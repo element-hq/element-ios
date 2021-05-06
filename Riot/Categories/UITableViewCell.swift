@@ -33,6 +33,11 @@ extension UITableViewCell {
         return result
     }
     
+    // Hide separator for one cell, otherwise use `tableView.separatorStyle = .none`
+    @objc func vc_hideSeparator() {
+        self.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+    }
+    
     @objc func vc_setAccessoryDisclosureIndicator(withTintColor tintColor: UIColor) {
         let disclosureImage = Asset.Images.disclosureIcon.image.withRenderingMode(.alwaysTemplate)
         let disclosureImageView = UIImageView(image: disclosureImage)
