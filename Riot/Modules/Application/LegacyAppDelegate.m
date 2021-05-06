@@ -1353,7 +1353,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
                     // Indicates that spaces are not supported
-                    [self.spaceFeatureUnavailablePresenter presentSpaceLinkUnavailableWith:universalLinkURL from:self.presentedViewController animated:YES];
+                    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
                 }
                 else
                 {
@@ -2777,14 +2777,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // Indicates that spaces are not supported
         if (room.summary.roomType == MXRoomTypeSpace)
         {
-            if (room.summary.membership == MXMembershipInvite)
-            {
-                [self.spaceFeatureUnavailablePresenter presentInvitesUnavailableFrom:self.presentedViewController animated:YES];
-            }
-            else
-            {
-                [self.spaceFeatureUnavailablePresenter presentOpenSpaceUnavailableFrom:self.presentedViewController animated:YES];
-            }
+            
+            [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
             
             if (completion)
             {

@@ -879,7 +879,7 @@
         self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
     }
     
-    [self.spaceFeatureUnavailablePresenter presentInvitesUnavailableFrom:self animated:YES];
+    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self animated:YES];
 }
 
 #pragma mark - MXKDataSourceDelegate

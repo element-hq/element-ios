@@ -23,30 +23,17 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
     // MARK: - Constants
     
     // MARK: - Properties
-    
-    private let webAppURL: URL
             
     // MARK: Private
     
     private weak var presentingViewController: UIViewController?
-    
-    // MARK: - Setup
-    
-    override init() {
-        guard let webAppURL = URL(string: BuildSettings.applicationWebAppUrlString) else {
-            fatalError("webAppURL is invalid")
-        }
-        self.webAppURL = webAppURL
-        super.init()
-    }
         
     // MARK: - Public
     
-    func presentUnavailableFeature(with viewData: SpaceFeatureUnavailableViewData,
-                                   from presentingViewController: UIViewController,
+    func presentUnavailableFeature(from presentingViewController: UIViewController,
                                    animated: Bool) {
         
-        let spaceFeatureUnavailableVC = SpaceFeatureUnaivableViewController.instantiate(with: viewData)
+        let spaceFeatureUnavailableVC = SpaceFeatureUnaivableViewController.instantiate()
         
         let navigationVC = RiotNavigationController(rootViewController: spaceFeatureUnavailableVC)
         
@@ -56,24 +43,5 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
                         
         navigationVC.modalPresentationStyle = .formSheet
         presentingViewController.present(navigationVC, animated: animated, completion: nil)
-    }
-    
-    func presentInvitesUnavailable(from presentingViewController: UIViewController, animated: Bool) {
-        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableInviteInfo, shareLink: self.webAppURL)
-        
-        self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
-    }
-    
-    func presentSpaceLinkUnavailable(with spaceLinkURL: URL, from presentingViewController: UIViewController, animated: Bool) {
-        
-        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableSpaceLinkInfo, shareLink: spaceLinkURL)
-        
-        self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
-    }
-    
-    func presentOpenSpaceUnavailable(from presentingViewController: UIViewController, animated: Bool) {
-        let viewData = SpaceFeatureUnavailableViewData(informationText: VectorL10n.spaceFeatureUnavailableOpenSpace, shareLink: self.webAppURL)
-        
-        self.presentUnavailableFeature(with: viewData, from: presentingViewController, animated: animated)
     }
 }

@@ -16,19 +16,8 @@
 
 import UIKit
 
-struct SpaceFeatureUnavailableViewData {    
-    let informationText: String
-    let shareLink: URL
-}
-
 final class SpaceFeatureUnaivableViewController: UIViewController {
 
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let buttonHighlightedAlpha: CGFloat = 0.2
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -36,19 +25,16 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     @IBOutlet private weak var artworkImageView: UIImageView!
     @IBOutlet private weak var informationLabel: UILabel!
     @IBOutlet private weak var generalInfoLabel: UILabel!
-    @IBOutlet private weak var shareButton: CustomRoundedButton!
     
     // MARK: Private
  
     private var theme: Theme!
-    private var viewData: SpaceFeatureUnavailableViewData!
     
     // MARK: - Setup
     
-    class func instantiate(with viewData: SpaceFeatureUnavailableViewData) -> SpaceFeatureUnaivableViewController {
+    class func instantiate() -> SpaceFeatureUnaivableViewController {
         let viewController = StoryboardScene.SpaceFeatureUnaivableViewController.initialScene.instantiate()
         viewController.theme = ThemeService.shared().theme
-        viewController.viewData = viewData
         return viewController
     }
     
@@ -80,11 +66,8 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     private func setupViews() {
         self.title = VectorL10n.spaceFeatureUnavailableTitle
         
-        self.informationLabel.text = self.viewData.informationText
-        self.generalInfoLabel.text = VectorL10n.spaceFeatureUnavailableGeneralInfo
-        
-        self.shareButton.titleLabel?.font = UIFont.systemFont(ofSize: 17.0, weight: .medium)
-        self.shareButton.setTitle(VectorL10n.spaceFeatureUnavailableShareLinkAction, for: .normal)
+        self.informationLabel.text = VectorL10n.spaceFeatureUnavailableSubtitle
+        self.generalInfoLabel.text = VectorL10n.spaceFeatureUnavailableInformation
     }
     
     // MARK: - Public
@@ -106,44 +89,9 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
         let artworkImage = ThemeService.shared().isCurrentThemeDark() ?   Asset.Images.featureUnavaibleArtworkDark.image : Asset.Images.featureUnavaibleArtwork.image
         
         self.artworkImageView.image = artworkImage
-        
-        // Share button
-        
-        self.shareButton.setTitleColor(theme.baseTextPrimaryColor, for: .normal)
-        self.shareButton.setTitleColor(theme.baseTextPrimaryColor.withAlphaComponent(Constants.buttonHighlightedAlpha), for: .highlighted)
-        self.shareButton.vc_setBackgroundColor(theme.tintColor, for: .normal)
-        
-        let buttonImage = Asset.Images.shareActionButton.image.vc_tintedImage(usingColor: theme.baseIconPrimaryColor)
-        
-        self.shareButton.setImage(buttonImage, for: .normal)
     }
     
     func fill(informationText: String, shareLink: URL) {
         self.informationLabel.text = informationText
-    }
-    
-    // MARK: - Private
-    
-    private func shareWebAppURL() {
-        let webAppURL = self.viewData.shareLink
-        
-        // Set up activity view controller
-        let activityItems: [Any] = [ webAppURL ]
-        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        
-        // Configure source view when activity view controller is presented with a popover
-        if let popoverPresentationController = activityViewController.popoverPresentationController {
-            popoverPresentationController.sourceView = self.shareButton
-            popoverPresentationController.sourceRect = self.shareButton.bounds
-            popoverPresentationController.permittedArrowDirections = [.down, .up]
-        }
-        
-        self.present(activityViewController, animated: true)
-    }
-    
-    // MARK: - Action
-    
-    @IBAction private func shareButtonAction(_ sender: UIButton) {
-        self.shareWebAppURL()
     }
 }
