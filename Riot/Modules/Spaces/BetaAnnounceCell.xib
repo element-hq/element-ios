@@ -40,7 +40,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kel-VV-C0f" customClass="CloseButton" customModule="Riot" customModuleProvider="target">
-                                <rect key="frame" x="235" y="8" width="44" height="44"/>
+                                <rect key="frame" x="237" y="6" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="BOd-JJ-paV"/>
                                     <constraint firstAttribute="height" constant="44" id="tdl-KN-AnH"/>
@@ -74,13 +74,13 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="aSK-Uf-CjE" secondAttribute="trailing" constant="15" id="1T1-zJ-fup"/>
                             <constraint firstAttribute="bottom" secondItem="npW-wC-Sab" secondAttribute="bottom" constant="20" id="2lh-cu-mmZ"/>
-                            <constraint firstAttribute="trailing" secondItem="kel-VV-C0f" secondAttribute="trailing" constant="12" id="CH2-5q-a51"/>
+                            <constraint firstAttribute="trailing" secondItem="kel-VV-C0f" secondAttribute="trailing" constant="10" id="CH2-5q-a51"/>
                             <constraint firstItem="npW-wC-Sab" firstAttribute="trailing" secondItem="vu4-y4-3xv" secondAttribute="trailing" id="D0P-in-hDZ"/>
                             <constraint firstItem="aTW-9I-M53" firstAttribute="leading" secondItem="vuH-Jo-iN1" secondAttribute="leading" constant="15" id="EiU-im-VWT"/>
                             <constraint firstItem="npW-wC-Sab" firstAttribute="leading" secondItem="vu4-y4-3xv" secondAttribute="leading" id="MD1-a4-T1w"/>
                             <constraint firstItem="aSK-Uf-CjE" firstAttribute="top" secondItem="aTW-9I-M53" secondAttribute="bottom" constant="15" id="ey5-aY-n3y"/>
                             <constraint firstItem="aSK-Uf-CjE" firstAttribute="leading" secondItem="aTW-9I-M53" secondAttribute="leading" id="ihA-R5-fpd"/>
-                            <constraint firstItem="kel-VV-C0f" firstAttribute="top" secondItem="vuH-Jo-iN1" secondAttribute="top" constant="8" id="ilP-Uo-PLu"/>
+                            <constraint firstItem="kel-VV-C0f" firstAttribute="top" secondItem="vuH-Jo-iN1" secondAttribute="top" constant="6" id="ilP-Uo-PLu"/>
                             <constraint firstItem="npW-wC-Sab" firstAttribute="top" secondItem="vu4-y4-3xv" secondAttribute="bottom" constant="15" id="nbH-gK-EU6"/>
                             <constraint firstItem="vu4-y4-3xv" firstAttribute="trailing" secondItem="aSK-Uf-CjE" secondAttribute="trailing" id="ox3-Gb-PVP"/>
                             <constraint firstItem="vu4-y4-3xv" firstAttribute="leading" secondItem="aSK-Uf-CjE" secondAttribute="leading" id="pCR-Vy-sbf"/>
