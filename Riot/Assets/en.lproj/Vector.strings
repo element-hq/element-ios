@@ -1619,10 +1619,10 @@ Tap the + to start adding people.";
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Spaces aren’t here yet";
-"space_feature_unavailable_subtitle" = "Spaces aren’t on iOS, but you can use them on the Web, Desktop or Android";
-"space_feature_unavailable_information" = "Spaces are a new way to group rooms and people.\n\nOnce you join a Space, you’ll be able to access rooms from that Space on iOS.";
+"space_feature_unavailable_subtitle" = "Spaces aren't on iOS yet, but you can use them now on Web and Desktop";
+"space_feature_unavailable_information" = "Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.";
 
 "space_beta_announce_badge" = "BETA";
-"space_beta_announce_title" = "Meet Spaces";
+"space_beta_announce_title" = "Spaces are coming soon";
 "space_beta_announce_subtitle" = "The new version of communities";
-"space_beta_announce_information" = "Spaces are new ways to group rooms and people. You can try them out now on Android, or on your computer.";
+"space_beta_announce_information" = "Spaces are a new way to group rooms and people.  They’re not on iOS yet, but you can use them now on Web and Desktop.";

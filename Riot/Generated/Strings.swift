@@ -4498,7 +4498,7 @@ internal enum VectorL10n {
   internal static var spaceBetaAnnounceBadge: String { 
     return VectorL10n.tr("Vector", "space_beta_announce_badge") 
   }
-  /// Spaces are new ways to group rooms and people. You can try them out now on Android, or on your computer.
+  /// Spaces are a new way to group rooms and people.  They’re not on iOS yet, but you can use them now on Web and Desktop.
   internal static var spaceBetaAnnounceInformation: String { 
     return VectorL10n.tr("Vector", "space_beta_announce_information") 
   }
@@ -4506,15 +4506,15 @@ internal enum VectorL10n {
   internal static var spaceBetaAnnounceSubtitle: String { 
     return VectorL10n.tr("Vector", "space_beta_announce_subtitle") 
   }
-  /// Meet Spaces
+  /// Spaces are coming soon
   internal static var spaceBetaAnnounceTitle: String { 
     return VectorL10n.tr("Vector", "space_beta_announce_title") 
   }
-  /// Spaces are a new way to group rooms and people.\n\nOnce you join a Space, you’ll be able to access rooms from that Space on iOS.
+  /// Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.
   internal static var spaceFeatureUnavailableInformation: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_information") 
   }
-  /// Spaces aren’t on iOS, but you can use them on the Web, Desktop or Android
+  /// Spaces aren't on iOS yet, but you can use them now on Web and Desktop
   internal static var spaceFeatureUnavailableSubtitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_subtitle") 
   }

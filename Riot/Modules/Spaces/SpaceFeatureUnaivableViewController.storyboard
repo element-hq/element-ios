@@ -86,8 +86,8 @@
                     </view>
                     <connections>
                         <outlet property="artworkImageView" destination="sGd-vk-QZn" id="823-PG-zoL"/>
-                        <outlet property="generalInfoLabel" destination="9ZF-ov-Mf3" id="9Oc-Zg-QZE"/>
-                        <outlet property="informationLabel" destination="0bq-od-FQz" id="fLM-1x-mjU"/>
+                        <outlet property="informationLabel" destination="9ZF-ov-Mf3" id="9Oc-Zg-QZE"/>
+                        <outlet property="subtitleLabel" destination="0bq-od-FQz" id="fLM-1x-mjU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aGN-2E-nEI" userLabel="First Responder" sceneMemberID="firstResponder"/>

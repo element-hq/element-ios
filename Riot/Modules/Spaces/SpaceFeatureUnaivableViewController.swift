@@ -23,8 +23,8 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     // MARK: Outlets
         
     @IBOutlet private weak var artworkImageView: UIImageView!
+    @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var generalInfoLabel: UILabel!
     
     // MARK: Private
  
@@ -66,8 +66,8 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     private func setupViews() {
         self.title = VectorL10n.spaceFeatureUnavailableTitle
         
-        self.informationLabel.text = VectorL10n.spaceFeatureUnavailableSubtitle
-        self.generalInfoLabel.text = VectorL10n.spaceFeatureUnavailableInformation
+        self.subtitleLabel.text = VectorL10n.spaceFeatureUnavailableSubtitle
+        self.informationLabel.text = VectorL10n.spaceFeatureUnavailableInformation
     }
     
     // MARK: - Public
@@ -81,8 +81,8 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.informationLabel.textColor = theme.textPrimaryColor
-        self.generalInfoLabel.textColor = theme.textSecondaryColor
+        self.subtitleLabel.textColor = theme.textPrimaryColor
+        self.informationLabel.textColor = theme.textSecondaryColor
         
         // Artwork image view
         
@@ -92,6 +92,6 @@ final class SpaceFeatureUnaivableViewController: UIViewController {
     }
     
     func fill(informationText: String, shareLink: URL) {
-        self.informationLabel.text = informationText
+        self.subtitleLabel.text = informationText
     }
 }
