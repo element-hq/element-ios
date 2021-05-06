@@ -376,9 +376,8 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.editionMentionTextFont = [UIFont systemFontOfSize:12];
         
         // Handle space room type, enables to show space in room list
-        // TODO: Waiting for MSC1772 to be finalized. Be sure to use MXRoomTypeStringSpace before releasing.
         defaultRoomSummaryUpdater.showRoomTypeStrings = @[
-            MXRoomTypeStringSpaceMSC1772
+            MXRoomTypeStringSpace
         ];
     }
     return self;
