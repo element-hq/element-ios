@@ -1619,8 +1619,13 @@ Tap the + to start adding people.";
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Not available";
-"space_feature_unavailable_general_info" = "Spaces are only available in Beta on Web, desktop or Android";
+"space_feature_unavailable_general_info" = "Spaces are a beta feature, for now only available on web, desktop and Android.\n\n";
 "space_feature_unavailable_invite_info" = "You’re trying to manage a Space invite. Please use your computer to manage the space invite";
 "space_feature_unavailable_open_space" = "You’re trying to open a Space. Please use your computer to open the space";
 "space_feature_unavailable_space_link_info" = "You’re trying to open a link to a Space. Please use your computer to open the link";
-"space_feature_unavailable_share_link_action" = "Share link";
+"space_feature_unavailable_share_link_action" = "Send link";
+
+"space_beta_announce_badge" = "BETA";
+"space_beta_announce_title" = "Meet Spaces";
+"space_beta_announce_subtitle" = "The new version of communities";
+"space_beta_announce_information" = "Spaces are new ways to group rooms and people. You can try them out now on Android, or on your computer.";

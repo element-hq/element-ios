@@ -4494,7 +4494,23 @@ internal enum VectorL10n {
   internal static var socialLoginListTitleSignUp: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
   }
-  /// Spaces are only available in Beta on Web, desktop or Android
+  /// BETA
+  internal static var spaceBetaAnnounceBadge: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_badge") 
+  }
+  /// Spaces are new ways to group rooms and people. You can try them out now on Android, or on your computer.
+  internal static var spaceBetaAnnounceInformation: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_information") 
+  }
+  /// The new version of communities
+  internal static var spaceBetaAnnounceSubtitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_subtitle") 
+  }
+  /// Meet Spaces
+  internal static var spaceBetaAnnounceTitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_title") 
+  }
+  /// Spaces are a beta feature, for now only available on web, desktop and Android.\n\n
   internal static var spaceFeatureUnavailableGeneralInfo: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_general_info") 
   }
@@ -4506,7 +4522,7 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableOpenSpace: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_open_space") 
   }
-  /// Share link
+  /// Send link
   internal static var spaceFeatureUnavailableShareLinkAction: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_share_link_action") 
   }
