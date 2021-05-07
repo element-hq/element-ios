@@ -54,3 +54,19 @@
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ en %@";
 /* Sticker from a specific person, not referencing a room. */
 "STICKER_FROM_USER" = "%@ envió una pegatina";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ quiere verificar";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Mensaje";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Mensaje de %@";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Mensaje en %@";
+"MESSAGE_PROTECTED" = "Nuevo mensaje";
