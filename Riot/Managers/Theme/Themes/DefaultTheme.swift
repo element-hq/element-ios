@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import DesignKit
 
 /// Color constants for the default theme
 @objcMembers
@@ -97,6 +98,8 @@ class DefaultTheme: NSObject, Theme {
     
     var secondaryCircleButtonBackgroundColor: UIColor = UIColor(rgb: 0xE3E8F0)
     
+    var shadowColor: UIColor = UIColor(rgb: 0x000000)
+    
     func applyStyle(onTabBar tabBar: UITabBar) {
         tabBar.unselectedItemTintColor = self.tabBarUnselectedItemTintColor
         tabBar.tintColor = self.tintColor
@@ -144,4 +147,10 @@ class DefaultTheme: NSObject, Theme {
         button.tintColor = self.tintColor
         button.setTitleColor(self.tintColor, for: .normal)
     }
+    
+    ///  MARK: - Theme v2
+    
+    lazy var colors: Colors = {
+        return LightColors()
+    }()
 }

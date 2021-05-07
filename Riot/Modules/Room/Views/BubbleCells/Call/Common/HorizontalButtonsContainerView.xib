@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tmw-j7-3Rd" customClass="HorizontalButtonsContainerView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="92"/>
+            <subviews>
+                <stackView verifyAmbiguity="ignoreSizes" opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UVD-pT-koz">
+                    <rect key="frame" x="0.0" y="8" width="414" height="68"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8md-Jx-SGt">
+                            <rect key="frame" x="0.0" y="9" width="1" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="kRw-vR-jdf"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qjq-AW-dwM" customClass="CallTileActionButton" customModule="Riot" customModuleProvider="target">
+                            <rect key="frame" x="84" y="14" width="108" height="40"/>
+                            <color key="backgroundColor" systemColor="systemRedColor"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="contentEdgeInsets" minX="12" minY="8" maxX="12" maxY="8"/>
+                            <state key="normal" title="Decline" image="voice_call_hangup_icon"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u30-NE-ETc" customClass="CallTileActionButton" customModule="Riot" customModuleProvider="target">
+                            <rect key="frame" x="226" y="15" width="100" height="38"/>
+                            <color key="backgroundColor" systemColor="systemGreenColor"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="contentEdgeInsets" minX="12" minY="8" maxX="12" maxY="8"/>
+                            <state key="normal" title="Answer" image="call_video_icon"/>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vjR-lf-Sa1">
+                            <rect key="frame" x="413" y="9" width="1" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="1" id="1Ki-pw-EhH"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="UVD-pT-koz" secondAttribute="trailing" id="9j6-zH-6Wt"/>
+                <constraint firstAttribute="bottom" secondItem="UVD-pT-koz" secondAttribute="bottom" constant="16" id="GMf-78-exZ"/>
+                <constraint firstItem="UVD-pT-koz" firstAttribute="top" secondItem="tmw-j7-3Rd" secondAttribute="top" constant="8" id="Jl8-6d-DIP"/>
+                <constraint firstItem="UVD-pT-koz" firstAttribute="leading" secondItem="tmw-j7-3Rd" secondAttribute="leading" id="sQB-Ri-Ydq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="firstButton" destination="Qjq-AW-dwM" id="Z8N-rh-6Ss"/>
+                <outlet property="secondButton" destination="u30-NE-ETc" id="IMp-8H-xAK"/>
+                <outlet property="stackView" destination="UVD-pT-koz" id="k8p-eH-xiB"/>
+            </connections>
+            <point key="canvasLocation" x="-797.10144927536237" y="-616.07142857142856"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="call_video_icon" width="16" height="16"/>
+        <image name="voice_call_hangup_icon" width="24" height="24"/>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

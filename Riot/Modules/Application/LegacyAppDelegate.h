@@ -30,6 +30,7 @@
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
 @class CallBar;
+@class CallPresenter;
 
 #pragma mark - Notifications
 /**
@@ -54,8 +55,8 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 @interface LegacyAppDelegate : UIResponder <
 UIApplicationDelegate,
 UISplitViewControllerDelegate,
-UINavigationControllerDelegate,
-JitsiViewControllerDelegate>
+UINavigationControllerDelegate
+>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -116,6 +117,11 @@ JitsiViewControllerDelegate>
 
 // Build Settings
 @property (nonatomic, readonly) id<Configurable> configuration;
+
+/**
+ Call presenter instance. May be nil unless at least one session initialized.
+ */
+@property (nonatomic, strong, readonly) CallPresenter *callPresenter;
 
 + (instancetype)theDelegate;
 

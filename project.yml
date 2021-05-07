@@ -31,3 +31,4 @@ include:
   - path: RiotShareExtension/target.yml
   - path: SiriIntents/target.yml
   - path: RiotNSE/target.yml
+  - path: DesignKit/target.yml
