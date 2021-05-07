@@ -20,26 +20,9 @@
 #import <MatrixSDK/MatrixSDK.h>
 
 #import "Widget.h"
+#import "WidgetConstants.h"
 
 @class WidgetManagerConfig;
-
-/**
- The type of matrix event used for matrix widgets.
- */
-FOUNDATION_EXPORT NSString *const kWidgetMatrixEventTypeString;
-
-/**
- The type of matrix event used for modular widgets.
- TODO: It should be replaced by kWidgetMatrixEventTypeString.
- */
-FOUNDATION_EXPORT NSString *const kWidgetModularEventTypeString;
-
-/**
- Known types widgets.
- */
-FOUNDATION_EXPORT NSString *const kWidgetTypeJitsiV1;
-FOUNDATION_EXPORT NSString *const kWidgetTypeJitsiV2;
-FOUNDATION_EXPORT NSString *const kWidgetTypeStickerPicker;
 
 /**
  Posted when a widget has been created, updated or disabled.

@@ -1350,3 +1350,9 @@
 
 // Call Bar
 "callbar_only_single_active" = "Aktív hívás (%@)";
+"room_details_integrations" = "Integrációk";
+"room_details_search" = "Szoba keresése";
+"room_multiple_typing_notification" = "%@ és mások";
+"room_accessibility_video_call" = "Videohívás";
+"room_message_replying_to" = "Válasz erre: %@";
+"room_message_editing" = "Szerkesztés";

@@ -1,3 +1,42 @@
+Changes in 1.3.6 (2021-05-07)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Jitsi: Use Jitsi server from homeserver's Well Known, if present, to create conferences (#3158).
+ * RoomMemberDetailsVC: Enable / disable "Hide all messages from this user" from settings (#4281).
+ * RoomVC: Show / Hide More and Report Content contextual menu from settings (#4285).
+ * SettingsVC: Show / hide NSFW and decrypted content options from build settings (#4290).
+ * RoomVC: Tweaked Scroll to Bottom FAB button (#4272).
+ * DesignKit: Introduce a new framework to manage design components.
+ * Add Jitsi widget remove banner for privileged users.
+ * Update "Jump to unread" banner to a pill style button.
+ * CallVC: Add transfer button.
+
+🐛 Bugfix
+ * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
+ * RiotSettings: Logging out resets RiotSettings (#4259).
+ * RoomVC: Crash in `setScrollToBottomHidden` method (#4270).
+ * Notifications: Make them work in debug mode (#4274).
+ * VoIP: Fix call bar layout issue (#4300).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * GH Actions: Make jobs use the right version of MatrixKit and MatrixSDK.
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.11](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.11)).
+
 Changes in 1.3.5 (2021-04-22)
 =================================================
 

@@ -1,6 +1,7 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Aparat służy do robienia zdjęć i nagrywania filmów, prowadzenia rozmów wideo.";
-"NSPhotoLibraryUsageDescription" = "Biblioteka zdjęć służy do wysyłania zdjęć i filmów.";
-"NSMicrophoneUsageDescription" = "Mikrofon służy do robienia filmów, wykonywania połączeń.";
-"NSContactsUsageDescription" = "Możemy pokazać Ci, które z Twoich kontaktów korzystają aktualnie z Element, bądź Matrix. Możemy wysyłać adresy e-mail i numery telefonów z Twojej książki adresowej na Twój serwer Matrix. New Vector nie przechowuje Twoich danych, ani nie wykorzystuje ich w żadnym celu. Aby uzyskać dodatkowe informacje zajrzyj do zakładki \"polityka prywatności\" w ustawieniach aplikacji.";
+"NSCameraUsageDescription" = "Kamera wykorzystywana jest do robienia zdjęć, nagrywania filmów i prowadzenia rozmów wideo.";
+"NSPhotoLibraryUsageDescription" = "Biblioteka zdjęć wykorzystywana jest do wysyłania zdjęć i filmów.";
+"NSMicrophoneUsageDescription" = "Mikrofon wykorzystywany jest podczas nagrywania filmów i wykonywania połączeń.";
+"NSContactsUsageDescription" = "Aby móc znaleźć osoby z Twoich kontaktów, które korzystają już z sieci Matrix, Element może wysłać adresy e-mail i numery telefonów z Twojej książki adresowej do wybranego serwera tożsamości Matrix. Tam, gdzie jest to obsługiwane, dane osobowe są szyfrowane przed wysłaniem - zapoznaj się z polityką prywatności Twojego serwera tożsamości, aby uzyskać więcej informacji.";
 "NSCalendarsUsageDescription" = "Zobacz swoje zaplanowane spotkania w aplikacji.";
+"NSFaceIDUsageDescription" = "Face ID wykorzystywane jest do odblokowywania aplikacji.";

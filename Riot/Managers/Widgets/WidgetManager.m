@@ -19,16 +19,11 @@
 
 #import "Riot-Swift.h"
 #import "JitsiWidgetData.h"
+#import "MXSession+Riot.h"
 
 #import <MatrixKit/MatrixKit.h>
 
 #pragma mark - Contants
-
-NSString *const kWidgetMatrixEventTypeString  = @"m.widget";
-NSString *const kWidgetModularEventTypeString = @"im.vector.modular.widgets";
-NSString *const kWidgetTypeJitsiV1 = @"jitsi";
-NSString *const kWidgetTypeJitsiV2 = @"m.jitsi";
-NSString *const kWidgetTypeStickerPicker = @"m.stickerpicker";
 
 NSString *const kWidgetManagerDidUpdateWidgetNotification = @"kWidgetManagerDidUpdateWidgetNotification";
 
@@ -284,7 +279,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     // Riot-Web still uses V1 type
     NSString *widgetId = [NSString stringWithFormat:@"%@_%@_%@", kWidgetTypeJitsiV1, room.mxSession.myUser.userId, @((uint64_t)([[NSDate date] timeIntervalSince1970] * 1000))];
     
-    NSURL *preferredJitsiServerUrl = BuildSettings.jitsiServerUrl;
+    NSURL *preferredJitsiServerUrl = [room.mxSession vc_homeserverConfiguration].jitsi.serverURL;
 
     JitsiService *jitsiService = JitsiService.shared;
     
