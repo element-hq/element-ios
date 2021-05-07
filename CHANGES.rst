@@ -5,6 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Spaces: Hide spaces from room list and home but keep space invites (#4252).
  * Spaces: Show space invites and advertise that they are not available (#4277).
  * Advertise that spaces are not available when tapping on a space link or a space invite (#4279).
 
