@@ -107,6 +107,12 @@
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateNormal];
     [self.endCallButton setImage:hangUpButtonImage forState:UIControlStateHighlighted];
     
+    //  force orientation to portrait if phone
+    if ([UIDevice currentDevice].isPhone)
+    {
+        [[UIDevice currentDevice] setValue:[NSNumber numberWithInteger: UIInterfaceOrientationPortrait] forKey:@"orientation"];
+    }
+    
     [self updateLocalPreviewLayout];
     
     [self configureUserInterface];
@@ -134,6 +140,8 @@
     self.callStatusLabel.textColor = self.overriddenTheme.baseTextPrimaryColor;
     [self.resumeButton setTitleColor:self.overriddenTheme.tintColor
                             forState:UIControlStateNormal];
+    [self.transferButton setTitleColor:self.overriddenTheme.tintColor
+                              forState:UIControlStateNormal];
     
     self.localPreviewContainerView.layer.borderColor = self.overriddenTheme.tintColor.CGColor;
     self.localPreviewContainerView.layer.borderWidth = 2;
@@ -150,6 +158,30 @@
     }
     
     [super viewWillDisappear:animated];
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    //  limit orientation to portrait only for phone
+    if ([UIDevice currentDevice].isPhone)
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    return [super supportedInterfaceOrientations];
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    if ([UIDevice currentDevice].isPhone)
+    {
+        return UIInterfaceOrientationPortrait;
+    }
+    return [super preferredInterfaceOrientationForPresentation];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
 }
 
 #pragma mark - override MXKViewController
@@ -347,18 +379,6 @@
     return _overriddenTheme;
 }
 
-- (void)setMxCall:(MXCall *)mxCall
-{
-    [super setMxCall:mxCall];
-    
-    if (self.videoMuteButton.isHidden)
-    {
-        //  shift more button to left
-        self.moreButtonLeadingConstraint.constant = 8.0;
-        [self.view layoutIfNeeded];
-    }
-}
-
 - (UIImage*)picturePlaceholder
 {
     CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);
@@ -385,26 +405,19 @@
 
 - (void)updatePeerInfoDisplay
 {
-    NSString *peerDisplayName;
-    NSString *peerAvatarURL;
+    [super updatePeerInfoDisplay];
     
+    NSString *peerAvatarURL;
+
     if (self.peer)
     {
-        peerDisplayName = [self.peer displayname];
-        if (!peerDisplayName.length)
-        {
-            peerDisplayName = self.peer.userId;
-        }
         peerAvatarURL = self.peer.avatarUrl;
     }
     else if (self.mxCall.isConferenceCall)
     {
-        peerDisplayName = self.mxCall.room.summary.displayname;
         peerAvatarURL = self.mxCall.room.summary.avatar;
     }
-    
-    self.callerNameLabel.text = peerDisplayName;
-    
+
     self.blurredCallerImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.callerImageView.contentMode = UIViewContentModeScaleAspectFill;
     if (peerAvatarURL)
@@ -415,7 +428,7 @@
                              andImageOrientation:UIImageOrientationUp
                                     previewImage:self.picturePlaceholder
                                     mediaManager:self.mainSession.mediaManager];
-        
+
         // Retrieve the avatar in full resolution
         [self.callerImageView setImageURI:peerAvatarURL
                                  withType:nil
@@ -521,7 +534,8 @@
                                                                showsBackspaceButton:NO
                                                                     showsCallButton:NO
                                                                   formattingEnabled:NO
-                                                                     editingEnabled:NO];
+                                                                     editingEnabled:NO
+                                                                          playTones:YES];
     DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:config];
     controller.delegate = self;
     self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];

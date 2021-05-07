@@ -6,6 +6,7 @@
 @import MatrixKit;
 
 #import "WebViewViewController.h"
+#import "RiotSplitViewController.h"
 #import "RiotNavigationController.h"
 #import "ThemeService.h"
 #import "TableViewCellWithCheckBoxAndLabel.h"

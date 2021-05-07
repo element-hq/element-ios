@@ -224,7 +224,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) PushNotificationService *pushNotificationService;
 @property (nonatomic, strong) PushNotificationStore *pushNotificationStore;
 @property (nonatomic, strong) LocalAuthenticationService *localAuthenticationService;
-@property (nonatomic, strong) CallPresenter *callPresenter;
+@property (nonatomic, strong, readwrite) CallPresenter *callPresenter;
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
@@ -3012,90 +3012,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-#pragma mark - Jitsi call
-
-- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video
-{
-#ifdef CALL_STACK_JINGLE
-    if (!_jitsiViewController)
-    {
-        MXWeakify(self);
-        [self checkPermissionForNativeWidget:jitsiWidget fromUrl:JitsiService.shared.serverURL completion:^(BOOL granted) {
-            MXStrongifyAndReturnIfNil(self);
-            if (!granted)
-            {
-                return;
-            }
-
-            self->_jitsiViewController = [JitsiViewController jitsiViewController];
-
-            [self->_jitsiViewController openWidget:jitsiWidget withVideo:video success:^{
-
-                self->_jitsiViewController.delegate = self;
-                [self presentJitsiViewController:nil];
-
-            } failure:^(NSError *error) {
-
-                self->_jitsiViewController = nil;
-
-                [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_jitsi_error", @"Vector", nil)];
-            }];
-        }];
-    }
-    else
-    {
-        [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"call_already_displayed", @"Vector", nil)];
-    }
-#else
-    [self showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]];
-#endif
-}
-
-- (void)presentJitsiViewController:(void (^)(void))completion
-{
-    [self removeCallStatusBar];
-
-    if (_jitsiViewController)
-    {
-        if (@available(iOS 13.0, *))
-        {
-            _jitsiViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-        }
-
-        [self presentViewController:_jitsiViewController animated:YES completion:completion];
-    }
-}
-
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController dismissViewJitsiController:(void (^)(void))completion
-{
-    if (jitsiViewController == _jitsiViewController)
-    {
-        [_jitsiViewController dismissViewControllerAnimated:YES completion:completion];
-        _jitsiViewController = nil;
-
-        [self removeCallStatusBar];
-    }
-}
-
-- (void)jitsiViewController:(JitsiViewController *)jitsiViewController goBackToApp:(void (^)(void))completion
-{
-    if (jitsiViewController == _jitsiViewController)
-    {
-        [_jitsiViewController dismissViewControllerAnimated:YES completion:^{
-
-            MXRoom *room = [_jitsiViewController.widget.mxSession roomWithRoomId:_jitsiViewController.widget.roomId];
-            NSString *btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"active_call_details", @"Vector", nil), room.summary.displayname];
-            [self updateCallStatusBar:btnTitle];
-
-            if (completion)
-            {
-                completion();
-            }
-        }];
-    }
-}
-
-
 #pragma mark - Native Widget Permission
 
 - (void)checkPermissionForNativeWidget:(Widget*)widget fromUrl:(NSURL*)url completion:(void (^)(BOOL granted))completion
@@ -3228,13 +3144,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return result;
 }
 
-- (void)updateCallStatusBar:(NSString*)title
+- (void)displayCallStatusBarWithTitle:(NSString*)title
 {
-    if (_callBar)
-    {
-        _callBar.title = title;
-        return;
-    }
     // Add a call status bar
     CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, [self calculateCallStatusBarHeight]);
 
@@ -3257,22 +3168,27 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [_callBar.heightAnchor constraintEqualToAnchor:_callStatusBarWindow.heightAnchor].active = YES;
 
     _callStatusBarWindow.hidden = NO;
-    [self statusBarDidChangeFrame];
+    [self deviceOrientationDidChange];
     
-    // We need to listen to the system status bar size change events to refresh the root controller frame.
+    // We need to listen to the device orientation change events to refresh the root controller frame.
     // Else the navigation bar position will be wrong.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(statusBarDidChangeFrame)
-                                                 name:UIApplicationDidChangeStatusBarFrameNotification
+                                             selector:@selector(deviceOrientationDidChange)
+                                                 name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
+}
+
+- (void)updateCallStatusBarWithTitle:(NSString*)title
+{
+    _callBar.title = title;
 }
 
 - (void)removeCallStatusBar
 {
     if (_callStatusBarWindow)
     {
-        // No more need to listen to system status bar changes
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
+        // No more need to listen to device orientation changes
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
         
         // Hide & destroy it
         _callStatusBarWindow.hidden = YES;
@@ -3280,11 +3196,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         _callBar = nil;
         _callStatusBarWindow = nil;
         
-        [self statusBarDidChangeFrame];
+        [self deviceOrientationDidChange];
     }
 }
 
-- (void)statusBarDidChangeFrame
+- (void)deviceOrientationDidChange
 {
     UIApplication *app = [UIApplication sharedApplication];
     UIViewController *rootController = app.keyWindow.rootViewController;
@@ -3296,30 +3212,20 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
 
-        UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+        CGFloat width;
         
-        switch (statusBarOrientation)
+        if (UIDeviceOrientationIsPortrait(deviceOrientation))
         {
-            case UIInterfaceOrientationLandscapeLeft:
-            {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, -1, 1, 0, callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
-                break;
-            }
-            case UIInterfaceOrientationLandscapeRight:
-            {
-                _callStatusBarWindow.frame = CGRectMake(-rootControllerFrame.size.width / 2, -callStatusBarHeight / 2, rootControllerFrame.size.width, callStatusBarHeight);
-                _callStatusBarWindow.transform = CGAffineTransformMake(0, 1, -1, 0, rootControllerFrame.size.height - callStatusBarHeight / 2, rootControllerFrame.size.width / 2);
-                break;
-            }
-            default:
-            {
-                _callStatusBarWindow.transform = CGAffineTransformIdentity;
-                _callStatusBarWindow.frame = CGRectMake(0, 0, rootControllerFrame.size.width, callStatusBarHeight);
-                break;
-            }
+            width = MIN(rootControllerFrame.size.width, rootControllerFrame.size.height);
         }
-
+        else
+        {
+            width = MAX(rootControllerFrame.size.width, rootControllerFrame.size.height);
+        }
+        
+        _callStatusBarWindow.frame = CGRectMake(0, 0, width, callStatusBarHeight);
+        
         // Apply the vertical offset due to call status bar
         rootControllerFrame.origin.y = callStatusBarHeight;
         rootControllerFrame.size.height -= callStatusBarHeight;
@@ -4481,12 +4387,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - CallPresenterDelegate
 
-- (BOOL)callPresenter:(CallPresenter *)presenter shouldHandleNewCall:(MXCall *)call
-{
-    //  Ignore the call if a call is already in progress
-    return _jitsiViewController == nil;
-}
-
 - (void)callPresenter:(CallPresenter *)presenter presentCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
@@ -4494,19 +4394,23 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     
-    [self presentViewController:viewController animated:YES completion:completion];
+    [self presentViewController:viewController animated:NO completion:completion];
 }
 
-- (void)callPresenter:(CallPresenter *)presenter dismissCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter dismissCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
     {
-        [viewController dismissViewControllerAnimated:YES completion:^{
+        [viewController.presentingViewController dismissViewControllerAnimated:NO completion:^{
             
-            if (viewController.shouldPromptForStunServerFallback)
+            if ([viewController isKindOfClass:CallViewController.class])
             {
-                [self promptForStunServerFallback];
+                CallViewController *callVC = (CallViewController *)viewController;
+                if (callVC.shouldPromptForStunServerFallback)
+                {
+                    [self promptForStunServerFallback];
+                }
             }
             
             if (completion)
@@ -4525,26 +4429,69 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callPresenter:(CallPresenter *)presenter presentCallBarFor:(CallViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter presentCallBarFor:(UIViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
+{
+    [self displayCallStatusBarWithTitle:nil];
+    [self callPresenter:presenter updateCallBarFor:activeCallViewController numberOfPausedCalls:numberOfPausedCalls];
+    
+    if (completion)
+    {
+        completion();
+    }
+}
+
+- (void)callPresenter:(CallPresenter *)presenter updateCallBarFor:(UIViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls
 {
     NSString *btnTitle;
     
     if (activeCallViewController)
     {
+        NSString *callStatus = @"";
+        BOOL isGroupCall = NO;
+        if ([activeCallViewController isKindOfClass:[CallViewController class]])
+        {
+            CallViewController *activeCallVC = (CallViewController *)activeCallViewController;
+            callStatus = activeCallVC.callStatusLabel.text;
+        }
+        else if ([activeCallViewController isKindOfClass:[JitsiViewController class]])
+        {
+            JitsiViewController *jitsiVC = (JitsiViewController *)activeCallViewController;
+            NSUInteger duration = jitsiVC.callDuration / 1000;
+            NSUInteger secs = duration % 60;
+            NSUInteger mins = (duration / 60) % 60;
+            NSUInteger hours = duration / 3600;
+            if (hours > 0)
+            {
+                callStatus = [NSString stringWithFormat:@"%02tu:%02tu:%02tu", hours, mins, secs];
+            }
+            else
+            {
+                callStatus = [NSString stringWithFormat:@"%02tu:%02tu", mins, secs];
+            }
+            isGroupCall = YES;
+        }
+        
         if (numberOfPausedCalls == 0)
         {
             //  only one active
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active", @"Vector", nil), activeCallViewController.callStatusLabel.text];
+            if (isGroupCall)
+            {
+                btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active_group", @"Vector", nil), callStatus];
+            }
+            else
+            {
+                btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active", @"Vector", nil), callStatus];
+            }
         }
         else if (numberOfPausedCalls == 1)
         {
             //  one active and one paused
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_single_paused", @"Vector", nil), activeCallViewController.callStatusLabel.text];
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_single_paused", @"Vector", nil), callStatus];
         }
         else
         {
             //  one active and multiple paused
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_multiple_paused", @"Vector", nil), activeCallViewController.callStatusLabel.text, @(numberOfPausedCalls)];
+            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_multiple_paused", @"Vector", nil), callStatus, @(numberOfPausedCalls)];
         }
     }
     else
@@ -4560,12 +4507,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
     }
     
-    [self updateCallStatusBar:btnTitle];
-    
-    if (completion)
-    {
-        completion();
-    }
+    [self updateCallStatusBarWithTitle:btnTitle];
 }
 
 - (void)callPresenter:(CallPresenter *)presenter dismissCallBar:(void (^)(void))completion
@@ -4578,7 +4520,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callPresenter:(CallPresenter *)presenter enterPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter enterPipForCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
     if (viewController.presentingViewController)
@@ -4594,7 +4536,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callPresenter:(CallPresenter *)presenter exitPipForCallViewController:(CallViewController *)viewController completion:(void (^)(void))completion
+- (void)callPresenter:(CallPresenter *)presenter exitPipForCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     if (@available(iOS 13.0, *))
     {
@@ -4606,18 +4548,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - CallBarDelegate
 
-- (void)callBarDidTapReturnButton:(CallBar *)callBar
+- (void)callBarDidTap:(CallBar *)callBar
 {
-    if ([_callPresenter callStatusBarButtonTapped])
-    {
-        return;
-    }
-    else if (_jitsiViewController)
-    {
-        [self presentJitsiViewController:nil];
-    }
+    [_callPresenter callStatusBarTapped];
 }
-    
+
 #pragma mark - Authentication
 
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId

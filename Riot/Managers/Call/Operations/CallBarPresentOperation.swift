@@ -19,12 +19,12 @@ import Foundation
 class CallBarPresentOperation: AsyncOperation {
     
     private var presenter: CallPresenter
-    private var activeCallVC: CallViewController?
+    private var activeCallVC: UIViewController?
     private var numberOfPausedCalls: UInt
     private var completion: (() -> Void)?
     
     init(presenter: CallPresenter,
-         activeCallVC: CallViewController?,
+         activeCallVC: UIViewController?,
          numberOfPausedCalls: UInt,
          completion: (() -> Void)? = nil) {
         self.presenter = presenter
@@ -36,7 +36,10 @@ class CallBarPresentOperation: AsyncOperation {
     override func main() {
         presenter.delegate?.callPresenter(presenter, presentCallBarFor: activeCallVC, numberOfPausedCalls: numberOfPausedCalls, completion: {
             self.finish()
-            self.completion?()
+            //  wait for the next life cycle to detect status bar layout updates
+            DispatchQueue.main.async {
+                self.completion?()
+            }
         })
     }
     

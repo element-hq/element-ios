@@ -18,29 +18,25 @@ import Foundation
 import Reusable
 
 @objc protocol CallBarDelegate: class {
-    func callBarDidTapReturnButton(_ callBar: CallBar)
+    func callBarDidTap(_ callBar: CallBar)
 }
 
 @objcMembers
 class CallBar: UIView, NibLoadable {
-    
-    @IBOutlet private weak var callIcon: UIImageView! {
-        didSet {
-            callIcon.image = Asset.Images.voiceCallHangonIcon.image.vc_tintedImage(usingColor: .white)
-        }
-    }
+
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var returnLabel: UILabel! {
-        didSet {
-            returnLabel.text = VectorL10n.callbarReturn
-        }
-    }
-    @IBOutlet private weak var returnButton: UIButton!
     
     weak var delegate: CallBarDelegate?
     
     static func instantiate() -> CallBar {
         return CallBar.loadFromNib()
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureRecognized(_:)))
+        addGestureRecognizer(tapRecognizer)
     }
     
     var title: String? {
@@ -51,7 +47,8 @@ class CallBar: UIView, NibLoadable {
         }
     }
     
-    @IBAction private func returnButtonTapped(_ sender: UIButton) {
-        delegate?.callBarDidTapReturnButton(self)
+    @objc
+    private func tapGestureRecognized(_ sender: UITapGestureRecognizer) {
+        delegate?.callBarDidTap(self)
     }
 }

@@ -60,6 +60,7 @@ class DialpadViewController: UIViewController {
     }
     @IBOutlet private weak var lineView: UIView!
     @IBOutlet private weak var digitsStackView: UIStackView!
+    @IBOutlet private var digitButtons: [DialpadButton]!
     @IBOutlet private weak var backspaceButton: DialpadActionButton! {
         didSet {
             backspaceButton.type = .backspace
@@ -83,6 +84,20 @@ class DialpadViewController: UIViewController {
     private enum Constants {
         static let sizeOniPad: CGSize = CGSize(width: 375, height: 667)
         static let additionalTopInset: CGFloat = 20
+        static let digitButtonViewDatas: [Int: DialpadButton.ViewData] = [
+            -2: .init(title: "#", tone: 1211),
+            -1: .init(title: "*", tone: 1210),
+            0: .init(title: "0", tone: 1200, subtitle: "+"),
+            1: .init(title: "1", tone: 1201, showsSubtitleSpace: true),
+            2: .init(title: "2", tone: 1202, subtitle: "ABC"),
+            3: .init(title: "3", tone: 1203, subtitle: "DEF"),
+            4: .init(title: "4", tone: 1204, subtitle: "GHI"),
+            5: .init(title: "5", tone: 1205, subtitle: "JKL"),
+            6: .init(title: "6", tone: 1206, subtitle: "MNO"),
+            7: .init(title: "7", tone: 1207, subtitle: "PQRS"),
+            8: .init(title: "8", tone: 1208, subtitle: "TUV"),
+            9: .init(title: "9", tone: 1209, subtitle: "WXYZ")
+        ]
     }
     
     private var wasCursorAtTheEnd: Bool = true
@@ -134,6 +149,12 @@ class DialpadViewController: UIViewController {
         //  force orientation to portrait if phone
         if UIDevice.current.isPhone {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        }
+        
+        for button in digitButtons {
+            if let viewData = Constants.digitButtonViewDatas[button.tag] {
+                button.render(withViewData: viewData)
+            }
         }
     }
     
@@ -212,10 +233,15 @@ class DialpadViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        titleLabel.textColor = theme.noticeSecondaryColor
+        if theme.identifier == ThemeIdentifier.light.rawValue {
+            titleLabel.textColor = theme.noticeSecondaryColor
+            closeButton.setBackgroundImage(Asset.Images.closeButton.image.vc_tintedImage(usingColor: theme.tabBarUnselectedItemTintColor), for: .normal)
+        } else {
+            titleLabel.textColor = theme.baseTextSecondaryColor
+            closeButton.setBackgroundImage(Asset.Images.closeButton.image.vc_tintedImage(usingColor: theme.baseTextSecondaryColor), for: .normal)
+        }
         phoneNumberTextField.textColor = theme.textPrimaryColor
         lineView.backgroundColor = theme.lineBreakColor
-        closeButton.setBackgroundImage(Asset.Images.closeButton.image.vc_tintedImage(usingColor: theme.tabBarUnselectedItemTintColor), for: .normal)
         
         updateThemesOfAllButtons(in: digitsStackView, with: theme)
     }
@@ -253,10 +279,17 @@ class DialpadViewController: UIViewController {
     }
     
     @IBAction private func digitButtonAction(_ sender: DialpadButton) {
-        let digit = sender.title(for: .normal) ?? ""
+        guard let digitViewData = Constants.digitButtonViewDatas[sender.tag] else {
+            return
+        }
+        let digit = digitViewData.title
         
         defer {
             delegate?.dialpadViewControllerDidTapDigit?(self, digit: digit)
+        }
+        
+        if configuration.playTones {
+            AudioServicesPlaySystemSound(digitViewData.tone)
         }
         
         if !configuration.editingEnabled {

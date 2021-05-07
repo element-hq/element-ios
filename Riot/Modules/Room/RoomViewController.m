@@ -129,12 +129,13 @@
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
+NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate>
 {
     
     // The preview header
@@ -195,6 +196,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Tell whether the view controller is appeared or not.
     BOOL isAppeared;
+    
+    // Tell whether the room has a Jitsi call or not.
+    BOOL hasJitsiCall;
+    
+    // The right bar button items back up.
+    NSArray<UIBarButtonItem *> *rightBarButtonItems;
 
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -213,6 +220,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
+@property (nonatomic, strong) RemoveJitsiWidgetView *removeJitsiWidgetView;
 
 
 @property (nonatomic, strong) RoomContextualMenuViewController *roomContextualMenuViewController;
@@ -372,12 +380,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     //  call cells
     [self.bubblesTableView registerClass:RoomDirectCallStatusBubbleCell.class forCellReuseIdentifier:RoomDirectCallStatusBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:RoomGroupCallStatusBubbleCell.class forCellReuseIdentifier:RoomGroupCallStatusBubbleCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
+    
+    [self setupRemoveJitsiWidgetRemoveView];
     
     // Replace the default input toolbar view.
     // Note: this operation will force the layout of subviews. That is why cell view classes must be registered before.
@@ -447,11 +458,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     
+    [self.removeJitsiWidgetView updateWithTheme:ThemeService.shared.theme];
+    
     // Prepare jump to last unread banner
-    self.jumpToLastUnreadBannerContainer.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.textPrimaryColor;
+    self.jumpToLastUnreadImageView.tintColor = ThemeService.shared.theme.tintColor;
     self.jumpToLastUnreadLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.jumpToLastUnreadBannerSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
     
     self.previewHeaderContainer.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
@@ -465,23 +476,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.bubblesTableView reloadData];
     }
     
-    self.scrollToBottomButton.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.scrollToBottomButton.layer.shadowOpacity = 0.2;
-    self.scrollToBottomButton.layer.shadowRadius = 6;
-    self.scrollToBottomButton.layer.shadowOffset = CGSizeMake(0, 4);
+    [self.scrollToBottomButton vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
+                                              offset:CGSizeMake(0, 4)
+                                              radius:6
+                                             opacity:0.2];
 
     self.inputBackgroundView.backgroundColor = [ThemeService.shared.theme.backgroundColor colorWithAlphaComponent:0.98];
     
-    if ([ThemeService.shared.themeId isEqualToString:@"light"])
+    if (ThemeService.shared.isCurrentThemeDark)
+    {
+        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
+
+        self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.navigation;
+        [self.jumpToLastUnreadBanner vc_removeShadow];
+        self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.quarterlyContent;
+    }
+    else
     {
         [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown"] forState:UIControlStateNormal];
-    }
-    else if ([ThemeService.shared.themeId isEqualToString:@"dark"] || [ThemeService.shared.themeId isEqualToString:@"black"])
-    {
-        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
-    }
-    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        [self.scrollToBottomButton setImage:[UIImage imageNamed:@"scrolldown_dark"] forState:UIControlStateNormal];
+        
+        self.jumpToLastUnreadBanner.backgroundColor = ThemeService.shared.theme.colors.background;
+        [self.jumpToLastUnreadBanner vc_addShadowWithColor:ThemeService.shared.theme.shadowColor
+                                                    offset:CGSizeMake(0, 4)
+                                                    radius:8
+                                                   opacity:0.1];
+        self.resetReadMarkerButton.tintColor = ThemeService.shared.theme.colors.tertiaryContent;
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
@@ -509,6 +528,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Refresh the room title view
     [self refreshRoomTitle];
+    
+    //  refresh remove Jitsi widget view
+    [self refreshRemoveJitsiWidgetView];
     
     // Refresh tool bar if the room data source is set.
     if (self.roomDataSource)
@@ -621,6 +643,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
     [self refreshMissedDiscussionsCount:YES];
     self.keyboardHeight = MAX(self.keyboardHeight, 0);
+    
+    if (hasJitsiCall &&
+        ![[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    {
+        //  the room had a Jitsi call before, but not now
+        hasJitsiCall = NO;
+        [self reloadBubblesTable:YES];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -650,6 +680,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
         mxEventDidDecryptNotificationObserver = nil;
     }
+    
+    JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
+    if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    {
+        hasJitsiCall = YES;
+        [self reloadBubblesTable:YES];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -657,7 +694,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [super viewDidLayoutSubviews];
     
     UIEdgeInsets contentInset = self.bubblesTableView.contentInset;
-    contentInset.bottom = self.bottomLayoutGuide.length;
+    contentInset.bottom = self.view.safeAreaInsets.bottom;
     self.bubblesTableView.contentInset = contentInset;
     
     // Check here whether a subview has been added or removed
@@ -709,15 +746,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
         self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
     }
     else
     {
         // In non expanded header mode, the navigation bar is opaque
         // The table view must not display behind it
         self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
-        
-        self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top; // no expanded
+    }
+    
+    //  stay at the bottom if already was
+    if (self.isBubblesTableScrollViewAtTheBottom)
+    {
+        [self scrollBubblesTableViewToBottomAnimated:NO];
     }
     
     [self refreshMissedDiscussionsCount:YES];
@@ -932,14 +972,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         self.eventsAcknowledgementEnabled = YES;
         
-        // Set room title view
-        [self refreshRoomTitle];
-        
         // Store ref on customized room data source
         if ([dataSource isKindOfClass:RoomDataSource.class])
         {
             customizedRoomDataSource = (RoomDataSource*)dataSource;
         }
+        
+        // Set room title view
+        [self refreshRoomTitle];
     }
     else
     {
@@ -1367,6 +1407,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 #pragma mark - Internals
 
+- (UIBarButtonItem *)videoCallBarButtonItem
+{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onVideoCallPressed:)];
+    item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
+    
+    return item;
+}
+
+- (void)setupRemoveJitsiWidgetRemoveView
+{
+    self.removeJitsiWidgetView = [RemoveJitsiWidgetView instantiate];
+    self.removeJitsiWidgetView.delegate = self;
+    
+    [self.removeJitsiWidgetContainer vc_addSubViewMatchingParent:self.removeJitsiWidgetView];
+    
+    self.removeJitsiWidgetContainer.hidden = YES;
+    
+    [self refreshRemoveJitsiWidgetView];
+}
+
 - (void)forceLayoutRefresh
 {
     // Sanity check: check whether the table view data source is set.
@@ -1408,7 +1471,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
     
     return (callInRoom && callInRoom.state != MXCallStateEnded)
-    || [[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId];
+    || customizedRoomDataSource.jitsiWidget;
+}
+
+/**
+ Returns a flag for the current user whether it's privileged to add/remove Jitsi widgets to this room.
+ */
+- (BOOL)canEditJitsiWidget
+{
+    MXRoomPowerLevels *powerLevels = [self.roomDataSource.roomState powerLevels];
+    NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kWidgetModularEventTypeString];
+    NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
+    return myPower >= requiredPower;
 }
 
 - (void)refreshRoomTitle
@@ -1427,27 +1501,84 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (self.roomDataSource.isLive)
         {
             rightBarButtonItems = [NSMutableArray new];
+            BOOL hasCustomJoinButton = NO;
             
-            UIEdgeInsets itemInsets = UIEdgeInsetsMake(0, -5, 0, 5);
             if (self.supportCallOption)
             {
-                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onVoiceCallPressed:)];
-                item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
-                item.imageInsets = UIEdgeInsetsMake(0, -5, 0, 5);
-                [rightBarButtonItems addObject:item];
-                
-                item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video_call"] style:UIBarButtonItemStylePlain target:self action:@selector(onVideoCallPressed:)];
-                item.imageInsets = UIEdgeInsetsMake(0, 10, 0, -10);
-                item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
-                [rightBarButtonItems addObject:item];
-                itemInsets = UIEdgeInsetsMake(0, 20, 0, -20);
+                if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
+                {
+                    //  voice call button for Matrix call
+                    UIBarButtonItem *itemVoice = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"voice_call_hangon_icon"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(onVoiceCallPressed:)];
+                    itemVoice.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
+                    itemVoice.enabled = !self.isCallActive;
+                    [rightBarButtonItems addObject:itemVoice];
+                    
+                    //  video call button for Matrix call
+                    UIBarButtonItem *itemVideo = [self videoCallBarButtonItem];
+                    itemVideo.enabled = !self.isCallActive;
+                    [rightBarButtonItems addObject:itemVideo];
+                }
+                else
+                {
+                    //  video call button for Jitsi call
+                    if (self.isCallActive)
+                    {
+                        JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
+                        if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+                        {
+                            //  show a disabled call button
+                            UIBarButtonItem *item = [self videoCallBarButtonItem];
+                            item.enabled = NO;
+                            [rightBarButtonItems addObject:item];
+                        }
+                        else
+                        {
+                            //  show Join button
+                            CallTileActionButton *button = [CallTileActionButton new];
+                            [button setImage:[UIImage imageNamed:@"call_video_icon"]
+                                    forState:UIControlStateNormal];
+                            [button setTitle:NSLocalizedStringFromTable(@"room_join_group_call", @"Vector", nil)
+                                    forState:UIControlStateNormal];
+                            [button addTarget:self
+                                       action:@selector(onVideoCallPressed:)
+                             forControlEvents:UIControlEventTouchUpInside];
+                            button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
+                            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
+                            item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
+                            [rightBarButtonItems addObject:item];
+                            
+                            hasCustomJoinButton = YES;
+                        }
+                    }
+                    else
+                    {
+                        //  show a video call button
+                        //  item will still be enabled, and when tapped an alert will be displayed to the user
+                        UIBarButtonItem *item = [self videoCallBarButtonItem];
+                        if (!self.canEditJitsiWidget)
+                        {
+                            item.image = [[UIImage imageNamed:@"video_call"] vc_withAlpha:0.3];
+                        }
+                        [rightBarButtonItems addObject:item];
+                    }
+                }
             }
             
             if ([self widgetsCount:NO])
             {
-                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"integrations_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onIntegrationsPressed:)];
-                item.imageInsets = itemInsets;
+                UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"integrations_icon"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(onIntegrationsPressed:)];
                 item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_integrations", @"Vector", nil);
+                if (hasCustomJoinButton)
+                {
+                    item.imageInsets = UIEdgeInsetsMake(0, -5, 0, -5);
+                    item.landscapeImagePhoneInsets = UIEdgeInsetsMake(0, -5, 0, -5);
+                }
                 [rightBarButtonItems addObject:item];
             }
             
@@ -1992,7 +2123,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                              animations:^{
                 
                 self.bubblesTableViewTopConstraint.constant = 0;
-                self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.bubblesTableView.mxk_adjustedContentInset.top;
                 
                 // Force to render the view
                 [self forceLayoutRefresh];
@@ -2111,7 +2241,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                          animations:^{
             
             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
-            self.jumpToLastUnreadBannerContainerTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant;
             
             previewHeader.roomAvatar.alpha = 1;
             
@@ -2225,6 +2354,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         else if (bubbleData.tag == RoomBubbleCellDataTagCall)
         {
             cellViewClass = RoomDirectCallStatusBubbleCell.class;
+        }
+        else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
+        {
+            cellViewClass = RoomGroupCallStatusBubbleCell.class;
         }
         else if (bubbleData.isIncoming)
         {
@@ -2402,6 +2535,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     {
                         //  post notification `RoomCallTileTapped`
                         [[NSNotificationCenter defaultCenter] postNotificationName:RoomCallTileTappedNotification object:bubbleData];
+                        
+                        preventBubblesTableViewScroll = YES;
+                        [self selectEventWithId:tappedEvent.eventId];
+                    }
+                }
+                else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
+                {
+                    if ([bubbleData isKindOfClass:[RoomBubbleCellData class]])
+                    {
+                        //  post notification `RoomGroupCallTileTapped`
+                        [[NSNotificationCenter defaultCenter] postNotificationName:RoomGroupCallTileTappedNotification object:bubbleData];
+                        
+                        preventBubblesTableViewScroll = YES;
+                        [self selectEventWithId:tappedEvent.eventId];
                     }
                 }
                 else
@@ -2536,12 +2683,82 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [self showReactionHistoryForEventId:tappedEventId animated:YES];
             }
         }
-        else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellCallBackButtonPressed])
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.callBackAction])
         {
             MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
             MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
             
             [self placeCallWithVideo2:eventContent.isVideoCall];
+        }
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.declineAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call hangup];
+        }
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.answerAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call answer];
+        }
+        else if ([actionIdentifier isEqualToString:RoomDirectCallStatusBubbleCell.endCallAction])
+        {
+            MXEvent *callInviteEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            MXCallInviteEventContent *eventContent = [MXCallInviteEventContent modelFromJSON:callInviteEvent.content];
+            
+            MXCall *call = [self.mainSession.callManager callWithCallId:eventContent.callId];
+            [call hangup];
+        }
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.joinAction] ||
+                 [actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.answerAction])
+        {
+            MXWeakify(self);
+            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+
+            // Check app permissions first
+            [MXKTools checkAccessForCall:YES
+             manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
+             manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+               showPopUpInViewController:self completionHandler:^(BOOL granted) {
+                
+                MXStrongifyAndReturnIfNil(self);
+                if (granted)
+                {
+                    // Present the Jitsi view controller
+                    Widget *jitsiWidget = [self->customizedRoomDataSource jitsiWidget];
+                    if (jitsiWidget)
+                    {
+                        [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
+                    }
+                }
+                else
+                {
+                    NSLog(@"[RoomVC] didRecognizeAction:inCell:userInfo Warning: The application does not have the permission to join/answer the group call");
+                }
+            }];
+            
+            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
+                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+            [[JitsiService shared] resetDeclineForWidgetWithId:widget.widgetId];
+        }
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.leaveAction])
+        {
+            [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+            [self reloadBubblesTable:YES];
+        }
+        else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.declineAction])
+        {
+            MXEvent *widgetEvent = userInfo[kMXKRoomBubbleCellEventKey];
+            Widget *widget = [[Widget alloc] initWithWidgetEvent:widgetEvent
+                                                 inMatrixSession:customizedRoomDataSource.mxSession];
+            [[JitsiService shared] declineWidgetWithId:widget.widgetId];
+            [self reloadBubblesTable:YES];
         }
         else if ([actionIdentifier isEqualToString:RoomCreationIntroCell.tapOnAvatarView])
         {
@@ -2573,6 +2790,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
     MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
+    
+    BOOL isJitsiCallEvent = NO;
+    switch (selectedEvent.eventType) {
+        case MXEventTypeCustom:
+            if ([selectedEvent.type isEqualToString:kWidgetMatrixEventTypeString]
+                || [selectedEvent.type isEqualToString:kWidgetModularEventTypeString])
+            {
+                Widget *widget = [[Widget alloc] initWithWidgetEvent:selectedEvent inMatrixSession:self.roomDataSource.mxSession];
+                if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                    [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                {
+                    isJitsiCallEvent = YES;
+                }
+            }
+        default:
+            break;
+    }
     
     if (currentAlert)
     {
@@ -2659,26 +2893,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_quote", @"Vector", nil)
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
+        if (!isJitsiCallEvent)
+        {
+            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_quote", @"Vector", nil)
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
                 
-                [self cancelEventSelection];
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    
+                    [self cancelEventSelection];
+                    
+                    // Quote the message a la Markdown into the input toolbar composer
+                    self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", self.inputToolbarView.textMessage, selectedComponent.textMessage];
+                    
+                    // And display the keyboard
+                    [self.inputToolbarView becomeFirstResponder];
+                }
                 
-                // Quote the message a la Markdown into the input toolbar composer
-                self.inputToolbarView.textMessage = [NSString stringWithFormat:@"%@\n>%@\n\n", self.inputToolbarView.textMessage, selectedComponent.textMessage];
-                
-                // And display the keyboard
-                [self.inputToolbarView becomeFirstResponder];
-            }
-            
-        }]];
+            }]];
+        }
         
-        if (BuildSettings.messageDetailsAllowShare)
+        if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -2987,7 +3224,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
-        if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId])
+        if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_report", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -3097,7 +3334,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (self.roomDataSource.room.summary.isEncrypted)
+        if (!isJitsiCallEvent && self.roomDataSource.room.summary.isEncrypted)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_encryption", @"Vector", nil)
                                                              style:UIAlertActionStyleDefault
@@ -3571,94 +3808,69 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)placeCallWithVideo2:(BOOL)video
 {
-    __weak __typeof(self) weakSelf = self;
-    
-    // If there is already a jitsi widget, join it
     Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
     if (jitsiWidget)
     {
-        [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
+        //  If there is already a Jitsi call, join it
+        [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
     }
-    
-    // If enabled, create the conf using jitsi widget and open it directly
-    else if (RiotSettings.shared.createConferenceCallsWithJitsi
-             && self.roomDataSource.room.summary.membersCount.joined > 2)
-    {
-        [self startActivityIndicator];
-        
-        [[WidgetManager sharedManager] createJitsiWidgetInRoom:self.roomDataSource.room
-                                                     withVideo:video
-                                                       success:^(Widget *jitsiWidget)
-         {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self stopActivityIndicator];
-                
-                [[AppDelegate theDelegate] displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
-            }
-        }
-                                                       failure:^(NSError *error)
-         {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                [self stopActivityIndicator];
-                
-                [self showJitsiErrorAsAlert:error];
-            }
-        }];
-    }
-    // Classic conference call is not supported in encrypted rooms
-    else if (self.roomDataSource.room.summary.isEncrypted && self.roomDataSource.room.summary.membersCount.joined > 2)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_conference_call_in_encrypted_rooms"]  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-            }
-            
-        }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
-    
-    // In case of conference call, check that the user has enough power level
-    else if (self.roomDataSource.room.summary.membersCount.joined > 2 &&
-             ![MXCallManager canPlaceConferenceCallInRoom:self.roomDataSource.room roomState:self.roomDataSource.roomState])
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_power_to_create_conference_call"]  message:nil preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action)
-                                 {
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-            }
-        }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
-    }
-    
-    // Classic 1:1 or group call can be done
     else
     {
-        [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
+        if (self.roomDataSource.room.summary.membersCount.joined == 2 && self.roomDataSource.room.isDirect)
+        {
+            //  Matrix call
+            [self.roomDataSource.room placeCallWithVideo:video success:nil failure:nil];
+        }
+        else
+        {
+            //  Jitsi call
+            if (self.canEditJitsiWidget)
+            {
+                //  User has right to add a Jitsi widget
+                //  Create the Jitsi widget and open it directly
+                [self startActivityIndicator];
+                
+                MXWeakify(self);
+                
+                [[WidgetManager sharedManager] createJitsiWidgetInRoom:self.roomDataSource.room
+                                                             withVideo:video
+                                                               success:^(Widget *jitsiWidget)
+                 {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                    
+                    [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
+                }
+                                                               failure:^(NSError *error)
+                 {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                    
+                    [self showJitsiErrorAsAlert:error];
+                }];
+            }
+            else
+            {
+                //  Insufficient privileges to add a Jitsi widget
+                MXWeakify(self);
+                [currentAlert dismissViewControllerAnimated:NO completion:nil];
+                
+                currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_privileges_to_create_group_call"]
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+                
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action)
+                                         {
+                    MXStrongifyAndReturnIfNil(self);
+                    self->currentAlert = nil;
+                }]];
+                
+                [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
+                [self presentViewController:currentAlert animated:YES completion:nil];
+            }
+        }
     }
 }
 
@@ -3669,9 +3881,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [callInRoom hangup];
     }
-    else if ([[AppDelegate theDelegate].jitsiViewController.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    else if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
     {
-        [[AppDelegate theDelegate].jitsiViewController hangup];
+        [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+        [self reloadBubblesTable:YES];
     }
     
     [self refreshActivitiesViewDisplay];
@@ -4264,17 +4477,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)listenWidgetNotifications
 {
+    MXWeakify(self);
+    
     kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         Widget *widget = notif.object;
         if (widget.mxSession == self.roomDataSource.mxSession
-            && [widget.roomId isEqualToString:customizedRoomDataSource.roomId])
+            && [widget.roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
-            // Jitsi conference widget existence is shown in the bottom bar
-            // Update the bar
-            [self refreshActivitiesViewDisplay];
-            [self refreshRoomInputToolbar];
+            //  Call button update
             [self refreshRoomTitle];
+            //  Remove Jitsi widget view update
+            [self refreshRemoveJitsiWidgetView];
         }
     }];
 }
@@ -4321,8 +4537,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             [roomActivitiesView removeGestureRecognizer:roomActivitiesView.gestureRecognizers[0]];
         }
-        
-        Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
         
         if ([self.roomDataSource.mxSession.syncError.errcode isEqualToString:kMXErrCodeStringResourceLimitExceeded])
         {
@@ -4382,102 +4596,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     }
                 }
             }];
-        }
-        else if (customizedRoomDataSource.roomState.isOngoingConferenceCall)
-        {
-            // Show the "Ongoing conference call" banner only if the user is not in the conference
-            MXCall *callInRoom = [self.roomDataSource.mxSession.callManager callInRoom:self.roomDataSource.roomId];
-            if (callInRoom && callInRoom.state != MXCallStateEnded)
-            {
-                if ([self checkUnsentMessages] == NO)
-                {
-                    [self refreshTypingNotification];
-                }
-            }
-            else
-            {
-                self.activitiesViewExpanded = YES;
-                [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
-                    
-                    NSLog(@"[RoomVC] onOngoingConferenceCallPressed");
-                    
-                    // Make sure there is not yet a call
-                    if (![customizedRoomDataSource.mxSession.callManager callInRoom:customizedRoomDataSource.roomId])
-                    {
-                        [customizedRoomDataSource.room placeCallWithVideo:video success:nil failure:nil];
-                    }
-                } onClosePressed:nil];
-            }
-        }
-        else if (jitsiWidget)
-        {
-            // The room has an active jitsi widget
-            // Show it in the banner if the user is not already in
-            LegacyAppDelegate *appDelegate = [AppDelegate theDelegate];
-            if ([appDelegate.jitsiViewController.widget.widgetId isEqualToString:jitsiWidget.widgetId])
-            {
-                if ([self checkUnsentMessages] == NO)
-                {
-                    [self refreshTypingNotification];
-                }
-            }
-            else
-            {
-                self.activitiesViewExpanded = YES;
-                [roomActivitiesView displayOngoingConferenceCall:^(BOOL video) {
-                    
-                    NSLog(@"[RoomVC] onOngoingConferenceCallPressed (jitsi)");
-                    
-                    __weak __typeof(self) weakSelf = self;
-                    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-                    
-                    // Check app permissions first
-                    [MXKTools checkAccessForCall:video
-                     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-                     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
-                       showPopUpInViewController:self completionHandler:^(BOOL granted) {
-                        
-                        if (weakSelf)
-                        {
-                            if (granted)
-                            {
-                                // Present the Jitsi view controller
-                                [appDelegate displayJitsiViewControllerWithWidget:jitsiWidget andVideo:video];
-                            }
-                            else
-                            {
-                                NSLog(@"[RoomVC] onOngoingConferenceCallPressed: Warning: The application does not have the perssion to join the call");
-                            }
-                        }
-                    }];
-                    
-                } onClosePressed:^{
-                    
-                    [self startActivityIndicator];
-                    
-                    // Close the widget
-                    __weak __typeof(self) weakSelf = self;
-                    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId inRoom:self.roomDataSource.room success:^{
-                        
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            [self stopActivityIndicator];
-                            
-                            // The banner will automatically leave thanks to kWidgetManagerDidUpdateWidgetNotification
-                        }
-                        
-                    } failure:^(NSError *error) {
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            
-                            [self showJitsiErrorAsAlert:error];
-                            [self stopActivityIndicator];
-                        }
-                    }];
-                }];
-            }
         }
         else if ([self checkUnsentMessages] == NO)
         {
@@ -5021,6 +5139,32 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
+- (void)refreshRemoveJitsiWidgetView
+{
+    if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking)
+    {
+        Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+        
+        if (jitsiWidget && self.canEditJitsiWidget)
+        {
+            [self.removeJitsiWidgetView reset];
+            self.removeJitsiWidgetContainer.hidden = NO;
+            self.removeJitsiWidgetView.delegate = self;
+        }
+        else
+        {
+            self.removeJitsiWidgetContainer.hidden = YES;
+            self.removeJitsiWidgetView.delegate = nil;
+        }
+    }
+    else
+    {
+        [self.removeJitsiWidgetView reset];
+        self.removeJitsiWidgetContainer.hidden = YES;
+        self.removeJitsiWidgetView.delegate = self;
+    }
+}
+
 - (void)refreshJumpToLastUnreadBannerDisplay
 {
     // This banner is only displayed when the room timeline is in live (and no peeking).
@@ -5368,12 +5512,25 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         ];
     }
     
-    return @[
-        [self copyMenuItemWithEvent:event andCell:cell],
-        [self replyMenuItemWithEvent:event],
-        [self editMenuItemWithEvent:event],
-        [self moreMenuItemWithEvent:event andCell:cell]
-    ];
+    BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates) || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
+    
+    if (showMoreOption)
+    {
+        return @[
+            [self copyMenuItemWithEvent:event andCell:cell],
+            [self replyMenuItemWithEvent:event],
+            [self editMenuItemWithEvent:event],
+            [self moreMenuItemWithEvent:event andCell:cell]
+        ];
+    }
+    else
+    {
+        return @[
+            [self copyMenuItemWithEvent:event andCell:cell],
+            [self replyMenuItemWithEvent:event],
+            [self editMenuItemWithEvent:event]
+        ];
+    }
 }
 
 - (void)showContextualMenuForEvent:(MXEvent*)event fromSingleTapGesture:(BOOL)usedSingleTapGesture cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
@@ -5579,6 +5736,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             case MXEventTypeKeyVerificationCancel:
                 isCopyActionEnabled = NO;
                 break;
+            case MXEventTypeCustom:
+                if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
+                    || [event.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:self.roomDataSource.mxSession];
+                    if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
+                        [widget.type isEqualToString:kWidgetTypeJitsiV2])
+                    {
+                        isCopyActionEnabled = NO;
+                    }
+                }
             default:
                 break;
         }
@@ -5953,6 +6121,39 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomInfoCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - RemoveJitsiWidgetViewDelegate
+
+- (void)removeJitsiWidgetViewDidCompleteSliding:(RemoveJitsiWidgetView *)view
+{
+    view.delegate = nil;
+    Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
+    
+    [self startActivityIndicator];
+    
+    //  close the widget
+    MXWeakify(self);
+    
+    [[WidgetManager sharedManager] closeWidget:jitsiWidget.widgetId
+                                        inRoom:self.roomDataSource.room
+                                       success:^{
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        //  we can wait for kWidgetManagerDidUpdateWidgetNotification, but we want to be faster
+        self.removeJitsiWidgetContainer.hidden = YES;
+        self.removeJitsiWidgetView.delegate = nil;
+        
+        //  end active call if exists
+        if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.widgetId isEqualToString:jitsiWidget.widgetId])
+        {
+            [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+        }
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        [self showJitsiErrorAsAlert:error];
+        [self stopActivityIndicator];
+    }];
 }
 
 @end

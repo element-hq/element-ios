@@ -18,32 +18,31 @@ import Foundation
 
 @objc
 protocol CallPresenterDelegate: class {
-    //  New call
-    func callPresenter(_ presenter: CallPresenter,
-                       shouldHandleNewCall call: MXCall) -> Bool
-    
     //  Call screens
     func callPresenter(_ presenter: CallPresenter,
-                       presentCallViewController viewController: CallViewController,
+                       presentCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
     func callPresenter(_ presenter: CallPresenter,
-                       dismissCallViewController viewController: CallViewController,
+                       dismissCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
     
     //  Call Bar
     func callPresenter(_ presenter: CallPresenter,
-                       presentCallBarFor activeCallViewController: CallViewController?,
+                       presentCallBarFor activeCallViewController: UIViewController?,
                        numberOfPausedCalls: UInt,
                        completion:(() -> Void)?)
+    func callPresenter(_ presenter: CallPresenter,
+                       updateCallBarFor activeCallViewController: UIViewController?,
+                       numberOfPausedCalls: UInt)
     func callPresenter(_ presenter: CallPresenter,
                        dismissCallBar completion:(() -> Void)?)
     
     //  PiP
     func callPresenter(_ presenter: CallPresenter,
-                       enterPipForCallViewController viewController: CallViewController,
+                       enterPipForCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
     
     func callPresenter(_ presenter: CallPresenter,
-                       exitPipForCallViewController viewController: CallViewController,
+                       exitPipForCallViewController viewController: UIViewController,
                        completion:(() -> Void)?)
 }

@@ -30,9 +30,11 @@ class DialpadActionButton: DialpadButton {
     override func update(theme: Theme) {
         switch type {
         case .backspace:
-            backgroundColor = theme.warningColor
+            backgroundColor = .clear
+            tintColor = theme.colors.tertiaryContent
         case .call:
-            backgroundColor = theme.tintColor
+            backgroundColor = theme.colors.accent
+            tintColor = .white
         }
     }
 
