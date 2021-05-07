@@ -1,1 +1,17 @@
 
+
+
+
+// Room Details
+"room_details_title" = "جزئیات اتاق";
+"invite" = "دعوت";
+
+// Actions
+"view" = "مشاهده";
+"leave" = "ترک";
+"save" = "ذخیره";
+"cancel" = "لغو";
+"retry" = "تلاش مجدد";
+"continue" = "ادامه";
+"close" = "بستن";
+"back" = "بازگشت";
