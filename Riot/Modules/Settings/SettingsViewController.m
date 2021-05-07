@@ -142,7 +142,7 @@ enum
 
 enum
 {
-    LABS_USE_JITSI_WIDGET_INDEX = 0,
+    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0
 };
 
 enum
@@ -350,7 +350,10 @@ TableViewSectionsDelegate>
     
     Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX];
-    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
+    if (RiotSettings.shared.settingsScreenShowNotificationDecodedContentOption)
+    {
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
+    }
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
@@ -458,7 +461,10 @@ TableViewSectionsDelegate>
         [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
     }
     [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
-    [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
+    if (RiotSettings.shared.settingsScreenShowNsfwRoomsOption)
+    {
+        [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
+    }
     
     if (BuildSettings.settingsScreenAllowChangingCrashUsageDataSettings)
     {
@@ -480,9 +486,12 @@ TableViewSectionsDelegate>
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
-        [sectionLabs addRowWithTag:LABS_USE_JITSI_WIDGET_INDEX];
+        [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
         sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
-        [tmpSections addObject:sectionLabs];
+        if (sectionLabs.hasAnyRows)
+        {
+            [tmpSections addObject:sectionLabs];
+        }
     }
     
     if ([groupsDataSource numberOfSectionsInTableView:self.tableView] && groupsDataSource.joinedGroupsSection != -1)
@@ -2244,16 +2253,16 @@ TableViewSectionsDelegate>
     }
     else if (section == SECTION_TAG_LABS)
     {
-        if (row == LABS_USE_JITSI_WIDGET_INDEX)
+        if (row == LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX)
         {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_create_conference_with_jitsi", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.createConferenceCallsWithJitsi;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleJitsiForConference:) forControlEvents:UIControlEventTouchUpInside];
-
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_enable_ringing_for_group_calls", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableRingingForGroupCalls;
+            labelAndSwitchCell.mxkSwitch.tintColor = ThemeService.shared.theme.tintColor;
+            
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
+            
             cell = labelAndSwitchCell;
         }
     }
@@ -2944,14 +2953,12 @@ TableViewSectionsDelegate>
     }
 }
 
-- (void)toggleJitsiForConference:(id)sender
+- (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
-    if (sender && [sender isKindOfClass:UISwitch.class])
+    if (sender)
     {
-        UISwitch *switchButton = (UISwitch*)sender;
+        RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
         
-        RiotSettings.shared.createConferenceCallsWithJitsi = switchButton.isOn;
-
         [self.tableView reloadData];
     }
 }

@@ -59,6 +59,11 @@
            failure:(void (^)(NSError *error))failure;
 
 /**
+ Set audio muted for the Jitsi call.
+ */
+- (void)setAudioMuted:(BOOL)muted;
+
+/**
  Hang up the jitsi conference call in progress.
  */
 - (void)hangup;
@@ -67,6 +72,11 @@
  The jitsi widget displayed by this `JitsiViewController`.
  */
 @property (nonatomic, readonly) Widget *widget;
+
+/**
+ Total duration of the call. In milliseconds.
+ */
+@property (nonatomic, readonly) NSUInteger callDuration;
 
 /**
  The delegate for the view controller.

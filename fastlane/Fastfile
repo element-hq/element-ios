@@ -28,19 +28,24 @@ platform :ios do
   desc "Builds an adhoc ipa"
   lane :adhoc do |options|
     options[:adhoc] = true
+    if !options.has_key?(:build_number)
+      build_number = generate_build_number()
+      options = { build_number: build_number }.merge(options)
+    end
     build_release(options)
   end
 
   desc "Builds an ipa for the App Store"
   lane :app_store do |options|
+    if !options.has_key?(:build_number)
+      build_number = generate_build_number()
+      options = { build_number: build_number }.merge(options)
+    end
     build_release(options)
   end
 
   desc "Builds the ipa for the AppStore, then uploads it"
   lane :deploy_release do |options|
-    require 'date'
-    build_number = DateTime.now.strftime("%Y%m%d%H%M%S")
-    options = { build_number: build_number }.merge(options)
     # build the IPA
     app_store(options)
     # upload the IPA and metadata
@@ -52,6 +57,18 @@ platform :ios do
     #
   end
 
+
+  desc "Point MatrixKit and MatrixSDK to the related branches if such ones exist"
+  lane :point_dependencies_to_related_branches do
+    current_branch = mx_git_branch
+    UI.message("Current branch: #{current_branch}")
+    if current_branch.start_with?("release/")
+        point_dependencies_to_pending_releases
+    else
+        point_dependencies_to_same_feature
+    end
+  end
+
   desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, develop otherwise"
   lane :point_dependencies_to_pending_releases do
     edit_podfile(branch_pattern: "release/*/release")
@@ -59,7 +76,7 @@ platform :ios do
 
   desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
   lane :point_dependencies_to_same_feature do
-    edit_podfile(branch_pattern: git_branch) unless git_branch.to_s.empty?
+    edit_podfile(branch_pattern: mx_git_branch) unless mx_git_branch.to_s.empty?
   end
 
   desc "Build the app for simulator to ensure it compiles"
@@ -112,7 +129,7 @@ platform :ios do
     git_branch_name = options[:git_tag]
     if git_branch_name.to_s.empty?
       # Retrieve the current git branch as a fallback
-      git_branch_name = git_branch
+      git_branch_name = mx_git_branch
     end
     UI.user_error!("Unable to retrieve GIT tag or branch") unless !git_branch_name.to_s.empty?
 
@@ -346,6 +363,19 @@ platform :ios do
     UI.command_output("Content of modified Podfile:\n" + podfile_content)
   end
 
+  # git_branch can return an empty screen with some CI tools (like GH actions) 
+  # The CI build script needs to define MX_GIT_BRANCH with the right branch.
+  def mx_git_branch
+    mx_git_branch = git_branch
+    if mx_git_branch == ""
+        ensure_env_vars(
+            env_vars: ['MX_GIT_BRANCH']
+          )
+        mx_git_branch = ENV["MX_GIT_BRANCH"]
+    end
+    return mx_git_branch
+  end
+
   # Find the latest branch with the given name pattern in the given repo
   def find_branch(repo_slug, pattern)
     list = `git ls-remote --heads --sort=version:refname https://github.com/#{repo_slug} #{pattern}`
@@ -366,4 +396,10 @@ end
       content.gsub!(pattern, replacement)
     end
     File.write(file, content)
+  end
+
+  # Generates a new build number based on timestamp
+  def generate_build_number()
+    require 'date'
+    return DateTime.now.strftime("%Y%m%d%H%M%S")
   end

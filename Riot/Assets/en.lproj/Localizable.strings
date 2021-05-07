@@ -123,6 +123,12 @@
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video group call from %@: '%@'";
 
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Group call started";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Group call)";
+
 /** Key verification **/
 
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ wants to verify";

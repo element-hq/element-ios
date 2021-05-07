@@ -19,7 +19,7 @@ import Reusable
 
 class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     
-    fileprivate lazy var innerContentView: CallBubbleCellBaseContentView = {
+    lazy var innerContentView: CallBubbleCellBaseContentView = {
         return CallBubbleCellBaseContentView.loadFromNib()
     }()
     
@@ -36,16 +36,29 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     override func setupViews() {
         super.setupViews()
         
-        self.contentView.vc_removeAllSubviews()
         self.contentView.vc_addSubViewMatchingParent(innerContentView)
-        
-        updateBottomContentView()
     }
 
-    //  Properties to override
-    private(set) var bottomContentView: UIView?
+    //  Bottom content view. Will be spanned in bottomContainerView
+    var bottomContentView: UIView? {
+        didSet {
+            updateBottomContentView()
+        }
+    }
     
-    func updateBottomContentView() {
+    var statusText: String? {
+        get {
+            return innerContentView.statusText
+        } set {
+            innerContentView.statusText = newValue
+        }
+    }
+    
+    private func updateBottomContentView() {
+        defer {
+            innerContentView.relayoutCallSummary()
+        }
+        
         innerContentView.bottomContainerView.vc_removeAllSubviews()
         
         guard let bottomContentView = bottomContentView else { return }
@@ -58,15 +71,37 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
     
     //  MARK: - Overrides
     
+    override var bubbleInfoContainer: UIView! {
+        get {
+            guard let infoContainer = innerContentView.bubbleInfoContainer else {
+                fatalError("[RoomBaseCallBubbleCell] bubbleInfoContainer should not be used before set")
+            }
+            return infoContainer
+        } set {
+            super.bubbleInfoContainer = newValue
+        }
+    }
+    
     override var bubbleOverlayContainer: UIView! {
         get {
             guard let overlayContainer = innerContentView.bubbleOverlayContainer else {
                 fatalError("[RoomBaseCallBubbleCell] bubbleOverlayContainer should not be used before set")
             }
             return overlayContainer
+        } set {
+            super.bubbleOverlayContainer = newValue
+        }
+    }
+    
+    override var bubbleInfoContainerTopConstraint: NSLayoutConstraint! {
+        get {
+            guard let infoContainerTopConstraint = innerContentView.bubbleInfoContainerTopConstraint else {
+                fatalError("[RoomBaseCallBubbleCell] bubbleInfoContainerTopConstraint should not be used before set")
+            }
+            return infoContainerTopConstraint
         }
         set {
-            super.bubbleOverlayContainer = newValue
+            super.bubbleInfoContainerTopConstraint = newValue
         }
     }
     
@@ -95,7 +130,28 @@ class RoomBaseCallBubbleCell: MXKRoomBubbleTableViewCell {
         }
         cell.render(cellData)
         
-        return cell.contentView.systemLayoutSizeFitting(fittingSize).height
+        //  we need to add suitable height manually for read receipts view, as adding of them is not handled in the render method
+        var readReceiptsHeight: CGFloat = 0
+        if let bubbleCellData = cellData as? RoomBubbleCellData,
+           bubbleCellData.showBubbleReceipts,
+           bubbleCellData.readReceipts.count > 0 {
+            readReceiptsHeight = cell.innerContentView.readReceiptsContainerView.systemLayoutSizeFitting(fittingSize).height
+                + cell.innerContentView.interItemSpacing
+        }
+        
+        return cell.contentView.systemLayoutSizeFitting(fittingSize).height + readReceiptsHeight
+    }
+    
+}
+
+extension RoomBaseCallBubbleCell: BubbleCellReadReceiptsDisplayable {
+    
+    func addReadReceiptsView(_ readReceiptsView: UIView) {
+        innerContentView.addReadReceiptsView(readReceiptsView)
+    }
+    
+    func removeReadReceiptsView() {
+        innerContentView.removeReadReceiptsView()
     }
     
 }
@@ -104,10 +160,13 @@ extension RoomBaseCallBubbleCell: Themable {
     
     func update(theme: Theme) {
         innerContentView.update(theme: theme)
+        if let themable = bottomContentView as? Themable {
+            themable.update(theme: theme)
+        }
     }
     
 }
 
-extension RoomBaseCallBubbleCell: NibLoadable, Reusable {
+extension RoomBaseCallBubbleCell: NibReusable {
     
 }

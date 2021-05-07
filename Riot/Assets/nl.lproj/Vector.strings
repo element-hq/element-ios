@@ -1023,7 +1023,7 @@
 
 // MARK: - Secrets reset
 
-"secrets_reset_title" = "Alles terugzetten";
+"secrets_reset_title" = "Alles opnieuw instellen";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Wachtwoord bevestigen";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bevestigen";
 "secrets_setup_recovery_passphrase_validate_action" = "Klaar";
@@ -1058,7 +1058,7 @@
 // Recover with passphrase
 
 "secrets_recovery_with_passphrase_title" = "Herstelwachtwoord";
-"secrets_recovery_reset_action_part_2" = "Alles terugzetten";
+"secrets_recovery_reset_action_part_2" = "Alles opnieuw instellen";
 
 // MARK: - Secrets recovery
 

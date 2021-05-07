@@ -19,11 +19,11 @@ import Foundation
 class CallVCExitPipOperation: AsyncOperation {
     
     private var presenter: CallPresenter
-    private var callVC: CallViewController
+    private var callVC: UIViewController
     private var completion: (() -> Void)?
     
     init(presenter: CallPresenter,
-         callVC: CallViewController,
+         callVC: UIViewController,
          completion: (() -> Void)? = nil) {
         self.presenter = presenter
         self.callVC = callVC

@@ -323,6 +323,30 @@ Matrix session observer used to detect new opened sessions.
 
 #pragma mark - UNUserNotificationCenterDelegate
 
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if (userInfo[Constants.userInfoKeyPresentNotificationOnForeground])
+    {
+        if (!userInfo[Constants.userInfoKeyPresentNotificationInRoom]
+            && [[AppDelegate theDelegate].visibleRoomId isEqualToString:userInfo[@"room_id"]])
+        {
+            //  do not show the notification when we're in the notified room
+            completionHandler(UNNotificationPresentationOptionNone);
+        }
+        else
+        {
+            completionHandler(UNNotificationPresentationOptionBadge
+                              | UNNotificationPresentationOptionSound
+                              | UNNotificationPresentationOptionAlert);
+        }
+    }
+    else
+    {
+        completionHandler(UNNotificationPresentationOptionNone);
+    }
+}
+
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
 {
@@ -568,23 +592,37 @@ Matrix session observer used to detect new opened sessions.
                     return;
                 }
                 
-                //  process the call invite synchronously
-                [session.callManager handleCallEvent:lastCallInvite];
-                MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
-                if (call)
+                if (lastCallInvite.eventType == MXEventTypeCallInvite)
                 {
-                    [session.callManager.callKitAdapter reportIncomingCall:call];
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
-                    
-                    //  Wait for the sync response in cache to be processed for data integrity.
-                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-                        //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
-                        [self launchBackgroundSync];
-                    });
+                    //  process the call invite synchronously
+                    [session.callManager handleCallEvent:lastCallInvite];
+                    MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
+                    if (call)
+                    {
+                        [session.callManager.callKitAdapter reportIncomingCall:call];
+                        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
+                        
+                        //  Wait for the sync response in cache to be processed for data integrity.
+                        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+                            //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
+                            [self launchBackgroundSync];
+                        });
+                    }
+                    else
+                    {
+                        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
+                    }
+                }
+                else if ([lastCallInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
+                         [lastCallInvite.type isEqualToString:kWidgetModularEventTypeString])
+                {
+                    [[AppDelegate theDelegate].callPresenter processWidgetEvent:lastCallInvite
+                                                                      inSession:session];
                 }
                 else
                 {
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
+                    //  It's a serious error. There is nothing to avoid iOS to kill us here.
+                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: We have an unknown type of event for %@. There is something wrong.", eventId);
                 }
             }
             else
