@@ -815,3 +815,46 @@
 "room_message_replying_to" = "Svarer til %@";
 "room_message_editing" = "Redigerer";
 "room_member_power_level_custom_in" = "Tilpasset (%@) av %@";
+"pin_protection_confirm_pin_to_disable" = "Bekreft PIN-kode for å deaktivere PIN-kode";
+"pin_protection_choose_pin" = "Opprett en PIN-kode for sikkerhet";
+"device_verification_self_verify_alert_message" = "Verifiser den nye påloggingen som vil ha tilgang til kontoen din:% @";
+
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Finne kontakter";
+"widget_integration_missing_room_id" = "Manglende rom_id i forespørsel.";
+"rage_shake_prompt" = "Det ser ut til at du rister telefonen i frustrasjon. Ønsker du å sende inn rapport om feil?";
+"room_details_addresses_invalid_address_prompt_title" = "Ugyldig alias format";
+"security_settings_crypto_sessions_description_2" = "Om du ikke gjenkjenner en pålogging, endre ditt passord og tilbakestill sikkerhetskopi.";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Sikkerhetskopi har signatur fra %@";
+"settings_key_backup_info_trust_signature_valid" = "Sikkerhetskopien har en gyldig signatur fra denne økten";
+"settings_key_backup_info_trust_signature_unknown" = "Sikkerhetskopi av økten har signatur med ID: %@";
+"settings_key_backup_info_progress_done" = "Alle nøkler sikkerhetskopiert";
+"settings_key_backup_info_progress" = "Sikkerhetskopierer %@ nøkler…";
+"settings_key_backup_info_not_valid" = "Denne økten sikkerhetskopierer ikke dine nøkler, men du har en eksisterende sikkerhetskopi du kan gjenopprette fra og legge til, for å gå videre.";
+"settings_key_backup_info_valid" = "Denne økten sikkerhetskopierer dine nøkler.";
+"settings_key_backup_info_version" = "Sikkerhetskopi av nøkler versjon : %@";
+"settings_key_backup_info_signout_warning" = "Før du logger ut, koble denne sesjonen til sikkerhetskopi av nøkler for å unngå tap av nøkler som kanskje bare er lagret på denne enheten.";
+"settings_key_backup_info_none" = "Nøklene dine for denne sesjonen blir ikke sikkerhetskopiert";
+"settings_third_party_notices" = "Tredjepartsmerknader";
+"settings_labs_e2e_encryption_prompt_message" = "Vennligst logg inn igjen for å ferdigstille oppsett av kryptering.";
+"settings_key_backup" = "Sikkerhetskopi av meldingsnøkler";
+"settings_ui_theme_picker_message" = "\"Auto\" bruker din enhets innstillinger for å bytte bakgrunnsfarge";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Favorittrom og personer";
+"create_room_placeholder_address" = "#testrom: matrix.org";
+"device_verification_emoji_santa" = "Julenisse";
+"device_verification_security_advice_emoji" = "Sammenlign de unike emojiene, og sjekk at de vises i samme rekkefølge.";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Er du sikker på at du vil logge av?";
+"service_terms_modal_message_identity_server" = "Godta brukervilkårene til identitetsserveren (%@) for å finne kontakter.";
+"event_formatter_call_back" = "Ring tilbake";
+"room_details_advanced_e2e_encryption_disabled" = "Kryptering er ikke aktivert i dette rommet.";
+"room_details_flair_section" = "Vi brukervalg for samfunn";
+"room_details_photo_for_dm" = "Bilde";
+"room_details_photo" = "Rombilde";
+"settings_flair" = "Vis brukervalg hvor tillat";
