@@ -596,7 +596,8 @@ Matrix session observer used to detect new opened sessions.
                 {
                     //  process the call invite synchronously
                     [session.callManager handleCallEvent:lastCallInvite];
-                    MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
+                    MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:lastCallInvite.content];
+                    MXCall *call = [session.callManager callWithCallId:content.callId];
                     if (call)
                     {
                         [session.callManager.callKitAdapter reportIncomingCall:call];
