@@ -1327,8 +1327,8 @@
 "callbar_only_single_active" = "Laufender Anruf (%@)";
 "room_event_action_delete_confirmation_message" = "Möchtest Du die nicht gesendete Nachricht wirklich löschen?";
 "room_event_action_delete_confirmation_title" = "Nicht gesendete Nachricht löschen";
-"room_details_integrations" = "Einbindungen";
-"room_details_search" = "Raum suchen";
+"room_details_integrations" = "Integrationen";
+"room_details_search" = "Raum durchsuchen";
 "room_multiple_typing_notification" = "%@ und andere";
 "room_accessibility_video_call" = "Videoanruf";
 "room_message_replying_to" = "%@ anworten";

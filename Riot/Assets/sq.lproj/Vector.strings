@@ -5,7 +5,7 @@
 "title_groups" = "Bashkësi";
 "warning" = "Sinjalizim";
 // Actions
-"view" = "Parje";
+"view" = "Shiheni";
 "next" = "Pasuesja";
 "back" = "Mbrapsht";
 "continue" = "Vazhdo";
@@ -1344,3 +1344,4 @@
 "room_accessibility_video_call" = "Thirrje Video";
 "room_message_replying_to" = "Në përgjigje të %@";
 "room_message_editing" = "Përpunim";
+"room_details_search" = "Kërkoni për dhomë";

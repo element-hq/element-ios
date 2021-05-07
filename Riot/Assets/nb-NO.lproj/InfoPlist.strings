@@ -1,0 +1,9 @@
+
+
+"NSContactsUsageDescription" = "For å finne kontakter som allerede bruker Matrix, kan Element sende e-postadresser og telefonnummer i din adressebok til utvalgte Matrix identitetstjenere. Der det støttes blir data anonymisert (hashet) - vennligst sjekk din identitetstjener for detaljer.";
+"NSFaceIDUsageDescription" = "Face ID brukes for å få tilgang til appen.";
+"NSCalendarsUsageDescription" = "Se dine avtalte møter i appen.";
+"NSMicrophoneUsageDescription" = "Mikrofonen brukes til videoopptak, og i samtaler.";
+"NSPhotoLibraryUsageDescription" = "Bildebiblioteket brukes for å sende bilder og videoer.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kameraet brukes til å ta bilder, spille inn video, og i videosamtaler.";
