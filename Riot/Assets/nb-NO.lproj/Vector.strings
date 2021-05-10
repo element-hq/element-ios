@@ -872,3 +872,4 @@
 "security_settings_crypto_sessions_loading" = "Laster sesjoner…";
 "settings_discovery_no_identity_server" = "Du bruker ikke for øyeblikket en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
 "settings_unignore_user" = "Vi alle meldinger fra %@?";
+"device_verification_cancelled" = "Den andre parten avbrøt verifiseringen";
