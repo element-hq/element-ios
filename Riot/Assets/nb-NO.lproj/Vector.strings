@@ -860,3 +860,15 @@
 "settings_flair" = "Vis brukervalg hvor tillat";
 "settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
 "settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
+"room_info_list_several_members" = "% @ medlemmer";
+"pin_protection_not_allowed_pin" = "Av sikkerhetsgrunner er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
+"secrets_setup_recovery_passphrase_information" = "Skriv inn et sikkerhetsfrase bare du kjenner, brukt til å sikre hemmeligheter på serveren din.";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen din";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen";
+"room_details_access_section_for_dm" = "Hvem har til gang til dette?";
+"identity_server_settings_place_holder" = "Skriv inn en identitetsserver";
+"identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne å bli funnet av dine eksisterende kontakter.";
+"security_settings_crosssigning_info_exists" = "Din konto har en kryss-signeringsidentitet, men den er ikke klarert av den økten. Fullfør klarering for denne økten.";
+"security_settings_crypto_sessions_loading" = "Laster sesjoner…";
+"settings_discovery_no_identity_server" = "Du bruker ikke for øyeblikket en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
+"settings_unignore_user" = "Vi alle meldinger fra %@?";
