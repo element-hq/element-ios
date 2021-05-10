@@ -6,7 +6,7 @@
 "title_groups" = "Społeczności";
 "warning" = "Ostrzeżenie";
 // Actions
-"view" = "Wyświetl";
+"view" = "Podgląd";
 "back" = "Powrót";
 "continue" = "Kontynuuj";
 "create" = "Utwórz";
@@ -373,7 +373,7 @@
 "room_participants_unknown" = "Status nieznany";
 "room_participants_action_section_other" = "Opcje";
 // Chat
-"room_jump_to_first_unread" = "Przeskocz do pierwszej nieprzeczytanej wiadomości";
+"room_jump_to_first_unread" = "Przeskocz do nieprzeczytanych wiadomości";
 "room_new_message_notification" = "%d nowa wiadomość";
 "room_new_messages_notification" = "%d nowych wiadomości";
 "room_one_user_is_typing" = "%@ pisze…";
@@ -1290,8 +1290,8 @@
 "event_formatter_jitsi_widget_added_by_you" = "Dodałeś(-aś) konferencję VoIP";
 "event_formatter_call_back" = "Oddzwoń";
 "event_formatter_call_you_declined" = "Odrzuciłeś to połączenie";
-"event_formatter_call_you_currently_in" = "Bierzesz obecnie udział w tej rozmowie";
-"event_formatter_call_has_ended" = "Rozmowa zakończona";
+"event_formatter_call_you_currently_in" = "Aktywne połączenie";
+"event_formatter_call_has_ended" = "Zakończono %@";
 "event_formatter_call_video" = "Połączenie Wideo";
 "event_formatter_call_voice" = "Połączenie głosowe";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Szyfrowanie nie jest włączone w tym pokoju.";
@@ -1416,8 +1416,27 @@
 "callbar_active_and_single_paused" = "1 aktywne połączenie (%@) · 1 wstrzymane połączenie";
 
 // Call Bar
-"callbar_only_single_active" = "Aktywne połączenie (%@)";
+"callbar_only_single_active" = "Dotknij, aby powrócić do rozmowy (%@)";
 "auth_email_is_required" = "Brak skonfigurowanego serwera tożsamości, nie możesz dodać adresu e-mail na wypadek konieczności zresetowania hasła.";
 "auth_add_email_phone_message_2" = "Ustaw adres e-mail na wypadek konieczności przywracania dostępu do konta, dodatkowo adres ten lub numer telefonu może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
 "auth_add_phone_message_2" = "Ustaw numer telefonu, numer ten może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
 "auth_add_email_message_2" = "Ustaw adres e-mail na wypadek konieczności przywracania dostępu do konta, dodatkowo adres ten może być wykorzystany przez Twoich znajomych do znalezienia Twojego profilu.";
+"event_formatter_group_call_incoming" = "%@ w %@";
+"event_formatter_group_call_leave" = "Opuść";
+"event_formatter_group_call_join" = "Dołącz";
+"event_formatter_group_call" = "Połączenie grupowe";
+"event_formatter_call_end_call" = "Zakończ połączenie";
+"event_formatter_call_retry" = "Ponów";
+"event_formatter_call_decline" = "Odrzuć";
+"event_formatter_call_answer" = "Odbierz";
+"event_formatter_call_connection_failed" = "Połączenie nieudane";
+"event_formatter_call_you_missed" = "Przegapiłeś to połączenie";
+"event_formatter_call_ringing" = "Dzwonie…";
+"event_formatter_call_connecting" = "Łączenie…";
+"settings_labs_enable_ringing_for_group_calls" = "Dźwięk połączeń grupowych";
+"room_no_privileges_to_create_group_call" = "Aby rozpocząć połączenie, musisz być administratorem lub moderatorem.";
+"room_join_group_call" = "Dołącz";
+
+// Chat
+"room_slide_to_end_group_call" = "Przesuń, aby zakończyć połączenie dla wszystkich";
+"callbar_only_single_active_group" = "Dotknij, aby powrócić do rozmowy grupowej (%@)";
