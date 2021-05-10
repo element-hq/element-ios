@@ -32,7 +32,7 @@ class NotificationService: UNNotificationServiceExtension {
     
     //  MARK: - Properties
     
-    /// Receiving dates for notifications
+    /// Receiving dates for notifications. Keys are eventId's
     private var receiveDates: [String: Date] = [:]
     
     /// Content handlers. Keys are eventId's
@@ -588,6 +588,11 @@ class NotificationService: UNNotificationServiceExtension {
         
         if event.isEncrypted {
             if #available(iOS 13.0, *) {
+                guard event.clear != nil else {
+                    NSLog("[NotificationService] sendVoipPush: Do not send a VoIP push for undecrypted event, it'll cause a crash.")
+                    return
+                }
+            }
             pushNotificationStore.storeCallInvite(event.clear)
         } else {
             pushNotificationStore.storeCallInvite(event)
