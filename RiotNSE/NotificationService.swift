@@ -586,7 +586,11 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        pushNotificationStore.lastCallInvite = event
+        if event.isEncrypted {
+            pushNotificationStore.lastCallInvite = event.clear
+        } else {
+            pushNotificationStore.lastCallInvite = event
+        }
         
         ongoingVoIPPushRequests[event.eventId] = true
         
