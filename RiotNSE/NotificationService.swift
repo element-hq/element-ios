@@ -26,8 +26,10 @@ class NotificationService: UNNotificationServiceExtension {
     private struct NSE {
         enum Constants {
             static let voipPushRequestTimeout: TimeInterval = 15
+            static let timeNeededToSendVoIPPushes: TimeInterval = 20
         }
     }
+    
     //  MARK: - Properties
     
     /// Receiving dates for notifications
@@ -309,7 +311,13 @@ class NotificationService: UNNotificationServiceExtension {
                             
                             // call notifications should stand out from normal messages, so we don't stack them
                             threadIdentifier = nil
-                            self.sendVoipPush(forEvent: event)
+                            
+                            if let callInviteContent = MXCallInviteEventContent(fromJSON: event.content),
+                               callInviteContent.lifetime > event.age,
+                               (callInviteContent.lifetime - event.age) > UInt(NSE.Constants.timeNeededToSendVoIPPushes * MSEC_PER_SEC) {
+                                self.sendVoipPush(forEvent: event)
+                                
+                            }
                         case .roomMessage, .roomEncrypted:
                             if isRoomMentionsOnly {
                                 // A local notification will be displayed only for highlighted notification.
