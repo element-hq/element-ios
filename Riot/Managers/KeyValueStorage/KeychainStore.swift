@@ -114,4 +114,8 @@ extension KeychainStore: KeyValueStore {
         try keychain.remove(key)
     }
     
+    func removeAll() throws {
+        try keychain.removeAll()
+    }
+    
 }

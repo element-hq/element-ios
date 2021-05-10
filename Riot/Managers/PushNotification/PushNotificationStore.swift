@@ -84,7 +84,6 @@ final class PushNotificationStore: NSObject {
     }
     
     func reset() {
-        pushKitToken = nil
-        lastCallInvite = nil
+        try? store.removeAll()
     }
 }
