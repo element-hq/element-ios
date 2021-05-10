@@ -20,6 +20,11 @@ import MatrixSDK
 
 class NotificationService: UNNotificationServiceExtension {
     
+    private struct NSE {
+        enum Constants {
+            static let voipPushRequestTimeout: TimeInterval = 15
+        }
+    }
     //  MARK: - Properties
     
     /// Content handlers. Keys are eventId's
@@ -565,14 +570,21 @@ class NotificationService: UNNotificationServiceExtension {
         
         let appId = BuildSettings.pushKitAppId
         
-        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { [weak self] (rejected) in
-            NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
-            
-            guard let self = self else { return }
-            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
-            
-            self.fallbackToBestAttemptContent(forEventId: event.eventId)
-        }) { [weak self] (error) in
+        pushGatewayRestClient.notifyApp(withId: appId,
+                                        pushToken: token,
+                                        eventId: event.eventId,
+                                        roomId: event.roomId,
+                                        eventType: nil,
+                                        sender: event.sender,
+                                        timeout: NSE.Constants.voipPushRequestTimeout,
+                                        success: { [weak self] (rejected) in
+                                            NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
+                                            
+                                            guard let self = self else { return }
+                                            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+                                            
+                                            self.fallbackToBestAttemptContent(forEventId: event.eventId)
+                                        }) { [weak self] (error) in
             NSLog("[NotificationService] sendVoipPush failed with error: \(error)")
             
             guard let self = self else { return }
