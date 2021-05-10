@@ -389,6 +389,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
+    if (![application isProtectedDataAvailable])
+    {
+        exit(0);
+    }
+    
     _configuration = [AppConfiguration new];
     
     // Log app information
