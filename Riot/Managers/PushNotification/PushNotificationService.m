@@ -299,25 +299,15 @@ Matrix session observer used to detect new opened sessions.
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
-        // Check the current session state
-        if (account.mxSession.state == MXSessionStatePaused)
-        {
-            NSLog(@"[PushNotificationService] launchBackgroundSync");
-            MXWeakify(self);
+        NSLog(@"[PushNotificationService] launchBackgroundSync");
 
-            [account backgroundSync:20000 success:^{
-                
-                // Sanity check
-                MXStrongifyAndReturnIfNil(self);
-                
-                [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
-                [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
-                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync succeeds");
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
-            }];
-        }
+        [account backgroundSync:20000 success:^{
+            [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+            [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
+            NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync succeeds");
+        } failure:^(NSError *error) {
+            NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
+        }];
     }
 }
 
