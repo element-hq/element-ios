@@ -18,6 +18,9 @@ import UserNotifications
 import MatrixKit
 import MatrixSDK
 
+/// The number of milliseconds in one second.
+private let MSEC_PER_SEC: TimeInterval = 1000
+
 class NotificationService: UNNotificationServiceExtension {
     
     private struct NSE {
@@ -26,6 +29,9 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     //  MARK: - Properties
+    
+    /// Receiving dates for notifications
+    private var receiveDates: [String: Date] = [:]
     
     /// Content handlers. Keys are eventId's
     private var contentHandlers: [String: ((UNNotificationContent) -> Void)] = [:]
@@ -92,6 +98,9 @@ class NotificationService: UNNotificationServiceExtension {
         guard let content = request.content.mutableCopy() as? UNMutableNotificationContent else {
             return
         }
+        
+        //  store receive date
+        receiveDates[eventId] = Date()
         
         //  read badge from "unread_count"
         //  no need to check before, if it's nil, the badge will remain unchanged
@@ -195,6 +204,10 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     private func processEvent(_ event: MXEvent) {
+        if let receiveDate = receiveDates[event.eventId] {
+            NSLog("[NotificationService] processEvent: notification receive delay: \(receiveDate.timeIntervalSince1970*MSEC_PER_SEC - TimeInterval(event.originServerTs)) ms")
+        }
+        
         guard let content = bestAttemptContents[event.eventId], let userAccount = userAccount else {
             self.fallbackToBestAttemptContent(forEventId: event.eventId)
             return
@@ -251,6 +264,7 @@ class NotificationService: UNNotificationServiceExtension {
         //  clear maps
         contentHandlers.removeValue(forKey: eventId)
         bestAttemptContents.removeValue(forKey: eventId)
+        receiveDates.removeValue(forKey: eventId)
         
         // We are done for this push
         NSLog("--------------------------------------------------------------------------------")
