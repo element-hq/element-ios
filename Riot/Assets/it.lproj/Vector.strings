@@ -201,7 +201,7 @@
 "room_participants_action_start_video_call" = "Nuova videochiamata";
 "room_participants_action_mention" = "Citazione";
 // Chat
-"room_jump_to_first_unread" = "Vai al primo messaggio non letto";
+"room_jump_to_first_unread" = "Vai ai non letti";
 "room_new_message_notification" = "%d nuovo messaggio";
 "room_new_messages_notification" = "%d nuovi messaggi";
 "room_one_user_is_typing" = "%@ sta scrivendo…";
@@ -1302,8 +1302,8 @@
 "call_actions_unhold" = "Riprendi";
 "event_formatter_call_back" = "Richiama";
 "event_formatter_call_you_declined" = "Hai rifiutato questa chiamata";
-"event_formatter_call_you_currently_in" = "Sei attualmente in questa chiamata";
-"event_formatter_call_has_ended" = "Questa chiamata è terminata";
+"event_formatter_call_you_currently_in" = "Chiamata attiva";
+"event_formatter_call_has_ended" = "Terminato %@";
 "event_formatter_call_video" = "Videochiamata";
 "event_formatter_call_voice" = "Telefonata";
 "settings_show_NSFW_public_rooms" = "Mostra stanze pubbliche per adulti";
@@ -1320,10 +1320,29 @@
 "callbar_active_and_single_paused" = "1 chiamata attiva (%@) · 1 chiamata in pausa";
 
 // Call Bar
-"callbar_only_single_active" = "Chiamata attiva (%@)";
+"callbar_only_single_active" = "Tocca per tornare alla chiamata (%@)";
 "room_details_integrations" = "Integrazioni";
 "room_details_search" = "Cerca stanza";
 "room_multiple_typing_notification" = "%@ e altri";
 "room_accessibility_video_call" = "Videochiamata";
 "room_message_editing" = "Modifica";
 "room_message_replying_to" = "Risposta a %@";
+"event_formatter_group_call_incoming" = "%@ in %@";
+"event_formatter_group_call_leave" = "Esci";
+"event_formatter_group_call_join" = "Entra";
+"event_formatter_group_call" = "Chiamata di gruppo";
+"event_formatter_call_end_call" = "Termina chiamata";
+"event_formatter_call_retry" = "Riprova";
+"event_formatter_call_answer" = "Rispondi";
+"event_formatter_call_decline" = "Rifiuta";
+"event_formatter_call_connection_failed" = "Connessione fallita";
+"event_formatter_call_you_missed" = "Hai perso questa chiamata";
+"event_formatter_call_ringing" = "Sta squillando…";
+"event_formatter_call_connecting" = "In connessione…";
+"settings_labs_enable_ringing_for_group_calls" = "Squilla per chiamate di gruppo";
+"room_no_privileges_to_create_group_call" = "Devi essere un amministratore o un moderatore per iniziare una chiamata.";
+"room_join_group_call" = "Entra";
+
+// Chat
+"room_slide_to_end_group_call" = "Scorri per terminare la chiamata per tutti";
+"callbar_only_single_active_group" = "Tocca per unirti alla chiamata di gruppo (%@)";
