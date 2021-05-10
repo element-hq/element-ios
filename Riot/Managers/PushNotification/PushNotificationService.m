@@ -554,16 +554,16 @@ Matrix session observer used to detect new opened sessions.
         if (@available(iOS 13.0, *))
         {
             //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
-            MXEvent *lastCallInvite = _pushNotificationStore.lastCallInvite;
+            MXEvent *callInvite = [_pushNotificationStore callInviteForEventId:eventId];
             //  remove event
-            _pushNotificationStore.lastCallInvite = nil;
+            [_pushNotificationStore removeCallInviteWithEventId:eventId];
             MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
             //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
             [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
             
-            NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: lastCallInvite: %@", lastCallInvite);
+            NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: callInvite: %@", callInvite);
             
-            if ([lastCallInvite.eventId isEqualToString:eventId])
+            if (callInvite)
             {
                 //  We're using this dispatch_group to continue event stream after cache fully processed.
                 dispatch_group_t dispatchGroup = dispatch_group_create();
@@ -575,18 +575,11 @@ Matrix session observer used to detect new opened sessions.
                     dispatch_group_leave(dispatchGroup);
                 }];
                 
-                if (lastCallInvite.isEncrypted && ![session decryptEvent:lastCallInvite inTimeline:nil])
-                {
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Failed to decrypt the call invite event: %@", eventId);
-                    completion();
-                    return;
-                }
-                
-                if (lastCallInvite.eventType == MXEventTypeCallInvite)
+                if (callInvite.eventType == MXEventTypeCallInvite)
                 {
                     //  process the call invite synchronously
-                    [session.callManager handleCallEvent:lastCallInvite];
-                    MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:lastCallInvite.content];
+                    [session.callManager handleCallEvent:callInvite];
+                    MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:callInvite.content];
                     MXCall *call = [session.callManager callWithCallId:content.callId];
                     if (call)
                     {
@@ -604,10 +597,10 @@ Matrix session observer used to detect new opened sessions.
                         NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
                     }
                 }
-                else if ([lastCallInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
-                         [lastCallInvite.type isEqualToString:kWidgetModularEventTypeString])
+                else if ([callInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
+                         [callInvite.type isEqualToString:kWidgetModularEventTypeString])
                 {
-                    [[AppDelegate theDelegate].callPresenter processWidgetEvent:lastCallInvite
+                    [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
                                                                       inSession:session];
                 }
                 else
@@ -619,7 +612,7 @@ Matrix session observer used to detect new opened sessions.
             else
             {
                 //  It's a serious error. There is nothing to avoid iOS to kill us here.
-                NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the last callInvite event for the event %@. There is something wrong.", eventId);
+                NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the callInvite event for the eventId: %@. There is something wrong.", eventId);
             }
         }
         else

@@ -587,9 +587,10 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         if event.isEncrypted {
-            pushNotificationStore.lastCallInvite = event.clear
+            if #available(iOS 13.0, *) {
+            pushNotificationStore.storeCallInvite(event.clear)
         } else {
-            pushNotificationStore.lastCallInvite = event
+            pushNotificationStore.storeCallInvite(event)
         }
         
         ongoingVoIPPushRequests[event.eventId] = true
