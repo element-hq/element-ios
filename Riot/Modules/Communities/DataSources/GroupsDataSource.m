@@ -31,7 +31,9 @@
     self = [super initWithMatrixSession:matrixSession];
     if (self)
     {
-        _showBetaAnnounce = !RiotSettings.shared.hideSpaceBetaAnnounce;
+    // TODO: Hide the banner for the moment. Wait for iterations on it.
+//        _showBetaAnnounce = !RiotSettings.shared.hideSpaceBetaAnnounce;
+        _showBetaAnnounce = NO;
     }
     return self;
 }
