@@ -62,3 +62,9 @@
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Messaggio in %@";
 "MESSAGE_PROTECTED" = "Nuovo messaggio";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (chiamata di gruppo)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Chiamata di gruppo iniziata";

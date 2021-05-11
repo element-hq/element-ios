@@ -95,3 +95,9 @@
 
 /* New message indicator on unknown room */
 "MESSAGE" = "Bericht";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Groepsgesprek gestart";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (groepsgesprek)";
