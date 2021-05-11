@@ -51,7 +51,7 @@
 "auth_repeat_password_placeholder" = "Repite la contraseña";
 "auth_repeat_new_password_placeholder" = "Confirma tu contraseña nueva";
 "auth_home_server_placeholder" = "URL (ej. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (ej. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (ej.: https://matrix.org)";
 "auth_invalid_login_param" = "Nombre de usuario y/o contraseña incorrectos";
 "auth_invalid_user_name" = "Los nombres de usuario solo pueden contener letras, números, puntos, guiones y guiones bajos";
 "auth_invalid_password" = "Contraseña demasiado corta (mínimo 6)";
@@ -121,12 +121,12 @@
 "auth_msisdn_validation_title" = "Verificación Pendiente";
 "auth_msisdn_validation_message" = "Hemos enviado un SMS con un código de activación. Por favor, ingresa este código a continuación.";
 "auth_msisdn_validation_error" = "No se pudo verificar el número telefónico.";
-"auth_recaptcha_message" = "Este Servidor Doméstico quiere asegurarse de que no eres un robot";
+"auth_recaptcha_message" = "Este servidor base quiere asegurarse de que no eres un robot";
 "auth_reset_password_message" = "Para restablecer tu contraseña, ingresa la dirección de correo electrónico vinculada a tu cuenta:";
 "auth_reset_password_missing_email" = "Debes ingresar la dirección de correo electrónico vinculada a tu cuenta.";
 "auth_reset_password_email_validation_message" = "Se envió un correo electrónico a %@. Una vez que hayas seguido el enlace que contiene, haz clic a continuación.";
 "auth_reset_password_error_unauthorized" = "No se pudo verificar la dirección de correo electrónico: asegúrate de hacer clic en el enlace del correo electrónico";
-"auth_reset_password_error_not_found" = "Tu dirección de correo electrónico no parece estar asociada a una ID de Matrix en este Servidor Doméstico.";
+"auth_reset_password_error_not_found" = "Tu dirección de correo electrónico no parece estar asociada a una ID de Matrix en este servidor base.";
 "auth_reset_password_success_message" = "Tu contraseña fue restablecida.\n\nSe ha cerrado sesión en todos tus dispositivos y ya no recibirás notificaciones push. Para volver a habilitar las notificaciones, vuelve a iniciar sesión en cada dispositivo.";
 "auth_add_email_and_phone_warning" = "Todavía no es posible registrarse con correo electrónico y número telefónico a la vez, hasta que exista la API. Solo se tendrá en cuenta el número telefónico. Puedes añadir tu correo electrónico a tu perfil en ajustes.";
 // Chat creation
@@ -550,3 +550,43 @@
 "deactivate_account_forget_messages_information_part3" = ": esto provocará que los usuarios futuros vean conversaciones incompletas)";
 // String for App Store
 "store_short_description" = "Chat/VoIP descentralizado y seguro";
+"room_participants_leave_prompt_title_for_dm" = "Salir";
+"people_empty_view_title" = "Personas";
+"social_login_button_title_sign_up" = "Registrarse con %@";
+"social_login_button_title_sign_in" = "Iniciar sesión con %@";
+"social_login_button_title_continue" = "Seguir con %@";
+"social_login_list_title_sign_up" = "O";
+"social_login_list_title_sign_in" = "O";
+
+// Social login
+
+"social_login_list_title_continue" = "Seguir con";
+"auth_softlogout_clear_data_sign_out" = "Cerrar sesión";
+"auth_softlogout_clear_data_sign_out_title" = "¿Seguro?";
+"auth_softlogout_clear_data_button" = "Borrar todos los datos";
+"auth_softlogout_clear_data_message_2" = "Bórralos si vas a dejar de usar este dispositivo, o quieres iniciar sesión con otra cuenta.";
+"auth_softlogout_clear_data_message_1" = "Cuidado: tus datos personales (incluyendo claves de cifrado) todavía están alojados en este dispositivo.";
+"auth_softlogout_clear_data" = "Borrar datos personales";
+"auth_softlogout_reason" = "La administración de tu servidor base (%1$@) ha cerrado tu sesión %2$@ (%3$@).";
+"auth_softlogout_sign_in" = "Iniciar sesión";
+"auth_softlogout_signed_out" = "No tienes una sesión iniciada";
+"auth_accept_policies" = "Por favor, lee y acepta los términos de este servidor base:";
+"auth_add_phone_message_2" = "Pon un número de teléfono para que te descubran personas que te conozcan.";
+"auth_add_email_message_2" = "Pon un correo para poder recuperar tu cuenta en el futuro, y, opcionalmente que las personas que te conozcan descubran tu cuenta.";
+"auth_login_single_sign_on" = "Iniciar sesión";
+
+// Accessibility
+"accessibility_checkbox_label" = "casilla de selección";
+"callbar_return" = "Volver";
+"callbar_only_multiple_paused" = "%@ llamadas en espera";
+"callbar_only_single_paused" = "Llamada en espera";
+"callbar_active_and_multiple_paused" = "1 llamada en curso (%@) · %@ llamadas en espera";
+"callbar_active_and_single_paused" = "1 llamada en curso (%@) · 1 llamada en espera";
+
+// Call Bar
+"callbar_only_single_active" = "Llamada en curso (%@)";
+"less" = "Menos";
+"more" = "Más";
+"switch" = "Cambiar";
+"skip" = "Saltar";
+"close" = "Cerrar";

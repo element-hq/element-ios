@@ -5,6 +5,30 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.3.6 (2021-05-07)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Jitsi: Use Jitsi server from homeserver's Well Known, if present, to create conferences (#3158).
  * RoomMemberDetailsVC: Enable / disable "Hide all messages from this user" from settings (#4281).
  * RoomVC: Show / Hide More and Report Content contextual menu from settings (#4285).
@@ -36,6 +60,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.11](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.11)).
 
 Changes in 1.3.5 (2021-04-22)
 =================================================

@@ -557,7 +557,7 @@
 "secrets_setup_recovery_key_loading" = "Laster…";
 "secrets_setup_recovery_key_export_action" = "Lagre";
 "secrets_setup_recovery_key_done_action" = "Fullført";
-"secrets_setup_recovery_key_storage_alert_title" = "Hold det trygt";
+"secrets_setup_recovery_key_storage_alert_title" = "Oppbevar trygt";
 "secrets_setup_recovery_passphrase_validate_action" = "Fullført";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bekreft";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Bekreft passordfrasen";
@@ -630,7 +630,7 @@
 "room_resource_usage_limit_reached_message_1_default" = "Denne hjemmeserveren har overskredet en av sine ressursgrenser så ";
 "room_resource_limit_exceeded_message_contact_3" = " for å fortsette å bruke denne tjenesten.";
 "room_resource_limit_exceeded_message_contact_2_link" = "kontakt tjenesteadministratoren";
-"room_resource_limit_exceeded_message_contact_1" = " Vær så snill ";
+"room_resource_limit_exceeded_message_contact_1" = " Vennligst ";
 "room_predecessor_link" = "Trykk her for å se eldre meldinger.";
 "room_predecessor_information" = "Dette rommet er en fortsettelse av en annen samtale.";
 "room_replacement_information" = "Dette rommet er erstattet og er ikke lenger aktivt.";
@@ -785,3 +785,91 @@
 
 // Call Bar
 "callbar_only_single_active" = "Aktiv samtale (%@)";
+"secrets_setup_recovery_key_information" = "Oppbevar din sikkerhetsnøkkel trygt. Den kan brukes til å å tilgang til dine sikrede meldinger og data.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Lagre din sikkerhetsnøkkel";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Vennligst sjekk at du har tastet riktig sikkerhetsnøkkel.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Ugyldig sikkerhetsnøkkel, ingen tilgang til sikret lagringsområde";
+"secrets_recovery_with_key_recover_action" = "Bruk sikkerhetsnøkkel";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Skriv ut og oppbevar på et trygt sted\n✓ Lagre på en USB minnepenn, eller ekstern sikkerhetskopi\n✓ Kopièr til din personlige skylagring";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Feil sikkerhetsfrase, ingen tilgang til sikret lagringsområde";
+"secrets_recovery_with_key_information_verify_device" = "Bruk din sikkerhetsnøkkel for å bekrefte denne enheten.";
+"secrets_recovery_with_key_information_default" = "Få tilgang til dine sikrede meldinger og identitetsnøkkelen som brukes for å bekrefte andre sesjoner, ved å taste inn din sikkerhetsnøkkel.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vennligst sjekk at du har tastet riktig sikkerhetsfrase.";
+"room_open_dialpad" = "Nummertastatur";
+"settings_labs" = "LABS";
+"room_place_voice_call" = "Lydsamtale";
+"settings_pin_rooms_with_unread" = "Feste rom med uleste meldinger";
+"settings_global_settings_info" = "Globale varslingsinnstillinger er tilgjengelige på din %@ nettleserklient";
+"room_multiple_typing_notification" = "%@ og andre";
+"room_event_action_delete_confirmation_message" = "Er du sikker på at du vil slette denne usendte meldingen?";
+"external_link_confirmation_message" = "Lenken %@ bringer deg til et annet nettsted: %@\n\nEr du sikker på at du vil fortsette?";
+"room_accessibility_video_call" = "Videosamtale";
+"room_event_action_delete_confirmation_title" = "Slett usendt melding";
+"room_unsent_messages_cancel_message" = "Er du sikker på at du vil slette alle usendte meldinger i dette rommet?";
+"room_unsent_messages_cancel_title" = "Slett usendte meldinger";
+"room_message_replying_to" = "Svarer til %@";
+"room_message_editing" = "Redigerer";
+"room_member_power_level_custom_in" = "Tilpasset (%@) av %@";
+"pin_protection_confirm_pin_to_disable" = "Bekreft PIN-kode for å deaktivere PIN-kode";
+"pin_protection_choose_pin" = "Opprett en PIN-kode for sikkerhet";
+"device_verification_self_verify_alert_message" = "Verifiser den nye påloggingen som vil ha tilgang til kontoen din:% @";
+
+// Service terms - Variant for identity server when displayed out of a context
+"service_terms_modal_title_identity_server" = "Finne kontakter";
+"widget_integration_missing_room_id" = "Manglende rom_id i forespørsel.";
+"rage_shake_prompt" = "Det ser ut til at du rister telefonen i frustrasjon. Ønsker du å sende inn rapport om feil?";
+"room_details_addresses_invalid_address_prompt_title" = "Ugyldig alias format";
+"security_settings_crypto_sessions_description_2" = "Om du ikke gjenkjenner en pålogging, endre ditt passord og tilbakestill sikkerhetskopi.";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Sikkerhetskopi har signatur fra %@";
+"settings_key_backup_info_trust_signature_valid" = "Sikkerhetskopien har en gyldig signatur fra denne økten";
+"settings_key_backup_info_trust_signature_unknown" = "Sikkerhetskopi av økten har signatur med ID: %@";
+"settings_key_backup_info_progress_done" = "Alle nøkler sikkerhetskopiert";
+"settings_key_backup_info_progress" = "Sikkerhetskopierer %@ nøkler…";
+"settings_key_backup_info_not_valid" = "Denne økten sikkerhetskopierer ikke dine nøkler, men du har en eksisterende sikkerhetskopi du kan gjenopprette fra og legge til, for å gå videre.";
+"settings_key_backup_info_valid" = "Denne økten sikkerhetskopierer dine nøkler.";
+"settings_key_backup_info_version" = "Sikkerhetskopi av nøkler versjon : %@";
+"settings_key_backup_info_signout_warning" = "Før du logger ut, koble denne sesjonen til sikkerhetskopi av nøkler for å unngå tap av nøkler som kanskje bare er lagret på denne enheten.";
+"settings_key_backup_info_none" = "Nøklene dine for denne sesjonen blir ikke sikkerhetskopiert";
+"settings_third_party_notices" = "Tredjepartsmerknader";
+"settings_labs_e2e_encryption_prompt_message" = "Vennligst logg inn igjen for å ferdigstille oppsett av kryptering.";
+"settings_key_backup" = "Sikkerhetskopi av meldingsnøkler";
+"settings_ui_theme_picker_message" = "\"Auto\" bruker din enhets innstillinger for å bytte bakgrunnsfarge";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Favorittrom og personer";
+"create_room_placeholder_address" = "#testrom: matrix.org";
+"device_verification_emoji_santa" = "Julenisse";
+"device_verification_security_advice_emoji" = "Sammenlign de unike emojiene, og sjekk at de vises i samme rekkefølge.";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Er du sikker på at du vil logge av?";
+"service_terms_modal_message_identity_server" = "Godta brukervilkårene til identitetsserveren (%@) for å finne kontakter.";
+"event_formatter_call_back" = "Ring tilbake";
+"room_details_advanced_e2e_encryption_disabled" = "Kryptering er ikke aktivert i dette rommet.";
+"room_details_flair_section" = "Vi brukervalg for samfunn";
+"room_details_photo_for_dm" = "Bilde";
+"room_details_photo" = "Rombilde";
+"settings_flair" = "Vis brukervalg hvor tillat";
+"settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
+"settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
+"room_info_list_several_members" = "% @ medlemmer";
+"pin_protection_not_allowed_pin" = "Av sikkerhetsgrunner er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
+"secrets_setup_recovery_passphrase_information" = "Skriv inn et sikkerhetsfrase bare du kjenner, brukt til å sikre hemmeligheter på serveren din.";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen din";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen";
+"room_details_access_section_for_dm" = "Hvem har til gang til dette?";
+"identity_server_settings_place_holder" = "Skriv inn en identitetsserver";
+"identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne å bli funnet av dine eksisterende kontakter.";
+"security_settings_crosssigning_info_exists" = "Din konto har en kryss-signeringsidentitet, men den er ikke klarert av den økten. Fullfør klarering for denne økten.";
+"security_settings_crypto_sessions_loading" = "Laster sesjoner…";
+"settings_discovery_no_identity_server" = "Du bruker ikke for øyeblikket en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
+"settings_unignore_user" = "Vi alle meldinger fra %@?";
+"device_verification_cancelled" = "Den andre parten avbrøt verifiseringen";

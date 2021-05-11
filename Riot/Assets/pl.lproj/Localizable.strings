@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "%@ wysłał(a) wiadomość";
+"MSG_FROM_USER" = "%@ wysłał(-a) wiadomość";
 /* New message from a specific person, not referencing a room. Content included. */
 "MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
 /* New message from a specific person in a named room. Content included. */
@@ -23,27 +23,27 @@
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ nowych wiadomości w %@, %@ i innych";
 /* New action message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ wysłał(a) zdjęcie %@";
+"IMAGE_FROM_USER" = "%@ wysłał(-a) zdjęcie %@";
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ wysłał(a) zdjęcie %@ w %@";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ wysłał(-a) zdjęcie %@ w %@";
 /* Multiple unread messages from a specific person, not referencing a room */
 "MSGS_FROM_USER" = "%@ nowych wiadomości w %@";
 /* Multiple messages in two rooms */
 "MSGS_IN_TWO_ROOMS" = "%@ nowych wiadomości w %@ i %@";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ zaprosił(a) Ciebie do %@";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ zaprosił(-a) Ciebie do %@";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ zaprosił(a) Ciebie do rozmowy grupowej";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ zaprosił(-a) Ciebie do rozmowy grupowej";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ zaprosił(a) Ciebie do rozmowy";
+"USER_INVITE_TO_CHAT" = "%@ zaprosił(-a) Ciebie do rozmowy";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ w %@";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ opublikowany w %@";
 /* Sticker from a specific person, not referencing a room. */
-"STICKER_FROM_USER" = "%@ wysłał(a) naklejkę";
+"STICKER_FROM_USER" = "%@ wysłał(-a) naklejkę";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "Zadzwonił do Ciebie z %@";
+"VOICE_CALL_FROM_USER" = "Połączenie głosowe z %@";
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "Połączenie wideo z %@";
 /* Incoming unnamed voice conference invite from a specific person */
@@ -54,10 +54,17 @@
 "VOICE_CONF_NAMED_FROM_USER" = "Połączenie grupowe z %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Grupowe połączenie wideo z %@: '%@'";
-"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ wymaga weryfikacji";
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ chce się z Tobą zweryfikować";
 /* New message indicator on unknown room */
 "MESSAGE" = "Wiadomość";
 /* New message indicator from a DM */
 "MESSAGE_FROM_X" = "Wiadomość od %@";
 /* New message indicator on a room */
 "MESSAGE_IN_X" = "Wiadomość w %@";
+"MESSAGE_PROTECTED" = "Nowa Wiadomość";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Połączenie grupowe)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Rozpoczęto połączenie grupowe";

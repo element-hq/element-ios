@@ -5,7 +5,7 @@
 "title_groups" = "Bashkësi";
 "warning" = "Sinjalizim";
 // Actions
-"view" = "Parje";
+"view" = "Shiheni";
 "next" = "Pasuesja";
 "back" = "Mbrapsht";
 "continue" = "Vazhdo";
@@ -162,7 +162,7 @@
 "room_participants_action_start_video_call" = "Nis thirrje video";
 "room_participants_action_mention" = "Përmendje";
 // Chat
-"room_jump_to_first_unread" = "Hidhu te mesazhi i parë i palexuar";
+"room_jump_to_first_unread" = "Hidhu te të palexuar";
 "room_new_message_notification" = "%d mesazh i ri";
 "room_new_messages_notification" = "%d mesazhe të rinj";
 "room_one_user_is_typing" = "%@ po shtyp…";
@@ -170,7 +170,7 @@
 "room_many_users_are_typing" = "%@, %@ & të tjerë po shtypin…";
 "room_message_placeholder" = "Dërgoni një mesazh (të pafshehtëzuar)…";
 "room_do_not_have_permission_to_post" = "S’keni leje të postoni në këtë dhomë";
-"encrypted_room_message_placeholder" = "Dërgoni një mesazhi të fshehtëzuar…";
+"encrypted_room_message_placeholder" = "Dërgoni një mesazh të fshehtëzuar…";
 "room_message_short_placeholder" = "Dërgoni një mesazh…";
 "room_offline_notification" = "Humbi lidhja me shërbyesin.";
 "room_unsent_messages_notification" = "Mesazhet s’u dërguan.";
@@ -1309,8 +1309,8 @@
 "call_actions_unhold" = "Rimerre";
 "event_formatter_call_back" = "Ktheji thirrjen";
 "event_formatter_call_you_declined" = "Hodhët poshtë këtë thirrje";
-"event_formatter_call_you_currently_in" = "Gjendeni në këtë thirrje";
-"event_formatter_call_has_ended" = "Kjo thirrje ka përfunduar";
+"event_formatter_call_you_currently_in" = "Thirrje aktive";
+"event_formatter_call_has_ended" = "Përfundoi %@";
 "event_formatter_call_video" = "Thirrje video";
 "event_formatter_call_voice" = "Thirrje audio";
 "security_settings_crosssigning_reset" = "Rikthe te parazgjedhjet <em>cross-signing</em>";
@@ -1338,9 +1338,29 @@
 "callbar_active_and_single_paused" = "1 thirrje aktive (%@) · 1 thirrje e ndalur";
 
 // Call Bar
-"callbar_only_single_active" = "Thirrje aktive (%@)";
+"callbar_only_single_active" = "Prekeni që të riktheheni te thirrja (%@)";
 "room_details_integrations" = "Integrime";
 "room_multiple_typing_notification" = "%@ dhe të tjerë";
 "room_accessibility_video_call" = "Thirrje Video";
 "room_message_replying_to" = "Në përgjigje të %@";
 "room_message_editing" = "Përpunim";
+"room_details_search" = "Kërkoni për dhomë";
+"settings_labs_enable_ringing_for_group_calls" = "Bjeri ziles për thirrje në grup";
+"event_formatter_group_call_incoming" = "%@ në %@";
+"event_formatter_group_call_leave" = "Dilni";
+"event_formatter_group_call_join" = "Hyni";
+"event_formatter_group_call" = "Thirrje në grup";
+"event_formatter_call_end_call" = "Përfundoje thirrjen";
+"event_formatter_call_retry" = "Riprovo";
+"event_formatter_call_answer" = "Përgjigjuni";
+"event_formatter_call_decline" = "Hidhe poshtë";
+"event_formatter_call_connection_failed" = "Lidhja dështoi";
+"event_formatter_call_you_missed" = "E humbët këtë thirrje";
+"event_formatter_call_ringing" = "Po i bihet ziles…";
+"event_formatter_call_connecting" = "Po lidhet…";
+"room_no_privileges_to_create_group_call" = "Që të nisni një thirrje, duhet të jeni një përgjegjës ose një moderator.";
+"room_join_group_call" = "Hyni";
+
+// Chat
+"room_slide_to_end_group_call" = "Rrëshqiteni, që të përfundohet thirrja për këdo";
+"callbar_only_single_active_group" = "Prekeni, që të Hyni në thirrjen e grupit (%@)";

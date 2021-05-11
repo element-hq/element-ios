@@ -1332,8 +1332,8 @@
 "call_actions_unhold" = "Folytatás";
 "event_formatter_call_back" = "Visszahívás";
 "event_formatter_call_you_declined" = "Elutasította ezt a hívást";
-"event_formatter_call_you_currently_in" = "Jelenleg ebben a hívásban van";
-"event_formatter_call_has_ended" = "Hívás befejeződött";
+"event_formatter_call_you_currently_in" = "Aktív hívás";
+"event_formatter_call_has_ended" = "Befejeződött: %@";
 "event_formatter_call_video" = "Videóhívás";
 "event_formatter_call_voice" = "Hang hívás";
 "room_open_dialpad" = "Tárcsázó számlap";
@@ -1349,4 +1349,29 @@
 "callbar_active_and_single_paused" = "1 aktív hívás (%@) · 1 hívás tartásban";
 
 // Call Bar
-"callbar_only_single_active" = "Aktív hívás (%@)";
+"callbar_only_single_active" = "Koppints a hívásba való visszatéréshez (%@)";
+"room_details_integrations" = "Integrációk";
+"room_details_search" = "Szoba keresése";
+"room_multiple_typing_notification" = "%@ és mások";
+"room_accessibility_video_call" = "Videohívás";
+"room_message_replying_to" = "Válasz erre: %@";
+"room_message_editing" = "Szerkesztés";
+"event_formatter_group_call_incoming" = "%@ itt: %@";
+"event_formatter_group_call_leave" = "Elhagy";
+"event_formatter_group_call_join" = "Csatlakozás";
+"event_formatter_group_call" = "Csoportos hívás";
+"event_formatter_call_end_call" = "Hívás befejezése";
+"event_formatter_call_retry" = "Újra";
+"event_formatter_call_answer" = "Válaszol";
+"event_formatter_call_decline" = "Elutasít";
+"event_formatter_call_connection_failed" = "Kapcsolódás sikertelen";
+"event_formatter_call_you_missed" = "Elmulasztottad ezt a hívást";
+"event_formatter_call_ringing" = "Hívás…";
+"event_formatter_call_connecting" = "Kapcsolás…";
+"settings_labs_enable_ringing_for_group_calls" = "Csengetés csoportos hívásokhoz";
+"room_no_privileges_to_create_group_call" = "Adminisztrátornak vagy moderátornak kell lenned a hívás indításához.";
+"room_join_group_call" = "Csatlakozás";
+
+// Chat
+"room_slide_to_end_group_call" = "Húzd el a hívás befejezéséhez mindenki számára";
+"callbar_only_single_active_group" = "Koppints a csoporthívásba való belépéshez (%@)";
