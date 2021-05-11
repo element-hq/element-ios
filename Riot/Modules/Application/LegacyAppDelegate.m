@@ -391,6 +391,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     if (![application isProtectedDataAvailable])
     {
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Terminating the app because protected data not available");
         exit(0);
     }
     

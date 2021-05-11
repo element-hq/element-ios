@@ -316,7 +316,8 @@ class NotificationService: UNNotificationServiceExtension {
                                callInviteContent.lifetime > event.age,
                                (callInviteContent.lifetime - event.age) > UInt(NSE.Constants.timeNeededToSendVoIPPushes * MSEC_PER_SEC) {
                                 self.sendVoipPush(forEvent: event)
-                                
+                            } else {
+                                NSLog("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
                             }
                         case .roomMessage, .roomEncrypted:
                             if isRoomMentionsOnly {
