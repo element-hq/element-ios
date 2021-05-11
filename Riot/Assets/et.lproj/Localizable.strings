@@ -62,3 +62,9 @@
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Video rühmakõne kasutajalt %@: „%@“";
 "MESSAGE_PROTECTED" = "Uus sõnum";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (rühmakõne)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Rühmakõne algas";
