@@ -1632,3 +1632,14 @@ Tap the + to start adding people.";
 
 "room_intro_cell_information_dm_sentence2" = "Only the two of you are in this conversation, no one else can join.";
 "room_intro_cell_information_multiple_dm_sentence2" = "Only you are in this conversation, unless any of you invites someone to join.";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Spaces aren’t here yet";
+"space_feature_unavailable_subtitle" = "Spaces aren't on iOS yet, but you can use them now on Web and Desktop";
+"space_feature_unavailable_information" = "Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.";
+
+"space_beta_announce_badge" = "BETA";
+"space_beta_announce_title" = "Spaces are coming soon";
+"space_beta_announce_subtitle" = "The new version of communities";
+"space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";

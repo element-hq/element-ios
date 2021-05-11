@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lF3-B1-QSM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Space Feature Unaivable View Controller-->
+        <scene sceneID="GxM-11-zLQ">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="lF3-B1-QSM" customClass="SpaceFeatureUnaivableViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xml-pK-Qwj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1B8-AI-sNF">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nR7-UU-l9H">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="398"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27X-Of-wNa">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="398"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="ylT-1L-OLp">
+                                                        <rect key="frame" x="25" y="50" width="364" height="328"/>
+                                                        <subviews>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="feature_unavaible_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="sGd-vk-QZn">
+                                                                <rect key="frame" x="0.0" y="0.0" width="364" height="106"/>
+                                                            </imageView>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You’re trying to open a link to a Space. Spaces are currently only available in beta on web, or Android" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bq-od-FQz">
+                                                                <rect key="frame" x="0.0" y="156" width="364" height="61"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use your computer to open the link. If you do, we’ll let you know when the feature comes to iOS." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ZF-ov-Mf3">
+                                                                <rect key="frame" x="0.0" y="267" width="364" height="61"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="ylT-1L-OLp" secondAttribute="bottom" constant="20" id="34J-bP-IoO"/>
+                                                    <constraint firstAttribute="trailing" secondItem="ylT-1L-OLp" secondAttribute="trailing" constant="25" id="5Jt-g6-D8E"/>
+                                                    <constraint firstItem="ylT-1L-OLp" firstAttribute="leading" secondItem="27X-Of-wNa" secondAttribute="leading" constant="25" id="pi6-0g-zBY"/>
+                                                    <constraint firstItem="ylT-1L-OLp" firstAttribute="top" secondItem="27X-Of-wNa" secondAttribute="top" constant="50" id="q2s-te-4sL"/>
+                                                    <constraint firstAttribute="width" priority="750" constant="500" id="ypd-Rv-SnZ"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="27X-Of-wNa" secondAttribute="bottom" id="8IE-H1-hHy"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="27X-Of-wNa" secondAttribute="trailing" id="9ES-BJ-i6i"/>
+                                            <constraint firstItem="27X-Of-wNa" firstAttribute="centerX" secondItem="nR7-UU-l9H" secondAttribute="centerX" id="Qaa-FG-9KG"/>
+                                            <constraint firstItem="27X-Of-wNa" firstAttribute="top" secondItem="nR7-UU-l9H" secondAttribute="top" id="lYG-Wh-gO8"/>
+                                            <constraint firstItem="27X-Of-wNa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="nR7-UU-l9H" secondAttribute="leading" id="vN8-ue-jSD"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="nR7-UU-l9H" firstAttribute="width" secondItem="1B8-AI-sNF" secondAttribute="width" id="DDt-dv-KuK"/>
+                                    <constraint firstAttribute="bottom" secondItem="nR7-UU-l9H" secondAttribute="bottom" id="NEU-Tu-bEO"/>
+                                    <constraint firstItem="nR7-UU-l9H" firstAttribute="top" secondItem="1B8-AI-sNF" secondAttribute="top" id="RUb-FJ-n39"/>
+                                    <constraint firstAttribute="trailing" secondItem="nR7-UU-l9H" secondAttribute="trailing" id="baF-fE-9RM"/>
+                                    <constraint firstItem="nR7-UU-l9H" firstAttribute="leading" secondItem="1B8-AI-sNF" secondAttribute="leading" id="m9t-z5-09A"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="EKA-x2-Dp6"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="EKA-x2-Dp6" firstAttribute="top" secondItem="1B8-AI-sNF" secondAttribute="top" id="4JH-b0-GAR"/>
+                            <constraint firstItem="1B8-AI-sNF" firstAttribute="leading" secondItem="EKA-x2-Dp6" secondAttribute="leading" id="FyW-NO-hPT"/>
+                            <constraint firstAttribute="bottom" secondItem="1B8-AI-sNF" secondAttribute="bottom" id="amp-xt-t4Z"/>
+                            <constraint firstItem="EKA-x2-Dp6" firstAttribute="trailing" secondItem="1B8-AI-sNF" secondAttribute="trailing" id="fBG-DS-i4e"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="artworkImageView" destination="sGd-vk-QZn" id="823-PG-zoL"/>
+                        <outlet property="informationLabel" destination="9ZF-ov-Mf3" id="9Oc-Zg-QZE"/>
+                        <outlet property="subtitleLabel" destination="0bq-od-FQz" id="fLM-1x-mjU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aGN-2E-nEI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3198" y="-647"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="feature_unavaible_artwork" width="160" height="106"/>
+    </resources>
+</document>
