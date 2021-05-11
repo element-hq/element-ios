@@ -1301,7 +1301,7 @@
 
 "secrets_reset_title" = "Tout réinitialiser";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Contrôle des autres fonctionnalités de vérification…";
-"event_formatter_call_you_currently_in" = "Vous êtes actuellement dans cet appel";
+"event_formatter_call_you_currently_in" = "Appel en cours";
 "rooms_empty_view_information" = "Les salons sont utiles pour toute conversation de groupe, privée ou publique. Appuyez sur « + » pour trouver des salons existants, ou en créer de nouveaux.";
 "rooms_empty_view_title" = "Salons";
 "people_empty_view_information" = "Communiquez de manière sécurisée avec n’importe qui. Appuyez sur « + » pour commencer à ajouter des personnes.";
@@ -1318,7 +1318,7 @@
 "call_actions_unhold" = "Reprendre";
 "event_formatter_call_back" = "Rappeler";
 "event_formatter_call_you_declined" = "Vous avez refusé cet appel";
-"event_formatter_call_has_ended" = "L’appel est terminé";
+"event_formatter_call_has_ended" = "Appel %@ terminé";
 "event_formatter_call_video" = "Appel vidéo";
 "event_formatter_call_voice" = "Appel audio";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Le chiffrement n’est pas activé ici.";
@@ -1358,7 +1358,7 @@
 "callbar_active_and_single_paused" = "1 appel en cours (%@) · 1 appel en attente";
 
 // Call Bar
-"callbar_only_single_active" = "Appel en cours (%@)";
+"callbar_only_single_active" = "Appuyez pour revenir à l’appel (%@)";
 "less" = "Moins";
 "more" = "Plus";
 "switch" = "Basculer";
@@ -1370,3 +1370,22 @@
 "room_accessibility_video_call" = "Appel vidéo";
 "room_message_replying_to" = "Réponse à %@";
 "room_message_editing" = "Modification";
+"event_formatter_group_call_incoming" = "%@ dans %@";
+"event_formatter_group_call_leave" = "Partir";
+"event_formatter_group_call_join" = "Rejoindre";
+"event_formatter_group_call" = "Appel de groupe";
+"event_formatter_call_end_call" = "Raccrocher";
+"event_formatter_call_retry" = "Réessayer";
+"event_formatter_call_answer" = "Décrocher";
+"event_formatter_call_decline" = "Refuser";
+"event_formatter_call_connection_failed" = "Échec de connexion";
+"event_formatter_call_you_missed" = "Vous avez manqué cet appel";
+"event_formatter_call_ringing" = "Sonnerie…";
+"event_formatter_call_connecting" = "Connexion…";
+"settings_labs_enable_ringing_for_group_calls" = "Sonnerie pour les appels de groupe";
+"room_no_privileges_to_create_group_call" = "Vous devez être administrateur ou modérateur pour démarrer un appel.";
+"room_join_group_call" = "Rejoindre";
+
+// Chat
+"room_slide_to_end_group_call" = "Faites glisser pour mettre fin à l’appel pour tout le monde";
+"callbar_only_single_active_group" = "Appuyez pour rejoindre l’appel de groupe (%@)";
