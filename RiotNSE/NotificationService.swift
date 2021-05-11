@@ -586,16 +586,22 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        if event.isEncrypted {
-            if #available(iOS 13.0, *) {
-                guard event.clear != nil else {
+        if #available(iOS 13.0, *) {
+            if event.isEncrypted {
+                guard let clearEvent = event.clear else {
                     NSLog("[NotificationService] sendVoipPush: Do not send a VoIP push for undecrypted event, it'll cause a crash.")
                     return
                 }
+                
+                //  Add some original data on the clear event
+                clearEvent.eventId = event.eventId
+                clearEvent.originServerTs = event.originServerTs
+                clearEvent.sender = event.sender
+                clearEvent.roomId = event.roomId
+                pushNotificationStore.storeCallInvite(clearEvent)
+            } else {
+                pushNotificationStore.storeCallInvite(event)
             }
-            pushNotificationStore.storeCallInvite(event.clear)
-        } else {
-            pushNotificationStore.storeCallInvite(event)
         }
         
         ongoingVoIPPushRequests[event.eventId] = true
