@@ -1066,3 +1066,4 @@
 "no_voip" = "%@ ringer deg men %@ støtter ikke anrop enda.\nDu kan overse denne varselen og svare anropet fra en annen enhet eller du kan avvise det.";
 "call_actions_unhold" = "Gjenoppta";
 "bug_report_description" = "Vennligst beskriv feil. Hva gjorde du? Hva forventet du skulle skje? Hva skjedde faktisk?";
+"bug_crash_report_description" = "Vennligst beskriv hva du gjorde før krasjet:";
