@@ -872,7 +872,7 @@
 "security_settings_crypto_sessions_loading" = "Laster økter…";
 "settings_discovery_no_identity_server" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
 "settings_unignore_user" = "Vis alle meldinger fra %@?";
-"device_verification_cancelled" = "Den andre parten avbrøt verifiseringen";
+"device_verification_cancelled" = "Den andre parten kansellerte bekreftelsen.";
 "settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken blir delt med Apple.";
 //"settings_enable_all_notif" = "Enable all notifications";
 //"settings_messages_my_display_name" = "Msg containing my display name";
@@ -969,3 +969,9 @@
 "room_details_access_section_no_address_warning" = "For å linke til et rom må det ha en adresse";
 "room_details_access_section_anyone_for_dm" = "Alle som har denne linken, inkludert gjester";
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "Alle som har denne linken, unntatt gjester";
+"room_details_advanced_e2e_encryption_enabled" = "Kryptering er aktivert i dette rommet";
+"room_details_advanced_enable_e2e_encryption" = "Aktiver kryptering (advarsel: kan ikke endres!)";
+"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_flair_invalid_id_prompt_msg" = "%@ er ikke en gyldig identifikator for et samfunn";
+"room_details_flair_invalid_id_prompt_title" = "Ugyldig format";
+"room_details_new_flair_placeholder" = "Legg til ID for samfunn (e.g. +foo%@)";
