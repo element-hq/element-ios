@@ -870,7 +870,7 @@
 "identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne å bli funnet av dine eksisterende kontakter.";
 "security_settings_crosssigning_info_exists" = "Din konto har en kryss-signeringsidentitet, men den er ikke klarert av den økten. Fullfør klarering for denne økten.";
 "security_settings_crypto_sessions_loading" = "Laster sesjoner…";
-"settings_discovery_no_identity_server" = "Du bruker ikke for øyeblikket en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
+"settings_discovery_no_identity_server" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
 "settings_unignore_user" = "Vis alle meldinger fra %@?";
 "device_verification_cancelled" = "Den andre parten avbrøt verifiseringen";
 "settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken blir delt med Apple.";
