@@ -1052,3 +1052,16 @@
 "bug_report_prompt" = "Applikasjonen krasjet sist gang. Vil du sende inn en krasj-rapport?";
 "public_room_section_title" = "Offentlige rom (på %@):";
 "call_no_stun_server_error_message_2" = "Alternativt kan prøve å bruke den offentlige serveren ved %@, men denne vil være mindre pålitelig, og vil dele din IP-addresse med serveren. Du kan også administrere dette i innstillinger.";
+"e2e_key_backup_wrong_version" = "Det har blitt oppdaget en ny sikkerhetskopi av meldingsnøkler for sikre meldinger .\n\nHvis dette ikke var deg, sett en ny passordfrase i innstillinger.";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Ny sikkerhetskopi av nøkler";
+"e2e_need_log_in_again" = "Du må logge inn igjen for å generere ende-til-ende-krypteringsnøkler for denne økten og sende den offentlige nøkkelen til din hjemmeserver.\nDette gjøres bare en gang; beklager ulempen";
+
+// Crypto
+"e2e_enabling_on_app_update" = "Element støtter nå ende-til-ende kryptering, men du må logge inn igjen for å aktivere det.\n\nDu kan gjøre det nå eller senere fra applikasjonsinnstillingene.";
+
+// Crash report
+"google_analytics_use_prompt" = "Vil du hjelpe til med å forbedre %@ ved automatisk og anonymt sende inn krasj-rapporter og brukerdata?";
+"no_voip" = "%@ ringer deg men %@ støtter ikke anrop enda.\nDu kan overse denne varselen og svare anropet fra en annen enhet eller du kan avvise det.";
+"call_actions_unhold" = "Gjenoppta";
