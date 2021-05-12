@@ -5,10 +5,10 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * NSE: Add logs for notification delay.
 
 🐛 Bugfix
- * 
+ * NSE: Fixes to avoid PushKit crashes (#4269).
 
 ⚠️ API Changes
  * 
