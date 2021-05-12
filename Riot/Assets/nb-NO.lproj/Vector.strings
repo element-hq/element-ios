@@ -893,7 +893,7 @@
 "settings_send_crash_report" = "Send anonyme krasj- & brukerdata";
 "settings_olm_version" = "Olm-versjon %@";
 "settings_labs_message_reaction" = "Reager på melding med emoji";
-"settings_crypto_blacklist_unverified_devices" = "Krypter kun verifiserte sesjoner";
+"settings_crypto_blacklist_unverified_devices" = "Krypter kun i verifiserte økter";
 "settings_add_3pid_password_message" = "Vennligst legg inn ditt passord for å fortsette";
 "settings_add_3pid_password_title_email" = "Legg til e-postadresse";
 "settings_password_updated" = "Ditt passord har blitt oppdatert";
