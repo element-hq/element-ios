@@ -1430,7 +1430,7 @@
 "event_formatter_call_decline" = "Odrzuć";
 "event_formatter_call_answer" = "Odbierz";
 "event_formatter_call_connection_failed" = "Połączenie nieudane";
-"event_formatter_call_you_missed" = "Przegapiłeś to połączenie";
+"event_formatter_call_you_missed" = "Przegapiłeś(-aś) to połączenie";
 "event_formatter_call_ringing" = "Dzwonie…";
 "event_formatter_call_connecting" = "Łączenie…";
 "settings_labs_enable_ringing_for_group_calls" = "Dźwięk połączeń grupowych";
