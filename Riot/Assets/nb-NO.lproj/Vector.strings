@@ -1037,7 +1037,7 @@
 "event_formatter_member_updates" = "%tu endringer i medlemskap";
 "directory_server_type_homeserver" = "Skriv inn en hjemmeserver å liste offentlige rom fra";
 "event_formatter_call_has_ended" = "Avsluttet samtale %@";
-"call_no_stun_server_error_message_1" = "Vennligst be administrator for din hjemmeserver %@ om å konfigurere en TURN server for pålitelige anrop.";
+"call_no_stun_server_error_message_1" = "Vennligst be administratoren for din hjemmeserver %@ om å konfigurere en TURN server for pålitelige anrop.";
 "call_no_stun_server_error_title" = "Anrop feilet på grunn av feilkonfigurert server";
 "call_jitsi_error" = "Forsøk på å bli med i konferansesamtale feilet.";
 "call_already_displayed" = "Du er allerede i en samtale.";
