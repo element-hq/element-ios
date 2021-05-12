@@ -826,7 +826,7 @@
 "room_details_addresses_invalid_address_prompt_title" = "Ugyldig alias format";
 "security_settings_crypto_sessions_description_2" = "Om du ikke gjenkjenner en pålogging, endre ditt passord og tilbakestill sikkerhetskopi.";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
-"settings_key_backup_info_trust_signature_valid_device_unverified" = "Sikkerhetskopi har signatur fra %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Sikkerhetskopien har signatur fra %@";
 "settings_key_backup_info_trust_signature_valid" = "Sikkerhetskopien har en gyldig signatur fra denne økten";
 "settings_key_backup_info_trust_signature_unknown" = "Sikkerhetskopi av økten har signatur med ID: %@";
 "settings_key_backup_info_progress_done" = "Alle nøkler sikkerhetskopiert";
@@ -898,3 +898,8 @@
 "settings_add_3pid_password_title_email" = "Legg til e-postadresse";
 "settings_password_updated" = "Ditt passord har blitt oppdatert";
 "settings_fail_to_update_password" = "Oppdatering av passord feilet";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Er du sikker? Du vil miste dine krypterte meldinger hvis dine nøkler ikke er tilstrekkelig sikkerhetskopiert.";
+"settings_key_backup_button_connect" = "Koble denne økten til sikkerhetskopi av meldingsnøkler";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Sikkerhetskopien har en gyldig signatur fra %@";
+"settings_key_backup_info_algorithm" = "Algoritme: %@";
