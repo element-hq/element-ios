@@ -1068,3 +1068,9 @@
 "bug_report_description" = "Vennligst beskriv feilen. Hva gjorde du? Hva forventet du skulle skje? Hva skjedde faktisk?";
 "bug_crash_report_description" = "Vennligst beskriv hva du gjorde før krasjet:";
 "bug_report_logs_description" = "For å diagnostisere problemer, vil logger fra denne klienten bli sendt sammen med denne feilrapporten. Hvis du foretrekker å kun sende teksten ovenfor, vennligst ta bort hake:";
+
+// Widget
+"widget_no_integrations_server_configured" = "Ingen integrasjoner er serverkonfigurert";
+"bug_report_background_mode" = "Fortsett i bakgrunnen";
+"bug_report_progress_uploading" = "Laster opp rapport";
+"bug_report_progress_zipping" = "Samler inn logger";
