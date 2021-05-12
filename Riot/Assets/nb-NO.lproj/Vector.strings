@@ -903,7 +903,7 @@
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Sikkerhetskopien har en gyldig signatur fra %@";
 "settings_key_backup_info_algorithm" = "Algoritme: %@";
-"settings_identity_server_no_is" = "Ingen idenitetsserver konfigurert";
+"settings_identity_server_no_is" = "Ingen identitetsserver konfigurert";
 "settings_identity_server_description" = "Ved å bruke identitetsserveren valgt ovenfor, kan du finne og bli funnet av eksisterende kontakter.";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Legg inn SMS-aktiveringskode";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Avbryt e-postgodkjenning";
