@@ -903,3 +903,14 @@
 "settings_key_backup_info_trust_signature_invalid_device_unverified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "Sikkerhetskopien har en gyldig signatur fra %@";
 "settings_key_backup_info_algorithm" = "Algoritme: %@";
+"settings_identity_server_no_is" = "Ingen idenitetsserver konfigurert";
+"settings_identity_server_description" = "Ved å bruke identitetsserveren valgt ovenfor, kan du finne og bli funnet av eksisterende kontakter.";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Legg inn SMS-aktiveringskode";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Avbryt e-postgodkjenning";
+"settings_discovery_three_pid_details_information_phone_number" = "Administrer valg for dette telefonnummeret, som andre brukere kan benytte for å finne deg og invitere deg til rom. Legg til eller fjern telefonnummer i Kontoer.";
+"settings_discovery_three_pid_details_title_phone_number" = "Administrer telefonnummer";
+"settings_discovery_three_pid_details_information_email" = "Administrer valg for denne e-postadressen, som andre brukere kan benytte for å finne deg og invitere deg til rom. Legg til eller fjern e-postadresser i Kontoer.";
+"settings_discovery_three_pid_details_title_email" = "Administrer e-post";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_three_pids_management_information_part1" = "Administrer hvilken e-postadresse eller telefonnummer andre brukere kan benytte for å finne deg og invitere deg til rom. Legg til eller fjern e-postadresser eller telefonnummer fra denne listen. ";
+"settings_discovery_terms_not_signed" = "Godta brukervilkårene for identitetsserveren (%@) for å tillate at du kan bli funnet med e-post eller telefonnummer.";
