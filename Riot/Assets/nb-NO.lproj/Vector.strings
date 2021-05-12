@@ -923,3 +923,7 @@
 "security_settings_secure_backup_description" = "Sikre deg mot å miste tilgang til krypterte meldinger og data ved å lagre sikkerhetskopi av krypteringsnøkler på din server.";
 "security_settings_secure_backup" = "SIKKERHETSKOPI";
 "security_settings_crosssigning_info_trusted" = "Kryss-signering er aktivert. Du kan stole på andre brukere og dine andre økter basert på kryss-signering, men du kan ikke kryss-signere fra denne økten fordi den ikke har kryss-signert private nøkler. Fullfør sikkerheten for denne økten.";
+"security_settings_export_keys_manually" = "Eksporter nøkler manuelt";
+"security_settings_crosssigning_reset" = "Tilbakestill kryss-signering";
+"security_settings_crosssigning_bootstrap" = "Bootstrap kryss-signering";
+"security_settings_crosssigning_info_ok" = "Kryss-signering er aktivert.";
