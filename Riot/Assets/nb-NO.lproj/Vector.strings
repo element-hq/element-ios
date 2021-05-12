@@ -1002,7 +1002,7 @@
 "room_details_save_changes_prompt" = "Vil du lagre endringer?";
 
 // Read Receipts
-"read_receipts_list" = "Les kvitteringsliste";
+"read_receipts_list" = "Lesekvitteringsliste";
 
 // Group rooms
 "group_rooms_filter_rooms" = "Filtrer samfunnsrom";
