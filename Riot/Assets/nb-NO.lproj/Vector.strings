@@ -927,3 +927,4 @@
 "security_settings_crosssigning_reset" = "Tilbakestill kryss-signering";
 "security_settings_crosssigning_bootstrap" = "Bootstrap kryss-signering";
 "security_settings_crosssigning_info_ok" = "Kryss-signering er aktivert.";
+"security_settings_blacklist_unverified_devices" = "Aldri send meldinger til ikke klarerte økter";
