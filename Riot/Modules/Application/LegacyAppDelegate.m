@@ -228,6 +228,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) MajorUpdateManager *majorUpdateManager;
 
+@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -389,6 +391,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
+    if (![application isProtectedDataAvailable])
+    {
+        NSLog(@"[AppDelegate] didFinishLaunchingWithOptions: Terminating the app because protected data not available");
+        exit(0);
+    }
+    
     _configuration = [AppConfiguration new];
     
     // Log app information
@@ -461,6 +469,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     self.pushNotificationStore = [PushNotificationStore new];
     self.pushNotificationService = [[PushNotificationService alloc] initWithPushNotificationStore:self.pushNotificationStore];
     self.pushNotificationService.delegate = self;
+        
+    self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
     
     // Add matrix observers, and initialize matrix sessions if the app is not launched in background.
     [self initMatrixSessions];
@@ -1212,7 +1222,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Continue the registration with the passed nextLink
                 NSLog(@"[AppDelegate] handleUniversalLink. Complete registration with nextLink");
                 NSURL *nextLink = [NSURL URLWithString:queryParams[@"nextLink"]];
-                [self handleUniversalLinkFragment:nextLink.fragment];
+                [self handleUniversalLinkFragment:nextLink.fragment fromURL:nextLink];
             }
             else
             {
@@ -1238,10 +1248,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return YES;
     }
     
-    return [self handleUniversalLinkFragment:webURL.fragment];
+    return [self handleUniversalLinkFragment:webURL.fragment fromURL:webURL];
 }
 
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment
+{
+    return [self handleUniversalLinkFragment:fragment fromURL:nil];
+}
+
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
 {
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
@@ -1325,19 +1340,32 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             if (account)
             {
                 NSString *roomId = roomIdOrAlias;
+                MXRoom *room;
                 
                 // Translate the alias into the room id
                 if ([roomIdOrAlias hasPrefix:@"#"])
                 {
-                    MXRoom *room = [account.mxSession roomWithAlias:roomIdOrAlias];
+                    room = [account.mxSession roomWithAlias:roomIdOrAlias];
                     if (room)
                     {
                         roomId = room.roomId;
                     }
                 }
+                else
+                {
+                    room = [account.mxSession roomWithRoomId:roomId];
+                }
                 
-                // Open the room page
-                [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+                if (room.summary.roomType == MXRoomTypeSpace)
+                {
+                    // Indicates that spaces are not supported
+                    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
+                }
+                else
+                {
+                    // Open the room page
+                    [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+                }
                 
                 continueUserActivity = YES;
             }
@@ -1387,7 +1415,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     {
                                         universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
-                                        [self handleUniversalLinkFragment:newUniversalLinkFragment];
+                                        [self handleUniversalLinkFragment:newUniversalLinkFragment fromURL:universalLinkURL];
                                     }
                                     else
                                     {
@@ -1425,7 +1453,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
                                     {
                                         NSLog(@"[AppDelegate] Universal link: The session is running. Retry the link");
-                                        [self handleUniversalLinkFragment:fragment];
+                                        [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
                                     }
                                 }
                             }];
@@ -1486,7 +1514,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment];
+                    [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
                 }
             }];
         }
@@ -1551,7 +1579,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     NSLog(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment];
+                    [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
                 }
             }];
         }
@@ -1573,6 +1601,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     return continueUserActivity;
+}
+
+- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
+{
+    // iOS Patch: fix vector.im urls before using it
+    NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:universalLinkURL];
+    
+    return [self handleUniversalLinkFragment:fixedURL.fragment fromURL:universalLinkURL];
 }
 
 - (void)resetPendingUniversalLink
@@ -2740,6 +2776,25 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay completion:(void (^)(void))completion
 {
+    if (roomId && mxSession)
+    {
+        MXRoom *room = [mxSession roomWithRoomId:roomId];
+        
+        // Indicates that spaces are not supported
+        if (room.summary.roomType == MXRoomTypeSpace)
+        {
+            
+            [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
+            
+            if (completion)
+            {
+                completion();
+            }
+            
+            return;
+        }
+    }
+    
     void (^selectRoom)(void) = ^() {
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
         [self.masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{

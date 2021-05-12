@@ -21,9 +21,9 @@ final class CloseButton: UIButton, Themable {
     // MARK: - Constants
     
     private enum CircleBackgroundConstants {
-        static let height: CGFloat = 30.0
+        static let height: CGFloat = 26.0
         static let highlightedAlha: CGFloat = 0.5
-        static let normalAlha: CGFloat = 1.0
+        static let normalAlha: CGFloat = 0.8
     }
     
     // MARK: - Properties
@@ -109,6 +109,6 @@ final class CloseButton: UIButton, Themable {
     func update(theme: Theme) {
         self.theme = theme
         
-        self.circleBackgroundView.backgroundColor = theme.headerTextSecondaryColor
+        self.circleBackgroundView.backgroundColor = theme.secondaryCircleButtonBackgroundColor
     }
 }

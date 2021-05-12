@@ -62,3 +62,9 @@
 "VIDEO_CONF_NAMED_FROM_USER" = "Videogruppsamtal från %@: '%@'";
 "KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ vill verifiera";
 "MESSAGE_PROTECTED" = "Nytt meddelande";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Gruppsamtal)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Gruppsamtal startat";

@@ -54,7 +54,9 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
         let flowTemplateCoordinator = FlowTemplateCoordinator(session: self.session)
         flowTemplateCoordinator.delegate = self
-        viewController.present(flowTemplateCoordinator.toPresentable(), animated: animated, completion: nil)
+        let presentable = flowTemplateCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        viewController.present(presentable, animated: animated, completion: nil)
         flowTemplateCoordinator.start()
         
         self.coordinator = flowTemplateCoordinator
@@ -79,4 +81,14 @@ extension FlowTemplateCoordinatorBridgePresenter: FlowTemplateCoordinatorDelegat
     func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType) {
         self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
     }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension FlowTemplateCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+    
+    func flowTemplateCoordinatorDidComplete(_ presentationController: UIPresentationController) {
+        self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
+    }
+    
 }

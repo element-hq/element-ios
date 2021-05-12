@@ -4562,6 +4562,34 @@ internal enum VectorL10n {
   internal static var socialLoginListTitleSignUp: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
   }
+  /// BETA
+  internal static var spaceBetaAnnounceBadge: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_badge") 
+  }
+  /// Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.
+  internal static var spaceBetaAnnounceInformation: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_information") 
+  }
+  /// The new version of communities
+  internal static var spaceBetaAnnounceSubtitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_subtitle") 
+  }
+  /// Spaces are coming soon
+  internal static var spaceBetaAnnounceTitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_title") 
+  }
+  /// Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.
+  internal static var spaceFeatureUnavailableInformation: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_information") 
+  }
+  /// Spaces aren't on iOS yet, but you can use them now on Web and Desktop
+  internal static var spaceFeatureUnavailableSubtitle: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_subtitle") 
+  }
+  /// Spaces aren’t here yet
+  internal static var spaceFeatureUnavailableTitle: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
+  }
   /// Start
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 
