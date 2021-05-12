@@ -928,3 +928,15 @@
 "security_settings_crosssigning_bootstrap" = "Bootstrap kryss-signering";
 "security_settings_crosssigning_info_ok" = "Kryss-signering er aktivert.";
 "security_settings_blacklist_unverified_devices" = "Aldri send meldinger til ikke klarerte økter";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Denne appen støtter ikke autentiseringsmekanismen på din hjemmeserver.";
+"manage_session_trusted" = "Klarert av deg";
+"manage_session_info" = "ØKTINFORMASJON";
+
+// Manage session
+"manage_session_title" = "Administrer økt";
+"security_settings_user_password_description" = "Bekreft din identitet ved å oppgi ditt passord";
+"security_settings_coming_soon" = "Beklager. Denne handlingen er ikke tilgjengelig på Element iOS enda. Vennligst benytt en annen Matrix klient for å sette det opp. Element iOS vil bruke den.";
+"security_settings_complete_security_alert_message" = "Du bør fullføre sikkerheten på din nåværende økt først.";
+"security_settings_blacklist_unverified_devices_description" = "Verifiser alle øktene til en bruker for å markere dem som klarert og send meldinger til dem.";
