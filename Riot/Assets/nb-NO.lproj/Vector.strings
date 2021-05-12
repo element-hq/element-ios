@@ -916,3 +916,9 @@
 "settings_discovery_terms_not_signed" = "Godta brukervilkårene for identitetsserveren (%@) for å tillate at du kan bli funnet med e-post eller telefonnummer.";
 "settings_show_NSFW_public_rooms" = "Vis NSFW offentlige rom";
 "settings_identity_server_no_is_description" = "Du benytter for øyeblikket ikke en identitetsserver. Legg til en ovenfor for å finne og bli funnet av eksisterende kontakter.";
+"security_settings_crosssigning_info_not_bootstrapped" = "Kryss-signering er ikke satt opp enda.";
+"security_settings_crosssigning" = "KRYSS-SIGNERING";
+"security_settings_backup" = "SIKKERHETSKOPI-MELDINGER";
+"security_settings_secure_backup_synchronise" = "Synkroniser";
+"security_settings_secure_backup_description" = "Sikre deg mot å miste tilgang til krypterte meldinger og data ved å lagre sikkerhetskopi av krypteringsnøkler på din server.";
+"security_settings_secure_backup" = "SIKKERHETSKOPI";
