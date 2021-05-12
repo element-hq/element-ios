@@ -914,3 +914,5 @@
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_discovery_three_pids_management_information_part1" = "Administrer hvilken e-postadresse eller telefonnummer andre brukere kan benytte for å finne deg og invitere deg til rom. Legg til eller fjern e-postadresser eller telefonnummer fra denne listen. ";
 "settings_discovery_terms_not_signed" = "Godta brukervilkårene for identitetsserveren (%@) for å tillate at du kan bli funnet med e-post eller telefonnummer.";
+"settings_show_NSFW_public_rooms" = "Vis NSFW offentlige rom";
+"settings_identity_server_no_is_description" = "Du benytter for øyeblikket ikke en identitetsserver. Legg til en ovenfor for å finne og bli funnet av eksisterende kontakter.";
