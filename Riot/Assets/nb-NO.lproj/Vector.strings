@@ -1013,7 +1013,7 @@
 "group_participants_invite_prompt_msg" = "Er du sikker på at du vil invitere %@ til denne gruppen?";
 "group_participants_remove_prompt_msg" = "Er du sikker på at du vil fjerne %@ fra denne gruppen?";
 "receipt_status_read" = "Lest: ";
-"directory_server_all_native_rooms" = "Alle innebygde Matrix-rom";
+"directory_server_all_native_rooms" = "Alle Matrix-rom";
 "directory_server_all_rooms" = "Alle rom på %@ server";
 "homeserver_connection_lost" = "Kunne ikke koble til hjemmeserveren.";
 "event_formatter_jitsi_widget_removed_by_you" = "Du fjernet VoIP-konferanse";
@@ -1036,3 +1036,4 @@
 // Events formatter
 "event_formatter_member_updates" = "%tu endringer i medlemskap";
 "directory_server_type_homeserver" = "Skriv inn en hjemmeserver å liste offentlige rom fra";
+"event_formatter_call_has_ended" = "Avsluttet samtale %@";
