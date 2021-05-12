@@ -1015,7 +1015,7 @@
 "receipt_status_read" = "Lest: ";
 "directory_server_all_native_rooms" = "Alle Matrix-rom";
 "directory_server_all_rooms" = "Alle rom på %@ server";
-"homeserver_connection_lost" = "Kunne ikke koble til hjemmeserveren.";
+"homeserver_connection_lost" = "Ingen kontakt med hjemmeserveren.";
 "event_formatter_jitsi_widget_removed_by_you" = "Du fjernet VoIP-konferanse";
 "event_formatter_jitsi_widget_added_by_you" = "Du la til VoIP-konferanse";
 "event_formatter_widget_removed_by_you" = "Du fjernet widget: %@";
