@@ -884,3 +884,4 @@
 
 "settings_enable_callkit" = "Integrerte anrop";
 "settings_calls_stun_server_fallback_button" = "Tillat bruk av alternativ server ved anrop";
+"settings_calls_stun_server_fallback_description" = "Tillat bruk av alternativ server ved anrop %@ når din hovedserver ikke tilbyr dette (din IP adresse vil bli delt under samtalen).";
