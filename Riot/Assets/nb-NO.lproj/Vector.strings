@@ -991,3 +991,12 @@
 "room_details_fail_to_update_history_visibility" = "Oppdatering av historikksynlighet feilet";
 "room_details_fail_to_update_room_directory_visibility" = "Oppdatering av synligheten til romliste feilet";
 "room_details_fail_to_enable_encryption" = "Aktivering av kryptering av dette rommet feilet";
+"group_participants_leave_prompt_msg" = "Er du sikker på at du vil forlate denne gruppen?";
+"group_invitation_format" = "%@ har invitert deg til å bli med i dette samfunnet";
+"group_home_multi_rooms_format" = "%tu rom";
+"group_home_multi_members_format" = "%tu medlemmer";
+"room_details_copy_room_url" = "Kopier rommets URL";
+"room_details_copy_room_address" = "Kopier romadresse";
+"room_details_unset_main_address" = "Fjern som primæradresse";
+"room_details_set_main_address" = "Sett som primæradresse";
+"room_details_save_changes_prompt" = "Vil du lagre endringer?";
