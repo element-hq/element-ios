@@ -889,3 +889,7 @@
 "settings_labs_create_conference_with_jitsi" = "Opprett konferansesamtale med jitsi";
 "settings_contacts_phonebook_country" = "Telefonkatalog land";
 "settings_contacts_discover_matrix_users" = "Bruk e-poster og telefonnummer for å finne brukere";
+"settings_enable_rageshake" = "Bruk ristefunksjon for å rapportere feil";
+"settings_send_crash_report" = "Send anonyme krasj- & brukerdata";
+"settings_olm_version" = "Olm-versjon %@";
+"settings_labs_message_reaction" = "Reager på melding med emoji";
