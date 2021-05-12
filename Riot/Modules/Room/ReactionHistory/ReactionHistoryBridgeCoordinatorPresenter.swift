@@ -60,6 +60,7 @@ final class ReactionHistoryCoordinatorBridgePresenter: NSObject {
         
         let coordinatorPresentable = reactionHistoryCoordinator.toPresentable()
         coordinatorPresentable.modalPresentationStyle = .formSheet
+        coordinatorPresentable.presentationController?.delegate = self
         viewController.present(coordinatorPresentable, animated: animated, completion: nil)
         
         reactionHistoryCoordinator.start()
@@ -86,4 +87,14 @@ extension ReactionHistoryCoordinatorBridgePresenter: ReactionHistoryCoordinatorD
     func reactionHistoryCoordinatorDidClose(_ coordinator: ReactionHistoryCoordinatorType) {
         self.delegate?.reactionHistoryCoordinatorBridgePresenterDelegateDidClose(self)
     }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension ReactionHistoryCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.delegate?.reactionHistoryCoordinatorBridgePresenterDelegateDidClose(self)
+    }
+    
 }

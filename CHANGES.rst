@@ -6,9 +6,11 @@ Changes to be released in next version
 
 🙌 Improvements
  * NSE: Add logs for notification delay.
+ * Templates: Update bridge presenter template to auto-implement iOS 13 pull-down gesture.
 
 🐛 Bugfix
  * NSE: Fixes to avoid PushKit crashes (#4269).
+ * Handle pull-down gesture for reactions history view (#4293).
 
 ⚠️ API Changes
  * 
