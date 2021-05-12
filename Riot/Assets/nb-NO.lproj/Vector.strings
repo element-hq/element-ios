@@ -835,7 +835,7 @@
 "settings_key_backup_info_valid" = "Denne økten sikkerhetskopierer dine nøkler.";
 "settings_key_backup_info_version" = "Sikkerhetskopi av nøkler versjon : %@";
 "settings_key_backup_info_signout_warning" = "Før du logger ut, koble denne sesjonen til sikkerhetskopi av nøkler for å unngå tap av nøkler som kanskje bare er lagret på denne enheten.";
-"settings_key_backup_info_none" = "Nøklene dine for denne sesjonen blir ikke sikkerhetskopiert";
+"settings_key_backup_info_none" = "Nøklene dine for denne sesjonen blir ikke sikkerhetskopiert.";
 "settings_third_party_notices" = "Tredjepartsmerknader";
 "settings_labs_e2e_encryption_prompt_message" = "Vennligst logg inn igjen for å ferdigstille oppsett av kryptering.";
 "settings_key_backup" = "Sikkerhetskopi av meldingsnøkler";
@@ -854,7 +854,7 @@
 "service_terms_modal_message_identity_server" = "Godta brukervilkårene til identitetsserveren (%@) for å finne kontakter.";
 "event_formatter_call_back" = "Ring tilbake";
 "room_details_advanced_e2e_encryption_disabled" = "Kryptering er ikke aktivert i dette rommet.";
-"room_details_flair_section" = "Vis brukervalg for samfunn";
+"room_details_flair_section" = "Vis assosiasjon for samfunn";
 "room_details_photo_for_dm" = "Bilde";
 "room_details_photo" = "Rombilde";
 "settings_flair" = "Vis brukervalg hvor tillat";
@@ -957,7 +957,7 @@
 "identity_server_settings_alert_change" = "Koble fra identitetsserver %1$@ og koble til %2$@ i stedet for?";
 "identity_server_settings_alert_no_terms" = "Identitetsserveren du har valgt har ikke brukervilkår. Fortsett kun hvis du stoler på eier av serveren.";
 "identity_server_settings_alert_no_terms_title" = "Identitetsserver har ingen brukervilkår";
-"room_details_addresses_disable_main_address_prompt_msg" = "Du vil ikke ha en primæradresse spesifisert. Standard primæradresse for dette rommet vil bli tilfeldig valgt.";
+"room_details_addresses_disable_main_address_prompt_msg" = "Du vil ikke ha en primæradresse spesifisert. Standard primæradresse for dette rommet vil bli tilfeldig valgt";
 "room_details_addresses_disable_main_address_prompt_title" = "Primæradresse-varsel";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ er ikke et gyldig format for et alias";
 "room_details_new_address_placeholder" = "Legg til ny adresse (f.eks. #foo%@)";
