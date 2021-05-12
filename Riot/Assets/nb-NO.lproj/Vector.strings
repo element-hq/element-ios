@@ -1037,3 +1037,17 @@
 "event_formatter_member_updates" = "%tu endringer i medlemskap";
 "directory_server_type_homeserver" = "Skriv inn en hjemmeserver å liste offentlige rom fra";
 "event_formatter_call_has_ended" = "Avsluttet samtale %@";
+"call_no_stun_server_error_message_1" = "Vennligst be administrator for din hjemmeserver %@ om å konfigurere en TURN server for pålitelige anrop.";
+"call_no_stun_server_error_title" = "Anrop feilet på grunn av feilkonfigurert server";
+"call_jitsi_error" = "Forsøk på å bli med i konferansesamtale feilet.";
+"call_already_displayed" = "Du er allerede i en samtale.";
+"call_incoming_video_prompt" = "Innkommende videoanrop fra %@";
+
+// Call
+"call_incoming_voice_prompt" = "Innkommende taleanrop fra %@";
+"large_badge_value_k_format" = "%.1fK";
+"photo_library_access_not_granted" = "%@ har ikke adgang til bildebiblioteket, vennligst endre personverninnstillingene";
+"camera_unavailable" = "Kameraet er utilgjengelig på din enhet";
+"camera_access_not_granted" = "%@ har ikke tillatelse til å bruke kameraet, vennligst endre personverninnstillinger";
+"bug_report_prompt" = "Applikasjonen krasjet sist gang. Vil du sende inn en krasj-rapport?";
+"public_room_section_title" = "Offentlige rom (på %@):";
