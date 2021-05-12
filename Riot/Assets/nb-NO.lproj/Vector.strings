@@ -990,3 +990,4 @@
 "room_details_fail_to_add_room_aliases" = "Å legge til nye romadresser feilet";
 "room_details_fail_to_update_history_visibility" = "Oppdatering av historikksynlighet feilet";
 "room_details_fail_to_update_room_directory_visibility" = "Oppdatering av synligheten til romliste feilet";
+"room_details_fail_to_enable_encryption" = "Aktivering av kryptering av dette rommet feilet";
