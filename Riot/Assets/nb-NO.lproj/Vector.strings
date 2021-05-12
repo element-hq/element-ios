@@ -1012,3 +1012,4 @@
 "group_participants_filter_members" = "Filtrer medlemmer i samfunnet";
 "group_participants_invite_prompt_msg" = "Er du sikker på at du vil invitere %@ til denne gruppen?";
 "group_participants_remove_prompt_msg" = "Er du sikker på at du vil fjerne %@ fra denne gruppen?";
+"receipt_status_read" = "Les: ";
