@@ -1051,3 +1051,4 @@
 "camera_access_not_granted" = "%@ har ikke tillatelse til å bruke kameraet, vennligst endre personverninnstillinger";
 "bug_report_prompt" = "Applikasjonen krasjet sist gang. Vil du sende inn en krasj-rapport?";
 "public_room_section_title" = "Offentlige rom (på %@):";
+"call_no_stun_server_error_message_2" = "Alternativt kan prøve å bruke den offentlige serveren ved %@, men denne vil være mindre pålitelig, og vil dele din IP-addresse med serveren. Du kan også administrere dette i innstillinger.";
