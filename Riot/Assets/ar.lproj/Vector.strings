@@ -144,3 +144,24 @@
 "auth_softlogout_clear_data_message_1" = "تَحذير: بَيَانَاتُكَ الشَّخصِيَّة (بِمَا فِي ذَلِكَ مَفاتيحُ التَّعمِيَة) لَا تَزَالُ مُخَزَنَةً عَلَى هَذَا الجِّهاز.";
 "auth_softlogout_clear_data" = "مَحوُ البَيَانَاتِ الشَّخصِيَّة";
 "auth_softlogout_recover_encryption_keys" = "سَجَّل الدُّخُول لِاِستِعادَة مَفاتيح التَّعمِيَة المُخَزَّنَة حَصرِيًّا عَلَى هَذَا الجِّهاز. أنتَ بِحاجةٍ لَهُم لِقِراءةِ جَمِيعِ رَسائِلكَ الآمِنَة عَلَى أيِّ جِهاز.";
+"room_creation_make_private" = "جَعلَها خَاصَّة";
+"room_creation_keep_private" = "إبقَائَها خَاصَّة";
+"room_creation_make_public_prompt_msg" = "هَل أنتَ مُتَأكِّدٌ أنَّكَ تُريدُ جَعلَ هَذِهِ المُحادَثَةَ عَامَّة؟ يُمكِنُ لَأيِّ شَخصٍ قِراءَةَ رَسائِلكِ وَالاِنضِمامِ إلَى المُحادَثَة.";
+"room_creation_make_public_prompt_title" = "جَعلَ هَذِهِ المُحادَثَةَ عَامَّة؟";
+"room_creation_make_public" = "جَعلَها عَامَّة";
+"room_creation_public_room" = "هَذِهِ المُحادَثَةُ عَامَّة";
+"room_creation_private_room" = "هَذِهِ المُحادَثَةُ خَاصَّة";
+"room_creation_appearance_picture" = "صُوَرةُ المُحادَثَة (اِختياري)";
+
+// Errors
+"error_user_already_logged_in" = "يَبدُو أنَّكَ تُحاوِلُ الاِتِصَالَ بِخَادِمٍ رَئيسٍ آخَر. هَل تُرِيدُ تَسجيلَ الخُرُوج؟";
+"social_login_button_title_sign_up" = "الاِشتِراك بِوَاسِطَةِ %@";
+"social_login_button_title_sign_in" = "تَسجيلُ الدُّخُولِ بِوَسِطَةِ %@";
+"social_login_button_title_continue" = "الاِستِمرار مَع %@";
+"social_login_list_title_sign_up" = "أَو";
+"social_login_list_title_sign_in" = "أَو";
+
+// Social login
+
+"social_login_list_title_continue" = "الاِستِمرار مَع";
+"auth_softlogout_clear_data_sign_out_msg" = "هَل أنتَ مُتأكِّدٌ أنَّكَ تُرِيدُ مَحوَ كَافَّةِ البَيَانَاتِ المُخَزَنَةِ حَاليًّا عَلَى هَذَا الجِهَاز؟ سَجِّل الدُّخُولَ مَرَةً أُخرَى لِلوصُولِ إلَى بَيَانَاتِ حِسَابِك وَرَسَائِلك.";
