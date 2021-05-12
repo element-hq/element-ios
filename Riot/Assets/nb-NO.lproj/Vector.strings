@@ -991,7 +991,7 @@
 "room_details_fail_to_update_history_visibility" = "Oppdatering av historikksynlighet feilet";
 "room_details_fail_to_update_room_directory_visibility" = "Oppdatering av synligheten til romliste feilet";
 "room_details_fail_to_enable_encryption" = "Aktivering av kryptering for dette rommet feilet";
-"group_participants_leave_prompt_msg" = "Er du sikker på at du vil forlate denne gruppen?";
+"group_participants_leave_prompt_msg" = "Er du sikker på at du vil forlate gruppen?";
 "group_invitation_format" = "%@ har invitert deg til å bli med i dette samfunnet";
 "group_home_multi_rooms_format" = "%tu rom";
 "group_home_multi_members_format" = "%tu medlemmer";
