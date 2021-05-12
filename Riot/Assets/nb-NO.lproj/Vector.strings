@@ -1070,7 +1070,7 @@
 "bug_report_logs_description" = "For å diagnostisere problemer vil logger fra denne klienten bli sendt sammen med denne feilrapporten. Hvis du foretrekker å kun sende teksten ovenfor, vennligst ta bort haken:";
 
 // Widget
-"widget_no_integrations_server_configured" = "Ingen integrasjoner er serverkonfigurert";
+"widget_no_integrations_server_configured" = "Ingen integrasjonsserver er konfigurert";
 "bug_report_background_mode" = "Fortsett i bakgrunnen";
 "bug_report_progress_uploading" = "Laster opp rapport";
 "bug_report_progress_zipping" = "Samler inn logger";
