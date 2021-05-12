@@ -883,3 +883,4 @@
 //"settings_call_invitations" = "Call invitations";
 
 "settings_enable_callkit" = "Integrerte anrop";
+"settings_calls_stun_server_fallback_button" = "Tillat bruk av alternativ server ved anrop";
