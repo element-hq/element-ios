@@ -1074,7 +1074,7 @@
 "bug_report_background_mode" = "Fortsett i bakgrunnen";
 "bug_report_progress_uploading" = "Laster opp rapport";
 "bug_report_progress_zipping" = "Samler inn logger";
-"widget_integrations_server_failed_to_connect" = "Kobling til integrasjonsserver feilet";
+"widget_integrations_server_failed_to_connect" = "Tilkobling til integrasjonsserver feilet";
 "widget_integration_positive_power_level" = "Rollenivå må være positiv int.";
 "widget_integration_room_not_recognised" = "Dette rommet gjenkjennes ikke.";
 "widget_integration_failed_to_send_request" = "Sending av forespørsel feilet.";
