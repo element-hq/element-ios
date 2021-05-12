@@ -885,7 +885,7 @@
 "settings_enable_callkit" = "Integrerte anrop";
 "settings_calls_stun_server_fallback_button" = "Tillat bruk av STUN støtteserver ved anrop";
 "settings_calls_stun_server_fallback_description" = "Tillat bruk av %@ STUN støtteserver ved anrop, når din hovedserver ikke tilbyr dette (din IP adresse vil bli delt under samtalen).";
-"settings_integrations_allow_description" = "Bruk integrasjonsadministrator (%@) for å administrere bots, bridges, widgets and sticker packs.\n\nIntegrasjonsadministrator mottar konfigurasjonsdata, og kan endre widgets, sende rominvitasjoner og sette rollenivå på dine vegne.";
+"settings_integrations_allow_description" = "Bruk integrasjonsadministrator (%@) for å administrere bots, bridges, widgets og sticker packs.\n\nIntegrasjonsadministrator mottar konfigurasjonsdata, og kan endre widgets, sende rominvitasjoner og sette tilgangsnivåer på dine vegne.";
 "settings_labs_create_conference_with_jitsi" = "Opprett konferansesamtale med jitsi";
 "settings_contacts_phonebook_country" = "Telefonkatalog land";
 "settings_contacts_discover_matrix_users" = "Bruk e-poster og telefonnummer for å finne brukere";
