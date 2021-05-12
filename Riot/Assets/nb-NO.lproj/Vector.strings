@@ -975,3 +975,6 @@
 "room_details_flair_invalid_id_prompt_msg" = "%@ er ikke en gyldig identifikator for et samfunn";
 "room_details_flair_invalid_id_prompt_title" = "Ugyldig format";
 "room_details_new_flair_placeholder" = "Legg til ID for samfunn (e.g. +foo%@)";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Krypter kun til verifiserte økter";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "Kryptering er ikke aktivert her.";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "Kryptering er aktivert her";
