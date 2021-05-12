@@ -1000,3 +1000,15 @@
 "room_details_unset_main_address" = "Fjern som primæradresse";
 "room_details_set_main_address" = "Sett som primæradresse";
 "room_details_save_changes_prompt" = "Vil du lagre endringer?";
+
+// Read Receipts
+"read_receipts_list" = "Les kvitteringsliste";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Filtrer samfunnsrom";
+"group_participants_invite_malformed_id" = "ID-format-feil. Bør være en Matrix ID som '@localpart:domain'";
+"group_participants_invite_malformed_id_title" = "Inviteringsfeil";
+"group_participants_invite_another_user" = "Søk/inviter med bruker ID eller navn";
+"group_participants_filter_members" = "Filtrer medlemmer i samfunnet";
+"group_participants_invite_prompt_msg" = "Er du sikker på at du vil invitere %@ til denne gruppen?";
+"group_participants_remove_prompt_msg" = "Er du sikker på at du vil fjerne %@ fra denne gruppen?";
