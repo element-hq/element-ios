@@ -1051,12 +1051,12 @@
 "camera_access_not_granted" = "%@ har ikke tillatelse til å bruke kameraet, vennligst endre personverninnstillinger";
 "bug_report_prompt" = "Applikasjonen krasjet sist gang. Vil du sende inn en krasj-rapport?";
 "public_room_section_title" = "Offentlige rom (på %@):";
-"call_no_stun_server_error_message_2" = "Alternativt kan du prøve å bruke den offentlige serveren ved %@, men denne vil være mindre pålitelig, og vil dele din IP-adresse med serveren. Du kan også administrere dette i innstillinger.";
+"call_no_stun_server_error_message_2" = "Alternativt kan du prøve å bruke den offentlige serveren ved %@, men denne vil være mindre pålitelig, og vil dele din IP-adresse med serveren. Du kan også administrere dette i innstillinger";
 "e2e_key_backup_wrong_version" = "Det har blitt oppdaget en ny sikkerhetskopi av meldingsnøkler .\n\nHvis dette ikke ble intitiert av deg bør du endre passordfrase i innstillinger.";
 
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Ny sikkerhetskopi av nøkler";
-"e2e_need_log_in_again" = "Du må logge inn igjen for å generere ende-til-ende-krypteringsnøkler for denne økten og sende den offentlige nøkkelen til din hjemmeserver.\nDette gjøres bare en gang; beklager ulempen";
+"e2e_need_log_in_again" = "Du må logge inn igjen for å generere ende-til-ende-krypteringsnøkler for denne økten og sende den offentlige nøkkelen til din hjemmeserver.\nDette gjøres bare en gang; beklager ulempen.";
 
 // Crypto
 "e2e_enabling_on_app_update" = "Element støtter nå ende-til-ende kryptering, men du må logge inn igjen for å aktivere det.\n\nDu kan gjøre det nå eller senere fra applikasjonsinnstillingene.";
@@ -1075,14 +1075,14 @@
 "bug_report_progress_uploading" = "Laster opp rapport";
 "bug_report_progress_zipping" = "Samler inn logger";
 "widget_integrations_server_failed_to_connect" = "Tilkobling til integrasjonsserver feilet";
-"widget_integration_positive_power_level" = "Rollenivå må være positiv int.";
+"widget_integration_positive_power_level" = "Tilgangsnivå må være et positiv heltall.";
 "widget_integration_room_not_recognised" = "Dette rommet gjenkjennes ikke.";
 "widget_integration_failed_to_send_request" = "Sending av forespørsel feilet.";
 
 // Widget Integration Manager
 "widget_integration_need_to_be_able_to_invite" = "Du må være i stand til å invitere brukere for å gjøre det.";
 "widget_menu_revoke_permission" = "Opphev min tilgang";
-"widget_sticker_picker_no_stickerpacks_alert" = "Du har for øyeblikket ingen \"stickerpacks\" aktivert";
+"widget_sticker_picker_no_stickerpacks_alert" = "Du har for øyeblikket ingen \"stickerpacks\" aktivert.";
 "widget_creation_failure" = "Opprettelse av widget har feilet";
 "widget_no_power_to_manage" = "Du trenger tillatelse til å administrere widgeter i dette rommet";
 "e2e_room_key_request_message_new_device" = "Du la til en ny sesjon '%@', som etterspør krypteringsnøkler.";
@@ -1100,3 +1100,11 @@
 "widget_integration_room_not_visible" = "Rom %@ er ikke synlig.";
 "widget_integration_missing_user_id" = "Manglende bruker_id i forespørsel.";
 "widget_integration_no_permission_in_room" = "Du har ikke tillatelse til å gjøre det i dette rommet.";
+"event_formatter_call_decline" = "Avslå";
+"event_formatter_call_connection_failed" = "Tilkobling feilet";
+"event_formatter_call_ringing" = "Ringer…";
+"event_formatter_call_connecting" = "Kobler til…";
+"settings_labs_enable_ringing_for_group_calls" = "Ringelyd for konferansesamtaler";
+"room_no_privileges_to_create_group_call" = "Du har ikke tilstrekkelige tillatelser til å starte en samtale.";
+"room_join_group_call" = "Bli med i samtale";
+"callbar_only_single_active_group" = "Trykk for å bli med i konferansesamtalen (%@)";
