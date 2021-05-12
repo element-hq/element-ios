@@ -940,3 +940,5 @@
 "security_settings_coming_soon" = "Beklager. Denne handlingen er ikke tilgjengelig på Element iOS enda. Vennligst benytt en annen Matrix klient for å sette det opp. Element iOS vil bruke den.";
 "security_settings_complete_security_alert_message" = "Du bør fullføre sikkerheten på din nåværende økt først.";
 "security_settings_blacklist_unverified_devices_description" = "Verifiser alle øktene til en bruker for å markere dem som klarert og send meldinger til dem.";
+"identity_server_settings_disconnect_info" = "Kobler du fra din identitetsserver vil det bety at andre brukere ikke kan finne deg og kunne invitere andre med e-post og telefonnummer.";
+"identity_server_settings_no_is_description" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en ovenfor, for å finne og bli funnet av eksisterende kontakter.";
