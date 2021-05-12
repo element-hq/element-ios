@@ -92,4 +92,8 @@ extension MemoryStore: KeyValueStore {
         map.removeValue(forKey: key)
     }
     
+    func removeAll() throws {
+        map.removeAll()
+    }
+    
 }

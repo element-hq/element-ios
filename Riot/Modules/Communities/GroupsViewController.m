@@ -79,6 +79,7 @@
     //Register here the customized cell view class used to render groups
     [self.groupsTableView registerNib:GroupTableViewCell.nib forCellReuseIdentifier:GroupTableViewCell.defaultReuseIdentifier];
     [self.groupsTableView registerNib:GroupInviteTableViewCell.nib forCellReuseIdentifier:GroupInviteTableViewCell.defaultReuseIdentifier];
+    [self.groupsTableView registerNib:BetaAnnounceCell.nib forCellReuseIdentifier:BetaAnnounceCell.reuseIdentifier];
     
     // Hide line separators of empty cells
     self.groupsTableView.tableFooterView = [[UIView alloc] init];

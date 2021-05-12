@@ -786,11 +786,8 @@
     if ([Tools isUniversalLink:URL])
     {
         shouldInteractWithURL = NO;
-        
-        // iOS Patch: fix vector.im urls before using it
-        NSURL *fixedURL = [Tools fixURLWithSeveralHashKeys:URL];
-        
-        [[AppDelegate theDelegate] handleUniversalLinkFragment:fixedURL.fragment];
+                        
+        [[AppDelegate theDelegate] handleUniversalLinkURL:URL];
     }
     // Open a detail screen about the clicked user
     else if ([MXTools isMatrixUserIdentifier:absoluteURLString])

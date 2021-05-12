@@ -38,4 +38,5 @@ protocol KeyValueStore {
     
     //  remove
     func removeObject(forKey key: KeyValueStoreKey) throws
+    func removeAll() throws
 }
