@@ -873,3 +873,4 @@
 "settings_discovery_no_identity_server" = "Du bruker ikke for øyeblikket en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
 "settings_unignore_user" = "Vi alle meldinger fra %@?";
 "device_verification_cancelled" = "Den andre parten avbrøt verifiseringen";
+"settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken blir delt med Apple.";
