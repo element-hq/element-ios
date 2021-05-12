@@ -1015,3 +1015,24 @@
 "receipt_status_read" = "Lest: ";
 "directory_server_all_native_rooms" = "Alle innebygde Matrix-rom";
 "directory_server_all_rooms" = "Alle rom på %@ server";
+"homeserver_connection_lost" = "Kunne ikke koble til hjemmeserveren.";
+"event_formatter_jitsi_widget_removed_by_you" = "Du fjernet VoIP-konferanse";
+"event_formatter_jitsi_widget_added_by_you" = "Du la til VoIP-konferanse";
+"event_formatter_widget_removed_by_you" = "Du fjernet widget: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Du la til widget: %@";
+"event_formatter_call_you_declined" = "Du avviste denne samtalen";
+"event_formatter_call_you_currently_in" = "Du er for øyeblikket i denne samtalen";
+"event_formatter_call_video" = "Videoanrop";
+"event_formatter_call_voice" = "Taleanrop";
+"event_formatter_rerequest_keys_part2" = " fra dine andre sesjoner.";
+"event_formatter_rerequest_keys_part1_link" = "Be om krypteringsnøkler på nytt";
+"event_formatter_jitsi_widget_removed" = "VoIP konferanse fjernet av %@";
+"event_formatter_jitsi_widget_added" = "VoIP konferanse lagt til av %@";
+"event_formatter_widget_removed" = "%@ widget fjernet av %@";
+"event_formatter_widget_added" = "%@ widget lagt til av %@";
+
+// Events formatter
+"event_formatter_member_updates" = "%tu endringer i medlemskap";
+"directory_server_type_homeserver" = "Skriv inn en hjemmeserver å liste offentlige rom fra";
