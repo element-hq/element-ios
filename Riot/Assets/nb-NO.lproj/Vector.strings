@@ -784,7 +784,7 @@
 "callbar_active_and_single_paused" = "1 aktiv samtale (%@) · 1 pauset samtale";
 
 // Call Bar
-"callbar_only_single_active" = "Aktiv samtale (%@)";
+"callbar_only_single_active" = "Trykk for å returnere til samtalen (%@)";
 "secrets_setup_recovery_key_information" = "Oppbevar din sikkerhetsnøkkel trygt. Den kan brukes til å å tilgang til dine sikrede meldinger og data.";
 
 // MARK: - Secrets set up
