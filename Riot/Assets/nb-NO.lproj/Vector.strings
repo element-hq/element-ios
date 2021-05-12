@@ -885,3 +885,4 @@
 "settings_enable_callkit" = "Integrerte anrop";
 "settings_calls_stun_server_fallback_button" = "Tillat bruk av STUN støtteserver ved anrop";
 "settings_calls_stun_server_fallback_description" = "Tillat bruk av alternativ server ved anrop %@ når din hovedserver ikke tilbyr dette (din IP adresse vil bli delt under samtalen).";
+"settings_integrations_allow_description" = "Bruk integrasjonsadministrator (%@) for å administrere bots, bridges, widgets and sticker packs.\n\nIntegrasjonsadministrator mottar konfigurasjonsdata, og kan endre widgets, sende rominvitasjoner og sette rollenivå på dine vegne.";
