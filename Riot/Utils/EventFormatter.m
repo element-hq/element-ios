@@ -365,6 +365,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
         self.editionMentionTextFont = [UIFont systemFontOfSize:12];
+        
+        // Handle space room type, enables to show space in room list
+        defaultRoomSummaryUpdater.showRoomTypeStrings = @[
+            MXRoomTypeStringSpace
+        ];
     }
     return self;
 }

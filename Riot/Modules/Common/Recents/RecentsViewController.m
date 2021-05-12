@@ -70,6 +70,8 @@
 
 @property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
 
+@property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
+
 @end
 
 @implementation RecentsViewController
@@ -870,6 +872,16 @@
     return recentsDataSource;
 }
 
+- (void)showSpaceInviteNotAvailable
+{
+    if (!self.spaceFeatureUnavailablePresenter)
+    {
+        self.spaceFeatureUnavailablePresenter = [SpaceFeatureUnavailablePresenter new];
+    }
+    
+    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self animated:YES];
+}
+
 #pragma mark - MXKDataSourceDelegate
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
@@ -905,6 +917,13 @@
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+                
+        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+        {
+            // Indicates that spaces are not supported
+            [self showSpaceInviteNotAvailable];
+            return;
+        }
         
         // Display the room preview
         [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
@@ -913,6 +932,13 @@
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
+                
+        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+        {
+            // Indicates that spaces are not supported
+            [self showSpaceInviteNotAvailable];
+            return;
+        }
         
         // Accept invitation
         [self joinRoom:invitedRoom completion:nil];
@@ -921,7 +947,7 @@
     {
         // Retrieve the invited room
         MXRoom *invitedRoom = userInfo[kInviteRecentTableViewCellRoomKey];
-                        
+        
         [self cancelEditionMode:isRefreshPending];
         
         // Decline the invitation
@@ -1372,8 +1398,13 @@
         // Retrieve the invited room
         MXRoom* invitedRoom = cellData.roomSummary.room;
         
+        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+        {
+            // Indicates that spaces are not supported
+            [self showSpaceInviteNotAvailable];
+        }
         // Check if can show preview for the invited room 
-        if ([self canShowRoomPreviewFor:invitedRoom])
+        else if ([self canShowRoomPreviewFor:invitedRoom])
         {
             // Display the room preview
             [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
