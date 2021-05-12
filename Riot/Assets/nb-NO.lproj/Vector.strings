@@ -854,7 +854,7 @@
 "service_terms_modal_message_identity_server" = "Godta brukervilkårene til identitetsserveren (%@) for å finne kontakter.";
 "event_formatter_call_back" = "Ring tilbake";
 "room_details_advanced_e2e_encryption_disabled" = "Kryptering er ikke aktivert i dette rommet.";
-"room_details_flair_section" = "Vi brukervalg for samfunn";
+"room_details_flair_section" = "Vis brukervalg for samfunn";
 "room_details_photo_for_dm" = "Bilde";
 "room_details_photo" = "Rombilde";
 "settings_flair" = "Vis brukervalg hvor tillat";
@@ -957,3 +957,15 @@
 "identity_server_settings_alert_change" = "Koble fra identitetsserver %1$@ og koble til %2$@ i stedet for?";
 "identity_server_settings_alert_no_terms" = "Identitetsserveren du har valgt har ikke brukervilkår. Fortsett kun hvis du stoler på eier av serveren.";
 "identity_server_settings_alert_no_terms_title" = "Identitetsserver har ingen brukervilkår";
+"room_details_addresses_disable_main_address_prompt_msg" = "Du vil ikke ha en primæradresse spesifisert. Standard primæradresse for dette rommet vil bli tilfeldig valgt.";
+"room_details_addresses_disable_main_address_prompt_title" = "Primæradresse-varsel";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ er ikke et gyldig format for et alias";
+"room_details_new_address_placeholder" = "Legg til ny adresse (f.eks. #foo%@)";
+"room_details_no_local_addresses_for_dm" = "Dette har ingen lokale adresser";
+"room_details_no_local_addresses" = "Dette rommet har ingen lokale adresser";
+"room_details_history_section_prompt_title" = "Personvernadvarsel";
+"room_details_access_section_directory_toggle_for_dm" = "Legg til i romliste";
+"room_details_access_section_directory_toggle" = "Legg dette rommet til i romliste";
+"room_details_access_section_no_address_warning" = "For å linke til et rom må det ha en adresse";
+"room_details_access_section_anyone_for_dm" = "Alle som har denne linken, inkludert gjester";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "Alle som har denne linken, unntatt gjester";
