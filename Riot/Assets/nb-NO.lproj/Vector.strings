@@ -866,7 +866,7 @@
 "secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen din";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen";
 "room_details_access_section_for_dm" = "Hvem har til gang til dette?";
-"identity_server_settings_place_holder" = "Skriv inn en identitetsserver";
+"identity_server_settings_place_holder" = "Legg inn en identitetsserver";
 "identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne og bli funnet av dine eksisterende kontakter.";
 "security_settings_crosssigning_info_exists" = "Din konto har en kryss-signeringsidentitet, men den er ikke klarert av denne økten. Fullfør klarering for denne økten.";
 "security_settings_crypto_sessions_loading" = "Laster økter…";
