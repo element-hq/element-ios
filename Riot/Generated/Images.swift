@@ -158,6 +158,8 @@ internal enum Asset {
     internal static let secretsResetWarning = ImageAsset(name: "secrets_reset_warning")
     internal static let removeIconPink = ImageAsset(name: "remove_icon_pink")
     internal static let settingsIcon = ImageAsset(name: "settings_icon")
+    internal static let featureUnavaibleArtwork = ImageAsset(name: "feature_unavaible_artwork")
+    internal static let featureUnavaibleArtworkDark = ImageAsset(name: "feature_unavaible_artwork_dark")
     internal static let tabFavourites = ImageAsset(name: "tab_favourites")
     internal static let tabGroups = ImageAsset(name: "tab_groups")
     internal static let tabHome = ImageAsset(name: "tab_home")

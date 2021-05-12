@@ -115,7 +115,7 @@
 "room_participants_security_information_room_not_encrypted" = "See jututuba ei ole läbivalt krüptitud.";
 "room_participants_security_information_room_encrypted" = "Sõnumid siin jututoas kasutavad läbivat krüptimist.\n\nSinu sõnumid on turvatud ning ainult sinul ja saaja(te)l on unikaalsed võtmed selliste sõnumite lugemiseks.";
 // Chat
-"room_jump_to_first_unread" = "Mine esimese lugemata sõnumi juurde";
+"room_jump_to_first_unread" = "Mine lugemata sõnumite juurde";
 // Room Details
 "room_details_title" = "Jututoa üksikasjad";
 "room_details_advanced_enable_e2e_encryption" = "Võta krüptimine kasutusele (hoiatus: seda ei saa hiljem enam välja lülitada!)";
@@ -1269,8 +1269,8 @@
 "call_actions_unhold" = "Jätka";
 "event_formatter_call_back" = "Helista tagasi";
 "event_formatter_call_you_declined" = "Sina keeldusid sellest kõnest";
-"event_formatter_call_you_currently_in" = "Sul on parasjagu see kõne pooleli";
-"event_formatter_call_has_ended" = "See kõne on lõppenud";
+"event_formatter_call_you_currently_in" = "Kõne on käsil";
+"event_formatter_call_has_ended" = "%@ kõne on lõppenud";
 "event_formatter_call_video" = "Videokõne";
 "event_formatter_call_voice" = "Häälkõne";
 "room_open_dialpad" = "Numbriklahvistik";
@@ -1286,10 +1286,29 @@
 "callbar_active_and_single_paused" = "Käsil on üks kõne (%@) · üks kõne on ootel";
 
 // Call Bar
-"callbar_only_single_active" = "Kõne on käsil (%@)";
+"callbar_only_single_active" = "Kõne juurde tagasipöördumiseks puuduta (%@)";
 "room_details_integrations" = "Lõiminguid";
 "room_details_search" = "Otsi jututoast";
 "room_multiple_typing_notification" = "%@ ja muud kasutajad";
 "room_accessibility_video_call" = "Videokõne";
 "room_message_replying_to" = "Vastan sõnumile %@";
 "room_message_editing" = "Muudan sõnumit";
+"room_no_privileges_to_create_group_call" = "Kõne alustamiseks peaksid sa olema haldaja või moderaatori õigustes.";
+"event_formatter_group_call_incoming" = "%@ kõnes %@";
+"event_formatter_group_call_leave" = "Lahku";
+"event_formatter_group_call_join" = "Liitu";
+"event_formatter_group_call" = "Rühmakõne";
+"event_formatter_call_end_call" = "Lõpeta kõne";
+"event_formatter_call_retry" = "Proovi uuesti";
+"event_formatter_call_answer" = "Vasta";
+"event_formatter_call_decline" = "Keeldu";
+"event_formatter_call_connection_failed" = "Ühendus ebaõnnestus";
+"event_formatter_call_you_missed" = "Sa ei märganud seda kõnet";
+"event_formatter_call_ringing" = "Helistan…";
+"event_formatter_call_connecting" = "Kõne on ühendamisel…";
+"settings_labs_enable_ringing_for_group_calls" = "Rühmakõnede helin";
+"room_join_group_call" = "Liitu";
+
+// Chat
+"room_slide_to_end_group_call" = "Viipa kõne lõpetamiseks kõigi jaoks";
+"callbar_only_single_active_group" = "Rühmakõnega liitumiseks puuduta (%@)";
