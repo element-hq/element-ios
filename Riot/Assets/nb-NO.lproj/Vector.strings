@@ -983,3 +983,10 @@
 "room_details_fail_to_update_room_name" = "Oppdatering av romnavn feilet";
 "room_details_fail_to_update_avatar" = "Oppdatering av rombilde feilet";
 "room_details_fail_to_update_room_join_rule" = "Oppdatering av bli-med-regel feilet";
+"room_details_fail_to_update_room_direct" = "Oppdatering av direkte flagg for dette rommet feilet";
+"room_details_fail_to_update_room_communities" = "Oppdatering av beslektede samfunn feilet";
+"room_details_fail_to_update_room_canonical_alias" = "Oppdatering av primæradresse feilet";
+"room_details_fail_to_remove_room_aliases" = "Fjerningen av romadresser feilet";
+"room_details_fail_to_add_room_aliases" = "Å legge til nye romadresser feilet";
+"room_details_fail_to_update_history_visibility" = "Oppdatering av historikksynlighet feilet";
+"room_details_fail_to_update_room_directory_visibility" = "Oppdatering av synligheten til romliste feilet";
