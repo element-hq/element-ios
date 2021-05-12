@@ -1312,3 +1312,13 @@
 // Chat
 "room_slide_to_end_group_call" = "Viipa kõne lõpetamiseks kõigi jaoks";
 "callbar_only_single_active_group" = "Rühmakõnega liitumiseks puuduta (%@)";
+"space_beta_announce_information" = "Kogukonnakeskused on uus viis inimeste ja jututubade sidumiseks. Neid veel ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses.";
+"space_beta_announce_subtitle" = "Uus versioon senistest kogukondadest";
+"space_beta_announce_title" = "Kogukonnakeskused saavad varsti olema ka siin";
+"space_beta_announce_badge" = "BEETA";
+"space_feature_unavailable_information" = "Kogukonnakeskused on uus viis inimeste ja jututubade sidumiseks.\n\nNad saavad varsti olema kasutusel ka siin keskkonnas. Kui praegu liitud mõne kogukonnakeskusega mõnes muus keskkonnas, siis pääsed ligi kõikidele seotud jututubadele ka siin.";
+"space_feature_unavailable_subtitle" = "Kogukonnakeskuseid ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Kogukonnakeskuseid ei saa veel siin rakenduses kasutada";
