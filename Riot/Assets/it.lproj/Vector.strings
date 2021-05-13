@@ -1346,3 +1346,13 @@
 // Chat
 "room_slide_to_end_group_call" = "Scorri per terminare la chiamata per tutti";
 "callbar_only_single_active_group" = "Tocca per unirti alla chiamata di gruppo (%@)";
+"space_beta_announce_information" = "Gli spazi sono un nuovo modo di raggruppare stanze e persone. Non sono ancora arrivati su iOS, ma puoi usarli già da ora su Web e Desktop.";
+"space_beta_announce_subtitle" = "La nuova versione delle comunità";
+"space_beta_announce_title" = "Gli spazi arriveranno presto";
+"space_beta_announce_badge" = "BETA";
+"space_feature_unavailable_information" = "Gli spazi sono un nuovo modo di raggruppare stanze e persone.\n\nArriveranno presto. Per ora, se entri in uno in un'altra piattaforma, potrai accedere a qualsiasi stanza in cui entri qui.";
+"space_feature_unavailable_subtitle" = "Gli spazi non sono ancora arrivati su iOS, ma puoi usarli già da ora su Web e Desktop";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Gli spazi non sono ancora pronti";
