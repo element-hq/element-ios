@@ -1117,3 +1117,4 @@
 "service_terms_modal_message" = "For å fortsette må du godta brukervilkårene for denne tjenesten (%@).";
 "gdpr_consent_not_given_alert_review_now_action" = "Se gjennom nå";
 "service_terms_modal_description_for_identity_server_1" = "Finn andre med telefonnummer og e-post";
+"service_terms_modal_description_for_identity_server_2" = "Bli funnet med telefonnummer eller e-post";
