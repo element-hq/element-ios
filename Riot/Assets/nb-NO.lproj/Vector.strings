@@ -839,7 +839,7 @@
 "settings_third_party_notices" = "Tredjepartsmerknader";
 "settings_labs_e2e_encryption_prompt_message" = "Vennligst logg inn igjen for å ferdigstille oppsett av kryptering.";
 "settings_key_backup" = "Sikkerhetskopi av meldingsnøkler";
-"settings_ui_theme_picker_message" = "\"Auto\" bruker din enhets innstillinger for å bytte bakgrunnsfarge";
+"settings_ui_theme_picker_message" = "\"Auto\" bruker dine enhetsinnstillinger for å bytte bakgrunnsfarge";
 
 // MARK: - Favourites
 
@@ -1036,7 +1036,7 @@
 // Events formatter
 "event_formatter_member_updates" = "%tu endringer i medlemskap";
 "directory_server_type_homeserver" = "Skriv inn en hjemmeserver å liste offentlige rom fra";
-"event_formatter_call_has_ended" = "Avsluttet samtale %@";
+"event_formatter_call_has_ended" = "Denne samtalen er avsluttet";
 "call_no_stun_server_error_message_1" = "Vennligst be administratoren for din hjemmeserver %@ om å konfigurere en TURN server for pålitelige anrop.";
 "call_no_stun_server_error_title" = "Anrop feilet på grunn av feilkonfigurert server";
 "call_jitsi_error" = "Forsøk på å bli med i konferansesamtale feilet.";
@@ -1085,3 +1085,18 @@
 "widget_sticker_picker_no_stickerpacks_alert" = "Du har for øyeblikket ingen \"stickerpacks\" aktivert";
 "widget_creation_failure" = "Opprettelse av widget har feilet";
 "widget_no_power_to_manage" = "Du trenger tillatelse til å administrere widgeter i dette rommet";
+"e2e_room_key_request_message_new_device" = "Du la til en ny sesjon '%@', som etterspør krypteringsnøkler.";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Forespørsel om krypteringsnøkkel";
+"share_extension_failed_to_encrypt" = "Sending feilet. Sjekk innstillinger for kryptering i dette rommet i hovedappen";
+
+// Share extension
+"share_extension_auth_prompt" = "Logg inn i hovedappen for å dele innhold";
+"room_widget_permission_information_title" = "Bruk av den kan føre til deling av data med %@:\n";
+"room_widget_permission_webview_information_title" = "Bruk kan aktivere informasjonskapsler og dele data med %@:\n";
+"room_widget_permission_creator_info_title" = "Denne widgeten ble lagt til av:";
+"widget_integration_manager_disabled" = "Du må aktivere integrasjonsadministrator i innstillinger";
+"widget_integration_room_not_visible" = "Rom %@ er ikke synlig.";
+"widget_integration_missing_user_id" = "Manglende bruker_id i forespørsel.";
+"widget_integration_no_permission_in_room" = "Du har ikke tillatelse til å gjøre det i dette rommet.";
