@@ -1137,3 +1137,20 @@
 "secure_key_backup_setup_intro_use_security_key_info" = "Generer en sikkerhetsnøkkel og lagre den på et trygt sted som i en passordadministrator eller en safe.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Bruk en sikkerhetsnøkkel";
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Bruk en passordfrase for sikkerhet";
+"key_backup_setup_intro_manual_export_action" = "Eksporter nøkler manuelt";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Koble denne enheten til sikkerhetskopi av meldingsnøkler";
+"key_backup_setup_skip_alert_message" = "Du kan miste sikre meldinger hvis du logger av eller mister enheten.";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Sikkerhetskopi av meldingsnøkler";
+"secure_backup_setup_banner_subtitle" = "Beskytt deg mot å miste tilgang til krypterte meldinger og data";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Sikkert lagringsområde";
+"secure_key_backup_setup_cancel_alert_message" = "Hvis du avbryter nå, kan du miste krypterte meldinger og data hvis du mister tilgangen til påloggingene dine.\n\nDu kan også konfigurere sikkert lagringsområde og administrere nøklene dine i innstillinger.";
+"secure_key_backup_setup_existing_backup_error_info" = "Lås den opp for å gjenbruke den på sikkert lagringsområde, eller slett den for å opprette en ny sikkerhetskopi av meldinger på sikkert lagringsområde.";
+"secure_key_backup_setup_existing_backup_error_title" = "Det finnes allerede en sikkerhetskopi for meldinger";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Skriv inn en hemmelig frase bare du vet, og generer en nøkkel for sikkerhetskopiering.";
