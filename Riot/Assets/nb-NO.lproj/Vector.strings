@@ -1121,7 +1121,7 @@
 "deactivate_account_informations_part1" = "Dette vil gjøre din konto ubrukelig på permanent basis. Du vil ikke kunne logge inn og ingen vil kunne registrere samme bruker-ID på nytt. Dette vil medføre at din konto vil forlate alle rom den deltar i, og vil fjerne dine kontodetaljer fra din identitetsserver. ";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Huk av for å akseptere %@";
 "service_terms_modal_description_for_integration_manager" = "Bruk Bots, bridges, widgets og sticker packs";
-"deactivate_account_informations_part5" = "Hvis du ønsker at vi skal glemme din melding, kryss av i boksen under.\n\nMeldingssynlighet i Matrix er sammenlignbar med e-post. Når vi glemmer dine meldinger betyr det at meldinger du har sendt ikke vil bli delt med nye eller uregistrerte brukere, men registrerte brukere som allerede har tilgang til disse meldingene vil fremdeles har tilgang på sin kopi.";
+"deactivate_account_informations_part5" = "Hvis du ønsker at vi skal glemme dine meldinger, kryss av i boksen under.\n\nMeldingssynlighet er sammenlignbar med e-post. Når vi glemmer dine meldinger betyr det at meldinger du har sendt ikke vil bli delt med nye eller uregistrerte brukere, men registrerte brukere som allerede har tilgang til disse meldingene vil fremdeles har tilgang på sin kopi.";
 "deactivate_account_informations_part4_emphasize" = "vil som standard ikke få oss til å glemme meldinger du har sendt. ";
 "rerequest_keys_alert_message" = "Start Element på en annen enhet som kan dekryptere meldingen, slik at den kan sende nøklene til denne økten.";
 "deactivate_account_password_alert_message" = "For å fortsette, vennligst skriv inn passordet ditt";
