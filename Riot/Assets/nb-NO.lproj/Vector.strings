@@ -1108,3 +1108,4 @@
 "room_no_privileges_to_create_group_call" = "Du har ikke tilstrekkelige tillatelser til å starte en samtale.";
 "room_join_group_call" = "Bli med i samtale";
 "callbar_only_single_active_group" = "Trykk for å bli med i konferansesamtalen (%@)";
+"e2e_room_key_request_message" = "Din ikke-verifiserte økt '%@' etterspør krypteringsnøkler.";
