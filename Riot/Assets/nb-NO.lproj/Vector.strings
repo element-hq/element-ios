@@ -1127,3 +1127,10 @@
 "deactivate_account_password_alert_message" = "For å fortsette, vennligst skriv inn passordet ditt";
 "deactivate_account_forget_messages_information_part3" = ": dette vil føre til at fremtidige brukere ser en ufullstendig visning av samtaler)";
 "deactivate_account_forget_messages_information_part1" = "Vennligst glem alle meldingene jeg har sendt når kontoen min er deaktivert (";
+"secure_key_backup_setup_intro_info" = "Beskytt deg mot å miste tilgang til krypterte meldinger og data ved å sikkerhetskopiere krypteringsnøkler på serveren din.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Sikkert lagringsområde";
