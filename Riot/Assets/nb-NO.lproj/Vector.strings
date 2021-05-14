@@ -1085,7 +1085,7 @@
 "widget_sticker_picker_no_stickerpacks_alert" = "Du har for øyeblikket ingen \"stickerpacks\" aktivert.";
 "widget_creation_failure" = "Opprettelse av widget har feilet";
 "widget_no_power_to_manage" = "Du trenger tillatelse til å administrere widgeter i dette rommet";
-"e2e_room_key_request_message_new_device" = "Du la til en ny sesjon '%@', som etterspør krypteringsnøkler.";
+"e2e_room_key_request_message_new_device" = "Du la til en ny økt '%@', som etterspør krypteringsnøkler.";
 
 // Room key request dialog
 "e2e_room_key_request_title" = "Forespørsel om krypteringsnøkkel";
