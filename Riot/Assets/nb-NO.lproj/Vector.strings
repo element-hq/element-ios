@@ -1116,3 +1116,4 @@
 "e2e_room_key_request_ignore_request" = "Ignorer forespørsel";
 "service_terms_modal_message" = "For å fortsette må du godta brukervilkårene (%@).";
 "gdpr_consent_not_given_alert_review_now_action" = "Se gjennom nå";
+"service_terms_modal_description_for_identity_server_1" = "Finn andre med telefonnummer og e-post";
