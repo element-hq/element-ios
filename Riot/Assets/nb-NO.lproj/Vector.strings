@@ -1109,7 +1109,7 @@
 "room_join_group_call" = "Bli med i samtale";
 "callbar_only_single_active_group" = "Trykk for å bli med i konferansesamtalen (%@)";
 "e2e_room_key_request_message" = "Din ikke-bekreftede økt '%@' etterspør krypteringsnøkler.";
-"e2e_room_key_request_share_without_verifying" = "Del uten å verifisere";
+"e2e_room_key_request_share_without_verifying" = "Del uten å bekrefte";
 
 // GDPR
 "gdpr_consent_not_given_alert_message" = "For å fortsette å bruke %@ hjemmeserver må du se gjennom og godta brukervilkårene.";
