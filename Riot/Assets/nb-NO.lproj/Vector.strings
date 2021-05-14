@@ -1117,7 +1117,7 @@
 "service_terms_modal_message" = "For å fortsette må du godta brukervilkårene for denne tjenesten (%@).";
 "gdpr_consent_not_given_alert_review_now_action" = "Se gjennom nå";
 "service_terms_modal_description_for_identity_server_1" = "Finn andre vha. telefonnummer og e-post";
-"service_terms_modal_description_for_identity_server_2" = "Bli funnet med telefonnummer eller e-post";
+"service_terms_modal_description_for_identity_server_2" = "Bli funnet vha. telefonnummer eller e-post";
 "deactivate_account_informations_part1" = "Dette vil gjøre din konto ubrukelig på permanent basis. Du vil ikke kunne logge inn og ingen vil kunne registrere sammen bruker-ID på nytt. Dette vil medføre at din konto vil forlate alle rom den deltar i, og vil fjerne dine kontodetaljer fra din identitetsserver. ";
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Huk av for å akseptere %@";
 "service_terms_modal_description_for_integration_manager" = "Bruk Bots, bridges, widgets og sticker packs";
