@@ -1123,7 +1123,7 @@
 "service_terms_modal_description_for_integration_manager" = "Bruk Bots, bridges, widgets og sticker packs";
 "deactivate_account_informations_part5" = "Hvis du ønsker at vi skal glemme dine meldinger, kryss av i boksen under.\n\nMeldingssynlighet er sammenlignbar med e-post. Når vi glemmer dine meldinger betyr det at meldinger du har sendt ikke vil bli delt med nye eller uregistrerte brukere, men registrerte brukere som allerede har tilgang til disse meldingene vil fremdeles har tilgang på sin kopi.";
 "deactivate_account_informations_part4_emphasize" = "vil som standard ikke få oss til å glemme meldinger du har sendt. ";
-"rerequest_keys_alert_message" = "Start Element på en annen enhet som kan dekryptere meldingen, slik at den kan sende nøklene til denne økten.";
+"rerequest_keys_alert_message" = "Start appen på en annen enhet som kan dekryptere meldingen, slik at den kan sende nøklene til denne økten.";
 "deactivate_account_password_alert_message" = "For å fortsette, vennligst skriv inn passordet ditt";
 "deactivate_account_forget_messages_information_part3" = ": dette vil føre til at fremtidige brukere ser en ufullstendig visning av samtaler)";
 "deactivate_account_forget_messages_information_part1" = "Vennligst glem alle meldingene jeg har sendt når kontoen min er deaktivert (";
