@@ -1134,3 +1134,5 @@
 // Intro
 
 "secure_key_backup_setup_intro_title" = "Sikkert lagringsområde";
+"secure_key_backup_setup_intro_use_security_key_info" = "Generer en sikkerhetsnøkkel for å lagre et trygt sted som en passordadministrator eller en safe.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Bruk en sikkerhetsnøkkel";
