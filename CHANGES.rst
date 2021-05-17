@@ -1,3 +1,27 @@
+Changes to be released in next version
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
 Changes in 1.3.8 (2021-05-17)
 =================================================
 
