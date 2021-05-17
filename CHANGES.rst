@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * RecentsDataSource: Do not display secure backup banner when keys upload is in process.
 
 ⚠️ API Changes
  * 
