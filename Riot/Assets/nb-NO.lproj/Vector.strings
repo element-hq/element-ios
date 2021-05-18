@@ -1268,7 +1268,7 @@
 
 // Incoming key verification request
 
-"key_verification_incoming_request_incoming_alert_message" = "% @ ønsker å verifisere";
+"key_verification_incoming_request_incoming_alert_message" = "%@ ønsker å bekrefte";
 "key_verification_tile_conclusion_warning_title" = "Ikke klarert pålogging";
 "key_verification_tile_request_status_cancelled" = "%@ kansellert";
 "key_verification_verify_qr_code_information" = "Skann koden for å verifisere hverandre på en sikker måte.";
