@@ -1154,7 +1154,7 @@
 "secure_key_backup_setup_existing_backup_error_info" = "Lås den opp for å gjenbruke den på sikkert lagringsområde, eller slett den for å opprette en ny sikkerhetskopi av meldinger på sikkert lagringsområde.";
 "secure_key_backup_setup_existing_backup_error_title" = "Det finnes allerede en sikkerhetskopi for meldinger";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Skriv inn en hemmelig frase bare du vet, og generer en nøkkel for sikkerhetskopiering.";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Eller sikre sikkerhetskopien din med en gjenopprettingsnøkkel, og lagre den et trygt sted.";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Eller sikre sikkerhetskopien din med en gjenopprettingsnøkkel, og lagre den på et trygt sted.";
 "key_backup_setup_passphrase_info" = "Vi lagrer en kryptert kopi av nøklene dine på serveren vår. Beskytt sikkerhetskopien din med en passordfrase for å holde den sikker.\n\nFor maksimal sikkerhet bør dette være forskjellig fra kontopassordet ditt.";
 
 // Passphrase
