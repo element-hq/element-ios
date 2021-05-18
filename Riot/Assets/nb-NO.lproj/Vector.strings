@@ -1139,7 +1139,7 @@
 "secure_key_backup_setup_intro_use_security_passphrase_title" = "Bruk en passordfrase";
 "key_backup_setup_intro_manual_export_action" = "Eksporter nøkler manuelt";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Koble denne enheten til sikkerhetskopi av meldingsnøkler";
-"key_backup_setup_skip_alert_message" = "Du kan miste sikre meldinger hvis du logger av eller mister enheten.";
+"key_backup_setup_skip_alert_message" = "Du kan miste dine krypterte meldinger dersom du logger ut eller mister enheten.";
 
 
 // MARK: Key backup setup
