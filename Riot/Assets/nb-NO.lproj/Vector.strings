@@ -1287,6 +1287,6 @@
 "key_verification_verify_qr_code_scan_other_code_success_message" = "QR-koden er bekreftet.";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Koden er bekreftet!";
 "key_verification_verify_qr_code_other_scan_my_code_title" = "Gjorde den andre brukeren en vellykket skanning av QR-koden?";
-"user_verification_start_information_part1" = "Verifiser for ekstra sikkerhet ";
+"user_verification_start_information_part1" = "Bekreft for ekstra sikkerhet ";
 "key_verification_scan_confirmation_scanned_device_information" = "Viser den andre enheten det samme skjoldet?";
 "user_verification_start_information_part2" = " ved å sjekke en engangskode på begge enhetene dine.";
