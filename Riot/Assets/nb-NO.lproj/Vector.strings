@@ -1294,3 +1294,4 @@
 "user_verification_session_details_information_trusted_current_user" = "Denne økten er klarert for sikre meldinger fordi du bekreftet den:";
 "user_verification_sessions_list_information" = "Meldinger med denne brukeren i dette rommet er ende-til-ende-kryptert og kan ikke leses av tredjeparter.";
 "user_verification_start_additional_information" = "For å være sikker, gjør dette personlig eller bruk en annen måte å kommunisere på.";
+"user_verification_session_details_information_trusted_other_user_part2" = " verifiserte det:";
