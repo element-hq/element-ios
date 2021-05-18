@@ -1214,3 +1214,4 @@
 
 // Mark: Incoming
 "device_verification_incoming_title" = "Innkommende verifikasjonsforespørsel";
+"device_verification_incoming_description_1" = "Verifiser denne økten for å merke den som klarert. Verifisering av økter fra partnere gir deg ekstra trygghet når du bruker ende-til-ende-krypterte meldinger.";
