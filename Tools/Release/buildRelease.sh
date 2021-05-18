@@ -27,13 +27,6 @@ if [ -e $BUILD_DIR ]; then
     exit 1
 fi
 
-
-# Fastlane update
-gem install bundler
-bundle install
-bundle update
-
-
 # Checkout the source to build
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
@@ -41,7 +34,6 @@ REPO_URL=$(git ls-remote --get-url origin)
 REPO_NAME=$(basename -s .git $REPO_URL)
 git clone $REPO_URL --depth=1 --branch $TAG
 cd $REPO_NAME
-
 
 # Fastlane update
 gem install bundler
