@@ -1187,3 +1187,8 @@
 "key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke gjenopprettingspassordet ditt? Du kan ";
 "key_backup_recover_from_passphrase_recover_action" = "Lås opp historikk";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Skriv inn passordfrase";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Bruk gjenopprettingsnøkkel for å låse opp historikken for sikre meldinger";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
