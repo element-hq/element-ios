@@ -1301,3 +1301,7 @@
 "user_verification_session_details_verify_action_current_user_manually" = "Bekreft manuelt med tekst";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Hvis du ikke logget på denne økten, kan det hende at kontoen din er kompromittert.";
 "user_verification_session_details_verify_action_other_user" = "Verifiser manuelt";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Har du glemt eller mistet alle gjenopprettingsalternativene? ";
