@@ -1190,7 +1190,7 @@
 
 // Recover from recovery key
 
-"key_backup_recover_from_recovery_key_info" = "Bruk gjenopprettingsnøkkel for å låse opp historikken for sikre meldinger";
+"key_backup_recover_from_recovery_key_info" = "Bruk gjenopprettingsnøkkel for å låse opp historikken for sikrede meldinger";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Begynn å bruke Sikkert lagringsområde";
 "sign_out_non_existing_key_backup_alert_title" = "Du mister tilgangen til de krypterte meldingene dine hvis du logger ut nå";
