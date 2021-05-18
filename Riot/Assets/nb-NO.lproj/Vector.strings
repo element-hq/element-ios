@@ -846,7 +846,7 @@
 "favourites_empty_view_title" = "Favorittrom og personer";
 "create_room_placeholder_address" = "#testrom: matrix.org";
 "device_verification_emoji_santa" = "Julenisse";
-"device_verification_security_advice_emoji" = "Sammenlign de unike emojiene, og sjekk at de vises i samme rekkefølge.";
+"device_verification_security_advice_emoji" = "Sammenlign de unike emojiene og sjekk at de vises i samme rekkefølge.";
 
 // MARK: Sign out warning
 
@@ -1205,3 +1205,6 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Du vil miste tilgangen til de krypterte meldingene dine med mindre du sikkerhetskopierer nøklene dine før du logger ut.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Du vil miste de krypterte meldingene dine";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Jeg vil ikke ha de krypterte meldingene mine";
+"key_verification_new_session_title" = "Bekreft den nye økten";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Jeg vil vente";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Jeg vil ikke ha de krypterte meldingene mine";
