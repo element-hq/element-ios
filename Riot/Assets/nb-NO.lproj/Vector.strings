@@ -1264,7 +1264,7 @@
 "device_verification_emoji_train" = "Tog";
 "device_verification_emoji_book" = "Bok";
 "key_verification_bootstrap_not_setup_message" = "Du må starte oppsett av kryssignering først.";
-"key_verification_tile_request_status_data_loading" = "Data lastes inn…";
+"key_verification_tile_request_status_data_loading" = "Data lastes…";
 
 // Incoming key verification request
 
