@@ -1216,7 +1216,7 @@
 "device_verification_incoming_title" = "Innkommende bekreftelsesforespørsel";
 "device_verification_incoming_description_1" = "Bekreft denne økten for å merke den som klarert. Bekreftelse av økter fra partnere gir deg ekstra trygghet når du bruker ende-til-ende-krypterte meldinger.";
 "device_verification_incoming_description_2" = "Bekreftelse av denne økten vil markere den som klarert, og også merke økten din som bekreftet for partneren.";
-"device_verification_start_use_legacy_action" = "Bruk Legacy verifikasjon";
+"device_verification_start_use_legacy_action" = "Bruk tidligere metode for bekreftelse";
 "device_verification_start_use_legacy" = "Dukker ingenting opp? Ikke alle klienter støtter interaktiv bekreftelse ennå. Bruk eldre bekreftelse.";
 "device_verification_start_wait_partner" = "Venter på at partneren skal godta …";
 
