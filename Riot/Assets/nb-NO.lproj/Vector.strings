@@ -1164,7 +1164,7 @@
 
 // MARK: Key backup recover
 
-"key_backup_recover_title" = "Sikre meldingene";
+"key_backup_recover_title" = "Krypterte meldinger";
 
 // Success from recovery key
 "key_backup_setup_success_from_recovery_key_info" = "Nøklene dine blir sikkerhetskopiert.\n\nKopier denne gjenopprettingsnøkkelen og lagre den på et trygt sted.";
