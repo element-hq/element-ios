@@ -872,7 +872,7 @@
 "security_settings_crypto_sessions_loading" = "Laster økter…";
 "settings_discovery_no_identity_server" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
 "settings_unignore_user" = "Vis alle meldinger fra %@?";
-"device_verification_cancelled" = "Den andre parten kansellerte bekreftelsen.";
+"device_verification_cancelled" = "Den andre parten avbrøt verifiseringen.";
 "settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken blir delt med Apple.";
 //"settings_enable_all_notif" = "Enable all notifications";
 //"settings_messages_my_display_name" = "Msg containing my display name";
