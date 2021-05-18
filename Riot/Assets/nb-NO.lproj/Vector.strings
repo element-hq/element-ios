@@ -1272,5 +1272,5 @@
 "key_verification_tile_conclusion_warning_title" = "Ikke klarert pålogging";
 "key_verification_tile_request_status_cancelled" = "%@ kansellert";
 "key_verification_verify_qr_code_information" = "Skann koden for å bekrefte hverandre på en sikker måte.";
-"key_verification_verify_qr_code_information_other_device" = "Skann koden nedenfor for å verifisere:";
+"key_verification_verify_qr_code_information_other_device" = "Skann koden nedenfor for å bekrefte:";
 "key_verification_verify_qr_code_emoji_information" = "Verifiser ved å sammenligne unike emoji.";
