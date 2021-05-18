@@ -1254,3 +1254,12 @@
 "key_verification_manually_verify_device_title" = "Bekreft manuelt med tekst";
 "device_verification_emoji_corn" = "Mais";
 "device_verification_emoji_spanner" = "Skrunøkkel";
+"error_not_supported_on_mobile" = "Du kan ikke gjøre dette fra % @ mobil.";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Legg til en identitetsserver i innstillingene dine for å invitere via e-post.";
+"device_verification_emoji_pin" = "Tegnestift";
+"device_verification_emoji_aeroplane" = "Fly";
+"device_verification_emoji_train" = "Tog";
+"device_verification_emoji_book" = "Bok";
