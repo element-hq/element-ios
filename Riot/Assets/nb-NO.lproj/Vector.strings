@@ -1263,3 +1263,4 @@
 "device_verification_emoji_aeroplane" = "Fly";
 "device_verification_emoji_train" = "Tog";
 "device_verification_emoji_book" = "Bok";
+"key_verification_bootstrap_not_setup_message" = "Du må starte kryssignering først.";
