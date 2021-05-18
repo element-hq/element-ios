@@ -1177,3 +1177,10 @@
 "key_backup_recover_invalid_passphrase_title" = "Feil gjenopprettingsfrase";
 "key_backup_recover_invalid_recovery_key" = "Sikkerhetskopiering kunne ikke dekrypteres med denne nøkkelen: bekreft at du skrev inn riktig gjenopprettingsnøkkel.";
 "key_backup_recover_invalid_recovery_key_title" = "Feil i gjenopprettingsnøkkel";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "Bruk gjenopprettingspassordet for å låse opp historikken for sikre meldinger";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Gjenoppretter sikkerhetskopi …";
