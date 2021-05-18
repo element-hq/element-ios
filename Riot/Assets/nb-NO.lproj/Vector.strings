@@ -1175,7 +1175,7 @@
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Avansert) Sett opp med gjenopprettingsnøkkel";
 "key_backup_recover_invalid_passphrase" = "Sikkerhetskopi kunne ikke dekrypteres med denne passordfrasen: Vennligst sjekk at du har angitt riktig passordfrase.";
 "key_backup_recover_invalid_passphrase_title" = "Feil gjenopprettingsfrase";
-"key_backup_recover_invalid_recovery_key" = "Sikkerhetskopiering kunne ikke dekrypteres med denne nøkkelen: bekreft at du skrev inn riktig gjenopprettingsnøkkel.";
+"key_backup_recover_invalid_recovery_key" = "Sikkerhetskopi kunne ikke dekrypteres med denne nøkkelen: bekreft at du skrev inn riktig gjenopprettingsnøkkel.";
 "key_backup_recover_invalid_recovery_key_title" = "Feil i gjenopprettingsnøkkel";
 
 // Recover from passphrase
