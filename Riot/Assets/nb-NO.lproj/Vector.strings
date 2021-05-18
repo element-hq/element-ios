@@ -1265,3 +1265,9 @@
 "device_verification_emoji_book" = "Bok";
 "key_verification_bootstrap_not_setup_message" = "Du må starte oppsett av kryssignering først.";
 "key_verification_tile_request_status_data_loading" = "Data lastes inn…";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "% @ ønsker å verifisere";
+"key_verification_tile_conclusion_warning_title" = "Ikke klarert pålogging";
+"key_verification_tile_request_status_cancelled" = "%@ kansellert";
