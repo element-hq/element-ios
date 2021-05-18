@@ -850,7 +850,7 @@
 
 // MARK: Sign out warning
 
-"sign_out_existing_key_backup_alert_title" = "Er du sikker på at du vil logge av?";
+"sign_out_existing_key_backup_alert_title" = "Er du sikker på at du vil logge ut?";
 "service_terms_modal_message_identity_server" = "Godta brukervilkårene til identitetsserveren (%@) for å finne kontakter.";
 "event_formatter_call_back" = "Ring tilbake";
 "room_details_advanced_e2e_encryption_disabled" = "Kryptering er ikke aktivert i dette rommet.";
@@ -1192,3 +1192,11 @@
 
 "key_backup_recover_from_recovery_key_info" = "Bruk gjenopprettingsnøkkel for å låse opp historikken for sikre meldinger";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Begynn å bruke Sikkert lagringsområde";
+"sign_out_non_existing_key_backup_alert_title" = "Du mister tilgangen til de krypterte meldingene dine hvis du logger ut nå";
+
+// Success
+
+"key_backup_recover_success_info" = "Sikkerhetskopi gjenopprettet!";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Mistet gjenopprettingsnøkkelen din? Du kan sette opp en ny i innstillingene.";
+"key_backup_recover_from_recovery_key_recover_action" = "Lås opp historikk";
