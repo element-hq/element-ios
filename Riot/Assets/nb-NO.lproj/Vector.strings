@@ -1305,7 +1305,7 @@
 // MARK: - Secrets recovery
 
 "secrets_recovery_reset_action_part_1" = "Har du glemt eller mistet alle gjenopprettingsalternativene? ";
-"secrets_recovery_with_passphrase_information_default" = "Få tilgang til den historikken for sikre meldinger og kryssigneringsidentiteten din, for å bekrefte andre økter ved å skrive inn passordfrasen.";
+"secrets_recovery_with_passphrase_information_default" = "Få tilgang til meldingshistorikken for krypterte meldinger og kryssigneringsidentiteten din som brukes for å bekrefte andre økter, ved å skrive inn passordfrasen.";
 
 // Recover with passphrase
 
