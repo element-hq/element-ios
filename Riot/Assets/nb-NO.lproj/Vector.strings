@@ -1296,3 +1296,4 @@
 "user_verification_start_additional_information" = "For å være sikker, gjør dette personlig eller bruk en annen måte å kommunisere på.";
 "user_verification_session_details_information_trusted_other_user_part2" = " bekreftet det:";
 "user_verification_session_details_information_untrusted_current_user" = "Verifiser denne økten for å markere den som klarert og gi den tilgang til krypterte meldinger:";
+"user_verification_session_details_information_untrusted_other_user" = " logget på med en ny økt:";
