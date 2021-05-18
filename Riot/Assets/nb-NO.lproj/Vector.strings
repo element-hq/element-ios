@@ -1161,3 +1161,15 @@
 
 "key_backup_setup_passphrase_title" = "Gjør sikkerhetskopien din sikker med en passordfrase";
 "key_backup_setup_intro_info" = "Meldinger i krypterte rom er sikret med ende-til-ende-kryptering. Bare du og mottakeren(e) har nøklene til å lese disse meldingene.\n\nLagre nøklene dine på et trygt sted for å unngå å miste dem.";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Sikre meldingene";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Nøklene dine blir sikkerhetskopiert.\n\nKopier denne gjenopprettingsnøkkelen og lagre den på et trygt sted.";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Lagre gjenopprettingsnøkkel";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Nøklene dine blir sikkerhetskopiert.\n\nGjenopprettingsnøkkelen din er et sikkerhetsnett - du kan bruke den til å gjenopprette tilgangen til de krypterte meldingene dine hvis du glemmer passordfrasen.\n\nLagre gjenopprettingsnøkkelen din på en trygg måte, f.eks. ved hjelp av en passordadministrator (eller i en safe).";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avansert) Sett opp med gjenopprettingsnøkkel";
