@@ -1235,3 +1235,20 @@
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Ser etter andre bekreftelsesmuligheter ...";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Hvis du ikke får tilgang til en eksisterende økt";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Bruk gjenopprettingsfrase eller nøkkel";
+"device_verification_emoji_apple" = "eple";
+"device_verification_emoji_fire" = "Brann";
+"device_verification_emoji_cloud" = "Sky";
+
+// User
+
+"key_verification_verified_user_information" = "Meldinger med denne brukeren er ende-til-ende-kryptert og kan ikke leses av tredjeparter.";
+"key_verification_verified_this_session_information" = "Du kan nå lese sikre meldinger på denne enheten, og andre brukere vil vite at de kan stole på meldingene.";
+"key_verification_verified_new_session_information" = "Du kan nå lese sikre meldinger på den nye enheten din, og andre brukere vil vite at de kan stole på meldingene.";
+"key_verification_verified_other_session_information" = "Du kan nå lese sikre meldinger på den andre økten din, og andre brukere vil vite at de kan stole på meldingene.";
+"key_verification_verified_new_session_title" = "Ny økt verifisert!";
+"key_verification_manually_verify_device_additional_information" = "Hvis de ikke stemmer overens, kan sikkerheten i kommunikasjonen din bli kompromittert.";
+"key_verification_manually_verify_device_instruction" = "Bekreft ved å sammenligne følgende med brukerinnstillingene i den andre økten:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Bekreft manuelt med tekst";
