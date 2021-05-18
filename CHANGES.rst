@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * buildRelease.sh: Make bundler operations in the cloned repository folder.
 
 ⚠️ API Changes
  * 
