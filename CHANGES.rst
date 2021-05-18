@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * RecentsDataSource: Present the secure backup banner only if key backup is disabled.
 
 ⚠️ API Changes
  * 
