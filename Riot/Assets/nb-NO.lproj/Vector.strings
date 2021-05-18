@@ -1274,3 +1274,16 @@
 "key_verification_verify_qr_code_information" = "Skann koden for å bekrefte hverandre på en sikker måte.";
 "key_verification_verify_qr_code_information_other_device" = "Skann koden nedenfor for å bekrefte:";
 "key_verification_verify_qr_code_emoji_information" = "Verifiser ved å sammenligne unike emoji.";
+"key_verification_scan_confirmation_scanned_user_information" = "Viser% @ det samme skjoldet?";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Nesten i mål!";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Venter på andre enheter …";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Nesten i mål! Venter på bekreftelse…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR-koden er bekreftet.";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Koden er bekreftet!";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Gjorde den andre brukeren en vellykket skanning av QR-koden?";
