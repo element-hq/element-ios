@@ -25,7 +25,7 @@ BUILD_NUMBER=$( date +%Y%m%d%H%M%S )
 if [ -e $BUILD_DIR ]; then
     echo "Error: Folder ${BUILD_DIR} already exists"
     exit 1
-fi 
+fi
 
 
 # Fastlane update
@@ -42,6 +42,14 @@ REPO_NAME=$(basename -s .git $REPO_URL)
 git clone $REPO_URL --depth=1 --branch $TAG
 cd $REPO_NAME
 
+
+# Fastlane update
+gem install bundler
+bundle install
+bundle update
+
+# Update fastlane plugins
+bundle exec fastlane update_plugins
 
 # Use appropriated dependencies according to the current branch
 bundle exec fastlane point_dependencies_to_same_feature
