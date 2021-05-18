@@ -1211,3 +1211,6 @@
 "device_verification_error_cannot_load_device" = "Kan ikke laste informasjon for økten.";
 "device_verification_cancelled_by_me" = "Bekreftelsen er kansellert. Årsak: %@";
 "device_verification_security_advice_number" = "Sammenlign tallene og sjekk at de vises i samme rekkefølge.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Innkommende verifikasjonsforespørsel";
