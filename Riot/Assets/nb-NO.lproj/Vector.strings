@@ -1224,3 +1224,7 @@
 "device_verification_start_title" = "Bekreft ved å sammenligne en kort tekststreng";
 "key_verification_self_verify_current_session_alert_message" = "Andre brukere stoler kanskje ikke på det.";
 "device_verification_self_verify_start_information" = "Bruk denne økten til å verifisere den nye, og gi den tilgang til krypterte meldinger.";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Gjennomgå hvor du er logget inn";
