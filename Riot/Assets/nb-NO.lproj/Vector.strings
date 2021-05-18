@@ -1297,3 +1297,4 @@
 "user_verification_session_details_information_trusted_other_user_part2" = " bekreftet det:";
 "user_verification_session_details_information_untrusted_current_user" = "Bekreft denne økten for å markere den som klarert og gi den tilgang til krypterte meldinger:";
 "user_verification_session_details_information_untrusted_other_user" = " logget på med en ny økt:";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Inntil denne brukeren verifiserer på denne økten, blir meldinger sendt til og fra den merket med advarsler. Alternativt kan du bekrefte det manuelt.";
