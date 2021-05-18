@@ -1298,3 +1298,5 @@
 "user_verification_session_details_information_untrusted_current_user" = "Bekreft denne økten for å markere den som klarert og gi den tilgang til krypterte meldinger:";
 "user_verification_session_details_information_untrusted_other_user" = " logget på med en ny økt:";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Inntil denne brukeren verifiserer på denne økten, blir meldinger sendt til og fra den merket med advarsler. Alternativt kan du bekrefte det manuelt.";
+"user_verification_session_details_verify_action_current_user_manually" = "Verifiser manuelt med tekst";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Hvis du ikke logget på denne økten, kan det hende at kontoen din er kompromittert.";
