@@ -1274,7 +1274,7 @@
 "key_verification_verify_qr_code_information" = "Skann koden for å bekrefte hverandre på en sikker måte.";
 "key_verification_verify_qr_code_information_other_device" = "Skann koden nedenfor for å bekrefte:";
 "key_verification_verify_qr_code_emoji_information" = "Bekreft ved å sammenligne unike emoji.";
-"key_verification_scan_confirmation_scanned_user_information" = "Viser% @ det samme skjoldet?";
+"key_verification_scan_confirmation_scanned_user_information" = "Viser %@ det samme skjoldet?";
 
 // Scanned
 "key_verification_scan_confirmation_scanned_title" = "Nesten i mål!";
