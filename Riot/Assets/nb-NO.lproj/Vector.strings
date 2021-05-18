@@ -1231,3 +1231,7 @@
 "device_verification_self_verify_wait_information" = "Bekreft denne økten fra en av de andre øktene dine, og gi den tilgang til krypterte meldinger.\n\nBruk siste versjon av appen på de andre enhetene dine:";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Bekreft alle øktene dine for å sikre at kontoen og meldingene dine er trygge.";
 "device_verification_self_verify_wait_additional_information" = "Dette fungerer med Element og andre kryssignerings-Matrix-klienter.";
+"key_verification_verify_sas_additional_information" = "For ytterligere sikkerhet, bruk et annen pålitelig kommunikasjonskanal eller snakk med personen.";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Ser etter andre bekreftelsesmuligheter ...";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Hvis du ikke får tilgang til en eksisterende økt";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Bruk gjenopprettingsfrase eller nøkkel";
