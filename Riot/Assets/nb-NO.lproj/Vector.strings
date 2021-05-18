@@ -1213,5 +1213,5 @@
 "device_verification_security_advice_number" = "Sammenlign tallene og sjekk at de vises i samme rekkefølge.";
 
 // Mark: Incoming
-"device_verification_incoming_title" = "Innkommende verifikasjonsforespørsel";
+"device_verification_incoming_title" = "Innkommende bekreftelsesforespørsel";
 "device_verification_incoming_description_1" = "Verifiser denne økten for å merke den som klarert. Verifisering av økter fra partnere gir deg ekstra trygghet når du bruker ende-til-ende-krypterte meldinger.";
