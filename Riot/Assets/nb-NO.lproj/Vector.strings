@@ -1180,7 +1180,7 @@
 
 // Recover from passphrase
 
-"key_backup_recover_from_passphrase_info" = "Bruk gjenopprettingspassordet for å låse opp historikken for sikre meldinger";
+"key_backup_recover_from_passphrase_info" = "Bruk gjenopprettingspassordet for å låse opp historikken for dine sikrede meldinger";
 
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Gjenoppretter sikkerhetskopi …";
