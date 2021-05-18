@@ -1173,7 +1173,7 @@
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "Nøklene dine blir sikkerhetskopiert.\n\nGjenopprettingsnøkkelen din er et sikkerhetsnett - du kan bruke den til å gjenopprette tilgangen til de krypterte meldingene dine hvis du glemmer passordfrasen.\n\nLagre gjenopprettingsnøkkelen din på en trygg måte, f.eks. ved hjelp av en passordadministrator (eller i en safe).";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Avansert) Sett opp med gjenopprettingsnøkkel";
-"key_backup_recover_invalid_passphrase" = "Sikkerhetskopiering kunne ikke dekrypteres med denne passordfrasen: Vennligst sjekk at du har angitt riktig passordfrase.";
+"key_backup_recover_invalid_passphrase" = "Sikkerhetskopi kunne ikke dekrypteres med denne passordfrasen: Vennligst sjekk at du har angitt riktig passordfrase.";
 "key_backup_recover_invalid_passphrase_title" = "Feil gjenopprettingsfrase";
 "key_backup_recover_invalid_recovery_key" = "Sikkerhetskopiering kunne ikke dekrypteres med denne nøkkelen: bekreft at du skrev inn riktig gjenopprettingsnøkkel.";
 "key_backup_recover_invalid_recovery_key_title" = "Feil i gjenopprettingsnøkkel";
