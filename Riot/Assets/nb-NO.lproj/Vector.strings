@@ -1200,7 +1200,7 @@
 "key_backup_recover_success_info" = "Sikkerhetskopi gjenopprettet!";
 "key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Mistet gjenopprettingsnøkkelen din? Du kan sette opp en ny i innstillingene.";
 "key_backup_recover_from_recovery_key_recover_action" = "Lås opp historikk";
-"sign_out_key_backup_in_progress_alert_title" = "Sikkerhetskopiering av nøkler pågår. Hvis du logger av nå, mister du tilgangen til de krypterte meldingene dine.";
+"sign_out_key_backup_in_progress_alert_title" = "Sikkerhetskopiering av nøkler pågår. Hvis du logger ut nå, mister du tilgangen til de krypterte meldingene dine.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Sikkerhetskopier";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Du vil miste tilgangen til de krypterte meldingene dine med mindre du sikkerhetskopierer nøklene dine før du logger ut.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Du vil miste de krypterte meldingene dine";
