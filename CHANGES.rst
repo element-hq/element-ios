@@ -1,4 +1,4 @@
-Changes to be released in next version
+Changes in 1.3.9 (2021-05-18)
 =================================================
 
 ✨ Features
@@ -21,6 +21,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+
 
 Changes in 1.3.8 (2021-05-17)
 =================================================
