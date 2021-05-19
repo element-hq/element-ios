@@ -1334,3 +1334,7 @@
 "cross_signing_setup_banner_subtitle" = "Verifiser de andre enhetene dine lettere";
 "secrets_reset_authentication_message" = "Skriv inn kontopassordet ditt for å bekrefte";
 "secrets_reset_reset_action" = "Tilbakestill";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot er nå Element";
