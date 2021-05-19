@@ -1320,3 +1320,14 @@
 
 "secrets_setup_recovery_passphrase_title" = "Angi en sikkerhetsfrase";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_reset_warning_message" = "Du starter på nytt uten historikk, meldinger, pålitelige enheter eller pålitelige brukere.";
+"secrets_reset_warning_title" = "Hvis du tilbakestiller alt";
+"secrets_reset_information" = "Gjør dette bare hvis du ikke har noen annen enhet du kan bekrefte denne enheten med.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Tilbakestill alt";
+"secrets_setup_recovery_passphrase_summary_information" = "Husk sikkerhetsfrasen. Den kan brukes til å låse opp krypterte meldinger og data.";
+"secrets_setup_recovery_passphrase_summary_title" = "Lagre sikkerhetsfrasen din";
+"secrets_setup_recovery_passphrase_confirm_information" = "Skriv inn sikkerhetsfrasen igjen for å bekrefte den.";
+"secrets_setup_recovery_passphrase_additional_information" = "Ikke bruk kontopassordet ditt.";
