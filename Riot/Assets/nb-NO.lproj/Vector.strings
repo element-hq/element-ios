@@ -1376,3 +1376,12 @@
 "create_room_title" = "Nytt rom";
 "searchable_directory_search_placeholder" = "Navn eller ID";
 "create_room_section_header_type" = "Romtype";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 medlem";
+"create_room_section_header_address" = "Romadresse";
+"create_room_show_in_directory" = "Vis rommet i romlisten";
+"create_room_section_footer_type" = "Folk blir bare med i et privat rom når de har fått rominvitasjon.";
+"create_room_type_public" = "Offentlig rom";
+"create_room_type_private" = "Privat rom";
