@@ -1399,3 +1399,4 @@
 "call_transfer_error_title" = "Feil";
 "call_transfer_contacts_all" = "Alle";
 "favourites_empty_view_information" = "Du kan legge til favoritter på flere måter - det raskeste er bare å trykke og holde nede. Trykk på stjernen, så vises de automatisk her og er lett tilgjengelig.";
+"invite_friends_share_text" = "Hei, snakk med meg på% @:% @";
