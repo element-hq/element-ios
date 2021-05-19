@@ -1309,7 +1309,7 @@
 "event_formatter_call_back" = "Zurückrufen";
 "event_formatter_call_you_declined" = "Du lehntest diesen Anruf ab";
 "event_formatter_call_you_currently_in" = "Du bist aktuell in diesem Anruf";
-"event_formatter_call_has_ended" = "Dieser Anruf ist beendet";
+"event_formatter_call_has_ended" = "%@ beendet";
 "event_formatter_call_video" = "Videoanruf";
 "event_formatter_call_voice" = "Sprachanruf";
 "settings_show_NSFW_public_rooms" = "Öffentliche Räume mit anstößigen Inhalte anzeigen";
