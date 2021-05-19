@@ -1389,3 +1389,9 @@
 
 // MARK: - Dial Pad
 "dialpad_title" = "Talltastaturet";
+"call_transfer_contacts_recent" = "Nylig";
+"call_transfer_dialpad" = "Talltastatur";
+"call_transfer_users" = "Brukere";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Overføre";
