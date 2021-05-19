@@ -863,8 +863,8 @@
 "room_info_list_several_members" = "% @ medlemmer";
 "pin_protection_not_allowed_pin" = "Av sikkerhetsgrunner er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
 "secrets_setup_recovery_passphrase_information" = "Skriv inn et sikkerhetsfrase bare du kjenner, brukt til å sikre hemmeligheter på serveren din.";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen din";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruke gjenopprettingsnøkkelen din";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruke gjenopprettingsnøkkelen";
 "room_details_access_section_for_dm" = "Hvem har tilgang til dette?";
 "identity_server_settings_place_holder" = "Legg inn en identitetsserver";
 "identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne og bli funnet av dine eksisterende kontakter.";
@@ -1311,3 +1311,4 @@
 
 "secrets_recovery_with_passphrase_title" = "Gjenopprettingsfrase";
 "secrets_recovery_reset_action_part_2" = "Tilbakestill alt";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke gjennopprettingsfrasen din? Du kan ";
