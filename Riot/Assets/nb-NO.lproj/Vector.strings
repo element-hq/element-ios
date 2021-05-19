@@ -1385,7 +1385,7 @@
 "create_room_section_footer_type" = "Folk blir bare med i et privat rom når de har fått rominvitasjon.";
 "create_room_type_public" = "Offentlig rom";
 "create_room_type_private" = "Privat rom";
-"room_info_list_section_other" = "Annen";
+"room_info_list_section_other" = "Andre";
 
 // MARK: - Dial Pad
 "dialpad_title" = "Talltastaturet";
