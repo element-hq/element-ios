@@ -1375,3 +1375,4 @@
 
 "create_room_title" = "Nytt rom";
 "searchable_directory_search_placeholder" = "Navn eller ID";
+"create_room_section_header_type" = "Romtype";
