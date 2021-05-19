@@ -1331,3 +1331,6 @@
 "secrets_setup_recovery_passphrase_summary_title" = "Lagre sikkerhetsfrasen din";
 "secrets_setup_recovery_passphrase_confirm_information" = "Skriv inn sikkerhetsfrasen igjen for å bekrefte den.";
 "secrets_setup_recovery_passphrase_additional_information" = "Ikke bruk kontopassordet ditt.";
+"cross_signing_setup_banner_subtitle" = "Verifiser de andre enhetene dine lettere";
+"secrets_reset_authentication_message" = "Skriv inn kontopassordet ditt for å bekrefte";
+"secrets_reset_reset_action" = "Tilbakestill";
