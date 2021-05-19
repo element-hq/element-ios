@@ -843,7 +843,7 @@
 
 // MARK: - Favourites
 
-"favourites_empty_view_title" = "Favorittrom og personer";
+"favourites_empty_view_title" = "Favorittrom og -personer";
 "create_room_placeholder_address" = "#testrom: matrix.org";
 "device_verification_emoji_santa" = "Julenisse";
 "device_verification_security_advice_emoji" = "Sammenlign de unike emojiene og sjekk at de vises i samme rekkefølge.";
@@ -1395,3 +1395,6 @@
 
 // MARK: - Call Transfer
 "call_transfer_title" = "Overføre";
+"call_transfer_error_message" = "Samtaleoverføring mislyktes";
+"call_transfer_error_title" = "Feil";
+"call_transfer_contacts_all" = "Alle";
