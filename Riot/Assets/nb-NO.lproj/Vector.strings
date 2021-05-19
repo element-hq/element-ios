@@ -1388,7 +1388,7 @@
 "room_info_list_section_other" = "Andre";
 
 // MARK: - Dial Pad
-"dialpad_title" = "Talltastaturet";
+"dialpad_title" = "Talltastatur";
 "call_transfer_contacts_recent" = "Nylig";
 "call_transfer_dialpad" = "Talltastatur";
 "call_transfer_users" = "Brukere";
