@@ -1389,7 +1389,7 @@
 
 // MARK: - Dial Pad
 "dialpad_title" = "Talltastatur";
-"call_transfer_contacts_recent" = "Nylig";
+"call_transfer_contacts_recent" = "Nylige";
 "call_transfer_dialpad" = "Talltastatur";
 "call_transfer_users" = "Brukere";
 
