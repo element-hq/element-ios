@@ -1315,3 +1315,8 @@
 "secrets_recovery_with_passphrase_recover_action" = "Bruk passordfrase";
 "secrets_recovery_with_passphrase_passphrase_placeholder" = "Skriv inn gjenopprettingsfrase";
 "secrets_recovery_with_passphrase_information_verify_device" = "Bruk gjenopprettingsfrasen for å bekrefte denne enheten.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Angi en sikkerhetsfrase";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
