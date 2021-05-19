@@ -1320,7 +1320,7 @@
 
 "secrets_setup_recovery_passphrase_title" = "Angi en sikkerhetsfrase";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
-"secrets_reset_warning_message" = "Du starter på nytt uten historikk, meldinger, pålitelige enheter eller pålitelige brukere.";
+"secrets_reset_warning_message" = "Du starter på nytt uten historikk, meldinger, bekreftede enheter eller bekreftede brukere.";
 "secrets_reset_warning_title" = "Hvis du tilbakestiller alt";
 "secrets_reset_information" = "Gjør dette bare hvis du ikke har noen annen enhet du kan bekrefte denne enheten med.";
 
