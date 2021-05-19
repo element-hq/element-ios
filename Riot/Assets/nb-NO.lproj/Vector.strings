@@ -1352,7 +1352,7 @@
 "major_update_information" = "Vi er glade for å kunngjøre at vi har byttet navn! Appen din er oppdatert, og du er logget på kontoen din.";
 "pin_protection_settings_change_pin" = "Endre PIN-kode";
 "pin_protection_settings_section_footer" = "For å tilbakestille PIN-koden din, må du logge på igjen og opprette en ny.";
-"biometrics_cant_unlocked_alert_message_x" = "For å låse opp, bruk% @ eller logg inn igjen og aktiver% @ en gang til";
+"biometrics_cant_unlocked_alert_message_x" = "For å låse opp, bruk %@ eller logg inn igjen og aktiver %@ en gang til";
 "biometrics_cant_unlocked_alert_title" = "Kan ikke låse opp appen";
 "biometrics_usage_reason" = "Autentisering er nødvendig for å få tilgang til appen din";
 "pin_protection_kick_user_alert_message" = "For mange feil, du har blitt logget ut";
