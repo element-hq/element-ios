@@ -860,7 +860,7 @@
 "settings_flair" = "Vis brukervalg hvor tillat";
 "settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
 "settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
-"room_info_list_several_members" = "% @ medlemmer";
+"room_info_list_several_members" = "%@ medlemmer";
 "pin_protection_not_allowed_pin" = "Av sikkerhetsårsaker er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
 "secrets_setup_recovery_passphrase_information" = "Skriv inn en sikkerhetsfrase bare du kjenner, brukes til å sikre hemmeligheter på serveren.";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruke gjenopprettingsnøkkelen din";
