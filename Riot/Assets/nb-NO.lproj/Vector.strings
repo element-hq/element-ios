@@ -1386,3 +1386,6 @@
 "create_room_type_public" = "Offentlig rom";
 "create_room_type_private" = "Privat rom";
 "room_info_list_section_other" = "Annen";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Talltastaturet";
