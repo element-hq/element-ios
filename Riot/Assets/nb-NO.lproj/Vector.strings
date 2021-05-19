@@ -1400,3 +1400,13 @@
 "call_transfer_contacts_all" = "Alle";
 "favourites_empty_view_information" = "Du kan legge til favoritter på flere måter - det raskeste er bare å trykke og holde nede. Trykk på stjernen, så vises de automatisk her og er lett tilgjengelige.";
 "invite_friends_share_text" = "Hei, snakk med meg på% @:% @";
+"room_intro_cell_information_room_sentence1_part1" = "Dette er begynnelsen på ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Legg til personer";
+"room_avatar_view_accessibility_hint" = "Bytt rombilde";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
