@@ -1350,3 +1350,5 @@
 
 "pin_protection_choose_pin_welcome_after_login" = "Velkommen tilbake.";
 "major_update_information" = "Vi er glade for å kunngjøre at vi har byttet navn! Appen din er oppdatert, og du er logget på kontoen din.";
+"pin_protection_settings_change_pin" = "Endre PIN-kode";
+"pin_protection_settings_section_footer" = "For å tilbakestille PIN-koden din, må du logge på igjen og opprette en ny.";
