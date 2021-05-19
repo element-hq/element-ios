@@ -1415,3 +1415,6 @@
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " for å fortelle folk hva dette rommet handler om.";
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "Legg til et tema";
 "room_intro_cell_information_dm_sentence1_part1" = "Dette er begynnelsen på dine direktemeldinger med ";
+"room_intro_cell_information_multiple_dm_sentence2" = "Bare dere er i denne samtalen, med mindre noen av dere inviterer andre til å bli med.";
+"room_intro_cell_information_dm_sentence2" = "Bare dere to er i denne samtalen, ingen andre kan bli med.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
