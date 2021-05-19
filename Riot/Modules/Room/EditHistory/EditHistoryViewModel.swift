@@ -220,12 +220,6 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     }
 
     private func process(event: MXEvent, ts: UInt64) -> EditHistoryMessage? {
-        
-        if event.isEncrypted && event.clear == nil {
-            if self.session.decryptEvent(event, inTimeline: nil) == false {
-                print("[EditHistoryViewModel] processEditEvent: Fail to decrypt event: \(event.eventId ?? "")")
-            }
-        }
 
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         guard let message = self.formatter.attributedString(from: event, with: nil, error: formatterError) else {
