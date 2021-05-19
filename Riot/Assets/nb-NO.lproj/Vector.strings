@@ -1357,3 +1357,9 @@
 "biometrics_usage_reason" = "Autentisering er nødvendig for å få tilgang til appen din";
 "pin_protection_kick_user_alert_message" = "For mange feil, du har blitt logget ut";
 "pin_protection_explanatory" = "Ved å sette opp en PIN-kode kan du beskytte data som meldinger og kontakter, slik at bare du kan få tilgang til dem ved å skrive inn PIN-koden ved oppstart av appen.";
+"searchable_directory_x_network" = "%@ nettverk";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Opprett et nytt rom";
+"biometrics_cant_unlocked_alert_message_login" = "Logg inn igjen";
