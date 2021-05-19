@@ -1412,3 +1412,5 @@
 "room_avatar_view_accessibility_label" = "avatar";
 "room_intro_cell_information_room_sentence1_part3" = ". ";
 "room_intro_cell_information_room_with_topic_sentence2" = "Tema: %@";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " for å fortelle folk hva dette rommet handler om.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Legg til et tema";
