@@ -1410,3 +1410,4 @@
 // Mark: - Room avatar view
 
 "room_avatar_view_accessibility_label" = "avatar";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
