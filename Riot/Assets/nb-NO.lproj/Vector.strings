@@ -1363,3 +1363,15 @@
 
 "searchable_directory_create_new_room" = "Opprett et nytt rom";
 "biometrics_cant_unlocked_alert_message_login" = "Logg inn igjen";
+"create_room_section_footer_encryption" = "Kryptering kan ikke deaktiveres etterpå.";
+"create_room_enable_encryption" = "Aktiver kryptering";
+"create_room_section_header_encryption" = "Romkryptering";
+"create_room_placeholder_topic" = "Tema";
+"create_room_section_header_topic" = "Romtema (valgfritt)";
+"create_room_placeholder_name" = "Navn";
+"create_room_section_header_name" = "Romnavn";
+
+// MARK: - Create Room
+
+"create_room_title" = "Nytt rom";
+"searchable_directory_search_placeholder" = "Navn eller ID";
