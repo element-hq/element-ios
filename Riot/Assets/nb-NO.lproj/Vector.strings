@@ -5,7 +5,7 @@
 "title_groups" = "Samfunn";
 "warning" = "Advarsel";
 // Actions
-"view" = "Vis";
+"view" = "Visning";
 "next" = "Neste";
 "back" = "Tilbake";
 "continue" = "Fortsett";
@@ -14,9 +14,9 @@
 "leave" = "Forlat";
 "remove" = "Fjern";
 "invite" = "Inviter";
-"retry" = "Prøv igjen";
+"retry" = "Prøv på nytt";
 "off" = "Av";
-"cancel" = "Lukk";
+"cancel" = "Avbryt";
 "save" = "Lagre";
 "join" = "Bli med";
 "decline" = "Avslå";
@@ -857,7 +857,7 @@
 "room_details_flair_section" = "Vis assosiasjon for samfunn";
 "room_details_photo_for_dm" = "Bilde";
 "room_details_photo" = "Rombilde";
-"settings_flair" = "Vis brukervalg hvor tillat";
+"settings_flair" = "Vis kobling hvor tillatt";
 "settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
 "settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
 "room_info_list_several_members" = "%@ medlemmer";
@@ -873,7 +873,7 @@
 "settings_discovery_no_identity_server" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
 "settings_unignore_user" = "Vis alle meldinger fra %@?";
 "device_verification_cancelled" = "Den andre parten avbrøt verifiseringen.";
-"settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken blir delt med Apple.";
+"settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken bli delt med Apple.";
 //"settings_enable_all_notif" = "Enable all notifications";
 //"settings_messages_my_display_name" = "Msg containing my display name";
 //"settings_messages_my_user_name" = "Msg containing my user name";
@@ -882,7 +882,7 @@
 //"settings_join_leave_rooms" = "When people join or leave rooms";
 //"settings_call_invitations" = "Call invitations";
 
-"settings_enable_callkit" = "Integrert/Innebygd anrop";
+"settings_enable_callkit" = "Integrert anrop";
 "settings_calls_stun_server_fallback_button" = "Tillat bruk av STUN støtteserver ved anrop";
 "settings_calls_stun_server_fallback_description" = "Tillat bruk av %@ STUN støtteserver ved anrop, når din hovedserver ikke tilbyr dette (din IP adresse vil bli delt under samtalen).";
 "settings_integrations_allow_description" = "Bruk integrasjonsadministrator (%@) for å administrere bots, bridges, widgets og sticker packs.\n\nIntegrasjonsadministrator mottar konfigurasjonsdata, og kan endre widgets, sende rominvitasjoner og sette tilgangsnivåer på dine vegne.";
@@ -1311,7 +1311,7 @@
 
 "secrets_recovery_with_passphrase_title" = "Gjenopprettingsfrase";
 "secrets_recovery_reset_action_part_2" = "Tilbakestill alt";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke gjennopprettingsfrasen din? Du kan ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke gjenopprettingsfrasen din? Du kan ";
 "secrets_recovery_with_passphrase_recover_action" = "Bruk passordfrase";
 "secrets_recovery_with_passphrase_passphrase_placeholder" = "Skriv inn gjenopprettingsfrase";
 "secrets_recovery_with_passphrase_information_verify_device" = "Bruk gjenopprettingsfrasen for å bekrefte denne enheten.";
@@ -1414,4 +1414,4 @@
 "room_intro_cell_information_room_with_topic_sentence2" = "Tema: %@";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " for å fortelle folk hva dette rommet handler om.";
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "Legg til et tema";
-"room_intro_cell_information_dm_sentence1_part1" = "Dette er begynnelsen på din direktemelding med ";
+"room_intro_cell_information_dm_sentence1_part1" = "Dette er begynnelsen på dine direktemeldinger med ";
