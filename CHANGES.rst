@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Crypto: Do not decrypt synchronously. It asynchronously happens upstream now (#4306). 
 
 🐛 Bugfix
  * buildRelease.sh: Make bundler operations in the cloned repository folder.
