@@ -33,3 +33,5 @@
 #import "CallViewController.h"
 #import "MatrixContactsDataSource.h"
 #import "TypingUserInfo.h"
+#import "UnifiedSearchViewController.h"
+#import "SettingsViewController.h"
