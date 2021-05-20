@@ -1784,6 +1784,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix sessions handling
 
+// TODO: Move this method content in UserSessionsService
 - (void)initMatrixSessions
 {
     NSLog(@"[AppDelegate] initMatrixSessions");
@@ -1887,6 +1888,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
             });
         }
+        
+        [self.delegate legacyAppDelegate:self didAddAccount:account];
     }];
     
     // Add observer to handle removed accounts
@@ -1907,6 +1910,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             [self logoutWithConfirmation:NO completion:nil];
         }
+        
+        [self.delegate legacyAppDelegate:self didRemoveAccount:account];
     }];
 
     // Add observer to handle soft logout
@@ -2005,9 +2010,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 });
             }
         });
-        
-        // Update home data sources
-        [_masterTabBarController addMatrixSession:mxSession];
 
         // Register the session to the widgets manager
         [[WidgetManager sharedManager] addMatrixSession:mxSession];
@@ -2019,15 +2021,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         // Do the one time check on device id
         [self checkDeviceId:mxSession];
+        
+        [self.delegate legacyAppDelegate:self didAddMatrixSession:mxSession];
     }
 }
 
 - (void)removeMatrixSession:(MXSession*)mxSession
 {
     [[MXKContactManager sharedManager] removeMatrixSession:mxSession];
-    
-    // Update home data sources
-    [_masterTabBarController removeMatrixSession:mxSession];
     
     // remove session from the call service
     [_callPresenter removeMatrixSession:mxSession];
@@ -2051,6 +2052,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         //  if no session left, stop the call service
         [self.callPresenter stop];
     }
+    
+    [self.delegate legacyAppDelegate:self didRemoveMatrixSession:mxSession];
 }
 
 - (void)markAllMessagesAsRead
