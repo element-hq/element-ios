@@ -151,7 +151,7 @@
         <!--People View Controller-->
         <scene sceneID="Qba-PP-lco">
             <objects>
-                <viewController id="IGB-jr-yFz" customClass="PeopleViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PeopleViewController" id="IGB-jr-yFz" customClass="PeopleViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mhy-d3-Jh6"/>
                         <viewControllerLayoutGuide type="bottom" id="Hkk-qB-8tq"/>
@@ -177,7 +177,7 @@
         <!--Favourites View Controller-->
         <scene sceneID="z6B-k5-ano">
             <objects>
-                <viewController id="HnD-LA-psC" customClass="FavouritesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FavouritesViewController" id="HnD-LA-psC" customClass="FavouritesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pOc-AC-QkD"/>
                         <viewControllerLayoutGuide type="bottom" id="W6L-Au-CaZ"/>
@@ -200,7 +200,7 @@
         <!--Unified Search View Controller-->
         <scene sceneID="ijO-nb-yi4">
             <objects>
-                <viewController id="nJt-uq-tV9" customClass="UnifiedSearchViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UnifiedSearchViewController" id="nJt-uq-tV9" customClass="UnifiedSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="V3l-gx-WNN"/>
                         <viewControllerLayoutGuide type="bottom" id="fYW-Kr-Hqf"/>
@@ -221,7 +221,7 @@
         <!--Home View Controller-->
         <scene sceneID="SZi-Ac-WJp">
             <objects>
-                <viewController id="pBa-To-3YT" customClass="HomeViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" id="pBa-To-3YT" customClass="HomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="m3s-18-JgR"/>
                         <viewControllerLayoutGuide type="bottom" id="2lp-r9-RR5"/>
@@ -444,7 +444,7 @@
         <!--Groups View Controller-->
         <scene sceneID="Rqp-Ti-qpu">
             <objects>
-                <viewController id="SLx-Wj-p7E" customClass="GroupsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GroupsViewController" id="SLx-Wj-p7E" customClass="GroupsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="N1j-ye-uQa"/>
                         <viewControllerLayoutGuide type="bottom" id="FYD-2t-u4k"/>
@@ -463,7 +463,7 @@
         <!--Rooms View Controller-->
         <scene sceneID="SDg-Pp-8Uj">
             <objects>
-                <viewController id="HPQ-zg-lZR" customClass="RoomsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RoomsViewController" id="HPQ-zg-lZR" customClass="RoomsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Hkg-kw-ioH"/>
                         <viewControllerLayoutGuide type="bottom" id="UI8-oQ-9M9"/>
