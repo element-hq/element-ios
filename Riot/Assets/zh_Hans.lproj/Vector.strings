@@ -179,7 +179,7 @@
 "room_participants_action_start_video_call" = "发起视频通话";
 "room_participants_action_mention" = "提及";
 // Chat
-"room_jump_to_first_unread" = "跳到第一条未读信息";
+"room_jump_to_first_unread" = "跳到未读信息";
 "room_new_message_notification" = "%d 条未读消息";
 "room_new_messages_notification" = "%d 条未读消息";
 "room_one_user_is_typing" = "%@ 正在输入…";
@@ -1136,7 +1136,7 @@
 "callbar_active_and_single_paused" = "1 个进行中通话（%@）· 1 个已暂停通话";
 
 // Call Bar
-"callbar_only_single_active" = "进行中通话（%@）";
+"callbar_only_single_active" = "轻按返回通话（%@）";
 "callbar_only_multiple_paused" = "%@ 个已暂停通话";
 "callbar_only_single_paused" = "已暂停通话";
 "callbar_return" = "返回";
