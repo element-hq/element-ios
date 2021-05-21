@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Navigation: Start decoupling view controllers managed by MasterTabBarController.
 
 🐛 Bugfix
  * buildRelease.sh: Make bundler operations in the cloned repository folder.
