@@ -36,10 +36,11 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private weak var splitViewCoordinator: SplitViewCoordinatorType?
     
-    // TODO: Use a dedicated class to handle Matrix sessions
+    private let userSessionsService: UserSessionsService
+        
     /// Main user Matrix session
-    private var mainSession: MXSession? {
-        return MXKAccountManager.shared().activeAccounts.first?.mxSession
+    private var mainMatrixSession: MXSession? {
+        return self.userSessionsService.mainUserSession?.matrixSession
     }
   
     // MARK: Public
@@ -51,12 +52,14 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     init(router: RootRouterType) {
         self.rootRouter = router
         self.customSchemeURLParser = CustomSchemeURLParser()
+        self.userSessionsService = UserSessionsService()
     }
     
     // MARK: - Public methods
     
     func start() {
-        self.showSplitView(session: self.mainSession)
+        // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the spit view.
+        self.showSplitView()
         NSLog("[AppCoordinator] Showed split view")
     }
     
@@ -86,8 +89,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         // TODO: Implement
     }
     
-    private func showSplitView(session: MXSession?) {
-        let splitViewCoordinator = SplitViewCoordinator(router: self.rootRouter, session: session)
+    private func showSplitView() {
+        let coordinatorParameters = SplitViewCoordinatorParameters(router: self.rootRouter, userSessionsService: self.userSessionsService)
+                        
+        let splitViewCoordinator = SplitViewCoordinator(parameters: coordinatorParameters)
         splitViewCoordinator.delegate = self
         splitViewCoordinator.start()
         self.add(childCoordinator: splitViewCoordinator)
@@ -128,6 +133,20 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     
     func legacyAppDelegateRestoreEmptyDetailsViewController(_ legacyAppDelegate: LegacyAppDelegate!) {
         self.splitViewCoordinator?.restorePlaceholderDetails()
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAddMatrixSession session: MXSession!) {
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession!) {
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAdd account: MXKAccount!) {
+        self.userSessionsService.addUserSession(fromAccount: account)
+    }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemove account: MXKAccount!) {
+        self.userSessionsService.removeUserSession(relatedToAccount: account)
     }
 }
 
