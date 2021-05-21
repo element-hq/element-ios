@@ -5,6 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Crypto: Do not decrypt synchronously. It asynchronously happens upstream now (#4306). 
  * Navigation: Start decoupling view controllers managed by MasterTabBarController (#3596 and #3618).
 
 🐛 Bugfix
