@@ -8,6 +8,7 @@ Changes to be released in next version
  * Crypto: Do not decrypt synchronously. It asynchronously happens upstream now (#4306). 
  * Navigation: Start decoupling view controllers managed by MasterTabBarController (#3596 and #3618).
  * Jitsi: Include optional server name field on JitsiJWTPayloadContextMatrix.
+ * CallPresenter: Add more logs for group calls.
 
 🐛 Bugfix
  * buildRelease.sh: Make bundler operations in the cloned repository folder.
