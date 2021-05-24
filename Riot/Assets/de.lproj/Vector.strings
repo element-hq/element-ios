@@ -160,7 +160,7 @@
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet.";
 "room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren.";
 "room_prompt_resend" = "alle erneut senden";
-"room_prompt_cancel" = "alles abbrechen";
+"room_prompt_cancel" = "Alles abbrechen";
 "room_resend_unsent_messages" = "Ungesendete Nachrichten erneut senden";
 "room_delete_unsent_messages" = "Lösche ungesendete Nachrichten";
 "room_event_action_copy" = "Kopieren";
@@ -1308,7 +1308,7 @@
 "call_actions_unhold" = "Fortsetzen";
 "event_formatter_call_back" = "Zurückrufen";
 "event_formatter_call_you_declined" = "Du lehntest diesen Anruf ab";
-"event_formatter_call_you_currently_in" = "Du bist aktuell in diesem Anruf";
+"event_formatter_call_you_currently_in" = "Aktuelles Gespräch";
 "event_formatter_call_has_ended" = "%@ beendet";
 "event_formatter_call_video" = "Videoanruf";
 "event_formatter_call_voice" = "Sprachanruf";
