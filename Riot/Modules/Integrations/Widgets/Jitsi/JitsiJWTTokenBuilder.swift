@@ -30,13 +30,15 @@ final class JitsiJWTTokenBuilder {
     // MARK: - Public
     
     func build(jitsiServerDomain: String,
-               openIdAccessToken: String,
+               openIdToken: MXOpenIdToken,
                roomId: String,
                userAvatarUrl: String,
                userDisplayName: String) throws -> String {
         
         // Create Jitsi JWT
-        let jitsiJWTPayloadContextMatrix = JitsiJWTPayloadContextMatrix(token: openIdAccessToken, roomId: roomId)
+        let jitsiJWTPayloadContextMatrix = JitsiJWTPayloadContextMatrix(token: openIdToken.accessToken,
+                                                                        roomId: roomId,
+                                                                        serverName: openIdToken.matrixServerName)
         let jitsiJWTPayloadContextUser = JitsiJWTPayloadContextUser(avatar: userAvatarUrl, name: userDisplayName)
         let jitsiJWTPayloadContext = JitsiJWTPayloadContext(matrix: jitsiJWTPayloadContextMatrix, user: jitsiJWTPayloadContextUser)
         
