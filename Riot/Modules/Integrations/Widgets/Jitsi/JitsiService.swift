@@ -190,14 +190,14 @@ final class JitsiService: NSObject {
         let avatarStringURL: String = myUser.avatarUrl ?? ""
         
         return matrixSession.matrixRestClient.openIdToken({ (openIdToken) in
-            guard let openIdToken = openIdToken, let openIdAccessToken = openIdToken.accessToken else {
+            guard let openIdToken = openIdToken, openIdToken.accessToken != nil else {
                 failure(JitsiServiceError.unknown)
                 return
             }
             
             do {
                 let jwtToken = try self.jwtTokenBuilder.build(jitsiServerDomain: jitsiServerDomain,
-                openIdAccessToken: openIdAccessToken,
+                openIdToken: openIdToken,
                 roomId: roomId,
                 userAvatarUrl: avatarStringURL,
                 userDisplayName: userDisplayName)
