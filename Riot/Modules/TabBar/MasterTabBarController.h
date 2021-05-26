@@ -47,7 +47,7 @@
 @property (weak, nonatomic) id<MasterTabBarControllerDelegate> masterTabBarDelegate;
 
 // Associated matrix sessions (empty by default).
-@property (nonatomic, readonly) NSArray *mxSessions;
+@property (nonatomic, readonly) NSArray<MXSession*> *mxSessions;
 
 // Add a matrix session. This session is propagated to all view controllers handled by the tab bar controller.
 - (void)addMatrixSession:(MXSession*)mxSession;

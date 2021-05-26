@@ -289,7 +289,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         // TODO: Remove Matrix session handling from the view controller
-        if let matrixSession = userSession.matrixSession {
+        if let matrixSession = userSession.matrixSession, self.masterTabBarController.mxSessions.contains(matrixSession) {
             self.masterTabBarController.removeMatrixSession(matrixSession)
         }
     }
@@ -301,7 +301,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         // TODO: Remove Matrix session handling from the view controller
         // MXSession is opened before set to MXKAccount, wait for account change to be sure is set at a moment
-        if let matrixSession = userSession.matrixSession {
+        if let matrixSession = userSession.matrixSession, self.masterTabBarController.mxSessions.contains(matrixSession) == false {
             self.masterTabBarController.addMatrixSession(matrixSession)
         }
     }
