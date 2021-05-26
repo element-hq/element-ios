@@ -3212,19 +3212,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Create statusBarButton
     _callBar = [CallBar instantiate];
-    _callBar.frame = CGRectMake(0, 0, topBarSize.width, topBarSize.height);
+    _callBar.frame = _callStatusBarWindow.bounds;
     _callBar.title = title;
     _callBar.backgroundColor = ThemeService.shared.theme.tintColor;
     _callBar.delegate = self;
+    _callBar.translatesAutoresizingMaskIntoConstraints = NO;
     
-    // Place button into the new window
-    [_callBar setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_callStatusBarWindow addSubview:_callBar];
+    // Set call bar view as the view of the root view controller
+    UIViewController *viewController = [[UIViewController alloc] init];
+    viewController.view = _callBar;
+    _callStatusBarWindow.rootViewController = viewController;
     
-    // Force callBar to fill the window (to handle auto-layout in case of screen rotation)
-    [_callBar.widthAnchor constraintEqualToAnchor:_callStatusBarWindow.widthAnchor].active = YES;
-    [_callBar.heightAnchor constraintEqualToAnchor:_callStatusBarWindow.heightAnchor].active = YES;
-
     _callStatusBarWindow.hidden = NO;
     [self deviceOrientationDidChange];
     
