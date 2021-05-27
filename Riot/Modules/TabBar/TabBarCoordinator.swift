@@ -278,7 +278,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         // TODO: Remove Matrix session handling from the view controller
-        if let matrixSession = userSession.matrixSession {
+        if let matrixSession = userSession.matrixSession, self.masterTabBarController.mxSessions.contains(matrixSession) == false {
             self.masterTabBarController.addMatrixSession(matrixSession)
         }
     }
