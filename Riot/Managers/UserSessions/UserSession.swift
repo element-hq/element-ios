@@ -31,6 +31,8 @@ class UserSession: NSObject, UserSessionProtocol {
     // MARK: Public
     
     let account: MXKAccount
+    // Keep strong reference to the MXSession because account.mxSession can become nil on logout or failure
+    let matrixSession: MXSession
     
     var userId: String {
         guard let userId = self.account.mxCredentials.userId else {
@@ -39,14 +41,11 @@ class UserSession: NSObject, UserSessionProtocol {
         return userId
     }
     
-    var matrixSession: MXSession? {
-        return account.mxSession
-    }
-    
     // MARK: - Setup
     
-    init(account: MXKAccount) {
+    init(account: MXKAccount, matrixSession: MXSession) {
         self.account = account
+        self.matrixSession = matrixSession
         super.init()
     }
 }

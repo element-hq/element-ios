@@ -75,6 +75,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.masterTabBarController = masterTabBarController
         self.navigationRouter.setRootModule(masterTabBarController)
         
+        // Add existing Matrix sessions if any
+        for userSession in self.parameters.userSessionsService.userSessions {
+            self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+        }
+        
         self.registerUserSessionsServiceNotifications()
     }
     
@@ -212,9 +217,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         viewController.loadViewIfNeeded()
         
         for userSession in self.parameters.userSessionsService.userSessions {
-            if let matrixSession = userSession.matrixSession {
-                viewController.addMatrixSession(matrixSession)
-            }
+            viewController.addMatrixSession(userSession.matrixSession)
         }
         
         return viewController
@@ -268,8 +271,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceDidAddUserSession(_:)), name: UserSessionsService.didAddUserSession, object: userSessionService)
         
         NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceWillRemoveUserSession(_:)), name: UserSessionsService.willRemoveUserSession, object: userSessionService)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceUserSessionDidChange(_:)), name: UserSessionsService.userSessionDidChange, object: userSessionService)
     }
     
     @objc private func userSessionsServiceDidAddUserSession(_ notification: Notification) {
@@ -277,10 +278,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             return
         }
         
-        // TODO: Remove Matrix session handling from the view controller
-        if let matrixSession = userSession.matrixSession {
-            self.masterTabBarController.addMatrixSession(matrixSession)
-        }
+        self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -288,22 +286,25 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             return
         }
         
-        // TODO: Remove Matrix session handling from the view controller
-        if let matrixSession = userSession.matrixSession {
-            self.masterTabBarController.removeMatrixSession(matrixSession)
-        }
+        self.removeMatrixSessionFromMasterTabBarController(userSession.matrixSession)
     }
     
-    @objc private func userSessionsServiceUserSessionDidChange(_ notification: Notification) {
-        guard let userSession = notification.userInfo?[UserSessionsService.NotificationUserInfoKey.userSession] as? UserSession else {
+    // TODO: Remove Matrix session handling from the view controller
+    private func addMatrixSessionToMasterTabBarController(_ matrixSession: MXSession) {
+        guard self.masterTabBarController.mxSessions.contains(matrixSession) == false else {
             return
         }
-        
-        // TODO: Remove Matrix session handling from the view controller
-        // MXSession is opened before set to MXKAccount, wait for account change to be sure is set at a moment
-        if let matrixSession = userSession.matrixSession {
-            self.masterTabBarController.addMatrixSession(matrixSession)
+        NSLog("[TabBarCoordinator] masterTabBarController.addMatrixSession")
+        self.masterTabBarController.addMatrixSession(matrixSession)
+    }
+    
+    // TODO: Remove Matrix session handling from the view controller
+    private func removeMatrixSessionFromMasterTabBarController(_ matrixSession: MXSession) {
+        guard self.masterTabBarController.mxSessions.contains(matrixSession) else {
+            return
         }
+        NSLog("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
+        self.masterTabBarController.removeMatrixSession(matrixSession)
     }
 }
 
