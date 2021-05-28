@@ -84,21 +84,30 @@ class UserSessionsService: NSObject {
     
     // MARK: - Private
     
-    private func addUserSession(fromAccount account: MXKAccount, postNotification: Bool) {
-        guard let userId = account.mxCredentials.userId, !self.isUserSessionExists(withUserId: userId) else {
-            return
+    @discardableResult
+    private func addUserSession(fromAccount account: MXKAccount, postNotification: Bool) -> Bool {
+        guard self.canAddAccount(account) else {
+            return false
         }
         
-        let userSession = UserSession(account: account)
+        guard let matrixSession = account.mxSession else {
+            return false
+        }
+        
+        let userSession = UserSession(account: account, matrixSession: matrixSession)
         self.userSessions.append(userSession)
+        
+        NSLog("[UserSessionsService] addUserSession from account with user id: \(userSession.userId)")
                 
         if postNotification {
             NotificationCenter.default.post(name: UserSessionsService.didAddUserSession, object: self, userInfo: [NotificationUserInfoKey.userSession: userSession])
         }
+        
+        return true
     }
     
     private func removeUserSession(relatedToAccount account: MXKAccount, postNotification: Bool) {
-        guard let userId = account.mxCredentials.userId, !self.isUserSessionExists(withUserId: userId) else {
+        guard let userId = account.mxCredentials.userId, let userSession = self.userSession(withUserId: userId) else {
             return
         }
         
@@ -110,9 +119,33 @@ class UserSessionsService: NSObject {
             return userId == userSession.userId
         }
         
+        NSLog("[UserSessionsService] removeUserSession related to account with user id: \(userId)")
+        
         if postNotification {
             NotificationCenter.default.post(name: UserSessionsService.didRemoveUserSession, object: self, userInfo: [NotificationUserInfoKey.userId: userId])
         }
+    }
+    
+    private func canAddAccount(_ account: MXKAccount) -> Bool {
+        guard let userId = account.mxCredentials.userId, !self.isUserSessionExists(withUserId: userId) else {
+            return false
+        }
+        
+        guard let mxSession = account.mxSession else {
+            NSLog("[UserSessionsService] Cannot add a UserSession from a MXKAccount with nil Matrix session")
+            return false
+        }
+        
+        let isSessionStateValid: Bool
+        
+        switch mxSession.state {
+        case MXSessionStateClosed, MXSessionStateUnknownToken:
+            isSessionStateValid = false
+        default:
+            isSessionStateValid = true
+        }
+        
+        return isSessionStateValid
     }
     
     private func registerAccountNotifications() {
@@ -124,7 +157,10 @@ class UserSessionsService: NSObject {
             return
         }
         
-        if let userSession = self.userSession(withUserId: userId) {
+        // Wait before MXKAccount.mxSession is set before adding a UserSession with the associated account
+        if let account = self.accountManager.account(forUserId: userId), self.canAddAccount(account) {
+            self.addUserSession(fromAccount: account)
+        } else if let userSession = self.userSession(withUserId: userId) {
             NotificationCenter.default.post(name: UserSessionsService.userSessionDidChange, object: self, userInfo: [NotificationUserInfoKey.userSession: userSession])
         }
     }
