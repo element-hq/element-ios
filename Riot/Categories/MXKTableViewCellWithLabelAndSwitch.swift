@@ -25,7 +25,7 @@ extension MXKTableViewCellWithLabelAndSwitch: Themable {
         mxkLabel.textColor = theme.textPrimaryColor
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = .clear
-        mxkSwitch.tintColor = theme.tintColor
+        mxkSwitch.onTintColor = theme.tintColor
    }
 
 }
