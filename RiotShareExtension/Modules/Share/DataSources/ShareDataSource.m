@@ -76,11 +76,11 @@
         NSComparator comparator = ^NSComparisonResult(MXKRecentCellData *recentCellData1, MXKRecentCellData *recentCellData2) {
             
             NSComparisonResult result = NSOrderedAscending;
-            if (recentCellData2.roomSummary.lastMessageOriginServerTs > recentCellData1.roomSummary.lastMessageOriginServerTs)
+            if (recentCellData2.roomSummary.lastMessage.originServerTs > recentCellData1.roomSummary.lastMessage.originServerTs)
             {
                 result = NSOrderedDescending;
             }
-            else if (recentCellData2.roomSummary.lastMessageOriginServerTs == recentCellData1.roomSummary.lastMessageOriginServerTs)
+            else if (recentCellData2.roomSummary.lastMessage.originServerTs == recentCellData1.roomSummary.lastMessage.originServerTs)
             {
                 result = NSOrderedSame;
             }
