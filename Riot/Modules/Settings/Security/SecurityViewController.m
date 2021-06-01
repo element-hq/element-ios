@@ -652,7 +652,7 @@ TableViewSectionsDelegate>
             [self reloadData];
         }
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[SecurityVC] loadCrossSigning: Cannot refresh cross-signing state. Error: %@", error);
+        MXLogDebug(@"[SecurityVC] loadCrossSigning: Cannot refresh cross-signing state. Error: %@", error);
     }];
 }
 

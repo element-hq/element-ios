@@ -31,12 +31,12 @@ final public class MajorUpdateManager: NSObject {
     
     var shouldShowMajorUpdate: Bool {
         guard let lastUsedAppVersion = AppVersion.lastUsed else {
-            NSLog("[MajorUpdateManager] shouldShowMajorUpdate: Unknown previous version")
+            MXLog.debug("[MajorUpdateManager] shouldShowMajorUpdate: Unknown previous version")
             return false
         }
         
         let shouldShowMajorUpdate = (lastUsedAppVersion.compare(Constants.lastMajorAppVersion) == .orderedAscending)
-        NSLog("[MajorUpdateManager] shouldShowMajorUpdate: \(shouldShowMajorUpdate). AppVersion.lastUsed: \(lastUsedAppVersion). lastMajorAppVersion: \(Constants.lastMajorAppVersion)")
+        MXLog.debug("[MajorUpdateManager] shouldShowMajorUpdate: \(shouldShowMajorUpdate). AppVersion.lastUsed: \(lastUsedAppVersion). lastMajorAppVersion: \(Constants.lastMajorAppVersion)")
         
         return shouldShowMajorUpdate
     }

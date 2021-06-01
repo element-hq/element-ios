@@ -49,7 +49,7 @@ class KeyVerificationConclusionBubbleCell: KeyVerificationBaseBubbleCell {
         guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
             let bubbleData = self.bubbleData as? RoomBubbleCellData,
             let viewData = self.viewData(from: bubbleData) else {
-                NSLog("[KeyVerificationConclusionBubbleCell] Fail to render \(String(describing: cellData))")
+            MXLog.debug("[KeyVerificationConclusionBubbleCell] Fail to render \(String(describing: cellData))")
                 return
         }
         

@@ -111,13 +111,13 @@ const CGFloat kTypingCellHeight = 24;
     if (![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
     {
         [self.room members:^(MXRoomMembers *roomMembers) {
-            NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
+            MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
 
             // Refresh the full table
             [self.delegate dataSource:self didCellChange:nil];
 
         } failure:^(NSError *error) {
-            NSLog(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
+            MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
         }];
     }
 
@@ -830,7 +830,7 @@ const CGFloat kTypingCellHeight = 24;
                                               
                                           } failure:^(NSError * _Nonnull error) {
                                               
-                                              NSLog(@"[RoomDataSource] updateKeyVerificationIfNeededForRoomBubbleCellData; keyVerificationFromKeyVerificationEvent fails with error: %@", error);
+                                              MXLogDebug(@"[RoomDataSource] updateKeyVerificationIfNeededForRoomBubbleCellData; keyVerificationFromKeyVerificationEvent fails with error: %@", error);
                                               
                                               bubbleCellData.isKeyVerificationOperationPending = NO;
                                           }];

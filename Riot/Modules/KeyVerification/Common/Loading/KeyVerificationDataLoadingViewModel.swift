@@ -112,7 +112,7 @@ final class KeyVerificationDataLoadingViewModel: KeyVerificationDataLoadingViewM
             let otherUserId = self.otherUserId,
             let otherDeviceId = self.otherDeviceId else {
             self.update(viewState: .errorMessage(VectorL10n.deviceVerificationErrorCannotLoadDevice))
-            NSLog("[KeyVerificationDataLoadingViewModel] Error session.crypto is nil")
+            MXLog.debug("[KeyVerificationDataLoadingViewModel] Error session.crypto is nil")
             return
         }
         

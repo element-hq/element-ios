@@ -1180,7 +1180,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[RoomVC] Join roomAlias (%@) failed", roomAlias);
+                MXLogDebug(@"[RoomVC] Join roomAlias (%@) failed", roomAlias);
                 //Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 
@@ -1243,14 +1243,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [self.roomDataSource sendReplyToEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
             // Just log the error. The message will be displayed in red in the room history
-            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+            MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
         }];
     }
     else if (self.inputToolBarSendMode == RoomInputToolbarViewSendModeEdit && customizedRoomDataSource.selectedEventId)
     {
         [self.roomDataSource replaceTextMessageForEventWithId:customizedRoomDataSource.selectedEventId withTextMessage:msgTxt success:nil failure:^(NSError *error) {
             // Just log the error. The message will be displayed in red
-            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+            MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
         }];
     }
     else
@@ -1259,7 +1259,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.roomDataSource sendTextMessage:msgTxt success:nil failure:^(NSError *error)
          {
             // Just log the error. The message will be displayed in red in the room history
-            NSLog(@"[MXKRoomViewController] sendTextMessage failed.");
+            MXLogDebug(@"[MXKRoomViewController] sendTextMessage failed.");
         }];
     }
     
@@ -1344,7 +1344,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (previewHeader)
     {
         // Here [destroy] is called before [viewWillDisappear:]
-        NSLog(@"[RoomVC] destroyed whereas it is still visible");
+        MXLogDebug(@"[RoomVC] destroyed whereas it is still visible");
         
         [previewHeader removeFromSuperview];
         previewHeader = nil;
@@ -1922,7 +1922,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self.navigationController pushViewController:stickerPickerVC animated:YES];
         } failure:^(NSError * _Nonnull error) {
             
-            NSLog(@"[RoomVC] Cannot display widget %@", widget);
+            MXLogDebug(@"[RoomVC] Cannot display widget %@", widget);
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];
     }
@@ -2037,7 +2037,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // or if the view controller is not embedded inside a split view controller yet.
         if (isVisible && (isSizeTransitionInProgress == YES || !self.splitViewController))
         {
-            NSLog(@"[RoomVC] Show preview header ignored");
+            MXLogDebug(@"[RoomVC] Show preview header ignored");
             return;
         }
         
@@ -2619,7 +2619,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }
                 else
                 {
-                    NSLog(@"[RoomViewController] didRecognizeAction:inCell:userInfo tap on attachment with event state MXEventSentStateFailed. Selected event is nil for event id %@", eventId);
+                    MXLogDebug(@"[RoomViewController] didRecognizeAction:inCell:userInfo tap on attachment with event state MXEventSentStateFailed. Selected event is nil for event id %@", eventId);
                 }
             }
             else if (((MXKRoomBubbleTableViewCell*)cell).bubbleData.attachment.type == MXKAttachmentTypeSticker)
@@ -2738,7 +2738,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }
                 else
                 {
-                    NSLog(@"[RoomVC] didRecognizeAction:inCell:userInfo Warning: The application does not have the permission to join/answer the group call");
+                    MXLogDebug(@"[RoomVC] didRecognizeAction:inCell:userInfo Warning: The application does not have the permission to join/answer the group call");
                 }
             }];
             
@@ -3132,7 +3132,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         __strong __typeof(weakSelf)self = weakSelf;
                         [self stopActivityIndicator];
                         
-                        NSLog(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                        MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
                         //Alert user
                         [[AppDelegate theDelegate] showErrorAsAlert:error];
                         
@@ -3163,7 +3163,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     }
                     else
                     {
-                        NSLog(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
+                        MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
                     }
                 }
                 
@@ -3283,7 +3283,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                             __strong __typeof(weakSelf)self = weakSelf;
                                             [self stopActivityIndicator];
                                             
-                                            NSLog(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
+                                            MXLogDebug(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
                                             //Alert user
                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                                             
@@ -3309,7 +3309,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                 __strong __typeof(weakSelf)self = weakSelf;
                                 [self stopActivityIndicator];
                                 
-                                NSLog(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
+                                MXLogDebug(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
                                 //Alert user
                                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                                 
@@ -3744,7 +3744,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
             else
             {
-                NSLog(@"RoomViewController: Warning: The application does not have the permission to place the call");
+                MXLogDebug(@"RoomViewController: Warning: The application does not have the permission to place the call");
             }
         }
     }];
@@ -4260,7 +4260,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             } failure:^(NSError *error) {
                 
                 [self stopActivityIndicator];
-                NSLog(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
+                MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
                 
             }];
         }
@@ -4542,7 +4542,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
                     if (!success)
                     {
-                        NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                        MXLogDebug(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
                     }
                 }];
             }];
@@ -4570,7 +4570,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 else
                 {
                     // Else auto join it via the server that sent the event
-                    NSLog(@"[RoomVC] Auto join an upgraded room: %@ -> %@. Sender: %@",                              self->customizedRoomDataSource.roomState.roomId,
+                    MXLogDebug(@"[RoomVC] Auto join an upgraded room: %@ -> %@. Sender: %@",                              self->customizedRoomDataSource.roomState.roomId,
                           replacementRoomId, stoneTombEvent.sender);
                     
                     NSString *viaSenderServer = [MXTools serverNameInMatrixIdentifier:stoneTombEvent.sender];
@@ -4586,7 +4586,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         } failure:^(NSError *error) {
                             [self stopActivityIndicator];
                             
-                            NSLog(@"[RoomVC] Failed to join an upgraded room. Error: %@",
+                            MXLogDebug(@"[RoomVC] Failed to join an upgraded room. Error: %@",
                                   error);
                             [[AppDelegate theDelegate] showErrorAsAlert:error];
                         }];
@@ -4624,7 +4624,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
                         if (!success)
                         {
-                            NSLog(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                            MXLogDebug(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
                         }
                     }];
                 }];
@@ -4922,7 +4922,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     if ([customizedRoomDataSource.selectedEventId isEqualToString:previousId])
     {
-        NSLog(@"[RoomVC] eventDidChangeIdentifier: Update selectedEventId");
+        MXLogDebug(@"[RoomVC] eventDidChangeIdentifier: Update selectedEventId");
         customizedRoomDataSource.selectedEventId = event.eventId;
     }
 }
@@ -5275,7 +5275,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[RoomVC] Invite %@ failed", participantId);
+                MXLogDebug(@"[RoomVC] Invite %@ failed", participantId);
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
                 
@@ -5306,7 +5306,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomVC] Invite be email %@ failed", participantId);
+                    MXLogDebug(@"[RoomVC] Invite be email %@ failed", participantId);
                     // Alert user
                     if ([error.domain isEqualToString:kMXRestClientErrorDomain]
                         && error.code == MXRestClientErrorMissingIdentityServer)
@@ -5329,7 +5329,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     
                 } failure:^(NSError *error) {
                     
-                    NSLog(@"[RoomVC] Invite %@ failed", participantId);
+                    MXLogDebug(@"[RoomVC] Invite %@ failed", participantId);
                     // Alert user
                     [[AppDelegate theDelegate] showErrorAsAlert:error];
                     
@@ -5404,7 +5404,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)presentReviewUnverifiedSessionsAlert
 {
-    NSLog(@"[MasterTabBarController] presentReviewUnverifiedSessionsAlertWithSession");
+    MXLogDebug(@"[MasterTabBarController] presentReviewUnverifiedSessionsAlertWithSession");
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
@@ -5774,7 +5774,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
             else
             {
-                NSLog(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
+                MXLogDebug(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
             }
             
             [self hideContextualMenuAnimated:YES];
@@ -5952,26 +5952,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         [self.roomDataSource sendImage:imageData mimeType:mimeType success:nil failure:^(NSError *error) {
             // Nothing to do. The image is marked as unsent in the room history by the datasource
-            NSLog(@"[MXKRoomViewController] sendImage failed.");
+            MXLogDebug(@"[MXKRoomViewController] sendImage failed.");
         }];
     }
     else if (fileUTI.isVideo)
     {
         [(RoomDataSource*)self.roomDataSource sendVideo:url success:nil failure:^(NSError *error) {
             // Nothing to do. The video is marked as unsent in the room history by the datasource
-            NSLog(@"[MXKRoomViewController] sendVideo failed.");
+            MXLogDebug(@"[MXKRoomViewController] sendVideo failed.");
         }];
     }
     else if (fileUTI.isFile)
     {
         [self.roomDataSource sendFile:url mimeType:mimeType success:nil failure:^(NSError *error) {
             // Nothing to do. The file is marked as unsent in the room history by the datasource
-            NSLog(@"[MXKRoomViewController] sendFile failed.");
+            MXLogDebug(@"[MXKRoomViewController] sendFile failed.");
         }];
     }
     else
     {
-        NSLog(@"[MXKRoomViewController] File upload using MIME type %@ is not supported.", mimeType);
+        MXLogDebug(@"[MXKRoomViewController] File upload using MIME type %@ is not supported.", mimeType);
         
         [[AppDelegate theDelegate] showAlertWithTitle:NSLocalizedStringFromTable(@"file_upload_error_title", @"Vector", nil)
                                               message:NSLocalizedStringFromTable(@"file_upload_error_unsupported_file_type_message", @"Vector", nil)];

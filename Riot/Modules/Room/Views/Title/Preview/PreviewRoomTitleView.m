@@ -226,7 +226,7 @@
         }lazyLoadedMembers:^(MXRoomMembers *lazyLoadedMembers) {
             onRoomMembers(lazyLoadedMembers, NO);
         } failure:^(NSError *error) {
-            NSLog(@"[PreviewRoomTitleView] refreshDisplay: Cannot get all room members");
+            MXLogDebug(@"[PreviewRoomTitleView] refreshDisplay: Cannot get all room members");
         }];
     }
     else

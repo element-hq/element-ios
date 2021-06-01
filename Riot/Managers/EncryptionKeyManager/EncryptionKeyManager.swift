@@ -104,7 +104,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
         do {
             try keychainStore.set(MXAes.iv(), forKey: key)
         } catch {
-            NSLog("[EncryptionKeyManager] initKeys: Failed to generate IV: %@", error.localizedDescription)
+            MXLog.debug("[EncryptionKeyManager] initKeys: Failed to generate IV: \(error.localizedDescription)")
         }
     }
     
@@ -122,7 +122,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
               _ = SecRandomCopyBytes(kSecRandomDefault, size, &keyBytes)
             try keychainStore.set(Data(bytes: keyBytes, count: size), forKey: key)
         } catch {
-            NSLog("[EncryptionKeyManager] initKeys: Failed to generate Key[%@]: %@", key, error.localizedDescription)
+            MXLog.debug("[EncryptionKeyManager] initKeys: Failed to generate Key[\(key)]: \(error.localizedDescription)")
         }
     }
 }

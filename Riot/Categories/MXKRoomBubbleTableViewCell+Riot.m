@@ -80,7 +80,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
 {
     if (!self.bubbleInfoContainer)
     {
-        NSLog(@"[MXKRoomBubbleTableViewCell+Riot] bubbleInfoContainer property is missing for cell class: %@", NSStringFromClass(self.class));
+        MXLogDebug(@"[MXKRoomBubbleTableViewCell+Riot] bubbleInfoContainer property is missing for cell class: %@", NSStringFromClass(self.class));
         return;
     }
     

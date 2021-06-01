@@ -169,10 +169,10 @@ extension SplitViewCoordinator: TabBarCoordinatorDelegate {
 /// MARK: - SplitViewMasterPresentableDelegate
 extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable) {
-        NSLog("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToDisplay detailPresentable: \(detailPresentable)")
+        MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToDisplay detailPresentable: \(detailPresentable)")
         
         guard let detailNavigationController = self.detailNavigationController else {
-            NSLog("[SplitViewCoordinator] splitViewMasterPresentable: Failed to display because detailNavigationController is nil")
+            MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: Failed to display because detailNavigationController is nil")
             return
         }
         

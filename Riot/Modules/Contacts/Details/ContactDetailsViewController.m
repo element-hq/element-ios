@@ -890,7 +890,7 @@
                                                                                                    } failure:^(NSError *error) {
                                                                                                        
                                                                                                        [self removePendingActionMask];
-                                                                                                       NSLog(@"[ContactDetailsViewController] Ignore %@ failed", self.firstMatrixId);
+                                                                                                       MXLogDebug(@"[ContactDetailsViewController] Ignore %@ failed", self.firstMatrixId);
                                                                                                        
                                                                                                        // Notify MatrixKit user
                                                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -931,7 +931,7 @@
                                             
                                             __strong __typeof(weakSelf)self = weakSelf;
                                             [self removePendingActionMask];
-                                            NSLog(@"[ContactDetailsViewController] Unignore %@ failed", self.firstMatrixId);
+                                            MXLogDebug(@"[ContactDetailsViewController] Unignore %@ failed", self.firstMatrixId);
                                             
                                             // Notify MatrixKit user
                                             [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -1010,7 +1010,7 @@
                     void (^onFailure)(NSError *) = ^(NSError *error){
                         MXStrongifyAndReturnIfNil(self);
 
-                        NSLog(@"[ContactDetailsViewController] Create room failed");
+                        MXLogDebug(@"[ContactDetailsViewController] Create room failed");
 
                         self->roomCreationRequest = nil;
 
@@ -1086,7 +1086,7 @@
 
                     } failure:^(NSError *error) {
 
-                        NSLog(@"[ContactDetailsViewController] Create room failed");
+                        MXLogDebug(@"[ContactDetailsViewController] Create room failed");
 
                         roomCreationRequest = nil;
 

@@ -101,7 +101,7 @@
         }
         else
         {
-            NSLog(@"[Widget] Error: Invalid data field value in %@ for key %@ in data %@", self, key, _data);
+            MXLogDebug(@"[Widget] Error: Invalid data field value in %@ for key %@ in data %@", self, key, _data);
         }
     }
 

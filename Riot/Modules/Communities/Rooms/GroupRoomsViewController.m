@@ -212,7 +212,7 @@
         // Trigger a refresh on the group rooms.
         [self.mxSession updateGroupRooms:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupRoomsViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupRoomsViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
             
         }];
     }

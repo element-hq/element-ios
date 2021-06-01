@@ -61,7 +61,7 @@ class KeyVerificationIncomingRequestApprovalBubbleCell: KeyVerificationBaseBubbl
         guard let keyVerificationCellInnerContentView = self.keyVerificationCellInnerContentView,
             let bubbleData = self.bubbleData,
             let viewData = self.viewData(from: bubbleData) else {
-                NSLog("[KeyVerificationIncomingRequestApprovalBubbleCell] Fail to render \(String(describing: cellData))")
+            MXLog.debug("[KeyVerificationIncomingRequestApprovalBubbleCell] Fail to render \(String(describing: cellData))")
                 return
         }
         

@@ -14,6 +14,8 @@
  limitations under the License.
  */
 
+@import MatrixSDK;
+
 #import "RiotNavigationController.h"
 
 @implementation RiotNavigationController
@@ -59,7 +61,7 @@
 {
     if ([self.viewControllers indexOfObject:viewController] != NSNotFound)
     {
-        NSLog(@"[RiotNavigationController] pushViewController: is pushing same view controller %@\n%@", viewController, [NSThread callStackSymbols]);
+        MXLogDebug(@"[RiotNavigationController] pushViewController: is pushing same view controller %@\n%@", viewController, [NSThread callStackSymbols]);
         return;
     }
     [super pushViewController:viewController animated:animated];

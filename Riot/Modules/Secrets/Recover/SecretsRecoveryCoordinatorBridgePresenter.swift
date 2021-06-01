@@ -91,7 +91,7 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
             return
         }
         
-        NSLog("[SecretsRecoveryCoordinatorBridgePresenter] Dismiss")
+        MXLog.debug("[SecretsRecoveryCoordinatorBridgePresenter] Dismiss")
         
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
