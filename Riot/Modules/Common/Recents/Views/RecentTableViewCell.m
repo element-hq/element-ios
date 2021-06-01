@@ -88,33 +88,19 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     {
         // Report computed values as is
         self.roomTitle.text = roomCellData.roomDisplayname;
-        MXWeakify(self);
-        [roomCellData lastEventDateString:^(NSString *dateString) {
-            MXStrongifyAndReturnIfNil(self);
-            self.lastEventDate.text = dateString;
-        }];
+        self.lastEventDate.text = roomCellData.lastEventDate;
         
         // Manage lastEventAttributedTextMessage optional property
-        if ([roomCellData respondsToSelector:@selector(lastEventAttributedText:)])
+        if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
-            MXWeakify(self);
-            [roomCellData lastEventAttributedText:^(NSAttributedString *attributedText) {
-                MXStrongifyAndReturnIfNil(self);
-                // Force the default text color for the last message (cancel highlighted message color)
-                NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
-                [lastEventDescription addAttribute:NSForegroundColorAttributeName
-                                             value:ThemeService.shared.theme.textSecondaryColor
-                                             range:NSMakeRange(0, lastEventDescription.length)];
-                self.lastEventDescription.attributedText = lastEventDescription;
-            }];
+            // Force the default text color for the last message (cancel highlighted message color)
+            NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
+            [lastEventDescription addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.textSecondaryColor range:NSMakeRange(0, lastEventDescription.length)];
+            self.lastEventDescription.attributedText = lastEventDescription;
         }
         else
         {
-            MXWeakify(self);
-            [roomCellData lastEventText:^(NSString *text) {
-                MXStrongifyAndReturnIfNil(self);
-                self.lastEventDescription.text = text;
-            }];
+            self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
         self.unsentImageView.hidden = roomCellData.roomSummary.room.sentStatus == RoomSentStatusOk;
