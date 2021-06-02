@@ -1311,3 +1311,13 @@
 // Chat
 "room_slide_to_end_group_call" = "Glid för att avsluta samtalet för alla";
 "callbar_only_single_active_group" = "Tryck för att gå med i gruppsamtalet (%@)";
+"space_beta_announce_information" = "Utrymmen är ett nytt sätt att gruppera rum och personer. De finns inte på iOS än, men du kan använda dem på webben och skrivbord.";
+"space_beta_announce_subtitle" = "Den nya versionen av gemenskaper";
+"space_beta_announce_title" = "Utrymmen kommer snart";
+"space_beta_announce_badge" = "BETA";
+"space_feature_unavailable_information" = "Utrymmen är ett nytt sätt att gruppera rum och personer.\n\nDe kommer att finnas här snart. För tillfället, om du går med i ett på en annan plattform så kommer du komma åt rum som går med i här.";
+"space_feature_unavailable_subtitle" = "Utrymmen finns inte på iOS än, men du kan använde dem på webben och skrivbord";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Utrymmen är inte här än";
