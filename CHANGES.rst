@@ -18,7 +18,8 @@ Changes to be released in next version
  * 
 
 🗣 Translations
- * 
+ * Fix missing translation files for Icelandic.
+ * Enable Esperanto, Portuguese (Brazil), Kabyle, Norwegian Bokmål (nb), Swedish, Japanese and Welsh.
     
 🧱 Build
  * 

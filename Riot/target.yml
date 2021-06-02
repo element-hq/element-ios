@@ -121,4 +121,27 @@ targets:
     - path: Assets/et.lproj/InfoPlist.strings
     - path: Assets/et.lproj/Localizable.strings
     - path: Assets/et.lproj/Vector.strings
+    - path: Assets/is.lproj/InfoPlist.strings
+    - path: Assets/is.lproj/Localizable.strings
     - path: Assets/is.lproj/Vector.strings
+    - path: Assets/eo.lproj/InfoPlist.strings
+    - path: Assets/eo.lproj/Localizable.strings
+    - path: Assets/eo.lproj/Vector.strings
+    - path: Assets/pt_BR.lproj/InfoPlist.strings
+    - path: Assets/pt_BR.lproj/Localizable.strings
+    - path: Assets/pt_BR.lproj/Vector.strings
+    - path: Assets/kab.lproj/InfoPlist.strings
+    - path: Assets/kab.lproj/Localizable.strings
+    - path: Assets/kab.lproj/Vector.strings
+    - path: Assets/nb-NO.lproj/InfoPlist.strings
+    - path: Assets/nb-NO.lproj/Localizable.strings
+    - path: Assets/nb-NO.lproj/Vector.strings
+    - path: Assets/sv.lproj/InfoPlist.strings
+    - path: Assets/sv.lproj/Localizable.strings
+    - path: Assets/sv.lproj/Vector.strings
+    - path: Assets/ja.lproj/InfoPlist.strings
+    - path: Assets/ja.lproj/Localizable.strings
+    - path: Assets/ja.lproj/Vector.strings
+    - path: Assets/cy.lproj/InfoPlist.strings
+    - path: Assets/cy.lproj/Localizable.strings
+    - path: Assets/cy.lproj/Vector.strings
