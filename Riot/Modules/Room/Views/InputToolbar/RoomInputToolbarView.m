@@ -35,10 +35,12 @@ const CGFloat kActionMenuAttachButtonSpringDamping = .45;
 const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
-@interface RoomInputToolbarView()
+@interface RoomInputToolbarView() <VoiceRecordViewDelegate>
 {
     // The intermediate action sheet
     UIAlertController *actionSheet;
+    
+    VoiceRecordView *voiceRecordView;
 }
 
 @end
@@ -75,6 +77,13 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
 
     self.isEncryptionEnabled = _isEncryptionEnabled;
+    
+    voiceRecordView = [VoiceRecordView instanceFromNib];
+    voiceRecordView.delegate = self;
+    
+    voiceRecordView.frame = self.voiceRecorderContainerView.bounds;
+    voiceRecordView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.voiceRecorderContainerView addSubview:voiceRecordView];
 }
 
 #pragma mark - Override MXKView
@@ -127,6 +136,9 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.inputContextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
     [self.actionsBar updateWithTheme:ThemeService.shared.theme];
+    
+    self.voiceRecorderContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    [voiceRecordView updateWithTheme:ThemeService.shared.theme];
 }
 
 #pragma mark -
@@ -358,18 +370,10 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 {
     self.actionMenuOpened = NO;
     
-    if (textMessage.length)
-    {
-        self.rightInputToolbarButton.alpha = 1;
-        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
-    }
-    else
-    {
-        self.rightInputToolbarButton.alpha = 0;
-        self.messageComposerContainerTrailingConstraint.constant = 12;
-    }
-    
-    [self layoutIfNeeded];
+    [UIView animateWithDuration:.15 animations:^{
+        self.rightInputToolbarButton.alpha = textMessage.length ? 1 : 0;
+        self.voiceRecorderContainerView.alpha = textMessage.length ? 0 : 1;
+    }];
 }
 
 #pragma mark - properties
@@ -430,6 +434,15 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     // TODO Custom here the validation screen for each available item
     
     [super paste:sender];
+}
+
+#pragma mark - VoiceRecordViewDelegate
+
+- (void)voiceRecordViewExpandedStateDidChange:(VoiceRecordView * _Nonnull)voiceRecordView {
+    [UIView animateWithDuration:voiceRecordView.expandAnimationDuration animations:^{
+        self.voiceRecorderContainerWidthConstraint.constant = voiceRecordView.isExpanded ? self.bounds.size.width : 48;
+        [self layoutIfNeeded];
+    }];
 }
 
 @end
