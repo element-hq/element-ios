@@ -294,7 +294,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         guard self.masterTabBarController.mxSessions.contains(matrixSession) == false else {
             return
         }
-        NSLog("[TabBarCoordinator] masterTabBarController.addMatrixSession")
+        MXLog.debug("[TabBarCoordinator] masterTabBarController.addMatrixSession")
         self.masterTabBarController.addMatrixSession(matrixSession)
     }
     
@@ -303,7 +303,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         guard self.masterTabBarController.mxSessions.contains(matrixSession) else {
             return
         }
-        NSLog("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
+        MXLog.debug("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
         self.masterTabBarController.removeMatrixSession(matrixSession)
     }
 }

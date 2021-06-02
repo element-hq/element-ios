@@ -63,3 +63,11 @@ type_name:
   max_length: # warning and error
     warning: 150
     error: 1000
+
+custom_rules:
+  ns_log_deprecation:
+    regex: "NSLog"
+    match_kinds: identifier
+    message: "MXLog should be used instead of NSLog"
+    severity: error
+
