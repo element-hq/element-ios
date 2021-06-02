@@ -103,6 +103,7 @@ internal enum Asset {
     internal static let actionFile = ImageAsset(name: "action_file")
     internal static let actionMediaLibrary = ImageAsset(name: "action_media_library")
     internal static let actionSticker = ImageAsset(name: "action_sticker")
+    internal static let actionVoiceMessage = ImageAsset(name: "action_voice_message")
     internal static let error = ImageAsset(name: "error")
     internal static let errorMessageTick = ImageAsset(name: "error_message_tick")
     internal static let newClose = ImageAsset(name: "new_close")
