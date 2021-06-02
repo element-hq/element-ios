@@ -160,7 +160,7 @@
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet.";
 "room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren.";
 "room_prompt_resend" = "alle erneut senden";
-"room_prompt_cancel" = "alles abbrechen";
+"room_prompt_cancel" = "Alles abbrechen";
 "room_resend_unsent_messages" = "Ungesendete Nachrichten erneut senden";
 "room_delete_unsent_messages" = "Lösche ungesendete Nachrichten";
 "room_event_action_copy" = "Kopieren";
@@ -1308,8 +1308,8 @@
 "call_actions_unhold" = "Fortsetzen";
 "event_formatter_call_back" = "Zurückrufen";
 "event_formatter_call_you_declined" = "Du lehntest diesen Anruf ab";
-"event_formatter_call_you_currently_in" = "Du bist aktuell in diesem Anruf";
-"event_formatter_call_has_ended" = "Dieser Anruf ist beendet";
+"event_formatter_call_you_currently_in" = "Aktueller Anruf";
+"event_formatter_call_has_ended" = "%@ beendet";
 "event_formatter_call_video" = "Videoanruf";
 "event_formatter_call_voice" = "Sprachanruf";
 "settings_show_NSFW_public_rooms" = "Öffentliche Räume mit anstößigen Inhalte anzeigen";
@@ -1333,3 +1333,32 @@
 "room_accessibility_video_call" = "Videoanruf";
 "room_message_replying_to" = "%@ anworten";
 "room_message_editing" = "Bearbeitung";
+"space_beta_announce_information" = "Spaces are a new way to group rooms and people. Bald werden sie auch auf iOS verfügbar sein, bis dahin kannst du sie schon auf Element Web/Desktop testen.";
+"space_feature_unavailable_information" = "Wir haben Spaces entwickelt, damit ihr eure vielen Räume besser organisieren könnt.\n\nBald werden sie auch auf iOS verfügbar sein, bis dahin kannst du sie schon auf Element Web/Desktop testen. Alle Räume die du dort betrittst, sind natürlich auch hier verfügbar.";
+"space_beta_announce_subtitle" = "Die verbesserte Version von Communities";
+"space_beta_announce_title" = "Spaces sind bald verfügbar";
+"space_beta_announce_badge" = "Beta (in Entwicklung)";
+"space_feature_unavailable_subtitle" = "Spaces sind auf iOS noch nicht verfügbar. Du kannst sie aber schon auf Element Web oder Desktop ausprobieren";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Spaces sind noch in der Entwicklung und werden bald verfügbar sein";
+"event_formatter_group_call_incoming" = "%@ in %@";
+"event_formatter_group_call_leave" = "Verlassen";
+"event_formatter_group_call_join" = "Beitreten";
+"event_formatter_group_call" = "Gruppenanruf";
+"event_formatter_call_end_call" = "Anruf beenden";
+"event_formatter_call_retry" = "Erneut versuchen";
+"event_formatter_call_decline" = "Ablehnen";
+"event_formatter_call_connection_failed" = "Verbindung fehlgeschlagen";
+"event_formatter_call_you_missed" = "Anruf verpasst";
+"event_formatter_call_ringing" = "Läuten…";
+"event_formatter_call_connecting" = "Verbinden…";
+"settings_labs_enable_ringing_for_group_calls" = "Bei Gruppenanrufen klingeln";
+"room_no_privileges_to_create_group_call" = "Du musst Admin oder Moderator sein, um einen Anruf zu starten.";
+"room_join_group_call" = "Beitreten";
+
+// Chat
+"room_slide_to_end_group_call" = "Wische, um den Anruf für alle zu beenden";
+"callbar_only_single_active_group" = "Klicke, um den Anruf beizutreten";
+"event_formatter_call_answer" = "Annehmen";
