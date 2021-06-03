@@ -35,13 +35,14 @@ const CGFloat kActionMenuAttachButtonSpringDamping = .45;
 const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
-@interface RoomInputToolbarView() <VoiceRecordViewDelegate>
+@interface RoomInputToolbarView()
 {
     // The intermediate action sheet
     UIAlertController *actionSheet;
-    
-    VoiceRecordView *voiceRecordView;
 }
+
+@property (nonatomic, weak) IBOutlet UIView *voiceMessageToolbarContainerView;
+@property (nonatomic, strong) VoiceMessageToolbarView *voiceMessageToolbarView;
 
 @end
 
@@ -78,12 +79,12 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
-    voiceRecordView = [VoiceRecordView instanceFromNib];
-    voiceRecordView.delegate = self;
+    self.voiceMessageToolbarView = [VoiceMessageToolbarView instanceFromNib];
+    self.voiceMessageToolbarView.frame = self.voiceMessageToolbarContainerView.bounds;
+    self.voiceMessageToolbarView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.voiceMessageToolbarContainerView addSubview:self.voiceMessageToolbarView];
     
-    voiceRecordView.frame = self.voiceRecorderContainerView.bounds;
-    voiceRecordView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.voiceRecorderContainerView addSubview:voiceRecordView];
+    [self _updateUIWithTextMessage:nil animated:NO];
 }
 
 #pragma mark - Override MXKView
@@ -137,15 +138,14 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
     [self.actionsBar updateWithTheme:ThemeService.shared.theme];
     
-    self.voiceRecorderContainerView.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    [voiceRecordView updateWithTheme:ThemeService.shared.theme];
+    [self.voiceMessageToolbarView updateWithTheme:ThemeService.shared.theme];
 }
 
 #pragma mark -
 
 - (void)setTextMessage:(NSString *)textMessage
 {
-    [self updateSendButtonWithMessage:textMessage];
+    [self _updateUIWithTextMessage:textMessage animated:YES];
     [super setTextMessage:textMessage];
 }
 
@@ -302,7 +302,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *newText = [growingTextView.text stringByReplacingCharactersInRange:range withString:text];
-    [self updateSendButtonWithMessage:newText];
+    [self _updateUIWithTextMessage:newText animated:YES];
     
     return YES;
 }
@@ -366,16 +366,6 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [super destroy];
 }
 
-- (void)updateSendButtonWithMessage:(NSString *)textMessage
-{
-    self.actionMenuOpened = NO;
-    
-    [UIView animateWithDuration:.15 animations:^{
-        self.rightInputToolbarButton.alpha = textMessage.length ? 1 : 0;
-        self.voiceRecorderContainerView.alpha = textMessage.length ? 0 : 1;
-    }];
-}
-
 #pragma mark - properties
 
 - (void)setActionMenuOpened:(BOOL)actionMenuOpened
@@ -436,12 +426,15 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [super paste:sender];
 }
 
-#pragma mark - VoiceRecordViewDelegate
+#pragma mark - Private
 
-- (void)voiceRecordViewExpandedStateDidChange:(VoiceRecordView * _Nonnull)voiceRecordView {
-    [UIView animateWithDuration:voiceRecordView.expandAnimationDuration animations:^{
-        self.voiceRecorderContainerWidthConstraint.constant = voiceRecordView.isExpanded ? self.bounds.size.width : 48;
-        [self layoutIfNeeded];
+- (void)_updateUIWithTextMessage:(NSString *)textMessage animated:(BOOL)animated
+{
+    self.actionMenuOpened = NO;
+    
+    [UIView animateWithDuration:(animated ? 0.15f : 0.0f) animations:^{
+        self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
+        self.voiceMessageToolbarContainerView.alpha = textMessage.length ? 0.0f : 1.0;
     }];
 }
 
