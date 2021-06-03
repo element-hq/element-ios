@@ -68,9 +68,6 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet UIButton *inputContextButton;
 @property (weak, nonatomic) IBOutlet RoomActionsBar *actionsBar;
 
-@property (weak, nonatomic) IBOutlet UIView *voiceRecorderContainerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *voiceRecorderContainerWidthConstraint;
-
 /**
  Tell whether the filled data will be sent encrypted. NO by default.
  */
