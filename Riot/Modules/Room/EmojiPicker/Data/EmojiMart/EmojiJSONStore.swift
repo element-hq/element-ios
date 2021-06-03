@@ -53,7 +53,7 @@ extension EmojiMartStore: Decodable {
             do {
                 emojiItem = try emojisContainer.decode(EmojiItem.self, forKey: emojiKey)
             } catch {
-                print("[EmojiJSONStore] init(from decoder: Decoder) failed to parse emojiItem \(emojiKey) with error: \(error)")
+                MXLog.debug("[EmojiJSONStore] init(from decoder: Decoder) failed to parse emojiItem \(emojiKey) with error: \(error)")
                 emojiItem = nil
             }
             

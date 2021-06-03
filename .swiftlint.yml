@@ -66,8 +66,28 @@ type_name:
 
 custom_rules:
   ns_log_deprecation:
-    regex: "NSLog"
+    regex: "\\b(NSLog)\\b"
     match_kinds: identifier
-    message: "MXLog should be used instead of NSLog"
+    message: "MXLog should be used instead of NSLog()"
     severity: error
+
+  print_deprecation:
+    regex: "\\b(print)\\b"
+    match_kinds: identifier
+    message: "MXLog should be used instead of print()"
+    severity: error
+
+  print_ln_deprecation:
+    regex: "\\b(println)\\b"
+    match_kinds: identifier
+    message: "MXLog should be used instead of println()"
+    severity: error
+
+  os_log_deprecation:
+    regex: "\\b(os_log)\\b"
+    match_kinds: identifier
+    message: "MXLog should be used instead of os_log()"
+    severity: error
+
+
 
