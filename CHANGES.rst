@@ -9,7 +9,7 @@ Changes to be released in next version
  * Navigation: Start decoupling view controllers managed by MasterTabBarController (#3596 and #3618).
  * Jitsi: Include optional server name field on JitsiJWTPayloadContextMatrix.
  * CallPresenter: Add more logs for group calls.
- * MXRoomSummary: Adapt room summary changes on MatrixSDK & recent cell changes on MatrixKit (#4360).
+ * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
 
 🐛 Bugfix
  * buildRelease.sh: Make bundler operations in the cloned repository folder.
