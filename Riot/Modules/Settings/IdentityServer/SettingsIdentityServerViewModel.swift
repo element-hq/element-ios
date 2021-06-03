@@ -96,7 +96,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
         viewStateUpdate(.loading)
 
         self.checkIdentityServerValidity(identityServer: newIdentityServer) { (identityServerValidityResponse) in
-            print("[SettingsIdentityServerViewModel] checkCanAddIdentityServer: \(newIdentityServer). Validity: \(identityServerValidityResponse)")
+            MXLog.debug("[SettingsIdentityServerViewModel] checkCanAddIdentityServer: \(newIdentityServer). Validity: \(identityServerValidityResponse)")
 
             switch identityServerValidityResponse {
             case .success(let identityServerValidity):
@@ -119,7 +119,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
                                 switch response {
                                 case .success(let accessToken):
                                     guard let accessToken = accessToken else {
-                                        print("[SettingsIdentityServerViewModel] accessToken: Error: No access token")
+                                        MXLog.debug("[SettingsIdentityServerViewModel] accessToken: Error: No access token")
                                         viewStateUpdate(.error(SettingsIdentityServerViewModelError.unknown))
                                         return
                                     }

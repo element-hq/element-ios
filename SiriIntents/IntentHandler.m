@@ -43,11 +43,18 @@
         [_configuration setupSettings];
 
         // NSLog -> console.log file when not debugging the app
-        if (!isatty(STDERR_FILENO))
-        {
-            [MXLogger setSubLogName:@"siri"];
-            [MXLogger redirectNSLogToFiles:YES];
+        MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
+        configuration.logLevel = MXLogLevelVerbose;
+        configuration.logFilesSizeLimit = 0;
+        configuration.maxLogFilesCount = 10;
+        configuration.subLogName = @"siri";
+        
+        // Redirect NSLogs to files only if we are not debugging
+        if (!isatty(STDERR_FILENO)) {
+            configuration.redirectLogsToFiles = YES;
         }
+        
+        [MXLog configure:configuration];
     }
     return self;
 }

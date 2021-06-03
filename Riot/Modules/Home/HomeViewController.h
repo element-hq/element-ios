@@ -22,4 +22,6 @@
  */
 @interface HomeViewController : RecentsViewController <UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
++ (instancetype)instantiate;
+
 @end

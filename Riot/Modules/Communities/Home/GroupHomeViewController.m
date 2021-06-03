@@ -213,19 +213,19 @@
         // Trigger a refresh on the group summary.
         [self.mxSession updateGroupSummary:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group summary update failed %@", _group.groupId);
             
         }];
         // Trigger a refresh on the group members (ignore here the invited users).
         [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group members update failed %@", _group.groupId);
             
         }];
         // Trigger a refresh on the group rooms.
         [self.mxSession updateGroupRooms:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupHomeViewController] viewWillAppear: group rooms update failed %@", _group.groupId);
             
         }];
     }
@@ -670,7 +670,7 @@
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[GroupDetailsViewController] join group (%@) failed", _group.groupId);
+                MXLogDebug(@"[GroupDetailsViewController] join group (%@) failed", _group.groupId);
                 
                 if (weakSelf)
                 {
@@ -703,7 +703,7 @@
                 
             } failure:^(NSError *error) {
                 
-                NSLog(@"[GroupDetailsViewController] leave group (%@) failed", _group.groupId);
+                MXLogDebug(@"[GroupDetailsViewController] leave group (%@) failed", _group.groupId);
                 
                 if (weakSelf)
                 {
@@ -857,7 +857,7 @@
                 }
                 
             } failure:^(NSError *error) {
-                NSLog(@"[GroupHomeViewController] Error: The homeserver failed to resolve the room alias (%@)", roomIdOrAlias);
+                MXLogDebug(@"[GroupHomeViewController] Error: The homeserver failed to resolve the room alias (%@)", roomIdOrAlias);
             }];
         }
     }

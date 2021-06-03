@@ -1362,7 +1362,7 @@
 "less" = "Moins";
 "more" = "Plus";
 "switch" = "Basculer";
-"joined" = "Arrivé";
+"joined" = "Rejoint";
 "store_promotional_text" = "Application de messagerie et collaboration respectueuse de la vie privée, sur un réseau ouvert. Décentralisée pour vous donner le contrôle. Pas d’extraction de vos données, pas de porte dérobée, pas d’accès réservé à des tiers.";
 "room_details_search" = "Rechercher dans le salon";
 "room_details_integrations" = "Intégrations";
@@ -1389,3 +1389,13 @@
 // Chat
 "room_slide_to_end_group_call" = "Faites glisser pour mettre fin à l’appel pour tout le monde";
 "callbar_only_single_active_group" = "Appuyez pour rejoindre l’appel de groupe (%@)";
+"space_beta_announce_information" = "Les espaces sont une nouvelle manière de grouper les salons et les personnes. Ils ne sont pas pris en charge sur iOS pour l’instant, mais vous pouvez les utiliser dès à présent sur l’application web ou de bureau.";
+"space_beta_announce_subtitle" = "Le futur des communautés";
+"space_beta_announce_title" = "Les espaces seront bientôt pris en charge";
+"space_beta_announce_badge" = "BÊTA";
+"space_feature_unavailable_information" = "Les espaces sont une nouvelle manière de grouper les salons et les personnes.\n\nIls seront bientôt pris en charge ici. Pour l’instant, si vous en rejoignez un depuis une autre plateforme, vous pourrez accéder à tous ses salons ici.";
+"space_feature_unavailable_subtitle" = "Les espaces ne sont pas pris en charge sur iOS pour l’instant, mais vous pouvez les utiliser dès à présent sur l’application web ou de bureau";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Les espaces ne sont pas encore pris en charge";

@@ -179,7 +179,7 @@
 "room_participants_action_start_video_call" = "发起视频通话";
 "room_participants_action_mention" = "提及";
 // Chat
-"room_jump_to_first_unread" = "跳到第一条未读信息";
+"room_jump_to_first_unread" = "跳到未读信息";
 "room_new_message_notification" = "%d 条未读消息";
 "room_new_messages_notification" = "%d 条未读消息";
 "room_one_user_is_typing" = "%@ 正在输入…";
@@ -328,8 +328,8 @@
 "room_details_new_address_placeholder" = "添加新地址（例如 #foo%@）";
 "room_details_addresses_invalid_address_prompt_title" = "别名格式无效";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ 不是一个有效的别名格式";
-"room_details_addresses_disable_main_address_prompt_title" = "主地址警告";
-"room_details_addresses_disable_main_address_prompt_msg" = "您没有指定主地址。此聊天室的默认主地址会随机选取";
+"room_details_addresses_disable_main_address_prompt_title" = "主要地址警告";
+"room_details_addresses_disable_main_address_prompt_msg" = "您没有指定主要地址。此聊天室的默认主要地址会随机选取";
 "room_details_banned_users_section" = "封禁的用户";
 "room_details_advanced_section" = "高级";
 "room_details_advanced_room_id" = "聊天室 ID：";
@@ -347,11 +347,11 @@
 "room_details_fail_to_update_history_visibility" = "更新历史可见性失败";
 "room_details_fail_to_add_room_aliases" = "添加新聊天室地址失败";
 "room_details_fail_to_remove_room_aliases" = "移除聊天室地址失败";
-"room_details_fail_to_update_room_canonical_alias" = "更新主地址失败";
+"room_details_fail_to_update_room_canonical_alias" = "更新主要地址失败";
 "room_details_fail_to_enable_encryption" = "为此聊天室启用加密失败";
 "room_details_save_changes_prompt" = "您要保存更改吗？";
-"room_details_set_main_address" = "设置为主地址";
-"room_details_unset_main_address" = "取消设置主地址";
+"room_details_set_main_address" = "设置为主要地址";
+"room_details_unset_main_address" = "取消设置主要地址";
 "room_details_copy_room_id" = "复制聊天室 ID";
 "room_details_copy_room_address" = "复制聊天室地址";
 "room_details_copy_room_url" = "复制聊天室 URL";
@@ -1136,7 +1136,7 @@
 "callbar_active_and_single_paused" = "1 个进行中通话（%@）· 1 个已暂停通话";
 
 // Call Bar
-"callbar_only_single_active" = "进行中通话（%@）";
+"callbar_only_single_active" = "轻按返回通话（%@）";
 "callbar_only_multiple_paused" = "%@ 个已暂停通话";
 "callbar_only_single_paused" = "已暂停通话";
 "callbar_return" = "返回";
@@ -1246,3 +1246,157 @@
 
 "room_info_list_one_member" = "1 位成员";
 "security_settings_secure_backup" = "安全备份";
+"space_beta_announce_information" = "空间是一种将聊天室和人们进行分组的新方式。它们在 iOS 上尚不可用，但你现在可以在网页端和桌面端上使用。";
+"space_beta_announce_subtitle" = "新版社群";
+"space_beta_announce_title" = "空间即将到来";
+"space_beta_announce_badge" = "测试版";
+"space_feature_unavailable_information" = "空间是一种将将聊天室和人们进行分组的新方式。\n\n他们即将到来。现在，如果你在另一个平台上加入其中一个空间，你将能够进入你在这里加入的任何聊天室。";
+"space_feature_unavailable_subtitle" = "空间在 iOS 上尚不可用，但你现在可以在网页端和桌面端上使用它";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "此处不存在空间";
+"room_intro_cell_information_multiple_dm_sentence2" = "仅有你在此对话中，除非你邀请其他人加入。";
+"room_intro_cell_information_dm_sentence2" = "仅有你们两个在此对话中，没有其他人可以加入。";
+"room_intro_cell_information_dm_sentence1_part1" = "这是你私信的开始： ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " 让大家知道此聊天室是做什么的。";
+"room_intro_cell_information_room_sentence1_part1" = "这是一切的开始： ";
+"invite_friends_share_text" = "嗨，在 %@ 跟我说：%@";
+"favourites_empty_view_information" = "你可以选择几种方法 - 最快只需按住。点击星星，它们会自动出现在这里，以确保安全。";
+"home_empty_view_information" = "团队、朋友和组织的一体化安全聊天应用程序。 点击下面的「+」按钮添加人员和聊天室。";
+"create_room_show_in_directory" = "在目录中显示聊天室";
+"create_room_section_footer_type" = "人们只有在收到聊天室邀请后才可以进入私有房间。";
+"create_room_type_public" = "公开聊天室";
+"create_room_type_private" = "私有聊天室";
+"biometrics_cant_unlocked_alert_message_login" = "重新登录";
+"biometrics_cant_unlocked_alert_message_x" = "若要解锁，请使用 %@ 或重新登录并启用 %@";
+"biometrics_cant_unlocked_alert_title" = "无法解锁应用程序";
+"biometrics_usage_reason" = "访问应用程序需要身份验证";
+"biometrics_setup_subtitle" = "节省自己的时间";
+"pin_protection_kick_user_alert_message" = "错误次数过多，你已被登出";
+"pin_protection_explanatory" = "设置 PIN 允许你保护像消息和联系人等数据，因此只有在应用程序开始时输入 PIN，只能访问它们。";
+"pin_protection_not_allowed_pin" = "出于安全原因，此 PIN 不可用。请尝试其他 PIN";
+"pin_protection_settings_change_pin" = "更改 PIN";
+"pin_protection_settings_enable_pin" = "启用 PIN";
+"pin_protection_settings_enabled_forced" = "PIN 已启用";
+"pin_protection_settings_section_footer" = "要重置你的密码，你需要重新登录并创建一个新的。";
+"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_mismatch_too_many_times_error_message" = "如果你没记不住你的 PIN，点击忘记密码按钮。";
+"pin_protection_mismatch_error_title" = "PIN 不匹配";
+"pin_protection_reset_alert_message" = "为重置你的 PIN，你将需要重新登录并创建新的";
+"pin_protection_reset_alert_title" = "重置 PIN";
+"pin_protection_forgot_pin" = "忘记 PIN";
+"pin_protection_enter_pin" = "输入你的 PIN";
+"pin_protection_confirm_pin_to_change" = "确认 PIN 并更改 PIN";
+"pin_protection_confirm_pin_to_disable" = "确认 PIN 并禁用 PIN";
+"pin_protection_confirm_pin" = "验证你的 PIN";
+"pin_protection_choose_pin" = "创建 PIN 以确保安全";
+"major_update_done_action" = "知道了";
+"major_update_information" = "我们很激动地宣布，我们改名了！你的应用程序是最新的，你已经登录了你的帐户。";
+"cross_signing_setup_banner_subtitle" = "更容易验证你的其他设备";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "设置加密";
+"secrets_reset_authentication_message" = "请输入你的帐户密码进行确认";
+"secrets_reset_warning_message" = "您将重新启动，没有历史记录，消息，受信任的设备或受信任的用户。";
+"secrets_reset_warning_title" = "如果你选择全部重置";
+"secrets_reset_information" = "仅当没有其他设备可用来验证此设备时，才执行此操作。";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "全部重置";
+"secrets_setup_recovery_passphrase_summary_information" = "记住你的安全短语。它可以用来解锁你的加密信息和数据。";
+"secrets_setup_recovery_passphrase_confirm_information" = "再次输入您的安全口令以确认。";
+"secrets_setup_recovery_passphrase_information" = "输入只有您知道的安全口令，用于保护您的服务器上的秘密。";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ 把它打印出来，储存在一个安全的地方\n✓ 把它保存在 USB 钥匙或备份驱动器上\n✓ 把它复制到你的个人云存储";
+"secrets_setup_recovery_key_storage_alert_title" = "保持安全";
+"secrets_setup_recovery_key_information" = "将恢复密钥保存在安全的地方。它可以用来解锁你的加密信息和数据。";
+"secrets_recovery_reset_action_part_2" = "全部重置";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "忘记或丢失了所有恢复选项？ ";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "检查其他验证功能……";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "开始使用安全备份";
+"secure_backup_setup_banner_subtitle" = "保护加密信息及数据的访问权";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "安全备份";
+"secure_key_backup_setup_cancel_alert_message" = "如果您现在取消，那么当您失去登录权限时也会丢失加密的信息和数据。\n\n您也可以通过设置菜单来建立保护备份以及管理您的密钥。";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "你确定吗？";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "删除";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "解锁";
+"secure_key_backup_setup_existing_backup_error_info" = "解锁它以在安全备份中复用它，或删除它以在安全备份中创建一个新的消息备份。";
+"secure_key_backup_setup_existing_backup_error_title" = "消息的备份已经存在";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "输入仅有您知道的安全口令，生成备份用的密钥。";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "使用安全口令";
+"secure_key_backup_setup_intro_use_security_key_info" = "生成安全密钥存储在安全的地方如密码管理器或保险箱。";
+"secure_key_backup_setup_intro_use_security_key_title" = "使用安全密钥";
+"secure_key_backup_setup_intro_info" = "通过在你的服务器上备份加密密钥防止丢失对加密消息和数据的访问。";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "安全备份";
+"bug_report_background_mode" = "继续在后台进行";
+"call_actions_unhold" = "恢复";
+"event_formatter_jitsi_widget_removed_by_you" = "你移除了网络电话会议";
+"event_formatter_jitsi_widget_added_by_you" = "你添加了网络电话会议";
+"event_formatter_widget_removed_by_you" = "你移除了挂件：%@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "你添加挂件：%@";
+"event_formatter_group_call_incoming" = "%@（来自 %@）";
+"event_formatter_group_call_leave" = "离开";
+"event_formatter_group_call_join" = "加入";
+"event_formatter_group_call" = "群组通话";
+"event_formatter_call_end_call" = "结束通话";
+"event_formatter_call_retry" = "重试";
+"event_formatter_call_answer" = "回答";
+"event_formatter_call_decline" = "取消";
+"event_formatter_call_back" = "回拨";
+"event_formatter_call_connection_failed" = "连接失败";
+"event_formatter_call_you_missed" = "你错过此通话";
+"event_formatter_call_you_declined" = "你拒绝了此通话";
+"event_formatter_call_you_currently_in" = "当前通话";
+"event_formatter_call_has_ended" = "结束 %@";
+"event_formatter_call_ringing" = "响铃中……";
+"event_formatter_call_connecting" = "连接中……";
+"event_formatter_call_video" = "视频通话";
+"event_formatter_call_voice" = "语音通话";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "此处没有启用加密。";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "此处已启用加密";
+"room_details_advanced_room_id_for_dm" = "ID：";
+"room_details_no_local_addresses_for_dm" = "此聊天室没有本地地址";
+"room_details_access_section_directory_toggle_for_dm" = "在聊天室列表中列出";
+"room_details_access_section_anyone_for_dm" = "任何知道此聊天室链接的人，除了访客";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "任何知道此聊天室链接的人，除了访客";
+"room_details_access_section_for_dm" = "谁可以访问此？";
+"room_details_room_name_for_dm" = "名称";
+"room_details_photo_for_dm" = "照片";
+"room_details_integrations" = "集成";
+"room_details_search" = "搜索聊天室";
+"room_details_title_for_dm" = "详细信息";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "此应用并不支持你的主服务器的认证机制。";
+"settings_labs_enable_ringing_for_group_calls" = "群组通话铃声";
+"room_multiple_typing_notification" = "%@ 和其他人";
+"room_no_privileges_to_create_group_call" = "你需要成为管理员或协管员以开始通话。";
+"room_join_group_call" = "加入";
+"room_accessibility_video_call" = "视频通话";
+"room_message_replying_to" = "正在回复 %@";
+"room_message_editing" = "编辑中";
+
+// Chat
+"room_slide_to_end_group_call" = "滑动结束所有人的通话";
+"callbar_only_single_active_group" = "轻点加入群组通话（%@）";

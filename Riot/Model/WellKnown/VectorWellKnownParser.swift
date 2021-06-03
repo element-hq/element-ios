@@ -26,7 +26,7 @@ final class VectorWellKnownParser {
             vectorWellKnown = try serializationService.deserialize(jsonDictionary)
         } catch {
             vectorWellKnown = nil
-            NSLog("[VectorWellKnownParser] Fail to parse application Well Known keys with error: \(error)")
+            MXLog.debug("[VectorWellKnownParser] Fail to parse application Well Known keys with error: \(error)")
         }
         
         return vectorWellKnown

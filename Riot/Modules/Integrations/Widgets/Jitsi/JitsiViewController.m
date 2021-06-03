@@ -125,7 +125,7 @@ static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
             }
             else
             {
-                NSLog(@"[JitsiVC] Failed to load widget: %@. Widget event: %@", widget, widget.widgetEvent);
+                MXLogDebug(@"[JitsiVC] Failed to load widget: %@. Widget event: %@", widget, widget.widgetEvent);
                 
                 if (failure)
                 {
@@ -162,7 +162,7 @@ static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
         }
     } failure:^(NSError * _Nonnull error) {
 
-        NSLog(@"[JitsiVC] Failed to load widget 2: %@. Widget event: %@", widget, widget.widgetEvent);
+        MXLogDebug(@"[JitsiVC] Failed to load widget 2: %@. Widget event: %@", widget, widget.widgetEvent);
 
         if (failure)
         {
@@ -316,7 +316,7 @@ static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
 {
     if (data[kJitsiDataErrorKey] != nil)
     {
-        NSLog(@"[JitsiViewController] conferenceTerminated - data: %@", data);
+        MXLogDebug(@"[JitsiViewController] conferenceTerminated - data: %@", data);
     }
     else
     {

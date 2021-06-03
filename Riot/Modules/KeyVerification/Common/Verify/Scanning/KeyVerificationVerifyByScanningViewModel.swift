@@ -174,7 +174,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
                 self.removePendingQRCodeTransaction()
             
                 if keyVerificationTransaction is MXOutgoingSASTransaction == false {
-                    NSLog("[KeyVerificationVerifyByScanningViewModel] SAS transaction should be outgoing")
+                    MXLog.debug("[KeyVerificationVerifyByScanningViewModel] SAS transaction should be outgoing")
                     self.unregisterTransactionDidStateChangeNotification()
                     self.update(viewState: .error(KeyVerificationVerifyByScanningViewModelError.unknown))
                 }
@@ -204,7 +204,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
         }
         
         guard self.keyVerificationRequest.requestId == transaction.transactionId else {
-            NSLog("[KeyVerificationVerifyByScanningViewModel] transactionDidStateChange: Not for our transaction (\(self.keyVerificationRequest.requestId)): \(transaction.transactionId)")
+            MXLog.debug("[KeyVerificationVerifyByScanningViewModel] transactionDidStateChange: Not for our transaction (\(self.keyVerificationRequest.requestId)): \(transaction.transactionId)")
             return
         }
         

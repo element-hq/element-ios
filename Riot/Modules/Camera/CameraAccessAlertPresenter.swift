@@ -36,7 +36,7 @@ final class CameraAccessAlertPresenter {
         let settingsAction = UIAlertAction(title: settingsActionTitle, style: .default, handler: { _ in
             UIApplication.shared.open(settingsURL, options: [:], completionHandler: { (succeed) in
                 if !succeed {
-                    print("[CameraPresenter] Fails to open settings")
+                    MXLog.debug("[CameraPresenter] Fails to open settings")
                 }
             })
         })

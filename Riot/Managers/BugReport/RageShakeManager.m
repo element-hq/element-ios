@@ -115,7 +115,7 @@ static RageShakeManager* sharedInstance = nil;
         && RiotSettings.shared.enableRageShake
         && !confirmationAlert)
     {
-        NSLog(@"[RageShakeManager] Start shaking with [%@]", [responder class]);
+        MXLogDebug(@"[RageShakeManager] Start shaking with [%@]", [responder class]);
         
         startShakingTimeStamp = [[NSDate date] timeIntervalSince1970];
         isShaking = YES;
@@ -124,7 +124,7 @@ static RageShakeManager* sharedInstance = nil;
 
 - (void)stopShaking:(UIResponder*)responder
 {
-    NSLog(@"[RageShakeManager] Stop shaking with [%@]", [responder class]);
+    MXLogDebug(@"[RageShakeManager] Stop shaking with [%@]", [responder class]);
     
     if (isShaking && [AppDelegate theDelegate].isAppForeground && !confirmationAlert
         && (([[NSDate date] timeIntervalSince1970] - startShakingTimeStamp) > RAGESHAKEMANAGER_MINIMUM_SHAKING_DURATION))

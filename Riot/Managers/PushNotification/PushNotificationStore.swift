@@ -46,14 +46,14 @@ final class PushNotificationStore: NSObject {
             do {
                 return try store.data(forKey: StoreKeys.pushToken)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when reading push token from store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when reading push token from store: \(error)")
                 return nil
             }
         } set {
             do {
                 try store.set(newValue, forKey: StoreKeys.pushToken)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when storing push token to the store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when storing push token to the store: \(error)")
             }
         }
     }

@@ -34,7 +34,7 @@
 "auth_password_dont_match" = "كَلِمَةُ المُرُورِ لَا تَتَطَابَق";
 "auth_untrusted_id_server" = "خادِمُ الهُويَّة غَيرُ مَوثُوقٍ بِه";
 "auth_phone_is_required" = "لَم يَتِمّ ضَبط خادِم هُويَّة لِذَلِك لا يُمكِنُكَ إضافَة رَقم هَاتِف لإعادَة تَعيِين كَلِمَة المُرُور الخَاصَّة بِكَ فِي المُستَقبَل.";
-"auth_email_is_required" = "لَم يَتِمّ ضَبط خادِم هُويَّة لِذَلِك لا يُمكِنُكَ إضافَة عُنوان بَريد إلِكتُرونيّ لإعادَة تَعيِين كَلِمَة المُرُور الخَاصَّة بِكَ فِي المُستَقبَل.";
+"auth_email_is_required" = "لَم يُضبَط خادِم هُويَّة لِذَلِك لا يُمكِنُكَ إضافَة عُنوان بَريد إلِكتُرونيّ لإعادَة تَعيِين كَلِمَة المُرُور الخَاصَّة بِكَ فِي المُستَقبَل.";
 "auth_phone_in_use" = "رَقم الهَاتِف هَذَا مُستَخدَمٌ بِالفِعل";
 "auth_email_in_use" = "هَذَا البَريد الإلِكتُرونيّ مُستَخدَم بِالفِعل";
 "auth_missing_email_or_phone" = "عُنوان البَريد إلِكتُرونيّ مَفقُود أو رَقم الهَاتِف";
@@ -144,3 +144,94 @@
 "auth_softlogout_clear_data_message_1" = "تَحذير: بَيَانَاتُكَ الشَّخصِيَّة (بِمَا فِي ذَلِكَ مَفاتيحُ التَّعمِيَة) لَا تَزَالُ مُخَزَنَةً عَلَى هَذَا الجِّهاز.";
 "auth_softlogout_clear_data" = "مَحوُ البَيَانَاتِ الشَّخصِيَّة";
 "auth_softlogout_recover_encryption_keys" = "سَجَّل الدُّخُول لِاِستِعادَة مَفاتيح التَّعمِيَة المُخَزَّنَة حَصرِيًّا عَلَى هَذَا الجِّهاز. أنتَ بِحاجةٍ لَهُم لِقِراءةِ جَمِيعِ رَسائِلكَ الآمِنَة عَلَى أيِّ جِهاز.";
+"room_creation_make_private" = "جَعلَها خَاصَّة";
+"room_creation_keep_private" = "إبقَائَها خَاصَّة";
+"room_creation_make_public_prompt_msg" = "هَل أنتَ مُتَأكِّدٌ أنَّكَ تُريدُ جَعلَ هَذِهِ المُحادَثَةَ عَامَّة؟ يُمكِنُ لَأيِّ شَخصٍ قِراءَةَ رَسائِلكِ وَالاِنضِمامِ إلَى المُحادَثَة.";
+"room_creation_make_public_prompt_title" = "جَعلَ هَذِهِ المُحادَثَةَ عَامَّة؟";
+"room_creation_make_public" = "جَعلَها عَامَّة";
+"room_creation_public_room" = "هَذِهِ المُحادَثَةُ عَامَّة";
+"room_creation_private_room" = "هَذِهِ المُحادَثَةُ خَاصَّة";
+"room_creation_appearance_picture" = "صُوَرةُ المُحادَثَة (اِختياري)";
+
+// Errors
+"error_user_already_logged_in" = "يَبدُو أنَّكَ تُحاوِلُ الاِتِصَالَ بِخَادِمٍ رَئيسٍ آخَر. هَل تُرِيدُ تَسجيلَ الخُرُوج؟";
+"social_login_button_title_sign_up" = "الاِشتِراك بِوَاسِطَةِ %@";
+"social_login_button_title_sign_in" = "تَسجيلُ الدُّخُولِ بِوَسِطَةِ %@";
+"social_login_button_title_continue" = "الاِستِمرار مَع %@";
+"social_login_list_title_sign_up" = "أَو";
+"social_login_list_title_sign_in" = "أَو";
+
+// Social login
+
+"social_login_list_title_continue" = "الاِستِمرار مَع";
+"auth_softlogout_clear_data_sign_out_msg" = "هَل أنتَ مُتأكِّدٌ أنَّكَ تُرِيدُ مَحوَ كَافَّةِ البَيَانَاتِ المُخَزَنَةِ حَاليًّا عَلَى هَذَا الجِهَاز؟ سَجِّل الدُّخُولَ مَرَةً أُخرَى لِلوصُولِ إلَى بَيَانَاتِ حِسَابِك وَرَسَائِلك.";
+"room_participants_invite_prompt_title" = "تَأكيد";
+"room_participants_remove_prompt_title" = "تَأكيد";
+"room_participants_leave_prompt_msg_for_dm" = "هَل أنتَ مُتَأكِّدٌ أنَّكَ تُريدُ المُغادَرَة؟";
+"room_participants_leave_prompt_msg" = "هَل أنتَ مُتَأكِّدٌ أنَّكَ تُريدُ المُغادَرَةَ مِنَ الغُرفَة؟";
+"room_participants_leave_prompt_title_for_dm" = "المُغادَرَة";
+"room_participants_leave_prompt_title" = "مُغادَرَةُ الغُرفَة";
+"room_participants_multi_participants" = "عَدَدُ %d مِنَ المُشَارِكُين";
+"room_participants_one_participant" = "مُشَارِكٌ وَاحِد";
+"room_participants_add_participant" = "إضَافَةُ مُشَارِك";
+
+// Chat participants
+"room_participants_title" = "المُشَارِكُون";
+"contacts_user_directory_offline_section" = "دَلِيلُ المُستَخدِم (غَيرُ مُتَّصِل)";
+"contacts_user_directory_section" = "دَلِيلُ المُستَخدِم";
+"contacts_address_book_permission_denied" = "أنتَ لَم تَسمَح لِـElement بِالوصُولِ إلَى جِهاتِ الاِتِّصالِ المَحَلِّيَّةِ الخَاصَّةِ بِك";
+"contacts_address_book_permission_required" = "يُطلَبُ الإِذنُ لِلوصُلِ إلَى جِهاتِ الاِتِّصالِ المَحَلِّيَّة";
+"contacts_address_book_no_contact" = "لَا تُوجَدُ جِهاتُ الاِتِّصالٍ المَحَلِّيَّة";
+"contacts_address_book_no_identity_server" = "لَم يُضبَط خادِم هُويَّة";
+"contacts_address_book_matrix_users_toggle" = "مُستَخدِمُو Matrix فَقَط";
+
+// Contacts
+"contacts_address_book_section" = "جِهاتُ الاِتِّصال المَحَلِّيَّة";
+"directory_search_fail" = "فَشَلَ جَلبُ البَيَانَات";
+"directory_searching_title" = "بَحثُ الدَّلِيلِ جَارٍ…";
+"directory_search_results_more_than" = ">عُثِرَ عَلَى %tu نَتِيجَة لِـ %@";
+"directory_search_results" = "عُثِرَ عَلَى %tu نَتِيجَة لِـ %@";
+"directory_search_results_title" = "تَصَفُحُ نَتائِجِ الدَّلِيل";
+"directory_cell_description" = "%tu غُرَف";
+
+// Directory
+"directory_cell_title" = "تَصَفُحُ الدَّلِيل";
+"search_in_progress" = "البَحثُ جَارٍ…";
+"people_no_conversation" = "لَا تُوجَدُ مُحادَثَات";
+"search_no_result" = "لَا تُوجَدُ نَتائِج";
+"search_people_placeholder" = "البَحثُ بِواسِطَةِ مُعَرِّفِ المُستَخدِم، الاِسم أو البَريد الإلِكتُرونيّ";
+"search_default_placeholder" = "البَحث";
+"search_files" = "المَلَفَّات";
+"search_people" = "الأشخَاص";
+"search_messages" = "الرَسائِل";
+
+// Search
+"search_rooms" = "الغُرَف";
+"group_section" = "المُجتَمَعَات";
+
+// Groups tab
+"group_invite_section" = "الدَّعَوات";
+"rooms_empty_view_information" = "الغُرَفُ رَائِعَةٌ لِأيِّ مُحادَثَةٍ جَماعِيِّة، خَاصَّةً كَانَت أو عَامَّة. اِضغَط عَلَى + لِلعُثورِ عَلَى غُرَفٍ مَوجودَةٍ أو أَنشِئ غُرَفًا جَديدَة.";
+"rooms_empty_view_title" = "غُرَف";
+
+// Rooms tab
+"room_directory_no_public_room" = "لَا تُوجَدُ غُرَفٌ عَامَّةُ مُتاحَة";
+"people_empty_view_information" = "المُحادَثَةُ الآمنةُ مَعَ أيِّ شَخص. اِضغَط عَلَى + لِبدءِ إضافَة أشخَاص.";
+"people_empty_view_title" = "الأشخَاص";
+"people_conversation_section" = "المُحادَثَات";
+
+// People tab
+"people_invites_section" = "الدَّعَوات";
+"room_recents_join_room_prompt" = "اُكتب مُعَرِّف غُرفَة أو الاِسم البَديل لِلغُرفَة";
+"room_recents_join_room_title" = "الاِنضِمام إلَى غُرفَة";
+"room_recents_join_room" = "الاِنضِمامُ لِلغُرفَة";
+"room_recents_invites_section" = "الدَّعَوات";
+"room_recents_server_notice_section" = "تَنبيهاتُ النِّظام";
+"room_recents_low_priority_section" = "أولَويَّةٌ مُنخَفِضَة";
+"room_recents_directory_section_network" = "الشَّبَكَة";
+
+// Room recents
+"room_recents_directory_section" = "دَلِيلُ الغُرَف";
+"room_creation_error_invite_user_by_email_without_identity_server" = "لَم يُضبَط خادِم هُويَّة لِذَلِكَ لَا يُمكِنُكَ إضافَة مُشَارِك بالبَريد الإلِكتُرونيّ.";
+"room_creation_invite_another_user" = "البَحث / الدَعوة عَن طَريق مُعَرِّف المُستَخدِم، الاِسم أو البَريد الإلِكتُرونيّ";
+"room_creation_wait_for_creation" = "يَجرِي إنشاء غُرفَة بِالفِعل. يُرجَى الاِنتِظار.";

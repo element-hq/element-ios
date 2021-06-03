@@ -121,7 +121,7 @@
         
     } failure:^(NSError * _Nonnull error) {
         
-        NSLog(@"[WidgetPickerVC] Get widget URL failed with error: %@", error);
+        MXLogDebug(@"[WidgetPickerVC] Get widget URL failed with error: %@", error);
         
         if (canPresentServiceTerms
             && [error.domain isEqualToString:WidgetManagerErrorDomain]
@@ -147,7 +147,7 @@
     
     WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:widget.mxSession.myUser.userId];
     
-    NSLog(@"[WidgetVC] presentTerms for %@", config.baseUrl);
+    MXLogDebug(@"[WidgetVC] presentTerms for %@", config.baseUrl);
     
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
                                                                                                                                                         serviceType:MXServiceTypeIntegrationManager

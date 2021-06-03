@@ -140,7 +140,7 @@ final class SSOAuthenticationPresenter: NSObject {
                 if let loginToken = self.ssoAuthenticationService.loginToken(from: successURL) {
                     self.delegate?.ssoAuthenticationPresenter(self, authenticationSucceededWithToken: loginToken)
                 } else {
-                    NSLog("SSOAuthenticationPresenter: Login token not found")
+                    MXLog.debug("SSOAuthenticationPresenter: Login token not found")
                     self.delegate?.ssoAuthenticationPresenter(self, authenticationDidFailWithError: SSOAuthenticationServiceError.tokenNotFound)
                 }
             }

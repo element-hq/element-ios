@@ -97,12 +97,12 @@ final class ReactionHistoryViewModel: ReactionHistoryViewModelType {
     
     private func loadMoreHistory() {
         guard self.canLoadMoreHistory() else {
-            print("[ReactionHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
+            MXLog.debug("[ReactionHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
             return
         }
         
         guard self.operation == nil else {
-            print("[ReactionHistoryViewModel] loadMoreHistory: operation already pending")
+            MXLog.debug("[ReactionHistoryViewModel] loadMoreHistory: operation already pending")
             return
         }
         

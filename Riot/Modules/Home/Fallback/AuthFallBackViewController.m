@@ -83,7 +83,7 @@ NSString *FallBackViewControllerJavascriptOnLogin = @"window.matrixLogin.onLogin
                                                        forDataRecords:@[record]
                                                     completionHandler:^
               {
-                  NSLog(@"[AuthFallBackViewController] clearCookies: Cookies for %@ deleted successfully", record.displayName);
+                 MXLogDebug(@"[AuthFallBackViewController] clearCookies: Cookies for %@ deleted successfully", record.displayName);
               }];
          }
      }];

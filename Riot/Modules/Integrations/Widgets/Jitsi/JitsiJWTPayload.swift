@@ -39,12 +39,14 @@ struct JitsiJWTPayloadContext: Codable {
 struct JitsiJWTPayloadContextMatrix {
     let token: String
     let roomId: String
+    let serverName: String?
 }
 
 extension JitsiJWTPayloadContextMatrix: Codable {
     enum CodingKeys: String, CodingKey {
         case token
         case roomId = "room_id"
+        case serverName = "server_name"
     }
 }
 

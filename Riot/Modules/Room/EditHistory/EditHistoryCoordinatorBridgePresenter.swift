@@ -91,7 +91,7 @@ final class EditHistoryCoordinatorBridgePresenter: NSObject {
 
     func createEventFormatter(session: MXSession) -> EventFormatter? {
         guard let formatter = EventFormatter(matrixSession: session) else {
-            print("[EditHistoryCoordinatorBridgePresenter] createEventFormatter: Cannot build formatter")
+            MXLog.debug("[EditHistoryCoordinatorBridgePresenter] createEventFormatter: Cannot build formatter")
             return nil
         }
 

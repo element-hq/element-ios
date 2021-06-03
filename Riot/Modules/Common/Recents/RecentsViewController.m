@@ -469,7 +469,7 @@
         }
         
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[RecentsViewController] Failed to join an invited room (%@)", room.roomId);
+        MXLogDebug(@"[RecentsViewController] Failed to join an invited room (%@)", room.roomId);
         [self presentRoomJoinFailedAlertForError:error completion:^{
             if (completion)
             {
@@ -491,7 +491,7 @@
             completion(YES);
         }
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[RecentsViewController] Failed to reject an invited room (%@)", room.roomId);
+        MXLogDebug(@"[RecentsViewController] Failed to reject an invited room (%@)", room.roomId);
         [[AppDelegate theDelegate] showErrorAsAlert:error];
         
         if (completion)
@@ -1171,7 +1171,7 @@
                                                                      
                                                                      // TODO GFO cancel pending uploads related to this room
                                                                      
-                                                                     NSLog(@"[RecentsViewController] Leave room (%@)", room.roomId);
+                                                                     MXLogDebug(@"[RecentsViewController] Leave room (%@)", room.roomId);
                                                                      
                                                                      [room leave:^{
                                                                          
@@ -1185,7 +1185,7 @@
                                                                          
                                                                      } failure:^(NSError *error) {
                                                                          
-                                                                         NSLog(@"[RecentsViewController] Failed to leave room");
+                                                                         MXLogDebug(@"[RecentsViewController] Failed to leave room");
                                                                          if (weakSelf)
                                                                          {
                                                                              typeof(self) self = weakSelf;
@@ -1274,7 +1274,7 @@
                     typeof(self) self = weakSelf;
                     [self stopActivityIndicator];
                     
-                    NSLog(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
+                    MXLogDebug(@"[RecentsViewController] Failed to update direct tag of the room (%@)", editedRoomId);
                     
                     // Notify the end user
                     NSString *userId = self.mainSession.myUser.userId; // TODO: handle multi-account
@@ -1835,7 +1835,7 @@
 {
     if (!self.self.mainSession)
     {
-        NSLog(@"[RecentsViewController] Fail to show room directory, session is nil");
+        MXLogDebug(@"[RecentsViewController] Fail to show room directory, session is nil");
         return;
     }
     
@@ -1855,7 +1855,7 @@
 {
     if (!self.recentsDataSource)
     {
-        NSLog(@"[RecentsViewController] Fail to open public room, dataSource is not kind of class MXKRecentsDataSource");
+        MXLogDebug(@"[RecentsViewController] Fail to open public room, dataSource is not kind of class MXKRecentsDataSource");
         return;
     }
     

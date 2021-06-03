@@ -49,4 +49,7 @@
  */
 @property (nonatomic) BOOL enableSearchBar;
 
+
++ (instancetype)instantiate;
+
 @end

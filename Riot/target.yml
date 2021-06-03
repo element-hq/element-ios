@@ -44,11 +44,11 @@ targets:
     - name: ⚠️ SwiftLint
       runOnlyWhenInstalling: false
       shell: /bin/sh
-      script: "${PODS_ROOT}/SwiftLint/swiftlint\n"
+      script: "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n"
     - name: 🛠 SwiftGen
       runOnlyWhenInstalling: false
       shell: /bin/sh
-      script: "${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config Tools/SwiftGen/swiftgen-config.yml\n"
+      script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
     sources:
     - path: ../Tools
@@ -64,61 +64,84 @@ targets:
 
     # Add separately localizable files
     # Once a language has enough translations (>80%), it must be declared here
-    - path: Assets/en.lproj/InfoPlist.strings
-    - path: Assets/en.lproj/Localizable.strings
-    - path: Assets/en.lproj/Vector.strings
-    - path: Assets/fr.lproj/InfoPlist.strings
-    - path: Assets/fr.lproj/Localizable.strings
-    - path: Assets/fr.lproj/Vector.strings
-    - path: Assets/de.lproj/InfoPlist.strings
-    - path: Assets/de.lproj/Localizable.strings
-    - path: Assets/de.lproj/Vector.strings
-    - path: Assets/sq.lproj/InfoPlist.strings
-    - path: Assets/sq.lproj/Localizable.strings
-    - path: Assets/sq.lproj/Vector.strings
-    - path: Assets/vi.lproj/InfoPlist.strings
-    - path: Assets/vi.lproj/Localizable.strings
-    - path: Assets/vi.lproj/Vector.strings
-    - path: Assets/eu.lproj/InfoPlist.strings
-    - path: Assets/eu.lproj/Localizable.strings
-    - path: Assets/eu.lproj/Vector.strings
     - path: Assets/bg.lproj/InfoPlist.strings
     - path: Assets/bg.lproj/Localizable.strings
     - path: Assets/bg.lproj/Vector.strings
-    - path: Assets/nl.lproj/InfoPlist.strings
-    - path: Assets/nl.lproj/Localizable.strings
-    - path: Assets/nl.lproj/Vector.strings
     - path: Assets/ca.lproj/InfoPlist.strings
     - path: Assets/ca.lproj/Localizable.strings
     - path: Assets/ca.lproj/Vector.strings
-    - path: Assets/zh_Hans.lproj/InfoPlist.strings
-    - path: Assets/zh_Hans.lproj/Localizable.strings
-    - path: Assets/zh_Hans.lproj/Vector.strings
-    - path: Assets/ru.lproj/InfoPlist.strings
-    - path: Assets/ru.lproj/Localizable.strings
-    - path: Assets/ru.lproj/Vector.strings
-    - path: Assets/zh_Hant.lproj/InfoPlist.strings
-    - path: Assets/zh_Hant.lproj/Localizable.strings
-    - path: Assets/zh_Hant.lproj/Vector.strings
+    - path: Assets/cy.lproj/InfoPlist.strings
+    - path: Assets/cy.lproj/InfoPlist.strings
+    - path: Assets/cy.lproj/Localizable.strings
+    - path: Assets/cy.lproj/Localizable.strings
+    - path: Assets/cy.lproj/Vector.strings
+    - path: Assets/cy.lproj/Vector.strings
+    - path: Assets/de.lproj/InfoPlist.strings
+    - path: Assets/de.lproj/Localizable.strings
+    - path: Assets/de.lproj/Vector.strings
+    - path: Assets/en.lproj/InfoPlist.strings
+    - path: Assets/en.lproj/Localizable.strings
+    - path: Assets/en.lproj/Vector.strings
+    - path: Assets/eo.lproj/InfoPlist.strings
+    - path: Assets/eo.lproj/Localizable.strings
+    - path: Assets/eo.lproj/Vector.strings
     - path: Assets/es.lproj/InfoPlist.strings
     - path: Assets/es.lproj/Localizable.strings
     - path: Assets/es.lproj/Vector.strings
-    - path: Assets/ja.lproj/InfoPlist.strings
-    - path: Assets/ja.lproj/Localizable.strings
-    - path: Assets/ja.lproj/Vector.strings
-    - path: Assets/hu.lproj/InfoPlist.strings
-    - path: Assets/hu.lproj/Localizable.strings
-    - path: Assets/hu.lproj/Vector.strings
-    - path: Assets/pl.lproj/InfoPlist.strings
-    - path: Assets/pl.lproj/Localizable.strings
-    - path: Assets/pl.lproj/Vector.strings
-    - path: Assets/cy.lproj/InfoPlist.strings
-    - path: Assets/cy.lproj/Localizable.strings
-    - path: Assets/cy.lproj/Vector.strings
-    - path: Assets/it.lproj/InfoPlist.strings
-    - path: Assets/it.lproj/Localizable.strings
-    - path: Assets/it.lproj/Vector.strings
     - path: Assets/et.lproj/InfoPlist.strings
     - path: Assets/et.lproj/Localizable.strings
     - path: Assets/et.lproj/Vector.strings
+    - path: Assets/eu.lproj/InfoPlist.strings
+    - path: Assets/eu.lproj/Localizable.strings
+    - path: Assets/eu.lproj/Vector.strings
+    - path: Assets/fr.lproj/InfoPlist.strings
+    - path: Assets/fr.lproj/Localizable.strings
+    - path: Assets/fr.lproj/Vector.strings
+    - path: Assets/hu.lproj/InfoPlist.strings
+    - path: Assets/hu.lproj/Localizable.strings
+    - path: Assets/hu.lproj/Vector.strings
+    - path: Assets/is.lproj/InfoPlist.strings
+    - path: Assets/is.lproj/Localizable.strings
     - path: Assets/is.lproj/Vector.strings
+    - path: Assets/it.lproj/InfoPlist.strings
+    - path: Assets/it.lproj/Localizable.strings
+    - path: Assets/it.lproj/Vector.strings
+    - path: Assets/ja.lproj/InfoPlist.strings
+    - path: Assets/ja.lproj/InfoPlist.strings
+    - path: Assets/ja.lproj/Localizable.strings
+    - path: Assets/ja.lproj/Localizable.strings
+    - path: Assets/ja.lproj/Vector.strings
+    - path: Assets/ja.lproj/Vector.strings
+    - path: Assets/kab.lproj/InfoPlist.strings
+    - path: Assets/kab.lproj/Localizable.strings
+    - path: Assets/kab.lproj/Vector.strings
+    - path: Assets/nb-NO.lproj/InfoPlist.strings
+    - path: Assets/nb-NO.lproj/Localizable.strings
+    - path: Assets/nb-NO.lproj/Vector.strings
+    - path: Assets/nl.lproj/InfoPlist.strings
+    - path: Assets/nl.lproj/Localizable.strings
+    - path: Assets/nl.lproj/Vector.strings
+    - path: Assets/pl.lproj/InfoPlist.strings
+    - path: Assets/pl.lproj/Localizable.strings
+    - path: Assets/pl.lproj/Vector.strings
+    - path: Assets/pt_BR.lproj/InfoPlist.strings
+    - path: Assets/pt_BR.lproj/Localizable.strings
+    - path: Assets/pt_BR.lproj/Vector.strings
+    - path: Assets/ru.lproj/InfoPlist.strings
+    - path: Assets/ru.lproj/Localizable.strings
+    - path: Assets/ru.lproj/Vector.strings
+    - path: Assets/sq.lproj/InfoPlist.strings
+    - path: Assets/sq.lproj/Localizable.strings
+    - path: Assets/sq.lproj/Vector.strings
+    - path: Assets/sv.lproj/InfoPlist.strings
+    - path: Assets/sv.lproj/Localizable.strings
+    - path: Assets/sv.lproj/Vector.strings
+    - path: Assets/vi.lproj/InfoPlist.strings
+    - path: Assets/vi.lproj/Localizable.strings
+    - path: Assets/vi.lproj/Vector.strings
+    - path: Assets/zh_Hans.lproj/InfoPlist.strings
+    - path: Assets/zh_Hans.lproj/Localizable.strings
+    - path: Assets/zh_Hans.lproj/Vector.strings
+    - path: Assets/zh_Hant.lproj/InfoPlist.strings
+    - path: Assets/zh_Hant.lproj/Localizable.strings
+    - path: Assets/zh_Hant.lproj/Vector.strings
