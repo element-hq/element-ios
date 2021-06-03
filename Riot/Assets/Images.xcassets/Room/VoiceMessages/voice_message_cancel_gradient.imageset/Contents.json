@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "voice_message_cancel_fade.png",
+      "filename" : "voice_message_cancel_gradient.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "voice_message_cancel_fade@2x.png",
+      "filename" : "voice_message_cancel_gradient@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "voice_message_cancel_fade@3x.png",
+      "filename" : "voice_message_cancel_gradient@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

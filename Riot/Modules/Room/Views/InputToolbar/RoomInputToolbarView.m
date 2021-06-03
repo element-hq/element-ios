@@ -41,7 +41,6 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     UIAlertController *actionSheet;
 }
 
-@property (nonatomic, weak) IBOutlet UIView *voiceMessageToolbarContainerView;
 @property (nonatomic, strong) VoiceMessageToolbarView *voiceMessageToolbarView;
 
 @end
@@ -80,9 +79,13 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
     self.voiceMessageToolbarView = [VoiceMessageToolbarView instanceFromNib];
-    self.voiceMessageToolbarView.frame = self.voiceMessageToolbarContainerView.bounds;
-    self.voiceMessageToolbarView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.voiceMessageToolbarContainerView addSubview:self.voiceMessageToolbarView];
+    self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.voiceMessageToolbarView];
+    
+    [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
+                                              [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
+                                              [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
+                                              [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
     
     [self _updateUIWithTextMessage:nil animated:NO];
 }
@@ -434,7 +437,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     
     [UIView animateWithDuration:(animated ? 0.15f : 0.0f) animations:^{
         self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
-        self.voiceMessageToolbarContainerView.alpha = textMessage.length ? 0.0f : 1.0;
+        self.voiceMessageToolbarView.alpha = textMessage.length ? 0.0f : 1.0;
     }];
 }
 
