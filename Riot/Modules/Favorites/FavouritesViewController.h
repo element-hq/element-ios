@@ -21,6 +21,8 @@
  */
 @interface FavouritesViewController : RecentsViewController
 
++ (instancetype)instantiate;
+
 /**
  Scroll the next room with missed notifications to the top.
  */

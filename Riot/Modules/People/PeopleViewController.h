@@ -22,6 +22,8 @@
  */
 @interface PeopleViewController : RecentsViewController <UITableViewDataSource, MXKDataSourceDelegate>
 
++ (instancetype)instantiate;
+
 /**
  Scroll the next room with missed notifications to the top.
  */

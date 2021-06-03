@@ -73,7 +73,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     private func loadData() {
         
         if !self.isNewSignIn {
-            print("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
+            MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices")
             
             let keyVerificationService = KeyVerificationService()
             self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in
@@ -93,7 +93,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             if session.state >= MXSessionStateRunning {
                 
                 // Always send request instead of waiting for an incoming one as per recent EW changes
-                print("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
+                MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
                 
                 let keyVerificationService = KeyVerificationService()
                 self.verificationManager.requestVerificationByToDevice(withUserId: self.session.myUserId, deviceIds: nil, methods: keyVerificationService.supportedKeyVerificationMethods(), success: { [weak self] (keyVerificationRequest) in

@@ -151,7 +151,7 @@ final class JitsiService: NSObject {
                 authType = jitsiWellKnown.authenticationType
                 continueOperation = true
             case .failure(let error):
-                NSLog("[JitsiService] Fail to get Jitsi Well Known with error: \(error)")
+                MXLog.debug("[JitsiService] Fail to get Jitsi Well Known with error: \(error)")
                 if let error = error as? JitsiServiceError, error == .noWellKnown {
                     //  no well-known, continue with no auth
                     continueOperation = true
@@ -190,14 +190,14 @@ final class JitsiService: NSObject {
         let avatarStringURL: String = myUser.avatarUrl ?? ""
         
         return matrixSession.matrixRestClient.openIdToken({ (openIdToken) in
-            guard let openIdToken = openIdToken, let openIdAccessToken = openIdToken.accessToken else {
+            guard let openIdToken = openIdToken, openIdToken.accessToken != nil else {
                 failure(JitsiServiceError.unknown)
                 return
             }
             
             do {
                 let jwtToken = try self.jwtTokenBuilder.build(jitsiServerDomain: jitsiServerDomain,
-                openIdAccessToken: openIdAccessToken,
+                openIdToken: openIdToken,
                 roomId: roomId,
                 userAvatarUrl: avatarStringURL,
                 userDisplayName: userDisplayName)
@@ -251,7 +251,7 @@ final class JitsiService: NSObject {
                                           roomID: String,
                                           isAudioOnly: Bool) -> [String: Any]? {
         guard MXTools.isMatrixRoomIdentifier(roomID) else {
-            NSLog("[JitsiService] createJitsiWidgetContent the roomID is not valid")
+            MXLog.debug("[JitsiService] createJitsiWidgetContent the roomID is not valid")
             return nil
         }
         

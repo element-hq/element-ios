@@ -1290,7 +1290,7 @@
 "callbar_active_and_single_paused" = "1 aktiva voko (%@) · 1 paŭzigita voko";
 
 // Call Bar
-"callbar_only_single_active" = "Aktiva voko (%@)";
+"callbar_only_single_active" = "Tuŝetu por reiri al la voko (%@)";
 "less" = "Malpli";
 "more" = "Pli";
 "switch" = "Baskuli";
@@ -1416,8 +1416,8 @@
 "photo_library_access_not_granted" = "%@ ne havas permeson aliri la fotujon; bonvolu ŝanĝi agordojn de privateco";
 "event_formatter_call_back" = "Revoki";
 "event_formatter_call_you_declined" = "Vi rifuzis ĉi tiun vokon";
-"event_formatter_call_you_currently_in" = "Vi nun partoprenas ĉi tiun vokon";
-"event_formatter_call_has_ended" = "Ĉi tiu voko finiĝis";
+"event_formatter_call_you_currently_in" = "Aktiva voko";
+"event_formatter_call_has_ended" = "Finiĝis %@";
 "event_formatter_call_video" = "Vidvoko";
 "event_formatter_call_voice" = "Voĉvoko";
 
@@ -1483,3 +1483,40 @@
 
 // MARK: - Dial Pad
 "dialpad_title" = "Ciferplato";
+"space_beta_announce_information" = "Aroj prezentas novan manieron grupigi ĉambrojn kaj personojn. Ili ankoraŭ ne disponeblas per iOS, sed vi povas ilin uzi per la reta kaj labortabla klientoj.";
+"space_beta_announce_subtitle" = "La nova versio de komunumoj";
+"space_beta_announce_title" = "Aroj venos baldaŭ";
+"space_beta_announce_badge" = "PROVA";
+"space_feature_unavailable_information" = "Aroj estas nova maniero grupigi ĉambrojn kaj personojn.\n\nIli baldaŭ venos ĉi tien. Nun, se vi aliĝas al aro per alia platformo, vi povos aliri ĉiujn aliĝitajn ĉambrojn ankaŭ ĉi tie.";
+"space_feature_unavailable_subtitle" = "Aroj ankoraŭ ne disponeblas per iOS, sed vi povas uzi ilin per reta aŭ labortabla klientoj";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Aroj ankoraŭ ne venis ĉi tien";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " por sciigi la temon de ĉi tiu ĉambro.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Aldonu temon";
+"event_formatter_group_call_incoming" = "%@ en %@";
+"event_formatter_group_call_leave" = "Foriri";
+"event_formatter_group_call_join" = "Aliĝi";
+"event_formatter_group_call" = "Grupa voko";
+"event_formatter_call_end_call" = "Fini vokon";
+"event_formatter_call_retry" = "Reprovi";
+"event_formatter_call_answer" = "Respondi";
+"event_formatter_call_decline" = "Rifuzi";
+"event_formatter_call_connection_failed" = "Malsukcesis konekto";
+"event_formatter_call_you_missed" = "Vi preteris ĉi tiun vokon";
+"event_formatter_call_ringing" = "Sonorante…";
+"event_formatter_call_connecting" = "Konektante…";
+"room_details_integrations" = "Kunigoj";
+"room_details_search" = "Serĉi en ĉambro";
+"settings_labs_enable_ringing_for_group_calls" = "Sonorado por grupaj vokoj";
+"room_multiple_typing_notification" = "%@ kaj aliaj";
+"room_no_privileges_to_create_group_call" = "Vi devas esti administranto aŭ reguligisto por komenci vokon.";
+"room_join_group_call" = "Aliĝi";
+"room_accessibility_video_call" = "Vidvoko";
+"room_message_replying_to" = "Responde al %@";
+"room_message_editing" = "Redaktado";
+
+// Chat
+"room_slide_to_end_group_call" = "Glitu por fini la vokon por ĉiuj";
+"callbar_only_single_active_group" = "Tuŝetu por aliĝi al la grupa voko (%@)";

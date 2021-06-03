@@ -329,7 +329,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         didCheckFalseAuthScreenDisplay = YES;
         
-        NSLog(@"[AuthenticationVC] viewDidAppear: Checking false logout");
+        MXLogDebug(@"[AuthenticationVC] viewDidAppear: Checking false logout");
         [[MXKAccountManager sharedManager] forceReloadAccounts];
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
@@ -595,7 +595,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         return YES;
     }
         
-    NSLog(@"[AuthenticationVC] Fail to continue SSO login");
+    MXLogDebug(@"[AuthenticationVC] Fail to continue SSO login");
     return NO;
 }
 
@@ -747,11 +747,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)clearDataAfterSoftLogout
 {
-    NSLog(@"[AuthenticationVC] clearDataAfterSoftLogout %@", self.softLogoutCredentials.userId);
+    MXLogDebug(@"[AuthenticationVC] clearDataAfterSoftLogout %@", self.softLogoutCredentials.userId);
 
     // Use AppDelegate so that we reset app settings and this auth screen
     [[AppDelegate theDelegate] logoutSendingRequestServer:YES completion:^(BOOL isLoggedOut) {
-        NSLog(@"[AuthenticationVC] Complete. isLoggedOut: %@", @(isLoggedOut));
+        MXLogDebug(@"[AuthenticationVC] Complete. isLoggedOut: %@", @(isLoggedOut));
     }];
 }
 
@@ -772,7 +772,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         // Remove known flows we do not support
         if (![flow.type isEqualToString:kMXLoginFlowTypeToken])
         {
-            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Filter out flow %@", flow.type);
+            MXLogDebug(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Filter out flow %@", flow.type);
             [supportedFlows addObject:flow];
         }
 
@@ -783,7 +783,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
         if ([flow isKindOfClass:MXLoginSSOFlow.class])
         {
-            NSLog(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Prioritise flow %@", flow.type);
+            MXLogDebug(@"[AuthenticationVC] handleSupportedFlowsInAuthenticationSession: Prioritise flow %@", flow.type);
             ssoFlow = (MXLoginSSOFlow *)flow;
         }
     }
@@ -986,7 +986,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                             //   - the username is not already in use
                             if ([mxError.errcode isEqualToString:kMXErrCodeStringUserInUse])
                             {
-                                NSLog(@"[AuthenticationVC] User name is already use");
+                                MXLogDebug(@"[AuthenticationVC] User name is already use");
                                 [self onFailureDuringAuthRequest:[NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_username_in_use"]}]];
                             }
                             //   - the server quota limits is not reached
@@ -1325,14 +1325,14 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)showResourceLimitExceededError:(NSDictionary *)errorDict
 {
-    NSLog(@"[AuthenticationVC] showResourceLimitExceededError");
+    MXLogDebug(@"[AuthenticationVC] showResourceLimitExceededError");
 
     [self showResourceLimitExceededError:errorDict onAdminContactTapped:^(NSURL *adminContactURL) {
 
         [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
            if (!success)
            {
-               NSLog(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContactURL);
+               MXLogDebug(@"[AuthenticationVC] adminContact(%@) cannot be opened", adminContactURL);
            }
         }];
     }];
@@ -1381,7 +1381,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         MXRoomCreationParameters *roomCreationParameters = [MXRoomCreationParameters parametersForDirectRoomWithUser:@"@riot-bot:matrix.org"];
         [session createRoomWithParameters:roomCreationParameters success:nil failure:^(NSError *error) {
-            NSLog(@"[AuthenticationVC] Create chat with riot-bot failed");
+            MXLogDebug(@"[AuthenticationVC] Create chat with riot-bot failed");
         }];
     }
     
@@ -1421,7 +1421,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         {
             [session.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
 
-                NSLog(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
+                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: crossSigning.state: %@", @(session.crypto.crossSigning.state));
 
                 switch (session.crypto.crossSigning.state)
                 {
@@ -1436,13 +1436,13 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                             // We do it for both registration and new login as long as cross-signing does not exist yet
                             if (self.authInputsView.password.length)
                             {
-                                NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
+                                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap with password");
                                 
                                 [session.crypto.crossSigning setupWithPassword:self.authInputsView.password success:^{
-                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded");
                                     [self dismiss];
                                 } failure:^(NSError * _Nonnull error) {
-                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap failed. Error: %@", error);
                                     [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                                     [self dismiss];
                                 }];
@@ -1451,10 +1451,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                             {
                                 // Try to setup cross-signing without authentication parameters in case if a grace period is enabled
                                 [self.crossSigningService setupCrossSigningWithoutAuthenticationFor:session success:^{
-                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded without credentials");
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Bootstrap succeeded without credentials");
                                     [self dismiss];
                                 } failure:^(NSError * _Nonnull error) {
-                                    NSLog(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
+                                    MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Do not know how to bootstrap cross-signing. Skip it.");
                                     [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                                     [self dismiss];
                                 }];
@@ -1469,7 +1469,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                     }
                     case MXCrossSigningStateCrossSigningExists:
                     {
-                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Complete security");
+                        MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Complete security");
                         
                         // Ask the user to verify this session
                         self.userInteractionEnabled = YES;
@@ -1480,7 +1480,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                     }
                         
                     default:
-                        NSLog(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
+                        MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Nothing to do");
                         
                         [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                         [self dismiss];
@@ -1488,7 +1488,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                 }
                 
             } failure:^(NSError * _Nonnull error) {
-                NSLog(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
+                MXLogDebug(@"[AuthenticationVC] sessionStateDidChange: Fail to refresh crypto state with error: %@", error);
                 [session.crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
                 [self dismiss];
             }];
@@ -1636,7 +1636,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     MXCrypto *crypto = coordinatorBridgePresenter.session.crypto;
     if (!crypto.backup.hasPrivateKeyInCryptoStore || !crypto.backup.enabled)
     {
-        NSLog(@"[AuthenticationVC][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
+        MXLogDebug(@"[AuthenticationVC][MXKeyVerification] requestAllPrivateKeys: Request key backup private keys");
         [crypto setOutgoingKeyRequestsEnabled:YES onComplete:nil];
     }
     [self dismiss];

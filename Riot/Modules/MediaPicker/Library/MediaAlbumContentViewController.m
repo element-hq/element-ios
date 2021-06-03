@@ -222,7 +222,7 @@
         
         assets = [PHAsset fetchAssetsInAssetCollection:assetsCollection options:options];
         
-        NSLog(@"[MediaAlbumVC] lists %tu assets", assets.count);
+        MXLogDebug(@"[MediaAlbumVC] lists %tu assets", assets.count);
     }
     else
     {

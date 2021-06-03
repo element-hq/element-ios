@@ -221,7 +221,7 @@
                 if ((![error.domain isEqualToString:NSURLErrorDomain] || error.code != NSURLErrorCancelled))
                 {
                     // But for other errors, launch a local search
-                    NSLog(@"[ContactsDataSource] [MXRestClient searchUsers] returns an error. Do a search on local known contacts");
+                    MXLogDebug(@"[ContactsDataSource] [MXRestClient searchUsers] returns an error. Do a search on local known contacts");
                     [self searchWithPattern:searchText forceReset:forceRefresh hsUserDirectory:NO];
                 }
             }];

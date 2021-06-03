@@ -28,6 +28,7 @@
 #import "RoomViewController.h"
 #import "ContactDetailsViewController.h"
 #import "GroupDetailsViewController.h"
+#import "UnifiedSearchViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
@@ -45,11 +46,8 @@
 // UITabBarController already have a `delegate` property
 @property (weak, nonatomic) id<MasterTabBarControllerDelegate> masterTabBarDelegate;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsBarButtonItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *searchBarButtonIem;
-
 // Associated matrix sessions (empty by default).
-@property (nonatomic, readonly) NSArray *mxSessions;
+@property (nonatomic, readonly) NSArray<MXSession*> *mxSessions;
 
 // Add a matrix session. This session is propagated to all view controllers handled by the tab bar controller.
 - (void)addMatrixSession:(MXSession*)mxSession;
@@ -125,11 +123,6 @@
 - (void)releaseSelectedItem;
 
 /**
- Dismiss the unified search screen (if any).
- */
-- (void)dismissUnifiedSearch:(BOOL)animated completion:(void (^)(void))completion;
-
-/**
  The current number of rooms with missed notifications, including the invites.
  */
 - (NSUInteger)missedDiscussionsCount;
@@ -168,6 +161,9 @@
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
 @property (nonatomic, readonly) GroupsViewController *groupsViewController;
 
+// The current unified search screen if any
+@property (nonatomic, weak) UnifiedSearchViewController *unifiedSearchViewController;
+
 // References on the currently selected room and its view controller
 @property (nonatomic, readonly) RoomViewController *currentRoomViewController;
 @property (nonatomic, readonly) NSString  *selectedRoomId;
@@ -187,6 +183,9 @@
 
 // YES while the authentication screen is displayed
 @property (nonatomic, readonly) BOOL authenticationInProgress;
+
+// Set tab bar item controllers
+- (void)updateViewControllers:(NSArray<UIViewController*>*)viewControllers;
 
 @end
 

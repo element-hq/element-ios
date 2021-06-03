@@ -80,10 +80,10 @@ final class HomeserverConfigurationBuilder: NSObject {
         if let lastJitsiConfiguration = vectorWellKnown.jitsi {
             jitsiConfiguration = lastJitsiConfiguration
         } else if let deprecatedJitsiConfiguration = vectorWellKnown.deprecatedJitsi {
-            NSLog("[HomeserverConfigurationBuilder] getJitsiConfiguration - Use deprecated configuration")
+            MXLog.debug("[HomeserverConfigurationBuilder] getJitsiConfiguration - Use deprecated configuration")
             jitsiConfiguration = deprecatedJitsiConfiguration
         } else {
-            NSLog("[HomeserverConfigurationBuilder] getJitsiConfiguration - No configuration found")
+            MXLog.debug("[HomeserverConfigurationBuilder] getJitsiConfiguration - No configuration found")
             jitsiConfiguration = nil
         }
         
@@ -97,10 +97,10 @@ final class HomeserverConfigurationBuilder: NSObject {
         if let lastEncryptionConfiguration = vectorWellKnown.encryption {
             encryptionConfiguration = lastEncryptionConfiguration
         } else if let deprecatedEncryptionConfiguration = vectorWellKnown.deprecatedEncryption {
-            NSLog("[HomeserverConfigurationBuilder] getEncryptionConfiguration - Use deprecated configuration")
+            MXLog.debug("[HomeserverConfigurationBuilder] getEncryptionConfiguration - Use deprecated configuration")
             encryptionConfiguration = deprecatedEncryptionConfiguration
         } else {
-            NSLog("[HomeserverConfigurationBuilder] getEncryptionConfiguration - No configuration found")
+            MXLog.debug("[HomeserverConfigurationBuilder] getEncryptionConfiguration - No configuration found")
             encryptionConfiguration = nil
         }
         
@@ -116,7 +116,7 @@ final class HomeserverConfigurationBuilder: NSObject {
         }
         
         guard let jitsiServerURL = URL(string: jitsiStringURL) else {
-            NSLog("[HomeserverConfigurationBuilder] Jitsi server URL is not valid")
+            MXLog.debug("[HomeserverConfigurationBuilder] Jitsi server URL is not valid")
             return nil
         }
         

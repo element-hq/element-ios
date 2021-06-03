@@ -248,12 +248,12 @@
         // Trigger a refresh on the group members and the invited users.
         [self.mxSession updateGroupUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupParticipantsViewController] viewWillAppear: group members update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: group members update failed %@", _group.groupId);
             
         }];
         [self.mxSession updateGroupInvitedUsers:_group success:(isPreview ? success : nil) failure:^(NSError *error) {
             
-            NSLog(@"[GroupParticipantsViewController] viewWillAppear: invited users update failed %@", _group.groupId);
+            MXLogDebug(@"[GroupParticipantsViewController] viewWillAppear: invited users update failed %@", _group.groupId);
             
         }];
     }
@@ -1085,7 +1085,7 @@
                                                                    } failure:^(NSError *error) {
                                                                        
                                                                        [self removePendingActionMask];
-                                                                       NSLog(@"[GroupParticipantsVC] Leave group %@ failed", _group.groupId);
+                                                                       MXLogDebug(@"[GroupParticipantsVC] Leave group %@ failed", _group.groupId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                        
@@ -1128,7 +1128,7 @@
                                                                    typeof(self) self = weakSelf;
                                                                    self->currentAlert = nil;
                                                                    
-                                                                   NSLog(@"[GroupParticipantsVC] Kick %@ failed", memberUserId);
+                                                                   MXLogDebug(@"[GroupParticipantsVC] Kick %@ failed", memberUserId);
                                                                    // Alert user
                                                                    [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]];
                                                                }
@@ -1187,7 +1187,7 @@
                                                            {
                                                                participantId = identifiers.firstObject;
                                                                
-                                                               NSLog(@"[GroupParticipantsVC] Invite %@ failed", participantId);
+                                                               MXLogDebug(@"[GroupParticipantsVC] Invite %@ failed", participantId);
                                                                [[AppDelegate theDelegate] showErrorAsAlert:[NSError errorWithDomain:@"GroupDomain" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]];
                                                            }
                                                        }

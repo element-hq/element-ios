@@ -575,7 +575,7 @@
                                duration:0
                            interToneGap:0];
     
-    NSLog(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
+    MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
 }
 
 #pragma mark - CallTransferMainViewControllerDelegate
@@ -615,9 +615,9 @@
                                     withTransferee:transfereeUser
                                       consultFirst:consult
                                            success:^(NSString * _Nonnull newCallId){
-            NSLog(@"Call transfer succeeded with new call ID: %@", newCallId);
+            MXLogDebug(@"Call transfer succeeded with new call ID: %@", newCallId);
         } failure:^(NSError * _Nullable error) {
-            NSLog(@"Call transfer failed with error: %@", error);
+            MXLogDebug(@"Call transfer failed with error: %@", error);
             failureBlock(error);
         }];
     };

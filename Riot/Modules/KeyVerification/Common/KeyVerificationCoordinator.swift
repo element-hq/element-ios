@@ -168,7 +168,7 @@ final class KeyVerificationCoordinator: KeyVerificationCoordinatorType {
         // In the case of the complete security flow, come back to the root screen if any child flow
         // like device verification has been cancelled
         if self.completeSecurityCoordinator != nil && childCoordinators.count > 1 {
-            NSLog("[KeyVerificationCoordinator] didCancel: popToRootModule")
+            MXLog.debug("[KeyVerificationCoordinator] didCancel: popToRootModule")
             self.navigationRouter.popToRootModule(animated: true)
             return
         }
@@ -307,7 +307,7 @@ extension KeyVerificationCoordinator: KeyVerificationDataLoadingCoordinatorDeleg
         if let sasTransaction = transaction as? MXSASTransaction {
             self.showVerifyBySAS(transaction: sasTransaction, animated: true)
         } else {
-            NSLog("[KeyVerificationCoordinator] Transaction \(transaction) is not supported")
+            MXLog.debug("[KeyVerificationCoordinator] Transaction \(transaction) is not supported")
             self.didCancel()
         }
     }

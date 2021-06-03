@@ -114,7 +114,7 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
         if let policies = terms?.policiesData(forLanguage: Bundle.mxk_language(), defaultLanguage: Bundle.mxk_fallbackLanguage()) {
             return policies
         } else {
-            print("[ServiceTermsModalScreenViewModel] processTerms: Error: No terms for \(String(describing: terms))")
+            MXLog.debug("[ServiceTermsModalScreenViewModel] processTerms: Error: No terms for \(String(describing: terms))")
             return []
         }
     }

@@ -570,7 +570,7 @@
                     // The identity server must be defined
                     if (!self.mainSession.matrixRestClient.identityServer)
                     {
-                        NSLog(@"[StartChatViewController] Invite %@ failed", participantId);
+                        MXLogDebug(@"[StartChatViewController] Invite %@ failed", participantId);
                         continue;
                     }
                     
@@ -622,7 +622,7 @@
                 self->roomCreationRequest = nil;
                 [self stopActivityIndicator];
 
-                NSLog(@"[StartChatViewController] Create room failed");
+                MXLogDebug(@"[StartChatViewController] Create room failed");
 
                 // Alert user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -754,7 +754,7 @@
         
         if ([MXTools isEmailAddress:participantId])
         {
-            NSLog(@"[StartChatViewController] No identity server is configured, do not add participant with email");
+            MXLogDebug(@"[StartChatViewController] No identity server is configured, do not add participant with email");
             
             [contactsTableViewController refreshCurrentSelectedCell:YES];
             

@@ -5,7 +5,7 @@
 "title_groups" = "Samfunn";
 "warning" = "Advarsel";
 // Actions
-"view" = "Vis";
+"view" = "Visning";
 "next" = "Neste";
 "back" = "Tilbake";
 "continue" = "Fortsett";
@@ -14,9 +14,9 @@
 "leave" = "Forlat";
 "remove" = "Fjern";
 "invite" = "Inviter";
-"retry" = "Prøv igjen";
+"retry" = "Prøv på nytt";
 "off" = "Av";
-"cancel" = "Lukk";
+"cancel" = "Avbryt";
 "save" = "Lagre";
 "join" = "Bli med";
 "decline" = "Avslå";
@@ -784,7 +784,7 @@
 "callbar_active_and_single_paused" = "1 aktiv samtale (%@) · 1 pauset samtale";
 
 // Call Bar
-"callbar_only_single_active" = "Aktiv samtale (%@)";
+"callbar_only_single_active" = "Trykk for å returnere til samtalen (%@)";
 "secrets_setup_recovery_key_information" = "Oppbevar din sikkerhetsnøkkel trygt. Den kan brukes til å å tilgang til dine sikrede meldinger og data.";
 
 // MARK: - Secrets set up
@@ -826,7 +826,7 @@
 "room_details_addresses_invalid_address_prompt_title" = "Ugyldig alias format";
 "security_settings_crypto_sessions_description_2" = "Om du ikke gjenkjenner en pålogging, endre ditt passord og tilbakestill sikkerhetskopi.";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
-"settings_key_backup_info_trust_signature_valid_device_unverified" = "Sikkerhetskopi har signatur fra %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Sikkerhetskopien har signatur fra %@";
 "settings_key_backup_info_trust_signature_valid" = "Sikkerhetskopien har en gyldig signatur fra denne økten";
 "settings_key_backup_info_trust_signature_unknown" = "Sikkerhetskopi av økten har signatur med ID: %@";
 "settings_key_backup_info_progress_done" = "Alle nøkler sikkerhetskopiert";
@@ -835,41 +835,586 @@
 "settings_key_backup_info_valid" = "Denne økten sikkerhetskopierer dine nøkler.";
 "settings_key_backup_info_version" = "Sikkerhetskopi av nøkler versjon : %@";
 "settings_key_backup_info_signout_warning" = "Før du logger ut, koble denne sesjonen til sikkerhetskopi av nøkler for å unngå tap av nøkler som kanskje bare er lagret på denne enheten.";
-"settings_key_backup_info_none" = "Nøklene dine for denne sesjonen blir ikke sikkerhetskopiert";
+"settings_key_backup_info_none" = "Nøklene dine for denne sesjonen blir ikke sikkerhetskopiert.";
 "settings_third_party_notices" = "Tredjepartsmerknader";
 "settings_labs_e2e_encryption_prompt_message" = "Vennligst logg inn igjen for å ferdigstille oppsett av kryptering.";
 "settings_key_backup" = "Sikkerhetskopi av meldingsnøkler";
-"settings_ui_theme_picker_message" = "\"Auto\" bruker din enhets innstillinger for å bytte bakgrunnsfarge";
+"settings_ui_theme_picker_message" = "\"Auto\" bruker dine enhetsinnstillinger for å bytte bakgrunnsfarge";
 
 // MARK: - Favourites
 
-"favourites_empty_view_title" = "Favorittrom og personer";
+"favourites_empty_view_title" = "Favorittrom og -personer";
 "create_room_placeholder_address" = "#testrom: matrix.org";
 "device_verification_emoji_santa" = "Julenisse";
-"device_verification_security_advice_emoji" = "Sammenlign de unike emojiene, og sjekk at de vises i samme rekkefølge.";
+"device_verification_security_advice_emoji" = "Sammenlign de unike emojiene og sjekk at de vises i samme rekkefølge.";
 
 // MARK: Sign out warning
 
-"sign_out_existing_key_backup_alert_title" = "Er du sikker på at du vil logge av?";
+"sign_out_existing_key_backup_alert_title" = "Er du sikker på at du vil logge ut?";
 "service_terms_modal_message_identity_server" = "Godta brukervilkårene til identitetsserveren (%@) for å finne kontakter.";
 "event_formatter_call_back" = "Ring tilbake";
 "room_details_advanced_e2e_encryption_disabled" = "Kryptering er ikke aktivert i dette rommet.";
-"room_details_flair_section" = "Vi brukervalg for samfunn";
+"room_details_flair_section" = "Vis assosiasjon for samfunn";
 "room_details_photo_for_dm" = "Bilde";
 "room_details_photo" = "Rombilde";
-"settings_flair" = "Vis brukervalg hvor tillat";
+"settings_flair" = "Vis kobling hvor tillatt";
 "settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
 "settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
-"room_info_list_several_members" = "% @ medlemmer";
-"pin_protection_not_allowed_pin" = "Av sikkerhetsgrunner er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
-"secrets_setup_recovery_passphrase_information" = "Skriv inn et sikkerhetsfrase bare du kjenner, brukt til å sikre hemmeligheter på serveren din.";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen din";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruk gjenopprettingsnøkkelen";
-"room_details_access_section_for_dm" = "Hvem har til gang til dette?";
-"identity_server_settings_place_holder" = "Skriv inn en identitetsserver";
-"identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne å bli funnet av dine eksisterende kontakter.";
-"security_settings_crosssigning_info_exists" = "Din konto har en kryss-signeringsidentitet, men den er ikke klarert av den økten. Fullfør klarering for denne økten.";
-"security_settings_crypto_sessions_loading" = "Laster sesjoner…";
-"settings_discovery_no_identity_server" = "Du bruker ikke for øyeblikket en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
-"settings_unignore_user" = "Vi alle meldinger fra %@?";
-"device_verification_cancelled" = "Den andre parten avbrøt verifiseringen";
+"room_info_list_several_members" = "%@ medlemmer";
+"pin_protection_not_allowed_pin" = "Av sikkerhetsårsaker er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
+"secrets_setup_recovery_passphrase_information" = "Skriv inn en sikkerhetsfrase bare du kjenner, brukes til å sikre hemmeligheter på serveren.";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruke gjenopprettingsnøkkelen din";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruke gjenopprettingsnøkkelen";
+"room_details_access_section_for_dm" = "Hvem har tilgang til dette?";
+"identity_server_settings_place_holder" = "Legg inn en identitetsserver";
+"identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne og bli funnet av dine eksisterende kontakter.";
+"security_settings_crosssigning_info_exists" = "Din konto har en kryss-signeringsidentitet, men den er ikke klarert av denne økten. Fullfør klarering for denne økten.";
+"security_settings_crypto_sessions_loading" = "Laster økter…";
+"settings_discovery_no_identity_server" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en for at dine eksisterende kontakter skal kunne finne deg.";
+"settings_unignore_user" = "Vis alle meldinger fra %@?";
+"device_verification_cancelled" = "Den andre parten avbrøt verifiseringen.";
+"settings_callkit_info" = "Motta innkommende samtale på låst skjerm. Se dine anrop i systemets anropshistorikk. Hvis iCloud er aktivert, vil anropshistorikken bli delt med Apple.";
+//"settings_enable_all_notif" = "Enable all notifications";
+//"settings_messages_my_display_name" = "Msg containing my display name";
+//"settings_messages_my_user_name" = "Msg containing my user name";
+//"settings_messages_sent_to_me" = "Messages sent to me";
+//"settings_invited_to_room" = "When i'm invited to a room";
+//"settings_join_leave_rooms" = "When people join or leave rooms";
+//"settings_call_invitations" = "Call invitations";
+
+"settings_enable_callkit" = "Integrert anrop";
+"settings_calls_stun_server_fallback_button" = "Tillat bruk av STUN støtteserver ved anrop";
+"settings_calls_stun_server_fallback_description" = "Tillat bruk av %@ STUN støtteserver ved anrop, når din hovedserver ikke tilbyr dette (din IP adresse vil bli delt under samtalen).";
+"settings_integrations_allow_description" = "Bruk integrasjonsadministrator (%@) for å administrere bots, bridges, widgets og sticker packs.\n\nIntegrasjonsadministrator mottar konfigurasjonsdata, og kan endre widgets, sende rominvitasjoner og sette tilgangsnivåer på dine vegne.";
+"settings_labs_create_conference_with_jitsi" = "Opprett konferansesamtale med jitsi";
+"settings_contacts_phonebook_country" = "Telefonkatalog land";
+"settings_contacts_discover_matrix_users" = "Bruk e-poster og telefonnummer for å finne brukere";
+"settings_enable_rageshake" = "Bruk \"rageshake\" for å rapportere feil";
+"settings_send_crash_report" = "Send anonyme krasj- & brukerdata";
+"settings_olm_version" = "Olm-versjon %@";
+"settings_labs_message_reaction" = "Reager på melding med emoji";
+"settings_crypto_blacklist_unverified_devices" = "Krypter kun i verifiserte økter";
+"settings_add_3pid_password_message" = "Vennligst legg inn ditt passord for å fortsette";
+"settings_add_3pid_password_title_email" = "Legg til e-postadresse";
+"settings_password_updated" = "Ditt passord har blitt oppdatert";
+"settings_fail_to_update_password" = "Oppdatering av passord feilet";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Er du sikker? Du vil miste dine krypterte meldinger hvis dine nøkler ikke er tilstrekkelig sikkerhetskopiert.";
+"settings_key_backup_button_connect" = "Koble denne økten til sikkerhetskopi av meldingsnøkler";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Sikkerhetskopien har en ugyldig signatur fra %@";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Sikkerhetskopien har en gyldig signatur fra %@";
+"settings_key_backup_info_algorithm" = "Algoritme: %@";
+"settings_identity_server_no_is" = "Ingen identitetsserver konfigurert";
+"settings_identity_server_description" = "Ved å bruke identitetsserveren valgt ovenfor, kan du finne og bli funnet av eksisterende kontakter.";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Legg inn SMS-aktiveringskode";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Avbryt e-postgodkjenning";
+"settings_discovery_three_pid_details_information_phone_number" = "Administrer valg for dette telefonnummeret, som andre brukere kan benytte for å finne deg og invitere deg til rom. Legg til eller fjern telefonnummer i Kontoer.";
+"settings_discovery_three_pid_details_title_phone_number" = "Administrer telefonnummer";
+"settings_discovery_three_pid_details_information_email" = "Administrer valg for denne e-postadressen, som andre brukere kan benytte for å finne deg og invitere deg til rom. Legg til eller fjern e-postadresser i Kontoer.";
+"settings_discovery_three_pid_details_title_email" = "Administrer e-post";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_three_pids_management_information_part1" = "Administrer hvilken e-postadresse eller telefonnummer andre brukere kan benytte for å finne deg og invitere deg til rom. Legg til eller fjern e-postadresser eller telefonnummer fra denne listen. ";
+"settings_discovery_terms_not_signed" = "Godta brukervilkårene for identitetsserveren (%@) for å tillate at du kan bli funnet med e-post eller telefonnummer.";
+"settings_show_NSFW_public_rooms" = "Vis NSFW offentlige rom";
+"settings_identity_server_no_is_description" = "Du benytter for øyeblikket ikke en identitetsserver. Legg til en ovenfor for å finne og bli funnet av eksisterende kontakter.";
+"security_settings_crosssigning_info_not_bootstrapped" = "Kryss-signering er ikke satt opp enda.";
+"security_settings_crosssigning" = "KRYSS-SIGNERING";
+"security_settings_backup" = "SIKKERHETSKOPI-MELDINGER";
+"security_settings_secure_backup_synchronise" = "Synkroniser";
+"security_settings_secure_backup_description" = "Sikre deg mot å miste tilgang til krypterte meldinger og data ved å lagre sikkerhetskopi av krypteringsnøkler på din server.";
+"security_settings_secure_backup" = "SIKKERHETSKOPI";
+"security_settings_crosssigning_info_trusted" = "Kryss-signering er aktivert. Du kan stole på andre brukere og dine andre økter basert på kryss-signering, men du kan ikke kryss-signere fra denne økten fordi den ikke har private nøkler for kryss-signering. Fullfør sikkerheten for denne økten.";
+"security_settings_export_keys_manually" = "Eksporter nøkler manuelt";
+"security_settings_crosssigning_reset" = "Tilbakestill kryss-signering";
+"security_settings_crosssigning_bootstrap" = "Bootstrap kryss-signering";
+"security_settings_crosssigning_info_ok" = "Kryss-signering er aktivert.";
+"security_settings_blacklist_unverified_devices" = "Aldri send meldinger til ikke-klarerte økter";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Denne appen støtter ikke autentiseringsmekanismen på din hjemmeserver.";
+"manage_session_trusted" = "Klarert av deg";
+"manage_session_info" = "ØKTINFORMASJON";
+
+// Manage session
+"manage_session_title" = "Administrer økt";
+"security_settings_user_password_description" = "Bekreft din identitet ved å oppgi ditt passord";
+"security_settings_coming_soon" = "Beklager. Denne handlingen er ikke tilgjengelig på Element iOS enda. Vennligst benytt en annen Matrix klient for å sette det opp. Element iOS vil bruke den.";
+"security_settings_complete_security_alert_message" = "Du bør fullføre sikkerheten på din nåværende økt først.";
+"security_settings_blacklist_unverified_devices_description" = "Verifiser alle øktene til en bruker for å markere dem som klarert og send meldinger til dem.";
+"identity_server_settings_disconnect_info" = "Kobler du fra din identitetsserver vil det bety at andre brukere ikke kan finne deg, og at du vil ikke kunne invitere andre med e-post og telefonnummer.";
+"identity_server_settings_no_is_description" = "Du bruker for øyeblikket ikke en identitetsserver. Legg til en ovenfor, for å finne og bli funnet av eksisterende kontakter.";
+"room_details_mute_notifs" = "Slå av varsler";
+"room_details_favourite_tag" = "Favoritt";
+"room_details_room_name_for_dm" = "Navn";
+"room_details_integrations" = "Integrasjoner";
+"room_details_search" = "Søk i rom";
+"room_details_title_for_dm" = "Detaljer";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ er ikke en gyldig identitetsserver.";
+"identity_server_settings_alert_error_terms_not_accepted" = "Du må godkjenne vilkårene til %@ for å bruke den som identitetsserver.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Koble fra likevel";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Du deler fortsatt dine personlige data på identitetsserver %@.\n\nVi anbefaler at du fjerner din e-postadresse og telefonnummer fra identitetsserveren før du kobler fra.";
+"identity_server_settings_alert_disconnect" = "Koble fra identitetsserver %@?";
+"identity_server_settings_alert_disconnect_title" = "Koble fra identitetsserver";
+"identity_server_settings_alert_change" = "Koble fra identitetsserver %1$@ og koble til %2$@ i stedet for?";
+"identity_server_settings_alert_no_terms" = "Identitetsserveren du har valgt har ikke brukervilkår. Fortsett kun hvis du stoler på eier av serveren.";
+"identity_server_settings_alert_no_terms_title" = "Identitetsserver har ingen brukervilkår";
+"room_details_addresses_disable_main_address_prompt_msg" = "Du vil ikke ha en primæradresse spesifisert. Standard primæradresse for dette rommet vil bli tilfeldig valgt";
+"room_details_addresses_disable_main_address_prompt_title" = "Primæradresse-varsel";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ er ikke et gyldig format for et alias";
+"room_details_new_address_placeholder" = "Legg til ny adresse (f.eks. #foo%@)";
+"room_details_no_local_addresses_for_dm" = "Dette har ingen lokale adresser";
+"room_details_no_local_addresses" = "Dette rommet har ingen lokale adresser";
+"room_details_history_section_prompt_title" = "Personvernadvarsel";
+"room_details_access_section_directory_toggle_for_dm" = "Legg til i romliste";
+"room_details_access_section_directory_toggle" = "Legg dette rommet til i romliste";
+"room_details_access_section_no_address_warning" = "For å linke til et rom må det ha en adresse";
+"room_details_access_section_anyone_for_dm" = "Alle som har denne linken, inkludert gjester";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "Alle som har denne linken, unntatt gjester";
+"room_details_advanced_e2e_encryption_enabled" = "Kryptering er aktivert i dette rommet";
+"room_details_advanced_enable_e2e_encryption" = "Aktiver kryptering (advarsel: kan ikke endres!)";
+"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_flair_invalid_id_prompt_msg" = "%@ er ikke en gyldig identifikator for et samfunn";
+"room_details_flair_invalid_id_prompt_title" = "Ugyldig format";
+"room_details_new_flair_placeholder" = "Legg til ID for samfunn (e.g. +foo%@)";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Krypter kun til bekreftede økter";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "Kryptering er ikke aktivert her.";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "Kryptering er aktivert her";
+"room_details_fail_to_update_room_guest_access" = "Oppdatering av gjestetilgang i rommet feilet";
+"room_details_fail_to_update_topic" = "Oppdatering av emne feilet";
+"room_details_fail_to_update_room_name" = "Oppdatering av romnavn feilet";
+"room_details_fail_to_update_avatar" = "Oppdatering av rombilde feilet";
+"room_details_fail_to_update_room_join_rule" = "Oppdatering av regel for å bli med i rommet feilet";
+"room_details_fail_to_update_room_direct" = "Oppdatering av flagg for direktesamtale feilet for dette rommet";
+"room_details_fail_to_update_room_communities" = "Oppdatering av beslektede samfunn feilet";
+"room_details_fail_to_update_room_canonical_alias" = "Oppdatering av primæradresse feilet";
+"room_details_fail_to_remove_room_aliases" = "Fjerningen av romadresser feilet";
+"room_details_fail_to_add_room_aliases" = "Å legge til nye romadresser feilet";
+"room_details_fail_to_update_history_visibility" = "Oppdatering av historikksynlighet feilet";
+"room_details_fail_to_update_room_directory_visibility" = "Oppdatering av synligheten til romliste feilet";
+"room_details_fail_to_enable_encryption" = "Aktivering av kryptering for dette rommet feilet";
+"group_participants_leave_prompt_msg" = "Er du sikker på at du vil forlate gruppen?";
+"group_invitation_format" = "%@ har invitert deg til å bli med i dette samfunnet";
+"group_home_multi_rooms_format" = "%tu rom";
+"group_home_multi_members_format" = "%tu medlemmer";
+"room_details_copy_room_url" = "Kopier rommets URL";
+"room_details_copy_room_address" = "Kopier romadresse";
+"room_details_unset_main_address" = "Fjern som primæradresse";
+"room_details_set_main_address" = "Sett som primæradresse";
+"room_details_save_changes_prompt" = "Vil du lagre endringer?";
+
+// Read Receipts
+"read_receipts_list" = "Lesekvitteringsliste";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Filtrer samfunnsrom";
+"group_participants_invite_malformed_id" = "ID-format-feil. Bør være en Matrix ID som '@localpart:domain'";
+"group_participants_invite_malformed_id_title" = "Inviteringsfeil";
+"group_participants_invite_another_user" = "Søk/inviter med bruker ID eller navn";
+"group_participants_filter_members" = "Filtrer medlemmer i samfunnet";
+"group_participants_invite_prompt_msg" = "Er du sikker på at du vil invitere %@ til denne gruppen?";
+"group_participants_remove_prompt_msg" = "Er du sikker på at du vil fjerne %@ fra denne gruppen?";
+"receipt_status_read" = "Lest: ";
+"directory_server_all_native_rooms" = "Alle Matrix-rom";
+"directory_server_all_rooms" = "Alle rom på %@ server";
+"homeserver_connection_lost" = "Ingen kontakt med hjemmeserveren.";
+"event_formatter_jitsi_widget_removed_by_you" = "Du fjernet VoIP-konferanse";
+"event_formatter_jitsi_widget_added_by_you" = "Du la til VoIP-konferanse";
+"event_formatter_widget_removed_by_you" = "Du fjernet widget: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Du la til widget: %@";
+"event_formatter_call_you_declined" = "Du avviste denne samtalen";
+"event_formatter_call_you_currently_in" = "Du er for øyeblikket i denne samtalen";
+"event_formatter_call_video" = "Videoanrop";
+"event_formatter_call_voice" = "Taleanrop";
+"event_formatter_rerequest_keys_part2" = " fra dine andre sesjoner.";
+"event_formatter_rerequest_keys_part1_link" = "Be om krypteringsnøkler på nytt";
+"event_formatter_jitsi_widget_removed" = "VoIP konferanse fjernet av %@";
+"event_formatter_jitsi_widget_added" = "VoIP konferanse lagt til av %@";
+"event_formatter_widget_removed" = "%@ widget fjernet av %@";
+"event_formatter_widget_added" = "%@ widget lagt til av %@";
+
+// Events formatter
+"event_formatter_member_updates" = "%tu endringer i medlemskap";
+"directory_server_type_homeserver" = "Skriv inn en hjemmeserver å liste offentlige rom fra";
+"event_formatter_call_has_ended" = "Denne samtalen er avsluttet";
+"call_no_stun_server_error_message_1" = "Vennligst be administratoren for din hjemmeserver %@ om å konfigurere en TURN server for pålitelige anrop.";
+"call_no_stun_server_error_title" = "Anrop feilet på grunn av feilkonfigurert server";
+"call_jitsi_error" = "Forsøk på å bli med i konferansesamtale feilet.";
+"call_already_displayed" = "Du er allerede i en samtale.";
+"call_incoming_video_prompt" = "Innkommende videoanrop fra %@";
+
+// Call
+"call_incoming_voice_prompt" = "Innkommende taleanrop fra %@";
+"large_badge_value_k_format" = "%.1fK";
+"photo_library_access_not_granted" = "%@ har ikke adgang til bildebiblioteket, vennligst endre personverninnstillingene";
+"camera_unavailable" = "Kameraet er utilgjengelig på din enhet";
+"camera_access_not_granted" = "%@ har ikke tillatelse til å bruke kameraet, vennligst endre personverninnstillinger";
+"bug_report_prompt" = "Applikasjonen krasjet sist gang. Vil du sende inn en krasj-rapport?";
+"public_room_section_title" = "Offentlige rom (på %@):";
+"call_no_stun_server_error_message_2" = "Alternativt kan du prøve å bruke den offentlige serveren ved %@, men denne vil være mindre pålitelig, og vil dele din IP-adresse med serveren. Du kan også administrere dette i innstillinger";
+"e2e_key_backup_wrong_version" = "Det har blitt oppdaget en ny sikkerhetskopi av meldingsnøkler .\n\nHvis dette ikke ble intitiert av deg bør du endre passordfrase i innstillinger.";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Ny sikkerhetskopi av nøkler";
+"e2e_need_log_in_again" = "Du må logge inn igjen for å generere ende-til-ende-krypteringsnøkler for denne økten og sende den offentlige nøkkelen til din hjemmeserver.\nDette gjøres bare en gang; beklager ulempen.";
+
+// Crypto
+"e2e_enabling_on_app_update" = "Element støtter nå ende-til-ende kryptering, men du må logge inn igjen for å aktivere det.\n\nDu kan gjøre det nå eller senere fra applikasjonsinnstillingene.";
+
+// Crash report
+"google_analytics_use_prompt" = "Vil du hjelpe til med å forbedre %@ ved automatisk og anonymt sende inn krasj-rapporter og brukerdata?";
+"no_voip" = "%@ ringer deg men %@ støtter ikke anrop enda.\nDu kan overse denne varselen og svare anropet fra en annen enhet eller du kan avvise det.";
+"call_actions_unhold" = "Gjenoppta";
+"bug_report_description" = "Vennligst beskriv feilen. Hva gjorde du? Hva forventet du skulle skje? Hva skjedde faktisk?";
+"bug_crash_report_description" = "Vennligst beskriv hva du gjorde før krasjet:";
+"bug_report_logs_description" = "For å diagnostisere problemer vil logger fra denne klienten bli sendt sammen med denne feilrapporten. Hvis du foretrekker å kun sende teksten ovenfor, vennligst ta bort haken:";
+
+// Widget
+"widget_no_integrations_server_configured" = "Ingen integrasjonsserver er konfigurert";
+"bug_report_background_mode" = "Fortsett i bakgrunnen";
+"bug_report_progress_uploading" = "Laster opp rapport";
+"bug_report_progress_zipping" = "Samler inn logger";
+"widget_integrations_server_failed_to_connect" = "Tilkobling til integrasjonsserver feilet";
+"widget_integration_positive_power_level" = "Tilgangsnivå må være et positiv heltall.";
+"widget_integration_room_not_recognised" = "Dette rommet gjenkjennes ikke.";
+"widget_integration_failed_to_send_request" = "Sending av forespørsel feilet.";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Du må være i stand til å invitere brukere for å gjøre det.";
+"widget_menu_revoke_permission" = "Opphev min tilgang";
+"widget_sticker_picker_no_stickerpacks_alert" = "Du har for øyeblikket ingen \"stickerpacks\" aktivert.";
+"widget_creation_failure" = "Opprettelse av widget har feilet";
+"widget_no_power_to_manage" = "Du trenger tillatelse til å administrere widgeter i dette rommet";
+"e2e_room_key_request_message_new_device" = "Du la til en ny økt '%@', som etterspør krypteringsnøkler.";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Forespørsel om krypteringsnøkkel";
+"share_extension_failed_to_encrypt" = "Sending feilet. Sjekk innstillinger for kryptering i dette rommet i hovedappen";
+
+// Share extension
+"share_extension_auth_prompt" = "Logg inn i hovedappen for å dele innhold";
+"room_widget_permission_information_title" = "Bruk av den kan føre til deling av data med %@:\n";
+"room_widget_permission_webview_information_title" = "Bruk kan aktivere informasjonskapsler og dele data med %@:\n";
+"room_widget_permission_creator_info_title" = "Denne widgeten ble lagt til av:";
+"widget_integration_manager_disabled" = "Du må aktivere integrasjonsadministrator i innstillinger";
+"widget_integration_room_not_visible" = "Rom %@ er ikke synlig.";
+"widget_integration_missing_user_id" = "Manglende bruker_id i forespørsel.";
+"widget_integration_no_permission_in_room" = "Du har ikke tillatelse til å gjøre det i dette rommet.";
+"event_formatter_call_decline" = "Avslå";
+"event_formatter_call_connection_failed" = "Tilkobling feilet";
+"event_formatter_call_ringing" = "Ringer…";
+"event_formatter_call_connecting" = "Kobler til…";
+"settings_labs_enable_ringing_for_group_calls" = "Ringelyd for konferansesamtaler";
+"room_no_privileges_to_create_group_call" = "Du har ikke tilstrekkelige tillatelser til å starte en samtale.";
+"room_join_group_call" = "Bli med i samtale";
+"callbar_only_single_active_group" = "Trykk for å bli med i konferansesamtalen (%@)";
+"e2e_room_key_request_message" = "Din ikke-bekreftede økt '%@' etterspør krypteringsnøkler.";
+"e2e_room_key_request_share_without_verifying" = "Del uten å bekrefte";
+
+// GDPR
+"gdpr_consent_not_given_alert_message" = "For å fortsette å bruke %@ hjemmeserveren må du se gjennom og godta brukervilkårene.";
+"e2e_room_key_request_ignore_request" = "Ignorer forespørsel";
+"service_terms_modal_message" = "For å fortsette må du godta brukervilkårene for denne tjenesten (%@).";
+"gdpr_consent_not_given_alert_review_now_action" = "Se gjennom nå";
+"service_terms_modal_description_for_identity_server_1" = "Finn andre vha. telefonnummer og e-post";
+"service_terms_modal_description_for_identity_server_2" = "Bli funnet vha. telefonnummer eller e-post";
+"deactivate_account_informations_part1" = "Dette vil gjøre din konto ubrukelig på permanent basis. Du vil ikke kunne logge inn og ingen vil kunne registrere samme bruker-ID på nytt. Dette vil medføre at din konto vil forlate alle rom den deltar i, og vil fjerne dine kontodetaljer fra din identitetsserver. ";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Huk av for å akseptere %@";
+"service_terms_modal_description_for_integration_manager" = "Bruk Bots, bridges, widgets og sticker packs";
+"deactivate_account_informations_part5" = "Hvis du ønsker at vi skal glemme dine meldinger, kryss av i boksen under.\n\nMeldingssynlighet er sammenlignbar med e-post. Når vi glemmer dine meldinger betyr det at meldinger du har sendt ikke vil bli delt med nye eller uregistrerte brukere, men registrerte brukere som allerede har tilgang til disse meldingene vil fremdeles har tilgang på sin kopi.";
+"deactivate_account_informations_part4_emphasize" = "vil som standard ikke få oss til å glemme meldinger du har sendt. ";
+"rerequest_keys_alert_message" = "Start appen på en annen enhet som kan dekryptere meldingen, slik at den kan sende nøklene til denne økten.";
+"deactivate_account_password_alert_message" = "For å fortsette, vennligst skriv inn passordet ditt";
+"deactivate_account_forget_messages_information_part3" = ": dette vil føre til at fremtidige brukere ser en ufullstendig visning av samtaler)";
+"deactivate_account_forget_messages_information_part1" = "Vennligst glem alle meldingene jeg har sendt når kontoen min er deaktivert (";
+"secure_key_backup_setup_intro_info" = "Beskytt deg mot å miste tilgang til krypterte meldinger og data ved å sikkerhetskopiere krypteringsnøkler til serveren din.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Sikkert lagringsområde";
+"secure_key_backup_setup_intro_use_security_key_info" = "Generer en sikkerhetsnøkkel og lagre den på et trygt sted som i en passordadministrator eller en safe.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Bruk en sikkerhetsnøkkel";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Bruk en passordfrase";
+"key_backup_setup_intro_manual_export_action" = "Eksporter nøkler manuelt";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Koble denne enheten til sikkerhetskopi av meldingsnøkler";
+"key_backup_setup_skip_alert_message" = "Du kan miste dine krypterte meldinger dersom du logger ut eller mister enheten.";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Sikkerhetskopi av meldingsnøkler";
+"secure_backup_setup_banner_subtitle" = "Beskytt deg mot å miste tilgang til krypterte meldinger og data";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Sikkert lagringsområde";
+"secure_key_backup_setup_cancel_alert_message" = "Hvis du avbryter nå, kan du miste krypterte meldinger og data hvis du mister tilgangen til påloggingene dine.\n\nDu kan også konfigurere sikkert lagringsområde og administrere nøklene dine i innstillinger.";
+"secure_key_backup_setup_existing_backup_error_info" = "Lås den opp for å gjenbruke den på sikkert lagringsområde, eller slett den for å opprette en ny sikkerhetskopi av meldinger på sikkert lagringsområde.";
+"secure_key_backup_setup_existing_backup_error_title" = "Det finnes allerede en sikkerhetskopi for meldinger";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Skriv inn en hemmelig frase bare du vet, og generer en nøkkel for sikkerhetskopiering.";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Eller sikre sikkerhetskopien din med en gjenopprettingsnøkkel, og lagre den på et trygt sted.";
+"key_backup_setup_passphrase_info" = "Vi lagrer en kryptert kopi av nøklene dine på serveren vår. Beskytt sikkerhetskopien din med en passordfrase for å holde den sikker.\n\nFor maksimal sikkerhet bør dette være forskjellig fra kontopassordet ditt.";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "Gjør sikkerhetskopien din sikker med en passordfrase";
+"key_backup_setup_intro_info" = "Meldinger i krypterte rom er sikret med ende-til-ende-kryptering. Bare du og mottakeren(e) har nøklene til å lese disse meldingene.\n\nLagre nøklene dine på et trygt sted for å unngå å miste dem.";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Krypterte meldinger";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Nøklene dine blir sikkerhetskopiert.\n\nKopier denne gjenopprettingsnøkkelen og lagre den på et trygt sted.";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Lagre gjenopprettingsnøkkel";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Nøklene dine blir sikkerhetskopiert.\n\nGjenopprettingsnøkkelen din er et sikkerhetsnett - du kan bruke den til å gjenopprette tilgangen til de krypterte meldingene dine hvis du glemmer passordfrasen.\n\nLagre gjenopprettingsnøkkelen din på en trygg måte, f.eks. ved hjelp av en passordadministrator (eller i en safe).";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avansert) Sett opp med gjenopprettingsnøkkel";
+"key_backup_recover_invalid_passphrase" = "Sikkerhetskopi kunne ikke dekrypteres med denne passordfrasen: Vennligst sjekk at du har angitt riktig passordfrase.";
+"key_backup_recover_invalid_passphrase_title" = "Feil gjenopprettingsfrase";
+"key_backup_recover_invalid_recovery_key" = "Sikkerhetskopi kunne ikke dekrypteres med denne nøkkelen: bekreft at du skrev inn riktig gjenopprettingsnøkkel.";
+"key_backup_recover_invalid_recovery_key_title" = "Feil i gjenopprettingsnøkkel";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "Bruk gjenopprettingspassordet for å låse opp historikken for dine sikrede meldinger";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Gjenoppretter sikkerhetskopi …";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke gjenopprettingspassordet ditt? Du kan ";
+"key_backup_recover_from_passphrase_recover_action" = "Lås opp historikk";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Skriv inn passordfrase";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Bruk gjenopprettingsnøkkel for å låse opp historikken for sikrede meldinger";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Begynn å bruke Sikkert lagringsområde";
+"sign_out_non_existing_key_backup_alert_title" = "Du mister tilgangen til de krypterte meldingene dine hvis du logger ut nå";
+
+// Success
+
+"key_backup_recover_success_info" = "Sikkerhetskopi gjenopprettet!";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Mistet gjenopprettingsnøkkelen din? Du kan sette opp en ny i innstillingene.";
+"key_backup_recover_from_recovery_key_recover_action" = "Lås opp historikk";
+"sign_out_key_backup_in_progress_alert_title" = "Sikkerhetskopiering av nøkler pågår. Hvis du logger ut nå, mister du tilgangen til de krypterte meldingene dine.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Sikkerhetskopier";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Du vil miste tilgangen til de krypterte meldingene dine med mindre du sikkerhetskopierer nøklene dine før du logger ut.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Du vil miste de krypterte meldingene dine";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Jeg vil ikke ha de krypterte meldingene mine";
+"key_verification_new_session_title" = "Bekreft den nye økten";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Jeg vil vente";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Jeg vil ikke ha de krypterte meldingene mine";
+"device_verification_error_cannot_load_device" = "Kan ikke laste informasjon om økten.";
+"device_verification_cancelled_by_me" = "Bekreftelsen er kansellert. Årsak: %@";
+"device_verification_security_advice_number" = "Sammenlign tallene og sjekk at de vises i samme rekkefølge.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Innkommende bekreftelsesforespørsel";
+"device_verification_incoming_description_1" = "Bekreft denne økten for å merke den som klarert. Bekreftelse av økter fra partnere gir deg ekstra trygghet når du bruker ende-til-ende-krypterte meldinger.";
+"device_verification_incoming_description_2" = "Bekreftelse av denne økten vil markere den som klarert, og også merke økten din som bekreftet for partneren.";
+"device_verification_start_use_legacy_action" = "Bruk tidligere metode for bekreftelse";
+"device_verification_start_use_legacy" = "Dukker ingenting opp? Ikke alle klienter støtter interaktiv bekreftelse ennå. Bruk eldre bekreftelse.";
+"device_verification_start_wait_partner" = "Venter på at partneren skal godta …";
+
+// MARK: Start
+"device_verification_start_title" = "Bekreft ved å sammenligne en kort tekststreng";
+"key_verification_self_verify_current_session_alert_message" = "Andre brukere stoler kanskje ikke på den.";
+"device_verification_self_verify_start_information" = "Bruk denne økten til å verifisere den nye, og gi den tilgang til krypterte meldinger.";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Gjennomgå dine innlogginger";
+"device_verification_self_verify_wait_information" = "Bekreft denne økten fra en av de andre øktene dine, og gi den tilgang til krypterte meldinger.\n\nBruk siste versjon av appen på de andre enhetene dine:";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Bekreft alle øktene dine for å sikre at kontoen og meldingene dine er trygge.";
+"device_verification_self_verify_wait_additional_information" = "Dette fungerer med Element og andre klienter som støtter kryssignering.";
+"key_verification_verify_sas_additional_information" = "For ytterligere sikkerhet, bruk en annen pålitelig kommunikasjonskanal eller snakk direkte med personen.";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Ser etter andre bekreftelsesmuligheter ...";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Hvis du ikke får tilgang til en eksisterende økt";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Bruk gjenopprettingsfrase eller nøkkel";
+"device_verification_emoji_apple" = "Eple";
+"device_verification_emoji_fire" = "Brann";
+"device_verification_emoji_cloud" = "Sky";
+
+// User
+
+"key_verification_verified_user_information" = "Meldinger med denne brukeren er ende-til-ende-kryptert og kan ikke leses av tredjeparter.";
+"key_verification_verified_this_session_information" = "Du kan nå lese sikre meldinger på denne enheten, og andre brukere vil vite at de kan stole på meldingene.";
+"key_verification_verified_new_session_information" = "Du kan nå lese sikre meldinger på den nye enheten din, og andre brukere vil vite at de kan stole på meldingene.";
+"key_verification_verified_other_session_information" = "Du kan nå lese sikre meldinger på den andre økten din, og andre brukere vil vite at de kan stole på meldingene.";
+"key_verification_verified_new_session_title" = "Ny økt verifisert!";
+"key_verification_manually_verify_device_additional_information" = "Hvis de ikke stemmer overens, kan sikkerheten i kommunikasjonen din bli kompromittert.";
+"key_verification_manually_verify_device_instruction" = "Bekreft ved å sammenligne følgende med brukerinnstillingene i den andre økten:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Bekreft manuelt med tekst";
+"device_verification_emoji_corn" = "Mais";
+"device_verification_emoji_spanner" = "Skiftnøkkel";
+"error_not_supported_on_mobile" = "Du kan ikke gjøre dette fra %@ mobil.";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Legg til en identitetsserver i innstillingene dine for å invitere via e-post.";
+"device_verification_emoji_pin" = "Tegnestift";
+"device_verification_emoji_aeroplane" = "Fly";
+"device_verification_emoji_train" = "Tog";
+"device_verification_emoji_book" = "Bok";
+"key_verification_bootstrap_not_setup_message" = "Du må starte oppsett av kryssignering først.";
+"key_verification_tile_request_status_data_loading" = "Data lastes…";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ ønsker å bekrefte";
+"key_verification_tile_conclusion_warning_title" = "Ikke klarert pålogging";
+"key_verification_tile_request_status_cancelled" = "%@ kansellert";
+"key_verification_verify_qr_code_information" = "Skann koden for å bekrefte hverandre på en sikker måte.";
+"key_verification_verify_qr_code_information_other_device" = "Skann koden nedenfor for å bekrefte:";
+"key_verification_verify_qr_code_emoji_information" = "Bekreft ved å sammenligne unike emoji.";
+"key_verification_scan_confirmation_scanned_user_information" = "Viser %@ det samme skjoldet?";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Nesten i mål!";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Venter på andre enheter …";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Nesten i mål! Venter på bekreftelse…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR-koden er bekreftet.";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Koden er bekreftet!";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Gjorde den andre brukeren en vellykket skanning av QR-koden?";
+"user_verification_start_information_part1" = "Bekreft for ekstra sikkerhet ";
+"key_verification_scan_confirmation_scanned_device_information" = "Viser den andre enheten det samme skjoldet?";
+"user_verification_start_information_part2" = " ved å sjekke en engangskode på begge enhetene dine.";
+"user_verification_session_details_information_trusted_other_user_part1" = "Denne økten er klarert for sikre meldinger fordi ";
+"user_verification_session_details_information_trusted_current_user" = "Denne økten er klarert for sikre meldinger fordi du bekreftet den:";
+"user_verification_sessions_list_information" = "Meldinger med denne brukeren i dette rommet er ende-til-ende-kryptert og kan ikke leses av tredjeparter.";
+"user_verification_start_additional_information" = "For å være sikker, gjør dette personlig eller bruk en annen måte å kommunisere på.";
+"user_verification_session_details_information_trusted_other_user_part2" = " bekreftet det:";
+"user_verification_session_details_information_untrusted_current_user" = "Bekreft denne økten for å markere den som klarert og gi den tilgang til krypterte meldinger:";
+"user_verification_session_details_information_untrusted_other_user" = " logget på med en ny økt:";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Inntil denne brukeren bekrefter denne økten, blir meldinger sendt til og fra den merket med advarsler. Alternativt kan du bekrefte den manuelt.";
+"user_verification_session_details_verify_action_current_user_manually" = "Bekreft manuelt med tekst";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Hvis du ikke logget på denne økten, kan det hende at kontoen din er kompromittert.";
+"user_verification_session_details_verify_action_other_user" = "Bekreft manuelt";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Har du glemt eller mistet alle gjenopprettingsalternativene? ";
+"secrets_recovery_with_passphrase_information_default" = "Få tilgang til meldingshistorikken for krypterte meldinger og kryssigneringsidentiteten din som brukes for å bekrefte andre økter, ved å skrive inn passordfrasen.";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Gjenopprettingsfrase";
+"secrets_recovery_reset_action_part_2" = "Tilbakestill alt";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke gjenopprettingsfrasen din? Du kan ";
+"secrets_recovery_with_passphrase_recover_action" = "Bruk passordfrase";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Skriv inn gjenopprettingsfrase";
+"secrets_recovery_with_passphrase_information_verify_device" = "Bruk gjenopprettingsfrasen for å bekrefte denne enheten.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Angi en sikkerhetsfrase";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_reset_warning_message" = "Du starter på nytt uten historikk, meldinger, bekreftede enheter eller bekreftede brukere.";
+"secrets_reset_warning_title" = "Hvis du tilbakestiller alt";
+"secrets_reset_information" = "Gjør dette bare hvis du ikke har noen annen enhet du kan bekrefte denne enheten med.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Tilbakestill alt";
+"secrets_setup_recovery_passphrase_summary_information" = "Husk sikkerhetsfrasen. Den kan brukes til å låse opp krypterte meldinger og data.";
+"secrets_setup_recovery_passphrase_summary_title" = "Lagre sikkerhetsfrasen din";
+"secrets_setup_recovery_passphrase_confirm_information" = "Skriv inn sikkerhetsfrasen igjen for å bekrefte den.";
+"secrets_setup_recovery_passphrase_additional_information" = "Ikke bruk kontopassordet ditt.";
+"cross_signing_setup_banner_subtitle" = "Bekreft de andre enhetene dine lettere";
+"secrets_reset_authentication_message" = "Skriv inn kontopassordet ditt for å bekrefte";
+"secrets_reset_reset_action" = "Tilbakestill";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot er nå Element";
+"pin_protection_settings_section_header_x" = "PIN-kode og %@";
+"pin_protection_mismatch_too_many_times_error_message" = "Hvis du ikke kan huske PIN-koden din, trykker du på glemt PIN-knappen.";
+"pin_protection_mismatch_error_title" = "PIN-koder samsvarer ikke";
+"pin_protection_reset_alert_message" = "For å tilbakestille PIN-koden din, må du logge på igjen og opprette en ny";
+"pin_protection_forgot_pin" = "Glemt PIN-kode";
+"pin_protection_confirm_pin_to_change" = "Bekreft PIN-kode for å endre PIN-kode";
+"pin_protection_choose_pin_welcome_after_register" = "Velkommen.";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Velkommen tilbake.";
+"major_update_information" = "Vi er glade for å kunngjøre at vi har byttet navn! Appen din er oppdatert, og du er logget på kontoen din.";
+"pin_protection_settings_change_pin" = "Endre PIN-kode";
+"pin_protection_settings_section_footer" = "For å tilbakestille PIN-koden din, må du logge på igjen og opprette en ny.";
+"biometrics_cant_unlocked_alert_message_x" = "For å låse opp, bruk %@ eller logg inn igjen og aktiver %@ en gang til";
+"biometrics_cant_unlocked_alert_title" = "Kan ikke låse opp appen";
+"biometrics_usage_reason" = "Autentisering er nødvendig for å få tilgang til appen din";
+"pin_protection_kick_user_alert_message" = "For mange feil, du har blitt logget ut";
+"pin_protection_explanatory" = "Ved å sette opp en PIN-kode kan du beskytte data som meldinger og kontakter, slik at bare du kan få tilgang til dem ved å skrive inn PIN-koden ved oppstart av appen.";
+"searchable_directory_x_network" = "%@ nettverk";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Opprett et nytt rom";
+"biometrics_cant_unlocked_alert_message_login" = "Logg inn igjen";
+"create_room_section_footer_encryption" = "Kryptering kan ikke deaktiveres senere.";
+"create_room_enable_encryption" = "Aktiver kryptering";
+"create_room_section_header_encryption" = "Romkryptering";
+"create_room_placeholder_topic" = "Tema";
+"create_room_section_header_topic" = "Romtema (valgfritt)";
+"create_room_placeholder_name" = "Navn";
+"create_room_section_header_name" = "Romnavn";
+
+// MARK: - Create Room
+
+"create_room_title" = "Nytt rom";
+"searchable_directory_search_placeholder" = "Navn eller ID";
+"create_room_section_header_type" = "Romtype";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 medlem";
+"create_room_section_header_address" = "Romadresse";
+"create_room_show_in_directory" = "Vis rommet i romlisten";
+"create_room_section_footer_type" = "Folk blir bare med i et privat rom når de har fått rominvitasjon.";
+"create_room_type_public" = "Offentlig rom";
+"create_room_type_private" = "Privat rom";
+"room_info_list_section_other" = "Andre";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Talltastatur";
+"call_transfer_contacts_recent" = "Nylige";
+"call_transfer_dialpad" = "Talltastatur";
+"call_transfer_users" = "Brukere";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Overføre";
+"call_transfer_error_message" = "Samtaleoverføring mislyktes";
+"call_transfer_error_title" = "Feil";
+"call_transfer_contacts_all" = "Alle";
+"favourites_empty_view_information" = "Du kan legge til favoritter på flere måter - det raskeste er bare å trykke og holde nede. Trykk på stjernen, så vises de automatisk her og er lett tilgjengelige.";
+"invite_friends_share_text" = "Hei, snakk med meg på %@: %@";
+"room_intro_cell_information_room_sentence1_part1" = "Dette er begynnelsen på ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Legg til personer";
+"room_avatar_view_accessibility_hint" = "Bytt rombilde";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_with_topic_sentence2" = "Tema: %@";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " for å fortelle folk hva dette rommet handler om.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Legg til et tema";
+"room_intro_cell_information_dm_sentence1_part1" = "Dette er begynnelsen på dine direktemeldinger med ";
+"room_intro_cell_information_multiple_dm_sentence2" = "Bare dere er i denne samtalen, med mindre noen av dere inviterer andre til å bli med.";
+"room_intro_cell_information_dm_sentence2" = "Bare dere to er i denne samtalen, ingen andre kan bli med.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";

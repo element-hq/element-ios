@@ -25,6 +25,8 @@
  */
 @interface UnifiedSearchViewController : SegmentedViewController <UIGestureRecognizerDelegate, ContactsTableViewControllerDelegate>
 
++ (instancetype)instantiate;
+
 /**
  Open the public rooms directory page.
  It uses the `publicRoomsDirectoryDataSource` managed by the recents view controller data source

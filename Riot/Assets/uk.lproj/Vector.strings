@@ -325,3 +325,4 @@
 "room_participants_action_leave" = "Вийти з цієї кімнати";
 "room_participants_action_invite" = "Запросити";
 "room_ongoing_conference_call_close" = "Закрити";
+"callbar_only_single_active_group" = "Торкніться, щоб приєднатися до групового виклику (%@)";

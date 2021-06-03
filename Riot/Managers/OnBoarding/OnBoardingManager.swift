@@ -63,7 +63,7 @@ final public class OnBoardingManager: NSObject {
                     case .success:
                         success?()
                     case .failure(let error):
-                        NSLog("[OnBoardingManager] Create chat with riot-bot failed")
+                        MXLog.debug("[OnBoardingManager] Create chat with riot-bot failed")
                         failure?(error)
                     }
                 }
@@ -72,7 +72,7 @@ final public class OnBoardingManager: NSObject {
                 httpOperation.maxNumberOfTries = Constants.createRiotBotDMRequestMaxNumberOfTries
 
             case .failure(let error):
-                NSLog("[OnBoardingManager] riot-bot is unknown or the user hs is non federated. Do not try to create a room with riot-bot")
+                MXLog.debug("[OnBoardingManager] riot-bot is unknown or the user hs is non federated. Do not try to create a room with riot-bot")
                 failure?(error)
             }
         }
