@@ -36,7 +36,7 @@
                                 </label>
                             </subviews>
                         </stackView>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_cancel_fade" translatesAutoresizingMaskIntoConstraints="NO" id="BYJ-HN-opT">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_cancel_gradient" translatesAutoresizingMaskIntoConstraints="NO" id="BYJ-HN-opT">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-1F-5qT">
@@ -98,7 +98,7 @@
                 <outlet property="secondaryRecordButton" destination="rel-Fo-ROL" id="KXM-gt-9hS"/>
                 <outlet property="slideToCancelChevron" destination="82A-vC-KEp" id="Chg-EH-UBv"/>
                 <outlet property="slideToCancelContainerView" destination="6FH-4Q-Z5e" id="qCc-rl-vQX"/>
-                <outlet property="slideToCancelFade" destination="BYJ-HN-opT" id="qbb-Q9-xSo"/>
+                <outlet property="slideToCancelGradient" destination="BYJ-HN-opT" id="qbb-Q9-xSo"/>
                 <outlet property="slideToCancelLabel" destination="Ydw-Nb-zP6" id="l4Y-Eg-Qwc"/>
             </connections>
             <point key="canvasLocation" x="-84" y="234"/>
@@ -106,7 +106,7 @@
     </objects>
     <resources>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
-        <image name="voice_message_cancel_fade" width="104" height="47"/>
+        <image name="voice_message_cancel_gradient" width="104" height="47"/>
         <image name="voice_message_record_button_default" width="22" height="26.5"/>
         <image name="voice_message_record_button_recording" width="52" height="52"/>
     </resources>

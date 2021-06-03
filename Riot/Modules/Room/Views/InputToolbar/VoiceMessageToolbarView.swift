@@ -32,7 +32,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     @IBOutlet private var slideToCancelContainerView: UIView!
     @IBOutlet private var slideToCancelLabel: UILabel!
     @IBOutlet private var slideToCancelChevron: UIImageView!
-    @IBOutlet private var slideToCancelFade: UIImageView!
+    @IBOutlet private var slideToCancelGradient: UIImageView!
     
     private var cancelLabelToRecordButtonDistance: CGFloat = 0.0
     
@@ -58,6 +58,8 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        slideToCancelGradient.image = Asset.Images.voiceMessageCancelGradient.image.withRenderingMode(.alwaysTemplate)
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         longPressGesture.delegate = self
@@ -117,7 +119,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             case .idle:
                 self.slideToCancelContainerView.alpha = 0.0
                 self.backgroundView.alpha = 0.0
-                self.slideToCancelFade.alpha = 0.0
+                self.slideToCancelGradient.alpha = 0.0
                 self.recordButtonsContainerView.transform = .identity
                 self.slideToCancelContainerView.transform = .identity
                 self.primaryRecordButton.alpha = 1.0
@@ -125,7 +127,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             case .recording:
                 self.slideToCancelContainerView.alpha = 1.0
                 self.backgroundView.alpha = 1.0
-                self.slideToCancelFade.alpha = 1.0
+                self.slideToCancelGradient.alpha = 1.0
                 self.primaryRecordButton.alpha = 0.0
                 self.secondaryRecordButton.alpha = 1.0
             }
@@ -138,6 +140,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             self.primaryRecordButton.tintColor = theme.textSecondaryColor
             self.slideToCancelLabel.textColor = theme.textSecondaryColor
             self.slideToCancelChevron.tintColor = theme.textSecondaryColor
+            self.slideToCancelGradient.tintColor = theme.backgroundColor
         }
     }
 }

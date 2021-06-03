@@ -106,17 +106,12 @@
                                 <action selector="onTouchUpInside:" destination="iN0-l3-epB" eventType="touchUpInside" id="Y9g-uz-rAz"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zp9-EN-PLT" customClass="PassthroughView" customModule="Riot" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="58"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="1FO-iu-urG"/>
                         <constraint firstItem="Hga-l8-Wua" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" constant="12" id="31r-fn-347"/>
                         <constraint firstItem="QWp-NV-uh5" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" constant="12" id="M9f-je-3zO"/>
                         <constraint firstAttribute="bottom" secondItem="QWp-NV-uh5" secondAttribute="bottom" constant="13" id="NGr-2o-sOP"/>
-                        <constraint firstItem="zp9-EN-PLT" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" id="OFZ-RG-O8K"/>
                         <constraint firstAttribute="trailing" secondItem="G8Z-CM-tGs" secondAttribute="trailing" constant="12" id="Sua-LC-3yW"/>
                         <constraint firstItem="ESv-9w-KJF" firstAttribute="leading" secondItem="Hga-l8-Wua" secondAttribute="trailing" constant="12" id="TIe-py-lFJ"/>
                         <constraint firstItem="QWp-NV-uh5" firstAttribute="top" secondItem="a84-Vc-6ud" secondAttribute="top" constant="9" id="WyZ-3i-OHi"/>
@@ -124,11 +119,8 @@
                         <constraint firstAttribute="height" constant="58" id="Yjj-ua-rbe"/>
                         <constraint firstAttribute="bottom" secondItem="Hga-l8-Wua" secondAttribute="bottom" constant="12" id="b0G-CY-AmP"/>
                         <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="56" id="hXO-cY-Jgz"/>
-                        <constraint firstItem="zp9-EN-PLT" firstAttribute="leading" secondItem="a84-Vc-6ud" secondAttribute="leading" id="iDd-At-1f7"/>
                         <constraint firstAttribute="trailing" secondItem="ESv-9w-KJF" secondAttribute="trailing" id="jCS-Tf-vxr"/>
-                        <constraint firstAttribute="bottom" secondItem="zp9-EN-PLT" secondAttribute="bottom" id="o7N-Dj-dCH"/>
                         <constraint firstAttribute="bottom" secondItem="ESv-9w-KJF" secondAttribute="bottom" constant="12" id="v8r-ac-MKn"/>
-                        <constraint firstAttribute="trailing" secondItem="zp9-EN-PLT" secondAttribute="trailing" id="yEl-3y-oBb"/>
                     </constraints>
                 </view>
             </subviews>
@@ -159,7 +151,6 @@
                 <outlet property="messageComposerContainerBottomConstraint" destination="NGr-2o-sOP" id="oez-6D-IKA"/>
                 <outlet property="messageComposerContainerTopConstraint" destination="WyZ-3i-OHi" id="OcO-1f-bNA"/>
                 <outlet property="rightInputToolbarButton" destination="G8Z-CM-tGs" id="NCk-5m-aNF"/>
-                <outlet property="voiceMessageToolbarContainerView" destination="zp9-EN-PLT" id="St9-oc-beM"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="151.12443778110946"/>
         </view>
