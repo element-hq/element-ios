@@ -1375,3 +1375,13 @@
 // Chat
 "room_slide_to_end_group_call" = "Húzd el a hívás befejezéséhez mindenki számára";
 "callbar_only_single_active_group" = "Koppints a csoporthívásba való belépéshez (%@)";
+"space_beta_announce_information" = "Terek az új lehetőség szobák és személyek csoportosítására. iOS-en még nem érhető el, de weben és asztali környezetben már használható.";
+"space_beta_announce_subtitle" = "A közösségek új verziója";
+"space_beta_announce_title" = "Terek hamarosan";
+"space_beta_announce_badge" = "Béta";
+"space_feature_unavailable_information" = "Terek az új lehetőség a szobák és személyek csoportosítására.\n\nHamarosan érkezik. Egyenlőre, ha egy másik klienssel csatlakozol egyhez, minden ottani szobába be tudsz lépni.";
+"space_feature_unavailable_subtitle" = "A Terek még nem működnek iOS rendszeren, de weben és asztali környezetben már használható";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "A Terek még nem érhetők el";

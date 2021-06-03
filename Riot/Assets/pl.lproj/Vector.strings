@@ -1440,3 +1440,13 @@
 // Chat
 "room_slide_to_end_group_call" = "Przesuń, aby zakończyć połączenie dla wszystkich";
 "callbar_only_single_active_group" = "Dotknij, aby powrócić do rozmowy grupowej (%@)";
+"space_beta_announce_title" = "Przestrzenie wkrótce się pojawią";
+"space_feature_unavailable_information" = "Przestrzenie to nowy sposób na grupowanie pokoi i osób.\n\nNiedługo tu będą. Na razie, jeśli dołączysz do jakiejś na innej platformie to będziesz mieć dostęp do wszystkich pokoi, do których dołączysz tutaj.";
+"space_feature_unavailable_subtitle" = "Przestrzenie nie są jeszcze obsługiwane w kliencie iOS ale możesz z nich już korzystać w przeglądarce i na komputerze";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Przestrzenie nie są jeszcze obsługiwane";
+"space_beta_announce_information" = "Przestrzenie to nowy sposób na grupowanie pokoi i osób. Nie ma ich jeszcze na iOS ale możesz ich teraz używać w przeglądarce i na komputerze.";
+"space_beta_announce_subtitle" = "Nowa wersja społeczności";
+"space_beta_announce_badge" = "BETA";

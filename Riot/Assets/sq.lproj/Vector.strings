@@ -1364,3 +1364,13 @@
 // Chat
 "room_slide_to_end_group_call" = "Rrëshqiteni, që të përfundohet thirrja për këdo";
 "callbar_only_single_active_group" = "Prekeni, që të Hyni në thirrjen e grupit (%@)";
+"space_beta_announce_information" = "Hapësirat janë një rrugë e re për të grupuar dhoma dhe njerëz. Ende s’janë në iOS, por mund t’i përdorni që tani në Web dhe Desktop.";
+"space_beta_announce_subtitle" = "Versioni i ri i bashkësive";
+"space_beta_announce_title" = "Hapësirat vijnë së shpejti";
+"space_beta_announce_badge" = "BETA";
+"space_feature_unavailable_information" = "Hapësirat janë një rrugë e re për të grupuar dhoma dhe njerëz.\n\nDo vijnë së shpejti edhe këtu. Për tani, nëse bëheni pjesë e një të tille në një platformë tjetër, do të jeni në gjendje të hyni në cilëndo dhomë ku hyni prej këtu.";
+"space_feature_unavailable_subtitle" = "Hapësirat s’janë ende në iOS, por mund t’i përdorni që tani në Web dhe Desktop";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Hapësirat s’kanë ardhur ende";

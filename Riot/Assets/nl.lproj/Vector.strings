@@ -1475,3 +1475,13 @@
 
 // Chat
 "room_slide_to_end_group_call" = "Schuif om voor iedereen de oproep te beëindigen";
+"space_beta_announce_information" = "Spaces zijn de nieuwe manier om gesprekken en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu gebruiken op Web en Desktop.";
+"space_feature_unavailable_information" = "Spaces zijn de nieuwe manier om gesprekken en personen te groeperen. \n\nZe zijn binnenkort beschikbaar. U kan aan spaces deelnemen via andere platformen en die gesprekken worden dan hier beschikbaar.";
+"space_beta_announce_subtitle" = "De nieuwe versie van gemeenschappen";
+"space_beta_announce_title" = "Spaces komen binnenkort";
+"space_beta_announce_badge" = "BETA";
+"space_feature_unavailable_subtitle" = "Spaces is nog niet beschikbaar op iOS, maar u kunt het nu al testen op Web en Desktop";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Spaces is nog niet klaar";
