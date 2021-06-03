@@ -93,14 +93,14 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         super.render(cellData)
         
         guard let bubbleCellContentView = self.bubbleCellContentView else {
-            NSLog("[RoomCreationIntroCell] Fail to load content view")
+            MXLog.debug("[RoomCreationIntroCell] Fail to load content view")
             return
         }
         
         guard let bubbleData = self.bubbleData,
-            let viewData = self.viewData(from: bubbleData) else {
-                NSLog("[RoomCreationIntroCell] Fail to render \(String(describing: cellData))")
-                return
+              let viewData = self.viewData(from: bubbleData) else {
+            MXLog.debug("[RoomCreationIntroCell] Fail to render \(String(describing: cellData))")
+            return
         }
         
         bubbleCellContentView.fill(with: viewData)

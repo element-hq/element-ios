@@ -185,7 +185,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     {
         if (![widgetEventContent isKindOfClass:NSDictionary.class])
         {
-            NSLog(@"[WidgetManager] userWidgets: ERROR: invalid user widget format: %@", widgetEventContent);
+            MXLogDebug(@"[WidgetManager] userWidgets: ERROR: invalid user widget format: %@", widgetEventContent);
             continue;
         }
 
@@ -262,7 +262,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        NSLog(@"[WidgetManager] createJitsiWidgetInRoom: Error: no Integrations Manager API URL for user %@", userId);
+        MXLogDebug(@"[WidgetManager] createJitsiWidgetInRoom: Error: no Integrations Manager API URL for user %@", userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -270,7 +270,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:room.mxSession];
     if (!sharedSettings.hasIntegrationProvisioningEnabled)
     {
-        NSLog(@"[WidgetManager] createJitsiWidgetInRoom: Error: Disabled integration manager for user %@", userId);
+        MXLogDebug(@"[WidgetManager] createJitsiWidgetInRoom: Error: Disabled integration manager for user %@", userId);
         failure(self.errorForDisabledIntegrationManager);
         return nil;
     }
@@ -391,11 +391,11 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
             NSString *widgetId = event.stateKey;
             if (!widgetId)
             {
-                NSLog(@"[WidgetManager] Error: New widget detected with no id in %@: %@", event.roomId, event.JSONDictionary);
+                MXLogDebug(@"[WidgetManager] Error: New widget detected with no id in %@: %@", event.roomId, event.JSONDictionary);
                 return;
             }
 
-            NSLog(@"[WidgetManager] New widget detected: %@ in %@", widgetId, event.roomId);
+            MXLogDebug(@"[WidgetManager] New widget detected: %@ in %@", widgetId, event.roomId);
 
             Widget *widget = [[Widget alloc] initWithWidgetEvent:event inMatrixSession:mxSession];
             if (widget)
@@ -411,7 +411,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
             }
             else
             {
-                NSLog(@"[WidgetManager] Cannot decode new widget - event: %@", event);
+                MXLogDebug(@"[WidgetManager] Cannot decode new widget - event: %@", event);
 
                 if (self->failureBlockForWidgetCreation[hash][widgetId])
                 {
@@ -545,7 +545,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                 }
                 else
                 {
-                    NSLog(@"[WidgetManager] getScalarTokenForMXSession: Invalid stored token. Need to register for a new token");
+                    MXLogDebug(@"[WidgetManager] getScalarTokenForMXSession: Invalid stored token. Need to register for a new token");
                     MXHTTPOperation *operation2 = [self registerForScalarToken:mxSession success:success failure:failure];
                     [operation mutateTo:operation2];
                 }
@@ -555,7 +555,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     }
     else
     {
-        NSLog(@"[WidgetManager] getScalarTokenForMXSession: Need to register for a token");
+        MXLogDebug(@"[WidgetManager] getScalarTokenForMXSession: Need to register for a token");
         operation = [self registerForScalarToken:mxSession success:success failure:failure];
     }
 
@@ -569,12 +569,12 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     MXHTTPOperation *operation;
     NSString *userId = mxSession.myUser.userId;
 
-    NSLog(@"[WidgetManager] registerForScalarToken");
+    MXLogDebug(@"[WidgetManager] registerForScalarToken");
 
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        NSLog(@"[WidgetManager] registerForScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
+        MXLogDebug(@"[WidgetManager] registerForScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -616,7 +616,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
          } failure:^(NSError *error) {
              httpClient = nil;
 
-             NSLog(@"[WidgetManager] registerForScalarToken: Failed to register. Error: %@", error);
+             MXLogDebug(@"[WidgetManager] registerForScalarToken: Failed to register. Error: %@", error);
 
              if (failure)
              {
@@ -634,7 +634,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         [operation mutateTo:operation2];
 
     } failure:^(NSError *error) {
-        NSLog(@"[WidgetManager] registerForScalarToken. Error in openIdToken request");
+        MXLogDebug(@"[WidgetManager] registerForScalarToken. Error in openIdToken request");
 
         if (failure)
         {
@@ -654,7 +654,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        NSLog(@"[WidgetManager] validateScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
+        MXLogDebug(@"[WidgetManager] validateScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -676,7 +676,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
                                      }
                                      else
                                      {
-                                         NSLog(@"[WidgetManager] validateScalarToken. Unexpected modular/account response: %@", JSONResponse);
+                                         MXLogDebug(@"[WidgetManager] validateScalarToken. Unexpected modular/account response: %@", JSONResponse);
                                          complete(NO);
                                      }
 
@@ -685,12 +685,12 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
 
                                      NSHTTPURLResponse *urlResponse = [MXHTTPOperation urlResponseFromError:error];
 
-                                     NSLog(@"[WidgetManager] validateScalarToken. Error in modular/account request. statusCode: %@", @(urlResponse.statusCode));
+                                     MXLogDebug(@"[WidgetManager] validateScalarToken. Error in modular/account request. statusCode: %@", @(urlResponse.statusCode));
 
                                      MXError *mxError = [[MXError alloc] initWithNSError:error];
                                      if ([mxError.errcode isEqualToString:kMXErrCodeStringTermsNotSigned])
                                      {
-                                         NSLog(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
+                                         MXLogDebug(@"[WidgetManager] validateScalarToke. Error: Need to accept terms");
                                          NSError *termsNotSignedError = [NSError errorWithDomain:WidgetManagerErrorDomain
                                                                                             code:WidgetManagerErrorCodeTermsNotSigned
                                                                                         userInfo:@{
@@ -757,7 +757,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
         {
             NSString *scalarToken = scalarTokens[userId];
 
-            NSLog(@"[WidgetManager] migrate scalarTokens to integrationManagerConfigs for %@", userId);
+            MXLogDebug(@"[WidgetManager] migrate scalarTokens to integrationManagerConfigs for %@", userId);
 
             WidgetManagerConfig *config = [self createWidgetManagerConfigWithAppSettings];
             config.scalarToken = scalarToken;

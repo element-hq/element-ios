@@ -165,22 +165,22 @@
     
     if (!self.emailTextField.text.length)
     {
-        NSLog(@"[ForgotPasswordInputsView] Missing email");
+        MXLogDebug(@"[ForgotPasswordInputsView] Missing email");
         errorMsg = NSLocalizedStringFromTable(@"auth_reset_password_missing_email", @"Vector", nil);
     }
     else if (!self.passWordTextField.text.length)
     {
-        NSLog(@"[ForgotPasswordInputsView] Missing Passwords");
+        MXLogDebug(@"[ForgotPasswordInputsView] Missing Passwords");
         errorMsg = NSLocalizedStringFromTable(@"auth_reset_password_missing_password", @"Vector", nil);
     }
     else if (self.passWordTextField.text.length < 6)
     {
-        NSLog(@"[ForgotPasswordInputsView] Invalid Passwords");
+        MXLogDebug(@"[ForgotPasswordInputsView] Invalid Passwords");
         errorMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
     }
     else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
     {
-        NSLog(@"[ForgotPasswordInputsView] Passwords don't match");
+        MXLogDebug(@"[ForgotPasswordInputsView] Passwords don't match");
         errorMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
     }
     else
@@ -188,7 +188,7 @@
         // Check validity of the non empty email
         if ([MXTools isEmailAddress:self.emailTextField.text] == NO)
         {
-            NSLog(@"[ForgotPasswordInputsView] Invalid email");
+            MXLogDebug(@"[ForgotPasswordInputsView] Invalid email");
             errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
         }
     }
@@ -285,7 +285,7 @@
                      }
                                                failure:^(NSError *error)
                      {
-                         NSLog(@"[ForgotPasswordInputsView] Failed to request email token");
+                        MXLogDebug(@"[ForgotPasswordInputsView] Failed to request email token");
 
                          // Ignore connection cancellation error
                          if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
@@ -345,7 +345,7 @@
             }
             else
             {
-                NSLog(@"[ForgotPasswordInputsView] Operation failed during the email identity stage");
+                MXLogDebug(@"[ForgotPasswordInputsView] Operation failed during the email identity stage");
             }
         }
         
@@ -414,7 +414,7 @@
 {
     [mxRestClient supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
 
-        NSLog(@"[ForgotPasswordInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
+        MXLogDebug(@"[ForgotPasswordInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
 
         if (matrixVersions.doesServerRequireIdentityServerParam
             && !mxRestClient.identityServer)

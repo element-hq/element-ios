@@ -125,7 +125,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     {
         [widgetManager closeWidget:widgetId inRoom:room success:^{
         } failure:^(NSError *error) {
-            NSLog(@"[WidgetVC] removeCurrentWidget failed. Error: %@", error);
+            MXLogDebug(@"[WidgetVC] removeCurrentWidget failed. Error: %@", error);
         }];
     }
 }
@@ -202,7 +202,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
              }
                                            failure:^(NSError * _Nullable error)
              {
-                 NSLog(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
+                MXLogDebug(@"[WidgetVC] setPermissionForWidget failed. Error: %@", error);
                  sharedSettings = nil;
              }];
 
@@ -274,7 +274,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     [sharedSettings setPermission:WidgetPermissionDeclined for:widget success:^{
         sharedSettings = nil;
     } failure:^(NSError * _Nullable error) {
-        NSLog(@"[WidgetVC] revokePermissionForCurrentWidget failed. Error: %@", error);
+        MXLogDebug(@"[WidgetVC] revokePermissionForCurrentWidget failed. Error: %@", error);
         sharedSettings = nil;
     }];
 }
@@ -401,7 +401,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
             }
             else
             {
-                NSLog(@"[WidgetVC] shouldStartLoadWithRequest: ERROR: Missing request id in postMessage API %@", parameters);
+                MXLogDebug(@"[WidgetVC] shouldStartLoadWithRequest: ERROR: Missing request id in postMessage API %@", parameters);
             }
         }
 
@@ -417,7 +417,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         [[UIApplication sharedApplication] vc_open:linkURL completionHandler:^(BOOL success) {
             if (!success)
             {
-                NSLog(@"[WidgetVC] webView:decidePolicyForNavigationAction:decisionHandler fail to open external link: %@", linkURL);
+                MXLogDebug(@"[WidgetVC] webView:decidePolicyForNavigationAction:decisionHandler fail to open external link: %@", linkURL);
             }
         }];
         decisionHandler(WKNavigationActionPolicyCancel);
@@ -433,7 +433,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     NSString *errorDescription = error.description;
     errorDescription = [self stringByReplacingScalarTokenInString:errorDescription byScalarToken:@"..."];
 
-    NSLog(@"[WidgetVC] didFailLoadWithError: %@", errorDescription);
+    MXLogDebug(@"[WidgetVC] didFailLoadWithError: %@", errorDescription);
 
     [self stopActivityIndicator];
     [self showErrorAsAlert:error];
@@ -446,7 +446,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         NSHTTPURLResponse * response = (NSHTTPURLResponse *)navigationResponse.response;
         if (response.statusCode != 200)
         {
-            NSLog(@"[WidgetVC] decidePolicyForNavigationResponse: statusCode: %@", @(response.statusCode));
+            MXLogDebug(@"[WidgetVC] decidePolicyForNavigationResponse: statusCode: %@", @(response.statusCode));
         }
 
         if (response.statusCode == 403 && [[WidgetManager sharedManager] isScalarUrl:self.URL forUser:self.widget.mxSession.myUser.userId])
@@ -485,7 +485,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         }
         else
         {
-            NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Invalid content for m.sticker: %@", requestData);
+            MXLogDebug(@"[WidgetVC] onPostMessageRequest: ERROR: Invalid content for m.sticker: %@", requestData);
         }
 
         // Consider we are done with the sticker picker widget
@@ -515,12 +515,12 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         }
         else
         {
-            NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Invalid content for integration_manager_open: %@", requestData);
+            MXLogDebug(@"[WidgetVC] onPostMessageRequest: ERROR: Invalid content for integration_manager_open: %@", requestData);
         }
     }
     else
     {
-        NSLog(@"[WidgetVC] onPostMessageRequest: ERROR: Unsupported action: %@: %@", action, requestData);
+        MXLogDebug(@"[WidgetVC] onPostMessageRequest: ERROR: Unsupported action: %@: %@", action, requestData);
     }
 }
 
@@ -571,7 +571,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (void)sendError:(NSString*)message toRequest:(NSString*)requestId
 {
-    NSLog(@"[WidgetVC] sendError: Action %@ failed with message: %@", requestId, message);
+    MXLogDebug(@"[WidgetVC] sendError: Action %@ failed with message: %@", requestId, message);
 
     // TODO: JS has an additional optional parameter: nestedError
     [self sendNSObjectResponse:@{
@@ -610,7 +610,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
  */
 - (void)fixScalarToken
 {
-    NSLog(@"[WidgetVC] fixScalarToken");
+    MXLogDebug(@"[WidgetVC] fixScalarToken");
 
     self->webView.hidden = YES;
 
@@ -621,11 +621,11 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     [WidgetManager.sharedManager getScalarTokenForMXSession:widget.mxSession validate:NO success:^(NSString *scalarToken) {
         MXStrongifyAndReturnIfNil(self);
 
-        NSLog(@"[WidgetVC] fixScalarToken: DONE");
+        MXLogDebug(@"[WidgetVC] fixScalarToken: DONE");
         [self loadDataWithScalarToken:scalarToken];
 
     } failure:^(NSError *error) {
-        NSLog(@"[WidgetVC] fixScalarToken: Error: %@", error);
+        MXLogDebug(@"[WidgetVC] fixScalarToken: Error: %@", error);
 
         if ([error.domain isEqualToString:WidgetManagerErrorDomain]
             && error.code == WidgetManagerErrorCodeTermsNotSigned)
@@ -659,7 +659,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     
     WidgetManagerConfig *config =  [[WidgetManager sharedManager] configForUser:widget.mxSession.myUser.userId];
 
-    NSLog(@"[WidgetVC] presentTerms for %@", config.baseUrl);
+    MXLogDebug(@"[WidgetVC] presentTerms for %@", config.baseUrl);
 
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
                                                                                                                                                        serviceType:MXServiceTypeIntegrationManager

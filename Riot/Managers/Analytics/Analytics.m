@@ -109,7 +109,7 @@ NSString *const kAnalyticsMetricsCategory = @"Metrics";
     }
     else
     {
-        NSLog(@"[AppDelegate] The user decided to not send analytics");
+        MXLogDebug(@"[AppDelegate] The user decided to not send analytics");
         matomoTracker.isOptedOut = YES;
         [MXLogger logCrashes:NO];
     }

@@ -290,7 +290,7 @@
             // Check required fields
             if ((!self.userLoginTextField.text.length && !nbPhoneNumber) || !self.passWordTextField.text.length)
             {
-                NSLog(@"[AuthInputsView] Invalid user/password");
+                MXLogDebug(@"[AuthInputsView] Invalid user/password");
                 errorMsg = NSLocalizedStringFromTable(@"auth_invalid_login_param", @"Vector", nil);
             }
         }
@@ -305,22 +305,22 @@
         {
             if (!self.userLoginTextField.text.length)
             {
-                NSLog(@"[AuthInputsView] Invalid user name");
+                MXLogDebug(@"[AuthInputsView] Invalid user name");
                 errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
             }
             else if (!self.passWordTextField.text.length)
             {
-                NSLog(@"[AuthInputsView] Missing Passwords");
+                MXLogDebug(@"[AuthInputsView] Missing Passwords");
                 errorMsg = NSLocalizedStringFromTable(@"auth_missing_password", @"Vector", nil);
             }
             else if (self.passWordTextField.text.length < 6)
             {
-                NSLog(@"[AuthInputsView] Invalid Passwords");
+                MXLogDebug(@"[AuthInputsView] Invalid Passwords");
                 errorMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
             }
             else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
             {
-                NSLog(@"[AuthInputsView] Passwords don't match");
+                MXLogDebug(@"[AuthInputsView] Passwords don't match");
                 errorMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
             }
             else
@@ -331,7 +331,7 @@
                 
                 if ([regex firstMatchInString:user options:0 range:NSMakeRange(0, user.length)] == nil)
                 {
-                    NSLog(@"[AuthInputsView] Invalid user name");
+                    MXLogDebug(@"[AuthInputsView] Invalid user name");
                     errorMsg = NSLocalizedStringFromTable(@"auth_invalid_user_name", @"Vector", nil);
                 }
             }
@@ -343,12 +343,12 @@
             {
                 if (self.areAllThirdPartyIdentifiersRequired)
                 {
-                    NSLog(@"[AuthInputsView] Missing email");
+                    MXLogDebug(@"[AuthInputsView] Missing email");
                     errorMsg = NSLocalizedStringFromTable(@"auth_missing_email", @"Vector", nil);
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypeMSISDN] && !self.phoneTextField.text.length && self.isThirdPartyIdentifierRequired)
                 {
-                    NSLog(@"[AuthInputsView] Missing email or phone number");
+                    MXLogDebug(@"[AuthInputsView] Missing email or phone number");
                     errorMsg = NSLocalizedStringFromTable(@"auth_missing_email_or_phone", @"Vector", nil);
                 }
             }
@@ -360,7 +360,7 @@
                 {
                     if (self.areAllThirdPartyIdentifiersRequired)
                     {
-                        NSLog(@"[AuthInputsView] Missing phone");
+                        MXLogDebug(@"[AuthInputsView] Missing phone");
                         errorMsg = NSLocalizedStringFromTable(@"auth_missing_phone", @"Vector", nil);
                     }
                 }
@@ -373,7 +373,7 @@
                         // Check validity of the non empty email
                         if (![MXTools isEmailAddress:self.emailTextField.text])
                         {
-                            NSLog(@"[AuthInputsView] Invalid email");
+                            MXLogDebug(@"[AuthInputsView] Invalid email");
                             errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
                         }
                     }
@@ -383,7 +383,7 @@
                         // Check validity of the non empty phone
                         if (![[NBPhoneNumberUtil sharedInstance] isValidNumber:nbPhoneNumber])
                         {
-                            NSLog(@"[AuthInputsView] Invalid phone number");
+                            MXLogDebug(@"[AuthInputsView] Invalid phone number");
                             errorMsg = NSLocalizedStringFromTable(@"auth_invalid_phone", @"Vector", nil);
                         }
                     }
@@ -403,7 +403,7 @@
         if (externalRegistrationParameters)
         {
             // We trigger here a registration based on external inputs. All the required data are handled by the session id.
-            NSLog(@"[AuthInputsView] prepareParameters: return external registration parameters");
+            MXLogDebug(@"[AuthInputsView] prepareParameters: return external registration parameters");
             callback(externalRegistrationParameters, nil);
             
             // CAUTION: Do not reset this dictionary here, it is used later to handle this registration until the end (see [updateAuthSessionWithCompletedStages:didUpdateParameters:])
@@ -522,7 +522,7 @@
                 // Check whether a phone number has been set, and if it is not handled yet
                 if (nbPhoneNumber && ![self isFlowCompleted:kMXLoginFlowTypeMSISDN])
                 {
-                    NSLog(@"[AuthInputsView] Prepare msisdn stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare msisdn stage");
                     
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
@@ -576,7 +576,7 @@
                                                                                 failure:^(NSError *error)
                              {
 
-                                 NSLog(@"[AuthInputsView] Failed to request msisdn token");
+                                MXLogDebug(@"[AuthInputsView] Failed to request msisdn token");
 
                                  // Ignore connection cancellation error
                                  if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
@@ -626,12 +626,12 @@
                         // Async response
                         return;
                     }
-                    NSLog(@"[AuthInputsView] Authentication failed during the msisdn stage");
+                    MXLogDebug(@"[AuthInputsView] Authentication failed during the msisdn stage");
                 }
                 // Check whether an email has been set, and if it is not handled yet
                 else if (!self.emailContainer.isHidden && self.emailTextField.text.length && ![self isFlowCompleted:kMXLoginFlowTypeEmailIdentity])
                 {
-                    NSLog(@"[AuthInputsView] Prepare email identity stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare email identity stage");
                     
                     // Retrieve the REST client from delegate
                     MXRestClient *restClient;
@@ -702,7 +702,7 @@
                                                                                failure:^(NSError *error)
                              {
 
-                                 NSLog(@"[AuthInputsView] Failed to request email token");
+                                MXLogDebug(@"[AuthInputsView] Failed to request email token");
 
                                  // Ignore connection cancellation error
                                  if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
@@ -749,11 +749,11 @@
                         // Async response
                         return;
                     }
-                    NSLog(@"[AuthInputsView] Authentication failed during the email identity stage");
+                    MXLogDebug(@"[AuthInputsView] Authentication failed during the email identity stage");
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypeRecaptcha] && ![self isFlowCompleted:kMXLoginFlowTypeRecaptcha])
                 {
-                    NSLog(@"[AuthInputsView] Prepare reCaptcha stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare reCaptcha stage");
                     
                     [self displayRecaptchaForm:^(NSString *response) {
                         
@@ -773,7 +773,7 @@
                         }
                         else
                         {
-                            NSLog(@"[AuthInputsView] reCaptcha stage failed");
+                            MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
                             callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
                         }
                         
@@ -807,7 +807,7 @@
                 }
                 else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
                 {
-                    NSLog(@"[AuthInputsView] Prepare terms stage");
+                    MXLogDebug(@"[AuthInputsView] Prepare terms stage");
 
                     MXWeakify(self);
                     [self displayTermsView:^{
@@ -848,7 +848,7 @@
             // Check the supported use cases
             if (isMSISDNFlowCompleted && self.isThirdPartyIdentifierPending)
             {
-                NSLog(@"[AuthInputsView] Prepare a new third-party stage");
+                MXLogDebug(@"[AuthInputsView] Prepare a new third-party stage");
                 
                 // Here an email address is available, we add it to the authentication session.
                 [self prepareParameters:callback];
@@ -858,7 +858,7 @@
             else if ((isMSISDNFlowCompleted || isEmailFlowCompleted)
                      && [self isFlowSupported:kMXLoginFlowTypeRecaptcha] && ![self isFlowCompleted:kMXLoginFlowTypeRecaptcha])
             {
-                NSLog(@"[AuthInputsView] Display reCaptcha stage");
+                MXLogDebug(@"[AuthInputsView] Display reCaptcha stage");
 
                 if (externalRegistrationParameters)
                 {
@@ -874,7 +874,7 @@
                         }
                         else
                         {
-                            NSLog(@"[AuthInputsView] reCaptcha stage failed");
+                            MXLogDebug(@"[AuthInputsView] reCaptcha stage failed");
                             callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
                         }
                     }];
@@ -888,7 +888,7 @@
             }
             else if ([self isFlowSupported:kMXLoginFlowTypeTerms] && ![self isFlowCompleted:kMXLoginFlowTypeTerms])
             {
-                NSLog(@"[AuthInputsView] Prepare a new terms stage");
+                MXLogDebug(@"[AuthInputsView] Prepare a new terms stage");
                 
                 if (externalRegistrationParameters)
                 {
@@ -912,7 +912,7 @@
             }
         }
         
-        NSLog(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
+        MXLogDebug(@"[AuthInputsView] updateAuthSessionWithCompletedStages failed");
         callback (nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
     }
 }
@@ -926,7 +926,7 @@
     // Check the current authentication type
     if (self.authType != MXKAuthenticationTypeRegister)
     {
-        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong auth type");
+        MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong auth type");
         return NO;
     }
     
@@ -947,7 +947,7 @@
             
             if ([homeserverURL isEqualToString:restClient.homeserver] == NO)
             {
-                NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong homeserver URL");
+                MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong homeserver URL");
                 return NO;
             }
         }
@@ -960,14 +960,14 @@
             
             if ([identityURL isEqualToString:restClient.identityServer] == NO)
             {
-                NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong identity server URL");
+                MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong identity server URL");
                 return NO;
             }
         }
     }
     else
     {
-        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: not supported");
+        MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: not supported");
         return NO;
     }
     
@@ -995,7 +995,7 @@
     // Check validity of the required parameters
     if (!homeserverURL.length || !clientSecret.length || !sid.length || !sessionId.length)
     {
-        NSLog(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong parameters");
+        MXLogDebug(@"[AuthInputsView] setExternalRegistrationParameters failed: wrong parameters");
         return NO;
     }
 
@@ -1052,7 +1052,7 @@
         [self displaySoftLogoutMessageWithUserDisplayname:myUser.displayname andKeyBackupNeeded:keyBackupNeeded];
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[AuthInputsView] displaySoftLogoutMessage: Cannot load displayname. Error: %@", error);
+        MXLogDebug(@"[AuthInputsView] displaySoftLogoutMessage: Cannot load displayname. Error: %@", error);
         [self displaySoftLogoutMessageWithUserDisplayname:nil andKeyBackupNeeded:keyBackupNeeded];
     }];
 }
@@ -1590,7 +1590,7 @@
                     {
                         if ([self isSupportedFlowType:stage] == NO)
                         {
-                            NSLog(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
+                            MXLogDebug(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
                             isSupported = NO;
                             break;
                         }
@@ -1608,7 +1608,7 @@
             }
             else
             {
-                NSLog(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), flow.type);
+                MXLogDebug(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), flow.type);
             }
         }
         else
@@ -1621,7 +1621,7 @@
                 {
                     if ([self isSupportedFlowType:stage] == NO)
                     {
-                        NSLog(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
+                        MXLogDebug(@"[AuthInputsView] %@: %@ stage is not supported.", (type == MXKAuthenticationTypeLogin ? @"login" : @"register"), stage);
                         isSupported = NO;
                         break;
                     }
@@ -1744,12 +1744,12 @@
                                                                   }
                                                                   else
                                                                   {
-                                                                      NSLog(@"[AuthInputsView] Failed to retrieve identity server URL");
+                                                                      MXLogDebug(@"[AuthInputsView] Failed to retrieve identity server URL");
                                                                   }
                                                                   
                                                               } failure:^(NSError *error) {
                                                                   
-                                                                  NSLog(@"[AuthInputsView] Failed to submit the sms token");
+                                                                  MXLogDebug(@"[AuthInputsView] Failed to submit the sms token");
                                                                   
                                                                   // Ignore connection cancellation error
                                                                   if (([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled))
@@ -1877,7 +1877,7 @@
 {
     [mxRestClient supportedMatrixVersions:^(MXMatrixVersions *matrixVersions) {
 
-        NSLog(@"[AuthInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
+        MXLogDebug(@"[AuthInputsView] checkIdentityServerRequirement: %@", matrixVersions.doesServerRequireIdentityServerParam ? @"YES": @"NO");
         success(matrixVersions.doesServerRequireIdentityServerParam);
 
     } failure:failure];

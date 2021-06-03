@@ -62,7 +62,7 @@ final class SlidingModalPresenter: NSObject {
     
     func present(_ viewController: SlidingModalPresentable.ViewControllerType, from presentingViewController: UIViewController, animated: Bool, options: SlidingModalOption, completion: (() -> Void)?) {
         
-        NSLog("[SlidingModalPresenter] present \(type(of: viewController))")
+        MXLog.debug("[SlidingModalPresenter] present \(type(of: viewController))")
         
         let transitionDelegate = SlidingModalPresentationDelegate(isSpanning: options.contains(.spanning), blurBackground: options.contains(.blurBackground))
         
@@ -81,7 +81,7 @@ final class SlidingModalPresenter: NSObject {
     
     @objc func presentView(_ view: SlidingModalPresentable.ViewType, from viewControllerPresenter: UIViewController, animated: Bool, completion: (() -> Void)?) {
         
-        NSLog("[SlidingModalPresenter] presentView \(type(of: view))")
+        MXLog.debug("[SlidingModalPresenter] presentView \(type(of: view))")
         
         let viewController = SlidingModalEmptyViewController.instantiate(with: view)
         self.present(viewController, from: viewControllerPresenter, animated: animated, completion: completion)

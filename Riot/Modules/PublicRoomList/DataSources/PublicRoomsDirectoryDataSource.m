@@ -302,7 +302,7 @@ static NSString *const kNSFWKeyword = @"nsfw";
 
             self->publicRoomsRequest = nil;
 
-            NSLog(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms.");
+            MXLogDebug(@"[PublicRoomsDirectoryDataSource] Failed to fecth public rooms.");
 
             [self setState:MXKDataSourceStateFailed];
 

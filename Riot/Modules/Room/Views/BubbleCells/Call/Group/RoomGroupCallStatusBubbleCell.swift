@@ -201,7 +201,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         
         let events = bubbleCellData.allLinkedEvents()
         
-        NSLog("[RoomGroupCallStatusBubbleCell] render: \(events.count) events: \(events)")
+        MXLog.debug("[RoomGroupCallStatusBubbleCell] render: \(events.count) events: \(events)")
         
         guard let widgetEvent = events
                 .first(where: {

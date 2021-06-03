@@ -119,7 +119,7 @@
         else
         {
             // Unexpected case
-            NSLog(@"[DeviceTableViewCell] Invalid button pressed.");
+            MXLogDebug(@"[DeviceTableViewCell] Invalid button pressed.");
             return;
         }
         

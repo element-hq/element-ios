@@ -80,7 +80,7 @@ final class ReauthenticationCoordinator: ReauthenticationCoordinatorType {
                 
                 switch authenticatedEnpointStatus {
                 case .authenticationNotNeeded:
-                    NSLog("[ReauthenticationCoordinator] No need to login again")
+                    MXLog.debug("[ReauthenticationCoordinator] No need to login again")
                     self.delegate?.reauthenticationCoordinatorDidComplete(self, withAuthenticationParameters: nil)
                 case .authenticationNeeded(let authenticationSession):
                     self.start(with: authenticationSession)

@@ -158,7 +158,7 @@ NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
             failuresCounts[failure.reason] = @(failuresCounts[failure.reason].unsignedIntegerValue + 1);
         }
 
-        NSLog(@"[DecryptionFailureTracker] trackFailures: %@", failuresCounts);
+        MXLogDebug(@"[DecryptionFailureTracker] trackFailures: %@", failuresCounts);
         
         for (NSString *reason in failuresCounts)
         {

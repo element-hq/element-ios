@@ -59,7 +59,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, otherUserId: String, otherDeviceId: String, animated: Bool) {
         
-        NSLog("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
+        MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
         
         let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyDevice(userId: otherUserId, deviceId: otherDeviceId))
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
@@ -67,7 +67,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, roomMember: MXRoomMember, animated: Bool) {
         
-        NSLog("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
+        MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present from \(viewController)")
         
         let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .verifyUser(roomMember))
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
@@ -75,7 +75,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
 
     func present(from viewController: UIViewController, incomingTransaction: MXIncomingSASTransaction, animated: Bool) {
         
-        NSLog("[KeyVerificationCoordinatorBridgePresenter] Present incoming verification from \(viewController)")
+        MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present incoming verification from \(viewController)")
         
         let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingSASTransaction(incomingTransaction))
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
@@ -83,7 +83,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, incomingKeyVerificationRequest: MXKeyVerificationRequest, animated: Bool) {
         
-        NSLog("[KeyVerificationCoordinatorBridgePresenter] Present incoming key verification request from \(viewController)")
+        MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present incoming key verification request from \(viewController)")
         
         let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .incomingRequest(incomingKeyVerificationRequest))
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
@@ -91,7 +91,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     func presentCompleteSecurity(from viewController: UIViewController, isNewSignIn: Bool, animated: Bool) {
         
-        NSLog("[KeyVerificationCoordinatorBridgePresenter] Present complete security from \(viewController)")
+        MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Present complete security from \(viewController)")
         
         let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn))
         self.present(coordinator: keyVerificationCoordinator, from: viewController, animated: animated)
@@ -99,7 +99,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
     
     func pushCompleteSecurity(from navigationController: UINavigationController, isNewSignIn: Bool, animated: Bool) {
         
-        NSLog("[KeyVerificationCoordinatorBridgePresenter] Push complete security from \(navigationController)")
+        MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Push complete security from \(navigationController)")
         
         let navigationRouter = NavigationRouter(navigationController: navigationController)
         
@@ -115,7 +115,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
             return
         }
         
-        NSLog("[KeyVerificationCoordinatorBridgePresenter] Dismiss")
+        MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Dismiss")
         
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil

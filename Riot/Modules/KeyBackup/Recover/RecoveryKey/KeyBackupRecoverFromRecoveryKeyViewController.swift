@@ -215,7 +215,7 @@ final class KeyBackupRecoverFromRecoveryKeyViewController: UIViewController {
         do {
             documentContent = try String(contentsOf: documentURL)
         } catch {
-            print("Error: \(error)")
+            MXLog.debug("Error: \(error)")
             documentContent = nil
         }
         

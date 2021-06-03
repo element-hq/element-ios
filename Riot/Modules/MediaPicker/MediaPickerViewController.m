@@ -291,7 +291,7 @@
                                                     }
                                                     else
                                                     {
-                                                        NSLog(@"[MediaPickerVC] Fails to open settings");
+                                                        MXLogDebug(@"[MediaPickerVC] Fails to open settings");
                                                     }
                                                 }];
                                             }]];
@@ -372,7 +372,7 @@
         PHAssetCollection *assetCollection = smartAlbums[0];
         recentCaptures = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
         
-        NSLog(@"[MediaPickerVC] lists %tu assets that were recently added to the photo library", recentCaptures.count);
+        MXLogDebug(@"[MediaPickerVC] lists %tu assets that were recently added to the photo library", recentCaptures.count);
     }
     else
     {
@@ -435,7 +435,7 @@
         [albums enumerateObjectsUsingBlock:^(PHAssetCollection *collection, NSUInteger idx, BOOL *stop) {
             
             PHFetchResult *assets = [PHAsset fetchAssetsInAssetCollection:collection options:options];
-            NSLog(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
+            MXLogDebug(@"album title %@, estimatedAssetCount %tu", collection.localizedTitle, assets.count);
             
             if (assets.count)
             {
@@ -541,7 +541,7 @@
                             
                             if (imageData)
                             {
-                                NSLog(@"[MediaPickerVC] didSelectAsset: Got image data");
+                                MXLogDebug(@"[MediaPickerVC] didSelectAsset: Got image data");
                                 
                                 CFStringRef uti = (__bridge CFStringRef)dataUTI;
                                 NSString *mimeType = (__bridge_transfer NSString *) UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType);
@@ -551,7 +551,7 @@
                             }
                             else
                             {
-                                NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image data for asset");
+                                MXLogDebug(@"[MediaPickerVC] didSelectAsset: Failed to get image data for asset");
                                 
                                 // Alert user
                                 NSError *error = info[@"PHImageErrorKey"];
@@ -570,7 +570,7 @@
             }
             else
             {
-                NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+                MXLogDebug(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
                 self->isValidationInProgress = NO;
                 
                 // Alert user
@@ -610,7 +610,7 @@
                 {
                     if ([asset isKindOfClass:[AVURLAsset class]])
                     {
-                        NSLog(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
+                        MXLogDebug(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
                         AVURLAsset *avURLAsset = (AVURLAsset*)asset;
                         
                         // Validate first the selected video
@@ -627,13 +627,13 @@
                     }
                     else
                     {
-                        NSLog(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                        MXLogDebug(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
                         self->isValidationInProgress = NO;
                     }
                 }
                 else
                 {
-                    NSLog(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
+                    MXLogDebug(@"[MediaPickerVC] didSelectAsset: Failed to get image for asset");
                     self->isValidationInProgress = NO;
                     
                     // Alert user
@@ -650,7 +650,7 @@
     }
     else
     {
-        NSLog(@"[MediaPickerVC] didSelectAsset: Unexpected media type");
+        MXLogDebug(@"[MediaPickerVC] didSelectAsset: Unexpected media type");
     }
 }
 

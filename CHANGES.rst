@@ -9,6 +9,7 @@ Changes to be released in next version
  * Navigation: Start decoupling view controllers managed by MasterTabBarController (#3596 and #3618).
  * Jitsi: Include optional server name field on JitsiJWTPayloadContextMatrix.
  * CallPresenter: Add more logs for group calls.
+ * Logging: Adopted MXLog throughout the application (vector-im/element-ios/issues/4351).
 
 🐛 Bugfix
  * buildRelease.sh: Make bundler operations in the cloned repository folder.

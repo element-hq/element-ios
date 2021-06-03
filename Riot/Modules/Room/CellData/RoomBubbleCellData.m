@@ -190,7 +190,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         // which takes place on the main thread.
         if ([NSThread currentThread] != [NSThread mainThread])
         {
-            NSLog(@"[RoomBubbleCellData] prepareBubbleComponentsPosition called on wrong thread");
+            MXLogDebug(@"[RoomBubbleCellData] prepareBubbleComponentsPosition called on wrong thread");
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self refreshBubbleComponentsPosition];
             });
@@ -217,7 +217,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             // is requested during the rendering step which takes place on the main thread.
             if ([NSThread currentThread] != [NSThread mainThread])
             {
-                NSLog(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
+                MXLogDebug(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     self.attributedTextMessage = [self refreshAttributedTextMessage];
                 });
@@ -544,7 +544,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         // which takes place on the main thread.
         if ([NSThread currentThread] != [NSThread mainThread])
         {
-            NSLog(@"[RoomBubbleCellData] prepareBubbleComponentsPosition called on wrong thread");
+            MXLogDebug(@"[RoomBubbleCellData] prepareBubbleComponentsPosition called on wrong thread");
             dispatch_sync(dispatch_get_main_queue(), ^{
                 updateAdditionalHeight();
             });

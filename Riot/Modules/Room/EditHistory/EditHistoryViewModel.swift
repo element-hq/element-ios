@@ -94,12 +94,12 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     
     private func loadMoreHistory() {
         guard self.canLoadMoreHistory() else {
-            print("[EditHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
+            MXLog.debug("[EditHistoryViewModel] loadMoreHistory: pending loading or all data loaded")
             return
         }
         
         guard self.operation == nil else {
-            print("[EditHistoryViewModel] loadMoreHistory: operation already pending")
+            MXLog.debug("[EditHistoryViewModel] loadMoreHistory: operation already pending")
             return
         }
         
@@ -212,7 +212,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
     private func process(editEvent: MXEvent) -> EditHistoryMessage? {
         // Create a temporary MXEvent that represents this edition
         guard let editedEvent = self.event.editedEvent(fromReplacementEvent: editEvent) else {
-            print("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
+            MXLog.debug("[EditHistoryViewModel] processEditEvent: Cannot build edited event: \(editEvent.eventId ?? "")")
             return nil
         }
 
@@ -223,7 +223,7 @@ final class EditHistoryViewModel: EditHistoryViewModelType {
 
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         guard let message = self.formatter.attributedString(from: event, with: nil, error: formatterError) else {
-            print("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) event: \(event.eventId ?? "")")
+            MXLog.debug("[EditHistoryViewModel] processEditEvent: cannot format(error: \(formatterError)) event: \(event.eventId ?? "")")
             return nil
         }
 

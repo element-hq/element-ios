@@ -59,7 +59,7 @@ final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
     
     func push(from navigationController: UINavigationController, animated: Bool) {
         
-        NSLog("[KeyBackupRecoverCoordinatorBridgePresenter] Push complete security from \(navigationController)")
+        MXLog.debug("[KeyBackupRecoverCoordinatorBridgePresenter] Push complete security from \(navigationController)")
         
         let navigationRouter = NavigationRouter(navigationController: navigationController)
         
