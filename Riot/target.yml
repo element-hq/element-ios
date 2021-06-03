@@ -44,11 +44,11 @@ targets:
     - name: ⚠️ SwiftLint
       runOnlyWhenInstalling: false
       shell: /bin/sh
-      script: "${PODS_ROOT}/SwiftLint/swiftlint\n"
+      script: "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n"
     - name: 🛠 SwiftGen
       runOnlyWhenInstalling: false
       shell: /bin/sh
-      script: "${PODS_ROOT}/SwiftGen/bin/swiftgen config run --config Tools/SwiftGen/swiftgen-config.yml\n"
+      script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
     sources:
     - path: ../Tools
