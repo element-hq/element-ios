@@ -3938,8 +3938,6 @@ TableViewSectionsDelegate>
 
 - (void)languagePickerViewController:(MXKLanguagePickerViewController *)languagePickerViewController didSelectLangugage:(NSString *)language
 {
-    [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
-
     if (![language isEqualToString:[NSBundle mxk_language]]
         || (language == nil && [NSBundle mxk_language]))
     {
