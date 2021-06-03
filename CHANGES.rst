@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * SettingsViewController: Fix crash when changing the app language (#4377).
 
 ⚠️ API Changes
  * 
