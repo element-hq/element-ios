@@ -279,7 +279,7 @@ static CGFloat const kTextFontSize = 15.0;
                                          @"type":     kMXLoginFlowTypePassword};
         
         [self.mainSession deactivateAccountWithAuthParameters:authParameters eraseAccount:eraseAllMessages success:^{
-            NSLog(@"[SettingsViewController] Deactivate account with success");
+            MXLogDebug(@"[SettingsViewController] Deactivate account with success");
             
             typeof(weakSelf) strongSelf = weakSelf;
             
@@ -292,7 +292,7 @@ static CGFloat const kTextFontSize = 15.0;
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[SettingsViewController] Failed to deactivate account");
+            MXLogDebug(@"[SettingsViewController] Failed to deactivate account");
             
             typeof(weakSelf) strongSelf = weakSelf;
             
@@ -306,7 +306,7 @@ static CGFloat const kTextFontSize = 15.0;
     }
     else
     {
-        NSLog(@"[SettingsViewController] Failed to deactivate account");
+        MXLogDebug(@"[SettingsViewController] Failed to deactivate account");
         [self.errorPresentation presentGenericErrorFromViewController:self animated:YES handler:nil];
     }
 }

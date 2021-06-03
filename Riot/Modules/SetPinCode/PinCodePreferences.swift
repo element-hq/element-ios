@@ -17,6 +17,7 @@ limitations under the License.
 import Foundation
 import KeychainAccess
 import LocalAuthentication
+import MatrixSDK
 
 /// Pin code preferences.
 @objcMembers
@@ -95,14 +96,14 @@ final class PinCodePreferences: NSObject {
             do {
                 return try store.string(forKey: StoreKeys.pin)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when reading user pin from store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when reading user pin from store: \(error)")
                 return nil
             }
         } set {
             do {
                 try store.set(newValue, forKey: StoreKeys.pin)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when storing user pin to the store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when storing user pin to the store: \(error)")
             }
         }
     }
@@ -112,14 +113,14 @@ final class PinCodePreferences: NSObject {
             do {
                 return try store.bool(forKey: StoreKeys.biometricsEnabled)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when reading biometrics enabled from store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when reading biometrics enabled from store: \(error)")
                 return nil
             }
         } set {
             do {
                 try store.set(newValue, forKey: StoreKeys.biometricsEnabled)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when storing biometrics enabled to the store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when storing biometrics enabled to the store: \(error)")
             }
         }
     }
@@ -129,14 +130,14 @@ final class PinCodePreferences: NSObject {
             do {
                 return try store.bool(forKey: StoreKeys.canUseBiometricsToUnlock)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when reading canUseBiometricsToUnlock from store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when reading canUseBiometricsToUnlock from store: \(error)")
                 return nil
             }
         } set {
             do {
                 try store.set(newValue, forKey: StoreKeys.canUseBiometricsToUnlock)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when storing canUseBiometricsToUnlock to the store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when storing canUseBiometricsToUnlock to the store: \(error)")
             }
         }
     }
@@ -146,14 +147,14 @@ final class PinCodePreferences: NSObject {
             do {
                 return try store.integer(forKey: StoreKeys.numberOfPinFailures) ?? 0
             } catch let error {
-                NSLog("[PinCodePreferences] Error when reading numberOfPinFailures from store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when reading numberOfPinFailures from store: \(error)")
                 return 0
             }
         } set {
             do {
                 try store.set(newValue, forKey: StoreKeys.numberOfPinFailures)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when storing numberOfPinFailures to the store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when storing numberOfPinFailures to the store: \(error)")
             }
         }
     }
@@ -163,14 +164,14 @@ final class PinCodePreferences: NSObject {
             do {
                 return try store.integer(forKey: StoreKeys.numberOfBiometricsFailures) ?? 0
             } catch let error {
-                NSLog("[PinCodePreferences] Error when reading numberOfBiometricsFailures from store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when reading numberOfBiometricsFailures from store: \(error)")
                 return 0
             }
         } set {
             do {
                 try store.set(newValue, forKey: StoreKeys.numberOfBiometricsFailures)
             } catch let error {
-                NSLog("[PinCodePreferences] Error when storing numberOfBiometricsFailures to the store: \(error)")
+                MXLog.debug("[PinCodePreferences] Error when storing numberOfBiometricsFailures to the store: \(error)")
             }
         }
     }

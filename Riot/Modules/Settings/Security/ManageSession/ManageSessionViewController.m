@@ -244,7 +244,7 @@ enum {
         completion();
         
     } failure:^(NSError *error) {
-        NSLog(@"[ManageSessionVC] reloadDeviceWithCompletion failed. Error: %@", error);
+        MXLogDebug(@"[ManageSessionVC] reloadDeviceWithCompletion failed. Error: %@", error);
         [self reloadData];
         completion();
     }];
@@ -652,7 +652,7 @@ enum {
                                      }];
                                  } failure:^(NSError *error) {
                                      
-                                     NSLog(@"[ManageSessionVC] Rename device (%@) failed", self->device.deviceId);
+                                     MXLogDebug(@"[ManageSessionVC] Rename device (%@) failed", self->device.deviceId);
                                      [self reloadDeviceWithCompletion:^{
                                          [self.activityIndicator stopAnimating];
                                          [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -709,7 +709,7 @@ enum {
             // We cannot stay in this screen anymore
             [self withdrawViewControllerAnimated:YES completion:nil];
         } failure:^(NSError *error) {
-            NSLog(@"[ManageSessionVC] Delete device (%@) failed", self->device.deviceId);
+            MXLogDebug(@"[ManageSessionVC] Delete device (%@) failed", self->device.deviceId);
             animationCompletion();
             [[AppDelegate theDelegate] showErrorAsAlert:error];
         }];

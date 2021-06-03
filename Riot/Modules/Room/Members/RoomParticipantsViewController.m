@@ -1315,7 +1315,7 @@
                                                                    
                                                                    MXStrongifyAndReturnIfNil(self);
                                                                    [self removePendingActionMask];
-                                                                   NSLog(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
+                                                                   MXLogDebug(@"[RoomParticipantsVC] Leave room %@ failed", self.mxRoom.roomId);
                                                                    // Alert user
                                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                    
@@ -1407,7 +1407,7 @@
                                                                                          
                                                                                          MXStrongifyAndReturnIfNil(self);
                                                                                          [self removePendingActionMask];
-                                                                                         NSLog(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
+                                                                                         MXLogDebug(@"[RoomParticipantsVC] Kick %@ failed", memberUserId);
                                                                                          // Alert user
                                                                                          [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                                          
@@ -1455,7 +1455,7 @@
                                                                                                      
                                                                                                      MXStrongifyAndReturnIfNil(self);
                                                                                                      [self removePendingActionMask];
-                                                                                                     NSLog(@"[RoomParticipantsVC] Revoke 3pid invite failed");
+                                                                                                     MXLogDebug(@"[RoomParticipantsVC] Revoke 3pid invite failed");
                                                                                                      // Alert user
                                                                                                      [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                                                      
@@ -1537,7 +1537,7 @@
                                                                    __strong __typeof(weakSelf)self = weakSelf;
                                                                    [self removePendingActionMask];
                                                                    
-                                                                   NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                   MXLogDebug(@"[RoomParticipantsVC] Invite %@ failed", participantId);
                                                                    // Alert user
                                                                    [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                }];
@@ -1574,7 +1574,7 @@
                                                                        __strong __typeof(weakSelf)self = weakSelf;
                                                                        [self removePendingActionMask];
                                                                        
-                                                                       NSLog(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
+                                                                       MXLogDebug(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
 
                                                                        // Alert user
                                                                        if ([error.domain isEqualToString:kMXRestClientErrorDomain]
@@ -1605,7 +1605,7 @@
                                                                        __strong __typeof(weakSelf)self = weakSelf;
                                                                        [self removePendingActionMask];
                                                                        
-                                                                       NSLog(@"[RoomParticipantsVC] Invite %@ failed", participantId);
+                                                                       MXLogDebug(@"[RoomParticipantsVC] Invite %@ failed", participantId);
                                                                        // Alert user
                                                                        [[AppDelegate theDelegate] showErrorAsAlert:error];
                                                                    }];

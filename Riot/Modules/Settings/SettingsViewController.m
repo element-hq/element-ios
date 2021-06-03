@@ -955,12 +955,12 @@ TableViewSectionsDelegate>
         }
 
     } failure:^(NSError * _Nonnull error) {
-        NSLog(@"[SettingsViewController] tryFinaliseAddEmailSession: Failed to bind email");
+        MXLogDebug(@"[SettingsViewController] tryFinaliseAddEmailSession: Failed to bind email");
 
         MXError *mxError = [[MXError alloc] initWithNSError:error];
         if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
         {
-            NSLog(@"[SettingsViewController] tryFinaliseAddEmailSession: Wrong credentials");
+            MXLogDebug(@"[SettingsViewController] tryFinaliseAddEmailSession: Wrong credentials");
 
             // Ask password again
             self->currentAlert = [UIAlertController alertControllerWithTitle:nil
@@ -1086,12 +1086,12 @@ TableViewSectionsDelegate>
 
     } failure:^(NSError * _Nonnull error) {
 
-        NSLog(@"[SettingsViewController] finaliseAddPhoneNumberSession: Failed to submit the sms token");
+        MXLogDebug(@"[SettingsViewController] finaliseAddPhoneNumberSession: Failed to submit the sms token");
    
         MXError *mxError = [[MXError alloc] initWithNSError:error];
         if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringForbidden])
         {
-            NSLog(@"[SettingsViewController] finaliseAddPhoneNumberSession: Wrong authentication credentials");
+            MXLogDebug(@"[SettingsViewController] finaliseAddPhoneNumberSession: Wrong authentication credentials");
 
             // Ask password again
             self->currentAlert = [UIAlertController alertControllerWithTitle:nil
@@ -2536,7 +2536,7 @@ TableViewSectionsDelegate>
                                                                            
                                                                            [self stopActivityIndicator];
                                                                            
-                                                                           NSLog(@"[SettingsViewController] Unignore %@ failed", ignoredUserId);
+                                                                           MXLogDebug(@"[SettingsViewController] Unignore %@ failed", ignoredUserId);
                                                                            
                                                                            NSString *myUserId = session.myUser.userId;
                                                                            [[NSNotificationCenter defaultCenter] postNotificationName:kMXKErrorNotification object:error userInfo:myUserId ? @{kMXKErrorUserIdKey: myUserId} : nil];
@@ -2768,7 +2768,7 @@ TableViewSectionsDelegate>
                                                                        
                                                                    } failure:^(NSError *error) {
                                                                        
-                                                                       NSLog(@"[SettingsViewController] Remove 3PID: %@ failed", address);
+                                                                       MXLogDebug(@"[SettingsViewController] Remove 3PID: %@ failed", address);
                                                                        if (weakSelf)
                                                                        {
                                                                            typeof(self) self = weakSelf;
@@ -2922,7 +2922,7 @@ TableViewSectionsDelegate>
     BOOL enable = RiotSettings.shared.enableCrashReport;
     if (enable)
     {
-        NSLog(@"[SettingsViewController] disable automatic crash report and analytics sending");
+        MXLogDebug(@"[SettingsViewController] disable automatic crash report and analytics sending");
         
         RiotSettings.shared.enableCrashReport = NO;
         
@@ -2933,7 +2933,7 @@ TableViewSectionsDelegate>
     }
     else
     {
-        NSLog(@"[SettingsViewController] enable automatic crash report and analytics sending");
+        MXLogDebug(@"[SettingsViewController] enable automatic crash report and analytics sending");
         
         RiotSettings.shared.enableCrashReport = YES;
         
@@ -3101,7 +3101,7 @@ TableViewSectionsDelegate>
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[SettingsViewController] Failed to set displayName");
+            MXLogDebug(@"[SettingsViewController] Failed to set displayName");
             
             if (weakSelf)
             {
@@ -3137,7 +3137,7 @@ TableViewSectionsDelegate>
             
         } failure:^(NSError *error) {
             
-            NSLog(@"[SettingsViewController] Failed to upload image");
+            MXLogDebug(@"[SettingsViewController] Failed to upload image");
             
             if (weakSelf)
             {
@@ -3164,7 +3164,7 @@ TableViewSectionsDelegate>
                              }
                              failure:^(NSError *error) {
                                  
-                                 NSLog(@"[SettingsViewController] Failed to set avatar url");
+                                 MXLogDebug(@"[SettingsViewController] Failed to set avatar url");
                                 
                                  if (weakSelf)
                                  {
@@ -3316,7 +3316,7 @@ TableViewSectionsDelegate>
 
             [self stopActivityIndicator];
 
-            NSLog(@"[SettingsViewController] Failed to request email token");
+            MXLogDebug(@"[SettingsViewController] Failed to request email token");
 
             // Translate the potential MX error.
             MXError *mxError = [[MXError alloc] initWithNSError:error];
@@ -3431,7 +3431,7 @@ TableViewSectionsDelegate>
 
             [self stopActivityIndicator];
 
-            NSLog(@"[SettingsViewController] Failed to request msisdn token");
+            MXLogDebug(@"[SettingsViewController] Failed to request msisdn token");
 
             // Translate the potential MX error.
             MXError *mxError = [[MXError alloc] initWithNSError:error];
@@ -3938,8 +3938,6 @@ TableViewSectionsDelegate>
 
 - (void)languagePickerViewController:(MXKLanguagePickerViewController *)languagePickerViewController didSelectLangugage:(NSString *)language
 {
-    [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
-
     if (![language isEqualToString:[NSBundle mxk_language]]
         || (language == nil && [NSBundle mxk_language]))
     {
@@ -3982,10 +3980,10 @@ TableViewSectionsDelegate>
 
 - (void)deactivateAccountViewControllerDidDeactivateWithSuccess:(DeactivateAccountViewController *)deactivateAccountViewController
 {
-    NSLog(@"[SettingsViewController] Deactivate account with success");
+    MXLogDebug(@"[SettingsViewController] Deactivate account with success");
     
     [[AppDelegate theDelegate] logoutSendingRequestServer:NO completion:^(BOOL isLoggedOut) {
-        NSLog(@"[SettingsViewController] Complete clear user data after account deactivation");
+        MXLogDebug(@"[SettingsViewController] Complete clear user data after account deactivation");
     }];
 }
 

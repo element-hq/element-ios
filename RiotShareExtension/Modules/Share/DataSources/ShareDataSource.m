@@ -89,7 +89,7 @@
         
     } failure:^(NSError * _Nonnull error) {
         
-        NSLog(@"[ShareDataSource failed to get room summaries]");
+        MXLogDebug(@"[ShareDataSource failed to get room summaries]");
         
     }];
 }

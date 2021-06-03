@@ -46,7 +46,7 @@ final public class GDPRConsentViewController: WebViewViewController {
         
         // When navigation finish on path `consentSuccessURLPath` with no query, it means that user consent to GDPR
         if let url = webView.url, url.path == GDPRConsentViewController.consentSuccessURLPath, url.query == nil {
-            NSLog("[GDPRConsentViewController] User consent to GDPR")
+            MXLog.debug("[GDPRConsentViewController] User consent to GDPR")
             self.delegate?.gdprConsentViewControllerDidConsentToGDPRWithSuccess(self)
         }
     }

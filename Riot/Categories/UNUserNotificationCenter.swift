@@ -16,6 +16,7 @@
 
 import Foundation
 import UserNotifications
+import MatrixSDK
 
 @objc extension UNUserNotificationCenter {
     
@@ -24,7 +25,7 @@ import UserNotifications
             //  get identifiers of notifications whose category identifiers are "TO_BE_REMOVED"
             let identifiersToBeRemoved = notifications.compactMap({ $0.request.content.categoryIdentifier == Constants.toBeRemovedNotificationCategoryIdentifier ? $0.request.identifier : nil })
             
-            NSLog("[UNUserNotificationCenter] removeUnwantedNotifications: Removing \(identifiersToBeRemoved.count) notifications.")
+            MXLog.debug("[UNUserNotificationCenter] removeUnwantedNotifications: Removing \(identifiersToBeRemoved.count) notifications.")
             //  remove the notifications with these id's
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiersToBeRemoved)
         }
@@ -52,7 +53,7 @@ import UserNotifications
             //  get identifiers of notifications that should be removed
             let identifiersToBeRemoved = notifications.compactMap({ notificationShouldBeRemoved($0) ? $0.request.identifier : nil })
 
-            NSLog("[UNUserNotificationCenter] removeCallNotifications: Removing \(identifiersToBeRemoved.count) notifications.")
+            MXLog.debug("[UNUserNotificationCenter] removeCallNotifications: Removing \(identifiersToBeRemoved.count) notifications.")
             //  remove the notifications with these id's
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiersToBeRemoved)
         }

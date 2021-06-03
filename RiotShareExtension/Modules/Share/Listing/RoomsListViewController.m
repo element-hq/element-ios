@@ -174,7 +174,7 @@
 
         } failure:^(NSError *error) {
 
-            NSLog(@"[RoomsListViewController] failed to prepare matrix session]");
+            MXLogDebug(@"[RoomsListViewController] failed to prepare matrix session]");
 
         }];
     }];

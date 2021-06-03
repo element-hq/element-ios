@@ -60,7 +60,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     func start() {
         // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the spit view.
         self.showSplitView()
-        NSLog("[AppCoordinator] Showed split view")
+        MXLog.debug("[AppCoordinator] Showed split view")
     }
     
     func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -70,7 +70,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
             let deepLinkOption = try self.customSchemeURLParser.parse(url: url, options: options)
             return self.handleDeepLinkOption(deepLinkOption)
         } catch {
-            NSLog("[AppCoordinator] Custom scheme URL parsing failed with error: \(error)")
+            MXLog.debug("[AppCoordinator] Custom scheme URL parsing failed with error: \(error)")
             return false
         }
     }
@@ -126,7 +126,7 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
             
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, wantsToPopToHomeViewControllerAnimated animated: Bool, completion: (() -> Void)!) {
         
-        NSLog("[AppCoordinator] wantsToPopToHomeViewControllerAnimated")
+        MXLog.debug("[AppCoordinator] wantsToPopToHomeViewControllerAnimated")
         
         self.splitViewCoordinator?.popToHome(animated: animated, completion: completion)
     }
