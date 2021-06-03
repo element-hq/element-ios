@@ -67,3 +67,9 @@
 
 /* New message indicator on unknown room */
 "MESSAGE" = "消息";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (群组通话)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "群组通话已启动";

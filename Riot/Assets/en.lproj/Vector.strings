@@ -65,12 +65,13 @@
 "less" = "Less";
 
 // Call Bar
-"callbar_only_single_active" = "Active call (%@)";
+"callbar_only_single_active" = "Tap to return to the call (%@)";
 "callbar_active_and_single_paused" = "1 active call (%@) · 1 paused call";
 "callbar_active_and_multiple_paused" = "1 active call (%@) · %@ paused calls";
 "callbar_only_single_paused" = "Paused call";
 "callbar_only_multiple_paused" = "%@ paused calls";
 "callbar_return" = "Return";
+"callbar_only_single_active_group" = "Tap to Join the group call (%@)";
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
@@ -312,7 +313,8 @@ Tap the + to start adding people.";
 "room_member_power_level_short_custom" = "Custom";
 
 // Chat
-"room_jump_to_first_unread" = "Jump to first unread message";
+"room_slide_to_end_group_call" = "Slide to end the call for everyone";
+"room_jump_to_first_unread" = "Jump to unread";
 "room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
 "room_new_message_notification" = "%d new message";
 "room_new_messages_notification" = "%d new messages";
@@ -395,6 +397,8 @@ Tap the + to start adding people.";
 "room_accessibility_hangup" = "Hang up";
 "room_place_voice_call" = "Voice call";
 "room_open_dialpad" = "Dial pad";
+"room_join_group_call" = "Join";
+"room_no_privileges_to_create_group_call" = "You need to be an admin or a moderator to start a call.";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -526,6 +530,7 @@ Tap the + to start adding people.";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
+"settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -823,10 +828,22 @@ Tap the + to start adding people.";
 "event_formatter_message_edited_mention" = "(edited)";
 "event_formatter_call_voice" = "Voice call";
 "event_formatter_call_video" = "Video call";
-"event_formatter_call_has_ended" = "This call has ended";
-"event_formatter_call_you_currently_in" = "You're currently in this call";
+"event_formatter_call_connecting" = "Connecting…";
+"event_formatter_call_ringing" = "Ringing…";
+"event_formatter_call_has_ended" = "Ended %@";
+"event_formatter_call_you_currently_in" = "Active call";
 "event_formatter_call_you_declined" = "You declined this call";
+"event_formatter_call_you_missed" = "You missed this call";
+"event_formatter_call_connection_failed" = "Connection failed";
 "event_formatter_call_back" = "Call back";
+"event_formatter_call_decline" = "Decline";
+"event_formatter_call_answer" = "Answer";
+"event_formatter_call_retry" = "Retry";
+"event_formatter_call_end_call" = "End call";
+"event_formatter_group_call" = "Group call";
+"event_formatter_group_call_join" = "Join";
+"event_formatter_group_call_leave" = "Leave";
+"event_formatter_group_call_incoming" = "%@ in %@";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";
@@ -1615,3 +1632,14 @@ Tap the + to start adding people.";
 
 "room_intro_cell_information_dm_sentence2" = "Only the two of you are in this conversation, no one else can join.";
 "room_intro_cell_information_multiple_dm_sentence2" = "Only you are in this conversation, unless any of you invites someone to join.";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Spaces aren’t here yet";
+"space_feature_unavailable_subtitle" = "Spaces aren't on iOS yet, but you can use them now on Web and Desktop";
+"space_feature_unavailable_information" = "Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.";
+
+"space_beta_announce_badge" = "BETA";
+"space_beta_announce_title" = "Spaces are coming soon";
+"space_beta_announce_subtitle" = "The new version of communities";
+"space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";

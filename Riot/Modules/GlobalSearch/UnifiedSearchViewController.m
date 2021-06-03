@@ -57,6 +57,13 @@
 
 @implementation UnifiedSearchViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    UnifiedSearchViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"UnifiedSearchViewController"];
+    return viewController;
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];

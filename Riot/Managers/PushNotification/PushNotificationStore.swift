@@ -29,7 +29,6 @@ final class PushNotificationStore: NSObject {
     
     private struct StoreKeys {
         static let pushToken: String = "pushtoken"
-        static let lastCallInvite: String = "lastCallInvite"
     }
     
     /// Store. Defaults to `KeychainStore`
@@ -59,32 +58,23 @@ final class PushNotificationStore: NSObject {
         }
     }
     
-    var lastCallInvite: MXEvent? {
-        get {
-            do {
-                guard let data = try store.data(forKey: StoreKeys.lastCallInvite) else {
-                    return nil
-                }
-                return NSKeyedUnarchiver.unarchiveObject(with: data) as? MXEvent
-            } catch let error {
-                NSLog("[PinCodePreferences] Error when reading push token from store: \(error)")
-                return nil
-            }
-        } set {
-            do {
-                guard let newValue = newValue else {
-                    return try store.removeObject(forKey: StoreKeys.lastCallInvite)
-                }
-                let data = NSKeyedArchiver.archivedData(withRootObject: newValue)
-                try store.set(data, forKey: StoreKeys.lastCallInvite)
-            } catch let error {
-                NSLog("[PinCodePreferences] Error when storing push token to the store: \(error)")
-            }
+    func callInvite(forEventId eventId: String) -> MXEvent? {
+        guard let data = try? store.data(forKey: eventId) else {
+            return nil
         }
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? MXEvent
+    }
+    
+    func storeCallInvite(_ event: MXEvent) {
+        let data = NSKeyedArchiver.archivedData(withRootObject: event)
+        try? store.set(data, forKey: event.eventId)
+    }
+    
+    func removeCallInvite(withEventId eventId: String) {
+        try? store.removeObject(forKey: eventId)
     }
     
     func reset() {
-        pushKitToken = nil
-        lastCallInvite = nil
+        try? store.removeAll()
     }
 }

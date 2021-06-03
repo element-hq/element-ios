@@ -856,7 +856,9 @@ const CGFloat kTypingCellHeight = 24;
         
         cellData.showTimestampForSelectedComponent = self.showBubbleDateTimeOnSelection;
 
-        if (cellData.collapsed && cellData.nextCollapsableCellData)
+        if (cellData.collapsed
+            && cellData.nextCollapsableCellData
+            && cellData.tag != RoomBubbleCellDataTagCall)
         {
             // Select nothing for a collased cell but open it
             [self collapseRoomBubble:cellData collapsed:NO];

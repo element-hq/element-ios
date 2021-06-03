@@ -18,14 +18,24 @@
 
 import UIKit
 
+/// TabBarCoordinator input parameters
+class TabBarCoordinatorParameters {
+    
+    let userSessionsService: UserSessionsService
+    
+    init(userSessionsService: UserSessionsService) {
+        self.userSessionsService = userSessionsService
+    }
+}
+
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // MARK: - Properties
     
     // MARK: Private
-        
-    private var session: MXSession?
+    
+    let parameters: TabBarCoordinatorParameters
     
     /// Completion called when `popToHomeAnimated:` has been completed.
     private var popToHomeViewControllerCompletion: (() -> Void)?
@@ -48,14 +58,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     weak var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate?
     
     // MARK: - Setup
-    
-    // TODO: Improve sessions injection
-    // at the moment Matrix session is injected to MasterTabBarController via LegacyAppDelegate
-    init(session: MXSession?) {
+        
+    init(parameters: TabBarCoordinatorParameters) {
+        self.parameters = parameters
+        
         let masterNavigationController = RiotNavigationController()
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
-        self.session = session
     }    
     
     // MARK: - Public methods
@@ -65,7 +74,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         masterTabBarController.masterTabBarDelegate = self
         self.masterTabBarController = masterTabBarController
         self.navigationRouter.setRootModule(masterTabBarController)
-      }
+        
+        // Add existing Matrix sessions if any
+        for userSession in self.parameters.userSessionsService.userSessions {
+            self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+        }
+        
+        self.registerUserSessionsServiceNotifications()
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -113,24 +129,121 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // MARK: - Private methods
     
-    private func createMasterTabBarController() -> MasterTabBarController {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let masterTabBarController = storyboard.instantiateViewController(withIdentifier: "MasterTabBarController") as? MasterTabBarController else {
-            fatalError("[TabBarCoordinator] Can't load MasterTabBarController")
+    private func createMasterTabBarController() -> MasterTabBarController {        
+        let tabBarController = MasterTabBarController()
+        
+        let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
+            self?.showSettings()
         }
-        return masterTabBarController
+        settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
+        
+        tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
+        
+        let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
+            self?.showUnifiedSearch()
+        }
+        searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
+        
+        tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem
+        
+        var viewControllers: [UIViewController] = []
+                
+        let homeViewController = self.createHomeViewController()
+        viewControllers.append(homeViewController)
+        
+        if RiotSettings.shared.homeScreenShowFavouritesTab {
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowPeopleTab {
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowRoomsTab {
+            let roomsViewController = self.createRoomsViewController()
+            viewControllers.append(roomsViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowCommunitiesTab {
+            let groupsViewController = self.createGroupsViewController()
+            viewControllers.append(groupsViewController)
+        }
+        
+        tabBarController.updateViewControllers(viewControllers)
+        
+        return tabBarController
+    }
+    
+    private func createHomeViewController() -> HomeViewController {
+        let homeViewController: HomeViewController = HomeViewController.instantiate()
+        homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
+        homeViewController.accessibilityLabel = VectorL10n.titleHome
+        return homeViewController
+    }
+    
+    private func createFavouritesViewController() -> FavouritesViewController {
+        let favouritesViewController: FavouritesViewController = FavouritesViewController.instantiate()
+        favouritesViewController.tabBarItem.tag = Int(TABBAR_FAVOURITES_INDEX)
+        favouritesViewController.accessibilityLabel = VectorL10n.titleFavourites
+        return favouritesViewController
+    }
+    
+    private func createPeopleViewController() -> PeopleViewController {
+        let peopleViewController: PeopleViewController = PeopleViewController.instantiate()
+        peopleViewController.tabBarItem.tag = Int(TABBAR_PEOPLE_INDEX)
+        peopleViewController.accessibilityLabel = VectorL10n.titlePeople
+        return peopleViewController
+    }
+    
+    private func createRoomsViewController() -> RoomsViewController {
+        let roomsViewController: RoomsViewController = RoomsViewController.instantiate()
+        roomsViewController.tabBarItem.tag = Int(TABBAR_ROOMS_INDEX)
+        roomsViewController.accessibilityLabel = VectorL10n.titleRooms
+        return roomsViewController
+    }
+    
+    private func createGroupsViewController() -> GroupsViewController {
+        let groupsViewController: GroupsViewController = GroupsViewController.instantiate()
+        groupsViewController.tabBarItem.tag = Int(TABBAR_GROUPS_INDEX)
+        groupsViewController.accessibilityLabel = VectorL10n.titleGroups
+        return groupsViewController
+    }
+    
+    private func createUnifiedSearchController() -> UnifiedSearchViewController {
+        
+        let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
+        viewController.loadViewIfNeeded()
+        
+        for userSession in self.parameters.userSessionsService.userSessions {
+            viewController.addMatrixSession(userSession.matrixSession)
+        }
+        
+        return viewController
+    }
+    
+    private func createSettingsViewController() -> SettingsViewController {
+        let viewController: SettingsViewController = SettingsViewController.instantiate()
+        viewController.loadViewIfNeeded()
+        return viewController
     }
     
     // MARK: Navigation
     
     // FIXME: Should be displayed per tab.
     private func showSettings() {
-        // TODO: Implement
+        let viewController = self.createSettingsViewController()
+        
+        self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
     }
     
     // FIXME: Should be displayed per tab.
     private func showUnifiedSearch() {
-        // TODO: Implement
+        let viewController = self.createUnifiedSearchController()
+        
+        self.masterTabBarController.unifiedSearchViewController = viewController
+        self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
     }
     
     // FIXME: Should be displayed from a tab.
@@ -146,6 +259,52 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // FIXME: Should be displayed from a tab.
     private func showGroupDetails() {
         // TODO: Implement
+    }
+    
+    // MARK: UserSessions management
+    
+    private func registerUserSessionsServiceNotifications() {
+        
+        // Listen only notifications from the current UserSessionsService instance
+        let userSessionService = self.parameters.userSessionsService
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceDidAddUserSession(_:)), name: UserSessionsService.didAddUserSession, object: userSessionService)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceWillRemoveUserSession(_:)), name: UserSessionsService.willRemoveUserSession, object: userSessionService)
+    }
+    
+    @objc private func userSessionsServiceDidAddUserSession(_ notification: Notification) {
+        guard let userSession = notification.userInfo?[UserSessionsService.NotificationUserInfoKey.userSession] as? UserSession else {
+            return
+        }
+        
+        self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+    }
+    
+    @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
+        guard let userSession = notification.userInfo?[UserSessionsService.NotificationUserInfoKey.userSession] as? UserSession else {
+            return
+        }
+        
+        self.removeMatrixSessionFromMasterTabBarController(userSession.matrixSession)
+    }
+    
+    // TODO: Remove Matrix session handling from the view controller
+    private func addMatrixSessionToMasterTabBarController(_ matrixSession: MXSession) {
+        guard self.masterTabBarController.mxSessions.contains(matrixSession) == false else {
+            return
+        }
+        NSLog("[TabBarCoordinator] masterTabBarController.addMatrixSession")
+        self.masterTabBarController.addMatrixSession(matrixSession)
+    }
+    
+    // TODO: Remove Matrix session handling from the view controller
+    private func removeMatrixSessionFromMasterTabBarController(_ matrixSession: MXSession) {
+        guard self.masterTabBarController.mxSessions.contains(matrixSession) else {
+            return
+        }
+        NSLog("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
+        self.masterTabBarController.removeMatrixSession(matrixSession)
     }
 }
 

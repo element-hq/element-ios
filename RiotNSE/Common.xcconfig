@@ -27,3 +27,4 @@ INFOPLIST_FILE = RiotNSE/Info.plist
 CODE_SIGN_ENTITLEMENTS = RiotNSE/RiotNSE.entitlements
 
 SKIP_INSTALL = YES
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotNSE-Bridging-Header.h

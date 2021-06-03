@@ -5,19 +5,137 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Crypto: Do not decrypt synchronously. It asynchronously happens upstream now (#4306). 
+ * Navigation: Start decoupling view controllers managed by MasterTabBarController (#3596 and #3618).
+ * Jitsi: Include optional server name field on JitsiJWTPayloadContextMatrix.
+ * CallPresenter: Add more logs for group calls.
+ * RoomVC: Back button chevron looks really weird (#4158).
+
+🐛 Bugfix
+ * buildRelease.sh: Make bundler operations in the cloned repository folder.
+ * VoIP: Fix call bar layout issue for landscape.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.3.9 (2021-05-18)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * RecentsDataSource: Present the secure backup banner only if key backup is disabled.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
+Changes in 1.3.8 (2021-05-17)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * RecentsDataSource: Do not display secure backup banner when keys upload is in process.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
+Changes in 1.3.7 (2021-05-12)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * NSE: Add logs for notification delay.
+ * Templates: Update bridge presenter template to auto-implement iOS 13 pull-down gesture.
+
+🐛 Bugfix
+ * NSE: Fixes to avoid PushKit crashes (#4269).
+ * Handle pull-down gesture for reactions history view (#4293).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.12](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.12)).
+
+Changes in 1.3.6 (2021-05-07)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Jitsi: Use Jitsi server from homeserver's Well Known, if present, to create conferences (#3158).
  * RoomMemberDetailsVC: Enable / disable "Hide all messages from this user" from settings (#4281).
  * RoomVC: Show / Hide More and Report Content contextual menu from settings (#4285).
  * SettingsVC: Show / hide NSFW and decrypted content options from build settings (#4290).
  * RoomVC: Tweaked Scroll to Bottom FAB button (#4272).
  * DesignKit: Introduce a new framework to manage design components.
- * RoomVC: Back button chevron looks really weird (#4158).
+ * Add Jitsi widget remove banner for privileged users.
+ * Update "Jump to unread" banner to a pill style button.
+ * CallVC: Add transfer button.
+ * Spaces: Hide spaces from room list and home but keep space invites (#4252).
+ * Spaces: Show space invites and advertise that they are not available (#4277).
+ * Advertise that spaces are not available when tapping on a space link or a space invite (#4279).
 
 🐛 Bugfix
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
  * RiotSettings: Logging out resets RiotSettings (#4259).
  * RoomVC: Crash in `setScrollToBottomHidden` method (#4270).
  * Notifications: Make them work in debug mode (#4274).
+ * VoIP: Fix call bar layout issue (#4300).
 
 ⚠️ API Changes
  * 
@@ -30,6 +148,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.14.11](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.11)).
 
 Changes in 1.3.5 (2021-04-22)
 =================================================

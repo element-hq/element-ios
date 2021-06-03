@@ -28,6 +28,13 @@
 
 @implementation FavouritesViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    FavouritesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"FavouritesViewController"];
+    return viewController;
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];

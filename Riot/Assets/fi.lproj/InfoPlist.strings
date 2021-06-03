@@ -2,4 +2,6 @@
 "NSCameraUsageDescription" = "Kameralla otetaan kuvia ja videota sekä soitetaan videopuheluita.";
 "NSPhotoLibraryUsageDescription" = "Kuvakirjastoa käytetään kuvien ja videoiden lähetykseen.";
 "NSMicrophoneUsageDescription" = "Mikrofonia käytetään puheluissa.";
-"NSContactsUsageDescription" = "Jotta Riot ja Matrix yhteyshenkilösi voidaan näyttää, tulee sähköpostosoitteesi ja puhelinnumerosi lähettää identiteettipalvelimelle. New Vector ei tallenna tietoja. Tarvittaessa saat lisätietoja sovelluksen asetussivulta.";
+"NSContactsUsageDescription" = "Element voi lähettää sähköpostisoitteesi ja puhelinnumerosi valitsemallesi identiteettipalvelimelle, jos haluat että Matrixia käyttävät kontaktisi löytyvät automaattisesti. Henkilötiedot salataan, jos se on mahdollista. Tutustu halutessasi käyttämäsi palvelimen käyttöehtoihin.";
+"NSFaceIDUsageDescription" = "Face ID:tä käytetään sovelluksen avaamiseen.";
+"NSCalendarsUsageDescription" = "Katso tapahtumasi sovelluksessa.";

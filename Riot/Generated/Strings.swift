@@ -502,9 +502,13 @@ internal enum VectorL10n {
   internal static func callbarOnlyMultiplePaused(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "callbar_only_multiple_paused", p1)
   }
-  /// Active call (%@)
+  /// Tap to return to the call (%@)
   internal static func callbarOnlySingleActive(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "callbar_only_single_active", p1)
+  }
+  /// Tap to Join the group call (%@)
+  internal static func callbarOnlySingleActiveGroup(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "callbar_only_single_active_group", p1)
   }
   /// Paused call
   internal static var callbarOnlySinglePaused: String { 
@@ -1238,13 +1242,41 @@ internal enum VectorL10n {
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
+  /// Answer
+  internal static var eventFormatterCallAnswer: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_answer") 
+  }
   /// Call back
   internal static var eventFormatterCallBack: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_back") 
   }
-  /// This call has ended
-  internal static var eventFormatterCallHasEnded: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_has_ended") 
+  /// Connecting…
+  internal static var eventFormatterCallConnecting: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_connecting") 
+  }
+  /// Connection failed
+  internal static var eventFormatterCallConnectionFailed: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_connection_failed") 
+  }
+  /// Decline
+  internal static var eventFormatterCallDecline: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_decline") 
+  }
+  /// End call
+  internal static var eventFormatterCallEndCall: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_end_call") 
+  }
+  /// Ended %@
+  internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)
+  }
+  /// Retry
+  internal static var eventFormatterCallRetry: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_retry") 
+  }
+  /// Ringing…
+  internal static var eventFormatterCallRinging: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_ringing") 
   }
   /// Video call
   internal static var eventFormatterCallVideo: String { 
@@ -1254,13 +1286,33 @@ internal enum VectorL10n {
   internal static var eventFormatterCallVoice: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_voice") 
   }
-  /// You're currently in this call
+  /// Active call
   internal static var eventFormatterCallYouCurrentlyIn: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_currently_in") 
   }
   /// You declined this call
   internal static var eventFormatterCallYouDeclined: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_declined") 
+  }
+  /// You missed this call
+  internal static var eventFormatterCallYouMissed: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_you_missed") 
+  }
+  /// Group call
+  internal static var eventFormatterGroupCall: String { 
+    return VectorL10n.tr("Vector", "event_formatter_group_call") 
+  }
+  /// %@ in %@
+  internal static func eventFormatterGroupCallIncoming(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_group_call_incoming", p1, p2)
+  }
+  /// Join
+  internal static var eventFormatterGroupCallJoin: String { 
+    return VectorL10n.tr("Vector", "event_formatter_group_call_join") 
+  }
+  /// Leave
+  internal static var eventFormatterGroupCallLeave: String { 
+    return VectorL10n.tr("Vector", "event_formatter_group_call_leave") 
   }
   /// VoIP conference added by %@
   internal static func eventFormatterJitsiWidgetAdded(_ p1: String) -> String {
@@ -2874,7 +2926,11 @@ internal enum VectorL10n {
   internal static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }
-  /// Jump to first unread message
+  /// Join
+  internal static var roomJoinGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_join_group_call") 
+  }
+  /// Jump to unread
   internal static var roomJumpToFirstUnread: String { 
     return VectorL10n.tr("Vector", "room_jump_to_first_unread") 
   }
@@ -2949,6 +3005,10 @@ internal enum VectorL10n {
   /// %d new messages
   internal static func roomNewMessagesNotification(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "room_new_messages_notification", p1)
+  }
+  /// You need to be an admin or a moderator to start a call.
+  internal static var roomNoPrivilegesToCreateGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_no_privileges_to_create_group_call") 
   }
   /// Connectivity to the server has been lost.
   internal static var roomOfflineNotification: String { 
@@ -3329,6 +3389,10 @@ internal enum VectorL10n {
   ///  to get this limit increased.
   internal static var roomResourceUsageLimitReachedMessageContact3: String { 
     return VectorL10n.tr("Vector", "room_resource_usage_limit_reached_message_contact_3") 
+  }
+  /// Slide to end the call for everyone
+  internal static var roomSlideToEndGroupCall: String { 
+    return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
   }
   /// Invite members
   internal static var roomTitleInviteMembers: String { 
@@ -4230,6 +4294,10 @@ internal enum VectorL10n {
   internal static var settingsLabsE2eEncryptionPromptMessage: String { 
     return VectorL10n.tr("Vector", "settings_labs_e2e_encryption_prompt_message") 
   }
+  /// Ring for group calls
+  internal static var settingsLabsEnableRingingForGroupCalls: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
+  }
   /// React to messages with emoji
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
@@ -4493,6 +4561,34 @@ internal enum VectorL10n {
   /// Or
   internal static var socialLoginListTitleSignUp: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
+  }
+  /// BETA
+  internal static var spaceBetaAnnounceBadge: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_badge") 
+  }
+  /// Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.
+  internal static var spaceBetaAnnounceInformation: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_information") 
+  }
+  /// The new version of communities
+  internal static var spaceBetaAnnounceSubtitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_subtitle") 
+  }
+  /// Spaces are coming soon
+  internal static var spaceBetaAnnounceTitle: String { 
+    return VectorL10n.tr("Vector", "space_beta_announce_title") 
+  }
+  /// Spaces are a new way to group rooms and people.\n\nThey’ll be here soon. For now, if you join one on another platform, you will be able to access any rooms you join here.
+  internal static var spaceFeatureUnavailableInformation: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_information") 
+  }
+  /// Spaces aren't on iOS yet, but you can use them now on Web and Desktop
+  internal static var spaceFeatureUnavailableSubtitle: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_subtitle") 
+  }
+  /// Spaces aren’t here yet
+  internal static var spaceFeatureUnavailableTitle: String { 
+    return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
   /// Start
   internal static var start: String { 

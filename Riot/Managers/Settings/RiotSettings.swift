@@ -27,7 +27,6 @@ final class RiotSettings: NSObject {
         static let identityServerUrlString = "identityserverurl"
         static let enableCrashReport = "enableCrashReport"
         static let enableRageShake = "enableRageShake"
-        static let createConferenceCallsWithJitsi = "createConferenceCallsWithJitsi"
         static let userInterfaceTheme = "userInterfaceTheme"
         static let notificationsShowDecryptedContent = "showDecryptedContent"
         static let pinRoomsWithMissedNotifications = "pinRoomsWithMissedNotif"
@@ -52,6 +51,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
+        static let enableRingingForGroupCalls = "enableRingingForGroupCalls"
         static let roomSettingsScreenShowLowPriorityOption = "roomSettingsScreenShowLowPriorityOption"
         static let roomSettingsScreenShowDirectChatOption = "roomSettingsScreenShowDirectChatOption"
         static let roomSettingsScreenAllowChangingAccessSettings = "roomSettingsScreenAllowChangingAccessSettings"
@@ -79,6 +79,7 @@ final class RiotSettings: NSObject {
         static let roomInfoScreenShowIntegrations = "roomInfoScreenShowIntegrations"
         static let roomMemberScreenShowIgnore = "roomMemberScreenShowIgnore"
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
+        static let hideSpaceBetaAnnounce = "hideSpaceBetaAnnounce"
     }
     
     static let shared = RiotSettings()
@@ -204,14 +205,15 @@ final class RiotSettings: NSObject {
     
     // MARK: Labs
     
-    var createConferenceCallsWithJitsi: Bool {
+    /// Indicates if CallKit ringing is enabled for group calls. This setting does not disable the CallKit integration for group calls, only relates to ringing.
+    var enableRingingForGroupCalls: Bool {
         get {
-            return defaults.bool(forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
+            return defaults.bool(forKey: UserDefaultsKeys.enableRingingForGroupCalls)
         } set {
-            defaults.set(newValue, forKey: UserDefaultsKeys.createConferenceCallsWithJitsi)
+            defaults.set(newValue, forKey: UserDefaultsKeys.enableRingingForGroupCalls)
         }
     }
-
+    
     // MARK: Calls
 
     /// Indicate if `allowStunServerFallback` settings has been set once.
@@ -706,4 +708,13 @@ final class RiotSettings: NSObject {
         }
     }
     
+    // MARK: - Beta
+    
+    var hideSpaceBetaAnnounce: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.hideSpaceBetaAnnounce)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.hideSpaceBetaAnnounce)
+        }
+    }
 }

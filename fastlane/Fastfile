@@ -28,19 +28,24 @@ platform :ios do
   desc "Builds an adhoc ipa"
   lane :adhoc do |options|
     options[:adhoc] = true
+    if !options.has_key?(:build_number)
+      build_number = generate_build_number()
+      options = { build_number: build_number }.merge(options)
+    end
     build_release(options)
   end
 
   desc "Builds an ipa for the App Store"
   lane :app_store do |options|
+    if !options.has_key?(:build_number)
+      build_number = generate_build_number()
+      options = { build_number: build_number }.merge(options)
+    end
     build_release(options)
   end
 
   desc "Builds the ipa for the AppStore, then uploads it"
   lane :deploy_release do |options|
-    require 'date'
-    build_number = DateTime.now.strftime("%Y%m%d%H%M%S")
-    options = { build_number: build_number }.merge(options)
     # build the IPA
     app_store(options)
     # upload the IPA and metadata
@@ -391,4 +396,10 @@ end
       content.gsub!(pattern, replacement)
     end
     File.write(file, content)
+  end
+
+  # Generates a new build number based on timestamp
+  def generate_build_number()
+    require 'date'
+    return DateTime.now.strftime("%Y%m%d%H%M%S")
   end

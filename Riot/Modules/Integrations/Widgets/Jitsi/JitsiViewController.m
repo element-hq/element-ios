@@ -22,8 +22,17 @@
 @import JitsiMeetSDK;
 
 static const NSString *kJitsiDataErrorKey = @"error";
+/**
+ Class name for RCTSafeAreaView. It's in the React Native SDK, so we cannot import its header.
+ */
+static NSString * _Nonnull kRCTSafeAreaViewClassName = @"RCTSafeAreaView";
 
-@interface JitsiViewController () <JitsiMeetViewDelegate>
+/*
+ Some feature flags defined in https://github.com/jitsi/jitsi-meet/blob/master/react/features/base/flags/constants.js
+ */
+static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
+
+@interface JitsiViewController () <PictureInPicturable, JitsiMeetViewDelegate>
 
 // The jitsi-meet SDK view
 @property (nonatomic, weak) IBOutlet JitsiMeetView *jitsiMeetView;
@@ -32,6 +41,11 @@ static const NSString *kJitsiDataErrorKey = @"error";
 @property (nonatomic, strong) NSURL *serverUrl;
 @property (nonatomic, strong) NSString *jwtToken;
 @property (nonatomic) BOOL startWithVideo;
+
+/**
+ Overlay views in self.jitsiMeetView. Only provided if the screen is in the PiP mode.
+ */
+@property (nonatomic, strong) NSArray<UIView*> *overlayViews;
 
 @end
 
@@ -157,9 +171,31 @@ static const NSString *kJitsiDataErrorKey = @"error";
     }];
 }
 
+- (void)setAudioMuted:(BOOL)muted
+{
+    [self.jitsiMeetView setAudioMuted:muted];
+}
+
 - (void)hangup
 {
     [self.jitsiMeetView leave];
+}
+
+- (NSUInteger)callDuration
+{
+    MXEvent *widgetEvent = self.widget.widgetEvent;
+    if (widgetEvent)
+    {
+        if (widgetEvent.originServerTs == kMXUndefinedTimestamp)
+        {
+            return 0;
+        }
+        else
+        {
+            return (uint64_t)[NSDate date].timeIntervalSince1970*1000 - widgetEvent.originServerTs;
+        }
+    }
+    return 0;
 }
 
 #pragma mark - Private
@@ -237,10 +273,31 @@ static const NSString *kJitsiDataErrorKey = @"error";
                                                                      andEmail:nil
                                                                     andAvatar:avatarUrl];
             builder.token = self.jwtToken;
+            [builder setFeatureFlag:kJitsiFeatureFlagChatEnabled withBoolean:NO];
         }];
         
         [self.jitsiMeetView join:jitsiMeetConferenceOptions];
     }
+}
+
+/**
+ Finds all the views in self.jitsiMeetView recursively those kind of class with the name `kRCTSafeAreaViewClassName`.
+ */
+- (NSArray<UIView*>*)overlayViewsIn:(UIView *)view
+{
+    Class class = NSClassFromString(kRCTSafeAreaViewClassName);
+    if ([view isKindOfClass:class])
+    {
+        return @[view];
+    }
+    
+    NSMutableArray<UIView *> *result = [NSMutableArray arrayWithCapacity:2];
+    
+    [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull subview, NSUInteger idx, BOOL * _Nonnull stop) {
+        [result addObjectsFromArray:[self overlayViewsIn:subview]];
+    }];
+    
+    return result;
 }
 
 #pragma mark - JitsiMeetViewDelegate
@@ -285,6 +342,26 @@ static const NSString *kJitsiDataErrorKey = @"error";
     {
         [self.delegate jitsiViewController:self goBackToApp:nil];
     }
+}
+
+#pragma mark - PictureInPicturable
+
+- (void)enterPiP
+{
+    self.overlayViews = [self overlayViewsIn:self.view];
+    for (UIView *view in self.overlayViews)
+    {
+        view.alpha = 0;
+    }
+}
+
+- (void)exitPiP
+{
+    for (UIView *view in self.overlayViews)
+    {
+        view.alpha = 1.0;
+    }
+    self.overlayViews = nil;
 }
 
 @end

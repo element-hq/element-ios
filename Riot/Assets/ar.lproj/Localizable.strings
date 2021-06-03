@@ -111,3 +111,9 @@
 
 /* New message from a specific person, not referencing a room */
 "MSG_FROM_USER" = "لَقَد أرسَلَ %@ رِسالة";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (مُكالَمَةٌ جَماعِيَّة)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "بَدَأت مُكالَمَةٌ جَماعِيَّة";

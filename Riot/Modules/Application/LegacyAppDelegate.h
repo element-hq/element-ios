@@ -30,6 +30,7 @@
 @protocol Configurable;
 @protocol LegacyAppDelegateDelegate;
 @class CallBar;
+@class CallPresenter;
 
 #pragma mark - Notifications
 /**
@@ -54,8 +55,8 @@ extern NSString *const AppDelegateUniversalLinkDidChangeNotification;
 @interface LegacyAppDelegate : UIResponder <
 UIApplicationDelegate,
 UISplitViewControllerDelegate,
-UINavigationControllerDelegate,
-JitsiViewControllerDelegate>
+UINavigationControllerDelegate
+>
 {
     // background sync management
     void (^_completionHandler)(UIBackgroundFetchResult);
@@ -116,6 +117,11 @@ JitsiViewControllerDelegate>
 
 // Build Settings
 @property (nonatomic, readonly) id<Configurable> configuration;
+
+/**
+ Call presenter instance. May be nil unless at least one session initialized.
+ */
+@property (nonatomic, strong, readonly) CallPresenter *callPresenter;
 
 + (instancetype)theDelegate;
 
@@ -218,6 +224,23 @@ JitsiViewControllerDelegate>
  */
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment;
 
+/**
+ Process the fragment part of a vector.im link.
+
+ @param fragment the fragment part of the universal link.
+ @param universalLinkURL the unprocessed the universal link URL (optional).
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL;
+
+/**
+ Process the URL of a vector.im link.
+
+ @param universalLinkURL the universal link URL.
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL;
+
 #pragma mark - Jitsi call
 
 /**
@@ -262,5 +285,13 @@ JitsiViewControllerDelegate>
 
 - (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate wantsToPopToHomeViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion;
 - (void)legacyAppDelegateRestoreEmptyDetailsViewController:(LegacyAppDelegate*)legacyAppDelegate;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveMatrixSession:(MXSession*)session;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddAccount:(MXKAccount*)account;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveAccount:(MXKAccount*)account;
 
 @end

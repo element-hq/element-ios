@@ -127,14 +127,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                 || [activeWidget.type isEqualToString:kWidgetTypeJitsiV2])
                             {
                                 // This was a jitsi widget
-                                if (isEventSenderMyUser)
-                                {
-                                    displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed_by_you", @"Vector", nil);
-                                }
-                                else
-                                {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_removed", @"Vector", nil), senderDisplayName];
-                                }
+                                return nil;
                             }
                             else
                             {
@@ -191,9 +184,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         }
             break;
         case MXEventTypeCallCandidates:
-        case MXEventTypeCallAnswer:
         case MXEventTypeCallSelectAnswer:
-        case MXEventTypeCallHangup:
         case MXEventTypeCallNegotiate:
         case MXEventTypeCallReplaces:
         case MXEventTypeCallRejectReplacement:
@@ -374,6 +365,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         self.encryptedMessagesTextFont = [UIFont italicSystemFontOfSize:15];
         self.emojiOnlyTextFont = [UIFont systemFontOfSize:48];
         self.editionMentionTextFont = [UIFont systemFontOfSize:12];
+        
+        // Handle space room type, enables to show space in room list
+        defaultRoomSummaryUpdater.showRoomTypeStrings = @[
+            MXRoomTypeStringSpace
+        ];
     }
     return self;
 }

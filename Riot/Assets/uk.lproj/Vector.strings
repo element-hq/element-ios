@@ -296,7 +296,7 @@
 "callbar_active_and_single_paused" = "1 активний виклик (%@) · 1 виклик в очікуванні";
 
 // Call Bar
-"callbar_only_single_active" = "Активний виклик (%@)";
+"callbar_only_single_active" = "Торкніться, щоб повернутися до виклику (%@)";
 "switch" = "Перемкнути";
 "room_event_action_resend" = "Повторно надіслати";
 "room_event_action_redact" = "Вилучити";
@@ -325,3 +325,4 @@
 "room_participants_action_leave" = "Вийти з цієї кімнати";
 "room_participants_action_invite" = "Запросити";
 "room_ongoing_conference_call_close" = "Закрити";
+"callbar_only_single_active_group" = "Торкніться, щоб приєднатися до групового виклику (%@)";

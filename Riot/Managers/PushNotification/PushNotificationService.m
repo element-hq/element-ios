@@ -299,29 +299,43 @@ Matrix session observer used to detect new opened sessions.
     NSArray *mxAccounts = [MXKAccountManager sharedManager].activeAccounts;
     for (MXKAccount *account in mxAccounts)
     {
-        // Check the current session state
-        if (account.mxSession.state == MXSessionStatePaused)
-        {
-            NSLog(@"[PushNotificationService] launchBackgroundSync");
-            MXWeakify(self);
+        NSLog(@"[PushNotificationService] launchBackgroundSync");
 
-            [account backgroundSync:20000 success:^{
-                
-                // Sanity check
-                MXStrongifyAndReturnIfNil(self);
-                
-                [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
-                [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
-                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync succeeds");
-            } failure:^(NSError *error) {
-                
-                NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
-            }];
-        }
+        [account backgroundSync:20000 success:^{
+            [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
+            [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
+            NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync succeeds");
+        } failure:^(NSError *error) {
+            NSLog(@"[PushNotificationService] launchBackgroundSync: the background sync failed. Error: %@ (%@).", error.domain, @(error.code));
+        }];
     }
 }
 
 #pragma mark - UNUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler
+{
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    if (userInfo[Constants.userInfoKeyPresentNotificationOnForeground])
+    {
+        if (!userInfo[Constants.userInfoKeyPresentNotificationInRoom]
+            && [[AppDelegate theDelegate].visibleRoomId isEqualToString:userInfo[@"room_id"]])
+        {
+            //  do not show the notification when we're in the notified room
+            completionHandler(UNNotificationPresentationOptionNone);
+        }
+        else
+        {
+            completionHandler(UNNotificationPresentationOptionBadge
+                              | UNNotificationPresentationOptionSound
+                              | UNNotificationPresentationOptionAlert);
+        }
+    }
+    else
+    {
+        completionHandler(UNNotificationPresentationOptionNone);
+    }
+}
 
 // iOS 10+, see application:handleActionWithIdentifier:forLocalNotification:withResponseInfo:completionHandler:
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
@@ -540,16 +554,16 @@ Matrix session observer used to detect new opened sessions.
         if (@available(iOS 13.0, *))
         {
             //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
-            MXEvent *lastCallInvite = _pushNotificationStore.lastCallInvite;
+            MXEvent *callInvite = [_pushNotificationStore callInviteForEventId:eventId];
             //  remove event
-            _pushNotificationStore.lastCallInvite = nil;
+            [_pushNotificationStore removeCallInviteWithEventId:eventId];
             MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
             //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
             [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
             
-            NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: lastCallInvite: %@", lastCallInvite);
+            NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: callInvite: %@", callInvite);
             
-            if ([lastCallInvite.eventId isEqualToString:eventId])
+            if (callInvite)
             {
                 //  We're using this dispatch_group to continue event stream after cache fully processed.
                 dispatch_group_t dispatchGroup = dispatch_group_create();
@@ -561,36 +575,44 @@ Matrix session observer used to detect new opened sessions.
                     dispatch_group_leave(dispatchGroup);
                 }];
                 
-                if (lastCallInvite.isEncrypted && ![session decryptEvent:lastCallInvite inTimeline:nil])
+                if (callInvite.eventType == MXEventTypeCallInvite)
                 {
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Failed to decrypt the call invite event: %@", eventId);
-                    completion();
-                    return;
+                    //  process the call invite synchronously
+                    [session.callManager handleCallEvent:callInvite];
+                    MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:callInvite.content];
+                    MXCall *call = [session.callManager callWithCallId:content.callId];
+                    if (call)
+                    {
+                        [session.callManager.callKitAdapter reportIncomingCall:call];
+                        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
+                        
+                        //  Wait for the sync response in cache to be processed for data integrity.
+                        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+                            //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
+                            [self launchBackgroundSync];
+                        });
+                    }
+                    else
+                    {
+                        NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
+                    }
                 }
-                
-                //  process the call invite synchronously
-                [session.callManager handleCallEvent:lastCallInvite];
-                MXCall *call = [session.callManager callWithCallId:lastCallInvite.content[@"call_id"]];
-                if (call)
+                else if ([callInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
+                         [callInvite.type isEqualToString:kWidgetModularEventTypeString])
                 {
-                    [session.callManager.callKitAdapter reportIncomingCall:call];
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
-                    
-                    //  Wait for the sync response in cache to be processed for data integrity.
-                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-                        //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
-                        [self launchBackgroundSync];
-                    });
+                    [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
+                                                                      inSession:session];
                 }
                 else
                 {
-                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
+                    //  It's a serious error. There is nothing to avoid iOS to kill us here.
+                    NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: We have an unknown type of event for %@. There is something wrong.", eventId);
                 }
             }
             else
             {
                 //  It's a serious error. There is nothing to avoid iOS to kill us here.
-                NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the last callInvite event for the event %@. There is something wrong.", eventId);
+                NSLog(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the callInvite event for the eventId: %@. There is something wrong.", eventId);
             }
         }
         else

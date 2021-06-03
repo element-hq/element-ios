@@ -18,9 +18,22 @@ import UserNotifications
 import MatrixKit
 import MatrixSDK
 
+/// The number of milliseconds in one second.
+private let MSEC_PER_SEC: TimeInterval = 1000
+
 class NotificationService: UNNotificationServiceExtension {
     
+    private struct NSE {
+        enum Constants {
+            static let voipPushRequestTimeout: TimeInterval = 15
+            static let timeNeededToSendVoIPPushes: TimeInterval = 20
+        }
+    }
+    
     //  MARK: - Properties
+    
+    /// Receiving dates for notifications. Keys are eventId's
+    private var receiveDates: [String: Date] = [:]
     
     /// Content handlers. Keys are eventId's
     private var contentHandlers: [String: ((UNNotificationContent) -> Void)] = [:]
@@ -87,6 +100,9 @@ class NotificationService: UNNotificationServiceExtension {
         guard let content = request.content.mutableCopy() as? UNMutableNotificationContent else {
             return
         }
+        
+        //  store receive date
+        receiveDates[eventId] = Date()
         
         //  read badge from "unread_count"
         //  no need to check before, if it's nil, the badge will remain unchanged
@@ -190,6 +206,10 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     private func processEvent(_ event: MXEvent) {
+        if let receiveDate = receiveDates[event.eventId] {
+            NSLog("[NotificationService] processEvent: notification receive delay: \(receiveDate.timeIntervalSince1970*MSEC_PER_SEC - TimeInterval(event.originServerTs)) ms")
+        }
+        
         guard let content = bestAttemptContents[event.eventId], let userAccount = userAccount else {
             self.fallbackToBestAttemptContent(forEventId: event.eventId)
             return
@@ -246,6 +266,7 @@ class NotificationService: UNNotificationServiceExtension {
         //  clear maps
         contentHandlers.removeValue(forKey: eventId)
         bestAttemptContents.removeValue(forKey: eventId)
+        receiveDates.removeValue(forKey: eventId)
         
         // We are done for this push
         NSLog("--------------------------------------------------------------------------------")
@@ -269,6 +290,7 @@ class NotificationService: UNNotificationServiceExtension {
                 case .success(let (roomState, eventSenderName)):
                     var notificationTitle: String?
                     var notificationBody: String?
+                    var additionalUserInfo: [AnyHashable: Any]?
                     
                     var threadIdentifier: String? = roomId
                     let currentUserId = account.mxCredentials.userId
@@ -289,7 +311,14 @@ class NotificationService: UNNotificationServiceExtension {
                             
                             // call notifications should stand out from normal messages, so we don't stack them
                             threadIdentifier = nil
-                            self.sendVoipPush(forEvent: event)
+                            
+                            if let callInviteContent = MXCallInviteEventContent(fromJSON: event.content),
+                               callInviteContent.lifetime > event.age,
+                               (callInviteContent.lifetime - event.age) > UInt(NSE.Constants.timeNeededToSendVoIPPushes * MSEC_PER_SEC) {
+                                self.sendVoipPush(forEvent: event)
+                            } else {
+                                NSLog("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
+                            }
                         case .roomMessage, .roomEncrypted:
                             if isRoomMentionsOnly {
                                 // A local notification will be displayed only for highlighted notification.
@@ -372,6 +401,22 @@ class NotificationService: UNNotificationServiceExtension {
                             }
                             
                             notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
+                        case .custom:
+                            if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
+                               let type = event.content?["type"] as? String,
+                               (type == kWidgetTypeJitsiV1 || type == kWidgetTypeJitsiV2) {
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "GROUP_CALL_STARTED", arguments: nil)
+                                notificationTitle = roomDisplayName
+                                
+                                // call notifications should stand out from normal messages, so we don't stack them
+                                threadIdentifier = nil
+                                //  only send VoIP pushes if ringing is enabled for group calls
+                                if RiotSettings.shared.enableRingingForGroupCalls {
+                                    self.sendVoipPush(forEvent: event)
+                                } else {
+                                    additionalUserInfo = [Constants.userInfoKeyPresentNotificationOnForeground: true]
+                                }
+                            }
                         default:
                             break
                     }
@@ -393,7 +438,8 @@ class NotificationService: UNNotificationServiceExtension {
                                                                        threadIdentifier: threadIdentifier,
                                                                        userId: currentUserId,
                                                                        event: event,
-                                                                       pushRule: pushRule)
+                                                                       pushRule: pushRule,
+                                                                       additionalInfo: additionalUserInfo)
                     
                     NSLog("[NotificationService] notificationContentForEvent: Calling onComplete.")
                     onComplete(notificationContent)
@@ -451,7 +497,8 @@ class NotificationService: UNNotificationServiceExtension {
                                      threadIdentifier: String?,
                                      userId: String?,
                                      event: MXEvent,
-                                     pushRule: MXPushRule?) -> UNNotificationContent {
+                                     pushRule: MXPushRule?,
+                                     additionalInfo: [AnyHashable: Any]? = nil) -> UNNotificationContent {
         let notificationContent = UNMutableNotificationContent()
         
         if let title = title {
@@ -469,12 +516,16 @@ class NotificationService: UNNotificationServiceExtension {
         if let soundName = notificationSoundName(fromPushRule: pushRule) {
             notificationContent.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: soundName))
         }
-        notificationContent.userInfo = notificationUserInfo(forEvent: event, andUserId: userId)
+        notificationContent.userInfo = notificationUserInfo(forEvent: event,
+                                                            andUserId: userId,
+                                                            additionalInfo: additionalInfo)
         
         return notificationContent
     }
     
-    private func notificationUserInfo(forEvent event: MXEvent, andUserId userId: String?) -> [AnyHashable: Any] {
+    private func notificationUserInfo(forEvent event: MXEvent,
+                                      andUserId userId: String?,
+                                      additionalInfo: [AnyHashable: Any]? = nil) -> [AnyHashable: Any] {
         var notificationUserInfo: [AnyHashable: Any] = [
             "type": "full",
             "room_id": event.roomId as Any,
@@ -482,6 +533,11 @@ class NotificationService: UNNotificationServiceExtension {
         ]
         if let userId = userId {
             notificationUserInfo["user_id"] = userId
+        }
+        if let additionalInfo = additionalInfo {
+            for (key, value) in additionalInfo {
+                notificationUserInfo[key] = value
+            }
         }
         return notificationUserInfo
     }
@@ -531,20 +587,43 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        pushNotificationStore.lastCallInvite = event
+        if #available(iOS 13.0, *) {
+            if event.isEncrypted {
+                guard let clearEvent = event.clear else {
+                    NSLog("[NotificationService] sendVoipPush: Do not send a VoIP push for undecrypted event, it'll cause a crash.")
+                    return
+                }
+                
+                //  Add some original data on the clear event
+                clearEvent.eventId = event.eventId
+                clearEvent.originServerTs = event.originServerTs
+                clearEvent.sender = event.sender
+                clearEvent.roomId = event.roomId
+                pushNotificationStore.storeCallInvite(clearEvent)
+            } else {
+                pushNotificationStore.storeCallInvite(event)
+            }
+        }
         
         ongoingVoIPPushRequests[event.eventId] = true
         
         let appId = BuildSettings.pushKitAppId
         
-        pushGatewayRestClient.notifyApp(withId: appId, pushToken: token, eventId: event.eventId, roomId: event.roomId, eventType: nil, sender: event.sender, success: { [weak self] (rejected) in
-            NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
-            
-            guard let self = self else { return }
-            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
-            
-            self.fallbackToBestAttemptContent(forEventId: event.eventId)
-        }) { [weak self] (error) in
+        pushGatewayRestClient.notifyApp(withId: appId,
+                                        pushToken: token,
+                                        eventId: event.eventId,
+                                        roomId: event.roomId,
+                                        eventType: nil,
+                                        sender: event.sender,
+                                        timeout: NSE.Constants.voipPushRequestTimeout,
+                                        success: { [weak self] (rejected) in
+                                            NSLog("[NotificationService] sendVoipPush succeeded, rejected tokens: \(rejected)")
+                                            
+                                            guard let self = self else { return }
+                                            self.ongoingVoIPPushRequests.removeValue(forKey: event.eventId)
+                                            
+                                            self.fallbackToBestAttemptContent(forEventId: event.eventId)
+                                        }) { [weak self] (error) in
             NSLog("[NotificationService] sendVoipPush failed with error: \(error)")
             
             guard let self = self else { return }
