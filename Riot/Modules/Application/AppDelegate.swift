@@ -17,21 +17,19 @@
 import UIKit
 import PushKit
 
+#if DEBUG
+import FLEX
+#endif
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    // MARK: - Properties
-
-    // MARK: Private
-
     private var appCoordinator: AppCoordinatorType!
     private var rootRouter: RootRouterType!
 
     private var legacyAppDelegate: LegacyAppDelegate {
         return AppDelegate.theDelegate()
     }
-    
-    // MARK: Public
     
     /// Call the Riot legacy AppDelegate
     @objc class func theDelegate() -> LegacyAppDelegate {
@@ -41,12 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return legacyAppDelegate
     }
     
-    // UIApplicationDelegate properties
-    
     /// Main application window
     var window: UIWindow?
-    
-    // MARK: - UIApplicationDelegate
     
     // MARK: Life cycle
     
@@ -55,8 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
         // Setup window
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
@@ -73,6 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Call legacy AppDelegate
         self.legacyAppDelegate.window = window
         self.legacyAppDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        setupFlexDebugger()
         
         return true
     }
@@ -123,5 +117,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         self.legacyAppDelegate.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+    }
+    
+    // MARK: - Private
+    
+    private func setupFlexDebugger() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showFlexDebugger))
+        tapGestureRecognizer.numberOfTouchesRequired = 2
+        tapGestureRecognizer.numberOfTapsRequired = 2
+        window?.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc private func showFlexDebugger() {
+        #if DEBUG
+        FLEXManager.shared.showExplorer()
+        #endif
     }
 }
