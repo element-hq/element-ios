@@ -4662,6 +4662,14 @@ internal enum VectorL10n {
   internal static var unknownDevicesVerify: String { 
     return VectorL10n.tr("Vector", "unknown_devices_verify") 
   }
+  /// Change user avatar
+  internal static var userAvatarViewAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "user_avatar_view_accessibility_hint") 
+  }
+  /// avatar
+  internal static var userAvatarViewAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "user_avatar_view_accessibility_label") 
+  }
   /// If you didn’t sign in to this session, your account may be compromised.
   internal static var userVerificationSessionDetailsAdditionalInformationUntrustedCurrentUser: String { 
     return VectorL10n.tr("Vector", "user_verification_session_details_additional_information_untrusted_current_user") 
