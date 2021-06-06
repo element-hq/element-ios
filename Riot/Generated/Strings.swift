@@ -4486,6 +4486,26 @@ internal enum VectorL10n {
   internal static var shareExtensionFailedToEncrypt: String { 
     return VectorL10n.tr("Vector", "share_extension_failed_to_encrypt") 
   }
+  /// Feedback
+  internal static var sideMenuActionFeedback: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_feedback") 
+  }
+  /// Help
+  internal static var sideMenuActionHelp: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_help") 
+  }
+  /// Invite friends
+  internal static var sideMenuActionInviteFriends: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_invite_friends") 
+  }
+  /// Settings
+  internal static var sideMenuActionSettings: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_settings") 
+  }
+  /// Version %@
+  internal static func sideMenuAppVersion(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "side_menu_app_version", p1)
+  }
   /// Sign out
   internal static var signOutExistingKeyBackupAlertSignOutAction: String { 
     return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_sign_out_action") 

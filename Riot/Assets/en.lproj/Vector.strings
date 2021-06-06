@@ -1648,3 +1648,11 @@ Tap the + to start adding people.";
 
 "user_avatar_view_accessibility_label" = "avatar";
 "user_avatar_view_accessibility_hint" = "Change user avatar";
+
+// Mark: - Side menu
+
+"side_menu_action_invite_friends" = "Invite friends";
+"side_menu_action_settings" = "Settings";
+"side_menu_action_help" = "Help";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_app_version" = "Version %@";
