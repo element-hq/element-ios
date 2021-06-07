@@ -2,7 +2,7 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Add left panel (#4398).
 
 🙌 Improvements
  * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
