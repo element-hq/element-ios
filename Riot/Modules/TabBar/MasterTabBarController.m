@@ -34,7 +34,7 @@
 @interface MasterTabBarController () <AuthenticationViewControllerDelegate>
 {
     // Array of `MXSession` instances.
-    NSMutableArray *mxSessionArray;    
+    NSMutableArray<MXSession*> *mxSessionArray;    
     
     // Tell whether the authentication screen is preparing.
     BOOL isAuthViewControllerPreparing;
@@ -284,7 +284,7 @@
 
 #pragma mark -
 
-- (NSArray*)mxSessions
+- (NSArray<MXSession*>*)mxSessions
 {
     return [NSArray arrayWithArray:mxSessionArray];
 }
@@ -339,7 +339,7 @@
         [self.groupsViewController displayList:groupsDataSource];
         
         // Check whether there are others sessions
-        NSArray* mxSessions = self.mxSessions;
+        NSArray<MXSession*>* mxSessions = self.mxSessions;
         if (mxSessions.count > 1)
         {
             for (MXSession *mxSession in mxSessions)
