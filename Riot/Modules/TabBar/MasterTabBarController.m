@@ -356,6 +356,12 @@
 
 - (void)addMatrixSession:(MXSession *)mxSession
 {
+    if ([mxSessionArray containsObject:mxSession])
+    {
+        MXLogDebug(@"MasterTabBarController already has %@ in mxSessionArray", mxSession)
+        return;
+    }
+    
     // Check whether the controller's view is loaded into memory.
     if (self.homeViewController)
     {
@@ -394,6 +400,12 @@
 
 - (void)removeMatrixSession:(MXSession *)mxSession
 {
+    if (![mxSessionArray containsObject:mxSession])
+    {
+        MXLogDebug(@"MasterTabBarController does not contain %@ in mxSessionArray", mxSession)
+        return;
+    }
+    
     [recentsDataSource removeMatrixSession:mxSession];
     
     // Check whether there are others sessions
