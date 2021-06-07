@@ -16,12 +16,20 @@
 
 import UIKit
 
-private enum VoiceMessageToolbarViewState {
+protocol VoiceMessageToolbarViewDelegate: AnyObject {
+    func voiceMessageToolbarViewDidRequestRecordingStart(_ toolbarView: VoiceMessageToolbarView)
+    func voiceMessageToolbarViewDidRequestRecordingCancel(_ toolbarView: VoiceMessageToolbarView)
+    func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView)
+}
+
+enum VoiceMessageToolbarViewState {
     case idle
     case recording
 }
 
 class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDelegate {
+    
+    weak var delegate: VoiceMessageToolbarViewDelegate?
 
     @IBOutlet private var backgroundView: UIView!
     
@@ -36,14 +44,22 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     
     private var cancelLabelToRecordButtonDistance: CGFloat = 0.0
     
-    private var state: VoiceMessageToolbarViewState = .idle {
+    private var currentTheme: Theme? {
         didSet {
             updateUIAnimated(true)
         }
     }
     
-    private var currentTheme: Theme? {
+    var state: VoiceMessageToolbarViewState = .idle {
         didSet {
+            switch state {
+            case .recording:
+                let convertedFrame = self.convert(slideToCancelLabel.frame, from: slideToCancelContainerView)
+                cancelLabelToRecordButtonDistance = recordButtonsContainerView.frame.minX - convertedFrame.maxX
+            case .idle:
+                cancelDrag()
+            }
+            
             updateUIAnimated(true)
         }
     }
@@ -90,13 +106,11 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
         switch gestureRecognizer.state {
         case UIGestureRecognizer.State.began:
-            state = .recording
-            
-            let convertedFrame = self.convert(slideToCancelLabel.frame, from: slideToCancelContainerView)
-            cancelLabelToRecordButtonDistance = recordButtonsContainerView.frame.minX - convertedFrame.maxX
-            
+            delegate?.voiceMessageToolbarViewDidRequestRecordingStart(self)
         case UIGestureRecognizer.State.ended:
-            state = .idle
+            delegate?.voiceMessageToolbarViewDidRequestRecordingFinish(self)
+        case UIGestureRecognizer.State.cancelled:
+            delegate?.voiceMessageToolbarViewDidRequestRecordingCancel(self)
         default:
             break
         }
@@ -111,6 +125,17 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
         
         recordButtonsContainerView.transform = CGAffineTransform(translationX: min(translation.x, 0.0), y: 0.0)
         slideToCancelContainerView.transform = CGAffineTransform(translationX: min(translation.x + cancelLabelToRecordButtonDistance, 0.0), y: 0.0)
+        
+        if abs(translation.x) > self.bounds.width / 2.0 {
+            cancelDrag()
+        }
+    }
+    
+    private func cancelDrag() {
+        recordButtonsContainerView.gestureRecognizers?.forEach { gestureRecognizer in
+            gestureRecognizer.isEnabled = false
+            gestureRecognizer.isEnabled = true
+        }
     }
     
     private func updateUIAnimated(_ animated: Bool) {

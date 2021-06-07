@@ -41,8 +41,6 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     UIAlertController *actionSheet;
 }
 
-@property (nonatomic, strong) VoiceMessageToolbarView *voiceMessageToolbarView;
-
 @end
 
 @implementation RoomInputToolbarView
@@ -78,16 +76,19 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
-    self.voiceMessageToolbarView = [VoiceMessageToolbarView instanceFromNib];
+    [self _updateUIWithTextMessage:nil animated:NO];
+}
+
+- (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
+{
+    _voiceMessageToolbarView = voiceMessageToolbarView;
     self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.voiceMessageToolbarView];
-    
+
     [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
                                               [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
                                               [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
                                               [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
-    
-    [self _updateUIWithTextMessage:nil animated:NO];
 }
 
 #pragma mark - Override MXKView
@@ -140,8 +141,6 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.inputContextLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.inputContextButton.tintColor = ThemeService.shared.theme.textSecondaryColor;
     [self.actionsBar updateWithTheme:ThemeService.shared.theme];
-    
-    [self.voiceMessageToolbarView updateWithTheme:ThemeService.shared.theme];
 }
 
 #pragma mark -
