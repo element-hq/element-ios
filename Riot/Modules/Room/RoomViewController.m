@@ -135,7 +135,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate>
 {
     
     // The preview header
@@ -240,6 +240,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 
+@property (nonatomic, strong, readonly) VoiceMessageController *voiceMessageController;
+
 @end
 
 @implementation RoomViewController
@@ -313,6 +315,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Show / hide actions button in document preview according BuildSettings
     self.allowActionsInDocumentPreview = BuildSettings.messageDetailsAllowShare;
+    
+    _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared];
+    self.voiceMessageController.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -1114,6 +1119,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (!self.inputToolbarView || ![self.inputToolbarView isMemberOfClass:roomInputToolbarViewClass])
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+        
+        [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        
         [self updateInputToolBarViewHeight];
     }
 }
@@ -6150,6 +6158,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXStrongifyAndReturnIfNil(self);
         [self showJitsiErrorAsAlert:error];
         [self stopActivityIndicator];
+    }];
+}
+
+#pragma mark - VoiceMessageControllerDelegate
+
+- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController didRequestSendForFileAtURL:(NSURL *)url completion:(void (^)(BOOL))completion
+{
+    [self.roomDataSource sendAudioFile:url mimeType:@"audio/mp4" success:^(NSString *eventId) {
+        MXLogDebug(@"Success with event id %@", eventId);
+        completion(YES);
+    } failure:^(NSError *error) {
+        MXLogError(@"Failed sending voice message");
+        completion(NO);
     }];
 }
 
