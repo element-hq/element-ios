@@ -68,6 +68,7 @@ abstract_target 'RiotPods' do
     pod 'ReadMoreTextView', '~> 3.0.1'
     pod 'SwiftBase32', '~> 0.9.0'
     pod 'SwiftJWT', '~> 3.6.200'
+    pod 'SideMenu', '~> 6.5'
 
     target 'RiotTests' do
       inherit! :search_paths
