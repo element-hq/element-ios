@@ -122,10 +122,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Private
     
     private func setupFlexDebugger() {
+        #if DEBUG
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showFlexDebugger))
         tapGestureRecognizer.numberOfTouchesRequired = 2
         tapGestureRecognizer.numberOfTapsRequired = 2
         window?.addGestureRecognizer(tapGestureRecognizer)
+        #endif
     }
     
     @objc private func showFlexDebugger() {
