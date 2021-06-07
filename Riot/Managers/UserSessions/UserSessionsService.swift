@@ -70,6 +70,18 @@ class UserSessionsService: NSObject {
         self.removeUserSession(relatedToAccount: account, postNotification: true)
     }
     
+    func removeUserSession(relatedToMatrixSession matrixSession: MXSession) {
+        let foundUserSession = self.userSessions.first { (userSession) -> Bool in
+            userSession.matrixSession == matrixSession
+        }
+        
+        guard let userSessionToRemove = foundUserSession else {
+            return
+        }
+        
+        self.removeUserSession(relatedToAccount: userSessionToRemove.account)
+    }
+    
     func isUserSessionExists(withUserId userId: String) -> Bool {
         return self.userSessions.contains { (userSession) -> Bool in
             return userSession.userId == userId

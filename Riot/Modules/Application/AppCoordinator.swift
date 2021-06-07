@@ -139,6 +139,8 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     }
     
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemoveMatrixSession session: MXSession!) {
+        // Handle user session removal on clear cache. On clear cache the account has his session closed but the account is not removed.
+        self.userSessionsService.removeUserSession(relatedToMatrixSession: session)
     }
     
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didAdd account: MXKAccount!) {
