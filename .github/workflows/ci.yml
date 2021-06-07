@@ -23,12 +23,12 @@ jobs:
 
       # Common cache
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - uses: actions/cache@v2
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
@@ -59,12 +59,12 @@ jobs:
 
       # Common cache
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - uses: actions/cache@v2
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
+      # - uses: actions/cache@v2
+      #   with:
+      #     path: Pods
+      #     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pods-
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
