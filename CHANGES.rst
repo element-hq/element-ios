@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
+ * EncryptionKeyManager: Create keys for room last message data type.
 
 🐛 Bugfix
  * SettingsViewController: Fix crash when changing the app language (#4377).
