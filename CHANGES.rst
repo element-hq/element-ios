@@ -1,4 +1,4 @@
-Changes to be released in next version
+Changes in 1.4.1 (2021-06-08)
 =================================================
 
 ✨ Features
