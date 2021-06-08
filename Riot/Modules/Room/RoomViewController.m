@@ -6163,6 +6163,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 #pragma mark - VoiceMessageControllerDelegate
 
+- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController didRequestPermissionCheckWithCompletion:(void (^)(BOOL))completion
+{
+    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+    
+    // FIXME: fix permission message
+    NSString * message = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName];
+    
+    [MXKTools checkAccessForMediaType:AVMediaTypeAudio
+                  manualChangeMessage: message
+            showPopUpInViewController:self completionHandler:^(BOOL granted) {
+        completion(granted);
+    }];
+}
+
 - (void)voiceMessageController:(VoiceMessageController *)voiceMessageController didRequestSendForFileAtURL:(NSURL *)url completion:(void (^)(BOOL))completion
 {
     [self.roomDataSource sendAudioFile:url mimeType:@"audio/mp4" success:^(NSString *eventId) {

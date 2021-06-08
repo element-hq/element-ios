@@ -23,60 +23,74 @@
                     <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6FH-4Q-Z5e">
-                            <rect key="frame" x="141" y="10" width="132" height="20.5"/>
+                            <rect key="frame" x="140" y="10" width="134.5" height="20.5"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.left" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="82A-vC-KEp">
                                     <rect key="frame" x="0.0" y="2" width="12.5" height="17"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Slide to cancel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ydw-Nb-zP6">
-                                    <rect key="frame" x="20.5" y="0.0" width="111.5" height="20.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <rect key="frame" x="20.5" y="0.0" width="114" height="20.5"/>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                         </stackView>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_cancel_gradient" translatesAutoresizingMaskIntoConstraints="NO" id="BYJ-HN-opT">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_cancel_gradient" translatesAutoresizingMaskIntoConstraints="NO" id="BYJ-HN-opT">
+                            <rect key="frame" x="0.0" y="0.0" width="165.5" height="40"/>
                         </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-1F-5qT">
-                            <rect key="frame" x="358" y="-6" width="52" height="52"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="K6L-me-5EJ">
+                            <rect key="frame" x="20" y="-5" width="64" height="50"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BDj-Sw-VQ5">
-                                    <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
-                                    <state key="normal" image="voice_message_record_button_default"/>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rel-Fo-ROL">
-                                    <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" image="voice_message_record_button_recording"/>
-                                </button>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_record_icon" translatesAutoresizingMaskIntoConstraints="NO" id="miF-pM-B9J">
+                                    <rect key="frame" x="0.0" y="0.0" width="10" height="50"/>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QBp-TZ-h5s">
+                                    <rect key="frame" x="14" y="0.0" width="50" height="50"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="BDj-Sw-VQ5" firstAttribute="leading" secondItem="7OQ-1F-5qT" secondAttribute="leading" id="2Xv-EI-etf"/>
-                                <constraint firstAttribute="trailing" secondItem="BDj-Sw-VQ5" secondAttribute="trailing" id="2ZQ-3v-0W7"/>
-                                <constraint firstAttribute="height" constant="52" id="4XA-Gb-5NO"/>
-                                <constraint firstAttribute="trailing" secondItem="BDj-Sw-VQ5" secondAttribute="trailing" id="Dki-cT-7xX"/>
-                                <constraint firstAttribute="bottom" secondItem="BDj-Sw-VQ5" secondAttribute="bottom" id="fzv-iX-c1Y"/>
-                                <constraint firstItem="BDj-Sw-VQ5" firstAttribute="top" secondItem="7OQ-1F-5qT" secondAttribute="top" id="mNa-EU-ZKQ"/>
-                                <constraint firstAttribute="bottom" secondItem="BDj-Sw-VQ5" secondAttribute="bottom" id="phX-gD-B2H"/>
-                                <constraint firstItem="BDj-Sw-VQ5" firstAttribute="top" secondItem="7OQ-1F-5qT" secondAttribute="top" id="pv8-li-wP8"/>
-                                <constraint firstItem="BDj-Sw-VQ5" firstAttribute="leading" secondItem="7OQ-1F-5qT" secondAttribute="leading" id="ynJ-4x-1jv"/>
-                                <constraint firstAttribute="width" constant="52" id="zPb-1B-JyA"/>
-                            </constraints>
-                        </view>
+                        </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="K6L-me-5EJ" firstAttribute="leading" secondItem="dyu-ha-046" secondAttribute="leading" constant="20" id="0CB-EV-XDb"/>
                         <constraint firstItem="BYJ-HN-opT" firstAttribute="top" secondItem="dyu-ha-046" secondAttribute="top" id="3Mq-1a-iKc"/>
-                        <constraint firstAttribute="trailing" secondItem="7OQ-1F-5qT" secondAttribute="trailing" constant="4" id="7eK-W2-VJy"/>
+                        <constraint firstItem="BYJ-HN-opT" firstAttribute="width" secondItem="dyu-ha-046" secondAttribute="width" multiplier="0.4" id="4R3-5v-p6s"/>
+                        <constraint firstItem="K6L-me-5EJ" firstAttribute="centerY" secondItem="dyu-ha-046" secondAttribute="centerY" id="Eyq-fW-20D"/>
                         <constraint firstItem="6FH-4Q-Z5e" firstAttribute="centerX" secondItem="dyu-ha-046" secondAttribute="centerX" id="IZ1-Dr-yrw"/>
                         <constraint firstItem="6FH-4Q-Z5e" firstAttribute="centerY" secondItem="dyu-ha-046" secondAttribute="centerY" id="NAu-5j-4Yg"/>
-                        <constraint firstAttribute="trailing" secondItem="BYJ-HN-opT" secondAttribute="trailing" id="NWq-wG-sAe"/>
-                        <constraint firstItem="7OQ-1F-5qT" firstAttribute="centerY" secondItem="dyu-ha-046" secondAttribute="centerY" id="cUx-pa-VEf"/>
                         <constraint firstItem="BYJ-HN-opT" firstAttribute="leading" secondItem="dyu-ha-046" secondAttribute="leading" id="lXc-5e-Ssj"/>
                         <constraint firstAttribute="bottom" secondItem="BYJ-HN-opT" secondAttribute="bottom" id="yNQ-wC-4iD"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-1F-5qT">
+                    <rect key="frame" x="358" y="-6" width="52" height="52"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BDj-Sw-VQ5">
+                            <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
+                            <state key="normal" image="voice_message_record_button_default"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rel-Fo-ROL">
+                            <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="voice_message_record_button_recording"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="BDj-Sw-VQ5" firstAttribute="leading" secondItem="7OQ-1F-5qT" secondAttribute="leading" id="2Xv-EI-etf"/>
+                        <constraint firstAttribute="trailing" secondItem="BDj-Sw-VQ5" secondAttribute="trailing" id="2ZQ-3v-0W7"/>
+                        <constraint firstAttribute="height" constant="52" id="4XA-Gb-5NO"/>
+                        <constraint firstAttribute="trailing" secondItem="BDj-Sw-VQ5" secondAttribute="trailing" id="Dki-cT-7xX"/>
+                        <constraint firstAttribute="bottom" secondItem="BDj-Sw-VQ5" secondAttribute="bottom" id="fzv-iX-c1Y"/>
+                        <constraint firstItem="BDj-Sw-VQ5" firstAttribute="top" secondItem="7OQ-1F-5qT" secondAttribute="top" id="mNa-EU-ZKQ"/>
+                        <constraint firstAttribute="bottom" secondItem="BDj-Sw-VQ5" secondAttribute="bottom" id="phX-gD-B2H"/>
+                        <constraint firstItem="BDj-Sw-VQ5" firstAttribute="top" secondItem="7OQ-1F-5qT" secondAttribute="top" id="pv8-li-wP8"/>
+                        <constraint firstItem="BDj-Sw-VQ5" firstAttribute="leading" secondItem="7OQ-1F-5qT" secondAttribute="leading" id="ynJ-4x-1jv"/>
+                        <constraint firstAttribute="width" constant="52" id="zPb-1B-JyA"/>
                     </constraints>
                 </view>
             </subviews>
@@ -84,17 +98,21 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dyu-ha-046" secondAttribute="trailing" id="4OH-8A-tMK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="7OQ-1F-5qT" secondAttribute="trailing" constant="4" id="8x0-jm-gub"/>
                 <constraint firstAttribute="bottom" secondItem="dyu-ha-046" secondAttribute="bottom" id="L4o-hW-kta"/>
                 <constraint firstItem="dyu-ha-046" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Qmv-hs-X3c"/>
                 <constraint firstItem="dyu-ha-046" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Tdp-61-WP9"/>
+                <constraint firstItem="7OQ-1F-5qT" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="t9O-KA-rTy"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="backgroundView" destination="FqE-3x-NQ9" id="RFR-SQ-s21"/>
+                <outlet property="elapsedTimeLabel" destination="QBp-TZ-h5s" id="qC9-BQ-8RA"/>
                 <outlet property="primaryRecordButton" destination="BDj-Sw-VQ5" id="dg3-fG-Bym"/>
                 <outlet property="recordButtonsContainerView" destination="7OQ-1F-5qT" id="HDQ-r9-2Tu"/>
+                <outlet property="recordingChromeContainerView" destination="dyu-ha-046" id="u7O-Vb-T2W"/>
                 <outlet property="secondaryRecordButton" destination="rel-Fo-ROL" id="KXM-gt-9hS"/>
                 <outlet property="slideToCancelChevron" destination="82A-vC-KEp" id="Chg-EH-UBv"/>
                 <outlet property="slideToCancelContainerView" destination="6FH-4Q-Z5e" id="qCc-rl-vQX"/>
@@ -109,5 +127,6 @@
         <image name="voice_message_cancel_gradient" width="104" height="47"/>
         <image name="voice_message_record_button_default" width="22" height="26.5"/>
         <image name="voice_message_record_button_recording" width="52" height="52"/>
+        <image name="voice_message_record_icon" width="10" height="10"/>
     </resources>
 </document>
