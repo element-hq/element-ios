@@ -17,6 +17,7 @@
 import UIKit
 
 /// Base class to support an avatar view
+/// Note: This class is made to be sublcassed
 class AvatarView: UIView, Themable {
     
     // MARK: - Properties
@@ -91,7 +92,7 @@ class AvatarView: UIView, Themable {
     }
     
     func updateAccessibilityTraits() {
-        
+        // Override in subclass
     }
     
     func setupAvatarImageView() {
@@ -123,6 +124,7 @@ class AvatarView: UIView, Themable {
     }
     
     func updateView() {
+        // Override in subclass if needed
         // TODO: Handle highlighted state
     }
     
