@@ -9,9 +9,6 @@ Changes to be released in next version
  * EncryptionKeyManager: Create keys for room last message data type.
 
 🐛 Bugfix
- * SettingsViewController: Fix crash when changing the app language (#4377).
- * UserSessionsService: Fix room lists lost after a reset cache (#4395).
- * UserSessionsService: Fix room lists lost after a reset cache (#4395).
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
 
 ⚠️ API Changes
@@ -24,7 +21,32 @@ Changes to be released in next version
  * 
 
 Others
- * 
+ *
+ 
+ Changes in 1.4.1 (2021-06-08)
+=================================================
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ * SettingsViewController: Fix crash when changing the app language (#4377).
+ * UserSessionsService: Fix room lists lost after a reset cache (#4395).
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+    
+🧱 Build
+ *
+
+Others
+ *
 
 Changes in 1.4.0 (2021-06-03)
 =================================================
