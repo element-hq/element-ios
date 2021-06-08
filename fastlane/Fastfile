@@ -84,6 +84,9 @@ platform :ios do
     xcodegen(spec: "project.yml")
     cocoapods
 
+    system "pwd"
+    system "cat ../Podfile.lock"
+
     app_name = "Riot"
     build_app(
       clean: true,
