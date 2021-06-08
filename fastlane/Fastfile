@@ -87,7 +87,6 @@ platform :ios do
     system "pwd"
     system "cat ../Podfile.lock"
     system "cat ../Pods/MatrixSDK/MatrixSDK/Data/MXRoomLastMessage.h"
-    system "rm -rf ../Pods/MatrixSDK"
 
     app_name = "Riot"
     build_app(
