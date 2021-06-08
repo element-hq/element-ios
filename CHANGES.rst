@@ -11,6 +11,8 @@ Changes to be released in next version
 🐛 Bugfix
  * SettingsViewController: Fix crash when changing the app language (#4377).
  * UserSessionsService: Fix room lists lost after a reset cache (#4395).
+ * UserSessionsService: Fix room lists lost after a reset cache (#4395).
+ * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
 
 ⚠️ API Changes
  * 
