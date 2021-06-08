@@ -17,6 +17,7 @@
 import Foundation
 
 @objc public protocol VoiceMessageControllerDelegate: AnyObject {
+    func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestPermissionCheckWithCompletion: @escaping (Bool) -> Void)
     func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, completion: @escaping (Bool) -> Void)
 }
 
@@ -24,6 +25,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private let themeService: ThemeService
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
+    private let timeFormatter: DateFormatter
+    private var displayLink: CADisplayLink!
     
     private var audioRecorder: AudioRecorder?
     
@@ -36,10 +39,17 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     @objc public init(themeService: ThemeService) {
         _voiceMessageToolbarView = VoiceMessageToolbarView.instanceFromNib()
         self.themeService = themeService
+        self.timeFormatter = DateFormatter()
         
         super.init()
         
         _voiceMessageToolbarView.delegate = self
+        
+        timeFormatter.dateFormat = "m:ss"
+        
+        displayLink = CADisplayLink(target: self, selector: #selector(handleDisplayLinkTick))
+        displayLink.isPaused = true
+        displayLink.add(to: .current, forMode: .common)
         
         self._voiceMessageToolbarView.update(theme: self.themeService.theme)
         NotificationCenter.default.addObserver(self, selector: #selector(handleThemeDidChange), name: .themeServiceDidChangeTheme, object: nil)
@@ -48,12 +58,18 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - VoiceMessageToolbarViewDelegate
     
     func voiceMessageToolbarViewDidRequestRecordingStart(_ toolbarView: VoiceMessageToolbarView) {
-        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString)
-        
-        audioRecorder = AudioRecorder()
-        audioRecorder?.delegate = self
-        audioRecorder?.recordWithOuputURL(temporaryFileURL)
+        delegate?.voiceMessageController(self, didRequestPermissionCheckWithCompletion: { [weak self] success in
+            guard let self = self, success != false else {
+                return
+            }
+            
+            let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString)
+            
+            self.audioRecorder = AudioRecorder()
+            self.audioRecorder?.delegate = self
+            self.audioRecorder?.recordWithOuputURL(temporaryFileURL)
+        })
     }
     
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView) {
@@ -65,6 +81,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
         
         delegate?.voiceMessageController(self, didRequestSendForFileAtURL: url) { [weak self] success in
+            UINotificationFeedbackGenerator().notificationOccurred( (success ? .success : .error))
             self?.deleteRecordingAtURL(url)
         }
     }
@@ -72,21 +89,25 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     func voiceMessageToolbarViewDidRequestRecordingCancel(_ toolbarView: VoiceMessageToolbarView) {
         audioRecorder?.stopRecording()
         deleteRecordingAtURL(audioRecorder?.url)
+        UINotificationFeedbackGenerator().notificationOccurred(.error)
     }
     
     // MARK: - AudioRecorderDelegate
     
     func audioRecorderDidStartRecording(_ audioRecorder: AudioRecorder) {
         _voiceMessageToolbarView.state = .recording
+        self.displayLink.isPaused = false
     }
     
     func audioRecorderDidFinishRecording(_ audioRecorder: AudioRecorder) {
         _voiceMessageToolbarView.state = .idle
+        displayLink.isPaused = true
     }
     
     func audioRecorder(_ audioRecorder: AudioRecorder, didFailWithError: Error) {
         MXLog.error("Failed recording voice message.")
         _voiceMessageToolbarView.state = .idle
+        displayLink.isPaused = true
     }
     
     // MARK: - Private
@@ -105,5 +126,13 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     @objc private func handleThemeDidChange() {
         self._voiceMessageToolbarView.update(theme: self.themeService.theme)
+    }
+    
+    @objc private func handleDisplayLinkTick() {
+        guard let audioRecorder = audioRecorder else {
+            return
+        }
+        
+        _voiceMessageToolbarView.elapsedTime = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioRecorder.currentTime))
     }
 }

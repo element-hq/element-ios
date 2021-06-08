@@ -133,6 +133,7 @@ internal enum Asset {
     internal static let voiceMessageCancelGradient = ImageAsset(name: "voice_message_cancel_gradient")
     internal static let voiceMessageRecordButtonDefault = ImageAsset(name: "voice_message_record_button_default")
     internal static let voiceMessageRecordButtonRecording = ImageAsset(name: "voice_message_record_button_recording")
+    internal static let voiceMessageRecordIcon = ImageAsset(name: "voice_message_record_icon")
     internal static let addMemberFloatingAction = ImageAsset(name: "add_member_floating_action")
     internal static let addParticipant = ImageAsset(name: "add_participant")
     internal static let addParticipants = ImageAsset(name: "add_participants")

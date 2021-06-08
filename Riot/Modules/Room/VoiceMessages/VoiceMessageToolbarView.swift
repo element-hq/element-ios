@@ -28,19 +28,20 @@ enum VoiceMessageToolbarViewState {
 }
 
 class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDelegate {
-    
-    weak var delegate: VoiceMessageToolbarViewDelegate?
-
     @IBOutlet private var backgroundView: UIView!
     
     @IBOutlet private var recordButtonsContainerView: UIView!
     @IBOutlet private var primaryRecordButton: UIButton!
     @IBOutlet private var secondaryRecordButton: UIButton!
     
+    @IBOutlet private var recordingChromeContainerView: UIView!
+    
     @IBOutlet private var slideToCancelContainerView: UIView!
     @IBOutlet private var slideToCancelLabel: UILabel!
     @IBOutlet private var slideToCancelChevron: UIImageView!
     @IBOutlet private var slideToCancelGradient: UIImageView!
+    
+    @IBOutlet private var elapsedTimeLabel: UILabel!
     
     private var cancelLabelToRecordButtonDistance: CGFloat = 0.0
     
@@ -49,6 +50,8 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             updateUIAnimated(true)
         }
     }
+    
+    weak var delegate: VoiceMessageToolbarViewDelegate?
     
     var state: VoiceMessageToolbarViewState = .idle {
         didSet {
@@ -61,6 +64,12 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             }
             
             updateUIAnimated(true)
+        }
+    }
+    
+    var elapsedTime: String? {
+        didSet {
+            elapsedTimeLabel.text = elapsedTime
         }
     }
         
@@ -142,19 +151,17 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
         UIView.animate(withDuration: (animated ? 0.25 : 0.0)) {
             switch self.state {
             case .idle:
-                self.slideToCancelContainerView.alpha = 0.0
                 self.backgroundView.alpha = 0.0
-                self.slideToCancelGradient.alpha = 0.0
-                self.recordButtonsContainerView.transform = .identity
-                self.slideToCancelContainerView.transform = .identity
                 self.primaryRecordButton.alpha = 1.0
                 self.secondaryRecordButton.alpha = 0.0
+                self.recordingChromeContainerView.alpha = 0.0
+                self.recordButtonsContainerView.transform = .identity
+                self.slideToCancelContainerView.transform = .identity
             case .recording:
-                self.slideToCancelContainerView.alpha = 1.0
                 self.backgroundView.alpha = 1.0
-                self.slideToCancelGradient.alpha = 1.0
                 self.primaryRecordButton.alpha = 0.0
                 self.secondaryRecordButton.alpha = 1.0
+                self.recordingChromeContainerView.alpha = 1.0
             }
             
             guard let theme = self.currentTheme else {
@@ -162,10 +169,12 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             }
             
             self.backgroundView.backgroundColor = theme.backgroundColor
+            self.slideToCancelGradient.tintColor = theme.backgroundColor
+            
             self.primaryRecordButton.tintColor = theme.textSecondaryColor
             self.slideToCancelLabel.textColor = theme.textSecondaryColor
             self.slideToCancelChevron.tintColor = theme.textSecondaryColor
-            self.slideToCancelGradient.tintColor = theme.backgroundColor
+            self.elapsedTimeLabel.textColor = theme.textSecondaryColor
         }
     }
 }

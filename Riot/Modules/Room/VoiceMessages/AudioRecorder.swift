@@ -29,13 +29,15 @@ enum AudioRecorderError: Error {
 
 class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     
-    private(set) var isRecording: Bool = false
-    private(set) var currentTime: TimeInterval = 0
+    private var audioRecorder: AVAudioRecorder?
     
     var url: URL? {
         return audioRecorder?.url
     }
-    private var audioRecorder: AVAudioRecorder?
+    
+    var currentTime: TimeInterval {
+        return audioRecorder?.currentTime ?? 0
+    }
     
     weak var delegate: AudioRecorderDelegate?
     
