@@ -4506,6 +4506,10 @@ internal enum VectorL10n {
   internal static func sideMenuAppVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "side_menu_app_version", p1)
   }
+  /// Left panel
+  internal static var sideMenuRevealActionAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "side_menu_reveal_action_accessibility_label") 
+  }
   /// Sign out
   internal static var signOutExistingKeyBackupAlertSignOutAction: String { 
     return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_sign_out_action") 

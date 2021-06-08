@@ -1651,6 +1651,7 @@ Tap the + to start adding people.";
 
 // Mark: - Side menu
 
+"side_menu_reveal_action_accessibility_label" = "Left panel";
 "side_menu_action_invite_friends" = "Invite friends";
 "side_menu_action_settings" = "Settings";
 "side_menu_action_help" = "Help";

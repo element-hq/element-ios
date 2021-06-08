@@ -142,9 +142,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.sideMenuIcon.image, style: .plain) { [weak self] in
                 self?.showSideMenu()
             }
+            sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+            
             tabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
         } else {
-            let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.sideMenuIcon.image, style: .plain) { [weak self] in
+            let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
                 self?.showSettings()
             }
             settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
