@@ -36,6 +36,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
+      - name: Reset MatrixKit pod
+        run: rm -rf Pods/MatrixKit
+
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
       - name: Bundle install
@@ -71,6 +74,9 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gems-
+
+      - name: Reset MatrixKit pod
+        run: rm -rf Pods/MatrixKit
 
       # Common setup
       # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
