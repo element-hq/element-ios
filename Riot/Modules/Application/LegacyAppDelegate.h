@@ -256,14 +256,6 @@ UINavigationControllerDelegate
  */
 @property (nonatomic, readonly) JitsiViewController *jitsiViewController;
 
-#pragma mark - Call status handling
-
-/**
- Call status window displayed when user goes back to app during a call.
- */
-@property (nonatomic, readonly) UIWindow* callStatusBarWindow;
-@property (nonatomic, readonly) CallBar* callBar;
-
 #pragma mark - App version management
 
 /**

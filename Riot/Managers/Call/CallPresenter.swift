@@ -48,13 +48,11 @@ class CallPresenter: NSObject {
             updateOnHoldCall()
         }
     }
-    private weak var inBarCallVC: UIViewController?
     private weak var pipCallVC: UIViewController?
     /// UI operation queue for various UI operations
     private var uiOperationQueue: OperationQueue = .main
     /// Flag to indicate whether the presenter is active.
     private var isStarted: Bool = false
-    private var callTimer: Timer?
     #if canImport(JitsiMeetSDK)
     private var widgetEventsListener: Any?
     /// Jitsi calls map. Keys are CallKit call UUIDs, values are corresponding widgets.
@@ -121,7 +119,6 @@ class CallPresenter: NSObject {
         MXLog.debug("[CallPresenter] start")
         
         addCallObservers()
-        startCallTimer()
     }
     
     /// Stop the service
@@ -129,22 +126,6 @@ class CallPresenter: NSObject {
         MXLog.debug("[CallPresenter] stop")
         
         removeCallObservers()
-        stopCallTimer()
-    }
-    
-    /// Method to be called when the call status bar is tapped.
-    func callStatusBarTapped() {
-        MXLog.debug("[CallPresenter] callStatusBarTapped")
-        
-        if let callVC = (inBarCallVC ?? activeCallVC) as? CallViewController {
-            dismissCallBar(for: callVC)
-            presentCallVC(callVC)
-            return
-        }
-        if let jitsiVC = jitsiVC {
-            dismissCallBar(for: jitsiVC)
-            presentCallVC(jitsiVC)
-        }
     }
     
     //  MARK - Group Calls
@@ -412,17 +393,12 @@ class CallPresenter: NSObject {
             if let oldCallVC = self.callVCs.values.first,
                self.presentedCallVC == nil,
                !self.uiOperationQueue.containsPresentCallVCOperation,
-               !self.uiOperationQueue.containsPresentCallBarOperation {
+               !self.uiOperationQueue.containsEnterPiPOperation {
                 //  present the call bar after dismissing this one
-                self.presentCallBar(for: oldCallVC)
+                self.enterPipCallVC(oldCallVC)
             }
         }
         
-        if inBarCallVC == callVC {
-            //  this call currently in the status bar,
-            //  first present it and then dismiss it
-            presentCallVC(callVC)
-        }
         if pipCallVC == callVC {
             //  this call currently in the PiP mode,
             //  first present it by exiting PiP mode and then dismiss it
@@ -443,36 +419,6 @@ class CallPresenter: NSObject {
             MXLog.debug("[CallPresenter] \(log): Matrix call: \(String(describing: callVC.mxCall?.callId))")
         } else if let callVC = callVC as? JitsiViewController {
             MXLog.debug("[CallPresenter] \(log): Jitsi call: \(callVC.widget.widgetId)")
-        }
-    }
-    
-    //  MARK: - Timer
-    
-    private func startCallTimer() {
-        callTimer = Timer.scheduledTimer(timeInterval: 1.0,
-                                                 target: self,
-                                                 selector: #selector(callTimerFired(_:)),
-                                                 userInfo: nil,
-                                                 repeats: true)
-    }
-    
-    private func stopCallTimer() {
-        callTimer?.invalidate()
-        callTimer = nil
-    }
-    
-    @objc private func callTimerFired(_ timer: Timer) {
-        if let inBarCallVC = inBarCallVC as? CallViewController {
-            guard let call = inBarCallVC.mxCall else {
-                return
-            }
-            guard call.state != .ended else {
-                return
-            }
-            
-            updateCallBar()
-        } else if inBarCallVC as? JitsiViewController != nil {
-            updateCallBar()
         }
     }
     
@@ -614,14 +560,11 @@ class CallPresenter: NSObject {
             }
         case .connected:
             MXLog.debug("[CallPresenter] callStateChanged: call connected: \(call.callId)")
-            callTimer?.fire()
         case .onHold:
             MXLog.debug("[CallPresenter] callStateChanged: call holded: \(call.callId)")
-            callTimer?.fire()
             callHolded(withCallId: call.callId)
         case .remotelyOnHold:
             MXLog.debug("[CallPresenter] callStateChanged: call remotely holded: \(call.callId)")
-            callTimer?.fire()
             callHolded(withCallId: call.callId)
         case .ended:
             MXLog.debug("[CallPresenter] callStateChanged: call ended: \(call.callId)")
@@ -716,10 +659,6 @@ class CallPresenter: NSObject {
         //  do not use PiP transitions here, as we really want to present the screen
         callVC.transitioningDelegate = nil
         
-        if let inBarCallVC = inBarCallVC {
-            dismissCallBar(for: inBarCallVC)
-        }
-        
         if let presentedCallVC = presentedCallVC {
             dismissCallVC(presentedCallVC)
         }
@@ -781,42 +720,6 @@ class CallPresenter: NSObject {
         uiOperationQueue.addOperation(operation)
     }
     
-    //  MARK: - Call Bar
-    
-    private func presentCallBar(for callVC: UIViewController, completion: (() -> Void)? = nil) {
-        logCallVC(callVC, log: "presentCallBar")
-
-        let activeCallVC = self.activeCallVC
-        
-        let operation = CallBarPresentOperation(presenter: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls) { [weak self] in
-            //  active calls are more prior to paused ones.
-            //  So, if user taps the bar when we have one active and one paused call, we navigate to the active one.
-            self?.inBarCallVC = activeCallVC ?? callVC
-            completion?()
-        }
-        uiOperationQueue.addOperation(operation)
-    }
-    
-    private func updateCallBar() {
-        let activeCallVC = self.activeCallVC
-        
-        let operation = CallBarUpdateOperation(presenter: self, activeCallVC: activeCallVC, numberOfPausedCalls: numberOfPausedCalls)
-        uiOperationQueue.addOperation(operation)
-    }
-    
-    private func dismissCallBar(for callVC: UIViewController, completion: (() -> Void)? = nil) {
-        logCallVC(callVC, log: "dismissCallBar")
-        
-        let operation = CallBarDismissOperation(presenter: self) { [weak self] in
-            if callVC == self?.inBarCallVC {
-                self?.inBarCallVC = nil
-            }
-            completion?()
-        }
-        
-        uiOperationQueue.addOperation(operation)
-    }
-    
 }
 
 //  MARK: - MXKCallViewControllerDelegate
@@ -834,13 +737,8 @@ extension CallPresenter: MXKCallViewControllerDelegate {
             //  wait for the call state changes, will be handled there
             return
         } else {
-            if callVC.mxCall.isVideoCall {
-                //  go to pip mode here
-                enterPipCallVC(callVC, completion: completion)
-            } else {
-                dismissCallVC(callVC)
-                self.presentCallBar(for: callVC, completion: completion)
-            }
+            //  go to pip mode here
+            enterPipCallVC(callVC, completion: completion)
         }
     }
     
@@ -902,8 +800,8 @@ extension OperationQueue {
         return containsOperation(ofType: CallVCPresentOperation.self)
     }
     
-    var containsPresentCallBarOperation: Bool {
-        return containsOperation(ofType: CallBarPresentOperation.self)
+    var containsEnterPiPOperation: Bool {
+        return containsOperation(ofType: CallVCEnterPipOperation.self)
     }
     
     private func containsOperation(ofType type: Operation.Type) -> Bool {
