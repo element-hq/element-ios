@@ -1798,8 +1798,10 @@
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction
-        actionWithTitle:NSLocalizedStringFromTable(@"room_open_dialpad", @"Vector", nil)
+    if (self.mainSession.callManager.supportsPSTN)
+    {
+        [currentAlert addAction:[UIAlertAction
+            actionWithTitle:NSLocalizedStringFromTable(@"room_open_dialpad", @"Vector", nil)
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
         
@@ -1812,6 +1814,7 @@
                                                        }
         
                                                    }]];
+    }
 
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                      style:UIAlertActionStyleCancel
