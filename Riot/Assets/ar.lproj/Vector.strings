@@ -235,3 +235,5 @@
 "room_creation_error_invite_user_by_email_without_identity_server" = "لَم يُضبَط خادِم هُويَّة لِذَلِكَ لَا يُمكِنُكَ إضافَة مُشَارِك بالبَريد الإلِكتُرونيّ.";
 "room_creation_invite_another_user" = "البَحث / الدَعوة عَن طَريق مُعَرِّف المُستَخدِم، الاِسم أو البَريد الإلِكتُرونيّ";
 "room_creation_wait_for_creation" = "يَجرِي إنشاء غُرفَة بِالفِعل. يُرجَى الاِنتِظار.";
+"room_participants_remove_third_party_invite_prompt_msg" = "هَل أنتَ مُتَأكِّدٌ أنَّكَ تٌريدُ إبطَالَ هَذِهِ الدَّعوَة؟";
+"room_participants_remove_prompt_msg" = "هَل أنتَ مُتَأكِّدٌ أنَّكَ تُريدُ إزالَة %@ مِن هَذِهِ المُحادَثَة؟";
