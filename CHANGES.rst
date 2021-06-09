@@ -8,6 +8,7 @@ Changes to be released in next version
  * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
  * EncryptionKeyManager: Create keys for room last message data type.
  * Integrated FLEX for debug builds.
+ * Add dial pad for PSTN capable servers to menu on homescreen
 
 🐛 Bugfix
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
