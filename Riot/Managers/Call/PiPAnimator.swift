@@ -69,6 +69,7 @@ class PiPAnimator: NSObject {
         let scale = Constants.pipViewSize.width/pipView.frame.width
         let transform = CGAffineTransform(scaleX: scale, y: scale)
         let targetSize = Constants.pipViewSize
+        pipView.cornerRadius = pipView.cornerRadius / scale
         
         let animator = UIViewPropertyAnimator(duration: animationDuration, dampingRatio: 1) {
             pipView.transform = transform
