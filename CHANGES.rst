@@ -2,16 +2,16 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
- * 
+ * Add left panel (#4398).
 
 🙌 Improvements
  * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
  * EncryptionKeyManager: Create keys for room last message data type.
+ * Integrated FLEX for debug builds.
  * Add dial pad for PSTN capable servers to menu on homescreen
 
 🐛 Bugfix
- * SettingsViewController: Fix crash when changing the app language (#4377).
- * UserSessionsService: Fix room lists lost after a reset cache (#4395).
+ * 
 
 ⚠️ API Changes
  * 
@@ -20,10 +20,35 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * GH Actions: Make sure we use the latest version of MatrixKit.
 
 Others
- * 
+ *
+ 
+ Changes in 1.4.1 (2021-06-08)
+=================================================
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ * SettingsViewController: Fix crash when changing the app language (#4377).
+ * UserSessionsService: Fix room lists lost after a reset cache (#4395).
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+    
+🧱 Build
+ *
+
+Others
+ *
 
 Changes in 1.4.0 (2021-06-03)
 =================================================

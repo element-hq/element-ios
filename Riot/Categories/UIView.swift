@@ -65,6 +65,13 @@ extension UIView {
         }
     }
     
+    @objc func vc_setupAccessibilityTraitsImage(withTitle title: String) {
+        self.isAccessibilityElement = false
+        self.accessibilityLabel = title
+        self.accessibilityHint = nil
+        self.accessibilityTraits = .image
+    }
+    
     @objc func vc_addShadow(withColor color: UIColor, offset: CGSize, radius: CGFloat, opacity: CGFloat) {
         layer.shadowColor = color.cgColor
         layer.shadowOpacity = Float(opacity)

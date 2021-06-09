@@ -187,7 +187,7 @@ class RoomCreationIntroCell: MXKRoomBubbleTableViewCell {
         let displayName = roomSummary.displayname ?? ""
         
         let roomAvatarViewData = RoomAvatarViewData(roomId: roomId,
-                                                    roomDisplayName: displayName,
+                                                    displayName: displayName,
                                                     avatarUrl: room.summary.avatar, mediaManager: session.mediaManager)
         
         return RoomCreationIntroViewData(dicussionType: discussionType, roomDisplayName: displayName, avatarViewData: roomAvatarViewData)
