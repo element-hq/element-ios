@@ -603,9 +603,8 @@
         if (isDirect && inviteArray.count)
         {
             [[AppDelegate theDelegate] startDirectChatWithUserId:inviteArray.firstObject completion:^{
-                
+                self->createBarButtonItem.enabled = YES;
                 [self stopActivityIndicator];
-                
             }];
         }
         else
@@ -625,7 +624,7 @@
                 MXLogDebug(@"[StartChatViewController] Create room failed");
 
                 // Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                [[AppDelegate theDelegate] showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"room_creation_dm_error", @"Vector", nil)];
             };
 
             [self.mainSession vc_canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {

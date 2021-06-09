@@ -10,7 +10,7 @@ Changes to be released in next version
  * Integrated FLEX for debug builds.
 
 🐛 Bugfix
- * 
+ * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
 
 ⚠️ API Changes
  * 
