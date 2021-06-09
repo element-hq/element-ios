@@ -112,8 +112,6 @@ class CallPiPView: UIView {
             bgImageView.setImageURI(avatarUrl,
                                     withType: nil,
                                     andImageOrientation: .up,
-                                    toFitViewSize: bgImageView.bounds.size,
-                                    with: MXThumbnailingMethodCrop,
                                     previewImage: bgPlaceholder,
                                     mediaManager: session.mediaManager)
             
@@ -123,8 +121,6 @@ class CallPiPView: UIView {
             mainCallAvatarImageView.setImageURI(avatarUrl,
                                                 withType: nil,
                                                 andImageOrientation: .up,
-                                                toFitViewSize: mainCallAvatarImageView.bounds.size,
-                                                with: MXThumbnailingMethodCrop,
                                                 previewImage: mainCallPlaceholder,
                                                 mediaManager: session.mediaManager)
         } else {
@@ -143,8 +139,6 @@ class CallPiPView: UIView {
             onHoldCallAvatarImageView.setImageURI(avatarUrl,
                                                   withType: nil,
                                                   andImageOrientation: .up,
-                                                  toFitViewSize: onHoldCallAvatarImageView.bounds.size,
-                                                  with: MXThumbnailingMethodCrop,
                                                   previewImage: onHoldCallPlaceholder,
                                                   mediaManager: session.mediaManager)
         } else {
