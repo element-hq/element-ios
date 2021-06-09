@@ -394,8 +394,8 @@ class CallPresenter: NSObject {
                self.presentedCallVC == nil,
                !self.uiOperationQueue.containsPresentCallVCOperation,
                !self.uiOperationQueue.containsEnterPiPOperation {
-                //  present the call bar after dismissing this one
-                self.enterPipCallVC(oldCallVC)
+                //  present the call screen after dismissing this one
+                self.presentCallVC(oldCallVC)
             }
         }
         
@@ -661,6 +661,11 @@ class CallPresenter: NSObject {
         
         if let presentedCallVC = presentedCallVC {
             dismissCallVC(presentedCallVC)
+        }
+        
+        if callVC == pipCallVC {
+            exitPipCallVC(callVC)
+            return
         }
         
         let operation = CallVCPresentOperation(presenter: self, callVC: callVC) { [weak self] in
