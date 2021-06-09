@@ -35,3 +35,5 @@
 #import "TypingUserInfo.h"
 #import "UnifiedSearchViewController.h"
 #import "SettingsViewController.h"
+#import "BugReportViewController.h"
+#import "BuildInfo.h"

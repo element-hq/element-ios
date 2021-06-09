@@ -78,9 +78,6 @@
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
-#define MAKE_STRING(x) #x
-#define MAKE_NS_STRING(x) @MAKE_STRING(x)
-
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
@@ -230,6 +227,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
+@property (nonatomic, strong) AppInfo *appInfo;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -304,38 +303,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (NSString*)appVersion
 {
-    if (!_appVersion)
-    {
-        _appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    }
-    
-    return _appVersion;
+    return self.appInfo.appVersion.bundleShortVersion;
 }
 
 - (NSString*)build
 {
-    if (!_build)
-    {
-        NSString *buildBranch = nil;
-        NSString *buildNumber = nil;
-        // Check whether GIT_BRANCH and BUILD_NUMBER were provided during compilation in command line argument.
-#ifdef GIT_BRANCH
-        buildBranch = MAKE_NS_STRING(GIT_BRANCH);
-#endif
-#ifdef BUILD_NUMBER
-        buildNumber = [NSString stringWithFormat:@"#%@", @(BUILD_NUMBER)];
-#endif
-        if (buildBranch && buildNumber)
-        {
-            _build = [NSString stringWithFormat:@"%@ %@", buildBranch, buildNumber];
-        } else if (buildNumber){
-            _build = buildNumber;
-        } else
-        {
-            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil);
-        }
-    }
-    return _build;
+    return self.appInfo.buildInfo.readableBuildVersion;
 }
 
 - (void)setIsOffline:(BOOL)isOffline
@@ -404,10 +377,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     _configuration = [AppConfiguration new];
     
+    self.appInfo = AppInfo.current;
+    
     // Log app information
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    NSString* appVersion = [AppDelegate theDelegate].appVersion;
-    NSString* build = [AppDelegate theDelegate].build;
+    NSString *appDisplayName = self.appInfo.displayName;
+    NSString* appVersion = self.appVersion;
+    NSString* build = self.build;
     
     MXLogDebug(@"------------------------------");
     MXLogDebug(@"Application info:");

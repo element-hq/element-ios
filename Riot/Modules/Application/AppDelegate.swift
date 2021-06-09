@@ -55,8 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
         // Setup window
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
@@ -64,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Create AppCoordinator
         self.rootRouter = RootRouter(window: window)
         
-        let appCoordinator = AppCoordinator(router: self.rootRouter)
+        let appCoordinator = AppCoordinator(router: self.rootRouter, window: window)
         appCoordinator.start()
         self.legacyAppDelegate.delegate = appCoordinator
         

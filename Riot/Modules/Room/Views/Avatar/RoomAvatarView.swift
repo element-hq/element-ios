@@ -17,35 +17,17 @@
 import UIKit
 import Reusable
 
-final class RoomAvatarView: UIView, NibOwnerLoadable, Themable {
+final class RoomAvatarView: AvatarView, NibOwnerLoadable {
     
     // MARK: - Properties
 
     // MARK: Outlets
     
-    @IBOutlet private weak var avatarImageView: MXKImageView!
     @IBOutlet private weak var cameraBadgeContainerView: UIView!
-    
-    // MARK: Private
-
-    private var theme: Theme?
-
-    private var isHighlighted: Bool = false {
-        didSet {
-            self.updateView()
-        }
-    }
-    
-    // MARK: Public
-
-    var action: (() -> Void)?
     
     // MARK: Setup
     
     private func commonInit() {
-        self.setupAvatarImageView()
-        self.setupGestureRecognizer()
-        self.vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel, hint: VectorL10n.roomAvatarViewAccessibilityHint, isEnabled: true)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -70,7 +52,7 @@ final class RoomAvatarView: UIView, NibOwnerLoadable, Themable {
     
     // MARK: - Public
     
-    func fill(with viewData: RoomAvatarViewData) {
+    override func fill(with viewData: AvatarViewDataProtocol) {
         self.updateAvatarImageView(with: viewData)
 
         // Fix layoutSubviews not triggered issue
@@ -78,72 +60,20 @@ final class RoomAvatarView: UIView, NibOwnerLoadable, Themable {
             self.setNeedsLayout()
         }
     }
-        
-    func update(theme: Theme) {
-        self.theme = theme
-    }
     
-    // MARK: - Private
+    // MARK: - Overrides
     
-    private func setupGestureRecognizer() {
-        let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(buttonAction(_:)))
-        gestureRecognizer.minimumPressDuration = 0
-        self.addGestureRecognizer(gestureRecognizer)
-    }
-    
-    private func setupAvatarImageView() {
-        self.avatarImageView.defaultBackgroundColor = UIColor.clear
-        self.avatarImageView.enableInMemoryCache = true
-        self.avatarImageView.layer.masksToBounds = true
-    }
-    
-    private func updateAvatarImageView(with viewData: RoomAvatarViewData) {
-        guard let avatarImageView = self.avatarImageView else {
-            return
-        }
-        
-        let defaultavatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: viewData.roomDisplayName)
-                
-        if let avatarUrl = viewData.avatarUrl {
-            avatarImageView.setImageURI(avatarUrl,
-                                        withType: nil,
-                                        andImageOrientation: .up,
-                                        toFitViewSize: avatarImageView.frame.size,
-                                        with: MXThumbnailingMethodScale,
-                                        previewImage: defaultavatarImage,
-                                        mediaManager: viewData.mediaManager)
+    override func updateAccessibilityTraits() {
+        if self.isUserInteractionEnabled {
+            self.vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel, hint: VectorL10n.roomAvatarViewAccessibilityHint, isEnabled: true)
         } else {
-            avatarImageView.image = defaultavatarImage
+            self.vc_setupAccessibilityTraitsImage(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel)
         }
-        
-        avatarImageView.contentMode = .scaleAspectFill
-                
-        self.cameraBadgeContainerView.isHidden = viewData.avatarUrl != nil
     }
     
-    private func updateView() {
-        // TODO: Handle highlighted state
-    }
+    override func updateAvatarImageView(with viewData: AvatarViewDataProtocol) {
+        super.updateAvatarImageView(with: viewData)
         
-    // MARK: - Actions
-
-    @objc private func buttonAction(_ sender: UILongPressGestureRecognizer) {
-
-        let isBackgroundViewTouched = sender.vc_isTouchingInside()
-
-        switch sender.state {
-        case .began, .changed:
-            self.isHighlighted = isBackgroundViewTouched
-        case .ended:
-            self.isHighlighted = false
-
-            if isBackgroundViewTouched {
-                self.action?()
-            }
-        case .cancelled:
-            self.isHighlighted = false
-        default:
-            break
-        }
+        self.cameraBadgeContainerView.isHidden = viewData.avatarUrl != nil
     }
 }
