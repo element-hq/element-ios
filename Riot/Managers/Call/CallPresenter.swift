@@ -663,11 +663,6 @@ class CallPresenter: NSObject {
             dismissCallVC(presentedCallVC)
         }
         
-        if callVC == pipCallVC {
-            exitPipCallVC(callVC)
-            return
-        }
-        
         let operation = CallVCPresentOperation(presenter: self, callVC: callVC) { [weak self] in
             self?.presentedCallVC = callVC
             if callVC == self?.pipCallVC {

@@ -38,6 +38,7 @@ class CallVCPresentOperation: AsyncOperation {
             self.finish()
             if let pipable = self.callVC as? PictureInPicturable {
                 pipable.didExitPiP?()
+                self.callVC.view.isUserInteractionEnabled = true
             }
             self.completion?()
         })
