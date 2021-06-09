@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view hidden="YES" contentMode="scaleToFill" id="Nhq-yj-aas" customClass="CallPiPView" customModule="Riot" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="Nhq-yj-aas" customClass="CallPiPView" customModule="Riot" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -21,7 +21,7 @@
                         <view contentMode="scaleAspectFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2OA-qI-QAp" customClass="MXKImageView">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ATO-Ff-TJp">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -89,9 +89,10 @@
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yTy-AV-IZA" customClass="DotsView" customModule="Riot" customModuleProvider="target">
                     <rect key="frame" x="130.5" y="423" width="153" height="50"/>
-                    <color key="backgroundColor" systemColor="systemRedColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="aD1-RW-Gad"/>
+                        <constraint firstAttribute="width" priority="250" constant="153" id="RfG-gl-t0t"/>
+                        <constraint firstAttribute="height" priority="250" constant="50" id="jTM-vB-gPv"/>
                     </constraints>
                 </view>
             </subviews>
@@ -106,13 +107,13 @@
                 <constraint firstItem="dw1-5t-Fa9" firstAttribute="centerX" secondItem="Nhq-yj-aas" secondAttribute="centerX" id="VQk-dH-mGH"/>
                 <constraint firstItem="yTy-AV-IZA" firstAttribute="centerY" secondItem="Nhq-yj-aas" secondAttribute="centerY" id="f16-3g-VPE"/>
                 <constraint firstItem="XQ2-lw-1Fx" firstAttribute="width" secondItem="Nhq-yj-aas" secondAttribute="width" multiplier="0.53" id="g4E-eM-tfL"/>
-                <constraint firstItem="yTy-AV-IZA" firstAttribute="width" secondItem="Nhq-yj-aas" secondAttribute="width" multiplier="0.37" id="pXP-Bg-CIA"/>
                 <constraint firstItem="yTy-AV-IZA" firstAttribute="centerX" secondItem="Nhq-yj-aas" secondAttribute="centerX" id="t3N-FC-MWo"/>
                 <constraint firstAttribute="bottom" secondItem="g3V-CO-w55" secondAttribute="bottom" id="xVn-dm-NkG"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="bgImageView" destination="2OA-qI-QAp" id="Wqx-I4-HHw"/>
+                <outlet property="bgView" destination="g3V-CO-w55" id="rXb-BJ-cTO"/>
                 <outlet property="connectingView" destination="yTy-AV-IZA" id="PNX-7s-QzT"/>
                 <outlet property="mainCallAvatarImageView" destination="XQ2-lw-1Fx" id="SaP-3f-6j6"/>
                 <outlet property="onHoldCallAvatarImageView" destination="MRZ-Tj-GFD" id="fVY-TK-URT"/>
@@ -126,9 +127,6 @@
         <image name="call_paused_white_icon" width="20" height="20"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
