@@ -13,6 +13,7 @@ Changes to be released in next version
 🐛 Bugfix
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
  * ContactsDataSource: iPad Crashes when you select a contact in search and then collapse a section or clear the query text (#4414).
+ 
 ⚠️ API Changes
  * 
 
