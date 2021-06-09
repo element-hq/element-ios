@@ -346,7 +346,7 @@ static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
 
 #pragma mark - PictureInPicturable
 
-- (void)enterPiP
+- (void)didEnterPiP
 {
     self.overlayViews = [self overlayViewsIn:self.view];
     for (UIView *view in self.overlayViews)
@@ -355,7 +355,7 @@ static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
     }
 }
 
-- (void)exitPiP
+- (void)didExitPiP
 {
     for (UIView *view in self.overlayViews)
     {

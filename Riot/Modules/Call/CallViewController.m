@@ -689,12 +689,17 @@
 
 #pragma mark - PictureInPicturable
 
-- (void)enterPiP
+- (void)didEnterPiP
 {
     self.inPiP = YES;
 }
 
-- (void)exitPiP
+- (void)willExitPiP
+{
+    self.pipViewContainer.hidden = YES;
+}
+
+- (void)didExitPiP
 {
     self.inPiP = NO;
 }

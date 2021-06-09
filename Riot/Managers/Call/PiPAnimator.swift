@@ -52,6 +52,10 @@ class PiPAnimator: NSObject {
             return
         }
         
+        if let pipable = fromVC as? PictureInPicturable {
+            pipable.willEnterPiP?()
+        }
+        
         fromVC.willMove(toParent: nil)
         //  TODO: find a way to call this at the end of animation
         context.completeTransition(true)
@@ -75,7 +79,7 @@ class PiPAnimator: NSObject {
         
         animator.addCompletion { (position) in
             if let pipable = fromVC as? PictureInPicturable {
-                pipable.enterPiP?()
+                pipable.didEnterPiP?()
             }
             fromVC.dismiss(animated: false, completion: nil)
         }
@@ -89,8 +93,16 @@ class PiPAnimator: NSObject {
             return
         }
         
-        guard let toVC = context.viewController(forKey: .to),
-              let snapshot = toVC.view.snapshotView(afterScreenUpdates: true) else {
+        guard let toVC = context.viewController(forKey: .to) else {
+            context.completeTransition(false)
+            return
+        }
+        
+        if let pipable = toVC as? PictureInPicturable {
+            pipable.willExitPiP?()
+        }
+        
+        guard let snapshot = toVC.view.snapshotView(afterScreenUpdates: true) else {
             context.completeTransition(false)
             return
         }
@@ -122,7 +134,7 @@ class PiPAnimator: NSObject {
             
             snapshot.removeFromSuperview()
             if let pipable = toVC as? PictureInPicturable {
-                pipable.exitPiP?()
+                pipable.didExitPiP?()
             }
             
             context.completeTransition(!context.transitionWasCancelled)
