@@ -389,6 +389,7 @@
     if (_pipView == nil)
     {
         _pipView = [CallPiPView instantiateWithSession:self.mainSession];
+        [_pipView updateWithTheme:self.overriddenTheme];
     }
     return _pipView;
 }
@@ -527,14 +528,14 @@
         if (self.pipViewContainer.subviews.count == 0)
         {
             [self.pipViewContainer vc_addSubViewMatchingParent:self.pipView];
-            [self configurePiPView];
         }
+        [self configurePiPView];
         self.pipViewContainer.hidden = NO;
     }
     else
     {
         self.pipViewContainer.hidden = YES;
-        self.localPreviewContainerView.hidden = NO;
+        self.localPreviewContainerView.hidden = !self.mxCall.isVideoCall;
         self.callerImageView.hidden = NO;
         self.callerNameLabel.hidden = NO;
         self.callStatusLabel.hidden = NO;
