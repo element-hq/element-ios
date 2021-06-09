@@ -69,6 +69,8 @@ abstract_target 'RiotPods' do
     pod 'SwiftBase32', '~> 0.9.0'
     pod 'SwiftJWT', '~> 3.6.200'
 
+    pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
+
     target 'RiotTests' do
       inherit! :search_paths
     end

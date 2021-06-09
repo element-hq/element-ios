@@ -17,6 +17,10 @@
 import Foundation
 import Intents
 
+#if DEBUG
+import FLEX
+#endif
+
 /// The AppCoordinator is responsible of screen navigation and data injection at root application level. It decides if authentication or home screen should be shown and inject data needed for these flows, it changes the navigation stack on deep link, displays global warning.
 /// This class should avoid to contain too many data management code not related to screen navigation logic. For example `MXSession` or push notification management should be handled in dedicated classes and report only navigation changes to the AppCoordinator.
 final class AppCoordinator: NSObject, AppCoordinatorType {
@@ -49,10 +53,14 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     // MARK: - Setup
     
-    init(router: RootRouterType) {
+    init(router: RootRouterType, window: UIWindow) {
         self.rootRouter = router
         self.customSchemeURLParser = CustomSchemeURLParser()
         self.userSessionsService = UserSessionsService()
+        
+        super.init()
+        
+        setupFlexDebuggerOnWindow(window)
     }
     
     // MARK: - Public methods
@@ -118,6 +126,21 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         }
         
         return canOpenLink
+    }
+    
+    private func setupFlexDebuggerOnWindow(_ window: UIWindow) {
+        #if DEBUG
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showFlexDebugger))
+        tapGestureRecognizer.numberOfTouchesRequired = 2
+        tapGestureRecognizer.numberOfTapsRequired = 2
+        window.addGestureRecognizer(tapGestureRecognizer)
+        #endif
+    }
+    
+    @objc private func showFlexDebugger() {
+        #if DEBUG
+        FLEXManager.shared.showExplorer()
+        #endif
     }
 }
 
