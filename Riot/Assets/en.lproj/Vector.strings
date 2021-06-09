@@ -1644,3 +1644,17 @@ Tap the + to start adding people.";
 "space_beta_announce_title" = "Spaces are coming soon";
 "space_beta_announce_subtitle" = "The new version of communities";
 "space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"user_avatar_view_accessibility_hint" = "Change user avatar";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Left panel";
+"side_menu_action_invite_friends" = "Invite friends";
+"side_menu_action_settings" = "Settings";
+"side_menu_action_help" = "Help";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_app_version" = "Version %@";

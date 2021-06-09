@@ -63,6 +63,10 @@ final class PlaceholderDetailViewController: UIViewController, Themable {
         
         self.view.backgroundColor = theme.backgroundColor
         self.logoImageView.tintColor = theme.tintColor
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            theme.applyStyle(onNavigationBar: navigationBar)
+        }
     }
     
     // MARK: - Private

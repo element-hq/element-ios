@@ -21,10 +21,12 @@ class SplitViewCoordinatorParameters {
     
     let router: RootRouterType
     let userSessionsService: UserSessionsService
+    let appNavigator: AppNavigatorProtocol
     
-    init(router: RootRouterType, userSessionsService: UserSessionsService) {
+    init(router: RootRouterType, userSessionsService: UserSessionsService, appNavigator: AppNavigatorProtocol) {
         self.router = router
         self.userSessionsService = userSessionsService
+        self.appNavigator = appNavigator
     }
 }
 
@@ -122,7 +124,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     private func createTabBarCoordinator() -> TabBarCoordinator {
         
-        let coordinatorParameters = TabBarCoordinatorParameters(userSessionsService: self.parameters.userSessionsService)
+        let coordinatorParameters = TabBarCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, appNavigator: self.parameters.appNavigator)
         
         let tabBarCoordinator = TabBarCoordinator(parameters: coordinatorParameters)
         tabBarCoordinator.delegate = self
