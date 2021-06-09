@@ -18,7 +18,7 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * GH Actions: Make sure we use the latest version of MatrixKit.
 
 Others
  *
