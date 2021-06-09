@@ -47,6 +47,12 @@ class CallPiPView: UIView {
             onHoldCallAvatarImageView.layer.cornerRadius = onHoldCallAvatarImageView.bounds.width/2
         }
     }
+    @IBOutlet private weak var onHoldCallEffectView: UIVisualEffectView! {
+        didSet {
+            onHoldCallEffectView.clipsToBounds = true
+            onHoldCallEffectView.layer.cornerRadius = onHoldCallEffectView.bounds.width/2
+        }
+    }
     
     @IBOutlet private weak var connectingView: DotsView! {
         didSet {
@@ -73,7 +79,7 @@ class CallPiPView: UIView {
         case .fledgling, .waitLocalMedia, .createOffer, .inviteSent, .ringing, .createAnswer, .connecting:
             stackView.isHidden = true
             connectingView.isHidden = false
-        case .connected:
+        default:
             connectingView.isHidden = true
             if mainCall.isVideoCall {
                 bgView.isHidden = true
@@ -83,8 +89,6 @@ class CallPiPView: UIView {
                 stackView.isHidden = false
             }
             onHoldCallView.isHidden = onHoldCall == nil
-        default:
-            break
         }
         
         let bgPlaceholder = placeholderImage(forPeer: peer,

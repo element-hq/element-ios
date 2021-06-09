@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -40,8 +39,8 @@
                         <constraint firstAttribute="trailing" secondItem="ATO-Ff-TJp" secondAttribute="trailing" id="gT9-MU-5YL"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dw1-5t-Fa9">
-                    <rect key="frame" x="97.5" y="279.5" width="219" height="337"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="dw1-5t-Fa9">
+                    <rect key="frame" x="97.5" y="259.5" width="219" height="377"/>
                     <subviews>
                         <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="XQ2-lw-1Fx" customClass="MXKImageView">
                             <rect key="frame" x="0.0" y="0.0" width="219" height="219.5"/>
@@ -51,9 +50,9 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWE-0k-gxK">
-                            <rect key="frame" x="55.5" y="229.5" width="108" height="107.5"/>
+                            <rect key="frame" x="55.5" y="269.5" width="108" height="107.5"/>
                             <subviews>
-                                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="MRZ-Tj-GFD" userLabel="OnHold Caller Image View" customClass="MXKImageView">
+                                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="MRZ-Tj-GFD" customClass="MXKImageView">
                                     <rect key="frame" x="0.0" y="0.0" width="108" height="107.5"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
@@ -66,10 +65,14 @@
                                     <blurEffect style="dark"/>
                                 </visualEffectView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="call_paused_white_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Os7-T2-TwH">
-                                    <rect key="frame" x="44" y="43.5" width="20" height="20"/>
+                                    <rect key="frame" x="32" y="31.5" width="44" height="44.5"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="Os7-T2-TwH" secondAttribute="height" multiplier="1:1" id="i0Q-og-tZc"/>
+                                    </constraints>
                                 </imageView>
                             </subviews>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="MRZ-Tj-GFD" secondAttribute="bottom" id="4vQ-F2-vLn"/>
                                 <constraint firstItem="8dC-eG-cT1" firstAttribute="leading" secondItem="cWE-0k-gxK" secondAttribute="leading" id="7LE-Gi-2py"/>
@@ -78,6 +81,7 @@
                                 <constraint firstItem="MRZ-Tj-GFD" firstAttribute="top" secondItem="cWE-0k-gxK" secondAttribute="top" id="VQ6-0i-ZJl"/>
                                 <constraint firstAttribute="trailing" secondItem="MRZ-Tj-GFD" secondAttribute="trailing" id="b0v-Xr-dN7"/>
                                 <constraint firstAttribute="width" secondItem="cWE-0k-gxK" secondAttribute="height" multiplier="1:1" id="cpz-Ea-1UY"/>
+                                <constraint firstItem="Os7-T2-TwH" firstAttribute="width" secondItem="MRZ-Tj-GFD" secondAttribute="width" multiplier="0.41" id="d1q-Qo-Rb7"/>
                                 <constraint firstAttribute="trailing" secondItem="8dC-eG-cT1" secondAttribute="trailing" id="fze-v5-rYt"/>
                                 <constraint firstItem="8dC-eG-cT1" firstAttribute="top" secondItem="cWE-0k-gxK" secondAttribute="top" id="mNe-Pb-bek"/>
                                 <constraint firstItem="Os7-T2-TwH" firstAttribute="centerX" secondItem="cWE-0k-gxK" secondAttribute="centerX" id="s5I-eW-1kK"/>
@@ -116,7 +120,8 @@
                 <outlet property="bgView" destination="g3V-CO-w55" id="rXb-BJ-cTO"/>
                 <outlet property="connectingView" destination="yTy-AV-IZA" id="PNX-7s-QzT"/>
                 <outlet property="mainCallAvatarImageView" destination="XQ2-lw-1Fx" id="SaP-3f-6j6"/>
-                <outlet property="onHoldCallAvatarImageView" destination="MRZ-Tj-GFD" id="fVY-TK-URT"/>
+                <outlet property="onHoldCallAvatarImageView" destination="MRZ-Tj-GFD" id="ytr-Jt-c0o"/>
+                <outlet property="onHoldCallEffectView" destination="8dC-eG-cT1" id="iLS-Fd-mPD"/>
                 <outlet property="onHoldCallView" destination="cWE-0k-gxK" id="jrg-bg-dpM"/>
                 <outlet property="stackView" destination="dw1-5t-Fa9" id="70n-QK-kCx"/>
             </connections>
@@ -125,8 +130,5 @@
     </objects>
     <resources>
         <image name="call_paused_white_icon" width="20" height="20"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
