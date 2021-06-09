@@ -114,6 +114,8 @@ final class BuildSettings: NSObject {
     static let applicationCopyrightUrlString = "https://element.io/copyright"
     static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
     static let applicationTermsConditionsUrlString = "https://element.io/terms-of-service"
+    static let applicationHelpUrlString =
+    "https://element.io/help"
     
     
     // MARk: - Matrix permalinks
@@ -199,6 +201,8 @@ final class BuildSettings: NSObject {
     static let allowLocalContactsAccess: Bool = true
     
     static let allowInviteExernalUsers: Bool = true
+    
+    static let enableSideMenu: Bool = true
     
     // MARK: - Feature Specifics
     

@@ -4486,6 +4486,30 @@ internal enum VectorL10n {
   internal static var shareExtensionFailedToEncrypt: String { 
     return VectorL10n.tr("Vector", "share_extension_failed_to_encrypt") 
   }
+  /// Feedback
+  internal static var sideMenuActionFeedback: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_feedback") 
+  }
+  /// Help
+  internal static var sideMenuActionHelp: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_help") 
+  }
+  /// Invite friends
+  internal static var sideMenuActionInviteFriends: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_invite_friends") 
+  }
+  /// Settings
+  internal static var sideMenuActionSettings: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_settings") 
+  }
+  /// Version %@
+  internal static func sideMenuAppVersion(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "side_menu_app_version", p1)
+  }
+  /// Left panel
+  internal static var sideMenuRevealActionAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "side_menu_reveal_action_accessibility_label") 
+  }
   /// Sign out
   internal static var signOutExistingKeyBackupAlertSignOutAction: String { 
     return VectorL10n.tr("Vector", "sign_out_existing_key_backup_alert_sign_out_action") 
@@ -4661,6 +4685,14 @@ internal enum VectorL10n {
   /// Verify…
   internal static var unknownDevicesVerify: String { 
     return VectorL10n.tr("Vector", "unknown_devices_verify") 
+  }
+  /// Change user avatar
+  internal static var userAvatarViewAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "user_avatar_view_accessibility_hint") 
+  }
+  /// avatar
+  internal static var userAvatarViewAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "user_avatar_view_accessibility_label") 
   }
   /// If you didn’t sign in to this session, your account may be compromised.
   internal static var userVerificationSessionDetailsAdditionalInformationUntrustedCurrentUser: String { 

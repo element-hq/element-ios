@@ -34,11 +34,16 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: Private
     
     private let rootRouter: RootRouterType
-    // swiftlint:disable weak_delegate        
-    private let legacyAppDelegate: LegacyAppDelegate = AppDelegate.theDelegate()
+    // swiftlint:disable weak_delegate
+    fileprivate let legacyAppDelegate: LegacyAppDelegate = AppDelegate.theDelegate()
     // swiftlint:enable weak_delegate
     
+    private lazy var appNavigator: AppNavigatorProtocol = {
+        return AppNavigator(appCoordinator: self)
+    }()
+    
     private weak var splitViewCoordinator: SplitViewCoordinatorType?
+    fileprivate weak var sideMenuCoordinator: SideMenuCoordinatorType?
     
     private let userSessionsService: UserSessionsService
         
@@ -66,7 +71,13 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the spit view.
+        self.setupTheme()
+        
+        if BuildSettings.enableSideMenu {
+            self.addSideMenu()
+        }
+        
+        // NOTE: When split view is shown there can be no Matrix sessions ready. Keep this behavior or use a loading screen before showing the split view.
         self.showSplitView()
         MXLog.debug("[AppCoordinator] Showed split view")
     }
@@ -85,6 +96,10 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
     // MARK: - Private methods
     
+    private func setupTheme() {
+        ThemeService.shared().themeId = RiotSettings.shared.userInterfaceTheme
+    }
+    
     private func showAuthentication() {
         // TODO: Implement
     }
@@ -98,7 +113,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
     
     private func showSplitView() {
-        let coordinatorParameters = SplitViewCoordinatorParameters(router: self.rootRouter, userSessionsService: self.userSessionsService)
+        let coordinatorParameters = SplitViewCoordinatorParameters(router: self.rootRouter, userSessionsService: self.userSessionsService, appNavigator: self.appNavigator)
                         
         let splitViewCoordinator = SplitViewCoordinator(parameters: coordinatorParameters)
         splitViewCoordinator.delegate = self
@@ -107,13 +122,19 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.splitViewCoordinator = splitViewCoordinator
     }
     
-    private func checkAppVersion() {
-        // TODO: Implement
+    private func addSideMenu() {
+        let appInfo = AppInfo.current
+        let coordinatorParameters = SideMenuCoordinatorParameters(userSessionsService: self.userSessionsService, appInfo: appInfo)
+        
+        let coordinator = SideMenuCoordinator(parameters: coordinatorParameters)
+        coordinator.delegate = self
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        self.sideMenuCoordinator = coordinator
     }
     
-    private func showError(_ error: Error) {
-        // FIXME: Present an error on coordinator.toPresentable()
-        self.legacyAppDelegate.showError(asAlert: error)
+    private func checkAppVersion() {
+        // TODO: Implement
     }
     
     private func handleDeepLinkOption(_ deepLinkOption: DeepLinkOption) -> Bool {
@@ -179,5 +200,35 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
 extension AppCoordinator: SplitViewCoordinatorDelegate {
     func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType) {
         self.legacyAppDelegate.authenticationDidComplete()
+    }
+}
+
+// MARK: - SideMenuCoordinatorDelegate
+extension AppCoordinator: SideMenuCoordinatorDelegate {
+    func sideMenuCoordinator(_ coordinator: SideMenuCoordinatorType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView) {
+    }
+}
+
+// MARK: - AppNavigator
+
+// swiftlint:disable private_over_fileprivate
+fileprivate class AppNavigator: AppNavigatorProtocol {
+// swiftlint:enable private_over_fileprivate
+    
+    private unowned let appCoordinator: AppCoordinator
+    
+    let alert: AlertPresentable
+    
+    lazy var sideMenu: SideMenuPresentable = {
+        guard let sideMenuCoordinator = appCoordinator.sideMenuCoordinator else {
+            fatalError("sideMenuCoordinator is not initialized")
+        }
+        
+        return SideMenuPresenter(sideMenuCoordinator: sideMenuCoordinator)
+    }()
+    
+    init(appCoordinator: AppCoordinator) {
+        self.appCoordinator = appCoordinator
+        self.alert = AppAlertPresenter(legacyAppDelegate: appCoordinator.legacyAppDelegate)
     }
 }
