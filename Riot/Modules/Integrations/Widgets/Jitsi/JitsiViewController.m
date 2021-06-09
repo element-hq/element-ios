@@ -26,6 +26,10 @@ static const NSString *kJitsiDataErrorKey = @"error";
  Class name for RCTSafeAreaView. It's in the React Native SDK, so we cannot import its header.
  */
 static NSString * _Nonnull kRCTSafeAreaViewClassName = @"RCTSafeAreaView";
+/**
+ Class name for RCTTextView. It's in the React Native SDK, so we cannot import its header.
+ */
+static NSString * _Nonnull kRCTTextViewClassName = @"RCTTextView";
 
 /*
  Some feature flags defined in https://github.com/jitsi/jitsi-meet/blob/master/react/features/base/flags/constants.js
@@ -281,12 +285,13 @@ static NSString * _Nonnull kJitsiFeatureFlagChatEnabled = @"chat.enabled";
 }
 
 /**
- Finds all the views in self.jitsiMeetView recursively those kind of class with the name `kRCTSafeAreaViewClassName`.
+ Finds all the views in self.jitsiMeetView recursively those kind of class with the name `kRCTSafeAreaViewClassName` or `kRCTTextViewClassName`.
  */
 - (NSArray<UIView*>*)overlayViewsIn:(UIView *)view
 {
-    Class class = NSClassFromString(kRCTSafeAreaViewClassName);
-    if ([view isKindOfClass:class])
+    Class class1 = NSClassFromString(kRCTSafeAreaViewClassName);
+    Class class2 = NSClassFromString(kRCTTextViewClassName);
+    if ([view isKindOfClass:class1] || [view isKindOfClass:class2])
     {
         return @[view];
     }
