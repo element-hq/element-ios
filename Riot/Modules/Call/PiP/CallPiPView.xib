@@ -42,11 +42,31 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="dw1-5t-Fa9">
                     <rect key="frame" x="97.5" y="259.5" width="219" height="377"/>
                     <subviews>
-                        <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="XQ2-lw-1Fx" customClass="MXKImageView">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m7y-28-xpb">
                             <rect key="frame" x="0.0" y="0.0" width="219" height="219.5"/>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <subviews>
+                                <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="XQ2-lw-1Fx" customClass="MXKImageView">
+                                    <rect key="frame" x="0.0" y="0.0" width="219" height="219.5"/>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="call_paused_white_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Cvf-KQ-Q52">
+                                    <rect key="frame" x="64.5" y="64.5" width="90" height="90"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" secondItem="Cvf-KQ-Q52" secondAttribute="height" multiplier="1:1" id="6zz-6v-j98"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="XQ2-lw-1Fx" secondAttribute="height" multiplier="1:1" id="Xuh-qb-kmk"/>
+                                <constraint firstItem="Cvf-KQ-Q52" firstAttribute="centerX" secondItem="m7y-28-xpb" secondAttribute="centerX" id="CDS-n4-L7k"/>
+                                <constraint firstAttribute="trailing" secondItem="XQ2-lw-1Fx" secondAttribute="trailing" id="FH7-u6-K33"/>
+                                <constraint firstItem="XQ2-lw-1Fx" firstAttribute="leading" secondItem="m7y-28-xpb" secondAttribute="leading" id="TrB-0Y-Pkv"/>
+                                <constraint firstItem="Cvf-KQ-Q52" firstAttribute="centerY" secondItem="m7y-28-xpb" secondAttribute="centerY" id="aB5-wL-fma"/>
+                                <constraint firstAttribute="bottom" secondItem="XQ2-lw-1Fx" secondAttribute="bottom" id="e4U-gy-OJN"/>
+                                <constraint firstAttribute="width" secondItem="m7y-28-xpb" secondAttribute="height" multiplier="1:1" id="eey-Uj-ltE"/>
+                                <constraint firstItem="XQ2-lw-1Fx" firstAttribute="top" secondItem="m7y-28-xpb" secondAttribute="top" id="jqZ-qm-wjK"/>
+                                <constraint firstItem="Cvf-KQ-Q52" firstAttribute="width" secondItem="m7y-28-xpb" secondAttribute="width" multiplier="0.41" id="zTa-hN-3f6"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cWE-0k-gxK">
@@ -110,7 +130,7 @@
                 <constraint firstItem="dw1-5t-Fa9" firstAttribute="centerY" secondItem="Nhq-yj-aas" secondAttribute="centerY" id="PQx-td-mDC"/>
                 <constraint firstItem="dw1-5t-Fa9" firstAttribute="centerX" secondItem="Nhq-yj-aas" secondAttribute="centerX" id="VQk-dH-mGH"/>
                 <constraint firstItem="yTy-AV-IZA" firstAttribute="centerY" secondItem="Nhq-yj-aas" secondAttribute="centerY" id="f16-3g-VPE"/>
-                <constraint firstItem="XQ2-lw-1Fx" firstAttribute="width" secondItem="Nhq-yj-aas" secondAttribute="width" multiplier="0.53" id="g4E-eM-tfL"/>
+                <constraint firstItem="m7y-28-xpb" firstAttribute="width" secondItem="Nhq-yj-aas" secondAttribute="width" multiplier="0.53" id="k6u-G0-gmj"/>
                 <constraint firstItem="yTy-AV-IZA" firstAttribute="centerX" secondItem="Nhq-yj-aas" secondAttribute="centerX" id="t3N-FC-MWo"/>
                 <constraint firstAttribute="bottom" secondItem="g3V-CO-w55" secondAttribute="bottom" id="xVn-dm-NkG"/>
             </constraints>
@@ -120,6 +140,7 @@
                 <outlet property="bgView" destination="g3V-CO-w55" id="rXb-BJ-cTO"/>
                 <outlet property="connectingView" destination="yTy-AV-IZA" id="PNX-7s-QzT"/>
                 <outlet property="mainCallAvatarImageView" destination="XQ2-lw-1Fx" id="SaP-3f-6j6"/>
+                <outlet property="mainCallPauseIcon" destination="Cvf-KQ-Q52" id="5ZP-01-BDp"/>
                 <outlet property="onHoldCallAvatarImageView" destination="MRZ-Tj-GFD" id="ytr-Jt-c0o"/>
                 <outlet property="onHoldCallEffectView" destination="8dC-eG-cT1" id="iLS-Fd-mPD"/>
                 <outlet property="onHoldCallView" destination="cWE-0k-gxK" id="jrg-bg-dpM"/>

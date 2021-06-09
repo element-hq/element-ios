@@ -39,6 +39,7 @@ class CallPiPView: UIView {
             mainCallAvatarImageView.layer.cornerRadius = mainCallAvatarImageView.bounds.width/2
         }
     }
+    @IBOutlet private weak var mainCallPauseIcon: UIImageView!
     
     @IBOutlet private weak var onHoldCallView: UIView!
     @IBOutlet private weak var onHoldCallAvatarImageView: MXKImageView! {
@@ -79,6 +80,7 @@ class CallPiPView: UIView {
         case .fledgling, .waitLocalMedia, .createOffer, .inviteSent, .ringing, .createAnswer, .connecting:
             stackView.isHidden = true
             connectingView.isHidden = false
+            mainCallPauseIcon.isHidden = true
         default:
             connectingView.isHidden = true
             if mainCall.isVideoCall {
@@ -88,6 +90,7 @@ class CallPiPView: UIView {
                 bgView.isHidden = false
                 stackView.isHidden = false
             }
+            mainCallPauseIcon.isHidden = !mainCall.isOnHold
             onHoldCallView.isHidden = onHoldCall == nil
         }
         
