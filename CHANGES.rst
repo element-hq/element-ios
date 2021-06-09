@@ -10,7 +10,7 @@ Changes to be released in next version
  * Integrated FLEX for debug builds.
 
 🐛 Bugfix
- * 
+ * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
 
 ⚠️ API Changes
  * 

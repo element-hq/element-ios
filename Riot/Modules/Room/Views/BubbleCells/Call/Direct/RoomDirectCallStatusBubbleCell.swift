@@ -412,6 +412,11 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             return (NSTimeIntervalSince1970 - TimeInterval(startDate))/MSEC_PER_SEC
         }
         
+        guard startDate < endDate else {
+            // started but hung up/rejected on other end around the same time
+            return 0
+        }
+        
         //  ended, compute the diff between two dates
         return TimeInterval(endDate - startDate)/MSEC_PER_SEC
     }
