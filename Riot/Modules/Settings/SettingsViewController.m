@@ -3571,9 +3571,18 @@ TableViewSectionsDelegate>
     autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
                                           style:UIAlertActionStyleDefault
                                         handler:actionBlock];
-    
+
     // Explain what is "auto"
-    themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message", @"Vector", nil);  
+    if (@available(iOS 13, *))
+    {
+        // Observe application did become active for iOS appearance setting changes
+        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message_match_system_theme", @"Vector", nil);
+    }
+    else
+    {
+        // Observe "Invert Colours" settings changes (available since iOS 11)
+        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message_invert_colours", @"Vector", nil);
+    }
 
     lightAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_light", @"Vector", nil)
                                           style:UIAlertActionStyleDefault
