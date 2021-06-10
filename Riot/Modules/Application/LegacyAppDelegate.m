@@ -2853,7 +2853,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             void (^onFailure)(NSError *) = ^(NSError *error){
                 MXLogDebug(@"[AppDelegate] Create direct chat failed");
                 //Alert user
-                [self showErrorAsAlert:error];
+                [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"room_creation_dm_error", @"Vector", nil)];
 
                 if (completion)
                 {

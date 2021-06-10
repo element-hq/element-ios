@@ -11,6 +11,7 @@ Changes to be released in next version
  * Add dial pad for PSTN capable servers to menu on homescreen
 
 🐛 Bugfix
+ * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
 
 ⚠️ API Changes

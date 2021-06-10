@@ -2402,6 +2402,10 @@ internal enum VectorL10n {
   internal static var roomCreationAppearancePicture: String { 
     return VectorL10n.tr("Vector", "room_creation_appearance_picture") 
   }
+  /// We couldn't create your DM. Please check the users you want to invite and try again.
+  internal static var roomCreationDmError: String { 
+    return VectorL10n.tr("Vector", "room_creation_dm_error") 
+  }
   /// No identity server is configured so you cannot add a participant with an email.
   internal static var roomCreationErrorInviteUserByEmailWithoutIdentityServer: String { 
     return VectorL10n.tr("Vector", "room_creation_error_invite_user_by_email_without_identity_server") 
