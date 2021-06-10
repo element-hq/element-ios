@@ -13,7 +13,8 @@ Changes to be released in next version
 🐛 Bugfix
  * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
-
+ * ContactsDataSource: iPad Crashes when you select a contact in search and then collapse a section or clear the query text (#4414).
+ 
 ⚠️ API Changes
  * 
 
