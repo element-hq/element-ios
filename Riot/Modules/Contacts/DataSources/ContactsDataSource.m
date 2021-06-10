@@ -688,12 +688,16 @@
     NSUInteger index = [filteredLocalContacts indexOfObject:contact];
     if (index != NSNotFound)
     {
-        indexPath = [NSIndexPath indexPathForRow:index inSection:filteredLocalContactsSection];
+        // if local section is collapsed there is no cell
+        if (!(shrinkedSectionsBitMask & CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE)) {
+            indexPath = [NSIndexPath indexPathForRow:index inSection:filteredLocalContactsSection];
+        }
     }
     else
     {
         index = [filteredMatrixContacts indexOfObject:contact];
-        if (index != NSNotFound)
+        // if matrix section is collapsed or we are not showing the matrix section(as with empty query) there is no cell
+        if (index != NSNotFound && !(shrinkedSectionsBitMask & CONTACTSDATASOURCE_USERDIRECTORY_BITWISE) && filteredMatrixContactsSection != -1)
         {
             indexPath = [NSIndexPath indexPathForRow:index inSection:filteredMatrixContactsSection];
         }
