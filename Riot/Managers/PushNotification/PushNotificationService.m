@@ -178,14 +178,15 @@ Matrix session observer used to detect new opened sessions.
 {
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
     [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:nil];
-}
-
-- (void)applicationDidEnterBackground
-{
     if (_pushNotificationStore.pushKitToken)
     {
         self.shouldReceiveVoIPPushes = YES;
     }
+}
+
+- (void)applicationDidEnterBackground
+{
+    
 }
 
 - (void)applicationDidBecomeActive
@@ -547,83 +548,81 @@ Matrix session observer used to detect new opened sessions.
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
     [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:roomId];
     
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
     {
-        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: application is in bg");
+        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: application is active. There is something wrong.");
+        completion();
+        return;
+    }
+    
+    if (@available(iOS 13.0, *))
+    {
+        //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
+        MXEvent *callInvite = [_pushNotificationStore callInviteForEventId:eventId];
+        //  remove event
+        [_pushNotificationStore removeCallInviteWithEventId:eventId];
+        MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
+        //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
+        [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
         
-        if (@available(iOS 13.0, *))
+        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: callInvite: %@", callInvite);
+        
+        if (callInvite)
         {
-            //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
-            MXEvent *callInvite = [_pushNotificationStore callInviteForEventId:eventId];
-            //  remove event
-            [_pushNotificationStore removeCallInviteWithEventId:eventId];
-            MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
-            //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
-            [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
+            //  We're using this dispatch_group to continue event stream after cache fully processed.
+            dispatch_group_t dispatchGroup = dispatch_group_create();
             
-            MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: callInvite: %@", callInvite);
+            dispatch_group_enter(dispatchGroup);
+            //  Not continuing in completion block here, because PushKit mandates reporting a new call in the same run loop.
+            //  'handleBackgroundSyncCacheIfRequiredWithCompletion' is processing to-device events synchronously.
+            [session handleBackgroundSyncCacheIfRequiredWithCompletion:^{
+                dispatch_group_leave(dispatchGroup);
+            }];
             
-            if (callInvite)
+            if (callInvite.eventType == MXEventTypeCallInvite)
             {
-                //  We're using this dispatch_group to continue event stream after cache fully processed.
-                dispatch_group_t dispatchGroup = dispatch_group_create();
-                
-                dispatch_group_enter(dispatchGroup);
-                //  Not continuing in completion block here, because PushKit mandates reporting a new call in the same run loop.
-                //  'handleBackgroundSyncCacheIfRequiredWithCompletion' is processing to-device events synchronously.
-                [session handleBackgroundSyncCacheIfRequiredWithCompletion:^{
-                    dispatch_group_leave(dispatchGroup);
-                }];
-                
-                if (callInvite.eventType == MXEventTypeCallInvite)
+                //  process the call invite synchronously
+                [session.callManager handleCallEvent:callInvite];
+                MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:callInvite.content];
+                MXCall *call = [session.callManager callWithCallId:content.callId];
+                if (call)
                 {
-                    //  process the call invite synchronously
-                    [session.callManager handleCallEvent:callInvite];
-                    MXCallInviteEventContent *content = [MXCallInviteEventContent modelFromJSON:callInvite.content];
-                    MXCall *call = [session.callManager callWithCallId:content.callId];
-                    if (call)
-                    {
-                        [session.callManager.callKitAdapter reportIncomingCall:call];
-                        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
-                        
-                        //  Wait for the sync response in cache to be processed for data integrity.
-                        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
-                            //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
-                            [self launchBackgroundSync];
-                        });
-                    }
-                    else
-                    {
-                        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
-                    }
-                }
-                else if ([callInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
-                         [callInvite.type isEqualToString:kWidgetModularEventTypeString])
-                {
-                    [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
-                                                                      inSession:session];
+                    [session.callManager.callKitAdapter reportIncomingCall:call];
+                    MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Reporting new call in room %@ for the event: %@", roomId, eventId);
+                    
+                    //  Wait for the sync response in cache to be processed for data integrity.
+                    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+                        //  After reporting the call, we can continue async. Launch a background sync to handle call answers/declines on other devices of the user.
+                        [self launchBackgroundSync];
+                    });
                 }
                 else
                 {
-                    //  It's a serious error. There is nothing to avoid iOS to kill us here.
-                    MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: We have an unknown type of event for %@. There is something wrong.", eventId);
+                    MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Error on call object on room %@ for the event: %@", roomId, eventId);
                 }
+            }
+            else if ([callInvite.type isEqualToString:kWidgetMatrixEventTypeString] ||
+                     [callInvite.type isEqualToString:kWidgetModularEventTypeString])
+            {
+                [[AppDelegate theDelegate].callPresenter processWidgetEvent:callInvite
+                                                                  inSession:session];
             }
             else
             {
                 //  It's a serious error. There is nothing to avoid iOS to kill us here.
-                MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the callInvite event for the eventId: %@. There is something wrong.", eventId);
+                MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: We have an unknown type of event for %@. There is something wrong.", eventId);
             }
         }
         else
         {
-            //  below iOS 13, we can call an async API. After background sync, we'll hopefully fetch the call invite and report a new call to the CallKit.
-            [self launchBackgroundSync];
+            //  It's a serious error. There is nothing to avoid iOS to kill us here.
+            MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the callInvite event for the eventId: %@. There is something wrong.", eventId);
         }
     }
     else
     {
-        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: application is not in bg. There is something wrong.");
+        //  below iOS 13, we can call an async API. After background sync, we'll hopefully fetch the call invite and report a new call to the CallKit.
+        [self launchBackgroundSync];
     }
     
     completion();
