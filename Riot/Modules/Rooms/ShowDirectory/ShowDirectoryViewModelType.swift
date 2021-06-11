@@ -20,7 +20,6 @@ import Foundation
 
 protocol ShowDirectoryViewModelViewDelegate: class {
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didUpdateViewState viewSate: ShowDirectoryViewState)
-    func showDirectoryViewModelDidUpdateDataSource(_ viewModel: ShowDirectoryViewModelType)
 }
 
 protocol ShowDirectoryViewModelCoordinatorDelegate: class {
@@ -38,7 +37,5 @@ protocol ShowDirectoryViewModelType {
     
     func process(viewAction: ShowDirectoryViewAction)
     
-    var roomsCount: Int { get }
-    var directoryServerDisplayname: String? { get }
-    func roomViewModel(at indexPath: IndexPath) -> DirectoryRoomTableViewCellVM?
+    func updatePublicRoomsDataSource(with cellData: MXKDirectoryServerCellDataStoring)
 }

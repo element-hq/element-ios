@@ -92,4 +92,15 @@
             == crossSigningServiceSecrets.count);
 }
 
+- (MXRoom*)vc_roomWithIdOrAlias:(NSString*)roomIdOrAlias
+{
+    if ([MXTools isMatrixRoomIdentifier:roomIdOrAlias]) {
+        return [self roomWithRoomId:roomIdOrAlias];
+    } else if ([MXTools isMatrixRoomAlias:roomIdOrAlias]) {
+        return [self roomWithAlias:roomIdOrAlias];
+    } else {
+        return nil;
+    }
+}
+
 @end

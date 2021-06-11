@@ -18,6 +18,11 @@
 
 import Foundation
 
+enum ShowDirectorySection {
+    case searchInput(_ searchInputViewData: DirectoryRoomTableViewCellVM)
+    case publicRoomsDirectory(_ viewModel: PublicRoomsDirectoryViewModel)
+}
+
 final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     
     // MARK: - Properties
@@ -27,38 +32,30 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     private let session: MXSession
     private let dataSource: PublicRoomsDirectoryDataSource
     
+    private let publicRoomsDirectoryViewModel: PublicRoomsDirectoryViewModel
+    
     private var currentOperation: MXHTTPOperation?
-    private var userDisplayName: String?
+    private var sections: [ShowDirectorySection] = []
+    
+    private var canPaginatePublicRoomsDirectory: Bool {
+        return !dataSource.hasReachedPaginationEnd && currentOperation == nil
+    }
+    
+    private var publicRoomsDirectorySection: ShowDirectorySection {
+        return .publicRoomsDirectory(self.publicRoomsDirectoryViewModel)
+    }
     
     // MARK: Public
 
     weak var viewDelegate: ShowDirectoryViewModelViewDelegate?
     weak var coordinatorDelegate: ShowDirectoryViewModelCoordinatorDelegate?
     
-    var roomsCount: Int {
-        return Int(dataSource.roomsCount)
-    }
-    var directoryServerDisplayname: String? {
-        return dataSource.directoryServerDisplayname
-    }
-    func roomViewModel(at indexPath: IndexPath) -> DirectoryRoomTableViewCellVM? {
-        guard let room = dataSource.room(at: indexPath) else { return nil }
-        let summary = session.roomSummary(withRoomId: room.roomId)
-        
-        return DirectoryRoomTableViewCellVM(title: room.displayname(),
-                                            numberOfUsers: room.numJoinedMembers,
-                                            subtitle: MXTools.stripNewlineCharacters(room.topic),
-                                            isJoined: summary?.membership == .join,
-                                            roomId: room.roomId,
-                                            avatarUrl: room.avatarUrl,
-                                            mediaManager: session.mediaManager)
-    }
-    
     // MARK: - Setup
     
     init(session: MXSession, dataSource: PublicRoomsDirectoryDataSource) {
         self.session = session
         self.dataSource = dataSource
+        self.publicRoomsDirectoryViewModel = PublicRoomsDirectoryViewModel(dataSource: dataSource, session: session)
     }
     
     deinit {
@@ -69,17 +66,38 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     
     func process(viewAction: ShowDirectoryViewAction) {
         switch viewAction {
-        case .loadData(let force):
-            self.loadData(force: force)
+        case .loadData:
+            self.resetSections()
+            self.paginatePublicRoomsDirectory(force: false)
         case .selectRoom(let indexPath):
-            guard let room = dataSource.room(at: indexPath) else { return }
-            self.coordinatorDelegate?.showDirectoryViewModelDidSelect(self, room: room)
+            
+            let directorySection = self.sections[indexPath.section]
+            
+            switch directorySection {
+            case .searchInput:
+                break
+            case.publicRoomsDirectory:
+                guard let publicRoom = dataSource.room(at: indexPath) else { return }
+                self.coordinatorDelegate?.showDirectoryViewModelDidSelect(self, room: publicRoom)
+            }
         case .joinRoom(let indexPath):
-            guard let room = dataSource.room(at: indexPath) else { return }
-            joinRoom(room)
+            
+            let directorySection = self.sections[indexPath.section]
+            let roomIdOrAlias: String?
+            
+            switch directorySection {
+            case .searchInput(let searchInputViewData):
+                roomIdOrAlias = searchInputViewData.title
+            case .publicRoomsDirectory:
+                let publicRoom = dataSource.room(at: IndexPath(row: indexPath.row, section: 0))
+                roomIdOrAlias = publicRoom?.roomId
+            }
+            
+            if let roomIdOrAlias = roomIdOrAlias {
+                joinRoom(withRoomIdOrAlias: roomIdOrAlias)
+            }
         case .search(let pattern):
-            self.dataSource.searchPattern = pattern
-            self.loadData(force: true)
+            self.search(with: pattern)
         case .createNewRoom:
             self.coordinatorDelegate?.showDirectoryViewModelDidTapCreateNewRoom(self)
         case .switchServer:
@@ -90,10 +108,22 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         }
     }
     
+    func updatePublicRoomsDataSource(with cellData: MXKDirectoryServerCellDataStoring) {
+        if let thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance {
+            self.dataSource.thirdpartyProtocolInstance = thirdpartyProtocolInstance
+        } else if let homeserver = cellData.homeserver {
+            self.dataSource.includeAllNetworks = cellData.includeAllNetworks
+            self.dataSource.homeserver = homeserver
+        }
+        
+        self.resetSections()
+        self.paginatePublicRoomsDirectory(force: false)
+    }
+    
     // MARK: - Private
     
-    private func loadData(force: Bool) {
-        if !force && (dataSource.hasReachedPaginationEnd || currentOperation != nil) {
+    private func paginatePublicRoomsDirectory(force: Bool) {
+        if !force && !self.canPaginatePublicRoomsDirectory {
             // We got all public rooms or we are already paginating
             // Do nothing
             return
@@ -101,12 +131,16 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         
         self.update(viewState: .loading)
         
+        // Useful only when force is true
+        self.cancelOperations()
+        
         currentOperation = dataSource.paginate({ [weak self] (roomsAdded) in
             guard let self = self else { return }
             if roomsAdded > 0 {
-                self.viewDelegate?.showDirectoryViewModelDidUpdateDataSource(self)
+                self.update(viewState: .loaded(self.sections))
+            } else {
+                self.update(viewState: .loadedWithoutUpdate)
             }
-            self.update(viewState: .loaded)
             self.currentOperation = nil
         }, failure: { [weak self] (error) in
             guard let self = self else { return }
@@ -116,6 +150,12 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         })
     }
     
+    private func resetSections() {
+        self.sections = [self.publicRoomsDirectorySection]
+    }
+    
+    // FIXME: DirectoryServerPickerViewController should be instantiated from ShowDirectoryCoordinator
+    // It should be just a call like: self.coordinatorDelegate?.showDirectoryServerPicker(self)
     private func switchServer() {
         let controller = DirectoryServerPickerViewController()
         let source = MXKDirectoryServersDataSource(matrixSession: session)
@@ -126,24 +166,83 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
             guard let self = self else { return }
             guard let cellData = cellData else { return }
 
-            if let thirdpartyProtocolInstance = cellData.thirdPartyProtocolInstance {
-                self.dataSource.thirdpartyProtocolInstance = thirdpartyProtocolInstance
-            } else if let homeserver = cellData.homeserver {
-                self.dataSource.includeAllNetworks = cellData.includeAllNetworks
-                self.dataSource.homeserver = homeserver
-            }
-
-            self.loadData(force: false)
+            self.updatePublicRoomsDataSource(with: cellData)
         }
 
         self.coordinatorDelegate?.showDirectoryViewModelWantsToShow(self, controller: controller)
     }
     
-    private func joinRoom(_ room: MXPublicRoom) {
-        session.joinRoom(room.roomId) { [weak self] (response) in
+    private func joinRoom(withRoomIdOrAlias roomIdOrAlias: String) {
+        session.joinRoom(roomIdOrAlias) { [weak self] (response) in
             guard let self = self else { return }
-            self.viewDelegate?.showDirectoryViewModelDidUpdateDataSource(self)
+            switch response {
+            case .success:
+                self.update(viewState: .loaded(self.sections))
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
         }
+    }
+    
+    private func search(with pattern: String?) {
+        self.dataSource.searchPattern = pattern
+        
+        var sections: [ShowDirectorySection] = []
+        
+        var shouldUpdate = false
+                
+        // If the search text is a room id or alias we add search input entry in sections
+        if let searchText = pattern, let searchInputViewData = self.searchInputViewData(from: searchText) {
+            sections.append(.searchInput(searchInputViewData))
+            
+            shouldUpdate = true
+        }
+        
+        sections.append(self.publicRoomsDirectorySection)
+        
+        self.sections = sections
+        
+        if shouldUpdate {
+            self.update(viewState: .loaded(self.sections))
+        }
+        
+        self.paginatePublicRoomsDirectory(force: true)
+    }
+    
+    private func searchInputViewData(from searchText: String) -> DirectoryRoomTableViewCellVM? {
+        guard MXTools.isMatrixRoomAlias(searchText) || MXTools.isMatrixRoomIdentifier(searchText) else {
+            return nil
+        }
+        
+        let roomIdOrAlias = searchText
+        
+        let searchInputViewData: DirectoryRoomTableViewCellVM
+        
+        if let room = self.session.vc_room(withIdOrAlias: roomIdOrAlias) {
+            searchInputViewData = self.roomCellViewModel(with: room)
+        } else {
+            searchInputViewData = self.roomCellViewModel(with: roomIdOrAlias)
+        }
+        
+        return searchInputViewData
+    }
+    
+    private func roomCellViewModel(with room: MXRoom) -> DirectoryRoomTableViewCellVM {
+        let displayName = room.summary.displayname
+        let joinedMembersCount = Int(room.summary.membersCount.joined)
+        let topic = MXTools.stripNewlineCharacters(room.summary.topic)
+        let isJoined = room.summary.membership == .join
+        let avatarStringUrl = room.summary.avatar
+        let mediaManager = self.session.mediaManager
+        
+        return DirectoryRoomTableViewCellVM(title: displayName, numberOfUsers: joinedMembersCount, subtitle: topic, isJoined: isJoined, roomId: room.roomId, avatarUrl: avatarStringUrl, mediaManager: mediaManager)
+    }
+    
+    private func roomCellViewModel(with roomIdOrAlias: String) -> DirectoryRoomTableViewCellVM {
+        let displayName = roomIdOrAlias
+        let mediaManager = self.session.mediaManager
+        
+        return DirectoryRoomTableViewCellVM(title: displayName, numberOfUsers: 0, subtitle: nil, isJoined: false, roomId: roomIdOrAlias, avatarUrl: nil, mediaManager: mediaManager)
     }
     
     private func update(viewState: ShowDirectoryViewState) {
@@ -172,7 +271,7 @@ extension ShowDirectoryViewModel: MXKDataSourceDelegate {
     }
     
     func dataSource(_ dataSource: MXKDataSource!, didStateChange state: MXKDataSourceState) {
-        self.viewDelegate?.showDirectoryViewModelDidUpdateDataSource(self)
+        self.update(viewState: .loaded(self.sections))
     }
     
 }
