@@ -228,6 +228,8 @@ Matrix session observer used to detect new opened sessions.
 {
     _shouldReceiveVoIPPushes = shouldReceiveVoIPPushes;
     
+    MXLogDebug(@"[PushNotificationService] setShouldReceiveVoIPPushes: %u", _shouldReceiveVoIPPushes)
+    
     if (_shouldReceiveVoIPPushes && _pushNotificationStore.pushKitToken)
     {
         MXSession *session = [AppDelegate theDelegate].mxSessions.firstObject;
@@ -257,14 +259,23 @@ Matrix session observer used to detect new opened sessions.
     }
     else
     {
-        _pushRegistry.delegate = nil;
+        [self deconfigurePushKit];
     }
 }
 
 - (void)configurePushKit
 {
+    MXLogDebug(@"[PushNotificationService] configurePushKit")
+    
     _pushRegistry.delegate = self;
     _pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
+}
+
+- (void)deconfigurePushKit
+{
+    MXLogDebug(@"[PushNotificationService] deconfigurePushKit")
+    
+    _pushRegistry.delegate = nil;
 }
 
 - (void)removePusher:(MXPusher*)pusher inSession:(MXSession*)session
