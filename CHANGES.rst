@@ -8,7 +8,8 @@ Changes to be released in next version
  * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
  * EncryptionKeyManager: Create keys for room last message data type.
  * Integrated FLEX for debug builds.
- * Add dial pad for PSTN capable servers to menu on homescreen
+ * VoIP: Add dial pad for PSTN capable servers to menu on homescreen.
+ * VoIP: Replace call bar with PiP tiles for every type of calls.
 
 🐛 Bugfix
  * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -35,6 +35,7 @@
                 <outlet property="onHoldCallerImageView" destination="uFS-C2-TxV" id="SfP-iP-jgd"/>
                 <outlet property="overlayContainerView" destination="JAR-tn-sGN" id="09u-3G-1UA"/>
                 <outlet property="pausedIcon" destination="rjn-DE-i10" id="CHR-mM-Dae"/>
+                <outlet property="pipViewContainer" destination="sJX-l2-pMa" id="mwA-1T-GHk"/>
                 <outlet property="rejectCallButton" destination="H4g-11-Y8d" id="8aM-2q-Lv7"/>
                 <outlet property="remotePreviewContainerView" destination="Tjb-57-yB1" id="MaR-IC-ZKw"/>
                 <outlet property="resumeButton" destination="OaQ-Ki-dbe" id="23i-sp-y3f"/>
@@ -294,7 +295,7 @@
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Zc0-eq-2kY">
-                            <rect key="frame" x="167" y="311.66666666666669" width="80" height="117"/>
+                            <rect key="frame" x="167" y="293" width="80" height="154"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FNb-tG-f7m">
                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -339,7 +340,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wqv-Uf-iNe" userLabel="Transfer">
-                                    <rect key="frame" x="11.5" y="176" width="57" height="29"/>
+                                    <rect key="frame" x="11.666666666666657" y="125" width="57" height="29"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                     <color key="tintColor" systemColor="systemGreenColor"/>
                                     <state key="normal" title="Transfer"/>
@@ -447,20 +448,27 @@
                         <constraint firstAttribute="width" constant="144" id="wft-dC-ob6"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJX-l2-pMa">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="r1a-fi-tZ0"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="CallVCView"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="VWv-s0-46r" secondAttribute="bottom" id="25w-l9-NMg"/>
+                <constraint firstItem="sJX-l2-pMa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4WB-kY-gwr"/>
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" priority="750" constant="420" id="6gi-ec-ZnO"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6gQ-zo-2Zw" secondAttribute="trailing" constant="20" id="9Om-6f-K9u"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" secondItem="VWv-s0-46r" secondAttribute="trailing" id="GX9-dL-Ejl"/>
+                <constraint firstAttribute="trailing" secondItem="sJX-l2-pMa" secondAttribute="trailing" id="H3S-H9-PQq"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" secondItem="4TX-46-pAi" secondAttribute="trailing" constant="20" id="PWX-RT-P9p"/>
                 <constraint firstItem="JAR-tn-sGN" firstAttribute="leading" secondItem="r1a-fi-tZ0" secondAttribute="leading" id="QLG-jw-Xph"/>
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="leading" secondItem="r1a-fi-tZ0" secondAttribute="leading" priority="750" constant="20" id="Qvg-FG-sBr"/>
                 <constraint firstItem="VWv-s0-46r" firstAttribute="leading" secondItem="r1a-fi-tZ0" secondAttribute="leading" id="SNc-WF-jXg"/>
                 <constraint firstItem="4TX-46-pAi" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="56" id="TQG-q5-eS7"/>
+                <constraint firstAttribute="bottom" secondItem="sJX-l2-pMa" secondAttribute="bottom" id="Vlf-ys-lS2"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="bottom" secondItem="nk9-Un-LVP" secondAttribute="bottom" constant="20" id="VpW-QU-xiw"/>
                 <constraint firstItem="r1a-fi-tZ0" firstAttribute="trailing" secondItem="JAR-tn-sGN" secondAttribute="trailing" id="Xcc-jT-zbd"/>
                 <constraint firstItem="UGa-hI-iqx" firstAttribute="top" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="120" id="YlJ-XZ-rCM"/>
@@ -475,6 +483,7 @@
                 <constraint firstAttribute="trailing" secondItem="Tjb-57-yB1" secondAttribute="trailing" id="rXn-dm-69F"/>
                 <constraint firstItem="6gQ-zo-2Zw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="r1a-fi-tZ0" secondAttribute="top" constant="80" id="tLa-Lx-XbY"/>
                 <constraint firstAttribute="bottom" secondItem="JAR-tn-sGN" secondAttribute="bottom" id="vNS-wR-TjW"/>
+                <constraint firstItem="sJX-l2-pMa" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="yjM-5y-vvH"/>
             </constraints>
             <point key="canvasLocation" x="139.13043478260872" y="152.67857142857142"/>
         </view>
