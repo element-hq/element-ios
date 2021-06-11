@@ -16,6 +16,8 @@ Changes to be released in next version
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
  * ContactsDataSource: iPad Crashes when you select a contact in search and then collapse a section or clear the query text (#4414).
  * SettingsViewController: Fix "auto" theme message to clarify that it matches the system theme on iOS 13+ (#2860).
+ * VoIP: Handle application inactive state too for VoIP pushes (#4269).
+ * VoIP: Do not terminate the app if protected data not available (#4419).
 
 ⚠️ API Changes
  * 
