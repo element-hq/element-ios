@@ -152,24 +152,10 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     
     private func resetSections() {
         self.sections = [self.publicRoomsDirectorySection]
-    }
+    }    
     
-    // FIXME: DirectoryServerPickerViewController should be instantiated from ShowDirectoryCoordinator
-    // It should be just a call like: self.coordinatorDelegate?.showDirectoryServerPicker(self)
     private func switchServer() {
-        let controller = DirectoryServerPickerViewController()
-        let source = MXKDirectoryServersDataSource(matrixSession: session)
-        source?.finalizeInitialization()
-        source?.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers
-
-        controller.display(with: source) { [weak self] (cellData) in
-            guard let self = self else { return }
-            guard let cellData = cellData else { return }
-
-            self.updatePublicRoomsDataSource(with: cellData)
-        }
-
-        self.coordinatorDelegate?.showDirectoryViewModelWantsToShow(self, controller: controller)
+        self.coordinatorDelegate?.showDirectoryViewModelWantsToShowDirectoryServerPicker(self)
     }
     
     private func joinRoom(withRoomIdOrAlias roomIdOrAlias: String) {
