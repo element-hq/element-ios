@@ -369,12 +369,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
-    if (![application isProtectedDataAvailable])
-    {
-        MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: Terminating the app because protected data not available");
-        exit(0);
-    }
-    
     _configuration = [AppConfiguration new];
     
     self.appInfo = AppInfo.current;
