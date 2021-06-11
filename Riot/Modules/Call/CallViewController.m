@@ -37,8 +37,11 @@
     BOOL promptForStunServerFallback;
 }
 
+@property (nonatomic, weak) IBOutlet UIView *pipViewContainer;
+
 @property (nonatomic, strong) id<Theme> overriddenTheme;
 @property (nonatomic, assign) BOOL inPiP;
+@property (nonatomic, strong) CallPiPView *pipView;
 
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 
@@ -224,6 +227,8 @@
 - (void)call:(MXCall *)call stateDidChange:(MXCallState)state reason:(MXEvent *)event
 {
     [super call:call stateDidChange:state reason:event];
+    
+    [self configurePiPView];
 
     [self checkStunServerFallbackWithCallState:state];
 }
@@ -379,6 +384,23 @@
     return _overriddenTheme;
 }
 
+- (CallPiPView *)pipView
+{
+    if (_pipView == nil)
+    {
+        _pipView = [CallPiPView instantiateWithSession:self.mainSession];
+        [_pipView updateWithTheme:self.overriddenTheme];
+    }
+    return _pipView;
+}
+
+- (void)setMxCallOnHold:(MXCall *)mxCallOnHold
+{
+    [super setMxCallOnHold:mxCallOnHold];
+    
+    [self configurePiPView];
+}
+
 - (UIImage*)picturePlaceholder
 {
     CGFloat fontSize = floor(self.callerImageViewWidthConstraint.constant * 0.7);
@@ -502,11 +524,19 @@
         self.callStatusLabel.hidden = YES;
         self.localPreviewContainerView.hidden = YES;
         self.localPreviewActivityView.hidden = YES;
+        
+        if (self.pipViewContainer.subviews.count == 0)
+        {
+            [self.pipViewContainer vc_addSubViewMatchingParent:self.pipView];
+        }
+        [self configurePiPView];
+        self.pipViewContainer.hidden = NO;
     }
     else
     {
-        self.localPreviewContainerView.hidden = NO;
-        self.callerImageView.hidden = NO;
+        self.pipViewContainer.hidden = YES;
+        self.localPreviewContainerView.hidden = !self.mxCall.isVideoCall;
+        self.callerImageView.hidden = self.mxCall.isVideoCall && self.mxCall.state == MXCallStateConnected;
         self.callerNameLabel.hidden = NO;
         self.callStatusLabel.hidden = NO;
         
@@ -644,14 +674,32 @@
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - PiP
+
+- (void)configurePiPView
+{
+    if (self.inPiP)
+    {
+        [self.pipView configureWithCall:self.mxCall
+                                   peer:self.peer
+                             onHoldCall:self.mxCallOnHold
+                             onHoldPeer:self.peerOnHold];
+    }
+}
+
 #pragma mark - PictureInPicturable
 
-- (void)enterPiP
+- (void)didEnterPiP
 {
     self.inPiP = YES;
 }
 
-- (void)exitPiP
+- (void)willExitPiP
+{
+    self.pipViewContainer.hidden = YES;
+}
+
+- (void)didExitPiP
 {
     self.inPiP = NO;
 }

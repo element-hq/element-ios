@@ -4458,9 +4458,13 @@ internal enum VectorL10n {
   internal static var settingsUiThemeLight: String { 
     return VectorL10n.tr("Vector", "settings_ui_theme_light") 
   }
-  /// "Auto" uses your device "Invert Colours" settings
-  internal static var settingsUiThemePickerMessage: String { 
-    return VectorL10n.tr("Vector", "settings_ui_theme_picker_message") 
+  /// "Auto" uses your device's "Invert Colours" settings
+  internal static var settingsUiThemePickerMessageInvertColours: String { 
+    return VectorL10n.tr("Vector", "settings_ui_theme_picker_message_invert_colours") 
+  }
+  /// "Auto" matches your device's system theme
+  internal static var settingsUiThemePickerMessageMatchSystemTheme: String { 
+    return VectorL10n.tr("Vector", "settings_ui_theme_picker_message_match_system_theme") 
   }
   /// Select a theme
   internal static var settingsUiThemePickerTitle: String { 

@@ -8,13 +8,15 @@ Changes to be released in next version
  * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
  * EncryptionKeyManager: Create keys for room last message data type.
  * Integrated FLEX for debug builds.
- * Add dial pad for PSTN capable servers to menu on homescreen
+ * VoIP: Add dial pad for PSTN capable servers to menu on homescreen.
+ * VoIP: Replace call bar with PiP tiles for every type of calls.
 
 🐛 Bugfix
  * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
  * ContactsDataSource: iPad Crashes when you select a contact in search and then collapse a section or clear the query text (#4414).
- 
+ * SettingsViewController: Fix "auto" theme message to clarify that it matches the system theme on iOS 13+ (#2860).
+
 ⚠️ API Changes
  * 
 

@@ -31,8 +31,15 @@ class CallVCPresentOperation: AsyncOperation {
     }
     
     override func main() {
+        if let pipable = callVC as? PictureInPicturable {
+            pipable.willExitPiP?()
+        }
         presenter.delegate?.callPresenter(presenter, presentCallViewController: callVC, completion: {
             self.finish()
+            if let pipable = self.callVC as? PictureInPicturable {
+                pipable.didExitPiP?()
+                self.callVC.view.isUserInteractionEnabled = true
+            }
             self.completion?()
         })
     }
