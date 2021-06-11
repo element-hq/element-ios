@@ -24,6 +24,7 @@ protocol ShowDirectoryViewModelViewDelegate: class {
 
 protocol ShowDirectoryViewModelCoordinatorDelegate: class {
     func showDirectoryViewModelDidSelect(_ viewModel: ShowDirectoryViewModelType, room: MXPublicRoom)
+    func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didSelectRoomWithIdOrAlias roomIdOrAlias: String)
     func showDirectoryViewModelDidTapCreateNewRoom(_ viewModel: ShowDirectoryViewModelType)
     func showDirectoryViewModelDidCancel(_ viewModel: ShowDirectoryViewModelType)
     func showDirectoryViewModelWantsToShowDirectoryServerPicker(_ viewModel: ShowDirectoryViewModelType)

@@ -2173,4 +2173,9 @@
     self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
+{
+    // TODO: Implement
+}
+
 @end

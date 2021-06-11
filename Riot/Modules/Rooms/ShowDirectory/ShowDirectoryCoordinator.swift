@@ -80,6 +80,9 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
 
 // MARK: - ShowDirectoryViewModelCoordinatorDelegate
 extension ShowDirectoryCoordinator: ShowDirectoryViewModelCoordinatorDelegate {
+    func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didSelectRoomWithIdOrAlias roomIdOrAlias: String) {
+        self.delegate?.showDirectoryCoordinator(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
+    }
     
     func showDirectoryViewModelDidSelect(_ viewModel: ShowDirectoryViewModelType, room: MXPublicRoom) {
         self.delegate?.showDirectoryCoordinator(self, didSelectRoom: room)

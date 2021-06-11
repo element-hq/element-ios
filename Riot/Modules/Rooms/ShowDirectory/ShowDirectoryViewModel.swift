@@ -74,10 +74,10 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
             let directorySection = self.sections[indexPath.section]
             
             switch directorySection {
-            case .searchInput:
-                break
-            case.publicRoomsDirectory:
-                guard let publicRoom = dataSource.room(at: indexPath) else { return }
+            case .searchInput(let viewData):
+                self.coordinatorDelegate?.showDirectoryViewModel(self, didSelectRoomWithIdOrAlias: viewData.roomId)
+            case .publicRoomsDirectory:
+                guard let publicRoom = self.publicRoom(at: indexPath.row) else { return }
                 self.coordinatorDelegate?.showDirectoryViewModelDidSelect(self, room: publicRoom)
             }
         case .joinRoom(let indexPath):
@@ -87,9 +87,9 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
             
             switch directorySection {
             case .searchInput(let searchInputViewData):
-                roomIdOrAlias = searchInputViewData.title
+                roomIdOrAlias = searchInputViewData.roomId
             case .publicRoomsDirectory:
-                let publicRoom = dataSource.room(at: IndexPath(row: indexPath.row, section: 0))
+                let publicRoom = self.publicRoom(at: indexPath.row)
                 roomIdOrAlias = publicRoom?.roomId
             }
             
@@ -152,7 +152,7 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     
     private func resetSections() {
         self.sections = [self.publicRoomsDirectorySection]
-    }    
+    }
     
     private func switchServer() {
         self.coordinatorDelegate?.showDirectoryViewModelWantsToShowDirectoryServerPicker(self)
@@ -168,6 +168,10 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
                 self.update(viewState: .error(error))
             }
         }
+    }
+    
+    private func publicRoom(at row: Int) -> MXPublicRoom? {
+        return dataSource.room(at: IndexPath(row: row, section: 0))
     }
     
     private func search(with pattern: String?) {
@@ -219,14 +223,14 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         let topic = MXTools.stripNewlineCharacters(room.summary.topic)
         let isJoined = room.summary.membership == .join
         let avatarStringUrl = room.summary.avatar
-        let mediaManager = self.session.mediaManager
+        let mediaManager: MXMediaManager = self.session.mediaManager
         
         return DirectoryRoomTableViewCellVM(title: displayName, numberOfUsers: joinedMembersCount, subtitle: topic, isJoined: isJoined, roomId: room.roomId, avatarUrl: avatarStringUrl, mediaManager: mediaManager)
     }
     
     private func roomCellViewModel(with roomIdOrAlias: String) -> DirectoryRoomTableViewCellVM {
         let displayName = roomIdOrAlias
-        let mediaManager = self.session.mediaManager
+        let mediaManager: MXMediaManager = self.session.mediaManager
         
         return DirectoryRoomTableViewCellVM(title: displayName, numberOfUsers: 0, subtitle: nil, isJoined: false, roomId: roomIdOrAlias, avatarUrl: nil, mediaManager: mediaManager)
     }
