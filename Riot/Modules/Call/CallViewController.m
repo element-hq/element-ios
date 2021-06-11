@@ -536,7 +536,7 @@
     {
         self.pipViewContainer.hidden = YES;
         self.localPreviewContainerView.hidden = !self.mxCall.isVideoCall;
-        self.callerImageView.hidden = NO;
+        self.callerImageView.hidden = self.mxCall.isVideoCall && self.mxCall.state == MXCallStateConnected;
         self.callerNameLabel.hidden = NO;
         self.callStatusLabel.hidden = NO;
         
