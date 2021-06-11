@@ -548,13 +548,6 @@ Matrix session observer used to detect new opened sessions.
     [[UNUserNotificationCenter currentNotificationCenter] removeUnwantedNotifications];
     [[UNUserNotificationCenter currentNotificationCenter] removeCallNotificationsFor:roomId];
     
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    {
-        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: application is active. There is something wrong.");
-        completion();
-        return;
-    }
-    
     if (@available(iOS 13.0, *))
     {
         //  for iOS 13, we'll just report the incoming call in the same runloop. It means we cannot call an async API here.
@@ -565,7 +558,7 @@ Matrix session observer used to detect new opened sessions.
         //  when we have a VoIP push while the application is killed, session.callManager will not be ready yet. Configure it.
         [[AppDelegate theDelegate] configureCallManagerIfRequiredForSession:session];
         
-        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: callInvite: %@", callInvite);
+        MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13+, callInvite: %@", callInvite);
         
         if (callInvite)
         {
@@ -616,11 +609,20 @@ Matrix session observer used to detect new opened sessions.
         else
         {
             //  It's a serious error. There is nothing to avoid iOS to kill us here.
-            MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13 and in bg, but we don't have the callInvite event for the eventId: %@. There is something wrong.", eventId);
+            MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: iOS 13+, but we don't have the callInvite event for the eventId: %@.", eventId);
         }
     }
     else
     {
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+        {
+            //  below iOS 13, we don't have to report a call immediately.
+            //  We can wait for a call invite from event stream and process.
+            MXLogDebug(@"[PushNotificationService] didReceiveIncomingPushWithPayload: Below iOS 13 and active app. Do nothing.");
+            completion();
+            return;
+        }
+        
         //  below iOS 13, we can call an async API. After background sync, we'll hopefully fetch the call invite and report a new call to the CallKit.
         [self launchBackgroundSync];
     }
