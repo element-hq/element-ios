@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="cGR-49-HWB" customClass="VoiceMessagePlaybackView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="427" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LPc-i8-8UC">
+                    <rect key="frame" x="0.0" y="0.0" width="427" height="44"/>
+                    <color key="backgroundColor" red="0.8901960784313725" green="0.90980392156862744" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="999" constant="44" id="RFF-Im-d7x"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eAi-HM-Wvj">
+                    <rect key="frame" x="44" y="0.0" width="40" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="iuv-MD-XYg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GL1-b8-dZK">
+                    <rect key="frame" x="8" y="6" width="32" height="32"/>
+                    <state key="normal" image="voice_message_play_button"/>
+                    <connections>
+                        <action selector="onPlayButtonTap" destination="cGR-49-HWB" eventType="touchUpInside" id="B5j-st-pUp"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fl-yZ-dZB">
+                    <rect key="frame" x="88" y="7" width="331" height="30"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Ugy-Dx-gcs"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Ugy-Dx-gcs" firstAttribute="trailing" secondItem="LPc-i8-8UC" secondAttribute="trailing" id="2AH-VU-Kcc"/>
+                <constraint firstItem="7Fl-yZ-dZB" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" constant="7" id="4wl-W5-P44"/>
+                <constraint firstItem="eAi-HM-Wvj" firstAttribute="leading" secondItem="GL1-b8-dZK" secondAttribute="trailing" constant="4" id="89L-2g-RhG"/>
+                <constraint firstItem="LPc-i8-8UC" firstAttribute="leading" secondItem="Ugy-Dx-gcs" secondAttribute="leading" id="FnY-Ab-FVL"/>
+                <constraint firstAttribute="bottom" secondItem="eAi-HM-Wvj" secondAttribute="bottom" id="K3Q-rl-3zD"/>
+                <constraint firstItem="7Fl-yZ-dZB" firstAttribute="leading" secondItem="eAi-HM-Wvj" secondAttribute="trailing" constant="4" id="KUM-Pg-Ume"/>
+                <constraint firstItem="GL1-b8-dZK" firstAttribute="leading" secondItem="cGR-49-HWB" secondAttribute="leading" constant="8" id="RIG-A2-5bp"/>
+                <constraint firstItem="Ugy-Dx-gcs" firstAttribute="trailing" secondItem="7Fl-yZ-dZB" secondAttribute="trailing" constant="8" id="TRa-VB-QEc"/>
+                <constraint firstItem="GL1-b8-dZK" firstAttribute="centerY" secondItem="cGR-49-HWB" secondAttribute="centerY" id="TW1-ng-w6C"/>
+                <constraint firstAttribute="bottom" secondItem="7Fl-yZ-dZB" secondAttribute="bottom" constant="7" id="Zx4-eB-H2q"/>
+                <constraint firstAttribute="bottom" secondItem="LPc-i8-8UC" secondAttribute="bottom" id="apf-b1-yIb"/>
+                <constraint firstItem="eAi-HM-Wvj" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" id="jxd-Mq-ASx"/>
+                <constraint firstAttribute="bottom" secondItem="GL1-b8-dZK" secondAttribute="bottom" constant="6" id="nzi-5c-92a"/>
+                <constraint firstItem="GL1-b8-dZK" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" constant="6" id="zCt-aS-zv4"/>
+                <constraint firstItem="LPc-i8-8UC" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" id="zl5-Sf-qSF"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="backgroundView" destination="LPc-i8-8UC" id="mfD-md-nTj"/>
+                <outlet property="elapsedTimeLabel" destination="eAi-HM-Wvj" id="z70-aJ-O90"/>
+                <outlet property="playButton" destination="GL1-b8-dZK" id="5u7-CG-d99"/>
+                <outlet property="waveformContainerView" destination="7Fl-yZ-dZB" id="f9u-wS-jvG"/>
+            </connections>
+            <point key="canvasLocation" x="-1742.753623188406" y="-299.33035714285711"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="voice_message_play_button" width="32" height="32"/>
+    </resources>
+</document>

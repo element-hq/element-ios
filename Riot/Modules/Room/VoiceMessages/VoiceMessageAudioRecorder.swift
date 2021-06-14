@@ -17,17 +17,17 @@
 import Foundation
 import AVFoundation
 
-protocol AudioRecorderDelegate: AnyObject {
-    func audioRecorderDidStartRecording(_ audioRecorder: AudioRecorder)
-    func audioRecorderDidFinishRecording(_ audioRecorder: AudioRecorder)
-    func audioRecorder(_ audioRecorder: AudioRecorder, didFailWithError: Error)
+protocol VoiceMessageAudioRecorderDelegate: AnyObject {
+    func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder)
+    func audioRecorderDidFinishRecording(_ audioRecorder: VoiceMessageAudioRecorder)
+    func audioRecorder(_ audioRecorder: VoiceMessageAudioRecorder, didFailWithError: Error)
 }
 
-enum AudioRecorderError: Error {
+enum VoiceMessageAudioRecorderError: Error {
     case genericError
 }
 
-class AudioRecorder: NSObject, AVAudioRecorderDelegate {
+class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
     
     private var audioRecorder: AVAudioRecorder?
     
@@ -39,7 +39,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         return audioRecorder?.currentTime ?? 0
     }
     
-    weak var delegate: AudioRecorderDelegate?
+    weak var delegate: VoiceMessageAudioRecorderDelegate?
     
     func recordWithOuputURL(_ url: URL) {
         
@@ -55,7 +55,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
             audioRecorder?.record()
             delegate?.audioRecorderDidStartRecording(self)
         } catch {
-            delegate?.audioRecorder(self, didFailWithError: AudioRecorderError.genericError)
+            delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
         }
         
     }
@@ -70,12 +70,12 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
         if success {
             delegate?.audioRecorderDidFinishRecording(self)
         } else {
-            delegate?.audioRecorder(self, didFailWithError: AudioRecorderError.genericError)
+            delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
         }
     }
     
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
-        delegate?.audioRecorder(self, didFailWithError: AudioRecorderError.genericError)
+        delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
     }
 }
 

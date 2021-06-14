@@ -69,6 +69,7 @@ abstract_target 'RiotPods' do
     pod 'SwiftBase32', '~> 0.9.0'
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
+    pod 'DSWaveformImage', '~> 6.1.1'
 
     pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
 

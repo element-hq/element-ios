@@ -391,6 +391,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
     
+    [self.bubblesTableView registerClass:VoiceMessageBubbleCell.class forCellReuseIdentifier:VoiceMessageBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:VoiceMessageWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:VoiceMessageWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    
     [self vc_removeBackTitle];
     
     [self setupRemoveJitsiWidgetRemoveView];
@@ -2366,6 +2370,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         else if (bubbleData.tag == RoomBubbleCellDataTagGroupCall)
         {
             cellViewClass = RoomGroupCallStatusBubbleCell.class;
+        }
+        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage) {
+            if (bubbleData.isPaginationFirstBubble) {
+                cellViewClass = VoiceMessageWithPaginationTitleBubbleCell.class;
+            } else if (bubbleData.shouldHideSenderInformation) {
+                cellViewClass = VoiceMessageWithoutSenderInfoBubbleCell.class;
+            } else {
+                cellViewClass = VoiceMessageBubbleCell.class;
+            }
         }
         else if (bubbleData.isIncoming)
         {
@@ -6163,7 +6176,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 #pragma mark - VoiceMessageControllerDelegate
 
-- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController didRequestPermissionCheckWithCompletion:(void (^)(BOOL))completion
+- (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
 {
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     
@@ -6173,13 +6186,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [MXKTools checkAccessForMediaType:AVMediaTypeAudio
                   manualChangeMessage: message
             showPopUpInViewController:self completionHandler:^(BOOL granted) {
-        completion(granted);
+        
     }];
 }
 
 - (void)voiceMessageController:(VoiceMessageController *)voiceMessageController didRequestSendForFileAtURL:(NSURL *)url completion:(void (^)(BOOL))completion
 {
-    [self.roomDataSource sendAudioFile:url mimeType:@"audio/mp4" success:^(NSString *eventId) {
+    [self.roomDataSource sendVoiceMessage:url mimeType:@"audio/m4a" success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
     } failure:^(NSError *error) {
