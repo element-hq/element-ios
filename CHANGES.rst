@@ -18,6 +18,7 @@ Changes to be released in next version
  * SettingsViewController: Fix "auto" theme message to clarify that it matches the system theme on iOS 13+ (#2860).
  * VoIP: Handle application inactive state too for VoIP pushes (#4269).
  * VoIP: Do not terminate the app if protected data not available (#4419).
+ * KeyVerification: Listen for request state changes and show QR reader option when it's ready.
 
 ⚠️ API Changes
  * 
