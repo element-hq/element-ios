@@ -132,9 +132,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         self.registerKeyVerificationManagerNewRequestNotification(for: self.verificationManager)
         self.update(viewState: .loaded(viewData))
         self.registerTransactionDidStateChangeNotification()
+        self.registerKeyVerificationRequestChangeNotification()
     }
     
     private func cancel() {
+        self.unregisterKeyVerificationRequestChangeNotification()
         self.unregisterKeyVerificationManagerNewRequestNotification()
         self.cancelKeyVerificationRequest()
         self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModelDidCancel(self)
@@ -191,6 +193,42 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
         
         self.unregisterTransactionDidStateChangeNotification()
         self.acceptKeyVerificationRequest(keyVerificationRequest)
+    }
+    
+    // MARK: MXKeyVerificationRequestDidChangeNotification
+    
+    private func registerKeyVerificationRequestChangeNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyVerificationRequestChangeNotification(notification:)),
+                                               name: .MXKeyVerificationRequestDidChange,
+                                               object: nil)
+    }
+    
+    private func unregisterKeyVerificationRequestChangeNotification() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: .MXKeyVerificationRequestDidChange,
+                                                  object: nil)
+    }
+    
+    @objc private func keyVerificationRequestChangeNotification(notification: Notification) {
+        guard let request = notification.object as? MXKeyVerificationRequest else {
+            return
+        }
+        guard let keyVerificationRequest = keyVerificationRequest,
+              keyVerificationRequest.requestId == request.requestId else {
+            return
+        }
+        
+        guard keyVerificationRequest.isFromMyUser,
+              keyVerificationRequest.isFromMyDevice else {
+            return
+        }
+        
+        if keyVerificationRequest.state == MXKeyVerificationRequestStateReady {
+            self.unregisterKeyVerificationRequestChangeNotification()
+            self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self,
+                                                                             didAcceptKeyVerificationRequest: keyVerificationRequest)
+        }
     }
     
     // MARK: MXKeyVerificationTransactionDidChange
