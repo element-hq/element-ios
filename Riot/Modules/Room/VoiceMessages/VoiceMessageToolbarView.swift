@@ -22,7 +22,7 @@ protocol VoiceMessageToolbarViewDelegate: AnyObject {
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView)
 }
 
-enum VoiceMessageToolbarViewState {
+enum VoiceMessageToolbarViewUIState {
     case idle
     case recording
 }
@@ -53,7 +53,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     
     weak var delegate: VoiceMessageToolbarViewDelegate?
     
-    var state: VoiceMessageToolbarViewState = .idle {
+    var state: VoiceMessageToolbarViewUIState = .idle {
         didSet {
             switch state {
             case .recording:

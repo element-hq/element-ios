@@ -15,20 +15,21 @@
 //
 
 import Foundation
+import AVFoundation
 
 @objc public protocol VoiceMessageControllerDelegate: AnyObject {
-    func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestPermissionCheckWithCompletion: @escaping (Bool) -> Void)
+    func voiceMessageControllerDidRequestMicrophonePermission(_ voiceMessageController: VoiceMessageController)
     func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, completion: @escaping (Bool) -> Void)
 }
 
-public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, AudioRecorderDelegate {
+public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate {
     
     private let themeService: ThemeService
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
     private let timeFormatter: DateFormatter
     private var displayLink: CADisplayLink!
     
-    private var audioRecorder: AudioRecorder?
+    private var audioRecorder: VoiceMessageAudioRecorder?
     
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
@@ -58,18 +59,17 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - VoiceMessageToolbarViewDelegate
     
     func voiceMessageToolbarViewDidRequestRecordingStart(_ toolbarView: VoiceMessageToolbarView) {
-        delegate?.voiceMessageController(self, didRequestPermissionCheckWithCompletion: { [weak self] success in
-            guard let self = self, success != false else {
-                return
-            }
-            
-            let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-            let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString)
-            
-            self.audioRecorder = AudioRecorder()
-            self.audioRecorder?.delegate = self
-            self.audioRecorder?.recordWithOuputURL(temporaryFileURL)
-        })
+        guard AVAudioSession.sharedInstance().recordPermission == .granted else {
+            delegate?.voiceMessageControllerDidRequestMicrophonePermission(self)
+            return
+        }
+                
+        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
+        
+        self.audioRecorder = VoiceMessageAudioRecorder()
+        self.audioRecorder?.delegate = self
+        self.audioRecorder?.recordWithOuputURL(temporaryFileURL)
     }
     
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView) {
@@ -94,17 +94,17 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     // MARK: - AudioRecorderDelegate
     
-    func audioRecorderDidStartRecording(_ audioRecorder: AudioRecorder) {
+    func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
         _voiceMessageToolbarView.state = .recording
         self.displayLink.isPaused = false
     }
     
-    func audioRecorderDidFinishRecording(_ audioRecorder: AudioRecorder) {
+    func audioRecorderDidFinishRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
         _voiceMessageToolbarView.state = .idle
         displayLink.isPaused = true
     }
     
-    func audioRecorder(_ audioRecorder: AudioRecorder, didFailWithError: Error) {
+    func audioRecorder(_ audioRecorder: VoiceMessageAudioRecorder, didFailWithError: Error) {
         MXLog.error("Failed recording voice message.")
         _voiceMessageToolbarView.state = .idle
         displayLink.isPaused = true
