@@ -2175,7 +2175,19 @@
 
 - (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
 {
-    // TODO: Implement
+    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
+    
+    if (room)
+    {
+        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+        }];
+        coordinatorBridgePresenter = nil;
+    }
+    else
+    {
+        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+    }
 }
 
 @end
