@@ -219,6 +219,11 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             return
         }
         
+        guard keyVerificationRequest.isFromMyUser,
+              keyVerificationRequest.isFromMyDevice else {
+            return
+        }
+        
         if keyVerificationRequest.state == MXKeyVerificationRequestStateReady {
             self.unregisterKeyVerificationRequestChangeNotification()
             self.coordinatorDelegate?.keyVerificationSelfVerifyWaitViewModel(self,
