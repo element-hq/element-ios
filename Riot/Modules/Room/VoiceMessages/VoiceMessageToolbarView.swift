@@ -35,6 +35,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     @IBOutlet private var secondaryRecordButton: UIButton!
     
     @IBOutlet private var recordingChromeContainerView: UIView!
+    @IBOutlet private var recordingIndicatorView: UIView!
     
     @IBOutlet private var slideToCancelContainerView: UIView!
     @IBOutlet private var slideToCancelLabel: UILabel!
@@ -59,6 +60,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             case .recording:
                 let convertedFrame = self.convert(slideToCancelLabel.frame, from: slideToCancelContainerView)
                 cancelLabelToRecordButtonDistance = recordButtonsContainerView.frame.minX - convertedFrame.maxX
+                startAnimatingRecordingIndicator()
             case .idle:
                 cancelDrag()
             }
@@ -132,10 +134,10 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
         
         let translation = gestureRecognizer.translation(in: self)
         
-        recordButtonsContainerView.transform = CGAffineTransform(translationX: min(translation.x, 0.0), y: 0.0)
+        secondaryRecordButton.transform = CGAffineTransform(translationX: min(translation.x, 0.0), y: 0.0)
         slideToCancelContainerView.transform = CGAffineTransform(translationX: min(translation.x + cancelLabelToRecordButtonDistance, 0.0), y: 0.0)
         
-        if abs(translation.x) > self.bounds.width / 2.0 {
+        if abs(translation.x - recordButtonsContainerView.frame.width / 2.0) > self.bounds.width / 2.0 {
             cancelDrag()
         }
     }
@@ -155,8 +157,6 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
                 self.primaryRecordButton.alpha = 1.0
                 self.secondaryRecordButton.alpha = 0.0
                 self.recordingChromeContainerView.alpha = 0.0
-                self.recordButtonsContainerView.transform = .identity
-                self.slideToCancelContainerView.transform = .identity
             case .recording:
                 self.backgroundView.alpha = 1.0
                 self.primaryRecordButton.alpha = 0.0
@@ -171,10 +171,35 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
             self.backgroundView.backgroundColor = theme.backgroundColor
             self.slideToCancelGradient.tintColor = theme.backgroundColor
             
-            self.primaryRecordButton.tintColor = theme.textSecondaryColor
+            self.primaryRecordButton.tintColor = theme.textTertiaryColor
             self.slideToCancelLabel.textColor = theme.textSecondaryColor
             self.slideToCancelChevron.tintColor = theme.textSecondaryColor
             self.elapsedTimeLabel.textColor = theme.textSecondaryColor
+        } completion: { _ in
+            switch self.state {
+            case .idle:
+                self.secondaryRecordButton.transform = .identity
+                self.slideToCancelContainerView.transform = .identity
+            default:
+                break
+            }
         }
+    }
+    
+    private func startAnimatingRecordingIndicator() {
+        if self.state != .recording {
+            return
+        }
+        
+        UIView.animate(withDuration: 0.5) {
+            if self.recordingIndicatorView.alpha > 0.0 {
+                self.recordingIndicatorView.alpha = 0.0
+            } else {
+                self.recordingIndicatorView.alpha = 1.0
+            }
+        } completion: { [weak self] _ in
+            self?.startAnimatingRecordingIndicator()
+        }
+        
     }
 }

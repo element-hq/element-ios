@@ -113,6 +113,7 @@
                 <outlet property="primaryRecordButton" destination="BDj-Sw-VQ5" id="dg3-fG-Bym"/>
                 <outlet property="recordButtonsContainerView" destination="7OQ-1F-5qT" id="HDQ-r9-2Tu"/>
                 <outlet property="recordingChromeContainerView" destination="dyu-ha-046" id="u7O-Vb-T2W"/>
+                <outlet property="recordingIndicatorView" destination="miF-pM-B9J" id="zNy-ms-awL"/>
                 <outlet property="secondaryRecordButton" destination="rel-Fo-ROL" id="KXM-gt-9hS"/>
                 <outlet property="slideToCancelChevron" destination="82A-vC-KEp" id="Chg-EH-UBv"/>
                 <outlet property="slideToCancelContainerView" destination="6FH-4Q-Z5e" id="qCc-rl-vQX"/>

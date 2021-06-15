@@ -45,7 +45,8 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
     
     var attachment: MXKAttachment? {
         didSet {
-            if oldValue?.contentURL == attachment?.contentURL {
+            if oldValue?.contentURL == attachment?.contentURL &&
+                oldValue?.eventSentState == attachment?.eventSentState {
                 return
             }
             
@@ -104,6 +105,10 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
     
     // MARK: - VoiceMessageAudioPlayerDelegate
     
+    func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
+        updateUI()
+    }
+    
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         state = .playing
     }
@@ -143,7 +148,7 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
         
         switch state {
         case .stopped:
-            elapsedTimeLabel.text = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: 0.0))
+            elapsedTimeLabel.text = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.duration))
             waveformView.progress = 0.0
         default:
             elapsedTimeLabel.text = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
