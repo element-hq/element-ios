@@ -22,6 +22,10 @@ final class ShowDirectoryViewController: UIViewController {
     
     // MARK: - Constants
     
+    private enum Constants {
+        static let networkHeaderViewEstimatedHeight: CGFloat = 40.0
+    }
+    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -312,9 +316,24 @@ extension ShowDirectoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return UITableView.automaticDimension
     }
     
+    func tableView(_ tableView: UITableView,
+                   estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        let directorySection = self.sections[section]
+        
+        let estimatedHeight: CGFloat
+        
+        switch directorySection {
+        case .searchInput:
+            estimatedHeight = 0.0
+        case .publicRoomsDirectory:
+            estimatedHeight = Constants.networkHeaderViewEstimatedHeight
+        }
+        
+        return estimatedHeight
+    }
 }
 
 // MARK: - UISearchBarDelegate
