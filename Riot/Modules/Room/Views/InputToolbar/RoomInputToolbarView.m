@@ -81,6 +81,10 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
 {
+    if (BuildSettings.voiceMessagesEnabled == NO) {
+        return;
+    }
+    
     _voiceMessageToolbarView = voiceMessageToolbarView;
     self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.voiceMessageToolbarView];
@@ -433,6 +437,10 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 - (void)_updateUIWithTextMessage:(NSString *)textMessage animated:(BOOL)animated
 {
     self.actionMenuOpened = NO;
+    
+    if (BuildSettings.voiceMessagesEnabled == NO) {
+        return;
+    }
     
     [UIView animateWithDuration:(animated ? 0.15f : 0.0f) animations:^{
         self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
