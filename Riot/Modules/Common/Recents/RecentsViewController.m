@@ -2186,7 +2186,29 @@
     }
     else
     {
-        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+        RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+                                                                        andSession:self.mainSession];
+        
+        [self startActivityIndicator];
+
+        // Try to get more information about the room before opening its preview
+        MXWeakify(self);
+        
+        [roomPreviewData peekInRoom:^(BOOL succeeded) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self stopActivityIndicator];
+                        
+            if (succeeded) {
+                [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+                    [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                }];
+                self.roomsDirectoryCoordinatorBridgePresenter = nil;
+            } else {
+                [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+            }
+        }];
     }
 }
 
