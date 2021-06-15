@@ -1768,7 +1768,7 @@ TableViewSectionsDelegate>
     
     if (indexPath)
     {
-        [self buttonCellForTableView:self.tableView atIndexPath:indexPath];
+        cell = [self buttonCellForTableView:self.tableView atIndexPath:indexPath];
     }
     
     return cell;
