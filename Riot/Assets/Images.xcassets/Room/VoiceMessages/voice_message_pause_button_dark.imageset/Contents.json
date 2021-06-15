@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "voice_message_pause_button.png",
+      "filename" : "voice_message_pause_button_dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "voice_message_pause_button@2x.png",
+      "filename" : "voice_message_pause_button_dark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "voice_message_pause_button@3x.png",
+      "filename" : "voice_message_pause_button_dark@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

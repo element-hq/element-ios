@@ -82,6 +82,8 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
 
         super.init(coder: coder)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+        
         audioPlayer.delegate = self
         
         displayLink = CADisplayLink(target: self, selector: #selector(handleDisplayLinkTick))
@@ -124,7 +126,20 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
     
     private func updateUI() {
         playButton.isEnabled = (state != .error)
-        playButton.setImage((state == .playing ? Asset.Images.voiceMessagePauseButton.image : Asset.Images.voiceMessagePlayButton.image), for: .normal)
+        
+        if ThemeService.shared().isCurrentThemeDark() {
+            playButton.setImage((state == .playing ? Asset.Images.voiceMessagePauseButtonDark.image : Asset.Images.voiceMessagePlayButtonDark.image), for: .normal)
+            backgroundView.backgroundColor = UIColor(rgb: 0x394049)
+            waveformView.primarylineColor =  ThemeService.shared().theme.colors.quarterlyContent
+            waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
+            elapsedTimeLabel.textColor = UIColor(rgb: 0x8E99A4)
+        } else {
+            playButton.setImage((state == .playing ? Asset.Images.voiceMessagePauseButtonLight.image : Asset.Images.voiceMessagePlayButtonLight.image), for: .normal)
+            backgroundView.backgroundColor = UIColor(rgb: 0xE3E8F0)
+            waveformView.primarylineColor = ThemeService.shared().theme.colors.quarterlyContent
+            waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
+            elapsedTimeLabel.textColor = UIColor(rgb: 0x737D8C)
+        }
         
         switch state {
         case .stopped:
@@ -211,5 +226,9 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
                 self?.waveformView.setSamples(samples)
             }
         })
+    }
+    
+    @objc private func handleThemeDidChange() {
+        updateUI()
     }
 }

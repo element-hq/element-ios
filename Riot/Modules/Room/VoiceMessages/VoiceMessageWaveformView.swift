@@ -19,12 +19,13 @@ import UIKit
 class VoiceMessageWaveformView: UIView {
 
     private let lineWidth: CGFloat = 2.0
-    private let primarylineColor = UIColor.lightGray
-    private let secondaryLineColor = UIColor.darkGray
     private let linePadding: CGFloat = 2.0
 
     private var samples: [Float] = []
     private var barViews: [CALayer] = []
+    
+    var primarylineColor = UIColor.lightGray
+    var secondaryLineColor = UIColor.darkGray
     
     var progress = 0.0 {
         didSet {
