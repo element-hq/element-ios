@@ -45,6 +45,9 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         return .publicRoomsDirectory(self.publicRoomsDirectoryViewModel)
     }
     
+    // Last room id or room alias search
+    private var lastSearchInputViewData: DirectoryRoomTableViewCellVM?
+    
     // MARK: Public
 
     weak var viewDelegate: ShowDirectoryViewModelViewDelegate?
@@ -151,7 +154,8 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     }
     
     private func resetSections() {
-        self.sections = [self.publicRoomsDirectorySection]
+        self.lastSearchInputViewData = nil
+        self.updateSectionsIfNeeded()
     }
     
     private func switchServer() {
@@ -163,6 +167,7 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
             guard let self = self else { return }
             switch response {
             case .success:
+                self.updateSectionsIfNeeded()
                 self.update(viewState: .loaded(self.sections))
             case .failure(let error):
                 self.update(viewState: .error(error))
@@ -185,7 +190,10 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         if let searchText = pattern, let searchInputViewData = self.searchInputViewData(from: searchText) {
             sections.append(.searchInput(searchInputViewData))
             
+            self.lastSearchInputViewData = searchInputViewData
             shouldUpdate = true
+        } else {
+            self.lastSearchInputViewData = nil
         }
         
         sections.append(self.publicRoomsDirectorySection)
@@ -197,6 +205,21 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         }
         
         self.paginatePublicRoomsDirectory(force: true)
+    }
+    
+    private func updateSectionsIfNeeded() {
+                      
+        var sections: [ShowDirectorySection] = []
+        
+        // Refresh search input view data if needed
+        // Useful when a room has been joined
+        if let lastSearchInputViewData = self.lastSearchInputViewData, let newSearchInputViewData = self.searchInputViewData(from: lastSearchInputViewData.roomId) {
+            sections.append(.searchInput(newSearchInputViewData))
+        }
+        
+        sections.append(self.publicRoomsDirectorySection)
+        
+        self.sections = sections
     }
     
     private func searchInputViewData(from searchText: String) -> DirectoryRoomTableViewCellVM? {
@@ -221,7 +244,7 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
         let displayName = room.summary.displayname
         let joinedMembersCount = Int(room.summary.membersCount.joined)
         let topic = MXTools.stripNewlineCharacters(room.summary.topic)
-        let isJoined = room.summary.membership == .join
+        let isJoined = room.summary.membership == .join || room.summary.membershipTransitionState == .joined
         let avatarStringUrl = room.summary.avatar
         let mediaManager: MXMediaManager = self.session.mediaManager
         
@@ -229,10 +252,20 @@ final class ShowDirectoryViewModel: NSObject, ShowDirectoryViewModelType {
     }
     
     private func roomCellViewModel(with roomIdOrAlias: String) -> DirectoryRoomTableViewCellVM {
-        let displayName = roomIdOrAlias
-        let mediaManager: MXMediaManager = self.session.mediaManager
         
-        return DirectoryRoomTableViewCellVM(title: displayName, numberOfUsers: 0, subtitle: nil, isJoined: false, roomId: roomIdOrAlias, avatarUrl: nil, mediaManager: mediaManager)
+        let directoryRoomTableViewCellVM: DirectoryRoomTableViewCellVM
+        
+        if let room = self.session.vc_room(withIdOrAlias: roomIdOrAlias) {
+            directoryRoomTableViewCellVM = self.roomCellViewModel(with: room)
+        } else {
+            let displayName = roomIdOrAlias
+            let mediaManager: MXMediaManager = self.session.mediaManager
+            
+            
+            directoryRoomTableViewCellVM = DirectoryRoomTableViewCellVM(title: displayName, numberOfUsers: 0, subtitle: nil, isJoined: false, roomId: roomIdOrAlias, avatarUrl: nil, mediaManager: mediaManager)
+        }
+        
+        return directoryRoomTableViewCellVM
     }
     
     private func update(viewState: ShowDirectoryViewState) {
@@ -261,6 +294,7 @@ extension ShowDirectoryViewModel: MXKDataSourceDelegate {
     }
     
     func dataSource(_ dataSource: MXKDataSource!, didStateChange state: MXKDataSourceState) {
+        self.updateSectionsIfNeeded()
         self.update(viewState: .loaded(self.sections))
     }
     

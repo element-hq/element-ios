@@ -58,10 +58,12 @@ class PublicRoomsDirectoryViewModel {
     private func roomCellViewModel(with publicRoom: MXPublicRoom) -> DirectoryRoomTableViewCellVM {
         let summary = session.roomSummary(withRoomId: publicRoom.roomId)
         
+        let isJoined = summary?.membership == .join || summary?.membershipTransitionState == .joined
+        
         return DirectoryRoomTableViewCellVM(title: publicRoom.displayname(),
                                             numberOfUsers: publicRoom.numJoinedMembers,
                                             subtitle: MXTools.stripNewlineCharacters(publicRoom.topic),
-                                            isJoined: summary?.membership == .join,
+                                            isJoined: isJoined,
                                             roomId: publicRoom.roomId,
                                             avatarUrl: publicRoom.avatarUrl,
                                             mediaManager: session.mediaManager)
