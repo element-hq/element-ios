@@ -10,6 +10,7 @@ Changes to be released in next version
  * Integrated FLEX for debug builds.
  * VoIP: Add dial pad for PSTN capable servers to menu on homescreen.
  * VoIP: Replace call bar with PiP tiles for every type of calls.
+ * Security settings: Display the cross-signing section (#4430).
 
 🐛 Bugfix
  * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).

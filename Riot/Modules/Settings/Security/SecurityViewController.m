@@ -36,9 +36,9 @@ enum
     SECTION_PIN_CODE,
     SECTION_CRYPTO_SESSIONS,
     SECTION_SECURE_BACKUP,
+    SECTION_CROSSSIGNING,
     SECTION_CRYPTOGRAPHY,
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
-    SECTION_CROSSSIGNING,
     SECTION_KEYBACKUP,
 #endif
     SECTION_ADVANCED,
@@ -363,6 +363,15 @@ TableViewSectionsDelegate>
         [sections addObject:secureBackupSection];
     }
     
+    // Cross-Signing
+    
+    Section *crossSigningSection = [Section sectionWithTag:SECTION_CROSSSIGNING];
+    crossSigningSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
+    
+    [crossSigningSection addRowsWithCount:[self numberOfRowsInCrossSigningSection]];
+    
+    [sections addObject:crossSigningSection];
+    
     // Cryptograhpy
     
     Section *cryptograhpySection = [Section sectionWithTag:SECTION_CRYPTOGRAPHY];
@@ -384,15 +393,6 @@ TableViewSectionsDelegate>
     }
 
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
-    
-    // Cross-Signing
-    
-    Section *crossSigningSection = [Section sectionWithTag:SECTION_CROSSSIGNING];
-    crossSigningSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
-    
-    [crossSigningSection addRowsWithCount:[self numberOfRowsInCrossSigningSection]];
-    
-    [sections addObject:crossSigningSection];
     
     // Keybackup
     
@@ -1425,6 +1425,7 @@ TableViewSectionsDelegate>
     {
         cell = [keyBackupSection cellForRowAtRow:row];
     }
+#endif
     else if (section == SECTION_CROSSSIGNING)
     {
         switch (row)
@@ -1444,7 +1445,6 @@ TableViewSectionsDelegate>
                 break;
         }
     }
-#endif
     else if (section == SECTION_CRYPTOGRAPHY)
     {
         switch (row)

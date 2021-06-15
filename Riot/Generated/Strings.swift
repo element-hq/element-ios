@@ -3802,7 +3802,7 @@ internal enum VectorL10n {
   internal static var securitySettingsCrosssigning: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning") 
   }
-  /// Bootstrap cross-signing
+  /// Set up
   internal static var securitySettingsCrosssigningBootstrap: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_bootstrap") 
   }
@@ -3818,7 +3818,7 @@ internal enum VectorL10n {
   internal static var securitySettingsCrosssigningInfoNotBootstrapped: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_info_not_bootstrapped") 
   }
-  /// Cross-signing is enabled.
+  /// Cross-signing is ready for use.
   internal static var securitySettingsCrosssigningInfoOk: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_info_ok") 
   }
@@ -3826,7 +3826,7 @@ internal enum VectorL10n {
   internal static var securitySettingsCrosssigningInfoTrusted: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_info_trusted") 
   }
-  /// Reset cross-signing
+  /// Reset
   internal static var securitySettingsCrosssigningReset: String { 
     return VectorL10n.tr("Vector", "security_settings_crosssigning_reset") 
   }

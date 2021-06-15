@@ -632,9 +632,9 @@ Tap the + to start adding people.";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing is not yet set up.";
 "security_settings_crosssigning_info_exists" = "Your account has a cross-signing identity, but it is not yet trusted by this session. Complete security of this session.";
 "security_settings_crosssigning_info_trusted" = "Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys. Complete security of this session.";
-"security_settings_crosssigning_info_ok" = "Cross-signing is enabled.";
-"security_settings_crosssigning_bootstrap" = "Bootstrap cross-signing";
-"security_settings_crosssigning_reset" = "Reset cross-signing";
+"security_settings_crosssigning_info_ok" = "Cross-signing is ready for use.";
+"security_settings_crosssigning_bootstrap" = "Set up";
+"security_settings_crosssigning_reset" = "Reset";
 "security_settings_crosssigning_complete_security" = "Complete security";
 
 "security_settings_cryptography" = "CRYPTOGRAPHY";
