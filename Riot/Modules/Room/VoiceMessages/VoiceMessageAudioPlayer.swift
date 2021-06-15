@@ -99,11 +99,8 @@ class VoiceMessageAudioPlayer: NSObject {
     func play() {
         isStopped = false
         
-        let audioSession = AVAudioSession.sharedInstance()
-        
         do {
-            try audioSession.setCategory(AVAudioSession.Category.playAndRecord, mode: .default, options: .defaultToSpeaker)
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
         } catch {
             MXLog.error("Could not redirect audio playback to speakers.")
         }

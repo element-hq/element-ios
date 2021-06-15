@@ -6179,9 +6179,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
 {
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    
-    // FIXME: fix permission message
-    NSString * message = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName];
+    NSString * message = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_voice_message"], appDisplayName];
     
     [MXKTools checkAccessForMediaType:AVMediaTypeAudio
                   manualChangeMessage: message
