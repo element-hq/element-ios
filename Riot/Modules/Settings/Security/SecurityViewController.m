@@ -90,6 +90,7 @@ enum {
 
 
 @interface SecurityViewController () <
+SettingsSecureBackupTableViewSectionDelegate,
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
 SettingsKeyBackupTableViewSectionDelegate,
 KeyBackupSetupCoordinatorBridgePresenterDelegate,
@@ -123,6 +124,8 @@ TableViewSectionsDelegate>
     
     // The current pushed view controller
     UIViewController *pushedViewController;
+    
+    SettingsSecureBackupTableViewSection *secureBackupSection;
 
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SettingsKeyBackupTableViewSection *keyBackupSection;
@@ -183,7 +186,6 @@ TableViewSectionsDelegate>
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
 
-#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     if (self.mainSession.crypto.backup)
     {
         MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
@@ -191,11 +193,15 @@ TableViewSectionsDelegate>
 
         if (deviceInfo)
         {
+            secureBackupSection = [[SettingsSecureBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
+            secureBackupSection.delegate = self;
+            
+#ifdef CROSS_SIGNING_AND_BACKUP_DEV
             keyBackupSection = [[SettingsKeyBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
             keyBackupSection.delegate = self;
+#endif
         }
     }
-#endif
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -355,13 +361,10 @@ TableViewSectionsDelegate>
     
     Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
     secureBackupSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_secure_backup", @"Vector", nil);
-
-    [secureBackupSection addRowsWithCount:[self numberOfRowsInSecureBackupSection]];
-
-    if (secureBackupSection.rows.count)
-    {
-        [sections addObject:secureBackupSection];
-    }
+    
+    [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
+    
+    [sections addObject:secureBackupSection];
     
     // Cross-Signing
     
@@ -1360,65 +1363,7 @@ TableViewSectionsDelegate>
     }
     else if (section == SECTION_SECURE_BACKUP)
     {
-        switch ([self secureBackupSectionEnumForRow:row])
-        {
-            case SECURE_BACKUP_DESCRIPTION:
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_secure_backup_description", @"Vector", nil)];
-                break;
-            }
-#ifdef CROSS_SIGNING_AND_BACKUP_DEV
-            case SECURE_BACKUP_INFO:
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:self.secureBackupInformation];
-                break;
-            }
-#endif
-            case SECURE_BACKUP_SETUP:
-            {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_setup", @"Vector", nil)
-                                                                            action:@selector(setupSecureBackup)
-                                                                      forTableView:tableView
-                                                                       atIndexPath:indexPath];
-                
-                cell = buttonCell;
-                break;
-            }
-            case SECURE_BACKUP_RESTORE:
-            {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_synchronise", @"Vector", nil)
-                                                                            action:@selector(restoreFromSecureBackup)
-                                                                      forTableView:tableView
-                                                                       atIndexPath:indexPath];
-                
-                cell = buttonCell;
-                break;
-            }
-            case SECURE_BACKUP_DELETE:
-            {
-                MXKTableViewCellWithButton *buttonCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_secure_backup_delete", @"Vector", nil)
-                                                                            action:@selector(deleteSecureBackup)
-                                                                      forTableView:tableView
-                                                                       atIndexPath:indexPath];
-                buttonCell.mxkButton.tintColor = ThemeService.shared.theme.warningColor;
-                
-                cell = buttonCell;
-                break;
-            }
-            
-            case SECURE_BACKUP_MANAGE_MANUALLY:
-            {
-                MXKTableViewCellWithTextView *textCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-                textCell.mxkTextView.text = @"Advanced: Manually manage keys";  // TODO
-                [textCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-                
-                cell = textCell;
-                break;
-            }
-        }
-
+        cell = [secureBackupSection cellForRowAtRow:row];
     }
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
     else if (section == SECTION_KEYBACKUP)
@@ -1738,6 +1683,112 @@ TableViewSectionsDelegate>
     self.setPinCoordinatorBridgePresenter.delegate = self;
     [self.setPinCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
+
+
+#pragma mark - SettingsSecureBackupTableViewSectionDelegate
+
+- (void)settingsSecureBackupTableViewSectionDidUpdate:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection
+{
+    [self reloadData];
+}
+
+- (MXKTableViewCellWithTextView *)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection textCellForRow:(NSInteger)textCellForRow
+{
+    MXKTableViewCellWithTextView *cell;
+    
+    NSIndexPath *indexPath = [self.tableViewSections exactIndexPathForRowTag:textCellForRow sectionTag:SECTION_SECURE_BACKUP];
+    
+    if (indexPath)
+    {
+        cell = [self textViewCellForTableView:self.tableView atIndexPath:indexPath];
+    }
+    
+    return cell;
+}
+
+- (MXKTableViewCellWithButton *)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection buttonCellForRow:(NSInteger)buttonCellForRow
+{
+    MXKTableViewCellWithButton *cell;
+    
+    NSIndexPath *indexPath = [self.tableViewSections exactIndexPathForRowTag:buttonCellForRow sectionTag:SECTION_SECURE_BACKUP];
+    
+    if (indexPath)
+    {
+        cell = [self buttonCellForTableView:self.tableView atIndexPath:indexPath];
+    }
+    
+    return cell;
+}
+
+- (void)settingsSecureBackupTableViewSectionShowKeyBackupSetup:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection
+{
+    [self showKeyBackupSetupFromSignOutFlow:NO];
+}
+
+- (void)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection showKeyBackupRecover:(MXKeyBackupVersion *)keyBackupVersion
+{
+    self.currentkeyBackupVersion = keyBackupVersion;
+    
+    // If key backup key is stored in SSSS, ask for secrets recovery before restoring key backup.
+    if (!self.mainSession.crypto.backup.hasPrivateKeyInCryptoStore
+        && self.mainSession.crypto.recoveryService.hasRecovery
+        && [self.mainSession.crypto.recoveryService hasSecretWithSecretId:MXSecretId.keyBackup])
+    {
+        [self showSecretsRecovery];
+    }
+    else
+    {
+        [self showKeyBackupRecover:keyBackupVersion fromViewController:self];
+    }
+}
+
+- (void)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection showKeyBackupDeleteConfirm:(MXKeyBackupVersion *)keyBackupVersion
+{
+    MXWeakify(self);
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    currentAlert =
+    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
+                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+    }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+        MXStrongifyAndReturnIfNil(self);
+        self->currentAlert = nil;
+        
+        [self->keyBackupSection deleteWithKeyBackupVersion:keyBackupVersion];
+    }]];
+    
+    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCDeleteKeyBackup"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection showActivityIndicator:(BOOL)show
+{
+    if (show)
+    {
+        [self startActivityIndicator];
+    }
+    else
+    {
+        [self stopActivityIndicator];
+    }
+}
+
+- (void)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection showError:(NSError *)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
 
 #pragma mark - SettingsKeyBackupTableViewSectionDelegate
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV

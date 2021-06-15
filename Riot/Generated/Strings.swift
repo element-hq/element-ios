@@ -3854,7 +3854,7 @@ internal enum VectorL10n {
   internal static var securitySettingsSecureBackup: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup") 
   }
-  /// Delete
+  /// Delete Backup
   internal static var securitySettingsSecureBackupDelete: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_delete") 
   }
@@ -3862,13 +3862,21 @@ internal enum VectorL10n {
   internal static var securitySettingsSecureBackupDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_description") 
   }
+  /// Checking…
+  internal static var securitySettingsSecureBackupInfoChecking: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_info_checking") 
+  }
+  /// This session is backing up your keys.
+  internal static var securitySettingsSecureBackupInfoValid: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_info_valid") 
+  }
+  /// Restore from Backup
+  internal static var securitySettingsSecureBackupRestore: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_restore") 
+  }
   /// Set up
   internal static var securitySettingsSecureBackupSetup: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_setup") 
-  }
-  /// Synchronise
-  internal static var securitySettingsSecureBackupSynchronise: String { 
-    return VectorL10n.tr("Vector", "security_settings_secure_backup_synchronise") 
   }
   /// Security
   internal static var securitySettingsTitle: String { 
