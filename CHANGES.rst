@@ -11,6 +11,7 @@ Changes to be released in next version
  * VoIP: Add dial pad for PSTN capable servers to menu on homescreen.
  * VoIP: Replace call bar with PiP tiles for every type of calls.
  * Security settings: Display the cross-signing section (#4430).
+ * Wording: Replace Recovery Passphrase and Recovery Key by Security Phrase and Security Key (#4268).
 
 🐛 Bugfix
  * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
