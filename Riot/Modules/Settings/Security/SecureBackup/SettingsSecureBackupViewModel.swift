@@ -90,19 +90,19 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
             viewState = .checkingBackup
 
         case MXKeyBackupStateDisabled, MXKeyBackupStateEnabling:
-            viewState = .noBackup
+            viewState = .noKeyBackup
 
         case MXKeyBackupStateNotTrusted:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
-            viewState = .backupNotTrusted(keyBackupVersion, keyBackupVersionTrust)
+            viewState = .keyBackupNotTrusted(keyBackupVersion, keyBackupVersionTrust)
 
         case MXKeyBackupStateReadyToBackUp:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
-            viewState = .backup(keyBackupVersion, keyBackupVersionTrust)
+            viewState = .keyBackup(keyBackupVersion, keyBackupVersionTrust)
 
         case MXKeyBackupStateWillBackUp, MXKeyBackupStateBackingUp:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
@@ -115,7 +115,7 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
                     return
                 }
 
-                sself.viewDelegate?.settingsSecureBackupViewModel(sself, didUpdateViewState: .backupAndRunning(keyBackupVersion, keyBackupVersionTrust, progress))
+                sself.viewDelegate?.settingsSecureBackupViewModel(sself, didUpdateViewState: .keyBackupAndRunning(keyBackupVersion, keyBackupVersionTrust, progress))
             }
         default:
             break

@@ -134,7 +134,7 @@ private enum BackupRows {
                 .info(text: text)
             ]
             
-        case .noBackup:
+        case .noKeyBackup:
             
             let noBackup = VectorL10n.settingsKeyBackupInfoNone
             let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
@@ -144,11 +144,12 @@ private enum BackupRows {
             backupRows = [
                 .info(text: VectorL10n.securitySettingsSecureBackupDescription),
                 .info(text: backupInfoText),
-                .createKeyBackupAction
+                .createKeyBackupAction,
+                .resetSecureBackupAction
             ]
             
-        case .backup(let keyBackupVersion, let keyBackupVersionTrust),
-             .backupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _):
+        case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
+             .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _):
             
             let info = VectorL10n.securitySettingsSecureBackupDescription
             let backupStatus = VectorL10n.securitySettingsSecureBackupInfoValid
@@ -212,7 +213,7 @@ private enum BackupRows {
 //
 //            backupRows = backupAndRunningViewStateRows
             
-        case .backupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
+        case .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
             
             // TODO: What?
             let info = VectorL10n.securitySettingsSecureBackupDescription
