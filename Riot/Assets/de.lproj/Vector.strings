@@ -147,7 +147,7 @@
 "room_participants_action_start_video_call" = "Starte Video-Anruf";
 "room_participants_action_mention" = "Erwähnen";
 // Chat
-"room_jump_to_first_unread" = "Zur ersten ungelesenen Nachricht springen";
+"room_jump_to_first_unread" = "Zur ersten ungelesenen Nachricht";
 "room_new_message_notification" = "%d neue Nachricht";
 "room_new_messages_notification" = "%d neue Nachrichten";
 "room_one_user_is_typing" = "%@ tippt…";
@@ -892,7 +892,7 @@
 "settings_add_3pid_password_title_msidsn" = "Telefonnummer hinzufügen";
 "settings_add_3pid_password_message" = "Um fortzufahren, bitte Passwort eingeben";
 "settings_add_3pid_invalid_password_message" = "Ungültige Anmeldedaten";
-"identity_server_settings_disconnect_info" = "Eine Trennung von deinem Identitätsserver würde bedeuten, dass du weder von anderen Nutzer gefunden werden, noch diese dich per E-Mail oder Telefonnummer einladen können.";
+"identity_server_settings_disconnect_info" = "Eine Trennung vom Identitätsserver bedeutet, dass du weder von anderen Nutzer gefunden werden, noch diese dich per E-Mail oder Telefonnummer einladen können.";
 "error_not_supported_on_mobile" = "Dies ist in der Mobilvariante von %@ nicht möglich.";
 "settings_integrations" = "INTEGRATIONEN";
 "settings_integrations_allow_button" = "Integrationen verwalten";
@@ -1058,7 +1058,7 @@
 "key_verification_other_session_title" = "Sitzung verifizieren";
 "key_verification_new_session_title" = "Neue Sitzung verifizieren";
 "key_verification_this_session_title" = "Verifiziere diese Sitzung";
-"device_verification_security_advice_emoji" = "Vergleiche die einzigartigen Emojis und kontrolliere, dass sie in derselben Reihenfolge angezeigt werden.";
+"device_verification_security_advice_emoji" = "Vergleiche die Emojis und kontrolliere, dass sie in derselben Reihenfolge angezeigt werden.";
 "device_verification_security_advice_number" = "Vergleiche die Zahlen und stell sicher, dass sie in derselben Reihenfolge angezeigt werden.";
 "key_verification_self_verify_current_session_alert_title" = "Verifiziere diese Sitzung";
 "key_verification_self_verify_current_session_alert_message" = "Andere Benutzer vertrauen ihr vielleicht nicht.";
@@ -1324,7 +1324,7 @@
 "callbar_active_and_single_paused" = "1 aktiver Anruf (%1$s) · 1 pausierter Anruf";
 
 // Call Bar
-"callbar_only_single_active" = "Zurück zum laufenden Anruf (%@)";
+"callbar_only_single_active" = "Zurück zum Anruf (%@)";
 "room_event_action_delete_confirmation_message" = "Möchtest Du die nicht gesendete Nachricht wirklich löschen?";
 "room_event_action_delete_confirmation_title" = "Nicht gesendete Nachricht löschen";
 "room_details_integrations" = "Integrationen";
