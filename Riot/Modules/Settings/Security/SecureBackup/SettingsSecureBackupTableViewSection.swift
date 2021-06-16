@@ -60,7 +60,7 @@ private enum BackupRows {
     private var viewModel: SettingsSecureBackupViewModelType!
 
     // Need to know the state to make `cellForRow` deliver cells accordingly
-    private var viewState: SettingsSecureBackupViewState = .checkingBackup {
+    private var viewState: SettingsSecureBackupViewState = .loading {
         didSet {
             self.updateBackupRows()
         }
@@ -124,91 +124,59 @@ private enum BackupRows {
         let backupRows: [BackupRows]
         
         switch self.viewState {
-        case .checkingBackup:
+        case .loading:
             backupRows = [
                 .info(text: VectorL10n.securitySettingsSecureBackupInfoChecking),
                 .description(text: VectorL10n.securitySettingsSecureBackupDescription)
             ]
             
-        case .noSecureBackup:
-            let noBackup = VectorL10n.settingsKeyBackupInfoNone
-            let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-            let infoText = [noBackup, signoutWarning].joined(separator: "\n")
-            
-            backupRows = [
-                .info(text: infoText),
-                .createSecureBackupAction,
-                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
-            ]
-            
-        case .noSecureBackupButKeyBackup(let keyBackupVersion, let keyBackupVersionTrust):
-            backupRows = [
-                .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
-                .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
-                .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
-                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
-            ]
-            
-        case .noKeyBackup:
-            let noBackup = VectorL10n.settingsKeyBackupInfoNone
-            let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-            let infoText = [noBackup, signoutWarning].joined(separator: "\n")
-            
-            backupRows = [
-                .info(text: infoText),
-                .createKeyBackupAction,
-                .resetSecureBackupAction,
-                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
-            ]
-            
-        case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
-             .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _):
-            backupRows = [
-                .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
-                .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
-                .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
-                .resetSecureBackupAction,
-                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
-            ]
-            
-        case .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
-            
-            // TODO: What?
-            let info = VectorL10n.securitySettingsSecureBackupDescription
-            backupRows =  [
-                .info(text: info)
-            ]
-            
-//            let info = VectorL10n.securitySettingsSecureBackupDescription
-//            let backupStatus = VectorL10n.settingsSecureBackupInfoNotValid
-//            let signoutWarning = VectorL10n.settingsSecureBackupInfoSignoutWarning
-//            let backupStrings = [info, "", backupStatus, "", signoutWarning]
-//            let backupInfoText = backupStrings.joined(separator: "\n")
-//
-//            let version = VectorL10n.settingsSecureBackupInfoVersion(keyBackupVersion.version ?? "")
-//            let algorithm = VectorL10n.settingsSecureBackupInfoAlgorithm(keyBackupVersion.algorithm)
-//            let additionalStrings = [version, algorithm]
-//            let additionalInfoText = additionalStrings.joined(separator: "\n")
-//
-//            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
-//            let backupTrustInfoText = backupTrust.joined(separator: "\n")
-//
-//            var backupNotTrustedViewStateRows: [BackupRows] = [
-//                .info(text: backupInfoText),
-//                .info(text: additionalInfoText),
-//                .info(text: backupTrustInfoText)
-//            ]
-//
-//            // TODO: Do not display restore button if all keys are stored on the device
-//            if true {
-//                backupNotTrustedViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.settingsSecureBackupButtonConnect))
-//            }
-//
-//            backupNotTrustedViewStateRows.append(.deleteAction(keyBackupVersion: keyBackupVersion))
-//
-//            backupRows = backupNotTrustedViewStateRows
+        case .noSecureBackup(let keyBackupState):
+            switch keyBackupState {
+            case .noKeyBackup:
+                let noBackup = VectorL10n.settingsKeyBackupInfoNone
+                let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
+                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                
+                backupRows = [
+                    .info(text: infoText),
+                    .createSecureBackupAction,
+                    .description(text: VectorL10n.securitySettingsSecureBackupDescription)
+                ]
+            case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
+                 .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _),
+                 .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
+                backupRows = [
+                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                    .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
+                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+                    .description(text: VectorL10n.securitySettingsSecureBackupDescription)
+                ]
+            }
+        case .secureBackup(let keyBackupState):
+            switch keyBackupState {
+            case .noKeyBackup:
+                let noBackup = VectorL10n.settingsKeyBackupInfoNone
+                let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
+                let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+                
+                backupRows = [
+                    .info(text: infoText),
+                    .createKeyBackupAction,
+                    .resetSecureBackupAction,
+                    .description(text: VectorL10n.securitySettingsSecureBackupDescription)
+                ]
+            case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
+                 .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _),
+                 .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
+                backupRows = [
+                    .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                    .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
+                    .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+                    .resetSecureBackupAction,
+                    .description(text: VectorL10n.securitySettingsSecureBackupDescription)
+                ]
+            }
         }
-        
         self.backupRows = backupRows
     }
 

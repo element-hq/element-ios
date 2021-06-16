@@ -46,7 +46,7 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
 
         switch viewAction {
         case .load:
-            viewDelegate.settingsSecureBackupViewModel(self, didUpdateViewState: .checkingBackup)
+            viewDelegate.settingsSecureBackupViewModel(self, didUpdateViewState: .loading)
             self.checkKeyBackupState()
         case .resetSecureBackup,
              .createSecureBackup: // The implement supports both
@@ -86,26 +86,27 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
     private func computeState(withBackupVersionTrust keyBackupVersionTrust: MXKeyBackupVersionTrust? = nil) {
         
         var viewState: SettingsSecureBackupViewState?
+        var keyBackupState: SettingsSecureBackupViewState.KeyBackupState?
         switch self.keyBackup.state {
 
         case MXKeyBackupStateUnknown,
              MXKeyBackupStateCheckingBackUpOnHomeserver:
-            viewState = .checkingBackup
+            viewState = .loading
 
         case MXKeyBackupStateDisabled, MXKeyBackupStateEnabling:
-            viewState = .noKeyBackup
+            keyBackupState = .noKeyBackup
 
         case MXKeyBackupStateNotTrusted:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
-            viewState = .keyBackupNotTrusted(keyBackupVersion, keyBackupVersionTrust)
+            keyBackupState = .keyBackupNotTrusted(keyBackupVersion, keyBackupVersionTrust)
 
         case MXKeyBackupStateReadyToBackUp:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
-            viewState = .keyBackup(keyBackupVersion, keyBackupVersionTrust)
+            keyBackupState = .keyBackup(keyBackupVersion, keyBackupVersionTrust)
 
         case MXKeyBackupStateWillBackUp, MXKeyBackupStateBackingUp:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
@@ -114,28 +115,22 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
 
             // Get the backup progress before updating the state
             self.keyBackup.backupProgress { [weak self] (progress) in
-                guard let sself = self else {
+                guard let self = self else {
                     return
                 }
-
-                sself.viewDelegate?.settingsSecureBackupViewModel(sself, didUpdateViewState: .keyBackupAndRunning(keyBackupVersion, keyBackupVersionTrust, progress))
+                
+                let keyBackupState: SettingsSecureBackupViewState.KeyBackupState = .keyBackupAndRunning(keyBackupVersion, keyBackupVersionTrust, progress)
+                let viewState: SettingsSecureBackupViewState = self.recoveryService.hasRecovery() ? .secureBackup(keyBackupState) : .noSecureBackup(keyBackupState)
+                
+                self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: viewState)
             }
         default:
             break
         }
         
-        // We want to have a secure backup before having a key backup
-        if recoveryService.hasRecovery() == false {
-            switch viewState {
-            case .checkingBackup:
-            break
-            case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
-                 .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _),
-                 .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
-                viewState = .noSecureBackupButKeyBackup(keyBackupVersion, keyBackupVersionTrust)
-            default:
-                viewState = .noSecureBackup
-            }
+        // Turn secure backup and key back states into view state
+        if viewState == nil, let keyBackupState = keyBackupState {
+            viewState = recoveryService.hasRecovery() ? .secureBackup(keyBackupState) : .noSecureBackup(keyBackupState)
         }
 
         if let viewState = viewState {
