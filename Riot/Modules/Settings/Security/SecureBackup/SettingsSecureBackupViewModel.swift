@@ -85,12 +85,6 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
 
     private func computeState(withBackupVersionTrust keyBackupVersionTrust: MXKeyBackupVersionTrust? = nil) {
         
-        // We want to have a secure backup before having a key backup
-        if recoveryService.hasRecovery() == false {
-            self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: .noSecureBackup)
-            return
-        }
-
         var viewState: SettingsSecureBackupViewState?
         switch self.keyBackup.state {
 
@@ -129,9 +123,23 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
         default:
             break
         }
+        
+        // We want to have a secure backup before having a key backup
+        if recoveryService.hasRecovery() == false {
+            switch viewState {
+            case .checkingBackup:
+            break
+            case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
+                 .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _),
+                 .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
+                viewState = .noSecureBackupButKeyBackup(keyBackupVersion, keyBackupVersionTrust)
+            default:
+                viewState = .noSecureBackup
+            }
+        }
 
-        if let vviewState = viewState {
-            self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: vviewState)
+        if let viewState = viewState {
+            self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: viewState)
         }
     }
 

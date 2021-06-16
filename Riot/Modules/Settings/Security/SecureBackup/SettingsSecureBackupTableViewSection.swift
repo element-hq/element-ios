@@ -141,6 +141,14 @@ private enum BackupRows {
                 .description(text: VectorL10n.securitySettingsSecureBackupDescription)
             ]
             
+        case .noSecureBackupButKeyBackup(let keyBackupVersion, let keyBackupVersionTrust):
+            backupRows = [
+                .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
+                .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
+            ]
+            
         case .noKeyBackup:
             let noBackup = VectorL10n.settingsKeyBackupInfoNone
             let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning

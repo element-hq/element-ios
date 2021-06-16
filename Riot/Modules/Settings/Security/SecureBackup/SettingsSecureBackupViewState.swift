@@ -27,6 +27,7 @@ import UIKit
 enum SettingsSecureBackupViewState {
     case checkingBackup
     case noSecureBackup
+    case noSecureBackupButKeyBackup(MXKeyBackupVersion, MXKeyBackupVersionTrust)
     case noKeyBackup
     case keyBackup(MXKeyBackupVersion, MXKeyBackupVersionTrust)
     case keyBackupAndRunning(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress)
