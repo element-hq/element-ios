@@ -3554,6 +3554,14 @@ internal enum VectorL10n {
   internal static var secretsRecoveryWithKeyInformationDefault: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_default") 
   }
+  /// Enter your Recovery Key to continue.
+  internal static var secretsRecoveryWithKeyInformationUnlockSecureBackupWithKey: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_unlock_secure_backup_with_key") 
+  }
+  /// Enter your Recovery Passphrase to continue.
+  internal static var secretsRecoveryWithKeyInformationUnlockSecureBackupWithPhrase: String { 
+    return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_unlock_secure_backup_with_phrase") 
+  }
   /// Use your Recovery Key to verify this device.
   internal static var secretsRecoveryWithKeyInformationVerifyDevice: String { 
     return VectorL10n.tr("Vector", "secrets_recovery_with_key_information_verify_device") 

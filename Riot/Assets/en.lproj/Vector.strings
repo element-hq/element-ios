@@ -1455,6 +1455,8 @@ Tap the + to start adding people.";
 "secrets_recovery_with_key_title" = "Recovery Key";
 "secrets_recovery_with_key_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.";
 "secrets_recovery_with_key_information_verify_device" = "Use your Recovery Key to verify this device.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Enter your Recovery Passphrase to continue.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Enter your Recovery Key to continue.";
 "secrets_recovery_with_key_recovery_key_title" = "Enter";
 "secrets_recovery_with_key_recovery_key_placeholder" = "Enter Recovery Key";
 "secrets_recovery_with_key_recover_action" = "Use Key";

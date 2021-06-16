@@ -1073,7 +1073,7 @@ TableViewSectionsDelegate>
 
 - (void)restoreFromSecureBackup
 {
-    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalRestoreSecureBackup];
+    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalBridgeRestoreSecureBackup];
     
     [secretsRecoveryCoordinatorBridgePresenter presentFrom:self animated:true];
     secretsRecoveryCoordinatorBridgePresenter.delegate = self;
@@ -1955,7 +1955,7 @@ TableViewSectionsDelegate>
     
 - (void)showSecretsRecovery
 {
-    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalKeyBackup];
+    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalBridgeKeyBackup];
     
     [secretsRecoveryCoordinatorBridgePresenter presentFrom:self animated:true];
     secretsRecoveryCoordinatorBridgePresenter.delegate = self;
@@ -1971,7 +1971,7 @@ TableViewSectionsDelegate>
 {
     UIViewController *presentedViewController = [coordinatorBridgePresenter toPresentable];
     
-    if (coordinatorBridgePresenter.recoveryGoal == SecretsRecoveryGoalKeyBackup)
+    if (coordinatorBridgePresenter.recoveryGoal == SecretsRecoveryGoalBridgeKeyBackup)
     {
         // Go to the true key backup recovery screen
         if ([presentedViewController isKindOfClass:UINavigationController.class])
