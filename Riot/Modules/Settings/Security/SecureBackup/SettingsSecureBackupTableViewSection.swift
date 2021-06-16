@@ -47,6 +47,10 @@ private enum BackupRows {
     case deleteKeyBackupAction(keyBackupVersion: MXKeyBackupVersion)
 }
 
+/// SettingsSecureBackupTableViewSection provides UITableViewCells to manage secure backup and key backup.
+///
+/// All states are described in SettingsSecureBackupViewState.
+/// All actions in SettingsSecureBackupViewAction.
 @objc final class SettingsSecureBackupTableViewSection: NSObject {
 
     // MARK: - Properties

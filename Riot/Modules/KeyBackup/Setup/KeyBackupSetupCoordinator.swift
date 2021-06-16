@@ -124,7 +124,6 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     }
     
     private func showSetupWithSecureBackupSuccess(animated: Bool) {
-        
         let viewController = KeyBackupSetupSuccessFromSecureBackupViewController.instantiate()
         viewController.delegate = self
         self.navigationRouter.push(viewController, animated: animated, popCompletion: nil)

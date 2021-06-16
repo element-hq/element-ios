@@ -52,23 +52,6 @@ enum {
 };
 
 enum {
-    SECURE_BACKUP_DESCRIPTION,
-    // TODO: We can display the state of 4S both locally and on the server. Then, provide actions according to all combinations.
-    // - Does the 4S contains all the 4 keys server side?
-    // - Advice the user to do a recovery if there is less keys locally
-    // - Advice them to do a recovery if local keys are obsolete -> We cannot know now
-    // - Advice them to fix a secure backup if there is 4S but no key backup
-    // - Warm them if there is no 4S and they do not have all 3 signing keys locally. They will set up a not complete secure backup
-#ifdef CROSS_SIGNING_AND_BACKUP_DEV
-    SECURE_BACKUP_INFO,
-#endif
-    SECURE_BACKUP_SETUP,
-    SECURE_BACKUP_RESTORE,
-    SECURE_BACKUP_DELETE,
-    SECURE_BACKUP_MANAGE_MANUALLY,  // TODO: What to do with that?
-};
-
-enum {
     PIN_CODE_SETTING,
     PIN_CODE_DESCRIPTION,
     PIN_CODE_CHANGE,
@@ -91,9 +74,9 @@ enum {
 
 @interface SecurityViewController () <
 SettingsSecureBackupTableViewSectionDelegate,
+KeyBackupSetupCoordinatorBridgePresenterDelegate,
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
 SettingsKeyBackupTableViewSectionDelegate,
-KeyBackupSetupCoordinatorBridgePresenterDelegate,
 KeyBackupRecoverCoordinatorBridgePresenterDelegate,
 #endif
 UIDocumentInteractionControllerDelegate,
@@ -107,9 +90,6 @@ TableViewSectionsDelegate>
 
     // Devices
     NSMutableArray<MXDevice *> *devicesArray;
-    
-    // SECURE_BACKUP_* rows to display
-    NSArray<NSNumber *> *secureBackupSectionState;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -582,8 +562,6 @@ TableViewSectionsDelegate>
 
 - (void)reloadData
 {
-    [self refreshSecureBackupSectionData];
-    
     // Update table view sections and trigger a tableView reloadData
     [self updateSections];
 }
@@ -874,56 +852,6 @@ TableViewSectionsDelegate>
 
 #pragma mark - SSSS
 
-- (void)refreshSecureBackupSectionData
-{
-    MXRecoveryService *recoveryService =  self.mainSession.crypto.recoveryService;
-    NSMutableArray *secureBackupSectionState = [NSMutableArray new];
-    if (recoveryService.hasRecovery)
-    {
-        if (RiotSettings.shared.settingsSecurityScreenShowRestoreBackup)
-        {
-            [secureBackupSectionState addObject:@(SECURE_BACKUP_RESTORE)];
-        }
-        if (RiotSettings.shared.settingsSecurityScreenShowDeleteBackup)
-        {
-            [secureBackupSectionState addObject:@(SECURE_BACKUP_DELETE)];
-        }
-    }
-    else
-    {
-        if (RiotSettings.shared.settingsSecurityScreenShowSetupBackup)
-        {
-            [secureBackupSectionState addObject:@(SECURE_BACKUP_SETUP)];
-        }
-    }
-    
-    if (secureBackupSectionState.count)
-    {
-        [secureBackupSectionState addObject:@(SECURE_BACKUP_DESCRIPTION)];
-    }
-
-#ifdef CROSS_SIGNING_AND_BACKUP_DEV
-    [secureBackupSectionState addObject:@(SECURE_BACKUP_INFO)];
-#endif
-    
-    self->secureBackupSectionState = secureBackupSectionState;
-}
-
-- (NSUInteger)secureBackupSectionEnumForRow:(NSUInteger)row
-{
-    if (row < secureBackupSectionState.count)
-    {
-        return secureBackupSectionState[row].unsignedIntegerValue;
-    }
-    
-    return SECURE_BACKUP_DESCRIPTION;
-}
-
-- (NSUInteger)numberOfRowsInSecureBackupSection
-{
-    return secureBackupSectionState.count;
-}
-
 - (NSString*)secureBackupInformation
 {
     NSString *secureBackupInformation;
@@ -1066,32 +994,6 @@ TableViewSectionsDelegate>
     [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
     
     self.secureBackupSetupCoordinatorBridgePresenter = secureBackupSetupCoordinatorBridgePresenter;
-}
-
-- (void)restoreFromSecureBackup
-{
-    secretsRecoveryCoordinatorBridgePresenter = [[SecretsRecoveryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession recoveryGoal:SecretsRecoveryGoalBridgeRestoreSecureBackup];
-    
-    [secretsRecoveryCoordinatorBridgePresenter presentFrom:self animated:true];
-    secretsRecoveryCoordinatorBridgePresenter.delegate = self;
-}
-
-- (void)deleteSecureBackup
-{
-    MXRecoveryService *recoveryService = self.mainSession.crypto.recoveryService;
-    if (recoveryService)
-    {
-        [self startActivityIndicator];
-        [recoveryService deleteRecoveryWithDeleteServicesBackups:YES success:^{
-            [self stopActivityIndicator];
-            [self reloadData];
-        } failure:^(NSError * _Nonnull error) {
-            [self stopActivityIndicator];
-            [self reloadData];
-            
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
-        }];
-    }
 }
 
 
