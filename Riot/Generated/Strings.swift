@@ -3870,7 +3870,7 @@ internal enum VectorL10n {
   internal static var securitySettingsSecureBackupDelete: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_delete") 
   }
-  /// Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.
+  /// Back up your encryption keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Recovery Key.
   internal static var securitySettingsSecureBackupDescription: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_description") 
   }

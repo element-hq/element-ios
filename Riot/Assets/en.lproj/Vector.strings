@@ -621,7 +621,7 @@ Tap the + to start adding people.";
 "security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your password and reset Secure Backup.";
 
 "security_settings_secure_backup" = "SECURE BACKUP";
-"security_settings_secure_backup_description" =  "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+"security_settings_secure_backup_description" =  "Back up your encryption keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Recovery Key.";
 "security_settings_secure_backup_info_checking" = "Checking…";
 "security_settings_secure_backup_info_valid" = "This session is backing up your keys.";
 "security_settings_secure_backup_setup" = "Set up";
