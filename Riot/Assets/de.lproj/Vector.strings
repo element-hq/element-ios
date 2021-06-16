@@ -1324,7 +1324,7 @@
 "callbar_active_and_single_paused" = "1 aktiver Anruf (%1$s) · 1 pausierter Anruf";
 
 // Call Bar
-"callbar_only_single_active" = "Laufender Anruf (%@)";
+"callbar_only_single_active" = "Zurück zum laufenden Anruf (%@)";
 "room_event_action_delete_confirmation_message" = "Möchtest Du die nicht gesendete Nachricht wirklich löschen?";
 "room_event_action_delete_confirmation_title" = "Nicht gesendete Nachricht löschen";
 "room_details_integrations" = "Integrationen";
