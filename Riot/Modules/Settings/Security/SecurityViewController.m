@@ -126,10 +126,10 @@ TableViewSectionsDelegate>
     UIViewController *pushedViewController;
     
     SettingsSecureBackupTableViewSection *secureBackupSection;
-
+    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
+    
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
     SettingsKeyBackupTableViewSection *keyBackupSection;
-    KeyBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter;
 #endif
     KeyBackupRecoverCoordinatorBridgePresenter *keyBackupRecoverCoordinatorBridgePresenter;
 
@@ -264,11 +264,8 @@ TableViewSectionsDelegate>
         kThemeServiceDidChangeThemeNotificationObserver = nil;
     }
 
-#ifdef CROSS_SIGNING_AND_BACKUP_DEV
     keyBackupSetupCoordinatorBridgePresenter = nil;
-#endif
     keyBackupRecoverCoordinatorBridgePresenter = nil;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1795,7 +1792,7 @@ TableViewSectionsDelegate>
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
         
-        [self->keyBackupSection deleteWithKeyBackupVersion:keyBackupVersion];
+        [self->secureBackupSection deleteKeyBackupWithKeyBackupVersion:keyBackupVersion];
     }]];
     
     [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCDeleteKeyBackup"];
@@ -1819,6 +1816,30 @@ TableViewSectionsDelegate>
     [[AppDelegate theDelegate] showErrorAsAlert:error];
 }
 
+#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
+
+- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
+{
+    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    
+    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
+                                     isStartedFromSignOut:showFromSignOutFlow
+                                                 animated:true];
+    
+    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+}
+
+- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
+    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
+    keyBackupSetupCoordinatorBridgePresenter = nil;
+    
+    [secureBackupSection reload];
+}
 
 #pragma mark - SettingsKeyBackupTableViewSectionDelegate
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
@@ -1922,31 +1943,6 @@ TableViewSectionsDelegate>
 - (void)settingsKeyBackup:(SettingsKeyBackupTableViewSection *)settingsKeyBackupTableViewSection showError:(NSError *)error
 {
     [[AppDelegate theDelegate] showErrorAsAlert:error];
-}
-
-#pragma mark - KeyBackupRecoverCoordinatorBridgePresenter
-
-- (void)showKeyBackupSetupFromSignOutFlow:(BOOL)showFromSignOutFlow
-{
-    keyBackupSetupCoordinatorBridgePresenter = [[KeyBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-
-    [keyBackupSetupCoordinatorBridgePresenter presentFrom:self
-                                     isStartedFromSignOut:showFromSignOutFlow
-                                                 animated:true];
-
-    keyBackupSetupCoordinatorBridgePresenter.delegate = self;
-}
-
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidCancel:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
-}
-
-- (void)keyBackupSetupCoordinatorBridgePresenterDelegateDidSetupRecoveryKey:(KeyBackupSetupCoordinatorBridgePresenter *)bridgePresenter {
-    [keyBackupSetupCoordinatorBridgePresenter dismissWithAnimated:true];
-    keyBackupSetupCoordinatorBridgePresenter = nil;
-
-    [keyBackupSection reload];
 }
 
 #endif
