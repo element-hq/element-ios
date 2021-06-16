@@ -159,7 +159,7 @@
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet.";
 "room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren.";
-"room_prompt_resend" = "alle erneut senden";
+"room_prompt_resend" = "Alle erneut senden";
 "room_prompt_cancel" = "Alles abbrechen";
 "room_resend_unsent_messages" = "Ungesendete Nachrichten erneut senden";
 "room_delete_unsent_messages" = "Lösche ungesendete Nachrichten";
@@ -1360,5 +1360,5 @@
 
 // Chat
 "room_slide_to_end_group_call" = "Wische, um den Anruf für alle zu beenden";
-"callbar_only_single_active_group" = "Klicke, um den Anruf beizutreten";
+"callbar_only_single_active_group" = "Klicke, um den Anruf beizutreten (%@)";
 "event_formatter_call_answer" = "Annehmen";
