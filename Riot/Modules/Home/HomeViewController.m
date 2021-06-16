@@ -167,7 +167,7 @@
 
 - (void)presentSecureBackupSetup
 {
-    SecureBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureBackupSetupCoordinatorBridgePresenter *keyBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession allowOverwrite:NO];
     keyBackupSetupCoordinatorBridgePresenter.delegate = self;
 
     [keyBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];

@@ -1063,7 +1063,7 @@ TableViewSectionsDelegate>
 
 - (void)setupSecureBackup2
 {
-    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession allowOverwrite:YES];
     secureBackupSetupCoordinatorBridgePresenter.delegate = self;
     
     [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];
@@ -1718,6 +1718,11 @@ TableViewSectionsDelegate>
     }
     
     return cell;
+}
+
+- (void)settingsSecureBackupTableViewSectionShowSecureBackupReset:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection
+{
+    [self setupSecureBackup];
 }
 
 - (void)settingsSecureBackupTableViewSectionShowKeyBackupCreate:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection

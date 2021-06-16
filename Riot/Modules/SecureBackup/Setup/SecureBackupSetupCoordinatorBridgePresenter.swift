@@ -33,6 +33,7 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     // MARK: Private
     
     private let session: MXSession
+    private let allowOverwrite: Bool
     private var coordinator: SecureBackupSetupCoordinator?
     
     // MARK: Public
@@ -40,9 +41,10 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     weak var delegate: SecureBackupSetupCoordinatorBridgePresenterDelegate?
     
     // MARK: - Setup
-    
-    init(session: MXSession) {
+
+    init(session: MXSession, allowOverwrite: Bool) {
         self.session = session
+        self.allowOverwrite = allowOverwrite
         super.init()
     }
     
@@ -54,7 +56,7 @@ final class SecureBackupSetupCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let secureBackupSetupCoordinator = SecureBackupSetupCoordinator(session: self.session)
+        let secureBackupSetupCoordinator = SecureBackupSetupCoordinator(session: self.session, allowOverwrite: self.allowOverwrite)
         secureBackupSetupCoordinator.delegate = self
         viewController.present(secureBackupSetupCoordinator.toPresentable(), animated: animated, completion: nil)
         secureBackupSetupCoordinator.start()

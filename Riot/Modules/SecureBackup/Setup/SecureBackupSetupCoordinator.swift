@@ -30,6 +30,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     private let recoveryService: MXRecoveryService
     private let keyBackup: MXKeyBackup?
     private let checkKeyBackup: Bool
+    private let allowOverwrite: Bool
 
     // MARK: Public
 
@@ -45,11 +46,12 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     ///   - session: The MXSession.
     ///   - checkKeyBackup: Indicate false to ignore existing key backup.
     ///   - navigationRouter: Use existing navigation router to plug this flow or let nil to use new one.
-    init(session: MXSession, checkKeyBackup: Bool = true, navigationRouter: NavigationRouterType? = nil) {
+    init(session: MXSession, checkKeyBackup: Bool = true, allowOverwrite: Bool = false, navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.recoveryService = session.crypto.recoveryService
         self.keyBackup = session.crypto.backup
         self.checkKeyBackup = checkKeyBackup
+        self.allowOverwrite = allowOverwrite
         
         if let navigationRouter = navigationRouter {
             self.navigationRouter = navigationRouter
@@ -85,7 +87,7 @@ final class SecureBackupSetupCoordinator: SecureBackupSetupCoordinatorType {
     }
     
     private func showSetupKey(passphraseOnly: Bool, passphrase: String? = nil) {
-        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly)
+        let coordinator = SecretsSetupRecoveryKeyCoordinator(recoveryService: self.recoveryService, passphrase: passphrase, passphraseOnly: passphraseOnly, allowOverwrite: allowOverwrite)
         coordinator.delegate = self
         coordinator.start()
         

@@ -3882,6 +3882,10 @@ internal enum VectorL10n {
   internal static var securitySettingsSecureBackupInfoValid: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_info_valid") 
   }
+  /// Reset
+  internal static var securitySettingsSecureBackupReset: String { 
+    return VectorL10n.tr("Vector", "security_settings_secure_backup_reset") 
+  }
   /// Restore from Backup
   internal static var securitySettingsSecureBackupRestore: String { 
     return VectorL10n.tr("Vector", "security_settings_secure_backup_restore") 

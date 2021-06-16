@@ -625,6 +625,7 @@ Tap the + to start adding people.";
 "security_settings_secure_backup_info_checking" = "Checking…";
 "security_settings_secure_backup_info_valid" = "This session is backing up your keys.";
 "security_settings_secure_backup_setup" = "Set up";
+"security_settings_secure_backup_reset" = "Reset";
 "security_settings_secure_backup_restore" = "Restore from Backup";
 "security_settings_secure_backup_delete" = "Delete Backup";
 

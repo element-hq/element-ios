@@ -18,6 +18,7 @@ import UIKit
 
 enum SettingsSecureBackupViewAction {
     case load
+    case resetSecureBackup
     case createKeyBackup
     case restoreFromKeyBackup(MXKeyBackupVersion)
     case confirmDeleteKeyBackup(MXKeyBackupVersion)
