@@ -40,6 +40,7 @@ import UIKit
 private enum BackupRows {
     case info(text: String)
     case description(text: String)
+    case createSecureBackupAction
     case resetSecureBackupAction
     case createKeyBackupAction
     case restoreFromKeyBackupAction(keyBackupVersion: MXKeyBackupVersion, title: String)
@@ -71,8 +72,8 @@ private enum BackupRows {
 
     // MARK: - Public
 
-    @objc init(withKeyBackup keyBackup: MXKeyBackup, userDevice: MXDeviceInfo) {
-        self.viewModel = SettingsSecureBackupViewModel(keyBackup: keyBackup)
+    @objc init(withRecoveryService recoveryService: MXRecoveryService, keyBackup: MXKeyBackup, userDevice: MXDeviceInfo) {
+        self.viewModel = SettingsSecureBackupViewModel(recoveryService: recoveryService, keyBackup: keyBackup)
         self.userDevice = userDevice
         super.init()
         self.viewModel.viewDelegate = self
@@ -93,6 +94,8 @@ private enum BackupRows {
             cell = self.textCell(atRow: row, text: text)
         case .description(let text):
             cell = self.descriptionCell(atRow: row, text: text)
+        case .createSecureBackupAction:
+            cell = self.buttonCellForCreateSecureBackup(atRow: row)
         case .resetSecureBackupAction:
             cell = self.buttonCellForResetSecureBackup(atRow: row)
         case .createKeyBackupAction:
@@ -124,6 +127,17 @@ private enum BackupRows {
         case .checkingBackup:
             backupRows = [
                 .info(text: VectorL10n.securitySettingsSecureBackupInfoChecking),
+                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
+            ]
+            
+        case .noSecureBackup:
+            let noBackup = VectorL10n.settingsKeyBackupInfoNone
+            let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
+            let infoText = [noBackup, signoutWarning].joined(separator: "\n")
+            
+            backupRows = [
+                .info(text: infoText),
+                .createSecureBackupAction,
                 .description(text: VectorL10n.securitySettingsSecureBackupDescription)
             ]
             
@@ -213,6 +227,25 @@ private enum BackupRows {
     }
     
     // MARK: - Button cells
+    
+    private func buttonCellForCreateSecureBackup(atRow row: Int) -> UITableViewCell {
+        
+        guard let delegate = self.delegate else {
+            return UITableViewCell()
+        }
+        
+        let cell: MXKTableViewCellWithButton = delegate.settingsSecureBackupTableViewSection(self, buttonCellForRow: row)
+        
+        let btnTitle = VectorL10n.securitySettingsSecureBackupSetup
+        cell.mxkButton.setTitle(btnTitle, for: .normal)
+        cell.mxkButton.setTitle(btnTitle, for: .highlighted)
+        
+        cell.mxkButton.vc_addAction {
+            self.viewModel.process(viewAction: .createSecureBackup)
+        }
+        
+        return cell
+    }
     
     private func buttonCellForResetSecureBackup(atRow row: Int) -> UITableViewCell {
         

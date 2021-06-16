@@ -26,6 +26,7 @@ import UIKit
 /// - keyBackupNotTrusted: There is a backup on the homeserver but it is not trusted
 enum SettingsSecureBackupViewState {
     case checkingBackup
+    case noSecureBackup
     case noKeyBackup
     case keyBackup(MXKeyBackupVersion, MXKeyBackupVersionTrust)
     case keyBackupAndRunning(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress)

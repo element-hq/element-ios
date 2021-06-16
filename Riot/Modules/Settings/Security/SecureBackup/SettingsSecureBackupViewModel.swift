@@ -22,9 +22,11 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
     weak var viewDelegate: SettingsSecureBackupViewModelViewDelegate?
 
     // MARK: Private
+    private let recoveryService: MXRecoveryService
     private let keyBackup: MXKeyBackup
 
-    init(keyBackup: MXKeyBackup) {
+    init(recoveryService: MXRecoveryService, keyBackup: MXKeyBackup) {
+        self.recoveryService = recoveryService
         self.keyBackup = keyBackup
         self.registerKeyBackupVersionDidChangeStateNotification()
     }
@@ -46,7 +48,8 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
         case .load:
             viewDelegate.settingsSecureBackupViewModel(self, didUpdateViewState: .checkingBackup)
             self.checkKeyBackupState()
-        case .resetSecureBackup:
+        case .resetSecureBackup,
+             .createSecureBackup: // The implement supports both
             viewDelegate.settingsSecureBackupViewModelShowSecureBackupReset(self)
         case .createKeyBackup:
             viewDelegate.settingsSecureBackupViewModelShowKeyBackupCreate(self)
@@ -81,6 +84,12 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
     }
 
     private func computeState(withBackupVersionTrust keyBackupVersionTrust: MXKeyBackupVersionTrust? = nil) {
+        
+        // We want to have a secure backup before having a key backup
+        if recoveryService.hasRecovery() == false {
+            self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: .noSecureBackup)
+            return
+        }
 
         var viewState: SettingsSecureBackupViewState?
         switch self.keyBackup.state {
