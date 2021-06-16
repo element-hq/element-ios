@@ -193,7 +193,7 @@ TableViewSectionsDelegate>
 
         if (deviceInfo)
         {
-            secureBackupSection = [[SettingsSecureBackupTableViewSection alloc] initWithKeyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
+            secureBackupSection = [[SettingsSecureBackupTableViewSection alloc] initWithRecoveryService:self.mainSession.crypto.recoveryService keyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];
             secureBackupSection.delegate = self;
             
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
