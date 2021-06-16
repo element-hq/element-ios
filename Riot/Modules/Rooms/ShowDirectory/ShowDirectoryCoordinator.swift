@@ -58,10 +58,31 @@ final class ShowDirectoryCoordinator: ShowDirectoryCoordinatorType {
     func toPresentable() -> UIViewController {
         return self.showDirectoryViewController
     }
+    
+    // MARK: - Private
+    
+    private func createDirectoryServerPickerViewController() -> DirectoryServerPickerViewController {
+        let controller = DirectoryServerPickerViewController()
+        let dataSource: MXKDirectoryServersDataSource = MXKDirectoryServersDataSource(matrixSession: session)
+        dataSource.finalizeInitialization()
+        dataSource.roomDirectoryServers = BuildSettings.publicRoomsDirectoryServers
+        
+        controller.display(with: dataSource) { [weak self] (cellData) in
+            guard let self = self else { return }
+            guard let cellData = cellData else { return }
+            
+            self.showDirectoryViewModel.updatePublicRoomsDataSource(with: cellData)
+        }
+        
+        return controller
+    }
 }
 
 // MARK: - ShowDirectoryViewModelCoordinatorDelegate
 extension ShowDirectoryCoordinator: ShowDirectoryViewModelCoordinatorDelegate {
+    func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didSelectRoomWithIdOrAlias roomIdOrAlias: String) {
+        self.delegate?.showDirectoryCoordinator(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
+    }
     
     func showDirectoryViewModelDidSelect(_ viewModel: ShowDirectoryViewModelType, room: MXPublicRoom) {
         self.delegate?.showDirectoryCoordinator(self, didSelectRoom: room)
@@ -75,8 +96,8 @@ extension ShowDirectoryCoordinator: ShowDirectoryViewModelCoordinatorDelegate {
         self.delegate?.showDirectoryCoordinatorDidCancel(self)
     }
     
-    func showDirectoryViewModelWantsToShow(_ viewModel: ShowDirectoryViewModelType, controller: UIViewController) {
+    func showDirectoryViewModelWantsToShowDirectoryServerPicker(_ viewModel: ShowDirectoryViewModelType) {
+        let controller = self.createDirectoryServerPickerViewController()
         self.delegate?.showDirectoryCoordinatorWantsToShow(self, viewController: controller)
     }
-    
 }

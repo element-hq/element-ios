@@ -23,6 +23,7 @@ protocol ShowDirectoryCoordinatorDelegate: class {
     func showDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: ShowDirectoryCoordinatorType)
     func showDirectoryCoordinatorDidCancel(_ coordinator: ShowDirectoryCoordinatorType)
     func showDirectoryCoordinatorWantsToShow(_ coordinator: ShowDirectoryCoordinatorType, viewController: UIViewController)
+    func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoomWithIdOrAlias roomIdOrAlias: String)
 }
 
 /// `ShowDirectoryCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.

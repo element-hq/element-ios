@@ -44,4 +44,7 @@ Return the homeserver configuration based on HS Well-Known or BuildSettings prop
  */
 - (BOOL)vc_canSetupSecureBackup;
 
+// TODO: Move to SDK
+- (MXRoom*)vc_roomWithIdOrAlias:(NSString*)roomIdOrAlias;
+
 @end

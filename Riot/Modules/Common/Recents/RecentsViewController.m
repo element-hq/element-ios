@@ -2173,4 +2173,50 @@
     self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
+{
+    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
+    
+    if (room)
+    {
+        // Room is known show it directly
+        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+        }];
+        coordinatorBridgePresenter = nil;
+    }
+    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
+    {
+        // Room preview doesn't support room alias
+        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+    }
+    else
+    {
+        // Try to preview the room from his id
+        RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+                                                                        andSession:self.mainSession];
+        
+        [self startActivityIndicator];
+
+        // Try to get more information about the room before opening its preview
+        MXWeakify(self);
+        
+        [roomPreviewData peekInRoom:^(BOOL succeeded) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self stopActivityIndicator];
+                        
+            if (succeeded) {
+                [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+                    [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                }];
+                self.roomsDirectoryCoordinatorBridgePresenter = nil;
+            } else {
+                [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+            }
+        }];
+    }
+}
+
 @end
