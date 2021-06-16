@@ -111,17 +111,27 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
         })
     }
     
-    private func execute(block: (_ privateKey: Data, _ completion: @escaping (Result<Void, Error>) -> Void) -> Void, privateKey: Data) {
-        // Run the extenal code while the view state is .loading
-        block(privateKey) { result in
-            MXLog.debug("[SecretsRecoveryWithPassphraseViewModel] execute: Block returned: \(result)")
-            
-            switch result {
-            case .success:
-                self.update(viewState: .loaded)
-                self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidRecover(self)
-            case .failure(let error):
+    private func execute(block: @escaping (_ privateKey: Data, _ completion: @escaping (Result<Void, Error>) -> Void) -> Void, privateKey: Data) {
+        // Check the private key is valid before using it
+        self.recoveryService.checkPrivateKey(privateKey) { match in
+            guard match else {
+                // Reuse already managed error
+                let error = NSError(domain: MXRecoveryServiceErrorDomain, code: Int(MXRecoveryServiceErrorCode.badRecoveryKeyErrorCode.rawValue), userInfo: nil)
                 self.update(viewState: .error(error))
+                return
+            }
+            
+            // Run the extenal code while the view state is .loading
+            block(privateKey) { result in
+                MXLog.debug("[SecretsRecoveryWithPassphraseViewModel] execute: Block returned: \(result)")
+                
+                switch result {
+                case .success:
+                    self.update(viewState: .loaded)
+                    self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidRecover(self)
+                case .failure(let error):
+                    self.update(viewState: .error(error))
+                }
             }
         }
     }
