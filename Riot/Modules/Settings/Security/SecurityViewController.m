@@ -1720,7 +1720,7 @@ TableViewSectionsDelegate>
     return cell;
 }
 
-- (void)settingsSecureBackupTableViewSectionShowKeyBackupSetup:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection
+- (void)settingsSecureBackupTableViewSectionShowKeyBackupCreate:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection
 {
     [self showKeyBackupSetupFromSignOutFlow:NO];
 }

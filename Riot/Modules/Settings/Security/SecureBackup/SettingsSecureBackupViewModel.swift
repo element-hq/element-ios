@@ -46,8 +46,8 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
         case .load:
             viewDelegate.settingsSecureBackupViewModel(self, didUpdateViewState: .checkingBackup)
             self.checkKeyBackupState()
-        case .setup:
-            viewDelegate.settingsSecureBackupViewModelShowKeyBackupSetup(self)
+        case .createKeyBackup:
+            viewDelegate.settingsSecureBackupViewModelShowKeyBackupCreate(self)
         case .restoreFromKeyBackup(let keyBackupVersion):
             viewDelegate.settingsSecureBackupViewModel(self, showKeyBackupRecover: keyBackupVersion)
         case .confirmDeleteKeyBackup(let keyBackupVersion):

@@ -1806,6 +1806,10 @@ internal enum VectorL10n {
   internal static var keyBackupSetupSuccessFromRecoveryKeyRecoveryKeyTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_from_recovery_key_recovery_key_title") 
   }
+  /// Your keys are being backed up.
+  internal static var keyBackupSetupSuccessFromSecureBackupInfo: String { 
+    return VectorL10n.tr("Vector", "key_backup_setup_success_from_secure_backup_info") 
+  }
   /// Success!
   internal static var keyBackupSetupSuccessTitle: String { 
     return VectorL10n.tr("Vector", "key_backup_setup_success_title") 
@@ -4262,7 +4266,7 @@ internal enum VectorL10n {
   internal static var settingsKeyBackupInfoProgressDone: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_progress_done") 
   }
-  /// Connect this session to key backup before signing out to avoid losing any keys that may only be on this device.
+  /// Back up your keys before signing out to avoid losing them.
   internal static var settingsKeyBackupInfoSignoutWarning: String { 
     return VectorL10n.tr("Vector", "settings_key_backup_info_signout_warning") 
   }

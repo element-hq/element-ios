@@ -567,7 +567,7 @@ Tap the + to start adding people.";
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking…";
 "settings_key_backup_info_none" = "Your keys are not being backed up from this session.";
-"settings_key_backup_info_signout_warning" = "Connect this session to key backup before signing out to avoid losing any keys that may only be on this device.";
+"settings_key_backup_info_signout_warning" = "Back up your keys before signing out to avoid losing them.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
 "settings_key_backup_info_valid" = "This session is backing up your keys.";
@@ -1093,6 +1093,9 @@ Tap the + to start adding people.";
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "Recovery Key";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Make a Copy";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "I've made a copy";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Your keys are being backed up.";
 
 // MARK: Key backup recover
 
