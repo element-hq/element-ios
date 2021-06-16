@@ -142,9 +142,8 @@ private enum BackupRows {
                     .createSecureBackupAction,
                     .description(text: VectorL10n.securitySettingsSecureBackupDescription)
                 ]
-            case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
-                 .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _),
-                 .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
+            case .keyBackup(let keyBackupVersion, _, _),
+                 .keyBackupNotTrusted(let keyBackupVersion, _):     // Manage the key backup in the same way for the moment
                 backupRows = [
                     .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
@@ -165,9 +164,8 @@ private enum BackupRows {
                     .resetSecureBackupAction,
                     .description(text: VectorL10n.securitySettingsSecureBackupDescription)
                 ]
-            case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
-                 .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _),
-                 .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
+            case .keyBackup(let keyBackupVersion, _, _),
+                 .keyBackupNotTrusted(let keyBackupVersion, _):     // Manage the key backup in the same way for the moment
                 backupRows = [
                     .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
                     .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),

@@ -102,13 +102,7 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
             }
             keyBackupState = .keyBackupNotTrusted(keyBackupVersion, keyBackupVersionTrust)
 
-        case MXKeyBackupStateReadyToBackUp:
-            guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
-                return
-            }
-            keyBackupState = .keyBackup(keyBackupVersion, keyBackupVersionTrust)
-
-        case MXKeyBackupStateWillBackUp, MXKeyBackupStateBackingUp:
+        case MXKeyBackupStateReadyToBackUp, MXKeyBackupStateWillBackUp, MXKeyBackupStateBackingUp:
             guard let keyBackupVersion = self.keyBackup.keyBackupVersion, let keyBackupVersionTrust = keyBackupVersionTrust else {
                 return
             }
@@ -119,9 +113,8 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
                     return
                 }
                 
-                let keyBackupState: SettingsSecureBackupViewState.KeyBackupState = .keyBackupAndRunning(keyBackupVersion, keyBackupVersionTrust, progress)
+                let keyBackupState: SettingsSecureBackupViewState.KeyBackupState = .keyBackup(keyBackupVersion, keyBackupVersionTrust, progress)
                 let viewState: SettingsSecureBackupViewState = self.recoveryService.hasRecovery() ? .secureBackup(keyBackupState) : .noSecureBackup(keyBackupState)
-                
                 self.viewDelegate?.settingsSecureBackupViewModel(self, didUpdateViewState: viewState)
             }
         default:
@@ -129,7 +122,7 @@ final class SettingsSecureBackupViewModel: SettingsSecureBackupViewModelType {
         }
         
         // Turn secure backup and key back states into view state
-        if viewState == nil, let keyBackupState = keyBackupState {
+        if let keyBackupState = keyBackupState {
             viewState = recoveryService.hasRecovery() ? .secureBackup(keyBackupState) : .noSecureBackup(keyBackupState)
         }
 

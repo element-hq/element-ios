@@ -31,13 +31,11 @@ enum SettingsSecureBackupViewState {
     /// Internal key backup state. It is independent from the secure backup state.
     ///
     /// - noKeyBackup: There is no backup on the homeserver
-    /// - keyBackup: There is a valid backup on the homeserver. All keys have been backed up to it
-    /// - keyBackupAndRunning: There is a valid backup on the homeserver. Keys are being sent to it
+    /// - keyBackup: There is a valid running backup on the homeserver. Keys are being sent to it
     /// - keyBackupNotTrusted: There is a backup on the homeserver but it is not trusted
     enum KeyBackupState {
         case noKeyBackup
-        case keyBackup(MXKeyBackupVersion, MXKeyBackupVersionTrust)
-        case keyBackupAndRunning(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress)
+        case keyBackup(MXKeyBackupVersion, MXKeyBackupVersionTrust, Progress)
         case keyBackupNotTrusted(MXKeyBackupVersion, MXKeyBackupVersionTrust)
     }
 }
