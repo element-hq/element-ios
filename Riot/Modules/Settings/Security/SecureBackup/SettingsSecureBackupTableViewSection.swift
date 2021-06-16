@@ -21,6 +21,7 @@ import UIKit
     func settingsSecureBackupTableViewSectionDidUpdate(_ settingsSecureBackupTableViewSection: SettingsSecureBackupTableViewSection)
 
     func settingsSecureBackupTableViewSection(_ settingsSecureBackupTableViewSection: SettingsSecureBackupTableViewSection, textCellForRow: Int) -> MXKTableViewCellWithTextView
+    func settingsSecureBackupTableViewSection(_ settingsSecureBackupTableViewSection: SettingsSecureBackupTableViewSection, descriptionCellForRow: Int) -> MXKTableViewCell
     func settingsSecureBackupTableViewSection(_ settingsSecureBackupTableViewSection: SettingsSecureBackupTableViewSection, buttonCellForRow: Int) -> MXKTableViewCellWithButton
 
     // Secure backup
@@ -38,6 +39,7 @@ import UIKit
 
 private enum BackupRows {
     case info(text: String)
+    case description(text: String)
     case resetSecureBackupAction
     case createKeyBackupAction
     case restoreFromKeyBackupAction(keyBackupVersion: MXKeyBackupVersion, title: String)
@@ -83,18 +85,14 @@ private enum BackupRows {
     }
     
     @objc func cellForRow(atRow row: Int) -> UITableViewCell {
-        guard let delegate = self.delegate else {
-            return UITableViewCell()
-        }
-        
         let backupRow = self.backupRows[row]
         
         var cell: UITableViewCell
         switch backupRow {
-        case .info(let infoText):
-            let infoCell: MXKTableViewCellWithTextView = delegate.settingsSecureBackupTableViewSection(self, textCellForRow: row)
-            infoCell.mxkTextView.text = infoText
-            cell = infoCell
+        case .info(let text):
+            cell = self.textCell(atRow: row, text: text)
+        case .description(let text):
+            cell = self.descriptionCell(atRow: row, text: text)
         case .resetSecureBackupAction:
             cell = self.buttonCellForResetSecureBackup(atRow: row)
         case .createKeyBackupAction:
@@ -124,94 +122,32 @@ private enum BackupRows {
         
         switch self.viewState {
         case .checkingBackup:
-            
-            let info = VectorL10n.securitySettingsSecureBackupDescription
-            let checking = VectorL10n.securitySettingsSecureBackupInfoChecking
-            let strings = [info, "", checking]
-            let text = strings.joined(separator: "\n")
-            
             backupRows = [
-                .info(text: text)
+                .info(text: VectorL10n.securitySettingsSecureBackupInfoChecking),
+                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
             ]
             
         case .noKeyBackup:
-            
             let noBackup = VectorL10n.settingsKeyBackupInfoNone
             let signoutWarning = VectorL10n.settingsKeyBackupInfoSignoutWarning
-            let strings = [noBackup, "", signoutWarning]
-            let backupInfoText = strings.joined(separator: "\n")
+            let infoText = [noBackup, signoutWarning].joined(separator: "\n")
             
             backupRows = [
-                .info(text: VectorL10n.securitySettingsSecureBackupDescription),
-                .info(text: backupInfoText),
+                .info(text: infoText),
                 .createKeyBackupAction,
-                .resetSecureBackupAction
+                .resetSecureBackupAction,
+                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
             ]
             
         case .keyBackup(let keyBackupVersion, let keyBackupVersionTrust),
              .keyBackupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, _):
-            
-            let info = VectorL10n.securitySettingsSecureBackupDescription
-            let backupStatus = VectorL10n.securitySettingsSecureBackupInfoValid
-            let backupStrings = [info, "", backupStatus]
-            let backupInfoText = backupStrings.joined(separator: "\n")
-            
-//            let version = VectorL10n.settingsSecureBackupInfoVersion(keyBackupVersion.version ?? "")
-//            let algorithm = VectorL10n.settingsSecureBackupInfoAlgorithm(keyBackupVersion.algorithm)
-//            let uploadStatus = VectorL10n.settingsSecureBackupInfoProgressDone
-//            let additionalStrings = [version, algorithm, uploadStatus]
-//            let additionalInfoText = additionalStrings.joined(separator: "\n")
-//
-//            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
-//            let backupTrustInfoText = backupTrust.joined(separator: "\n")
-            
-            var backupViewStateRows: [BackupRows] = [
-                .info(text: backupInfoText),
-//                .info(text: additionalInfoText),
-//                .info(text: backupTrustInfoText)
+            backupRows = [
+                .info(text: VectorL10n.securitySettingsSecureBackupInfoValid),
+                .restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore),
+                .deleteKeyBackupAction(keyBackupVersion: keyBackupVersion),
+                .resetSecureBackupAction,
+                .description(text: VectorL10n.securitySettingsSecureBackupDescription)
             ]
-            
-            // TODO: Do not display restore button if all keys are stored on the device
-            if true {
-                backupViewStateRows.append(.restoreFromKeyBackupAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.securitySettingsSecureBackupRestore))
-            }
-            
-            backupViewStateRows.append(.deleteKeyBackupAction(keyBackupVersion: keyBackupVersion))
-            backupViewStateRows.append(.resetSecureBackupAction)
-            
-            backupRows = backupViewStateRows
-            
-//        case .backupAndRunning(let keyBackupVersion, let keyBackupVersionTrust, let backupProgress):
-//
-//            let info = VectorL10n.securitySettingsSecureBackupDescription
-//            let backupStatus = VectorL10n.securitySettingsSecureBackupInfoValid
-//            let backupStrings = [info, "", backupStatus]
-//            let backupInfoText = backupStrings.joined(separator: "\n")
-//
-//            let remaining = backupProgress.totalUnitCount - backupProgress.completedUnitCount
-//            let version = VectorL10n.settingsSecureBackupInfoVersion(keyBackupVersion.version ?? "")
-//            let algorithm = VectorL10n.settingsSecureBackupInfoAlgorithm(keyBackupVersion.algorithm)
-//            let uploadStatus = VectorL10n.settingsSecureBackupInfoProgress(String(remaining))
-//            let additionalStrings = [version, algorithm, uploadStatus]
-//            let additionalInfoText = additionalStrings.joined(separator: "\n")
-//
-//            let backupTrust = self.stringForKeyBackupTrust(keyBackupVersionTrust)
-//            let backupTrustInfoText = backupTrust.joined(separator: "\n")
-//
-//            var backupAndRunningViewStateRows: [BackupRows] = [
-//                .info(text: backupInfoText),
-//                .info(text: additionalInfoText),
-//                .info(text: backupTrustInfoText)
-//            ]
-//
-//            // TODO: Do not display restore button if all keys are stored on the device
-//            if true {
-//                backupAndRunningViewStateRows.append(.restoreAction(keyBackupVersion: keyBackupVersion, title: VectorL10n.settingsSecureBackupButtonRestore))
-//            }
-//
-//            backupAndRunningViewStateRows.append(.deleteAction(keyBackupVersion: keyBackupVersion))
-//
-//            backupRows = backupAndRunningViewStateRows
             
         case .keyBackupNotTrusted(let keyBackupVersion, let keyBackupVersionTrust):
             
@@ -254,6 +190,28 @@ private enum BackupRows {
         self.backupRows = backupRows
     }
 
+    // MARK: - Cells -
+    
+    private func textCell(atRow row: Int, text: String) -> UITableViewCell {
+        guard let delegate = self.delegate else {
+            return UITableViewCell()
+        }
+        
+        let cell = delegate.settingsSecureBackupTableViewSection(self, textCellForRow: row)
+        cell.mxkTextView.text = text
+        return cell
+    }
+    
+    private func descriptionCell(atRow row: Int, text: String) -> UITableViewCell {
+        guard let delegate = self.delegate else {
+            return UITableViewCell()
+        }
+        
+        let cell = delegate.settingsSecureBackupTableViewSection(self, descriptionCellForRow: row)
+        cell.textLabel?.text = text
+        return cell
+    }
+    
     // MARK: - Button cells
     
     private func buttonCellForResetSecureBackup(atRow row: Int) -> UITableViewCell {

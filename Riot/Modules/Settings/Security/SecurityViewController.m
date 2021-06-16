@@ -1231,6 +1231,17 @@ TableViewSectionsDelegate>
     return textViewCell;
 }
 
+- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
+{
+    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
+    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    cell.textLabel.numberOfLines = 0;
+    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
+}
+
 - (MXKTableViewCellWithButton *)buttonCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithButton *cell = [self.tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
@@ -1701,6 +1712,20 @@ TableViewSectionsDelegate>
     if (indexPath)
     {
         cell = [self textViewCellForTableView:self.tableView atIndexPath:indexPath];
+    }
+    
+    return cell;
+}
+
+- (MXKTableViewCellWithTextView *)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection descriptionCellForRow:(NSInteger)textCellForRow
+{
+    MXKTableViewCellWithTextView *cell;
+    
+    NSIndexPath *indexPath = [self.tableViewSections exactIndexPathForRowTag:textCellForRow sectionTag:SECTION_SECURE_BACKUP];
+    
+    if (indexPath)
+    {
+        cell = [self descriptionCellForTableView:self.tableView atIndexPath:indexPath];
     }
     
     return cell;
