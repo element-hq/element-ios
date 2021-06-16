@@ -1616,9 +1616,9 @@ TableViewSectionsDelegate>
     return cell;
 }
 
-- (MXKTableViewCellWithTextView *)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection descriptionCellForRow:(NSInteger)textCellForRow
+- (MXKTableViewCell *)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection descriptionCellForRow:(NSInteger)textCellForRow
 {
-    MXKTableViewCellWithTextView *cell;
+    MXKTableViewCell *cell;
     
     NSIndexPath *indexPath = [self.tableViewSections exactIndexPathForRowTag:textCellForRow sectionTag:SECTION_SECURE_BACKUP];
     
