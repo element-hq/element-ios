@@ -126,3 +126,43 @@
 "room_new_messages_notification" = "%d ข้อความใหม่";
 "room_new_message_notification" = "%d ข้อความใหม่";
 "room_participants_action_ignore" = "ซ่อนข้อความทั้งหมดจากผู้ใช้นี้";
+"room_event_action_share" = "แบ่งปัน";
+"room_event_action_more" = "เพิ่มเติม";
+"room_event_action_redact" = "เอาออก";
+"room_event_action_copy" = "คัดลอก";
+"auth_password_dont_match" = "รหัสผ่านไม่ตรงกัน";
+"retry" = "ลองใหม่";
+
+// Room Title
+"room_title_new_room" = "ห้องใหม่";
+"room_action_reply" = "ตอบกลับ";
+"room_message_edits_history_title" = "การแก้ไขข้อความ";
+"room_accessibility_search" = "ค้นหา";
+"room_accessibility_call" = "โทร";
+"room_accessibility_upload" = "อัปโหลด";
+"room_event_action_cancel_download" = "ยกเลิกการดาวน์โหลด";
+"room_event_action_cancel_send" = "ยกเลิกการส่ง";
+"room_event_action_reaction_show_less" = "แสดงน้อยลง";
+"room_event_action_reaction_show_all" = "แสดงทั้งหมด";
+"room_event_action_edit" = "แก้ไข";
+"room_event_action_reply" = "ตอบกลับ";
+"room_ongoing_conference_call_close" = "ปิด";
+"room_participants_security_loading" = "กำลังโหลด…";
+"room_participants_action_security_status_loading" = "กำลังโหลด…";
+"room_participants_action_mention" = "การกล่าวถึง";
+"room_participants_multi_participants" = "%d ผู้เข้าร่วม";
+"room_participants_one_participant" = "1 ผู้เข้าร่วม";
+"room_participants_add_participant" = "เพิ่มผู้เข้าร่วม";
+
+// Chat participants
+"room_participants_title" = "ผู้เข้าร่วม";
+"contacts_user_directory_offline_section" = "ไดเรกทอรีผู้ใช้ (ออฟไลน์)";
+"contacts_user_directory_section" = "ไดเรกทอรีผู้ใช้";
+"directory_search_results_more_than" = "พบ >%tu ผลลัพธ์สำหรับ %@";
+"directory_search_results" = "พบ %tu ผลลัพธ์สำหรับ %@";
+"switch" = "สลับ";
+"auth_invalid_login_param" = "ชื่อผู้ใช้และ/หรือรหัสผ่านไม่ถูกต้อง";
+"sending" = "กำลังส่ง";
+"send_to" = "ส่งไปยัง %@";
+"less" = "น้อยลง";
+"more" = "เพิ่มเติม";
