@@ -1353,3 +1353,30 @@
 "event_formatter_call_you_missed" = "Você perdeu esta chamada";
 "event_formatter_call_ringing" = "Tocando…";
 "event_formatter_call_connecting" = "Conectando…";
+"side_menu_app_version" = "Versão %@";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_action_help" = "Ajuda";
+"side_menu_action_settings" = "Configurações";
+"side_menu_action_invite_friends" = "Convidar amigas(os)";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Painel esquerdo";
+"user_avatar_view_accessibility_hint" = "Mudar avatar de usuária(o)";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Entre sua Chave de Segurança para continuar.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Entre sua Frase de Segurança para continuar.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Backup de suas chaves está sendo feito.";
+"security_settings_secure_backup_restore" = "Restaurar de Backup";
+"security_settings_secure_backup_reset" = "Resettar";
+"security_settings_secure_backup_info_valid" = "Esta sessão está fazendo backup de suas chaves.";
+"security_settings_secure_backup_info_checking" = "Checando…";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" corresponde ao tema de sistema de seu dispositivo";
+"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" usa as configurações \"Inverter Cores\" de seu dispositivo";
+"room_recents_unknown_room_error_message" = "Não dá para encontrar esta sala. Assegure que ela existe";
+"room_creation_dm_error" = "Nós não conseguimos criar sua DM. Por favor cheque as/os usuárias(os) que você quer convidar e tente de novo.";
