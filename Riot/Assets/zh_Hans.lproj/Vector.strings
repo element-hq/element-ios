@@ -86,7 +86,7 @@
 "room_creation_appearance_picture" = "聊天图片（可选）";
 "room_creation_privacy" = "因此";
 "room_creation_private_room" = "此聊天是私密的";
-"room_creation_public_room" = "此聊天是公开的";
+"room_creation_public_room" = "此聊天室为公开聊天室";
 "room_creation_make_public" = "使其公开";
 "room_creation_make_public_prompt_title" = "要让此聊天公开吗？";
 "room_creation_make_public_prompt_msg" = "你确认要让此聊天公开吗？任何人都可以读到您的消息并加入此聊天。";
