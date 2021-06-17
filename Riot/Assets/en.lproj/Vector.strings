@@ -195,6 +195,7 @@
 "room_recents_join_room" = "Join room";
 "room_recents_join_room_title" = "Join a room";
 "room_recents_join_room_prompt" = "Type a room id or a room alias";
+"room_recents_unknown_room_error_message" = "Can't find this room. Make sure it exists";
 
 // People tab
 "people_invites_section" = "INVITES";

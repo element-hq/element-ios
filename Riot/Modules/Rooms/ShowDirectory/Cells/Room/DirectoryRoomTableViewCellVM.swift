@@ -17,19 +17,19 @@
 import Foundation
 
 struct DirectoryRoomTableViewCellVM {
-    var title: String?
-    var numberOfUsers: Int
-    var subtitle: String?
-    var isJoined: Bool = false
-    
-    private var roomId: String!
-    private var avatarUrl: String?
-    private var mediaManager: MXMediaManager?
-
-    func setAvatar(in avatarImageView: MXKImageView) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: roomId, withDisplayName: title)
         
-        if let avatarUrl = avatarUrl {
+    let title: String?
+    let numberOfUsers: Int
+    let subtitle: String?
+    let isJoined: Bool
+    let roomId: String
+    let avatarViewData: AvatarViewDataProtocol
+
+    // TODO: Use AvatarView subclass in the cell view
+    func setAvatar(in avatarImageView: MXKImageView) {
+        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: self.avatarViewData.matrixItemId, withDisplayName: title)
+        
+        if let avatarUrl = self.avatarViewData.avatarUrl {
             avatarImageView.enableInMemoryCache = true
 
             avatarImageView.setImageURI(avatarUrl,
@@ -38,7 +38,7 @@ struct DirectoryRoomTableViewCellVM {
                                         toFitViewSize: avatarImageView.frame.size,
                                         with: MXThumbnailingMethodCrop,
                                         previewImage: avatarImage,
-                                        mediaManager: mediaManager)
+                                        mediaManager: self.avatarViewData.mediaManager)
         } else {
             avatarImageView.image = avatarImage
         }
@@ -48,16 +48,18 @@ struct DirectoryRoomTableViewCellVM {
     init(title: String?,
          numberOfUsers: Int,
          subtitle: String?,
-         isJoined: Bool,
+         isJoined: Bool = false,
          roomId: String!,
          avatarUrl: String?,
-         mediaManager: MXMediaManager?) {
+         mediaManager: MXMediaManager) {
         self.title = title
         self.numberOfUsers = numberOfUsers
         self.subtitle = subtitle
         self.isJoined = isJoined
         self.roomId = roomId
-        self.avatarUrl = avatarUrl
-        self.mediaManager = mediaManager
+        
+        let avatarViewData = RoomAvatarViewData(roomId: roomId, displayName: title, avatarUrl: avatarUrl, mediaManager: mediaManager)
+        
+        self.avatarViewData = avatarViewData
     }
 }

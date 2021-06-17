@@ -72,6 +72,7 @@ final class RoomsDirectoryCoordinator: RoomsDirectoryCoordinatorType {
 
 // MARK: - ShowDirectoryCoordinatorDelegate
 extension RoomsDirectoryCoordinator: ShowDirectoryCoordinatorDelegate {
+    
     func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom) {
         self.delegate?.roomsDirectoryCoordinator(self, didSelectRoom: room)
     }
@@ -86,5 +87,9 @@ extension RoomsDirectoryCoordinator: ShowDirectoryCoordinatorDelegate {
     
     func showDirectoryCoordinatorWantsToShow(_ coordinator: ShowDirectoryCoordinatorType, viewController: UIViewController) {
         toPresentable().present(RiotNavigationController(rootViewController: viewController), animated: true, completion: nil)
+    }
+    
+    func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoomWithIdOrAlias roomIdOrAlias: String) {
+        self.delegate?.roomsDirectoryCoordinator(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
     }
 }

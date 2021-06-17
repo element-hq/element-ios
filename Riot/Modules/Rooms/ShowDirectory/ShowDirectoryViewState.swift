@@ -21,6 +21,7 @@ import Foundation
 /// ShowDirectoryViewController view state
 enum ShowDirectoryViewState {
     case loading
-    case loaded
+    case loadedWithoutUpdate
+    case loaded(_ sections: [ShowDirectorySection])
     case error(Error)
 }
