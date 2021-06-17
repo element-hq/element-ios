@@ -535,7 +535,7 @@
 "settings_key_backup_info" = "消息已被端对端安全加密。只有您和持有密钥的接收方可以阅读这些消息。";
 "settings_key_backup_info_checking" = "正在检查…";
 "settings_key_backup_info_none" = "您的密钥未从此会话备份。";
-"settings_key_backup_info_signout_warning" = "在登出账号之前把此会话关联到密钥备份以免丢失仅在此设备上的所有密钥。";
+"settings_key_backup_info_signout_warning" = "在退出账号之前备份你的密钥以避免丢失它们。";
 "settings_key_backup_info_version" = "密钥备份版本：%@";
 "settings_key_backup_info_algorithm" = "算法：%@";
 "settings_key_backup_info_valid" = "此会话正在备份密钥。";
@@ -562,7 +562,7 @@
 "call_incoming_video" = "收到视频通话…";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "新建密钥备份";
-"e2e_key_backup_wrong_version" = "一个新的安全消息密钥备份已被删除。\n\n如果这不是您的操作，请在设置中设定一个新的密码。";
+"e2e_key_backup_wrong_version" = "一个新的安全消息密钥备份已被删除。\n\n如果这不是您的操作，请在设置中设定一个新的密码口令 (phrase)。";
 "e2e_key_backup_wrong_version_button_settings" = "设置";
 "e2e_key_backup_wrong_version_button_wasme" = "那是我操作的";
 "widget_sticker_picker_no_stickerpacks_alert" = "您目前并未启用任何贴纸包。";
@@ -599,46 +599,46 @@
 "key_backup_setup_intro_setup_action_with_existing_backup" = "使用密钥备份";
 "key_backup_setup_intro_manual_export_info" = "（高级）";
 "key_backup_setup_intro_manual_export_action" = "手动导出密钥";
-"key_backup_setup_passphrase_title" = "使用一段密码保护您的备份";
-"key_backup_setup_passphrase_info" = "我们将会在主服务器上保存一份您的密钥的加密拷贝。设置一个密码来保护您的备份的安全。\n\n为了最大的安全性，这个密码应当与您的账号密码不同。";
+"key_backup_setup_passphrase_title" = "使用一段安全口令保护您的备份";
+"key_backup_setup_passphrase_info" = "我们将会在主服务器上保存一份您的密钥的加密拷贝。设置一个密码口令来保护您的备份的安全。\n\n为了最大的安全性，这个密码应当与您的账号密码不同。";
 "key_backup_setup_passphrase_passphrase_title" = "输入";
-"key_backup_setup_passphrase_passphrase_placeholder" = "输入密码";
+"key_backup_setup_passphrase_passphrase_placeholder" = "输入密码口令";
 "key_backup_setup_passphrase_passphrase_valid" = "太棒了！";
 "key_backup_setup_passphrase_passphrase_invalid" = "尝试添加一个字符";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "确认";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "确认密码";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "确认密码口令";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "太棒了！";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "密码不匹配";
-"key_backup_setup_passphrase_set_passphrase_action" = "设置密码";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "或者使用恢复密钥来保护您的备份，将密钥保存在一个安全的地方。";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "（高级）设置恢复密钥";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "密码口令不匹配";
+"key_backup_setup_passphrase_set_passphrase_action" = "设置密码口令";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "或者使用安全密钥来保护您的备份，将密钥保存在一个安全的地方。";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(高级) 使用安全密钥进行设置";
 "key_backup_setup_success_title" = "成功！";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "您的密钥已备份。\n\n您的恢复密钥是一张安全网 - 如果您忘记了密码您可以利用它重获您的已加密信息的访问权。\n\n请将您的恢复密钥保存在一个非常安全的地方，比如密码管理器中 （或保险箱里）。";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "保存恢复密钥";
+"key_backup_setup_success_from_passphrase_info" = "您的密钥已备份。\n\n您的安全密钥是一张安全网 - 如果您忘记了密码您可以利用它重获您的已加密信息的访问权。\n\n请将您的安全密钥保存在一个非常安全的地方，比如密码管理器中 （或保险箱里）。";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "保存安全密钥";
 "key_backup_setup_success_from_passphrase_done_action" = "完成";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "您的密钥已备份。\n\n制作此恢复密钥的副本并确保其安全。";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "恢复密钥";
+"key_backup_setup_success_from_recovery_key_info" = "您的密钥已备份。\n\n制作此安全密钥的副本并确保其安全。";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "安全密钥";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "制作副本";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "我已制作一份副本";
 "key_backup_recover_title" = "安全消息";
-"key_backup_recover_invalid_passphrase_title" = "恢复密码不正确";
-"key_backup_recover_invalid_passphrase" = "备份无法用此密码解密：请检查您输入的恢复密码是否正确。";
-"key_backup_recover_invalid_recovery_key_title" = "恢复密钥不匹配";
-"key_backup_recover_invalid_recovery_key" = "备份无法用此密钥解密：请检查您输入的恢复密钥是否正确。";
-"key_backup_recover_from_passphrase_info" = "使用恢复密钥解锁您的安全消息历史";
+"key_backup_recover_invalid_passphrase_title" = "密码口令不正确";
+"key_backup_recover_invalid_passphrase" = "备份无法用此密码口令解密：请检查您输入的安全口令是否正确。";
+"key_backup_recover_invalid_recovery_key_title" = "安全密钥不匹配";
+"key_backup_recover_invalid_recovery_key" = "备份无法用此密钥解密：请检查您输入的安全密钥是否正确。";
+"key_backup_recover_from_passphrase_info" = "使用安全口令解锁您的安全消息历史";
 "key_backup_recover_from_passphrase_passphrase_title" = "输入";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "输入密码";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "输入密码口令";
 "key_backup_recover_from_passphrase_recover_action" = "解锁历史";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "忘记了您的恢复密码？您可以 ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "使用恢复密钥";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "忘记了您的安全口令？您可以 ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "使用你的安全密钥";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = "。";
-"key_backup_recover_from_recovery_key_info" = "使用恢复密钥解锁您的安全消息历史";
+"key_backup_recover_from_recovery_key_info" = "使用安全密钥解锁您的安全消息历史";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "输入";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "输入恢复密钥";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "输入安全密钥";
 "key_backup_recover_from_recovery_key_recover_action" = "解锁历史";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "丢失了恢复密钥？您可以在设置中新设一个。";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "丢失了安全密钥？您可以在设置中新设一个。";
 "key_backup_recover_success_info" = "备份已恢复！";
 "key_backup_recover_done_action" = "完成";
 "key_backup_setup_banner_title" = "永不丢失加密消息";
@@ -1001,9 +1001,9 @@
 "room_member_power_level_custom_in" = "自定义（%@）（%@）";
 "room_member_power_level_short_custom" = "自定义";
 "security_settings_crosssigning_info_trusted" = "已启用交叉签名。您可以基于交叉签名信任其他用户和其他会话，但不能从此会话交叉签名，因为它没有交叉签名私钥。此会话完全安全。";
-"security_settings_crosssigning_info_ok" = "交叉签名还没有被设置。";
-"security_settings_crosssigning_bootstrap" = "引导交叉签名";
-"security_settings_crosssigning_reset" = "重置交叉签名";
+"security_settings_crosssigning_info_ok" = "交叉登录已准备就绪。";
+"security_settings_crosssigning_bootstrap" = "设置";
+"security_settings_crosssigning_reset" = "重置";
 "security_settings_crosssigning_complete_security" = "完整安全性";
 "security_settings_cryptography" = "加密";
 "security_settings_complete_security_alert_title" = "绝对安全";
@@ -1034,8 +1034,8 @@
 "device_verification_self_verify_wait_new_sign_in_title" = "验证此登录名";
 "device_verification_self_verify_wait_information" = "从您的其他会话之一验证此会话，授予它访问加密消息的权限。\n\n在您的其他设备上使用最新版的Element:";
 "device_verification_self_verify_wait_additional_information" = "这适用于Element和其他支持交叉签名的Matrix客户端。";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "使用恢复密钥";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "使用恢复密码或密钥";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "使用安全密钥";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "使用安全口令或密钥";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "如果您无法访问一个现有会话";
 "key_verification_verify_sas_title_emoji" = "比较emoji";
 "key_verification_verify_sas_title_number" = "比较数字";
@@ -1075,25 +1075,25 @@
 "key_verification_scan_confirmation_scanned_user_information" = "是否%@显示相同的盾牌？";
 "key_verification_scan_confirmation_scanned_device_information" = "另一台设备是否显示相同的盾牌？";
 "user_verification_session_details_verify_action_current_user_manually" = "通过文本手动验证";
-"secrets_recovery_with_passphrase_title" = "恢复密码";
-"secrets_recovery_with_passphrase_information_default" = "通过输入恢复密码，访问您的安全信息历史记录和交叉签名身份，以验证其他会话。";
-"secrets_recovery_with_passphrase_information_verify_device" = "使用您的恢复密码验证此设备。";
+"secrets_recovery_with_passphrase_title" = "安全口令";
+"secrets_recovery_with_passphrase_information_default" = "通过输入安全口令，访问您的安全信息历史记录和交叉登录身份，以验证其他会话。";
+"secrets_recovery_with_passphrase_information_verify_device" = "使用您的安全口令验证此设备。";
 "secrets_recovery_with_passphrase_passphrase_title" = "输入";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "输入恢复密码";
-"secrets_recovery_with_passphrase_recover_action" = "使用密码短语";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "忘记了您的恢复密码？您可以 ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "使用您的恢复密钥";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "输入安全口令";
+"secrets_recovery_with_passphrase_recover_action" = "使用密码口令";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "忘记了您的安全口令？您可以 ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "使用您的安全密钥";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "无法访问机密存储";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "请验证您输入的恢复密码是否正确。";
-"secrets_recovery_with_key_title" = "恢复密钥";
-"secrets_recovery_with_key_information_default" = "通过输入恢复密钥访问安全信息历史记录和交叉签名身份，以验证其他会话。";
-"secrets_recovery_with_key_information_verify_device" = "使用您的恢复密码验证此设备。";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "请验证您输入的安全口令是否正确。";
+"secrets_recovery_with_key_title" = "安全密钥";
+"secrets_recovery_with_key_information_default" = "通过输入安全密钥访问安全信息历史记录和交叉登录身份，以验证其他会话。";
+"secrets_recovery_with_key_information_verify_device" = "使用您的安全密钥验证此设备。";
 "secrets_recovery_with_key_recovery_key_title" = "输入";
-"secrets_recovery_with_key_recovery_key_placeholder" = "输入恢复密钥";
+"secrets_recovery_with_key_recovery_key_placeholder" = "输入安全密钥";
 "secrets_recovery_with_key_recover_action" = "使用密钥";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "无法访问机密存储";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "请验证您输入的恢复密钥是否正确。";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "请验证您输入的安全密钥是否正确。";
 "rooms_empty_view_information" = "房间非常适合任何群聊，无论是私人的还是公共的。点击+以查找现有房间，或新建房间。";
 "security_settings_user_password_description" = "通过输入您的帐户密码确认您的身份";
 "rooms_empty_view_title" = "聊天室";
@@ -1113,10 +1113,10 @@
 // Social login
 
 "social_login_list_title_continue" = "以其他方式登录";
-"security_settings_secure_backup_delete" = "删除";
+"security_settings_secure_backup_delete" = "删除备份";
 "security_settings_secure_backup_synchronise" = "同步";
 "security_settings_secure_backup_setup" = "设置";
-"security_settings_secure_backup_description" = "通过在您的服务器上备份加密密钥，防止失去对加密信息和数据的访问。";
+"security_settings_secure_backup_description" = "备份你的帐户数据备份和加密密钥，以防你无法访问会话。 你的密钥将受到唯一的安全密钥保护。";
 "security_settings_crypto_sessions_description_2" = "如果您未曾发起登录，请更改密码并重置安全备份。";
 "settings_show_NSFW_public_rooms" = "显示 NSFW 公共聊天室";
 "external_link_confirmation_message" = "此链接 %@ 会将您带至另一个网站：%@\n\n是否前往？";
@@ -1223,7 +1223,7 @@
 "major_update_title" = "Riot 现已成为 Element";
 "secrets_reset_reset_action" = "重置";
 "secrets_setup_recovery_passphrase_summary_title" = "保存您的安全密语";
-"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "确认安全密语";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "确认口令";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "确认";
 "secrets_setup_recovery_passphrase_additional_information" = "不要使用你的账号密码。";
 "secrets_setup_recovery_passphrase_validate_action" = "完成";
@@ -1313,7 +1313,7 @@
 "secrets_setup_recovery_passphrase_information" = "输入只有您知道的安全口令，用于保护您的服务器上的秘密。";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ 把它打印出来，储存在一个安全的地方\n✓ 把它保存在 USB 钥匙或备份驱动器上\n✓ 把它复制到你的个人云存储";
 "secrets_setup_recovery_key_storage_alert_title" = "保持安全";
-"secrets_setup_recovery_key_information" = "将恢复密钥保存在安全的地方。它可以用来解锁你的加密信息和数据。";
+"secrets_setup_recovery_key_information" = "将安全密钥保存在安全的地方。它可以用来解锁你的加密信息和数据。";
 "secrets_recovery_reset_action_part_2" = "全部重置";
 
 // MARK: - Secrets recovery
@@ -1400,3 +1400,30 @@
 // Chat
 "room_slide_to_end_group_call" = "滑动结束所有人的通话";
 "callbar_only_single_active_group" = "轻点加入群组通话（%@）";
+"side_menu_app_version" = "版本号 %@";
+"side_menu_action_feedback" = "反馈";
+"side_menu_action_help" = "帮助";
+"side_menu_action_settings" = "设置";
+"side_menu_action_invite_friends" = "邀请好友";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "左面板";
+"user_avatar_view_accessibility_hint" = "更改用户头像";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "头像";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "输入您的安全密钥以继续。";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "输入您的安全口令以继续。";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "正在备份您的密钥。";
+"security_settings_secure_backup_restore" = "从备份文件还原";
+"security_settings_secure_backup_reset" = "重置";
+"security_settings_secure_backup_info_valid" = "此会话正在备份您的密钥。";
+"security_settings_secure_backup_info_checking" = "检查中…";
+"settings_ui_theme_picker_message_match_system_theme" = "“自动”匹配您设备的系统主题";
+"settings_ui_theme_picker_message_invert_colours" = "“自动”使用您设备的“反转颜色”设置";
+"room_recents_unknown_room_error_message" = "找不到这个房间。 确保它存在";
+"room_creation_dm_error" = "我们无法创建您的 DM。 请检查您要邀请的用户，然后重试。";
