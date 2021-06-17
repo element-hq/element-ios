@@ -97,6 +97,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromRecoveryKeyViewController>(storyboard: KeyBackupSetupSuccessFromRecoveryKeyViewController.self)
   }
+  internal enum KeyBackupSetupSuccessFromSecureBackupViewController: StoryboardType {
+    internal static let storyboardName = "KeyBackupSetupSuccessFromSecureBackupViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.KeyBackupSetupSuccessFromSecureBackupViewController>(storyboard: KeyBackupSetupSuccessFromSecureBackupViewController.self)
+  }
   internal enum KeyVerificationDataLoadingViewController: StoryboardType {
     internal static let storyboardName = "KeyVerificationDataLoadingViewController"
 

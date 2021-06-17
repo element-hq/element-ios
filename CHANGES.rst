@@ -10,6 +10,9 @@ Changes to be released in next version
  * Integrated FLEX for debug builds.
  * VoIP: Add dial pad for PSTN capable servers to menu on homescreen.
  * VoIP: Replace call bar with PiP tiles for every type of calls.
+ * Security settings: Display the cross-signing section (#4430).
+ * Security settings: The Secure backup section has been updated to match element-web UX (#4430).
+ * Wording: Replace Recovery Passphrase and Recovery Key by Security Phrase and Security Key (#4268).
  * Room directory: Join room by alias or id (#4429).
 
 🐛 Bugfix

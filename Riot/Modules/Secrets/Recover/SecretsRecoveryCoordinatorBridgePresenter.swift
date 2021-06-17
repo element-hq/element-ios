@@ -32,7 +32,7 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession
     private let recoveryMode: SecretsRecoveryMode
-    let recoveryGoal: SecretsRecoveryGoal
+    let recoveryGoal: SecretsRecoveryGoalBridge
     
     private var coordinator: SecretsRecoveryCoordinator?
     
@@ -46,14 +46,14 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, recoveryMode: SecretsRecoveryMode, recoveryGoal: SecretsRecoveryGoal) {
+    init(session: MXSession, recoveryMode: SecretsRecoveryMode, recoveryGoal: SecretsRecoveryGoalBridge) {
         self.session = session
         self.recoveryMode = recoveryMode
         self.recoveryGoal = recoveryGoal
         super.init()
     }
     
-    init(session: MXSession, recoveryGoal: SecretsRecoveryGoal) {
+    init(session: MXSession, recoveryGoal: SecretsRecoveryGoalBridge) {
         self.session = session
         
         if case SecretsRecoveryAvailability.available(let secretMode) = session.crypto.recoveryService.vc_availability {
@@ -74,7 +74,7 @@ final class SecretsRecoveryCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         
-        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: self.recoveryMode, recoveryGoal: self.recoveryGoal)
+        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: self.recoveryMode, recoveryGoal: self.recoveryGoal.goal)
         coordinator.delegate = self
         
         let presentable = coordinator.toPresentable()
