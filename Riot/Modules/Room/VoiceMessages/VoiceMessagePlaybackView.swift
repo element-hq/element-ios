@@ -15,20 +15,21 @@
 //
 
 import Foundation
-import DSWaveformImage
 
-private enum VoiceMessagePlaybackViewUIState {
-    case stopped
-    case playing
-    case paused
-    case error
+protocol VoiceMessagePlaybackViewDelegate: AnyObject {
+    func voiceMessagePlaybackViewDidRequestToggle()
 }
 
-class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
+struct VoiceMessagePlaybackViewDetails {
+    var currentTime: String = ""
+    var progress = 0.0
+    var samples: [Float] = []
+    var playing: Bool = false
+    var playbackEnabled = false
+}
+
+class VoiceMessagePlaybackView: UIView {
     
-    private let audioPlayer: VoiceMessageAudioPlayer
-    private var displayLink: CADisplayLink!
-    private let timeFormatter: DateFormatter
     private var waveformView: VoiceMessageWaveformView!
     
     @IBOutlet private var backgroundView: UIView!
@@ -36,29 +37,9 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
     @IBOutlet private var elapsedTimeLabel: UILabel!
     @IBOutlet private var waveformContainerView: UIView!
     
-    private var state: VoiceMessagePlaybackViewUIState = .stopped {
-        didSet {
-            updateUI()
-            displayLink.isPaused = (state != .playing)
-        }
-    }
+    weak var delegate: VoiceMessagePlaybackViewDelegate?
     
-    var attachment: MXKAttachment? {
-        didSet {
-            if oldValue?.contentURL == attachment?.contentURL &&
-                oldValue?.eventSentState == attachment?.eventSentState {
-                return
-            }
-            
-            switch attachment?.eventSentState {
-            case MXEventSentStateFailed:
-                state = .error
-            default:
-                state = .stopped
-                loadAttachmentData()
-            }
-        }
-    }
+    var details: VoiceMessagePlaybackViewDetails?
     
     static func instanceFromNib() -> VoiceMessagePlaybackView {
         let nib = UINib(nibName: "VoiceMessagePlaybackView", bundle: nil)
@@ -68,172 +49,58 @@ class VoiceMessagePlaybackView: UIView, VoiceMessageAudioPlayerDelegate {
         return view
     }
     
-    override func didMoveToWindow() {
-        if self.window == nil {
-            audioPlayer.stop()
-            displayLink.invalidate()
-        }
-    }
-        
-    required init?(coder: NSCoder) {
-        audioPlayer = VoiceMessageAudioPlayer()
-        
-        timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "m:ss"
-
-        super.init(coder: coder)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeDidChange), name: .themeServiceDidChangeTheme, object: nil)
-        
-        audioPlayer.delegate = self
-        
-        displayLink = CADisplayLink(target: self, selector: #selector(handleDisplayLinkTick))
-        displayLink.isPaused = true
-        displayLink.add(to: .current, forMode: .common)
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeDidChange), name: .themeServiceDidChangeTheme, object: nil)
         
         backgroundView.layer.cornerRadius = 12.0
         
         waveformView = VoiceMessageWaveformView(frame: waveformContainerView.bounds)
         waveformContainerView.vc_addSubViewMatchingParent(waveformView)
+    }
+    
+    func configureWithDetails(_ details: VoiceMessagePlaybackViewDetails?) {
+        guard let details = details else {
+            return
+        }
         
-        updateUI()
-    }
-    
-    // MARK: - VoiceMessageAudioPlayerDelegate
-    
-    func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
-        updateUI()
-    }
-    
-    func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        state = .playing
-    }
-    
-    func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        state = .paused
-    }
-    
-    func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {
-        state = .error
-        MXLog.error("Failed playing voice message with error: \(error)")
-    }
-    
-    func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        audioPlayer.seekToTime(0.0)
-        state = .stopped
-    }
-    
-    // MARK: - Private
-    
-    private func updateUI() {
-        playButton.isEnabled = (state != .error)
+        playButton.isEnabled = details.playbackEnabled
+        elapsedTimeLabel.text = details.currentTime
+        waveformView.progress = details.progress
         
         if ThemeService.shared().isCurrentThemeDark() {
-            playButton.setImage((state == .playing ? Asset.Images.voiceMessagePauseButtonDark.image : Asset.Images.voiceMessagePlayButtonDark.image), for: .normal)
+            playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButtonDark.image : Asset.Images.voiceMessagePlayButtonDark.image), for: .normal)
             backgroundView.backgroundColor = UIColor(rgb: 0x394049)
             waveformView.primarylineColor =  ThemeService.shared().theme.colors.quarterlyContent
             waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
             elapsedTimeLabel.textColor = UIColor(rgb: 0x8E99A4)
         } else {
-            playButton.setImage((state == .playing ? Asset.Images.voiceMessagePauseButtonLight.image : Asset.Images.voiceMessagePlayButtonLight.image), for: .normal)
+            playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButtonLight.image : Asset.Images.voiceMessagePlayButtonLight.image), for: .normal)
             backgroundView.backgroundColor = UIColor(rgb: 0xE3E8F0)
             waveformView.primarylineColor = ThemeService.shared().theme.colors.quarterlyContent
             waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
             elapsedTimeLabel.textColor = UIColor(rgb: 0x737D8C)
         }
         
-        switch state {
-        case .stopped:
-            elapsedTimeLabel.text = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.duration))
-            waveformView.progress = 0.0
-        default:
-            elapsedTimeLabel.text = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
-            waveformView.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
-        }
+        waveformView.setSamples(details.samples)
+        
+        self.details = details
     }
     
-    @IBAction private func onPlayButtonTap() {
-        if audioPlayer.isPlaying {
-            audioPlayer.pause()
-        } else {
-            audioPlayer.play()
-        }
-    }
-    
-    @objc private func handleDisplayLinkTick() {
-        updateUI()
-    }
-    
-    private func loadAttachmentData() {
-        guard let attachment = attachment else {
-            return
-        }
-        
-        if attachment.isEncrypted {
-            attachment.decrypt(toTempFile: { [weak self] filePath in
-                self?.loadFileAtPath(filePath)
-            }, failure: { [weak self] error in
-                // A nil error in this case is a cancellation on the MXMediaLoader
-                if let error = error {
-                    MXLog.error("Failed decrypting attachment with error: \(String(describing: error))")
-                    self?.state = .error
-                }
-            })
-        } else {
-            attachment.prepare({ [weak self] in
-                self?.loadFileAtPath(attachment.cacheFilePath)
-            }, failure: { [weak self] error in
-                MXLog.error("Failed preparing attachment with error: \(String(describing: error))")
-                self?.state = .error
-            })
-        }
-    }
-    
-    private func loadFileAtPath(_ path: String?) {
-        guard let filePath = path else {
-            return
-        }
-        
-        let url = URL(fileURLWithPath: filePath)
-        
-        // AVPlayer doesn't want to play it otherwise. https://stackoverflow.com/a/9350824
-        let newURL = url.appendingPathExtension("m4a")
-        
-        do {
-            try FileManager.default.moveItem(at: url, to: newURL)
-        } catch {
-            self.state = .error
-            MXLog.error("Failed appending voice message extension.")
-            return
-        }
-        
-        audioPlayer.loadContentFromURL(newURL)
-        
+    func getRequiredNumberOfSamples() -> Int {
         waveformView.setNeedsLayout()
         waveformView.layoutIfNeeded()
+        return waveformView.requiredNumberOfSamples
+    }
+    
+    // MARK: - Private
         
-        if waveformView.requiredNumberOfSamples == 0 {
-            return
-        }
-        
-        let analyser = WaveformAnalyzer(audioAssetURL: newURL)
-        analyser?.samples(count: waveformView.requiredNumberOfSamples, completionHandler: { [weak self] samples in
-            guard let samples = samples else {
-                self?.state = .error
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self?.waveformView.setSamples(samples)
-            }
-        })
+    @IBAction private func onPlayButtonTap() {
+        delegate?.voiceMessagePlaybackViewDidRequestToggle()
     }
     
     @objc private func handleThemeDidChange() {
-        updateUI()
+        configureWithDetails(details)
     }
 }

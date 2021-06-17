@@ -39,6 +39,10 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
         return audioRecorder?.currentTime ?? 0
     }
     
+    var isRecording: Bool {
+        return audioRecorder?.isRecording ?? false
+    }
+    
     weak var delegate: VoiceMessageAudioRecorderDelegate?
     
     func recordWithOuputURL(_ url: URL) {
@@ -52,6 +56,7 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
             audioRecorder = try AVAudioRecorder(url: url, settings: settings)
             audioRecorder?.delegate = self
+            audioRecorder?.isMeteringEnabled = true
             audioRecorder?.record()
             delegate?.audioRecorderDidStartRecording(self)
         } catch {
@@ -59,9 +64,29 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
         }
         
     }
-    
+
     func stopRecording() {
         audioRecorder?.stop()
+    }
+    
+    func peakPowerForChannelNumber(_ channelNumber: Int) -> Float {
+        guard self.isRecording, let audioRecorder = audioRecorder else {
+            return 0.0
+        }
+        
+        audioRecorder.updateMeters()
+
+        return self.normalizedPowerLevelFromDecibels(audioRecorder.peakPower(forChannel: channelNumber))
+    }
+    
+    func averagePowerForChannelNumber(_ channelNumber: Int) -> Float {
+        guard self.isRecording, let audioRecorder = audioRecorder else {
+            return 0.0
+        }
+        
+        audioRecorder.updateMeters()
+        
+        return self.normalizedPowerLevelFromDecibels(audioRecorder.averagePower(forChannel: channelNumber))
     }
     
     // MARK: - AVAudioRecorderDelegate
@@ -76,6 +101,14 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
     
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
         delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+    }
+    
+    private func normalizedPowerLevelFromDecibels(_ decibels: Float) -> Float {
+        if decibels < -60.0 || decibels == 0.0 {
+            return 0.0
+        }
+        
+        return powf((powf(10.0, 0.05 * decibels) - powf(10.0, 0.05 * -60.0)) * (1.0 / (1.0 - powf(10.0, 0.05 * -60.0))), 1.0 / 2.0)
     }
 }
 

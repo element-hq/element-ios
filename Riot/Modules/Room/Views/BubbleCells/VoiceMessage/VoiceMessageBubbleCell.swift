@@ -18,7 +18,7 @@ import Foundation
 
 class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
     
-    private var playbackView: VoiceMessagePlaybackView!
+    private var playbackController: VoiceMessagePlaybackController!
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
@@ -31,7 +31,7 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
             fatalError("Invalid attachment type passed to a voice message cell.")
         }
         
-        playbackView.attachment = data.attachment
+        playbackController.attachment = data.attachment
     }
     
     override func setupViews() {
@@ -44,9 +44,9 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
             return
         }
         
-        playbackView = VoiceMessagePlaybackView.instanceFromNib()
-        bubbleCellContentView?.addSubview(playbackView)
+        playbackController = VoiceMessagePlaybackController()
+        bubbleCellContentView?.addSubview(playbackController.playbackView)
         
-        contentView.vc_addSubViewMatchingParent(playbackView)
+        contentView.vc_addSubViewMatchingParent(playbackController.playbackView)
     }
 }
