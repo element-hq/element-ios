@@ -74,7 +74,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     self = [super init];
     if (self)
     {
-        processingQueue = dispatch_queue_create("MXRestClient", DISPATCH_QUEUE_SERIAL);
+        processingQueue = dispatch_queue_create("RecentsDataSource", DISPATCH_QUEUE_SERIAL);
         
         _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
         crossSigningBannerSection = -1;
