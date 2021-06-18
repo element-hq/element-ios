@@ -165,7 +165,10 @@ final class SideMenuViewController: UIViewController {
         for sideMenuItem in viewData.sideMenuItems {
             let sideMenuActionView = SideMenuActionView.instantiate()
             sideMenuActionView.translatesAutoresizingMaskIntoConstraints = false
-            sideMenuActionView.heightAnchor.constraint(equalToConstant: Constants.sideMenuActionViewHeight).isActive = true
+            let heightConstraint = sideMenuActionView.heightAnchor.constraint(equalToConstant: 0)
+            heightConstraint.priority = .defaultLow
+            heightConstraint.isActive = true
+            
             sideMenuActionView.update(theme: self.theme)
             sideMenuActionView.fill(with: sideMenuItem)
             sideMenuActionView.delegate = self
