@@ -14,6 +14,7 @@ Changes to be released in next version
  * Security settings: The Secure backup section has been updated to match element-web UX (#4430).
  * Wording: Replace Recovery Passphrase and Recovery Key by Security Phrase and Security Key (#4268).
  * Room directory: Join room by alias or id (#4429).
+ * Room lists: Avoid app freezes by building them on a separated thread (#3777).
 
 🐛 Bugfix
  * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
