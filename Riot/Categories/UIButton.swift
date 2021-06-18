@@ -40,4 +40,15 @@ extension UIButton {
         let image = UIImage.vc_image(from: color)
         self.setBackgroundImage(image, for: state)
     }
+        
+    /// Shortcut to button label property `adjustsFontForContentSizeCategory`
+    @IBInspectable
+    var vc_adjustsFontForContentSizeCategory: Bool {
+        get {
+            return self.titleLabel?.adjustsFontForContentSizeCategory ?? false
+        }
+        set {
+            self.titleLabel?.adjustsFontForContentSizeCategory = newValue
+        }
+    }
 }
