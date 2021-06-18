@@ -26,6 +26,7 @@ struct VoiceMessagePlaybackViewDetails {
     var samples: [Float] = []
     var playing: Bool = false
     var playbackEnabled = false
+    var recording: Bool = false
 }
 
 class VoiceMessagePlaybackView: UIView {
@@ -33,6 +34,7 @@ class VoiceMessagePlaybackView: UIView {
     private var waveformView: VoiceMessageWaveformView!
     
     @IBOutlet private var backgroundView: UIView!
+    @IBOutlet private var recordingIcon: UIView!
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var elapsedTimeLabel: UILabel!
     @IBOutlet private var waveformContainerView: UIView!
@@ -66,6 +68,8 @@ class VoiceMessagePlaybackView: UIView {
         }
         
         playButton.isEnabled = details.playbackEnabled
+        playButton.isHidden = details.recording
+        recordingIcon.isHidden = !details.recording
         elapsedTimeLabel.text = details.currentTime
         waveformView.progress = details.progress
         

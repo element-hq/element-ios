@@ -56,11 +56,6 @@ class VoiceMessageWaveformView: UIView {
         updateBarViews()
     }
 
-    func addSample(_ sample: Float) {
-        samples.append(sample)
-        updateBarViews()
-    }
-
     // MARK: - Private
 
     private func setupBarViews() {

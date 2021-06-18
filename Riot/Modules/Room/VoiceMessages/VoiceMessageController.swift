@@ -31,6 +31,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private var audioRecorder: VoiceMessageAudioRecorder?
     
+    private var audioSamples: [Float] = []
+    private var isInLockedMode: Bool = false
+    
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
     @objc public var voiceMessageToolbarView: UIView {
@@ -54,6 +57,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         self._voiceMessageToolbarView.update(theme: self.themeService.theme)
         NotificationCenter.default.addObserver(self, selector: #selector(handleThemeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+        
+        updateUI()
     }
     
     // MARK: - VoiceMessageToolbarViewDelegate
@@ -87,27 +92,32 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func voiceMessageToolbarViewDidRequestRecordingCancel(_ toolbarView: VoiceMessageToolbarView) {
+        isInLockedMode = false
         audioRecorder?.stopRecording()
         deleteRecordingAtURL(audioRecorder?.url)
         UINotificationFeedbackGenerator().notificationOccurred(.error)
     }
     
+    func voiceMessageToolbarViewDidRequestLockedModeRecording(_ toolbarView: VoiceMessageToolbarView) {
+        isInLockedMode = true
+        updateUI()
+    }
+    
     // MARK: - AudioRecorderDelegate
     
     func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
-        _voiceMessageToolbarView.state = .recording
-        self.displayLink.isPaused = false
+        updateUI()
     }
     
     func audioRecorderDidFinishRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
-        _voiceMessageToolbarView.state = .idle
-        displayLink.isPaused = true
+        updateUI()
     }
     
     func audioRecorder(_ audioRecorder: VoiceMessageAudioRecorder, didFailWithError: Error) {
+        isInLockedMode = false
+        updateUI()
+        
         MXLog.error("Failed recording voice message.")
-        _voiceMessageToolbarView.state = .idle
-        displayLink.isPaused = true
     }
     
     // MARK: - Private
@@ -129,10 +139,27 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     @objc private func handleDisplayLinkTick() {
-        guard let audioRecorder = audioRecorder else {
-            return
+        updateUI()
+    }
+    
+    private func updateUI() {
+        displayLink.isPaused = !(audioRecorder?.isRecording ?? false)
+        
+        let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
+        
+        if audioSamples.count != requiredNumberOfSamples {
+            audioSamples = [Float](repeating: 0.0, count: requiredNumberOfSamples)
         }
         
-        _voiceMessageToolbarView.elapsedTime = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioRecorder.currentTime))
+        if let sample = audioRecorder?.averagePowerForChannelNumber(0) {
+            audioSamples.append(sample)
+            audioSamples.remove(at: 0)
+        }
+        
+        var details = VoiceMessageToolbarViewDetails()
+        details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
+        details.elapsedTime = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioRecorder?.currentTime ?? 0.0))
+        details.audioSamples = audioSamples
+        _voiceMessageToolbarView.configureWithDetails(details)
     }
 }
