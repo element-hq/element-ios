@@ -1362,3 +1362,29 @@
 "room_slide_to_end_group_call" = "Wische, um den Anruf für alle zu beenden";
 "callbar_only_single_active_group" = "Klicke, um den Anruf beizutreten (%@)";
 "event_formatter_call_answer" = "Annehmen";
+"side_menu_app_version" = "Version %@";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_action_help" = "Hilfe";
+"side_menu_action_settings" = "Einstellungen";
+"side_menu_action_invite_friends" = "Freunde einladen";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Linkes Panel";
+"user_avatar_view_accessibility_hint" = "Nutzeravatar ändern";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "Avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Zum Fortfahren gib deinen Sicherheitsschlüssel ein.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Zum Forfahren gib deine Passphrase ein.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Deine Schlüssel werden gesichert.";
+"security_settings_secure_backup_restore" = "Von Backup wiederherstellen";
+"security_settings_secure_backup_reset" = "Zurücksetzen";
+"security_settings_secure_backup_info_valid" = "Diese Sitzung sichert deine Schlüssel.";
+"security_settings_secure_backup_info_checking" = "Überprüfen…";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" passt sich an das Systemthema an";
+"room_recents_unknown_room_error_message" = "Raum kann nicht gefunden werden. Überprüfe bitte, dass er existiert";
+"room_creation_dm_error" = "Fehler beim Erstellen der Direktnachricht. Bitte überprüfe die eingeladenen Leute und versuche es erneut.";
