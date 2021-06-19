@@ -612,7 +612,7 @@
 "settings_ui_theme_picker_message" = "\"Auto\" använder dina enhetsinställningar för \"Invertera färger\"";
 "settings_olm_version" = "Olm-version %@";
 "settings_crypto_device_key" = "\nSessionsnyckel:\n";
-"settings_key_backup_info_signout_warning" = "Anslut den här sessionen till nyckelsäkerhetskopiering innan du loggar ut för att undvika förlust av någon nyckel som endast finns på den här enheten.";
+"settings_key_backup_info_signout_warning" = "Säkerhetskopiera dina nycklar innan du loggar ut för att undvika att du förlorar dem.";
 "settings_discovery_no_identity_server" = "Du använder för närvarande ingen identitetsserver. Lägg till en för att kunna upptäckas av befintliga kontakter du känner.";
 "settings_discovery_terms_not_signed" = "Acceptera identitetsserverns (%@) användarvillkor för att låta dig själv vara upptäckbar med e-postadress eller telefonnummer.";
 "security_settings_crypto_sessions_loading" = "Laddar sessioner…";
@@ -1321,3 +1321,7 @@
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Utrymmen är inte här än";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matchar din enhets systemtema";
+"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" använder din enhets \"Invertera färger\"-inställning";
+"room_recents_unknown_room_error_message" = "Kan inte hitta det här rummet. Se till att det finns";
+"room_creation_dm_error" = "Vi kunde inte skapa din DM. Vänligen kolla användarna du vill bjuda in och försök igen.";
