@@ -221,7 +221,7 @@
         <!--Home View Controller-->
         <scene sceneID="SZi-Ac-WJp">
             <objects>
-                <viewController storyboardIdentifier="HomeViewController" id="pBa-To-3YT" customClass="HomeViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HomeViewController" extendedLayoutIncludesOpaqueBars="YES" id="pBa-To-3YT" customClass="HomeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="m3s-18-JgR"/>
                         <viewControllerLayoutGuide type="bottom" id="2lp-r9-RR5"/>
@@ -581,7 +581,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="mhb-l9-pM3"/>
         <segue reference="f5u-Y1-7nt"/>
     </inferredMetricsTieBreakers>
     <resources>
