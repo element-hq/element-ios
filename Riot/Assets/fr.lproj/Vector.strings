@@ -622,7 +622,7 @@
 "key_backup_recover_banner_title_part1" = "Lancer la récupération de messages sécurisée";
 "key_backup_recover_banner_title_part2" = " pour lire l'historique des messages chiffrés sur cet appareil";
 "settings_key_backup_info" = "Les messages chiffrés sont sécurisés avec un chiffrement de bout en bout. Seuls vous et le(s) destinataire(s) avez les clés pour lire ces messages.";
-"settings_key_backup_info_signout_warning" = "Connectez cette session à la sauvegarde de clés avant de vous déconnecter pour éviter de perdre les clés qui ne seraient que sur cet appareil.";
+"settings_key_backup_info_signout_warning" = "Sauvegardez vos clés avant de vous déconnecter pour éviter de les perdre.";
 "settings_key_backup_button_use" = "Utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Commencer à utiliser la sauvegarde de clés";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Utiliser la sauvegarde de clés";
@@ -1050,9 +1050,9 @@
 "security_settings_crosssigning_info_not_bootstrapped" = "La signature croisée n’est pas encore configurée.";
 "security_settings_crosssigning_info_exists" = "Votre compte a une identité de signature croisée, mais cette session ne lui fait pas encore confiance. Améliorez la sécurité de cette session.";
 "security_settings_crosssigning_info_trusted" = "La signature croisée est activée. Vous pouvez faire confiance à d’autres utilisateurs et à vos autres sessions selon la signature croisée mais vous ne pouvez pas effectuer des signatures croisées depuis cette session car elle n’a pas de clés privées de signature croisée. Améliorez la sécurité de cette session.";
-"security_settings_crosssigning_info_ok" = "La signature croisée est activée.";
-"security_settings_crosssigning_bootstrap" = "Configurer la signature croisée";
-"security_settings_crosssigning_reset" = "Réinitialiser la signature croisée";
+"security_settings_crosssigning_info_ok" = "La signature croisée est prête à être utilisée.";
+"security_settings_crosssigning_bootstrap" = "Configurer";
+"security_settings_crosssigning_reset" = "Réinitialiser";
 "security_settings_crosssigning_complete_security" = "Compléter la sécurité";
 "security_settings_complete_security_alert_title" = "Améliorer la sécurité";
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord améliorer la sécurité de votre session actuelle.";
@@ -1148,10 +1148,10 @@
 "secure_backup_setup_banner_subtitle" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés";
 "security_settings_crypto_sessions_description_2" = "Si vous ne reconnaissez pas une connexion, changez votre mot de passe et réinitialisez la sauvegarde sécurisée.";
 "security_settings_secure_backup" = "SAUVEGARDE SÉCURISÉE";
-"security_settings_secure_backup_description" = "Protection afin d’éviter de perdre l’accès aux messages et données chiffrés en sauvegardant les clés de chiffrement sur votre serveur.";
+"security_settings_secure_backup_description" = "Sauvegardez vos clés de chiffrement et les données de votre compte au où vous perdriez l’accès à vos sessions. Vos clés seront protégées par une clé de sécurité unique.";
 "security_settings_secure_backup_setup" = "Configurer";
 "security_settings_secure_backup_synchronise" = "Synchroniser";
-"security_settings_secure_backup_delete" = "Supprimer";
+"security_settings_secure_backup_delete" = "Supprimer la sauvegarde";
 "security_settings_user_password_description" = "Confirmez votre identité en saisissant le mot de passe de votre compte";
 "secure_key_backup_setup_existing_backup_error_title" = "Une sauvegarde pour les messages existe déjà";
 "secure_key_backup_setup_existing_backup_error_info" = "Déverrouillez-la pour la réutiliser dans la sauvegarde sécurisée ou supprimez-la pour créer une nouvelle sauvegarde de messages dans la sauvegarde sécurisée.";
@@ -1399,3 +1399,30 @@
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Les espaces ne sont pas encore pris en charge";
+"side_menu_app_version" = "Version %@";
+"side_menu_action_feedback" = "Remarques";
+"side_menu_action_help" = "Aide";
+"side_menu_action_settings" = "Paramètres";
+"side_menu_action_invite_friends" = "Inviter des amis";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Panneau de gauche";
+"user_avatar_view_accessibility_hint" = "Change l’avatar de l’utilisateur";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Saisissez votre clé de sécurité pour poursuivre.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Saisissez votre phrase secrète de récupération pour poursuivre.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Vos clés sont en cours de sauvegarde.";
+"security_settings_secure_backup_restore" = "Restaurer depuis une sauvegarde";
+"security_settings_secure_backup_reset" = "Réinitialiser";
+"security_settings_secure_backup_info_valid" = "Cette session sauvegarde vos clés.";
+"security_settings_secure_backup_info_checking" = "Vérification…";
+"settings_ui_theme_picker_message_match_system_theme" = "« Auto » s’aligne avec le thème de votre appareil";
+"settings_ui_theme_picker_message_invert_colours" = "« Auto » utilise le paramètre « Inverser les couleurs » de l’appreil";
+"room_recents_unknown_room_error_message" = "Aucun résultat dans ce salon. Assurez vous de son existence";
+"room_creation_dm_error" = "Nous n’avons pas pu créer votre message direct. Merci de vérifier les utilisateurs que vous voulez inviter et réessayer.";
