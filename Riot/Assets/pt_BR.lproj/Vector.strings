@@ -503,7 +503,7 @@
 "e2e_need_log_in_again" = "Você precisa fazer login de volta para gerar chaves de encriptação ponta-a-ponta para esta sessão e submeter a chave pública a seu servidorcasa.\nIsto é só desta vez; desculpe pela inconveniência.";
 // Bug report
 "bug_report_title" = "Report de Bug";
-"bug_report_description" = "Por favor descreva o bug. O que você fez? O que você esperava que acontecese? O que aconteceu na verdade?";
+"bug_report_description" = "Por favor descreva o bug. O que você fez? O que você esperava que acontecesse? O que na verdade aconteceu?";
 "bug_crash_report_title" = "Reporte de Crash";
 "bug_crash_report_description" = "Por favor descreva o que você fez antes do crash:";
 "bug_report_logs_description" = "A fim de diagnosticar problemas, logs deste cliente vão ser enviados com este reporte de bug. Se você prefere somente enviar o texto acima, por favor desmarque:";
