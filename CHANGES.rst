@@ -24,6 +24,7 @@ Changes to be released in next version
  * VoIP: Handle application inactive state too for VoIP pushes (#4269).
  * VoIP: Do not terminate the app if protected data not available (#4419).
  * KeyVerification: Listen for request state changes and show QR reader option when it's ready.
+ * NSE: Recreate background sync service if credentials changed (#3695).
 
 ⚠️ API Changes
  * 
