@@ -21,11 +21,17 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pK8-ke-xvx">
                     <rect key="frame" x="0.0" y="0.0" width="217" height="59"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="qXw-QN-EC5"/>
+                    </constraints>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                     <inset key="titleEdgeInsets" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Settings" image="side_menu_action_icon_settings">
                         <color key="titleColor" systemColor="systemGrayColor"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="vc_adjustsFontForContentSizeCategory" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="buttonAction:" destination="-1" eventType="touchUpInside" id="tNk-fq-wFy"/>
                     </connections>

@@ -53,6 +53,7 @@ final class SideMenuActionView: UIView, NibOwnerLoadable {
     
     private func commonInit() {
         self.button.contentHorizontalAlignment = .left
+        self.button.titleLabel?.lineBreakMode = .byTruncatingTail
     }
     
     convenience init() {
