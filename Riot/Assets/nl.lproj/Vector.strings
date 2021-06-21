@@ -589,7 +589,7 @@
 "settings_key_backup_info" = "Versleutelde berichten worden beveiligd met eind-tot-eind-versleuteling. Enkel de ontvanger(s) en u hebben de sleutels om deze berichten te lezen.";
 "settings_key_backup_info_checking" = "Bezig met controleren…";
 "settings_key_backup_info_none" = "Uw sleutels worden niet geback-upt vanaf dit apparaat.";
-"settings_key_backup_info_signout_warning" = "Verbind dit apparaat met de sleutelback-up vooraleer u zich afmeldt om sleutels die enkel op dit apparaat staat niet te verliezen.";
+"settings_key_backup_info_signout_warning" = "Maak een back-up van uw sleutels voordat u zich afmeldt om ze niet te verliezen.";
 "settings_key_backup_info_version" = "Sleutelback-upversie: %@";
 "settings_key_backup_info_algorithm" = "Algoritme: %@";
 "settings_key_backup_info_valid" = "Dit apparaat maakt een back-up van uw sleutels.";
@@ -1485,3 +1485,30 @@
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Spaces is nog niet klaar";
+"side_menu_app_version" = "Versie %@";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_action_help" = "Help";
+"side_menu_action_settings" = "Instellingen";
+"side_menu_action_invite_friends" = "Vrienden uitnodigen";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Linkerpaneel";
+"user_avatar_view_accessibility_hint" = "Avatar veranderen";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Voor uw veiligheidssleutel in om door te gaan.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Voer uw veiligheidswachtwoord in om door te gaan.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Uw sleutels worden geback-upt.";
+"security_settings_secure_backup_restore" = "Uit back-up herstellen";
+"security_settings_secure_backup_reset" = "Opnieuw instellen";
+"security_settings_secure_backup_info_valid" = "Deze sessie maakt een back-up van uw sleutels.";
+"security_settings_secure_backup_info_checking" = "Controleren…";
+"settings_ui_theme_picker_message_match_system_theme" = "'Automatisch' gebruikt uw apparaat thema instelling";
+"settings_ui_theme_picker_message_invert_colours" = "‘Automatisch’ gebruikt de instelling ‘Kleurweergave omkeren’ van uw apparaat";
+"room_recents_unknown_room_error_message" = "Dit gesprek is niet gevonden. Controleer of het bestaat";
+"room_creation_dm_error" = "Uw direct gesprek kon niet aangemaakt worden. Controleer de gebruikers die u wilt uitnodigen en probeer het opnieuw.";
