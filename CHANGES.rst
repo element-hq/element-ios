@@ -25,6 +25,7 @@ Changes to be released in next version
  * VoIP: Do not terminate the app if protected data not available (#4419).
  * KeyVerification: Listen for request state changes and show QR reader option when it's ready.
  * NSE: Recreate background sync service if credentials changed (#3695).
+ * HomeViewController: Don't clip the home view when searching for rooms on iPhone 12 Pro Max (#4450).
 
 ⚠️ API Changes
  * 
