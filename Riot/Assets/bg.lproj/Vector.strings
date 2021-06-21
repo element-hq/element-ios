@@ -198,7 +198,7 @@
 "room_participants_action_start_video_call" = "Започни видео разговор";
 "room_participants_action_mention" = "Спомени";
 // Chat
-"room_jump_to_first_unread" = "Виж първото непрочетено съобщение";
+"room_jump_to_first_unread" = "Към непрочетеното";
 "room_new_message_notification" = "%d ново съобщение";
 "room_new_messages_notification" = "%d нови съобщения";
 "room_one_user_is_typing" = "%@ пише…";
@@ -672,7 +672,7 @@
 "room_message_unable_open_link_error_message" = "Неуспешно отваряне на връзката.";
 "room_event_action_reply" = "Отговори";
 "room_event_action_edit" = "Редактирай";
-"auth_login_single_sign_on" = "Влез със SSO";
+"auth_login_single_sign_on" = "Вход";
 "room_event_action_reaction_agree" = "Съгласи се с %@";
 "room_event_action_reaction_disagree" = "Противоречи на %@";
 "room_event_action_reaction_like" = "Харесай %@";
@@ -860,7 +860,7 @@
 "settings_add_3pid_password_title_email" = "Добави имейл адрес";
 "settings_add_3pid_password_title_msidsn" = "Добави телефонен номер";
 "settings_add_3pid_password_message" = "За да продължите, въведете паролата си";
-"settings_add_3pid_invalid_password_message" = "Невалидна парола";
+"settings_add_3pid_invalid_password_message" = "Невалидни данни за вход";
 "settings_devices_description" = "Публичното име на сесията е видимо за хората, с които общувате";
 "settings_discovery_no_identity_server" = "В момента не използвате сървър за самоличност. Добавете такъв, за да бъдете откриваеми от съществуващи познати контакти.";
 "settings_discovery_terms_not_signed" = "Съгласете се с условията за ползване на сървъра за самоличност (%@) за да бъдете откриваеми по имейл адрес или телефон.";
@@ -1014,7 +1014,7 @@
 "device_verification_self_verify_wait_title" = "Завършване на сигурността";
 "device_verification_self_verify_wait_new_sign_in_title" = "Потвърждение на вход";
 "device_verification_self_verify_wait_information" = "Потвърдете тази сесия от някоя от другите ви сесии, за че да й дадете достъп до шифрованите съобщения.\n\nИзползвайте най-новия Element на другите си устройства:";
-"device_verification_self_verify_wait_additional_information" = "или друг Matrix клиент поддържащ кръстосано-подписване";
+"device_verification_self_verify_wait_additional_information" = "Това работи в Element и в други Matrix клиенти поддържащи кръстосано-подписване.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Използвай ключ за възстановяване";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Използвай парола или ключ за възстановяване";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Ако не можете да достъпите съществуваща сесия";
@@ -1280,3 +1280,123 @@
 "switch" = "Смяна";
 "joined" = "Се присъедини";
 "store_promotional_text" = "Пазещо-поверителността ви приложение за чат и съвместна работа, което е част от отворена мрежа. Децентрализирано, за да ви даде контрол. Без събиране на данни, без задни вратички и без достъп на трети страни.";
+"space_beta_announce_information" = "Пространства са нов начин да групирате стаи и хора. Все още не работят на iOS, но можете да ги използвате през Уеб и Desktop.";
+"space_beta_announce_subtitle" = "Новата версия на общности";
+"space_beta_announce_title" = "Пространства ще е налично скоро";
+"space_beta_announce_badge" = "БЕТА";
+"space_feature_unavailable_information" = "Пространства е нов начин за групиране на стаи и хора.\n\nСкоро ще са налични за ползване. Засега, ако се присъедините към Пространство от друга платформа, и тук ще можете да достъпите стаите, към които се присъедините.";
+"space_feature_unavailable_subtitle" = "Функция Пространства не се поддържа на iOS все още, но можете да ги използвате в Уеб и Desktop версията";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Все още не се поддържат Пространства";
+"room_intro_cell_information_multiple_dm_sentence2" = "Само вие сте в този разговор, освен ако някой от вас не покани друг да се присъедини.";
+"room_intro_cell_information_dm_sentence2" = "Никой друг освен двама ви не може да се присъедини в този разговор.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Това е началото на директните ви съобщения с ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " за да кажете на хората за какво е тази стая.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Добави тема";
+"room_intro_cell_information_room_with_topic_sentence2" = "Тема: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Това е началото на ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Добави хора";
+"room_avatar_view_accessibility_hint" = "Промени аватара на стаята";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "аватар";
+"invite_friends_share_text" = "Хей, говори с мен в %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Покани приятели в %@";
+"favourites_empty_view_information" = "Можете да добавяте в любими по няколко начина - най-бързият е чрез натискане и задържане. Докоснете звездата и стаята ще се появи тук автоматично.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Любими хора и стаи";
+"home_empty_view_information" = "Комплексно приложение за защитен чат за екипи, приятели и организации. Докоснете бутон + по-долу за да добавите хора и стаи.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Добре дошли в %@,\n%@";
+"call_transfer_error_message" = "Прехвърлянето на разговора се провали";
+"call_transfer_error_title" = "Грешка";
+"call_transfer_contacts_all" = "Всички";
+"call_transfer_contacts_recent" = "Скорошни";
+"call_transfer_dialpad" = "Панел за набиране";
+"call_transfer_users" = "Потребители";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Прехвърляне";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Панел за набиране";
+"pin_protection_settings_change_pin" = "Промяна на PIN код";
+"pin_protection_confirm_pin_to_change" = "Потвърдете PIN кода за да го промените";
+"secrets_setup_recovery_passphrase_summary_information" = "Запомнете паролата си. Може да се използва за да отключи шифрованите съобщения и данни.";
+"secrets_setup_recovery_passphrase_summary_title" = "Запазете паролата си";
+"bug_report_background_mode" = "Продължи във фонов режим";
+"call_actions_unhold" = "Възобнови";
+"event_formatter_group_call_incoming" = "%@ в %@";
+"event_formatter_group_call_leave" = "Напусни";
+"event_formatter_group_call_join" = "Влез";
+"event_formatter_group_call" = "Групов разговор";
+"event_formatter_call_end_call" = "Затвори";
+"event_formatter_call_retry" = "Опитай пак";
+"event_formatter_call_answer" = "Отговори";
+"event_formatter_call_decline" = "Откажи";
+"event_formatter_call_back" = "Звънни отново";
+"event_formatter_call_connection_failed" = "Връзката се провали";
+"event_formatter_call_you_missed" = "Пропуснахте това обаждане";
+"event_formatter_call_you_declined" = "Отказахте разговора";
+"event_formatter_call_you_currently_in" = "Активен разговор";
+"event_formatter_call_has_ended" = "Прекратяване на %@";
+"event_formatter_call_ringing" = "Звънене…";
+"event_formatter_call_connecting" = "Свързване…";
+"event_formatter_call_video" = "Видео разговор";
+"event_formatter_call_voice" = "Гласов разговор";
+"room_details_integrations" = "Интеграции";
+"room_details_search" = "Търси в стаята";
+"settings_show_NSFW_public_rooms" = "Показвай публични стаи с чувствително съдържание";
+"settings_labs_enable_ringing_for_group_calls" = "Позвъняване за групови разговори";
+"room_multiple_typing_notification" = "%@ и други";
+"room_no_privileges_to_create_group_call" = "Трябва да сте администратор или модератор за да започнете разговор.";
+"room_join_group_call" = "Влез";
+"room_open_dialpad" = "Панел за набиране";
+"room_place_voice_call" = "Гласов разговор";
+"room_accessibility_video_call" = "Видео разговор";
+"room_event_action_delete_confirmation_message" = "Сигурни ли сте, че искате да изтриете неизпратеното съобщение?";
+"room_event_action_delete_confirmation_title" = "Изтрий неизпратеното съобщение";
+"room_unsent_messages_cancel_message" = "Сигурни ли сте, че искате да изтриете всички неизпратени съобщения в тази стая?";
+"room_unsent_messages_cancel_title" = "Изтрий неизпратените съобщения";
+"room_message_replying_to" = "Отговаряне на %@";
+"room_message_editing" = "Редактиране";
+
+// Chat
+"room_slide_to_end_group_call" = "Издърпайте за да прекратите разговора за всички";
+"rooms_empty_view_information" = "Стаите са удобни за какъв да е групов чат - личен или публичен. Докоснете + за да намерите съществуващи стаи или да създадете нови.";
+"rooms_empty_view_title" = "Стаи";
+"people_empty_view_information" = "Чатете защитено с всеки. Докоснете + за да добавите хора.";
+"people_empty_view_title" = "Хора";
+"social_login_button_title_sign_up" = "Регистрирай се с %@";
+"social_login_button_title_sign_in" = "Влез с %@";
+"social_login_button_title_continue" = "Продължи с %@";
+"social_login_list_title_sign_up" = "или";
+"social_login_list_title_sign_in" = "или";
+
+// Social login
+
+"social_login_list_title_continue" = "Продължи с";
+"callbar_only_single_active_group" = "Докоснете за влизане в груповия разговор (%@)";
+"callbar_return" = "Връщане";
+"callbar_only_multiple_paused" = "%@ паузирани разговора";
+"callbar_only_single_paused" = "Паузиран разговор";
+"callbar_active_and_multiple_paused" = "1 активен разговор (%@) · %@ паузирани разговора";
+"callbar_active_and_single_paused" = "1 активен разговор (%@) · 1 паузиран разговор";
+
+// Call Bar
+"callbar_only_single_active" = "Докоснете за връщане в разговора (%@)";

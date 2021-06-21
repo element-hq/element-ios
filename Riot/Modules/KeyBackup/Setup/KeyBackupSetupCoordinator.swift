@@ -44,11 +44,11 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        
-        // Set key backup setup intro as root controller
-        let keyBackupSetupIntroViewController = self.createSetupIntroViewController()
-        keyBackupSetupIntroViewController.delegate = self
-        self.navigationRouter.setRootModule(keyBackupSetupIntroViewController)
+        if self.session.crypto.recoveryService.hasRecovery() {
+            showUnlockSecureBackup()
+        } else {
+            showSetupIntro()
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -56,6 +56,13 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
     }
     
     // MARK: - Private methods
+    
+    private func showSetupIntro() {
+        // Set key backup setup intro as root controller
+        let keyBackupSetupIntroViewController = self.createSetupIntroViewController()
+        keyBackupSetupIntroViewController.delegate = self
+        self.navigationRouter.setRootModule(keyBackupSetupIntroViewController)
+    }
     
     private func createSetupIntroViewController() -> KeyBackupSetupIntroViewController {
         
@@ -78,6 +85,17 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
         }
         
         return KeyBackupSetupIntroViewController.instantiate(isABackupAlreadyExists: isABackupAlreadyExists, encryptionKeysExportPresenter: encryptionKeysExportPresenter)
+    }
+    
+    private func showUnlockSecureBackup() {
+        let recoveryGoal: SecretsRecoveryGoal = .unlockSecureBackup { (privateKey, completion) in
+            self.createKeyBackupUsingSecureBackup(privateKey: privateKey, completion: completion)
+        }
+        
+        let coordinator = SecretsRecoveryCoordinator(session: self.session, recoveryMode: .passphraseOrKey, recoveryGoal: recoveryGoal, navigationRouter: self.navigationRouter)
+        coordinator.delegate = self
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
     }
     
     private func showSetupPassphrase(animated: Bool) {
@@ -103,6 +121,33 @@ final class KeyBackupSetupCoordinator: KeyBackupSetupCoordinatorType {
         let viewController = KeyBackupSetupSuccessFromPassphraseViewController.instantiate(with: recoveryKey)
         viewController.delegate = self
         self.navigationRouter.push(viewController, animated: animated, popCompletion: nil)
+    }
+    
+    private func showSetupWithSecureBackupSuccess(animated: Bool) {
+        let viewController = KeyBackupSetupSuccessFromSecureBackupViewController.instantiate()
+        viewController.delegate = self
+        self.navigationRouter.push(viewController, animated: animated, popCompletion: nil)
+    }
+    
+    private func createKeyBackupUsingSecureBackup(privateKey: Data, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let keyBackup = session.crypto.backup, let recoveryService = session.crypto.recoveryService else {
+            return
+        }
+        
+        keyBackup.prepareKeyBackupVersion(withPassword: nil, success: { megolmBackupCreationInfo in
+            keyBackup.createKeyBackupVersion(megolmBackupCreationInfo, success: { _ in
+                recoveryService.updateRecovery(forSecrets: [MXSecretId.keyBackup.takeUnretainedValue() as String], withPrivateKey: privateKey) {
+                    completion(.success(Void()))
+                } failure: { error in
+                    completion(.failure(error))
+                }
+                
+            }, failure: { error in
+                completion(.failure(error))
+            })
+        }, failure: { error in
+            completion(.failure(error))
+        })
     }
 }
 
@@ -133,6 +178,17 @@ extension KeyBackupSetupCoordinator: KeyBackupSetupPassphraseCoordinatorDelegate
     }
 }
 
+// MARK: - SecretsRecoveryCoordinatorDelegate
+extension KeyBackupSetupCoordinator: SecretsRecoveryCoordinatorDelegate {
+    func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType) {
+        self.showSetupWithSecureBackupSuccess(animated: true)
+    }
+    
+    func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType) {
+        self.delegate?.keyBackupSetupCoordinatorDidCancel(self)
+    }
+}
+
 // MARK: - KeyBackupSetupSuccessFromPassphraseViewControllerDelegate
 extension KeyBackupSetupCoordinator: KeyBackupSetupSuccessFromPassphraseViewControllerDelegate {
     func keyBackupSetupSuccessFromPassphraseViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromPassphraseViewController) {
@@ -143,6 +199,13 @@ extension KeyBackupSetupCoordinator: KeyBackupSetupSuccessFromPassphraseViewCont
 // MARK: - KeyBackupSetupSuccessFromRecoveryKeyViewControllerDelegate
 extension KeyBackupSetupCoordinator: KeyBackupSetupSuccessFromRecoveryKeyViewControllerDelegate {
     func keyBackupSetupSuccessFromRecoveryKeyViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromRecoveryKeyViewController) {
+        self.delegate?.keyBackupSetupCoordinatorDidSetupRecoveryKey(self)
+    }
+}
+
+// MARK: - KeyBackupSetupSuccessFromSecureBackupViewControllerDelegate
+extension KeyBackupSetupCoordinator: KeyBackupSetupSuccessFromSecureBackupViewControllerDelegate {
+    func keyBackupSetupSuccessFromSecureBackupViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromSecureBackupViewController) {
         self.delegate?.keyBackupSetupCoordinatorDidSetupRecoveryKey(self)
     }
 }

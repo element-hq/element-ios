@@ -73,26 +73,12 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
                 return
             }
             
-            let secretIds: [String]?
-            
-            if case SecretsRecoveryGoal.keyBackup = self.recoveryGoal {
-                secretIds = [MXSecretId.keyBackup.takeUnretainedValue() as String]
-            } else {
-                secretIds = nil
+            switch self.recoveryGoal {
+            case .unlockSecureBackup(let block):
+                self.execute(block: block, privateKey: privateKey)
+            default:
+                self.recoverSecrets(privateKey: privateKey)
             }
-            
-            self.recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
-                guard let self = self else {
-                    return
-                }
-                self.update(viewState: .loaded)
-                self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidRecover(self)
-            }, failure: { [weak self] error in
-                guard let self = self else {
-                    return
-                }
-                self.update(viewState: .error(error))
-            })
             
         }, failure: { [weak self] error in
             guard let self = self else {
@@ -100,6 +86,54 @@ final class SecretsRecoveryWithPassphraseViewModel: SecretsRecoveryWithPassphras
             }
             self.update(viewState: .error(error))
         })
+    }
+    
+    private func recoverSecrets(privateKey: Data) {
+        let secretIds: [String]?
+        
+        if case SecretsRecoveryGoal.keyBackup = self.recoveryGoal {
+            secretIds = [MXSecretId.keyBackup.takeUnretainedValue() as String]
+        } else {
+            secretIds = nil
+        }
+        
+        self.recoveryService.recoverSecrets(secretIds, withPrivateKey: privateKey, recoverServices: true, success: { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            self.update(viewState: .loaded)
+            self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidRecover(self)
+        }, failure: { [weak self] error in
+            guard let self = self else {
+                return
+            }
+            self.update(viewState: .error(error))
+        })
+    }
+    
+    private func execute(block: @escaping (_ privateKey: Data, _ completion: @escaping (Result<Void, Error>) -> Void) -> Void, privateKey: Data) {
+        // Check the private key is valid before using it
+        self.recoveryService.checkPrivateKey(privateKey) { match in
+            guard match else {
+                // Reuse already managed error
+                let error = NSError(domain: MXRecoveryServiceErrorDomain, code: Int(MXRecoveryServiceErrorCode.badRecoveryKeyErrorCode.rawValue), userInfo: nil)
+                self.update(viewState: .error(error))
+                return
+            }
+            
+            // Run the extenal code while the view state is .loading
+            block(privateKey) { result in
+                MXLog.debug("[SecretsRecoveryWithPassphraseViewModel] execute: Block returned: \(result)")
+                
+                switch result {
+                case .success:
+                    self.update(viewState: .loaded)
+                    self.coordinatorDelegate?.secretsRecoveryWithPassphraseViewModelDidRecover(self)
+                case .failure(let error):
+                    self.update(viewState: .error(error))
+                }
+            }
+        }
     }
     
     private func update(viewState: SecretsRecoveryWithPassphraseViewState) {

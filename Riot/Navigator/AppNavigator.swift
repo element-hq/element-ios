@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,22 +16,11 @@
 
 import Foundation
 
-class CallBarDismissOperation: AsyncOperation {
+/// AppNavigatorProtocol abstract a navigator at app level.
+/// It enables to perform the navigation within the global app scope (open the side menu, open a room and so on)
+/// Note: Use a destination enum like presented here https://www.swiftbysundell.com/articles/navigation-in-swift/#where-to-navigator or use simple methods like Element Android Navigator
+protocol AppNavigatorProtocol {
     
-    private var presenter: CallPresenter
-    private var completion: (() -> Void)?
-    
-    init(presenter: CallPresenter,
-         completion: (() -> Void)? = nil) {
-        self.presenter = presenter
-        self.completion = completion
-    }
-    
-    override func main() {
-        presenter.delegate?.callPresenter(presenter, dismissCallBar: {
-            self.finish()
-            self.completion?()
-        })
-    }
-    
+    var sideMenu: SideMenuPresentable { get }
+    var alert: AlertPresentable { get }
 }

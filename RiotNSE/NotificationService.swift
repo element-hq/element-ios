@@ -163,7 +163,7 @@ class NotificationService: UNNotificationServiceExtension {
         MXKAccountManager.shared()?.forceReloadAccounts()
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
-            if NotificationService.backgroundSyncService == nil {
+            if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
                 MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
                 self.logMemory()
                 NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)

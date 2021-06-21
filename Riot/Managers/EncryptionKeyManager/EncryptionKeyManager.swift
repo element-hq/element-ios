@@ -29,6 +29,8 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     private static let accountIv: KeyValueStoreKey = "accountIv"
     private static let accountAesKey: KeyValueStoreKey = "accountAesKey"
     private static let cryptoOlmPickleKey: KeyValueStoreKey = "cryptoOlmPickleKey"
+    private static let roomLastMessageIv: KeyValueStoreKey = "roomLastMessageIv"
+    private static let roomLastMessageAesKey: KeyValueStoreKey = "roomLastMessageAesKey"
 
     private let keychainStore: KeyValueStore = KeychainStore(withKeychain: Keychain(service: keychainService, accessGroup: BuildSettings.keychainAccessGroup))
 
@@ -43,12 +45,16 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
         generateIvIfNotExists(forKey: EncryptionKeyManager.contactsIv)
         generateAesKeyIfNotExists(forKey: EncryptionKeyManager.contactsAesKey)
         generateKeyIfNotExists(forKey: EncryptionKeyManager.cryptoOlmPickleKey, size: 32)
+        generateIvIfNotExists(forKey: EncryptionKeyManager.roomLastMessageIv)
+        generateAesKeyIfNotExists(forKey: EncryptionKeyManager.roomLastMessageAesKey)
 
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsIv), "[EncryptionKeyManager] initKeys: Failed to generate IV for acount")
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsAesKey), "[EncryptionKeyManager] initKeys: Failed to generate AES Key for acount")
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsIv), "[EncryptionKeyManager] initKeys: Failed to generate IV for contacts")
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.contactsAesKey), "[EncryptionKeyManager] initKeys: Failed to generate AES Key for contacts")
         assert(keychainStore.containsObject(forKey: EncryptionKeyManager.cryptoOlmPickleKey), "[EncryptionKeyManager] initKeys: Failed to generate Key for olm pickle key")
+        assert(keychainStore.containsObject(forKey: EncryptionKeyManager.roomLastMessageIv), "[EncryptionKeyManager] initKeys: Failed to generate IV for room last message")
+        assert(keychainStore.containsObject(forKey: EncryptionKeyManager.roomLastMessageAesKey), "[EncryptionKeyManager] initKeys: Failed to generate AES Key for room last message encryption")
     }
     
     // MARK: - MXKeyProviderDelegate
@@ -57,6 +63,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
         return dataType == MXKContactManagerDataType
             || dataType == MXKAccountManagerDataType
             || dataType == MXCryptoOlmPickleKeyDataType
+            || dataType == MXRoomLastMessageDataType
     }
             
     func hasKeyForData(ofType dataType: String) -> Bool {
@@ -67,6 +74,9 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
             return keychainStore.containsObject(forKey: EncryptionKeyManager.accountIv) && keychainStore.containsObject(forKey: EncryptionKeyManager.accountAesKey)
         case MXCryptoOlmPickleKeyDataType:
             return keychainStore.containsObject(forKey: EncryptionKeyManager.cryptoOlmPickleKey)
+        case MXRoomLastMessageDataType:
+            return keychainStore.containsObject(forKey: EncryptionKeyManager.roomLastMessageIv) &&
+                keychainStore.containsObject(forKey: EncryptionKeyManager.roomLastMessageAesKey)
         default:
             return false
         }
@@ -87,6 +97,11 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
         case MXCryptoOlmPickleKeyDataType:
             if let key = try? keychainStore.data(forKey: EncryptionKeyManager.cryptoOlmPickleKey) {
                 return MXRawDataKey(key: key)
+            }
+        case MXRoomLastMessageDataType:
+            if let ivKey = try? keychainStore.data(forKey: EncryptionKeyManager.roomLastMessageIv),
+               let aesKey = try? keychainStore.data(forKey: EncryptionKeyManager.roomLastMessageAesKey) {
+                return MXAesKeyData(iv: ivKey, key: aesKey)
             }
         default:
             return nil

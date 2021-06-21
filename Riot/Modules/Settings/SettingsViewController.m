@@ -3571,9 +3571,18 @@ TableViewSectionsDelegate>
     autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
                                           style:UIAlertActionStyleDefault
                                         handler:actionBlock];
-    
+
     // Explain what is "auto"
-    themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message", @"Vector", nil);  
+    if (@available(iOS 13, *))
+    {
+        // Observe application did become active for iOS appearance setting changes
+        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message_match_system_theme", @"Vector", nil);
+    }
+    else
+    {
+        // Observe "Invert Colours" settings changes (available since iOS 11)
+        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message_invert_colours", @"Vector", nil);
+    }
 
     lightAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_light", @"Vector", nil)
                                           style:UIAlertActionStyleDefault
@@ -3938,8 +3947,6 @@ TableViewSectionsDelegate>
 
 - (void)languagePickerViewController:(MXKLanguagePickerViewController *)languagePickerViewController didSelectLangugage:(NSString *)language
 {
-    [languagePickerViewController withdrawViewControllerAnimated:YES completion:nil];
-
     if (![language isEqualToString:[NSBundle mxk_language]]
         || (language == nil && [NSBundle mxk_language]))
     {
@@ -4016,7 +4023,7 @@ TableViewSectionsDelegate>
 
 - (void)setupSecureBackup2
 {
-    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    SecureBackupSetupCoordinatorBridgePresenter *secureBackupSetupCoordinatorBridgePresenter = [[SecureBackupSetupCoordinatorBridgePresenter alloc] initWithSession:self.mainSession allowOverwrite:YES];
     secureBackupSetupCoordinatorBridgePresenter.delegate = self;
     
     [secureBackupSetupCoordinatorBridgePresenter presentFrom:self animated:YES];

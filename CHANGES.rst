@@ -1,3 +1,72 @@
+Changes in 1.4.2 (2021-06-21)
+=================================================
+
+✨ Features
+ * Add left panel (#4398).
+
+🙌 Improvements
+ * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
+ * EncryptionKeyManager: Create keys for room last message data type.
+ * Integrated FLEX for debug builds.
+ * VoIP: Add dial pad for PSTN capable servers to menu on homescreen.
+ * VoIP: Replace call bar with PiP tiles for every type of calls.
+ * Security settings: Display the cross-signing section (#4430).
+ * Security settings: The Secure backup section has been updated to match element-web UX (#4430).
+ * Wording: Replace Recovery Passphrase and Recovery Key by Security Phrase and Security Key (#4268).
+ * Room directory: Join room by alias or id (#4429).
+ * Room lists: Avoid app freezes by building them on a separated thread (#3777).
+
+🐛 Bugfix
+ * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
+ * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
+ * ContactsDataSource: iPad Crashes when you select a contact in search and then collapse a section or clear the query text (#4414).
+ * SettingsViewController: Fix "auto" theme message to clarify that it matches the system theme on iOS 13+ (#2860).
+ * VoIP: Handle application inactive state too for VoIP pushes (#4269).
+ * VoIP: Do not terminate the app if protected data not available (#4419).
+ * KeyVerification: Listen for request state changes and show QR reader option when it's ready.
+ * NSE: Recreate background sync service if credentials changed (#3695).
+ * HomeViewController: Don't clip the home view when searching for rooms on iPhone 12 Pro Max (#4450).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * GH Actions: Make sure we use the latest version of MatrixKit.
+
+Others
+ *
+ 
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.1)).
+
+ Changes in 1.4.1 (2021-06-08)
+=================================================
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ * SettingsViewController: Fix crash when changing the app language (#4377).
+ * UserSessionsService: Fix room lists lost after a reset cache (#4395).
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+    
+🧱 Build
+ *
+
+Others
+ *
+
 Changes in 1.4.0 (2021-06-03)
 =================================================
 

@@ -27,6 +27,7 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     private let recoveryService: MXRecoveryService
     private let passphrase: String?
     private let passphraseOnly: Bool
+    private let allowOverwrite: Bool
     
     // MARK: Public
 
@@ -35,10 +36,11 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     
     // MARK: - Setup
     
-    init(recoveryService: MXRecoveryService, passphrase: String?, passphraseOnly: Bool) {
+    init(recoveryService: MXRecoveryService, passphrase: String?, passphraseOnly: Bool, allowOverwrite: Bool = false) {
         self.recoveryService = recoveryService
         self.passphrase = passphrase
         self.passphraseOnly = passphraseOnly
+        self.allowOverwrite = allowOverwrite
     }
     
     // MARK: - Public
@@ -61,6 +63,16 @@ final class SecretsSetupRecoveryKeyViewModel: SecretsSetupRecoveryKeyViewModelTy
     
     private func createSecureKey() {
         self.update(viewState: .loading)
+        
+        if allowOverwrite && self.recoveryService.hasRecovery() {
+            MXLog.debug("[SecretsSetupRecoveryKeyViewModel] createSecureKey: Overwrite existing secure backup")
+            self.recoveryService.deleteRecovery(withDeleteServicesBackups: true) {
+                self.createSecureKey()
+            } failure: { error in
+                self.update(viewState: .error(error))
+            }
+            return
+        }
                 
         self.recoveryService.createRecovery(forSecrets: nil, withPassphrase: self.passphrase, createServicesBackups: true, success: { secretStorageKeyCreationInfo in
             self.update(viewState: .recoveryCreated(secretStorageKeyCreationInfo.recoveryKey))

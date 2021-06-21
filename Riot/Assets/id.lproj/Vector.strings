@@ -1,0 +1,72 @@
+
+
+"auth_invalid_login_param" = "Nama pengguna dan/atau kata sandi tidak benar";
+"auth_identity_server_placeholder" = "URL (contoh https://vector.im)";
+"auth_home_server_placeholder" = "URL (contoh https://matrix.org)";
+"auth_repeat_new_password_placeholder" = "Konfirmasi kata sandi baru Anda";
+"auth_repeat_password_placeholder" = "Ulangi kata sandi";
+"auth_phone_placeholder" = "Nomor telepon";
+"auth_optional_phone_placeholder" = "Nomor telepon (opsional)";
+"auth_email_placeholder" = "Alamat surel";
+"auth_optional_email_placeholder" = "Alamat surel (opsional)";
+"auth_user_name_placeholder" = "Nama pengguna";
+"auth_new_password_placeholder" = "Kata sandi baru";
+"auth_password_placeholder" = "Kata sandi";
+"auth_user_id_placeholder" = "Surel atau nama pengguna";
+"auth_return_to_login" = "Kembali ke layar masuk";
+"auth_login_single_sign_on" = "Masuk";
+"auth_skip" = "Lewati";
+"auth_register" = "Daftar";
+
+// Authentication
+"auth_login" = "Masuk";
+"callbar_return" = "Kembali";
+"callbar_only_multiple_paused" = "%@ panggilan dijeda";
+"callbar_only_single_paused" = "Panggilan dijeda";
+"callbar_active_and_multiple_paused" = "1 panggilan aktif (%@) • %@ panggilan dijeda";
+"callbar_active_and_single_paused" = "1 panggilan aktif (%@) • 1 panggilan dijeda";
+
+// Call Bar
+"callbar_only_single_active" = "Ketuk untuk kembali ke panggilan (%@)";
+"less" = "Lebih sedikit";
+"more" = "Lebih banyak";
+"switch" = "Beralih";
+"skip" = "Lewati";
+"close" = "Tutup";
+"sending" = "Mengirim";
+"send_to" = "Kirim ke %@";
+"rename" = "Ubah nama";
+"later" = "Nanti";
+"active_call_details" = "Panggilan Aktif (%@)";
+"active_call" = "Panggilan Aktif";
+"video" = "Video";
+"voice" = "Suara";
+"camera" = "Kamera";
+"preview" = "Tinjauan";
+"accept" = "Terima";
+"decline" = "Tolak";
+"join" = "Bergabung";
+"save" = "Simpan";
+"cancel" = "Batal";
+"off" = "Nonaktif";
+"on" = "Aktif";
+"retry" = "Coba lagi";
+"invite" = "Undang";
+"remove" = "Hapus";
+"leave" = "Tinggalkan";
+"start" = "Mulai";
+"create" = "Buat";
+"continue" = "Lanjut";
+"back" = "Kembali";
+"next" = "Selanjutnya";
+
+// Actions
+"view" = "Lihat";
+"warning" = "Peringatan";
+"title_groups" = "Komunitas-komunitas";
+"title_rooms" = "Ruangan-ruangan";
+"title_people" = "Orang-orang";
+"title_favourites" = "Favorit";
+
+// Titles
+"title_home" = "Beranda";

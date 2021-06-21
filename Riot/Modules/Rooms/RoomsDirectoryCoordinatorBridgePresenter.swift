@@ -22,6 +22,7 @@ import Foundation
     func roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: RoomsDirectoryCoordinatorBridgePresenter)
     func roomsDirectoryCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomsDirectoryCoordinatorBridgePresenter, didSelectRoom room: MXPublicRoom)
     func roomsDirectoryCoordinatorBridgePresenterDelegateDidTapCreateNewRoom(_ coordinatorBridgePresenter: RoomsDirectoryCoordinatorBridgePresenter)
+    func roomsDirectoryCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomsDirectoryCoordinatorBridgePresenter, didSelectRoomWithIdOrAlias roomIdOrAlias: String)
 }
 
 /// RoomsDirectoryCoordinatorBridgePresenter enables to start RoomsDirectoryCoordinator from a view controller.
@@ -96,6 +97,9 @@ extension RoomsDirectoryCoordinatorBridgePresenter: RoomsDirectoryCoordinatorDel
         self.delegate?.roomsDirectoryCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
+    func roomsDirectoryCoordinator(_ coordinator: RoomsDirectoryCoordinatorType, didSelectRoomWithIdOrAlias roomIdOrAlias: String) {
+        self.delegate?.roomsDirectoryCoordinatorBridgePresenterDelegate(self, didSelectRoomWithIdOrAlias: roomIdOrAlias)
+    }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate

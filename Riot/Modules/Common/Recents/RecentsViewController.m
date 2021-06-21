@@ -72,6 +72,8 @@
 
 @property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
+@property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+
 @end
 
 @implementation RecentsViewController
@@ -1796,6 +1798,24 @@
                                                        
                                                    }]];
     
+    if (self.mainSession.callManager.supportsPSTN)
+    {
+        [currentAlert addAction:[UIAlertAction
+            actionWithTitle:NSLocalizedStringFromTable(@"room_open_dialpad", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+        
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+            
+                                                           [self openDialpad];
+                                                       }
+        
+                                                   }]];
+    }
+
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
@@ -1813,6 +1833,46 @@
     
     [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];
+}
+
+- (void)openDialpad
+{
+    DialpadViewController *controller = [DialpadViewController instantiateWithConfiguration:[DialpadConfiguration default]];
+    controller.delegate = self;
+    self.customSizedPresentationController = [[CustomSizedPresentationController alloc] initWithPresentedViewController:controller presentingViewController:self];
+    self.customSizedPresentationController.dismissOnBackgroundTap = NO;
+    self.customSizedPresentationController.cornerRadius = 16;
+    
+    controller.transitioningDelegate = self.customSizedPresentationController;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)dialpadViewControllerDidTapCall:(DialpadViewController *)viewController withPhoneNumber:(NSString *)phoneNumber
+{
+    if (self.mainSession.callManager && phoneNumber.length > 0)
+    {
+        [self startActivityIndicator];
+        
+        [viewController dismissViewControllerAnimated:YES completion:^{
+            MXWeakify(self);
+            [self.mainSession.callManager placeCallAgainst:phoneNumber withVideo:NO success:^(MXCall * _Nonnull call) {
+                MXStrongifyAndReturnIfNil(self);
+                [self stopActivityIndicator];
+                self.customSizedPresentationController = nil;
+                
+                //  do nothing extra here. UI will be handled automatically by the CallService.
+            } failure:^(NSError * _Nullable error) {
+                MXStrongifyAndReturnIfNil(self);
+                [self stopActivityIndicator];
+            }];
+        }];
+    }
+}
+
+- (void)dialpadViewControllerDidTapClose:(DialpadViewController *)viewController
+{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    self.customSizedPresentationController = nil;
 }
 
 - (void)createNewRoom
@@ -2111,6 +2171,52 @@
         [self createNewRoom];
     }];
     self.roomsDirectoryCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomsDirectoryCoordinatorBridgePresenterDelegate:(RoomsDirectoryCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectRoomWithIdOrAlias:(NSString * _Nonnull)roomIdOrAlias
+{
+    MXRoom *room = [self.mainSession vc_roomWithIdOrAlias:roomIdOrAlias];
+    
+    if (room)
+    {
+        // Room is known show it directly
+        [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+            [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+        }];
+        coordinatorBridgePresenter = nil;
+    }
+    else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
+    {
+        // Room preview doesn't support room alias
+        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+    }
+    else
+    {
+        // Try to preview the room from his id
+        RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:roomIdOrAlias
+                                                                        andSession:self.mainSession];
+        
+        [self startActivityIndicator];
+
+        // Try to get more information about the room before opening its preview
+        MXWeakify(self);
+        
+        [roomPreviewData peekInRoom:^(BOOL succeeded) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self stopActivityIndicator];
+                        
+            if (succeeded) {
+                [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+                    [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                }];
+                self.roomsDirectoryCoordinatorBridgePresenter = nil;
+            } else {
+                [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+            }
+        }];
+    }
 }
 
 @end
