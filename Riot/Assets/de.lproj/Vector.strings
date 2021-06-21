@@ -558,7 +558,7 @@
 "settings_key_backup_info" = "Verschlüsselte Nachrichten sind durch Ende-zu-Ende-Verschlüsselung gesichert. Ausschließlich du und der/die Empfänger besitzen die Schlüssel, um diese Nachrichten zu lesen.";
 "settings_key_backup_info_checking" = "Überprüfe…";
 "settings_key_backup_info_none" = "Deine Schlüssel werden nicht von dieser Sitzung gesichert.";
-"settings_key_backup_info_signout_warning" = "Verbinde diese Sitzung mit der Schlüsselsicherung, bevor du dich abmeldest, um den Verlust von Schlüsseln zu vermeiden, die sich möglicherweise nur auf diesem Gerät befinden.";
+"settings_key_backup_info_signout_warning" = "Sichere deine Schlüssel damit du sie beim Abmelden nicht verlierst.";
 "settings_key_backup_info_version" = "Version der Schlüsselsicherung: %@";
 "settings_key_backup_info_algorithm" = "Algorithmus";
 "settings_key_backup_info_valid" = "Diese Sitzung sichert deine Schlüssel.";
@@ -596,7 +596,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Passphrase bestätigen";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Gut!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrasen müssen übereinstimmen";
-"key_backup_setup_passphrase_set_passphrase_action" = "Setze Passphrase";
+"key_backup_setup_passphrase_set_passphrase_action" = "Passphrase setzen";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "Oder sichere deine Sicherung mit einem Wiederherstellungsschlüssel, und speichere sie an einem sicheren Ort ab.";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Erweitert) Mit Wiederherstellungsschlüssel einrichten";
 "key_backup_setup_success_title" = "Erfolgreich!";
@@ -1015,9 +1015,9 @@
 "room_member_power_level_short_custom" = "Benutzerdefiniert";
 "security_settings_secure_backup" = "SICHERE SICHERHEITSKOPIE";
 "security_settings_secure_backup_synchronise" = "Synchronisiere";
-"security_settings_secure_backup_delete" = "Lösche";
-"security_settings_crosssigning_info_ok" = "Quersignierung ist angeschaltet.";
-"security_settings_crosssigning_reset" = "Quersignierung zurücksetzen";
+"security_settings_secure_backup_delete" = "Backup löschen";
+"security_settings_crosssigning_info_ok" = "Quersignierung ist bereit zur Anwendung.";
+"security_settings_crosssigning_reset" = "Zurücksetzen";
 "security_settings_coming_soon" = "Entschuldigung, diese Funktion ist noch nicht für Element iOS verfügbar. Bitte nutze einen anderen Matrix-Client, um es einzurichten. Element iOS wird es benutzen.";
 "security_settings_user_password_description" = "Bestätige deine Identität durch Eingabe des Kontopassworts";
 // AuthenticatedSessionViewControllerFactory
@@ -1031,7 +1031,7 @@
 "security_settings_secure_backup_description" = "Sichere deine verschlüsselten Nachrichten und Daten, indem du die Schlüssel auf deinem Server sicherst.";
 "security_settings_crosssigning_info_exists" = "Dein Konto hat eine Quersignatur-Identität, aber dieser Sitzung wird noch nicht vertraut. Vervollständige die Sicherheit auf diese Sitzung.";
 "security_settings_crosssigning_info_trusted" = "Quersignierung ist aktiviert. Du kannst anderen Nutzern und deinen anderen Sitzungen basierend auf der Quersignatur vertrauen, aber du kannst in dieser Sitzung keine Quersignierung durchführen, da sie keine privaten Quersignatur-Schlüssel enthält. Vervollständige die Sicherheit dieser Sitzung.";
-"security_settings_crosssigning_bootstrap" = "Quersignierung einrichten";
+"security_settings_crosssigning_bootstrap" = "Einrichten";
 "security_settings_complete_security_alert_title" = "Vollständige Sicherheit";
 "security_settings_complete_security_alert_message" = "Du solltest zuerst die Sicherheit deiner aktuellen Sitzung vervollständigen.";
 // Events formatter with you
@@ -1388,3 +1388,4 @@
 "settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" passt sich an das Systemthema an";
 "room_recents_unknown_room_error_message" = "Raum kann nicht gefunden werden. Überprüfe bitte, dass er existiert";
 "room_creation_dm_error" = "Fehler beim Erstellen der Direktnachricht. Bitte überprüfe die eingeladenen Leute und versuche es erneut.";
+"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" verwendet die Farbinvertierungseinstellung deines Geräts";
