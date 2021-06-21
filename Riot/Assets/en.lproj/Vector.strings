@@ -178,6 +178,7 @@
 "room_creation_wait_for_creation" = "A room is already being created. Please wait.";
 "room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
 "room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
+"room_creation_dm_error" = "We couldn't create your DM. Please check the users you want to invite and try again.";
 
 // Room recents
 "room_recents_directory_section" = "ROOM DIRECTORY";
@@ -194,6 +195,7 @@
 "room_recents_join_room" = "Join room";
 "room_recents_join_room_title" = "Join a room";
 "room_recents_join_room_prompt" = "Type a room id or a room alias";
+"room_recents_unknown_room_error_message" = "Can't find this room. Make sure it exists";
 
 // People tab
 "people_invites_section" = "INVITES";
@@ -519,7 +521,8 @@ Tap the + to start adding people.";
 "settings_ui_theme_dark" = "Dark";
 "settings_ui_theme_black" = "Black";
 "settings_ui_theme_picker_title" = "Select a theme";
-"settings_ui_theme_picker_message" = "\"Auto\" uses your device \"Invert Colours\" settings";
+"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" uses your device's \"Invert Colours\" settings";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matches your device's system theme";
 
 "settings_unignore_user" = "Show all messages from %@?";
 
@@ -565,7 +568,7 @@ Tap the + to start adding people.";
 "settings_key_backup_info" = "Encrypted messages are secured with end-to-end encryption. Only you and the recipient(s) have the keys to read these messages.";
 "settings_key_backup_info_checking" = "Checking…";
 "settings_key_backup_info_none" = "Your keys are not being backed up from this session.";
-"settings_key_backup_info_signout_warning" = "Connect this session to key backup before signing out to avoid losing any keys that may only be on this device.";
+"settings_key_backup_info_signout_warning" = "Back up your keys before signing out to avoid losing them.";
 "settings_key_backup_info_version" = "Key Backup Version: %@";
 "settings_key_backup_info_algorithm" = "Algorithm: %@";
 "settings_key_backup_info_valid" = "This session is backing up your keys.";
@@ -619,10 +622,13 @@ Tap the + to start adding people.";
 "security_settings_crypto_sessions_description_2" = "If you don’t recognise a login, change your password and reset Secure Backup.";
 
 "security_settings_secure_backup" = "SECURE BACKUP";
-"security_settings_secure_backup_description" =  "Safeguard against losing access to encrypted messages & data by backing up encryption keys on your server.";
+"security_settings_secure_backup_description" =  "Back up your encryption keys with your account data in case you lose access to your sessions. Your keys will be secured with a unique Security Key.";
+"security_settings_secure_backup_info_checking" = "Checking…";
+"security_settings_secure_backup_info_valid" = "This session is backing up your keys.";
 "security_settings_secure_backup_setup" = "Set up";
-"security_settings_secure_backup_synchronise" = "Synchronise";
-"security_settings_secure_backup_delete" = "Delete";
+"security_settings_secure_backup_reset" = "Reset";
+"security_settings_secure_backup_restore" = "Restore from Backup";
+"security_settings_secure_backup_delete" = "Delete Backup";
 
 "security_settings_backup" = "MESSAGE BACKUP";
 
@@ -630,9 +636,9 @@ Tap the + to start adding people.";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing is not yet set up.";
 "security_settings_crosssigning_info_exists" = "Your account has a cross-signing identity, but it is not yet trusted by this session. Complete security of this session.";
 "security_settings_crosssigning_info_trusted" = "Cross-signing is enabled. You can trust other users and your other sessions based on cross-signing but you cannot cross-sign from this session because it does not have cross-signing private keys. Complete security of this session.";
-"security_settings_crosssigning_info_ok" = "Cross-signing is enabled.";
-"security_settings_crosssigning_bootstrap" = "Bootstrap cross-signing";
-"security_settings_crosssigning_reset" = "Reset cross-signing";
+"security_settings_crosssigning_info_ok" = "Cross-signing is ready for use.";
+"security_settings_crosssigning_bootstrap" = "Set up";
+"security_settings_crosssigning_reset" = "Reset";
 "security_settings_crosssigning_complete_security" = "Complete security";
 
 "security_settings_cryptography" = "CRYPTOGRAPHY";
@@ -896,7 +902,7 @@ Tap the + to start adding people.";
 
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "New Key Backup";
-"e2e_key_backup_wrong_version" = "A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new passphrase in Settings.";
+"e2e_key_backup_wrong_version" = "A new secure message key backup has been detected.\n\nIf this wasn’t you, set a new Security Phrase in Settings.";
 "e2e_key_backup_wrong_version_button_settings" = "Settings";
 "e2e_key_backup_wrong_version_button_wasme" = "It was me";
 
@@ -1022,7 +1028,7 @@ Tap the + to start adding people.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Use a Security Key";
 "secure_key_backup_setup_intro_use_security_key_info" = "Generate a security key to store somewhere safe like a password manager or a safe.";
 
-"secure_key_backup_setup_intro_use_security_passphrase_title" = "Use a Security Passphrase";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Use a Security Phrase";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Enter a secret phrase only you know, and generate a key for backup.";
 
 "secure_key_backup_setup_existing_backup_error_title" = "A backup for messages already exists";
@@ -1061,66 +1067,69 @@ Tap the + to start adding people.";
 
 // Passphrase
 
-"key_backup_setup_passphrase_title" = "Secure your backup with a Passphrase";
-"key_backup_setup_passphrase_info" = "We'll store an encrypted copy of your keys on our server. Protect your backup with a passphrase to keep it secure.\n\nFor maximum security, this should be different from your account password.";
+"key_backup_setup_passphrase_title" = "Secure your backup with a Security Phrase";
+"key_backup_setup_passphrase_info" = "We'll store an encrypted copy of your keys on our server. Protect your backup with a phrase to keep it secure.\n\nFor maximum security, this should be different from your account password.";
 "key_backup_setup_passphrase_passphrase_title" = "Enter";
-"key_backup_setup_passphrase_passphrase_placeholder" = "Enter passphrase";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Enter phrase";
 "key_backup_setup_passphrase_passphrase_valid" = "Great!";
 "key_backup_setup_passphrase_passphrase_invalid" = "Try adding a word";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "Confirm";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Confirm passphrase";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Confirm phrase";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
-"key_backup_setup_passphrase_set_passphrase_action" = "Set Passphrase";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Or, secure your backup with a Recovery Key, saving it somewhere safe.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Advanced) Set up with Recovery Key";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "phrase doesn’t match";
+"key_backup_setup_passphrase_set_passphrase_action" = "Set Phrase";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Or, secure your backup with a Security Key, saving it somewhere safe.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Advanced) Set up with Security Key";
 
 // Success
 
 "key_backup_setup_success_title" = "Success!";
 
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Your keys are being backed up.\n\nYour recovery key is a safety net - you can use it to restore access to your encrypted messages if you forget your passphrase.\n\nKeep your recovery key somewhere very secure, like a password manager (or a safe).";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Save Recovery Key";
+"key_backup_setup_success_from_passphrase_info" = "Your keys are being backed up.\n\nYour Security Key is a safety net - you can use it to restore access to your encrypted messages if you forget your passphrase.\n\nKeep your Security Key somewhere very secure, like a password manager (or a safe).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Save Security Key";
 "key_backup_setup_success_from_passphrase_done_action" = "Done";
 
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Your keys are being backed up.\n\nMake a copy of this recovery key and keep it safe.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Recovery Key";
+"key_backup_setup_success_from_recovery_key_info" = "Your keys are being backed up.\n\nMake a copy of this Security Key and keep it safe.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Security Key";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Make a Copy";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "I've made a copy";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Your keys are being backed up.";
 
 // MARK: Key backup recover
 
 "key_backup_recover_title" = "Secure Messages";
 
-"key_backup_recover_invalid_passphrase_title" = "Incorrect Recovery Passphrase";
-"key_backup_recover_invalid_passphrase" = "Backup could not be decrypted with this passphrase: please verify that you entered the correct recovery passphrase.";
-"key_backup_recover_invalid_recovery_key_title" = "Recovery Key Mismatch";
-"key_backup_recover_invalid_recovery_key" = "Backup could not be decrypted with this key: please verify that you entered the correct recovery key.";
+"key_backup_recover_invalid_passphrase_title" = "Incorrect Security Phrase";
+"key_backup_recover_invalid_passphrase" = "Backup could not be decrypted with this phrase: please verify that you entered the correct Security Phrase.";
+"key_backup_recover_invalid_recovery_key_title" = "Security Key Mismatch";
+"key_backup_recover_invalid_recovery_key" = "Backup could not be decrypted with this key: please verify that you entered the correct Security Key.";
 
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Restoring backup…";
 
 // Recover from passphrase
 
-"key_backup_recover_from_passphrase_info" = "Use your recovery passphrase to unlock your secure message history";
+"key_backup_recover_from_passphrase_info" = "Use your Security Phrase to unlock your secure message history";
 "key_backup_recover_from_passphrase_passphrase_title" = "Enter";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "Enter Passphrase";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Enter Phrase";
 "key_backup_recover_from_passphrase_recover_action" = "Unlock History";
 
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Don’t know your recovery passphrase? You can ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "use your recovery key";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Don’t know your Security Phrase? You can ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "use your Security Key";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
 
 // Recover from recovery key
 
-"key_backup_recover_from_recovery_key_info" = "Use your recovery key to unlock your secure message history";
+"key_backup_recover_from_recovery_key_info" = "Use your Security Key to unlock your secure message history";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Enter";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Enter Recovery Key";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Enter Security Key";
 "key_backup_recover_from_recovery_key_recover_action" = "Unlock History";
 
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Lost your recovery key? You can set up a new one in settings.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Lost your Security Key You can set up a new one in settings.";
 
 // Success
 
@@ -1197,8 +1206,8 @@ Tap the + to start adding people.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
 "device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Element on your other devices:";
 "device_verification_self_verify_wait_additional_information" = "This works with Element and other cross-signing capable Matrix clients.";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Recovery Key";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Recovery Passphrase or Key";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Security Key";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Security Phrase or Key";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checking for other verification capabilities ...";
 
@@ -1432,38 +1441,40 @@ Tap the + to start adding people.";
 
 // Recover with passphrase
 
-"secrets_recovery_with_passphrase_title" = "Recovery Passphrase";
-"secrets_recovery_with_passphrase_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery passphrase.";
-"secrets_recovery_with_passphrase_information_verify_device" = "Use your Recovery Passphrase to verify this device.";
+"secrets_recovery_with_passphrase_title" = "Security Phrase";
+"secrets_recovery_with_passphrase_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your Security Phrase.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Use your Security Phrase to verify this device.";
 "secrets_recovery_with_passphrase_passphrase_title" = "Enter";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Enter Recovery Passphrase";
-"secrets_recovery_with_passphrase_recover_action" = "Use Passphrase";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Enter Security Phrase";
+"secrets_recovery_with_passphrase_recover_action" = "Use Phrase";
 
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Don’t know your recovery passphrase? You can ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "use your recovery key";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Don’t know your Security Phrase? You can ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "use your Security Key";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Unable to access secret storage";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Please verify that you entered the correct recovery passphrase.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Please verify that you entered the correct Security Phrase.";
 
 // Recover with key
 
-"secrets_recovery_with_key_title" = "Recovery Key";
-"secrets_recovery_with_key_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your recovery key.";
-"secrets_recovery_with_key_information_verify_device" = "Use your Recovery Key to verify this device.";
+"secrets_recovery_with_key_title" = "Security Key";
+"secrets_recovery_with_key_information_default" = "Access your secure message history and your cross-signing identity for verifying other sessions by entering your Security Key.";
+"secrets_recovery_with_key_information_verify_device" = "Use your Security Key to verify this device.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Enter your Security Phrase to continue.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Enter your Security Key to continue.";
 "secrets_recovery_with_key_recovery_key_title" = "Enter";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Enter Recovery Key";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Enter Security Key";
 "secrets_recovery_with_key_recover_action" = "Use Key";
 
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Unable to access secret storage";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Please verify that you entered the correct recovery key.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Please verify that you entered the correct Security Key.";
 
 // MARK: - Secrets set up
 
 // Recovery Key
 
 "secrets_setup_recovery_key_title" = "Save your Security Key";
-"secrets_setup_recovery_key_information" = "Store your Recovery Key somewhere safe. It can be used to unlock your encrypted messages & data.";
+"secrets_setup_recovery_key_information" = "Store your Security Key somewhere safe. It can be used to unlock your encrypted messages & data.";
 "secrets_setup_recovery_key_loading" = "Loading…";
 "secrets_setup_recovery_key_export_action" = "Save";
 "secrets_setup_recovery_key_done_action" = "Done";
@@ -1480,10 +1491,10 @@ Tap the + to start adding people.";
 
 "secrets_setup_recovery_passphrase_confirm_information" = "Enter your Security Phrase again to confirm it.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirm";
-"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirm passphrase";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirm phrase";
 
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Great!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passphrase doesn’t match";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Phrase doesn’t match";
 
 "secrets_setup_recovery_passphrase_summary_title" = "Save your Security Phrase";
 "secrets_setup_recovery_passphrase_summary_information" = "Remember your Security Phrase. It can be used to unlock your encrypted messages & data.";
@@ -1643,3 +1654,17 @@ Tap the + to start adding people.";
 "space_beta_announce_title" = "Spaces are coming soon";
 "space_beta_announce_subtitle" = "The new version of communities";
 "space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"user_avatar_view_accessibility_hint" = "Change user avatar";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Left panel";
+"side_menu_action_invite_friends" = "Invite friends";
+"side_menu_action_settings" = "Settings";
+"side_menu_action_help" = "Help";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_app_version" = "Version %@";

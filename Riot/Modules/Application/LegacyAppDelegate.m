@@ -78,9 +78,6 @@
 
 #define CALL_STATUS_BAR_HEIGHT 44
 
-#define MAKE_STRING(x) #x
-#define MAKE_NS_STRING(x) @MAKE_STRING(x)
-
 NSString *const kAppDelegateDidTapStatusBarNotification = @"kAppDelegateDidTapStatusBarNotification";
 NSString *const kAppDelegateNetworkStatusDidChangeNotification = @"kAppDelegateNetworkStatusDidChangeNotification";
 
@@ -90,7 +87,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, CallBarDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate>
 {
     /**
      Reachability observer
@@ -230,6 +227,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
+@property (nonatomic, strong) AppInfo *appInfo;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -304,38 +303,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (NSString*)appVersion
 {
-    if (!_appVersion)
-    {
-        _appVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    }
-    
-    return _appVersion;
+    return self.appInfo.appVersion.bundleShortVersion;
 }
 
 - (NSString*)build
 {
-    if (!_build)
-    {
-        NSString *buildBranch = nil;
-        NSString *buildNumber = nil;
-        // Check whether GIT_BRANCH and BUILD_NUMBER were provided during compilation in command line argument.
-#ifdef GIT_BRANCH
-        buildBranch = MAKE_NS_STRING(GIT_BRANCH);
-#endif
-#ifdef BUILD_NUMBER
-        buildNumber = [NSString stringWithFormat:@"#%@", @(BUILD_NUMBER)];
-#endif
-        if (buildBranch && buildNumber)
-        {
-            _build = [NSString stringWithFormat:@"%@ %@", buildBranch, buildNumber];
-        } else if (buildNumber){
-            _build = buildNumber;
-        } else
-        {
-            _build = buildBranch ? buildBranch : NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil);
-        }
-    }
-    return _build;
+    return self.appInfo.buildInfo.readableBuildVersion;
 }
 
 - (void)setIsOffline:(BOOL)isOffline
@@ -396,18 +369,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
-    if (![application isProtectedDataAvailable])
-    {
-        MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: Terminating the app because protected data not available");
-        exit(0);
-    }
-    
     _configuration = [AppConfiguration new];
     
+    self.appInfo = AppInfo.current;
+    
     // Log app information
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    NSString* appVersion = [AppDelegate theDelegate].appVersion;
-    NSString* build = [AppDelegate theDelegate].build;
+    NSString *appDisplayName = self.appInfo.displayName;
+    NSString* appVersion = self.appVersion;
+    NSString* build = self.build;
     
     MXLogDebug(@"------------------------------");
     MXLogDebug(@"Application info:");
@@ -2878,7 +2847,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             void (^onFailure)(NSError *) = ^(NSError *error){
                 MXLogDebug(@"[AppDelegate] Create direct chat failed");
                 //Alert user
-                [self showErrorAsAlert:error];
+                [self showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"room_creation_dm_error", @"Vector", nil)];
 
                 if (completion)
                 {
@@ -3187,117 +3156,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                    from:self.presentedViewController
                                animated:YES
                              completion:nil];
-}
-
-
-#pragma mark - Call status handling
-
-/// Returns a suitable height for call status bar. Considers safe area insets if available and notch status.
-- (CGFloat)calculateCallStatusBarHeight
-{
-    CGFloat result = CALL_STATUS_BAR_HEIGHT;
-    if (@available(iOS 11.0, *))
-    {
-        if (UIDevice.currentDevice.hasNotch)
-        {
-            //  this device has a notch (iPhone X +)
-            result += UIApplication.sharedApplication.keyWindow.safeAreaInsets.top;
-        }
-    }
-    return result;
-}
-
-- (void)displayCallStatusBarWithTitle:(NSString*)title
-{
-    // Add a call status bar
-    CGSize topBarSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, [self calculateCallStatusBarHeight]);
-
-    _callStatusBarWindow = [[UIWindow alloc] initWithFrame:CGRectMake(0, 0, topBarSize.width, topBarSize.height)];
-    _callStatusBarWindow.windowLevel = UIWindowLevelStatusBar;
-    
-    // Create statusBarButton
-    _callBar = [CallBar instantiate];
-    _callBar.frame = _callStatusBarWindow.bounds;
-    _callBar.title = title;
-    _callBar.backgroundColor = ThemeService.shared.theme.tintColor;
-    _callBar.delegate = self;
-    _callBar.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    // Set call bar view as the view of the root view controller
-    UIViewController *viewController = [[UIViewController alloc] init];
-    viewController.view = _callBar;
-    _callStatusBarWindow.rootViewController = viewController;
-    
-    _callStatusBarWindow.hidden = NO;
-    [self deviceOrientationDidChange];
-    
-    // We need to listen to the device orientation change events to refresh the root controller frame.
-    // Else the navigation bar position will be wrong.
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deviceOrientationDidChange)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
-}
-
-- (void)updateCallStatusBarWithTitle:(NSString*)title
-{
-    _callBar.title = title;
-}
-
-- (void)removeCallStatusBar
-{
-    if (_callStatusBarWindow)
-    {
-        // No more need to listen to device orientation changes
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-        
-        // Hide & destroy it
-        _callStatusBarWindow.hidden = YES;
-        [_callBar removeFromSuperview];
-        _callBar = nil;
-        _callStatusBarWindow = nil;
-        
-        [self deviceOrientationDidChange];
-    }
-}
-
-- (void)deviceOrientationDidChange
-{
-    UIApplication *app = [UIApplication sharedApplication];
-    UIViewController *rootController = app.keyWindow.rootViewController;
-    
-    // Refresh the root view controller frame
-    CGRect rootControllerFrame = [[UIScreen mainScreen] bounds];
-
-    if (_callStatusBarWindow)
-    {
-        CGFloat callStatusBarHeight = [self calculateCallStatusBarHeight];
-
-        UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-        CGFloat width;
-        
-        if (UIDeviceOrientationIsPortrait(deviceOrientation))
-        {
-            width = MIN(rootControllerFrame.size.width, rootControllerFrame.size.height);
-        }
-        else
-        {
-            width = MAX(rootControllerFrame.size.width, rootControllerFrame.size.height);
-        }
-        
-        _callStatusBarWindow.frame = CGRectMake(0, 0, width, callStatusBarHeight);
-        
-        // Apply the vertical offset due to call status bar
-        rootControllerFrame.origin.y = callStatusBarHeight;
-        rootControllerFrame.size.height -= callStatusBarHeight;
-    }
-    
-    rootController.view.frame = rootControllerFrame;
-    if (rootController.presentedViewController)
-    {
-        rootController.presentedViewController.view.frame = rootControllerFrame;
-    }
-    [rootController.view setNeedsLayout];
 }
 
 #pragma mark - Status Bar Tap handling
@@ -4490,97 +4348,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)callPresenter:(CallPresenter *)presenter presentCallBarFor:(UIViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls completion:(void (^)(void))completion
-{
-    [self displayCallStatusBarWithTitle:nil];
-    [self callPresenter:presenter updateCallBarFor:activeCallViewController numberOfPausedCalls:numberOfPausedCalls];
-    
-    if (completion)
-    {
-        completion();
-    }
-}
-
-- (void)callPresenter:(CallPresenter *)presenter updateCallBarFor:(UIViewController *)activeCallViewController numberOfPausedCalls:(NSUInteger)numberOfPausedCalls
-{
-    NSString *btnTitle;
-    
-    if (activeCallViewController)
-    {
-        NSString *callStatus = @"";
-        BOOL isGroupCall = NO;
-        if ([activeCallViewController isKindOfClass:[CallViewController class]])
-        {
-            CallViewController *activeCallVC = (CallViewController *)activeCallViewController;
-            callStatus = activeCallVC.callStatusLabel.text;
-        }
-        else if ([activeCallViewController isKindOfClass:[JitsiViewController class]])
-        {
-            JitsiViewController *jitsiVC = (JitsiViewController *)activeCallViewController;
-            NSUInteger duration = jitsiVC.callDuration / 1000;
-            NSUInteger secs = duration % 60;
-            NSUInteger mins = (duration / 60) % 60;
-            NSUInteger hours = duration / 3600;
-            if (hours > 0)
-            {
-                callStatus = [NSString stringWithFormat:@"%02tu:%02tu:%02tu", hours, mins, secs];
-            }
-            else
-            {
-                callStatus = [NSString stringWithFormat:@"%02tu:%02tu", mins, secs];
-            }
-            isGroupCall = YES;
-        }
-        
-        if (numberOfPausedCalls == 0)
-        {
-            //  only one active
-            if (isGroupCall)
-            {
-                btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active_group", @"Vector", nil), callStatus];
-            }
-            else
-            {
-                btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_single_active", @"Vector", nil), callStatus];
-            }
-        }
-        else if (numberOfPausedCalls == 1)
-        {
-            //  one active and one paused
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_single_paused", @"Vector", nil), callStatus];
-        }
-        else
-        {
-            //  one active and multiple paused
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_active_and_multiple_paused", @"Vector", nil), callStatus, @(numberOfPausedCalls)];
-        }
-    }
-    else
-    {
-        //  no active calls
-        if (numberOfPausedCalls == 1)
-        {
-            btnTitle = NSLocalizedStringFromTable(@"callbar_only_single_paused", @"Vector", nil);
-        }
-        else
-        {
-            btnTitle = [NSString stringWithFormat:NSLocalizedStringFromTable(@"callbar_only_multiple_paused", @"Vector", nil), @(numberOfPausedCalls)];
-        }
-    }
-    
-    [self updateCallStatusBarWithTitle:btnTitle];
-}
-
-- (void)callPresenter:(CallPresenter *)presenter dismissCallBar:(void (^)(void))completion
-{
-    [self removeCallStatusBar];
-    
-    if (completion)
-    {
-        completion();
-    }
-}
-
 - (void)callPresenter:(CallPresenter *)presenter enterPipForCallViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
     // Check whether the call view controller is actually presented
@@ -4605,13 +4372,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     [self presentViewController:viewController animated:YES completion:completion];
-}
-
-#pragma mark - CallBarDelegate
-
-- (void)callBarDidTap:(CallBar *)callBar
-{
-    [_callPresenter callStatusBarTapped];
 }
 
 #pragma mark - Authentication

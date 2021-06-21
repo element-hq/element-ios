@@ -227,11 +227,11 @@
 "security_settings_coming_soon" = "Vabandust. See tegevus pole veel kasutatav Element iOS rakenduses. Palun kasuta seadistamiseks mõnda muud Matrix'i klienti ning Element iOS oskab seda kasutada.";
 "major_update_title" = "Riot'i uus nimi on Element";
 "security_settings_secure_backup_synchronise" = "Sünkroniseeri";
-"security_settings_secure_backup_delete" = "Kustuta";
+"security_settings_secure_backup_delete" = "Kustuta varukoopia";
 "security_settings_backup" = "SÕNUMITE VARUNDUS";
 "security_settings_crosssigning" = "RISTTUNNUSTAMINE";
 "security_settings_crosssigning_info_not_bootstrapped" = "Risttunnustamine pole veel seadistatud.";
-"security_settings_crosssigning_info_ok" = "Risttunnustamine on kasutusel.";
+"security_settings_crosssigning_info_ok" = "Risttunnustamine on kasutamiseks valmis.";
 "security_settings_cryptography" = "KRÜPTOGRAAFIA";
 "security_settings_export_keys_manually" = "Ekspordi võtmed käsitsi";
 "group_participants_leave_prompt_title" = "Lahku grupist";
@@ -636,11 +636,11 @@
 "room_widget_permission_widget_id_permission" = "Vidina tunnus";
 "room_widget_permission_room_id_permission" = "Jututoa tunnus";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Sinu krüptovõtmed on varundatud.\n\nSinu taastevõti toimib turvavõrguna - juhul, kui sa unustad taastamiseks mõeldud paroolifraasi, siis sa saad seda kasutada taastamaks ligipääsu krüptitud sõnumitele.\n\nHoia taastevõtit turvalises kohas, nagu näiteks salasõnahalduris või vana kooli seifis.";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Salvesta taastevõti";
+"key_backup_setup_success_from_passphrase_info" = "Sinu krüptovõtmed on varundatud.\n\nSinu turvavõti toimib päästevõrguna - juhul, kui sa unustad taastamiseks mõeldud paroolifraasi, siis sa saad seda kasutada taastamaks ligipääsu krüptitud sõnumitele.\n\nHoia turvavõtit turvalises kohas, nagu näiteks salasõnahalduris või vana kooli seifis.";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Salvesta turvavõti";
 "key_backup_setup_success_from_passphrase_done_action" = "Valmis";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Sisesta paroolifraas";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Sisesta taastevõti";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Sisesta turvavõti";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ma ei soovi lugeda oma krüptitud sõnumeid";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Ma võin oodata";
 // MARK: - Device Verification
@@ -775,7 +775,7 @@
 "security_settings_crypto_sessions" = "MINU SESSIOONID";
 "security_settings_crypto_sessions_description_2" = "Kui sa ei tunne ära mõnda oma sisselogimissessiooni, siis muuda ära oma salasõna ja tee võtmetest uus turvaline varukoopia.";
 "security_settings_secure_backup" = "TURVALINE VARUNDUS";
-"security_settings_secure_backup_description" = "Tagamaks, et sa ei kaota ligipääsu krüptitud sõnumitele ja andmetele, varunda krüptimisvõtmed oma serveris.";
+"security_settings_secure_backup_description" = "Selleks puhuks, kui sa kaotad ligipääsu kõikidele oma sessioonidele, tee varukoopia oma krüptovõtmetest ja kasutajakonto seadistustest. Unikaalse turvavõtmega tagad selle, et sinu varukoopia on kaitstud.";
 "security_settings_secure_backup_setup" = "Võta kasutusele";
 "security_settings_crosssigning_info_exists" = "Sinu kontol on olemas risttunnustamise identiteet, kuid seda veel ei loeta antud sessioonis usaldusväärseks. Vormista lõpuni selle sessiooni turvaseadistused.";
 "e2e_room_key_request_ignore_request" = "Eira päringut";
@@ -800,7 +800,7 @@
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Seo see seade krüptovõtmete varundusega";
 "key_backup_setup_intro_manual_export_info" = "(Lisaseadistused)";
 "key_backup_setup_intro_manual_export_action" = "Ekspordi võtmed käsitsi";
-"key_backup_setup_passphrase_title" = "Krüpti oma varukoopia paroolifraasiga";
+"key_backup_setup_passphrase_title" = "Krüpti oma varukoopia turvafraasiga";
 "key_backup_setup_passphrase_info" = "Me salvestame krüptitud varukoopia sinu krüptovõtmetest meie serveris. Tagamaks, et keegi ei saa seda kasutada, krüpti varukoopia paroolifraasiga.\n\n Parima turvalisuse jaoks peaks paroolifraas olema erinev sinu konto salasõnast.";
 "key_backup_setup_passphrase_passphrase_title" = "Sisesta";
 "key_backup_setup_passphrase_passphrase_placeholder" = "Sisesta paroolifraas";
@@ -854,19 +854,19 @@
 "key_verification_scan_confirmation_scanned_device_information" = "Kas teine seade kuvab sama kilpi?";
 "user_verification_start_verify_action" = "Alusta verifitseerimist";
 "security_settings_crosssigning_info_trusted" = "Risttunnustamine on kasutusel. Selle põhjal saad sa usaldada nii teisi kasutajaid, kui ka oma teisi sessioone, kuid kuna sul siin sessioonis pole risttunnustamise privaatvõtmeid, siis sa siit uusi risttunnustamisi teha. Selle jaoks vormista lõpuni praeguse sessiooni turvaseadistused.";
-"security_settings_crosssigning_bootstrap" = "Võta risttunnustamine kasutusele";
-"security_settings_crosssigning_reset" = "Lähtesta risttunnustamine";
+"security_settings_crosssigning_bootstrap" = "Võta kasutusele";
+"security_settings_crosssigning_reset" = "Taasta algolek";
 "security_settings_crosssigning_complete_security" = "Vormista turvaseadistused lõpuni";
 "security_settings_advanced" = "KEERUKAMAD SEADISTUSED";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Sisesta turvafraas, mida vaid sina tead ning loo võti varukoopia jaoks.";
 "key_backup_recover_from_passphrase_recover_action" = "Võta ajalugu lukust lahti";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Kas sa ei tea oma taastamiseks mõeldud paroolifraasi? Siis sa võid ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "kasutada oma taastevõtit";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Kas sa ei tea oma turvafraasi? Siis sa võid ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "kasutada oma turvavõtit";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Selleks, et krüptitud sõnumite ajalugu lukust lahti võtta, kasuta oma taastevõtit";
+"key_backup_recover_from_recovery_key_info" = "Selleks, et krüptitud sõnumite ajalugu lukust lahti võtta, kasuta oma turvavõtit";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Sisesta";
 "key_backup_recover_from_recovery_key_recover_action" = "Võta ajalugu lukust lahti";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Kas sa kaotasid oma taastevõtme? Sa võid seadistustes määrata uue.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Kas sa kaotasid oma turvavõtme? Sa võid seadistustes määrata uue.";
 "key_backup_recover_success_info" = "Varukoopiast taastatud!";
 "key_backup_recover_done_action" = "Valmis";
 "sign_out_existing_key_backup_alert_title" = "Kas sa oled kindel, et soovid välja logida?";
@@ -879,7 +879,7 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Logi välja";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Tee varukoopia";
 "sign_out_key_backup_in_progress_alert_title" = "Parasjagu varundan võtmeid. Kui sa logid nüüd välja, siis sa kaotad ligipääsu kõikidele oma krüptitud sõnumitele.";
-"secrets_recovery_with_passphrase_title" = "Taastamiseks mõeldud paroolifraas";
+"secrets_recovery_with_passphrase_title" = "Turvafraas";
 "pin_protection_choose_pin" = "Turvaliseks ligipääsuks seadista PIN-kood";
 "pin_protection_confirm_pin" = "Korda PIN-koodi";
 "pin_protection_confirm_pin_to_disable" = "PIN-koodi kasutuselt eemaldamiseks korda PIN-koodi";
@@ -902,14 +902,14 @@
 "room_participants_action_security_status_complete_security" = "Vormista turvaseadistused lõpuni";
 "room_warning_about_encryption" = "Läbiv krüptimine on veel testimisjärgus ja ei pruugi veel olla täiesti töökindel.\n\nSeda funktsionaalsust ei saa veel täies mahus usaldada.\n\nSeadmed ei suuda veel dekrüptida jututoa vestlusajalugu, mis pärineb jututoaga liitumise eelsest ajast.\n\nKrüptitud sõnumid pole loetavad klientides ja seadmetes, kus krüptimine pole veel toetatud.";
 "secure_key_backup_setup_intro_use_security_key_info" = "Loome turvavõtme, mida sa peaksid hoidma turvalises kohas, nagu näiteks arvutis salasõnade halduris või vana kooli seifis.";
-"secure_key_backup_setup_intro_use_security_passphrase_title" = "Täiendavaks krüptimiseks kasuta paroolifraasi";
-"key_backup_recover_from_passphrase_info" = "Selleks, et krüptitud sõnumite ajalugu lukust lahti võtta, kasuta oma taastamiseks mõeldud paroolifraasi";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Täiendavaks krüptimiseks kasuta turvafraasi";
+"key_backup_recover_from_passphrase_info" = "Selleks, et krüptitud sõnumite ajalugu lukust lahti võtta, kasuta oma taastamiseks mõeldud turvafraasi";
 "key_backup_recover_from_passphrase_passphrase_title" = "Sisesta";
 "device_verification_self_verify_wait_title" = "Vormista turvaseadistused lõpuni";
 "device_verification_self_verify_wait_information" = "Verifitseeri see sessioon oma mõnest muust sessioonist ning anna sellega ka ligipääs oma krüptitud sõnumitele.\n\nKasuta viimast Element'i versiooni oma muudes seadmetes:";
 "device_verification_self_verify_wait_additional_information" = "See toimib Element'is või mõnes teises Matrix'i kliendis, mis oskab risttunnustamist.";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Kasuta taastevõtit";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Kasuta taastamiseks mõeldud paroolifraasi või võtit";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Kasuta turvavõtit";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Kasuta turvafraasi või turvavõtit";
 "key_verification_verify_sas_title_emoji" = "Võrdle emoji'sid";
 "key_verification_verify_sas_title_number" = "Võrdle numbreid";
 "key_verification_verify_sas_cancel_action" = "Nad ei klapi";
@@ -982,7 +982,7 @@
 "settings_security" = "TURVALISUS";
 "settings_enable_push_notif" = "Teavitused selles seadmes";
 "settings_key_backup_info" = "Krüptitud sõnumid kasutavad läbivat krüptimist. Ainult sinul ja saaja(te)l on võtmed selliste sõnumite lugemiseks.";
-"settings_key_backup_info_signout_warning" = "Enne väljalogimist seo see sessioon krüptovõtmete varundusega. Kui sa seda ei tee, siis võid kaotada võtmed, mida kasutatakse vaid siin seadmes.";
+"settings_key_backup_info_signout_warning" = "Vältimaks nende kaotamist, varunda krüptovõtmed enne väljalogimist.";
 "settings_discovery_three_pids_management_information_part2" = "Kasutaja seadistused";
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_discovery_error_message" = "Ilmnes viga. Palun proovi uuesti.";
@@ -1015,19 +1015,19 @@
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Tore!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Paroolifraasid ei klappi mitte";
 "key_backup_setup_passphrase_set_passphrase_action" = "Loo paroolifraas";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Või krüpti oma varukoopia taastevõtmega ning hoia taastevõtit turvalises kohas.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "Võta kasutusele taastevõti";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Või krüpti oma varukoopia turvavõtmega ning hoia seda turvalises kohas.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "Võta kasutusele turvavõti";
 "key_backup_setup_success_title" = "Õnnestus!";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Sinu krüptovõtmeid parasjagu varundatakse.\n\nTee taastevõtmest koopia ja hoia seda turvalises kohas.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Taastevõti";
+"key_backup_setup_success_from_recovery_key_info" = "Sinu krüptovõtmeid parasjagu varundatakse.\n\nTee turvavõtmest koopia ja hoia seda kaitstud kohas.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Turvavõti";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Tee koopia";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Ma olen juba teinud koopia";
 "key_backup_recover_title" = "Krüptitud sõnumid";
-"key_backup_recover_invalid_passphrase_title" = "Vigane taastamiseks mõeldud paroolifraas";
-"key_backup_recover_invalid_passphrase" = "Selle paroolifraasiga ei õnnestunud varundust dekrüptida: palun kontrolli, kas sa kasutad õiget taastamiseks mõeldud paroolifraasi.";
-"key_backup_recover_invalid_recovery_key_title" = "Taastevõtmed ei klapi";
-"key_backup_recover_invalid_recovery_key" = "Selle taastevõtmega ei õnnestunud varundust dekrüptida: palun kontrolli, kas sa kasutad õiget taastevõtit.";
+"key_backup_recover_invalid_passphrase_title" = "Vigane turvafraas";
+"key_backup_recover_invalid_passphrase" = "Selle turvafraasiga ei õnnestunud varundust dekrüptida: palun kontrolli, kas sa kasutad õiget turvafraasi.";
+"key_backup_recover_invalid_recovery_key_title" = "Turvavõtmed ei klapi";
+"key_backup_recover_invalid_recovery_key" = "Selle turvavõtmega ei õnnestunud varundust dekrüptida: palun kontrolli, kas sa kasutad õiget turvavõtit.";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Taastan võtmed varundusest…";
 "user_verification_session_details_information_untrusted_current_user" = "Verifitseeri see sessioon selleks, et teda võiks lugeda usaldusväärseks ja saaks ligipääsu krüptitud sõnumitele:";
@@ -1037,26 +1037,26 @@
 "user_verification_session_details_verify_action_current_user" = "Verifitseeri interaktiivselt";
 "user_verification_session_details_verify_action_current_user_manually" = "Verifitseeri käsitsi etteantud teksti abil";
 "user_verification_session_details_verify_action_other_user" = "Verifitseeri käsitsi";
-"secrets_recovery_with_passphrase_information_default" = "Sisestades taastamiseks mõeldud paroolifraasi, saad ligipääsu oma turvatud sõnumitele ja risttunnustamisega seotud identiteedile, mis lubab teisi sessioone verifitseerida.";
-"secrets_recovery_with_passphrase_information_verify_device" = "Kasuta taastamiseks mõeldud paroolifraasi selle seadme verifitseerimiseks.";
+"secrets_recovery_with_passphrase_information_default" = "Sisestades turvafraasi, saad ligipääsu oma turvatud sõnumitele ja risttunnustamisega seotud identiteedile, mis lubab teisi sessioone verifitseerida.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Selle seadme verifitseerimiseks kasuta oma turvafraasi.";
 "secrets_recovery_with_passphrase_passphrase_title" = "Sisesta";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Sisesta taastamise paroolifraas";
-"secrets_recovery_with_passphrase_recover_action" = "Kasuta paroolifraasi";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Kas sa ei tea oma taastamiseks mõeldud paroolifraasi? Siis sa võid ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "kasutada oma taastevõtit";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Sisesta turvafraas";
+"secrets_recovery_with_passphrase_recover_action" = "Kasuta turvafraasi";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Kas sa ei tea oma turvafraasi? Siis sa võid ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "kasutada oma turvavõtit";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Turvahoidla kasutamine ei õnnestu";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Palun kontrolli, et sa sisestasid õige taastamiseks mõeldud paroolifraasi.";
-"secrets_recovery_with_key_title" = "Taastevõti";
-"secrets_recovery_with_key_information_default" = "Sisestades oma taastevõtme, saad ligipääsu oma turvatud sõnumitele ja risttunnustamisega seotud identiteedile, mis lubab teisi sessioone verifitseerida.";
-"secrets_recovery_with_key_information_verify_device" = "Kasuta taastevõtit selle seadme verifitseerimiseks.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Palun kontrolli, et sa sisestasid õige turvafraasi.";
+"secrets_recovery_with_key_title" = "Turvavõti";
+"secrets_recovery_with_key_information_default" = "Sisestades oma turvavõtme, saad ligipääsu oma krüptitud sõnumitele ja risttunnustamisega seotud identiteedile, mis lubab teisi sessioone verifitseerida.";
+"secrets_recovery_with_key_information_verify_device" = "Kasuta turvavõtit selle seadme verifitseerimiseks.";
 "secrets_recovery_with_key_recovery_key_title" = "Sisesta";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Sisesta taastevõti";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Sisesta turvavõti";
 "secrets_recovery_with_key_recover_action" = "Kasuta võtit";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Turvahoidla kasutamine ei õnnestu";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Palun kontrolli, et sa sisestasid õige taastevõtme.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Palun kontrolli, et sa sisestasid õige turvavõtme.";
 "secrets_setup_recovery_key_title" = "Salvesta turvavõti";
-"secrets_setup_recovery_key_information" = "Salvesta oma taastevõti turvalisse kohta. Seda saab kasutada sinu krüptitud sõnumite ja andmete lugemiseks.";
+"secrets_setup_recovery_key_information" = "Salvesta oma turvavõti kaitstud kohta. Seda saab kasutada sinu krüptitud sõnumite ja andmete lugemiseks.";
 "secrets_setup_recovery_key_loading" = "Laadime…";
 "secrets_setup_recovery_key_export_action" = "Salvesta";
 "secrets_setup_recovery_key_done_action" = "Valmis";
@@ -1068,7 +1068,7 @@
 "secrets_setup_recovery_passphrase_validate_action" = "Valmis";
 "secrets_setup_recovery_passphrase_confirm_information" = "Kinnituseks sisesta turvafraas uuesti.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Kinnita";
-"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Sisesta paroolifraas veel üks kord";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Sisesta turvafraas veel üks kord";
 "cross_signing_setup_banner_title" = "Seadista krüptimine";
 "cross_signing_setup_banner_subtitle" = "Verifitseeri oma muud seadmed lihtsamini";
 "major_update_information" = "Meil on hea meel teatada, et oleme muutnud nime! Sinu rakendus on uuendatud ning sa oled oma kontole sisse logitud.";
@@ -1107,7 +1107,7 @@
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Tühista e-posti aadressi kinnitamine";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Sisesta SMS'iga saadetud aktiveerimiskood";
 "settings_identity_server_description" = "Kasutades ülalkirjeldatud isikutuvastusserverit saad sa otsida tuttavaid ja lasta neil sind leida.";
-"e2e_key_backup_wrong_version" = "Tuvastasin uue krüptosõnumite võtmete varukoopia.\n\nKui sina ei teinud seda, siis seadista varukoopiale uus paroolifraas.";
+"e2e_key_backup_wrong_version" = "Tuvastasin uue krüptosõnumite võtmete varukoopia.\n\nKui sina ei teinud seda, siis seadista varukoopiale uus turvafraas.";
 "e2e_key_backup_wrong_version_button_settings" = "Seadistused";
 "e2e_key_backup_wrong_version_button_wasme" = "See olin mina";
 // Bug report
@@ -1322,3 +1322,30 @@
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Kogukonnakeskuseid ei saa veel siin rakenduses kasutada";
+"side_menu_app_version" = "Versioon %@";
+"side_menu_action_feedback" = "Tagasiside";
+"side_menu_action_help" = "Abiteave";
+"side_menu_action_settings" = "Seadistused";
+"side_menu_action_invite_friends" = "Kutsu sõpru";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Vasak paneel";
+"user_avatar_view_accessibility_hint" = "Muuda kasutaja tunnuspilti ehk avatari";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "tunnuspilt";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Jätkamiseks kasuta turvavõtit.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Jätkamaks sisesta oma salafraas.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Sinu krüptovõtmeid parasjagu varundatakse.";
+"security_settings_secure_backup_restore" = "Taasta varukoopiast";
+"security_settings_secure_backup_reset" = "Taasta algolek";
+"security_settings_secure_backup_info_valid" = "See sessioon varundab sinu krüptovõtmeid.";
+"security_settings_secure_backup_info_checking" = "Kontrollin…";
+"settings_ui_theme_picker_message_match_system_theme" = "Automaatne valik kasutab sinu seadme süsteemset teemat";
+"settings_ui_theme_picker_message_invert_colours" = "Automaatne valik kasutab sinu seadme pööratud värvide seadistust";
+"room_recents_unknown_room_error_message" = "Ei leia sellist jututuba. Palun kontrolli, et ta ikka olemas on";
+"room_creation_dm_error" = "Otsevestluse loomine ei õnnestunud. Palun kontrolli, et kasutajanimed oleks õiged ja proovi uuesti.";

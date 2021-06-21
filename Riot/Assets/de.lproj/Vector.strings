@@ -147,7 +147,7 @@
 "room_participants_action_start_video_call" = "Starte Video-Anruf";
 "room_participants_action_mention" = "Erwähnen";
 // Chat
-"room_jump_to_first_unread" = "Zur ersten ungelesenen Nachricht springen";
+"room_jump_to_first_unread" = "Zur ersten ungelesenen Nachricht";
 "room_new_message_notification" = "%d neue Nachricht";
 "room_new_messages_notification" = "%d neue Nachrichten";
 "room_one_user_is_typing" = "%@ tippt…";
@@ -159,7 +159,7 @@
 "room_offline_notification" = "Verbindung zum Server wurde unterbrochen.";
 "room_unsent_messages_notification" = "Nachrichten wurden nicht gesendet.";
 "room_unsent_messages_unknown_devices_notification" = "Nachrichten wurden nicht gesendet, da unbekannte Sitzungen vorhanden waren.";
-"room_prompt_resend" = "alle erneut senden";
+"room_prompt_resend" = "Alle erneut senden";
 "room_prompt_cancel" = "Alles abbrechen";
 "room_resend_unsent_messages" = "Ungesendete Nachrichten erneut senden";
 "room_delete_unsent_messages" = "Lösche ungesendete Nachrichten";
@@ -892,7 +892,7 @@
 "settings_add_3pid_password_title_msidsn" = "Telefonnummer hinzufügen";
 "settings_add_3pid_password_message" = "Um fortzufahren, bitte Passwort eingeben";
 "settings_add_3pid_invalid_password_message" = "Ungültige Anmeldedaten";
-"identity_server_settings_disconnect_info" = "Eine Trennung von deinem Identitätsserver würde bedeuten, dass du weder von anderen Nutzer gefunden werden, noch diese dich per E-Mail oder Telefonnummer einladen können.";
+"identity_server_settings_disconnect_info" = "Eine Trennung vom Identitätsserver bedeutet, dass du weder von anderen Nutzer gefunden werden, noch diese dich per E-Mail oder Telefonnummer einladen können.";
 "error_not_supported_on_mobile" = "Dies ist in der Mobilvariante von %@ nicht möglich.";
 "settings_integrations" = "INTEGRATIONEN";
 "settings_integrations_allow_button" = "Integrationen verwalten";
@@ -1058,7 +1058,7 @@
 "key_verification_other_session_title" = "Sitzung verifizieren";
 "key_verification_new_session_title" = "Neue Sitzung verifizieren";
 "key_verification_this_session_title" = "Verifiziere diese Sitzung";
-"device_verification_security_advice_emoji" = "Vergleiche die einzigartigen Emojis und kontrolliere, dass sie in derselben Reihenfolge angezeigt werden.";
+"device_verification_security_advice_emoji" = "Vergleiche die Emojis und kontrolliere, dass sie in derselben Reihenfolge angezeigt werden.";
 "device_verification_security_advice_number" = "Vergleiche die Zahlen und stell sicher, dass sie in derselben Reihenfolge angezeigt werden.";
 "key_verification_self_verify_current_session_alert_title" = "Verifiziere diese Sitzung";
 "key_verification_self_verify_current_session_alert_message" = "Andere Benutzer vertrauen ihr vielleicht nicht.";
@@ -1324,7 +1324,7 @@
 "callbar_active_and_single_paused" = "1 aktiver Anruf (%1$s) · 1 pausierter Anruf";
 
 // Call Bar
-"callbar_only_single_active" = "Laufender Anruf (%@)";
+"callbar_only_single_active" = "Zurück zum Anruf (%@)";
 "room_event_action_delete_confirmation_message" = "Möchtest Du die nicht gesendete Nachricht wirklich löschen?";
 "room_event_action_delete_confirmation_title" = "Nicht gesendete Nachricht löschen";
 "room_details_integrations" = "Integrationen";
@@ -1360,5 +1360,31 @@
 
 // Chat
 "room_slide_to_end_group_call" = "Wische, um den Anruf für alle zu beenden";
-"callbar_only_single_active_group" = "Klicke, um den Anruf beizutreten";
+"callbar_only_single_active_group" = "Klicke, um den Anruf beizutreten (%@)";
 "event_formatter_call_answer" = "Annehmen";
+"side_menu_app_version" = "Version %@";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_action_help" = "Hilfe";
+"side_menu_action_settings" = "Einstellungen";
+"side_menu_action_invite_friends" = "Freunde einladen";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Linkes Panel";
+"user_avatar_view_accessibility_hint" = "Nutzeravatar ändern";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "Avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Zum Fortfahren gib deinen Sicherheitsschlüssel ein.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Zum Forfahren gib deine Passphrase ein.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Deine Schlüssel werden gesichert.";
+"security_settings_secure_backup_restore" = "Von Backup wiederherstellen";
+"security_settings_secure_backup_reset" = "Zurücksetzen";
+"security_settings_secure_backup_info_valid" = "Diese Sitzung sichert deine Schlüssel.";
+"security_settings_secure_backup_info_checking" = "Überprüfen…";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" passt sich an das Systemthema an";
+"room_recents_unknown_room_error_message" = "Raum kann nicht gefunden werden. Überprüfe bitte, dass er existiert";
+"room_creation_dm_error" = "Fehler beim Erstellen der Direktnachricht. Bitte überprüfe die eingeladenen Leute und versuche es erneut.";

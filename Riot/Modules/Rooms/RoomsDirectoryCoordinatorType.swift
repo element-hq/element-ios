@@ -22,6 +22,7 @@ protocol RoomsDirectoryCoordinatorDelegate: class {
     func roomsDirectoryCoordinator(_ coordinator: RoomsDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom)
     func roomsDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: RoomsDirectoryCoordinatorType)
     func roomsDirectoryCoordinatorDidComplete(_ coordinator: RoomsDirectoryCoordinatorType)
+    func roomsDirectoryCoordinator(_ coordinator: RoomsDirectoryCoordinatorType, didSelectRoomWithIdOrAlias roomIdOrAlias: String)
 }
 
 /// `RoomsDirectoryCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.

@@ -103,6 +103,8 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         switch self.viewModel.recoveryGoal {
         case .default, .keyBackup, .restoreSecureBackup:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationDefault
+        case .unlockSecureBackup(_):
+            informationText = VectorL10n.secretsRecoveryWithKeyInformationUnlockSecureBackupWithKey
         case .verifyDevice:
             informationText = VectorL10n.secretsRecoveryWithKeyInformationVerifyDevice
         }

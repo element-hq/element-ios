@@ -285,7 +285,7 @@
 "secrets_setup_recovery_key_export_action" = "Зберегти";
 "room_event_action_save" = "Зберегти";
 "room_event_action_delete" = "Видалити";
-"security_settings_secure_backup_delete" = "Видалити";
+"security_settings_secure_backup_delete" = "Видалити резервну копію";
 "security_settings_secure_backup_synchronise" = "Синхронізувати";
 "security_settings_secure_backup_setup" = "Налаштувати";
 "people_empty_view_information" = "Безпечно спілкуйтеся з будь-ким. Торкніться +, щоб додати співрозмовників.";

@@ -22,6 +22,10 @@ final class ShowDirectoryViewController: UIViewController {
     
     // MARK: - Constants
     
+    private enum Constants {
+        static let networkHeaderViewEstimatedHeight: CGFloat = 40.0
+    }
+    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -62,6 +66,8 @@ final class ShowDirectoryViewController: UIViewController {
         bar.delegate = self
         return bar
     }()
+    
+    private var sections: [ShowDirectorySection] = []
 
     // MARK: - Setup
     
@@ -171,10 +177,12 @@ final class ShowDirectoryViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let sections):
+            self.renderLoaded(sections: sections)
         case .error(let error):
             self.render(error: error)
+        case .loadedWithoutUpdate:
+            self.renderLoadedWithoutUpdate()
         }
     }
     
@@ -182,14 +190,22 @@ final class ShowDirectoryViewController: UIViewController {
         addSpinnerFooterView()
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(sections: [ShowDirectorySection]) {
         removeSpinnerFooterView()
-
+        self.sections = sections
+        self.mainTableView.reloadData()
+    }
+    
+    private func renderLoadedWithoutUpdate() {
+        removeSpinnerFooterView()
     }
     
     private func render(error: Error) {
         removeSpinnerFooterView()
-        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, forError: error, animated: true) {
+            // If the join failed, reload the table view
+            self.mainTableView.reloadData()
+        }
     }
 
     // MARK: - Actions
@@ -209,17 +225,37 @@ final class ShowDirectoryViewController: UIViewController {
 extension ShowDirectoryViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return self.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.roomsCount
+        
+        let directorySection = self.sections[section]
+        
+        switch directorySection {
+        case .searchInput:
+            return 1
+        case.publicRoomsDirectory(let viewModel):
+            return viewModel.roomsCount
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                        
+        let section = self.sections[indexPath.section]
+        
+        let cellViewModel: DirectoryRoomTableViewCellVM?
+        
+        switch section {
+        case .searchInput(let searchInputViewData):
+            cellViewModel = searchInputViewData
+        case.publicRoomsDirectory(let viewModel):
+            cellViewModel = viewModel.roomViewModel(at: indexPath.row)
+        }
+        
         let cell: DirectoryRoomTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-        if let viewModel = viewModel.roomViewModel(at: indexPath) {
-            cell.configure(withViewModel: viewModel)
+        if let cellViewModel = cellViewModel {
+            cell.configure(withViewModel: cellViewModel)
         }
         cell.indexPath = indexPath
         cell.delegate = self
@@ -255,22 +291,49 @@ extension ShowDirectoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let view: DirectoryNetworkTableHeaderFooterView = tableView.dequeueReusableHeaderFooterView() else {
-            return nil
+        
+        let sectionHeaderView: UIView?
+        
+        let directorySection = self.sections[section]
+        
+        switch directorySection {
+        case .searchInput:
+            sectionHeaderView = nil
+        case .publicRoomsDirectory(let viewModel):
+            guard let view: DirectoryNetworkTableHeaderFooterView = tableView.dequeueReusableHeaderFooterView() else {
+                return nil
+            }
+            if let name = viewModel.directoryServerDisplayname {
+                let title = VectorL10n.searchableDirectoryXNetwork(name)
+                view.configure(withViewModel: DirectoryNetworkVM(title: title))
+            }
+            view.update(theme: self.theme)
+            view.delegate = self
+            sectionHeaderView = view
         }
-        if let name = self.viewModel.directoryServerDisplayname {
-            let title = VectorL10n.searchableDirectoryXNetwork(name)
-            view.configure(withViewModel: DirectoryNetworkVM(title: title))
-        }
-        view.update(theme: self.theme)
-        view.delegate = self
-        return view
+        
+        return sectionHeaderView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return UITableView.automaticDimension
     }
     
+    func tableView(_ tableView: UITableView,
+                   estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        let directorySection = self.sections[section]
+        
+        let estimatedHeight: CGFloat
+        
+        switch directorySection {
+        case .searchInput:
+            estimatedHeight = 0.0
+        case .publicRoomsDirectory:
+            estimatedHeight = Constants.networkHeaderViewEstimatedHeight
+        }
+        
+        return estimatedHeight
+    }
 }
 
 // MARK: - UISearchBarDelegate
@@ -310,9 +373,5 @@ extension ShowDirectoryViewController: ShowDirectoryViewModelViewDelegate {
 
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didUpdateViewState viewSate: ShowDirectoryViewState) {
         self.render(viewState: viewSate)
-    }
-    
-    func showDirectoryViewModelDidUpdateDataSource(_ viewModel: ShowDirectoryViewModelType) {
-        self.mainTableView.reloadData()
     }
 }

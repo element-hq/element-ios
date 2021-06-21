@@ -22,9 +22,11 @@ import UIKit
 class TabBarCoordinatorParameters {
     
     let userSessionsService: UserSessionsService
+    let appNavigator: AppNavigatorProtocol
     
-    init(userSessionsService: UserSessionsService) {
+    init(userSessionsService: UserSessionsService, appNavigator: AppNavigatorProtocol) {
         self.userSessionsService = userSessionsService
+        self.appNavigator = appNavigator
     }
 }
 
@@ -80,6 +82,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
         }
         
+        if BuildSettings.enableSideMenu {
+            self.setupSideMenuGestures()
+        }
+        
         self.registerUserSessionsServiceNotifications()
     }
     
@@ -129,15 +135,24 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // MARK: - Private methods
     
-    private func createMasterTabBarController() -> MasterTabBarController {        
+    private func createMasterTabBarController() -> MasterTabBarController {
         let tabBarController = MasterTabBarController()
         
-        let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
-            self?.showSettings()
+        if BuildSettings.enableSideMenu {
+            let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.sideMenuIcon.image, style: .plain) { [weak self] in
+                self?.showSideMenu()
+            }
+            sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+            
+            tabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
+        } else {
+            let settingsBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.settingsIcon.image, style: .plain) { [weak self] in
+                self?.showSettings()
+            }
+            settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
+            
+            tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
         }
-        settingsBarButtonItem.accessibilityLabel = VectorL10n.settingsTitle
-        
-        tabBarController.navigationItem.leftBarButtonItem = settingsBarButtonItem
         
         let searchBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: Asset.Images.searchIcon.image, style: .plain) { [weak self] in
             self?.showUnifiedSearch()
@@ -229,7 +244,17 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return viewController
     }
     
+    private func setupSideMenuGestures() {
+        self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: self.masterNavigationController.view)
+        
+        self.parameters.appNavigator.sideMenu.addPanGestureToPresent(to: self.masterNavigationController.navigationBar)
+    }
+    
     // MARK: Navigation
+    
+    private func showSideMenu() {
+        self.parameters.appNavigator.sideMenu.show(from: self.masterTabBarController, animated: true)
+    }
     
     // FIXME: Should be displayed per tab.
     private func showSettings() {
@@ -291,18 +316,12 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // TODO: Remove Matrix session handling from the view controller
     private func addMatrixSessionToMasterTabBarController(_ matrixSession: MXSession) {
-        guard self.masterTabBarController.mxSessions.contains(matrixSession) == false else {
-            return
-        }
         MXLog.debug("[TabBarCoordinator] masterTabBarController.addMatrixSession")
         self.masterTabBarController.addMatrixSession(matrixSession)
     }
     
     // TODO: Remove Matrix session handling from the view controller
     private func removeMatrixSessionFromMasterTabBarController(_ matrixSession: MXSession) {
-        guard self.masterTabBarController.mxSessions.contains(matrixSession) else {
-            return
-        }
         MXLog.debug("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
         self.masterTabBarController.removeMatrixSession(matrixSession)
     }
