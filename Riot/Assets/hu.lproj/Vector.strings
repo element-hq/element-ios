@@ -599,7 +599,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_title" = "Megerősítés";
 "key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Jelmondat megerősítése";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Szuper!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "A jelmondatok nem egyeznek meg";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "a jelmondatok nem egyeznek meg";
 "key_backup_setup_passphrase_set_passphrase_action" = "Jelmondat beállítása";
 "key_backup_setup_recovery_key_info" = "Erről a Visszaállítási Kulcsról készíts egy másolatot és őrizd meg biztonságos helyen.\n\nEz egy további biztosíték, amivel újra hozzáférhetsz a titkosított üzeneteidhez ha elfelejtenéd a Visszaállítási Jelmondatot.";
 "key_backup_setup_recovery_key_recovery_key_title" = "Visszaállítási Kulcs";
@@ -608,18 +608,18 @@
 "key_backup_recover_title" = "Biztonságos Üzenetek";
 "key_backup_recover_empty_backup_title" = "Üres mentés";
 "key_backup_recover_empty_backup_message" = "Nincs mentendő kulcs";
-"key_backup_recover_from_passphrase_info" = "Használd a visszaállítási jelmondatot, hogy újra hozzáférj a biztonságos üzeneteidhez";
+"key_backup_recover_from_passphrase_info" = "Használd a Biztonsági jelmondatot, hogy újra hozzáférj a biztonságos üzeneteidhez";
 "key_backup_recover_from_passphrase_passphrase_title" = "Bevitel";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Jelmondat bevitele";
 "key_backup_recover_from_passphrase_recover_action" = "Újra hozzáférés a régi üzenetekhez";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Nem emlékszel a visszaállítási jelmondatodra? Használhatod a ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "visszaállítási kulcsot";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Nem emlékszel a Biztonsági jelmondatodra? Használhatod a ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "Biztonsági kulcsot";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Használd a visszaállítási kulcsod, hogy újra hozzáférhess a biztonságos üzeneteidhez";
+"key_backup_recover_from_recovery_key_info" = "Használd a Biztonsági kulcsod, hogy újra hozzáférhess a biztonságos üzeneteidhez";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Bevitel";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Visszaállítási Kulcs megadása";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Biztonsági Kulcs megadása";
 "key_backup_recover_from_recovery_key_recover_action" = "Hozzáférés a régi üzenetekhez";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Elvesztetted a visszaállítási kulcsod? A beállításokban készíthetsz egy újat.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Elvesztetted a Biztonsági kulcsod? A beállításokban készíthetsz egy újat.";
 "key_backup_recover_success_info" = "Mentés visszaállítva!";
 "key_backup_recover_done_action" = "Kész";
 "key_backup_setup_banner_title_part1" = "Biztonságos Üzenet Visszaállítás beállítása";
@@ -627,27 +627,27 @@
 "key_backup_recover_banner_title_part1" = "Biztonságos Üzenet Visszaállítás futtatása";
 "key_backup_recover_banner_title_part2" = " , hogy elolvashasd a titkosított üzeneteidet ezen az eszközön";
 "settings_key_backup_info" = "Titkosított üzenetek végponttól-végpontig vannak titkosítva. Csak te és a címzettek rendelkeznek a visszafejtéshez szükséges kulcsokkal.";
-"settings_key_backup_info_signout_warning" = "Állítsd be ezen az munkameneten a Kulcs Mentést kijelentkezés előtt, hogy ne veszíts el olyan kulcsot ami csak ezen az eszközön van meg.";
+"settings_key_backup_info_signout_warning" = "Töltsd fel kulcsaidat a szerverre mielőtt kijelentkezel, hogy ne veszítsd el őket.";
 "settings_key_backup_button_use" = "Kulcs mentés használata";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Kulcs mentés használata";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Használd a Kulcs mentést";
-"key_backup_setup_passphrase_title" = "Védd a mentést jelmondattal";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Vagy védd a mentést egy Visszaállítási Kulccsal és tedd el egy biztonságos helyre.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Haladó) Visszaállítási Kulcs beállítása";
+"key_backup_setup_passphrase_title" = "Védd a mentést Biztonsági jelmondattal";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Vagy védd a mentést egy Biztonsági Kulccsal és tedd el egy biztonságos helyre.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Haladó) Biztonsági Kulcs beállítása";
 "key_backup_setup_success_title" = "Sikerült!";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "A kulcsaid elmentésre kerülnek.\n\nA Visszaállítási Kulcs egy olyan biztonsági elem amivel akkor is visszaállíthatod a hozzáférésed a titkosított üzenetekhez ha a jelmondatot elfelejted.\n\nA Visszaállítási kulcsot biztonságos helyen tárold, mint pl. egy jelszókezelőben (vagy széfben).";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Visszaállítási Kulcs beállítása";
+"key_backup_setup_success_from_passphrase_info" = "A kulcsaid elmentésre kerülnek.\n\nA Biztonsági Kulcs egy olyan biztonsági elem amivel akkor is visszaállíthatod a hozzáférésed a titkosított üzenetekhez ha a jelmondatot elfelejted.\n\nA Biztonsági kulcsot biztonságos helyen tárold, mint pl. egy jelszókezelőben (vagy széfben).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Biztonsági Kulcs beállítása";
 "key_backup_setup_success_from_passphrase_done_action" = "Kész";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "A kulcsaid elmentésre kerülnek.\n\nMásold ki a Visszaállítási Kulcsot és tárold biztonságos helyen.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Visszaállítási Kulcs";
+"key_backup_setup_success_from_recovery_key_info" = "A kulcsaid elmentésre kerülnek.\n\nMásold ki a Biztonsági Kulcsot és tárold biztonságos helyen.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Biztonsági Kulcs";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Készíts másolatot";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Készítettem másolatot";
-"key_backup_recover_invalid_passphrase_title" = "Helytelen Visszaállítási Jelmondat";
-"key_backup_recover_invalid_passphrase" = "A mentést nem lehet visszafejteni ezzel a jelmondattal: kérlek ellenőrizd, hogy a megfelelő visszaállítási jelmondatot adtad-e meg.";
-"key_backup_recover_invalid_recovery_key_title" = "A Visszaállítási Kulcsok nem egyeznek meg";
-"key_backup_recover_invalid_recovery_key" = "A mentést nem lehet ezzel a kulccsal visszafejteni: kérlek ellenőrizd, hogy a megfelelő kulcsot adtad-e meg.";
+"key_backup_recover_invalid_passphrase_title" = "Helytelen Biztonsági Jelmondat";
+"key_backup_recover_invalid_passphrase" = "A mentést nem lehet visszafejteni ezzel a jelmondattal: kérlek ellenőrizd, hogy a megfelelő Biztonsági jelmondatot adtad-e meg.";
+"key_backup_recover_invalid_recovery_key_title" = "A Biztonsági Kulcsok nem egyeznek meg";
+"key_backup_recover_invalid_recovery_key" = "A mentést nem lehet ezzel a kulccsal visszafejteni: kérlek ellenőrizd, hogy a megfelelő Biztonsági kulcsot adtad-e meg.";
 "key_backup_setup_banner_title" = "Soha ne veszítsd el a titkosított üzeneteidet";
 "key_backup_setup_banner_subtitle" = "Kulcs mentés használata";
 "key_backup_recover_banner_title" = "Soha ne veszítsd el a titkosított üzeneteidet";
@@ -1057,9 +1057,9 @@
 "security_settings_crosssigning_info_not_bootstrapped" = "Az eszközök közötti hitelesítés nincs még beállítva.";
 "security_settings_crosssigning_info_exists" = "A fiókodban az eszközök közötti aláírás be van állítva, de ebben a munkamenetben még nem ellenőrizted. Végezd el a munkamenet biztonsági beállításait.";
 "security_settings_crosssigning_info_trusted" = "Eszközök közötti hitelesítés engedélyezve van. Megbízhatsz más felhasználókban és a munkameneteidben az aláírást felhasználva de ebből a munkamenetből nem tudsz aláírni mert az eszközök közötti aláíráshoz hiányzik a privát kulcs. Fejezd be a munkamenet biztonsági beállításait.";
-"security_settings_crosssigning_info_ok" = "Eszközök közti hitelesítés engedélyezve.";
-"security_settings_crosssigning_bootstrap" = "Eszközök közötti hitelesítés beállítása";
-"security_settings_crosssigning_reset" = "Eszközök közötti hitelesítés alaphelyzetbe állítása";
+"security_settings_crosssigning_info_ok" = "Eszközök közötti hitelesítés kész a használatra.";
+"security_settings_crosssigning_bootstrap" = "Beállítás";
+"security_settings_crosssigning_reset" = "Visszaállít";
 "security_settings_crosssigning_complete_security" = "Biztonsági beállítás befejezése";
 "security_settings_complete_security_alert_title" = "Biztonsági beállítás befejezése";
 "security_settings_complete_security_alert_message" = "Először be kell fejezned ennek a munkamenetnek a biztonsági beállítását.";
@@ -1100,32 +1100,32 @@
 "key_verification_manually_verify_device_additional_information" = "Ha nem egyeznek akkor a kommunikációtok biztonsága veszélyben lehet.";
 "key_verification_manually_verify_device_validate_action" = "Ellenőriz";
 "user_verification_session_details_verify_action_current_user_manually" = "Manuális szöveges ellenőrzés";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Használd a Visszaállítási Kulcsot";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Használd a Visszaállítási Jelmondatot vagy Kulcsot";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Használd a Biztonsági Kulcsot";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Használd a Biztonsági Jelmondatot vagy Kulcsot";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Ha nem érsz el létező munkamenetet";
-"secrets_recovery_with_passphrase_title" = "Visszaállítási Jelmondat";
-"secrets_recovery_with_passphrase_information_default" = "A visszaállítási jelmondat megadásával hozzáférhetsz a titkosított üzeneteidhez és az eszközök közötti aláírásnál használt személyazonosságodhoz hogy más munkameneteket ellenőrizhess.";
-"secrets_recovery_with_passphrase_information_verify_device" = "Használd a visszaállítási jelmondatot az eszköz ellenőrzésére.";
+"secrets_recovery_with_passphrase_title" = "Biztonsági Jelmondat";
+"secrets_recovery_with_passphrase_information_default" = "A Biztonsági jelmondat megadásával hozzáférhetsz a titkosított üzeneteidhez és az eszközök közötti aláírásnál használt személyazonosságodhoz hogy más munkameneteket ellenőrizhess.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Használd a Biztonsági jelmondatot az eszköz ellenőrzésére.";
 "secrets_recovery_with_passphrase_passphrase_title" = "Bevitel";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Visszaállítási jelmondat megadása";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Biztonsági jelmondat megadása";
 "secrets_recovery_with_passphrase_recover_action" = "Használd a jelmondatot";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Nem emlékszel a visszaállítási jelmondatodra? Használhatod a ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "visszaállítási kulcs használata";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Nem emlékszel a Biztonsági jelmondatodra? Használhatod a ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "Biztonsági kulcs használata";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "A biztonsági tárolót nem sikerült elérni";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Kérlek ellenőrizd, hogy a visszaállítási jelmondatot helyesen írtad be.";
-"secrets_recovery_with_key_title" = "Visszaállítási Kulcs";
-"secrets_recovery_with_key_information_default" = "A visszaállítási kulcs megadásával hozzáférhetsz a biztonságos üzeneteidhez és az eszközök közötti hitelesítéshez használt személyazonosságodhoz, hogy más munkameneteket hitelesíthess.";
-"secrets_recovery_with_key_information_verify_device" = "Használd a visszaállítási kulcsot az eszköz ellenőrzésére.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Kérlek ellenőrizd, hogy a Biztonsági jelmondatot helyesen írtad be.";
+"secrets_recovery_with_key_title" = "Biztonsági Kulcs";
+"secrets_recovery_with_key_information_default" = "A Biztonsági kulcs megadásával hozzáférhetsz a biztonságos üzeneteidhez és az eszközök közötti hitelesítéshez használt személyazonosságodhoz, hogy más munkameneteket hitelesíthess.";
+"secrets_recovery_with_key_information_verify_device" = "Használd a Biztonsági kulcsot az eszköz ellenőrzésére.";
 "secrets_recovery_with_key_recovery_key_title" = "Bevitel";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Visszaállítási Kulcs megadása";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Biztonsági Kulcs megadása";
 "secrets_recovery_with_key_recover_action" = "Használd a kulcsot";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "A biztonsági tárolót nem sikerült elérni";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Kérlek ellenőrizd, hogy a visszaállítási kulcsot helyesen írtad be.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Kérlek ellenőrizd, hogy a Biztonsági kulcsot helyesen írtad be.";
 "security_settings_secure_backup" = "BIZTONSÁGI MENTÉS";
 "security_settings_secure_backup_setup" = "Beállítás";
 "security_settings_secure_backup_synchronise" = "Szinkronizál";
-"security_settings_secure_backup_delete" = "Töröl";
+"security_settings_secure_backup_delete" = "Mentés törlése";
 "security_settings_user_password_description" = "A fiók jelszó megadásával erősítsd meg a személyazonosságodat";
 "secure_key_backup_setup_intro_title" = "Biztonsági Mentés";
 "secure_key_backup_setup_intro_info" = "A titkosított üzenetekhez és adatokhoz való hozzáférés elvesztése esetén használható biztonsági tartalék a titkosított kulcsok a szerveredre való elmentésével.";
@@ -1154,7 +1154,7 @@
 "cross_signing_setup_banner_title" = "Titkosítás beállítása";
 "cross_signing_setup_banner_subtitle" = "A többi eszközödet ellenőrizd egyszerűen";
 "security_settings_crypto_sessions_description_2" = "Ha ez a bejelentkezés nem ismerős, akkor változtasd meg a jelszavad és újra állítsd be a Biztonsági Mentést.";
-"security_settings_secure_backup_description" = "A titkosított üzenetekhez és adatokhoz való hozzáférés elvesztése esetén használható biztonsági tartalék a titkosított kulcsok a szerveredre való elmentésével.";
+"security_settings_secure_backup_description" = "Mentsd el a titkosítási kulcsokat a fiókadatokkal arra az esetre ha elvesztenéd a hozzáférést a munkameneteidhez. A kulcsok egy egyedi Biztonsági Kulccsal lesznek védve.";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Ez az alkalmazás nem támogatja a matrix szervered azonosítási mechanizmusát.";
 // Events formatter with you
@@ -1164,7 +1164,7 @@
 "event_formatter_jitsi_widget_removed_by_you" = "Törölted a VoIP konferenciát";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Adj meg olyan biztonsági jelmondatot amit csak te ismersz és generálj egy kulcsot a mentéshez.";
 "secure_key_backup_setup_existing_backup_error_info" = "Old fel, hogy a biztonsági mentéshez tudd használni vagy töröld, hogy új üzenet mentést állíthass be a biztonsági mentésben.";
-"secrets_setup_recovery_key_information" = "A Visszaállítási Kulcsot tárold valahol biztonságos helyen. Felhasználható a titkosított üzenetek és adatok hozzáféréshez.";
+"secrets_setup_recovery_key_information" = "A Biztonsági Kulcsot tárold valahol biztonságos helyen. Felhasználható a titkosított üzenetek és adatok hozzáféréshez.";
 "secrets_setup_recovery_key_storage_alert_message" = "✓Nyomtasd ki és tárold biztonságos helyen\n✓Mentsd egy USB kulcsra vagy biztonsági mentésbe\n✓Másold a saját felhő tárhelyedre";
 "secrets_setup_recovery_passphrase_information" = "Add meg a biztonsági jelmondatot amit csak te tudsz és a titkok biztosításához használod a szervereden.";
 "major_update_title" = "Riot mostantól Element";
@@ -1385,3 +1385,30 @@
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "A Terek még nem érhetők el";
+"side_menu_app_version" = "Verzió %@";
+"side_menu_action_feedback" = "Visszajelzés";
+"side_menu_action_help" = "Segítség";
+"side_menu_action_settings" = "Beállítások";
+"side_menu_action_invite_friends" = "Ismerősök meghívása";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Bal panel";
+"user_avatar_view_accessibility_hint" = "Felhasználó profilkép megváltoztatása";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "profilkép";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Add meg a Biztonsági kulcsot a folytatáshoz.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Add meg a Biztonsági jelmondatot a továbblépéshez.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "A kulcsaid mentésre kerülnek.";
+"security_settings_secure_backup_restore" = "Visszaállítás mentésből";
+"security_settings_secure_backup_reset" = "Visszaállít";
+"security_settings_secure_backup_info_valid" = "Ez a munkamenet elmenti a kulcsaidat.";
+"security_settings_secure_backup_info_checking" = "Ellenőrzés…";
+"settings_ui_theme_picker_message_match_system_theme" = "„Auto” megfelel az eszközöd rendszer témájának";
+"settings_ui_theme_picker_message_invert_colours" = "„Autó” az eszközöd „invertált színek” beállítását használja";
+"room_recents_unknown_room_error_message" = "A szoba nem található. Győződj meg róla, hogy létezik";
+"room_creation_dm_error" = "Nem lehet elkészíteni a közvetlen beszélgetést. Ellenőrizd a meghívni kívánt felhasználót és próbáld újra.";

@@ -503,7 +503,7 @@
 "e2e_need_log_in_again" = "Você precisa fazer login de volta para gerar chaves de encriptação ponta-a-ponta para esta sessão e submeter a chave pública a seu servidorcasa.\nIsto é só desta vez; desculpe pela inconveniência.";
 // Bug report
 "bug_report_title" = "Report de Bug";
-"bug_report_description" = "Por favor descreva o bug. O que você fez? O que você esperava que acontecese? O que aconteceu na verdade?";
+"bug_report_description" = "Por favor descreva o bug. O que você fez? O que você esperava que acontecesse? O que na verdade aconteceu?";
 "bug_crash_report_title" = "Reporte de Crash";
 "bug_crash_report_description" = "Por favor descreva o que você fez antes do crash:";
 "bug_report_logs_description" = "A fim de diagnosticar problemas, logs deste cliente vão ser enviados com este reporte de bug. Se você prefere somente enviar o texto acima, por favor desmarque:";
@@ -566,7 +566,7 @@
 "settings_key_backup_info" = "Mensagens encriptadas são asseguradas com encriptação ponta-a-ponta. Somente você e a(s)/o(s) recipiente(s) têm as chaves para ler estas mensagens.";
 "settings_key_backup_info_checking" = "Checando…";
 "settings_key_backup_info_none" = "Backup de suas chaves não está sendo feito desta sessão.";
-"settings_key_backup_info_signout_warning" = "Conecte esta sessão a backup de chave antes de fazer signout para evitar perder quaisquer chaves que podem somente estar neste dispositivo.";
+"settings_key_backup_info_signout_warning" = "Faça backup de suas chaves antes de fazer signout para evitar perdê-las.";
 "settings_key_backup_info_version" = "Versão de Backup de Chave: %@";
 "settings_key_backup_info_algorithm" = "Algoritmo: %@";
 "settings_key_backup_info_valid" = "Esta sessão está fazendo backup de suas chaves.";
@@ -588,7 +588,7 @@
 "room_does_not_exist" = "%@ não existe";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Novo Backup de Chave";
-"e2e_key_backup_wrong_version" = "Um novo backup de chave de mensagem segura tem sido detectado.\n\nSe isto não foi você, defina uma nova frasepasse em Configurações.";
+"e2e_key_backup_wrong_version" = "Um novo backup de chave de mensagem segura tem sido detectado.\n\nSe isto não foi você, defina uma nova Frase de Segurança em Configurações.";
 "e2e_key_backup_wrong_version_button_settings" = "Configurações";
 "e2e_key_backup_wrong_version_button_wasme" = "Foi eu";
 "key_backup_setup_title" = "Backup de Chave";
@@ -601,46 +601,46 @@
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Usar Backup de Chave";
 "key_backup_setup_intro_manual_export_info" = "(Avançada)";
 "key_backup_setup_intro_manual_export_action" = "Exportar chaves manualmente";
-"key_backup_setup_passphrase_title" = "Assegure seu backup com uma Frasepasse";
-"key_backup_setup_passphrase_info" = "Nós vamos armazenar uma cópia encriptada de suas chaves em nosso servidor. Proteja seu backup com uma frasepasse para mantê-lo seguro.\n\nPara segurança máxima, esta deveria ser diferente da senha de sua conta.";
+"key_backup_setup_passphrase_title" = "Assegure seu backup com uma Frase de Segurança";
+"key_backup_setup_passphrase_info" = "Nós vamos armazenar uma cópia encriptada de suas chaves em nosso servidor. Proteja seu backup com uma frase para mantê-lo seguro.\n\nPara segurança máxima, esta deveria ser diferente da senha de sua conta.";
 "key_backup_setup_passphrase_passphrase_title" = "Entrar";
-"key_backup_setup_passphrase_passphrase_placeholder" = "Entrar frasepasse";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Entrar frase";
 "key_backup_setup_passphrase_passphrase_valid" = "Ótimo!";
 "key_backup_setup_passphrase_passphrase_invalid" = "Tente adicionar uma palavra";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "Confirmar";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Confirmar frasepasse";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Confirmar frase";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Ótimo!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Frasepasse não corresponde";
-"key_backup_setup_passphrase_set_passphrase_action" = "Definir Frasepasse";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Ou, assegure seu backup com uma Chave de Recuperação, salvando-a em algum lugar seguro.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avançado) Configurar com Chave de Recuperação";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Frase não corresponde";
+"key_backup_setup_passphrase_set_passphrase_action" = "Definir Frase";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Ou, assegure seu backup com uma Chave de Segurança, salvando-a em algum lugar seguro.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avançada) Configurar com Chave de Segurança";
 "key_backup_setup_success_title" = "Sucesso!";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Backup de suas chaves está sendo feito.\n\nSua chave de recuperação é uma rede de segurança - você pode usá-la para restaurar acesso a suas mensagens encriptadas se você esquecer sua frasepasse.\n\nMantenha sua chave de recuperação em algum lugar muito seguro, como um gerenciador de senhas (ou um cofre).";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Salvar Chave de Recuperação";
+"key_backup_setup_success_from_passphrase_info" = "Backup de suas chaves está sendo feito.\n\nSua Chave de Segurança é uma rede de segurança - você pode usá-la para restaurar acesso a suas mensagens encriptadas se você esquecer sua frasepasse.\n\nMantenha sua Chave de Segurança em algum lugar muito seguro, como um gerenciador de senhas (ou um cofre).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Salvar Chave de Segurança";
 "key_backup_setup_success_from_passphrase_done_action" = "Feito";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Backup de suas chaves está sendo feito.\n\nFaça uma cópia desta chave de recuperação e mantenha-a segura.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Chave de Recuperação";
+"key_backup_setup_success_from_recovery_key_info" = "Backup de suas chaves está sendo feito.\n\nFaça uma cópia desta Chave de Segurança e mantenha-a segura.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Chave de Segurança";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Fazer uma Cópia";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Eu tenho feito uma cópia";
 "key_backup_recover_title" = "Mensagens Seguras";
-"key_backup_recover_invalid_passphrase_title" = "Frasepasse de Recuperação Incorreta";
-"key_backup_recover_invalid_passphrase" = "Backup não pôde ser decriptado com esta frasepasse: por favor verifique que você entrou a frasepasse de recuperação correta.";
-"key_backup_recover_invalid_recovery_key_title" = "Disparidade de Chave de Recuperação";
-"key_backup_recover_invalid_recovery_key" = "Backup não pôde ser decriptografado com esta chave: por favor verifique que você entrou a chave de recuperação correta.";
-"key_backup_recover_from_passphrase_info" = "Use sua frasepasse de recuperação para destrancar seu histórico de mensagens seguras";
+"key_backup_recover_invalid_passphrase_title" = "Frase de Segurança Incorreta";
+"key_backup_recover_invalid_passphrase" = "Backup não pôde ser decriptado com esta frase: por favor verifique que você entrou a Frase de Segurança correta.";
+"key_backup_recover_invalid_recovery_key_title" = "Disparidade de Chave de Segurança";
+"key_backup_recover_invalid_recovery_key" = "Backup não pôde ser decriptografado com esta chave: por favor verifique que você entrou a Chave de Segurança correta.";
+"key_backup_recover_from_passphrase_info" = "Use sua Frase de Segurança para destrancar seu histórico de mensagens seguras";
 "key_backup_recover_from_passphrase_passphrase_title" = "Entrar";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "Entrar Frasepasse";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Entrar Frase";
 "key_backup_recover_from_passphrase_recover_action" = "Destrancar Histórico";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Não sabe sua frasepasse de recuperação? Você pode ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "usar sua chave de recuperação";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Não sabe sua Frase de Segurança? Você pode ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "usar sua Chave de Segurança";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Use sua chave de recuperação para destrancar seu histórico de mensagens seguras";
+"key_backup_recover_from_recovery_key_info" = "Use sua Chave de Segurança para destrancar seu histórico de mensagens seguras";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Entrar";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Entrar Chave de Recuperação";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Entrar Chave de Segurança";
 "key_backup_recover_from_recovery_key_recover_action" = "Destrancar Histórico";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Perdeu sua chave de recuperação? Você pode configurar uma nova em configurações.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Perdeu sua Chave de Segurança? Você pode configurar uma nova em configurações.";
 "key_backup_recover_success_info" = "Backup Restaurado!";
 "key_backup_recover_done_action" = "Feito";
 "key_backup_setup_banner_title" = "Nunca perca mensagens criptografadas";
@@ -693,7 +693,7 @@
 "device_verification_security_advice_number" = "Compare os números, garantindo que eles aparecem na mesma ordem.";
 "device_verification_cancelled_by_me" = "A verificação tem sido cancelada. Razão: %@";
 "device_verification_error_cannot_load_device" = "Não dá para carregar informação de sessão.";
-"major_update_information" = "Estamos felizes em anunciar que mudamos de nome! Seu aplicativo está atualizado e você está conectado à sua conta.";
+"major_update_information" = "Nós estamos animados em anunciar que nós temos mudado de nome! Seu app está atualizado e você está com signin feito a sua conta.";
 "room_action_camera" = "Tirar foto ou vídeo";
 "room_accessibility_call" = "Chamar";
 "media_type_accessibility_video" = "Vídeo";
@@ -734,13 +734,13 @@
 "device_verification_incoming_title" = "Requisição de Verificação Recebendo";
 "device_verification_start_wait_partner" = "Esperando por parceira(o) aceitar…";
 "device_verification_self_verify_start_waiting" = "Esperando…";
-"device_verification_verify_wait_partner" = "Aguardando seu contato confirmar…";
-"key_verification_tile_request_status_waiting" = "Aguardando…";
+"device_verification_verify_wait_partner" = "Esperando por parceira(o) confirmar…";
+"key_verification_tile_request_status_waiting" = "Esperando…";
 // Scanning
-"key_verification_scan_confirmation_scanning_title" = "Quase lá! Aguardando a confirmação…";
-"key_verification_scan_confirmation_scanning_user_waiting_other" = "Aguardando %@…";
-"key_verification_scan_confirmation_scanning_device_waiting_other" = "Aguardando o outro aparelho…";
-"user_verification_start_waiting_partner" = "Aguardando %@…";
+"key_verification_scan_confirmation_scanning_title" = "Quase lá! Esperando por confirmação…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Esperando por %@…";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Esperando por outro dispositivo…";
+"user_verification_start_waiting_partner" = "Esperando por %@…";
 "settings_devices_description" = "O nome público de uma sessão é visível para pessoas com quem você se comunica";
 "security_settings_crypto_sessions_description_2" = "Se você não reconhece um login, mude sua senha e resette Backup Seguro.";
 "security_settings_export_keys_manually" = "Exportar chaves manualmente";
@@ -753,25 +753,25 @@
 "room_widget_permission_display_name_permission" = "Seu nome de exibição";
 "device_verification_security_advice_emoji" = "Compare os emoji únicos, garantindo que eles aparecem na mesma ordem.";
 "device_verification_self_verify_alert_message" = "Verifique o novo login acessando sua conta: %@";
-"key_verification_verify_sas_title_emoji" = "Compare os emojis";
-"key_verification_manually_verify_device_title" = "Confirme manualmente por texto";
+"key_verification_verify_sas_title_emoji" = "Comparar emoji";
+"key_verification_manually_verify_device_title" = "Verificar Manualmente por Texto";
 "device_verification_emoji_scissors" = "Tesoura";
 "device_verification_emoji_guitar" = "Guitarra";
-"emoji_picker_people_category" = "Sorrisos e pessoas";
-"emoji_picker_nature_category" = "Animais e natureza";
-"emoji_picker_foods_category" = "Comidas e bebidas";
+"emoji_picker_people_category" = "Smileys & Pessoas";
+"emoji_picker_nature_category" = "Animais & Natureza";
+"emoji_picker_foods_category" = "Comida & Bebida";
 "emoji_picker_activity_category" = "Atividades";
-"emoji_picker_places_category" = "Viagem e lugares";
+"emoji_picker_places_category" = "Viagem & Lugares";
 "emoji_picker_objects_category" = "Objetos";
 "emoji_picker_symbols_category" = "Símbolos";
 "emoji_picker_flags_category" = "Bandeiras";
-"key_verification_verify_qr_code_scan_code_action" = "Escanear o código do seu contato";
+"key_verification_verify_qr_code_scan_code_action" = "Scannar código dela(e)";
 // Scanned
 "key_verification_scan_confirmation_scanned_title" = "Quase lá!";
-"user_verification_session_details_additional_information_untrusted_other_user" = "Até que este usuário confirme esta sessão, as mensagens enviadas para e a partir dela são rotuladas com alertas. Como alternativa, você pode confirmá-la manualmente.";
-"user_verification_session_details_verify_action_current_user" = "Confirmem interativamente";
-"user_verification_session_details_verify_action_current_user_manually" = "Confirme manualmente por texto";
-"user_verification_session_details_verify_action_other_user" = "Confirmar manualmente";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Até que esta(e) usuária(o) confie nesta sessão, mensagens enviadas para e desde ela são etiquetadas com avisos. Alternativamente, você pode verificá-la manualmente.";
+"user_verification_session_details_verify_action_current_user" = "Verificar Interativamente";
+"user_verification_session_details_verify_action_current_user_manually" = "Verificar Manualmente por Texto";
+"user_verification_session_details_verify_action_other_user" = "Verificar manualmente";
 "auth_add_email_phone_message_2" = "Defina um email para recuperação de conta. Use depois email ou telefone para ser opcionalmente descobertável por pessoas que conhecem você.";
 "auth_email_is_required" = "Nenhum servidor de identidade está configurado então você não pode adicionar um endereço de email a fim de resettar sua senha no futuro.";
 "auth_softlogout_clear_data_message_1" = "Aviso: Seus dados pessoais (incluindo chaves de encriptação) ainda estão armazenados neste dispositivo.";
@@ -790,33 +790,33 @@
 "security_settings_crosssigning_info_not_bootstrapped" = "Assinatura cruzada não está ainda configurada.";
 "security_settings_crosssigning_info_exists" = "Sua conta tem uma identidade de assinatura cruzada, mas ainda não é confiada por esta sessão. Complete segurança desta sessão.";
 "security_settings_crosssigning_info_trusted" = "Assinatura cruzada está ativada. Você pode confiar em outras(os) usuárias(os) e suas outras sessões baseada(o) em assinatura cruzada mas você não pode fazer assinar cruzado desta sessão porque ela não tem chaves privadas de assinatura cruzada. Complete segurança desta sessão.";
-"security_settings_crosssigning_info_ok" = "Assinatura cruzada está ativada.";
-"security_settings_crosssigning_bootstrap" = "Fazer bootstrap de assinatura cruzada";
-"security_settings_crosssigning_reset" = "Resettar assinatura cruzada";
+"security_settings_crosssigning_info_ok" = "Assinatura cruzada está pronta para uso.";
+"security_settings_crosssigning_bootstrap" = "Configurar";
+"security_settings_crosssigning_reset" = "Resettar";
 "identity_server_settings_disconnect_info" = "Desconectar-se de seu servidor de identidade vai significar que você não vai ser descobertável por outras(os) usuárias(os) e ser capaz de convidar outras(os) por email ou telefone.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "Você ainda está compartilhando seus dados pessoais no servidor de identidade %@.\n\nNós recomendamos que você remova seus endereços de email e números de telefone do servidor de identidade antes de se desconectar.";
 "call_no_stun_server_error_title" = "Chamada falhou devido a servidor malconfigurado";
 "widget_integration_manager_disabled" = "Você precisa ativar Gerenciador de Integração em configurações";
 "service_terms_modal_description_for_identity_server_1" = "Encontrar outras(os) por telefone ou email";
 "service_terms_modal_description_for_identity_server_2" = "Ser encontrada(o) por telefone ou email";
-"device_verification_self_verify_wait_additional_information" = "Isso funciona no Element e em outros clientes da Matrix capazes de fazer autoverificação.";
-"key_verification_verified_user_information" = "As mensagens com este usuário estão criptografadas de ponta a ponta e não podem ser lidas por terceiros.";
-"device_verification_emoji_smiley" = "Sorriso";
+"device_verification_self_verify_wait_additional_information" = "Isto funciona com Element e outros clientes Matrix capazes de assinatura cruzada.";
+"key_verification_verified_user_information" = "Mensagens com esta(e) usuária(o) são encriptadas ponta-a-ponta e não podem ser lidas por terceiros.";
+"device_verification_emoji_smiley" = "Smiley";
 // Generic errors
-"error_invite_3pid_with_no_identity_server" = "Adicionar um servidor de identidade nas suas configurações para convidar por e-mail.";
-"key_verification_bootstrap_not_setup_message" = "Você precisa fazer a autoverificação em primeiro lugar.";
-"user_verification_sessions_list_user_trust_level_warning_title" = "Atenção";
-"user_verification_sessions_list_information" = "As mensagens com este usuário nesta sala estão criptografadas de ponta a ponta e não podem ser lidas por terceiros.";
-"secrets_recovery_with_passphrase_information_default" = "Digite a sua senha de recuperação para acessar o seu histórico de mensagens seguras e a sua identidade autoverificada para confirmar outras sessões.";
-"secrets_recovery_with_key_information_default" = "Digite a sua chave de recuperação para acessar o seu histórico de mensagens seguras e para confirmar outras sessões com sua identidade autoverificada.";
+"error_invite_3pid_with_no_identity_server" = "Adicione um servidor de identidade em suas configurações para convidar por email.";
+"key_verification_bootstrap_not_setup_message" = "Você precisa fazer bootstrap de assinatura cruzada primeiro.";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Aviso";
+"user_verification_sessions_list_information" = "Mensagens com esta(e) usuária(o) nesta sala são encriptadas ponta-a-ponta e não podem ser lidas por terceiros.";
+"secrets_recovery_with_passphrase_information_default" = "Acesse seu histórico de mensagens seguras e sua identidade de assinatura cruzada para verificar outras sessões ao entrar sua Frase de Segurança.";
+"secrets_recovery_with_key_information_default" = "Acesse seu histórico de mensagens seguras e sua identidade de assinatura cruzada para verificar outras sessões ao entrar sua Chave de Segurança.";
 "secrets_setup_recovery_key_done_action" = "Fechar";
-"secrets_setup_recovery_passphrase_validate_action" = "Fechar";
+"secrets_setup_recovery_passphrase_validate_action" = "Feito";
 "pin_protection_settings_enabled_forced" = "PIN ativado";
-"pin_protection_settings_enable_pin" = "Ativar o PIN";
+"pin_protection_settings_enable_pin" = "Ativar PIN";
 "biometrics_settings_enable_x" = "Ativar %@";
 "biometrics_setup_title_x" = "Ativar %@";
 "biometrics_setup_enable_button_title_x" = "Ativar %@";
-"biometrics_cant_unlocked_alert_message_x" = "Para desbloquear, use %@ ou faça login novamente e ative %@ novamente";
+"biometrics_cant_unlocked_alert_message_x" = "Para destrancar, use %@ ou faça login de volta e ative %@ de novo";
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
 // MARK: Clients
@@ -876,10 +876,10 @@
 "security_settings_crypto_sessions" = "MINHAS SESSÕES";
 "security_settings_crypto_sessions_loading" = "Carregando sessões…";
 "security_settings_secure_backup" = "BACKUP SEGURO";
-"security_settings_secure_backup_description" = "Salvaguardar-se contra perda de acesso a mensagens & dados encriptados ao fazer backup de chaves de encriptação em seu servidor.";
+"security_settings_secure_backup_description" = "Faça backup de suas chaves de decriptação em caso você perca acesso a suas sessões. Suas chaves vão estar asseguradas com uma Chave de Segurança única.";
 "security_settings_secure_backup_setup" = "Configurar";
 "security_settings_secure_backup_synchronise" = "Sincronizar";
-"security_settings_secure_backup_delete" = "Deletar";
+"security_settings_secure_backup_delete" = "Deletar Backup";
 "security_settings_backup" = "BACKUP DE MENSAGEM";
 "security_settings_crosssigning_complete_security" = "Completar segurança";
 "security_settings_cryptography" = "CRIPTOGRAFIA";
@@ -966,33 +966,33 @@
 "device_verification_self_verify_start_verify_action" = "Começar verificação";
 "device_verification_self_verify_start_information" = "Use esta sessão para verificar sua nova, garantindo-lhe acesso a mensagens encriptadas.";
 "key_verification_self_verify_current_session_alert_title" = "Verificar esta sessão";
-"key_verification_self_verify_current_session_alert_message" = "Outros usuários podem não confiar nela.";
-"key_verification_self_verify_current_session_alert_validate_action" = "Confirmar";
-"key_verification_self_verify_unverified_sessions_alert_title" = "Revisar onde você está logado";
-"key_verification_self_verify_unverified_sessions_alert_message" = "Verifique todas as suas sessões para garantir que sua conta e mensagens estão seguras.";
+"key_verification_self_verify_current_session_alert_message" = "Outras(os) usuárias(os) podem não confiar nela.";
+"key_verification_self_verify_current_session_alert_validate_action" = "Verificar";
+"key_verification_self_verify_unverified_sessions_alert_title" = "Revisar onde você tem sido feito login";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Verifique todas as suas sessões para assegurar que sua conta & mensagens estão seguras.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Revisar";
-"device_verification_self_verify_wait_title" = "Concluir segurança";
-"device_verification_self_verify_wait_new_sign_in_title" = "Confirmar este login";
-"device_verification_self_verify_wait_information" = "Confirme esta sessão a partir de uma de suas outras sessões, concedendo acesso às mensagens criptografadas.↵\n↵\nUse o Element mais recente em seus outros aparelhos:";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Usar chave de recuperação";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use a chave de recuperação, ou a frase de recuperação";
-"device_verification_self_verify_wait_recover_secrets_additional_information" = "Se você não tem acesso a uma sessão existente";
+"device_verification_self_verify_wait_title" = "Completar segurança";
+"device_verification_self_verify_wait_new_sign_in_title" = "Verificar este login";
+"device_verification_self_verify_wait_information" = "Confirme sua identidade ao verificar este login desde uma de suas outras sessões, garantindo-lhe acesso a mensagens encriptadas.\n\nUse o Element mais recente em seus outros dispositivos:";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Usar Chave de Segurança";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Usar Frase ou Chave de Segurança";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Se você não consegue acessar uma sessão existente";
 "key_verification_verify_sas_title_number" = "Comparar números";
-"key_verification_verify_sas_cancel_action" = "Não correspondem";
-"key_verification_verify_sas_validate_action" = "Correspondem";
-"key_verification_verify_sas_additional_information" = "Para maior segurança, use outro meio de comunicação confiável ou faça isso pessoalmente.";
-"key_verification_manually_verify_device_instruction" = "Compare as seguintes informações com aquelas na sessão do outro usuário e confirme:";
-"key_verification_manually_verify_device_name_title" = "Nome da sessão";
-"key_verification_manually_verify_device_id_title" = "ID da sessão";
-"key_verification_manually_verify_device_key_title" = "Chave da sessão";
-"key_verification_manually_verify_device_additional_information" = "Se eles não corresponderem, a segurança da sua comunicação pode estar comprometida.";
-"key_verification_manually_verify_device_validate_action" = "Confirmar";
-"device_verification_verified_title" = "Confirmado!";
-"device_verification_verified_got_it_button" = "Ok, entendi";
-"key_verification_verified_new_session_title" = "Sessão confirmada!";
-"key_verification_verified_other_session_information" = "Agora você poderá ler mensagens seguras em sua outra sessão, e os usuários saberão que podem confiar nela.";
-"key_verification_verified_new_session_information" = "Agora você poderá ler mensagens seguras em seu outro aparelho, e os usuários saberão que podem confiar nele.";
-"key_verification_verified_this_session_information" = "Agora você poderá ler mensagens seguras neste aparelho, e os usuários saberão que podem confiar nele.";
+"key_verification_verify_sas_cancel_action" = "Eles não correspondem";
+"key_verification_verify_sas_validate_action" = "Eles correspondem";
+"key_verification_verify_sas_additional_information" = "Para segurança ótima, use um outro meio de comunicação confiado ou faça isto em pessoa.";
+"key_verification_manually_verify_device_instruction" = "Confirme ao comparar o seguinte com as Configurações de Usuária(o) em sua outra sessão:";
+"key_verification_manually_verify_device_name_title" = "Nome de sessão";
+"key_verification_manually_verify_device_id_title" = "ID de sessão";
+"key_verification_manually_verify_device_key_title" = "Chave de sessão";
+"key_verification_manually_verify_device_additional_information" = "Se eles não corresponderem, a segurança de sua comunicação pode estar comprometida.";
+"key_verification_manually_verify_device_validate_action" = "Verificar";
+"device_verification_verified_title" = "Verificado!";
+"device_verification_verified_got_it_button" = "Entendido";
+"key_verification_verified_new_session_title" = "Nova sessão verificada!";
+"key_verification_verified_other_session_information" = "Você pode agora ler mensagens seguras em sua outra sessão, e outras(os) usuárias(os) vão saber que elas(es) podem confiar nela.";
+"key_verification_verified_new_session_information" = "Você poder agora ler mensagens seguras em seu novo dispositivo, e outras(os) usuárias(os) vão saber que elas(es) podem confiar nele.";
+"key_verification_verified_this_session_information" = "Você pode agora ler mensagens seguras neste dispositivo, e outras(os) usuárias(os) vão saber que elas(es) podem confiar nele.";
 // MARK: Emoji
 "device_verification_emoji_dog" = "Cachorro";
 "device_verification_emoji_cat" = "Gato";
@@ -1011,7 +1011,7 @@
 "device_verification_emoji_butterfly" = "Borboleta";
 "device_verification_emoji_flower" = "Flor";
 "device_verification_emoji_tree" = "Árvore";
-"device_verification_emoji_cactus" = "Cacto";
+"device_verification_emoji_cactus" = "Cactus";
 "device_verification_emoji_mushroom" = "Cogumelo";
 "device_verification_emoji_globe" = "Globo";
 "device_verification_emoji_moon" = "Lua";
@@ -1027,16 +1027,16 @@
 "device_verification_emoji_hat" = "Chapéu";
 "device_verification_emoji_glasses" = "Óculos";
 "device_verification_emoji_spanner" = "Chave inglesa";
-"device_verification_emoji_santa" = "Papai-noel";
+"device_verification_emoji_santa" = "Noel";
 "device_verification_emoji_thumbs up" = "Joinha";
-"device_verification_emoji_umbrella" = "Guarda-chuva";
+"device_verification_emoji_umbrella" = "Guardachuva";
 "device_verification_emoji_hourglass" = "Ampulheta";
 "device_verification_emoji_clock" = "Relógio";
 "device_verification_emoji_gift" = "Presente";
 "device_verification_emoji_light bulb" = "Lâmpada";
 "device_verification_emoji_book" = "Livro";
 "device_verification_emoji_pencil" = "Lápis";
-"device_verification_emoji_paperclip" = "Clipe de papel";
+"device_verification_emoji_paperclip" = "Clip de papel";
 "device_verification_emoji_lock" = "Cadeado";
 "device_verification_emoji_key" = "Chave";
 "device_verification_emoji_hammer" = "Martelo";
@@ -1055,112 +1055,112 @@
 "device_verification_emoji_folder" = "Pasta";
 "device_verification_emoji_pin" = "Alfinete";
 // MARK: File upload
-"file_upload_error_title" = "Envio de arquivo";
-"file_upload_error_unsupported_file_type_message" = "Tipo de arquivo não compatível.";
+"file_upload_error_title" = "Upload de arquivo";
+"file_upload_error_unsupported_file_type_message" = "Tipo de arquivo não suportado.";
 // MARK: Emoji picker
 "emoji_picker_title" = "Reações";
 // MARK: Reaction history
 "reaction_history_title" = "Reações";
-"error_not_supported_on_mobile" = "Você não pode fazer isso no %@ para iOS.";
+"error_not_supported_on_mobile" = "Você não pode fazer isto desde %@ mobile.";
 "key_verification_bootstrap_not_setup_title" = "Erro";
-"key_verification_tile_request_incoming_title" = "Solicitação de confirmação";
-"key_verification_tile_request_outgoing_title" = "Confirmação enviada";
-"key_verification_tile_request_status_data_loading" = "Carregando…";
-"key_verification_tile_request_status_expired" = "Expirado";
+"key_verification_tile_request_incoming_title" = "Requisição de verificação";
+"key_verification_tile_request_outgoing_title" = "Verificação enviada";
+"key_verification_tile_request_status_data_loading" = "Dados carregando…";
+"key_verification_tile_request_status_expired" = "Expirada";
 "key_verification_tile_request_status_cancelled_by_me" = "Você cancelou";
 "key_verification_tile_request_status_cancelled" = "%@ cancelou";
 "key_verification_tile_request_status_accepted" = "Você aceitou";
 "key_verification_tile_request_incoming_approval_accept" = "Aceitar";
-"key_verification_tile_request_incoming_approval_decline" = "Recusar";
-"key_verification_tile_conclusion_done_title" = "Confirmado";
-"key_verification_tile_conclusion_warning_title" = "Login não confiável";
-"key_verification_incoming_request_incoming_alert_message" = "%@ solicita confirmação";
-"key_verification_verify_qr_code_title" = "Confirmar através de QR Code";
-"key_verification_verify_qr_code_information" = "Escaneie o código para confirmar um ao outro com segurança.";
-"key_verification_verify_qr_code_information_other_device" = "Escaneie o código abaixo para confirmar:";
-"key_verification_verify_qr_code_emoji_information" = "Confirmar comparando emojis únicos.";
-"key_verification_verify_qr_code_cannot_scan_action" = "Não consegue escanear?";
-"key_verification_verify_qr_code_start_emoji_action" = "Confirmar por emojis";
-"key_verification_verify_qr_code_other_scan_my_code_title" = "O seu contato escaneou o código QR com sucesso?";
+"key_verification_tile_request_incoming_approval_decline" = "Declinar";
+"key_verification_tile_conclusion_done_title" = "Verificada";
+"key_verification_tile_conclusion_warning_title" = "Signin não-confiado";
+"key_verification_incoming_request_incoming_alert_message" = "%@ quer verificar";
+"key_verification_verify_qr_code_title" = "Verificar por scanning";
+"key_verification_verify_qr_code_information" = "Scanne o código para verificar seguramente um/uma a/o outra(o).";
+"key_verification_verify_qr_code_information_other_device" = "Scanne o código abaixo para verificar:";
+"key_verification_verify_qr_code_emoji_information" = "Verificar ao comparar emoji únicos.";
+"key_verification_verify_qr_code_cannot_scan_action" = "Não dá pra scannar?";
+"key_verification_verify_qr_code_start_emoji_action" = "Verificar por emoji";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "A/o outra(o) usuária(o) scannou o QR code com sucesso?";
 "key_verification_verify_qr_code_scan_other_code_success_title" = "Código validado!";
-"key_verification_verify_qr_code_scan_other_code_success_message" = "O código QR foi validado com sucesso.";
-"key_verification_scan_confirmation_scanned_user_information" = "Este escudo também aparece para %@?";
-"key_verification_scan_confirmation_scanned_device_information" = "O outro aparelho está mostrando o mesmo escudo?";
-"user_verification_start_verify_action" = "Iniciar a confirmação";
-"user_verification_start_information_part1" = "Para segurança extra, confirme· ";
-"user_verification_start_information_part2" = " comparando um código único em ambos os aparelhos.";
-"user_verification_start_additional_information" = "Para sua segurança, faça isso pessoalmente ou use outra forma de comunicação.";
-"user_verification_sessions_list_user_trust_level_trusted_title" = "Confiável";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR code tem sido validado com sucesso.";
+"key_verification_scan_confirmation_scanned_user_information" = "%@ está mostrando o mesmo escudo?";
+"key_verification_scan_confirmation_scanned_device_information" = "O outro dispositivo está mostrando o mesmo escudo?";
+"user_verification_start_verify_action" = "Começar verificação";
+"user_verification_start_information_part1" = "Para segurança extra, verifique ";
+"user_verification_start_information_part2" = " ao checar um código de uma vez em ambos seus dispositivos.";
+"user_verification_start_additional_information" = "Para estar segura(o), faça isto em pessoa ou use uma outra forma de se comunicar.";
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Confiado";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "Desconhecido";
 "user_verification_sessions_list_table_title" = "Sessões";
-"user_verification_sessions_list_session_trusted" = "Confiável";
-"user_verification_sessions_list_session_untrusted" = "Não confiável";
-"user_verification_session_details_trusted_title" = "Confiável";
-"user_verification_session_details_untrusted_title" = "Não confiável";
-"user_verification_session_details_information_trusted_current_user" = "Esta sessão é confiável para o envio de mensagens seguras porque você a confirmou:";
-"user_verification_session_details_information_trusted_other_user_part1" = "Esta sessão é confiável para o envio de mensagens seguras porque· ";
-"user_verification_session_details_information_trusted_other_user_part2" = " ·confirmou:";
-"user_verification_session_details_information_untrusted_current_user" = "Confirme esta sessão para marcá-la como confiável e conceder a ela acesso a mensagens criptografadas:";
-"user_verification_session_details_information_untrusted_other_user" = " ·entrou usando uma nova sessão:";
-"user_verification_session_details_additional_information_untrusted_current_user" = "Se você não fez login nesta sessão, sua conta pode estar comprometida.";
-"secrets_recovery_with_passphrase_title" = "Frase secreta de recuperação";
-"secrets_recovery_with_passphrase_information_verify_device" = "Use sua frase secreta de recuperação para confirmar este aparelho.";
-"secrets_recovery_with_passphrase_passphrase_title" = "Digite";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Digite a senha de recuperação";
-"secrets_recovery_with_passphrase_recover_action" = "Use a frase secreta";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Não sabe sua frase de recuperação? Você pode· ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "use sua chave de recuperação";
+"user_verification_sessions_list_session_trusted" = "Confiada";
+"user_verification_sessions_list_session_untrusted" = "Não confiada";
+"user_verification_session_details_trusted_title" = "Confiada";
+"user_verification_session_details_untrusted_title" = "Não Confiada";
+"user_verification_session_details_information_trusted_current_user" = "Esta sessão é confiada para mensageria segura porque você a verificou:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Esta sessão é confiada para mensageria segura porque ";
+"user_verification_session_details_information_trusted_other_user_part2" = " a verificou:";
+"user_verification_session_details_information_untrusted_current_user" = "Verifique esta sessão para marcá-la como confiada & garantir-lhe acesso a mensagens encriptadas:";
+"user_verification_session_details_information_untrusted_other_user" = " fez signin usando uma nova sessão:";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Se você não fez signin a esta sessão, sua conta pode estar comprometida.";
+"secrets_recovery_with_passphrase_title" = "Frase de Segurança";
+"secrets_recovery_with_passphrase_information_verify_device" = "Use sua Frase de Segurança para verificar este dispositivo.";
+"secrets_recovery_with_passphrase_passphrase_title" = "Entrar";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Entrar Frase de Segurança";
+"secrets_recovery_with_passphrase_recover_action" = "Usar Frase";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Não sabe sua Frase de Segurança? Você pode ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "usar sua Chave de Segurança";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
-"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Não foi possível acessar o armazenamento secreto";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Verifique se você digitou a frase de recuperação correta.";
-"secrets_recovery_with_key_title" = "Chave de recuperação";
-"secrets_recovery_with_key_information_verify_device" = "Use sua chave de recuperação para confirmar este aparelho.";
-"secrets_recovery_with_key_recovery_key_title" = "Digite";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Digite a chave de recuperação";
-"secrets_recovery_with_key_recover_action" = "Usar chave";
-"secrets_recovery_with_key_invalid_recovery_key_title" = "Não foi possível acessar o armazenamento secreto";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Verifique se você digitou a chave de recuperação correta.";
-"secrets_setup_recovery_key_title" = "Salve a sua chave de segurança";
-"secrets_setup_recovery_key_information" = "Guarde sua chave de recuperação em um lugar seguro. Ela pode ser usada para desbloquear suas mensagens e dados criptografados.";
-"secrets_setup_recovery_key_loading" = "Acessar…";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Incapaz de acessar armazenamento secreto";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Por favor verifique que você entrou a Frase de Segurança correta.";
+"secrets_recovery_with_key_title" = "Chave de Segurança";
+"secrets_recovery_with_key_information_verify_device" = "Use sua Chave de Segurança para verificar este dispositivo.";
+"secrets_recovery_with_key_recovery_key_title" = "Entrar";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Entrar Chave de Segurança";
+"secrets_recovery_with_key_recover_action" = "Usar Chave";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Incapaz de acessar armazenamento secreto";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Por favor verifique que você entrou a Chave de Segurança correta.";
+"secrets_setup_recovery_key_title" = "Salvar sua Chave de Segurança";
+"secrets_setup_recovery_key_information" = "Armazene sua Chave de Segurança em algum lugar seguro. Ela pode ser usada para destrancar suas mensagens & dados encriptados.";
+"secrets_setup_recovery_key_loading" = "Carregando…";
 "secrets_setup_recovery_key_export_action" = "Salvar";
-"secrets_setup_recovery_key_storage_alert_title" = "Guarde num lugar seguro";
-"secrets_setup_recovery_key_storage_alert_message" = "✓ Imprima e guarde em algum lugar seguro\n✓ Salve em uma chave USB ou unidade de backup\n✓ Copie para o seu armazenamento em nuvem pessoal";
-"secrets_setup_recovery_passphrase_title" = "Defina uma Frase de Segurança";
-"secrets_setup_recovery_passphrase_information" = "Digite uma frase de segurança que só você conheça, usada para proteger segredos em seu servidor.";
-"secrets_setup_recovery_passphrase_additional_information" = "Não use a senha da sua conta.";
-"secrets_setup_recovery_passphrase_confirm_information" = "Digite sua frase de segurança novamente para confirmá-la.";
+"secrets_setup_recovery_key_storage_alert_title" = "Mantenha-a segura";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Imprima-a e armazene-a em algum lugar seguro\n✓ Salve-a em uma chave USB ou drive de backup \n✓ Copie-a para seu armazenamento nuvem pessoal";
+"secrets_setup_recovery_passphrase_title" = "Definir uma Frase de Segurança";
+"secrets_setup_recovery_passphrase_information" = "Entre uma frase de segurança que só você conheça, usada para assegurar segredos em seu servidor.";
+"secrets_setup_recovery_passphrase_additional_information" = "Não use a senha de sua conta.";
+"secrets_setup_recovery_passphrase_confirm_information" = "Entre sua Frase de Segurança de novo para confirmá-la.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Confirmar";
-"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirme a frase secreta";
-"cross_signing_setup_banner_title" = "Configurar a criptografia";
-"cross_signing_setup_banner_subtitle" = "Confirme seus outros aparelhos com mais facilidade";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirmar frase";
+"cross_signing_setup_banner_title" = "Configurar encriptação";
+"cross_signing_setup_banner_subtitle" = "Verifique seus outros dispositivos mais fácil";
 "major_update_title" = "Riot agora é Element";
 "major_update_learn_more_action" = "Saiba mais";
-"major_update_done_action" = "Ok, entendi";
-"pin_protection_choose_pin" = "Crie um PIN de segurança";
+"major_update_done_action" = "Entendido";
+"pin_protection_choose_pin" = "Crie um PIN por segurança";
 "pin_protection_confirm_pin" = "Confirme seu PIN";
-"pin_protection_confirm_pin_to_disable" = "Confirme o PIN para desativar o PIN";
-"pin_protection_enter_pin" = "Digite seu PIN";
-"pin_protection_forgot_pin" = "Esqueci o PIN";
-"pin_protection_reset_alert_title" = "Redefinir o PIN";
-"pin_protection_reset_alert_message" = "Para redefinir seu PIN, você precisará fazer um novo login e em seguida criar um novo PIN";
-"pin_protection_reset_alert_action_reset" = "Redefinir";
-"pin_protection_mismatch_error_title" = "PINs não coincidem";
-"pin_protection_mismatch_error_message" = "Por favor, tente novamente";
-"pin_protection_mismatch_too_many_times_error_message" = "Se você não se lembrar do PIN, toque no botão Esqueci o PIN.";
-"pin_protection_settings_section_header_x" = "PIN e %@";
-"pin_protection_settings_section_footer" = "Para redefinir seu PIN, você precisará fazer login novamente e criar um novo PIN.";
+"pin_protection_confirm_pin_to_disable" = "Confirme PIN para desativar PIN";
+"pin_protection_enter_pin" = "Entre seu PIN";
+"pin_protection_forgot_pin" = "Esqueci PIN";
+"pin_protection_reset_alert_title" = "Resettar PIN";
+"pin_protection_reset_alert_message" = "Para resettar seu PIN, você vai precisar re-fazer login e criar um novo";
+"pin_protection_reset_alert_action_reset" = "Resettar";
+"pin_protection_mismatch_error_title" = "PINs não correspondem";
+"pin_protection_mismatch_error_message" = "Por favor tente de novo";
+"pin_protection_mismatch_too_many_times_error_message" = "Se você não consegue se lembrar de seu PIN, toque no botão esqueci PIN.";
+"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_footer" = "Para resettar seu PIN, você vai precisar re-fazer login e criar um novo.";
 "biometrics_mode_touch_id" = "Touch ID";
 "biometrics_mode_face_id" = "Face ID";
-"biometrics_setup_subtitle" = "Poupe tempo";
+"biometrics_setup_subtitle" = "Poupe a si mesma(o) tempo";
 "biometrics_desetup_title_x" = "Desativar %@";
 "biometrics_desetup_subtitle" = "biometrics_desetup_subtitle";
 "biometrics_desetup_disable_button_title_x" = "Desativar %@";
-"biometrics_usage_reason" = "A autenticação é necessária para acessar seu aplicativo";
-"biometrics_cant_unlocked_alert_title" = "Não foi possível desbloquear o app";
-"biometrics_cant_unlocked_alert_message_login" = "Entrar novamente";
-"biometrics_cant_unlocked_alert_message_retry" = "Tentar novamente";
-"pin_protection_kick_user_alert_message" = "Muitos erros, vocês foi desconectada/o";
+"biometrics_usage_reason" = "Autenticação é necessitada para acessar seu app";
+"biometrics_cant_unlocked_alert_title" = "Não dá para destrancar app";
+"biometrics_cant_unlocked_alert_message_login" = "Fazer login de volta";
+"biometrics_cant_unlocked_alert_message_retry" = "Retentar";
+"pin_protection_kick_user_alert_message" = "Erros demais, você tem sido feito logout";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Encriptação não está ativada aqui.";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Encriptação está ativada aqui";
 "room_details_advanced_room_id_for_dm" = "ID:";
@@ -1177,85 +1177,85 @@
 "room_participants_filter_room_members_for_dm" = "Filtrar membros";
 "room_participants_leave_prompt_msg_for_dm" = "Tem certeza que você quer sair?";
 "room_participants_leave_prompt_title_for_dm" = "Sair";
-"room_info_list_section_other" = "Outros";
-"room_info_list_several_members" = "%@ integrantes";
+"room_info_list_section_other" = "Outras";
+"room_info_list_several_members" = "%@ membros";
 
 // MARK: - Room Info
 
-"room_info_list_one_member" = "1 integrante";
-"create_room_placeholder_address" = "#saladeteste:matrix.org";
-"create_room_section_header_address" = "Endereço da sala";
-"create_room_show_in_directory" = "Exibir a sala na lista pública de salas";
-"create_room_section_footer_type" = "Pessoas entram em uma sala privada apenas com o convite da sala.";
-"create_room_type_public" = "Sala pública";
-"create_room_type_private" = "Sala privada";
+"room_info_list_one_member" = "1 membro";
+"create_room_placeholder_address" = "#salateste:matrix.org";
+"create_room_section_header_address" = "Endereço de sala";
+"create_room_show_in_directory" = "Mostrar a sala no diretório";
+"create_room_section_footer_type" = "Pessoas se juntam a uma sala privada somente com o convite da sala.";
+"create_room_type_public" = "Sala Pública";
+"create_room_type_private" = "Sala Privada";
 "create_room_section_header_type" = "Tipo de sala";
-"create_room_section_footer_encryption" = "A criptografia não poderá ser desativada posteriormente.";
-"create_room_enable_encryption" = "Ativar criptografia";
-"create_room_section_header_encryption" = "Criptografia da sala";
-"create_room_placeholder_topic" = "Descrição";
-"create_room_section_header_topic" = "Descrição da sala (opcional)";
+"create_room_section_footer_encryption" = "Encriptação não pode ser desativada em seguida.";
+"create_room_enable_encryption" = "Ativar Encriptação";
+"create_room_section_header_encryption" = "Encriptação de sala";
+"create_room_placeholder_topic" = "Tópico";
+"create_room_section_header_topic" = "Tópico de sala (opcional)";
 "create_room_placeholder_name" = "Nome";
-"create_room_section_header_name" = "Nome da sala";
+"create_room_section_header_name" = "Nome de sala";
 
 // MARK: - Create Room
 
-"create_room_title" = "Nova sala";
+"create_room_title" = "Nova Sala";
 "searchable_directory_search_placeholder" = "Nome ou ID";
 "searchable_directory_x_network" = "Rede %@";
 
 // MARK: - Searchable Directory View Controller
 
 "searchable_directory_create_new_room" = "Criar uma nova sala";
-"pin_protection_explanatory" = "Configurar um PIN permite que você proteja dados como mensagens e contatos, de forma que somente você possa acessá-los inserindo o PIN ao iniciar o aplicativo.";
-"pin_protection_not_allowed_pin" = "Por motivos de segurança, este PIN não está disponível. Por favor, escolha outra PIN";
-"pin_protection_choose_pin_welcome_after_register" = "Boas-vindas.";
-"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Procurando outras possibilidades de confirmação...";
+"pin_protection_explanatory" = "Configurar um PIN permite você proteger dados como mensagens e contatos, para que somente você possa acessá-los entrando o PIN no início do app.";
+"pin_protection_not_allowed_pin" = "Por razões de segurança, este PIN não está disponível. Por favor tente um outro PIN";
+"pin_protection_choose_pin_welcome_after_register" = "Boas vindas.";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Checando por outras capabilidades de verificação ...";
 
 // MARK: - PIN Protection
 
-"pin_protection_choose_pin_welcome_after_login" = "Bem-vindo de volta.";
+"pin_protection_choose_pin_welcome_after_login" = "Boas vindas de volta.";
 "more" = "Mais";
 "switch" = "Trocar";
 "joined" = "Juntou-Se";
-"secrets_reset_authentication_message" = "Digite a senha da sua conta para confirmar";
-"secrets_reset_reset_action" = "Redefinir";
-"secrets_reset_warning_message" = "Você não terá mais o histórico de mensagens, aparelhos confiáveis e contatos confirmados.";
-"secrets_reset_warning_title" = "Se você redefinir tudo";
-"secrets_reset_information" = "Apenas faça isso se você não tiver outro aparelho para confirmar este aparelho.";
+"secrets_reset_authentication_message" = "Entre a senha de sua conta para confirmar";
+"secrets_reset_reset_action" = "Resettar";
+"secrets_reset_warning_message" = "Você vai recomeçar com nada de histórico, mensagens, dispositivos confiados ou usuárias(os) confiadas(os).";
+"secrets_reset_warning_title" = "Se você resettar tudo";
+"secrets_reset_information" = "Somente faça isto se você não tem nenhum outro dispositivo com o qual você pode verificar este dispositivo.";
 
 // MARK: - Secrets reset
 
-"secrets_reset_title" = "Remover tudo";
+"secrets_reset_title" = "Resettar tudo";
 
 // MARK: - Secrets recovery
 
-"secrets_recovery_reset_action_part_1" = "Esqueceu as senhas ou perdeu todas opções de recuperação? ";
+"secrets_recovery_reset_action_part_1" = "Esqueceu ou perdeu todas opções de recuperação? ";
 "less" = "Menos";
-"secrets_recovery_reset_action_part_2" = "Redefinir tudo";
-"secrets_setup_recovery_passphrase_summary_information" = "Lembre-se da sua frase de segurança. Ela pode ser usada para desbloquear suas mensagens e dados criptografados.";
-"secrets_setup_recovery_passphrase_summary_title" = "Salve a sua frase de segurança";
-"home_empty_view_information" = "O aplicativo de conversas seguro e completo para equipes, amigos e organizações. Toque no botão + abaixo para adicionar pessoas e salas.";
+"secrets_recovery_reset_action_part_2" = "Resettar tudo";
+"secrets_setup_recovery_passphrase_summary_information" = "Lembre-se de sua Frase de Segurança. Ela pode ser usada para destrancar suas mensagens & dados encriptados.";
+"secrets_setup_recovery_passphrase_summary_title" = "Salvar sua Frase de Segurança";
+"home_empty_view_information" = "O app de chat seguro tudo-em-um para equipes, amigas(os) e organizações. Toque no botão + abaixo para adicionar pessoas e salas.";
 
 // MARK: - Home
 
-"home_empty_view_title" = "Boas-vindas ao %@,\n%@";
+"home_empty_view_title" = "Boas vindas a %@,\n%@";
 "people_empty_view_title" = "Pessoas";
-"favourites_empty_view_information" = "Você pode adicionar aos favoritos de algumas maneiras - a mais rápida é simplesmente pressionar e segurar. Toque na estrela e eles aparecerão automaticamente aqui, para fins de segurança.";
+"favourites_empty_view_information" = "Você pode favoritar de algumas formas - a mais rápida é só pressionar e segurar. Toque na estrela e elas vão automaticamente aparecer aqui para mantimento seguro.";
 
 // MARK: - Favourites
 
-"favourites_empty_view_title" = "Salas e pessoas favoritas";
+"favourites_empty_view_title" = "Favoritar salas e pessoas";
 "rooms_empty_view_information" = "Salas são ótimas para qualquer chat de grupo, privado ou público. Toque no + para encontrar salas existentes, ou criar umas novas.";
 "rooms_empty_view_title" = "Salas";
 "people_empty_view_information" = "Faça chat seguramene com qualquer pessoa. Toque no + para começar a adicionar pessoas.";
-"invite_friends_share_text" = "Ei, converse comigo no %@: %@";
+"invite_friends_share_text" = "Hey, fale comigo em %@: %@";
 
 // MARK: - Invite friends
 
-"invite_friends_action" = "Convidar amigos para o %@";
-"pin_protection_settings_change_pin" = "Alterar o PIN";
-"pin_protection_confirm_pin_to_change" = "Confirme o PIN para alterá-lo";
+"invite_friends_action" = "Convidar amigas(os) para %@";
+"pin_protection_settings_change_pin" = "Mudar PIN";
+"pin_protection_confirm_pin_to_change" = "Confirme PIN para mudar PIN";
 "bug_report_background_mode" = "Continuar em background";
 "social_login_button_title_sign_up" = "Registrar-Se com %@";
 "social_login_button_title_sign_in" = "Fazer Signin com %@";
@@ -1266,37 +1266,37 @@
 // Social login
 
 "social_login_list_title_continue" = "Continuar com";
-"room_avatar_view_accessibility_hint" = "Alterar a imagem da sala";
+"room_avatar_view_accessibility_hint" = "Mudar avatar de sala";
 
 // Mark: - Room avatar view
 
-"room_avatar_view_accessibility_label" = "imagem";
+"room_avatar_view_accessibility_label" = "avatar";
 "call_transfer_contacts_all" = "Todos";
-"call_transfer_contacts_recent" = "Recente";
-"call_transfer_users" = "Pessoas";
+"call_transfer_contacts_recent" = "Recentes";
+"call_transfer_users" = "Usuárias(os)";
 "event_formatter_call_has_ended" = "Terminou %@";
-"room_intro_cell_information_multiple_dm_sentence2" = "Somente vocês estão nesta conversa, ao menos até que convidem alguém para participar.";
-"room_intro_cell_information_dm_sentence2" = "Apenas vocês dois/duas estão nesta conversa, ninguém mais pode entrar.";
+"room_intro_cell_information_multiple_dm_sentence2" = "Somente vocês estão nesta conversa, a menos que algum(a) de você convide alguém para se juntar.";
+"room_intro_cell_information_dm_sentence2" = "Somente vocês dois/duas estão nesta conversa, ninguém mais pode juntar-se.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
-"room_intro_cell_information_dm_sentence1_part1" = "Este é o início de sua conversa com ";
-"room_intro_cell_information_room_without_topic_sentence2_part2" = " para que as pessoas saibam do que se trata essa sala.";
-"room_intro_cell_information_room_without_topic_sentence2_part1" = "Adicionar uma descrição";
-"room_intro_cell_information_room_with_topic_sentence2" = "Descrição: %@";
+"room_intro_cell_information_dm_sentence1_part1" = "Este é o começo de sua mensagem direta com ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " para deixar pessoas saberem do que esta sala se trata.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Adicionar um tópico";
+"room_intro_cell_information_room_with_topic_sentence2" = "Tópico: %@";
 "room_intro_cell_information_room_sentence1_part3" = ". ";
 "room_intro_cell_information_room_sentence1_part1" = "Este é o começo de ";
 
 // Mark: - Room creation introduction cell
 
 "room_intro_cell_add_participants_action" = "Adicionar pessoas";
-"call_transfer_error_message" = "Falha ao transferir a chamada";
+"call_transfer_error_message" = "Transferência de chamada falhou";
 "call_transfer_error_title" = "Erro";
-"call_transfer_dialpad" = "Teclado de discagem";
+"call_transfer_dialpad" = "Pad de disco";
 
 // MARK: - Call Transfer
 "call_transfer_title" = "Transferir";
 
 // MARK: - Dial Pad
-"dialpad_title" = "Teclado de discagem";
+"dialpad_title" = "Pad de disco";
 "call_actions_unhold" = "Retomar";
 "event_formatter_call_back" = "Ligar de volta";
 "event_formatter_call_you_declined" = "Você declinou esta chamada";
@@ -1353,3 +1353,30 @@
 "event_formatter_call_you_missed" = "Você perdeu esta chamada";
 "event_formatter_call_ringing" = "Tocando…";
 "event_formatter_call_connecting" = "Conectando…";
+"side_menu_app_version" = "Versão %@";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_action_help" = "Ajuda";
+"side_menu_action_settings" = "Configurações";
+"side_menu_action_invite_friends" = "Convidar amigas(os)";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Painel esquerdo";
+"user_avatar_view_accessibility_hint" = "Mudar avatar de usuária(o)";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Entre sua Chave de Segurança para continuar.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Entre sua Frase de Segurança para continuar.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Backup de suas chaves está sendo feito.";
+"security_settings_secure_backup_restore" = "Restaurar de Backup";
+"security_settings_secure_backup_reset" = "Resettar";
+"security_settings_secure_backup_info_valid" = "Esta sessão está fazendo backup de suas chaves.";
+"security_settings_secure_backup_info_checking" = "Checando…";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" corresponde ao tema de sistema de seu dispositivo";
+"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" usa as configurações \"Inverter Cores\" de seu dispositivo";
+"room_recents_unknown_room_error_message" = "Não dá para encontrar esta sala. Assegure que ela existe";
+"room_creation_dm_error" = "Nós não conseguimos criar sua DM. Por favor cheque as/os usuárias(os) que você quer convidar e tente de novo.";
