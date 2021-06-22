@@ -33,7 +33,6 @@ enum VoiceMessageAudioPlayerError: Error {
 
 class VoiceMessageAudioPlayer: NSObject {
     
-    private var contentURL: URL!
     private var playerItem: AVPlayerItem?
     private var audioPlayer: AVPlayer?
     
@@ -43,6 +42,8 @@ class VoiceMessageAudioPlayer: NSObject {
     private var playToEndObsever: NSObjectProtocol?
     
     weak var delegate: VoiceMessageAudioPlayerDelegate?
+    
+    private(set) var url: URL?
     
     var isPlaying: Bool {
         guard let audioPlayer = audioPlayer else {
@@ -57,7 +58,9 @@ class VoiceMessageAudioPlayer: NSObject {
             return 0
         }
         
-        return CMTimeGetSeconds(item.duration)
+        let duration = CMTimeGetSeconds(item.duration)
+        
+        return duration.isNaN ? 0.0 : duration
     }
     
     var currentTime: TimeInterval {
@@ -76,21 +79,18 @@ class VoiceMessageAudioPlayer: NSObject {
         removeObservers()
     }
     
-    override init() {
-        audioPlayer = AVPlayer()
-    }
-    
     func loadContentFromURL(_ url: URL) {
-        if contentURL == url {
+        if self.url == url {
             return
         }
+        
+        self.url = url
         
         removeObservers()
         
         delegate?.audioPlayerDidStartLoading(self)
-        
-        contentURL = url
-        playerItem = AVPlayerItem(url: contentURL)
+    
+        playerItem = AVPlayerItem(url: url)
         audioPlayer = AVPlayer(playerItem: playerItem)
         
         addObservers()

@@ -64,7 +64,6 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
         } catch {
             delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
         }
-        
     }
 
     func stopRecording() {

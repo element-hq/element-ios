@@ -21,6 +21,8 @@ protocol VoiceMessageToolbarViewDelegate: AnyObject {
     func voiceMessageToolbarViewDidRequestRecordingCancel(_ toolbarView: VoiceMessageToolbarView)
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView)
     func voiceMessageToolbarViewDidRequestLockedModeRecording(_ toolbarView: VoiceMessageToolbarView)
+    func voiceMessageToolbarViewDidRequestPlaybackToggle(_ toolbarView: VoiceMessageToolbarView)
+    func voiceMessageToolbarViewDidRequestSend(_ toolbarView: VoiceMessageToolbarView)
 }
 
 enum VoiceMessageToolbarViewUIState {
@@ -34,9 +36,11 @@ struct VoiceMessageToolbarViewDetails {
     var state: VoiceMessageToolbarViewUIState = .idle
     var elapsedTime: String = ""
     var audioSamples: [Float] = []
+    var isPlaying: Bool = false
+    var progress: Double = 0.0
 }
 
-class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDelegate {
+class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDelegate, VoiceMessagePlaybackViewDelegate {
     @IBOutlet private var backgroundView: UIView!
     
     @IBOutlet private var recordingContainerView: UIView!
@@ -107,7 +111,11 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
         recordButtonsContainerView.addGestureRecognizer(panGesture)
         
         playbackView = VoiceMessagePlaybackView.instanceFromNib()
+        playbackView.delegate = self
         playbackViewContainerView.vc_addSubViewMatchingParent(playbackView)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleWaveformTap))
+        playbackView.waveformView.addGestureRecognizer(tapGesture)
         
         updateUIWithDetails(VoiceMessageToolbarViewDetails(), animated: false)
     }
@@ -164,6 +172,12 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+    
+    // MARK: - VoiceMessagePlaybackViewDelegate
+    
+    func voiceMessagePlaybackViewDidRequestPlaybackToggle() {
+        delegate?.voiceMessageToolbarViewDidRequestPlaybackToggle(self)
     }
     
     // MARK: - Private
@@ -249,6 +263,14 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
                 self.lockContainerBackgroundView.alpha = 1.0
                 self.lockedModeContainerView.alpha = 0.0
                 self.recordingContainerView.alpha = 1.0
+            case .lockedModePlayback:
+                self.backgroundView.alpha = 1.0
+                self.primaryRecordButton.alpha = 0.0
+                self.secondaryRecordButton.alpha = 0.0
+                self.recordingChromeContainerView.alpha = 0.0
+                self.lockContainerView.alpha = 0.0
+                self.lockedModeContainerView.alpha = 1.0
+                self.recordingContainerView.alpha = 0.0
             case .lockedModeRecord:
                 self.backgroundView.alpha = 1.0
                 self.primaryRecordButton.alpha = 0.0
@@ -257,7 +279,7 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
                 self.lockContainerView.alpha = 0.0
                 self.lockedModeContainerView.alpha = 1.0
                 self.recordingContainerView.alpha = 0.0
-            default:
+            case .idle:
                 self.backgroundView.alpha = 0.0
                 self.primaryRecordButton.alpha = 1.0
                 self.secondaryRecordButton.alpha = 0.0
@@ -298,10 +320,11 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     private func updatePlaybackViewWithDetails(_ details: VoiceMessageToolbarViewDetails) {
         var playbackViewDetails = VoiceMessagePlaybackViewDetails()
         playbackViewDetails.recording = (details.state == .record || details.state == .lockedModeRecord)
+        playbackViewDetails.playing = details.isPlaying
+        playbackViewDetails.progress = details.progress
         playbackViewDetails.currentTime = details.elapsedTime
         playbackViewDetails.samples = details.audioSamples
         playbackViewDetails.playbackEnabled = true
-        playbackViewDetails.progress = 0.0
         playbackView.configureWithDetails(playbackViewDetails)
     }
     
@@ -327,6 +350,10 @@ class VoiceMessageToolbarView: PassthroughView, Themable, UIGestureRecognizerDel
     }
     
     @IBAction private func onSendButtonTap(_ sender: UIBarItem) {
+        delegate?.voiceMessageToolbarViewDidRequestSend(self)
+    }
+    
+    @objc private func handleWaveformTap(_ gestureRecognizer: UITapGestureRecognizer) {
         delegate?.voiceMessageToolbarViewDidRequestRecordingFinish(self)
     }
 }

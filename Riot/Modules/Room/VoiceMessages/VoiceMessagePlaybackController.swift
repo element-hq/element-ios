@@ -73,7 +73,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     
     // MARK: - VoiceMessagePlaybackViewDelegate
     
-    func voiceMessagePlaybackViewDidRequestToggle() {
+    func voiceMessagePlaybackViewDidRequestPlaybackToggle() {
         if audioPlayer.isPlaying {
             audioPlayer.pause()
         } else {
@@ -149,8 +149,11 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             attachment.prepare({ [weak self] in
                 self?.loadFileAtPath(attachment.cacheFilePath)
             }, failure: { [weak self] error in
-                MXLog.error("Failed preparing attachment with error: \(String(describing: error))")
-                self?.state = .error
+                // A nil error in this case is a cancellation on the MXMediaLoader
+                if let error = error {
+                    MXLog.error("Failed preparing attachment with error: \(String(describing: error))")
+                    self?.state = .error
+                }
             })
         }
     }

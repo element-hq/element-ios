@@ -17,7 +17,7 @@
 import Foundation
 
 protocol VoiceMessagePlaybackViewDelegate: AnyObject {
-    func voiceMessagePlaybackViewDidRequestToggle()
+    func voiceMessagePlaybackViewDidRequestPlaybackToggle()
 }
 
 struct VoiceMessagePlaybackViewDetails {
@@ -31,7 +31,7 @@ struct VoiceMessagePlaybackViewDetails {
 
 class VoiceMessagePlaybackView: UIView {
     
-    private var waveformView: VoiceMessageWaveformView!
+    private var _waveformView: VoiceMessageWaveformView!
     
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private var recordingIcon: UIView!
@@ -42,6 +42,10 @@ class VoiceMessagePlaybackView: UIView {
     weak var delegate: VoiceMessagePlaybackViewDelegate?
     
     var details: VoiceMessagePlaybackViewDetails?
+    
+    var waveformView: UIView {
+        return _waveformView
+    }
     
     static func instanceFromNib() -> VoiceMessagePlaybackView {
         let nib = UINib(nibName: "VoiceMessagePlaybackView", bundle: nil)
@@ -58,8 +62,8 @@ class VoiceMessagePlaybackView: UIView {
         
         backgroundView.layer.cornerRadius = 12.0
         
-        waveformView = VoiceMessageWaveformView(frame: waveformContainerView.bounds)
-        waveformContainerView.vc_addSubViewMatchingParent(waveformView)
+        _waveformView = VoiceMessageWaveformView(frame: waveformContainerView.bounds)
+        waveformContainerView.vc_addSubViewMatchingParent(_waveformView)
     }
     
     func configureWithDetails(_ details: VoiceMessagePlaybackViewDetails?) {
@@ -68,40 +72,51 @@ class VoiceMessagePlaybackView: UIView {
         }
         
         playButton.isEnabled = details.playbackEnabled
-        playButton.isHidden = details.recording
-        recordingIcon.isHidden = !details.recording
+        
+        UIView.performWithoutAnimation {
+            // UIStackView doesn't respond well to re-setting hidden states https://openradar.appspot.com/22819594
+            if playButton.isHidden != details.recording {
+                playButton.isHidden = details.recording
+            }
+            
+            // UIStackView doesn't respond well to re-setting hidden states https://openradar.appspot.com/22819594
+            if recordingIcon.isHidden != !details.recording {
+                recordingIcon.isHidden = !details.recording
+            }
+        }
+        
         elapsedTimeLabel.text = details.currentTime
-        waveformView.progress = details.progress
+        _waveformView.progress = details.progress
         
         if ThemeService.shared().isCurrentThemeDark() {
             playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButtonDark.image : Asset.Images.voiceMessagePlayButtonDark.image), for: .normal)
             backgroundView.backgroundColor = UIColor(rgb: 0x394049)
-            waveformView.primarylineColor =  ThemeService.shared().theme.colors.quarterlyContent
-            waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
+            _waveformView.primarylineColor =  ThemeService.shared().theme.colors.quarterlyContent
+            _waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
             elapsedTimeLabel.textColor = UIColor(rgb: 0x8E99A4)
         } else {
             playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButtonLight.image : Asset.Images.voiceMessagePlayButtonLight.image), for: .normal)
             backgroundView.backgroundColor = UIColor(rgb: 0xE3E8F0)
-            waveformView.primarylineColor = ThemeService.shared().theme.colors.quarterlyContent
-            waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
+            _waveformView.primarylineColor = ThemeService.shared().theme.colors.quarterlyContent
+            _waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
             elapsedTimeLabel.textColor = UIColor(rgb: 0x737D8C)
         }
         
-        waveformView.setSamples(details.samples)
+        _waveformView.setSamples(details.samples)
         
         self.details = details
     }
     
     func getRequiredNumberOfSamples() -> Int {
-        waveformView.setNeedsLayout()
-        waveformView.layoutIfNeeded()
-        return waveformView.requiredNumberOfSamples
+        _waveformView.setNeedsLayout()
+        _waveformView.layoutIfNeeded()
+        return _waveformView.requiredNumberOfSamples
     }
     
     // MARK: - Private
         
     @IBAction private func onPlayButtonTap() {
-        delegate?.voiceMessagePlaybackViewDidRequestToggle()
+        delegate?.voiceMessagePlaybackViewDidRequestPlaybackToggle()
     }
     
     @objc private func handleThemeDidChange() {
