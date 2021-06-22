@@ -51,7 +51,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         timeFormatter.dateFormat = "m:ss"
         
-        displayLink = CADisplayLink(target: self, selector: #selector(handleDisplayLinkTick))
+        displayLink = CADisplayLink(target: WeakObjectWrapper(self), selector: #selector(handleDisplayLinkTick))
         displayLink.isPaused = true
         displayLink.add(to: .current, forMode: .common)
         

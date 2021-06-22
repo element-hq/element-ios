@@ -49,7 +49,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         audioPlayer.delegate = self
         playbackView.delegate = self
         
-        displayLink = CADisplayLink(target: self, selector: #selector(handleDisplayLinkTick))
+        displayLink = CADisplayLink(target: WeakObjectWrapper(self), selector: #selector(handleDisplayLinkTick))
         displayLink.isPaused = true
         displayLink.add(to: .current, forMode: .common)
     }
