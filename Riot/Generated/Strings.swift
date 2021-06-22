@@ -2710,6 +2710,10 @@ internal enum VectorL10n {
   internal static var roomDetailsNoLocalAddressesForDm: String { 
     return VectorL10n.tr("Vector", "room_details_no_local_addresses_for_dm") 
   }
+  /// Notifications
+  internal static var roomDetailsNotifs: String { 
+    return VectorL10n.tr("Vector", "room_details_notifs") 
+  }
   /// Members
   internal static var roomDetailsPeople: String { 
     return VectorL10n.tr("Vector", "room_details_people") 

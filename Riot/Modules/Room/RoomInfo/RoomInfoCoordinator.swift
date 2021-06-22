@@ -152,8 +152,13 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
                     self.navigationRouter.push(search, animated: animated, popCompletion: nil)
                 }
             })
+        case .notifications:
+            break
         default:
-            segmentedViewController.selectedIndex = target.tabIndex
+            guard let tabIndex = target.tabIndex else {
+                fatalError("No settings tab index for this target.")
+            }
+            segmentedViewController.selectedIndex = tabIndex
             
             if case .settings(let roomSettingsField) = target {
                 roomSettingsViewController?.selectedRoomSettingsField = roomSettingsField
