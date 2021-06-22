@@ -129,6 +129,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             return
         }
         
+        audioPlayer?.stop()
+        audioRecorder?.stopRecording()
+        
         sendRecordingAtURL(url)
         
         isInLockedMode = false
@@ -206,12 +209,11 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         let shouldUpdateFromAudioPlayer = isInLockedMode && !(audioRecorder?.isRecording ?? false)
 
-        guard shouldUpdateFromAudioPlayer else {
+        if shouldUpdateFromAudioPlayer {
+            updateUIFromAudioPlayer()
+        } else {
             updateUIFromAudioRecorder()
-            return
         }
-        
-        updateUIFromAudioPlayer()
     }
     
     private func updateUIFromAudioRecorder() {
