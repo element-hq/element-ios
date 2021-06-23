@@ -2371,7 +2371,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             cellViewClass = RoomGroupCallStatusBubbleCell.class;
         }
-        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage) {
+        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
+        {
             if (bubbleData.isPaginationFirstBubble) {
                 cellViewClass = VoiceMessageWithPaginationTitleBubbleCell.class;
             } else if (bubbleData.shouldHideSenderInformation) {
@@ -2739,12 +2740,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                  [actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.answerAction])
         {
             MXWeakify(self);
-            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
             // Check app permissions first
             [MXKTools checkAccessForCall:YES
-             manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-             manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+             manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], AppInfo.current.displayName]
+             manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], AppInfo.current.displayName]
                showPopUpInViewController:self completionHandler:^(BOOL granted) {
                 
                 MXStrongifyAndReturnIfNil(self);
@@ -3736,12 +3736,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     __weak __typeof(self) weakSelf = self;
     
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    
     // Check app permissions first
     [MXKTools checkAccessForCall:video
-     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], AppInfo.current.displayName]
+     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], AppInfo.current.displayName]
        showPopUpInViewController:self completionHandler:^(BOOL granted) {
         
         if (weakSelf)
@@ -6178,8 +6176,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
 {
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    NSString * message = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_voice_message"], appDisplayName];
+    NSString *message = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_voice_message"], AppInfo.current.displayName];
     
     [MXKTools checkAccessForMediaType:AVMediaTypeAudio
                   manualChangeMessage: message

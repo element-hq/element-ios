@@ -76,7 +76,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
-    [self _updateUIWithTextMessage:nil animated:NO];
+    [self updateUIWithTextMessage:nil animated:NO];
 }
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
@@ -151,7 +151,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setTextMessage:(NSString *)textMessage
 {
-    [self _updateUIWithTextMessage:textMessage animated:YES];
+    [self updateUIWithTextMessage:textMessage animated:YES];
     [super setTextMessage:textMessage];
 }
 
@@ -308,7 +308,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *newText = [growingTextView.text stringByReplacingCharactersInRange:range withString:text];
-    [self _updateUIWithTextMessage:newText animated:YES];
+    [self updateUIWithTextMessage:newText animated:YES];
     
     return YES;
 }
@@ -434,7 +434,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 #pragma mark - Private
 
-- (void)_updateUIWithTextMessage:(NSString *)textMessage animated:(BOOL)animated
+- (void)updateUIWithTextMessage:(NSString *)textMessage animated:(BOOL)animated
 {
     self.actionMenuOpened = NO;
     

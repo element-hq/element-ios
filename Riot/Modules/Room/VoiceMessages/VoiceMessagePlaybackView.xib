@@ -29,7 +29,11 @@
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GL1-b8-dZK">
                             <rect key="frame" x="14" y="6" width="32" height="32"/>
-                            <state key="normal" image="voice_message_play_button_light"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="5Pl-ej-HIg"/>
+                                <constraint firstAttribute="width" constant="32" id="dXM-KA-xzM"/>
+                            </constraints>
+                            <state key="normal" image="voice_message_play_button"/>
                             <connections>
                                 <action selector="onPlayButtonTap" destination="cGR-49-HWB" eventType="touchUpInside" id="B5j-st-pUp"/>
                             </connections>
@@ -79,7 +83,7 @@
         </view>
     </objects>
     <resources>
-        <image name="voice_message_play_button_light" width="32" height="32"/>
+        <image name="voice_message_play_button" width="12.5" height="15"/>
         <image name="voice_message_record_icon" width="10" height="10"/>
     </resources>
 </document>

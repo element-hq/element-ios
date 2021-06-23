@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import Reusable
 
 protocol VoiceMessagePlaybackViewDelegate: AnyObject {
     func voiceMessagePlaybackViewDidRequestPlaybackToggle()
@@ -29,9 +30,14 @@ struct VoiceMessagePlaybackViewDetails {
     var recording: Bool = false
 }
 
-class VoiceMessagePlaybackView: UIView {
+class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
+    
+    private enum Constants {
+        static let backgroundCornerRadius: CGFloat = 12.0
+    }
     
     private var _waveformView: VoiceMessageWaveformView!
+    private var currentTheme: Theme?
     
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private var recordingIcon: UIView!
@@ -47,20 +53,11 @@ class VoiceMessagePlaybackView: UIView {
         return _waveformView
     }
     
-    static func instanceFromNib() -> VoiceMessagePlaybackView {
-        let nib = UINib(nibName: "VoiceMessagePlaybackView", bundle: nil)
-        guard let view = nib.instantiate(withOwner: nil, options: nil).first as? Self else {
-          fatalError("The nib \(nib) expected its root view to be of type \(self)")
-        }
-        return view
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeDidChange), name: .themeServiceDidChangeTheme, object: nil)
-        
-        backgroundView.layer.cornerRadius = 12.0
+        backgroundView.layer.cornerRadius = Constants.backgroundCornerRadius
+        playButton.layer.cornerRadius = playButton.bounds.width / 2.0
         
         _waveformView = VoiceMessageWaveformView(frame: waveformContainerView.bounds)
         waveformContainerView.vc_addSubViewMatchingParent(_waveformView)
@@ -72,6 +69,7 @@ class VoiceMessagePlaybackView: UIView {
         }
         
         playButton.isEnabled = details.playbackEnabled
+        playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButton.image : Asset.Images.voiceMessagePlayButton.image), for: .normal)
         
         UIView.performWithoutAnimation {
             // UIStackView doesn't respond well to re-setting hidden states https://openradar.appspot.com/22819594
@@ -88,23 +86,19 @@ class VoiceMessagePlaybackView: UIView {
         elapsedTimeLabel.text = details.currentTime
         _waveformView.progress = details.progress
         
-        if ThemeService.shared().isCurrentThemeDark() {
-            playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButtonDark.image : Asset.Images.voiceMessagePlayButtonDark.image), for: .normal)
-            backgroundView.backgroundColor = UIColor(rgb: 0x394049)
-            _waveformView.primarylineColor =  ThemeService.shared().theme.colors.quarterlyContent
-            _waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
-            elapsedTimeLabel.textColor = UIColor(rgb: 0x8E99A4)
-        } else {
-            playButton.setImage((details.playing ? Asset.Images.voiceMessagePauseButtonLight.image : Asset.Images.voiceMessagePlayButtonLight.image), for: .normal)
-            backgroundView.backgroundColor = UIColor(rgb: 0xE3E8F0)
-            _waveformView.primarylineColor = ThemeService.shared().theme.colors.quarterlyContent
-            _waveformView.secondaryLineColor = ThemeService.shared().theme.colors.secondaryContent
-            elapsedTimeLabel.textColor = UIColor(rgb: 0x737D8C)
-        }
-        
         _waveformView.setSamples(details.samples)
         
         self.details = details
+        
+        guard let theme = currentTheme else {
+            return
+        }
+        
+        playButton.backgroundColor = theme.colors.separator
+        backgroundView.backgroundColor = theme.colors.tile
+        _waveformView.primarylineColor =  theme.colors.quarterlyContent
+        _waveformView.secondaryLineColor = theme.colors.secondaryContent
+        elapsedTimeLabel.textColor = theme.colors.tertiaryContent
     }
     
     func getRequiredNumberOfSamples() -> Int {
@@ -113,13 +107,16 @@ class VoiceMessagePlaybackView: UIView {
         return _waveformView.requiredNumberOfSamples
     }
     
+    // MARK: - Themable
+    
+    func update(theme: Theme) {
+        currentTheme = theme
+        configureWithDetails(details)
+    }
+    
     // MARK: - Private
         
     @IBAction private func onPlayButtonTap() {
         delegate?.voiceMessagePlaybackViewDidRequestPlaybackToggle()
-    }
-    
-    @objc private func handleThemeDidChange() {
-        configureWithDetails(details)
     }
 }

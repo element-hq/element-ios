@@ -19,7 +19,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XRB-CY-ijK">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XRB-CY-ijK" customClass="PassthroughView" customModule="Riot" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="544" height="72"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8fP-9K-WTa">
@@ -30,30 +30,45 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" red="0.95686274510000002" green="0.97647058819999999" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YF2-5s-q5S">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C9P-A3-Vew">
                                     <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                    <state key="normal" image="voice_message_lock_icon_unlocked"/>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vm7-e1-VJ8">
-                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                    <state key="normal" image="voice_message_lock_icon_locked"/>
-                                </button>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YF2-5s-q5S">
+                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                            <state key="normal" image="voice_message_lock_icon_unlocked"/>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vm7-e1-VJ8">
+                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                            <state key="normal" image="voice_message_lock_icon_locked"/>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="YF2-5s-q5S" secondAttribute="trailing" id="3a5-Dn-gjn"/>
+                                        <constraint firstAttribute="bottom" secondItem="vm7-e1-VJ8" secondAttribute="bottom" id="87x-rV-hNr"/>
+                                        <constraint firstItem="vm7-e1-VJ8" firstAttribute="leading" secondItem="C9P-A3-Vew" secondAttribute="leading" id="BeS-hI-uDa"/>
+                                        <constraint firstAttribute="width" secondItem="C9P-A3-Vew" secondAttribute="height" multiplier="1:1" id="fuO-oh-g8I"/>
+                                        <constraint firstAttribute="bottom" secondItem="YF2-5s-q5S" secondAttribute="bottom" id="rMf-if-5c3"/>
+                                        <constraint firstItem="YF2-5s-q5S" firstAttribute="leading" secondItem="C9P-A3-Vew" secondAttribute="leading" id="rZq-pO-0OY"/>
+                                        <constraint firstAttribute="trailing" secondItem="vm7-e1-VJ8" secondAttribute="trailing" id="rwd-uO-nu6"/>
+                                        <constraint firstItem="YF2-5s-q5S" firstAttribute="top" secondItem="C9P-A3-Vew" secondAttribute="top" id="xJC-WF-SKy"/>
+                                        <constraint firstItem="vm7-e1-VJ8" firstAttribute="top" secondItem="C9P-A3-Vew" secondAttribute="top" id="xzW-aL-alz"/>
+                                    </constraints>
+                                </view>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_lock_chevron" translatesAutoresizingMaskIntoConstraints="NO" id="c8y-xb-2nh">
                                     <rect key="frame" x="0.0" y="64" width="44" height="24"/>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="YF2-5s-q5S" firstAttribute="top" secondItem="8fP-9K-WTa" secondAttribute="top" id="62w-uz-1IT"/>
-                                <constraint firstItem="YF2-5s-q5S" firstAttribute="leading" secondItem="8fP-9K-WTa" secondAttribute="leading" id="6sU-56-2eT"/>
                                 <constraint firstAttribute="trailing" secondItem="c8y-xb-2nh" secondAttribute="trailing" id="7HA-jr-fUD"/>
+                                <constraint firstItem="C9P-A3-Vew" firstAttribute="top" secondItem="8fP-9K-WTa" secondAttribute="top" id="7qH-6G-oAq"/>
                                 <constraint firstItem="c8y-xb-2nh" firstAttribute="centerY" secondItem="8fP-9K-WTa" secondAttribute="centerY" id="9x0-mO-M0V"/>
+                                <constraint firstAttribute="trailing" secondItem="C9P-A3-Vew" secondAttribute="trailing" id="DJV-ib-qiR"/>
+                                <constraint firstItem="C9P-A3-Vew" firstAttribute="leading" secondItem="8fP-9K-WTa" secondAttribute="leading" id="F2q-RQ-dgi"/>
                                 <constraint firstItem="c8y-xb-2nh" firstAttribute="leading" secondItem="8fP-9K-WTa" secondAttribute="leading" id="U4g-Vq-hJB"/>
                                 <constraint firstAttribute="width" constant="44" id="iwn-h5-ilH"/>
                                 <constraint firstAttribute="height" constant="152" id="li1-Bd-px2"/>
-                                <constraint firstItem="vm7-e1-VJ8" firstAttribute="centerY" secondItem="YF2-5s-q5S" secondAttribute="centerY" id="voJ-BE-HrY"/>
-                                <constraint firstItem="vm7-e1-VJ8" firstAttribute="centerX" secondItem="YF2-5s-q5S" secondAttribute="centerX" id="xKW-V1-MVd"/>
-                                <constraint firstAttribute="trailing" secondItem="YF2-5s-q5S" secondAttribute="trailing" id="zLG-ji-Sqy"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyu-ha-046" customClass="PassthroughView" customModule="Riot" customModuleProvider="target">
@@ -75,7 +90,7 @@
                                 </stackView>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_cancel_gradient" translatesAutoresizingMaskIntoConstraints="NO" id="BYJ-HN-opT">
                                     <rect key="frame" x="0.0" y="0.0" width="217.5" height="72"/>
-                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="K6L-me-5EJ">
                                     <rect key="frame" x="20" y="11" width="64" height="50"/>
@@ -211,6 +226,7 @@
                 <outlet property="backgroundView" destination="FqE-3x-NQ9" id="RFR-SQ-s21"/>
                 <outlet property="deleteButton" destination="U4V-EC-Ffy" id="Op3-oN-2vG"/>
                 <outlet property="elapsedTimeLabel" destination="QBp-TZ-h5s" id="qC9-BQ-8RA"/>
+                <outlet property="lockButtonsContainerView" destination="C9P-A3-Vew" id="ebu-OR-VXw"/>
                 <outlet property="lockChevron" destination="c8y-xb-2nh" id="p6S-mB-C1U"/>
                 <outlet property="lockContainerBackgroundView" destination="kvc-OZ-peC" id="ke4-gM-LQV"/>
                 <outlet property="lockContainerView" destination="8fP-9K-WTa" id="mFH-Va-74i"/>
@@ -239,8 +255,8 @@
         <image name="send_icon" width="36" height="36"/>
         <image name="voice_message_cancel_gradient" width="104" height="47"/>
         <image name="voice_message_lock_chevron" width="24" height="24"/>
-        <image name="voice_message_lock_icon_locked" width="44" height="44"/>
-        <image name="voice_message_lock_icon_unlocked" width="44" height="44"/>
+        <image name="voice_message_lock_icon_locked" width="24" height="24"/>
+        <image name="voice_message_lock_icon_unlocked" width="16" height="16"/>
         <image name="voice_message_record_button_default" width="22" height="26.5"/>
         <image name="voice_message_record_button_recording" width="52" height="52"/>
         <image name="voice_message_record_icon" width="10" height="10"/>

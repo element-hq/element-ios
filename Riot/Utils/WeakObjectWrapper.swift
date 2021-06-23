@@ -16,6 +16,10 @@
 
 import Foundation
 
+/**
+ Used to avoid retain cycles by creating a proxy that holds a weak reference to the original object.
+ One example of that would be using CADisplayLink, which strongly retains its target, when manually invalidating it is unfeasable.
+ */
 class WeakObjectWrapper: NSObject {
     
     private weak var wrappedObject: AnyObject?

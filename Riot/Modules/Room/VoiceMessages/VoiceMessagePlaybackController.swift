@@ -40,7 +40,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     let playbackView: VoiceMessagePlaybackView
     
     init() {
-        playbackView = VoiceMessagePlaybackView.instanceFromNib()
+        playbackView = VoiceMessagePlaybackView.loadFromNib()
         audioPlayer = VoiceMessageAudioPlayer()
 
         timeFormatter = DateFormatter()
@@ -52,6 +52,9 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         displayLink = CADisplayLink(target: WeakObjectWrapper(self), selector: #selector(handleDisplayLinkTick))
         displayLink.isPaused = true
         displayLink.add(to: .current, forMode: .common)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeServiceDidChangeTheme, object: nil)
+        updateTheme()
     }
  
     var attachment: MXKAttachment? {
@@ -197,5 +200,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
                 self?.updateUI()
             }
         })
+    }
+    
+    
+    @objc private func updateTheme() {
+        playbackView.update(theme: ThemeService.shared().theme)
     }
 }

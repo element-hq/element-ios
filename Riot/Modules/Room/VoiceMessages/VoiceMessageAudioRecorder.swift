@@ -17,8 +17,6 @@
 import Foundation
 import AVFoundation
 
-private let silenceThreshold: Float = -50.0
-
 protocol VoiceMessageAudioRecorderDelegate: AnyObject {
     func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder)
     func audioRecorderDidFinishRecording(_ audioRecorder: VoiceMessageAudioRecorder)
@@ -30,6 +28,10 @@ enum VoiceMessageAudioRecorderError: Error {
 }
 
 class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
+    
+    private enum Constants {
+        static let silenceThreshold: Float = -50.0
+    }
     
     private var audioRecorder: AVAudioRecorder?
     
@@ -105,7 +107,7 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
     }
     
     private func normalizedPowerLevelFromDecibels(_ decibels: Float) -> Float {
-        return decibels / silenceThreshold
+        return decibels / Constants.silenceThreshold
     }
 }
 

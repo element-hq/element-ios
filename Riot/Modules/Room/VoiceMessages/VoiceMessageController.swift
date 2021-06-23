@@ -45,7 +45,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     @objc public init(themeService: ThemeService) {
-        _voiceMessageToolbarView = VoiceMessageToolbarView.instanceFromNib()
+        _voiceMessageToolbarView = VoiceMessageToolbarView.loadFromNib()
         self.themeService = themeService
         self.timeFormatter = DateFormatter()
         
@@ -59,8 +59,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         displayLink.isPaused = true
         displayLink.add(to: .current, forMode: .common)
         
-        _voiceMessageToolbarView.update(theme: themeService.theme)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleThemeDidChange), name: .themeServiceDidChangeTheme, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeServiceDidChangeTheme, object: nil)
+        updateTheme()
         
         updateUI()
     }
@@ -197,7 +197,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
     }
     
-    @objc private func handleThemeDidChange() {
+    @objc private func updateTheme() {
         _voiceMessageToolbarView.update(theme: themeService.theme)
     }
     
@@ -222,7 +222,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
         
         if audioSamples.count != requiredNumberOfSamples {
-            audioSamples = [Float](repeating: 0.0, count: requiredNumberOfSamples)
+            padSamplesArrayToSize(requiredNumberOfSamples)
         }
         
         let sample = audioRecorder?.averagePowerForChannelNumber(0) ?? 0.0
@@ -250,7 +250,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
         if audioSamples.count != requiredNumberOfSamples {
-            audioSamples = [Float](repeating: 0.0, count: requiredNumberOfSamples)
+            padSamplesArrayToSize(requiredNumberOfSamples)
             
             waveformAnalyser = WaveformAnalyzer(audioAssetURL: url)
             waveformAnalyser?.samples(count: requiredNumberOfSamples, completionHandler: { [weak self] samples in
@@ -273,5 +273,14 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         details.isPlaying = audioPlayer.isPlaying
         details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
         _voiceMessageToolbarView.configureWithDetails(details)
+    }
+    
+    private func padSamplesArrayToSize(_ size: Int) {
+        let delta = size - audioSamples.count
+        guard delta > 0 else {
+            return
+        }
+        
+        audioSamples = audioSamples + [Float](repeating: 0.0, count: delta)
     }
 }
