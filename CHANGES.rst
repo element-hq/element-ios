@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Room lists: Hide invited rooms if auto-accept option enabled.
 
 🐛 Bugfix
  * 

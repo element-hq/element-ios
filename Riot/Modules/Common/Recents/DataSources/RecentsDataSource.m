@@ -1273,7 +1273,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }
             else if (room.summary.membership == MXMembershipInvite)
             {
-                [invitesCellDataArray addObject:recentCellDataStoring];
+                if (!MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
+                {
+                    [invitesCellDataArray addObject:recentCellDataStoring];
+                }
             }
             else if (room.isDirect)
             {
@@ -1303,7 +1306,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             {
                 if (room.summary.membership == MXMembershipInvite)
                 {
-                    [invitesCellDataArray addObject:recentCellDataStoring];
+                    if (!MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
+                    {
+                        [invitesCellDataArray addObject:recentCellDataStoring];
+                    }
+                    
                 }
                 else
                 {
@@ -1319,7 +1326,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Keep only the invites, the favourites and the rooms without tag and room type different from space
                 if (room.summary.membership == MXMembershipInvite)
                 {
-                    [invitesCellDataArray addObject:recentCellDataStoring];
+                    if (!MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
+                    {
+                        [invitesCellDataArray addObject:recentCellDataStoring];
+                    }
                 }
                 else if ((!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite]) && room.summary.roomType != MXRoomTypeSpace)
                 {
