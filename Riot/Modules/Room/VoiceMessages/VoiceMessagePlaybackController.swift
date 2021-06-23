@@ -25,6 +25,7 @@ enum VoiceMessagePlaybackControllerState {
 }
 
 class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMessagePlaybackViewDelegate {
+
     private let audioPlayer: VoiceMessageAudioPlayer
     private let timeFormatter: DateFormatter
     private var displayLink: CADisplayLink!
@@ -39,14 +40,14 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     
     let playbackView: VoiceMessagePlaybackView
     
-    init() {
+    init(mediaServiceProvider: VoiceMessageMediaServiceProvider) {
         playbackView = VoiceMessagePlaybackView.loadFromNib()
-        audioPlayer = VoiceMessageAudioPlayer()
+        audioPlayer = mediaServiceProvider.audioPlayer()
 
         timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "m:ss"
         
-        audioPlayer.delegate = self
+        audioPlayer.registerDelegate(self)
         playbackView.delegate = self
         
         displayLink = CADisplayLink(target: WeakObjectWrapper(self), selector: #selector(handleDisplayLinkTick))
@@ -94,8 +95,12 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         state = .playing
     }
     
-    func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+    func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         state = .paused
+    }
+    
+    func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        state = .stopped
     }
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError error: Error) {

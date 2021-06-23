@@ -34,6 +34,7 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
     }
     
     private var audioRecorder: AVAudioRecorder?
+    private let delegateContainer = DelegateContainer()
     
     var url: URL? {
         return audioRecorder?.url
@@ -46,8 +47,6 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
     var isRecording: Bool {
         return audioRecorder?.isRecording ?? false
     }
-    
-    weak var delegate: VoiceMessageAudioRecorderDelegate?
     
     func recordWithOuputURL(_ url: URL) {
         
@@ -62,9 +61,13 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
             audioRecorder?.delegate = self
             audioRecorder?.isMeteringEnabled = true
             audioRecorder?.record()
-            delegate?.audioRecorderDidStartRecording(self)
+            delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorderDidStartRecording(self)
+            }
         } catch {
-            delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+            delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+            }
         }
     }
 
@@ -92,18 +95,32 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
         return self.normalizedPowerLevelFromDecibels(audioRecorder.averagePower(forChannel: channelNumber))
     }
     
+    func registerDelegate(_ delegate: VoiceMessageAudioPlayerDelegate) {
+        delegateContainer.registerDelegate(delegate)
+    }
+    
+    func deregisterDelegate(_ delegate: VoiceMessageAudioPlayerDelegate) {
+        delegateContainer.deregisterDelegate(delegate)
+    }
+    
     // MARK: - AVAudioRecorderDelegate
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully success: Bool) {
         if success {
-            delegate?.audioRecorderDidFinishRecording(self)
+            delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorderDidFinishRecording(self)
+            }
         } else {
-            delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+            delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+            }
         }
     }
     
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
-        delegate?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+        delegateContainer.notifyDelegatesWithBlock { delegate in
+            (delegate as? VoiceMessageAudioRecorderDelegate)?.audioRecorder(self, didFailWithError: VoiceMessageAudioRecorderError.genericError)
+        }
     }
     
     private func normalizedPowerLevelFromDecibels(_ decibels: Float) -> Float {
@@ -113,4 +130,12 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
 
 extension String: LocalizedError {
     public var errorDescription: String? { return self }
+}
+
+extension VoiceMessageAudioRecorderDelegate {
+    func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder) { }
+
+    func audioRecorderDidFinishRecording(_ audioRecorder: VoiceMessageAudioRecorder) { }
+    
+    func audioRecorder(_ audioRecorder: VoiceMessageAudioRecorder, didFailWithError: Error) { }
 }

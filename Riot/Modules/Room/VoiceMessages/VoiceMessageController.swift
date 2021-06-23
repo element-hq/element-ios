@@ -26,6 +26,8 @@ import DSWaveformImage
 public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate, VoiceMessageAudioPlayerDelegate {
     
     private let themeService: ThemeService
+    private let mediaServiceProvider: VoiceMessageMediaServiceProvider
+    
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
     private let timeFormatter: DateFormatter
     private var displayLink: CADisplayLink!
@@ -44,9 +46,11 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         return _voiceMessageToolbarView
     }
     
-    @objc public init(themeService: ThemeService) {
-        _voiceMessageToolbarView = VoiceMessageToolbarView.loadFromNib()
+    @objc public init(themeService: ThemeService, mediaServiceProvider: VoiceMessageMediaServiceProvider) {
         self.themeService = themeService
+        self.mediaServiceProvider = mediaServiceProvider
+        
+        _voiceMessageToolbarView = VoiceMessageToolbarView.loadFromNib()
         self.timeFormatter = DateFormatter()
         
         super.init()
@@ -76,8 +80,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
         
-        audioRecorder = VoiceMessageAudioRecorder()
-        audioRecorder?.delegate = self
+        audioRecorder = mediaServiceProvider.audioRecorder()
+        audioRecorder?.registerDelegate(self)
         audioRecorder?.recordWithOuputURL(temporaryFileURL)
     }
     
@@ -94,8 +98,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             return
         }
         
-        audioPlayer = VoiceMessageAudioPlayer()
-        audioPlayer?.delegate = self
+        audioPlayer = mediaServiceProvider.audioPlayer()
+        audioPlayer?.registerDelegate(self)
         audioPlayer?.loadContentFromURL(url)
         audioSamples = []
         
@@ -158,6 +162,10 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        updateUI()
+    }
+    
+    func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         updateUI()
     }
     

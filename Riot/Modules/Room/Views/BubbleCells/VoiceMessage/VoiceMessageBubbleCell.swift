@@ -44,7 +44,7 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
             return
         }
         
-        playbackController = VoiceMessagePlaybackController()
+        playbackController = VoiceMessagePlaybackController(mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider)
         bubbleCellContentView?.addSubview(playbackController.playbackView)
         
         contentView.vc_addSubViewMatchingParent(playbackController.playbackView)

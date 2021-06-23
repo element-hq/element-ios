@@ -21,6 +21,7 @@ protocol VoiceMessageAudioPlayerDelegate: AnyObject {
     func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer)
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer)
+    func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer)
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer)
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer)
     
@@ -41,7 +42,7 @@ class VoiceMessageAudioPlayer: NSObject {
     private var rateObserver: NSKeyValueObservation?
     private var playToEndObsever: NSObjectProtocol?
     
-    weak var delegate: VoiceMessageAudioPlayerDelegate?
+    private let delegateContainer = DelegateContainer()
     
     private(set) var url: URL?
     
@@ -88,8 +89,10 @@ class VoiceMessageAudioPlayer: NSObject {
         
         removeObservers()
         
-        delegate?.audioPlayerDidStartLoading(self)
-    
+        delegateContainer.notifyDelegatesWithBlock { delegate in
+            (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidStartLoading(self)
+        }
+        
         playerItem = AVPlayerItem(url: url)
         audioPlayer = AVPlayer(playerItem: playerItem)
         
@@ -122,6 +125,14 @@ class VoiceMessageAudioPlayer: NSObject {
         audioPlayer?.seek(to: CMTime(seconds: time, preferredTimescale: 60000))
     }
     
+    func registerDelegate(_ delegate: VoiceMessageAudioPlayerDelegate) {
+        delegateContainer.registerDelegate(delegate)
+    }
+    
+    func deregisterDelegate(_ delegate: VoiceMessageAudioPlayerDelegate) {
+        delegateContainer.deregisterDelegate(delegate)
+    }
+    
     // MARK: - Private
     
     private func addObservers() {
@@ -134,9 +145,13 @@ class VoiceMessageAudioPlayer: NSObject {
             
             switch playerItem.status {
             case .failed:
-                self.delegate?.audioPlayer(self, didFailWithError: playerItem.error ?? VoiceMessageAudioPlayerError.genericError)
+                self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                    (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayer(self, didFailWithError: playerItem.error ?? VoiceMessageAudioPlayerError.genericError)
+                }
             case .readyToPlay:
-                self.delegate?.audioPlayerDidFinishLoading(self)
+                self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                    (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishLoading(self)
+                }
             default:
                 break
             }
@@ -146,9 +161,13 @@ class VoiceMessageAudioPlayer: NSObject {
             guard let self = self else { return }
             
             if playerItem.isPlaybackBufferEmpty {
-                self.delegate?.audioPlayerDidStartLoading(self)
+                self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                    (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidStartLoading(self)
+                }
             } else {
-                self.delegate?.audioPlayerDidFinishLoading(self)
+                self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                    (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishLoading(self)
+                }
             }
         }
         
@@ -156,16 +175,28 @@ class VoiceMessageAudioPlayer: NSObject {
             guard let self = self else { return }
             
             if audioPlayer.rate == 0.0 {
-                self.delegate?.audioPlayerDidStopPlaying(self)
+                if self.isStopped {
+                    self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                        (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidStopPlaying(self)
+                    }
+                } else {
+                    self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                        (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidPausePlaying(self)
+                    }
+                }
             } else {
-                self.delegate?.audioPlayerDidStartPlaying(self)
+                self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                    (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidStartPlaying(self)
+                }
             }
         }
         
         playToEndObsever = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
             guard let self = self else { return }
             
-            self.delegate?.audioPlayerDidFinishPlaying(self)
+            self.delegateContainer.notifyDelegatesWithBlock { delegate in
+                (delegate as? VoiceMessageAudioPlayerDelegate)?.audioPlayerDidFinishPlaying(self)
+            }
         }
     }
     
@@ -178,11 +209,17 @@ class VoiceMessageAudioPlayer: NSObject {
 }
 
 extension VoiceMessageAudioPlayerDelegate {
-    func audioPlayerDidStartLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
-        
-    }
+    func audioPlayerDidStartLoading(_ audioPlayer: VoiceMessageAudioPlayer) { }
     
-    func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
-        
-    }
+    func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) { }
+    
+    func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) { }
+    
+    func audioPlayerDidPausePlaying(_ audioPlayer: VoiceMessageAudioPlayer) { }
+    
+    func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) { }
+    
+    func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) { }
+    
+    func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError: Error) { }
 }
