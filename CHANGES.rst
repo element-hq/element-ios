@@ -8,7 +8,7 @@ Changes to be released in next version
  * Room lists: Hide invited rooms if auto-accept option enabled.
 
 🐛 Bugfix
- * 
+ * Fixed retain cycle between the RoomTitleView and RoomViewController
 
 ⚠️ API Changes
  * 
