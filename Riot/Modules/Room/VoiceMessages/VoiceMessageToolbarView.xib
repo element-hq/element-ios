@@ -206,16 +206,36 @@
                         <constraint firstItem="wL2-0Z-cvF" firstAttribute="leading" secondItem="pkc-LT-lE6" secondAttribute="leading" constant="8" id="cG3-Fr-Auu"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HDF-2Z-UHZ">
+                    <rect key="frame" x="260" y="-45" width="24" height="16"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gZJ-ep-9Bz">
+                            <rect key="frame" x="12" y="8" width="0.0" height="0.0"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="gZJ-ep-9Bz" firstAttribute="leading" secondItem="HDF-2Z-UHZ" secondAttribute="leading" constant="12" id="OtO-8K-aVX"/>
+                        <constraint firstAttribute="trailing" secondItem="gZJ-ep-9Bz" secondAttribute="trailing" constant="12" id="avM-Fg-VOH"/>
+                        <constraint firstAttribute="bottom" secondItem="gZJ-ep-9Bz" secondAttribute="bottom" constant="8" id="cab-E0-Xdu"/>
+                        <constraint firstItem="gZJ-ep-9Bz" firstAttribute="top" secondItem="HDF-2Z-UHZ" secondAttribute="top" constant="8" id="fwT-X9-jWY"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="HDF-2Z-UHZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="JaY-uF-uSj"/>
                 <constraint firstAttribute="trailing" secondItem="XRB-CY-ijK" secondAttribute="trailing" id="Utk-t1-anP"/>
                 <constraint firstAttribute="trailing" secondItem="pkc-LT-lE6" secondAttribute="trailing" id="VNU-5V-O6I"/>
                 <constraint firstAttribute="bottom" secondItem="XRB-CY-ijK" secondAttribute="bottom" id="VT1-7g-OYr"/>
                 <constraint firstItem="XRB-CY-ijK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VWe-l9-ZqO"/>
                 <constraint firstItem="pkc-LT-lE6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="X9R-lc-F52"/>
                 <constraint firstAttribute="top" secondItem="XRB-CY-ijK" secondAttribute="top" id="XRb-zW-xdf"/>
+                <constraint firstAttribute="top" secondItem="HDF-2Z-UHZ" secondAttribute="top" constant="45" id="h5P-gd-sf3"/>
                 <constraint firstItem="pkc-LT-lE6" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="ppT-PL-6Jg"/>
                 <constraint firstAttribute="top" secondItem="pkc-LT-lE6" secondAttribute="top" id="tEJ-94-MLM"/>
             </constraints>
@@ -245,6 +265,8 @@
                 <outlet property="slideToCancelContainerView" destination="6FH-4Q-Z5e" id="qCc-rl-vQX"/>
                 <outlet property="slideToCancelGradient" destination="BYJ-HN-opT" id="qbb-Q9-xSo"/>
                 <outlet property="slideToCancelLabel" destination="Ydw-Nb-zP6" id="l4Y-Eg-Qwc"/>
+                <outlet property="toastNotificationContainerView" destination="HDF-2Z-UHZ" id="8Ty-Gl-XnP"/>
+                <outlet property="toastNotificationLabel" destination="gZJ-ep-9Bz" id="soa-bs-C37"/>
             </connections>
             <point key="canvasLocation" x="10.144927536231885" y="456.69642857142856"/>
         </view>

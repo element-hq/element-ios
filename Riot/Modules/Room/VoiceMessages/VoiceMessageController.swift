@@ -25,9 +25,15 @@ import DSWaveformImage
 
 public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate, VoiceMessageAudioPlayerDelegate {
     
+    private enum Constants {
+        static let maximumAudioRecordingDuration: TimeInterval = 120.0
+        static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
+        static let elapsedTimeFormat = "m:ss"
+    }
+    
     private static let timeFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "m:ss"
+        dateFormatter.dateFormat = Constants.elapsedTimeFormat
         return dateFormatter
     }()
     
@@ -88,24 +94,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView) {
-        audioRecorder?.stopRecording()
-        
-        guard let url = audioRecorder?.url else {
-            MXLog.error("Invalid audio recording URL")
-            return
-        }
-        
-        guard isInLockedMode else {
-            sendRecordingAtURL(url)
-            return
-        }
-        
-        audioPlayer = mediaServiceProvider.audioPlayer()
-        audioPlayer?.registerDelegate(self)
-        audioPlayer?.loadContentFromURL(url)
-        audioSamples = []
-        
-        updateUI()
+        finishRecording()
     }
     
     func voiceMessageToolbarViewDidRequestRecordingCancel(_ toolbarView: VoiceMessageToolbarView) {
@@ -188,6 +177,27 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     // MARK: - Private
     
+    private func finishRecording() {
+        audioRecorder?.stopRecording()
+        
+        guard let url = audioRecorder?.url else {
+            MXLog.error("Invalid audio recording URL")
+            return
+        }
+        
+        guard isInLockedMode else {
+            sendRecordingAtURL(url)
+            return
+        }
+        
+        audioPlayer = mediaServiceProvider.audioPlayer()
+        audioPlayer?.registerDelegate(self)
+        audioPlayer?.loadContentFromURL(url)
+        audioSamples = []
+        
+        updateUI()
+    }
+    
     private func sendRecordingAtURL(_ sourceURL: URL) {
         
         let destinationURL = sourceURL.deletingPathExtension().appendingPathExtension("opus")
@@ -240,7 +250,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func updateUIFromAudioRecorder() {
-        displayLink.isPaused = !(self.audioRecorder?.isRecording ?? false)
+        let isRecording = audioRecorder?.isRecording ?? false
+        
+        displayLink.isPaused = !isRecording
         
         let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
         
@@ -252,10 +264,26 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         audioSamples.append(sample)
         audioSamples.remove(at: 0)
         
+        let currentTime = audioRecorder?.currentTime ?? 0.0
+        
+        if currentTime >= Constants.maximumAudioRecordingDuration {
+            finishRecording()
+            return
+        }
+        
         var details = VoiceMessageToolbarViewDetails()
-        details.state = (self.audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.audioRecorder?.currentTime ?? 0.0))
+        details.state = (isRecording ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
+        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: currentTime))
         details.audioSamples = audioSamples
+        
+        if isRecording {
+            if currentTime >= Constants.maximumAudioRecordingDuration - Constants.maximumAudioRecordingLengthReachedThreshold {
+                details.toastMessage = VectorL10n.voiceMessageRemainingRecordingTime(String(Constants.maximumAudioRecordingLengthReachedThreshold))
+            } else {
+                details.toastMessage = (isInLockedMode ? VectorL10n.voiceMessageStopLockedModeRecording : VectorL10n.voiceMessageReleaseToSend)
+            }
+        }
+        
         _voiceMessageToolbarView.configureWithDetails(details)
     }
     

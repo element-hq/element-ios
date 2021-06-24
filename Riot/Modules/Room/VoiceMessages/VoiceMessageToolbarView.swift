@@ -39,6 +39,7 @@ struct VoiceMessageToolbarViewDetails {
     var audioSamples: [Float] = []
     var isPlaying: Bool = false
     var progress: Double = 0.0
+    var toastMessage: String?
 }
 
 class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGestureRecognizerDelegate, VoiceMessagePlaybackViewDelegate {
@@ -48,6 +49,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         static let animationDuration: TimeInterval = 0.25
         static let lockModeTransitionAnimationDuration: TimeInterval = 0.5
         static let panDirectionChangeThreshold: CGFloat = 20.0
+        static let toastContainerCornerRadii: CGFloat = 8.0
     }
     
     @IBOutlet private var backgroundView: UIView!
@@ -81,6 +83,9 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     @IBOutlet private var playbackViewContainerView: UIView!
     @IBOutlet private var sendButton: UIButton!
     
+    @IBOutlet private var toastNotificationContainerView: UIView!
+    @IBOutlet private var toastNotificationLabel: UILabel!
+    
     private var playbackView: VoiceMessagePlaybackView!
     
     private var cancelLabelToRecordButtonDistance: CGFloat = 0.0
@@ -103,6 +108,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         
         lockContainerBackgroundView.layer.cornerRadius = lockContainerBackgroundView.bounds.width / 2.0
         lockButtonsContainerView.layer.cornerRadius = lockButtonsContainerView.bounds.width / 2.0
+        toastNotificationContainerView.layer.cornerRadius = Constants.toastContainerCornerRadii
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         longPressGesture.delegate = self
@@ -126,9 +132,8 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     func configureWithDetails(_ details: VoiceMessageToolbarViewDetails) {
         elapsedTimeLabel.text = details.elapsedTime
         
-        UIView.animate(withDuration: Constants.animationDuration) {
-            self.updatePlaybackViewWithDetails(details)
-        }
+        self.updateToastNotificationsWithDetails(details)
+        self.updatePlaybackViewWithDetails(details)
         
         if self.details?.state != details.state {
             switch details.state {
@@ -258,43 +263,23 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         UIView.animate(withDuration: (animated ? Constants.animationDuration : 0.0), delay: 0.0, options: .beginFromCurrentState) {
             switch details.state {
             case .record:
-                self.backgroundView.alpha = 1.0
-                self.primaryRecordButton.alpha = 0.0
-                self.secondaryRecordButton.alpha = 1.0
-                self.recordingChromeContainerView.alpha = 1.0
-                self.lockContainerView.alpha = 1.0
                 self.lockContainerBackgroundView.alpha = 1.0
-                self.lockedModeContainerView.alpha = 0.0
-                self.recordingContainerView.alpha = 1.0
-            case .lockedModePlayback:
-                self.backgroundView.alpha = 1.0
-                self.primaryRecordButton.alpha = 0.0
-                self.secondaryRecordButton.alpha = 0.0
-                self.recordingChromeContainerView.alpha = 0.0
-                self.lockContainerView.alpha = 0.0
-                self.lockedModeContainerView.alpha = 1.0
-                self.recordingContainerView.alpha = 0.0
-            case .lockedModeRecord:
-                self.backgroundView.alpha = 1.0
-                self.primaryRecordButton.alpha = 0.0
-                self.secondaryRecordButton.alpha = 0.0
-                self.recordingChromeContainerView.alpha = 0.0
-                self.lockContainerView.alpha = 0.0
-                self.lockedModeContainerView.alpha = 1.0
-                self.recordingContainerView.alpha = 0.0
             case .idle:
-                self.backgroundView.alpha = 0.0
-                self.primaryRecordButton.alpha = 1.0
-                self.secondaryRecordButton.alpha = 0.0
-                self.recordingChromeContainerView.alpha = 0.0
-                self.lockContainerView.alpha = 0.0
                 self.lockContainerBackgroundView.alpha = 1.0
                 self.primaryLockButton.alpha = 1.0
                 self.secondaryLockButton.alpha = 0.0
                 self.lockChevron.alpha = 1.0
-                self.lockedModeContainerView.alpha = 0.0
-                self.recordingContainerView.alpha = 1.0
+            default:
+                break
             }
+            
+            self.backgroundView.alpha = (details.state == .idle ? 0.0 : 1.0)
+            self.primaryRecordButton.alpha = (details.state == .idle ? 1.0 : 0.0)
+            self.secondaryRecordButton.alpha = (details.state == .record ? 1.0 : 0.0)
+            self.recordingChromeContainerView.alpha = (details.state == .record ? 1.0 : 0.0)
+            self.lockContainerView.alpha = (details.state == .record ? 1.0 : 0.0)
+            self.lockedModeContainerView.alpha = (details.state == .lockedModePlayback || details.state == .lockedModeRecord ? 1.0 : 0.0)
+            self.recordingContainerView.alpha = (details.state == .idle || details.state == .record ? 1.0 : 0.0)
             
             guard let theme = self.currentTheme else {
                 return
@@ -311,6 +296,8 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
             self.lockContainerBackgroundView.backgroundColor = theme.colors.navigation
             self.lockButtonsContainerView.backgroundColor = theme.colors.navigation
             
+            self.toastNotificationContainerView.backgroundColor = theme.colors.primaryContent
+            
         } completion: { _ in
             switch details.state {
             case .idle:
@@ -324,15 +311,29 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         }
     }
     
-    private func updatePlaybackViewWithDetails(_ details: VoiceMessageToolbarViewDetails) {
-        var playbackViewDetails = VoiceMessagePlaybackViewDetails()
-        playbackViewDetails.recording = (details.state == .record || details.state == .lockedModeRecord)
-        playbackViewDetails.playing = details.isPlaying
-        playbackViewDetails.progress = details.progress
-        playbackViewDetails.currentTime = details.elapsedTime
-        playbackViewDetails.samples = details.audioSamples
-        playbackViewDetails.playbackEnabled = true
-        playbackView.configureWithDetails(playbackViewDetails)
+    private func updateToastNotificationsWithDetails(_ details: VoiceMessageToolbarViewDetails, animated: Bool = true) {
+        let shouldShowNotification = details.state != .idle && details.toastMessage != nil
+        
+        if shouldShowNotification {
+            self.toastNotificationLabel.text = details.toastMessage
+        }
+        
+        UIView.animate(withDuration: (animated ? Constants.animationDuration : 0.0)) {
+            self.toastNotificationContainerView.alpha = (shouldShowNotification ? 1.0 : 0.0)
+        }
+    }
+    
+    private func updatePlaybackViewWithDetails(_ details: VoiceMessageToolbarViewDetails, animated: Bool = true) {
+        UIView.animate(withDuration: (animated ? Constants.animationDuration : 0.0)) {
+            var playbackViewDetails = VoiceMessagePlaybackViewDetails()
+            playbackViewDetails.recording = (details.state == .record || details.state == .lockedModeRecord)
+            playbackViewDetails.playing = details.isPlaying
+            playbackViewDetails.progress = details.progress
+            playbackViewDetails.currentTime = details.elapsedTime
+            playbackViewDetails.samples = details.audioSamples
+            playbackViewDetails.playbackEnabled = true
+            self.playbackView.configureWithDetails(playbackViewDetails)
+        }
     }
     
     private func startAnimatingRecordingIndicator() {

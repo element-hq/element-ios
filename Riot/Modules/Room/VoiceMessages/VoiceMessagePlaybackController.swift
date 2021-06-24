@@ -26,9 +26,13 @@ enum VoiceMessagePlaybackControllerState {
 
 class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMessagePlaybackViewDelegate {
     
+    private enum Constants {
+        static let elapsedTimeFormat = "m:ss"
+    }
+    
     private static let timeFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "m:ss"
+        dateFormatter.dateFormat = Constants.elapsedTimeFormat
         return dateFormatter
     }()
 

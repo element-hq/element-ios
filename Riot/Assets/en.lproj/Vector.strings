@@ -1668,3 +1668,9 @@ Tap the + to start adding people.";
 "side_menu_action_help" = "Help";
 "side_menu_action_feedback" = "Feedback";
 "side_menu_app_version" = "Version %@";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Release to send";
+"voice_message_remaining_recording_time" = "%@s left";
+"voice_message_stop_locked_mode_recording" = "Tap on the wavelenghth to stop and playback";
