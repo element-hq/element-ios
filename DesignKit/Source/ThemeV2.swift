@@ -23,6 +23,9 @@ import UIKit
     /// Colors object
     var colors: Colors { get }
     
+    /// Fonts object
+    var fonts: Fonts { get }
+    
     /// may contain more design components in future, like icons, audio files etc.
     
 }
