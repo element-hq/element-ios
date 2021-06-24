@@ -144,7 +144,7 @@
 "room_title_new_room" = "Nytt rom";
 "room_title_one_member" = "1 medlem";
 // Settings
-"settings_title" = "Instillinger";
+"settings_title" = "Innstillinger";
 "settings_report_bug" = "Meld fra om en bug";
 "settings_clear_cache" = "Tøm mellomlageret";
 "settings_user_settings" = "BRUKERINNSTILLINGER";
@@ -207,7 +207,7 @@
 "identity_server_settings_alert_disconnect_button" = "Koble fra";
 "room_details_people" = "Medlemmer";
 "room_details_files" = "Filopplastinger";
-"room_details_settings" = "Instillinger";
+"room_details_settings" = "Innstillinger";
 "room_details_room_name" = "Rommets navn";
 "room_details_topic" = "Emne";
 "room_details_low_priority_tag" = "Lavprioritet";
@@ -260,7 +260,7 @@
 "call_incoming_video" = "Innkommende videosamtale …";
 // No VoIP support
 "no_voip_title" = "Innkommende samtale";
-"e2e_key_backup_wrong_version_button_settings" = "Instillinger";
+"e2e_key_backup_wrong_version_button_settings" = "Innstillinger";
 "e2e_key_backup_wrong_version_button_wasme" = "Det var meg";
 "bug_crash_report_title" = "Krasjrapport";
 "bug_report_send_logs" = "Send loggbøker";

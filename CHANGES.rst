@@ -22,6 +22,33 @@ Changes to be released in next version
 Others
  * 
 
+Changes in 1.4.3 (2021-06-24)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Room lists: Hide invited rooms if auto-accept option enabled.
+
+🐛 Bugfix
+ * Fixed retain cycle between the RoomTitleView and RoomViewController
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.2)).
+
 Changes in 1.4.2 (2021-06-21)
 =================================================
 

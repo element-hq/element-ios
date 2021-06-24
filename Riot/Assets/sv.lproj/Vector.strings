@@ -377,7 +377,7 @@
 "security_settings_crypto_sessions" = "MINA SESSIONER";
 "security_settings_secure_backup_setup" = "Ställ in";
 "security_settings_secure_backup_synchronise" = "Synkronisera";
-"security_settings_secure_backup_delete" = "Radera";
+"security_settings_secure_backup_delete" = "Radera säkerhetskopia";
 "security_settings_cryptography" = "KRYPTOGRAFI";
 "security_settings_export_keys_manually" = "Exportera nycklar manuellt";
 "security_settings_advanced" = "AVANCERAT";
@@ -456,8 +456,8 @@
 "settings_key_backup_button_connect" = "Anslut den här sessionen till nyckelsäkerhetskopia";
 "security_settings_crosssigning" = "KORSSIGNERING";
 "security_settings_crosssigning_info_not_bootstrapped" = "Korssignering har ännu inte ställts in.";
-"security_settings_crosssigning_info_ok" = "Korssignering är aktiverat.";
-"security_settings_crosssigning_reset" = "Återställ korssignering";
+"security_settings_crosssigning_info_ok" = "Korssignering är redo att använda.";
+"security_settings_crosssigning_reset" = "Återställ";
 "manage_session_trusted" = "Betrodd av dig";
 "identity_server_settings_alert_no_terms_title" = "Identitetsservern har inga användarvillkor";
 "identity_server_settings_alert_change_title" = "Byt identitetsserver";
@@ -585,7 +585,7 @@
 "service_terms_modal_description_for_identity_server_1" = "Hitta andra via telefon eller e-post";
 "deactivate_account_title" = "Inaktivera konto";
 "deactivate_account_forget_messages_information_part2_emphasize" = "Varning";
-"secrets_recovery_with_key_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din återställningsnyckel.";
+"secrets_recovery_with_key_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din säkerhetsnyckel.";
 "store_promotional_text" = "En chatt- och samarbetsapp som bevarar din integritet, på ett öppet nätverk. Decentraliserat så att du har kontrollen. Ingen datainsamling, inga bakdörrar och ingen tredjepartsåtkomst.";
 "auth_add_phone_message_2" = "Ställ in ett telefonnummer, som senare valfritt kan användas för att bli upptäckbar av personer som känner dig.";
 "auth_untrusted_id_server" = "Identitetsservern är inte betrodd";
@@ -630,7 +630,7 @@
 "device_verification_self_verify_wait_additional_information" = "Detta funkar med Element och andra Matrix-klienter som stöder korssignering.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Lägg till en identitetsserver i dina inställningar för att bjuda in via e-post.";
-"secrets_recovery_with_passphrase_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din återställningslösenfras.";
+"secrets_recovery_with_passphrase_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din säkerhetsfras.";
 "store_full_description" = "Element är en ny sorts meddelande- och samarbetsapp som:\n\n1. Sätter dig i kontroll för att kunna säkerställa ditt privatliv\n2. Låter dig kommunicera med vem som helst i Matrix-nätverket, och till och med bortom det genom integrationer med appar som Slack\n3. Skyddar dig från reklam, datainsamling, bakdörrar och inlåsning\n4. Säkrar dig genom totalsträckskryptering, med korssingering för att verifiera andra\n\nElement skiljer sig helt från andra meddelande- och samarbetsappar genom att vara decentraliserad och öppen källkod.\n\nElement låter dig driva en egen server - eller välja en värd - så att du har sekretess, ägande och kontroll över din data och dina konversationer. Den ger dig tillgång till ett öppet nätverk; så att du inte kan prata bara med Element-användare. Och den är väldigt säker.\n\nElement kan göra allt detta för att den använder Matrix - standarden för öppen decentraliserad kommunikation.\n\nElement sätter dig i kontroll genom att låta dig välja att vara värd för dina konversationer. Från appen Element kan du välja att ansluta på följande sätt:\n\n1. Skaffa ett gratis konto på den publika servern på matrix.org\n2. Var värd för ditt eget konto genom att driva en server på din egen hårdvara\n3. Skapa ett konto på en anpassad server genom att registrera dig på värdplattformen Element Matrix Services\n\nVarför välja Element?\n\nÄG DIN DATA: Du väljer var du vill ha din data och dina meddelanden. Du äger den och kontrollerar den, inte nåt stort företag som samlar in din data och ger den till tredje parter.\n\nÖPPEN KOMMUNIKATION OCH ÖPPET SAMARBETE: Du kan chatta med vem som helst på Matrix-nätverket, oavsett om de använder Element eller en annan Matrix-app, och till och med om de använder ett annat meddelandesystem som Slack, IRC eller XMPP.\n\nSUPERSÄKER: Riktig totalsträckskryptering (bara de in konversationen kan avkryptera meddelandena), och korssingering för att verifiera konversationsmedlemmars enheter.\n\nKOMPLETT KOMMUNIKATION: Meddelanden, röst- och videosamtal, fildelning, skärmdelning och massa integrationer, bottar och widgets. Skapa rum och gemenskaper, håll kontakten och få saker gjorda.\n\nÖVERALLT DÄR DU ÄR: Håll kontakten vart du än befinner dig med fullständigt synkroniserad meddelandehistorik på alla dina enheter och på webben på https://element.io/app.";
 "auth_add_email_phone_message_2" = "Sätt en e-postadress för kontoåterställning. E-postadress och telefonnummer kan senare valfritt användas för att vara upptäckbar av folk som känner dig.";
 "auth_add_email_and_phone_warning" = "Registrering med e-post och telefonnummer samtidigt stöds inte än, tills att API:t finns. Endast telefonnumret kommer att användas. Du kan lägga till din e-postadress till din profil i inställningarna.";
@@ -662,9 +662,9 @@
 "settings_identity_server_no_is_description" = "Du använder för närvarande inte en identitetsserver. För att upptäcka och bli upptäckt av befintliga kontakter du känner, lägg till en ovan.";
 "security_settings_crypto_sessions_description_2" = "Om du inte känner igen en inloggning, ändra ditt lösenord och återställ säker säkerhetskopiering.";
 "security_settings_secure_backup" = "SÄKER SÄKERHETSKOPIERING";
-"security_settings_secure_backup_description" = "Skydda mot att förlora åtkomst till krypterade meddelanden och data genom att säkerhetskopiera krypteringsnycklar på din server.";
+"security_settings_secure_backup_description" = "Säkerhetskopiera dina nycklar med din kontodata ifall du förlorar åtkomst till dina sessioner. Dina nycklar kommer att säkras med en unik säkerhetsnyckel.";
 "security_settings_backup" = "MEDDELANDESÄKERHETSKOPIERING";
-"security_settings_crosssigning_bootstrap" = "Ställ in korssignering";
+"security_settings_crosssigning_bootstrap" = "Ställ in";
 "security_settings_complete_security_alert_title" = "Fullborda säkerhet";
 "security_settings_coming_soon" = "Den här åtgärden är tyvärr inte tillgänglig i Element iOS än. Använd en annan Matrix-klient för att ställa in den. Element iOS kommer att använda den.";
 "identity_server_settings_description" = "Du använder för närvarande %@ för att upptäcka och kunna upptäckas av befintliga kontakter du känner till.";
@@ -773,37 +773,37 @@
 "key_backup_setup_intro_info" = "Meddelanden i krypterade rum skyddas av totalsträckskryptering. Endast du och mottagaren/mottagarna har nycklarna för att läsa dessa meddelanden.\n\nSäkerhetskopiera dina nycklar för att inte bli av med dem.";
 "key_backup_setup_intro_manual_export_info" = "(Avancerat)";
 "key_backup_setup_intro_manual_export_action" = "Exportera nycklar manuellt";
-"key_backup_setup_passphrase_title" = "Skydda din säkerhetskopia med en lösenfras";
+"key_backup_setup_passphrase_title" = "Skydda din säkerhetskopia med en säkerhetsfras";
 "key_backup_setup_passphrase_passphrase_title" = "Ange";
-"key_backup_setup_passphrase_passphrase_placeholder" = "Ange lösenfras";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Ange fras";
 "key_backup_setup_passphrase_passphrase_valid" = "Toppen!";
 "key_backup_setup_passphrase_passphrase_invalid" = "Försök att lägga till ett ord";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "Bekräfta";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Bekräfta lösenfras";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Bekräfta fras";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Toppen!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Lösenfrasen matchar inte";
-"key_backup_setup_passphrase_set_passphrase_action" = "Ställ in lösenfras";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avancerat) Ställ in med återställningsnyckel";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Frasen matchar inte";
+"key_backup_setup_passphrase_set_passphrase_action" = "Ställ in fras";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avancerat) Ställ in med säkerhetsnyckel";
 "key_backup_setup_success_title" = "Lyckades!";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Dina nycklar säkerhetskopieras.\n\nDin återställningsnyckel är ett skyddsnät – du kan använda den för att åter få tillgång till dina krypterade meddelanden om du glömmer din lösenfras.\n\nLagra din återställningsnyckel på en väldigt säker plats, som i en lösenordshanterare (eller ett kassaskåp).";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Spara återställningsnyckel";
+"key_backup_setup_success_from_passphrase_info" = "Dina nycklar säkerhetskopieras.\n\nDin säkerhetsnyckel är ett skyddsnät – du kan använda den för att åter få tillgång till dina krypterade meddelanden om du glömmer din lösenfras.\n\nLagra din säkerhetsnyckel på en väldigt säker plats, som i en lösenordshanterare (eller ett kassaskåp).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Spara säkerhetsnyckel";
 "key_backup_setup_success_from_passphrase_done_action" = "Klart";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Dina nycklar säkerhetskopieras.\n\nSkapa en kopia av den här återställningsnyckeln och skydda den.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Återställningsnyckel";
+"key_backup_setup_success_from_recovery_key_info" = "Dina nycklar säkerhetskopieras.\n\nSkapa en kopia av den här säkerhetsnyckeln och skydda den.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Säkerhetsnyckel";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Skapa en kopia";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Jag har skapat en kopia";
 "key_backup_recover_title" = "Säkra meddelanden";
-"key_backup_recover_invalid_passphrase_title" = "Felaktig återställningslösenfras";
+"key_backup_recover_invalid_passphrase_title" = "Felaktig säkerhetsfras";
 "key_backup_recover_from_passphrase_passphrase_title" = "Ange";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "Ange lösenfras";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Känner du inte till din lösenfras för återställning? Du kan ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "använda din återställningsnyckel";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Ange fras";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Känner du inte till din säkerhetsfras? Du kan ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "använda din säkerhetsnyckel";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Ange";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Ange återställningsnyckel";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Förlorat din återställningsnyckel? Du kan ställa in en ny i inställningarna.";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Ange säkerhetsnyckel";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Förlorat din säkerhetsnyckel? Du kan ställa in en ny i inställningarna.";
 "key_backup_recover_done_action" = "Klart";
 "sign_out_existing_key_backup_alert_title" = "Är du säker på att du vill logga ut?";
 "sign_out_existing_key_backup_alert_sign_out_action" = "Logga ut";
@@ -834,7 +834,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Vill du hjälpa till att förbättra %@ genom att automatiskt skicka anonyma kraschrapporter och användningsdata?";
 "e2e_need_log_in_again" = "Du behöver logga in igen för att generera nycklar för totalsträckskryptering för den här sessionen och skicka den publika nyckeln till din hemserver.\nDet behövs bara en gång; beklagar olägenheten.";
-"e2e_key_backup_wrong_version" = "En ny säkerhetskopia för säkra meddelandenycklar har upptäckts.\n\nOm det inte var du, ställ in en ny lösenfras i inställningarna.";
+"e2e_key_backup_wrong_version" = "En ny säkerhetskopia för säkra meddelandenycklar har upptäckts.\n\nOm det inte var du, ställ in en ny säkerhetsfras i inställningarna.";
 "bug_report_description" = "Vänligen beskriv buggen. Vad gjorde du? Vad förväntade du dig att hända? Vad hände egentligen?";
 "bug_crash_report_description" = "Vänligen beskriv vad du gjorde innan kraschen:";
 "bug_report_logs_description" = "För att diagnostisera problem skickas loggar från den här klienten med denna buggrapport. Om du föredrar att bara skicka texten ovan, kryssa ur:";
@@ -858,7 +858,7 @@
 "rerequest_keys_alert_title" = "Begäran skickad";
 "secure_key_backup_setup_intro_title" = "Säker säkerhetskopia";
 "secure_key_backup_setup_intro_info" = "Skydda mot att förlora åtkomst till krypterade meddelanden och data genom att säkerhetskopiera krypteringsnycklar på din server.";
-"secure_key_backup_setup_intro_use_security_passphrase_title" = "Använd en säkerhetslösenfras";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Använd en säkerhetsfras";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Ange en hemlig fras endast du känner till, för att generera en nyckel för säkerhetskopiering.";
 "secure_key_backup_setup_existing_backup_error_title" = "En säkerhetskopia för meddelanden finns redan";
 "secure_key_backup_setup_existing_backup_error_info" = "Lås upp den för att återanvända den för säker säkerhetskopiering eller radera den för att skapa en ny säkerhetskopia för meddelanden i den säkra säkerhetskopieringen.";
@@ -867,16 +867,16 @@
 "key_backup_setup_intro_title" = "Bli aldrig av med krypterade meddelanden";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Börja använda nyckelsäkerhetskopiering";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Anslut den här enheten till nyckelsäkerhetskopiering";
-"key_backup_setup_passphrase_info" = "Vi kommer lagra en krypterad kopia av dina nycklar på vår server. Skydda din säkerhetskopia med en lösenfras för att hålla den säker.\n\nFör maximal säkerhet bör denna skilja sig från ditt kontolösenord.";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Eller säkra din säkerhetskopia med en återställningsnyckel och spara den någonstans säkert.";
-"key_backup_recover_invalid_passphrase" = "Säkerhetskopian kunde inte avkrypteras med den här lösenfrasen: vänligen kontrollera att du angav rätt återställningslösenfras.";
-"key_backup_recover_invalid_recovery_key_title" = "Återställningsnyckel matchade inte";
-"key_backup_recover_invalid_recovery_key" = "Säkerhetskopian kunde inte avkrypteras med den här nyckeln: vänligen kontrollera att du angav rätt återställningsnyckel.";
+"key_backup_setup_passphrase_info" = "Vi kommer lagra en krypterad kopia av dina nycklar på vår server. Skydda din säkerhetskopia med en fras för att hålla den säker.\n\nFör maximal säkerhet bör denna skilja sig från ditt kontolösenord.";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Eller säkra din säkerhetskopia med en säkerhetsnyckel och spara den någonstans säkert.";
+"key_backup_recover_invalid_passphrase" = "Säkerhetskopian kunde inte avkrypteras med den här frasen: vänligen kontrollera att du angav rätt säkerhetsfras.";
+"key_backup_recover_invalid_recovery_key_title" = "Säkerhetsnyckeln matchade inte";
+"key_backup_recover_invalid_recovery_key" = "Säkerhetskopian kunde inte avkrypteras med den här nyckeln: vänligen kontrollera att du angav rätt säkerhetsnyckel.";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Återställer säkerhetskopia…";
-"key_backup_recover_from_passphrase_info" = "Använd din återställningslösenfras för att låsa upp din säkra meddelandehistorik";
+"key_backup_recover_from_passphrase_info" = "Använd din säkerhetsfras för att låsa upp din säkra meddelandehistorik";
 "key_backup_recover_from_passphrase_recover_action" = "Lås upp historik";
-"key_backup_recover_from_recovery_key_info" = "Använd din återställningsnyckel för att låsa upp din säkra meddelandehistorik";
+"key_backup_recover_from_recovery_key_info" = "Använd din säkerhetsnyckel för att låsa upp din säkra meddelandehistorik";
 "key_backup_recover_from_recovery_key_recover_action" = "Lås upp historik";
 "key_backup_recover_success_info" = "Säkerhetskopia återställd!";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Du förlorar åtkomst till dina krypterade meddelanden om du inte säkerhetskopierar dina nycklar innan du loggar ut.";
@@ -913,8 +913,8 @@
 "device_verification_self_verify_wait_title" = "Fullgör säkerhet";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifiera den här inloggningen";
 "device_verification_self_verify_wait_information" = "Verifiera den här sessionen från en av dina andra sessioner och ge den åtkomst till krypterade meddelanden.\n\nAnvänd senaste Element på dina andra enheter:";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Använd återställningsnyckel";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Använd återställningslösenfras eller -nyckel";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Använd säkerhetsnyckel";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Använd säkerhetsfras eller -nyckel";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Om du inte kan komma åt en existerade session";
 "key_verification_verify_sas_title_emoji" = "Jämför emojier";
 "key_verification_verify_sas_title_number" = "Jämför nummer";
@@ -1074,25 +1074,25 @@
 "user_verification_session_details_verify_action_current_user" = "Interaktiv verifiering";
 "user_verification_session_details_verify_action_current_user_manually" = "Verifiera manuellt med text";
 "user_verification_session_details_verify_action_other_user" = "Verifiera manuellt";
-"secrets_recovery_with_passphrase_title" = "Återställningslösenfras";
-"secrets_recovery_with_passphrase_information_verify_device" = "Använd din återställningslösenfras för att verifiera den här enheten.";
+"secrets_recovery_with_passphrase_title" = "säkerhetsfras";
+"secrets_recovery_with_passphrase_information_verify_device" = "Använd din säkerhetsfras för att verifiera den här enheten.";
 "secrets_recovery_with_passphrase_passphrase_title" = "Ange";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Använd återställningslösenfras";
-"secrets_recovery_with_passphrase_recover_action" = "Använd lösenfras";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Känner du inte till din återställningslösenfras? Du kan ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "använda din återställningsnyckel";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Använd säkerhetsfras";
+"secrets_recovery_with_passphrase_recover_action" = "Använd fras";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Känner du inte till din säkerhetsfras? Du kan ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "använda din säkerhetsnyckel";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Kunde inte komma åt hemlig lagring";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vänligen verifiera att du angav rätt återställningslösenfras.";
-"secrets_recovery_with_key_title" = "Återställningsnyckel";
-"secrets_recovery_with_key_information_verify_device" = "Använd din återställningsnyckel för att verifiera den här enheten.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vänligen verifiera att du angav rätt säkerhetsfras.";
+"secrets_recovery_with_key_title" = "Säkerhetsnyckel";
+"secrets_recovery_with_key_information_verify_device" = "Använd din säkerhetsnyckel för att verifiera den här enheten.";
 "secrets_recovery_with_key_recovery_key_title" = "Ange";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Ange återställningsnyckel";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Ange säkerhetsnyckel";
 "secrets_recovery_with_key_recover_action" = "Använd nyckel";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Kunde inte komma åt hemlig lagring";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Vänligen verifiera att du angav rätt återställningsnyckel.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Vänligen verifiera att du angav rätt säkerhetsnyckel.";
 "secrets_setup_recovery_key_title" = "Spara din säkerhetsnyckel";
-"secrets_setup_recovery_key_information" = "Lagra din återställningsnyckel någonstans säkert. Den kan användas för att låsa upp dina krypterade meddelanden och data.";
+"secrets_setup_recovery_key_information" = "Lagra din säkerhetsnyckel någonstans säkert. Den kan användas för att låsa upp dina krypterade meddelanden och data.";
 "secrets_setup_recovery_key_loading" = "Laddar…";
 "secrets_setup_recovery_key_export_action" = "Spara";
 "secrets_setup_recovery_key_done_action" = "Klart";
@@ -1104,7 +1104,7 @@
 "secrets_setup_recovery_passphrase_validate_action" = "Klart";
 "secrets_setup_recovery_passphrase_confirm_information" = "Ange din säkerhetsfras igen för att bekräfta den.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Bekräfta";
-"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Bekräfta lösenfras";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Bekräfta fras";
 "cross_signing_setup_banner_title" = "Ställ in kryptering";
 "cross_signing_setup_banner_subtitle" = "Verifiera dina andra enheter enklare";
 "major_update_title" = "Riot är nu Element";
@@ -1325,3 +1325,26 @@
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" använder din enhets \"Invertera färger\"-inställning";
 "room_recents_unknown_room_error_message" = "Kan inte hitta det här rummet. Se till att det finns";
 "room_creation_dm_error" = "Vi kunde inte skapa din DM. Vänligen kolla användarna du vill bjuda in och försök igen.";
+"side_menu_app_version" = "Version %@";
+"side_menu_action_feedback" = "Återkoppling";
+"side_menu_action_help" = "Hjälp";
+"side_menu_action_settings" = "Inställningar";
+"side_menu_action_invite_friends" = "Bjud in vänner";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Vänsterpanel";
+"user_avatar_view_accessibility_hint" = "Byt användaravatar";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Ange din säkerhetsnyckel för att fortsätta.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Ange din säkerhetsfras för att fortsätta.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Dina nycklar säkerhetskopieras.";
+"security_settings_secure_backup_restore" = "Återställ från säkerhetskopia";
+"security_settings_secure_backup_reset" = "Återställ";
+"security_settings_secure_backup_info_valid" = "Den här sessionen säkerhetskopierar dina nycklar.";
+"security_settings_secure_backup_info_checking" = "Kontrollerar…";
