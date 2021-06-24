@@ -25,9 +25,14 @@ enum VoiceMessagePlaybackControllerState {
 }
 
 class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMessagePlaybackViewDelegate {
+    
+    private static let timeFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "m:ss"
+        return dateFormatter
+    }()
 
     private let audioPlayer: VoiceMessageAudioPlayer
-    private let timeFormatter: DateFormatter
     private var displayLink: CADisplayLink!
     private var samples: [Float] = []
     
@@ -43,9 +48,6 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     init(mediaServiceProvider: VoiceMessageMediaServiceProvider) {
         playbackView = VoiceMessagePlaybackView.loadFromNib()
         audioPlayer = mediaServiceProvider.audioPlayer()
-
-        timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "m:ss"
         
         audioPlayer.registerDelegate(self)
         playbackView.delegate = self
@@ -128,10 +130,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         
         switch state {
         case .stopped:
-            details.currentTime = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.duration))
+            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.duration))
             details.progress = 0.0
         default:
-            details.currentTime = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
+            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
             details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
         }
         

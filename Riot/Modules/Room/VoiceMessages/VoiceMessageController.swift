@@ -25,11 +25,16 @@ import DSWaveformImage
 
 public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate, VoiceMessageAudioPlayerDelegate {
     
+    private static let timeFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "m:ss"
+        return dateFormatter
+    }()
+    
     private let themeService: ThemeService
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
     
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
-    private let timeFormatter: DateFormatter
     private var displayLink: CADisplayLink!
     
     private var audioRecorder: VoiceMessageAudioRecorder?
@@ -51,13 +56,10 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         self.mediaServiceProvider = mediaServiceProvider
         
         _voiceMessageToolbarView = VoiceMessageToolbarView.loadFromNib()
-        self.timeFormatter = DateFormatter()
         
         super.init()
         
         _voiceMessageToolbarView.delegate = self
-        
-        timeFormatter.dateFormat = "m:ss"
         
         displayLink = CADisplayLink(target: WeakObjectWrapper(self), selector: #selector(handleDisplayLinkTick))
         displayLink.isPaused = true
@@ -239,7 +241,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (self.audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.audioRecorder?.currentTime ?? 0.0))
+        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.audioRecorder?.currentTime ?? 0.0))
         details.audioSamples = audioSamples
         _voiceMessageToolbarView.configureWithDetails(details)
     }
@@ -276,7 +278,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
+        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
         details.audioSamples = audioSamples
         details.isPlaying = audioPlayer.isPlaying
         details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
