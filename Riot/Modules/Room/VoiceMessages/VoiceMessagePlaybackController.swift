@@ -147,7 +147,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         
         if attachment.isEncrypted {
             attachment.decrypt(toTempFile: { [weak self] filePath in
-                self?.loadFileAtPath(filePath)
+                self?.convertAndLoadFileAtPath(filePath)
             }, failure: { [weak self] error in
                 // A nil error in this case is a cancellation on the MXMediaLoader
                 if let error = error {
@@ -157,7 +157,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             })
         } else {
             attachment.prepare({ [weak self] in
-                self?.loadFileAtPath(attachment.cacheFilePath)
+                self?.convertAndLoadFileAtPath(attachment.cacheFilePath)
             }, failure: { [weak self] error in
                 // A nil error in this case is a cancellation on the MXMediaLoader
                 if let error = error {
@@ -168,26 +168,28 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
     }
     
-    private func loadFileAtPath(_ path: String?) {
+    private func convertAndLoadFileAtPath(_ path: String?) {
         guard let filePath = path else {
             return
         }
         
-        let url = URL(fileURLWithPath: filePath)
+        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let newURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
         
-        // AVPlayer doesn't want to play it otherwise. https://stackoverflow.com/a/9350824
-        let newURL = url.appendingPathExtension("m4a")
-        
-        do {
-            try? FileManager.default.removeItem(at: newURL)
-            try FileManager.default.moveItem(at: url, to: newURL)
-        } catch {
-            self.state = .error
-            MXLog.error("Failed appending voice message extension.")
-            return
+        VoiceMessageAudioConverter.convertToMPEG4AAC(sourceURL: URL(fileURLWithPath: filePath), destinationURL: newURL) { [weak self] result in
+            switch result {
+            case .success:
+                self?.loadFileAtURL(newURL)
+            case .failure(let error):
+                self?.state = .error
+                MXLog.error("Failed failed decoding audio message with: \(error)")
+            }
         }
+    }
+    
+    private func loadFileAtURL(_ url: URL) {
         
-        audioPlayer.loadContentFromURL(newURL)
+        audioPlayer.loadContentFromURL(url)
         
         let requiredNumberOfSamples = playbackView.getRequiredNumberOfSamples()
         
@@ -195,7 +197,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             return
         }
         
-        let analyser = WaveformAnalyzer(audioAssetURL: newURL)
+        let analyser = WaveformAnalyzer(audioAssetURL: url)
         analyser?.samples(count: requiredNumberOfSamples, completionHandler: { [weak self] samples in
             guard let samples = samples else {
                 self?.state = .error

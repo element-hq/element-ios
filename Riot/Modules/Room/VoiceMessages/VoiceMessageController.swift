@@ -188,10 +188,23 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     // MARK: - Private
     
-    private func sendRecordingAtURL(_ url: URL) {
-        delegate?.voiceMessageController(self, didRequestSendForFileAtURL: url) { [weak self] success in
-            UINotificationFeedbackGenerator().notificationOccurred( (success ? .success : .error))
-            self?.deleteRecordingAtURL(url)
+    private func sendRecordingAtURL(_ sourceURL: URL) {
+        
+        let destinationURL = sourceURL.deletingPathExtension().appendingPathExtension("opus")
+        
+        VoiceMessageAudioConverter.convertToOpusOgg(sourceURL: sourceURL, destinationURL: destinationURL) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                self.delegate?.voiceMessageController(self, didRequestSendForFileAtURL: destinationURL) { [weak self] success in
+                    UINotificationFeedbackGenerator().notificationOccurred((success ? .success : .error))
+                    self?.deleteRecordingAtURL(sourceURL)
+                    self?.deleteRecordingAtURL(destinationURL)
+                }
+            case .failure(let error):
+                MXLog.error("Failed failed encoding audio message with: \(error)")
+            }
         }
     }
     

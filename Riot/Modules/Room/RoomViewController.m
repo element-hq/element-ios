@@ -6187,7 +6187,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)voiceMessageController:(VoiceMessageController *)voiceMessageController didRequestSendForFileAtURL:(NSURL *)url completion:(void (^)(BOOL))completion
 {
-    [self.roomDataSource sendVoiceMessage:url mimeType:@"audio/m4a" success:^(NSString *eventId) {
+    [self.roomDataSource sendVoiceMessage:url mimeType:nil success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
     } failure:^(NSError *error) {
