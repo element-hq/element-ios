@@ -296,8 +296,6 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
             self.lockContainerBackgroundView.backgroundColor = theme.colors.navigation
             self.lockButtonsContainerView.backgroundColor = theme.colors.navigation
             
-            self.toastNotificationContainerView.backgroundColor = theme.colors.primaryContent
-            
         } completion: { _ in
             switch details.state {
             case .idle:
