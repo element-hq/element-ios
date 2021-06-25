@@ -5,8 +5,6 @@
 @import MatrixSDK;
 @import MatrixKit;
 
-#include <ffmpegkit/FFmpegKit.h>
-
 #import "WebViewViewController.h"
 #import "RiotSplitViewController.h"
 #import "RiotNavigationController.h"

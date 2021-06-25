@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import ffmpegkit
 
 enum VoiceMessageAudioConverterError: Error {
     case generic(String)

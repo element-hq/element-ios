@@ -42,15 +42,15 @@ class VoiceMessageAttachmentCacheManager {
     
     static let sharedManager = VoiceMessageAttachmentCacheManager()
     
-    private let workQueue: DispatchQueue
+//    private let workQueue: DispatchQueue
     
     private var completionCallbacks = [String: [CompletionWrapper]]()
     private var samples = [String: [Int: [Float]]]()
     private var finalURLs = [String: URL]()
     
-    private init() {
-        workQueue = DispatchQueue(label: "io.element.VoiceMessageAttachmentCacheManager.queue", qos: .userInitiated)
-    }
+//    private init() {
+//        workQueue = DispatchQueue(label: "io.element.VoiceMessageAttachmentCacheManager.queue", qos: .userInitiated)
+//    }
     
     func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
         guard attachment.type == MXKAttachmentTypeVoiceMessage else {
@@ -73,9 +73,9 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        workQueue.async {
+//        workQueue.async {
             self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
-        }
+//        }
     }
     
     private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
@@ -90,7 +90,9 @@ class VoiceMessageAttachmentCacheManager {
         func sampleFileAtURL(_ url: URL) {
             let analyser = WaveformAnalyzer(audioAssetURL: url)
             analyser?.samples(count: numberOfSamples, completionHandler: { samples in
-                self.workQueue.async {
+                // Dispatch back from the WaveformAnalyzer's internal queue
+                DispatchQueue.main.async {
+//                self.workQueue.async {
                     guard let samples = samples else {
                         self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.samplingError)
                         return
