@@ -67,7 +67,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         _voiceMessageToolbarView.delegate = self
         
-        displayLink = CADisplayLink(target: WeakObjectWrapper(self), selector: #selector(handleDisplayLinkTick))
+        displayLink = CADisplayLink(target: WeakDisplayLinkTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakDisplayLinkTarget.triggerSelector)
         displayLink.isPaused = true
         displayLink.add(to: .current, forMode: .common)
         
