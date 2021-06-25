@@ -616,6 +616,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.roomDataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
     isAppeared = NO;
+    
+    [VoiceMessageMediaServiceProvider.sharedProvider stopAllServices];
 }
 
 - (void)viewDidAppear:(BOOL)animated
