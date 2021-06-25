@@ -137,6 +137,12 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         return coordinator
     }
     
+    private func createRoomNotificationSettingsCoordinator() -> RoomNotificationSettingsCoordinator {
+        let coordinator = RoomNotificationSettingsCoordinator(room: room)
+        coordinator.delegate = self
+        return coordinator
+    }
+    
     private func showRoomDetails(with target: RoomInfoListTarget, animated: Bool) {
         switch target {
         case .integrations:
@@ -153,7 +159,10 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
                 }
             })
         case .notifications:
-            break
+            let coordinator = createRoomNotificationSettingsCoordinator()
+            coordinator.start()
+            self.add(childCoordinator: coordinator)
+            self.navigationRouter.push(coordinator, animated: true, popCompletion: nil)
         default:
             guard let tabIndex = target.tabIndex else {
                 fatalError("No settings tab index for this target.")
@@ -185,6 +194,17 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
 extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
     
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
+        
+    }
+    
+}
+
+extension RoomInfoCoordinator: RoomNotificationSettingsCoordinatorDelegate {
+    func roomNotificationSettingsCoordinatorDidComplete(_ coordinator: RoomNotificationSettingsCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomNotificationSettingsCoordinatorDidCancel(_ coordinator: RoomNotificationSettingsCoordinatorType) {
         
     }
     
