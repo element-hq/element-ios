@@ -29,6 +29,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         static let maximumAudioRecordingDuration: TimeInterval = 120.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
         static let elapsedTimeFormat = "m:ss"
+        static let minimumRecordingDuration = 5.0
     }
     
     private static let timeFormatter: DateFormatter = {
@@ -186,7 +187,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
         
         guard isInLockedMode else {
-            sendRecordingAtURL(url)
+            if audioRecorder?.currentTime ?? 0 >= Constants.minimumRecordingDuration {
+                sendRecordingAtURL(url)
+            }
             return
         }
         
@@ -261,8 +264,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
         
         let sample = audioRecorder?.averagePowerForChannelNumber(0) ?? 0.0
-        audioSamples.append(sample)
-        audioSamples.remove(at: 0)
+        audioSamples.insert(sample, at: 0)
+        audioSamples.removeLast()
         
         let currentTime = audioRecorder?.currentTime ?? 0.0
         

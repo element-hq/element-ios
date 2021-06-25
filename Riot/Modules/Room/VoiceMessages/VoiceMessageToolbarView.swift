@@ -45,7 +45,7 @@ struct VoiceMessageToolbarViewDetails {
 class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGestureRecognizerDelegate, VoiceMessagePlaybackViewDelegate {
     
     private enum Constants {
-        static let longPressMinimumDuration: TimeInterval = 0.1
+        static let longPressMinimumDuration: TimeInterval = 1.0
         static let animationDuration: TimeInterval = 0.25
         static let lockModeTransitionAnimationDuration: TimeInterval = 0.5
         static let panDirectionChangeThreshold: CGFloat = 20.0
