@@ -300,7 +300,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         displayLink.isPaused = !audioPlayer.isPlaying
         
         let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
-        if audioSamples.count != requiredNumberOfSamples {
+        if audioSamples.count != requiredNumberOfSamples  && requiredNumberOfSamples > 0 {
             padSamplesArrayToSize(requiredNumberOfSamples)
             
             waveformAnalyser = WaveformAnalyzer(audioAssetURL: url)

@@ -23,6 +23,7 @@ enum VoiceMessageAttachmentCacheManagerError: Error {
     case decryptionError(Error)
     case preparationError(Error)
     case conversionError(Error)
+    case invalidNumberOfSamples
     case samplingError
 }
 
@@ -52,33 +53,32 @@ class VoiceMessageAttachmentCacheManager {
     }
     
     func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
-        workQueue.async {
-            self.enqueueLoadAttachment(attachment, numberOfSamples: numberOfSamples, completion: completion)
-        }
-    }
-    
-    func enqueueLoadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
         guard attachment.type == MXKAttachmentTypeVoiceMessage else {
-            DispatchQueue.main.async {
-                completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidAttachmentType))
-            }
+            completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidAttachmentType))
             return
         }
         
         guard let identifier = attachment.eventId else {
-            DispatchQueue.main.async {
-                completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidEventId))
-            }
+            completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidEventId))
+            return
+        }
+        
+        guard numberOfSamples > 0 else {
+            completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidNumberOfSamples))
             return
         }
         
         if let finalURL = finalURLs[identifier], let samples = samples[identifier]?[numberOfSamples] {
-            DispatchQueue.main.async {
-                completion(Result.success((finalURL, samples)))
-            }
+            completion(Result.success((finalURL, samples)))
             return
         }
         
+        workQueue.async {
+            self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
+        }
+    }
+    
+    private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
         if var callbacks = completionCallbacks[identifier] {
             callbacks.append(CompletionWrapper(completion))
             completionCallbacks[identifier] = callbacks
@@ -160,13 +160,14 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        for wrapper in callbacks {
-            DispatchQueue.main.async {
+        let copy = callbacks.map { $0 }
+        DispatchQueue.main.async {
+            for wrapper in copy {
                 wrapper.completion(Result.success((url, samples)))
             }
         }
         
-        completionCallbacks[identifier] = nil
+        self.completionCallbacks[identifier] = nil
     }
     
     private func invokeFailureCallbacksForIdentifier(_ identifier: String, error: Error) {
@@ -174,12 +175,13 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        for wrapper in callbacks {
-            DispatchQueue.main.async {
+        let copy = callbacks.map { $0 }
+        DispatchQueue.main.async {
+            for wrapper in copy {
                 wrapper.completion(Result.failure(error))
             }
         }
         
-        completionCallbacks[identifier] = nil
+        self.completionCallbacks[identifier] = nil
     }
 }
