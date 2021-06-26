@@ -1275,7 +1275,7 @@
 // Social login
 
 "social_login_list_title_continue" = "Weiter mit";
-"room_intro_cell_information_multiple_dm_sentence2" = "Nur ihr seid in diesem Gespräch, außer ihr lädt jemand anderen ein.";
+"room_intro_cell_information_multiple_dm_sentence2" = "Nur ihr seid in diesem Gespräch, außer jemand von euch lädt jemanden ein.";
 "room_intro_cell_information_dm_sentence2" = "Nur zwei von euch sind in diesem Gespräch. Keine anderer kann beitreten.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
 "room_intro_cell_information_dm_sentence1_part1" = "Dies ist der Beginn deiner Direktnachricht mit ";
