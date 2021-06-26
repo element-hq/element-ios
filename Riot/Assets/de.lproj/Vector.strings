@@ -1089,7 +1089,7 @@
 "key_verification_bootstrap_not_setup_title" = "Fehler";
 "key_verification_bootstrap_not_setup_message" = "Du musst erst die Quersignatur einrichten.";
 "key_verification_verify_qr_code_title" = "Verifizierung durch Scannen eines QR-Codes";
-"key_verification_verify_qr_code_information" = "Scanne den Code für eine gegenseitige Überprüfung.";
+"key_verification_verify_qr_code_information" = "Zum gegenseitigen Verifizieren scanne den QR-Code.";
 "key_verification_verify_qr_code_information_other_device" = "Scanne den Code unten zur Überprüfung:";
 "key_verification_verify_qr_code_emoji_information" = "Überprüfung durch den Vergleich einzigartiger Emojis.";
 "key_verification_verify_qr_code_scan_code_action" = "Scanne Code des Gegenübers";
