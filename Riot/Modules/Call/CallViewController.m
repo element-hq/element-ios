@@ -99,7 +99,8 @@
     
     UIImage *moreButtonImage = [UIImage imageNamed:@"call_more_icon"];
     
-    [self.moreButton setImage:moreButtonImage forState:UIControlStateNormal];
+    [self.moreButtonForVoice setImage:moreButtonImage forState:UIControlStateNormal];
+    [self.moreButtonForVideo setImage:moreButtonImage forState:UIControlStateNormal];
     
     // Hang up
     
