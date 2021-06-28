@@ -1356,3 +1356,30 @@
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Gli spazi non sono ancora pronti";
+"side_menu_app_version" = "Versione %@";
+"side_menu_action_feedback" = "Opinioni";
+"side_menu_action_help" = "Aiuto";
+"side_menu_action_settings" = "Impostazioni";
+"side_menu_action_invite_friends" = "Invita amici";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Pannello sinistro";
+"user_avatar_view_accessibility_hint" = "Cambia avatar utente";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Inserisci la tua chiave di sicurezza per continuare.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Inserisci la tua frase di sicurezza per continuare.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Il backup delle tue chiavi è in corso.";
+"security_settings_secure_backup_restore" = "Ripristina da un backup";
+"security_settings_secure_backup_reset" = "Reimposta";
+"security_settings_secure_backup_info_valid" = "Questa sessione sta eseguendo il backup delle tue chiavi.";
+"security_settings_secure_backup_info_checking" = "Controllo…";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Automatico\" usa il tema di sistema del tuo dispositivo";
+"settings_ui_theme_picker_message_invert_colours" = "\"Automatico\" usa l'impostazione \"Inverti Colori\" del tuo dispositivo";
+"room_recents_unknown_room_error_message" = "Impossibile trovare questa stanza. Assicurati che esista";
+"room_creation_dm_error" = "Impossibile creare il messaggio diretto. Ricontrolla gli utenti che vuoi invitare e riprova.";
