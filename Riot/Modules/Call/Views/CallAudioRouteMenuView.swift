@@ -22,14 +22,26 @@ protocol CallAudioRouteMenuViewDelegate: AnyObject {
 }
 
 @objcMembers
-class CallAudioRouteMenuView: UIStackView {
+class CallAudioRouteMenuView: UIView {
     
     private enum Constants {
         static let routeHeight: CGFloat = 62
+        static let stackViewInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+        static let stackViewCornerRadius: CGFloat = 13
     }
     
     let routes: [MXAudioOutputRoute]
     let currentRoute: MXAudioOutputRoute?
+    
+    private lazy var stackView: UIStackView = {
+        let view = UIStackView(frame: bounds.inset(by: Constants.stackViewInsets))
+        view.axis = .vertical
+        view.alignment = .fill
+        view.distribution = .fillEqually
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = Constants.stackViewCornerRadius
+        return view
+    }()
     
     private var theme: Theme = DefaultTheme()
     
@@ -39,7 +51,7 @@ class CallAudioRouteMenuView: UIStackView {
          currentRoute: MXAudioOutputRoute?) {
         self.routes = routes
         self.currentRoute = currentRoute
-        super.init(frame: .zero)
+        super.init(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: CGFloat(routes.count) * Constants.routeHeight)))
         setup()
     }
     
@@ -48,9 +60,7 @@ class CallAudioRouteMenuView: UIStackView {
     }
     
     private func setup() {
-        axis = .vertical
-        alignment = .fill
-        distribution = .fillEqually
+        addSubview(stackView)
         
         for (index, route) in routes.enumerated() {
             let routeView = CallAudioRouteView(withRoute: route,
@@ -60,7 +70,7 @@ class CallAudioRouteMenuView: UIStackView {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(routeTapped(_:)))
             routeView.addGestureRecognizer(tapGesture)
             
-            addArrangedSubview(routeView)
+            stackView.addArrangedSubview(routeView)
         }
         
         update(theme: theme)
@@ -73,6 +83,19 @@ class CallAudioRouteMenuView: UIStackView {
         }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        stackView.frame = bounds.inset(by: Constants.stackViewInsets)
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        
+        //  TODO: specific to SlidingModalPresenter, remove bg handling logic from there
+        superview?.backgroundColor = .clear
+    }
+    
 }
 
 extension CallAudioRouteMenuView: Themable {
@@ -80,9 +103,10 @@ extension CallAudioRouteMenuView: Themable {
     func update(theme: Theme) {
         self.theme = DefaultTheme()
         
-        backgroundColor = self.theme.colors.navigation
+        backgroundColor = .clear
+        stackView.backgroundColor = self.theme.colors.navigation
         
-        for view in arrangedSubviews {
+        for view in stackView.arrangedSubviews {
             if let view = view as? Themable {
                 view.update(theme: self.theme)
             }
