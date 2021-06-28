@@ -239,6 +239,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.submitButton.backgroundColor = ThemeService.shared.theme.tintColor;
     self.skipButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
+    self.authenticationActivityIndicator.color = ThemeService.shared.theme.textSecondaryColor;
     self.noFlowLabel.textColor = ThemeService.shared.theme.warningColor;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
