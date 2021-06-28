@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * DesignKit: Add Fonts (#4356).
+ * VoIP: Implement audio output router menu in call screen.
 
 🐛 Bugfix
  * 
