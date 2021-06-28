@@ -76,6 +76,7 @@ extension CallAudioRouteView: Themable {
         backgroundColor = theme.colors.navigation
         iconImageView.tintColor = theme.colors.secondaryContent
         titleLabel.textColor = theme.colors.primaryContent
+        titleLabel.font = theme.fonts.body
         selectedIconImageView.tintColor = theme.colors.primaryContent
         bottomLineView.backgroundColor = theme.colors.secondaryContent
     }
