@@ -8,7 +8,7 @@ Changes to be released in next version
  * DesignKit: Add Fonts (#4356).
 
 🐛 Bugfix
- * 
+ * SSO: Handle login callback URL with HTML entities (#4129).
 
 ⚠️ API Changes
  * 

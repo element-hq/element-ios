@@ -83,6 +83,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 @property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
 
+@property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
+
 @end
 
 @implementation AuthenticationViewController
@@ -118,6 +120,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     _firstViewAppearing = YES;
     
     self.crossSigningService = [CrossSigningService new];
+    self.errorPresenter = [MXKErrorAlertPresentation new];
 }
 
 - (void)viewDidLoad
@@ -1817,6 +1820,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
 {
     [self dismissSSOAuthenticationPresenter];
+    [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
 }
 
 - (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationSucceededWithToken:(NSString *)token
