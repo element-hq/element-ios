@@ -36,6 +36,7 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
     self.titleLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.titleLabel.text = NSLocalizedStringFromTable(@"share_extension_auth_prompt", @"Vector", nil);
     self.logoImageView.tintColor = ThemeService.shared.theme.tintColor;

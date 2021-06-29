@@ -21,6 +21,9 @@
 #import "ShareDataSource.h"
 #import "ShareExtensionManager.h"
 
+#import "ThemeService.h"
+#import "RiotShareExtension-Swift.h"
+
 
 @interface ShareViewController ()
 
@@ -43,6 +46,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.tintColor = ThemeService.shared.theme.tintColor;
+    self.tittleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.masterContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
     
     self.shareExtensionManagerDidUpdateAccountDataObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidUpdateAccountDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
