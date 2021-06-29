@@ -407,6 +407,10 @@ const CGFloat kComposerContainerTrailingPadding = 12;
         [UIView animateWithDuration:kActionMenuContentAlphaAnimationDuration delay:_actionMenuOpened ? 0 : .1 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self->messageComposerContainer.alpha = actionMenuOpened ? 0 : 1;
             self.rightInputToolbarButton.alpha = self->growingTextView.text.length == 0 || actionMenuOpened ? 0 : 1;
+            if (BuildSettings.voiceMessagesEnabled)
+            {
+                self.voiceMessageToolbarView.alpha = self->growingTextView.text.length > 0 || actionMenuOpened ? 0 : 1;
+            }
         } completion:nil];
         
         [UIView animateWithDuration:kActionMenuComposerHeightAnimationDuration animations:^{
