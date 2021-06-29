@@ -462,6 +462,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     // Restore here the actual content view height.
     // Indeed this height has been modified according to the authInputsView height in the default implementation of MXKAuthenticationViewController.
     [self refreshContentViewHeightConstraint];
+    
+    // the authentication indicator should be the front most view
+    [self.authInputsContainerView bringSubviewToFront:self.authenticationActivityIndicator];
 }
 
 - (void)updateAuthInputViewVisibility
