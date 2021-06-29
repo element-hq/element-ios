@@ -58,6 +58,8 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
+
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *inputTextBackgroundView;

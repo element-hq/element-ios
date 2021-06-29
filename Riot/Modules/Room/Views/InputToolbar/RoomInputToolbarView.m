@@ -34,6 +34,7 @@ const CGFloat kActionMenuAttachButtonSpringVelocity = 7;
 const CGFloat kActionMenuAttachButtonSpringDamping = .45;
 const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
+const CGFloat kComposerContainerTrailingPadding = 12;
 
 @interface RoomInputToolbarView()
 {
@@ -439,6 +440,11 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     self.actionMenuOpened = NO;
     
     if (BuildSettings.voiceMessagesEnabled == NO) {
+        self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
+        self.messageComposerContainerTrailingConstraint.constant = (textMessage.length ? self.frame.size.width - self.rightInputToolbarButton.frame.origin.x : 0.0f) + kComposerContainerTrailingPadding;
+
+        [self layoutIfNeeded];
+        
         return;
     }
     

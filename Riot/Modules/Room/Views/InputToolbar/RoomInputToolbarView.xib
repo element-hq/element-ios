@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -150,6 +150,7 @@
                 <outlet property="messageComposerContainer" destination="QWp-NV-uh5" id="APR-B5-ogC"/>
                 <outlet property="messageComposerContainerBottomConstraint" destination="NGr-2o-sOP" id="oez-6D-IKA"/>
                 <outlet property="messageComposerContainerTopConstraint" destination="WyZ-3i-OHi" id="OcO-1f-bNA"/>
+                <outlet property="messageComposerContainerTrailingConstraint" destination="hXO-cY-Jgz" id="0m7-AB-90i"/>
                 <outlet property="rightInputToolbarButton" destination="G8Z-CM-tGs" id="NCk-5m-aNF"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="151.12443778110946"/>
