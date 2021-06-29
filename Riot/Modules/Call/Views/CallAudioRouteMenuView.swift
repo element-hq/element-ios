@@ -18,7 +18,7 @@ import Foundation
 
 @objc
 protocol CallAudioRouteMenuViewDelegate: AnyObject {
-    func callAudioRouteMenuView(_ view: CallAudioRouteMenuView, didSelectRoute route: MXAudioOutputRoute)
+    func callAudioRouteMenuView(_ view: CallAudioRouteMenuView, didSelectRoute route: MXiOSAudioOutputRoute)
 }
 
 @objcMembers
@@ -30,8 +30,8 @@ class CallAudioRouteMenuView: UIView {
         static let stackViewCornerRadius: CGFloat = 13
     }
     
-    let routes: [MXAudioOutputRoute]
-    let currentRoute: MXAudioOutputRoute?
+    let routes: [MXiOSAudioOutputRoute]
+    let currentRoute: MXiOSAudioOutputRoute?
     
     private lazy var stackView: UIStackView = {
         let view = UIStackView(frame: bounds.inset(by: Constants.stackViewInsets))
@@ -47,8 +47,8 @@ class CallAudioRouteMenuView: UIView {
     
     weak var delegate: CallAudioRouteMenuViewDelegate?
     
-    init(withRoutes routes: [MXAudioOutputRoute],
-         currentRoute: MXAudioOutputRoute?) {
+    init(withRoutes routes: [MXiOSAudioOutputRoute],
+         currentRoute: MXiOSAudioOutputRoute?) {
         self.routes = routes
         self.currentRoute = currentRoute
         super.init(frame: CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: CGFloat(routes.count) * Constants.routeHeight)))

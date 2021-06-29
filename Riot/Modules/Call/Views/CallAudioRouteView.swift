@@ -24,13 +24,13 @@ class CallAudioRouteView: UIView {
     @IBOutlet private weak var selectedIconImageView: UIImageView!
     @IBOutlet private weak var bottomLineView: UIView!
 
-    let route: MXAudioOutputRoute
+    let route: MXiOSAudioOutputRoute
     private let isSelected: Bool
     private let isBottomLineHidden: Bool
     
     private var theme: Theme = ThemeService.shared().theme
     
-    init(withRoute route: MXAudioOutputRoute,
+    init(withRoute route: MXiOSAudioOutputRoute,
          isSelected: Bool,
          isBottomLineHidden: Bool = false) {
         self.route = route

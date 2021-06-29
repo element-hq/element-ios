@@ -231,7 +231,7 @@ CallAudioRouteMenuViewDelegate>
 
 - (void)showAudioDeviceOptions
 {
-    MXAudioOutputRouter *router = self.mxCall.audioOutputRouter;
+    MXiOSAudioOutputRouter *router = self.mxCall.audioOutputRouter;
     if (router.isAnyExternalDeviceConnected)
     {
         self.slidingModalPresenter = [SlidingModalPresenter new];
@@ -251,10 +251,10 @@ CallAudioRouteMenuViewDelegate>
         //  toggle between built-in and loud speakers
         switch (router.currentRoute.routeType)
         {
-            case MXAudioOutputRouteTypeBuiltIn:
+            case MXiOSAudioOutputRouteTypeBuiltIn:
                 [router changeCurrentRouteTo:router.loudSpeakersRoute];
                 break;
-            case MXAudioOutputRouteTypeLoudSpeakers:
+            case MXiOSAudioOutputRouteTypeLoudSpeakers:
                 [router changeCurrentRouteTo:router.builtInRoute];
                 break;
             default:
@@ -268,17 +268,17 @@ CallAudioRouteMenuViewDelegate>
 {
     switch (self.mxCall.audioOutputRouter.currentRoute.routeType)
     {
-        case MXAudioOutputRouteTypeBuiltIn:
+        case MXiOSAudioOutputRouteTypeBuiltIn:
             [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"]
                                 forState:UIControlStateNormal];
             break;
-        case MXAudioOutputRouteTypeLoudSpeakers:
+        case MXiOSAudioOutputRouteTypeLoudSpeakers:
             [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_on_icon"]
                                 forState:UIControlStateNormal];
             break;
-        case MXAudioOutputRouteTypeExternalWired:
-        case MXAudioOutputRouteTypeExternalBluetooth:
-        case MXAudioOutputRouteTypeExternalCar:
+        case MXiOSAudioOutputRouteTypeExternalWired:
+        case MXiOSAudioOutputRouteTypeExternalBluetooth:
+        case MXiOSAudioOutputRouteTypeExternalCar:
             [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_external_icon"]
                                 forState:UIControlStateNormal];
             break;
@@ -769,7 +769,7 @@ CallAudioRouteMenuViewDelegate>
 
 #pragma mark - CallAudioRouteMenuViewDelegate
 
-- (void)callAudioRouteMenuView:(CallAudioRouteMenuView *)view didSelectRoute:(MXAudioOutputRoute *)route
+- (void)callAudioRouteMenuView:(CallAudioRouteMenuView *)view didSelectRoute:(MXiOSAudioOutputRoute *)route
 {
     [self.mxCall.audioOutputRouter changeCurrentRouteTo:route];
     [self.slidingModalPresenter dismissWithAnimated:YES completion:nil];
