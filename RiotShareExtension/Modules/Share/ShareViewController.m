@@ -28,7 +28,7 @@
 @interface ShareViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *masterContainerView;
-@property (weak, nonatomic) IBOutlet UILabel *tittleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 
 @property (nonatomic) SegmentedViewController *segmentedViewController;
@@ -48,7 +48,7 @@
     [super viewDidLoad];
     
     self.view.tintColor = ThemeService.shared.theme.tintColor;
-    self.tittleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.masterContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
     
     self.shareExtensionManagerDidUpdateAccountDataObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidUpdateAccountDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -103,14 +103,14 @@
     
     if ([ShareExtensionManager sharedManager].userAccount)
     {
-        self.tittleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
+        self.titleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
         [self configureSegmentedViewController];
     }
     else
     {
         NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
         NSString *bundleDisplayName = infoDictionary[@"CFBundleDisplayName"];
-        self.tittleLabel.text = bundleDisplayName;
+        self.titleLabel.text = bundleDisplayName;
         [self configureFallbackViewController];
     }
 }

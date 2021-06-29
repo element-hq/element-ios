@@ -14,7 +14,7 @@
             <connections>
                 <outlet property="contentView" destination="jAn-9F-DlU" id="NWV-TS-MGK"/>
                 <outlet property="masterContainerView" destination="oax-z3-vv0" id="KvN-B4-ZkF"/>
-                <outlet property="tittleLabel" destination="BQ5-AW-rsV" id="qm6-T7-3LB"/>
+                <outlet property="titleLabel" destination="BQ5-AW-rsV" id="qm6-T7-3LB"/>
                 <outlet property="view" destination="Bej-An-0PZ" id="sgO-5Q-y1c"/>
             </connections>
         </placeholder>
