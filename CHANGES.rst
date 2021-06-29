@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * SSO: Handle login callback URL with HTML entities (#4129).
+ * Theme: Fix authentication activity indicator colour when using a dark theme.
 
 ⚠️ API Changes
  * 
