@@ -29,7 +29,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         static let maximumAudioRecordingDuration: TimeInterval = 120.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
         static let elapsedTimeFormat = "m:ss"
-        static let minimumRecordingDuration = 5.0
+        static let minimumRecordingDuration = 2.0
     }
     
     private static let timeFormatter: DateFormatter = {
@@ -179,15 +179,16 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - Private
     
     private func finishRecording() {
+        let recordDuration = audioRecorder?.currentTime
         audioRecorder?.stopRecording()
-        
+
         guard let url = audioRecorder?.url else {
             MXLog.error("Invalid audio recording URL")
             return
         }
         
         guard isInLockedMode else {
-            if audioRecorder?.currentTime ?? 0 >= Constants.minimumRecordingDuration {
+            if recordDuration ?? 0 >= Constants.minimumRecordingDuration {
                 sendRecordingAtURL(url)
             }
             return

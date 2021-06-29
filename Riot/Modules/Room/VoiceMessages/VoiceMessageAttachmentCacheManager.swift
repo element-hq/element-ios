@@ -73,9 +73,9 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        workQueue.async {
+//        workQueue.async {
             self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
-        }
+//        }
     }
     
     private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
