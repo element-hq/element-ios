@@ -19,22 +19,22 @@ PODS:
   - BlueRSA (1.0.34)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - Down (0.11.0)
-  - DTCoreText (1.6.25):
-    - DTCoreText/Core (= 1.6.25)
+  - DTCoreText (1.6.26):
+    - DTCoreText/Core (= 1.6.26)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.25):
+  - DTCoreText/Core (1.6.26):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.17)
-  - DTFoundation/DTAnimatedGIF (1.7.17)
-  - DTFoundation/DTHTMLParser (1.7.17):
+  - DTFoundation/Core (1.7.18)
+  - DTFoundation/DTAnimatedGIF (1.7.18)
+  - DTFoundation/DTHTMLParser (1.7.18):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.17):
+  - DTFoundation/UIKit (1.7.18):
     - DTFoundation/Core
   - FLEX (4.4.1)
   - FlowCommoniOS (1.10.0)
@@ -56,29 +56,29 @@ PODS:
   - MatomoTracker (7.4.1):
     - MatomoTracker/Core (= 7.4.1)
   - MatomoTracker/Core (7.4.1)
-  - MatrixKit (0.15.2):
+  - MatrixKit (0.15.3):
     - Down (~> 0.11.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.15.2)
-    - MatrixSDK (= 0.19.2)
-  - MatrixKit/Core (0.15.2):
+    - MatrixKit/Core (= 0.15.3)
+    - MatrixSDK (= 0.19.3)
+  - MatrixKit/Core (0.15.3):
     - Down (~> 0.11.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.19.2)
-  - MatrixSDK (0.19.2):
-    - MatrixSDK/Core (= 0.19.2)
-  - MatrixSDK/Core (0.19.2):
+    - MatrixSDK (= 0.19.3)
+  - MatrixSDK (0.19.3):
+    - MatrixSDK/Core (= 0.19.3)
+  - MatrixSDK/Core (0.19.3):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.4)
     - Realm (= 10.7.6)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.19.2):
+  - MatrixSDK/JingleCallStack (0.19.3):
     - JitsiMeetSDK (= 3.5.0)
     - MatrixSDK/Core
   - OLMKit (3.2.4):
@@ -120,7 +120,7 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.4.1)
-  - MatrixKit (= 0.15.2)
+  - MatrixKit (= 0.15.3)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -180,8 +180,8 @@ SPEC CHECKSUMS:
   BlueRSA: 6f9776d62d9773502415a7db3bcbb2bbb3f71fc3
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
-  DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
-  DTFoundation: 989698be00d3f19438c38a49a8ebb3f6919dcac5
+  DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
+  DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
   FLEX: 7ca2c8cd3a435ff501ff6d2f2141e9bdc934eaab
   FlowCommoniOS: bcdf81a5f30717e711af08a8c812eb045411ba94
   GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
@@ -196,8 +196,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
-  MatrixKit: e599b337cb4e5f13e95849a1cb4b60adc12916ad
-  MatrixSDK: f36fd5831ba91eb4ce0bf3ebe702b83875a296a5
+  MatrixKit: 6cbe65db11a5450ec8cc02d51660f43b5e95a141
+  MatrixSDK: c15663c67bfd2991d897d973c1551ba4de900e25
   OLMKit: 2d73cd67d149b5c3e3a8eb8ecae93d0b429d8a02
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
@@ -211,6 +211,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: f59708f3185dc0e3713ccef3f13e0916d6d9e733
+PODFILE CHECKSUM: c39d88adc5ec2df412af32b64ceb99a9a1ee92a8
 
 COCOAPODS: 1.10.1
