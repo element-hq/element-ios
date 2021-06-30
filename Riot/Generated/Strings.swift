@@ -4622,6 +4622,14 @@ internal enum VectorL10n {
   internal static var socialLoginListTitleSignUp: String { 
     return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
   }
+  /// Change space avatar
+  internal static var spaceAvatarViewAccessibilityHint: String { 
+    return VectorL10n.tr("Vector", "space_avatar_view_accessibility_hint") 
+  }
+  /// avatar
+  internal static var spaceAvatarViewAccessibilityLabel: String { 
+    return VectorL10n.tr("Vector", "space_avatar_view_accessibility_label") 
+  }
   /// BETA
   internal static var spaceBetaAnnounceBadge: String { 
     return VectorL10n.tr("Vector", "space_beta_announce_badge") 
@@ -4649,6 +4657,10 @@ internal enum VectorL10n {
   /// Spaces aren’t here yet
   internal static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
+  }
+  /// Home
+  internal static var spacesHomeSpaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_home_space_title") 
   }
   /// Start
   internal static var start: String { 

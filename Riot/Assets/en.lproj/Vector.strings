@@ -1655,6 +1655,13 @@ Tap the + to start adding people.";
 "space_beta_announce_subtitle" = "The new version of communities";
 "space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";
 
+"spaces_home_space_title" = "Home";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_avatar_view_accessibility_hint" = "Change space avatar";
+
 // Mark: - User avatar view
 
 "user_avatar_view_accessibility_label" = "avatar";
