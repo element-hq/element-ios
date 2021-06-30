@@ -103,7 +103,8 @@ final class SideMenuViewModel: SideMenuViewModelType {
             .feedback
         ]
         
-        let appVersion = self.appInfo.appVersion?.bundleShortVersion
+        // Hide app version
+        let appVersion: String? = nil
         
         let viewData = SideMenuViewData(userAvatarViewData: userAvatarViewData, sideMenuItems: sideMenuItems, appVersion: appVersion)
         
