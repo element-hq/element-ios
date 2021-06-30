@@ -11,6 +11,7 @@ Changes to be released in next version
 🐛 Bugfix
  * SSO: Handle login callback URL with HTML entities (#4129).
  * Share extension: Fix theme in dark mode (#4486).
+ * Theme: Fix authentication activity indicator colour when using a dark theme (#4485).
 
 ⚠️ API Changes
  * 
