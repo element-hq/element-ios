@@ -153,4 +153,8 @@ class DefaultTheme: NSObject, Theme {
     lazy var colors: Colors = {
         return LightColors()
     }()
+    
+    lazy var fonts: Fonts = {
+        return ElementFonts()
+    }()
 }

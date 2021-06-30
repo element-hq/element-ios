@@ -146,4 +146,8 @@ class DarkTheme: NSObject, Theme {
     lazy var colors: Colors = {
         return DarkColors()
     }()
+    
+    lazy var fonts: Fonts = {
+        return ElementFonts()
+    }()
 }
