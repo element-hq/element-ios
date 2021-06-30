@@ -10,6 +10,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * SSO: Handle login callback URL with HTML entities (#4129).
+ * Share extension: Fix theme in dark mode (#4486).
 
 ⚠️ API Changes
  * 
