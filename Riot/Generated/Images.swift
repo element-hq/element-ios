@@ -169,6 +169,7 @@ internal enum Asset {
     internal static let sideMenuIcon = ImageAsset(name: "side_menu_icon")
     internal static let featureUnavaibleArtwork = ImageAsset(name: "feature_unavaible_artwork")
     internal static let featureUnavaibleArtworkDark = ImageAsset(name: "feature_unavaible_artwork_dark")
+    internal static let spaceHomeIcon = ImageAsset(name: "space_home_icon")
     internal static let tabFavourites = ImageAsset(name: "tab_favourites")
     internal static let tabGroups = ImageAsset(name: "tab_groups")
     internal static let tabHome = ImageAsset(name: "tab_home")
