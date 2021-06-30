@@ -29,8 +29,7 @@ final class SlidingModalPresentationAnimator: NSObject {
     // MARK: - Properties
 
     private let isPresenting: Bool
-    private let isSpanning: Bool
-    private let blurBackground: Bool
+    private let options: SlidingModalOption
     
     // MARK: - Setup
     
@@ -38,10 +37,9 @@ final class SlidingModalPresentationAnimator: NSObject {
     ///
     /// - Parameter isPresenting: true to animate presentation or false to animate dismissal
     /// - Parameter isSpanning: true to remove left, bottom and right spaces between the screen edges and the content view
-    required public init(isPresenting: Bool, isSpanning: Bool, blurBackground: Bool) {
+    required public init(isPresenting: Bool, options: SlidingModalOption) {
         self.isPresenting = isPresenting
-        self.isSpanning = isSpanning
-        self.blurBackground = blurBackground
+        self.options = options
         super.init()
     }
     
@@ -50,7 +48,7 @@ final class SlidingModalPresentationAnimator: NSObject {
     // Animate presented view controller presentation
     private func animatePresentation(using transitionContext: UIViewControllerContextTransitioning) {
         guard let presentedViewController = transitionContext.viewController(forKey: .to),
-            let sourceViewController = transitionContext.viewController(forKey: .from) else {
+            transitionContext.viewController(forKey: .from) != nil else {
                 return
         }
         
@@ -61,8 +59,9 @@ final class SlidingModalPresentationAnimator: NSObject {
         let containerView = transitionContext.containerView
         
         // Spanning not available for iPad
-        let slidingModalContainerView = isSpanning && UIDevice.current.userInterfaceIdiom != .pad ? SpanningSlidingModalContainerView.instantiate() : SlidingModalContainerView.instantiate()
-        slidingModalContainerView.blurBackground = self.blurBackground
+        let slidingModalContainerView = options.contains(.spanning) && UIDevice.current.userInterfaceIdiom != .pad ? SpanningSlidingModalContainerView.instantiate() : SlidingModalContainerView.instantiate()
+        slidingModalContainerView.blurBackground = options.contains(.blurBackground)
+        slidingModalContainerView.centerInScreen = options.contains(.centerInScreen)
         slidingModalContainerView.alpha = 0
         slidingModalContainerView.updateDimmingViewAlpha(0.0)
         

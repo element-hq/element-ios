@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "call_speaker_off_icon.png",
+      "filename" : "Button VoIP.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "call_speaker_off_icon@2x.png",
+      "filename" : "Button VoIP@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "call_speaker_off_icon@3x.png",
+      "filename" : "Button VoIP@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -21,6 +21,6 @@
     "version" : 1
   },
   "properties" : {
-    "template-rendering-intent" : "template"
+    "template-rendering-intent" : "original"
   }
 }

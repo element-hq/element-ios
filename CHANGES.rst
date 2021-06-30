@@ -6,10 +6,12 @@ Changes to be released in next version
 
 🙌 Improvements
  * DesignKit: Add Fonts (#4356).
+ * VoIP: Implement audio output router menu in call screen.
 
 🐛 Bugfix
  * SSO: Handle login callback URL with HTML entities (#4129).
- * Theme: Fix authentication activity indicator colour when using a dark theme.
+ * Share extension: Fix theme in dark mode (#4486).
+ * Theme: Fix authentication activity indicator colour when using a dark theme (#4485).
 
 ⚠️ API Changes
  * 
