@@ -244,6 +244,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SpaceFeatureUnaivableViewController>(storyboard: SpaceFeatureUnaivableViewController.self)
   }
+  internal enum SpaceListViewController: StoryboardType {
+    internal static let storyboardName = "SpaceListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceListViewController>(storyboard: SpaceListViewController.self)
+  }
   internal enum TemplateScreenViewController: StoryboardType {
     internal static let storyboardName = "TemplateScreenViewController"
 
