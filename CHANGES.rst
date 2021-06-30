@@ -5,6 +5,30 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.4.4 (2021-06-30)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * DesignKit: Add Fonts (#4356).
  * VoIP: Implement audio output router menu in call screen.
 
@@ -24,6 +48,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.3)).
 
 Changes in 1.4.3 (2021-06-24)
 =================================================
