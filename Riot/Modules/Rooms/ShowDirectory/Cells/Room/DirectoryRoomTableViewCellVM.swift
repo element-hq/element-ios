@@ -27,7 +27,19 @@ struct DirectoryRoomTableViewCellVM {
 
     // TODO: Use AvatarView subclass in the cell view
     func setAvatar(in avatarImageView: MXKImageView) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: self.avatarViewData.matrixItemId, withDisplayName: title)
+        
+        let defaultAvatarImage: UIImage?
+        var defaultAvatarImageContentMode: UIView.ContentMode = .scaleAspectFill
+        
+        switch self.avatarViewData.fallbackImage {
+        case .matrixItem(let matrixItemId, let matrixItemDisplayName):
+            defaultAvatarImage = AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: matrixItemDisplayName)
+        case .image(let image, let contentMode):
+            defaultAvatarImage = image
+            defaultAvatarImageContentMode = contentMode ?? .scaleAspectFill
+        case .none:
+            defaultAvatarImage = nil
+        }
         
         if let avatarUrl = self.avatarViewData.avatarUrl {
             avatarImageView.enableInMemoryCache = true
@@ -37,10 +49,12 @@ struct DirectoryRoomTableViewCellVM {
                                         andImageOrientation: .up,
                                         toFitViewSize: avatarImageView.frame.size,
                                         with: MXThumbnailingMethodCrop,
-                                        previewImage: avatarImage,
+                                        previewImage: defaultAvatarImage,
                                         mediaManager: self.avatarViewData.mediaManager)
+            avatarImageView.contentMode = .scaleAspectFill
         } else {
-            avatarImageView.image = avatarImage
+            avatarImageView.image = defaultAvatarImage
+            avatarImageView.contentMode = defaultAvatarImageContentMode
         }
     }
     
