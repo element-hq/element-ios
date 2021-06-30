@@ -28,7 +28,11 @@
 
 #import "IncomingCallView.h"
 
-@interface CallViewController () <PictureInPicturable, DialpadViewControllerDelegate, CallTransferMainViewControllerDelegate>
+@interface CallViewController () <
+PictureInPicturable,
+DialpadViewControllerDelegate,
+CallTransferMainViewControllerDelegate,
+CallAudioRouteMenuViewDelegate>
 {
     // Current alert (if any).
     UIAlertController *currentAlert;
@@ -44,6 +48,8 @@
 @property (nonatomic, strong) CallPiPView *pipView;
 
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+@property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
+@property (nonatomic, strong) CallAudioRouteMenuView *audioRoutesMenuView;
 
 @end
 
@@ -99,7 +105,8 @@
     
     UIImage *moreButtonImage = [UIImage imageNamed:@"call_more_icon"];
     
-    [self.moreButton setImage:moreButtonImage forState:UIControlStateNormal];
+    [self.moreButtonForVoice setImage:moreButtonImage forState:UIControlStateNormal];
+    [self.moreButtonForVideo setImage:moreButtonImage forState:UIControlStateNormal];
     
     // Hang up
     
@@ -220,6 +227,62 @@
     };
     
     return incomingCallView;
+}
+
+- (void)showAudioDeviceOptions
+{
+    MXiOSAudioOutputRouter *router = self.mxCall.audioOutputRouter;
+    if (router.isAnyExternalDeviceConnected)
+    {
+        self.slidingModalPresenter = [SlidingModalPresenter new];
+        
+        _audioRoutesMenuView = [[CallAudioRouteMenuView alloc] initWithRoutes:router.availableOutputRoutes
+                                                                 currentRoute:router.currentRoute];
+        _audioRoutesMenuView.delegate = self;
+        
+        [self.slidingModalPresenter presentView:_audioRoutesMenuView
+                                           from:self
+                                       animated:true
+                                        options:SlidingModalPresenter.CenterInScreenOption
+                                     completion:nil];
+    }
+    else
+    {
+        //  toggle between built-in and loud speakers
+        switch (router.currentRoute.routeType)
+        {
+            case MXiOSAudioOutputRouteTypeBuiltIn:
+                [router changeCurrentRouteTo:router.loudSpeakersRoute];
+                break;
+            case MXiOSAudioOutputRouteTypeLoudSpeakers:
+                [router changeCurrentRouteTo:router.builtInRoute];
+                break;
+            default:
+                break;
+        }
+        
+    }
+}
+
+- (void)configureSpeakerButton
+{
+    switch (self.mxCall.audioOutputRouter.currentRoute.routeType)
+    {
+        case MXiOSAudioOutputRouteTypeBuiltIn:
+            [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_off_icon"]
+                                forState:UIControlStateNormal];
+            break;
+        case MXiOSAudioOutputRouteTypeLoudSpeakers:
+            [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_on_icon"]
+                                forState:UIControlStateNormal];
+            break;
+        case MXiOSAudioOutputRouteTypeExternalWired:
+        case MXiOSAudioOutputRouteTypeExternalBluetooth:
+        case MXiOSAudioOutputRouteTypeExternalCar:
+            [self.speakerButton setImage:[UIImage imageNamed:@"call_speaker_external_icon"]
+                                forState:UIControlStateNormal];
+            break;
+    }
 }
 
 #pragma mark - MXCallDelegate
@@ -702,6 +765,14 @@
 - (void)didExitPiP
 {
     self.inPiP = NO;
+}
+
+#pragma mark - CallAudioRouteMenuViewDelegate
+
+- (void)callAudioRouteMenuView:(CallAudioRouteMenuView *)view didSelectRoute:(MXiOSAudioOutputRoute *)route
+{
+    [self.mxCall.audioOutputRouter changeCurrentRouteTo:route];
+    [self.slidingModalPresenter dismissWithAnimated:YES completion:nil];
 }
 
 @end

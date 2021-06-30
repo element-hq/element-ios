@@ -107,6 +107,7 @@ final class SideMenuViewController: UIViewController {
         
         self.userAvatarView.update(theme: theme)
         self.userDisplayNameLabel.textColor = theme.textPrimaryColor
+        self.userDisplayNameLabel.font = theme.fonts.title3SB
         self.userIdLabel.textColor = theme.textSecondaryColor
         
         for sideMenuActionView in self.sideMenuActionViews {
