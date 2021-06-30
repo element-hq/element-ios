@@ -347,7 +347,7 @@
 "settings_privacy_policy_url" = "https://riot.im/privacy";
 "settings_third_party_notices" = "Notas de Terceiros";
 "settings_send_crash_report" = "Enviar dados de cash & uso anon";
-"settings_enable_rageshake" = "Agite com raiva para reportar bug";
+"settings_enable_rageshake" = "Agitar com raiva para reportar bug";
 "settings_clear_cache" = "Limpar cache";
 "settings_change_password" = "Mudar senha";
 "settings_old_password" = "senha antiga";
@@ -482,7 +482,7 @@
 "homeserver_connection_lost" = "Não foi possível conectar-se ao servidorcasa.";
 "public_room_section_title" = "Salas Públicas (em %@):";
 "bug_report_prompt" = "O aplicativo tem crashado da última vez. Você gostaria de submeter um reporte de crash?";
-"rage_shake_prompt" = "Você parece estar agitando o telefone em frustração. Você gostaria desubmeter um reporte de bug?";
+"rage_shake_prompt" = "Você parece estar agitando o telefone em frustração. Você gostaria de submeter um reporte de bug?";
 "do_not_ask_again" = "Não perguntar de novo";
 "camera_access_not_granted" = "%@ não tem permissão para usar Câmera, por favor mude configurações de privacidade";
 "large_badge_value_k_format" = "%.1fK";
@@ -842,7 +842,7 @@
 "room_participants_action_security_status_verified" = "Verificado";
 "room_participants_action_security_status_verify" = "Verificar";
 "room_participants_action_security_status_complete_security" = "Completar segurança";
-"room_participants_security_information_room_encrypted" = "Mensagens nesta sala são encriptadas ponta-a-ponta.\n\nSuas mensagens são asseguradas com cadeados e somente você e a/o recipiente têm as chaves únicas para destrancá-los.";
+"room_participants_security_information_room_encrypted" = "Mensagens nesta sala são encriptadas ponta-a-ponta.\n\nSuas mensagens são asseguradas com cadeados e somente você e a/o recipiente têm as chaves únicas para as destrancar.";
 "room_member_power_level_custom_in" = "Personalizada(o) (%@) em %@";
 "room_member_power_level_short_custom" = "Perso";
 "room_accessiblity_scroll_to_bottom" = "Rolar para fundo";
@@ -1172,7 +1172,7 @@
 "room_details_room_name_for_dm" = "Nome";
 "room_details_photo_for_dm" = "Foto";
 "room_details_title_for_dm" = "Detalhes";
-"room_participants_security_information_room_encrypted_for_dm" = "Mensagens aqui são encriptadas ponta-a-ponta.\n\nSuas mensagens são asseguradas com cadeados e somente você e a/o recipiente têm as chaves únicas para os destrancar.";
+"room_participants_security_information_room_encrypted_for_dm" = "Mensagens aqui são encriptadas ponta-a-ponta.\n\nSuas mensagens são asseguradas com cadeados e somente você e a/o recipiente têm as chaves únicas para as destrancar.";
 "room_participants_security_information_room_not_encrypted_for_dm" = "Mensagens aqui não são encriptadas ponta-a-ponta.";
 "room_participants_filter_room_members_for_dm" = "Filtrar membros";
 "room_participants_leave_prompt_msg_for_dm" = "Tem certeza que você quer sair?";

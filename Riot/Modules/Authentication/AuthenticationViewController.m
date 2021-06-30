@@ -83,6 +83,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 @property (nonatomic, getter = isFirstViewAppearing) BOOL firstViewAppearing;
 
+@property (nonatomic, strong) MXKErrorAlertPresentation *errorPresenter;
+
 @end
 
 @implementation AuthenticationViewController
@@ -118,6 +120,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     _firstViewAppearing = YES;
     
     self.crossSigningService = [CrossSigningService new];
+    self.errorPresenter = [MXKErrorAlertPresentation new];
 }
 
 - (void)viewDidLoad
@@ -170,6 +173,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     self.homeServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_home_server_placeholder", @"Vector", nil);
     self.identityServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_identity_server_placeholder", @"Vector", nil);
+    
+    self.authenticationActivityIndicatorContainerView.layer.cornerRadius = 5;
+    [self.authenticationActivityIndicator addObserver:self
+                                           forKeyPath:@"hidden"
+                                              options:0
+                                              context:nil];
     
     // Custom used authInputsView
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
@@ -239,6 +248,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.submitButton.backgroundColor = ThemeService.shared.theme.tintColor;
     self.skipButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
+    self.authenticationActivityIndicator.color = ThemeService.shared.theme.textSecondaryColor;
+    self.authenticationActivityIndicatorContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
     self.noFlowLabel.textColor = ThemeService.shared.theme.warningColor;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
@@ -342,6 +353,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [_keyboardAvoider stopAvoiding];
+    
+    [self.authenticationActivityIndicator removeObserver:self forKeyPath:@"hidden"];
     
     [super viewDidDisappear:animated];
 }
@@ -461,6 +474,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     // Restore here the actual content view height.
     // Indeed this height has been modified according to the authInputsView height in the default implementation of MXKAuthenticationViewController.
     [self refreshContentViewHeightConstraint];
+    
+    // the authentication indicator should be the front most view
+    [self.authInputsContainerView bringSubviewToFront:self.authenticationActivityIndicatorContainerView];
 }
 
 - (void)updateAuthInputViewVisibility
@@ -1355,6 +1371,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         // Refresh content view height by considering the updated frame of the options container.
         [self refreshContentViewHeightConstraint];
     }
+    else if ([@"hidden" isEqualToString:keyPath])
+    {
+        UIActivityIndicatorView *indicator = (UIActivityIndicatorView*)object;
+        [self.authenticationActivityIndicatorContainerView setHidden:indicator.hidden];
+    }
     else
     {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -1817,6 +1838,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationDidFailWithError:(NSError *)error
 {
     [self dismissSSOAuthenticationPresenter];
+    [self.errorPresenter presentErrorFromViewController:self forError:error animated:YES handler:nil];
 }
 
 - (void)ssoAuthenticationPresenter:(SSOAuthenticationPresenter *)presenter authenticationSucceededWithToken:(NSString *)token

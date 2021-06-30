@@ -70,7 +70,9 @@ final class SSOAuthenticationService: NSObject {
     }
     
     func loginToken(from url: URL) -> String? {
-        guard let components = URLComponents(string: url.absoluteString) else {
+        // If needed convert URL string from HTML entities into correct character representations using UTF8  (like '&amp;' with '&')
+        guard let sanitizedStringURL = url.absoluteString.replacingHTMLEntities(),
+              let components = URLComponents(string: sanitizedStringURL) else {
             return nil
         }
         return components.vc_getQueryItemValue(for: SSOURLConstants.Parameters.callbackLoginToken)
