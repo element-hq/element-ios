@@ -16,17 +16,14 @@
 
 import Foundation
 
-struct UserAvatarViewData: AvatarViewDataProtocol {
-    let userId: String
-    let displayName: String?
-    let avatarUrl: String?
-    let mediaManager: MXMediaManager
+struct AvatarViewData: AvatarViewDataProtocol {
     
-    var matrixItemId: String {
-        return userId
-    }
+    /// Matrix item avatar URL (user or room avatar url)
+    var avatarUrl: String?
+        
+    /// Matrix media handler
+    var mediaManager: MXMediaManager
     
-    var fallbackImage: AvatarFallbackImage? {
-        return .matrixItem(matrixItemId, displayName)
-    }
+    /// Fallback image used when avatarUrl is nil
+    var fallbackImage: AvatarFallbackImage?
 }
