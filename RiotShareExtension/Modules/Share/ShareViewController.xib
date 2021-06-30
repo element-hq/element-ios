@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,10 +20,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0SU-xL-B4a" userLabel="Overlay View">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <color key="backgroundColor" red="0.16337278091968011" green="0.16337278091968011" blue="0.16337278091968011" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oax-z3-vv0" userLabel="Master Container View">
                     <rect key="frame" x="30" y="58.5" width="315" height="550"/>
                     <subviews>
@@ -34,7 +27,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="315" height="40"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BQ5-AW-rsV" userLabel="Title Label">
-                                    <rect key="frame" x="133" y="8" width="50.5" height="24"/>
+                                    <rect key="frame" x="132.5" y="8" width="50" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -81,11 +74,8 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="0SU-xL-B4a" secondAttribute="bottom" id="51f-Wf-Yg2"/>
                 <constraint firstAttribute="bottom" secondItem="oax-z3-vv0" secondAttribute="bottom" priority="750" constant="10" id="Qjd-aK-VSL"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="oax-z3-vv0" secondAttribute="trailing" constant="30" id="VUX-RZ-Jke"/>
-                <constraint firstItem="0SU-xL-B4a" firstAttribute="top" secondItem="Bej-An-0PZ" secondAttribute="top" id="avs-GA-7eh"/>
-                <constraint firstAttribute="trailing" secondItem="0SU-xL-B4a" secondAttribute="trailing" id="bgh-PD-Xqx"/>
                 <constraint firstAttribute="trailing" secondItem="oax-z3-vv0" secondAttribute="trailing" priority="750" constant="30" id="cYZ-zQ-1Dh"/>
                 <constraint firstItem="oax-z3-vv0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Bej-An-0PZ" secondAttribute="leading" constant="30" id="h8V-gU-iRt"/>
                 <constraint firstItem="oax-z3-vv0" firstAttribute="centerY" secondItem="Bej-An-0PZ" secondAttribute="centerY" id="lbe-HZ-ZsR"/>
@@ -94,7 +84,6 @@
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="oax-z3-vv0" secondAttribute="bottom" constant="10" id="qnO-IP-fp3"/>
                 <constraint firstItem="oax-z3-vv0" firstAttribute="leading" secondItem="Bej-An-0PZ" secondAttribute="leading" priority="750" constant="30" id="sYU-AK-85d"/>
                 <constraint firstItem="oax-z3-vv0" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Bej-An-0PZ" secondAttribute="top" constant="40" id="vXO-uW-nFN"/>
-                <constraint firstItem="0SU-xL-B4a" firstAttribute="leading" secondItem="Bej-An-0PZ" secondAttribute="leading" id="wol-Zy-dCb"/>
             </constraints>
             <point key="canvasLocation" x="39.5" y="89.5"/>
         </view>
