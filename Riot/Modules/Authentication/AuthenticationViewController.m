@@ -174,6 +174,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.homeServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_home_server_placeholder", @"Vector", nil);
     self.identityServerTextField.placeholder = NSLocalizedStringFromTable(@"auth_identity_server_placeholder", @"Vector", nil);
     
+    self.authenticationActivityIndicatorContainerView.layer.cornerRadius = 5;
+    [self.authenticationActivityIndicator addObserver:self
+                                           forKeyPath:@"hidden"
+                                              options:0
+                                              context:nil];
+    
     // Custom used authInputsView
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeLogin];
     [self registerAuthInputsViewClass:AuthInputsView.class forAuthType:MXKAuthenticationTypeRegister];
@@ -243,6 +249,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.skipButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     self.authenticationActivityIndicator.color = ThemeService.shared.theme.textSecondaryColor;
+    self.authenticationActivityIndicatorContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
     self.noFlowLabel.textColor = ThemeService.shared.theme.warningColor;
     
     NSMutableAttributedString *forgotPasswordTitle = [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"auth_forgot_password", @"Vector", nil)];
@@ -346,6 +353,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)viewDidDisappear:(BOOL)animated
 {
     [_keyboardAvoider stopAvoiding];
+    
+    [self.authenticationActivityIndicator removeObserver:self forKeyPath:@"hidden"];
     
     [super viewDidDisappear:animated];
 }
@@ -467,7 +476,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self refreshContentViewHeightConstraint];
     
     // the authentication indicator should be the front most view
-    [self.authInputsContainerView bringSubviewToFront:self.authenticationActivityIndicator];
+    [self.authInputsContainerView bringSubviewToFront:self.authenticationActivityIndicatorContainerView];
 }
 
 - (void)updateAuthInputViewVisibility
@@ -1361,6 +1370,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     {
         // Refresh content view height by considering the updated frame of the options container.
         [self refreshContentViewHeightConstraint];
+    }
+    else if ([@"hidden" isEqualToString:keyPath])
+    {
+        UIActivityIndicatorView *indicator = (UIActivityIndicatorView*)object;
+        [self.authenticationActivityIndicatorContainerView setHidden:indicator.hidden];
     }
     else
     {
