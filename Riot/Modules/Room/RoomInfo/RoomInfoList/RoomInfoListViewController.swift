@@ -165,8 +165,7 @@ final class RoomInfoListViewController: UIViewController {
         }
         
         var rows = [rowSettings]
-        if (RiotSettings.shared.roomInfoScreenShowIntegrations)
-        {
+        if RiotSettings.shared.roomInfoScreenShowIntegrations {
             rows.append(rowIntegrations)
         }
         rows.append(rowMembers)
