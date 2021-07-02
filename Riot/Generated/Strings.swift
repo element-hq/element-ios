@@ -2014,6 +2014,10 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeScanCodeAction: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_code_action") 
   }
+  /// Scan with this device
+  internal static var keyVerificationVerifyQrCodeScanCodeOtherDeviceAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_code_other_device_action") 
+  }
   /// QR code has been successfully validated.
   internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_message") 

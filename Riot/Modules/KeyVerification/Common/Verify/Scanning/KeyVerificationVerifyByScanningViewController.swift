@@ -143,7 +143,9 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         self.titleLabel.text = VectorL10n.keyVerificationVerifyQrCodeTitle
         self.informationLabel.text = VectorL10n.keyVerificationVerifyQrCodeInformation
         
-        self.scanCodeButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeScanCodeAction, for: .normal)
+        // Hide until we have the type of the verification request
+        self.scanCodeButton.isHidden = true
+
         self.cannotScanButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeCannotScanAction, for: .normal)
     }
 
@@ -195,10 +197,13 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             switch viewData.verificationKind {
             case .user:
                 informationText = VectorL10n.keyVerificationVerifyQrCodeInformation
+                self.scanCodeButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeScanCodeAction, for: .normal)
             default:
                 informationText = VectorL10n.keyVerificationVerifyQrCodeInformationOtherDevice
+                self.scanCodeButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeScanCodeOtherDeviceAction, for: .normal)
             }
             
+            self.scanCodeButton.isHidden = false
             self.informationLabel.text = informationText
         }
     }
