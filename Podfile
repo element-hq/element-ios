@@ -101,7 +101,7 @@ post_install do |installer|
       # Plus the app does not enable it
       config.build_settings['ENABLE_BITCODE'] = 'NO'
 
-      # Make fastlane(xcodebuild) happy by preventing it from building for arm64 simulator
+      # Make fastlane(xcodebuild) happy by preventing it from building for arm64 simulator 
       config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
 
       # Force ReadMoreTextView to use Swift 5.2 version (as there is no code changes to perform)
@@ -109,7 +109,7 @@ post_install do |installer|
         config.build_settings['SWIFT_VERSION'] = '5.2'
       end
 
-      # Stop Xcode 12 complaining about old IPHONEOS_DEPLOYMENT_TARGET from pods
+      # Stop Xcode 12 complaining about old IPHONEOS_DEPLOYMENT_TARGET from pods 
       config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
     end
   end
