@@ -27,6 +27,10 @@ protocol TabBarCoordinatorDelegate: class {
 protocol TabBarCoordinatorType: Coordinator, SplitViewMasterPresentable {
     
     var delegate: TabBarCoordinatorDelegate? { get }
+        
+    /// Start coordinator by selecting a Space.
+    /// - Parameter spaceId: The id of the Space to use.
+    func start(with spaceId: String?)
     
     func popToHome(animated: Bool, completion: (() -> Void)?)
     
