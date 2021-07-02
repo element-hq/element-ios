@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Use different title for scan button for self verification (#4525)
 
 ⚠️ API Changes
  * 
