@@ -3038,9 +3038,9 @@ internal enum VectorL10n {
   internal static var roomNotifsSettingsDoneAction: String { 
     return VectorL10n.tr("Vector", "room_notifs_settings_done_action") 
   }
-  /// \nPlease note that mentions & keyword notifications are not available in encrypted rooms on mobile.
-  internal static var roomNotifsSettingsEncryedRoomNotice: String { 
-    return VectorL10n.tr("Vector", "room_notifs_settings_encryed_room_notice") 
+  /// Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.
+  internal static var roomNotifsSettingsEncryptedRoomNotice: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_encrypted_room_notice") 
   }
   /// You can manage notifications in %@
   internal static func roomNotifsSettingsManageNotifications(_ p1: String) -> String {

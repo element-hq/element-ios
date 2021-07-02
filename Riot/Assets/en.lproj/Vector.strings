@@ -781,7 +781,7 @@ Tap the + to start adding people.";
 "room_notifs_settings_cancel_action" = "Cancel";
 "room_notifs_settings_manage_notifications" = "You can manage notifications in %@";
 "room_notifs_settings_account_settings" = "Account settings";
-"room_notifs_settings_encryed_room_notice" = "\nPlease note that mentions & keyword notifications are not available in encrypted rooms on mobile.";
+"room_notifs_settings_encrypted_room_notice" = "Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.";
 
 
 // Group Details

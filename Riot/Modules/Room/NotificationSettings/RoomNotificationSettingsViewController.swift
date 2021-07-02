@@ -150,11 +150,6 @@ final class RoomNotificationSettingsViewController: UIViewController {
                         self.viewModel.process(viewAction: .selectNotificationState(setting))
             })
         })
-
-        let linkStr = VectorL10n.roomNotifsSettingsAccountSettings
-        let formatStr = VectorL10n.roomNotifsSettingsManageNotifications(linkStr)
-        
-        let formattedStr = String(format: formatStr, arguments: [linkStr])
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.16
@@ -163,15 +158,20 @@ final class RoomNotificationSettingsViewController: UIViewController {
             NSAttributedString.Key.paragraphStyle: paragraphStyle,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0)
         ]
-        let footer0 = NSMutableAttributedString(string: formattedStr, attributes: paragraphAttributes)
-        let linkRange = (footer0.string as NSString).range(of: linkStr)
-        footer0.addAttribute(NSAttributedString.Key.link, value: Constants.linkToAccountSettings, range: linkRange)
-        
+
+        // Don't include link until global settings in place
+//        let linkStr = VectorL10n.roomNotifsSettingsAccountSettings
+//        let formatStr = VectorL10n.roomNotifsSettingsManageNotifications(linkStr)
+//
+//        let formattedStr = String(format: formatStr, arguments: [linkStr])
+//        let footer0 = NSMutableAttributedString(string: formattedStr, attributes: paragraphAttributes)
+//        let linkRange = (footer0.string as NSString).range(of: linkStr)
+//        footer0.addAttribute(NSAttributedString.Key.link, value: Constants.linkToAccountSettings, range: linkRange)
+        var footer0: NSAttributedString?
         if viewState.roomEncrypted {
-            footer0.append(NSAttributedString(string: VectorL10n.roomNotifsSettingsEncryedRoomNotice, attributes: paragraphAttributes))
+            footer0 = NSAttributedString(string: VectorL10n.roomNotifsSettingsEncryptedRoomNotice, attributes: paragraphAttributes)
         }
         let section0 = Section(header: nil, rows: rows, footer: footer0)
-
         sections = [
             section0
         ]
