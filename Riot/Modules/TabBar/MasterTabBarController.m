@@ -760,6 +760,13 @@
     return foundViewController;
 }
 
+- (void)filterRoomsWithParentId:(NSString*)roomParentId
+                inMatrixSession:(MXSession*)mxSession
+{
+    // TODO: Update recentsDataSource in order to keep only rooms with given parent id.
+    // When updating the data source, if needed, screens should also update their title view subtitle with the space name
+}
+
 #pragma mark -
 
 /**

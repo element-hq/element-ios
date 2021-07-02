@@ -152,6 +152,13 @@
 - (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session;
 
 
+/// Filter rooms for each tab data source with the given room parent id.
+/// It should keep rooms having an ancestor with `roomParentId` as parent id.
+/// @param roomParentId The room parent id used to filter rooms.
+/// @param mxSession The matrix session in which the room filtering should be done.
+- (void)filterRoomsWithParentId:(NSString*)roomParentId
+                inMatrixSession:(MXSession*)mxSession;
+
 // Reference to the current auth VC. It is not nil only when the auth screen is displayed.
 @property (nonatomic, readonly) AuthenticationViewController *authViewController;
 
