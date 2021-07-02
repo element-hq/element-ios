@@ -115,11 +115,11 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
     
     private func setupViews() {
-        let doneBarButtonItem = MXKBarButtonItem(title: "Done", style: .plain) { [weak self] in
+        let doneBarButtonItem = MXKBarButtonItem(title: VectorL10n.roomNotifsSettingsDoneAction, style: .plain) { [weak self] in
             self?.viewModel.process(viewAction: .save)
         }
         
-        let cancelBarButtonItem = MXKBarButtonItem(title: "Cancel", style: .plain) { [weak self] in
+        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.roomNotifsSettingsCancelAction, style: .plain) { [weak self] in
             self?.viewModel.process(viewAction: .cancel)
         }
         
@@ -141,7 +141,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
     
     private func updateSections() {
-        let rows = RoomNotificationState.allCases.map({ (setting) -> Row in
+        let rows = viewState.notificationOptions.map({ (setting) -> Row in
             return Row(type: .plain,
                        setting: setting,
                        text: setting.title,
@@ -151,20 +151,26 @@ final class RoomNotificationSettingsViewController: UIViewController {
             })
         })
 
-        let formatStr = "You can manage keywords in the %@"
-        let linkStr = "Account Settings"
+        let linkStr = VectorL10n.roomNotifsSettingsAccountSettings
+        let formatStr = VectorL10n.roomNotifsSettingsManageNotifications(linkStr)
+        
         let formattedStr = String(format: formatStr, arguments: [linkStr])
-
+        
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.16
-        let footer_0 = NSMutableAttributedString(string: formattedStr, attributes: [
+        let paragraphAttributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.kern: -0.08,
             NSAttributedString.Key.paragraphStyle: paragraphStyle,
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0)
-            ])
-        let linkRange = (footer_0.string as NSString).range(of: linkStr)
-        footer_0.addAttribute(NSAttributedString.Key.link, value: Constants.linkToAccountSettings, range: linkRange)
-        let section0 = Section(header: nil, rows: rows, footer: footer_0)
+        ]
+        let footer0 = NSMutableAttributedString(string: formattedStr, attributes: paragraphAttributes)
+        let linkRange = (footer0.string as NSString).range(of: linkStr)
+        footer0.addAttribute(NSAttributedString.Key.link, value: Constants.linkToAccountSettings, range: linkRange)
+        
+        if viewState.roomEncrypted {
+            footer0.append(NSAttributedString(string: VectorL10n.roomNotifsSettingsEncryedRoomNotice, attributes: paragraphAttributes))
+        }
+        let section0 = Section(header: nil, rows: rows, footer: footer0)
 
         sections = [
             section0
@@ -264,11 +270,11 @@ extension RoomNotificationState {
     var title: String {
         switch self {
         case .all:
-            return "All Messages"
+            return VectorL10n.roomNotifsSettingsAllMessages
         case .mentionsOnly:
-            return "Mentions and Keywords only"
+            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
         case .mute:
-            return "None"
+            return VectorL10n.roomNotifsSettingsNone
         }
     }
 }

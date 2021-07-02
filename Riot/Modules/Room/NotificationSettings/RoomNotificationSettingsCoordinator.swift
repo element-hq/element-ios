@@ -38,7 +38,7 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     init(room: MXRoom) {
         let repository = RoomNotificationRepositoryImpl(room: room)
-        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationRepository: repository)
+        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationRepository: repository, roomEncrypted: room.summary.isEncrypted)
         let roomNotificationSettingsViewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
         self.roomNotificationSettingsViewModel = roomNotificationSettingsViewModel
         self.roomNotificationSettingsViewController = roomNotificationSettingsViewController

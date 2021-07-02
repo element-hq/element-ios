@@ -287,6 +287,7 @@ fileprivate extension MXRoom {
     }
     
     var notificationState: RoomNotificationState {
+        
         if isMuted {
             return .mute
         }

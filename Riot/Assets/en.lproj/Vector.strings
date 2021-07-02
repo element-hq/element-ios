@@ -773,6 +773,17 @@ Tap the + to start adding people.";
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
 
+// Room Notification Settings
+"room_notifs_settings_all_messages" = "All Messages";
+"room_notifs_settings_mentions_and_keywords" = "Mentions and Keywords only";
+"room_notifs_settings_none" = "None";
+"room_notifs_settings_done_action" = "Done";
+"room_notifs_settings_cancel_action" = "Cancel";
+"room_notifs_settings_manage_notifications" = "You can manage notifications in %@";
+"room_notifs_settings_account_settings" = "Account settings";
+"room_notifs_settings_encryed_room_notice" = "\nPlease note that mentions & keyword notifications are not available in encrypted rooms on mobile.";
+
+
 // Group Details
 "group_details_title" = "Community Details";
 "group_details_home" = "Home";

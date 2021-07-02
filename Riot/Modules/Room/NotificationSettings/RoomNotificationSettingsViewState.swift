@@ -20,11 +20,21 @@ import Foundation
 
 /// RoomNotificationSettingsViewController view state
 struct RoomNotificationSettingsViewStateImpl: RoomNotificationSettingsViewState {
+    let roomEncrypted: Bool
     var saving: Bool
     var notificationState: RoomNotificationState
+    var notificationOptions: [RoomNotificationState] {
+        if roomEncrypted {
+            return [.all, .mute]
+        } else {
+            return RoomNotificationState.allCases
+        }
+    }
 }
 
 protocol RoomNotificationSettingsViewState {
     var saving: Bool { get }
+    var roomEncrypted: Bool { get }
+    var notificationOptions: [RoomNotificationState] { get }
     var notificationState: RoomNotificationState { get }
 }
