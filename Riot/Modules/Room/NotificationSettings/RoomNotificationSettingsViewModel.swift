@@ -25,8 +25,8 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     
     // MARK: Private
     
-    private let roomNotificationRepository: RoomNotificationRepository
-    private var state: RoomNotificationSettingsViewStateImpl {
+    private let roomNotificationRepository: RoomNotificationSettingsServiceType
+    private var state: RoomNotificationSettingsViewState {
         willSet {
             update(viewState: newValue)
         }
@@ -39,11 +39,11 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     
     // MARK: - Setup
     
-    init(roomNotificationRepository: RoomNotificationRepository, roomEncrypted: Bool) {
+    init(roomNotificationRepository: RoomNotificationSettingsServiceType, roomEncrypted: Bool) {
         self.roomNotificationRepository = roomNotificationRepository
         
         let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationRepository.notificationState)
-        self.state = RoomNotificationSettingsViewStateImpl(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState)
+        self.state = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState)
         self.roomNotificationRepository.observeNotificationState { [weak self] state in
             guard let self = self else { return }
             
@@ -92,7 +92,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
         }
     }
     
-    private func update(viewState: RoomNotificationSettingsViewState) {
+    private func update(viewState: RoomNotificationSettingsViewStateType) {
         self.viewDelegate?.roomNotificationSettingsViewModel(self, didUpdateViewState: viewState)
     }
     

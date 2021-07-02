@@ -60,7 +60,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
         }
     }
     
-    private var viewState: RoomNotificationSettingsViewState!
+    private var viewState: RoomNotificationSettingsViewStateType!
     
     // MARK: - Setup
     
@@ -129,7 +129,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
         navigationItem.rightBarButtonItem = doneBarButtonItem
     }
     
-    private func render(viewState: RoomNotificationSettingsViewState) {
+    private func render(viewState: RoomNotificationSettingsViewStateType) {
         
         if viewState.saving {
             activityPresenter.presentActivityIndicator(on: view, animated: true)
@@ -261,7 +261,7 @@ extension RoomNotificationSettingsViewController: UITableViewDelegate {
 // MARK: - RoomNotificationSettingsViewModelViewDelegate
 extension RoomNotificationSettingsViewController: RoomNotificationSettingsViewModelViewDelegate {
 
-    func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewSate: RoomNotificationSettingsViewState) {
+    func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewSate: RoomNotificationSettingsViewStateType) {
         render(viewState: viewSate)
     }
 }

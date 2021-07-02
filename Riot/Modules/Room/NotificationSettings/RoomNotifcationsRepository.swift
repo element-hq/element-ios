@@ -22,7 +22,7 @@ enum RoomNotificationState: CaseIterable {
     case mute
 }
 
-protocol RoomNotificationRepository {
+protocol RoomNotificationSettingsServiceType {
     typealias Completion = () -> Void
     typealias NotificationSettingCallback = (RoomNotificationState) -> Void
 
@@ -31,7 +31,7 @@ protocol RoomNotificationRepository {
     var notificationState: RoomNotificationState { get }
 }
 
-final class RoomNotificationRepositoryImpl: RoomNotificationRepository {
+final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType {
     
     // MARK: - Properties
     
