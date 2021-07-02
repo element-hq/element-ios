@@ -51,6 +51,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     private var mainMatrixSession: MXSession? {
         return self.userSessionsService.mainUserSession?.matrixSession
     }
+        
+    private var currentSpaceId: String?
   
     // MARK: Public
     
@@ -167,14 +169,24 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     fileprivate func navigate(to destination: AppNavigatorDestination) {
         switch destination {
         case .homeSpace:
-            // TODO: Swicth to home space
-            // Refresh TabBarCoordinator if needed
             MXLog.verbose("Switch to home space")
+            self.navigateToSpace(with: nil)
         case .space(let spaceId):
-            // TODO: Swicth to space with id
-            // Refresh TabBarCoordinator if needed
-            MXLog.verbose("Switch to space with id: \(spaceId)")            
+            MXLog.verbose("Switch to space with id: \(spaceId)")
+            self.navigateToSpace(with: spaceId)
         }
+    }
+    
+    private func navigateToSpace(with spaceId: String?) {
+        guard spaceId != self.currentSpaceId else {
+            MXLog.verbose("Space with id: \(String(describing: spaceId)) is already selected")
+            return
+        }
+        
+        self.currentSpaceId = spaceId
+        
+        // Reload split view with selected space id
+        self.splitViewCoordinator?.start(with: spaceId)
     }
 }
 
