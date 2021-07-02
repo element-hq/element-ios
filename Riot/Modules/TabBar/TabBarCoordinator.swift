@@ -98,9 +98,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             
             self.registerUserSessionsServiceNotifications()
         }
-        
-        // Update masterNavigationController.navigationItem.titleView
-        self.updateMasterNavigationBarTitleView(with: spaceId)
+                
+        self.updateMasterTabBarController(with: spaceId)
     }
     
     func toPresentable() -> UIViewController {
@@ -262,10 +261,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: self.masterNavigationController.view)
         
         self.parameters.appNavigator.sideMenu.addPanGestureToPresent(to: self.masterNavigationController.navigationBar)
-    }        
+    }
     
-    private func updateMasterNavigationBarTitleView(with spaceId: String?) {
-        // TODO: Update masterNavigationController title view with new space info
+    private func updateMasterTabBarController(with spaceId: String?) {
+                
+        let currentMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession
+        
+        // TODO: Implement filtering logic inside this method
+        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: currentMatrixSession)
     }
     
     // MARK: Navigation
