@@ -34,7 +34,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -73,6 +73,8 @@
 @property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+
+@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
 
 @end
 
@@ -1031,12 +1033,12 @@
     UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [self muteEditedRoomNotifications:!isMuted];
+        [self changeEditedRoomNotificationSettings];
         completionHandler(YES);
     }];
     muteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *notificationImage = [UIImage imageNamed:@"room_action_notification"];
+    UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
     muteAction.image = [notificationImage vc_notRenderedImage];
     
@@ -1298,7 +1300,7 @@
     }
 }
 
-- (void)muteEditedRoomNotifications:(BOOL)mute
+- (void)changeEditedRoomNotificationSettings
 {
     if (editedRoomId)
     {
@@ -1306,36 +1308,22 @@
         MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
         if (room)
         {
-            [self startActivityIndicator];
-            
-            if (mute)
-            {
-                [room mentionsOnly:^{
-                    
-                    [self stopActivityIndicator];
-                    
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
-                }];
-            }
-            else
-            {
-                [room allMessages:^{
-                    
-                    [self stopActivityIndicator];
-                    
-                    // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
-                }];
-            }
+           // navigate
+            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
         }
-        else
-        {
-            // Leave editing mode
-            [self cancelEditionMode:isRefreshPending];
-        }
+        [self cancelEditionMode:isRefreshPending];
+    }
+}
+
+- (void)openNotificationsSettings
+{
+    if (self.mainSession)
+    {
+        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+        self.createRoomCoordinatorBridgePresenter.delegate = self;
+        [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
     }
 }
 
@@ -2217,6 +2205,12 @@
             }
         }];
     }
+}
+
+-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomsDirectoryCoordinatorBridgePresenter = nil;
 }
 
 @end

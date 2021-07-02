@@ -22,7 +22,6 @@ final class RoomNotificationSettingsViewController: UIViewController {
      
     // MARK: - Properties
     private enum Constants {
-        static let plainStyleCellReuseIdentifier = "plain"
         static let linkToAccountSettings = "linkToAccountSettings"
     }
     // MARK: Outlets

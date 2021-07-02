@@ -161,9 +161,9 @@
 - (void)makeDirectEditedRoom:(BOOL)isDirect;
 
 /**
- Enable/disable the notifications for the selected room.
+ Edit notification settings for the selected room.
  */
-- (void)muteEditedRoomNotifications:(BOOL)mute;
+- (void)changeEditedRoomNotificationSettings;
 
 /**
  Show room directory.

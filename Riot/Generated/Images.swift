@@ -81,6 +81,7 @@ internal enum Asset {
     internal static let roomActionFavourite = ImageAsset(name: "room_action_favourite")
     internal static let roomActionLeave = ImageAsset(name: "room_action_leave")
     internal static let roomActionNotification = ImageAsset(name: "room_action_notification")
+    internal static let roomActionNotificationMuted = ImageAsset(name: "room_action_notification_muted")
     internal static let roomActionPriorityHigh = ImageAsset(name: "room_action_priority_high")
     internal static let roomActionPriorityLow = ImageAsset(name: "room_action_priority_low")
     internal static let homeEmptyScreenArtwork = ImageAsset(name: "home_empty_screen_artwork")
