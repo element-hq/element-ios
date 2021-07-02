@@ -1065,7 +1065,7 @@
 "secrets_recovery_reset_action_part_1" = "Alle herstelopties vergeten of verloren? ";
 "user_verification_session_details_verify_action_other_user" = "Handmatig verifiëren";
 "user_verification_session_details_verify_action_current_user_manually" = "Handmatig middels een tekst";
-"user_verification_session_details_verify_action_current_user" = "Interactief Verifiëren";
+"user_verification_session_details_verify_action_current_user" = "Interactief verifiëren";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Als u zich niet heeft aangemeld bij deze sessie, is uw account wellicht geschonden.";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Totdat deze persoon deze sessie vertrouwd, zijn berichten gelabeld met waarschuwingen. Een andere mogelijkheid is om de persoon handmatig te verifiëren.";
 "user_verification_session_details_information_untrusted_other_user" = " heeft zich in een nieuwe sessie aangemeld:";
@@ -1266,7 +1266,7 @@
 // Room widget permissions
 "room_widget_permission_title" = "Widget laden";
 "widget_picker_manage_integrations" = "Beheer integraties…";
-"widget_integration_manager_disabled" = "U moet een integratebeheerder inschakelen in uw instellingen";
+"widget_integration_manager_disabled" = "U moet integratiebeheer inschakelen in de instellingen";
 "widget_menu_remove" = "Verwijderen voor iedereen";
 "widget_menu_revoke_permission" = "Toegang intrekken voor mij";
 "widget_menu_open_outside" = "Openen in browser";
