@@ -260,11 +260,17 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 
 // MARK: - SideMenuNavigationControllerDelegate
 extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
-    func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {
+    func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {                
+        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+            
+        }
         self.parameters.appNavigator.navigate(to: .homeSpace)
     }
     
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectSpaceWithId spaceId: String) {
+        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+            
+        }
         self.parameters.appNavigator.navigate(to: .space(spaceId))
     }
 }
