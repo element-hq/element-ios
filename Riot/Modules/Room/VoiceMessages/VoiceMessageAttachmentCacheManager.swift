@@ -31,9 +31,9 @@ enum VoiceMessageAttachmentCacheManagerError: Error {
  Swift optimizes the callbacks to be the same instance. Wrap them so we can store them in an array.
  */
 private class CompletionWrapper {
-    let completion: (Result<(URL, [Float]), Error>) -> Void
+    let completion: (Result<(URL, TimeInterval, [Float]), Error>) -> Void
     
-    init(_ completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
+    init(_ completion: @escaping (Result<(URL, TimeInterval, [Float]), Error>) -> Void) {
         self.completion = completion
     }
 }
@@ -46,13 +46,14 @@ class VoiceMessageAttachmentCacheManager {
     
     private var completionCallbacks = [String: [CompletionWrapper]]()
     private var samples = [String: [Int: [Float]]]()
+    private var durations = [String: TimeInterval]()
     private var finalURLs = [String: URL]()
     
     private init() {
         workQueue = DispatchQueue(label: "io.element.VoiceMessageAttachmentCacheManager.queue", qos: .userInitiated)
     }
     
-    func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
+    func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<(URL, TimeInterval, [Float]), Error>) -> Void) {
         guard attachment.type == MXKAttachmentTypeVoiceMessage else {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidAttachmentType))
             return
@@ -68,8 +69,8 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        if let finalURL = finalURLs[identifier], let samples = samples[identifier]?[numberOfSamples] {
-            completion(Result.success((finalURL, samples)))
+        if let finalURL = finalURLs[identifier], let duration = durations[identifier], let samples = samples[identifier]?[numberOfSamples] {
+            completion(Result.success((finalURL, duration, samples)))
             return
         }
         
@@ -78,7 +79,8 @@ class VoiceMessageAttachmentCacheManager {
 //        }
     }
     
-    private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<(URL, [Float]), Error>) -> Void) {
+    private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<(URL, Double, [Float]), Error>) -> Void) {
+
         if var callbacks = completionCallbacks[identifier] {
             callbacks.append(CompletionWrapper(completion))
             completionCallbacks[identifier] = callbacks
@@ -87,7 +89,7 @@ class VoiceMessageAttachmentCacheManager {
             completionCallbacks[identifier] = [CompletionWrapper(completion)]
         }
         
-        func sampleFileAtURL(_ url: URL) {
+        func sampleFileAtURL(_ url: URL, duration: TimeInterval) {
             let analyser = WaveformAnalyzer(audioAssetURL: url)
             analyser?.samples(count: numberOfSamples, completionHandler: { samples in
                 // Dispatch back from the WaveformAnalyzer's internal queue
@@ -103,13 +105,13 @@ class VoiceMessageAttachmentCacheManager {
                         self.samples[identifier] = [numberOfSamples: samples]
                     }
                     
-                    self.invokeSuccessCallbacksForIdentifier(identifier, url: url, samples: samples)
+                    self.invokeSuccessCallbacksForIdentifier(identifier, url: url, duration: duration, samples: samples)
                 }
             })
         }
         
-        if let finalURL = finalURLs[identifier] {
-            sampleFileAtURL(finalURL)
+        if let finalURL = finalURLs[identifier], let duration = durations[identifier] {
+            sampleFileAtURL(finalURL, duration: duration)
             return
         }
         
@@ -125,10 +127,21 @@ class VoiceMessageAttachmentCacheManager {
                 switch result {
                 case .success:
                     self.finalURLs[identifier] = newURL
-                    sampleFileAtURL(newURL)
+                    VoiceMessageAudioConverter.mediaDurationAt(newURL) { result in
+                        switch result {
+                        case .success:
+                            if let duration = try? result.get() {
+                                sampleFileAtURL(newURL, duration: duration)
+                            } else {
+                                MXLog.error("[VoiceMessageAttachmentCacheManager] enqueueLoadAttachment: Failed to retrieve media duration")
+                            }
+                        case .failure(let error):
+                            MXLog.error("[VoiceMessageAttachmentCacheManager] enqueueLoadAttachment: failed getting audio duration with: \(error)")
+                        }
+                    }
                 case .failure(let error):
                     self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.conversionError(error))
-                    MXLog.error("Failed failed decoding audio message with: \(error)")
+                    MXLog.error("[VoiceMessageAttachmentCacheManager] enqueueLoadAttachment: failed decoding audio message with: \(error)")
                 }
             }
         }
@@ -156,7 +169,7 @@ class VoiceMessageAttachmentCacheManager {
         }
     }
     
-    private func invokeSuccessCallbacksForIdentifier(_ identifier: String, url: URL, samples: [Float]) {
+    private func invokeSuccessCallbacksForIdentifier(_ identifier: String, url: URL, duration: TimeInterval, samples: [Float]) {
         guard let callbacks = completionCallbacks[identifier] else {
             return
         }
@@ -164,7 +177,7 @@ class VoiceMessageAttachmentCacheManager {
         let copy = callbacks.map { $0 }
         DispatchQueue.main.async {
             for wrapper in copy {
-                wrapper.completion(Result.success((url, samples)))
+                wrapper.completion(Result.success((url, duration, samples)))
             }
         }
         

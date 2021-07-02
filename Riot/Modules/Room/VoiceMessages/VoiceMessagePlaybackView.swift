@@ -28,6 +28,7 @@ struct VoiceMessagePlaybackViewDetails {
     var playing: Bool = false
     var playbackEnabled = false
     var recording: Bool = false
+    var loading: Bool = false
 }
 
 class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
@@ -83,10 +84,17 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
             }
         }
         
-        elapsedTimeLabel.text = details.currentTime
-        _waveformView.progress = details.progress
-        
-        _waveformView.setSamples(details.samples)
+        if details.loading {
+            elapsedTimeLabel.text = "--:--"
+            _waveformView.progress = 0
+            _waveformView.samples = []
+            _waveformView.alpha = 0.3
+        } else {
+            elapsedTimeLabel.text = details.currentTime
+            _waveformView.progress = details.progress
+            _waveformView.samples = details.samples
+            _waveformView.alpha = 1
+        }
         
         self.details = details
         

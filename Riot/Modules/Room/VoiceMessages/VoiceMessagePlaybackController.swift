@@ -41,6 +41,9 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     private let audioPlayer: VoiceMessageAudioPlayer
     private var displayLink: CADisplayLink!
     private var samples: [Float] = []
+    private var duration: TimeInterval = 0
+    private var urlToLoad: URL?
+    private var loading: Bool = false
     
     private var state: VoiceMessagePlaybackControllerState = .stopped {
         didSet {
@@ -82,6 +85,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         if audioPlayer.isPlaying {
             audioPlayer.pause()
         } else {
+            if let urlToLoad = urlToLoad {
+                audioPlayer.loadContentFromURL(urlToLoad)
+            }
+            urlToLoad = nil
             audioPlayer.play()
         }
     }
@@ -129,12 +136,13 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         
         switch state {
         case .stopped:
-            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.duration))
+            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.duration))
             details.progress = 0.0
         default:
             details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
             details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
         }
+        details.loading = self.loading
         
         playbackView.configureWithDetails(details)
     }
@@ -144,13 +152,23 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             return
         }
         
+        self.loading = true
+        updateUI()
+        
+        // TODO: manage a unique instance of audio player.
+        if audioPlayer.isPlaying || audioPlayer.currentTime > 0 {
+            audioPlayer.stop()
+        }
+        
         let requiredNumberOfSamples = playbackView.getRequiredNumberOfSamples()
         
         cacheManager.loadAttachment(attachment, numberOfSamples: requiredNumberOfSamples) { result in
             switch result {
             case .success(let result):
-                self.audioPlayer.loadContentFromURL(result.0)
-                self.samples = result.1
+                self.loading = false
+                self.urlToLoad = result.0
+                self.duration = result.1
+                self.samples = result.2
                 self.updateUI()
             case .failure:
                 self.state = .error

@@ -29,8 +29,20 @@ struct VoiceMessageAudioConverter {
     }
     
     static func convertToMPEG4AAC(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
-        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a aac_at \"\(destinationURL.path)\""
+        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a aac_at -b:a 192k \"\(destinationURL.path)\""
         executeCommand(command, completion: completion)
+    }
+    
+    static func mediaDurationAt(_ sourceURL: URL, completion: @escaping (Result<TimeInterval, VoiceMessageAudioConverterError>) -> Void) {
+        DispatchQueue.global(qos: .userInteractive).async {
+            let mediaInfoSession = FFprobeKit.getMediaInformation(sourceURL.path)
+            let mediaInfo = mediaInfoSession?.getMediaInformation()
+            if let duration = try? TimeInterval(value: mediaInfo?.getDuration() ?? "0") {
+                completion(.success(duration))
+            } else {
+                completion(.failure(.generic("Failed to get media duration")))
+            }
+        }
     }
     
     static private func executeCommand(_ command: String, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {

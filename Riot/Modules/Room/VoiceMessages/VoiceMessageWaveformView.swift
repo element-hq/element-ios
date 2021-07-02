@@ -20,26 +20,48 @@ class VoiceMessageWaveformView: UIView {
 
     private let lineWidth: CGFloat = 2.0
     private let linePadding: CGFloat = 2.0
+    private let renderingQueue: DispatchQueue = DispatchQueue(label: "io.element.VoiceMessageWaveformView.queue", qos: .userInitiated)
 
-    private var samples: [Float] = []
-    private var barViews: [CALayer] = []
+    var samples: [Float] = [] {
+        didSet {
+            computeWaveForm()
+        }
+    }
     
-    var primarylineColor = UIColor.lightGray
-    var secondaryLineColor = UIColor.darkGray
-    
+    var primarylineColor = UIColor.lightGray {
+        didSet {
+            backgroundLayer.strokeColor = primarylineColor.cgColor
+            backgroundLayer.fillColor = primarylineColor.cgColor
+        }
+    }
+    var secondaryLineColor = UIColor.darkGray {
+        didSet {
+            progressLayer.strokeColor = secondaryLineColor.cgColor
+            progressLayer.fillColor = secondaryLineColor.cgColor
+        }
+    }
+
+    private let backgroundLayer = CAShapeLayer()
+    private let progressLayer = CAShapeLayer()
+
     var progress = 0.0 {
         didSet {
-            updateBarViews()
+            progressLayer.frame = CGRect(origin: self.bounds.origin, size: CGSize(width: self.bounds.width * CGFloat(self.progress), height: self.bounds.height))
         }
     }
 
     var requiredNumberOfSamples: Int {
-        return barViews.count
+        return Int(self.bounds.size.width / (lineWidth + linePadding))
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupBarViews()
+        
+        setupAndAdd(backgroundLayer, with: primarylineColor)
+        setupAndAdd(progressLayer, with: secondaryLineColor)
+        progressLayer.masksToBounds = true
+
+        computeWaveForm()
     }
     
     required init?(coder: NSCoder) {
@@ -48,61 +70,52 @@ class VoiceMessageWaveformView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        setupBarViews()
+        
+        backgroundLayer.frame = self.bounds
+        progressLayer.frame = CGRect(origin: self.bounds.origin, size: CGSize(width: self.bounds.width * CGFloat(self.progress), height: self.bounds.height))
+        computeWaveForm()
     }
     
-    func setSamples(_ samples: [Float]) {
-        self.samples = samples
-        updateBarViews()
-    }
-
     // MARK: - Private
 
-    private func setupBarViews() {
-        for layer in barViews {
-            layer.removeFromSuperlayer()
+    private func computeWaveForm() {
+        renderingQueue.async {
+            let path = UIBezierPath()
+
+            let drawMappingFactor = self.bounds.size.height
+            let minimumGraphAmplitude: CGFloat = 1
+
+            var xOffset: CGFloat = self.lineWidth / 2
+            var index = 0
+            
+            while xOffset < self.bounds.width - self.lineWidth {
+                let sample = CGFloat(index >= self.samples.count ? 1 : self.samples[index])
+                let invertedDbSample = 1 - sample // sample is in dB, linearly normalized to [0, 1] (1 -> -50 dB)
+                let drawingAmplitude = max(minimumGraphAmplitude, invertedDbSample * drawMappingFactor)
+
+                path.move(to: CGPoint(x: xOffset, y: self.bounds.midY - drawingAmplitude / 2))
+                path.addLine(to: CGPoint(x: xOffset, y: self.bounds.midY + drawingAmplitude / 2))
+
+                xOffset += self.lineWidth + self.linePadding
+
+                index += 1
+            }
+
+            DispatchQueue.main.async {
+                self.backgroundLayer.path = path.cgPath
+                self.progressLayer.path = path.cgPath
+            }
         }
-
-        var barViews: [CALayer] = []
-
-        var xOffset: CGFloat = lineWidth / 2
-
-        while xOffset < bounds.width - lineWidth {
-            let layer = CALayer()
-            layer.backgroundColor = primarylineColor.cgColor
-            layer.cornerRadius = lineWidth / 2
-            layer.masksToBounds = true
-            layer.anchorPoint = CGPoint(x: 0, y: 0.5)
-            layer.frame = CGRect(x: xOffset, y: bounds.midY - lineWidth / 2, width: lineWidth, height: lineWidth)
-
-            self.layer.addSublayer(layer)
-
-            barViews.append(layer)
-
-            xOffset += lineWidth + linePadding
-        }
-
-        self.barViews = barViews
-
-        updateBarViews()
     }
-
-    private func updateBarViews() {
-        let drawMappingFactor = bounds.size.height
-        let minimumGraphAmplitude: CGFloat = lineWidth
-        
-        let progressPosition = Int(floor(progress * Double(barViews.count)))
-        
-        for (index, layer) in barViews.enumerated() {
-            let sample = CGFloat(index >= samples.count ? 1 : samples[index])
-            
-            let invertedDbSample = 1 - sample // sample is in dB, linearly normalized to [0, 1] (1 -> -50 dB)
-            let drawingAmplitude = max(minimumGraphAmplitude, invertedDbSample * drawMappingFactor)
-            
-            layer.frame.origin.y = bounds.midY - drawingAmplitude / 2
-            layer.frame.size.height = drawingAmplitude
-            
-            layer.backgroundColor = (index < progressPosition ? secondaryLineColor.cgColor : primarylineColor.cgColor)   
-        }
+    
+    private func setupAndAdd(_ shapeLayer: CAShapeLayer, with color: UIColor) {
+//        shapeLayer.shouldRasterize = true
+        shapeLayer.drawsAsynchronously = true
+        shapeLayer.frame = self.bounds
+        shapeLayer.strokeColor = color.cgColor
+        shapeLayer.fillColor = color.cgColor
+        shapeLayer.lineCap = .round
+        shapeLayer.lineWidth = lineWidth
+        self.layer.addSublayer(shapeLayer)
     }
 }
