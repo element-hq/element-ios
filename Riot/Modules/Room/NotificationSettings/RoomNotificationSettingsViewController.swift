@@ -36,22 +36,14 @@ final class RoomNotificationSettingsViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
-    private enum RowType {
-        case plain
-    }
-
     private struct Row {
-        var type: RowType
-        var setting: RoomNotificationState
-        var text: String?
-        var accessoryType: UITableViewCell.AccessoryType = .none
+        var cellState: RoomNotificationSettingsCell.State
         var action: (() -> Void)?
     }
 
     private struct Section {
-        var header: String?
         var rows: [Row]
-        var footer: NSAttributedString?
+        var footerState: RoomNotificationSettingsFooter.State
     }
 
     private var sections: [Section] = [] {
@@ -104,6 +96,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
         if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
+        mainTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -127,6 +120,10 @@ final class RoomNotificationSettingsViewController: UIViewController {
             navigationItem.leftBarButtonItem = cancelBarButtonItem
         }
         navigationItem.rightBarButtonItem = doneBarButtonItem
+        mainTableView.register(cellType: RoomNotificationSettingsCell.self)
+        mainTableView.register(headerFooterViewType: RoomNotificationSettingsFooter.self)
+        mainTableView.sectionFooterHeight = UITableView.automaticDimension
+        mainTableView.estimatedSectionFooterHeight = 50
     }
     
     private func render(viewState: RoomNotificationSettingsViewStateType) {
@@ -142,36 +139,14 @@ final class RoomNotificationSettingsViewController: UIViewController {
     
     private func updateSections() {
         let rows = viewState.notificationOptions.map({ (setting) -> Row in
-            return Row(type: .plain,
-                       setting: setting,
-                       text: setting.title,
-                       accessoryType: viewState.notificationState == setting ? .checkmark : .none,
+            let cellState = RoomNotificationSettingsCell.State(notificicationState: setting, selected: viewState.notificationState == setting)
+            return Row(cellState: cellState,
                        action: {
                         self.viewModel.process(viewAction: .selectNotificationState(setting))
             })
         })
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.16
-        let paragraphAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.kern: -0.08,
-            NSAttributedString.Key.paragraphStyle: paragraphStyle,
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0)
-        ]
-
-        // Don't include link until global settings in place
-//        let linkStr = VectorL10n.roomNotifsSettingsAccountSettings
-//        let formatStr = VectorL10n.roomNotifsSettingsManageNotifications(linkStr)
-//
-//        let formattedStr = String(format: formatStr, arguments: [linkStr])
-//        let footer0 = NSMutableAttributedString(string: formattedStr, attributes: paragraphAttributes)
-//        let linkRange = (footer0.string as NSString).range(of: linkStr)
-//        footer0.addAttribute(NSAttributedString.Key.link, value: Constants.linkToAccountSettings, range: linkRange)
-        var footer0: NSAttributedString?
-        if viewState.roomEncrypted {
-            footer0 = NSAttributedString(string: VectorL10n.roomNotifsSettingsEncryptedRoomNotice, attributes: paragraphAttributes)
-        }
-        let section0 = Section(header: nil, rows: rows, footer: footer0)
+        let footerState = RoomNotificationSettingsFooter.State(showEncryptedNotice: viewState.roomEncrypted, showAccountLink: false)
+        let section0 = Section(rows: rows, footerState: footerState)
         sections = [
             section0
         ]
@@ -191,29 +166,15 @@ extension RoomNotificationSettingsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
+        let cell: RoomNotificationSettingsCell = tableView.dequeueReusableCell(for: indexPath)
+        cell.update(state: row.cellState)
+        cell.update(theme: theme)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 
-        switch row.type {
-        case .plain:
-            var cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: Constants.plainStyleCellReuseIdentifier)
-            if cell == nil {
-                cell = UITableViewCell(style: .value1, reuseIdentifier: Constants.plainStyleCellReuseIdentifier)
-            }
-            cell.textLabel?.font = .systemFont(ofSize: 17)
-            cell.detailTextLabel?.font = .systemFont(ofSize: 16)
-            cell.textLabel?.text = row.text
-            if row.accessoryType == .checkmark {
-                cell.accessoryView = UIImageView(image: Asset.Images.checkmark.image)
-            } else {
-                cell.accessoryView = nil
-                cell.accessoryType = row.accessoryType
-            }
-            cell.textLabel?.textColor = theme.textPrimaryColor
-            cell.detailTextLabel?.textColor = theme.textSecondaryColor
-            cell.backgroundColor = theme.backgroundColor
-            cell.contentView.backgroundColor = .clear
-            cell.tintColor = theme.tintColor
-            return cell
-        }
+        return UITableView.automaticDimension
     }
 
 }
@@ -227,27 +188,13 @@ extension RoomNotificationSettingsViewController: UITableViewDelegate {
         cell.selectedBackgroundView?.backgroundColor = theme.selectedBackgroundColor
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].header
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    guard let footerView: RoomNotificationSettingsFooter = tableView.dequeueReusableHeaderFooterView() else { return nil }
+        let footerState = sections[section].footerState
+        footerView.update(footerState: footerState)
+        footerView.update(theme: theme)
+        return footerView
     }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return sections[section].footer?.string
-    }
-
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        if sections[section].footer == nil {
-//            return nil
-//        }
-//
-//        let view = tableView.dequeueReusableHeaderFooterView(RiotTableViewHeaderFooterView.self)
-//
-//        view?.textView.attributedText = sections[section].footer
-//        view?.update(theme: theme)
-//        view?.delegate = self
-//
-//        return view
-//    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -263,18 +210,5 @@ extension RoomNotificationSettingsViewController: RoomNotificationSettingsViewMo
 
     func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewSate: RoomNotificationSettingsViewStateType) {
         render(viewState: viewSate)
-    }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
-        }
     }
 }
