@@ -61,8 +61,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
             self.state.notificationState = state
         case .save:
             self.state.saving = true
-            let updateState = Self.mapNotificationStateOnUpdate(encrypted: self.state.roomEncrypted, state: state.notificationState)
-            roomNotificationRepository.update(state: updateState) { [weak self] in
+            roomNotificationRepository.update(state: state.notificationState) { [weak self] in
                 guard let self = self else { return }
                 self.state.saving = false
                 self.coordinatorDelegate?.roomNotificationSettingsViewModelDidComplete(self)
@@ -78,15 +77,6 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
         if encrypted, case .mentionsOnly = state {
             // Notifications not supported on encrypted rooms, map mentionsOnly to mute on read
             return .mute
-        } else {
-            return state
-        }
-    }
-    
-    private static func mapNotificationStateOnUpdate(encrypted: Bool, state: RoomNotificationState) -> RoomNotificationState {
-        if encrypted, case .mute = state {
-            // Notifications not supported on encrypted rooms, map mute to mentions only on update
-            return .mentionsOnly
         } else {
             return state
         }
