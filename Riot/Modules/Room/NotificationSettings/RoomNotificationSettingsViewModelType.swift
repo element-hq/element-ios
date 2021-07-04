@@ -19,7 +19,7 @@
 import Foundation
 
 protocol RoomNotificationSettingsViewModelViewDelegate: AnyObject {
-    func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewSate: RoomNotificationSettingsViewStateType)
+    func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewState: RoomNotificationSettingsViewStateType)
 }
 
 protocol RoomNotificationSettingsViewModelCoordinatorDelegate: AnyObject {

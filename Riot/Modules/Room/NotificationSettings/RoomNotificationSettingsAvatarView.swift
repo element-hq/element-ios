@@ -17,20 +17,13 @@
 import Foundation
 import Reusable
 
-struct RoomNotificationSettingsAvatarViewData {
-    let avatarUrl: String?
-    let mediaManager: MXMediaManager?
-    let displayName: String?
-    let roomId: String
-}
-
 class RoomNotificationSettingsAvatarView: UIView, NibLoadable {
     
     @IBOutlet weak var avatarView: MXKImageView!
     @IBOutlet weak var nameLabel: UILabel!
     
-    func configure(viewData: RoomNotificationSettingsAvatarViewData) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.roomId, withDisplayName: viewData.displayName)
+    func configure(viewData: AvatarViewDataProtocol) {
+        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.matrixItemId, withDisplayName: viewData.displayName)
         
         if let avatarUrl = viewData.avatarUrl {
             avatarView.enableInMemoryCache = true

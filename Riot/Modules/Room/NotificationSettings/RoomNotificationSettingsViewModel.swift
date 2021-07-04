@@ -39,7 +39,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     
     // MARK: - Setup
     
-    init(roomNotificationRepository: RoomNotificationSettingsServiceType, roomEncrypted: Bool, avatarViewData: RoomNotificationSettingsAvatarViewData?) {
+    init(roomNotificationRepository: RoomNotificationSettingsServiceType, roomEncrypted: Bool, avatarViewData: AvatarViewDataProtocol?) {
         self.roomNotificationRepository = roomNotificationRepository
         
         let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationRepository.notificationState)

@@ -21,9 +21,11 @@ import UIKit
 final class RoomNotificationSettingsViewController: UIViewController {
      
     // MARK: - Properties
+    
     private enum Constants {
         static let linkToAccountSettings = "linkToAccountSettings"
     }
+    
     // MARK: Outlets
 
     @IBOutlet private weak var mainTableView: UITableView!
@@ -161,7 +163,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
 }
 
-// MARK - UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension RoomNotificationSettingsViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -187,7 +189,7 @@ extension RoomNotificationSettingsViewController: UITableViewDataSource {
 
 }
 
-// MARK - UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension RoomNotificationSettingsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
