@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
 
 ⚠️ API Changes
  * 
