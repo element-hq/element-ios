@@ -25,7 +25,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     
     // MARK: Private
     
-    private let roomNotificationRepository: RoomNotificationSettingsServiceType
+    private let roomNotificationService: RoomNotificationSettingsServiceType
     private var state: RoomNotificationSettingsViewState {
         willSet {
             update(viewState: newValue)
@@ -39,12 +39,12 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     
     // MARK: - Setup
     
-    init(roomNotificationRepository: RoomNotificationSettingsServiceType, roomEncrypted: Bool, avatarViewData: AvatarViewDataProtocol?) {
-        self.roomNotificationRepository = roomNotificationRepository
+    init(roomNotificationService: RoomNotificationSettingsServiceType, roomEncrypted: Bool, avatarViewData: AvatarViewDataProtocol?) {
+        self.roomNotificationService = roomNotificationService
         
-        let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationRepository.notificationState)
+        let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationService.notificationState)
         self.state = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatarData: avatarViewData)
-        self.roomNotificationRepository.observeNotificationState { [weak self] state in
+        self.roomNotificationService.observeNotificationState { [weak self] state in
             guard let self = self else { return }
             
             self.state.notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: state)
@@ -61,7 +61,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
             self.state.notificationState = state
         case .save:
             self.state.saving = true
-            roomNotificationRepository.update(state: state.notificationState) { [weak self] in
+            roomNotificationService.update(state: state.notificationState) { [weak self] in
                 guard let self = self else { return }
                 self.state.saving = false
                 self.coordinatorDelegate?.roomNotificationSettingsViewModelDidComplete(self)
