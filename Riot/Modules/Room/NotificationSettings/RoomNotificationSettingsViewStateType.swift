@@ -30,6 +30,7 @@ struct RoomNotificationSettingsViewState: RoomNotificationSettingsViewStateType 
             return RoomNotificationState.allCases
         }
     }
+    let avatarData: RoomNotificationSettingsAvatarViewData?
 }
 
 protocol RoomNotificationSettingsViewStateType {
@@ -37,4 +38,5 @@ protocol RoomNotificationSettingsViewStateType {
     var roomEncrypted: Bool { get }
     var notificationOptions: [RoomNotificationState] { get }
     var notificationState: RoomNotificationState { get }
+    var avatarData: RoomNotificationSettingsAvatarViewData? { get }
 }

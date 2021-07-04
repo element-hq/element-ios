@@ -36,9 +36,15 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     // MARK: - Setup
     
-    init(room: MXRoom) {
+    init(room: MXRoom, showAvatar: Bool = true) {
         let repository = RoomNotificationSettingsService(room: room)
-        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationRepository: repository, roomEncrypted: room.summary.isEncrypted)
+        
+        let avatarData = showAvatar ? RoomNotificationSettingsAvatarViewData(
+            avatarUrl: room.summary.avatar,
+            mediaManager: room.mxSession.mediaManager,
+            displayName: room.summary.displayname,
+        roomId: room.roomId) : nil
+        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationRepository: repository, roomEncrypted: room.summary.isEncrypted, avatarViewData: avatarData)
         let roomNotificationSettingsViewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
         self.roomNotificationSettingsViewModel = roomNotificationSettingsViewModel
         self.roomNotificationSettingsViewController = roomNotificationSettingsViewController

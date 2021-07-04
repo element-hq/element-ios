@@ -138,7 +138,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     }
     
     private func createRoomNotificationSettingsCoordinator() -> RoomNotificationSettingsCoordinator {
-        let coordinator = RoomNotificationSettingsCoordinator(room: room)
+        let coordinator = RoomNotificationSettingsCoordinator(room: room, showAvatar: false)
         coordinator.delegate = self
         return coordinator
     }

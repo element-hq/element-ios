@@ -34,6 +34,9 @@ final class RoomNotificationSettingsViewController: UIViewController {
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private lazy var avatarView: RoomNotificationSettingsAvatarView = {
+        RoomNotificationSettingsAvatarView.loadFromNib()
+    }()
 
     private struct Row {
         var cellState: RoomNotificationSettingsCell.State
@@ -107,6 +110,8 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }
     
     private func setupViews() {
+        
+        self.title = VectorL10n.roomDetailsNotifs
         let doneBarButtonItem = MXKBarButtonItem(title: VectorL10n.roomNotifsSettingsDoneAction, style: .plain) { [weak self] in
             self?.viewModel.process(viewAction: .save)
         }
@@ -133,6 +138,10 @@ final class RoomNotificationSettingsViewController: UIViewController {
             activityPresenter.removeCurrentActivityIndicator(animated: true)
         }
         self.viewState = viewState
+        if let avatarData = viewState.avatarData {
+            mainTableView.tableHeaderView = avatarView
+            avatarView.configure(viewData: avatarData)
+        }
         updateSections()
     }
     

@@ -39,11 +39,11 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     
     // MARK: - Setup
     
-    init(roomNotificationRepository: RoomNotificationSettingsServiceType, roomEncrypted: Bool) {
+    init(roomNotificationRepository: RoomNotificationSettingsServiceType, roomEncrypted: Bool, avatarViewData: RoomNotificationSettingsAvatarViewData?) {
         self.roomNotificationRepository = roomNotificationRepository
         
         let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationRepository.notificationState)
-        self.state = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState)
+        self.state = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatarData: avatarViewData)
         self.roomNotificationRepository.observeNotificationState { [weak self] state in
             guard let self = self else { return }
             
