@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Notifications: Show decrypted content is enabled by default (#4519).
 
 🐛 Bugfix
  * 
