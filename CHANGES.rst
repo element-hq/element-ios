@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Fix crash on Apple Silicon Macs.
 
 ⚠️ API Changes
  * 
