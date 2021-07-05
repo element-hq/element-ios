@@ -1317,16 +1317,6 @@
     }
 }
 
-- (void)openNotificationsSettings
-{
-    if (self.mainSession)
-    {
-        self.createRoomCoordinatorBridgePresenter = [[CreateRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-        self.createRoomCoordinatorBridgePresenter.delegate = self;
-        [self.createRoomCoordinatorBridgePresenter presentFrom:self animated:YES];
-    }
-}
-
 #pragma mark - UITableView delegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -2207,10 +2197,11 @@
     }
 }
 
+#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
 -(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-    self.roomsDirectoryCoordinatorBridgePresenter = nil;
+    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
 }
 
 @end

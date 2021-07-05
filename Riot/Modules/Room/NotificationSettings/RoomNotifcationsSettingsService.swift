@@ -16,22 +16,10 @@
 
 import Foundation
 
-enum RoomNotificationState: CaseIterable {
-    case all
-    case mentionsOnly
-    case mute
-}
-
-protocol RoomNotificationSettingsServiceType {
+final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType {
+    
     typealias Completion = () -> Void
     typealias NotificationSettingCallback = (RoomNotificationState) -> Void
-
-    func observeNotificationState(listener: @escaping NotificationSettingCallback)
-    func update(state: RoomNotificationState, completion: @escaping Completion)
-    var notificationState: RoomNotificationState { get }
-}
-
-final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType {
     
     // MARK: - Properties
     
@@ -73,7 +61,6 @@ final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType
         }
         observers += [ObjectIdentifier(observer)]
     }
-    
     
     func update(state: RoomNotificationState, completion: @escaping Completion) {
         switch state {
@@ -207,7 +194,6 @@ final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType
             highlight: false
         )
     }
-    
     
     private func removePushRule(rule: MXPushRule, completion: @escaping Completion) {
         handleUpdateCallback(completion) { [weak self] in

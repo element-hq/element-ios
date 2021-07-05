@@ -28,6 +28,7 @@ class RoomNotificationSettingsFooter: UITableViewHeaderFooterView {
     
     func update(footerState: State) {
         
+        // Don't include link until global settings in place
 //        let paragraphStyle = NSMutableParagraphStyle()
 //        paragraphStyle.lineHeightMultiple = 1.16
 //        let paragraphAttributes: [NSAttributedString.Key: Any] = [
@@ -35,8 +36,6 @@ class RoomNotificationSettingsFooter: UITableViewHeaderFooterView {
 //            NSAttributedString.Key.paragraphStyle: paragraphStyle,
 //            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0)
 //        ]
-
-        // Don't include link until global settings in place
 //        let linkStr = VectorL10n.roomNotifsSettingsAccountSettings
 //        let formatStr = VectorL10n.roomNotifsSettingsManageNotifications(linkStr)
 //

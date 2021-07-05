@@ -783,7 +783,6 @@ Tap the + to start adding people.";
 "room_notifs_settings_account_settings" = "Account settings";
 "room_notifs_settings_encrypted_room_notice" = "Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.";
 
-
 // Group Details
 "group_details_title" = "Community Details";
 "group_details_home" = "Home";

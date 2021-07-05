@@ -18,7 +18,6 @@
 
 import Foundation
 
-
 final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType {
     
     // MARK: - Properties
