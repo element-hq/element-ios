@@ -18,12 +18,7 @@ import Reusable
 
 class RoomNotificationSettingsCell: UITableViewCell {
     
-    struct State {
-        let notificicationState: RoomNotificationState
-        let selected: Bool
-    }
-    
-    func update(state: State) {
+    func update(state: RoomNotificationSettingsCellViewData) {
         textLabel?.font = .systemFont(ofSize: 17)
         detailTextLabel?.font = .systemFont(ofSize: 16)
         textLabel?.text = state.notificicationState.title

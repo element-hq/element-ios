@@ -45,7 +45,7 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
             avatarUrl: room.summary.avatar,
             mediaManager: room.mxSession.mediaManager
         ) : nil
-        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationRepository: repository, roomEncrypted: room.summary.isEncrypted, avatarViewData: avatarData)
+        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationService: repository, roomEncrypted: room.summary.isEncrypted, avatarViewData: avatarData)
         let roomNotificationSettingsViewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
         self.roomNotificationSettingsViewModel = roomNotificationSettingsViewModel
         self.roomNotificationSettingsViewController = roomNotificationSettingsViewController

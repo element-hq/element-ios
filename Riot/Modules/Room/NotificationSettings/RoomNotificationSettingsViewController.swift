@@ -41,7 +41,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
     }()
 
     private struct Row {
-        var cellState: RoomNotificationSettingsCell.State
+        var cellViewData: RoomNotificationSettingsCellViewData
         var action: (() -> Void)?
     }
 
@@ -149,8 +149,8 @@ final class RoomNotificationSettingsViewController: UIViewController {
     
     private func updateSections() {
         let rows = viewState.notificationOptions.map({ (setting) -> Row in
-            let cellState = RoomNotificationSettingsCell.State(notificicationState: setting, selected: viewState.notificationState == setting)
-            return Row(cellState: cellState,
+            let cellViewData = RoomNotificationSettingsCellViewData(notificicationState: setting, selected: viewState.notificationState == setting)
+            return Row(cellViewData: cellViewData,
                        action: {
                         self.viewModel.process(viewAction: .selectNotificationState(setting))
             })
@@ -177,7 +177,7 @@ extension RoomNotificationSettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
         let cell: RoomNotificationSettingsCell = tableView.dequeueReusableCell(for: indexPath)
-        cell.update(state: row.cellState)
+        cell.update(state: row.cellViewData)
         cell.update(theme: theme)
         return cell
     }
