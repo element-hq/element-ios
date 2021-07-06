@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * DesignKit: Add Fonts (#4356).
+ * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
 
 🐛 Bugfix
  * SSO: Handle login callback URL with HTML entities (#4129).
