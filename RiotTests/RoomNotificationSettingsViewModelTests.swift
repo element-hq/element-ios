@@ -20,18 +20,18 @@ import XCTest
 
 class MockRoomNotificationSettingsService: RoomNotificationSettingsServiceType {
     
-    var listener: NotificationSettingCallback?
+    var listener: RoomNotificationStateCallback?
     var notificationState: RoomNotificationState
     
     init(initialState: RoomNotificationState) {
         notificationState = initialState
     }
     
-    func observeNotificationState(listener: @escaping NotificationSettingCallback) {
+    func observeNotificationState(listener: @escaping RoomNotificationStateCallback) {
         self.listener = listener
     }
     
-    func update(state: RoomNotificationState, completion: @escaping Completion) {
+    func update(state: RoomNotificationState, completion: @escaping UpdateRoomNotificationStateCompletion) {
         self.notificationState = state
         completion()
         listener?(state)
@@ -82,7 +82,7 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
     
     func setupViewModel(roomEncrypted: Bool, showAvatar: Bool) {
         let avatarData = showAvatar ? Constants.avatarData : nil
-        let viewModel = RoomNotificationSettingsViewModel(roomNotificationRepository: service, roomEncrypted: roomEncrypted, avatarViewData: avatarData)
+        let viewModel = RoomNotificationSettingsViewModel(roomNotificationService: service, roomEncrypted: roomEncrypted, avatarViewData: avatarData)
         viewModel.viewDelegate = view
         viewModel.coordinatorDelegate = coordinator
         self.viewModel = viewModel

@@ -19,7 +19,6 @@ import Foundation
 final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType {
     
     typealias Completion = () -> Void
-    typealias NotificationSettingCallback = (RoomNotificationState) -> Void
     
     // MARK: - Properties
     
@@ -50,7 +49,7 @@ final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType
     
     // MARK: - Public
     
-    func observeNotificationState(listener: @escaping NotificationSettingCallback) {
+    func observeNotificationState(listener: @escaping RoomNotificationStateCallback) {
         
         let observer = NotificationCenter.default.addObserver(
             forName: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules),
@@ -81,7 +80,7 @@ final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType
             return
         }
         
-        if let rule = room.roomPushRule, room.isMentionsOnly {
+        if let rule = room.roomPushRule {
             removePushRule(rule: rule) {
                 self.mute(completion: completion)
             }

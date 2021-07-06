@@ -43,9 +43,9 @@ class RoomNotificationSettingsFooter: UITableViewHeaderFooterView {
 //        let footer0 = NSMutableAttributedString(string: formattedStr, attributes: paragraphAttributes)
 //        let linkRange = (footer0.string as NSString).range(of: linkStr)
 //        footer0.addAttribute(NSAttributedString.Key.link, value: Constants.linkToAccountSettings, range: linkRange)
-        if footerState.showEncryptedNotice {
-            label.text = VectorL10n.roomNotifsSettingsEncryptedRoomNotice
-        }
+        
+        label.text = footerState.showEncryptedNotice ? VectorL10n.roomNotifsSettingsEncryptedRoomNotice : nil
+
     }
 }
 
