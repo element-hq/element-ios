@@ -145,49 +145,43 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger count = 0;
-    
-    // FIXME: Should this still need to check the section? Where do invites come in?
-    if (section < directRoomsSectionNumber)
+    // FIXME: Should this need to check the section?
+    if (section >= directRoomsSectionNumber)
     {
-        count = [self.dataSource tableView:tableView numberOfRowsInSection:section];
+        return 0;
     }
     
-    return count;
+    return [self.dataSource tableView:tableView numberOfRowsInSection:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    
-    // FIXME: Should this still need to check the section? Where do invites come in?
-    if (section < directRoomsSectionNumber)
+    // FIXME: Should this need to check the section?
+    if (indexPath.section >= directRoomsSectionNumber)
     {
-        return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
+        // Return a fake cell to prevent app from crashing.
+        return [[UITableViewCell alloc] init];
     }
     
-    // Return a fake cell to prevent app from crashing.
-    return [[UITableViewCell alloc] init];
+    return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    
-    // FIXME: Should this still need to check the section? Where do invites come in?
-    if (section < directRoomsSectionNumber)
+    // FIXME: Should this need to check the section?
+    if (indexPath.section >= directRoomsSectionNumber)
     {
-        return [self.dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
+        return NO;
     }
     
-    return NO;
+    return [self.dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
 }
 
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // FIXME: Should this still need to check the section? Where do invites come in?
+    // FIXME: Should this need to check the section?
     if (section >= directRoomsSectionNumber)
     {
         return 0.0;
@@ -198,7 +192,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    // FIXME: Should this still need to check the section? Where do invites come in?
+    // FIXME: Should this need to check the section?
     if (section >= directRoomsSectionNumber)
     {
         return nil;
@@ -209,10 +203,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    
-    // FIXME: Should this still need to check the section? Where do invites come in?
-    if (section >= directRoomsSectionNumber)
+    // FIXME: Should this need to check the section?
+    if (indexPath.section >= directRoomsSectionNumber)
     {
         return 0.0;
     }
@@ -222,9 +214,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger section = indexPath.section;
-    // FIXME: Should this still need to check the section? Where do invites come in?
-    if (section >= directRoomsSectionNumber)
+    // FIXME: Should this need to check the section?
+    if (indexPath.section >= directRoomsSectionNumber)
     {
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         return;
@@ -237,21 +228,16 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
 {
-    CGRect frame = [tableView rectForHeaderInSection:section];
-    frame.size.height = self.stickyHeaderHeight;
-    
-    // FIXME: Should this still need to check the section? Where do invites come in?
-    if (section >= directRoomsSectionNumber)
+    // FIXME: Should this need to check the section?
+    if (section >= directRoomsSectionNumber || recentsDataSource == nil)
     {
         return nil;
     }
     
-    if (recentsDataSource)
-    {
-        return [recentsDataSource viewForStickyHeaderInSection:section withFrame:frame];
-    }
+    CGRect frame = [tableView rectForHeaderInSection:section];
+    frame.size.height = self.stickyHeaderHeight;
     
-    return nil;
+    return [recentsDataSource viewForStickyHeaderInSection:section withFrame:frame];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
