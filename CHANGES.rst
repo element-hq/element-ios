@@ -10,6 +10,7 @@ Changes to be released in next version
 🐛 Bugfix
  * VoIP: Do not present ended calls.
  * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
+ * Media Picker: Generate video thumbnails with the correct orientation (#4515).
 
 ⚠️ API Changes
  * 
