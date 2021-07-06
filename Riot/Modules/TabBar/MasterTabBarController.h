@@ -172,6 +172,7 @@
 @property (nonatomic, readonly) MXKRoomDataSource *selectedRoomDataSource;
 @property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
+// TODO: Check if this is needed anymore as the New Chat dialog is model
 // References on the currently selected contact and its view controller
 @property (nonatomic, readonly) ContactDetailsViewController *currentContactDetailViewController;
 @property (nonatomic, readonly) MXKContact *selectedContact;
