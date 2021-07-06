@@ -1033,12 +1033,31 @@
     UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [self changeEditedRoomNotificationSettings];
+        
+        if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+        {
+            [self changeEditedRoomNotificationSettings];
+        }
+        else
+        {
+            [self muteEditedRoomNotifications:!isMuted];
+        }
+        
+        
         completionHandler(YES);
     }];
     muteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+    UIImage *notificationImage;
+    if([BuildSettings roomSettingsScreenShowNotificationsV2])
+    {
+        notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+    }
+    else
+    {
+        notificationImage = [UIImage imageNamed:@"room_action_notification"];
+    }
+
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
     muteAction.image = [notificationImage vc_notRenderedImage];
     
@@ -1314,6 +1333,47 @@
             [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
         }
         [self cancelEditionMode:isRefreshPending];
+    }
+}
+
+- (void)muteEditedRoomNotifications:(BOOL)mute
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+            [self startActivityIndicator];
+
+            if (mute)
+            {
+                [room mentionsOnly:^{
+
+                    [self stopActivityIndicator];
+
+                    // Leave editing mode
+                    [self cancelEditionMode:self->isRefreshPending];
+
+                }];
+            }
+            else
+            {
+                [room allMessages:^{
+
+                    [self stopActivityIndicator];
+
+                    // Leave editing mode
+                    [self cancelEditionMode:self->isRefreshPending];
+
+                }];
+            }
+        }
+        else
+        {
+            // Leave editing mode
+            [self cancelEditionMode:isRefreshPending];
+        }
     }
 }
 
