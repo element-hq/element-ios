@@ -240,7 +240,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 
-@property (nonatomic, strong, readonly) VoiceMessageController *voiceMessageController;
+@property (nonatomic, strong) VoiceMessageController *voiceMessageController;
 
 @end
 
