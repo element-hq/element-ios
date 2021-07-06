@@ -11,6 +11,7 @@ Changes to be released in next version
  * VoIP: Do not present ended calls.
  * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
  * Fix crash on Apple Silicon Macs.
+ * Media Picker: Generate video thumbnails with the correct orientation (#4515).
 
 ⚠️ API Changes
  * 
