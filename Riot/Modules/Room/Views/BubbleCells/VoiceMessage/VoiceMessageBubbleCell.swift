@@ -31,12 +31,15 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
             fatalError("Invalid attachment type passed to a voice message cell.")
         }
         
-        playbackController.attachment = data.attachment
+        if playbackController.attachment != data.attachment {
+            playbackController.attachment = data.attachment
+        }
     }
     
     override func setupViews() {
         super.setupViews()
         
+        bubbleCellContentView?.backgroundColor = .clear
         bubbleCellContentView?.showSenderInfo = true
         bubbleCellContentView?.showPaginationTitle = false
         
@@ -46,7 +49,6 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
         
         playbackController = VoiceMessagePlaybackController(mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider,
                                                             cacheManager: VoiceMessageAttachmentCacheManager.sharedManager)
-        bubbleCellContentView?.addSubview(playbackController.playbackView)
         
         contentView.vc_addSubViewMatchingParent(playbackController.playbackView)
     }

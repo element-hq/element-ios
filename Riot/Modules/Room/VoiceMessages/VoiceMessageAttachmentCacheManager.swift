@@ -42,16 +42,13 @@ class VoiceMessageAttachmentCacheManager {
     
     static let sharedManager = VoiceMessageAttachmentCacheManager()
     
-//    private let workQueue: DispatchQueue
-    
     private var completionCallbacks = [String: [CompletionWrapper]]()
     private var samples = [String: [Int: [Float]]]()
     private var durations = [String: TimeInterval]()
     private var finalURLs = [String: URL]()
     
-//    private init() {
-//        workQueue = DispatchQueue(label: "io.element.VoiceMessageAttachmentCacheManager.queue", qos: .userInitiated)
-//    }
+    private init() {
+    }
     
     func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<(String, URL, TimeInterval, [Float]), Error>) -> Void) {
         guard attachment.type == MXKAttachmentTypeVoiceMessage else {
@@ -74,9 +71,7 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-//        workQueue.async {
-            self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
-//        }
+        self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
     }
     
     private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<(String, URL, Double, [Float]), Error>) -> Void) {

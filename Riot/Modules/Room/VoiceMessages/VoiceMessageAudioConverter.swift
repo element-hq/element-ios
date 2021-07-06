@@ -34,13 +34,35 @@ struct VoiceMessageAudioConverter {
     }
     
     static func mediaDurationAt(_ sourceURL: URL, completion: @escaping (Result<TimeInterval, VoiceMessageAudioConverterError>) -> Void) {
-        DispatchQueue.global(qos: .userInteractive).async {
-            let mediaInfoSession = FFprobeKit.getMediaInformation(sourceURL.path)
-            let mediaInfo = mediaInfoSession?.getMediaInformation()
-            if let duration = try? TimeInterval(value: mediaInfo?.getDuration() ?? "0") {
-                completion(.success(duration))
-            } else {
-                completion(.failure(.generic("Failed to get media duration")))
+        FFprobeKit.getMediaInformationAsync(sourceURL.path) { session in
+            guard let session = session as? MediaInformationSession else {
+                completion(.failure(.generic("Invalid session")))
+                return
+            }
+            
+            guard let returnCode = session.getReturnCode() else {
+                completion(.failure(.generic("Invalid return code")))
+                return
+            }
+            
+            DispatchQueue.main.async {
+                if returnCode.isSuccess() {
+                    let mediaInfo = session.getMediaInformation()
+                    if let duration = try? TimeInterval(value: mediaInfo?.getDuration() ?? "0") {
+                        completion(.success(duration))
+                    } else {
+                        completion(.failure(.generic("Failed to get media duration")))
+                    }
+                } else if returnCode.isCancel() {
+                    completion(.failure(.cancelled))
+                } else {
+                    completion(.failure(.generic(String(returnCode.getValue()))))
+                    MXLog.error("""
+                        getMediaInformationAsync failed with state: \(String(describing: FFmpegKitConfig.sessionState(toString: session.getState()))), \
+                        returnCode: \(String(describing: returnCode)), \
+                        stackTrace: \(String(describing: session.getFailStackTrace()))
+                        """)
+                }
             }
         }
     }
