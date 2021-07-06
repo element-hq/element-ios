@@ -17,6 +17,8 @@
 #import "RecentRoomTableViewCell.h"
 
 #import "MXRoomSummary+Riot.h"
+#import "ThemeService.h"
+#import "RiotShareExtension-Swift.h"
 
 @interface RecentRoomTableViewCell ()
 
@@ -42,6 +44,14 @@
         return [UINib nibWithNibName:NSStringFromClass([self class]) bundle:mainBundle];
     }
     return nil;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.roomTitleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.contentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
 }
 
 - (void)layoutSubviews

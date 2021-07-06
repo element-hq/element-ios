@@ -2,6 +2,90 @@ Changes to be released in next version
 =================================================
 
 ✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * VoIP: Do not present ended calls.
+ * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
+ * Fix crash on Apple Silicon Macs.
+ * Media Picker: Generate video thumbnails with the correct orientation (#4515).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.4.4 (2021-06-30)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * DesignKit: Add Fonts (#4356).
+ * VoIP: Implement audio output router menu in call screen.
+
+🐛 Bugfix
+ * SSO: Handle login callback URL with HTML entities (#4129).
+ * Share extension: Fix theme in dark mode (#4486).
+ * Theme: Fix authentication activity indicator colour when using a dark theme (#4485).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.3)).
+
+Changes in 1.4.3 (2021-06-24)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Room lists: Hide invited rooms if auto-accept option enabled.
+
+🐛 Bugfix
+ * Fixed retain cycle between the RoomTitleView and RoomViewController
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.2)).
+
+Changes in 1.4.2 (2021-06-21)
+=================================================
+
+✨ Features
  * Add left panel (#4398).
 
 🙌 Improvements
@@ -39,6 +123,9 @@ Changes to be released in next version
 Others
  *
  
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.1)).
+
  Changes in 1.4.1 (2021-06-08)
 =================================================
 

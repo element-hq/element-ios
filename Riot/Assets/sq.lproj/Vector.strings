@@ -582,16 +582,16 @@
 "key_backup_setup_intro_title" = "Mos humbni kurrë mesazhe të fshehtëzuar";
 "key_backup_setup_intro_info" = "Mesazhet në dhoma të fshehtëzuara sigurohen me fshehtëzim skaj-më-skaj. Vetëm ju dhe marrësi(t) keni kyçet për leximin e këtyre mesazheve.\n\nBëni një kopjeruajtje të sigurt të kyçeve tuaj, për të shmangur humbjen e tyre.";
 "key_backup_setup_intro_setup_action" = "Rregulloje";
-"key_backup_setup_passphrase_info" = "Do të depozitojmë një kopje të fshehtëzuar të kyçeve tuaj në shërbyesin tonë. Mbrojeni kopjeruajtjen tuaj me një frazëkalim, për ta mbajtur të parrezikuar.\n\nPër maksimumin e sigurisë, ky duhet të jetë i ndryshëm nga fjalëkalimi juaj për llogarinë.";
+"key_backup_setup_passphrase_info" = "Do të depozitojmë një kopje të fshehtëzuar të kyçeve tuaj në shërbyesin tonë. Mbrojeni kopjeruajtjen tuaj me një frazë, për ta mbajtur të parrezikuar.\n\nPër maksimumin e sigurisë, ky duhet të jetë i ndryshëm nga fjalëkalimi juaj për llogarinë.";
 "key_backup_setup_passphrase_passphrase_title" = "Jepeni";
-"key_backup_setup_passphrase_passphrase_placeholder" = "Jepni frazëkalimin";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Jepni frazë";
 "key_backup_setup_passphrase_passphrase_valid" = "Bukur!";
 "key_backup_setup_passphrase_passphrase_invalid" = "Provoni të shtoni një fjalë";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "Ripohojeni";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Ripohoni frazëkalimin";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Ripohoni frazën";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Bukur!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Frazëkalimet nuk përputhen";
-"key_backup_setup_passphrase_set_passphrase_action" = "Caktoni Frazëkalim";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "fraza s’përputhet";
+"key_backup_setup_passphrase_set_passphrase_action" = "Caktoni Frazë";
 "key_backup_setup_recovery_key_info" = "Bëni një kopje të këtij Kyçi Rikthimesh dhe ruajeni diku.\n\nSi rrjet sigurie, mund ta përdorni për të rikthyer historikun e mesazheve tuaj të fshehtëzuar, nëse harroni Frazëkalimin e Rikthimeve.";
 "key_backup_setup_recovery_key_recovery_key_title" = "Kyç Rikthimesh";
 "key_backup_setup_recovery_key_make_copy_action" = "Bëni një Kopje";
@@ -599,18 +599,18 @@
 "key_backup_recover_title" = "Mesazhe të Sigurt";
 "key_backup_recover_empty_backup_title" = "Kopjeruajtje e zbrazët";
 "key_backup_recover_empty_backup_message" = "S’ka kyç për rikthim";
-"key_backup_recover_from_passphrase_info" = "Që të shkyçni historikun e mesazheve tuaj të sigurt përdorni frazëkalimin tuaj të rimarrjeve";
+"key_backup_recover_from_passphrase_info" = "Që të shkyçni historikun e mesazheve tuaj të sigurt, përdorni Frazën tuaj të Sigurisë";
 "key_backup_recover_from_passphrase_passphrase_title" = "Jepeni";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "Jepni Frazëkalimin";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Jepni Frazë";
 "key_backup_recover_from_passphrase_recover_action" = "Shkyçeni Historikun";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Nuk e dini frazëkalimin tuaj të rimarrjeve? Mundeni të ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "përdorni kyçin tuaj të rimarrjeve";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Nuk e dini Frazën tuaj të Sigurisë? Mundeni të ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "përdorni Kyçin tuaj të Sigurisë";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Që të shkyçni historikun e mesazheve tuaj të sigurt, përdorni frazëkalimin tuaj të rimarrjeve";
+"key_backup_recover_from_recovery_key_info" = "Që të shkyçni historikun e mesazheve tuaj të sigurt, përdorni Kyçin tuaj të Sigurisë";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Jepeni";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Jepni Kyç Rimarrjesh";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Jepni Kyç Sigurie";
 "key_backup_recover_from_recovery_key_recover_action" = "Shkyçe Historikun";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Humbët kyçin tuaj të rimarrjeve? Te rregullimet mund të caktoni një të ri.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Humbët Kyçin tuaj të Sigurisë? Te rregullimet mund të caktoni një të ri.";
 "key_backup_recover_success_info" = "Kopjeruajtja u Rikthye!";
 "key_backup_recover_done_action" = "U bë";
 "key_backup_setup_banner_title_part1" = "Rregulloni Rikthim Mesazhesh të Sigurt";
@@ -618,27 +618,27 @@
 "key_backup_recover_banner_title_part1" = "Xhironi Rikthim Mesazhesh të Sigurt";
 "key_backup_recover_banner_title_part2" = " që të lexoni historik mesazhesh të fshehtëzuar në këtë pajisje";
 "settings_key_backup_info" = "Mesazhet e fshehtëzuar sigurohen me fshehtëzim skaj-më-skaj. Vetëm ju dhe marrësi(t) kanë kyçet për të lexuar këto mesazhe.";
-"settings_key_backup_info_signout_warning" = "Lidheni këtë sesion me kopjeruajtje kyçesh, përpara se të dilni, që të shmangni humbje të çfarëdo kyçi që mund të gjendet vetëm në këtë pajisje.";
+"settings_key_backup_info_signout_warning" = "Kopjeruani kyçet tuaja, përpara se të dilni, që të shmangni humbjen e tyre.";
 "settings_key_backup_button_use" = "Përdor kopjeruajtje kyçesh";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Fillo të përdorësh Kopjeruajtje Kyçesh";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Përdor Kopjeruajtje Kyçesh";
-"key_backup_setup_passphrase_title" = "Sigurojeni kopjeruajtjen tuaj me një Frazëkalim";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Ose, sigurojeni kopjeruajtjen tuaj me një Kyç Rimarrjesh, duke e ruajtur këtë diku të parrezikuar.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Të mëtejshme) Rregullojeni me një Kyç Rimarrjesh";
+"key_backup_setup_passphrase_title" = "Sigurojeni kopjeruajtjen tuaj me një Frazë Sigurie";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Ose, sigurojeni kopjeruajtjen tuaj me një Kyç Sigurie, duke e ruajtur këtë diku të parrezikuar.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Të mëtejshme) Rregullojeni me një Kyç Sigurie";
 "key_backup_setup_success_title" = "Sukses!";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Po bëhet kopjeruajtja për kyçet tuaj.\n\nKyçi juaj i rimarrjeve është një lloj mase sigurie - mund ta përdorni për të rifituar hyrje te mesazhet tuaj të fshehtëzuar, nëse harroni frazëkalimin tuaj.\n\nMbajeni kyçin tuaj të rimarrjeve diku shumë të sigurt, bie fjala, nën një përgjegjës fjalëkalimesh (ose në një kasafortë).";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Ruani Kyç Rimarrjesh";
+"key_backup_setup_success_from_passphrase_info" = "Po bëhet kopjeruajtja për kyçet tuaj.\n\nKyçi juaj i Sigurisë është një lloj mase sigurie - mund ta përdorni për të rifituar hyrje te mesazhet tuaj të fshehtëzuar, nëse harroni frazëkalimin tuaj.\n\nMbajeni Kyçin tuaj të Sigurisë diku shumë të sigurt, bie fjala, nën një përgjegjës fjalëkalimesh (ose në një kasafortë).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Ruani Kyç Sigurie";
 "key_backup_setup_success_from_passphrase_done_action" = "U krye";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Po bëhet kopjeruajtja për kyçet tuaj.\n\nBëni një kopje të këtij kyçi rimarrjesh dhe mbajeni të parrezikuar.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Kyç Rimarrjesh";
+"key_backup_setup_success_from_recovery_key_info" = "Po bëhet kopjeruajtja për kyçet tuaj.\n\nBëni një kopje të këtij Kyçi Sigurie dhe mbajeni të parrezikuar.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Kyç Sigurie";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Bëni një Kopje";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Kam bërë një kopje";
-"key_backup_recover_invalid_passphrase_title" = "Frazëkalim Rimarrjeje i Pasaktë";
-"key_backup_recover_invalid_passphrase" = "S’u shfshehtëzua dot kopjeruajtja me këtë frazëkalim: ju lutemi, verifikoni që dhatë frazëkalimin e duhur të rimarrjeve.";
-"key_backup_recover_invalid_recovery_key_title" = "Mospërputhje Kyçesh Rimarrjeje";
-"key_backup_recover_invalid_recovery_key" = "Nuk u shfshehtëzua dot kopjeruajtja me këtë kyç: ju lutemi, verifikoni që dhatë kyçin e duhur të rimarrjeve.";
+"key_backup_recover_invalid_passphrase_title" = "Frazë e Pasaktë Sigurie";
+"key_backup_recover_invalid_passphrase" = "S’u shfshehtëzua dot kopjeruajtja me këtë frazë: ju lutemi, verifikoni që dhatë Frazën e duhur të Sigurisë.";
+"key_backup_recover_invalid_recovery_key_title" = "Mospërputhje Kyçesh Sigurie";
+"key_backup_recover_invalid_recovery_key" = "Nuk u shfshehtëzua dot kopjeruajtja me këtë kyç: ju lutemi, verifikoni që dhatë Kyçin e duhur të Sigurisë.";
 "key_backup_setup_banner_title" = "Mos humbni kurrë mesazhe të fshehtëzuar";
 "key_backup_setup_banner_subtitle" = "Fillo të përdorësh Kopjeruajtje Kyçesh";
 "key_backup_recover_banner_title" = "Mos humbni kurrë mesazhe të fshehtëzuar";
@@ -657,7 +657,7 @@
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Do të pres";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Kopjeruajtje e Re Kyçesh";
-"e2e_key_backup_wrong_version" = "U pikas një kopjeruajtje e re kyçesh mesazhesh të sigurt.\n\nNëse s’qe prej jush, caktoni një frazëkalim të ri te Rregullimet.";
+"e2e_key_backup_wrong_version" = "U pikas një kopjeruajtje e re kyçesh mesazhesh të sigurt.\n\nNëse s’qe prej jush, caktoni një Frazë të re Sigurie te Rregullimet.";
 "e2e_key_backup_wrong_version_button_settings" = "Rregullime";
 "e2e_key_backup_wrong_version_button_wasme" = "Prej meje qe";
 "key_backup_setup_intro_manual_export_info" = "(Të mëtejshme)";
@@ -1039,7 +1039,7 @@
 "security_settings_crosssigning_info_not_bootstrapped" = "<em>Cross-signing</em> s’është ujdisur ende.";
 "security_settings_crosssigning_info_exists" = "Llogaria juaj ka një identitet <em>cross-signing</em>, por s’është ende i besuar nga ky sesion. Plotësoni sigurinë e këtij sesioni.";
 "security_settings_crosssigning_info_trusted" = "<em>Cross-signing</em> është i aktivizuar. Mund të besoni përdorues të tjerë dhe sesionet tuaj të tjerë bazuar në <em>cross-signing</em>, por s’mund të kryeni <em>cross-sign</em> që nga ky sesion,ngaqë nuk ka kyçe privatë për <em>cross-signing</em>. Plotësoni sigurinë e këtij sesioni.";
-"security_settings_crosssigning_info_ok" = "<em>Cross-signing</em> është i aktivizuar.";
+"security_settings_crosssigning_info_ok" = "<em>Cross-signing</em> është gati për përdorim.";
 "security_settings_crosssigning_complete_security" = "Siguri e plotë";
 "security_settings_complete_security_alert_title" = "Siguri e plotë";
 "security_settings_complete_security_alert_message" = "Së pari duhet të plotësoni sigurinë në sesionin tuaj të tanishëm.";
@@ -1088,40 +1088,40 @@
 "key_verification_manually_verify_device_additional_information" = "Nëse s’përputhen, siguria e komunikimeve tuaja mund të jetë komprometuar.";
 "key_verification_manually_verify_device_validate_action" = "Verifikoje";
 "user_verification_session_details_verify_action_current_user_manually" = "Verifikojeni Dorazi përmes Teksti";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Përdor Kyç Rimarrjesh";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Përdor Frazëkalim ose Kyç Rimarrjesh";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Përdor Kyç Sigurie";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Përdor Frazë ose Kyç Sigurie";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Nëse s’hyni dot në një sesion ekzistues";
-"secrets_recovery_with_passphrase_title" = "Frazëkalim Rimarrjesh";
-"secrets_recovery_with_passphrase_information_default" = "Hyni në historikun tuaj të mesazheve të sigurt dhe përdorni identitetin tuaj “cross-signing” për të verifikuar sesione të tjerë duke dhënë frazëkalimin tuaj të rimarrjeve.";
-"secrets_recovery_with_passphrase_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Frazëkalimin tuaj të Rimarrjeve.";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Jepni Frazëkalim Rimarrjesh";
-"secrets_recovery_with_passphrase_recover_action" = "Përdor Frazëkalim";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "S’e din frazëkalimin tuaj të rimarrjeve? Mundeni të ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "përdorni kyçin tuaj të rimarrjeve";
+"secrets_recovery_with_passphrase_title" = "Frazë Sigurie";
+"secrets_recovery_with_passphrase_information_default" = "Hyni në historikun tuaj të mesazheve të sigurt dhe përdorni identitetin tuaj “cross-signing” për të verifikuar sesione të tjerë duke dhënë Frazën tuaj të Sigurisë.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Frazën tuaj të Sigurisë.";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Jepni Frazë Sigurie";
+"secrets_recovery_with_passphrase_recover_action" = "Përdor Frazë";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "S’e dini Frazën tuaj të Sigurisë? Mundeni të ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "përdorni Kyçin tuaj të Sigurisë";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "S’arrihet të hyhet në depo të fshehtë";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Ju lutemi, verifikoni që keni dhënë frazëkalimin e saktë të rimarrjeve.";
-"secrets_recovery_with_key_title" = "Kyç Rimarrjesh";
-"secrets_recovery_with_key_information_default" = "Hyni te historiku i mesazheve tuaj të sigurt dhe te identiteti juaj për cross-signing për verifikim sesionesh të tjerë përmes dhënies së kyçit të rimarrjeve.";
-"secrets_recovery_with_key_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Kyç Rimarrjesh.";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Jepni Kyç Rimarrjesh";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Ju lutemi, verifikoni që keni dhënë Frazën e saktë të Sigurisë.";
+"secrets_recovery_with_key_title" = "Kyç Sigurie";
+"secrets_recovery_with_key_information_default" = "Hyni te historiku i mesazheve tuaj të sigurt dhe te identiteti juaj për “cross-signing” për verifikim sesionesh të tjerë përmes dhënies së Kyçit të Sigurisë.";
+"secrets_recovery_with_key_information_verify_device" = "Që të verifikoni këtë pajisje, përdorni Kyçin tuaj të Sigurisë.";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Jepni Kyç Sigurie";
 "secrets_recovery_with_key_recover_action" = "Përdor Kyç";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "S’arrihet të hyhet në depozitë të fshehtë";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Ju lutemi, verifikoni se dhatë kyçin e saktë të rimarrjeve.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Ju lutemi, verifikoni se dhatë Kyçin e saktë të Sigurisë.";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Ky aplikacion nuk mbulon mekanizimin e mirëfilltësimeve në shërbyesin tuaj Home.";
 "secure_key_backup_setup_intro_title" = "Kopjeruajtje e Sigurt";
 "secure_key_backup_setup_intro_info" = "Mbrohuni kundër humbjes së hyrjes në mesazhe & të dhëna të fshehtëzuara, duke kopjeruajtur kyçe fshehtëzimi në shërbyesin tuaj.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Përdorni një Kyç Sigurie";
 "secure_key_backup_setup_intro_use_security_key_info" = "Prodhoni një kyç sigurie për ta ruajtur diku të parrezik, bie fjala, në një përgjegjës fjalëkalimesh apo në një kasafortë.";
-"secure_key_backup_setup_intro_use_security_passphrase_title" = "Përdorni një Frazëkalim Sigurie";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Përdorni një Frazë Sigurie";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Jepni një frazë të fshehtë që e dini vetëm ju, dhe prodhoni një kyç për kopjeruajtje.";
 "secure_key_backup_setup_cancel_alert_title" = "Jeni i sigurt?";
 "secure_key_backup_setup_cancel_alert_message" = "Nëse e anuloni tani, mund të humbni mesazhe & të dhëna të fshehtëzuara, nëse humbni hyrje te kredenciale tuajt hyrjesh.\n\nMundeni edhe të ujdisni Kopjeruajtje të Sigurt & të administroni kyçet tuaj që nga Rregullimet.";
 "secure_backup_setup_banner_title" = "Kopjeruajtje e Sigurt";
 "secure_backup_setup_banner_subtitle" = "Mbrohuni kundër humbjes së hyrjes te mesazhe & të dhëna të fshehtëzuara";
 "secrets_setup_recovery_key_title" = "Ruani Kyçin tuaj të Sigurisë";
-"secrets_setup_recovery_key_information" = "Mbajeni Kyçin tuaj të Rimarrjeve diku të parrezik. Mund të përdoret për të shkyçur mesazhet & të dhënat tuaja të fshehtëzuara.";
+"secrets_setup_recovery_key_information" = "Mbajeni Kyçin tuaj të Sigurisë diku të parrezik. Mund të përdoret për të shkyçur mesazhet & të dhënat tuaja të fshehtëzuara.";
 "secrets_setup_recovery_key_loading" = "Po ngarkohet…";
 "secrets_setup_recovery_key_export_action" = "Ruaje";
 "secrets_setup_recovery_key_done_action" = "U bë";
@@ -1133,12 +1133,12 @@
 "secrets_setup_recovery_passphrase_validate_action" = "U bë";
 "secrets_setup_recovery_passphrase_confirm_information" = "Që ta ripohoni, rijepeni Frazën e Sigurisë.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Ripohojeni";
-"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Ripohoni frazëkalimin";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Ripohoni frazën";
 "security_settings_secure_backup" = "KOPJERUAJTJE E SIGURT";
-"security_settings_secure_backup_description" = "Mbrohuni kundër humbjes së hyrjes në mesazhe & të dhëna të fshehtëzuara, duke kopjeruajtur kyçe fshehtëzimi në shërbyesin tuaj.";
+"security_settings_secure_backup_description" = "Kopjeruani kyçet tuaj të fshehtëzimit me të dhëna të llogarisë tuaj, për rastin kur do të humbnit hyrje në sesionet tuaja. Kyçet tuaj do të sigurohen me një Kyç unik Sigurie.";
 "security_settings_secure_backup_setup" = "Ujdiseni";
 "security_settings_secure_backup_synchronise" = "Njëkohësoje";
-"security_settings_secure_backup_delete" = "Fshije";
+"security_settings_secure_backup_delete" = "Fshije Kopjeruajtjen";
 "security_settings_user_password_description" = "Ripohoni identitetin tuaj duke dhënë fjalëkalimin e llogarisë tuaj";
 "secure_key_backup_setup_existing_backup_error_title" = "Një kopjeruajtje për mesazhe që ekzistojnë tashmë";
 "secure_key_backup_setup_existing_backup_error_info" = "Shkyçeni, që ta ripërdorni te kopjeruajtja e sigurt ose për ta fshirë që të krijoni një kopjeruajtje të re mesazhesh te kopjeruajtja e sigurt.";
@@ -1313,7 +1313,7 @@
 "event_formatter_call_has_ended" = "Përfundoi %@";
 "event_formatter_call_video" = "Thirrje video";
 "event_formatter_call_voice" = "Thirrje audio";
-"security_settings_crosssigning_reset" = "Rikthe te parazgjedhjet <em>cross-signing</em>";
+"security_settings_crosssigning_reset" = "Rikthe te parazgjedhjet";
 "security_settings_crosssigning" = "<em>CROSS-SIGNING</em>";
 "settings_show_NSFW_public_rooms" = "Shfaq dhoma publike NSFW";
 "room_open_dialpad" = "Numërator";
@@ -1374,3 +1374,30 @@
 // Mark: - Spaces
 
 "space_feature_unavailable_title" = "Hapësirat s’kanë ardhur ende";
+"side_menu_app_version" = "Version %@";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"side_menu_action_feedback" = "Përshtypje";
+"side_menu_action_help" = "Ndihmë";
+"side_menu_action_settings" = "Rregullime";
+"side_menu_action_invite_friends" = "Ftoni shokë";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Paneli majtas";
+"user_avatar_view_accessibility_hint" = "Ndryshoni avatar përdoruesi";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Që të vazhdohet, jepni Kyçin tuaj të Sigurisë.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Që të vazhdohet, jepni Frazën tuaj të Sigurisë.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Kyçet tuaj po kopjeruhen.";
+"security_settings_crosssigning_bootstrap" = "Ujdise";
+"security_settings_secure_backup_restore" = "Riktheji prej Kopjeruajtjeje";
+"security_settings_secure_backup_info_valid" = "Ky sesion po kopjeruan kyçet tuaj.";
+"security_settings_secure_backup_info_checking" = "Po kontrollohet…";
+"settings_ui_theme_picker_message_match_system_theme" = "“Auto” përputhet me temën e sistemit të pajisjes tuaj";
+"settings_ui_theme_picker_message_invert_colours" = "“Auto” përdor rregullimet “Ktheji Së Prapthi Ngjyrat”";
+"room_recents_unknown_room_error_message" = "S’gjendet dot kjo dhomë. Sigurohuni se ekziston";
+"room_creation_dm_error" = "S’mundëm të krijojmë dot MD-në tuaj. Ju lutemi, kontrolloni përdoruesit të cilëve doni t’u dërgohet dhe riprovoni.";

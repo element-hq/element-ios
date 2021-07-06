@@ -4,6 +4,7 @@
 
 @import MatrixSDK;
 @import MatrixKit;
+@import DTCoreText;
 
 #import "WebViewViewController.h"
 #import "RiotSplitViewController.h"

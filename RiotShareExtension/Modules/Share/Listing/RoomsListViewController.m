@@ -75,6 +75,7 @@
 {
     [super viewDidLoad];
     
+    self.recentsTableView.backgroundColor = ThemeService.shared.theme.backgroundColor;
     [self.recentsTableView registerNib:[RecentRoomTableViewCell nib] forCellReuseIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
     
     [self configureSearchBar];
@@ -97,6 +98,7 @@
     self.recentsSearchBar.searchBarStyle = UISearchBarStyleMinimal;
     self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     self.recentsSearchBar.tintColor = ThemeService.shared.theme.tintColor;
+    self.recentsSearchBar.backgroundColor = ThemeService.shared.theme.baseColor;
     
     _tableSearchBar.tintColor = self.recentsSearchBar.tintColor;
 }
