@@ -1673,4 +1673,4 @@ Tap the + to start adding people.";
 
 "voice_message_release_to_send" = "Release to send";
 "voice_message_remaining_recording_time" = "%@s left";
-"voice_message_stop_locked_mode_recording" = "Tap on the wavelenghth to stop and playback";
+"voice_message_stop_locked_mode_recording" = "Tap on the wavelength to stop and playback";
