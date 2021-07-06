@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * VoIP: Do not present ended calls.
 
 ⚠️ API Changes
  * 
