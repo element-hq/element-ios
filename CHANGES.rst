@@ -8,6 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
+ * VoIP: Do not present ended calls.
  * Fix crash on Apple Silicon Macs.
 
 ⚠️ API Changes
