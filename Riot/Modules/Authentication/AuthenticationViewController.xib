@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,6 +18,7 @@
                 <outlet property="authInputsContainerView" destination="xWb-IJ-v7F" id="DEo-Ji-wPT"/>
                 <outlet property="authScrollViewBottomConstraint" destination="Q6p-jM-1nj" id="6gY-U4-cSi"/>
                 <outlet property="authenticationActivityIndicator" destination="30E-gm-z6O" id="DDw-QJ-ND8"/>
+                <outlet property="authenticationActivityIndicatorContainerView" destination="yLn-GC-maY" id="ie3-dl-OoN"/>
                 <outlet property="authenticationScrollView" destination="OHV-KQ-Ww0" id="gyc-zq-fA1"/>
                 <outlet property="cancelAuthFallbackButton" destination="9qj-5c-Sfb" id="IH4-cc-kKx"/>
                 <outlet property="contentView" destination="rhx-dD-4EJ" id="XXc-2j-Gi6"/>
@@ -100,12 +102,26 @@
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xWb-IJ-v7F" userLabel="AuthInputsContainerView">
                                     <rect key="frame" x="0.0" y="160" width="375" height="200"/>
                                     <subviews>
-                                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="30E-gm-z6O">
-                                            <rect key="frame" x="177.66666666666666" y="90" width="20" height="20"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="AuthenticationVCActivityIndicator"/>
-                                            </userDefinedRuntimeAttributes>
-                                        </activityIndicatorView>
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yLn-GC-maY" userLabel="Activity Container">
+                                            <rect key="frame" x="157.66666666666666" y="70" width="60" height="60"/>
+                                            <subviews>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="30E-gm-z6O">
+                                                    <rect key="frame" x="20" y="20" width="20" height="20"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="AuthenticationVCActivityIndicator"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="centerX" secondItem="30E-gm-z6O" secondAttribute="centerX" id="5NJ-Fd-8Dd"/>
+                                                <constraint firstAttribute="bottom" secondItem="30E-gm-z6O" secondAttribute="bottom" constant="20" symbolic="YES" id="5PP-GA-wTT"/>
+                                                <constraint firstItem="30E-gm-z6O" firstAttribute="leading" secondItem="yLn-GC-maY" secondAttribute="leading" constant="20" symbolic="YES" id="Wzf-kr-smK"/>
+                                                <constraint firstAttribute="trailing" secondItem="30E-gm-z6O" secondAttribute="trailing" constant="20" symbolic="YES" id="c4O-VY-42t"/>
+                                                <constraint firstAttribute="centerY" secondItem="30E-gm-z6O" secondAttribute="centerY" id="nBZ-jT-cXk"/>
+                                                <constraint firstItem="30E-gm-z6O" firstAttribute="top" secondItem="yLn-GC-maY" secondAttribute="top" constant="20" symbolic="YES" id="nfX-PM-XBB"/>
+                                            </constraints>
+                                        </view>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currently we do not support authentication flows defined by this homeserver" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="54b-4O-ip9" userLabel="noFlowLabel">
                                             <rect key="frame" x="28" y="8" width="319.33333333333331" height="33.666666666666664"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -131,19 +147,19 @@
                                     <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCInputContainerView"/>
                                     <constraints>
                                         <constraint firstAttribute="centerX" secondItem="54b-4O-ip9" secondAttribute="centerX" id="0bV-x1-MhX"/>
+                                        <constraint firstItem="yLn-GC-maY" firstAttribute="centerY" secondItem="xWb-IJ-v7F" secondAttribute="centerY" id="5MG-iL-vu7"/>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="8K0-es-Aee"/>
                                         <constraint firstItem="54b-4O-ip9" firstAttribute="top" secondItem="xWb-IJ-v7F" secondAttribute="top" constant="8" id="Ddp-gU-nLY"/>
+                                        <constraint firstItem="yLn-GC-maY" firstAttribute="centerX" secondItem="xWb-IJ-v7F" secondAttribute="centerX" id="ExH-Te-BRQ"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="54b-4O-ip9" secondAttribute="trailing" constant="8" id="VEQ-w9-9Ln"/>
-                                        <constraint firstAttribute="centerY" secondItem="30E-gm-z6O" secondAttribute="centerY" id="ctL-D3-bgP"/>
                                         <constraint firstAttribute="height" priority="750" constant="200" id="e04-1Y-4gZ"/>
                                         <constraint firstItem="wIH-Kd-r7q" firstAttribute="top" secondItem="54b-4O-ip9" secondAttribute="bottom" constant="5" id="grf-0I-rwT"/>
                                         <constraint firstItem="54b-4O-ip9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xWb-IJ-v7F" secondAttribute="leading" constant="8" id="phW-Yy-zN7"/>
                                         <constraint firstAttribute="centerX" secondItem="wIH-Kd-r7q" secondAttribute="centerX" id="rTd-Qc-xrD"/>
-                                        <constraint firstAttribute="centerX" secondItem="30E-gm-z6O" secondAttribute="centerX" id="sSN-PO-Q6t"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gg0-TE-OGb">
-                                    <rect key="frame" x="0.0" y="360" width="375" height="300"/>
+                                    <rect key="frame" x="0.0" y="360" width="375" height="125"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AJ2-lJ-NUq">
                                             <rect key="frame" x="19" y="33" width="122" height="30"/>
@@ -418,7 +434,7 @@ Clear it if you're finished using this device, or want to sign in to another acc
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TjK-XL-dQS">
-                                    <rect key="frame" x="0.0" y="660" width="375" height="0.0"/>
+                                    <rect key="frame" x="0.0" y="485" width="375" height="0.0"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" priority="750" id="mIX-QF-Tmn"/>
@@ -522,5 +538,8 @@ Clear it if you're finished using this device, or want to sign in to another acc
     <resources>
         <image name="horizontal_logo" width="210" height="120"/>
         <image name="selection_untick" width="22" height="22"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

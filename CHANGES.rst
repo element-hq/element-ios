@@ -5,11 +5,10 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * DesignKit: Add Fonts (#4356).
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
 
 🐛 Bugfix
- * SSO: Handle login callback URL with HTML entities (#4129).
+ * 
 
 ⚠️ API Changes
  * 
@@ -22,6 +21,36 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.4.4 (2021-06-30)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * DesignKit: Add Fonts (#4356).
+ * VoIP: Implement audio output router menu in call screen.
+
+🐛 Bugfix
+ * SSO: Handle login callback URL with HTML entities (#4129).
+ * Share extension: Fix theme in dark mode (#4486).
+ * Theme: Fix authentication activity indicator colour when using a dark theme (#4485).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.3)).
 
 Changes in 1.4.3 (2021-06-24)
 =================================================
