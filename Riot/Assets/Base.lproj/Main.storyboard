@@ -151,7 +151,7 @@
         <!--People View Controller-->
         <scene sceneID="Qba-PP-lco">
             <objects>
-                <viewController storyboardIdentifier="PeopleViewController" id="IGB-jr-yFz" customClass="PeopleViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PeopleViewController" extendedLayoutIncludesOpaqueBars="YES" id="IGB-jr-yFz" customClass="PeopleViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mhy-d3-Jh6"/>
                         <viewControllerLayoutGuide type="bottom" id="Hkk-qB-8tq"/>
@@ -177,7 +177,7 @@
         <!--Favourites View Controller-->
         <scene sceneID="z6B-k5-ano">
             <objects>
-                <viewController storyboardIdentifier="FavouritesViewController" id="HnD-LA-psC" customClass="FavouritesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FavouritesViewController" extendedLayoutIncludesOpaqueBars="YES" id="HnD-LA-psC" customClass="FavouritesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pOc-AC-QkD"/>
                         <viewControllerLayoutGuide type="bottom" id="W6L-Au-CaZ"/>
@@ -463,7 +463,7 @@
         <!--Rooms View Controller-->
         <scene sceneID="SDg-Pp-8Uj">
             <objects>
-                <viewController storyboardIdentifier="RoomsViewController" id="HPQ-zg-lZR" customClass="RoomsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RoomsViewController" extendedLayoutIncludesOpaqueBars="YES" id="HPQ-zg-lZR" customClass="RoomsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Hkg-kw-ioH"/>
                         <viewControllerLayoutGuide type="bottom" id="UI8-oQ-9M9"/>
@@ -581,7 +581,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mhb-l9-pM3"/>
+        <segue reference="Tfl-tq-LQp"/>
         <segue reference="f5u-Y1-7nt"/>
     </inferredMetricsTieBreakers>
     <resources>
