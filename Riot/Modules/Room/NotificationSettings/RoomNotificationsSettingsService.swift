@@ -65,7 +65,7 @@ final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType
         switch state {
         case .all:
             allMessages(completion: completion)
-        case .mentionsOnly:
+        case .mentionsAndKeywordsOnly:
             mentionsOnly(completion: completion)
         case .mute:
             mute(completion: completion)
@@ -277,7 +277,7 @@ fileprivate extension MXRoom {
             return .mute
         }
         if isMentionsOnly {
-            return .mentionsOnly
+            return .mentionsAndKeywordsOnly
         }
         return .all
     }

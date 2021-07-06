@@ -18,6 +18,6 @@ import Foundation
 
 enum RoomNotificationState: CaseIterable {
     case all
-    case mentionsOnly
+    case mentionsAndKeywordsOnly
     case mute
 }

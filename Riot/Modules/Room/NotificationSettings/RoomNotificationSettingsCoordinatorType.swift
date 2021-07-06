@@ -1,7 +1,7 @@
 // File created from ScreenTemplate
 // $ createScreen.sh Room/NotificationSettings RoomNotificationSettings
 /*
- Copyright 2020 New Vector Ltd
+ Copyright 2021 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ protocol RoomNotificationSettingsCoordinatorDelegate: AnyObject {
     func roomNotificationSettingsCoordinatorDidCancel(_ coordinator: RoomNotificationSettingsCoordinatorType)
 }
 
-/// `RoomNotificationSettingsCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
+/// `RoomNotificationSettingsCoordinatorType` is a protocol describing a Coordinator that handles changes to the room navigation settings navigation flow.
 protocol RoomNotificationSettingsCoordinatorType: Coordinator, Presentable {
     var delegate: RoomNotificationSettingsCoordinatorDelegate? { get }
 }

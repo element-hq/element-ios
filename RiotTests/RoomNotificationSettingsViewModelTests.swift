@@ -119,10 +119,10 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
         viewModel.process(viewAction: .load)
         XCTAssertNotNil(view.viewState)
         XCTAssertTrue(view.viewState!.notificationState == .all)
-        viewModel.process(viewAction: .selectNotificationState(.mentionsOnly))
-        XCTAssertTrue(view.viewState!.notificationState == .mentionsOnly)
+        viewModel.process(viewAction: .selectNotificationState(.mentionsAndKeywordsOnly))
+        XCTAssertTrue(view.viewState!.notificationState == .mentionsAndKeywordsOnly)
         viewModel.process(viewAction: .save)
-        XCTAssertTrue(service.notificationState == .mentionsOnly)
+        XCTAssertTrue(service.notificationState == .mentionsAndKeywordsOnly)
         XCTAssertTrue(coordinator.didComplete)
     }
     
@@ -135,7 +135,7 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
     }
     
     func testMentionsOnlyNotAvaileOnEncryptedRoom() throws {
-        service = MockRoomNotificationSettingsService(initialState: .mentionsOnly)
+        service = MockRoomNotificationSettingsService(initialState: .mentionsAndKeywordsOnly)
         setupViewModel(roomEncrypted: true, showAvatar: false)
         
         viewModel.process(viewAction: .load)

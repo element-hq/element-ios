@@ -47,7 +47,7 @@ fileprivate extension RoomNotificationState {
         switch self {
         case .all:
             return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsOnly:
+        case .mentionsAndKeywordsOnly:
             return VectorL10n.roomNotifsSettingsMentionsAndKeywords
         case .mute:
             return VectorL10n.roomNotifsSettingsNone

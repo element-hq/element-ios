@@ -1,7 +1,7 @@
 // File created from ScreenTemplate
 // $ createScreen.sh Room/NotificationSettings RoomNotificationSettings
 /*
- Copyright 2020 New Vector Ltd
+ Copyright 2021 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     // MARK: - Private
     
     private static func mapNotificationStateOnRead(encrypted: Bool, state: RoomNotificationState) -> RoomNotificationState {
-        if encrypted, case .mentionsOnly = state {
+        if encrypted, case .mentionsAndKeywordsOnly = state {
             // Notifications not supported on encrypted rooms, map mentionsOnly to mute on read
             return .mute
         } else {
