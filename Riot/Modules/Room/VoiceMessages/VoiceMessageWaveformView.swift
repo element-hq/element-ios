@@ -46,7 +46,10 @@ class VoiceMessageWaveformView: UIView {
 
     var progress = 0.0 {
         didSet {
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
             progressLayer.frame = CGRect(origin: self.bounds.origin, size: CGSize(width: self.bounds.width * CGFloat(self.progress), height: self.bounds.height))
+            CATransaction.commit()
         }
     }
 
@@ -109,8 +112,6 @@ class VoiceMessageWaveformView: UIView {
     }
     
     private func setupAndAdd(_ shapeLayer: CAShapeLayer, with color: UIColor) {
-//        shapeLayer.shouldRasterize = true
-        shapeLayer.drawsAsynchronously = true
         shapeLayer.frame = self.bounds
         shapeLayer.strokeColor = color.cgColor
         shapeLayer.fillColor = color.cgColor

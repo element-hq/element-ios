@@ -37,8 +37,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     }()
     
     private let cacheManager: VoiceMessageAttachmentCacheManager
-    
-    private let audioPlayer: VoiceMessageAudioPlayer
+    private let mediaServiceProvider: VoiceMessageMediaServiceProvider
     private var displayLink: CADisplayLink!
     private var samples: [Float] = []
     private var duration: TimeInterval = 0
@@ -47,6 +46,9 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     
     private var state: VoiceMessagePlaybackControllerState = .stopped {
         didSet {
+            if state == .stopped || state == .error {
+                mediaServiceProvider.audioPlayer.deregisterDelegate(self)
+            }
             updateUI()
             displayLink.isPaused = (state != .playing)
         }
@@ -57,11 +59,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     init(mediaServiceProvider: VoiceMessageMediaServiceProvider,
          cacheManager: VoiceMessageAttachmentCacheManager) {
         self.cacheManager = cacheManager
+        self.mediaServiceProvider = mediaServiceProvider
         
         playbackView = VoiceMessagePlaybackView.loadFromNib()
-        audioPlayer = mediaServiceProvider.audioPlayer()
         
-        audioPlayer.registerDelegate(self)
         playbackView.delegate = self
         
         displayLink = CADisplayLink(target: WeakDisplayLinkTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakDisplayLinkTarget.triggerSelector)
@@ -82,20 +83,29 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     // MARK: - VoiceMessagePlaybackViewDelegate
     
     func voiceMessagePlaybackViewDidRequestPlaybackToggle() {
-        if audioPlayer.isPlaying {
-            audioPlayer.pause()
-        } else {
-            if let urlToLoad = urlToLoad {
-                audioPlayer.loadContentFromURL(urlToLoad)
+        if mediaServiceProvider.mediaIdentifier == attachment?.eventId {
+            if mediaServiceProvider.audioPlayer.isPlaying {
+                mediaServiceProvider.audioPlayer.pause()
+            } else {
+                mediaServiceProvider.audioPlayer.registerDelegate(self)
+                mediaServiceProvider.audioPlayer.play()
             }
-            urlToLoad = nil
-            audioPlayer.play()
+        } else {
+            if let url = urlToLoad {
+                mediaServiceProvider.mediaIdentifier = attachment?.eventId
+                mediaServiceProvider.audioPlayer.registerDelegate(self)
+                mediaServiceProvider.audioPlayer.loadContentFromURL(url)
+                mediaServiceProvider.audioPlayer.play()
+            }
         }
     }
     
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
+        if audioPlayer.url != self.urlToLoad {
+            state = .stopped
+        }
         updateUI()
     }
     
@@ -139,8 +149,8 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.duration))
             details.progress = 0.0
         default:
-            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
-            details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
+            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: mediaServiceProvider.audioPlayer.currentTime))
+            details.progress = (mediaServiceProvider.audioPlayer.duration > 0.0 ? mediaServiceProvider.audioPlayer.currentTime / mediaServiceProvider.audioPlayer.duration : 0.0)
         }
         details.loading = self.loading
         
@@ -152,23 +162,37 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             return
         }
         
+        mediaServiceProvider.audioPlayer.deregisterDelegate(self)
+        self.state = .stopped
         self.loading = true
+        self.samples = []
         updateUI()
-        
-        // TODO: manage a unique instance of audio player.
-        if audioPlayer.isPlaying || audioPlayer.currentTime > 0 {
-            audioPlayer.stop()
-        }
         
         let requiredNumberOfSamples = playbackView.getRequiredNumberOfSamples()
         
         cacheManager.loadAttachment(attachment, numberOfSamples: requiredNumberOfSamples) { result in
             switch result {
             case .success(let result):
+                guard result.0 == attachment.eventId else {
+                    return
+                }
+                
                 self.loading = false
-                self.urlToLoad = result.0
-                self.duration = result.1
-                self.samples = result.2
+                self.urlToLoad = result.1
+                self.duration = result.2
+                self.samples = result.3
+                
+                if self.mediaServiceProvider.mediaIdentifier == self.attachment?.eventId {
+                    self.mediaServiceProvider.audioPlayer.registerDelegate(self)
+                    if self.mediaServiceProvider.audioPlayer.isPlaying {
+                        self.state = .playing
+                    } else if self.mediaServiceProvider.audioPlayer.currentTime > 0 {
+                        self.state = .paused
+                    } else {
+                        self.state = .stopped
+                    }
+                }
+                
                 self.updateUI()
             case .failure:
                 self.state = .error
