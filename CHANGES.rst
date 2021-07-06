@@ -9,6 +9,7 @@ Changes to be released in next version
 
 🐛 Bugfix
  * VoIP: Do not present ended calls.
+ * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
  * Fix crash on Apple Silicon Macs.
 
 ⚠️ API Changes
