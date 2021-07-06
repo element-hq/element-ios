@@ -19,8 +19,6 @@ import Reusable
 class RoomNotificationSettingsCell: UITableViewCell {
     
     func update(state: RoomNotificationSettingsCellViewData) {
-        textLabel?.font = .systemFont(ofSize: 17)
-        detailTextLabel?.font = .systemFont(ofSize: 16)
         textLabel?.text = state.notificicationState.title
         if state.selected {
             accessoryView = UIImageView(image: Asset.Images.checkmark.image)
@@ -34,8 +32,8 @@ extension RoomNotificationSettingsCell: Reusable {}
 
 extension RoomNotificationSettingsCell: Themable {
     func update(theme: Theme) {
+        textLabel?.font = theme.fonts.body
         textLabel?.textColor = theme.textPrimaryColor
-        detailTextLabel?.textColor = theme.textSecondaryColor
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = .clear
         tintColor = theme.tintColor
