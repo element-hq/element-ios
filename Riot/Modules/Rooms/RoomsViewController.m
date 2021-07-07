@@ -58,8 +58,6 @@
     plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"rooms_floating_action"]
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
-    
-    self.enableStickyHeaders = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,17 +94,17 @@
     [super refreshCurrentSelectedCell:forceVisible];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
-{
-    CGRect frame = [tableView rectForHeaderInSection:section];
-    frame.size.height = self.stickyHeaderHeight;
-    
-    return [recentsDataSource viewForHeaderInSection:section withFrame:frame];
-}
-
 - (void)onPlusButtonPressed
 {
     [self showRoomDirectory];
+}
+
+#pragma mark - UITableView delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // Hide the header to merge Invites and Rooms into a single list.
+    return 0.0;
 }
 
 #pragma mark - 
