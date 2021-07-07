@@ -736,6 +736,7 @@
         //  create a thumbnail for the first frame
         AVAsset *asset = [AVAsset assetWithURL:selectedVideoURL];
         AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        generator.appliesPreferredTrackTransform = YES;
         CGImageRef thumbnailRef = [generator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
 
         //  set thumbnail on validationView
