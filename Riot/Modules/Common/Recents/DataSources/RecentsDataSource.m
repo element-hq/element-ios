@@ -19,7 +19,6 @@
 
 #import "RecentCellData.h"
 #import "SectionHeaderView.h"
-#import "DirectorySectionHeaderContainerView.h"
 
 #import "ThemeService.h"
 
@@ -46,10 +45,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     dispatch_queue_t processingQueue;
     
     NSInteger shrinkedSectionsBitMask;
-
-    DirectorySectionHeaderContainerView *directorySectionContainer;
-    UILabel *networkLabel;
-    UILabel *directoryServerLabel;
 
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
     
