@@ -483,13 +483,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             conversationSection = sectionsCount++;
         }
         
-        if (_recentsDataSourceMode == RecentsDataSourceModeRooms
-            && BuildSettings.publicRoomsShowDirectory)
-        {
-            // Add the directory section after "ROOMS"
-            directorySection = sectionsCount++;
-        }
-        
         if (self.lowPriorityCellDataArray.count > 0)
         {
             lowPrioritySection = sectionsCount++;
