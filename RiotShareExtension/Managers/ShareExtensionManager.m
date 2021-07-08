@@ -1174,7 +1174,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
     CFRelease(imageRef);
     
-    [room sendVideo:videoLocalUrl withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+    [room sendVideo:urlAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
         if (successBlock)
         {
             successBlock();
