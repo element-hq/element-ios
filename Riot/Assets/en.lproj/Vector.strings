@@ -710,6 +710,7 @@ Tap the + to start adding people.";
 "room_details_topic" = "Topic";
 "room_details_favourite_tag" = "Favourite";
 "room_details_low_priority_tag" = "Low priority";
+"room_details_notifs" = "Notifications";
 "room_details_mute_notifs" = "Mute notifications";
 "room_details_direct_chat" = "Direct Chat";
 "room_details_access_section"="Who can access this room?";
@@ -771,6 +772,17 @@ Tap the + to start adding people.";
 "room_details_copy_room_id" = "Copy Room ID";
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Notify me for";
+"room_notifs_settings_all_messages" = "All Messages";
+"room_notifs_settings_mentions_and_keywords" = "Mentions and Keywords only";
+"room_notifs_settings_none" = "None";
+"room_notifs_settings_done_action" = "Done";
+"room_notifs_settings_cancel_action" = "Cancel";
+"room_notifs_settings_manage_notifications" = "You can manage notifications in %@";
+"room_notifs_settings_account_settings" = "Account settings";
+"room_notifs_settings_encrypted_room_notice" = "Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.";
 
 // Group Details
 "group_details_title" = "Community Details";
