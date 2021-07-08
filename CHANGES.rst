@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Remove the directory section from the Rooms tab.
 
 🐛 Bugfix
  * VoIP: Do not present ended calls.
