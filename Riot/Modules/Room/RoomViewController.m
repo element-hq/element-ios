@@ -6056,7 +6056,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedVideo:url isPhotoLibraryAsset:NO];
+        AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
+        [roomInputToolbarView sendSelectedVideo:selectedVideo isPhotoLibraryAsset:NO];
     }
 }
 
