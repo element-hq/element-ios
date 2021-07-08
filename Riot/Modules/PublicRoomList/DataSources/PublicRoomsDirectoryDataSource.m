@@ -165,6 +165,11 @@ static NSString *const kNSFWKeyword = @"nsfw";
     }
 }
 
+- (NSUInteger)roomsCount
+{
+    return rooms.count;
+}
+
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
 {
     NSIndexPath *indexPath = nil;
@@ -217,8 +222,8 @@ static NSString *const kNSFWKeyword = @"nsfw";
     // Reset all pagination vars
     [rooms removeAllObjects];
     nextBatch = nil;
-    _roomsCount = 0;
-    _moreThanRoomsCount = NO;
+    _searchResultsCount = 0;
+    _searchResultsCountIsLimited = NO;
     _hasReachedPaginationEnd = NO;
 }
 
@@ -264,14 +269,14 @@ static NSString *const kNSFWKeyword = @"nsfw";
             if (!self->_searchPattern)
             {
                 // When there is no search, we can use totalRoomCountEstimate returned by the server
-                self->_roomsCount = publicRoomsResponse.totalRoomCountEstimate;
-                self->_moreThanRoomsCount = NO;
+                self->_searchResultsCount = publicRoomsResponse.totalRoomCountEstimate;
+                self->_searchResultsCountIsLimited = NO;
             }
             else
             {
                 // Else we can only display something like ">20 matching rooms"
-                self->_roomsCount = self->rooms.count;
-                self->_moreThanRoomsCount = publicRoomsResponse.nextBatch ? YES : NO;
+                self->_searchResultsCount = self->rooms.count;
+                self->_searchResultsCountIsLimited = publicRoomsResponse.nextBatch ? YES : NO;
             }
 
             // Detect pagination end
