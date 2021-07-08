@@ -3054,6 +3054,10 @@ internal enum VectorL10n {
   internal static var roomNotifsSettingsNone: String { 
     return VectorL10n.tr("Vector", "room_notifs_settings_none") 
   }
+  /// Notify me for
+  internal static var roomNotifsSettingsNotifyMeFor: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_notify_me_for") 
+  }
   /// Connectivity to the server has been lost.
   internal static var roomOfflineNotification: String { 
     return VectorL10n.tr("Vector", "room_offline_notification") 

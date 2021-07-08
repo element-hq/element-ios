@@ -774,6 +774,7 @@ Tap the + to start adding people.";
 "room_details_copy_room_url" = "Copy Room URL";
 
 // Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Notify me for";
 "room_notifs_settings_all_messages" = "All Messages";
 "room_notifs_settings_mentions_and_keywords" = "Mentions and Keywords only";
 "room_notifs_settings_none" = "None";

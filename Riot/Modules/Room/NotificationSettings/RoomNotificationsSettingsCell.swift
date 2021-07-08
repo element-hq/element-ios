@@ -37,6 +37,8 @@ extension RoomNotificationSettingsCell: Themable {
         backgroundColor = theme.backgroundColor
         contentView.backgroundColor = .clear
         tintColor = theme.tintColor
+        selectedBackgroundView = UIView()
+        selectedBackgroundView?.backgroundColor = theme.selectedBackgroundColor
     }
 }
 

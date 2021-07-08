@@ -17,7 +17,7 @@
 import Foundation
 import Reusable
 
-class RoomNotificationSettingsAvatarView: UIView, NibLoadable {
+class RoomNotificationSettingsAvatarView: UIView {
     
     @IBOutlet weak var avatarView: MXKImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -39,5 +39,13 @@ class RoomNotificationSettingsAvatarView: UIView, NibLoadable {
             avatarView.image = avatarImage
         }
         nameLabel.text = viewData.displayName
+    }
+}
+
+extension RoomNotificationSettingsAvatarView: NibLoadable { }
+extension RoomNotificationSettingsAvatarView: Themable {
+    func update(theme: Theme) {
+        nameLabel?.font = theme.fonts.title3SB
+        nameLabel?.textColor = theme.textPrimaryColor
     }
 }
