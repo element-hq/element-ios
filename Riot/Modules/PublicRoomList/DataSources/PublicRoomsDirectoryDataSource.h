@@ -68,7 +68,7 @@
 
 /**
  The total number of public rooms matching `searchPattern`.
- It is accurate only if 'moreThanRoomsCount' is NO.
+ It is accurate only if 'searchResultsCountIsLimited' is NO.
  */
 @property (nonatomic, readonly) NSUInteger searchResultsCount;
 
