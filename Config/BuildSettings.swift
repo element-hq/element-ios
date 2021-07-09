@@ -308,6 +308,9 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowCopyMedia: Bool = true
     static let messageDetailsAllowPasteMedia: Bool = true
     
+    // MARK: - Notifications
+    static let decryptNotificationsByDefault: Bool = true
+    
     // MARK: - HTTP
     /// Additional HTTP headers will be sent by all requests. Not recommended to use request-specific headers, like `Authorization`.
     /// Empty dictionary by default.

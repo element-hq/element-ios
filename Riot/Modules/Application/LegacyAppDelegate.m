@@ -4210,7 +4210,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Show encrypted message notification content by default.
     if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
     {
-        RiotSettings.shared.showDecryptedContentInNotifications = YES;
+        RiotSettings.shared.showDecryptedContentInNotifications = BuildSettings.decryptNotificationsByDefault;
     }
 }
 
