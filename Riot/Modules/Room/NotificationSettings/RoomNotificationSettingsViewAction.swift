@@ -1,3 +1,5 @@
+// File created from ScreenTemplate
+// $ createScreen.sh Room/NotificationSettings RoomNotificationSettings
 /*
  Copyright 2021 New Vector Ltd
  
@@ -15,12 +17,10 @@
  */
 
 import Foundation
-
-protocol FlowTemplateCoordinatorDelegate: class {
-    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType)
-}
-
-/// `FlowTemplateCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol FlowTemplateCoordinatorType: Coordinator, Presentable {
-    var delegate: FlowTemplateCoordinatorDelegate? { get }
+/// RoomNotificationSettingsViewController view actions exposed to view model
+enum RoomNotificationSettingsViewAction {
+    case load
+    case selectNotificationState(RoomNotificationState)
+    case save
+    case cancel
 }
