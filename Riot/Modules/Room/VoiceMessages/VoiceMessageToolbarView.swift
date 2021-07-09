@@ -50,6 +50,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         static let lockModeTransitionAnimationDuration: TimeInterval = 0.5
         static let panDirectionChangeThreshold: CGFloat = 20.0
         static let toastContainerCornerRadii: CGFloat = 8.0
+        static let toastDisplayTimeout: TimeInterval = 5.0
     }
     
     @IBOutlet private var backgroundView: UIView!
@@ -309,15 +310,44 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         }
     }
     
+    private var toastIdleTimer: Timer?
+    private var lastUIState: VoiceMessageToolbarViewUIState = .idle
+    
     private func updateToastNotificationsWithDetails(_ details: VoiceMessageToolbarViewDetails, animated: Bool = true) {
+        
+        guard self.toastNotificationLabel.text != details.toastMessage || lastUIState != details.state else {
+            return
+        }
+        
+        lastUIState = details.state
+        
         let shouldShowNotification = details.state != .idle && details.toastMessage != nil
+        let requiredAlpha: CGFloat = shouldShowNotification ? 1.0 : 0.0
+        
+        toastIdleTimer?.invalidate()
+        toastIdleTimer = nil
         
         if shouldShowNotification {
             self.toastNotificationLabel.text = details.toastMessage
         }
         
         UIView.animate(withDuration: (animated ? Constants.animationDuration : 0.0)) {
-            self.toastNotificationContainerView.alpha = (shouldShowNotification ? 1.0 : 0.0)
+            self.toastNotificationContainerView.alpha = requiredAlpha
+        }
+        
+        if shouldShowNotification {
+            toastIdleTimer = Timer.scheduledTimer(withTimeInterval: Constants.toastDisplayTimeout, repeats: false) { [weak self] timer in
+                guard let self = self else {
+                    return
+                }
+                
+                self.toastIdleTimer?.invalidate()
+                self.toastIdleTimer = nil
+                
+                UIView.animate(withDuration: Constants.animationDuration) {
+                    self.toastNotificationContainerView.alpha = 0
+                }
+            }
         }
     }
     

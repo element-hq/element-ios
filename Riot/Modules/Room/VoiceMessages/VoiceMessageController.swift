@@ -48,6 +48,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private var audioSamples: [Float] = []
     private var isInLockedMode: Bool = false
+    private var notifiedRemainingTime = false
     
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
@@ -82,7 +83,17 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             delegate?.voiceMessageControllerDidRequestMicrophonePermission(self)
             return
         }
-                
+        
+        // Haptic are not played during record on iOS by default. This fix works
+        // only since iOS 13. A workaround for iOS 12 and earlier would be to
+        // dispatch after at least 100ms recordWithOuputURL call
+        if #available(iOS 13.0, *) {
+            try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+            try? AVAudioSession.sharedInstance().setAllowHapticsAndSystemSoundsDuringRecording(true)
+        }
+        
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+
         let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
         
@@ -133,6 +144,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - AudioRecorderDelegate
     
     func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
+        notifiedRemainingTime = false
         updateUI()
     }
     
@@ -277,7 +289,15 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         if isRecording {
             if currentTime >= Constants.maximumAudioRecordingDuration - Constants.maximumAudioRecordingLengthReachedThreshold {
-                details.toastMessage = VectorL10n.voiceMessageRemainingRecordingTime(String(Constants.maximumAudioRecordingLengthReachedThreshold))
+                
+                if !self.notifiedRemainingTime {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                }
+                
+                notifiedRemainingTime = true
+
+                let remainingTime = ceil(Constants.maximumAudioRecordingDuration - currentTime)
+                details.toastMessage = VectorL10n.voiceMessageRemainingRecordingTime(String(remainingTime))
             } else {
                 details.toastMessage = (isInLockedMode ? VectorL10n.voiceMessageStopLockedModeRecording : VectorL10n.voiceMessageReleaseToSend)
             }

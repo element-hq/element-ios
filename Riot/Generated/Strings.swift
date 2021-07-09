@@ -4838,7 +4838,7 @@ internal enum VectorL10n {
   internal static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
   }
-  /// Release to send
+  /// Hold to record, release to send
   internal static var voiceMessageReleaseToSend: String { 
     return VectorL10n.tr("Vector", "voice_message_release_to_send") 
   }
