@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol FlowTemplateCoordinatorDelegate: class {
+protocol FlowTemplateCoordinatorDelegate: AnyObject {
     func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType)
 }
 

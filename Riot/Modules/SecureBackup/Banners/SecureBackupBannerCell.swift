@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol SecureBackupBannerCellDelegate: class {
+@objc protocol SecureBackupBannerCellDelegate: AnyObject {
     func secureBackupBannerCellDidTapCloseAction(_ cell: SecureBackupBannerCell)
 }
 

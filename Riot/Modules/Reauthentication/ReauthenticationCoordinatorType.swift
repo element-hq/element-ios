@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol ReauthenticationCoordinatorDelegate: class {
+protocol ReauthenticationCoordinatorDelegate: AnyObject {
     func reauthenticationCoordinatorDidComplete(_ coordinator: ReauthenticationCoordinatorType, withAuthenticationParameters: [String: Any]?)
     func reauthenticationCoordinatorDidCancel(_ coordinator: ReauthenticationCoordinatorType)
     func reauthenticationCoordinator(_ coordinator: ReauthenticationCoordinatorType, didFailWithError: Error)

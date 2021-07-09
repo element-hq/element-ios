@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol EditHistoryCoordinatorDelegate: class {
+protocol EditHistoryCoordinatorDelegate: AnyObject {
     func editHistoryCoordinatorDidComplete(_ coordinator: EditHistoryCoordinatorType)
 }
 

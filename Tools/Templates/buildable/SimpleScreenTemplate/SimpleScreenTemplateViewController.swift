@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol SimpleScreenTemplateViewControllerDelegate: class {
+protocol SimpleScreenTemplateViewControllerDelegate: AnyObject {
     func simpleScreenTemplateViewControllerDidTapSetupAction(_ viewController: SimpleScreenTemplateViewController)
     func simpleScreenTemplateViewControllerDidCancel(_ viewController: SimpleScreenTemplateViewController)
 }

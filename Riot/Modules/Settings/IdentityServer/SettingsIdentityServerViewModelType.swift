@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SettingsIdentityServerViewModelViewDelegate: class {
+protocol SettingsIdentityServerViewModelViewDelegate: AnyObject {
     func settingsIdentityServerViewModel(_ viewModel: SettingsIdentityServerViewModelType, didUpdateViewState viewSate: SettingsIdentityServerViewState)
 }
 

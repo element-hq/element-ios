@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol KeyBackupRecoverFromRecoveryKeyCoordinatorDelegate: class {
+protocol KeyBackupRecoverFromRecoveryKeyCoordinatorDelegate: AnyObject {
     func keyBackupRecoverFromPassphraseCoordinatorDidRecover(_ keyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromRecoveryKeyCoordinatorType)
     func keyBackupRecoverFromPassphraseCoordinatorDidCancel(_ keyBackupRecoverFromRecoveryKeyCoordinator: KeyBackupRecoverFromRecoveryKeyCoordinatorType)
 }
