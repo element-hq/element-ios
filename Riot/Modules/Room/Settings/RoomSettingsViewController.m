@@ -528,7 +528,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_DIRECT_CHAT];
     }
-    [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
+    if (!BuildSettings.roomSettingsScreenShowNotificationsV2)
+    {
+        [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_MUTE_NOTIFICATIONS];
+    }
     [sectionMain addRowWithTag:ROOM_SETTINGS_MAIN_SECTION_ROW_LEAVE];
     [tmpSections addObject:sectionMain];
     
