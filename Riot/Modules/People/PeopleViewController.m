@@ -74,8 +74,6 @@
     
     // Change the table data source. It must be the people view controller itself.
     self.recentsTableView.dataSource = self;
-    
-    self.enableStickyHeaders = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -181,24 +179,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // FIXME: Should this need to check the section?
-    if (section >= directRoomsSectionNumber)
-    {
-        return 0.0;
-    }
-    
-    return [super tableView:tableView heightForHeaderInSection:section];
+    return 0.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    // FIXME: Should this need to check the section?
-    if (section >= directRoomsSectionNumber)
-    {
-        return nil;
-    }
-    
-    return [super tableView:tableView viewForHeaderInSection:section];
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -225,20 +211,6 @@
 }
 
 #pragma mark - Override RecentsViewController
-
-- (UIView *)tableView:(UITableView *)tableView viewForStickyHeaderInSection:(NSInteger)section
-{
-    // FIXME: Should this need to check the section?
-    if (section >= directRoomsSectionNumber || recentsDataSource == nil)
-    {
-        return nil;
-    }
-    
-    CGRect frame = [tableView rectForHeaderInSection:section];
-    frame.size.height = self.stickyHeaderHeight;
-    
-    return [recentsDataSource viewForStickyHeaderInSection:section withFrame:frame];
-}
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
