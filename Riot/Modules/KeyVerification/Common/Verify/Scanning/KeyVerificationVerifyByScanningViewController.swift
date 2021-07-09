@@ -242,8 +242,8 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
     
         self.stopQRCodeScanningIfPresented()
         
-        // if we're verifying with someone else, let the user know threy cancelled.
-        // if we're verifying our own device, assume the user probably knows since it them who
+        // if we're verifying with someone else, let the user know they cancelled.
+        // if we're verifying our own device, assume the user probably knows since it was them who
         // cancelled on their other device
         if verificationKind == .user {
             self.errorPresenter.presentError(from: self.alertPresentingViewController, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
