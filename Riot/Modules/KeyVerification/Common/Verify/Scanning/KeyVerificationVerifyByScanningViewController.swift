@@ -159,8 +159,8 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             self.render(error: error)
         case .scannedCodeValidated(let isValid):
             self.renderScannedCode(valid: isValid)        
-        case .cancelled(let reason):
-            self.renderCancelled(reason: reason)
+        case .cancelled(let reason, let verificationKind):
+            self.renderCancelled(reason: reason, verificationKind: verificationKind)
         case .cancelledByMe(let reason):
             self.renderCancelledByMe(reason: reason)
         }
@@ -236,12 +236,21 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         }
     }
     
-    private func renderCancelled(reason: MXTransactionCancelCode) {
+    private func renderCancelled(reason: MXTransactionCancelCode,
+                                 verificationKind: KeyVerificationKind) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
     
         self.stopQRCodeScanningIfPresented()
         
-        self.errorPresenter.presentError(from: self.alertPresentingViewController, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+        // if we're verifying with someone else, let the user know threy cancelled.
+        // if we're verifying our own device, assume the user probably knows since it them who
+        // cancelled on their other device
+        if verificationKind == .user {
+            self.errorPresenter.presentError(from: self.alertPresentingViewController, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+                self.dismissQRCodeScanningIfPresented(animated: false)
+                self.viewModel.process(viewAction: .cancel)
+            }
+        } else {
             self.dismissQRCodeScanningIfPresented(animated: false)
             self.viewModel.process(viewAction: .cancel)
         }
