@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Add support for sending slow motion videos (#4483).
 
 🐛 Bugfix
  * VoIP: Do not present ended calls.
