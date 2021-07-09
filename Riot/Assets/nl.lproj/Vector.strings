@@ -112,7 +112,6 @@
 "room_creation_invite_another_user" = "Zoeken/uitnodigen met gebruikers-ID, naam of e-mailadres";
 // Room recents
 "room_recents_directory_section" = "GESPREKSCATALOGUS";
-"room_recents_directory_section_network" = "Netwerk";
 "room_recents_favourites_section" = "FAVORIETEN";
 "room_recents_people_section" = "PERSONEN";
 "room_recents_conversations_section" = "GESPREKKEN";

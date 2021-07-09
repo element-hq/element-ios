@@ -3314,10 +3314,6 @@ internal enum VectorL10n {
   internal static var roomRecentsDirectorySection: String { 
     return VectorL10n.tr("Vector", "room_recents_directory_section") 
   }
-  /// Network
-  internal static var roomRecentsDirectorySectionNetwork: String { 
-    return VectorL10n.tr("Vector", "room_recents_directory_section_network") 
-  }
   /// FAVOURITES
   internal static var roomRecentsFavouritesSection: String { 
     return VectorL10n.tr("Vector", "room_recents_favourites_section") 

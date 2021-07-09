@@ -101,7 +101,6 @@
 "room_creation_make_private" = "Fazer privado";
 "room_creation_wait_for_creation" = "Uma sala já está sendo criada. Por favor espere.";
 "room_creation_invite_another_user" = "Buscar / convidar por ID de usuária(o), Nome ou email";
-"room_recents_directory_section_network" = "Rede";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PESSOAS";
 "room_recents_conversations_section" = "SALAS";

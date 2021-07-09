@@ -218,7 +218,6 @@
 "auth_login_single_sign_on" = "Logi sisse";
 // Room recents
 "room_recents_directory_section" = "JUTUTUBADE LOEND";
-"room_recents_directory_section_network" = "Võrk";
 "room_recents_favourites_section" = "LEMMIKUD";
 "room_recents_people_section" = "INIMESED";
 "room_recents_conversations_section" = "JUTUTOAD";

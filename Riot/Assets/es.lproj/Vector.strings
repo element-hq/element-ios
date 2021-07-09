@@ -144,7 +144,6 @@
 "room_creation_invite_another_user" = "Buscar / invitar por ID de Usuario, Nombre o correo electrónico";
 // Room recents
 "room_recents_directory_section" = "DIRECTORIO DE SALAS";
-"room_recents_directory_section_network" = "Red";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PERSONAS";
 "room_recents_conversations_section" = "SALAS";

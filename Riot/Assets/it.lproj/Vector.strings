@@ -112,7 +112,6 @@
 "room_creation_invite_another_user" = "Cerca / invita per ID utente, nome o email";
 // Room recents
 "room_recents_directory_section" = "ELENCO STANZE";
-"room_recents_directory_section_network" = "Rete";
 "room_recents_favourites_section" = "PREFERITI";
 "room_recents_people_section" = "CHAT DIRETTE";
 "room_recents_conversations_section" = "STANZE";
