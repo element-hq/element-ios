@@ -1387,6 +1387,7 @@ Tap the + to start adding people.";
 "key_verification_verify_qr_code_information_other_device" = "Scan the code below to verify:";
 "key_verification_verify_qr_code_emoji_information" = "Verify by comparing unique emoji.";
 "key_verification_verify_qr_code_scan_code_action" = "Scan their code";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scan with this device";
 "key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
 "key_verification_verify_qr_code_start_emoji_action" = "Verify by emoji";
 

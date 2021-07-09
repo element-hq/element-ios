@@ -13,6 +13,7 @@ Changes to be released in next version
  * Fix crash on Apple Silicon Macs.
  * Media Picker: Generate video thumbnails with the correct orientation (#4515).
  * Directory List (pop-up one): Fix duplicate rooms being shown (#4537).
+ * Use different title for scan button for self verification (#4525)
 
 ⚠️ API Changes
  * 
