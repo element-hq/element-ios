@@ -52,6 +52,10 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
+    @objc public var isRecordingAudio: Bool {
+        return mediaServiceProvider.audioRecorder.isRecording || isInLockedMode
+    }
+    
     @objc public var voiceMessageToolbarView: UIView {
         return _voiceMessageToolbarView
     }

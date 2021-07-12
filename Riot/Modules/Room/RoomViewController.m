@@ -5831,7 +5831,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     
     RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
-    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId];
+    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
     replyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
