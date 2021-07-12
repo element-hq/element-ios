@@ -18,32 +18,63 @@ import Foundation
 
 @objc public class VoiceMessageMediaServiceProvider: NSObject, VoiceMessageAudioPlayerDelegate, VoiceMessageAudioRecorderDelegate {
     
-    let audioPlayer = VoiceMessageAudioPlayer()
-    var mediaIdentifier: String?
-    let audioRecorder = VoiceMessageAudioRecorder()
-
+    private let audioPlayers: NSHashTable<VoiceMessageAudioPlayer>
+    private let audioRecorders: NSHashTable<VoiceMessageAudioRecorder>
+    
     @objc public static let sharedProvider = VoiceMessageMediaServiceProvider()
     
     private override init() {
-        super.init()
+        audioPlayers = NSHashTable<VoiceMessageAudioPlayer>(options: .weakMemory)
+        audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
+    }
+    
+    @objc func audioPlayer() -> VoiceMessageAudioPlayer {
+        let audioPlayer = VoiceMessageAudioPlayer()
         audioPlayer.registerDelegate(self)
+        audioPlayers.add(audioPlayer)
+        return audioPlayer
+    }
+    
+    @objc func audioRecorder() -> VoiceMessageAudioRecorder {
+        let audioRecorder = VoiceMessageAudioRecorder()
         audioRecorder.registerDelegate(self)
+        audioRecorders.add(audioRecorder)
+        return audioRecorder
     }
     
     @objc func stopAllServices() {
-        audioPlayer.stop()
-        audioRecorder.stopRecording()
+        stopAllServicesExcept(nil)
     }
     
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        audioRecorder.stopRecording()
+        stopAllServicesExcept(audioPlayer)
     }
     
     // MARK: - VoiceMessageAudioRecorderDelegate
     
     func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
-        audioPlayer.stop()
+        stopAllServicesExcept(audioRecorder)
+    }
+    
+    // MARK: - Private
+    
+    private func stopAllServicesExcept(_ service: AnyObject?) {
+        for audioPlayer in audioPlayers.allObjects {
+            if audioPlayer === service {
+                continue
+            }
+            
+            audioPlayer.pause()
+        }
+        
+        for audioRecoder in audioRecorders.allObjects {
+            if audioRecoder === service {
+                continue
+            }
+            
+            audioRecoder.stopRecording()
+        }
     }
 }
