@@ -393,7 +393,9 @@ class CallPresenter: NSObject {
             if let oldCallVC = self.callVCs.values.first,
                self.presentedCallVC == nil,
                !self.uiOperationQueue.containsPresentCallVCOperation,
-               !self.uiOperationQueue.containsEnterPiPOperation {
+               !self.uiOperationQueue.containsEnterPiPOperation,
+               let oldCall = oldCallVC.mxCall,
+               oldCall.state != .ended {
                 //  present the call screen after dismissing this one
                 self.presentCallVC(oldCallVC)
             }

@@ -20,7 +20,7 @@ import Foundation
 
 protocol MediaPickerCoordinatorDelegate: AnyObject {
     func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectImageData imageData: Data, withUTI uti: MXKUTI?)
-    func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectVideoAt url: URL)
+    func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectVideo videoAsset: AVAsset)
     func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectAssets assets: [PHAsset])
     func mediaPickerCoordinatorDidCancel(_ coordinator: MediaPickerCoordinatorType)
 }
