@@ -29,7 +29,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         static let maximumAudioRecordingDuration: TimeInterval = 120.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
         static let elapsedTimeFormat = "m:ss"
-        static let minimumRecordingDuration = 2.0
+        static let minimumRecordingDuration = 1.0
     }
     
     private static let timeFormatter: DateFormatter = {
