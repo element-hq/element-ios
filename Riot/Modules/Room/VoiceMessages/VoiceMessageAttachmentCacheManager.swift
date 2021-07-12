@@ -126,6 +126,7 @@ class VoiceMessageAttachmentCacheManager {
                         switch result {
                         case .success:
                             if let duration = try? result.get() {
+                                self.durations[identifier] = duration
                                 sampleFileAtURL(newURL, duration: duration)
                             } else {
                                 MXLog.error("[VoiceMessageAttachmentCacheManager] enqueueLoadAttachment: Failed to retrieve media duration")
