@@ -890,7 +890,7 @@ const CGFloat kTypingCellHeight = 24;
     AVURLAsset *videoAsset = [AVURLAsset assetWithURL:videoLocalURL];
     UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
     
-    [self sendVideo:videoAsset withThumbnail:videoThumbnail success:success failure:failure];
+    [self sendVideoAsset:videoAsset withThumbnail:videoThumbnail success:success failure:failure];
 }
 
 - (void)acceptVerificationRequestForEventId:(NSString*)eventId success:(void(^)(void))success failure:(void(^)(NSError*))failure

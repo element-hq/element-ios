@@ -6057,7 +6057,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (roomInputToolbarView)
     {
         AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
-        [roomInputToolbarView sendSelectedVideo:selectedVideo isPhotoLibraryAsset:NO];
+        [roomInputToolbarView sendSelectedVideoAsset:selectedVideo isPhotoLibraryAsset:NO];
     }
 }
 
@@ -6089,7 +6089,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedVideo:videoAsset isPhotoLibraryAsset:YES];
+        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:YES];
     }
 }
 
