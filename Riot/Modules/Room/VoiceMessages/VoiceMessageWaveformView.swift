@@ -82,7 +82,7 @@ class VoiceMessageWaveformView: UIView {
     // MARK: - Private
 
     private func computeWaveForm() {
-        renderingQueue.async {
+        renderingQueue.async { [samples] in // Capture the current samples as a way to provide atomicity
             let path = UIBezierPath()
 
             let drawMappingFactor = self.bounds.size.height
@@ -92,7 +92,7 @@ class VoiceMessageWaveformView: UIView {
             var index = 0
             
             while xOffset < self.bounds.width - self.lineWidth {
-                let sample = CGFloat(index >= self.samples.count ? 1 : self.samples[index])
+                let sample = CGFloat(index >= samples.count ? 1 : samples[index])
                 let invertedDbSample = 1 - sample // sample is in dB, linearly normalized to [0, 1] (1 -> -50 dB)
                 let drawingAmplitude = max(minimumGraphAmplitude, invertedDbSample * drawMappingFactor)
 
