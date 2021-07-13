@@ -16,11 +16,11 @@
 
 import Foundation
 
-protocol TemplateScreenViewModelViewDelegate: class {
+protocol TemplateScreenViewModelViewDelegate: AnyObject {
     func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didUpdateViewState viewSate: TemplateScreenViewState)
 }
 
-protocol TemplateScreenViewModelCoordinatorDelegate: class {
+protocol TemplateScreenViewModelCoordinatorDelegate: AnyObject {
     func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
     func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType)
 }

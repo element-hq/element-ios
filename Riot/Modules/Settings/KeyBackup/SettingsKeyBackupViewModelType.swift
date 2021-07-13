@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol SettingsKeyBackupViewModelViewDelegate: class {
+protocol SettingsKeyBackupViewModelViewDelegate: AnyObject {
     func settingsKeyBackupViewModel(_ viewModel: SettingsKeyBackupViewModelType, didUpdateViewState viewState: SettingsKeyBackupViewState)
     func settingsKeyBackupViewModel(_ viewModel: SettingsKeyBackupViewModelType, didUpdateNetworkRequestViewState networkRequestViewSate: SettingsKeyBackupNetworkRequestViewState)
 

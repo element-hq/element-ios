@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol UserVerificationSessionsStatusViewModelViewDelegate: class {
+protocol UserVerificationSessionsStatusViewModelViewDelegate: AnyObject {
     func userVerificationSessionsStatusViewModel(_ viewModel: UserVerificationSessionsStatusViewModelType, didUpdateViewState viewSate: UserVerificationSessionsStatusViewState)
 }
 
-protocol UserVerificationSessionsStatusViewModelCoordinatorDelegate: class {
+protocol UserVerificationSessionsStatusViewModelCoordinatorDelegate: AnyObject {
     func userVerificationSessionsStatusViewModel(_ viewModel: UserVerificationSessionsStatusViewModelType, didSelectDeviceWithId deviceId: String, for userId: String)
     func userVerificationSessionsStatusViewModelDidClose(_ viewModel: UserVerificationSessionsStatusViewModelType)
 }

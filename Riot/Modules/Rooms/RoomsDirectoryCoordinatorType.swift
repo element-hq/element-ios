@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol RoomsDirectoryCoordinatorDelegate: class {
+protocol RoomsDirectoryCoordinatorDelegate: AnyObject {
     func roomsDirectoryCoordinator(_ coordinator: RoomsDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom)
     func roomsDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: RoomsDirectoryCoordinatorType)
     func roomsDirectoryCoordinatorDidComplete(_ coordinator: RoomsDirectoryCoordinatorType)

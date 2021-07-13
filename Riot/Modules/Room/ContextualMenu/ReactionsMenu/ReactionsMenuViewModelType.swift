@@ -16,11 +16,11 @@
 
 import Foundation
 
-protocol ReactionsMenuViewModelViewDelegate: class {
+protocol ReactionsMenuViewModelViewDelegate: AnyObject {
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didUpdateViewState viewState: ReactionsMenuViewState)
 }
 
-@objc protocol ReactionsMenuViewModelCoordinatorDelegate: class {
+@objc protocol ReactionsMenuViewModelCoordinatorDelegate: AnyObject {
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didAddReaction reaction: String, forEventId eventId: String)
     func reactionsMenuViewModel(_ viewModel: ReactionsMenuViewModel, didRemoveReaction reaction: String, forEventId eventId: String)
     func reactionsMenuViewModelDidTapMoreReactions(_ viewModel: ReactionsMenuViewModel, forEventId eventId: String)

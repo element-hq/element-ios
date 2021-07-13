@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol KeyVerificationVerifyBySASCoordinatorDelegate: class {
+protocol KeyVerificationVerifyBySASCoordinatorDelegate: AnyObject {
     func keyVerificationVerifyBySASCoordinatorDidComplete(_ coordinator: KeyVerificationVerifyBySASCoordinatorType)
     func keyVerificationVerifyBySASCoordinatorDidCancel(_ coordinator: KeyVerificationVerifyBySASCoordinatorType)
 }

@@ -90,7 +90,7 @@
  
  @param roomId the room identifier.
  @param eventId if not nil, the room will be opened on this event.
- @param mxSession the matrix session in which the room should be available.
+ @param matrixSession the matrix session in which the room should be available.
  @param completion the block to execute at the end of the operation.
  */
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion;
@@ -113,7 +113,7 @@
  Open a GroupDetailsViewController to display the information of the provided group.
  
  @param group
- @param mxSession the matrix session in which the group should be available.
+ @param matrixSession the matrix session in which the group should be available.
  */
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession;
 

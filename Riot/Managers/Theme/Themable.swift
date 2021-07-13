@@ -16,6 +16,6 @@
 
 import Foundation
 
-@objc protocol Themable: class {
+@objc protocol Themable: AnyObject {
     func update(theme: Theme)
 }

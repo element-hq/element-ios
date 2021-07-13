@@ -2,7 +2,6 @@
 disabled_rules:
   - trailing_whitespace
   - todo
-  - conditional_binding_cascade
   - mark
   - vertical_whitespace
   - syntactic_sugar

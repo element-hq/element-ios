@@ -76,10 +76,17 @@
  Contructors.
  
  @param roomId the id of the room.
- @param emailInvitationParams, in case of an email invitation link, the query parameters extracted from the link.
  @param mxSession the session to open the room preview with.
  */
 - (instancetype)initWithRoomId:(NSString*)roomId andSession:(MXSession*)mxSession;
+
+/**
+ Contructors.
+ 
+ @param roomId the id of the room.
+ @param emailInvitationParams in case of an email invitation link, the query parameters extracted from the link.
+ @param mxSession the session to open the room preview with.
+ */
 - (instancetype)initWithRoomId:(NSString*)roomId emailInvitationParams:(NSDictionary*)emailInvitationParams andSession:(MXSession*)mxSession;
 
 /**

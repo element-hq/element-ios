@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol CreateRoomCoordinatorDelegate: class {
+protocol CreateRoomCoordinatorDelegate: AnyObject {
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom)
     func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType)
 }

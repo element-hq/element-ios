@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-@objc protocol CameraPresenterDelegate: class {
+@objc protocol CameraPresenterDelegate: AnyObject {
     func cameraPresenter(_ presenter: CameraPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?)
     func cameraPresenter(_ presenter: CameraPresenter, didSelectVideoAt url: URL)
     func cameraPresenterDidCancel(_ cameraPresenter: CameraPresenter)

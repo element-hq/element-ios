@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol ShowDirectoryCoordinatorDelegate: class {
+protocol ShowDirectoryCoordinatorDelegate: AnyObject {
     func showDirectoryCoordinator(_ coordinator: ShowDirectoryCoordinatorType, didSelectRoom room: MXPublicRoom)
     func showDirectoryCoordinatorDidTapCreateNewRoom(_ coordinator: ShowDirectoryCoordinatorType)
     func showDirectoryCoordinatorDidCancel(_ coordinator: ShowDirectoryCoordinatorType)

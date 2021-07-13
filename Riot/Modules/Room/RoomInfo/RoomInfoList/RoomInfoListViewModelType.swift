@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol RoomInfoListViewModelViewDelegate: class {
+protocol RoomInfoListViewModelViewDelegate: AnyObject {
     func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, didUpdateViewState viewSate: RoomInfoListViewState)
 }
 
-protocol RoomInfoListViewModelCoordinatorDelegate: class {
+protocol RoomInfoListViewModelCoordinatorDelegate: AnyObject {
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType)
     func roomInfoListViewModel(_ viewModel: RoomInfoListViewModelType, wantsToNavigateTo target: RoomInfoListTarget)
 }

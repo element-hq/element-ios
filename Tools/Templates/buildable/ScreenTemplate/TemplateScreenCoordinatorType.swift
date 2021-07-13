@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol TemplateScreenCoordinatorDelegate: class {
+protocol TemplateScreenCoordinatorDelegate: AnyObject {
     func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
     func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType)
 }
