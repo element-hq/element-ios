@@ -8,7 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * 
+ * Share Extension: Fix layout when searching (#4258).
 
 ⚠️ API Changes
  * 
