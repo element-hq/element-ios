@@ -311,7 +311,7 @@ final class BuildSettings: NSObject {
     
     // MARK: - Voice Message
     
-    static let voiceMessagesEnabled = false
+    static let voiceMessagesEnabled = true
     
     // MARK: - HTTP
     /// Additional HTTP headers will be sent by all requests. Not recommended to use request-specific headers, like `Authorization`.

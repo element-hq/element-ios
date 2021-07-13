@@ -6188,9 +6188,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
 }
 
-- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController didRequestSendForFileAtURL:(NSURL *)url completion:(void (^)(BOOL))completion
+- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
+    didRequestSendForFileAtURL:(NSURL *)url
+                      duration:(NSTimeInterval)duration
+                       samples:(NSArray<NSNumber *> *)samples
+                    completion:(void (^)(BOOL))completion
 {
-    [self.roomDataSource sendVoiceMessage:url mimeType:nil success:^(NSString *eventId) {
+    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
         MXLogDebug(@"Success with event id %@", eventId);
         completion(YES);
     } failure:^(NSError *error) {

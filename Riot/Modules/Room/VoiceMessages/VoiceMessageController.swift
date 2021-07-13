@@ -20,7 +20,7 @@ import DSWaveformImage
 
 @objc public protocol VoiceMessageControllerDelegate: AnyObject {
     func voiceMessageControllerDidRequestMicrophonePermission(_ voiceMessageController: VoiceMessageController)
-    func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, completion: @escaping (Bool) -> Void)
+    func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, duration: TimeInterval, samples: [Float]?, completion: @escaping (Bool) -> Void)
 }
 
 public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate, VoiceMessageAudioPlayerDelegate {
@@ -215,20 +215,67 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private func sendRecordingAtURL(_ sourceURL: URL) {
         
-        let destinationURL = sourceURL.deletingPathExtension().appendingPathExtension("opus")
+        let dispatchGroup = DispatchGroup()
         
-        VoiceMessageAudioConverter.convertToOpusOgg(sourceURL: sourceURL, destinationURL: destinationURL) { [weak self] result in
-            guard let self = self else { return }
-            
+        var duration = 0.0
+        var invertedSamples: [Float]?
+        var finalURL: URL?
+        
+        dispatchGroup.enter()
+        VoiceMessageAudioConverter.mediaDurationAt(sourceURL) { result in
             switch result {
             case .success:
-                self.delegate?.voiceMessageController(self, didRequestSendForFileAtURL: destinationURL) { [weak self] success in
-                    UINotificationFeedbackGenerator().notificationOccurred((success ? .success : .error))
-                    self?.deleteRecordingAtURL(sourceURL)
-                    self?.deleteRecordingAtURL(destinationURL)
+                if let someDuration = try? result.get() {
+                    duration = someDuration
+                } else {
+                    MXLog.error("[VoiceMessageController] Failed retrieving media duration")
                 }
             case .failure(let error):
+                MXLog.error("[VoiceMessageController] Failed getting audio duration with: \(error)")
+            }
+            
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        let analyser = WaveformAnalyzer(audioAssetURL: sourceURL)
+        analyser?.samples(count: 100, completionHandler: { samples in
+            // Dispatch back from the WaveformAnalyzer's internal queue
+            DispatchQueue.main.async {
+                if let samples = samples {
+                    invertedSamples = samples.compactMap { return 1.0 - $0 } // linearly normalized to [0, 1] (1 -> -50 dB)
+                } else {
+                    MXLog.error("[VoiceMessageController] Failed sampling recorder voice message.")
+                }
+                
+                dispatchGroup.leave()
+            }
+        })
+        
+        dispatchGroup.enter()
+        let destinationURL = sourceURL.deletingPathExtension().appendingPathExtension("opus")
+        VoiceMessageAudioConverter.convertToOpusOgg(sourceURL: sourceURL, destinationURL: destinationURL) { result in
+            switch result {
+            case .success:
+                finalURL = destinationURL
+            case .failure(let error):
                 MXLog.error("Failed failed encoding audio message with: \(error)")
+            }
+            
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            guard let url = finalURL else {
+                return
+            }
+            
+            self.delegate?.voiceMessageController(self, didRequestSendForFileAtURL: url,
+                                                  duration: duration,
+                                                  samples: invertedSamples) { [weak self] success in
+                UINotificationFeedbackGenerator().notificationOccurred((success ? .success : .error))
+                self?.deleteRecordingAtURL(sourceURL)
+                self?.deleteRecordingAtURL(destinationURL)
             }
         }
     }
