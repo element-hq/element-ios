@@ -19,6 +19,7 @@ PODS:
   - BlueRSA (1.0.34)
   - DGCollectionViewLeftAlignFlowLayout (1.0.4)
   - Down (0.11.0)
+  - DSWaveformImage (6.1.1)
   - DTCoreText (1.6.26):
     - DTCoreText/Core (= 1.6.26)
     - DTFoundation/Core (~> 1.7.5)
@@ -36,6 +37,7 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.18):
     - DTFoundation/Core
+  - ffmpeg-kit-ios-audio (4.4)
   - FLEX (4.4.1)
   - FlowCommoniOS (1.10.0)
   - GBDeviceInfo (6.6.0):
@@ -104,7 +106,7 @@ PODS:
     - BlueRSA (~> 1.0)
     - KituraContracts (~> 1.2)
     - LoggerAPI (~> 1.7)
-  - SwiftLint (0.43.0)
+  - SwiftLint (0.43.1)
   - SwiftyBeaver (1.9.5)
   - zxcvbn-ios (1.0.4)
   - ZXingObjC (3.6.5):
@@ -113,6 +115,8 @@ PODS:
 
 DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
+  - DSWaveformImage (~> 6.1.1)
+  - ffmpeg-kit-ios-audio (~> 4.4)
   - FLEX (~> 4.4.1)
   - FlowCommoniOS (~> 1.10.0)
   - GBDeviceInfo (~> 6.6.0)
@@ -142,8 +146,10 @@ SPEC REPOS:
     - BlueRSA
     - DGCollectionViewLeftAlignFlowLayout
     - Down
+    - DSWaveformImage
     - DTCoreText
     - DTFoundation
+    - ffmpeg-kit-ios-audio
     - FLEX
     - FlowCommoniOS
     - GBDeviceInfo
@@ -180,8 +186,10 @@ SPEC CHECKSUMS:
   BlueRSA: 6f9776d62d9773502415a7db3bcbb2bbb3f71fc3
   DGCollectionViewLeftAlignFlowLayout: a0fa58797373ded039cafba8133e79373d048399
   Down: b6ba1bc985c9d2f4e15e3b293d2207766fa12612
+  DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
   DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
+  ffmpeg-kit-ios-audio: ddfc3dac6f574e83d53f8ae33586711162685d3e
   FLEX: 7ca2c8cd3a435ff501ff6d2f2141e9bdc934eaab
   FlowCommoniOS: bcdf81a5f30717e711af08a8c812eb045411ba94
   GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
@@ -206,11 +214,11 @@ SPEC CHECKSUMS:
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
   SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
   SwiftJWT: 88c412708f58c169d431d344c87bc79a87c830ae
-  SwiftLint: 0c645fdc6feed3e390c1701ab3cc669f88b42752
+  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: c39d88adc5ec2df412af32b64ceb99a9a1ee92a8
+PODFILE CHECKSUM: d45d2eeb5bfe89bb4d5be71d7eeaf71d2c53aa61
 
 COCOAPODS: 1.10.1

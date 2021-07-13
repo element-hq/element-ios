@@ -29,7 +29,7 @@ enum KeyVerificationVerifyByScanningViewState {
     case loading
     case loaded(viewData: KeyVerificationVerifyByScanningViewData)
     case scannedCodeValidated(isValid: Bool)    
-    case cancelled(MXTransactionCancelCode)
+    case cancelled(cancelCode: MXTransactionCancelCode, verificationKind: KeyVerificationKind)
     case cancelledByMe(MXTransactionCancelCode)
     case error(Error)
 }

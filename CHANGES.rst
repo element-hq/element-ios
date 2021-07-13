@@ -6,9 +6,17 @@ Changes to be released in next version
 
 🙌 Improvements
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
+ * Room Notification Settings: Ability to change between "All Messages", "Mentions and Keywords" and "None". Not yet exposed in Element UI. (#4458).
+ * Add support for sending slow motion videos (#4483).
 
 🐛 Bugfix
- * 
+ * VoIP: Do not present ended calls.
+ * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
+ * Fix crash on Apple Silicon Macs.
+ * Media Picker: Generate video thumbnails with the correct orientation (#4515).
+ * Directory List (pop-up one): Fix duplicate rooms being shown (#4537).
+ * Use different title for scan button for self verification (#4525).
+ * it's easy for the back button to trigger a leftpanel reveal (#4438).
 
 ⚠️ API Changes
  * 
