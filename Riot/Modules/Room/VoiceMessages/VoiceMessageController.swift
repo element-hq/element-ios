@@ -44,9 +44,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
     private var displayLink: CADisplayLink!
     
-    private var audioRecorder: VoiceMessageAudioRecorder?
-    
-    private var audioPlayer: VoiceMessageAudioPlayer?
     private var waveformAnalyser: WaveformAnalyzer?
     
     private var audioSamples: [Float] = []
@@ -56,7 +53,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
     @objc public var isRecordingAudio: Bool {
-        return audioRecorder?.isRecording ?? false || isInLockedMode
+        return mediaServiceProvider.audioRecorder.isRecording || isInLockedMode
     }
     
     @objc public var voiceMessageToolbarView: UIView {
@@ -104,9 +101,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
         
-        audioRecorder = mediaServiceProvider.audioRecorder()
-        audioRecorder?.registerDelegate(self)
-        audioRecorder?.recordWithOuputURL(temporaryFileURL)
+        mediaServiceProvider.audioRecorder.registerDelegate(self)
+        mediaServiceProvider.audioRecorder.recordWithOuputURL(temporaryFileURL)
     }
     
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView) {
@@ -115,8 +111,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     func voiceMessageToolbarViewDidRequestRecordingCancel(_ toolbarView: VoiceMessageToolbarView) {
         isInLockedMode = false
-        audioRecorder?.stopRecording()
-        deleteRecordingAtURL(audioRecorder?.url)
+        mediaServiceProvider.audioRecorder.stopRecording()
+        deleteRecordingAtURL(mediaServiceProvider.audioRecorder.url)
         UINotificationFeedbackGenerator().notificationOccurred(.error)
         updateUI()
     }
@@ -127,21 +123,21 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func voiceMessageToolbarViewDidRequestPlaybackToggle(_ toolbarView: VoiceMessageToolbarView) {
-        if audioPlayer?.isPlaying ?? false {
-            audioPlayer?.pause()
+        if mediaServiceProvider.audioPlayer.isPlaying {
+            mediaServiceProvider.audioPlayer.pause()
         } else {
-            audioPlayer?.play()
+            mediaServiceProvider.audioPlayer.play()
         }
     }
     
     func voiceMessageToolbarViewDidRequestSend(_ toolbarView: VoiceMessageToolbarView) {
-        guard let url = audioRecorder?.url else {
+        guard let url = mediaServiceProvider.audioRecorder.url else {
             MXLog.error("Invalid audio recording URL")
             return
         }
         
-        audioPlayer?.stop()
-        audioRecorder?.stopRecording()
+        mediaServiceProvider.audioPlayer.stop()
+        mediaServiceProvider.audioRecorder.stopRecording()
         
         sendRecordingAtURL(url)
         
@@ -195,25 +191,23 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - Private
     
     private func finishRecording() {
-        let recordDuration = audioRecorder?.currentTime
-        audioRecorder?.stopRecording()
+        let recordDuration = mediaServiceProvider.audioRecorder.currentTime
+        mediaServiceProvider.audioRecorder.stopRecording()
 
-        guard let url = audioRecorder?.url else {
+        guard let url = mediaServiceProvider.audioRecorder.url else {
             MXLog.error("Invalid audio recording URL")
             return
         }
         
         guard isInLockedMode else {
-            if recordDuration ?? 0 >= Constants.minimumRecordingDuration {
+            if recordDuration >= Constants.minimumRecordingDuration {
                 sendRecordingAtURL(url)
             }
             return
         }
         
-        audioPlayer = mediaServiceProvider.audioPlayer()
-        audioPlayer?.registerDelegate(self)
-        audioPlayer?.loadContentFromURL(url)
-
+        mediaServiceProvider.audioPlayer.registerDelegate(self)
+        mediaServiceProvider.audioPlayer.loadContentFromURL(url)
         audioSamples = []
         
         updateUI()
@@ -261,7 +255,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private func updateUI() {
         
-        let shouldUpdateFromAudioPlayer = isInLockedMode && !(audioRecorder?.isRecording ?? false)
+        let shouldUpdateFromAudioPlayer = isInLockedMode && !mediaServiceProvider.audioRecorder.isRecording
 
         if shouldUpdateFromAudioPlayer {
             updateUIFromAudioPlayer()
@@ -271,7 +265,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func updateUIFromAudioRecorder() {
-        let isRecording = audioRecorder?.isRecording ?? false
+        let isRecording = mediaServiceProvider.audioRecorder.isRecording
         
         displayLink.isPaused = !isRecording
         
@@ -281,11 +275,11 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             padSamplesArrayToSize(requiredNumberOfSamples)
         }
         
-        let sample = audioRecorder?.averagePowerForChannelNumber(0) ?? 0.0
+        let sample = mediaServiceProvider.audioRecorder.averagePowerForChannelNumber(0)
         audioSamples.insert(sample, at: 0)
         audioSamples.removeLast()
         
-        let currentTime = audioRecorder?.currentTime ?? 0.0
+        let currentTime = mediaServiceProvider.audioRecorder.currentTime
         
         if currentTime >= Constants.maximumAudioRecordingDuration {
             finishRecording()
@@ -317,16 +311,12 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func updateUIFromAudioPlayer() {
-        guard let audioPlayer = audioPlayer else {
-            return
-        }
-        
-        guard let url = audioPlayer.url else {
+        guard let url = mediaServiceProvider.audioPlayer.url else {
             MXLog.error("Invalid audio player url.")
             return
         }
         
-        displayLink.isPaused = !audioPlayer.isPlaying
+        displayLink.isPaused = !mediaServiceProvider.audioPlayer.isPlaying
         
         let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
         if audioSamples.count != requiredNumberOfSamples  && requiredNumberOfSamples > 0 {
@@ -347,11 +337,11 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
         
         var details = VoiceMessageToolbarViewDetails()
-        details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
+        details.state = (mediaServiceProvider.audioRecorder.isRecording ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
+        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (mediaServiceProvider.audioPlayer.isPlaying ? mediaServiceProvider.audioPlayer.currentTime : mediaServiceProvider.audioPlayer.duration)))
         details.audioSamples = audioSamples
-        details.isPlaying = audioPlayer.isPlaying
-        details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
+        details.isPlaying = mediaServiceProvider.audioPlayer.isPlaying
+        details.progress = (mediaServiceProvider.audioPlayer.duration > 0.0 ? mediaServiceProvider.audioPlayer.currentTime / mediaServiceProvider.audioPlayer.duration : 0.0)
         _voiceMessageToolbarView.configureWithDetails(details)
     }
     
