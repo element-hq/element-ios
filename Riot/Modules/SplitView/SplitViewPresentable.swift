@@ -16,12 +16,12 @@
 
 import UIKit
 
-protocol SplitViewMasterPresentableDelegate: class {
+protocol SplitViewMasterPresentableDelegate: AnyObject {
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable)
 }
 
 /// Protocol used by the master view presentable of a UISplitViewController
-protocol SplitViewMasterPresentable: class, Presentable {
+protocol SplitViewMasterPresentable: AnyObject, Presentable {
         
     var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate? { get set }
     

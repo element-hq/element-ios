@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol KeyVerificationVerifyBySASViewModelViewDelegate: class {
+protocol KeyVerificationVerifyBySASViewModelViewDelegate: AnyObject {
     func keyVerificationVerifyBySASViewModel(_ viewModel: KeyVerificationVerifyBySASViewModelType, didUpdateViewState viewSate: KeyVerificationVerifyViewState)
 }
 
-protocol KeyVerificationVerifyBySASViewModelCoordinatorDelegate: class {
+protocol KeyVerificationVerifyBySASViewModelCoordinatorDelegate: AnyObject {
     func keyVerificationVerifyViewModelDidComplete(_ viewModel: KeyVerificationVerifyBySASViewModelType)    
     func keyVerificationVerifyViewModelDidCancel(_ viewModel: KeyVerificationVerifyBySASViewModelType)
 }

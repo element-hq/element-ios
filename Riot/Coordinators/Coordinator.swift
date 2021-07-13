@@ -19,7 +19,7 @@ import UIKit
 /// Protocol describing a [Coordinator](http://khanlou.com/2015/10/coordinators-redux/).
 /// Coordinators are the objects which control the navigation flow of the application.
 /// It helps to isolate and reuse view controllers and pass dependencies down the navigation hierarchy.
-protocol Coordinator: class {
+protocol Coordinator: AnyObject {
     
     /// Starts job of the coordinator.
     func start()

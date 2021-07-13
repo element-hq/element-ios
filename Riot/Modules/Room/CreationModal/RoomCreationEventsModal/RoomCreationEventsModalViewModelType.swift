@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol RoomCreationEventsModalViewModelViewDelegate: class {
+protocol RoomCreationEventsModalViewModelViewDelegate: AnyObject {
     func roomCreationEventsModalViewModel(_ viewModel: RoomCreationEventsModalViewModelType, didUpdateViewState viewSate: RoomCreationEventsModalViewState)
 }
 
-protocol RoomCreationEventsModalViewModelCoordinatorDelegate: class {
+protocol RoomCreationEventsModalViewModelCoordinatorDelegate: AnyObject {
     func roomCreationEventsModalViewModelDidTapClose(_ viewModel: RoomCreationEventsModalViewModelType)
 }
 

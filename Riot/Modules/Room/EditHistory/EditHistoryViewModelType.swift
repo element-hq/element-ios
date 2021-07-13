@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol EditHistoryViewModelViewDelegate: class {
+protocol EditHistoryViewModelViewDelegate: AnyObject {
     func editHistoryViewModel(_ viewModel: EditHistoryViewModelType, didUpdateViewState viewSate: EditHistoryViewState)
 }
 
-protocol EditHistoryViewModelCoordinatorDelegate: class {
+protocol EditHistoryViewModelCoordinatorDelegate: AnyObject {
     func editHistoryViewModelDidClose(_ viewModel: EditHistoryViewModelType)
 }
 

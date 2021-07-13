@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol UserVerificationSessionStatusCoordinatorDelegate: class {
+protocol UserVerificationSessionStatusCoordinatorDelegate: AnyObject {
     func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToVerifyDeviceWithId deviceId: String, for userId: String)
     func userVerificationSessionStatusCoordinator(_ coordinator: UserVerificationSessionStatusCoordinatorType, wantsToManuallyVerifyDeviceWithId deviceId: String, for userId: String)
     func userVerificationSessionStatusCoordinatorDidClose(_ coordinator: UserVerificationSessionStatusCoordinatorType)

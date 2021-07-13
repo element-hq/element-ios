@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SideMenuCoordinatorDelegate: class {
+protocol SideMenuCoordinatorDelegate: AnyObject {
     func sideMenuCoordinator(_ coordinator: SideMenuCoordinatorType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView)
 }
 

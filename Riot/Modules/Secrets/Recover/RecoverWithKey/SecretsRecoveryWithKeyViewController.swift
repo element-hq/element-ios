@@ -123,6 +123,8 @@ final class SecretsRecoveryWithKeyViewController: UIViewController {
         self.updateRecoverButton()
         
         self.resetSecretsButton.vc_enableMultiLinesTitle()
+        
+        self.resetSecretsButton.isHidden = !RiotSettings.shared.secretsRecoveryAllowReset
     }
     
     private func update(theme: Theme) {

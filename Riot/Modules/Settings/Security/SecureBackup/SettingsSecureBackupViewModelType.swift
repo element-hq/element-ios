@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol SettingsSecureBackupViewModelViewDelegate: class {
+protocol SettingsSecureBackupViewModelViewDelegate: AnyObject {
     func settingsSecureBackupViewModel(_ viewModel: SettingsSecureBackupViewModelType, didUpdateViewState viewState: SettingsSecureBackupViewState)
     func settingsSecureBackupViewModel(_ viewModel: SettingsSecureBackupViewModelType, didUpdateNetworkRequestViewState networkRequestViewSate: SettingsSecureBackupNetworkRequestViewState)
     

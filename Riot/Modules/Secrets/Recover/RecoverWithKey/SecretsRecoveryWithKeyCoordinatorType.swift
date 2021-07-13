@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol SecretsRecoveryWithKeyCoordinatorDelegate: class {
+protocol SecretsRecoveryWithKeyCoordinatorDelegate: AnyObject {
     func secretsRecoveryWithKeyCoordinatorDidRecover(_ coordinator: SecretsRecoveryWithKeyCoordinatorType)
     func secretsRecoveryWithKeyCoordinatorDidCancel(_ coordinator: SecretsRecoveryWithKeyCoordinatorType)
     func secretsRecoveryWithKeyCoordinatorWantsToResetSecrets(_ viewModel: SecretsRecoveryWithKeyCoordinatorType)

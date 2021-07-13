@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-@objc protocol SingleImagePickerPresenterDelegate: class {
+@objc protocol SingleImagePickerPresenterDelegate: AnyObject {
     func singleImagePickerPresenter(_ presenter: SingleImagePickerPresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?)
     func singleImagePickerPresenterDidCancel(_ presenter: SingleImagePickerPresenter)
 }
@@ -135,7 +135,7 @@ extension SingleImagePickerPresenter: MediaPickerCoordinatorBridgePresenterDeleg
         self.delegate?.singleImagePickerPresenter(self, didSelectImageData: imageData, withUTI: uti)
     }
     
-    func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectVideoAt url: URL) {
+    func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectVideo videoAsset: AVAsset) {
         self.delegate?.singleImagePickerPresenterDidCancel(self)
     }
     
