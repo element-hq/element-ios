@@ -16,6 +16,7 @@ Changes to be released in next version
  * Directory List (pop-up one): Fix duplicate rooms being shown (#4537).
  * Use different title for scan button for self verification (#4525).
  * it's easy for the back button to trigger a leftpanel reveal (#4438).
+ * Show / hide reset button in secrets recovery screen (#4546).
 
 ⚠️ API Changes
  * 
