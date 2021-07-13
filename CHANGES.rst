@@ -27,7 +27,7 @@ Changes to be released in next version
  * 
 
 Others
- * 
+ * Silenced some documentation, deprecations and SwiftLint warnings.
 
 Changes in 1.4.4 (2021-06-30)
 =================================================
