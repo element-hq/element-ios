@@ -1590,7 +1590,7 @@ internal enum VectorL10n {
   internal static var identityServerSettingsPlaceHolder: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_place_holder") 
   }
-  /// Identity Server
+  /// Identity server
   internal static var identityServerSettingsTitle: String { 
     return VectorL10n.tr("Vector", "identity_server_settings_title") 
   }
@@ -4150,7 +4150,7 @@ internal enum VectorL10n {
   internal static var settingsDiscoverySettings: String { 
     return VectorL10n.tr("Vector", "settings_discovery_settings") 
   }
-  /// Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.
+  /// Agree to the identity server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.
   internal static func settingsDiscoveryTermsNotSigned(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_discovery_terms_not_signed", p1)
   }

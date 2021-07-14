@@ -1164,7 +1164,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return YES;
     }
     
-    // Manage email validation link from Identity Server v1 or v2
+    // Manage email validation link from identity server v1 or v2
     else if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1]
              || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
     {
