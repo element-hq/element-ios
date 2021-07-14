@@ -262,7 +262,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        MXLogDebug(@"[WidgetManager] createJitsiWidgetInRoom: Error: no Integrations Manager API URL for user %@", userId);
+        MXLogDebug(@"[WidgetManager] createJitsiWidgetInRoom: Error: no integration manager API URL for user %@", userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -574,7 +574,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        MXLogDebug(@"[WidgetManager] registerForScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
+        MXLogDebug(@"[WidgetManager] registerForScalarToken: Error: no integration manager API URL for user %@", mxSession.myUser.userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
@@ -654,7 +654,7 @@ NSString *const WidgetManagerErrorDomain = @"WidgetManagerErrorDomain";
     WidgetManagerConfig *config = [self configForUser:userId];
     if (!config.hasUrls)
     {
-        MXLogDebug(@"[WidgetManager] validateScalarToken: Error: no Integrations Manager API URL for user %@", mxSession.myUser.userId);
+        MXLogDebug(@"[WidgetManager] validateScalarToken: Error: no integration manager API URL for user %@", mxSession.myUser.userId);
         failure(self.errorForNonConfiguredIntegrationManager);
         return nil;
     }
