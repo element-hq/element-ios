@@ -31,11 +31,18 @@ enum VoiceMessageAttachmentCacheManagerError: Error {
  Swift optimizes the callbacks to be the same instance. Wrap them so we can store them in an array.
  */
 private class CompletionWrapper {
-    let completion: (Result<(String, URL, TimeInterval, [Float]), Error>) -> Void
+    let completion: (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void
     
-    init(_ completion: @escaping (Result<(String, URL, TimeInterval, [Float]), Error>) -> Void) {
+    init(_ completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
         self.completion = completion
     }
+}
+
+struct VoiceMessageAttachmentCacheManagerLoadResult {
+    let eventIdentifier: String
+    let url: URL
+    let duration: TimeInterval
+    let samples: [Float]
 }
 
 class VoiceMessageAttachmentCacheManager {
@@ -48,9 +55,10 @@ class VoiceMessageAttachmentCacheManager {
     private var finalURLs = [String: URL]()
     
     private init() {
+        
     }
     
-    func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<(String, URL, TimeInterval, [Float]), Error>) -> Void) {
+    func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
         guard attachment.type == MXKAttachmentTypeVoiceMessage else {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidAttachmentType))
             return
@@ -67,14 +75,15 @@ class VoiceMessageAttachmentCacheManager {
         }
         
         if let finalURL = finalURLs[identifier], let duration = durations[identifier], let samples = samples[identifier]?[numberOfSamples] {
-            completion(Result.success((identifier, finalURL, duration, samples)))
+            let result = VoiceMessageAttachmentCacheManagerLoadResult(eventIdentifier: identifier, url: finalURL, duration: duration, samples: samples)
+            completion(Result.success(result))
             return
         }
         
         self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
     }
     
-    private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<(String, URL, Double, [Float]), Error>) -> Void) {
+    private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
 
         if var callbacks = completionCallbacks[identifier] {
             callbacks.append(CompletionWrapper(completion))
@@ -170,10 +179,12 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
+        let result = VoiceMessageAttachmentCacheManagerLoadResult(eventIdentifier: identifier, url: url, duration: duration, samples: samples)
+        
         let copy = callbacks.map { $0 }
         DispatchQueue.main.async {
             for wrapper in copy {
-                wrapper.completion(Result.success((identifier, url, duration, samples)))
+                wrapper.completion(Result.success(result))
             }
         }
         

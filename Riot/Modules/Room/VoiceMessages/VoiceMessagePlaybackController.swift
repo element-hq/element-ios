@@ -36,9 +36,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         return dateFormatter
     }()
     
+    private let mediaServiceProvider: VoiceMessageMediaServiceProvider
     private let cacheManager: VoiceMessageAttachmentCacheManager
     
-    private let audioPlayer: VoiceMessageAudioPlayer
+    private var audioPlayer: VoiceMessageAudioPlayer?
     private var displayLink: CADisplayLink!
     private var samples: [Float] = []
     private var duration: TimeInterval = 0
@@ -56,12 +57,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     
     init(mediaServiceProvider: VoiceMessageMediaServiceProvider,
          cacheManager: VoiceMessageAttachmentCacheManager) {
+        self.mediaServiceProvider = mediaServiceProvider
         self.cacheManager = cacheManager
         
         playbackView = VoiceMessagePlaybackView.loadFromNib()
-        audioPlayer = mediaServiceProvider.audioPlayer()
-        
-        audioPlayer.registerDelegate(self)
         playbackView.delegate = self
         
         displayLink = CADisplayLink(target: WeakTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakTarget.triggerSelector)
@@ -82,9 +81,18 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     // MARK: - VoiceMessagePlaybackViewDelegate
     
     func voiceMessagePlaybackViewDidRequestPlaybackToggle() {
-        if audioPlayer.isPlaying {
-            audioPlayer.pause()
-        } else {
+        guard let audioPlayer = audioPlayer else {
+            return
+        }
+        
+        if audioPlayer.url != nil {
+            if audioPlayer.isPlaying {
+                audioPlayer.pause()
+            } else {
+                audioPlayer.play()
+            }
+        } else if let url = urlToLoad {
+            audioPlayer.loadContentFromURL(url)
             audioPlayer.play()
         }
     }
@@ -135,8 +143,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.duration))
             details.progress = 0.0
         default:
-            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
-            details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
+            if let audioPlayer = audioPlayer {
+                details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
+                details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
+            }
         }
         details.loading = self.loading
         
@@ -155,19 +165,37 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         
         let requiredNumberOfSamples = playbackView.getRequiredNumberOfSamples()
         
-        cacheManager.loadAttachment(attachment, numberOfSamples: requiredNumberOfSamples) { result in
+        cacheManager.loadAttachment(attachment, numberOfSamples: requiredNumberOfSamples) { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
             switch result {
             case .success(let result):
-                guard result.0 == attachment.eventId else {
+                guard result.eventIdentifier == attachment.eventId else {
                     return
                 }
                 
-                self.loading = false
-                self.audioPlayer.loadContentFromURL(result.1)
-                self.duration = result.2
-                self.samples = result.3
+                // Avoid listening to old audio player delegates if the attachment for this playbackController/cell changes
+                self.audioPlayer?.deregisterDelegate(self)
                 
-                self.updateUI()
+                self.audioPlayer = self.mediaServiceProvider.audioPlayerForIdentifier(result.eventIdentifier)
+                self.audioPlayer?.registerDelegate(self)
+                
+                self.loading = false
+                self.urlToLoad = result.url
+                self.duration = result.duration
+                self.samples = result.samples
+                
+                if let audioPlayer = self.audioPlayer {
+                    if audioPlayer.isPlaying {
+                        self.state = .playing
+                    } else if audioPlayer.currentTime > 0 {
+                        self.state = .paused
+                    } else {
+                        self.state = .stopped
+                    }
+                }
             case .failure:
                 self.state = .error
             }

@@ -99,6 +99,11 @@ class VoiceMessageAudioPlayer: NSObject {
         addObservers()
     }
     
+    func unloadContent() {
+        url = nil
+        audioPlayer?.replaceCurrentItem(with: nil)
+    }
+    
     func play() {
         isStopped = false
         

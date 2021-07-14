@@ -18,20 +18,27 @@ import Foundation
 
 @objc public class VoiceMessageMediaServiceProvider: NSObject, VoiceMessageAudioPlayerDelegate, VoiceMessageAudioRecorderDelegate {
     
-    private let audioPlayers: NSHashTable<VoiceMessageAudioPlayer>
+    private let audioPlayers: NSMapTable<NSString, VoiceMessageAudioPlayer>
     private let audioRecorders: NSHashTable<VoiceMessageAudioRecorder>
+    
+    // Retain currently playing audio player so it doesn't stop playing on timeline cell reusage
+    private var currentlyPlayingAudioPlayer: VoiceMessageAudioPlayer?
     
     @objc public static let sharedProvider = VoiceMessageMediaServiceProvider()
     
     private override init() {
-        audioPlayers = NSHashTable<VoiceMessageAudioPlayer>(options: .weakMemory)
+        audioPlayers = NSMapTable<NSString, VoiceMessageAudioPlayer>(valueOptions: .weakMemory)
         audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
     }
     
-    @objc func audioPlayer() -> VoiceMessageAudioPlayer {
+    @objc func audioPlayerForIdentifier(_ identifier: String) -> VoiceMessageAudioPlayer {
+        if let audioPlayer = audioPlayers.object(forKey: identifier as NSString) {
+            return audioPlayer
+        }
+        
         let audioPlayer = VoiceMessageAudioPlayer()
         audioPlayer.registerDelegate(self)
-        audioPlayers.add(audioPlayer)
+        audioPlayers.setObject(audioPlayer, forKey: identifier as NSString)
         return audioPlayer
     }
     
@@ -49,7 +56,14 @@ import Foundation
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        currentlyPlayingAudioPlayer = audioPlayer
         stopAllServicesExcept(audioPlayer)
+    }
+    
+    func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
+        if currentlyPlayingAudioPlayer == audioPlayer {
+            currentlyPlayingAudioPlayer = nil
+        }
     }
     
     // MARK: - VoiceMessageAudioRecorderDelegate
@@ -61,20 +75,25 @@ import Foundation
     // MARK: - Private
     
     private func stopAllServicesExcept(_ service: AnyObject?) {
-        for audioPlayer in audioPlayers.allObjects {
-            if audioPlayer === service {
-                continue
-            }
-            
-            audioPlayer.pause()
-        }
-        
         for audioRecoder in audioRecorders.allObjects {
             if audioRecoder === service {
                 continue
             }
             
             audioRecoder.stopRecording()
+        }
+        
+        guard let audioPlayersEnumerator = audioPlayers.objectEnumerator() else {
+            return
+        }
+        
+        for case let audioPlayer as VoiceMessageAudioPlayer in audioPlayersEnumerator {
+            if audioPlayer === service {
+                continue
+            }
+            
+            audioPlayer.stop()
+            audioPlayer.unloadContent()
         }
     }
 }

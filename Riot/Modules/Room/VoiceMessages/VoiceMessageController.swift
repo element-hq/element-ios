@@ -40,6 +40,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private let themeService: ThemeService
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
+    private let temporaryFileURL: URL
     
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
     private var displayLink: CADisplayLink!
@@ -66,6 +67,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     @objc public init(themeService: ThemeService, mediaServiceProvider: VoiceMessageMediaServiceProvider) {
         self.themeService = themeService
         self.mediaServiceProvider = mediaServiceProvider
+        
+        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
         
         _voiceMessageToolbarView = VoiceMessageToolbarView.loadFromNib()
         
@@ -100,9 +104,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
         
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-
-        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
         
         audioRecorder = mediaServiceProvider.audioRecorder()
         audioRecorder?.registerDelegate(self)
@@ -127,9 +128,14 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func voiceMessageToolbarViewDidRequestPlaybackToggle(_ toolbarView: VoiceMessageToolbarView) {
-        if audioPlayer?.isPlaying ?? false {
-            audioPlayer?.pause()
+        if audioPlayer?.url != nil {
+            if audioPlayer?.isPlaying ?? false {
+                audioPlayer?.pause()
+            } else {
+                audioPlayer?.play()
+            }
         } else {
+            audioPlayer?.loadContentFromURL(temporaryFileURL)
             audioPlayer?.play()
         }
     }
@@ -210,9 +216,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             return
         }
         
-        audioPlayer = mediaServiceProvider.audioPlayer()
+        audioPlayer = mediaServiceProvider.audioPlayerForIdentifier(UUID().uuidString)
         audioPlayer?.registerDelegate(self)
-        audioPlayer?.loadContentFromURL(url)
 
         audioSamples = []
         
@@ -368,18 +373,13 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             return
         }
         
-        guard let url = audioPlayer.url else {
-            MXLog.error("Invalid audio player url.")
-            return
-        }
-        
         displayLink.isPaused = !audioPlayer.isPlaying
         
         let requiredNumberOfSamples = _voiceMessageToolbarView.getRequiredNumberOfSamples()
         if audioSamples.count != requiredNumberOfSamples  && requiredNumberOfSamples > 0 {
             padSamplesArrayToSize(requiredNumberOfSamples)
             
-            waveformAnalyser = WaveformAnalyzer(audioAssetURL: url)
+            waveformAnalyser = WaveformAnalyzer(audioAssetURL: temporaryFileURL)
             waveformAnalyser?.samples(count: requiredNumberOfSamples, completionHandler: { [weak self] samples in
                 guard let samples =  samples else {
                     MXLog.error("Could not sample audio recording.")
@@ -398,7 +398,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
         details.audioSamples = audioSamples
         details.isPlaying = audioPlayer.isPlaying
-        details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
+        details.progress = (audioPlayer.isPlaying ? (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0) : 0.0)
         _voiceMessageToolbarView.configureWithDetails(details)
     }
     
