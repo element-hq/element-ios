@@ -121,6 +121,10 @@ class VoiceMessageAudioPlayer: NSObject {
     }
     
     func stop() {
+        if isStopped {
+            return
+        }
+        
         isStopped = true
         audioPlayer?.pause()
         audioPlayer?.seek(to: .zero)

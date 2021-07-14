@@ -26,16 +26,6 @@ enum VoiceMessagePlaybackControllerState {
 
 class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMessagePlaybackViewDelegate {
     
-    private enum Constants {
-        static let elapsedTimeFormat = "m:ss"
-    }
-    
-    private static let timeFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = Constants.elapsedTimeFormat
-        return dateFormatter
-    }()
-    
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
     private let cacheManager: VoiceMessageAttachmentCacheManager
     
@@ -140,11 +130,11 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         
         switch state {
         case .stopped:
-            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.duration))
+            details.currentTime = durationStringFromTimeInterval(self.duration)
             details.progress = 0.0
         default:
             if let audioPlayer = audioPlayer {
-                details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
+                details.currentTime = durationStringFromTimeInterval(audioPlayer.currentTime)
                 details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
             }
         }
@@ -204,5 +194,19 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     
     @objc private func updateTheme() {
         playbackView.update(theme: ThemeService.shared().theme)
+    }
+    
+    private func durationStringFromTimeInterval(_ interval: TimeInterval) -> String {
+        guard interval.isFinite else {
+            return ""
+        }
+        
+        var timeInterval = abs(interval)
+        let hours = trunc(timeInterval / 3600.0)
+        timeInterval -= hours * 3600.0
+        let minutes = trunc(timeInterval / 60.0)
+        timeInterval -= minutes * 60.0
+        
+        return String(format: "%01.0f:%02.0f", minutes, timeInterval)
     }
 }

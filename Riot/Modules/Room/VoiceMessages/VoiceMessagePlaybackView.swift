@@ -93,7 +93,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
             elapsedTimeLabel.text = details.currentTime
             _waveformView.progress = details.progress
             _waveformView.samples = details.samples
-            _waveformView.alpha = 1
+            _waveformView.alpha = 1.0
         }
         
         self.details = details
