@@ -1041,21 +1041,8 @@ const CGFloat kTypingCellHeight = 24;
 {
     if (cell.attachmentView)
     {
-        UIBezierPath *myClippingPath = [UIBezierPath bezierPathWithRoundedRect:cell.attachmentView.bounds cornerRadius:6];
-        CAShapeLayer *mask;
-        
-        // check for an existing mask in case the cell is being reused, otherwise create a new one
-        if ([cell.attachmentView.layer.mask isKindOfClass:[CAShapeLayer class]])
-        {
-            mask = (CAShapeLayer*)cell.attachmentView.layer.mask;
-        }
-        else
-        {
-            mask = [CAShapeLayer layer];
-        }
-        
-        mask.path = myClippingPath.CGPath;
-        cell.attachmentView.layer.mask = mask;
+        cell.attachmentView.layer.cornerRadius = 6;
+        cell.attachmentView.layer.masksToBounds = YES;
     }
 }
 
