@@ -38,10 +38,14 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     init(session: MXSession) {
         self.session = session
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.sessionDidSync(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
+
     }
     
     deinit {
         self.cancelOperations()
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Public
@@ -59,10 +63,15 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 let spaceViewData = viewDataList[indexPath.row]
                 self.selectSpace(with: spaceViewData.spaceId)
             }
+            self.viewDelegate?.spaceListViewModel(self, didSelectSpaceAt: indexPath)
         }
     }
     
     // MARK: - Private
+    
+    @objc private func sessionDidSync(notification: Notification) {
+        loadData()
+    }
     
     private func loadData() {
 
@@ -70,9 +79,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 
         let homeViewData = self.createHomeViewData()
         
-        // TODO: Manage space list
-        let spacesViewDataList: [SpaceListItemViewData] = [
-        ]
+        let spacesViewDataList = getSpacesViewData()
         
         let sections: [SpaceListSection] = [
             .home(homeViewData),
@@ -98,6 +105,17 @@ final class SpaceListViewModel: SpaceListViewModelType {
         let homeViewData = SpaceListItemViewData(spaceId: "home",
                                                  title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData)
         return homeViewData
+    }
+    
+    private func getSpacesViewData() -> [SpaceListItemViewData] {
+        return session.spaceService.spaces.compactMap { space -> SpaceListItemViewData? in
+            guard let summary = space.summary else {
+                return nil
+            }
+            let avatarViewData = AvatarViewData(avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+            return SpaceListItemViewData(spaceId: summary.roomId,
+                                                     title: summary.displayname, avatarViewData: avatarViewData)
+        }
     }
     
     private func update(viewState: SpaceListViewState) {

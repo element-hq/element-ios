@@ -118,7 +118,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             popToHomeViewControllerCompletion = completion
             masterNavigationController.delegate = self
 
-            masterNavigationController.popToViewController(masterTabBarController, animated: animated)
+            if masterNavigationController.viewControllers.last == masterTabBarController {
+                self.navigationController(masterNavigationController, didShow: masterTabBarController, animated: false)
+            } else {
+                masterNavigationController.popToViewController(masterTabBarController, animated: animated)
+            }
         } else {
             // Select the Home tab
             masterTabBarController.selectedIndex = Int(TABBAR_HOME_INDEX)
@@ -267,7 +271,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 
         let currentMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession
         
-        // TODO: Implement filtering logic inside this method
         self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: currentMatrixSession)
     }
     

@@ -19,6 +19,8 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+@class MXSpace;
+
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.
@@ -97,6 +99,8 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  The data source used to manage the rooms from directory.
  */
 @property (nonatomic) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
+
+@property (nonatomic, strong) MXSpace *currentSpace;
 
 /**
  Refresh the recents data source and notify its delegate.
