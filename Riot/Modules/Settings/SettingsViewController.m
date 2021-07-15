@@ -2791,7 +2791,7 @@ TableViewSectionsDelegate>
 
 - (void)togglePushNotifications:(id)sender
 {
-    // Get the user's notification settings to check check authorization status.
+    // Get the user's notification settings to check their authorization status.
     [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self togglePushNotifications:sender withNotificationSettings:settings];
