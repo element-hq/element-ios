@@ -2791,9 +2791,18 @@ TableViewSectionsDelegate>
 
 - (void)togglePushNotifications:(id)sender
 {
+    // Get the user's notification settings to check check authorization status.
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self togglePushNotifications:sender withNotificationSettings:settings];
+        });
+    }];
+}
+
+- (void)togglePushNotifications:(id)sender withNotificationSettings:(UNNotificationSettings * _Nonnull)settings
+{
     // Check first whether the user allow notification from device settings
-    UIUserNotificationType currentUserNotificationTypes = UIApplication.sharedApplication.currentUserNotificationSettings.types;
-    if (currentUserNotificationTypes == UIUserNotificationTypeNone)
+    if (settings.authorizationStatus == UNAuthorizationStatusDenied)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
