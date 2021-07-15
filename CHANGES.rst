@@ -31,6 +31,30 @@ Changes to be released in next version
 
 Others
  * Silenced some documentation, deprecations and SwiftLint warnings.
+ 
+Changes in 1.4.5 (2021-07-07)
+=================================================
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ * Notifications: Fix an issue where the app is unresponsive after getting some notifications (#4534).
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+
+🧱 Build
+ *
+
+Others
+ *
 
 Changes in 1.4.4 (2021-06-30)
 =================================================
