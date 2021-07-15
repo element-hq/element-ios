@@ -100,6 +100,7 @@ Improvements:
 
  * Room Notification Settings: Ability to change between "All Messages", "Mentions and Keywords" and "None". Not yet exposed in Element UI. (#4458).
  * Add support for sending slow motion videos (#4483).
+ * Standardise casing of identity server and integration manager (#4559).
 
 🐛 Bugfix
 
