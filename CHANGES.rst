@@ -1,4 +1,4 @@
-Changes to be released in next version
+Changes in 1.4.6 (2021-07-15)
 =================================================
 
 ✨ Features
@@ -31,6 +31,9 @@ Changes to be released in next version
 
 Others
  * Silenced some documentation, deprecations and SwiftLint warnings.
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.4)).
 
 Changes in 1.4.4 (2021-06-30)
 =================================================
