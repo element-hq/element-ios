@@ -34,7 +34,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -73,6 +73,8 @@
 @property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+
+@property (nonatomic, strong) RoomNotificationSettingsCoordinatorBridgePresenter *roomNotificationSettingsCoordinatorBridgePresenter;
 
 @end
 
@@ -1031,12 +1033,31 @@
     UIContextualAction *muteAction = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [self muteEditedRoomNotifications:!isMuted];
+        
+        if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+        {
+            [self changeEditedRoomNotificationSettings];
+        }
+        else
+        {
+            [self muteEditedRoomNotifications:!isMuted];
+        }
+        
+        
         completionHandler(YES);
     }];
     muteAction.backgroundColor = actionBackgroundColor;
     
-    UIImage *notificationImage = [UIImage imageNamed:@"room_action_notification"];
+    UIImage *notificationImage;
+    if([BuildSettings roomSettingsScreenShowNotificationsV2])
+    {
+        notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
+    }
+    else
+    {
+        notificationImage = [UIImage imageNamed:@"room_action_notification"];
+    }
+
     notificationImage = [notificationImage vc_tintedImageUsingColor:isMuted ? unselectedColor : selectedColor];
     muteAction.image = [notificationImage vc_notRenderedImage];
     
@@ -1298,6 +1319,23 @@
     }
 }
 
+- (void)changeEditedRoomNotificationSettings
+{
+    if (editedRoomId)
+    {
+        // Check whether the user didn't leave the room
+        MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
+        if (room)
+        {
+           // navigate
+            self.roomNotificationSettingsCoordinatorBridgePresenter = [[RoomNotificationSettingsCoordinatorBridgePresenter alloc] initWithRoom:room];
+            self.roomNotificationSettingsCoordinatorBridgePresenter.delegate = self;
+            [self.roomNotificationSettingsCoordinatorBridgePresenter presentFrom:self animated:YES];
+        }
+        [self cancelEditionMode:isRefreshPending];
+    }
+}
+
 - (void)muteEditedRoomNotifications:(BOOL)mute
 {
     if (editedRoomId)
@@ -1307,27 +1345,27 @@
         if (room)
         {
             [self startActivityIndicator];
-            
+
             if (mute)
             {
                 [room mentionsOnly:^{
-                    
+
                     [self stopActivityIndicator];
-                    
+
                     // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
+                    [self cancelEditionMode:self->isRefreshPending];
+
                 }];
             }
             else
             {
                 [room allMessages:^{
-                    
+
                     [self stopActivityIndicator];
-                    
+
                     // Leave editing mode
-                    [self cancelEditionMode:isRefreshPending];
-                    
+                    [self cancelEditionMode:self->isRefreshPending];
+
                 }];
             }
         }
@@ -2217,6 +2255,13 @@
             }
         }];
     }
+}
+
+#pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate
+-(void)roomNotificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(RoomNotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.roomNotificationSettingsCoordinatorBridgePresenter = nil;
 }
 
 @end

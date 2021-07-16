@@ -19,7 +19,7 @@
 import UIKit
 import libPhoneNumber_iOS
 
-@objc protocol DialpadViewControllerDelegate: class {
+@objc protocol DialpadViewControllerDelegate: AnyObject {
     @objc optional func dialpadViewControllerDidTapCall(_ viewController: DialpadViewController,
                                                         withPhoneNumber phoneNumber: String)
     @objc optional func dialpadViewControllerDidTapClose(_ viewController: DialpadViewController)

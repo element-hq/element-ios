@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol EnterNewRoomDetailsCoordinatorDelegate: class {
+protocol EnterNewRoomDetailsCoordinatorDelegate: AnyObject {
     func enterNewRoomDetailsCoordinator(_ coordinator: EnterNewRoomDetailsCoordinatorType, didCreateNewRoom room: MXRoom)
     func enterNewRoomDetailsCoordinatorDidCancel(_ coordinator: EnterNewRoomDetailsCoordinatorType)
 }

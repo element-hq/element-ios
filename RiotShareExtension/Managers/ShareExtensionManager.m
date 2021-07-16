@@ -1165,8 +1165,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
     
     // Retrieve the video frame at 1 sec to define the video thumbnail
-    AVURLAsset *urlAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
-    AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+    AVURLAsset *videoAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
+    AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
     assetImageGenerator.appliesPreferredTrackTransform = YES;
     CMTime time = CMTimeMake(1, 1);
     CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
@@ -1174,7 +1174,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
     CFRelease(imageRef);
     
-    [room sendVideo:videoLocalUrl withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+    [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
         if (successBlock)
         {
             successBlock();

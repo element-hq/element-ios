@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol KeyBackupSetupSuccessFromSecureBackupViewControllerDelegate: class {
+protocol KeyBackupSetupSuccessFromSecureBackupViewControllerDelegate: AnyObject {
     func keyBackupSetupSuccessFromSecureBackupViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromSecureBackupViewController)
 }
 

@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol KeyBackupSetupSuccessFromRecoveryKeyViewControllerDelegate: class {
+protocol KeyBackupSetupSuccessFromRecoveryKeyViewControllerDelegate: AnyObject {
     func keyBackupSetupSuccessFromRecoveryKeyViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromRecoveryKeyViewController)
 }
 

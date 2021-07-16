@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 @objc
-protocol InviteFriendsHeaderViewDelegate: class {
+protocol InviteFriendsHeaderViewDelegate: AnyObject {
     func inviteFriendsHeaderView(_ headerView: InviteFriendsHeaderView, didTapButton button: UIButton)
 }
 

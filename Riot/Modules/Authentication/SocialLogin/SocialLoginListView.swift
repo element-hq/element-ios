@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-@objc protocol SocialLoginListViewDelegate: class {
+@objc protocol SocialLoginListViewDelegate: AnyObject {
     func socialLoginListView(_ socialLoginListView: SocialLoginListView, didTapSocialButtonWithIdentifier identifier: String)
 }
 

@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol ReactionHistoryCoordinatorDelegate: class {
+protocol ReactionHistoryCoordinatorDelegate: AnyObject {
     func reactionHistoryCoordinatorDidClose(_ coordinator: ReactionHistoryCoordinatorType)
 }
 

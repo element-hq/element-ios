@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol KeyVerificationVerifyByScanningCoordinatorDelegate: class {
+protocol KeyVerificationVerifyByScanningCoordinatorDelegate: AnyObject {
     func keyVerificationVerifyByScanningCoordinatorDidCancel(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType)    
     func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, didScanOtherQRCodeData qrCodeData: MXQRCodeData, withTransaction transaction: MXQRCodeTransaction)
     func keyVerificationVerifyByScanningCoordinator(_ coordinator: KeyVerificationVerifyByScanningCoordinatorType, qrCodeDidScannedByOtherWithTransaction transaction: MXQRCodeTransaction)    

@@ -21,8 +21,12 @@ import Intents
 import FLEX
 #endif
 
-/// The AppCoordinator is responsible of screen navigation and data injection at root application level. It decides if authentication or home screen should be shown and inject data needed for these flows, it changes the navigation stack on deep link, displays global warning.
-/// This class should avoid to contain too many data management code not related to screen navigation logic. For example `MXSession` or push notification management should be handled in dedicated classes and report only navigation changes to the AppCoordinator.
+/// The AppCoordinator is responsible of screen navigation and data injection at root application level. It decides
+/// if authentication or home screen should be shown and inject data needed for these flows, it changes the navigation
+/// stack on deep link, displays global warning.
+/// This class should avoid to contain too many data management code not related to screen navigation logic. For example
+/// `MXSession` or push notification management should be handled in dedicated classes and report only navigation
+/// changes to the AppCoordinator.
 final class AppCoordinator: NSObject, AppCoordinatorType {
     
     // MARK: - Constants
@@ -83,7 +87,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
     
     func open(url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        // NOTE: As said in the Apple documentation be careful on security issues with Custom Scheme URL (see https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app)
+        // NOTE: As said in the Apple documentation be careful on security issues with Custom Scheme URL:
+        // https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app
         
         do {
             let deepLinkOption = try self.customSchemeURLParser.parse(url: url, options: options)

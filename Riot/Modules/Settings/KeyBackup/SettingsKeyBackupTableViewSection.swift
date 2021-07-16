@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol SettingsKeyBackupTableViewSectionDelegate: class {
+@objc protocol SettingsKeyBackupTableViewSectionDelegate: AnyObject {
     func settingsKeyBackupTableViewSectionDidUpdate(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection)
 
     func settingsKeyBackupTableViewSection(_ settingsKeyBackupTableViewSection: SettingsKeyBackupTableViewSection, textCellForRow: Int) -> MXKTableViewCellWithTextView

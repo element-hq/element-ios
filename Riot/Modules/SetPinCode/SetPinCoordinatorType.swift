@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SetPinCoordinatorDelegate: class {
+protocol SetPinCoordinatorDelegate: AnyObject {
     func setPinCoordinatorDidComplete(_ coordinator: SetPinCoordinatorType)
     func setPinCoordinatorDidCompleteWithReset(_ coordinator: SetPinCoordinatorType, dueToTooManyErrors: Bool)
     func setPinCoordinatorDidCancel(_ coordinator: SetPinCoordinatorType)
