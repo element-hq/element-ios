@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '12.1'
+platform :ios, '11.0'
 
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
@@ -70,7 +70,7 @@ abstract_target 'RiotPods' do
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '~> 4.4'
+    pod 'ffmpeg-kit-ios-audio', '~> 4.4.LTS'
 
     pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
 
