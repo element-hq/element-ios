@@ -6190,7 +6190,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
     didRequestSendForFileAtURL:(NSURL *)url
-                      duration:(NSTimeInterval)duration
+                      duration:(NSUInteger)duration
                        samples:(NSArray<NSNumber *> *)samples
                     completion:(void (^)(BOOL))completion
 {

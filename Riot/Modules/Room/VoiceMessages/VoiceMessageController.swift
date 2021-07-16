@@ -20,7 +20,7 @@ import DSWaveformImage
 
 @objc public protocol VoiceMessageControllerDelegate: AnyObject {
     func voiceMessageControllerDidRequestMicrophonePermission(_ voiceMessageController: VoiceMessageController)
-    func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, duration: TimeInterval, samples: [Float]?, completion: @escaping (Bool) -> Void)
+    func voiceMessageController(_ voiceMessageController: VoiceMessageController, didRequestSendForFileAtURL url: URL, duration: UInt, samples: [Float]?, completion: @escaping (Bool) -> Void)
 }
 
 public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, VoiceMessageAudioRecorderDelegate, VoiceMessageAudioPlayerDelegate {
@@ -271,7 +271,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             }
             
             self.delegate?.voiceMessageController(self, didRequestSendForFileAtURL: url,
-                                                  duration: duration,
+                                                  duration: UInt(duration * 1000),
                                                   samples: invertedSamples) { [weak self] success in
                 UINotificationFeedbackGenerator().notificationOccurred((success ? .success : .error))
                 self?.deleteRecordingAtURL(sourceURL)
