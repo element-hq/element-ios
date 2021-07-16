@@ -1389,3 +1389,16 @@
 "room_recents_unknown_room_error_message" = "Raum kann nicht gefunden werden. Überprüfe bitte, dass er existiert";
 "room_creation_dm_error" = "Fehler beim Erstellen der Direktnachricht. Bitte überprüfe die eingeladenen Leute und versuche es erneut.";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" verwendet die Farbinvertierungseinstellung deines Geräts";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Mit diesem Gerät scannen";
+"room_notifs_settings_encrypted_room_notice" = "Am Handy sind Benachrichtigungen bei Erwähnungen und Schlüsselwörtern in verschlüsselten Räumen nicht verfügbar.";
+"room_notifs_settings_account_settings" = "Kontoeinstellungen";
+"room_notifs_settings_manage_notifications" = "Benachrichtigungen kannst du in %@ verwalten";
+"room_notifs_settings_cancel_action" = "Abbrechen";
+"room_notifs_settings_done_action" = "Fertig";
+"room_notifs_settings_none" = "Nichts";
+"room_notifs_settings_mentions_and_keywords" = "Nur Erwähnungen und Schlüsselwörtern";
+"room_notifs_settings_all_messages" = "Allen Nachrichten";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Benachrichtige mich bei";
+"room_details_notifs" = "Benachrichtigungen";
