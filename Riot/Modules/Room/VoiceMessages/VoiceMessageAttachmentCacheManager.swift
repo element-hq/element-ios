@@ -96,9 +96,12 @@ class VoiceMessageAttachmentCacheManager {
     }
     
     private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
+        MXLog.debug("[VoiceMessageAttachmentCacheManager] Started task")
+        
         let callbackKey = CompletionCallbackKey(eventIdentifier: identifier, requiredNumberOfSamples: numberOfSamples)
         
         if var callbacks = completionCallbacks[callbackKey] {
+            MXLog.debug("[VoiceMessageAttachmentCacheManager] Finished task - cached completion callback")
             callbacks.append(CompletionWrapper(completion))
             completionCallbacks[callbackKey] = callbacks
             return
@@ -106,30 +109,37 @@ class VoiceMessageAttachmentCacheManager {
             completionCallbacks[callbackKey] = [CompletionWrapper(completion)]
         }
         
+        let dispatchGroup = DispatchGroup()
+        
         func sampleFileAtURL(_ url: URL, duration: TimeInterval) {
             let analyser = WaveformAnalyzer(audioAssetURL: url)
+            
+            dispatchGroup.enter()
             analyser?.samples(count: numberOfSamples, completionHandler: { samples in
-                // Dispatch back from the WaveformAnalyzer's internal queue
-                self.workQueue.async {
-                    guard let samples = samples else {
-                        self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.samplingError)
-                        return
-                    }
-                    
-                    if var existingSamples = self.samples[identifier] {
-                        existingSamples[numberOfSamples] = samples
-                        self.samples[identifier] = existingSamples
-                    } else {
-                        self.samples[identifier] = [numberOfSamples: samples]
-                    }
-                    
-                    self.invokeSuccessCallbacksForIdentifier(identifier, url: url, duration: duration, samples: samples)
+                MXLog.debug("[VoiceMessageAttachmentCacheManager] Finished sampling voice message")
+                
+                dispatchGroup.leave()
+                
+                guard let samples = samples else {
+                    self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.samplingError)
+                    return
                 }
+                
+                if var existingSamples = self.samples[identifier] {
+                    existingSamples[numberOfSamples] = samples
+                    self.samples[identifier] = existingSamples
+                } else {
+                    self.samples[identifier] = [numberOfSamples: samples]
+                }
+                
+                self.invokeSuccessCallbacksForIdentifier(identifier, url: url, duration: duration, samples: samples)
             })
         }
         
         if let finalURL = finalURLs[identifier], let duration = durations[identifier] {
             sampleFileAtURL(finalURL, duration: duration)
+            dispatchGroup.wait()
+            MXLog.debug("[VoiceMessageAttachmentCacheManager] Finished task")
             return
         }
         
@@ -141,11 +151,14 @@ class VoiceMessageAttachmentCacheManager {
             let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
             let newURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
             
+            dispatchGroup.enter()
             VoiceMessageAudioConverter.convertToMPEG4AAC(sourceURL: URL(fileURLWithPath: filePath), destinationURL: newURL) { result in
                 switch result {
                 case .success:
                     self.finalURLs[identifier] = newURL
                     VoiceMessageAudioConverter.mediaDurationAt(newURL) { result in
+                        MXLog.debug("[VoiceMessageAttachmentCacheManager] Finished converting voice message")
+                        
                         switch result {
                         case .success:
                             if let duration = try? result.get() {
@@ -157,35 +170,49 @@ class VoiceMessageAttachmentCacheManager {
                         case .failure(let error):
                             MXLog.error("[VoiceMessageAttachmentCacheManager] enqueueLoadAttachment: failed getting audio duration with: \(error)")
                         }
+                        
+                        dispatchGroup.leave()
                     }
                 case .failure(let error):
                     self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.conversionError(error))
                     MXLog.error("[VoiceMessageAttachmentCacheManager] enqueueLoadAttachment: failed decoding audio message with: \(error)")
+                    dispatchGroup.leave()
                 }
             }
         }
         
-        if attachment.isEncrypted {
-            attachment.decrypt(toTempFile: { filePath in
-                convertFileAtPath(filePath)
-            }, failure: { error in
-                // A nil error in this case is a cancellation on the MXMediaLoader
-                if let error = error {
-                    MXLog.error("Failed decrypting attachment with error: \(String(describing: error))")
-                    self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.decryptionError(error))
-                }
-            })
-        } else {
-            attachment.prepare({
-                convertFileAtPath(attachment.cacheFilePath)
-            }, failure: { error in
-                // A nil error in this case is a cancellation on the MXMediaLoader
-                if let error = error {
-                    MXLog.error("Failed preparing attachment with error: \(String(describing: error))")
-                    self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.preparationError(error))
-                }
-            })
+        dispatchGroup.enter()
+        DispatchQueue.main.async { // These don't behave accordingly if called from a background thread
+            if attachment.isEncrypted {
+                attachment.decrypt(toTempFile: { filePath in
+                    convertFileAtPath(filePath)
+                    dispatchGroup.leave()
+                }, failure: { error in
+                    // A nil error in this case is a cancellation on the MXMediaLoader
+                    if let error = error {
+                        MXLog.error("Failed decrypting attachment with error: \(String(describing: error))")
+                        self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.decryptionError(error))
+                    }
+                    dispatchGroup.leave()
+                })
+            } else {
+                attachment.prepare({
+                    convertFileAtPath(attachment.cacheFilePath)
+                    dispatchGroup.leave()
+                }, failure: { error in
+                    // A nil error in this case is a cancellation on the MXMediaLoader
+                    if let error = error {
+                        MXLog.error("Failed preparing attachment with error: \(String(describing: error))")
+                        self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.preparationError(error))
+                    }
+                    dispatchGroup.leave()
+                })
+            }
         }
+        
+        dispatchGroup.wait()
+        
+        MXLog.debug("[VoiceMessageAttachmentCacheManager] Finished task")
     }
     
     private func invokeSuccessCallbacksForIdentifier(_ identifier: String, url: URL, duration: TimeInterval, samples: [Float]) {
