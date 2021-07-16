@@ -74,6 +74,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func loadData() {
+        guard session.mediaManager != nil else {
+            return
+        }
 
         self.update(viewState: .loading)
                 
