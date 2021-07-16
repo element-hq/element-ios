@@ -82,7 +82,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
 {
-    if (BuildSettings.voiceMessagesEnabled == NO) {
+    if (RiotSettings.shared.enableVoiceMessages == NO) {
         return;
     }
     
@@ -407,7 +407,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
         [UIView animateWithDuration:kActionMenuContentAlphaAnimationDuration delay:_actionMenuOpened ? 0 : .1 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self->messageComposerContainer.alpha = actionMenuOpened ? 0 : 1;
             self.rightInputToolbarButton.alpha = self->growingTextView.text.length == 0 || actionMenuOpened ? 0 : 1;
-            if (BuildSettings.voiceMessagesEnabled)
+            if (RiotSettings.shared.enableVoiceMessages)
             {
                 self.voiceMessageToolbarView.alpha = self->growingTextView.text.length > 0 || actionMenuOpened ? 0 : 1;
             }
@@ -443,7 +443,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 {
     self.actionMenuOpened = NO;
     
-    if (BuildSettings.voiceMessagesEnabled == NO) {
+    if (RiotSettings.shared.enableVoiceMessages == NO) {
         self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
         self.messageComposerContainerTrailingConstraint.constant = (textMessage.length ? self.frame.size.width - self.rightInputToolbarButton.frame.origin.x : 0.0f) + kComposerContainerTrailingPadding;
 
