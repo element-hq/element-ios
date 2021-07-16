@@ -31,7 +31,7 @@
 
 #import "Riot-Swift.h"
 
-@interface MasterTabBarController () <AuthenticationViewControllerDelegate>
+@interface MasterTabBarController () <AuthenticationViewControllerDelegate, UITabBarControllerDelegate>
 {
     // Array of `MXSession` instances.
     NSMutableArray<MXSession*> *mxSessionArray;    
@@ -110,6 +110,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.delegate = self;
     
     _authenticationInProgress = NO;
     
@@ -1270,6 +1272,32 @@
 {
     _authenticationInProgress = NO;
     [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
+}
+
+#pragma mark - UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    if ([viewController isKindOfClass:HomeViewController.class])
+    {
+        titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:FavouritesViewController.class])
+    {
+        titleLabel.text = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:PeopleViewController.class])
+    {
+        titleLabel.text = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:RoomsViewController.class])
+    {
+        titleLabel.text = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:GroupsViewController.class])
+    {
+        titleLabel.text = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
+    }
 }
 
 @end
