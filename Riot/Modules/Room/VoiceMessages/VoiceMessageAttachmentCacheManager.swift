@@ -38,6 +38,11 @@ private class CompletionWrapper {
     }
 }
 
+private struct CompletionCallbackKey: Hashable {
+    let eventIdentifier: String
+    let requiredNumberOfSamples: Int
+}
+
 struct VoiceMessageAttachmentCacheManagerLoadResult {
     let eventIdentifier: String
     let url: URL
@@ -49,13 +54,15 @@ class VoiceMessageAttachmentCacheManager {
     
     static let sharedManager = VoiceMessageAttachmentCacheManager()
     
-    private var completionCallbacks = [String: [CompletionWrapper]]()
+    private var completionCallbacks = [CompletionCallbackKey: [CompletionWrapper]]()
     private var samples = [String: [Int: [Float]]]()
     private var durations = [String: TimeInterval]()
     private var finalURLs = [String: URL]()
     
+    private let workQueue: DispatchQueue
+    
     private init() {
-        
+        workQueue = DispatchQueue(label: "io.element.VoiceMessageAttachmentCacheManager.queue", qos: .userInitiated)
     }
     
     func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
@@ -74,30 +81,36 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        if let finalURL = finalURLs[identifier], let duration = durations[identifier], let samples = samples[identifier]?[numberOfSamples] {
-            let result = VoiceMessageAttachmentCacheManagerLoadResult(eventIdentifier: identifier, url: finalURL, duration: duration, samples: samples)
-            completion(Result.success(result))
-            return
+        workQueue.async {
+            // Run this in the work queue to preserve order
+            if let finalURL = self.finalURLs[identifier], let duration = self.durations[identifier], let samples = self.samples[identifier]?[numberOfSamples] {
+                let result = VoiceMessageAttachmentCacheManagerLoadResult(eventIdentifier: identifier, url: finalURL, duration: duration, samples: samples)
+                DispatchQueue.main.async {
+                    completion(Result.success(result))
+                }
+                return
+            }
+            
+            self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
         }
-        
-        self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
     }
     
     private func enqueueLoadAttachment(_ attachment: MXKAttachment, identifier: String, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
-
-        if var callbacks = completionCallbacks[identifier] {
+        let callbackKey = CompletionCallbackKey(eventIdentifier: identifier, requiredNumberOfSamples: numberOfSamples)
+        
+        if var callbacks = completionCallbacks[callbackKey] {
             callbacks.append(CompletionWrapper(completion))
-            completionCallbacks[identifier] = callbacks
+            completionCallbacks[callbackKey] = callbacks
             return
         } else {
-            completionCallbacks[identifier] = [CompletionWrapper(completion)]
+            completionCallbacks[callbackKey] = [CompletionWrapper(completion)]
         }
         
         func sampleFileAtURL(_ url: URL, duration: TimeInterval) {
             let analyser = WaveformAnalyzer(audioAssetURL: url)
             analyser?.samples(count: numberOfSamples, completionHandler: { samples in
                 // Dispatch back from the WaveformAnalyzer's internal queue
-                DispatchQueue.main.async {
+                self.workQueue.async {
                     guard let samples = samples else {
                         self.invokeFailureCallbacksForIdentifier(identifier, error: VoiceMessageAttachmentCacheManagerError.samplingError)
                         return
@@ -176,7 +189,9 @@ class VoiceMessageAttachmentCacheManager {
     }
     
     private func invokeSuccessCallbacksForIdentifier(_ identifier: String, url: URL, duration: TimeInterval, samples: [Float]) {
-        guard let callbacks = completionCallbacks[identifier] else {
+        let callbackKey = CompletionCallbackKey(eventIdentifier: identifier, requiredNumberOfSamples: samples.count)
+        
+        guard let callbacks = completionCallbacks[callbackKey] else {
             return
         }
         
@@ -189,11 +204,13 @@ class VoiceMessageAttachmentCacheManager {
             }
         }
         
-        self.completionCallbacks[identifier] = nil
+        self.completionCallbacks[callbackKey] = nil
     }
     
     private func invokeFailureCallbacksForIdentifier(_ identifier: String, error: Error) {
-        guard let callbacks = completionCallbacks[identifier] else {
+        let callbackKey = CompletionCallbackKey(eventIdentifier: identifier, requiredNumberOfSamples: samples.count)
+        
+        guard let callbacks = completionCallbacks[callbackKey] else {
             return
         }
         
@@ -204,6 +221,6 @@ class VoiceMessageAttachmentCacheManager {
             }
         }
         
-        self.completionCallbacks[identifier] = nil
+        self.completionCallbacks[callbackKey] = nil
     }
 }
