@@ -6056,7 +6056,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedVideo:url isPhotoLibraryAsset:NO];
+        AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
+        [roomInputToolbarView sendSelectedVideoAsset:selectedVideo isPhotoLibraryAsset:NO];
     }
 }
 
@@ -6080,7 +6081,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
-- (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectVideoAt:(NSURL *)url
+- (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectVideo:(AVAsset *)videoAsset
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.mediaPickerPresenter = nil;
@@ -6088,7 +6089,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedVideo:url isPhotoLibraryAsset:YES];
+        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:YES];
     }
 }
 

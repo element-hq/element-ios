@@ -62,10 +62,15 @@
 @property (nonatomic, readonly) NSString *directoryServerDisplayname;
 
 /**
- The number of public rooms matching `searchPattern`.
- It is accurate only if 'moreThanRoomsCount' is NO.
+ The number of public rooms that have been fetched so far.
  */
 @property (nonatomic, readonly) NSUInteger roomsCount;
+
+/**
+ The total number of public rooms matching `searchPattern`.
+ It is accurate only if 'searchResultsCountIsLimited' is NO.
+ */
+@property (nonatomic, readonly) NSUInteger searchResultsCount;
 
 /**
  In case of search with a lot of matching public rooms, we cannot return an accurate
@@ -74,7 +79,7 @@
  This flag indicates that we know that there is more matching rooms than we got
  so far.
  */
-@property (nonatomic, readonly) BOOL moreThanRoomsCount;
+@property (nonatomic, readonly) BOOL searchResultsCountIsLimited;
 
 /**
  The maximum number of public rooms to retrieve during a pagination. 

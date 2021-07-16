@@ -18,7 +18,7 @@
 
 import UIKit
 
-@objc protocol CallTransferMainViewControllerDelegate: class {
+@objc protocol CallTransferMainViewControllerDelegate: AnyObject {
     func callTransferMainViewControllerDidComplete(_ viewController: CallTransferMainViewController,
                                                    consult: Bool,
                                                    contact: MXKContact?,

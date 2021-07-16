@@ -137,6 +137,12 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         return coordinator
     }
     
+    private func createRoomNotificationSettingsCoordinator() -> RoomNotificationSettingsCoordinator {
+        let coordinator = RoomNotificationSettingsCoordinator(room: room, showAvatar: false)
+        coordinator.delegate = self
+        return coordinator
+    }
+    
     private func showRoomDetails(with target: RoomInfoListTarget, animated: Bool) {
         switch target {
         case .integrations:
@@ -152,8 +158,16 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
                     self.navigationRouter.push(search, animated: animated, popCompletion: nil)
                 }
             })
+        case .notifications:
+            let coordinator = createRoomNotificationSettingsCoordinator()
+            coordinator.start()
+            self.add(childCoordinator: coordinator)
+            self.navigationRouter.push(coordinator, animated: true, popCompletion: nil)
         default:
-            segmentedViewController.selectedIndex = target.tabIndex
+            guard let tabIndex = target.tabIndex else {
+                fatalError("No settings tab index for this target.")
+            }
+            segmentedViewController.selectedIndex = tabIndex
             
             if case .settings(let roomSettingsField) = target {
                 roomSettingsViewController?.selectedRoomSettingsField = roomSettingsField
@@ -180,6 +194,17 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
 extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
     
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
+        
+    }
+    
+}
+
+extension RoomInfoCoordinator: RoomNotificationSettingsCoordinatorDelegate {
+    func roomNotificationSettingsCoordinatorDidComplete(_ coordinator: RoomNotificationSettingsCoordinatorType) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomNotificationSettingsCoordinatorDidCancel(_ coordinator: RoomNotificationSettingsCoordinatorType) {
         
     }
     

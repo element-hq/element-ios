@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol RoomContextualMenuViewControllerDelegate: class {
+@objc protocol RoomContextualMenuViewControllerDelegate: AnyObject {
     func roomContextualMenuViewControllerDidTapBackgroundOverlay(_ viewController: RoomContextualMenuViewController)
 }
 

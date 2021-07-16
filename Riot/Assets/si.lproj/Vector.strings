@@ -1,3 +1,16 @@
 // Titles
 "title_home" = "මුල් පිටුව";
 "warning" = "අවවාදයයි";
+"join" = "එක්වන්න";
+"save" = "සුරකින්න";
+"cancel" = "අවලංගු කරන්න";
+"remove" = "ඉවත් කරන්න";
+"leave" = "හැරයන්න";
+"start" = "අරඹන්න";
+"create" = "සාදන්න";
+"continue" = "ඉදිරියට";
+"back" = "ආපසු";
+"next" = "ඊලඟ";
+"title_rooms" = "කාමර";
+"title_people" = "මිනිසුන්";
+"title_favourites" = "ප්‍රියතමයින්";

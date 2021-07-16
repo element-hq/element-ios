@@ -111,3 +111,9 @@
 "MSG_FROM_USER" = "%@ sendte en melding";
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ i %@";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Gruppeanrop)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Gruppeanrop startet";

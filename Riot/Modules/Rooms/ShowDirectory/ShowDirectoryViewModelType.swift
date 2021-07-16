@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol ShowDirectoryViewModelViewDelegate: class {
+protocol ShowDirectoryViewModelViewDelegate: AnyObject {
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didUpdateViewState viewSate: ShowDirectoryViewState)
 }
 
-protocol ShowDirectoryViewModelCoordinatorDelegate: class {
+protocol ShowDirectoryViewModelCoordinatorDelegate: AnyObject {
     func showDirectoryViewModelDidSelect(_ viewModel: ShowDirectoryViewModelType, room: MXPublicRoom)
     func showDirectoryViewModel(_ viewModel: ShowDirectoryViewModelType, didSelectRoomWithIdOrAlias roomIdOrAlias: String)
     func showDirectoryViewModelDidTapCreateNewRoom(_ viewModel: ShowDirectoryViewModelType)

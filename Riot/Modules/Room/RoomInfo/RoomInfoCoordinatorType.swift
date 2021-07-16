@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol RoomInfoCoordinatorDelegate: class {
+protocol RoomInfoCoordinatorDelegate: AnyObject {
     func roomInfoCoordinatorDidComplete(_ coordinator: RoomInfoCoordinatorType)
 }
 

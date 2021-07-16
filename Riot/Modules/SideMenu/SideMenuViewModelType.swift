@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol SideMenuViewModelViewDelegate: class {
+protocol SideMenuViewModelViewDelegate: AnyObject {
     func sideMenuViewModel(_ viewModel: SideMenuViewModelType, didUpdateViewState viewSate: SideMenuViewState)
 }
 
-protocol SideMenuViewModelCoordinatorDelegate: class {
+protocol SideMenuViewModelCoordinatorDelegate: AnyObject {
     func sideMenuViewModel(_ viewModel: SideMenuViewModelType, didTapMenuItem menuItem: SideMenuItem, fromSourceView sourceView: UIView)
 }
 
