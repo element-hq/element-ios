@@ -105,6 +105,7 @@ class VoiceMessageAttachmentCacheManager {
                     
                     if var existingSamples = self.samples[identifier] {
                         existingSamples[numberOfSamples] = samples
+                        self.samples[identifier] = existingSamples
                     } else {
                         self.samples[identifier] = [numberOfSamples: samples]
                     }

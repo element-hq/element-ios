@@ -189,6 +189,10 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         delegate?.voiceMessageToolbarViewDidRequestPlaybackToggle(self)
     }
     
+    func voiceMessagePlaybackViewDidChangeWidth() {
+        
+    }
+    
     // MARK: - Private
     
     @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {

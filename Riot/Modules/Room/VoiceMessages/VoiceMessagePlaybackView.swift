@@ -19,6 +19,7 @@ import Reusable
 
 protocol VoiceMessagePlaybackViewDelegate: AnyObject {
     func voiceMessagePlaybackViewDidRequestPlaybackToggle()
+    func voiceMessagePlaybackViewDidChangeWidth()
 }
 
 struct VoiceMessagePlaybackViewDetails {
@@ -52,6 +53,14 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     
     var waveformView: UIView {
         return _waveformView
+    }
+    
+    override var bounds: CGRect {
+        didSet {
+            if oldValue.width != bounds.width {
+                delegate?.voiceMessagePlaybackViewDidChangeWidth()
+            }
+        }
     }
     
     override func awakeFromNib() {

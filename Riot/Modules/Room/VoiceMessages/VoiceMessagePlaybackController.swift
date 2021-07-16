@@ -87,6 +87,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
     }
     
+    func voiceMessagePlaybackViewDidChangeWidth() {
+        loadAttachmentData()
+    }
+    
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidFinishLoading(_ audioPlayer: VoiceMessageAudioPlayer) {
