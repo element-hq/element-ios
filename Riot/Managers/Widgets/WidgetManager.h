@@ -183,7 +183,7 @@ FOUNDATION_EXPORT NSString *const WidgetManagerErrorOpenIdTokenKey;
 /**
  Store the integration manager configuration for a user.
 
- @param the integration manager configuration.
+ @param config the integration manager configuration.
  @param userId the user id.
  */
 - (void)setConfig:(WidgetManagerConfig*)config forUser:(NSString*)userId;

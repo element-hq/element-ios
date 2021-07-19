@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol CrossSigningSetupCoordinatorDelegate: class {
+protocol CrossSigningSetupCoordinatorDelegate: AnyObject {
     func crossSigningSetupCoordinatorDidComplete(_ coordinator: CrossSigningSetupCoordinatorType)
     func crossSigningSetupCoordinatorDidCancel(_ coordinator: CrossSigningSetupCoordinatorType)
     func crossSigningSetupCoordinator(_ coordinator: CrossSigningSetupCoordinatorType, didFailWithError error: Error)

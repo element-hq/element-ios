@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol RoomCreationEventsModalCoordinatorDelegate: class {
+protocol RoomCreationEventsModalCoordinatorDelegate: AnyObject {
     func roomCreationEventsModalCoordinatorDidTapClose(_ coordinator: RoomCreationEventsModalCoordinatorType)
 }
 

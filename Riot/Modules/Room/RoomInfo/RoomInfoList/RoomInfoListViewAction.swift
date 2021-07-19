@@ -24,25 +24,21 @@ enum RoomInfoListTarget: Equatable {
     case uploads
     case integrations
     case search
-
-    var tabIndex: UInt {
-        let tabIndex: UInt
-        
+    case notifications
+    
+    var tabIndex: UInt? {
         switch self {
         case .members:
-            tabIndex = 0
+            return 0
         case .uploads:
-            tabIndex = 1
+            return 1
         case .settings:
-            tabIndex = 2
-        case .integrations:
-            tabIndex = 3
-        case .search:
-            tabIndex = 4
+            return 2
+        default:
+            return nil
         }
-        
-        return tabIndex
     }
+    
 }
 
 /// RoomInfoListViewController view actions exposed to view model

@@ -8,9 +8,7 @@ Changes to be released in next version
  * 
 
 🐛 Bugfix
- * VoIP: Do not present ended calls.
- * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
- * Fix crash on Apple Silicon Macs.
+ * 
 
 ⚠️ API Changes
  * 
@@ -23,6 +21,67 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.4.6 (2021-07-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Room Notification Settings: Ability to change between "All Messages", "Mentions and Keywords" and "None". Not yet exposed in Element UI. (#4458).
+ * Add support for sending slow motion videos (#4483).
+
+🐛 Bugfix
+ * VoIP: Do not present ended calls.
+ * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
+ * Fix crash on Apple Silicon Macs.
+ * Media Picker: Generate video thumbnails with the correct orientation (#4515).
+ * Directory List (pop-up one): Fix duplicate rooms being shown (#4537).
+ * Use different title for scan button for self verification (#4525).
+ * it's easy for the back button to trigger a leftpanel reveal (#4438).
+ * Show / hide reset button in secrets recovery screen (#4546).
+ * Share Extension: Fix layout when searching (#4258).
+ * Timeline: Fix incorrect crop of media thumbnails (#4552).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * Silenced some documentation, deprecations and SwiftLint warnings.
+ 
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.4)).
+
+Changes in 1.4.5 (2021-07-07)
+=================================================
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ * Notifications: Fix an issue where the app is unresponsive after getting some notifications (#4534).
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+
+🧱 Build
+ *
+
+Others
+ *
 
 Changes in 1.4.4 (2021-06-30)
 =================================================

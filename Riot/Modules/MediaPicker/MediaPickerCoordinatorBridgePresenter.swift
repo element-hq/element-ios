@@ -20,7 +20,7 @@ import Foundation
 
 @objc protocol MediaPickerCoordinatorBridgePresenterDelegate {
     func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectImageData imageData: Data, withUTI uti: MXKUTI?)
-    func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectVideoAt url: URL)
+    func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectVideo videoAsset: AVAsset)
     func mediaPickerCoordinatorBridgePresenter(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter, didSelectAssets assets: [PHAsset])
     func mediaPickerCoordinatorBridgePresenterDidCancel(_ coordinatorBridgePresenter: MediaPickerCoordinatorBridgePresenter)
 }
@@ -110,8 +110,8 @@ extension MediaPickerCoordinatorBridgePresenter: MediaPickerCoordinatorDelegate 
         self.delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectImageData: imageData, withUTI: uti)
     }
     
-    func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectVideoAt url: URL) {
-        self.delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectVideoAt: url)
+    func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectVideo videoAsset: AVAsset) {
+        self.delegate?.mediaPickerCoordinatorBridgePresenter(self, didSelectVideo: videoAsset)
     }
     
     func mediaPickerCoordinator(_ coordinator: MediaPickerCoordinatorType, didSelectAssets assets: [PHAsset]) {
