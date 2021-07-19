@@ -57,6 +57,7 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
         
         do {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
             audioRecorder = try AVAudioRecorder(url: url, settings: settings)
             audioRecorder?.delegate = self
             audioRecorder?.isMeteringEnabled = true

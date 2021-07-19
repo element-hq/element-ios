@@ -97,6 +97,7 @@ class VoiceMessageAudioPlayer: NSObject {
         
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             MXLog.error("Could not redirect audio playback to speakers.")
         }
