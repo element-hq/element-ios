@@ -513,7 +513,7 @@ Tap the + to start adding people.";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
 "settings_integrations_allow_button" = "Manage integrations";
-"settings_integrations_allow_description" = "Use an Integration Manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration Managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
+"settings_integrations_allow_description" = "Use an integration manager (%@) to manage bots, bridges, widgets and sticker packs.\n\nIntegration managers receive configuration data, and can modify widgets, send room invites and set power levels on your behalf.";
 
 "settings_ui_language" = "Language";
 "settings_ui_theme" = "Theme";
@@ -595,7 +595,7 @@ Tap the + to start adding people.";
 "settings_devices_description" = "A session's public name is visible to people you communicate with";
 
 "settings_discovery_no_identity_server" = "You are not currently using an identity server. To be discoverable by existing contacts you known, add one.";
-"settings_discovery_terms_not_signed" = "Agree to the Identity Server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
+"settings_discovery_terms_not_signed" = "Agree to the identity server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
 "settings_discovery_three_pids_management_information_part1" = "Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in ";
 "settings_discovery_three_pids_management_information_part2" = "User Settings";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -668,7 +668,7 @@ Tap the + to start adding people.";
 "authenticated_session_flow_not_supported" = "This app does not support the authentication mechanism on your homeserver.";
 
 // Identity server settings
-"identity_server_settings_title" = "Identity Server";
+"identity_server_settings_title" = "Identity server";
 
 "identity_server_settings_description" = "You are currently using %@ to discover and be discoverable by existing contacts you know.";
 "identity_server_settings_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts, add one above.";
@@ -959,7 +959,7 @@ Tap the + to start adding people.";
 "widget_integration_missing_room_id" = "Missing room_id in request.";
 "widget_integration_missing_user_id" = "Missing user_id in request.";
 "widget_integration_room_not_visible" = "Room %@ is not visible.";
-"widget_integration_manager_disabled" = "You need to enable Integration Manager in settings";
+"widget_integration_manager_disabled" = "You need to enable integration manager in settings";
 
 // Widget Picker
 "widget_picker_title" = "Integrations";
