@@ -28,6 +28,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     private enum Constants {
         static let maximumAudioRecordingDuration: TimeInterval = 120.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
+        static let elapsedTimeFormat = "m:ss"
         static let minimumRecordingDuration = 1.0
     }
     
@@ -46,6 +47,12 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     private var audioSamples: [Float] = []
     private var isInLockedMode: Bool = false
     private var notifiedRemainingTime = false
+    
+    private static let timeFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Constants.elapsedTimeFormat
+        return dateFormatter
+    }()
     
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
@@ -90,7 +97,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         // Haptic are not played during record on iOS by default. This fix works
         // only since iOS 13. A workaround for iOS 12 and earlier would be to
-        // dispatch after at least 100ms recordWithOuputURL call
+        // dispatch after at least 100ms recordWithOutputURL call
         if #available(iOS 13.0, *) {
             try? AVAudioSession.sharedInstance().setCategory(.playAndRecord)
             try? AVAudioSession.sharedInstance().setAllowHapticsAndSystemSoundsDuringRecording(true)
@@ -100,7 +107,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         audioRecorder = mediaServiceProvider.audioRecorder()
         audioRecorder?.registerDelegate(self)
-        audioRecorder?.recordWithOuputURL(temporaryFileURL)
+        audioRecorder?.recordWithOutputURL(temporaryFileURL)
     }
     
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView) {
@@ -335,7 +342,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (isRecording ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = durationStringFromTimeInterval(currentTime)
+        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: currentTime))
         details.audioSamples = audioSamples
         
         if isRecording {
@@ -384,7 +391,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = durationStringFromTimeInterval(audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)
+        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
         details.audioSamples = audioSamples
         details.isPlaying = audioPlayer.isPlaying
         details.progress = (audioPlayer.isPlaying ? (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0) : 0.0)
@@ -398,19 +405,5 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
         
         audioSamples = audioSamples + [Float](repeating: 0.0, count: delta)
-    }
-    
-    private func durationStringFromTimeInterval(_ interval: TimeInterval) -> String {
-        guard interval.isFinite else {
-            return ""
-        }
-        
-        var timeInterval = abs(interval)
-        let hours = trunc(timeInterval / 3600.0)
-        timeInterval -= hours * 3600.0
-        let minutes = trunc(timeInterval / 60.0)
-        timeInterval -= minutes * 60.0
-        
-        return String(format: "%01.0f:%02.0f", minutes, timeInterval)
     }
 }

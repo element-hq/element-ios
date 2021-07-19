@@ -2802,7 +2802,7 @@ TableViewSectionsDelegate>
     }
 }
 
-- (void)togglePushNotifications:(id)sender
+- (void)togglePushNotifications:(UISwitch *)sender
 {
     // Check first whether the user allow notification from device settings
     UIUserNotificationType currentUserNotificationTypes = UIApplication.sharedApplication.currentUserNotificationSettings.types;
@@ -2832,7 +2832,7 @@ TableViewSectionsDelegate>
         [self presentViewController:currentAlert animated:YES completion:nil];
         
         // Keep off the switch
-        ((UISwitch*)sender).on = NO;
+        sender.on = NO;
     }
     else if ([MXKAccountManager sharedManager].activeAccounts.count)
     {
@@ -2855,7 +2855,7 @@ TableViewSectionsDelegate>
             [[AppDelegate theDelegate] registerForRemoteNotificationsWithCompletion:^(NSError * error) {
                 if (error)
                 {
-                    [(UISwitch *)sender setOn:NO animated:YES];
+                    [sender setOn:NO animated:YES];
                     [self stopActivityIndicator];
                 }
                 else
@@ -2871,49 +2871,42 @@ TableViewSectionsDelegate>
     }
 }
 
-- (void)toggleCallKit:(id)sender
+- (void)toggleCallKit:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-    [MXKAppSettings standardAppSettings].enableCallKit = switchButton.isOn;
+    [MXKAppSettings standardAppSettings].enableCallKit = sender.isOn;
 }
 
-- (void)toggleStunServerFallback:(id)sender
+- (void)toggleStunServerFallback:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-    RiotSettings.shared.allowStunServerFallback = switchButton.isOn;
+    RiotSettings.shared.allowStunServerFallback = sender.isOn;
 
     self.mainSession.callManager.fallbackSTUNServer = RiotSettings.shared.allowStunServerFallback ? BuildSettings.stunServerFallbackUrlString : nil;
 }
 
-- (void)toggleAllowIntegrations:(id)sender
+- (void)toggleAllowIntegrations:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-
     MXSession *session = self.mainSession;
     [self startActivityIndicator];
-
+    
     __block RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
-    [sharedSettings setIntegrationProvisioningWithEnabled:switchButton.on success:^{
+    [sharedSettings setIntegrationProvisioningWithEnabled:sender.isOn success:^{
         sharedSettings = nil;
         [self stopActivityIndicator];
     } failure:^(NSError * _Nullable error) {
         sharedSettings = nil;
-        [switchButton setOn:!switchButton.on animated:YES];
+        [sender setOn:!sender.isOn animated:YES];
         [self stopActivityIndicator];
     }];
 }
 
-- (void)toggleShowDecodedContent:(id)sender
+- (void)toggleShowDecodedContent:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-    RiotSettings.shared.showDecryptedContentInNotifications = switchButton.isOn;
+    RiotSettings.shared.showDecryptedContentInNotifications = sender.isOn;
 }
 
-- (void)toggleLocalContactsSync:(id)sender
+- (void)toggleLocalContactsSync:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-
-    if (switchButton.on)
+    if (sender.on)
     {
         [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
 
@@ -2954,57 +2947,36 @@ TableViewSectionsDelegate>
     }
 }
 
-- (void)toggleEnableRageShake:(id)sender
+- (void)toggleEnableRageShake:(UISwitch *)sender
 {
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-
-        RiotSettings.shared.enableRageShake = switchButton.isOn;
-
-        [self updateSections];
-    }
+    RiotSettings.shared.enableRageShake = sender.isOn;
+    
+    [self updateSections];
 }
 
 - (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
-    if (sender)
-    {
-        RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
-        
-        [self.tableView reloadData];
-    }
+    RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
 }
 
 - (void)toggleEnableVoiceMessages:(UISwitch *)sender
 {
-    if (sender)
-    {
-        RiotSettings.shared.enableVoiceMessages = sender.isOn;
-        
-        [self.tableView reloadData];
-    }
+    RiotSettings.shared.enableVoiceMessages = sender.isOn;
 }
 
-- (void)togglePinRoomsWithMissedNotif:(id)sender
+- (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome = switchButton.on;
+    RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome = sender.isOn;
 }
 
-- (void)togglePinRoomsWithUnread:(id)sender
+- (void)togglePinRoomsWithUnread:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-
-    RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome = switchButton.on;
+    RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome = sender.on;
 }
 
-- (void)toggleCommunityFlair:(id)sender
+- (void)toggleCommunityFlair:(UISwitch *)sender
 {
-    UISwitch *switchButton = (UISwitch*)sender;
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:switchButton.tag inSection:groupsDataSource.joinedGroupsSection];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:sender.tag inSection:groupsDataSource.joinedGroupsSection];
     id<MXKGroupCellDataStoring> groupCellData = [groupsDataSource cellDataAtIndex:indexPath];
     MXGroup *group = groupCellData.group;
     
@@ -3014,7 +2986,7 @@ TableViewSectionsDelegate>
         
         __weak typeof(self) weakSelf = self;
         
-        [self.mainSession updateGroupPublicity:group isPublicised:switchButton.on success:^{
+        [self.mainSession updateGroupPublicity:group isPublicised:sender.isOn success:^{
             
             if (weakSelf)
             {
@@ -3030,7 +3002,7 @@ TableViewSectionsDelegate>
                 [self stopActivityIndicator];
                 
                 // Come back to previous state button
-                [switchButton setOn:!switchButton.isOn animated:YES];
+                [sender setOn:!sender.isOn animated:YES];
                 
                 // Notify user
                 [[AppDelegate theDelegate] showErrorAsAlert:error];
@@ -3676,16 +3648,9 @@ TableViewSectionsDelegate>
                                    animated:YES];
 }
 
-- (void)toggleNSFWPublicRoomsFiltering:(id)sender
+- (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender
 {
-    if (sender && [sender isKindOfClass:UISwitch.class])
-    {
-        UISwitch *switchButton = (UISwitch*)sender;
-        
-        RiotSettings.shared.showNSFWPublicRooms = switchButton.isOn;
-
-        [self.tableView reloadData];
-    }
+    RiotSettings.shared.showNSFWPublicRooms = sender.isOn;
 }
 
 #pragma mark - TextField listener

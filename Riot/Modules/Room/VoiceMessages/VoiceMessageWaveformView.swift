@@ -28,10 +28,10 @@ class VoiceMessageWaveformView: UIView {
         }
     }
     
-    var primarylineColor = UIColor.lightGray {
+    var primaryLineColor = UIColor.lightGray {
         didSet {
-            backgroundLayer.strokeColor = primarylineColor.cgColor
-            backgroundLayer.fillColor = primarylineColor.cgColor
+            backgroundLayer.strokeColor = primaryLineColor.cgColor
+            backgroundLayer.fillColor = primaryLineColor.cgColor
         }
     }
     var secondaryLineColor = UIColor.darkGray {
@@ -60,7 +60,7 @@ class VoiceMessageWaveformView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupAndAdd(backgroundLayer, with: primarylineColor)
+        setupAndAdd(backgroundLayer, with: primaryLineColor)
         setupAndAdd(progressLayer, with: secondaryLineColor)
         progressLayer.masksToBounds = true
 

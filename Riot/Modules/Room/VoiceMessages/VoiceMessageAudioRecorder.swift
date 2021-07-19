@@ -48,7 +48,7 @@ class VoiceMessageAudioRecorder: NSObject, AVAudioRecorderDelegate {
         return audioRecorder?.isRecording ?? false
     }
     
-    func recordWithOuputURL(_ url: URL) {
+    func recordWithOutputURL(_ url: URL) {
         
         let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                         AVSampleRateKey: 12000,

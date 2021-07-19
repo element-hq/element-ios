@@ -200,7 +200,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         case UIGestureRecognizer.State.began:
             delegate?.voiceMessageToolbarViewDidRequestRecordingStart(self)
         case UIGestureRecognizer.State.ended:
-             delegate?.voiceMessageToolbarViewDidRequestRecordingFinish(self)
+            delegate?.voiceMessageToolbarViewDidRequestRecordingFinish(self)
         default:
             break
         }

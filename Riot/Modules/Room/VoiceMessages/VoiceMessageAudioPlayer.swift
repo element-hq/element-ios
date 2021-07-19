@@ -40,7 +40,7 @@ class VoiceMessageAudioPlayer: NSObject {
     private var statusObserver: NSKeyValueObservation?
     private var playbackBufferEmptyObserver: NSKeyValueObservation?
     private var rateObserver: NSKeyValueObservation?
-    private var playToEndObsever: NSObjectProtocol?
+    private var playToEndObserver: NSObjectProtocol?
     
     private let delegateContainer = DelegateContainer()
     
@@ -55,23 +55,11 @@ class VoiceMessageAudioPlayer: NSObject {
     }
     
     var duration: TimeInterval {
-        guard let item = self.audioPlayer?.currentItem else {
-            return 0
-        }
-        
-        let duration = CMTimeGetSeconds(item.duration)
-        
-        return duration.isNaN ? 0.0 : duration
+        return abs(CMTimeGetSeconds(self.audioPlayer?.currentItem?.duration ?? .zero))
     }
     
     var currentTime: TimeInterval {
-        guard let audioPlayer = self.audioPlayer else {
-            return 0.0
-        }
-        
-        let currentTime = CMTimeGetSeconds(audioPlayer.currentTime())
-        
-        return currentTime.isNaN ? 0.0 : currentTime
+        return abs(CMTimeGetSeconds(audioPlayer?.currentTime() ?? .zero))
     }
     
     private(set) var isStopped = true
@@ -200,7 +188,7 @@ class VoiceMessageAudioPlayer: NSObject {
             }
         }
         
-        playToEndObsever = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
+        playToEndObserver = NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime, object: playerItem, queue: nil) { [weak self] notification in
             guard let self = self else { return }
             
             self.delegateContainer.notifyDelegatesWithBlock { delegate in
@@ -213,7 +201,7 @@ class VoiceMessageAudioPlayer: NSObject {
         statusObserver?.invalidate()
         playbackBufferEmptyObserver?.invalidate()
         rateObserver?.invalidate()
-        NotificationCenter.default.removeObserver(playToEndObsever as Any)
+        NotificationCenter.default.removeObserver(playToEndObserver as Any)
     }
 }
 

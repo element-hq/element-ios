@@ -75,12 +75,12 @@ import Foundation
     // MARK: - Private
     
     private func stopAllServicesExcept(_ service: AnyObject?) {
-        for audioRecoder in audioRecorders.allObjects {
-            if audioRecoder === service {
+        for audioRecorder in audioRecorders.allObjects {
+            if audioRecorder === service {
                 continue
             }
             
-            audioRecoder.stopRecording()
+            audioRecorder.stopRecording()
         }
         
         guard let audioPlayersEnumerator = audioPlayers.objectEnumerator() else {
