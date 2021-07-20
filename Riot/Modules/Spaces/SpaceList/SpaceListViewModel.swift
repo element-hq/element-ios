@@ -111,13 +111,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func getSpacesViewData() -> [SpaceListItemViewData] {
-        return session.spaceService.spaces.compactMap { space -> SpaceListItemViewData? in
-            guard let summary = space.summary else {
-                return nil
-            }
+        return session.spaceService.rootSpaceSummaries.map { summary in
             let avatarViewData = AvatarViewData(avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
-            return SpaceListItemViewData(spaceId: summary.roomId,
-                                                     title: summary.displayname, avatarViewData: avatarViewData)
+            return SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData)
         }
     }
     
