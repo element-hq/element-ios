@@ -2,7 +2,7 @@
 "title_home" = "ホーム";
 "title_favourites" = "お気に入り";
 "title_people" = "対話";
-"title_rooms" = "部屋";
+"title_rooms" = "ルーム";
 "warning" = "警告";
 // Actions
 "view" = "表示";
@@ -92,37 +92,37 @@
 "room_creation_account" = "アカウント";
 "room_creation_appearance" = "外観";
 "room_creation_appearance_name" = "名前";
-"room_creation_appearance_picture" = "部屋のアイコン画像 (任意で)";
+"room_creation_appearance_picture" = "チャット画像 (任意)";
 "room_creation_privacy" = "個人情報保護";
 "room_creation_private_room" = "この会話は非公開です";
 "room_creation_public_room" = "この会話は公開されます";
-"room_creation_make_public" = "公開部屋作成";
-"room_creation_make_public_prompt_title" = "この部屋を公開しますか？";
-"room_creation_make_public_prompt_msg" = "この部屋を一般公開してもよろしいですか？誰でもあなたの発言を読み、部屋に参加できます。";
-"room_creation_keep_private" = "非公開部屋";
-"room_creation_make_private" = "非公開部屋を作成";
-"room_creation_wait_for_creation" = "部屋はすでに作成されています。お待ちください。";
+"room_creation_make_public" = "パブリックにする";
+"room_creation_make_public_prompt_title" = "このチャットをパブリックしますか？";
+"room_creation_make_public_prompt_msg" = "このチャットをパブリックしてもよろしいですか？ 誰でもあなたのメッセージを読んでチャットに参加できます。";
+"room_creation_keep_private" = "プライベートに保つ";
+"room_creation_make_private" = "プライベートにする";
+"room_creation_wait_for_creation" = "ルームはすでに作成されています。 お待ちください。";
 "room_creation_invite_another_user" = "ユーザID, 表示名, 電子メールで検索と招待";
 // Room recents
-"room_recents_directory_section" = "部屋一覧";
+"room_recents_directory_section" = "ルーム一覧";
 "room_recents_directory_section_network" = "通信回線";
 "room_recents_favourites_section" = "お気に入り";
 "room_recents_people_section" = "対話";
-"room_recents_conversations_section" = "部屋";
-"room_recents_no_conversation" = "部屋がありません";
+"room_recents_conversations_section" = "ルーム";
+"room_recents_no_conversation" = "ルームがありません";
 "room_recents_low_priority_section" = "低優先度";
 "room_recents_invites_section" = "招待中";
 "room_recents_start_chat_with" = "対話を開始";
-"room_recents_create_empty_room" = "部屋を作成";
-"room_recents_join_room" = "部屋へ参加";
-"room_recents_join_room_title" = "部屋へ参加";
-"room_recents_join_room_prompt" = "部屋の固有IDまたは住所表記を入力";
+"room_recents_create_empty_room" = "ルームを作成";
+"room_recents_join_room" = "ルームへ参加";
+"room_recents_join_room_title" = "ルームへ参加";
+"room_recents_join_room_prompt" = "ルームIDまたはルームのエイリアスを入力します";
 // People tab
 "people_invites_section" = "招待中";
 "people_conversation_section" = "会話";
 "people_no_conversation" = "会話なし";
 // Rooms tab
-"room_directory_no_public_room" = "公開された部屋がありません";
+"room_directory_no_public_room" = "利用可能なパブリックのルームはありません";
 // Search
 "search_rooms" = "部屋";
 "search_messages" = "発言";
@@ -354,7 +354,7 @@
 "room_details_addresses_section" = "住所表記";
 "room_details_no_local_addresses" = "この部屋はサーバ内住所表記がありません";
 "room_details_new_address" = "新しい住所表記を追加";
-"room_details_new_address_placeholder" = "新しい住所表記を追加 (例  #foo%@)";
+"room_details_new_address_placeholder" = "新しいアドレスを追加（例 #foo%@）";
 "room_details_addresses_invalid_address_prompt_title" = "住所表記が正しくありません";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ は正しくない形式の住所表記です";
 "room_details_addresses_disable_main_address_prompt_title" = "代表住所表記の警告";
