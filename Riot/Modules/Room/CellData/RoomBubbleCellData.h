@@ -79,7 +79,12 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 @property(nonatomic, readonly) CGFloat additionalContentHeight;
 
 /**
- MXKeyVerification object associated to key verifcation event when using key verification by direct message.
+ A link if the textMessage contains one, otherwise nil.
+ */
+@property (nonatomic) NSURL *link;
+
+/**
+ MXKeyVerification object associated to key verification event when using key verification by direct message.
  */
 @property(nonatomic, strong) MXKeyVerification *keyVerification;
 

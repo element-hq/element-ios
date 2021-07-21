@@ -132,6 +132,12 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 self.collapsed = YES;
             }
                 break;
+            case MXEventTypeRoomMessage:
+            {
+                // If the message contains a URL, store it in the cell data.
+                self.link = [event vc_firstURLInBody];
+            }
+                break;
             case MXEventTypeCallInvite:
             case MXEventTypeCallAnswer:
             case MXEventTypeCallHangup:
@@ -788,6 +794,41 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
                     shouldAddEvent = NO;
+                    break;
+                }
+                
+                NSDate *eventDate = [NSDate dateWithTimeIntervalSince1970:(double)event.originServerTs/1000];
+                
+                if (self.mostRecentComponentIndex != NSNotFound)
+                {
+                    MXKRoomBubbleComponent *lastComponent = self.bubbleComponents[self.mostRecentComponentIndex];
+                    // If the new event comes after the last bubble component
+                    if ([lastComponent.date earlierDate:eventDate] == lastComponent.date)
+                    {
+                        // FIXME: This should be for all event types, not just messages.
+                        // Don't add it if there is already a link in the cell data
+                        if (self.link)
+                        {
+                            shouldAddEvent = NO;
+                        }
+                        break;
+                    }
+                }
+                    
+                if (self.oldestComponentIndex != NSNotFound)
+                {
+                    MXKRoomBubbleComponent *firstComponent = self.bubbleComponents[self.oldestComponentIndex];
+                    // If the new event event comes before the first bubble component
+                    if ([firstComponent.date laterDate:eventDate] == firstComponent.date)
+                    {
+                        // Don't add it to the cell data if it contains a link
+                        NSString *messageBody = event.content[@"body"];
+                        if (messageBody && [messageBody vc_containsURL])
+                        {
+                            shouldAddEvent = NO;
+                        }
+                        break;
+                    }
                 }
             }
                 break;
@@ -842,6 +883,11 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     if (shouldAddEvent)
     {
         shouldAddEvent = [super addEvent:event andRoomState:roomState];
+    }
+    
+    if (shouldAddEvent)
+    {
+        self.link = [event vc_firstURLInBody];
     }
     
     return shouldAddEvent;
