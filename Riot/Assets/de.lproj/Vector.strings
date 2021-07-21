@@ -506,7 +506,7 @@
 "group_rooms_filter_rooms" = "Filtere Community-Räume";
 "e2e_room_key_request_message_new_device" = "Du hast die neue Sitzung '%@' hinzugefügt, welche Verschlüsselungs-Schlüssel anfordert.";
 "room_do_not_have_permission_to_post" = "Du hast keine Berechtigung Nachrichten in diesem Raum zu senden";
-"room_event_action_kick_prompt_reason" = "Grund für den Rauswurf des Benutzers";
+"room_event_action_kick_prompt_reason" = "Grund für das Entfernen des Benutzers";
 "room_event_action_ban_prompt_reason" = "Grund für die Verbannung des Benutzers";
 "room_action_send_photo_or_video" = "Foto oder Video senden";
 "room_action_send_sticker" = "Aufkleber senden";
