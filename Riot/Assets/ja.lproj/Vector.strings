@@ -307,7 +307,7 @@
 "settings_labs_matrix_apps" = "Matrixアプリ";
 "settings_labs_create_conference_with_jitsi" = "jitsiの会議通話を作成する";
 "settings_version" = "Version %@";
-"settings_olm_version" = "Olm Version %@";
+"settings_olm_version" = "Olm バージョン %@";
 "settings_copyright" = "著作権";
 "settings_term_conditions" = "利用規約";
 "settings_privacy_policy" = "個人情報保護方針";
@@ -323,7 +323,7 @@
 "settings_password_updated" = "あなたのパスワードは更新されました";
 "settings_crypto_device_name" = "セッション名: ";
 "settings_crypto_device_id" = "\nセッションID: ";
-"settings_crypto_device_key" = "\n端末鍵: ";
+"settings_crypto_device_key" = "\nセッションキー:\n";
 "settings_crypto_export" = "暗号鍵を外部へ保存";
 "settings_crypto_blacklist_unverified_devices" = "検証されたセッションのみで暗号化";
 // Room Details
@@ -534,7 +534,7 @@
 "e2e_room_key_request_title" = "暗号化キー要求";
 "e2e_room_key_request_message_new_device" = "暗号化キーを要求している新しい端末 '%@'を追加しました。";
 "e2e_room_key_request_message" = "検証されていない端末 '%@'が暗号化キーを要求しています。";
-"e2e_room_key_request_start_verification" = "検証開始...";
+"e2e_room_key_request_start_verification" = "検証を始めます…";
 "e2e_room_key_request_share_without_verifying" = "検証せずに共有";
 "e2e_room_key_request_ignore_request" = "要求を無視";
 // GDPR
@@ -556,7 +556,7 @@
 "rerequest_keys_alert_title" = "リクエスト送信";
 "rerequest_keys_alert_message" = "この端末にキーを送信できるように、メッセージを復号化できる別の端末でElementを起動してください。";
 "room_event_action_ban_prompt_reason" = "このユーザーをブロックする理由";
-"room_resource_limit_exceeded_message_contact_1" = " Please ";
+"room_resource_limit_exceeded_message_contact_1" = " お願い ";
 "settings_ui_theme_black" = "Black";
 "settings_flair" = "特色を表示する";
 // String for App Store
@@ -753,7 +753,7 @@
 "room_participants_leave_prompt_msg_for_dm" = "退出してよろしいですか？";
 "room_participants_leave_prompt_title_for_dm" = "退出する";
 "contacts_address_book_no_identity_server" = "IDサーバーが設定されていません";
-"rooms_empty_view_information" = "ルームはプライベートでもパブリックでも、あらゆるグループチャットに最適です。+をタップすると既にある部屋を探したり、新しい部屋を作ることができます。";
+"rooms_empty_view_information" = "ルームはプライベートでもパブリックでも、あらゆるグループチャットに最適です。+をタップすると、既にある部屋を見つけたり、新しい部屋を作ることができます。";
 "rooms_empty_view_title" = "ルーム";
 "people_empty_view_information" = "誰とでも安全にチャットできます。＋をタップすると会話相手を追加できます。";
 "people_empty_view_title" = "人々";
