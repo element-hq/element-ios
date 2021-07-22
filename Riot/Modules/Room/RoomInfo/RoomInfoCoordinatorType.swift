@@ -20,6 +20,7 @@ import Foundation
 
 protocol RoomInfoCoordinatorDelegate: AnyObject {
     func roomInfoCoordinatorDidComplete(_ coordinator: RoomInfoCoordinatorType)
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didRequestMentionForMember member: MXRoomMember)
 }
 
 /// `RoomInfoCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.

@@ -34,6 +34,7 @@ const CGFloat kActionMenuAttachButtonSpringVelocity = 7;
 const CGFloat kActionMenuAttachButtonSpringDamping = .45;
 const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
+const CGFloat kComposerContainerTrailingPadding = 12;
 
 @interface RoomInputToolbarView()
 {
@@ -75,6 +76,24 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [self.rightInputToolbarButton setTitle:nil forState:UIControlStateHighlighted];
 
     self.isEncryptionEnabled = _isEncryptionEnabled;
+    
+    [self updateUIWithTextMessage:nil animated:NO];
+}
+
+- (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
+{
+    if (RiotSettings.shared.enableVoiceMessages == NO) {
+        return;
+    }
+    
+    _voiceMessageToolbarView = voiceMessageToolbarView;
+    self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.voiceMessageToolbarView];
+
+    [NSLayoutConstraint activateConstraints:@[[self.mainToolbarView.topAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.topAnchor],
+                                              [self.mainToolbarView.leftAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.leftAnchor],
+                                              [self.mainToolbarView.bottomAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.bottomAnchor],
+                                              [self.mainToolbarView.rightAnchor constraintEqualToAnchor:self.voiceMessageToolbarView.rightAnchor]]];
 }
 
 #pragma mark - Override MXKView
@@ -133,7 +152,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
 - (void)setTextMessage:(NSString *)textMessage
 {
-    [self updateSendButtonWithMessage:textMessage];
+    [self updateUIWithTextMessage:textMessage animated:YES];
     [super setTextMessage:textMessage];
 }
 
@@ -290,7 +309,7 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *newText = [growingTextView.text stringByReplacingCharactersInRange:range withString:text];
-    [self updateSendButtonWithMessage:newText];
+    [self updateUIWithTextMessage:newText animated:YES];
     
     return YES;
 }
@@ -354,24 +373,6 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     [super destroy];
 }
 
-- (void)updateSendButtonWithMessage:(NSString *)textMessage
-{
-    self.actionMenuOpened = NO;
-    
-    if (textMessage.length)
-    {
-        self.rightInputToolbarButton.alpha = 1;
-        self.messageComposerContainerTrailingConstraint.constant = self.frame.size.width - self.rightInputToolbarButton.frame.origin.x + 12;
-    }
-    else
-    {
-        self.rightInputToolbarButton.alpha = 0;
-        self.messageComposerContainerTrailingConstraint.constant = 12;
-    }
-    
-    [self layoutIfNeeded];
-}
-
 #pragma mark - properties
 
 - (void)setActionMenuOpened:(BOOL)actionMenuOpened
@@ -406,6 +407,10 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
         [UIView animateWithDuration:kActionMenuContentAlphaAnimationDuration delay:_actionMenuOpened ? 0 : .1 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self->messageComposerContainer.alpha = actionMenuOpened ? 0 : 1;
             self.rightInputToolbarButton.alpha = self->growingTextView.text.length == 0 || actionMenuOpened ? 0 : 1;
+            if (RiotSettings.shared.enableVoiceMessages)
+            {
+                self.voiceMessageToolbarView.alpha = self->growingTextView.text.length > 0 || actionMenuOpened ? 0 : 1;
+            }
         } completion:nil];
         
         [UIView animateWithDuration:kActionMenuComposerHeightAnimationDuration animations:^{
@@ -430,6 +435,27 @@ const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
     // TODO Custom here the validation screen for each available item
     
     [super paste:sender];
+}
+
+#pragma mark - Private
+
+- (void)updateUIWithTextMessage:(NSString *)textMessage animated:(BOOL)animated
+{
+    self.actionMenuOpened = NO;
+    
+    if (RiotSettings.shared.enableVoiceMessages == NO) {
+        self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
+        self.messageComposerContainerTrailingConstraint.constant = (textMessage.length ? self.frame.size.width - self.rightInputToolbarButton.frame.origin.x : 0.0f) + kComposerContainerTrailingPadding;
+
+        [self layoutIfNeeded];
+        
+        return;
+    }
+    
+    [UIView animateWithDuration:(animated ? 0.15f : 0.0f) animations:^{
+        self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
+        self.voiceMessageToolbarView.alpha = textMessage.length ? 0.0f : 1.0;
+    }];
 }
 
 @end

@@ -105,7 +105,6 @@
 "room_creation_invite_another_user" = "Tìm / mời bằng ID người dùng, tên hoặc email";
 // Room recents
 "room_recents_directory_section" = "DANH MỤC PHÒNG";
-"room_recents_directory_section_network" = "Mạng";
 "room_recents_favourites_section" = "YÊU THÍCH";
 "room_recents_people_section" = "DANH BẠ";
 "room_recents_conversations_section" = "PHÒNG";

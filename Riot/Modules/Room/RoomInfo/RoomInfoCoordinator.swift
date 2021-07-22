@@ -194,7 +194,8 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
 extension RoomInfoCoordinator: RoomParticipantsViewControllerDelegate {
     
     func roomParticipantsViewController(_ roomParticipantsViewController: RoomParticipantsViewController!, mention member: MXRoomMember!) {
-        
+        self.navigationRouter.popToRootModule(animated: true)
+        self.delegate?.roomInfoCoordinator(self, didRequestMentionForMember: member)
     }
     
 }

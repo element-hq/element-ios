@@ -52,6 +52,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
         static let enableRingingForGroupCalls = "enableRingingForGroupCalls"
+        static let enableVoiceMessages = "enableVoiceMessages"
         static let roomSettingsScreenShowLowPriorityOption = "roomSettingsScreenShowLowPriorityOption"
         static let roomSettingsScreenShowDirectChatOption = "roomSettingsScreenShowDirectChatOption"
         static let roomSettingsScreenAllowChangingAccessSettings = "roomSettingsScreenAllowChangingAccessSettings"
@@ -92,6 +93,11 @@ final class RiotSettings: NSObject {
         }
         return userDefaults
     }()
+    
+    private override init() {
+        super.init()
+        defaults.register(defaults: [UserDefaultsKeys.enableVoiceMessages: BuildSettings.voiceMessagesEnabled])
+    }
     
     // MARK: Servers
     
@@ -212,6 +218,14 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.enableRingingForGroupCalls)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.enableRingingForGroupCalls)
+        }
+    }
+    
+    var enableVoiceMessages: Bool {
+        get {
+            return defaults.bool(forKey: UserDefaultsKeys.enableVoiceMessages)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.enableVoiceMessages)
         }
     }
     

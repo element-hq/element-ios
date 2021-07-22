@@ -45,6 +45,10 @@ import UIKit
     /// - Icons
     var quarterlyContent: UIColor { get }
     
+    /// - Text
+    /// - Icons
+    var quinaryContent: UIColor { get }
+    
     /// Separating line
     var separator: UIColor { get }
     

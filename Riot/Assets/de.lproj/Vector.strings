@@ -79,7 +79,6 @@
 "room_creation_wait_for_creation" = "Es wird gerade schon ein Raum erstellt. Bitte warten.";
 // Room recents
 "room_recents_directory_section" = "RAUM VERZEICHNIS";
-"room_recents_directory_section_network" = "Netzwerk";
 "room_recents_favourites_section" = "FAVORITEN";
 "room_recents_people_section" = "PERSONEN";
 "room_recents_conversations_section" = "RÄUME";
@@ -506,7 +505,7 @@
 "group_rooms_filter_rooms" = "Filtere Community-Räume";
 "e2e_room_key_request_message_new_device" = "Du hast die neue Sitzung '%@' hinzugefügt, welche Verschlüsselungs-Schlüssel anfordert.";
 "room_do_not_have_permission_to_post" = "Du hast keine Berechtigung Nachrichten in diesem Raum zu senden";
-"room_event_action_kick_prompt_reason" = "Grund für den Rauswurf des Benutzers";
+"room_event_action_kick_prompt_reason" = "Grund für das Entfernen des Benutzers";
 "room_event_action_ban_prompt_reason" = "Grund für die Verbannung des Benutzers";
 "room_action_send_photo_or_video" = "Foto oder Video senden";
 "room_action_send_sticker" = "Aufkleber senden";
@@ -1389,3 +1388,16 @@
 "room_recents_unknown_room_error_message" = "Raum kann nicht gefunden werden. Überprüfe bitte, dass er existiert";
 "room_creation_dm_error" = "Fehler beim Erstellen der Direktnachricht. Bitte überprüfe die eingeladenen Leute und versuche es erneut.";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" verwendet die Farbinvertierungseinstellung deines Geräts";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Mit diesem Gerät scannen";
+"room_notifs_settings_encrypted_room_notice" = "Am Handy sind Benachrichtigungen bei Erwähnungen und Schlüsselwörtern in verschlüsselten Räumen nicht verfügbar.";
+"room_notifs_settings_account_settings" = "Kontoeinstellungen";
+"room_notifs_settings_manage_notifications" = "Benachrichtigungen kannst du in %@ verwalten";
+"room_notifs_settings_cancel_action" = "Abbrechen";
+"room_notifs_settings_done_action" = "Fertig";
+"room_notifs_settings_none" = "Nichts";
+"room_notifs_settings_mentions_and_keywords" = "Nur Erwähnungen und Schlüsselwörtern";
+"room_notifs_settings_all_messages" = "Allen Nachrichten";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Benachrichtige mich bei";
+"room_details_notifs" = "Benachrichtigungen";
