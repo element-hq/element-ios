@@ -45,7 +45,7 @@ Changes in 1.4.7 (2021-07-22)
  * 
 
 Others
- * 
+ * Updated issue templates.
 
 Improvements:
  * Upgrade MatrixKit version ([v0.15.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.5)).
