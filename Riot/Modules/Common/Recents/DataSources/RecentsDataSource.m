@@ -1228,30 +1228,50 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         // FIXME manage multi accounts
         MXKSessionRecentsDataSource *recentsDataSource = displayedRecentsDataSourceArray[0];
         
-        NSMutableArray<id<MXKRecentCellDataStoring>> *cells = [NSMutableArray new];
-        NSInteger count = recentsDataSource.numberOfCells;
-        
-        for (NSUInteger index = 0; index < count; index++)
+        if (self.currentSpace)
         {
-            id<MXKRecentCellDataStoring> cell = [recentsDataSource cellDataAtIndex:index];
-            if (self.currentSpace == nil || [self.currentSpace isRoomAChildWithRoomId:cell.roomSummary.roomId])
-            {
-                [cells addObject:cell];
-            }
+            [self.mxSession.spaceService getSpaceChildrenForSpaceWithId:self.currentSpace.spaceId suggestedOnly:YES limit:5 success:^(MXSpaceChildrenSummary * _Nonnull childrenSummary) {
+                MXLogDebug(@"[RecentDataSource] getSpaceChildrenForSpaceWithId : %@", childrenSummary.childInfos);
+                for (MXSpaceChildInfo *childInfo in childrenSummary.childInfos)
+                {
+                    MXLogDebug(@"[RecentDataSource] getSpaceChildrenForSpaceWithId : %@", [self.mxSession roomWithRoomId:childInfo.childRoomId]);
+                }
+                [self computeRecentCellsWithRecentsDataSource:recentsDataSource completion:onComplete];
+            } failure:^(NSError * _Nonnull error) {
+                MXLogError(@"[RecentDataSource] getSpaceChildrenForSpaceWithId failed with error: %@", error);
+                [self computeRecentCellsWithRecentsDataSource:recentsDataSource completion:onComplete];
+            }];
         }
         
-        MXWeakify(self);
-        [self computeStateAsyncWithCells:cells recentsDataSourceMode:self.recentsDataSourceMode matrixSession:recentsDataSource.mxSession onComplete:^(RecentsDataSourceState *newState) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            self->state = newState;
-            onComplete();
-        }];
+        [self computeRecentCellsWithRecentsDataSource:recentsDataSource completion:onComplete];
     }
     else
     {
         onComplete();
     }
+}
+
+- (void)computeRecentCellsWithRecentsDataSource:(MXKSessionRecentsDataSource*) recentsDataSource completion:(void (^)(void))onComplete
+{
+    NSMutableArray<id<MXKRecentCellDataStoring>> *cells = [NSMutableArray new];
+    NSInteger count = recentsDataSource.numberOfCells;
+
+    for (NSUInteger index = 0; index < count; index++)
+    {
+        id<MXKRecentCellDataStoring> cell = [recentsDataSource cellDataAtIndex:index];
+        if (self.currentSpace == nil || [self.currentSpace isRoomAChildWithRoomId:cell.roomSummary.roomId])
+        {
+            [cells addObject:cell];
+        }
+    }
+    
+    MXWeakify(self);
+    [self computeStateAsyncWithCells:cells recentsDataSourceMode:self.recentsDataSourceMode matrixSession:recentsDataSource.mxSession onComplete:^(RecentsDataSourceState *newState) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        self->state = newState;
+        onComplete();
+    }];
 }
 
 - (void)computeStateAsyncWithCells:(NSArray<id<MXKRecentCellDataStoring>> *)cells
