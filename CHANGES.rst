@@ -6,6 +6,7 @@ Changes to be released in next version
 
 🙌 Improvements
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
+ * Remove the directory section from the Rooms tab.
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)
@@ -20,6 +21,7 @@ Changes to be released in next version
  * 
 
 Others
+ * Separated CI jobs into individual actions
  * Update Gemfile.lock
 
 Changes in 1.4.7 (2021-07-22)
@@ -44,7 +46,7 @@ Changes in 1.4.7 (2021-07-22)
  * 
 
 Others
- * 
+ * Updated issue templates.
 
 Improvements:
  * Upgrade MatrixKit version ([v0.15.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.5)).

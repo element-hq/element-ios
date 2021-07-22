@@ -98,7 +98,6 @@
 "room_creation_invite_another_user" = "Поиск / приглашение по идентификатору пользователя, имени или адресу электронной почты";
 // Room recents
 "room_recents_directory_section" = "КАТАЛОГ КОМНАТ";
-"room_recents_directory_section_network" = "Сеть";
 "room_recents_favourites_section" = "ИЗБРАННЫЕ";
 "room_recents_people_section" = "ЛЮДИ";
 "room_recents_conversations_section" = "КОМНАТЫ";

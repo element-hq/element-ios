@@ -130,7 +130,6 @@
 "room_creation_error_invite_user_by_email_without_identity_server" = "Nid oes unrhyw weinydd adnabod wedi'i osod felly ni allwch ychwanegu cyfranogwr gydag e-bost.";
 // Room recents
 "room_recents_directory_section" = "CYFEIRIADUR YSTAFELLOEDD";
-"room_recents_directory_section_network" = "Rhwydwaith";
 "room_recents_favourites_section" = "FFEFRYNAU";
 "room_recents_people_section" = "POBL";
 "room_recents_conversations_section" = "YSTAFELLOEDD";

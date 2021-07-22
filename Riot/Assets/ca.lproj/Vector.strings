@@ -106,7 +106,6 @@
 "room_creation_invite_another_user" = "Cerca / convida per l'identificador d'usuari, nom o correu electrònic";
 // Room recents
 "room_recents_directory_section" = "Directori de Sales";
-"room_recents_directory_section_network" = "Xarxa";
 "room_recents_favourites_section" = "Favorits";
 "room_recents_people_section" = "Contactes";
 "room_recents_conversations_section" = "Sales";
