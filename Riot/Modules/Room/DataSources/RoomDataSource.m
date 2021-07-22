@@ -1039,12 +1039,10 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)applyMaskToAttachmentViewOfBubbleCell:(MXKRoomBubbleTableViewCell *)cell
 {
-    if (cell.attachmentView && !cell.attachmentView.layer.mask)
+    if (cell.attachmentView)
     {
-        UIBezierPath *myClippingPath = [UIBezierPath bezierPathWithRoundedRect:cell.attachmentView.bounds cornerRadius:6];
-        CAShapeLayer *mask = [CAShapeLayer layer];
-        mask.path = myClippingPath.CGPath;
-        cell.attachmentView.layer.mask = mask;
+        cell.attachmentView.layer.cornerRadius = 6;
+        cell.attachmentView.layer.masksToBounds = YES;
     }
 }
 

@@ -4378,6 +4378,10 @@ internal enum VectorL10n {
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
   }
+  /// Voice messages
+  internal static var settingsLabsVoiceMessages: String { 
+    return VectorL10n.tr("Vector", "settings_labs_voice_messages") 
+  }
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
@@ -4881,6 +4885,18 @@ internal enum VectorL10n {
   /// Voice
   internal static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
+  }
+  /// Hold to record, release to send
+  internal static var voiceMessageReleaseToSend: String { 
+    return VectorL10n.tr("Vector", "voice_message_release_to_send") 
+  }
+  /// %@s left
+  internal static func voiceMessageRemainingRecordingTime(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "voice_message_remaining_recording_time", p1)
+  }
+  /// Tap on the wavelength to stop and playback
+  internal static var voiceMessageStopLockedModeRecording: String { 
+    return VectorL10n.tr("Vector", "voice_message_stop_locked_mode_recording") 
   }
   /// Warning
   internal static var warning: String { 

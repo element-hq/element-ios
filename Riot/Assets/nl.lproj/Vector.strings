@@ -611,7 +611,7 @@
 "room_does_not_exist" = "%@ bestaat niet";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nieuwe sleutelback-up";
-"e2e_key_backup_wrong_version" = "Er is een nieuwe sleutelback-up voor versleutelde berichten gedetecteerd.\n\nIndien deze niet van u komt, stel dan een nieuw wachtwoord in in de instellingen.";
+"e2e_key_backup_wrong_version" = "Er is een nieuwe sleutelback-up voor versleutelde berichten gedetecteerd.\n\nIndien deze niet van u komt, stel dan een nieuw veiligheidswachtwoord in in de instellingen.";
 "e2e_key_backup_wrong_version_button_settings" = "Instellingen";
 "e2e_key_backup_wrong_version_button_wasme" = "Ik was het";
 "key_backup_setup_title" = "Sleutelback-up";
@@ -623,10 +623,10 @@
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Begin sleutelback-up te gebruiken";
 "key_backup_setup_intro_manual_export_info" = "(Geavanceerd)";
 "key_backup_setup_intro_manual_export_action" = "Sleutels handmatig exporteren";
-"key_backup_setup_passphrase_title" = "Beveilig uw back-up met een wachtwoord";
-"key_backup_setup_passphrase_info" = "We bewaren een versleutelde kopie van uw sleutels op onze server. Bescherm uw back-up met een wachtwoord om deze veilig te houden.\n\nVoor maximale beveiliging zou dit moeten verschillen van uw accountwachtwoord.";
+"key_backup_setup_passphrase_title" = "Beveilig uw back-up met een veiligheidswachtwoord";
+"key_backup_setup_passphrase_info" = "We bewaren een versleutelde kopie van uw sleutels op onze server. Bescherm uw back-up met een veiligheidswachtwoord om deze veilig te houden.\n\nVoor maximale beveiliging zou dit moeten verschillen van uw accountwachtwoord.";
 "key_backup_setup_passphrase_passphrase_title" = "Invoeren";
-"key_backup_setup_passphrase_passphrase_placeholder" = "Voer wachtwoord in";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Wachtwoord invoeren";
 "key_backup_setup_passphrase_passphrase_valid" = "Top!";
 "key_backup_setup_passphrase_passphrase_invalid" = "Probeer nog een woord toe te voegen";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "Bevestigen";
@@ -634,35 +634,35 @@
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Top!";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Wachtwoorden komen niet overeen";
 "key_backup_setup_passphrase_set_passphrase_action" = "Wachtwoord instellen";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Of beveilig uw back-up met een herstelsleutel, en bewaar deze op een veilige plaats.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Geavanceerd) Instellen met herstelsleutel";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Of beveilig uw back-up met een veiligheidssleutel en bewaar deze op een veilige plaats.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Geavanceerd) Instellen met veiligheidssleutel";
 "key_backup_setup_success_title" = "Klaar!";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Er wordt een back-up van uw sleutels gemaakt.\n\nUw herstelsleutel is een veiligheidsnet - u kunt deze gebruiken om de toegang tot uw versleutelde berichten te herstellen als u uw wachtwoord zou vergeten.\n\nBewaar uw herstelsleutel op een heel veilig plaats, zoals een wachtwoordbeheerder (of een kluis).";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Herstelsleutel opslaan";
+"key_backup_setup_success_from_passphrase_info" = "Er wordt een back-up van uw sleutels gemaakt.\n\nUw veiligheidssleutel is een veiligheidsnet - u kunt deze gebruiken om de toegang tot uw versleutelde berichten te herstellen als u uw wachtwoord zou vergeten.\n\nBewaar uw veiligheidssleutel op een heel veilige plaats, zoals een wachtwoordbeheerder (of een kluis).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Veiligheidssleutel opslaan";
 "key_backup_setup_success_from_passphrase_done_action" = "Klaar";
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Er wordt een back-up van uw sleutels gemaakt.\n\nMaak een kopie van deze herstelsleutel en bewaar deze op een veilige plaats.";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Herstelsleutel";
+"key_backup_setup_success_from_recovery_key_info" = "Er wordt een back-up van uw sleutels gemaakt.\n\nMaak een kopie van deze veiligheidssleutel en bewaar deze op een veilige plaats.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Veiligheidssleutel";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Maak een kopie";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Ik heb een kopie gemaakt";
 "key_backup_recover_title" = "Versleutelde berichten";
-"key_backup_recover_invalid_passphrase_title" = "Onjuist herstelwachtwoord";
-"key_backup_recover_invalid_passphrase" = "De back-up kon niet ontsleuteld worden met dit wachtwoord: controleer of u het herstelwachtwoord juist hebt ingevoerd.";
-"key_backup_recover_invalid_recovery_key_title" = "Herstelsleutel komt niet overeen";
-"key_backup_recover_invalid_recovery_key" = "De back-up kon niet ontsleuteld worden met deze sleutel: controleer of u de juiste herstelsleutel hebt ingevoerd.";
-"key_backup_recover_from_passphrase_info" = "Gebruik uw herstelwachtwoord om uw versleutelde berichtgeschiedenis te ontgrendelen";
+"key_backup_recover_invalid_passphrase_title" = "Onjuist veiligheidswachtwoord";
+"key_backup_recover_invalid_passphrase" = "De back-up kon niet ontsleuteld worden met dit wachtwoord: controleer of u het veiligheidswachtwoord juist hebt ingevoerd.";
+"key_backup_recover_invalid_recovery_key_title" = "Veiligheidssleutel komt niet overeen";
+"key_backup_recover_invalid_recovery_key" = "De back-up kon niet ontsleuteld worden met deze sleutel: controleer of u de juiste veiligheidssleutel hebt ingevoerd.";
+"key_backup_recover_from_passphrase_info" = "Gebruik uw veiligheidswachtwoord om uw versleutelde berichtengeschiedenis te ontgrendelen";
 "key_backup_recover_from_passphrase_passphrase_title" = "Invoeren";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "Voer wachtwoord in";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Wachtwoord invoeren";
 "key_backup_recover_from_passphrase_recover_action" = "Geschiedenis ontgrendelen";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Herstelwachtwoord vergeten? Dan kunt u ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "uw herstelsleutel gebruiken";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Veiligheidswachtwoord vergeten? Dan kunt u ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "uw veiligheidssleutel gebruiken";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Gebruik uw herstelsleutel om uw versleutelde berichtgeschiedenis te ontgrendelen";
+"key_backup_recover_from_recovery_key_info" = "Gebruik uw veiligheidssleutel om uw versleutelde berichtengeschiedenis te ontgrendelen";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Invoeren";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Voer herstelsleutel in";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Veiligheidssleutel invoeren";
 "key_backup_recover_from_recovery_key_recover_action" = "Geschiedenis ontgrendelen";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Herstelsleutel verloren? U kunt er een nieuwe aanmaken in de instellingen.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Veiligheidssleutel verloren? U kunt er een nieuwe aanmaken in de instellingen.";
 "key_backup_recover_success_info" = "Back-up hersteld!";
 "key_backup_recover_done_action" = "Klaar";
 "key_backup_setup_banner_title" = "Verlies nooit uw versleutelde berichten";
@@ -913,7 +913,7 @@
 // MARK: - Favourites
 
 "favourites_empty_view_title" = "Favoriete gesprekken en personen";
-"home_empty_view_information" = "De alles-in-één veilige chat app voor teams, vrienden en organisaties. Klik op de onderstaande + knop om gesprekken te starten met personen en groepen.";
+"home_empty_view_information" = "De alles-in-één veilige chat-app voor teams, vrienden en organisaties. Druk op de + knop hieronder om personen en gesprekken toe te voegen.";
 
 // MARK: - Home
 
@@ -1032,32 +1032,32 @@
 "secrets_setup_recovery_key_done_action" = "Klaar";
 "secrets_setup_recovery_key_export_action" = "Opslaan";
 "secrets_setup_recovery_key_loading" = "Laden…";
-"secrets_setup_recovery_key_information" = "Bewaar uw Herstelsleutel op een veilige plek. Het kan gebruikt worden voor het ontgrendelen van uw versleutelde berichten en data.";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Verifieer dat u de juiste herstelsleutel heeft ingevoerd.";
+"secrets_setup_recovery_key_information" = "Bewaar uw veiligheidssleutel op een veilige plek. Deze kan gebruikt worden om uw versleutelde berichten en data te ontsleutelen.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Verifieer dat u de juiste veiligheidssleutel heeft ingevoerd.";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Geen toegang tot geheime opslag";
 "secrets_recovery_with_key_recover_action" = "Gebruik sleutel";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Voer de herstelsleutel in";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Veiligheidssleutel invoeren";
 "secrets_recovery_with_key_recovery_key_title" = "Invoeren";
-"secrets_recovery_with_key_information_verify_device" = "Gebruik uw herstelsleutel om dit apparaat te verifiëren.";
-"secrets_recovery_with_key_information_default" = "Ontvang toegang tot uw versleutelde berichtengeschiedenis en uw kruislings ondertekenen ID voor het verifiëren van andere sessie door het invoeren van uw Herstelsleutel.";
+"secrets_recovery_with_key_information_verify_device" = "Gebruik uw veiligheidssleutel om dit apparaat te verifiëren.";
+"secrets_recovery_with_key_information_default" = "Ontvang toegang tot uw versleutelde berichtengeschiedenis en kruislings ondertekenen voor het verifiëren van andere sessie door het invoeren van uw veiligheidssleutel.";
 
 // Recover with key
 
-"secrets_recovery_with_key_title" = "Herstelsleutel";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Verifieer dat u het juiste Herstelwachtwoord heeft ingevoerd.";
+"secrets_recovery_with_key_title" = "Veiligheidssleutel";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Verifieer dat u het juiste veiligheidswachtwoord heeft ingevoerd.";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Geen toegang tot geheime opslag";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "uw Herstelsleutel gebruiken";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Herstelwachtwoord vergeten? Dan kunt u ";
-"secrets_recovery_with_passphrase_recover_action" = "Gebruik Wachtwoord";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Voer uw Herstelwachtwoord in";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "uw veiligheidssleutel gebruiken";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Veiligheidswachtwoord vergeten? Dan kunt u ";
+"secrets_recovery_with_passphrase_recover_action" = "Gebruik wachtwoord";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Voer uw veiligheidswachtwoord in";
 "secrets_recovery_with_passphrase_passphrase_title" = "Invoeren";
-"secrets_recovery_with_passphrase_information_verify_device" = "Gebruik uw Herstelwachtwoord om dit apparaat te verifiëren.";
-"secrets_recovery_with_passphrase_information_default" = "Ontvang toegang tot uw versleutelde berichtengeschiedenis en uw kruislings ondertekenen ID voor het verifiëren van andere sessies door het invoeren van uw Herstelwachtwoord.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Gebruik uw veiligheidswachtwoord om dit apparaat te verifiëren.";
+"secrets_recovery_with_passphrase_information_default" = "Ontvang toegang tot uw versleutelde berichtengeschiedenis en kruislings ondertekenen voor het verifiëren van andere sessies door het invoeren van uw veiligheidswachtwoord.";
 
 // Recover with passphrase
 
-"secrets_recovery_with_passphrase_title" = "Herstelwachtwoord";
+"secrets_recovery_with_passphrase_title" = "Veiligheidswachtwoord";
 "secrets_recovery_reset_action_part_2" = "Alles opnieuw instellen";
 
 // MARK: - Secrets recovery
@@ -1065,9 +1065,9 @@
 "secrets_recovery_reset_action_part_1" = "Alle herstelopties vergeten of verloren? ";
 "user_verification_session_details_verify_action_other_user" = "Handmatig verifiëren";
 "user_verification_session_details_verify_action_current_user_manually" = "Handmatig middels een tekst";
-"user_verification_session_details_verify_action_current_user" = "Interactief Verifiëren";
+"user_verification_session_details_verify_action_current_user" = "Interactief verifiëren";
 "user_verification_session_details_additional_information_untrusted_current_user" = "Als u zich niet heeft aangemeld bij deze sessie, is uw account wellicht geschonden.";
-"user_verification_session_details_additional_information_untrusted_other_user" = "Totdat deze persoon de sessie vertrouwd zijn berichten gelabeld met een waarschuwing. Een alternatief is handmatig verifiëren.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Totdat deze persoon deze sessie vertrouwd, zijn berichten gelabeld met waarschuwingen. Een andere mogelijkheid is om de persoon handmatig te verifiëren.";
 "user_verification_session_details_information_untrusted_other_user" = " heeft zich in een nieuwe sessie aangemeld:";
 "user_verification_session_details_information_untrusted_current_user" = "Verifieer deze sessie om het als vertrouwd te markeren en het toegang te geven tot versleutelde berichten:";
 "user_verification_session_details_information_trusted_other_user_part2" = " verifieer het:";
@@ -1180,8 +1180,8 @@
 "key_verification_verify_sas_title_emoji" = "Vergelijk de emoji's";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Controleren op andere verificatie mogelijkheden...";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Wanneer u geen toegang meer heeft tot een bestaande sessie";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uw Herstelwachtwoord of -sleutel gebruiken";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Herstelsleutel gebruiken";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uw veiligheidswachtwoord of -sleutel gebruiken";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Veiligheidssleutel gebruiken";
 "device_verification_self_verify_wait_additional_information" = "Dit werkt met Element en andere Matrix-apps die kruislings ondertekenen ondersteunen.";
 "device_verification_self_verify_wait_information" = "Verifieer deze sessie vanaf een van uw andere sessies, om toegang te krijgen tot de versleutelde berichten.\n\nGebruik de laatste versie van Element op uw andere apparaten:";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifieer deze login";
@@ -1266,7 +1266,7 @@
 // Room widget permissions
 "room_widget_permission_title" = "Widget laden";
 "widget_picker_manage_integrations" = "Beheer integraties…";
-"widget_integration_manager_disabled" = "U moet een integratebeheerder inschakelen in uw instellingen";
+"widget_integration_manager_disabled" = "U moet integratiebeheer inschakelen in de instellingen";
 "widget_menu_remove" = "Verwijderen voor iedereen";
 "widget_menu_revoke_permission" = "Toegang intrekken voor mij";
 "widget_menu_open_outside" = "Openen in browser";
@@ -1292,11 +1292,11 @@
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Versleuteling is hier niet ingeschakeld.";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Versleuteling is hier ingeschakeld";
 "room_details_advanced_room_id_for_dm" = "ID:";
-"room_details_no_local_addresses_for_dm" = "Dit heeft geen lokaaladres";
+"room_details_no_local_addresses_for_dm" = "Geen lokaaladres bekend";
 "room_details_access_section_directory_toggle_for_dm" = "Weergeven in publieke groepsgesprekkencatalogus";
 "room_details_access_section_anyone_for_dm" = "Iedereen die de koppeling kent, inclusief gasten";
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "Iedereen die de koppeling kent, behalve gasten";
-"room_details_access_section_for_dm" = "Wie mag toegang hebben?";
+"room_details_access_section_for_dm" = "Wie heeft toegang?";
 "room_details_room_name_for_dm" = "Naam";
 "room_details_photo_for_dm" = "Foto";
 "room_details_title_for_dm" = "Details";
@@ -1343,17 +1343,17 @@
 "security_settings_cryptography" = "CRYPTOGRAFIE";
 "security_settings_crosssigning_complete_security" = "Beveiliging afronden";
 "security_settings_crosssigning_reset" = "Reset";
-"security_settings_crosssigning_bootstrap" = "Stel in";
-"security_settings_crosssigning_info_ok" = "Cross-signing is klaar voor gebruik.";
+"security_settings_crosssigning_bootstrap" = "Instellen";
+"security_settings_crosssigning_info_ok" = "Kruiselings ondertekenen is klaar voor gebruik.";
 "security_settings_crosssigning_info_trusted" = "Kruislings ondertekenen is ingeschakeld. U kunt andere personen en sessies verifiëren met kruislings ondertekenen, maar u kunt dit nog niet vanaf deze sessie doordat de versleutelingssleutel ontbreekt. Rond de beveiliging van deze sessie af.";
 "security_settings_crosssigning_info_exists" = "Uw account heeft een kruislings ondertekenen ID, maar is nog niet geverifieerd door deze sessie. Rond de beveiliging van deze sessie af.";
 "security_settings_crosssigning_info_not_bootstrapped" = "Kruislings ondertekenen is nog niet ingesteld.";
 "security_settings_crosssigning" = "KRUISLINGS ONDERTEKENEN";
 "security_settings_backup" = "BERICHTENBACK-UP";
-"security_settings_secure_backup_delete" = "Verwijder backup";
+"security_settings_secure_backup_delete" = "Back-up verwijderen";
 "security_settings_secure_backup_synchronise" = "Synchroniseren";
 "security_settings_secure_backup_setup" = "Instellen";
-"security_settings_secure_backup_description" = "Waarborg uw toegang tot uw versleutelde berichten & data door de versleutelingssleutels op te slaan. Uw sleutels zullen worden beveiligd met een unieke beveiligingssleutel.";
+"security_settings_secure_backup_description" = "Maak een back-up van uw versleutelingssleutel bij uw account data voor het geval u toegang verliest tot uw sessies. Uw sleutels zullen worden beveiligd met een unieke veiligheidssleutel.";
 "security_settings_secure_backup" = "VEILIGE BACK-UP";
 "security_settings_crypto_sessions_description_2" = "Als u deze inlog niet herkent, verander uw wachtwoord en reset uw Veilige Back-up.";
 "security_settings_crypto_sessions_loading" = "Sessies laden…";
@@ -1512,3 +1512,16 @@
 "settings_ui_theme_picker_message_invert_colours" = "‘Automatisch’ gebruikt de instelling ‘Kleurweergave omkeren’ van uw apparaat";
 "room_recents_unknown_room_error_message" = "Dit gesprek is niet gevonden. Controleer of het bestaat";
 "room_creation_dm_error" = "Uw direct gesprek kon niet aangemaakt worden. Controleer de gebruikers die u wilt uitnodigen en probeer het opnieuw.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scan met dit apparaat";
+"room_notifs_settings_encrypted_room_notice" = "Let op dat vermeldingen & trefwoorden-meldingen niet beschikbaar zijn in versleutelde gesprekken op mobiel.";
+"room_notifs_settings_account_settings" = "Accountinstellingen";
+"room_notifs_settings_manage_notifications" = "U kunt uw meldingen beheren in %@";
+"room_notifs_settings_cancel_action" = "Annuleer";
+"room_notifs_settings_done_action" = "Klaar";
+"room_notifs_settings_none" = "Geen";
+"room_notifs_settings_mentions_and_keywords" = "Alleen vermeldingen en trefwoorden";
+"room_notifs_settings_all_messages" = "Alle berichten";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Stuur een melding voor";
+"room_details_notifs" = "Meldingen";

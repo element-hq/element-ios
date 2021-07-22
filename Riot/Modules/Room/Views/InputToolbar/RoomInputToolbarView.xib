@@ -16,7 +16,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a84-Vc-6ud" userLabel="MainToolBar View">
                     <rect key="frame" x="0.0" y="2" width="600" height="58"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua" userLabel="attach Button">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hga-l8-Wua">
                             <rect key="frame" x="12" y="10" width="36" height="36"/>
                             <accessibility key="accessibilityConfiguration" identifier="AttachButton"/>
                             <constraints>
@@ -35,26 +35,26 @@
                             <viewLayoutGuide key="contentLayoutGuide" id="F6O-76-cZl"/>
                             <viewLayoutGuide key="frameLayoutGuide" id="rZR-Bv-AqG"/>
                         </scrollView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5" userLabel="Message Composer Container">
-                            <rect key="frame" x="60" y="9" width="528" height="36"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QWp-NV-uh5">
+                            <rect key="frame" x="60" y="9" width="484" height="36"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="input_text_background" translatesAutoresizingMaskIntoConstraints="NO" id="uH7-Q7-hpZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="528" height="36"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="484" height="36"/>
                                 </imageView>
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jXI-9E-Bgl">
-                                    <rect key="frame" x="0.0" y="0.0" width="528" height="32"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="484" height="32"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="input_edit_icon" translatesAutoresizingMaskIntoConstraints="NO" id="PZ4-0Y-TmL">
                                             <rect key="frame" x="8" y="16" width="10.5" height="10"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVr-ZM-kkX">
-                                            <rect key="frame" x="22.5" y="13.5" width="471.5" height="14.5"/>
+                                            <rect key="frame" x="22.5" y="13.5" width="427.5" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48y-kn-7b5">
-                                            <rect key="frame" x="498" y="6" width="30" height="30"/>
+                                            <rect key="frame" x="454" y="6" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="I17-S0-9fp"/>
                                                 <constraint firstAttribute="width" constant="30" id="cCe-RB-ET2"/>
@@ -78,7 +78,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="KeyboardGrowingTextView">
-                                    <rect key="frame" x="5" y="33" width="518" height="4"/>
+                                    <rect key="frame" x="5" y="33" width="474" height="4"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>
                                 </view>
@@ -98,7 +98,7 @@
                                 <constraint firstAttribute="trailing" secondItem="uH7-Q7-hpZ" secondAttribute="trailing" id="wS9-oU-alv"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs" userLabel="send Button">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G8Z-CM-tGs">
                             <rect key="frame" x="552" y="10" width="36" height="36"/>
                             <accessibility key="accessibilityConfiguration" identifier="SendButton"/>
                             <state key="normal" image="send_icon"/>
@@ -118,7 +118,7 @@
                         <constraint firstAttribute="bottom" secondItem="G8Z-CM-tGs" secondAttribute="bottom" constant="12" id="Yam-dS-zwr"/>
                         <constraint firstAttribute="height" constant="58" id="Yjj-ua-rbe"/>
                         <constraint firstAttribute="bottom" secondItem="Hga-l8-Wua" secondAttribute="bottom" constant="12" id="b0G-CY-AmP"/>
-                        <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="12" id="hXO-cY-Jgz"/>
+                        <constraint firstAttribute="trailing" secondItem="QWp-NV-uh5" secondAttribute="trailing" constant="56" id="hXO-cY-Jgz"/>
                         <constraint firstAttribute="trailing" secondItem="ESv-9w-KJF" secondAttribute="trailing" id="jCS-Tf-vxr"/>
                         <constraint firstAttribute="bottom" secondItem="ESv-9w-KJF" secondAttribute="bottom" constant="12" id="v8r-ac-MKn"/>
                     </constraints>
@@ -150,7 +150,7 @@
                 <outlet property="messageComposerContainer" destination="QWp-NV-uh5" id="APR-B5-ogC"/>
                 <outlet property="messageComposerContainerBottomConstraint" destination="NGr-2o-sOP" id="oez-6D-IKA"/>
                 <outlet property="messageComposerContainerTopConstraint" destination="WyZ-3i-OHi" id="OcO-1f-bNA"/>
-                <outlet property="messageComposerContainerTrailingConstraint" destination="hXO-cY-Jgz" id="lHZ-MU-vyC"/>
+                <outlet property="messageComposerContainerTrailingConstraint" destination="hXO-cY-Jgz" id="0m7-AB-90i"/>
                 <outlet property="rightInputToolbarButton" destination="G8Z-CM-tGs" id="NCk-5m-aNF"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="151.12443778110946"/>

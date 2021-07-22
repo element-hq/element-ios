@@ -112,6 +112,9 @@
         case MXKAttachmentTypeAudio:
             image = [UIImage imageNamed:@"file_music_icon"];
             break;
+        case MXKAttachmentTypeVoiceMessage:
+            image = [UIImage imageNamed:@"file_music_icon"];
+            break;
         case MXKAttachmentTypeVideo:
             image = [UIImage imageNamed:@"file_video_icon"];
             break;

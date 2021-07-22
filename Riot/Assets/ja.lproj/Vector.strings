@@ -2,7 +2,7 @@
 "title_home" = "ホーム";
 "title_favourites" = "お気に入り";
 "title_people" = "対話";
-"title_rooms" = "部屋";
+"title_rooms" = "ルーム";
 "warning" = "警告";
 // Actions
 "view" = "表示";
@@ -92,39 +92,39 @@
 "room_creation_account" = "アカウント";
 "room_creation_appearance" = "外観";
 "room_creation_appearance_name" = "名前";
-"room_creation_appearance_picture" = "部屋のアイコン画像 (任意で)";
+"room_creation_appearance_picture" = "チャット画像 (任意)";
 "room_creation_privacy" = "個人情報保護";
 "room_creation_private_room" = "この会話は非公開です";
 "room_creation_public_room" = "この会話は公開されます";
-"room_creation_make_public" = "公開部屋作成";
-"room_creation_make_public_prompt_title" = "この部屋を公開しますか？";
-"room_creation_make_public_prompt_msg" = "この部屋を一般公開してもよろしいですか？誰でもあなたの発言を読み、部屋に参加できます。";
-"room_creation_keep_private" = "非公開部屋";
-"room_creation_make_private" = "非公開部屋を作成";
-"room_creation_wait_for_creation" = "部屋はすでに作成されています。お待ちください。";
+"room_creation_make_public" = "パブリックにする";
+"room_creation_make_public_prompt_title" = "このチャットをパブリックしますか？";
+"room_creation_make_public_prompt_msg" = "このチャットをパブリックしてもよろしいですか？ 誰でもあなたのメッセージを読んでチャットに参加できます。";
+"room_creation_keep_private" = "プライベートに保つ";
+"room_creation_make_private" = "プライベートにする";
+"room_creation_wait_for_creation" = "ルームはすでに作成されています。 お待ちください。";
 "room_creation_invite_another_user" = "ユーザID, 表示名, 電子メールで検索と招待";
 // Room recents
-"room_recents_directory_section" = "部屋一覧";
+"room_recents_directory_section" = "ルーム一覧";
 "room_recents_directory_section_network" = "通信回線";
 "room_recents_favourites_section" = "お気に入り";
 "room_recents_people_section" = "対話";
-"room_recents_conversations_section" = "部屋";
-"room_recents_no_conversation" = "部屋がありません";
+"room_recents_conversations_section" = "ルーム";
+"room_recents_no_conversation" = "ルームがありません";
 "room_recents_low_priority_section" = "低優先度";
 "room_recents_invites_section" = "招待中";
 "room_recents_start_chat_with" = "対話を開始";
-"room_recents_create_empty_room" = "部屋を作成";
-"room_recents_join_room" = "部屋へ参加";
-"room_recents_join_room_title" = "部屋へ参加";
-"room_recents_join_room_prompt" = "部屋の固有IDまたは住所表記を入力";
+"room_recents_create_empty_room" = "ルームを作成";
+"room_recents_join_room" = "ルームへ参加";
+"room_recents_join_room_title" = "ルームへ参加";
+"room_recents_join_room_prompt" = "ルームIDまたはルームのエイリアスを入力します";
 // People tab
 "people_invites_section" = "招待中";
 "people_conversation_section" = "会話";
 "people_no_conversation" = "会話なし";
 // Rooms tab
-"room_directory_no_public_room" = "公開された部屋がありません";
+"room_directory_no_public_room" = "利用可能なパブリックのルームはありません";
 // Search
-"search_rooms" = "部屋";
+"search_rooms" = "ルーム";
 "search_messages" = "発言";
 "search_people" = "対話";
 "search_files" = "添付ファイル";
@@ -133,12 +133,12 @@
 "search_no_result" = "結果なし";
 "search_in_progress" = "検索中…";
 // Directory
-"directory_cell_title" = "部屋一覧を見る";
-"directory_cell_description" = "%tu 部屋";
-"directory_search_results_title" = "部屋一覧検索結果";
+"directory_cell_title" = "ルーム一覧を見る";
+"directory_cell_description" = "%tu ルーム";
+"directory_search_results_title" = "ルーム一覧検索結果";
 "directory_search_results" = "%tu 件の検索結果 for %@";
 "directory_search_results_more_than" = ">%tu 件の検索結果 for %@";
-"directory_searching_title" = "部屋一覧を検索中…";
+"directory_searching_title" = "ルーム一覧を検索中…";
 "directory_search_fail" = "一覧を取得できませんでした";
 // Contacts
 "contacts_address_book_section" = "端末の電話帳";
@@ -153,13 +153,13 @@
 "room_participants_add_participant" = "参加者を追加";
 "room_participants_one_participant" = "参加者 1名";
 "room_participants_multi_participants" = "参加者 %d名";
-"room_participants_leave_prompt_title" = "部屋を退室";
-"room_participants_leave_prompt_msg" = "部屋を退室して本当によろしいですか？";
+"room_participants_leave_prompt_title" = "ルームを出る";
+"room_participants_leave_prompt_msg" = "ルームを退室して本当によろしいですか？";
 "room_participants_remove_prompt_title" = "確認";
-"room_participants_remove_prompt_msg" = "本当に %@ さんを部屋から退去させますか？";
+"room_participants_remove_prompt_msg" = "本当に %@ さんをチャットから退去させますか？";
 "room_participants_remove_third_party_invite_msg" = "サードパーティの招待を削除することは、APIが存在するまでサポートされていません";
 "room_participants_invite_prompt_title" = "確認";
-"room_participants_invite_prompt_msg" = "本当に %@ さんを部屋へ招待しますか？";
+"room_participants_invite_prompt_msg" = "本当に %@ さんをチャットへ招待しますか？";
 "room_participants_filter_room_members" = "参加者を検索";
 "room_participants_invite_another_user" = "ユーザID, 表示名, 電子メールで検索と招待";
 "room_participants_invite_malformed_id_title" = "招待エラー";
@@ -176,9 +176,9 @@
 "room_participants_action_section_devices" = "セッション";
 "room_participants_action_section_other" = "オプション";
 "room_participants_action_invite" = "招待";
-"room_participants_action_leave" = "部屋を退室";
-"room_participants_action_remove" = "部屋から退室させる";
-"room_participants_action_ban" = "この部屋からブロックする";
+"room_participants_action_leave" = "このルームを出る";
+"room_participants_action_remove" = "このルームから退室させる";
+"room_participants_action_ban" = "このルームからブロックする";
 "room_participants_action_unban" = "ブロック解除";
 "room_participants_action_ignore" = "この参加者の発言を全て非表示にする";
 "room_participants_action_unignore" = "この参加者の発言を全て表示する";
@@ -205,7 +205,7 @@
 "room_ongoing_conference_call" = "会議通話実施中。 %@ または %@で参加してください。";
 "room_ongoing_conference_call_with_close" = "会議通話実施中。%@または%@で参加してください。 %@。";
 "room_ongoing_conference_call_close" = "閉じる";
-"room_conference_call_no_power" = "この部屋で会議通話を管理する権限が必要です";
+"room_conference_call_no_power" = "このルームで会議通話を管理する権限が必要です";
 "room_prompt_resend" = "全て再送信";
 "room_prompt_cancel" = "全て中止";
 "room_resend_unsent_messages" = "未送信の文を再送信";
@@ -307,7 +307,7 @@
 "settings_labs_matrix_apps" = "Matrixアプリ";
 "settings_labs_create_conference_with_jitsi" = "jitsiの会議通話を作成する";
 "settings_version" = "Version %@";
-"settings_olm_version" = "Olm Version %@";
+"settings_olm_version" = "Olm バージョン %@";
 "settings_copyright" = "著作権";
 "settings_term_conditions" = "利用規約";
 "settings_privacy_policy" = "個人情報保護方針";
@@ -323,7 +323,7 @@
 "settings_password_updated" = "あなたのパスワードは更新されました";
 "settings_crypto_device_name" = "セッション名: ";
 "settings_crypto_device_id" = "\nセッションID: ";
-"settings_crypto_device_key" = "\n端末鍵: ";
+"settings_crypto_device_key" = "\nセッションキー:\n";
 "settings_crypto_export" = "暗号鍵を外部へ保存";
 "settings_crypto_blacklist_unverified_devices" = "検証されたセッションのみで暗号化";
 // Room Details
@@ -354,7 +354,7 @@
 "room_details_addresses_section" = "住所表記";
 "room_details_no_local_addresses" = "この部屋はサーバ内住所表記がありません";
 "room_details_new_address" = "新しい住所表記を追加";
-"room_details_new_address_placeholder" = "新しい住所表記を追加 (例  #foo%@)";
+"room_details_new_address_placeholder" = "新しいアドレスを追加（例 #foo%@）";
 "room_details_addresses_invalid_address_prompt_title" = "住所表記が正しくありません";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ は正しくない形式の住所表記です";
 "room_details_addresses_disable_main_address_prompt_title" = "代表住所表記の警告";
@@ -473,14 +473,14 @@
 "group_invite_section" = "招待";
 "group_section" = "コミュニティ";
 "room_message_reply_to_placeholder" = "返信を送る (暗号化されていない)…";
-"room_do_not_have_permission_to_post" = "この部屋に投稿する権限がありません";
+"room_do_not_have_permission_to_post" = "このルームに投稿する権限がありません";
 "encrypted_room_message_reply_to_placeholder" = "暗号化された返信を送る…";
 "room_message_reply_to_short_placeholder" = "返信を送る…";
 "room_event_action_view_decrypted_source" = "復号化されたソースを見る";
 "room_event_action_kick_prompt_reason" = "このユーザーを追放する理由";
 "room_action_send_photo_or_video" = "写真か動画を送る";
 "room_action_send_sticker" = "スタンプ送信";
-"room_replacement_information" = "この部屋は交換されており、もうアクティブではありません。";
+"room_replacement_information" = "このルームは交換されており、もうアクティブではありません。";
 "room_replacement_link" = "会話はここで続けられます。";
 "room_predecessor_information" = "この部屋は別の会話の続きです。";
 "room_predecessor_link" = "より古いメッセージを見るにはここをタップしてください。";
@@ -534,7 +534,7 @@
 "e2e_room_key_request_title" = "暗号化キー要求";
 "e2e_room_key_request_message_new_device" = "暗号化キーを要求している新しい端末 '%@'を追加しました。";
 "e2e_room_key_request_message" = "検証されていない端末 '%@'が暗号化キーを要求しています。";
-"e2e_room_key_request_start_verification" = "検証開始...";
+"e2e_room_key_request_start_verification" = "検証を始めます…";
 "e2e_room_key_request_share_without_verifying" = "検証せずに共有";
 "e2e_room_key_request_ignore_request" = "要求を無視";
 // GDPR
@@ -556,7 +556,7 @@
 "rerequest_keys_alert_title" = "リクエスト送信";
 "rerequest_keys_alert_message" = "この端末にキーを送信できるように、メッセージを復号化できる別の端末でElementを起動してください。";
 "room_event_action_ban_prompt_reason" = "このユーザーをブロックする理由";
-"room_resource_limit_exceeded_message_contact_1" = " Please ";
+"room_resource_limit_exceeded_message_contact_1" = " お願い ";
 "settings_ui_theme_black" = "Black";
 "settings_flair" = "特色を表示する";
 // String for App Store
@@ -599,8 +599,8 @@
 // Mark: - Room creation introduction cell
 
 "room_intro_cell_add_participants_action" = "参加者を追加";
-"room_participants_security_information_room_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されます。\n\nメッセージは安全に保護されており、この部屋の参加者のみがメッセージの閲覧に必要な鍵を所持します。";
-"room_participants_security_information_room_not_encrypted" = "この部屋で送受信されるメッセージはエンドツーエンド暗号化されません。";
+"room_participants_security_information_room_encrypted" = "このルームで送受信されるメッセージはエンドツーエンド暗号化されます。\n\nメッセージは安全に保護されており、このルームの参加者のみがメッセージの閲覧に必要な鍵を所持します。";
+"room_participants_security_information_room_not_encrypted" = "このルームのメッセージはエンドツーエンド暗号化されていません。";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
 "callbar_active_and_single_paused" = "ひとつのアクティブな通話 (%@) · ひとつの一時停止された通話";
 
@@ -729,7 +729,7 @@
 "room_multiple_typing_notification" = "%@とその他のユーザーが入力中です";
 "external_link_confirmation_message" = "リンク%@は別のサイトに移動します: %@\n\n本当に続けますか？";
 "room_event_action_delete_confirmation_title" = "未送信メッセージを削除";
-"room_unsent_messages_cancel_message" = "この部屋にある未送信のメッセージをすべて削除してもよろしいですか？";
+"room_unsent_messages_cancel_message" = "このルームにある未送信のメッセージをすべて削除してもよろしいですか？";
 "room_unsent_messages_cancel_title" = "未送信メッセージを削除";
 "room_message_replying_to" = "%@に返信中";
 "room_message_editing" = "編集中";
@@ -753,7 +753,7 @@
 "room_participants_leave_prompt_msg_for_dm" = "退出してよろしいですか？";
 "room_participants_leave_prompt_title_for_dm" = "退出する";
 "contacts_address_book_no_identity_server" = "IDサーバーが設定されていません";
-"rooms_empty_view_information" = "ルームはプライベートでもパブリックでも、あらゆるグループチャットに最適です。+をタップすると既にある部屋を探したり、新しい部屋を作ることができます。";
+"rooms_empty_view_information" = "ルームはプライベートでもパブリックでも、あらゆるグループチャットに最適です。+をタップすると、既にあるルームを見つけたり、新しいルームを作ることができます。";
 "rooms_empty_view_title" = "ルーム";
 "people_empty_view_information" = "誰とでも安全にチャットできます。＋をタップすると会話相手を追加できます。";
 "people_empty_view_title" = "人々";
