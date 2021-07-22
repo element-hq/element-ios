@@ -64,6 +64,14 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 self.selectSpace(with: spaceViewData.spaceId)
             }
             self.viewDelegate?.spaceListViewModel(self, didSelectSpaceAt: indexPath)
+        case .moreAction(at: let indexPath, from: let sourceView):
+            let section = self.sections[indexPath.section]
+            switch section {
+            case .home: break
+            case .spaces(let viewDataList):
+                let spaceViewData = viewDataList[indexPath.row]
+                self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: spaceViewData.spaceId, from: sourceView)
+            }
         }
     }
     

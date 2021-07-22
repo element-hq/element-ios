@@ -22,4 +22,5 @@ import Foundation
 enum SpaceListViewAction {
     case loadData    
     case selectRow(at: IndexPath)
+    case moreAction(at: IndexPath, from: UIView)
 }

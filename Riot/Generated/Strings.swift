@@ -4662,6 +4662,10 @@ internal enum VectorL10n {
   internal static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 
   }
+  /// Spaces
+  internal static var spacesLeftPanelTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_left_panel_title") 
+  }
   /// Start
   internal static var start: String { 
     return VectorL10n.tr("Vector", "start") 

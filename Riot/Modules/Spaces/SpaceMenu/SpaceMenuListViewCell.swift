@@ -14,23 +14,18 @@
 // limitations under the License.
 //
 
-import UIKit
+import Foundation
 import Reusable
 
-protocol SpaceListViewCellDelegate: AnyObject {
-    func spaceListViewCell(_ cell: SpaceListViewCell, didPressMore button: UIButton)
-}
-
-final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
-
+class SpaceMenuListViewCell: UITableViewCell, Themable, NibReusable {
+    
     // MARK: - Properties
     
-    @IBOutlet private weak var avatarView: SpaceAvatarView!
+    @IBOutlet private weak var iconView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var selectionView: UIView!
-    @IBOutlet private weak var moreButton: UIButton!
-    
-    public weak var delegate: SpaceListViewCellDelegate?
+
+    // MARK: - Private
     
     private var theme: Theme?
     
@@ -39,6 +34,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        self.selectionStyle = .none
         self.selectionView.layer.cornerRadius = 8.0
         self.selectionView.layer.masksToBounds = true
     }
@@ -46,32 +42,36 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        UIView.animate(withDuration: animated ? 0.3 : 0.0) {
+        UIView.animate(withDuration: !animated ? 0.3 : 0.0) {
             self.selectionView.alpha = selected ? 1.0 : 0.0
         }
     }
 
     // MARK: - Public
     
-    func fill(with viewData: SpaceListItemViewData) {
-        self.avatarView.fill(with: viewData.avatarViewData)
+    func fill(with viewData: SpaceMenuListItemViewData) {
+        self.iconView.image = viewData.icon
         self.titleLabel.text = viewData.title
-        self.moreButton.isHidden = viewData.spaceId == "home"
+        
+        guard let theme = self.theme else {
+            return
+        }
+        
+        if viewData.style == .destructive {
+            self.titleLabel.textColor = theme.colors.alert
+            self.iconView.tintColor = theme.colors.alert
+        } else {
+            self.titleLabel.textColor = theme.colors.primaryContent
+            self.iconView.tintColor = theme.colors.secondaryContent
+        }
     }
     
     func update(theme: Theme) {
         self.theme = theme
         self.backgroundColor = theme.colors.background
-        self.avatarView.update(theme: theme)
+        self.iconView.tintColor = theme.colors.secondaryContent
         self.titleLabel.textColor = theme.colors.primaryContent
-        self.titleLabel.font = theme.fonts.calloutSB
+        self.titleLabel.font = theme.fonts.body
         self.selectionView.backgroundColor = theme.colors.separator
-        self.moreButton.tintColor = theme.colors.secondaryContent
-    }
-    
-    // MARK: - IBActions
-    
-    @IBAction private func moreAction(sender: UIButton) {
-        delegate?.spaceListViewCell(self, didPressMore: self.moreButton)
     }
 }

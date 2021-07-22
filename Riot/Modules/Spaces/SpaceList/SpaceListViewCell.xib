@@ -31,28 +31,44 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VMB-P3-ogn">
-                        <rect key="frame" x="66" y="18.5" width="239" height="17"/>
+                        <rect key="frame" x="66" y="18.5" width="194" height="17"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JKR-aN-bur">
+                        <rect key="frame" x="268" y="13" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="WFW-cN-EM2"/>
+                            <constraint firstAttribute="height" constant="32" id="ri7-cn-S4Z"/>
+                        </constraints>
+                        <state key="normal" image="spaces_more"/>
+                        <connections>
+                            <action selector="moreActionWithSender:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Kk0-Lb-cGY"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="JKR-aN-bur" secondAttribute="trailing" constant="20" id="DnB-DW-hgc"/>
                     <constraint firstAttribute="bottom" secondItem="lBS-QH-Kbp" secondAttribute="bottom" constant="11" id="GCa-yL-d8S"/>
                     <constraint firstItem="TZK-rU-aCS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="GDx-I8-LPX"/>
                     <constraint firstItem="VMB-P3-ogn" firstAttribute="leading" secondItem="lBS-QH-Kbp" secondAttribute="trailing" constant="16" id="Jfh-Ex-s45"/>
                     <constraint firstAttribute="bottom" secondItem="TZK-rU-aCS" secondAttribute="bottom" constant="1" id="O09-dX-GuR"/>
-                    <constraint firstAttribute="trailing" secondItem="VMB-P3-ogn" secondAttribute="trailing" constant="15" id="OTN-cf-dx9"/>
                     <constraint firstAttribute="trailing" secondItem="TZK-rU-aCS" secondAttribute="trailing" constant="16" id="ST4-p9-7RB"/>
                     <constraint firstItem="VMB-P3-ogn" firstAttribute="centerY" secondItem="lBS-QH-Kbp" secondAttribute="centerY" id="Vfj-Bt-ghR"/>
                     <constraint firstItem="TZK-rU-aCS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="Xm8-aq-LMK"/>
                     <constraint firstItem="lBS-QH-Kbp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="m8q-jc-lxH"/>
+                    <constraint firstItem="JKR-aN-bur" firstAttribute="leading" secondItem="VMB-P3-ogn" secondAttribute="trailing" constant="8" id="mqZ-uv-P44"/>
                     <constraint firstItem="lBS-QH-Kbp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="zSD-gu-4Kd"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <constraints>
+                <constraint firstItem="JKR-aN-bur" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="4XR-cr-agB"/>
+            </constraints>
             <connections>
                 <outlet property="avatarView" destination="lBS-QH-Kbp" id="UYd-1N-Mn6"/>
+                <outlet property="moreButton" destination="JKR-aN-bur" id="ytc-WW-ew5"/>
                 <outlet property="selectionView" destination="TZK-rU-aCS" id="VCe-2o-h8G"/>
                 <outlet property="titleLabel" destination="VMB-P3-ogn" id="lDY-8e-Y8H"/>
             </connections>
@@ -60,6 +76,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="spaces_more" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

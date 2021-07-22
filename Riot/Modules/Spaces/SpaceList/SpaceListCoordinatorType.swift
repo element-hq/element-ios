@@ -18,9 +18,10 @@
 
 import Foundation
 
-protocol SpaceListCoordinatorDelegate: class {
+protocol SpaceListCoordinatorDelegate: AnyObject {
     func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType)
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectSpaceWithId spaceId: String)
+    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView)
 }
 
 /// `SpaceListCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
