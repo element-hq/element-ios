@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)

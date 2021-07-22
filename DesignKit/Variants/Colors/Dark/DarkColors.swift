@@ -32,6 +32,8 @@ public class DarkColors: Colors {
     
     public let quarterlyContent: UIColor = UIColor(rgb: 0x6F7882)
     
+    public let quinaryContent: UIColor = UIColor(rgb: 0x394049)
+    
     public let separator: UIColor = UIColor(rgb: 0x21262C)
     
     public let tile: UIColor = UIColor(rgb: 0x394049)

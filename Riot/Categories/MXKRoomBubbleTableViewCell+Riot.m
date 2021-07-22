@@ -397,7 +397,7 @@ NSString *const kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed =
         }
         
         // Move this view in front
-        [self.contentView bringSubviewToFront:self.bubbleOverlayContainer];
+        [self.bubbleOverlayContainer.superview bringSubviewToFront:self.bubbleOverlayContainer];
     }
     else
     {
