@@ -19,7 +19,7 @@
 import UIKit
 import Reusable
 
-protocol CallTransferSelectContactViewControllerDelegate: class {
+protocol CallTransferSelectContactViewControllerDelegate: AnyObject {
     func callTransferSelectContactViewControllerDidSelectContact(_ viewController: CallTransferSelectContactViewController,
                                                                  contact: MXKContact?)
 }

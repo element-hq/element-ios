@@ -1,5 +1,5 @@
 /*
- Copyright 2020 New Vector Ltd
+ Copyright 2021 New Vector Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 import Foundation
 
-protocol TemplateScreenViewModelViewDelegate: class {
+protocol TemplateScreenViewModelViewDelegate: AnyObject {
     func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didUpdateViewState viewSate: TemplateScreenViewState)
 }
 
-protocol TemplateScreenViewModelCoordinatorDelegate: class {
+protocol TemplateScreenViewModelCoordinatorDelegate: AnyObject {
     func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
     func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType)
 }

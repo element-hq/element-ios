@@ -155,8 +155,7 @@ final class SettingsIdentityServerViewModel: SettingsIdentityServerViewModelType
 
         let viewStateUpdate: (SettingsIdentityServerViewState) -> Void = { (viewState) in
 
-            // Convert states for .addActionAlert and .disconnectActionAlert to
-            //.changeActionAlert
+            // Convert states for .addActionAlert and .disconnectActionAlert to .changeActionAlert
             var changeViewState = viewState
             switch viewState {
             case .alert(let alert, let onContinue):

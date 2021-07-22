@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol ServiceTermsModalScreenViewModelViewDelegate: class {
+protocol ServiceTermsModalScreenViewModelViewDelegate: AnyObject {
     func serviceTermsModalScreenViewModel(_ viewModel: ServiceTermsModalScreenViewModelType, didUpdateViewState viewSate: ServiceTermsModalScreenViewState)
 }
 
-protocol ServiceTermsModalScreenViewModelCoordinatorDelegate: class {
+protocol ServiceTermsModalScreenViewModelCoordinatorDelegate: AnyObject {
     func serviceTermsModalScreenViewModel(_ coordinator: ServiceTermsModalScreenViewModelType, displayPolicy policy: MXLoginPolicyData)
     func serviceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType)
     func serviceTermsModalScreenViewModelDidDecline(_ viewModel: ServiceTermsModalScreenViewModelType)

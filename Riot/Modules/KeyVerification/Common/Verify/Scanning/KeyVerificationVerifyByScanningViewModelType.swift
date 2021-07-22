@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol KeyVerificationVerifyByScanningViewModelViewDelegate: class {
+protocol KeyVerificationVerifyByScanningViewModelViewDelegate: AnyObject {
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didUpdateViewState viewSate: KeyVerificationVerifyByScanningViewState)
 }
 
-protocol KeyVerificationVerifyByScanningViewModelCoordinatorDelegate: class {
+protocol KeyVerificationVerifyByScanningViewModelCoordinatorDelegate: AnyObject {
     func keyVerificationVerifyByScanningViewModelDidCancel(_ viewModel: KeyVerificationVerifyByScanningViewModelType)
     
     func keyVerificationVerifyByScanningViewModel(_ viewModel: KeyVerificationVerifyByScanningViewModelType, didScanOtherQRCodeData qrCodeData: MXQRCodeData, withTransaction transaction: MXQRCodeTransaction)

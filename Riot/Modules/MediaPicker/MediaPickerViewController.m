@@ -608,28 +608,19 @@
                 
                 if (asset)
                 {
-                    if ([asset isKindOfClass:[AVURLAsset class]])
-                    {
-                        MXLogDebug(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
-                        AVURLAsset *avURLAsset = (AVURLAsset*)asset;
+                    MXLogDebug(@"[MediaPickerVC] didSelectAsset: Got AVAsset for video");
+                    
+                    // Validate first the selected video
+                    [self validateSelectedVideo:asset responseHandler:^(BOOL isValidated) {
                         
-                        // Validate first the selected video
-                        [self validateSelectedVideo:[avURLAsset URL] responseHandler:^(BOOL isValidated) {
-                            
-                            if (isValidated)
-                            {
-                                [self.delegate mediaPickerController:self didSelectVideo:[avURLAsset URL]];
-                            }
-                            
-                            self->isValidationInProgress = NO;
-                            
-                        }];
-                    }
-                    else
-                    {
-                        MXLogDebug(@"[MediaPickerVC] Selected video asset is not initialized from an URL!");
+                        if (isValidated)
+                        {
+                            [self.delegate mediaPickerController:self didSelectVideo:asset];
+                        }
+                        
                         self->isValidationInProgress = NO;
-                    }
+                        
+                    }];
                 }
                 else
                 {
@@ -693,7 +684,7 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)validateSelectedVideo:(NSURL*)selectedVideoURL responseHandler:(void (^)(BOOL isValidated))handler
+- (void)validateSelectedVideo:(AVAsset*)selectedVideo responseHandler:(void (^)(BOOL isValidated))handler
 {
     [self dismissImageValidationView];
     
@@ -727,15 +718,15 @@
     videoPlayer = [[AVPlayerViewController alloc] init];
     if (videoPlayer)
     {
+        AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:selectedVideo];
         videoPlayer.allowsPictureInPicturePlayback = NO;
         videoPlayer.updatesNowPlayingInfoCenter = NO;
-        videoPlayer.player = [AVPlayer playerWithURL:selectedVideoURL];
+        videoPlayer.player = [AVPlayer playerWithPlayerItem:item];
         videoPlayer.videoGravity = AVLayerVideoGravityResizeAspect;
         videoPlayer.showsPlaybackControls = NO;
 
         //  create a thumbnail for the first frame
-        AVAsset *asset = [AVAsset assetWithURL:selectedVideoURL];
-        AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:selectedVideo];
         generator.appliesPreferredTrackTransform = YES;
         CGImageRef thumbnailRef = [generator copyCGImageAtTime:kCMTimeZero actualTime:nil error:nil];
 

@@ -1379,3 +1379,16 @@
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" usa as configurações \"Inverter Cores\" de seu dispositivo";
 "room_recents_unknown_room_error_message" = "Não dá para encontrar esta sala. Assegure que ela existe";
 "room_creation_dm_error" = "Nós não conseguimos criar sua DM. Por favor cheque as/os usuárias(os) que você quer convidar e tente de novo.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scannar com este dispositivo";
+"room_notifs_settings_encrypted_room_notice" = "Por favor note que notificações de menções & palavrachave não estão disponíveis em salas encriptadas no celular.";
+"room_notifs_settings_account_settings" = "Configurações de conta";
+"room_notifs_settings_manage_notifications" = "Você pode gerenciar notificações em %@";
+"room_notifs_settings_cancel_action" = "Cancelar";
+"room_notifs_settings_done_action" = "Feito";
+"room_notifs_settings_none" = "Nenhuma";
+"room_notifs_settings_mentions_and_keywords" = "Menções e Palavrachaves somente";
+"room_notifs_settings_all_messages" = "Todas as Mensagens";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Notifique-me para";
+"room_details_notifs" = "Notificações";

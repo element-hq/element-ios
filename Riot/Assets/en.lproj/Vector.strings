@@ -533,6 +533,7 @@ Tap the + to start adding people.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
+"settings_labs_voice_messages" = "Voice messages";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -709,6 +710,7 @@ Tap the + to start adding people.";
 "room_details_topic" = "Topic";
 "room_details_favourite_tag" = "Favourite";
 "room_details_low_priority_tag" = "Low priority";
+"room_details_notifs" = "Notifications";
 "room_details_mute_notifs" = "Mute notifications";
 "room_details_direct_chat" = "Direct Chat";
 "room_details_access_section"="Who can access this room?";
@@ -770,6 +772,17 @@ Tap the + to start adding people.";
 "room_details_copy_room_id" = "Copy Room ID";
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Notify me for";
+"room_notifs_settings_all_messages" = "All Messages";
+"room_notifs_settings_mentions_and_keywords" = "Mentions and Keywords only";
+"room_notifs_settings_none" = "None";
+"room_notifs_settings_done_action" = "Done";
+"room_notifs_settings_cancel_action" = "Cancel";
+"room_notifs_settings_manage_notifications" = "You can manage notifications in %@";
+"room_notifs_settings_account_settings" = "Account settings";
+"room_notifs_settings_encrypted_room_notice" = "Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.";
 
 // Group Details
 "group_details_title" = "Community Details";
@@ -1374,6 +1387,7 @@ Tap the + to start adding people.";
 "key_verification_verify_qr_code_information_other_device" = "Scan the code below to verify:";
 "key_verification_verify_qr_code_emoji_information" = "Verify by comparing unique emoji.";
 "key_verification_verify_qr_code_scan_code_action" = "Scan their code";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scan with this device";
 "key_verification_verify_qr_code_cannot_scan_action" = "Can't scan?";
 "key_verification_verify_qr_code_start_emoji_action" = "Verify by emoji";
 
@@ -1667,3 +1681,9 @@ Tap the + to start adding people.";
 "side_menu_action_help" = "Help";
 "side_menu_action_feedback" = "Feedback";
 "side_menu_app_version" = "Version %@";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Hold to record, release to send";
+"voice_message_remaining_recording_time" = "%@s left";
+"voice_message_stop_locked_mode_recording" = "Tap on the wavelength to stop and playback";

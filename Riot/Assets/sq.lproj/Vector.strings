@@ -1400,3 +1400,16 @@
 "settings_ui_theme_picker_message_invert_colours" = "“Auto” përdor rregullimet “Ktheji Së Prapthi Ngjyrat”";
 "room_recents_unknown_room_error_message" = "S’gjendet dot kjo dhomë. Sigurohuni se ekziston";
 "room_creation_dm_error" = "S’mundëm të krijojmë dot MD-në tuaj. Ju lutemi, kontrolloni përdoruesit të cilëve doni t’u dërgohet dhe riprovoni.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Skanoje me këtë pajisje";
+"room_notifs_settings_encrypted_room_notice" = "Ju lutemi, kini parasysh se njoftimet për përmendje & fjalëkyçe s’mund të kihen në celular për dhoma të fshehtëzuara.";
+"room_notifs_settings_account_settings" = "Rregullime llogarie";
+"room_notifs_settings_manage_notifications" = "Njoftimet mund t’i administroni që nga %@";
+"room_notifs_settings_cancel_action" = "Anuloje";
+"room_notifs_settings_done_action" = "U bë";
+"room_notifs_settings_none" = "Asnjë";
+"room_notifs_settings_mentions_and_keywords" = "Vetëm Përmendje dhe Fjalëkyçe";
+"room_notifs_settings_all_messages" = "Krejt Mesazhet";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Njoftomëni për";
+"room_details_notifs" = "Njoftime";

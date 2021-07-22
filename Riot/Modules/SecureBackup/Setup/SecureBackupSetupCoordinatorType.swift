@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SecureBackupSetupCoordinatorDelegate: class {
+protocol SecureBackupSetupCoordinatorDelegate: AnyObject {
     func secureBackupSetupCoordinatorDidComplete(_ coordinator: SecureBackupSetupCoordinatorType)
     func secureBackupSetupCoordinatorDidCancel(_ coordinator: SecureBackupSetupCoordinatorType)
 }

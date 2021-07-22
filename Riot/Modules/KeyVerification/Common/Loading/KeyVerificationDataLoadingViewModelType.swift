@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol KeyVerificationDataLoadingViewModelViewDelegate: class {
+protocol KeyVerificationDataLoadingViewModelViewDelegate: AnyObject {
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didUpdateViewState viewSate: KeyVerificationDataLoadingViewState)
 }
 
-protocol KeyVerificationDataLoadingViewModelCoordinatorDelegate: class {
+protocol KeyVerificationDataLoadingViewModelCoordinatorDelegate: AnyObject {
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didLoadUser user: MXUser, device: MXDeviceInfo)
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didAcceptKeyVerificationWithTransaction transaction: MXKeyVerificationTransaction)
     func keyVerificationDataLoadingViewModel(_ viewModel: KeyVerificationDataLoadingViewModelType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest)

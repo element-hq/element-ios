@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol EnterNewRoomDetailsViewModelViewDelegate: class {
+protocol EnterNewRoomDetailsViewModelViewDelegate: AnyObject {
     func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didUpdateViewState viewSate: EnterNewRoomDetailsViewState)
 }
 
-protocol EnterNewRoomDetailsViewModelCoordinatorDelegate: class {
+protocol EnterNewRoomDetailsViewModelCoordinatorDelegate: AnyObject {
     func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didCreateNewRoom room: MXRoom)
     func enterNewRoomDetailsViewModel(_ viewModel: EnterNewRoomDetailsViewModelType, didTapChooseAvatar sourceView: UIView)
     func enterNewRoomDetailsViewModelDidCancel(_ viewModel: EnterNewRoomDetailsViewModelType)

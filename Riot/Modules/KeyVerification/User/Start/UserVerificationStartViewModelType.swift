@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol UserVerificationStartViewModelViewDelegate: class {
+protocol UserVerificationStartViewModelViewDelegate: AnyObject {
     func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, didUpdateViewState viewSate: UserVerificationStartViewState)
 }
 
-protocol UserVerificationStartViewModelCoordinatorDelegate: class {
+protocol UserVerificationStartViewModelCoordinatorDelegate: AnyObject {
     
     func userVerificationStartViewModel(_ viewModel: UserVerificationStartViewModelType, otherDidAcceptRequest request: MXKeyVerificationRequest)
     
