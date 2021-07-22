@@ -20,7 +20,7 @@ Changes to be released in next version
  * 
 
 Others
- * Update Podfile.lock
+ * Update Gemfile.lock
 
 Changes in 1.4.7 (2021-07-22)
 =================================================
