@@ -79,7 +79,6 @@
 "room_creation_wait_for_creation" = "Es wird gerade schon ein Raum erstellt. Bitte warten.";
 // Room recents
 "room_recents_directory_section" = "RAUM VERZEICHNIS";
-"room_recents_directory_section_network" = "Netzwerk";
 "room_recents_favourites_section" = "FAVORITEN";
 "room_recents_people_section" = "PERSONEN";
 "room_recents_conversations_section" = "RÄUME";
