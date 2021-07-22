@@ -1,3 +1,30 @@
+Changes in 1.4.7 (2021-07-22)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.5)).
+
 Changes in 1.4.6 (2021-07-16)
 =================================================
 
