@@ -50,3 +50,27 @@
 "SINGLE_UNREAD_IN_ROOM" = "%@にメッセージを受け取りました";
 /* A single unread message */
 "SINGLE_UNREAD" = "あなたはメッセージを受け取りました";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@は検証したい";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "%@ 内のメッセージ";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ さんからのスタンプ";
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@（%@ から）";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (グループ通話)";
+"MESSAGE_PROTECTED" = "新しいメッセージ";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "%@ からのメッセージ";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "メッセージ";
