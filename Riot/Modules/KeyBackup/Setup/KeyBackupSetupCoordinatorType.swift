@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol KeyBackupSetupCoordinatorDelegate: class {
+protocol KeyBackupSetupCoordinatorDelegate: AnyObject {
     func keyBackupSetupCoordinatorDidCancel(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinatorType)
     func keyBackupSetupCoordinatorDidSetupRecoveryKey(_ keyBackupSetupCoordinator: KeyBackupSetupCoordinatorType)
 }

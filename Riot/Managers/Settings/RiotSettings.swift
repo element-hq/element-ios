@@ -81,6 +81,7 @@ final class RiotSettings: NSObject {
         static let roomMemberScreenShowIgnore = "roomMemberScreenShowIgnore"
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
         static let hideSpaceBetaAnnounce = "hideSpaceBetaAnnounce"
+        static let secretsRecoveryAllowReset = "secretsRecoveryAllowReset"
     }
     
     static let shared = RiotSettings()
@@ -709,7 +710,7 @@ final class RiotSettings: NSObject {
         }
     }
 
-    // Mark: - Unified Search
+    // MARK: - Unified Search
     
     var unifiedSearchScreenShowPublicDirectory: Bool {
         get {
@@ -719,6 +720,19 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.unifiedSearchScreenShowPublicDirectory)
+        }
+    }
+    
+    // MARK: - Secrets Recovery
+    
+    var secretsRecoveryAllowReset: Bool {
+        get {
+            guard defaults.object(forKey: UserDefaultsKeys.secretsRecoveryAllowReset) != nil else {
+                return BuildSettings.secretsRecoveryAllowReset
+            }
+            return defaults.bool(forKey: UserDefaultsKeys.secretsRecoveryAllowReset)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.secretsRecoveryAllowReset)
         }
     }
     

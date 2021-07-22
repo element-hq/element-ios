@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol EmojiPickerViewModelViewDelegate: class {
+protocol EmojiPickerViewModelViewDelegate: AnyObject {
     func emojiPickerViewModel(_ viewModel: EmojiPickerViewModelType, didUpdateViewState viewSate: EmojiPickerViewState)
 }
 
-protocol EmojiPickerViewModelCoordinatorDelegate: class {
+protocol EmojiPickerViewModelCoordinatorDelegate: AnyObject {
     func emojiPickerViewModel(_ viewModel: EmojiPickerViewModelType, didAddEmoji emoji: String, forEventId eventId: String)
     func emojiPickerViewModel(_ viewModel: EmojiPickerViewModelType, didRemoveEmoji emoji: String, forEventId eventId: String)
     func emojiPickerViewModelDidCancel(_ viewModel: EmojiPickerViewModelType)

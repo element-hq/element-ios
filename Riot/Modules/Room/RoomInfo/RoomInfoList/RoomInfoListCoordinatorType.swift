@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol RoomInfoListCoordinatorDelegate: class {
+protocol RoomInfoListCoordinatorDelegate: AnyObject {
     func roomInfoListCoordinator(_ coordinator: RoomInfoListCoordinatorType, wantsToNavigateTo target: RoomInfoListTarget)
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType)
 }

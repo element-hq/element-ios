@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol KeyVerificationCoordinatorDelegate: class {
+protocol KeyVerificationCoordinatorDelegate: AnyObject {
     func keyVerificationCoordinatorDidComplete(_ coordinator: KeyVerificationCoordinatorType, otherUserId: String, otherDeviceId: String)
     func keyVerificationCoordinatorDidCancel(_ coordinator: KeyVerificationCoordinatorType)
 }

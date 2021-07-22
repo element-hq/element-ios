@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SecretsSetupRecoveryKeyCoordinatorDelegate: class {
+protocol SecretsSetupRecoveryKeyCoordinatorDelegate: AnyObject {
     func secretsSetupRecoveryKeyCoordinatorDidComplete(_ coordinator: SecretsSetupRecoveryKeyCoordinatorType)
     func secretsSetupRecoveryKeyCoordinatorDidFailed(_ coordinator: SecretsSetupRecoveryKeyCoordinatorType)
     func secretsSetupRecoveryKeyCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryKeyCoordinatorType)

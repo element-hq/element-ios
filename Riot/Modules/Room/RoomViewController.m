@@ -3957,13 +3957,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self cancelEventSelection];
 }
 
-#pragma mark - RoomParticipantsViewControllerDelegate
-
-- (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member
-{
-    [self mention:member];
-}
-
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
@@ -6140,6 +6133,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomInfoCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didRequestMentionForMember:(MXRoomMember *)member
+{
+    [self mention:member];
 }
 
 #pragma mark - RemoveJitsiWidgetViewDelegate

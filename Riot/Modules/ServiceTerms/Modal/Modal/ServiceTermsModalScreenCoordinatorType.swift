@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol ServiceTermsModalScreenCoordinatorDelegate: class {
+protocol ServiceTermsModalScreenCoordinatorDelegate: AnyObject {
     func serviceTermsModalScreenCoordinatorDidAccept(_ coordinator: ServiceTermsModalScreenCoordinatorType)
     func serviceTermsModalScreenCoordinator(_ coordinator: ServiceTermsModalScreenCoordinatorType, displayPolicy policy: MXLoginPolicyData)
     func serviceTermsModalScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalScreenCoordinatorType)

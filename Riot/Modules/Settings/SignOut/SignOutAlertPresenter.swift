@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol SignOutAlertPresenterDelegate: class {
+@objc protocol SignOutAlertPresenterDelegate: AnyObject {
     func signOutAlertPresenterDidTapSignOutAction(_ presenter: SignOutAlertPresenter)
     func signOutAlertPresenterDidTapBackupAction(_ presenter: SignOutAlertPresenter)
 }

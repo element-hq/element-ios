@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-@objc protocol BetaAnnounceCellDelegate: class {
+@objc protocol BetaAnnounceCellDelegate: AnyObject {
     func betaAnnounceCellDidTapCloseButton(_ cell: BetaAnnounceCell)
 }
 

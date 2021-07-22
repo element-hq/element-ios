@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol SetupBiometricsViewModelViewDelegate: class {
+protocol SetupBiometricsViewModelViewDelegate: AnyObject {
     func setupBiometricsViewModel(_ viewModel: SetupBiometricsViewModelType, didUpdateViewState viewSate: SetupBiometricsViewState)
 }
 
-protocol SetupBiometricsViewModelCoordinatorDelegate: class {
+protocol SetupBiometricsViewModelCoordinatorDelegate: AnyObject {
     func setupBiometricsViewModelDidComplete(_ viewModel: SetupBiometricsViewModelType)
     func setupBiometricsViewModelDidCompleteWithReset(_ viewModel: SetupBiometricsViewModelType, dueToTooManyErrors: Bool)
     func setupBiometricsViewModelDidCancel(_ viewModel: SetupBiometricsViewModelType)

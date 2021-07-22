@@ -1349,3 +1349,16 @@
 "settings_ui_theme_picker_message_invert_colours" = "Automaatne valik kasutab sinu seadme pööratud värvide seadistust";
 "room_recents_unknown_room_error_message" = "Ei leia sellist jututuba. Palun kontrolli, et ta ikka olemas on";
 "room_creation_dm_error" = "Otsevestluse loomine ei õnnestunud. Palun kontrolli, et kasutajanimed oleks õiged ja proovi uuesti.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Skaneeri selle seadmega";
+"room_notifs_settings_encrypted_room_notice" = "Teavitused mainimiste ja võtmesõnade esinemise puhul pole mobiilirakenduses krüptitud jututoas saadaval.";
+"room_notifs_settings_account_settings" = "Kasutajakonto seadistused";
+"room_notifs_settings_manage_notifications" = "Sa võid hallata teavitusi %@ jututoas";
+"room_notifs_settings_cancel_action" = "Katkesta";
+"room_notifs_settings_done_action" = "Valmis";
+"room_notifs_settings_none" = "mitte ühelgi juhul";
+"room_notifs_settings_mentions_and_keywords" = "mainimiste ja võtmesõnade leidumise puhul";
+"room_notifs_settings_all_messages" = "kõikide sõnumite puhul";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Teavita mind";
+"room_details_notifs" = "Teavitused";

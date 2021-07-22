@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol KeyBackupSetupSuccessFromPassphraseViewControllerDelegate: class {
+protocol KeyBackupSetupSuccessFromPassphraseViewControllerDelegate: AnyObject {
     func keyBackupSetupSuccessFromPassphraseViewControllerDidTapDoneAction(_ viewController: KeyBackupSetupSuccessFromPassphraseViewController)
 }
 

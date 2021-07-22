@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc protocol SettingsDiscoveryTableViewSectionDelegate: class {
+@objc protocol SettingsDiscoveryTableViewSectionDelegate: AnyObject {
     
     func settingsDiscoveryTableViewSection(_ settingsDiscoveryTableViewSection: SettingsDiscoveryTableViewSection, tableViewCellClass: MXKTableViewCell.Type, forRow: Int) -> MXKTableViewCell
     func settingsDiscoveryTableViewSectionDidUpdate(_ settingsDiscoveryTableViewSection: SettingsDiscoveryTableViewSection)
