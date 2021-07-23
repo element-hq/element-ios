@@ -9,7 +9,6 @@ Changes to be released in next version
  * Remove the directory section from the Rooms tab.
  * Notifications: Show decrypted content is enabled by default (#4519).
 
-
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)
 
