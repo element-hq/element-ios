@@ -7,6 +7,7 @@ Changes to be released in next version
 🙌 Improvements
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
  * Remove the directory section from the Rooms tab.
+ * Notifications: Show decrypted content is enabled by default (#4519).
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)

@@ -4202,18 +4202,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     
+    // Migrates old UserDefaults values if showDecryptedContentInNotifications hasn't been set
     if (!RiotSettings.shared.isUserDefaultsMigrated)
     {
         [RiotSettings.shared migrate];
     }
     
-    // Now use RiotSettings and NSUserDefaults to store `showDecryptedContentInNotifications` setting option
-    // Migrate this information from main MXKAccount to RiotSettings, if value is not in UserDefaults
-    
+    // Show encrypted message notification content by default.
     if (!RiotSettings.shared.isShowDecryptedContentInNotificationsHasBeenSetOnce)
     {
-        MXKAccount *currentAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-        RiotSettings.shared.showDecryptedContentInNotifications = currentAccount.showDecryptedContentInNotifications;
+        RiotSettings.shared.showDecryptedContentInNotifications = BuildSettings.decryptNotificationsByDefault;
     }
 }
 
