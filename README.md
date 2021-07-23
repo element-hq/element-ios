@@ -29,8 +29,7 @@ You can try last beta build by accessing our [TestFlight Public Link](https://te
 If you have already everything installed, opening the project workspace in Xcode should be as easy as:
 
 ```
-$ xcodegen                  # Create the xcodeproj with all project source files
-$ pod install               # Create the xcworkspace with all project dependencies
+$ ./setup_project.sh        # Local script that creates the xcodeproj and xcworkspace with all source files and dependencies
 $ open Riot.xcworkspace     # Open Xcode
 ```
 
