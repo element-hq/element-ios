@@ -41,6 +41,7 @@ import DesignKit
     var textPrimaryColor: UIColor { get }
     var textSecondaryColor: UIColor { get }
     var textTertiaryColor: UIColor { get }
+    var textQuinaryColor: UIColor { get }
 
     var tintColor: UIColor { get }
     var tintBackgroundColor: UIColor { get }
