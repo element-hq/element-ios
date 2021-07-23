@@ -5,7 +5,7 @@
 # Remove existing project file if any
 rm -r Riot.xcodeproj
 
-# Generate project file
+# Create the xcodeproj with all project source files
 xcodegen
 
 # Use appropriated dependencies
@@ -26,5 +26,5 @@ else
     bundle exec fastlane point_dependencies_to_same_feature
 fi
 
-# Install dependencies
+# Create the xcworkspace with all project dependencies
 pod install
