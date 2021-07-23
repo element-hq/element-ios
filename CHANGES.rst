@@ -22,6 +22,7 @@ Changes to be released in next version
 
 Others
  * Separated CI jobs into individual actions
+ * Update Gemfile.lock
 
 Changes in 1.4.7 (2021-07-22)
 =================================================
