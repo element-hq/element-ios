@@ -20,7 +20,7 @@
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 
-@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate>
+@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate, RequestContactsAccessFooterViewDelegate>
 {
     // The contact used to describe the current user.
     MXKContact *userContact;
@@ -48,6 +48,8 @@
 
 @property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
 @property (nonatomic, weak) InviteFriendsHeaderView *inviteFriendsHeaderView;
+
+@property (nonatomic, strong) RequestContactsAccessFooterView *requestContactsAccessFooterView;
 
 @end
 
@@ -120,9 +122,6 @@
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;    
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    // Hide line separators of empty cells
-    self.contactsTableView.tableFooterView = [[UIView alloc] init];
-    
     [self.contactsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
     
     // Redirect table data source
@@ -161,16 +160,34 @@
     }
 }
 
+- (void)updateFooterView
+{
+    if (!RiotSettings.shared.allowInviteExernalUsers
+        || [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized
+        || self.contactsTableView.numberOfSections > 0)
+    {
+        // Hide line separators of empty cells
+        // FIXME: Store this?
+        self.contactsTableView.tableFooterView = [[UIView alloc] init];
+        return;
+    }
+    
+    RequestContactsAccessFooterView *contactsAccessView = self.requestContactsAccessFooterView ?: [RequestContactsAccessFooterView instantiate];
+    contactsAccessView.delegate = self;
+    self.contactsTableView.tableFooterView = contactsAccessView;
+    
+    self.requestContactsAccessFooterView = contactsAccessView;
+}
+
 - (void)userInterfaceThemeDidChange
 {
     [super userInterfaceThemeDidChange];
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
-    
     // Check the table view style to select its bg color.
     self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
+    self.navigationController.navigationBar.barTintColor = self.contactsTableView.backgroundColor;
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
     self.contactsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
     
@@ -230,6 +247,8 @@
         // Refresh display
         [self refreshContactsTable];
     }
+    
+    [self updateFooterView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -244,6 +263,31 @@
 {
     [super viewDidLayoutSubviews];
     [self.contactsTableView vc_relayoutHeaderView];
+    [self layoutRequestContactsAccessFooterView];
+}
+
+- (void)layoutRequestContactsAccessFooterView
+{
+    // FIXME: add nil checks
+    if (self.contactsTableView.tableFooterView == self.requestContactsAccessFooterView)
+    {
+        CGSize footerSize = [self.requestContactsAccessFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        CGFloat gapHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom - self.inviteFriendsHeaderView.frame.size.height;
+        if (gapHeight > footerSize.height)
+        {
+            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
+                                                                    self.requestContactsAccessFooterView.frame.origin.y,
+                                                                    self.requestContactsAccessFooterView.frame.size.width,
+                                                                    gapHeight);
+        }
+        else
+        {
+            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
+                                                                    self.requestContactsAccessFooterView.frame.origin.y,
+                                                                    footerSize.width,
+                                                                    footerSize.height);
+        }
+    }
 }
 
 #pragma mark -
@@ -693,7 +737,10 @@
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     leftImageView.tintColor = ThemeService.shared.theme.tintColor;
     
-    // remove the gray background color
+    // Use the theme's grey color.
+    // The effect views are needed due to minimal style.
+    // With default style there is a border above the search bar.
+    searchBarTextField.backgroundColor = ThemeService.shared.theme.textQuinaryColor;
     UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
     UIView *effectBackgroundBottom =  [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
     effectBackgroundTop.hidden = YES;
@@ -712,11 +759,16 @@
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{    
+{
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = NO;
     
     return YES;
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [self updateFooterView];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -729,6 +781,11 @@
     
     // Leave search
     [searchBar resignFirstResponder];
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [self updateFooterView];
 }
 
 #pragma mark - ContactsTableViewControllerDelegate
@@ -783,6 +840,20 @@
 
 {
     [self showInviteFriendsFromSourceView:button];
+}
+
+#pragma mark - RequestContactsAccessFooterViewDelegate
+
+- (void)didRequestContactsAccess
+{
+    [MXKTools checkAccessForContacts:@"Doug" showPopUpInViewController:self completionHandler:^(BOOL granted) {
+        if (granted)
+        {
+            [self updateFooterView];
+            // FIXME: Local contacts are refreshed but not matched
+            [MXKContactManager.sharedManager refreshLocalContacts];
+        }
+    }];
 }
 
 @end
