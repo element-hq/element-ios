@@ -16,14 +16,20 @@
 
 import Foundation
 
+protocol SpaceMenuViewModelViewDelegate: AnyObject {
+    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didUpdateViewState viewSate: SpaceMenuViewState)
+}
+
 protocol SpaceMenuModelViewModelCoordinatorDelegate: AnyObject {
-    func spaceListViewModelDidDismiss(_ viewModel: SpaceMenuViewModelType)
-    func spaceListViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWithId itemId: String)
+    func spaceMenuViewModelDidDismiss(_ viewModel: SpaceMenuViewModelType)
+    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWithId itemId: String)
 }
 
 /// Protocol describing the view model used by `SpaceMenuViewController`
 protocol SpaceMenuViewModelType {
     var menuItems: [SpaceMenuListItemViewData] { get }
+    
+    var viewDelegate: SpaceMenuViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceMenuModelViewModelCoordinatorDelegate? { get set }
 
     func process(viewAction: SpaceMenuViewAction)

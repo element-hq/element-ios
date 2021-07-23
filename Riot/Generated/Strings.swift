@@ -2062,6 +2062,10 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
+  /// Are you sure you want to leave %@?
+  internal static func leaveSpaceMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "leave_space_message", p1)
+  }
   /// Less
   internal static var less: String { 
     return VectorL10n.tr("Vector", "less") 
