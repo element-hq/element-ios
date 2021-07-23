@@ -98,6 +98,7 @@
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="avatarView" destination="aSn-OV-epF" id="kgk-RU-l5L"/>
+                        <outlet property="bottomMargin" destination="8cn-Zi-aY3" id="jCd-eZ-Jz0"/>
                         <outlet property="closeButton" destination="dxd-y5-bn4" id="T5W-Ah-JMq"/>
                         <outlet property="subtitleLabel" destination="Flc-Ew-aDd" id="vaA-iC-rfS"/>
                         <outlet property="tableView" destination="TI7-FD-nIm" id="WSM-hN-CQQ"/>

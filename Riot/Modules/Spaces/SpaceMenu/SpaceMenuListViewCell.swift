@@ -42,7 +42,7 @@ class SpaceMenuListViewCell: UITableViewCell, Themable, NibReusable {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        UIView.animate(withDuration: !animated ? 0.3 : 0.0) {
+        UIView.animate(withDuration: animated ? 0.3 : 0.0) {
             self.selectionView.alpha = selected ? 1.0 : 0.0
         }
     }

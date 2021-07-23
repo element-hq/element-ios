@@ -26,11 +26,12 @@ class SpaceMenuPresenter: NSObject {
     // MARK: Private
     
     private weak var presentingViewController: UIViewController?
-    private let viewModel = SpaceMenuViewModel()
+    private var viewModel: SpaceMenuViewModel!
     private weak var sourceView: UIView?
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
     }()
+    private weak var selectedSpace: MXSpace?
 
     // MARK: - Public
     
@@ -39,10 +40,11 @@ class SpaceMenuPresenter: NSObject {
                  sourceView: UIView?,
                  session: MXSession,
                  animated: Bool) {
-        
+        self.viewModel = SpaceMenuViewModel(session: session, spaceId: spaceId)
         self.viewModel.coordinatorDelegate = self
         self.presentingViewController = viewController
         self.sourceView = sourceView
+        self.selectedSpace = session.spaceService.getSpace(withId: spaceId)
         
         self.showMenu(for: spaceId, session: session)
     }
@@ -60,34 +62,43 @@ class SpaceMenuPresenter: NSObject {
     
     private func present(_ viewController: SpaceMenuViewController, animated: Bool) {
         
-//        if UIDevice.current.isPhone {
+        if UIDevice.current.isPhone {
             guard let rootViewController = self.presentingViewController else {
                 MXLog.error("[SpaceMenuPresenter] present no rootViewController found")
                 return
             }
 
             slidingModalPresenter.present(viewController, from: rootViewController.presentedViewController ?? rootViewController, animated: true, completion: nil)
-//        } else {
+        } else {
             // Configure source view when view controller is presented with a popover
-//            viewController.modalPresentationStyle = .popover
-//            if let sourceView = self.sourceView, let popoverPresentationController = viewController.popoverPresentationController {
-//                popoverPresentationController.sourceView = sourceView
-//                popoverPresentationController.sourceRect = sourceView.bounds
-//            }
-//
-//            self.presentingViewController?.present(viewController, animated: animated, completion: nil)
-//        }
+            viewController.modalPresentationStyle = .popover
+            if let sourceView = self.sourceView, let popoverPresentationController = viewController.popoverPresentationController {
+                popoverPresentationController.sourceView = sourceView
+                popoverPresentationController.sourceRect = sourceView.bounds
+            }
+
+            self.presentingViewController?.present(viewController, animated: animated, completion: nil)
+        }
     }
 }
 
 // MARK: - SpaceMenuModelViewModelCoordinatorDelegate
 
 extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
-    func spaceListViewModelDidDismiss(_ viewModel: SpaceMenuViewModelType) {
+    func spaceMenuViewModelDidDismiss(_ viewModel: SpaceMenuViewModelType) {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func spaceListViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWithId itemId: String) {
-        self.dismiss(animated: true, completion: nil)
+    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWithId itemId: String) {
+        let actionId = SpaceMenuViewModel.ActionId(rawValue: itemId)
+        switch actionId {
+        case .leave: break
+        case .members:
+            self.dismiss(animated: true, completion: nil)
+        case .rooms:
+            self.dismiss(animated: true, completion: nil)
+        default:
+            MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItemWithId: invalid itemId \(itemId)")
+        }
     }
 }

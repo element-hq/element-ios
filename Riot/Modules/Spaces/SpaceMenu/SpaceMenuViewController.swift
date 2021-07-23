@@ -31,7 +31,9 @@ class SpaceMenuViewController: UIViewController {
     private var session: MXSession!
     private var spaceId: String!
     private var viewModel: SpaceMenuViewModelType!
-    
+    private var errorPresenter: MXKErrorPresentation!
+    private var activityPresenter: ActivityIndicatorPresenter!
+
     // MARK: Outlets
 
     @IBOutlet private weak var avatarView: SpaceAvatarView!
@@ -39,6 +41,7 @@ class SpaceMenuViewController: UIViewController {
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var closeButton: UIButton!
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var bottomMargin: NSLayoutConstraint!
 
     // MARK: - Setup
     
@@ -59,9 +62,13 @@ class SpaceMenuViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        
+        self.activityPresenter = ActivityIndicatorPresenter()
+        self.errorPresenter = MXKErrorAlertPresentation()
+
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+        
+        self.viewModel.viewDelegate = self
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -70,7 +77,7 @@ class SpaceMenuViewController: UIViewController {
     
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: 300, height: 300)
+            return CGSize(width: 320, height: self.tableView.frame.minY + Constants.estimatedRowHeight * CGFloat(self.viewModel.menuItems.count) + self.bottomMargin.constant)
         }
         set {
             super.preferredContentSize = newValue
@@ -134,6 +141,45 @@ class SpaceMenuViewController: UIViewController {
         self.tableView.register(cellType: SpaceMenuListViewCell.self)
         self.tableView.tableFooterView = UIView()
     }
+    
+    private func render(viewState: SpaceMenuViewState) {
+        switch viewState {
+        case .loading:
+            self.renderLoading()
+        case .loaded:
+            self.renderLoaded()
+        case .alert(let alert):
+            self.render(alert: alert)
+        case .error(let error):
+            self.render(error: error)
+        case .deselect:
+            self.renderDeselect()
+        }
+    }
+    
+    private func renderLoading() {
+        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+    }
+    
+    private func renderLoaded() {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        self.renderDeselect()
+    }
+    
+    private func render(error: Error) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
+    }
+    
+    private func render(alert: UIAlertController) {
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func renderDeselect() {
+        if let selectedRow = self.tableView.indexPathForSelectedRow {
+            self.tableView.deselectRow(at: selectedRow, animated: true)
+        }
+    }
 }
 
 // MARK: - SlidingModalPresentable
@@ -145,9 +191,17 @@ extension SpaceMenuViewController: SlidingModalPresentable {
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        return 300
+        return self.preferredContentSize.height
     }
     
+}
+
+// MARK: - SpaceMenuViewModelViewDelegate
+
+extension SpaceMenuViewController: SpaceMenuViewModelViewDelegate {
+    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didUpdateViewState viewSate: SpaceMenuViewState) {
+        self.render(viewState: viewSate)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -175,6 +229,7 @@ extension SpaceMenuViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
+
 extension SpaceMenuViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
