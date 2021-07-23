@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol DeviceVerificationIncomingCoordinatorDelegate: class {
+protocol DeviceVerificationIncomingCoordinatorDelegate: AnyObject {
     func deviceVerificationIncomingCoordinator(_ coordinator: DeviceVerificationIncomingCoordinatorType, didAcceptTransaction message: MXSASTransaction)
     func deviceVerificationIncomingCoordinatorDidCancel(_ coordinator: DeviceVerificationIncomingCoordinatorType)
 }

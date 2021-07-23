@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol UserVerificationCoordinatorDelegate: class {
+protocol UserVerificationCoordinatorDelegate: AnyObject {
     func userVerificationCoordinatorDidComplete(_ coordinator: UserVerificationCoordinatorType)
 }
 

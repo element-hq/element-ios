@@ -351,6 +351,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSURL *messageSoundURL = [[NSBundle mainBundle] URLForResource:@"message" withExtension:@"caf"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)messageSoundURL, &_messageSound);
     
+    // Set app info now as Mac (Designed for iPad) accesses it before didFinishLaunching is called
+    self.appInfo = AppInfo.current;
+    
     MXLogDebug(@"[AppDelegate] willFinishLaunchingWithOptions: Done");
 
     return YES;
@@ -370,8 +373,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     _configuration = [AppConfiguration new];
-    
-    self.appInfo = AppInfo.current;
     
     // Log app information
     NSString *appDisplayName = self.appInfo.displayName;

@@ -245,9 +245,9 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private func setupSideMenuGestures() {
-        self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: self.masterNavigationController.view)
-        
-        self.parameters.appNavigator.sideMenu.addPanGestureToPresent(to: self.masterNavigationController.navigationBar)
+        if let rootViewController = self.masterNavigationController.viewControllers.first {
+            self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: rootViewController.view)
+        }
     }
     
     // MARK: Navigation

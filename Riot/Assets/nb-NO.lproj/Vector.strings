@@ -64,7 +64,6 @@
 "room_creation_appearance" = "Utseende";
 "room_creation_appearance_name" = "Navn";
 "room_creation_privacy" = "Personvern";
-"room_recents_directory_section_network" = "Nettverk";
 "room_recents_create_empty_room" = "Opprett et rom";
 "room_recents_join_room" = "Bli med i rommet";
 "room_recents_join_room_title" = "Bli med i et rom";
@@ -479,7 +478,7 @@
 "settings_discovery_error_message" = "Det oppstod en feil. Vennligst prøv igjen.";
 "security_settings_crypto_sessions" = "MINE ØKTER";
 "security_settings_secure_backup_setup" = "Sett opp";
-"security_settings_secure_backup_delete" = "Slett";
+"security_settings_secure_backup_delete" = "Slett sikkerhetskopi";
 "security_settings_crosssigning_complete_security" = "Komplett sikkerhet";
 "security_settings_cryptography" = "KRYPTOGRAFI";
 "security_settings_complete_security_alert_title" = "Komplett sikkerhet";
@@ -513,7 +512,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Bekreft passordfrasen";
 "key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passordfrasen samsvarer ikke";
 "key_backup_setup_passphrase_set_passphrase_action" = "Velg passordfrase";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Gjenopprettingsnøkkel";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Sikkerhetsnøkkel";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Lag en kpi";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Jeg har laget en kopi";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Skriv inn gjenopprettingsnøkkelen";
@@ -834,7 +833,7 @@
 "settings_key_backup_info_not_valid" = "Denne økten sikkerhetskopierer ikke dine nøkler, men du har en eksisterende sikkerhetskopi du kan gjenopprette fra og legge til, for å gå videre.";
 "settings_key_backup_info_valid" = "Denne økten sikkerhetskopierer dine nøkler.";
 "settings_key_backup_info_version" = "Sikkerhetskopi av nøkler versjon : %@";
-"settings_key_backup_info_signout_warning" = "Før du logger ut, koble denne sesjonen til sikkerhetskopi av nøkler for å unngå tap av nøkler som kanskje bare er lagret på denne enheten.";
+"settings_key_backup_info_signout_warning" = "Sikkerhetskopier nøklene dine før du logger av for å unngå å miste dem.";
 "settings_key_backup_info_none" = "Nøklene dine for denne sesjonen blir ikke sikkerhetskopiert.";
 "settings_third_party_notices" = "Tredjepartsmerknader";
 "settings_labs_e2e_encryption_prompt_message" = "Vennligst logg inn igjen for å ferdigstille oppsett av kryptering.";
@@ -864,7 +863,7 @@
 "pin_protection_not_allowed_pin" = "Av sikkerhetsårsaker er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
 "secrets_setup_recovery_passphrase_information" = "Skriv inn en sikkerhetsfrase bare du kjenner, brukes til å sikre hemmeligheter på serveren.";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "bruke gjenopprettingsnøkkelen din";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruke gjenopprettingsnøkkelen";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "bruk sikkerhetsnøkkelen";
 "room_details_access_section_for_dm" = "Hvem har tilgang til dette?";
 "identity_server_settings_place_holder" = "Legg inn en identitetsserver";
 "identity_server_settings_description" = "Du bruker for øyeblikket %@ for å finne og bli funnet av dine eksisterende kontakter.";
@@ -920,13 +919,13 @@
 "security_settings_crosssigning" = "KRYSS-SIGNERING";
 "security_settings_backup" = "SIKKERHETSKOPI-MELDINGER";
 "security_settings_secure_backup_synchronise" = "Synkroniser";
-"security_settings_secure_backup_description" = "Sikre deg mot å miste tilgang til krypterte meldinger og data ved å lagre sikkerhetskopi av krypteringsnøkler på din server.";
+"security_settings_secure_backup_description" = "Sikkerhetskopier krypteringsnøklene med kontodataene dine hvis du mister tilgangen til øktene dine. Nøklene dine blir sikret med en unik sikkerhetsnøkkel.";
 "security_settings_secure_backup" = "SIKKERHETSKOPI";
 "security_settings_crosssigning_info_trusted" = "Kryss-signering er aktivert. Du kan stole på andre brukere og dine andre økter basert på kryss-signering, men du kan ikke kryss-signere fra denne økten fordi den ikke har private nøkler for kryss-signering. Fullfør sikkerheten for denne økten.";
 "security_settings_export_keys_manually" = "Eksporter nøkler manuelt";
-"security_settings_crosssigning_reset" = "Tilbakestill kryss-signering";
-"security_settings_crosssigning_bootstrap" = "Bootstrap kryss-signering";
-"security_settings_crosssigning_info_ok" = "Kryss-signering er aktivert.";
+"security_settings_crosssigning_reset" = "Nullstill";
+"security_settings_crosssigning_bootstrap" = "Sett opp";
+"security_settings_crosssigning_info_ok" = "Kryss-signering er klar til bruk.";
 "security_settings_blacklist_unverified_devices" = "Aldri send meldinger til ikke-klarerte økter";
 
 // AuthenticatedSessionViewControllerFactory
@@ -1052,7 +1051,7 @@
 "bug_report_prompt" = "Applikasjonen krasjet sist gang. Vil du sende inn en krasj-rapport?";
 "public_room_section_title" = "Offentlige rom (på %@):";
 "call_no_stun_server_error_message_2" = "Alternativt kan du prøve å bruke den offentlige serveren ved %@, men denne vil være mindre pålitelig, og vil dele din IP-adresse med serveren. Du kan også administrere dette i innstillinger";
-"e2e_key_backup_wrong_version" = "Det har blitt oppdaget en ny sikkerhetskopi av meldingsnøkler .\n\nHvis dette ikke ble intitiert av deg bør du endre passordfrase i innstillinger.";
+"e2e_key_backup_wrong_version" = "Det har blitt oppdaget en ny sikkerhetskopi av meldingsnøkler .\n\nHvis dette ikke var deg, angir du en ny sikkerhetsfrase i Innstillinger.";
 
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Ny sikkerhetskopi av nøkler";
@@ -1136,7 +1135,7 @@
 "secure_key_backup_setup_intro_title" = "Sikkert lagringsområde";
 "secure_key_backup_setup_intro_use_security_key_info" = "Generer en sikkerhetsnøkkel og lagre den på et trygt sted som i en passordadministrator eller en safe.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Bruk en sikkerhetsnøkkel";
-"secure_key_backup_setup_intro_use_security_passphrase_title" = "Bruk en passordfrase";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Bruk en sikkerhetsfrase";
 "key_backup_setup_intro_manual_export_action" = "Eksporter nøkler manuelt";
 "key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Koble denne enheten til sikkerhetskopi av meldingsnøkler";
 "key_backup_setup_skip_alert_message" = "Du kan miste dine krypterte meldinger dersom du logger ut eller mister enheten.";
@@ -1154,12 +1153,12 @@
 "secure_key_backup_setup_existing_backup_error_info" = "Lås den opp for å gjenbruke den på sikkert lagringsområde, eller slett den for å opprette en ny sikkerhetskopi av meldinger på sikkert lagringsområde.";
 "secure_key_backup_setup_existing_backup_error_title" = "Det finnes allerede en sikkerhetskopi for meldinger";
 "secure_key_backup_setup_intro_use_security_passphrase_info" = "Skriv inn en hemmelig frase bare du vet, og generer en nøkkel for sikkerhetskopiering.";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Eller sikre sikkerhetskopien din med en gjenopprettingsnøkkel, og lagre den på et trygt sted.";
-"key_backup_setup_passphrase_info" = "Vi lagrer en kryptert kopi av nøklene dine på serveren vår. Beskytt sikkerhetskopien din med en passordfrase for å holde den sikker.\n\nFor maksimal sikkerhet bør dette være forskjellig fra kontopassordet ditt.";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Eller, sikre sikkerhetskopien med en sikkerhetsnøkkel, og lagre den et trygt sted.";
+"key_backup_setup_passphrase_info" = "Vi lagrer en kryptert kopi av nøklene dine på serveren vår. Beskytt sikkerhetskopien med en setning for å holde den sikker.\n\nFor maksimal sikkerhet bør dette være forskjellig fra kontopassordet ditt.";
 
 // Passphrase
 
-"key_backup_setup_passphrase_title" = "Gjør sikkerhetskopien din sikker med en passordfrase";
+"key_backup_setup_passphrase_title" = "Sikre sikkerhetskopien din med en sikkerhetsfrase";
 "key_backup_setup_intro_info" = "Meldinger i krypterte rom er sikret med ende-til-ende-kryptering. Bare du og mottakeren(e) har nøklene til å lese disse meldingene.\n\nLagre nøklene dine på et trygt sted for å unngå å miste dem.";
 
 // MARK: Key backup recover
@@ -1168,29 +1167,29 @@
 
 // Success from recovery key
 "key_backup_setup_success_from_recovery_key_info" = "Nøklene dine blir sikkerhetskopiert.\n\nKopier denne gjenopprettingsnøkkelen og lagre den på et trygt sted.";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Lagre gjenopprettingsnøkkel";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Lagre sikkerhetsnøkkel";
 
 // Success from passphrase
 "key_backup_setup_success_from_passphrase_info" = "Nøklene dine blir sikkerhetskopiert.\n\nGjenopprettingsnøkkelen din er et sikkerhetsnett - du kan bruke den til å gjenopprette tilgangen til de krypterte meldingene dine hvis du glemmer passordfrasen.\n\nLagre gjenopprettingsnøkkelen din på en trygg måte, f.eks. ved hjelp av en passordadministrator (eller i en safe).";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avansert) Sett opp med gjenopprettingsnøkkel";
-"key_backup_recover_invalid_passphrase" = "Sikkerhetskopi kunne ikke dekrypteres med denne passordfrasen: Vennligst sjekk at du har angitt riktig passordfrase.";
-"key_backup_recover_invalid_passphrase_title" = "Feil gjenopprettingsfrase";
-"key_backup_recover_invalid_recovery_key" = "Sikkerhetskopi kunne ikke dekrypteres med denne nøkkelen: bekreft at du skrev inn riktig gjenopprettingsnøkkel.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Avansert) Sett opp med sikkerhetsnøkkel";
+"key_backup_recover_invalid_passphrase" = "Sikkerhetskopiering kunne ikke dekrypteres med denne setningen: bekreft at du har skrevet riktig sikkerhetsfrase.";
+"key_backup_recover_invalid_passphrase_title" = "Feil sikkerhetsfrase";
+"key_backup_recover_invalid_recovery_key" = "Sikkerhetskopiering kunne ikke dekrypteres med denne nøkkelen: bekreft at du har angitt riktig sikkerhetsnøkkel.";
 "key_backup_recover_invalid_recovery_key_title" = "Feil i gjenopprettingsnøkkel";
 
 // Recover from passphrase
 
-"key_backup_recover_from_passphrase_info" = "Bruk gjenopprettingspassordet for å låse opp historikken for dine sikrede meldinger";
+"key_backup_recover_from_passphrase_info" = "Bruk sikkerhetsfrasen for å låse opp den sikre meldingsloggen";
 
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Gjenoppretter sikkerhetskopi …";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke gjenopprettingspassordet ditt? Du kan ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Kjenner du ikke sikkerhetsfrasen din? Du kan ";
 "key_backup_recover_from_passphrase_recover_action" = "Lås opp historikk";
 "key_backup_recover_from_passphrase_passphrase_placeholder" = "Skriv inn passordfrase";
 
 // Recover from recovery key
 
-"key_backup_recover_from_recovery_key_info" = "Bruk gjenopprettingsnøkkel for å låse opp historikken for sikrede meldinger";
+"key_backup_recover_from_recovery_key_info" = "Bruk sikkerhetsnøkkelen til å låse opp den sikre meldingsloggen";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
 "sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Begynn å bruke Sikkert lagringsområde";
 "sign_out_non_existing_key_backup_alert_title" = "Du mister tilgangen til de krypterte meldingene dine hvis du logger ut nå";
@@ -1418,3 +1417,50 @@
 "room_intro_cell_information_multiple_dm_sentence2" = "Bare dere er i denne samtalen, med mindre noen av dere inviterer andre til å bli med.";
 "room_intro_cell_information_dm_sentence2" = "Bare dere to er i denne samtalen, ingen andre kan bli med.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
+"side_menu_app_version" = "Versjon %@";
+"side_menu_action_feedback" = "Tilbakemelding";
+"side_menu_action_help" = "Hjelp";
+"side_menu_action_settings" = "Innstillinger";
+"side_menu_action_invite_friends" = "Inviter venner";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Venstre panel";
+"user_avatar_view_accessibility_hint" = "Endre bruker avatar";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"space_beta_announce_information" = "Plasser er en ny måte å gruppere rom og mennesker på. De er ikke på iOS ennå, men du kan bruke dem nå på nettet og på skrivebordet.";
+"space_beta_announce_subtitle" = "Den nye versjonen av lokalsamfunn";
+"space_beta_announce_title" = "Plasser kommer snart";
+"space_beta_announce_badge" = "BETA";
+"space_feature_unavailable_information" = "Plasser er en ny måte å gruppere rom og mennesker på.\n\nDe kommer snart. For nå, hvis du blir med på en annen plattform, vil du kunne få tilgang til alle rom du blir med her.";
+"space_feature_unavailable_subtitle" = "Plasser er ikke på iOS ennå, men du kan bruke dem nå på nettet og på skrivebordet";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Plasser er ikke her ennå";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Skriv inn sikkerhetsnøkkelen din for å fortsette.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Skriv inn sikkerhetsfrasen for å fortsette.";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Nøklene dine blir sikkerhetskopiert.";
+"event_formatter_group_call_incoming" = "%@ i %@";
+"event_formatter_group_call_leave" = "Forlat";
+"event_formatter_group_call_join" = "Bli med";
+"event_formatter_group_call" = "Gruppeanrop";
+"event_formatter_call_end_call" = "Avslutt samtale";
+"event_formatter_call_retry" = "Prøv på nytt";
+"event_formatter_call_answer" = "Svar";
+"security_settings_secure_backup_restore" = "Gjenopprett fra sikkerhetskopi";
+"security_settings_secure_backup_reset" = "Nullstill";
+"security_settings_secure_backup_info_valid" = "Denne økten tar sikkerhetskopi av nøklene dine.";
+"security_settings_secure_backup_info_checking" = "Sjekker…";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" samsvarer med enhetens systemtema";
+"settings_ui_theme_picker_message_invert_colours" = "\"Auto\" bruker enhetens \"Inverter farger\" innstillinger";
+
+// Chat
+"room_slide_to_end_group_call" = "Skyv for å avslutte samtalen for alle";
+"room_recents_unknown_room_error_message" = "Finner ikke dette rommet. Forsikre deg om at den eksisterer";
+"room_creation_dm_error" = "Vi kunne ikke opprette DM. Kontroller brukerne du vil invitere, og prøv på nytt.";

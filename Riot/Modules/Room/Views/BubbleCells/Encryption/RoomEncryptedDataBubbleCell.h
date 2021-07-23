@@ -31,7 +31,7 @@ extern NSString *const kRoomEncryptedDataBubbleCellTapOnEncryptionIcon;
 /**
  Return the icon displayed in front of an event in an encrypted room if needed.
  
- @param event the bubble component.
+ @param bubbleComponent the bubble component.
  */
 + (UIImage*)encryptionIconForBubbleComponent:(MXKRoomBubbleComponent *)bubbleComponent;
 

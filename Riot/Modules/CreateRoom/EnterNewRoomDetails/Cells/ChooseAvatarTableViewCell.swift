@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol ChooseAvatarTableViewCellDelegate: class {
+protocol ChooseAvatarTableViewCellDelegate: AnyObject {
     func chooseAvatarTableViewCellDidTapChooseAvatar(_ cell: ChooseAvatarTableViewCell, sourceView: UIView)
 }
 

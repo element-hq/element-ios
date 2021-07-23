@@ -148,7 +148,7 @@ final class BuildSettings: NSObject {
     
     
     // MARK: -  Public rooms Directory
-    static let publicRoomsShowDirectory: Bool = true
+    #warning("Unused build setting: should this be implemented in ShowDirectory?")
     static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
@@ -295,6 +295,7 @@ final class BuildSettings: NSObject {
     static let roomSettingsScreenShowFlairSettings: Bool = true
     static let roomSettingsScreenShowAdvancedSettings: Bool = true
     static let roomSettingsScreenAdvancedShowEncryptToVerifiedOption: Bool = true
+    static let roomSettingsScreenShowNotificationsV2: Bool = false
 
     // MARK: - Room Member Screen
     
@@ -307,6 +308,10 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowSave: Bool = true
     static let messageDetailsAllowCopyMedia: Bool = true
     static let messageDetailsAllowPasteMedia: Bool = true
+    
+    // MARK: - Voice Message
+    
+    static let voiceMessagesEnabled = false
     
     // MARK: - Notifications
     static let decryptNotificationsByDefault: Bool = true
@@ -323,6 +328,9 @@ final class BuildSettings: NSObject {
     static let authScreenShowForgotPassword = true
     static let authScreenShowCustomServerOptions = true
     
-    // Mark: - Unified Search
+    // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
+    
+    // MARK: - Secrets Recovery
+    static let secretsRecoveryAllowReset = true
 }

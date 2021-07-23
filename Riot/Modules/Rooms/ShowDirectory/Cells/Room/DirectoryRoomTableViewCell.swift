@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol DirectoryRoomTableViewCellDelegate: class {
+protocol DirectoryRoomTableViewCellDelegate: AnyObject {
     func directoryRoomTableViewCellDidTapJoin(_ cell: DirectoryRoomTableViewCell)
 }
 

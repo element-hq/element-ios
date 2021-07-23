@@ -18,13 +18,13 @@
 
 import Foundation
 
-protocol EnterPinCodeViewModelViewDelegate: class {
+protocol EnterPinCodeViewModelViewDelegate: AnyObject {
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateViewState viewSate: EnterPinCodeViewState)
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdatePlaceholdersCount count: Int)
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didUpdateCancelButtonHidden isHidden: Bool)
 }
 
-protocol EnterPinCodeViewModelCoordinatorDelegate: class {
+protocol EnterPinCodeViewModelCoordinatorDelegate: AnyObject {
     func enterPinCodeViewModelDidComplete(_ viewModel: EnterPinCodeViewModelType)
     func enterPinCodeViewModelDidCompleteWithReset(_ viewModel: EnterPinCodeViewModelType, dueToTooManyErrors: Bool)
     func enterPinCodeViewModel(_ viewModel: EnterPinCodeViewModelType, didCompleteWithPin pin: String)

@@ -225,7 +225,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
                 return
             }
             self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            self.update(viewState: .cancelled(cancelCode: reason, verificationKind: verificationKind))
         case MXSASTransactionStateCancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return
@@ -251,7 +251,7 @@ final class KeyVerificationVerifyByScanningViewModel: KeyVerificationVerifyBySca
                 return
             }
             self.unregisterTransactionDidStateChangeNotification()
-            self.update(viewState: .cancelled(reason))
+            self.update(viewState: .cancelled(cancelCode: reason, verificationKind: verificationKind))
         case .cancelledByMe:
             guard let reason = transaction.reasonCancelCode else {
                 return

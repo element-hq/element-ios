@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SecretsResetCoordinatorDelegate: class {
+protocol SecretsResetCoordinatorDelegate: AnyObject {
     func secretsResetCoordinatorDidResetSecrets(_ coordinator: SecretsResetCoordinatorType)
     func secretsResetCoordinatorDidCancel(_ coordinator: SecretsResetCoordinatorType)
 }

@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol SecretsSetupRecoveryPassphraseViewModelViewDelegate: class {
+protocol SecretsSetupRecoveryPassphraseViewModelViewDelegate: AnyObject {
     func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didUpdateViewState viewSate: SecretsSetupRecoveryPassphraseViewState)
 }
 
-protocol SecretsSetupRecoveryPassphraseViewModelCoordinatorDelegate: class {
+protocol SecretsSetupRecoveryPassphraseViewModelCoordinatorDelegate: AnyObject {
     func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didEnterNewPassphrase passphrase: String)
     func secretsSetupRecoveryPassphraseViewModel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType, didConfirmPassphrase passphrase: String)    
     func secretsSetupRecoveryPassphraseViewModelDidCancel(_ viewModel: SecretsSetupRecoveryPassphraseViewModelType)

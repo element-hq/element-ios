@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol KeyVerificationVerifiedViewControllerDelegate: class {
+protocol KeyVerificationVerifiedViewControllerDelegate: AnyObject {
     func keyVerificationVerifiedViewControllerDidTapSetupAction(_ viewController: KeyVerificationVerifiedViewController)
     func keyVerificationVerifiedViewControllerDidCancel(_ viewController: KeyVerificationVerifiedViewController)
 }
