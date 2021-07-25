@@ -1097,7 +1097,7 @@
 "deactivate_account_informations_part3" = "\n\nSinu konto kustutamine ";
 "deactivate_account_informations_part4_emphasize" = "vaikimisi ei tähenda, et unustatakse ka sinu saadetud sõnumid. ";
 "deactivate_account_informations_part5" = "Kui sa siiski soovid seda, siis palun tee märge alljärgnevasse kasti.\n\nMatrix'i sõnumite nähtavus on sarnane e-posti kirjadega. Sõnumite unustamine tegelikult tähendab seda, et sinu varemsaadetud sõnumeid ei jagata uute või veel registreerumata kasutajatega, kuid registeerunud kasutajad, kes juba on need sõnumid saanud, võivad neid ka jätkuvalt lugeda.";
-"rerequest_keys_alert_message" = "Palun käivita Element mõnes muus seadmes, mis suudab neid sõnumeid dekrüptoda ja seega saata krüptovõtmeid siia sessiooni.";
+"rerequest_keys_alert_message" = "Palun käivita Element mõnes muus seadmes, mis suudab neid sõnumeid dekrüptida ja seega saata krüptovõtmeid siia sessiooni.";
 "settings_discovery_three_pids_management_information_part1" = "Halda missuguse e-posti aadressi ja telefoninumbri alusel teised kasutajad saavad sind kutsuda jututubadesse. Lisa või eemalda e-posti aadresse ja telefoninumbreid sellest loendist ";
 "settings_discovery_three_pid_details_information_email" = "Halda selle e-posti aadressi eelistusi, mille alusel teised kasutajad saavad sind leida ja kutsuda jututubade liikmeks. E-posti aadresse lisada ja muuta saad kasutajakonto seadistustest.";
 "settings_discovery_three_pid_details_title_phone_number" = "Halda telefoninumbrit";
