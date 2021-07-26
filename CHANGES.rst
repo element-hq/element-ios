@@ -12,6 +12,7 @@ Changes to be released in next version
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)
  * Settings: Disabled autocorrection when entering an identity server (#4593).
+ * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
 
 ⚠️ API Changes
  * 
