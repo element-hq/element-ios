@@ -238,7 +238,6 @@
 "room_creation_invite_another_user" = "Bilatu / gonbidatu erabiltzaile ID-a, izena edo e-maila erabiliz";
 // Room recents
 "room_recents_directory_section" = "GELEN DIREKTORIOA";
-"room_recents_directory_section_network" = "Sarea";
 "room_recents_favourites_section" = "GOGOKOAK";
 "room_recents_invites_section" = "GONBIDAPENAK";
 // People tab

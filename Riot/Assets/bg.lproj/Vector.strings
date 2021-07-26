@@ -106,7 +106,6 @@
 // Room recents
 "room_recents_directory_section" = "ДИРЕКТОРИЯ СЪС СТАИ";
 "room_creation_invite_another_user" = "Търси потребител по ID, име, имейл";
-"room_recents_directory_section_network" = "Мрежа";
 "room_recents_favourites_section" = "ЛЮБИМИ";
 "room_recents_people_section" = "ХОРА";
 "room_recents_conversations_section" = "СТАИ";
