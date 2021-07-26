@@ -263,16 +263,21 @@
 {
     [super viewDidLayoutSubviews];
     [self.contactsTableView vc_relayoutHeaderView];
-    [self layoutRequestContactsAccessFooterView];
+    [self updateRequestContactsAccessFooterViewHeight];
 }
 
-- (void)layoutRequestContactsAccessFooterView
+- (void)updateRequestContactsAccessFooterViewHeight
 {
-    // FIXME: add nil checks
-    if (self.contactsTableView.tableFooterView == self.requestContactsAccessFooterView)
+    if (self.requestContactsAccessFooterView && self.requestContactsAccessFooterView == self.contactsTableView.tableFooterView)
     {
         CGSize footerSize = [self.requestContactsAccessFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        CGFloat gapHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom - self.inviteFriendsHeaderView.frame.size.height;
+        CGFloat gapHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom;
+        
+        if (self.contactsTableView.tableHeaderView)
+        {
+            gapHeight -= self.contactsTableView.tableHeaderView.frame.size.height;
+        }
+        
         if (gapHeight > footerSize.height)
         {
             self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
@@ -284,7 +289,7 @@
         {
             self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
                                                                     self.requestContactsAccessFooterView.frame.origin.y,
-                                                                    footerSize.width,
+                                                                    self.requestContactsAccessFooterView.frame.size.width,
                                                                     footerSize.height);
         }
     }
@@ -846,11 +851,14 @@
 
 - (void)didRequestContactsAccess
 {
-    [MXKTools checkAccessForContacts:@"Doug" showPopUpInViewController:self completionHandler:^(BOOL granted) {
+    [MXKTools checkAccessForContacts:@"Contacts access has been disabled in the Settings app." showPopUpInViewController:self completionHandler:^(BOOL granted) {
         if (granted)
         {
+            // Hide the request access view.
             [self updateFooterView];
-            // FIXME: Local contacts are refreshed but not matched
+            
+            // Enable sync local contacts and refresh the contacts manager.
+            MXKAppSettings.standardAppSettings.syncLocalContacts = YES;
             [MXKContactManager.sharedManager refreshLocalContacts];
         }
     }];
