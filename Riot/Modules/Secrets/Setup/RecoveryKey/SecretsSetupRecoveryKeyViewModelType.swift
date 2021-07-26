@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol SecretsSetupRecoveryKeyViewModelViewDelegate: class {
+protocol SecretsSetupRecoveryKeyViewModelViewDelegate: AnyObject {
     func secretsSetupRecoveryKeyViewModel(_ viewModel: SecretsSetupRecoveryKeyViewModelType, didUpdateViewState viewSate: SecretsSetupRecoveryKeyViewState)
 }
 
-protocol SecretsSetupRecoveryKeyViewModelCoordinatorDelegate: class {
+protocol SecretsSetupRecoveryKeyViewModelCoordinatorDelegate: AnyObject {
     func secretsSetupRecoveryKeyViewModelDidComplete(_ viewModel: SecretsSetupRecoveryKeyViewModelType)
     func secretsSetupRecoveryKeyViewModelDidFailed(_ viewModel: SecretsSetupRecoveryKeyViewModelType)
     func secretsSetupRecoveryKeyViewModelDidCancel(_ viewModel: SecretsSetupRecoveryKeyViewModelType)

@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SecretsSetupRecoveryPassphraseCoordinatorDelegate: class {
+protocol SecretsSetupRecoveryPassphraseCoordinatorDelegate: AnyObject {
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didEnterNewPassphrase passphrase: String)
     func secretsSetupRecoveryPassphraseCoordinator(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType, didConfirmPassphrase passphrase: String)
     func secretsSetupRecoveryPassphraseCoordinatorDidCancel(_ coordinator: SecretsSetupRecoveryPassphraseCoordinatorType)

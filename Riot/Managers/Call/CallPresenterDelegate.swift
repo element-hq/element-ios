@@ -17,7 +17,7 @@
 import Foundation
 
 @objc
-protocol CallPresenterDelegate: class {
+protocol CallPresenterDelegate: AnyObject {
     //  Call screens
     func callPresenter(_ presenter: CallPresenter,
                        presentCallViewController viewController: UIViewController,

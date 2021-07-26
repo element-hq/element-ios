@@ -1,0 +1,54 @@
+name: Tests CI
+
+on:
+  # Triggers the workflow on any pull request and push to develop
+  push:
+    branches: [ develop ]
+  pull_request:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  # Make the git branch for a PR available to our Fastfile
+  MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Common cache
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      # Make sure we use the latest version of MatrixKit
+      - name: Reset MatrixKit pod
+        run: rm -rf Pods/MatrixKit
+
+      # Common setup
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Bundle install
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3    
+      - name: Use right MatrixKit and MatrixSDK versions
+        run: bundle exec fastlane point_dependencies_to_related_branches
+
+      # Main step
+      - name: Unit tests
+        run: bundle exec fastlane test

@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol KeyVerificationManuallyVerifyViewModelViewDelegate: class {
+protocol KeyVerificationManuallyVerifyViewModelViewDelegate: AnyObject {
     func keyVerificationManuallyVerifyViewModel(_ viewModel: KeyVerificationManuallyVerifyViewModelType, didUpdateViewState viewSate: KeyVerificationManuallyVerifyViewState)
 }
 
-protocol KeyVerificationManuallyVerifyViewModelCoordinatorDelegate: class {
+protocol KeyVerificationManuallyVerifyViewModelCoordinatorDelegate: AnyObject {
     func keyVerificationManuallyVerifyViewModel(_ viewModel: KeyVerificationManuallyVerifyViewModelType, didVerifiedDeviceWithId deviceId: String, of userId: String)
     func keyVerificationManuallyVerifyViewModelDidCancel(_ viewModel: KeyVerificationManuallyVerifyViewModelType)
 }

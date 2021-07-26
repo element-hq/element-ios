@@ -17,3 +17,6 @@
 
 /* New message from a specific person, not referencing a room. Content included. */
 "MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (සමූහ ඇමතුම)";

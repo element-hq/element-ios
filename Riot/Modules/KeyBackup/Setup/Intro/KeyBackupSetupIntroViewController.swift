@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol KeyBackupSetupIntroViewControllerDelegate: class {
+protocol KeyBackupSetupIntroViewControllerDelegate: AnyObject {
     func keyBackupSetupIntroViewControllerDidTapSetupAction(_ keyBackupSetupIntroViewController: KeyBackupSetupIntroViewController)
     func keyBackupSetupIntroViewControllerDidCancel(_ keyBackupSetupIntroViewController: KeyBackupSetupIntroViewController)
 }

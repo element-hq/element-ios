@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol SettingsSecureBackupTableViewSectionDelegate: class {
+@objc protocol SettingsSecureBackupTableViewSectionDelegate: AnyObject {
     // Table view rendering
     func settingsSecureBackupTableViewSectionDidUpdate(_ settingsSecureBackupTableViewSection: SettingsSecureBackupTableViewSection)
 

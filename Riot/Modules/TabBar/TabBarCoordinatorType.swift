@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol TabBarCoordinatorDelegate: class {
+protocol TabBarCoordinatorDelegate: AnyObject {
     // TODO: Remove this method, authentication should not be handled by TabBarCoordinator
     func tabBarCoordinatorDidCompleteAuthentication(_ coordinator: TabBarCoordinatorType)
 }
