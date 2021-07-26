@@ -354,8 +354,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 {
     [_keyboardAvoider stopAvoiding];
     
-    [self.authenticationActivityIndicator removeObserver:self forKeyPath:@"hidden"];
-    
     [super viewDidDisappear:animated];
 }
 
