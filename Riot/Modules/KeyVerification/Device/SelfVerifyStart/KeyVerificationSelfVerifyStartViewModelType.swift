@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol KeyVerificationSelfVerifyStartViewModelViewDelegate: class {
+protocol KeyVerificationSelfVerifyStartViewModelViewDelegate: AnyObject {
     func keyVerificationSelfVerifyStartViewModel(_ viewModel: KeyVerificationSelfVerifyStartViewModelType, didUpdateViewState viewSate: KeyVerificationSelfVerifyStartViewState)
 }
 
-protocol KeyVerificationSelfVerifyStartViewModelCoordinatorDelegate: class {
+protocol KeyVerificationSelfVerifyStartViewModelCoordinatorDelegate: AnyObject {
     func keyVerificationSelfVerifyStartViewModel(_ viewModel: KeyVerificationSelfVerifyStartViewModelType, otherDidAcceptRequest request: MXKeyVerificationRequest)
     func keyVerificationSelfVerifyStartViewModelDidCancel(_ viewModel: KeyVerificationSelfVerifyStartViewModelType)
 }

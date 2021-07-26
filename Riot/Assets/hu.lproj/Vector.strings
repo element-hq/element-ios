@@ -108,7 +108,6 @@
 "room_creation_invite_another_user" = "Keresés / meghívás felhasználói azonosítás, név vagy e-mail cím alapján";
 // Room recents
 "room_recents_directory_section" = "SZOBA KÖNYVTÁR";
-"room_recents_directory_section_network" = "Hálózat";
 "room_recents_favourites_section" = "KEDVENCEK";
 "room_recents_people_section" = "EMBEREK";
 "room_recents_conversations_section" = "SZOBÁK";

@@ -74,7 +74,7 @@
 /**
  init the segmentedViewController with a list of UIViewControllers.
  @param titles the section tiles
- @param viewControllers the list of viewControllers to display.
+ @param someViewControllers the list of viewControllers to display.
  @param defaultSelected index of the default selected UIViewController in the list.
  */
 - (void)initWithTitles:(NSArray*)titles viewControllers:(NSArray*)someViewControllers defaultSelected:(NSUInteger)defaultSelected

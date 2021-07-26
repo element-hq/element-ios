@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol EmojiPickerCoordinatorDelegate: class {
+protocol EmojiPickerCoordinatorDelegate: AnyObject {
     func emojiPickerCoordinator(_ coordinator: EmojiPickerCoordinatorType, didAddEmoji emoji: String, forEventId eventId: String)
     func emojiPickerCoordinator(_ coordinator: EmojiPickerCoordinatorType, didRemoveEmoji emoji: String, forEventId eventId: String)
     func emojiPickerCoordinatorDidCancel(_ coordinator: EmojiPickerCoordinatorType)

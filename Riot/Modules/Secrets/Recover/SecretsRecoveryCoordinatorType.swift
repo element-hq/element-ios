@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol SecretsRecoveryCoordinatorDelegate: class {
+protocol SecretsRecoveryCoordinatorDelegate: AnyObject {
     func secretsRecoveryCoordinatorDidRecover(_ coordinator: SecretsRecoveryCoordinatorType)
     func secretsRecoveryCoordinatorDidCancel(_ coordinator: SecretsRecoveryCoordinatorType)
 }

@@ -16,7 +16,7 @@
 
 import Foundation
 
-@objc protocol GDPRConsentViewControllerDelegate: class {
+@objc protocol GDPRConsentViewControllerDelegate: AnyObject {
     func gdprConsentViewControllerDidConsentToGDPRWithSuccess(_ gdprConsentViewController: GDPRConsentViewController)
 }
 
