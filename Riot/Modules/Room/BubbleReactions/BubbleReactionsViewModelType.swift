@@ -39,7 +39,7 @@ enum BubbleReactionsViewState {
     }
 }
 
-@objc protocol BubbleReactionsViewModelDelegate: class {
+@objc protocol BubbleReactionsViewModelDelegate: AnyObject {
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didAddReaction reactionCount: MXReactionCount, forEventId eventId: String)
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didRemoveReaction reactionCount: MXReactionCount, forEventId eventId: String)
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didShowAllTappedForEventId eventId: String)
@@ -47,7 +47,7 @@ enum BubbleReactionsViewState {
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didLongPressForEventId eventId: String)
 }
 
-protocol BubbleReactionsViewModelViewDelegate: class {
+protocol BubbleReactionsViewModelViewDelegate: AnyObject {
     func bubbleReactionsViewModel(_ viewModel: BubbleReactionsViewModel, didUpdateViewState viewState: BubbleReactionsViewState)
 }
 

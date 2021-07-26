@@ -112,7 +112,6 @@
 "room_creation_invite_another_user" = "Cerca / invita per ID utente, nome o email";
 // Room recents
 "room_recents_directory_section" = "ELENCO STANZE";
-"room_recents_directory_section_network" = "Rete";
 "room_recents_favourites_section" = "PREFERITI";
 "room_recents_people_section" = "CHAT DIRETTE";
 "room_recents_conversations_section" = "STANZE";
@@ -1383,3 +1382,16 @@
 "settings_ui_theme_picker_message_invert_colours" = "\"Automatico\" usa l'impostazione \"Inverti Colori\" del tuo dispositivo";
 "room_recents_unknown_room_error_message" = "Impossibile trovare questa stanza. Assicurati che esista";
 "room_creation_dm_error" = "Impossibile creare il messaggio diretto. Ricontrolla gli utenti che vuoi invitare e riprova.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scansiona con questo dispositivo";
+"room_notifs_settings_encrypted_room_notice" = "Nota che le notifiche per menzioni e parole chiave non sono disponibili nelle stanze cifrate su mobile.";
+"room_notifs_settings_account_settings" = "impostazioni dell'account";
+"room_notifs_settings_manage_notifications" = "Puoi gestire le notifiche nelle %@";
+"room_notifs_settings_cancel_action" = "Annulla";
+"room_notifs_settings_done_action" = "Fatto";
+"room_notifs_settings_none" = "Niente";
+"room_notifs_settings_mentions_and_keywords" = "Solo menzioni e parole chiave";
+"room_notifs_settings_all_messages" = "Tutti i messaggi";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Inviami notifiche per";
+"room_details_notifs" = "Notifiche";

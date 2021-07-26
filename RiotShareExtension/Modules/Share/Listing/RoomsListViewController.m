@@ -129,6 +129,13 @@
     }
 }
 
+- (void)setKeyboardHeight:(CGFloat)keyboardHeight
+{
+    // Bypass inherited keyboard handling to fix layout when searching.
+    // There are no sticky headers to worry about updating.
+    return;
+}
+
 #pragma mark - Private
 
 - (void)showShareAlertForRoomPath:(NSIndexPath *)indexPath
@@ -288,6 +295,12 @@
                 
                 // Refresh display
                 [self refreshRecentsTable];
+            }
+            
+            // Dismiss the keyboard when scrolling to match the behaviour of the main app.
+            if (self.recentsSearchBar.isFirstResponder)
+            {
+                [self.recentsSearchBar resignFirstResponder];
             }
         }
     }

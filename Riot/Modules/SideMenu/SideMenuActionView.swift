@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol SideMenuActionViewDelegate: class {
+protocol SideMenuActionViewDelegate: AnyObject {
     func sideMenuActionView(_ actionView: SideMenuActionView, didTapMenuItem sideMenuItem: SideMenuItem?)
 }
 

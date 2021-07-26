@@ -96,7 +96,6 @@
 "room_creation_invite_another_user" = "通过用户 ID、名称或电子邮件进行搜索/邀请";
 // Room recents
 "room_recents_directory_section" = "聊天室目录";
-"room_recents_directory_section_network" = "网络";
 "room_recents_favourites_section" = "收藏夹";
 "room_recents_people_section" = "联系人";
 "room_recents_conversations_section" = "聊天室";

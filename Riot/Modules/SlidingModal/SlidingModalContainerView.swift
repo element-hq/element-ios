@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-protocol SlidingModalContainerViewDelegate: class {
+protocol SlidingModalContainerViewDelegate: AnyObject {
     func slidingModalContainerViewDidTapBackground(_ view: SlidingModalContainerView)
 }
 

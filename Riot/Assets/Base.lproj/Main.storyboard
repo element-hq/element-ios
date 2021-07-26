@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -151,7 +151,7 @@
         <!--People View Controller-->
         <scene sceneID="Qba-PP-lco">
             <objects>
-                <viewController storyboardIdentifier="PeopleViewController" id="IGB-jr-yFz" customClass="PeopleViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PeopleViewController" extendedLayoutIncludesOpaqueBars="YES" id="IGB-jr-yFz" customClass="PeopleViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mhy-d3-Jh6"/>
                         <viewControllerLayoutGuide type="bottom" id="Hkk-qB-8tq"/>
@@ -177,7 +177,7 @@
         <!--Favourites View Controller-->
         <scene sceneID="z6B-k5-ano">
             <objects>
-                <viewController storyboardIdentifier="FavouritesViewController" id="HnD-LA-psC" customClass="FavouritesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FavouritesViewController" extendedLayoutIncludesOpaqueBars="YES" id="HnD-LA-psC" customClass="FavouritesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pOc-AC-QkD"/>
                         <viewControllerLayoutGuide type="bottom" id="W6L-Au-CaZ"/>
@@ -356,22 +356,6 @@
             </objects>
             <point key="canvasLocation" x="1223" y="-3899"/>
         </scene>
-        <!--Riot Navigation Controller-->
-        <scene sceneID="TbB-77-7oK">
-            <objects>
-                <navigationController id="qAW-wR-KyU" customClass="RiotNavigationController" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r5V-3P-3Lg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="mRq-hp-dod" kind="relationship" relationship="rootViewController" id="fqQ-aW-08c"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="T7q-ez-UVO" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3326" y="-2050"/>
-        </scene>
         <!--Contact Details View Controller-->
         <scene sceneID="grY-bt-CcD">
             <objects>
@@ -463,7 +447,7 @@
         <!--Rooms View Controller-->
         <scene sceneID="SDg-Pp-8Uj">
             <objects>
-                <viewController storyboardIdentifier="RoomsViewController" id="HPQ-zg-lZR" customClass="RoomsViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RoomsViewController" extendedLayoutIncludesOpaqueBars="YES" id="HPQ-zg-lZR" customClass="RoomsViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Hkg-kw-ioH"/>
                         <viewControllerLayoutGuide type="bottom" id="UI8-oQ-9M9"/>
@@ -479,7 +463,6 @@
                         </userDefinedRuntimeAttributes>
                     </tabBarItem>
                     <connections>
-                        <segue destination="qAW-wR-KyU" kind="presentation" identifier="presentDirectoryServerPicker" id="1mb-Wk-zpt"/>
                         <segue destination="WDS-Ip-RQ9" kind="presentation" identifier="presentStartChat" id="Tfl-tq-LQp"/>
                     </connections>
                 </viewController>
@@ -560,28 +543,9 @@
             </objects>
             <point key="canvasLocation" x="374" y="449"/>
         </scene>
-        <!--Directory Server Picker View Controller-->
-        <scene sceneID="t8d-GX-ntZ">
-            <objects>
-                <tableViewController storyboardIdentifier="DirectoryServerPickerViewControllerStoryboardId" id="mRq-hp-dod" customClass="DirectoryServerPickerViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="YbK-Rh-uRf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="mRq-hp-dod" id="71E-8v-wpk"/>
-                            <outlet property="delegate" destination="mRq-hp-dod" id="0Nu-Wt-eJD"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="6vB-s9-qMc"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Q9W-8f-BvC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4174" y="-2050"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mhb-l9-pM3"/>
+        <segue reference="Tfl-tq-LQp"/>
         <segue reference="f5u-Y1-7nt"/>
     </inferredMetricsTieBreakers>
     <resources>

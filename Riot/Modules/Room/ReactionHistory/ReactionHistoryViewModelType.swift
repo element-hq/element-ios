@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol ReactionHistoryViewModelViewDelegate: class {
+protocol ReactionHistoryViewModelViewDelegate: AnyObject {
     func reactionHistoryViewModel(_ viewModel: ReactionHistoryViewModelType, didUpdateViewState viewSate: ReactionHistoryViewState)
 }
 
-protocol ReactionHistoryViewModelCoordinatorDelegate: class {        
+protocol ReactionHistoryViewModelCoordinatorDelegate: AnyObject {        
     func reactionHistoryViewModelDidClose(_ viewModel: ReactionHistoryViewModelType)
 }
 
