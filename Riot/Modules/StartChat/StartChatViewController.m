@@ -740,7 +740,7 @@
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = ThemeService.shared.theme.tintColor;
+    leftImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
     
     // Use the theme's grey color.
     // The effect views are needed due to minimal style.
@@ -750,12 +750,6 @@
     UIView *effectBackgroundBottom =  [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
     effectBackgroundTop.hidden = YES;
     effectBackgroundBottom.hidden = YES;
-        
-    // place holder
-    if (searchBarTextField.placeholder)
-    {
-        searchBarTextField.textColor = ThemeService.shared.theme.placeholderTextColor;
-    }
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

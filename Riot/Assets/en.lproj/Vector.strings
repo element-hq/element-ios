@@ -176,7 +176,7 @@
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
 "room_creation_wait_for_creation" = "A room is already being created. Please wait.";
-"room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
+"room_creation_invite_another_user" = "Invite by User ID, Name or email";
 "room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
 "room_creation_dm_error" = "We couldn't create your DM. Please check the users you want to invite and try again.";
 
