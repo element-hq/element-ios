@@ -50,7 +50,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
         }
     }
     
-    // MARK: - Public
+    // MARK: - Public 
     
     func process(viewAction: RoomNotificationSettingsViewAction) {
         switch viewAction {
