@@ -393,6 +393,10 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     }
     
     @objc private func handleWaveformTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard self.lastUIState == .lockedModeRecord else {
+            return
+        }
+
         delegate?.voiceMessageToolbarViewDidRequestRecordingFinish(self)
     }
 }

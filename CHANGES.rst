@@ -15,6 +15,7 @@ Changes to be released in next version
  * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
  * AuthenticationViewController: Fix crash on authentication if an intermediate view was presented (#4606).
  * Tap/hold to send voice messages isn't intuitive (#4601).
+ * Tapping on waveform in composer glitches UI (#4603).
 
 ⚠️ API Changes
  * 
