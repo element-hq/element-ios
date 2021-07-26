@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol SettingsDiscoveryThreePidDetailsViewModelViewDelegate: class {
+protocol SettingsDiscoveryThreePidDetailsViewModelViewDelegate: AnyObject {
     func settingsDiscoveryThreePidDetailsViewModel(_ viewModel: SettingsDiscoveryThreePidDetailsViewModelType, didUpdateViewState viewSate: SettingsDiscoveryThreePidDetailsViewState)
 }
 

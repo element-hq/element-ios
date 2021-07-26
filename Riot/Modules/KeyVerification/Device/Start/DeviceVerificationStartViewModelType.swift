@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol DeviceVerificationStartViewModelViewDelegate: class {
+protocol DeviceVerificationStartViewModelViewDelegate: AnyObject {
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didUpdateViewState viewSate: DeviceVerificationStartViewState)
 }
 
-protocol DeviceVerificationStartViewModelCoordinatorDelegate: class {
+protocol DeviceVerificationStartViewModelCoordinatorDelegate: AnyObject {
     func deviceVerificationStartViewModelDidUseLegacyVerification(_ viewModel: DeviceVerificationStartViewModelType)
 
     func deviceVerificationStartViewModel(_ viewModel: DeviceVerificationStartViewModelType, didCompleteWithOutgoingTransaction transaction: MXSASTransaction)

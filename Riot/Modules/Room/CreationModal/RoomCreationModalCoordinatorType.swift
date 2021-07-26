@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol RoomCreationModalCoordinatorDelegate: class {
+protocol RoomCreationModalCoordinatorDelegate: AnyObject {
     func roomCreationModalCoordinatorDidComplete(_ coordinator: RoomCreationModalCoordinatorType)
 }
 

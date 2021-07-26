@@ -143,7 +143,9 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         self.titleLabel.text = VectorL10n.keyVerificationVerifyQrCodeTitle
         self.informationLabel.text = VectorL10n.keyVerificationVerifyQrCodeInformation
         
-        self.scanCodeButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeScanCodeAction, for: .normal)
+        // Hide until we have the type of the verification request
+        self.scanCodeButton.isHidden = true
+
         self.cannotScanButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeCannotScanAction, for: .normal)
     }
 
@@ -157,8 +159,8 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             self.render(error: error)
         case .scannedCodeValidated(let isValid):
             self.renderScannedCode(valid: isValid)        
-        case .cancelled(let reason):
-            self.renderCancelled(reason: reason)
+        case .cancelled(let reason, let verificationKind):
+            self.renderCancelled(reason: reason, verificationKind: verificationKind)
         case .cancelledByMe(let reason):
             self.renderCancelledByMe(reason: reason)
         }
@@ -195,10 +197,13 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
             switch viewData.verificationKind {
             case .user:
                 informationText = VectorL10n.keyVerificationVerifyQrCodeInformation
+                self.scanCodeButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeScanCodeAction, for: .normal)
             default:
                 informationText = VectorL10n.keyVerificationVerifyQrCodeInformationOtherDevice
+                self.scanCodeButton.setTitle(VectorL10n.keyVerificationVerifyQrCodeScanCodeOtherDeviceAction, for: .normal)
             }
             
+            self.scanCodeButton.isHidden = false
             self.informationLabel.text = informationText
         }
     }
@@ -231,12 +236,21 @@ final class KeyVerificationVerifyByScanningViewController: UIViewController {
         }
     }
     
-    private func renderCancelled(reason: MXTransactionCancelCode) {
+    private func renderCancelled(reason: MXTransactionCancelCode,
+                                 verificationKind: KeyVerificationKind) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
     
         self.stopQRCodeScanningIfPresented()
         
-        self.errorPresenter.presentError(from: self.alertPresentingViewController, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+        // if we're verifying with someone else, let the user know they cancelled.
+        // if we're verifying our own device, assume the user probably knows since it was them who
+        // cancelled on their other device
+        if verificationKind == .user {
+            self.errorPresenter.presentError(from: self.alertPresentingViewController, title: "", message: VectorL10n.deviceVerificationCancelled, animated: true) {
+                self.dismissQRCodeScanningIfPresented(animated: false)
+                self.viewModel.process(viewAction: .cancel)
+            }
+        } else {
             self.dismissQRCodeScanningIfPresented(animated: false)
             self.viewModel.process(viewAction: .cancel)
         }

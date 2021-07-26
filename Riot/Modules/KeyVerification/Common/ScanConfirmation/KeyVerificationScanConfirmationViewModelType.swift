@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol KeyVerificationScanConfirmationViewModelViewDelegate: class {
+protocol KeyVerificationScanConfirmationViewModelViewDelegate: AnyObject {
     func keyVerificationScanConfirmationViewModel(_ viewModel: KeyVerificationScanConfirmationViewModelType, didUpdateViewState viewSate: KeyVerificationScanConfirmationViewState)
 }
 
-protocol KeyVerificationScanConfirmationViewModelCoordinatorDelegate: class {
+protocol KeyVerificationScanConfirmationViewModelCoordinatorDelegate: AnyObject {
     func keyVerificationScanConfirmationViewModelDidComplete(_ viewModel: KeyVerificationScanConfirmationViewModelType)
     func keyVerificationScanConfirmationViewModelDidCancel(_ viewModel: KeyVerificationScanConfirmationViewModelType)
 }

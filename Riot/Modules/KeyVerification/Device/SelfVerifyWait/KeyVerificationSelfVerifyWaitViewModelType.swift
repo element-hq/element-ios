@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol KeyVerificationSelfVerifyWaitViewModelViewDelegate: class {
+protocol KeyVerificationSelfVerifyWaitViewModelViewDelegate: AnyObject {
     func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didUpdateViewState viewSate: KeyVerificationSelfVerifyWaitViewState)
 }
 
-protocol KeyVerificationSelfVerifyWaitViewModelCoordinatorDelegate: class {
+protocol KeyVerificationSelfVerifyWaitViewModelCoordinatorDelegate: AnyObject {
     func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptKeyVerificationRequest keyVerificationRequest: MXKeyVerificationRequest)
     func keyVerificationSelfVerifyWaitViewModel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType, didAcceptIncomingSASTransaction incomingSASTransaction: MXIncomingSASTransaction)
     func keyVerificationSelfVerifyWaitViewModelDidCancel(_ viewModel: KeyVerificationSelfVerifyWaitViewModelType)

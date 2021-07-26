@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol KeyVerificationSelfVerifyStartCoordinatorDelegate: class {
+protocol KeyVerificationSelfVerifyStartCoordinatorDelegate: AnyObject {
     
     func keyVerificationSelfVerifyStartCoordinator(_ coordinator: KeyVerificationSelfVerifyStartCoordinatorType, otherDidAcceptRequest request: MXKeyVerificationRequest)
     

@@ -16,7 +16,7 @@
 
 import UIKit
 
-protocol SecureBackupSetupIntroViewControllerDelegate: class {
+protocol SecureBackupSetupIntroViewControllerDelegate: AnyObject {
     func secureBackupSetupIntroViewControllerDidTapUseKey(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
     func secureBackupSetupIntroViewControllerDidTapUsePassphrase(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController)
     func secureBackupSetupIntroViewControllerDidCancel(_ secureBackupSetupIntroViewController: SecureBackupSetupIntroViewController, showSkipAlert: Bool)

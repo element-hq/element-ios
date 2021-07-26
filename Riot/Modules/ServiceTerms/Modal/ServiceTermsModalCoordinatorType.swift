@@ -18,7 +18,7 @@
 
 import Foundation
 
-protocol ServiceTermsModalCoordinatorDelegate: class {
+protocol ServiceTermsModalCoordinatorDelegate: AnyObject {
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType)
     func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType)
     func serviceTermsModalCoordinatorDidCancel(_ coordinator: ServiceTermsModalCoordinatorType)

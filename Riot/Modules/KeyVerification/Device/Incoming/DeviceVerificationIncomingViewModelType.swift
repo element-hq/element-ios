@@ -18,11 +18,11 @@
 
 import Foundation
 
-protocol DeviceVerificationIncomingViewModelViewDelegate: class {
+protocol DeviceVerificationIncomingViewModelViewDelegate: AnyObject {
     func deviceVerificationIncomingViewModel(_ viewModel: DeviceVerificationIncomingViewModelType, didUpdateViewState viewSate: DeviceVerificationIncomingViewState)
 }
 
-protocol DeviceVerificationIncomingViewModelCoordinatorDelegate: class {
+protocol DeviceVerificationIncomingViewModelCoordinatorDelegate: AnyObject {
     func deviceVerificationIncomingViewModel(_ viewModel: DeviceVerificationIncomingViewModelType, didAcceptTransaction transaction: MXSASTransaction)    
     func deviceVerificationIncomingViewModelDidCancel(_ viewModel: DeviceVerificationIncomingViewModelType)
 }
