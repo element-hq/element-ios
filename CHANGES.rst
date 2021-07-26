@@ -8,14 +8,15 @@ Changes to be released in next version
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
  * Remove the directory section from the Rooms tab.
  * Notifications: Show decrypted content is enabled by default (#4519).
+ * Voice Messages: Tap/hold to send voice messages isn't intuitive (#4601).
+ * Voice Messages: copy could be improved (#4604).
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)
  * Settings: Disabled autocorrection when entering an identity server (#4593).
  * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
  * AuthenticationViewController: Fix crash on authentication if an intermediate view was presented (#4606).
- * Tap/hold to send voice messages isn't intuitive (#4601).
- * Tapping on waveform in composer glitches UI (#4603).
+ * Voice Messages: Tapping on waveform in composer glitches UI (#4603).
 
 ⚠️ API Changes
  * 
