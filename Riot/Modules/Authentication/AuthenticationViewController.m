@@ -382,6 +382,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [[NSNotificationCenter defaultCenter] removeObserver:universalLinkDidChangeNotificationObserver];
         universalLinkDidChangeNotificationObserver = nil;
     }
+    
+    [self.authenticationActivityIndicator removeObserver:self forKeyPath:@"hidden"];
 
     autoDiscovery = nil;
     _keyVerificationCoordinatorBridgePresenter = nil;
