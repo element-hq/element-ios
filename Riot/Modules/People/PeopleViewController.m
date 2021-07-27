@@ -71,9 +71,6 @@
     
     // Register table view cell for contacts.
     [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
-    
-    // Change the table data source. It must be the people view controller itself.
-    self.recentsTableView.dataSource = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,9 +86,10 @@
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
-    if (recentsDataSource)
+    if ([self.dataSource isKindOfClass:RecentsDataSource.class])
     {
         // Take the lead on the shared data source.
+        recentsDataSource = (RecentsDataSource*)self.dataSource;
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
     }
@@ -125,56 +123,6 @@
     return [super cellViewClassForCellData:cellData];
 }
 
-#pragma mark - UITableView data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Retrieve the current number of sections related to the direct rooms.
-    // Sanity check: check whether the recents data source is correctly configured.
-    directRoomsSectionNumber = 0;
-    
-    if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
-    {
-        directRoomsSectionNumber = [self.dataSource numberOfSectionsInTableView:self.recentsTableView];
-    }
-    
-    return directRoomsSectionNumber;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // FIXME: Should this need to check the section?
-    if (section >= directRoomsSectionNumber)
-    {
-        return 0;
-    }
-    
-    return [self.dataSource tableView:tableView numberOfRowsInSection:section];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // FIXME: Should this need to check the section?
-    if (indexPath.section >= directRoomsSectionNumber)
-    {
-        // Return a fake cell to prevent app from crashing.
-        return [[UITableViewCell alloc] init];
-    }
-    
-    return [self.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // FIXME: Should this need to check the section?
-    if (indexPath.section >= directRoomsSectionNumber)
-    {
-        return NO;
-    }
-    
-    return [self.dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
-}
-
 #pragma mark - UITableView delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -185,29 +133,6 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // FIXME: Should this need to check the section?
-    if (indexPath.section >= directRoomsSectionNumber)
-    {
-        return 0.0;
-    }
-    
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // FIXME: Should this need to check the section?
-    if (indexPath.section >= directRoomsSectionNumber)
-    {
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        return;
-    }
-    
-    return [super tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 #pragma mark - Override RecentsViewController
