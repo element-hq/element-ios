@@ -169,8 +169,7 @@
 - (NSUInteger)totalItemCounts
 {
     return recentsDataSource.invitesCellDataArray.count
-    + recentsDataSource.conversationCellDataArray.count
-    + recentsDataSource.peopleCellDataArray.count;
+    + recentsDataSource.conversationCellDataArray.count;
 }
 
 @end
