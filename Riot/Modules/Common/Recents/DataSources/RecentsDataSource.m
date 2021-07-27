@@ -1170,7 +1170,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         for (NSUInteger index = 0; index < count; index++)
         {
             id<MXKRecentCellDataStoring> cell = [recentsDataSource cellDataAtIndex:index];
-//            if (self.currentSpace == nil || [self.currentSpace isRoomAChildWithRoomId:cell.roomSummary.roomId])
             if (self.currentSpace == nil || [self.mxSession.spaceService isRoomWithId:cell.roomSummary.roomId descendantOf:self.currentSpace.spaceId])
             {
                 [cells addObject:cell];
