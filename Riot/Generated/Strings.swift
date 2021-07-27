@@ -4114,6 +4114,10 @@ internal enum VectorL10n {
   internal static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
   }
+  /// Device notifications
+  internal static var settingsDeviceNotifications: String { 
+    return VectorL10n.tr("Vector", "settings_device_notifications") 
+  }
   /// SESSIONS
   internal static var settingsDevices: String { 
     return VectorL10n.tr("Vector", "settings_devices") 

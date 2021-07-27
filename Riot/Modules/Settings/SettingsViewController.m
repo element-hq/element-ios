@@ -1810,7 +1810,7 @@ TableViewSectionsDelegate>
 
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
-            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
+            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_device_notifications", @"Vector", nil);
             cell.detailTextLabel.text = @"";
 
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
