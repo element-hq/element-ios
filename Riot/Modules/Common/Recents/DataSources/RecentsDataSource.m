@@ -19,7 +19,6 @@
 
 #import "RecentCellData.h"
 #import "SectionHeaderView.h"
-#import "DirectorySectionHeaderContainerView.h"
 
 #import "ThemeService.h"
 
@@ -37,7 +36,6 @@
 #define RECENTSDATASOURCE_SECTION_PEOPLE        0x40
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
-#define RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT   65.0
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
@@ -47,10 +45,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     dispatch_queue_t processingQueue;
     
     NSInteger shrinkedSectionsBitMask;
-
-    DirectorySectionHeaderContainerView *directorySectionContainer;
-    UILabel *networkLabel;
-    UILabel *directoryServerLabel;
 
     NSMutableDictionary<NSString*, id> *roomTagsListenerByUserId;
     
@@ -483,13 +477,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             conversationSection = sectionsCount++;
         }
         
-        if (_recentsDataSourceMode == RecentsDataSourceModeRooms
-            && BuildSettings.publicRoomsShowDirectory)
-        {
-            // Add the directory section after "ROOMS"
-            directorySection = sectionsCount++;
-        }
-        
         if (self.lowPriorityCellDataArray.count > 0)
         {
             lowPrioritySection = sectionsCount++;
@@ -571,12 +558,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (section == self.secureBackupBannerSection || section == self.crossSigningBannerSection)
     {
         return 0.0;
-    }
-    else if (section == directorySection
-             && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
-             && BuildSettings.publicRoomsAllowServerChange)
-    {
-        return RECENTSDATASOURCE_DIRECTORY_SECTION_HEADER_HEIGHT;
     }
 
     return RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT;
@@ -822,57 +803,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     headerLabel.attributedText = [self attributedStringForHeaderTitleInSection:section];
     [sectionHeader addSubview:headerLabel];
     sectionHeader.headerLabel = headerLabel;
-
-    if (section == directorySection
-        && _recentsDataSourceMode == RecentsDataSourceModeRooms
-        && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_DIRECTORY)
-        && BuildSettings.publicRoomsAllowServerChange)
-    {
-        if (!directorySectionContainer)
-        {
-            directorySectionContainer = [[DirectorySectionHeaderContainerView alloc] initWithFrame:CGRectZero];
-            directorySectionContainer.backgroundColor = [UIColor clearColor];
-
-            // Add the "Network" label at the left
-            networkLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
-            networkLabel.font = [UIFont systemFontOfSize:16.0];
-            networkLabel.text = NSLocalizedStringFromTable(@"room_recents_directory_section_network", @"Vector", nil);
-            [directorySectionContainer addSubview:networkLabel];
-            directorySectionContainer.networkLabel = networkLabel;
-
-            // Add label for selected directory server
-            directoryServerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
-            directoryServerLabel.font = [UIFont systemFontOfSize:16.0];
-            directoryServerLabel.textAlignment = NSTextAlignmentRight;
-            [directorySectionContainer addSubview:directoryServerLabel];
-            directorySectionContainer.directoryServerLabel = directoryServerLabel;
-
-            // Chevron
-            UIImageView *chevronImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 12)];
-            chevronImageView.contentMode = UIViewContentModeScaleAspectFit;
-            chevronImageView.image = [UIImage imageNamed:@"disclosure_icon"];
-            chevronImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
-            [directorySectionContainer addSubview:chevronImageView];
-            directorySectionContainer.disclosureView = chevronImageView;
-
-            // Set a tap listener on all the container
-            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDirectoryServerPickerTap:)];
-            [tapGesture setNumberOfTouchesRequired:1];
-            [tapGesture setNumberOfTapsRequired:1];
-            [directorySectionContainer addGestureRecognizer:tapGesture];
-        }
-        
-        // Apply the current UI theme.
-        networkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-        directoryServerLabel.textColor = ThemeService.shared.theme.textSecondaryColor;
-
-        // Set the current directory server name
-        directoryServerLabel.text = _publicRoomsDirectoryDataSource.directoryServerDisplayname;
-
-        // Add the check box container
-        [sectionHeader addSubview:directorySectionContainer];
-        sectionHeader.bottomView = directorySectionContainer;
-    }
 
     return sectionHeader;
 }

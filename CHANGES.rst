@@ -5,6 +5,63 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
+ * Remove the directory section from the Rooms tab.
+ * Notifications: Show decrypted content is enabled by default (#4519).
+
+🐛 Bugfix
+ * Room: Fixed mentioning users from room info member details (#4583)
+ * Settings: Disabled autocorrection when entering an identity server (#4593).
+ * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
+ * AuthenticationViewController: Fix crash on authentication if an intermediate view was presented (#4606).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * Separated CI jobs into individual actions
+ * Update Gemfile.lock
+
+Changes in 1.4.7 (2021-07-22)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * Updated issue templates.
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.5)).
+
+Changes in 1.4.6 (2021-07-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Room Notification Settings: Ability to change between "All Messages", "Mentions and Keywords" and "None". Not yet exposed in Element UI. (#4458).
  * Add support for sending slow motion videos (#4483).
 
@@ -31,6 +88,33 @@ Changes to be released in next version
 
 Others
  * Silenced some documentation, deprecations and SwiftLint warnings.
+ 
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.4)).
+
+Changes in 1.4.5 (2021-07-07)
+=================================================
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ * Notifications: Fix an issue where the app is unresponsive after getting some notifications (#4534).
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+
+🧱 Build
+ *
+
+Others
+ *
 
 Changes in 1.4.4 (2021-06-30)
 =================================================
