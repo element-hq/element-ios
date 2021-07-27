@@ -68,9 +68,6 @@
     plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"people_floating_action"]
                                             target:self
                                             action:@selector(onPlusButtonPressed)];
-    
-    // Register table view cell for contacts.
-    [self.recentsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:ContactTableViewCell.defaultReuseIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -93,34 +90,6 @@
         recentsDataSource.areSectionsShrinkable = NO;
         [recentsDataSource setDelegate:self andRecentsDataSourceMode:RecentsDataSourceModePeople];
     }
-}
-
-#pragma mark - 
-
-- (void)displayList:(MXKRecentsDataSource *)listDataSource
-{
-    [super displayList:listDataSource];
-    
-    // Change the table data source. It must be the people view controller itself.
-    self.recentsTableView.dataSource = self;
-    
-    // Keep a ref on the recents data source
-    if ([listDataSource isKindOfClass:RecentsDataSource.class])
-    {
-        recentsDataSource = (RecentsDataSource*)listDataSource;
-    }
-}
-
-#pragma mark - MXKDataSourceDelegate
-
-- (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
-{
-    if ([cellData isKindOfClass:MXKContact.class])
-    {
-        return ContactTableViewCell.class;
-    }
-    
-    return [super cellViewClassForCellData:cellData];
 }
 
 #pragma mark - UITableView delegate
