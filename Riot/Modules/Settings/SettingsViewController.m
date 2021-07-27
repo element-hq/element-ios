@@ -89,6 +89,7 @@ enum
 enum
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
+    NOTIFICATION_SETTINGS_SYSTEM_SETTINGS,
     NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
@@ -351,6 +352,7 @@ TableViewSectionsDelegate>
     
     Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SYSTEM_SETTINGS];
     if (RiotSettings.shared.settingsScreenShowNotificationDecodedContentOption)
     {
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
@@ -1798,6 +1800,22 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_SYSTEM_SETTINGS)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            }
+
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+
+            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
+            cell.detailTextLabel.text = @"";
+
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
         else if (row == NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -2501,6 +2519,10 @@ TableViewSectionsDelegate>
             UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             [self showInviteFriendsFromSourceView:selectedCell];
         }
+        else if (section == SECTION_TAG_NOTIFICATIONS && row == NOTIFICATION_SETTINGS_SYSTEM_SETTINGS)
+        {
+            [self openSystemSettingsApp];
+        }
         else if (section == SECTION_TAG_DISCOVERY)
         {
             [self.settingsDiscoveryTableViewSection selectRow:row];
@@ -2878,6 +2900,12 @@ TableViewSectionsDelegate>
             }];
         }
     }
+}
+
+- (void)openSystemSettingsApp
+{
+    NSURL *settingsAppURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    [[UIApplication sharedApplication] openURL:settingsAppURL options:@{} completionHandler:nil];
 }
 
 - (void)toggleCallKit:(UISwitch *)sender
