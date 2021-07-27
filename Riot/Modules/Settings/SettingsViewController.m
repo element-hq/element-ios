@@ -2812,7 +2812,7 @@ TableViewSectionsDelegate>
     }];
 }
 
-- (void)togglePushNotifications:(id)sender withNotificationSettings:(UNNotificationSettings * _Nonnull)settings
+- (void)togglePushNotifications:(UISwitch *)sender withNotificationSettings:(UNNotificationSettings * _Nonnull)settings
 {
     // Check first whether the user allow notification from device settings
     if (settings.authorizationStatus == UNAuthorizationStatusDenied)
