@@ -10,6 +10,7 @@ Changes to be released in next version
  * Notifications: Show decrypted content is enabled by default (#4519).
  * Voice Messages: Tap/hold to send voice messages isn't intuitive (#4601).
  * Voice Messages: copy could be improved (#4604).
+ * Slide to lock should be more generous (#4602).
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)

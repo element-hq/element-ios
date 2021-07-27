@@ -145,7 +145,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
                 convertedFrame = self.convert(lockChevron.frame, from: lockContainerView)
                 lockChevronToRecordButtonDistance = recordButtonsContainerView.frame.midY + convertedFrame.maxY
                 
-                lockChevronToLockButtonDistance = lockChevron.frame.minY - lockButtonsContainerView.frame.midY
+                lockChevronToLockButtonDistance = (lockChevron.frame.minY - lockButtonsContainerView.frame.midY) / 2
                 
                 startAnimatingRecordingIndicator()
             default:
