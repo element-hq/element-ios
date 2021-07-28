@@ -2867,13 +2867,14 @@ TableViewSectionsDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
         __weak typeof(self) weakSelf = self;
-
-        NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+        NSString *title = NSLocalizedStringFromTable(@"settings_notifications_disabled_alert_title", @"Vector", nil);
+        NSString *message = NSLocalizedStringFromTable(@"settings_notifications_disabled_alert_message", @"Vector", nil);
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
+        currentAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                         style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
                                                            if (weakSelf)
@@ -2883,6 +2884,21 @@ TableViewSectionsDelegate>
                                                            }
                                                            
                                                        }]];
+        
+        UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                            if (weakSelf)
+                                                            {
+                                                                typeof(self) self = weakSelf;
+                                                                self->currentAlert = nil;
+                                                                
+                                                                [self openSystemSettingsApp];
+                                                            }
+                                                        }];
+        
+        [currentAlert addAction:settingsAction];
+        currentAlert.preferredAction = settingsAction;
         
         [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCPushNotificationsAlert"];
         [self presentViewController:currentAlert animated:YES completion:nil];

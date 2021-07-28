@@ -272,7 +272,6 @@
 "settings_global_settings_info" = "全局通知设置可在 %@ 的网页客户端中修改";
 "settings_pin_rooms_with_missed_notif" = "置顶含有错过的通知的聊天室";
 "settings_pin_rooms_with_unread" = "置顶含有未读消息的聊天室";
-"settings_on_denied_notification" = "%@ 的通知请求被拒绝，请在系统设置中允许";
 "settings_unignore_user" = "显示所有来自 %@ 的消息？";
 "settings_contacts_discover_matrix_users" = "使用电子邮件和手机号码来发现用户";
 "settings_contacts_phonebook_country" = "电话本国家";
