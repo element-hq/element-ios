@@ -4,11 +4,11 @@
 "title_people" = "Lidé";
 "title_rooms" = "Místnosti";
 "title_groups" = "Komunity";
-"warning" = "Varování!";
+"warning" = "Varování";
 // Actions
-"view" = "Zobrazit zdroj";
+"view" = "Zobrazit";
 "next" = "Další";
-"back" = "Pro zabezpečení se při odhlašování odstraní všechny šifrovací klíče typu end-to-end, a i po přihlašení bude historie šifrovaných kanálů nečitelná.\nZvolte export, chcete-li je zálohovat, než se odhlásíte.";
+"back" = "Zpět";
 "continue" = "Pokračovat";
 "create" = "Vytvořit";
 "start" = "Spustit";
@@ -52,7 +52,7 @@
 "auth_repeat_password_placeholder" = "Zopakovat heslo";
 "auth_repeat_new_password_placeholder" = "Potvrďte své nové heslo";
 "auth_home_server_placeholder" = "URL (např. https://matrix.org)";
-"auth_identity_server_placeholder" = "URL (např. https://matrix.org)";
+"auth_identity_server_placeholder" = "URL (např. https://vector.im)";
 "auth_invalid_login_param" = "Nesprávné uživatelské jméno nebo heslo";
 "auth_invalid_user_name" = "Uživatelské jméno může obsahovat pouze písmena, číslice, tečky, pomlčky a podtržítka";
 "auth_invalid_password" = "Heslo je velmi krátké (min 6)";
@@ -130,7 +130,7 @@
 // Directory
 "directory_cell_title" = "Procházet adresář";
 "directory_cell_description" = "%tu místnosti";
-"directory_search_results_title" = "Procházet výsledky výhledávání v adresáři";
+"directory_search_results_title" = "Procházet výsledky v adresáři";
 "directory_search_results" = "%tu výsledky nalezeny pro %@";
 "directory_search_results_more_than" = ">%tu výsledky nalezeny pro %@";
 "directory_searching_title" = "Vyhledávání v adresáři…";
@@ -139,7 +139,7 @@
 "contacts_address_book_section" = "LOKÁLNÍ KONTAKTY";
 "contacts_address_book_matrix_users_toggle" = "Pouze Matrix uživatelé";
 "contacts_address_book_no_contact" = "Žádné lokální kontakty";
-"contacts_address_book_permission_denied" = "Nepovolil jste přístup aplikace Riot k místním kontaktům";
+"contacts_address_book_permission_denied" = "Nepovolil jste přístup aplikace Element k místním kontaktům";
 "contacts_user_directory_section" = "UŽIVATELSKÝ ADRESÁŘ";
 "contacts_user_directory_offline_section" = "UŽIVATELSKÝ ADRESÁŘ (offline)";
 // Chat participants
@@ -162,8 +162,8 @@
 "room_participants_ago" = "před";
 "room_participants_action_section_admin_tools" = "Nástroje pro správce";
 "room_participants_action_section_direct_chats" = "Přímé chaty";
-"room_participants_action_section_devices" = "Zařízení";
-"room_participants_action_section_other" = "Další";
+"room_participants_action_section_devices" = "Relace";
+"room_participants_action_section_other" = "Možnosti";
 "room_participants_action_invite" = "Pozvat";
 "room_participants_action_leave" = "Odejít z místnosti";
 "room_participants_action_remove" = "Odebrat z této místnosti";
@@ -178,7 +178,7 @@
 "room_participants_action_start_video_call" = "Začít video hovor";
 "room_participants_action_mention" = "Zmínka";
 // Chat
-"room_jump_to_first_unread" = "Přeskočit na první nepřečtenou zprávu";
+"room_jump_to_first_unread" = "Přeskočit na nepřečtenou zprávu";
 "room_new_message_notification" = "%d nová zpráva";
 "room_new_messages_notification" = "%d nových zpráv";
 "room_one_user_is_typing" = "%@ právě píše…";
@@ -196,7 +196,7 @@
 "room_delete_unsent_messages" = "Smazat neodeslané zprávy";
 "room_event_action_copy" = "Kopírovat";
 "room_event_action_quote" = "Citovat";
-"room_event_action_redact" = "Redigovat";
+"room_event_action_redact" = "Odstranit";
 "room_event_action_more" = "Víc";
 "room_event_action_share" = "Sdílet";
 "room_event_action_permalink" = "Trvalý odkaz";
@@ -211,12 +211,12 @@
 "room_event_action_view_encryption" = "Informace o šifrování";
 "room_event_failed_to_send" = "Odeslání se nezdařilo";
 // Unknown devices
-"unknown_devices_alert_title" = "V místnosti jsou neznámá zařízení";
+"unknown_devices_alert_title" = "V místnosti jsou neznámé relace";
 "unknown_devices_send_anyway" = "Přesto poslat";
 "unknown_devices_call_anyway" = "Přesto zavolat";
 "unknown_devices_answer_anyway" = "Přesto přijmout";
 "unknown_devices_verify" = "Ověřit…";
-"unknown_devices_title" = "Neznámá zařízení";
+"unknown_devices_title" = "Neznámé relace";
 // Room Title
 "room_title_new_room" = "Nová místnost";
 "room_participants_invite_another_user" = "Hledat / Pozvat podle uživatelského ID, jména nebo emailu";
@@ -231,10 +231,117 @@
 "settings_title" = "Nastavení";
 "account_logout_all" = "Odhlásit všechny účty";
 "settings_report_bug" = "Nahlásit chybu";
-"settings_config_home_server" = "Domácího serveru je %@";
+"settings_config_home_server" = "Domácí server je %@";
 "settings_config_identity_server" = "Server identit je %@";
 "settings_config_user_id" = "Přihlášen/a jako %@";
 "auth_msisdn_validation_message" = "Odeslali jsme vám SMS aktivační kod. Prosím, zadejte jej níže.";
 "auth_msisdn_validation_error" = "Nelze ověřit telefonní číslo.";
-"auth_reset_password_success_message" = "Vaše heslo bylo úspěšně resetováno.\n\nByl jste právě odhlášen na všech vašich zařízeních a nebudete vánm nadále zasíláno oznámení. Pro znovu povolení zasílání oznámení, přihlašte se znovu na každém zařízení.";
+"auth_reset_password_success_message" = "Vaše heslo bylo úspěšně resetováno.\n\nByl jste právě odhlášen na všech vašich relací a nebudete vánm nadále zasíláno oznámení. Pro znovu povolení zasílání oznámení, přihlašte se znovu na každém zařízení.";
 "store_full_description" = "Element je novým typem komunikátoru a propojovací aplikace která:\n\n1. Dává vám kontrolu nad vaším soukromím\n2. Vás nechá komunikovat s kýmkoli v Matrix síti a dokonce mimo ni, díky integrace s aplikacemi jako je například Slack\n3. Vás chrání před reklamou, těžbou Vašich dat, nechráněnými přístupy nebo nezdokumentovanými fukncemi\n4. Zabezpečuje Vaši komunikaci pomocí koncového šifrování s distribuovaným ověřením ostatních\n\nElement se liší od ostatních komunikačních řešeních především tím, že je decentralizovaný a open-source\n\nElement vám umožňuje provozovat vlastní server anebo si vybrat nějakyý z veřejných, takže máte controlu nad vašimi konverzacemi a soukromím. Dává vám přístup do otevřené sítě, takže nejste odkázání jen ke komunikaci s ostatními uživateli Elementu. A je vysoce bezpečný.\n\nElement je toho všeho schopen díky svému operačnímu protokolu - Matrix, otevřeného standartu pro decentralizovanou komunikaci.\n\nElement vás nechává vybrat, kdo bude hostovat vaše konverzace. Přímo z aplikace si můžete vybrat několik rozdílných řešení:\n\n1. Účet zdarma na veřejném serveru matrix.org\n2. Vlastní hosting serveru na vlastním hardwaru\n3. Účet na přizpůsobeném serveru jednodýúchým přihlášením na hosting Element Matrix Services\n\nProč Element?\n\nVLASTNĚTE SVÁ DATA: Vy rozhodujete kde jsou vaše data a zprávy uchovávány. Svá data vlastníte a spravujete Vy, ne nějaká obří korporace, která o vás sbírá osobní data nebo poskytuje přístup dalším stranám.\n\nOTEVŘENÁ KOMUNIKACE A SPOLUPRÁCE: Máte možnost spojit se s kýmkoli v síti Matrix bez ohledu na jeho softwarové řešení, a dokonce se můžete připojit i na jiné komunikační protokoly, jako je Slack, IRC nebo XMPP (Jabber). Komunita podporuje i komunikátory jako Whatsapp, Telegram nebo iMessage.\n\nNEPROLOMITELNÉ ŠIFROVÁNÍ: Skutečné koncové šifrování (pouze přímí účastníci konverzace mají možnost rozšifrovat jejich zprávy) a pokročilé ověřování kontaktů.\n\nVŠESTRANNÉ KOMUNIKAČNÍ MOŽNOSTI: Textové zprávy, hlasové nebo videohovory, přenos souborů, sdílení obrazovky a mnoho dalších funkcí a možností pro implementaci. Vytvářejte místnosti a komunity a zůstaňte v kontaktu.\n\nKDEKOLI SE NACHÁZÍTE: Přístup k plně synchronizované historii konverzací máte kdekoli se nacházíte, ať už z aplikace anebo webového rozhraní na https://element.io/app.";
+"user_verification_sessions_list_session_untrusted" = "Nedůvěryhodná";
+"user_verification_sessions_list_session_trusted" = "Důvěryhodná";
+"user_verification_sessions_list_table_title" = "Relace";
+"user_verification_sessions_list_information" = "Zprávy s tímto uživatelem v této místnosti jsou šifrovány end-to-end a nemohou je číst třetí strany.";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Není známo";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Varování";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Důvěryhodný";
+"user_verification_start_additional_information" = "Abyste byli v bezpečí, dělejte to osobně nebo použijte jiný způsob komunikace.";
+"user_verification_start_waiting_partner" = "Čekám na %@…";
+"user_verification_start_information_part2" = " kontrolou jednorázového kódu na obou zařízeních.";
+"user_verification_start_information_part1" = "Pro větší bezpečnost ověřit ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Spustit ověřování";
+"key_verification_user_title" = "Ověřit je";
+"room_participants_security_information_room_encrypted" = "Zprávy v této místnosti jsou šifrovány end-to-end.\n\nVaše zprávy jsou zabezpečeny zámky a jedinečnými klíči je můžete odemknout pouze vy a příjemce.";
+"room_participants_security_information_room_not_encrypted" = "Zprávy v této místnosti nejsou šifrovány end-to-end.";
+"room_participants_security_loading" = "Načítání…";
+"room_participants_action_security_status_warning" = "Varování";
+"room_participants_action_security_status_verify" = "Ověřit";
+"room_participants_action_security_status_verified" = "Ověřeno";
+"room_participants_action_section_security" = "Zabezpečení";
+"room_participants_action_ban" = "Vyhodit z této místnosti";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Není nakonfigurován žádný server identity, takže nemůžete přidat účastníka pomocí e-mailu.";
+"auth_softlogout_recover_encryption_keys" = "Přihlaste se a obnovte šifrovací klíče uložené výhradně v tomto zařízení. Potřebujete je ke čtení všech zabezpečených zpráv na jakémkoli zařízení.";
+"auth_softlogout_reason" = "Váš správce domovského serveru (%1$@) vás odhlásil z vašeho účtu %2 @ (%3$@).";
+"auth_softlogout_signed_out" = "Jste odhlášeni";
+"auth_autodiscover_invalid_response" = "Neplatná odpověď na objevení domovského serveru";
+"auth_accept_policies" = "Přečtěte si a přijměte zásady tohoto domovského serveru:";
+"auth_add_email_and_phone_warning" = "Registrace pomocí e-mailu a telefonního čísla najednou ještě není podporována, dokud neexistuje rozhraní API. Zohledněno bude pouze telefonní číslo. Svůj e-mail můžete přidat do svého profilu v nastavení.";
+"auth_reset_password_error_is_required" = "Není nakonfigurován žádný server identity: pro obnovení hesla přidejte jeden server z možností .";
+"auth_forgot_password_error_no_configured_identity_server" = "Není nakonfigurován žádný server identity: pro obnovení hesla jeden přidejte .";
+"settings_key_backup_button_delete" = "Smazat zálohu";
+"settings_key_backup_button_restore" = "Obnovit ze zálohy";
+"auth_login_single_sign_on" = "Přihlásit se";
+
+// Accessibility
+"accessibility_checkbox_label" = "zaškrtávací políčko";
+"callbar_only_single_active_group" = "Klepnutím se připojíte ke skupinovému hovoru (%@)";
+"callbar_return" = "Vrátit se";
+"callbar_only_multiple_paused" = "%@ pozastavené hovory";
+"callbar_only_single_paused" = "Pozastavený hovor";
+"callbar_active_and_multiple_paused" = "1 aktivní hovor (%@) · %@ pozastavené hovory";
+"callbar_active_and_single_paused" = "1 aktivní hovor (%@) · 1 pozastavený hovor";
+
+// Call Bar
+"callbar_only_single_active" = "Klepnutím se vrátíte k hovoru (%@)";
+"less" = "Méně";
+"more" = "Více";
+"switch" = "Přepnout";
+"joined" = "Připojil se";
+"skip" = "Přeskočit";
+"close" = "Zavřít";
+"store_promotional_text" = "Aplikace pro chat a spolupráci chránící soukromí v otevřené síti. Žádný sběr dat, žádná zadní vrátka a žádný přístup třetích stran.";
+// String for App Store
+"store_short_description" = "Zabezpečený decentralizovaný chat/VoIP";
+"e2e_key_backup_wrong_version_button_settings" = "Nastavení";
+"side_menu_action_settings" = "Nastavení";
+"room_details_photo" = "Obrázek místnosti";
+"room_details_settings" = "Nastavení";
+"room_details_integrations" = "Integrace";
+"room_details_search" = "Vyhledat místnost";
+"room_details_files" = "Nahrávání";
+"room_details_people" = "Členové";
+"room_details_title_for_dm" = "Podrobnosti";
+"room_avatar_view_accessibility_hint" = "Změnit avatar místnosti";
+"room_creation_appearance_picture" = "Obrázek chatu (volitelné)";
+
+// Errors
+"error_user_already_logged_in" = "Vypadá to, že se pokoušíte připojit k jinému domovskému serveru. Chcete se odhlásit?";
+"social_login_button_title_sign_up" = "Zaregistrovat se pomocí %@";
+"social_login_button_title_sign_in" = "Přihlásit se pomocí %@";
+"social_login_button_title_continue" = "Pokračovat s %@";
+"social_login_list_title_sign_up" = "nebo";
+"social_login_list_title_sign_in" = "nebo";
+
+// Social login
+
+"social_login_list_title_continue" = "Pokračovat s";
+"auth_softlogout_clear_data_sign_out" = "Odhlásit se";
+"auth_softlogout_clear_data_sign_out_msg" = "Opravdu chcete vymazat všechny údaje aktuálně uložené v tomto zařízení? Chcete-li získat přístup k údajům a zprávám svého účtu, znovu se přihlaste.";
+"auth_softlogout_clear_data_sign_out_title" = "Jste si jisti?";
+"auth_softlogout_clear_data_button" = "Vymazat všechny údaje";
+"auth_softlogout_clear_data_message_2" = "Vymažte, pokud jste s tímto zařízením skončili nebo se chcete přihlásit k jinému účtu.";
+"auth_softlogout_clear_data_message_1" = "Varování: Vaše osobní údaje (včetně šifrovacích klíčů) jsou stále uloženy v tomto zařízení.";
+"auth_softlogout_clear_data" = "Vymazat osobní údaje";
+"auth_softlogout_sign_in" = "Přihlásit se";
+"biometrics_setup_subtitle" = "Ušetřete si čas";
+"biometrics_setup_enable_button_title_x" = "Povolit %@";
+"biometrics_setup_title_x" = "Povolit %@";
+"biometrics_settings_enable_x" = "Povolit %@";
+"biometrics_mode_face_id" = "Face ID";
+"biometrics_cant_unlocked_alert_title" = "Aplikaci nelze odemknout";
+"biometrics_usage_reason" = "Pro přístup k vaší aplikaci je nutné ověření";
+"biometrics_desetup_disable_button_title_x" = "Zakázat %@";
+"biometrics_desetup_title_x" = "Zakázat %@";
+"public_room_section_title" = "Veřejné místnosti (v %@):";
+"homeserver_connection_lost" = "Nelze se připojit k domovskému serveru.";
+"network_offline_prompt" = "Zdá se, že připojení k internetu je offline.";
+"yesterday" = "Včera";
+"today" = "Dnes";
