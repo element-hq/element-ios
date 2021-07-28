@@ -9,6 +9,7 @@ Changes to be released in next version
  * Rooms Tab: Remove the directory section (#4521).
  * Notifications: Show decrypted content is enabled by default (#4519).
  * People Tab: Remove the local contacts section (#4523).
+ * Contacts: Delay access to local contacts until they're needed for display (#4616).
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)
