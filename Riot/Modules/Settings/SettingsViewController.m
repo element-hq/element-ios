@@ -51,6 +51,7 @@ enum
 {
     SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS,
+    SECTION_TAG_MEDIA,
     SECTION_TAG_SECURITY,
     SECTION_TAG_NOTIFICATIONS,
     SECTION_TAG_CALLS,
@@ -84,6 +85,11 @@ enum
 {
     USER_SETTINGS_EMAILS_OFFSET = 2000,
     USER_SETTINGS_PHONENUMBERS_OFFSET = 1000
+};
+
+enum
+{
+    MEDIA_SETTINGS_CONFIRM_IMAGE_SIZE = 0
 };
 
 enum
@@ -343,6 +349,14 @@ TableViewSectionsDelegate>
     
     sectionUserSettings.headerTitle = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
     [tmpSections addObject:sectionUserSettings];
+    
+    if (BuildSettings.settingsScreenShowConfirmImageSize)
+    {
+        Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_MEDIA];
+        [sectionMedia addRowWithTag:MEDIA_SETTINGS_CONFIRM_IMAGE_SIZE];
+        sectionMedia.headerTitle = NSLocalizedStringFromTable(@"settings_media", @"Vector", nil);
+        [tmpSections addObject:sectionMedia];
+    }
     
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
     [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
@@ -1784,6 +1798,21 @@ TableViewSectionsDelegate>
             cell = passwordCell;
         }
     }
+    else if (section == SECTION_TAG_MEDIA)
+    {
+        if (row == MEDIA_SETTINGS_CONFIRM_IMAGE_SIZE)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_confirm_image_size", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleConfirmImageSize:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+    }
     else if (section == SECTION_TAG_NOTIFICATIONS)
     {
         if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
@@ -2800,6 +2829,11 @@ TableViewSectionsDelegate>
             [self presentViewController:currentAlert animated:YES completion:nil];
         }
     }
+}
+
+- (void)toggleConfirmImageSize:(UISwitch *)sender
+{
+    RiotSettings.shared.roomInputToolbarCompressionMode = sender.on ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
 }
 
 - (void)togglePushNotifications:(UISwitch *)sender

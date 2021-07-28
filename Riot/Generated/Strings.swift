@@ -4062,6 +4062,10 @@ internal enum VectorL10n {
   internal static func settingsConfigUserId(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_user_id", p1)
   }
+  /// Confirm image size before sending
+  internal static var settingsConfirmImageSize: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_image_size") 
+  }
   /// confirm password
   internal static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
@@ -4381,6 +4385,10 @@ internal enum VectorL10n {
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
+  }
+  /// MEDIA
+  internal static var settingsMedia: String { 
+    return VectorL10n.tr("Vector", "settings_media") 
   }
   /// new password
   internal static var settingsNewPassword: String { 

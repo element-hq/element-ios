@@ -237,6 +237,7 @@ final class BuildSettings: NSObject {
     static let settingsScreenShowThreepidExplanatory: Bool = true
     static let settingsScreenShowDiscoverySettings: Bool = true
     static let settingsScreenAllowIdentityServerConfig: Bool = true
+    static let settingsScreenShowConfirmImageSize: Bool = true
     static let settingsScreenShowAdvancedSettings: Bool = true
     static let settingsScreenShowLabSettings: Bool = true
     static let settingsScreenAllowChangingRageshakeSettings: Bool = true
@@ -257,7 +258,7 @@ final class BuildSettings: NSObject {
     static let settingsSecurityScreenShowAdvancedUnverifiedDevices:Bool = true
 
     // MARK: - Timeline settings
-    static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModePrompt
+    static let roomInputToolbarCompressionMode = MXKRoomInputToolbarCompressionModeNone
     
     // MARK: - Room Creation Screen
     

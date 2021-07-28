@@ -450,6 +450,7 @@ Tap the + to start adding people.";
 "settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
+"settings_media" = "MEDIA";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
@@ -488,6 +489,8 @@ Tap the + to start adding people.";
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
+
+"settings_confirm_image_size" = "Confirm image size before sending";
 
 "settings_security" = "SECURITY";
 

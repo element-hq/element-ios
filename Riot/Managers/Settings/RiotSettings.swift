@@ -15,6 +15,7 @@
  */
 
 import Foundation
+import MatrixKit
 
 /// Store Riot specific app settings.
 @objcMembers
@@ -46,6 +47,7 @@ final class RiotSettings: NSObject {
         static let settingsSecurityScreenShowCryptographyInfo = "settingsSecurityScreenShowCryptographyInfo"
         static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
         static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
+        static let roomInputToolbarCompressionMode = "roomInputToolbarCompressionMode"
         static let roomCreationScreenAllowEncryptionConfiguration = "roomCreationScreenAllowEncryptionConfiguration"
         static let roomCreationScreenRoomIsEncrypted = "roomCreationScreenRoomIsEncrypted"
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
@@ -96,7 +98,10 @@ final class RiotSettings: NSObject {
     
     private override init() {
         super.init()
-        defaults.register(defaults: [UserDefaultsKeys.enableVoiceMessages: BuildSettings.voiceMessagesEnabled])
+        defaults.register(defaults: [
+            UserDefaultsKeys.enableVoiceMessages: BuildSettings.voiceMessagesEnabled,
+            UserDefaultsKeys.roomInputToolbarCompressionMode: BuildSettings.roomInputToolbarCompressionMode.rawValue
+        ])
     }
     
     // MARK: Servers
@@ -402,6 +407,15 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.roomMemberScreenShowIgnore)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomMemberScreenShowIgnore)
+        }
+    }
+    
+    // MARK: - Room Input Toolbar
+    var roomInputToolbarCompressionMode: MXKRoomInputToolbarCompressionMode {
+        get {
+            MXKRoomInputToolbarCompressionMode(UInt(defaults.integer(forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)))
+        } set {
+            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)
         }
     }
 
