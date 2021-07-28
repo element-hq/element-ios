@@ -236,6 +236,11 @@ TableViewSectionsDelegate>
  */
 @property (nonatomic) BOOL newPhoneEditingEnabled;
 
+/**
+ The current `UNUserNotificationCenter` notification settings for the app.
+ */
+@property (nonatomic) UNNotificationSettings *systemNotificationSettings;
+
 @property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
 @property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
@@ -1233,6 +1238,27 @@ TableViewSectionsDelegate>
         [self editNewPhoneNumberTextField];
         keepNewPhoneNumberEditing = NO;
     }
+    
+    // Update notification access
+    [self refreshSystemNotificationSettings];
+}
+
+- (void)refreshSystemNotificationSettings
+{
+    __weak typeof(self) weakSelf = self;
+    
+    // Get the system notification settings to check authorization status and configuration.
+    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                
+                self.systemNotificationSettings = settings;
+                [self.tableView reloadData];
+            }
+        });
+    }];
 }
 
 - (void)formatNewPhoneNumber
@@ -1793,10 +1819,19 @@ TableViewSectionsDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
+            
+            BOOL isPushEnabled = account.pushNotificationServiceIsActive;
+            
+            // Even if push is enabled for the account, the user may have turned off notifications in system settings
+            if (isPushEnabled && self.systemNotificationSettings)
+            {
+                isPushEnabled = self.systemNotificationSettings.authorizationStatus == UNAuthorizationStatusAuthorized;
+            }
+            
+            labelAndSwitchCell.mxkSwitch.on = isPushEnabled;
             
             cell = labelAndSwitchCell;
         }
@@ -2826,18 +2861,8 @@ TableViewSectionsDelegate>
 
 - (void)togglePushNotifications:(UISwitch *)sender
 {
-    // Get the user's notification settings to check their authorization status.
-    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self togglePushNotifications:sender withNotificationSettings:settings];
-        });
-    }];
-}
-
-- (void)togglePushNotifications:(UISwitch *)sender withNotificationSettings:(UNNotificationSettings * _Nonnull)settings
-{
-    // Check first whether the user allow notification from device settings
-    if (settings.authorizationStatus == UNAuthorizationStatusDenied)
+    // Check first whether the user allow notification from system settings
+    if (self.systemNotificationSettings.authorizationStatus == UNAuthorizationStatusDenied)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
