@@ -6,8 +6,11 @@ Changes to be released in next version
 
 🙌 Improvements
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
- * Remove the directory section from the Rooms tab.
+ * Rooms Tab: Remove the directory section (#4521).
  * Notifications: Show decrypted content is enabled by default (#4519).
+ * People Tab: Remove the local contacts section (#4523).
+ * Contacts: Delay access to local contacts until they're needed for display (#4616).
+ * RecentsDataSource: Factorize section reset in one place (target #4591).
  * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
  * Settings: Adds a link to open the Settings app to quickly configure app notifications.
 
@@ -16,6 +19,7 @@ Changes to be released in next version
  * Settings: Disabled autocorrection when entering an identity server (#4593).
  * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
  * AuthenticationViewController: Fix crash on authentication if an intermediate view was presented (#4606).
+ * Room: Fixed crash when opening a read-only room (#4620).
 
 ⚠️ API Changes
  * 

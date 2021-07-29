@@ -1126,7 +1126,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
         
-        [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        // The voice message toolbar cannot be set on DisabledInputToolbarView.
+        if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+        {
+            [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        }
         
         [self updateInputToolBarViewHeight];
     }
