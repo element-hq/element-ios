@@ -84,9 +84,6 @@
         [[[self class] nib] instantiateWithOwner:self options:nil];
     }
     
-    // Load the local contacts for display
-    [self refreshLocalContacts];
-    
     // Finalize table view configuration
     self.contactsTableView.delegate = self;
     self.contactsTableView.dataSource = contactsDataSource; // Note: dataSource may be nil here
@@ -175,6 +172,15 @@
     }];
     
     [self refreshContactsTable];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Load the local contacts for display.
+    // In viewDidAppear as it may trigger a request for contacts access.
+    [self refreshLocalContacts];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
