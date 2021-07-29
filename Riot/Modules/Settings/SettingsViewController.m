@@ -1245,18 +1245,15 @@ TableViewSectionsDelegate>
 
 - (void)refreshSystemNotificationSettings
 {
-    __weak typeof(self) weakSelf = self;
+    MXWeakify(self);
     
     // Get the system notification settings to check authorization status and configuration.
-    [[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+    [UNUserNotificationCenter.currentNotificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                
-                self.systemNotificationSettings = settings;
-                [self.tableView reloadData];
-            }
+            MXStrongifyAndReturnIfNil(self);
+            
+            self.systemNotificationSettings = settings;
+            [self.tableView reloadData];
         });
     }];
 }
