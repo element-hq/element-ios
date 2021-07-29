@@ -45,7 +45,7 @@ struct VoiceMessageToolbarViewDetails {
 class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGestureRecognizerDelegate, VoiceMessagePlaybackViewDelegate {
     
     private enum Constants {
-        static let longPressMinimumDuration: TimeInterval = 1.0
+        static let longPressMinimumDuration: TimeInterval = 0.0
         static let animationDuration: TimeInterval = 0.25
         static let lockModeTransitionAnimationDuration: TimeInterval = 0.5
         static let panDirectionChangeThreshold: CGFloat = 20.0
@@ -145,7 +145,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
                 convertedFrame = self.convert(lockChevron.frame, from: lockContainerView)
                 lockChevronToRecordButtonDistance = recordButtonsContainerView.frame.midY + convertedFrame.maxY
                 
-                lockChevronToLockButtonDistance = lockChevron.frame.minY - lockButtonsContainerView.frame.midY
+                lockChevronToLockButtonDistance = (lockChevron.frame.minY - lockButtonsContainerView.frame.midY) / 2
                 
                 startAnimatingRecordingIndicator()
             default:
@@ -393,6 +393,10 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     }
     
     @objc private func handleWaveformTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard self.lastUIState == .lockedModeRecord else {
+            return
+        }
+
         delegate?.voiceMessageToolbarViewDidRequestRecordingFinish(self)
     }
 }
