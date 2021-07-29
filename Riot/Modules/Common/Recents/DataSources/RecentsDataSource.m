@@ -34,6 +34,7 @@
 #define RECENTSDATASOURCE_SECTION_LOWPRIORITY   0x10
 #define RECENTSDATASOURCE_SECTION_SERVERNOTICE  0x20
 #define RECENTSDATASOURCE_SECTION_PEOPLE        0x40
+#define RECENTSDATASOURCE_SECTION_SUGGESTED     0x80
 
 #define RECENTSDATASOURCE_DEFAULT_SECTION_HEADER_HEIGHT     30.0
 
@@ -56,11 +57,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @property (nonatomic, assign, readwrite) CrossSigningBannerDisplay crossSigningBannerDisplay;
 
 @property (nonatomic, strong) CrossSigningService *crossSigningService;
+@property (nonatomic, strong) NSArray<MXSpaceChildInfo *> *lastSuggestedRooms;
 
 @end
 
 @implementation RecentsDataSource
-@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, secureBackupBannerSection, crossSigningBannerSection;
+@synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, suggestedRoomsSection, secureBackupBannerSection, crossSigningBannerSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
 - (instancetype)init
@@ -82,6 +84,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         conversationSection = -1;
         lowPrioritySection = -1;
         serverNoticeSection = -1;
+        suggestedRoomsSection = -1;
         
         _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
@@ -129,6 +132,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 {
     return state.serverNoticeCellDataArray;
 }
+- (NSArray *)suggestedRoomCellDataArray
+{
+    return state.suggestedRoomCellDataArray;
+}
 
 - (NSUInteger)missedFavouriteDiscussionsCount
 {
@@ -164,16 +171,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (NSUInteger)unsentMessagesGroupDiscussionsCount
 {
     return state.unsentMessagesGroupDiscussionsCount;
-}
-
-- (void)setCurrentSpace:(MXSpace *)currentSpace
-{
-    MXLogDebug(@"[Spaces] setCurrentSpace %@", currentSpace.spaceId);
-    
-    _currentSpace = currentSpace;
-    [self refreshRoomsSection:^{
-        [self.delegate dataSource:self didCellChange:nil];
-    }];
 }
 
 #pragma mark -
@@ -479,6 +476,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
+        
+        MXLogDebug(@"[Spaces] numberOfSectionsInTableView: suggestedRoomCellDataArray %ld", self->state.suggestedRoomCellDataArray.count);
+
         crossSigningBannerSection = secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
         
         if (self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
@@ -519,6 +519,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (self.serverNoticeCellDataArray.count > 0)
         {
             serverNoticeSection = sectionsCount++;
+        }
+        
+        if (self.suggestedRoomCellDataArray.count > 0)
+        {
+            suggestedRoomsSection = sectionsCount++;
         }
     }
     
@@ -571,6 +576,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (section == invitesSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_INVITES))
     {
         count = self.invitesCellDataArray.count;
+    }
+    else if (section == suggestedRoomsSection && !(shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SUGGESTED))
+    {
+        count = self.suggestedRoomCellDataArray.count;
     }
     
     // Adjust this count according to the potential dragged cell.
@@ -653,6 +662,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             title = NSLocalizedStringFromTable(@"room_recents_invites_section", @"Vector", nil);
         }
     }
+    else if (section == suggestedRoomsSection)
+    {
+        count = self.suggestedRoomCellDataArray.count;
+        title = NSLocalizedStringFromTable(@"room_recents_suggested_rooms_section", @"Vector", nil);
+    }
     
     if (count)
     {
@@ -703,6 +717,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     else if (section == serverNoticeSection)
     {
         sectionArray = self.serverNoticeCellDataArray;
+    }
+    else if (section == suggestedRoomsSection)
+    {
+        sectionArray = self.suggestedRoomCellDataArray;
     }
 
     BOOL highlight = NO;
@@ -788,6 +806,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         else if (section == invitesSection)
         {
             sectionBitwise = RECENTSDATASOURCE_SECTION_INVITES;
+        }
+        else if (section == suggestedRoomsSection)
+        {
+            sectionBitwise = RECENTSDATASOURCE_SECTION_SUGGESTED;
         }
     }
     
@@ -986,6 +1008,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             cellData = self.invitesCellDataArray[cellDataIndex];
         }
     }
+    else if (tableSection == suggestedRoomsSection)
+    {
+        if (cellDataIndex < self.suggestedRoomCellDataArray.count)
+        {
+            cellData = self.suggestedRoomCellDataArray[cellDataIndex];
+        }
+    }
     
     return cellData;
 }
@@ -1042,9 +1071,19 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             id<MXKRecentCellDataStoring> cellDataStoring = cellDataArray[index];
 
-            if ([roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == cellDataStoring.roomSummary.room.mxSession))
+            if (cellDataStoring.roomSummary)
             {
-                return index;
+                if ([roomId isEqualToString:cellDataStoring.roomSummary.roomId] && (matrixSession == cellDataStoring.roomSummary.room.mxSession))
+                {
+                    return index;
+                }
+            }
+            else if (cellDataStoring.spaceChildInfo)
+            {
+                if ([roomId isEqualToString:cellDataStoring.spaceChildInfo.name])
+                {
+                    return index;
+                }
             }
         }
     }
@@ -1146,7 +1185,22 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             indexPath = [NSIndexPath indexPathForRow:index inSection:serverNoticeSection];
         }
     }
-    
+
+    if (!indexPath && (suggestedRoomsSection >= 0))
+    {
+        index = [self cellIndexPosWithRoomId:roomId andMatrixSession:matrixSession within:self.serverNoticeCellDataArray];
+
+        if (index != NSNotFound)
+        {
+            // Check whether the low priority rooms are shrinked
+            if (shrinkedSectionsBitMask & RECENTSDATASOURCE_SECTION_SUGGESTED)
+            {
+                return nil;
+            }
+            indexPath = [NSIndexPath indexPathForRow:index inSection:serverNoticeSection];
+        }
+    }
+
     return indexPath;
 }
 
@@ -1155,60 +1209,34 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)refreshRoomsSection:(void (^)(void))onComplete;
 {
-    secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = invitesSection = -1;
+    secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = suggestedRoomsSection = invitesSection = -1;
 
     if (displayedRecentsDataSourceArray.count > 0)
     {
         // FIXME manage multi accounts
         MXKSessionRecentsDataSource *recentsDataSource = displayedRecentsDataSourceArray[0];
         
-        if (self.currentSpace)
+        NSMutableArray<id<MXKRecentCellDataStoring>> *cells = [NSMutableArray new];
+        NSInteger count = recentsDataSource.numberOfCells;
+
+        for (NSUInteger index = 0; index < count; index++)
         {
-            [self.mxSession.spaceService getSpaceChildrenForSpaceWithId:self.currentSpace.spaceId suggestedOnly:YES limit:5 success:^(MXSpaceChildrenSummary * _Nonnull childrenSummary) {
-                MXLogDebug(@"[RecentDataSource] getSpaceChildrenForSpaceWithId : %@", childrenSummary.childInfos);
-                for (MXSpaceChildInfo *childInfo in childrenSummary.childInfos)
-                {
-                    MXLogDebug(@"[RecentDataSource] getSpaceChildrenForSpaceWithId : %@", [self.mxSession roomWithRoomId:childInfo.childRoomId]);
-                }
-                [self computeRecentCellsWithRecentsDataSource:recentsDataSource completion:onComplete];
-            } failure:^(NSError * _Nonnull error) {
-                MXLogError(@"[RecentDataSource] getSpaceChildrenForSpaceWithId failed with error: %@", error);
-                [self computeRecentCellsWithRecentsDataSource:recentsDataSource completion:onComplete];
-            }];
+            id<MXKRecentCellDataStoring> cell = [recentsDataSource cellDataAtIndex:index];
+            [cells addObject:cell];
         }
-        
-        [self computeRecentCellsWithRecentsDataSource:recentsDataSource completion:onComplete];
+
+        MXWeakify(self);
+        [self computeStateAsyncWithCells:cells recentsDataSourceMode:self.recentsDataSourceMode matrixSession:recentsDataSource.mxSession onComplete:^(RecentsDataSourceState *newState) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            self->state = newState;
+            onComplete();
+        }];
     }
     else
     {
         onComplete();
     }
-}
-
-- (void)computeRecentCellsWithRecentsDataSource:(MXKSessionRecentsDataSource*) recentsDataSource completion:(void (^)(void))onComplete
-{
-    NSMutableArray<id<MXKRecentCellDataStoring>> *cells = [NSMutableArray new];
-    NSInteger count = recentsDataSource.numberOfCells;
-
-    NSDate *startDate = [NSDate new];
-    MXLogDebug(@"[Spaces] starting filtering rooms");
-    for (NSUInteger index = 0; index < count; index++)
-    {
-        id<MXKRecentCellDataStoring> cell = [recentsDataSource cellDataAtIndex:index];
-        if (self.currentSpace == nil || [self.mxSession.spaceService isRoomWithId:cell.roomSummary.roomId descendantOf:self.currentSpace.spaceId])
-        {
-            [cells addObject:cell];
-        }
-    }
-    MXLogDebug(@"[Spaces] ended filtering rooms after %f", [[NSDate new] timeIntervalSinceDate:startDate]);
-
-    MXWeakify(self);
-    [self computeStateAsyncWithCells:cells recentsDataSourceMode:self.recentsDataSourceMode matrixSession:recentsDataSource.mxSession onComplete:^(RecentsDataSourceState *newState) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        self->state = newState;
-        onComplete();
-    }];
 }
 
 - (void)computeStateAsyncWithCells:(NSArray<id<MXKRecentCellDataStoring>> *)cells
@@ -1236,7 +1264,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     NSMutableArray<id<MXKRecentCellDataStoring>> *conversationCellDataArray = [NSMutableArray new];
     NSMutableArray<id<MXKRecentCellDataStoring>> *lowPriorityCellDataArray = [NSMutableArray new];
     NSMutableArray<id<MXKRecentCellDataStoring>> *serverNoticeCellDataArray = [NSMutableArray new];
-    
+    NSMutableArray<id<MXKRecentCellDataStoring>> *suggestedRoomCellDataArray = [NSMutableArray new];
+
     MissedDiscussionsCount *favouriteMissedDiscussionsCount = [MissedDiscussionsCount new];
     MissedDiscussionsCount *directMissedDiscussionsCount = [MissedDiscussionsCount new];
     MissedDiscussionsCount *groupMissedDiscussionsCount = [MissedDiscussionsCount new];
@@ -1271,6 +1300,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             else if (room.isDirect)
             {
                 [peopleCellDataArray addObject:recentCellDataStoring];
+            }
+            else if (recentCellDataStoring.spaceChildInfo != nil)
+            {
+                [suggestedRoomCellDataArray addObject:recentCellDataStoring];
             }
             else
             {
@@ -1310,8 +1343,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         else if (recentsDataSourceMode == RecentsDataSourceModeRooms)
         {
+            if (recentCellDataStoring.spaceChildInfo)
+            {
+                [suggestedRoomCellDataArray addObject:recentCellDataStoring];
+            }
             // Consider only non direct rooms.
-            if (!room.isDirect)
+            else if (!room.isDirect)
             {
                 // Keep only the invites, the favourites and the rooms without tag and room type different from space
                 if (room.summary.membership == MXMembershipInvite)
@@ -1405,6 +1442,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             // Sort each rooms collection by considering first the rooms with some missed notifs, the rooms with unread, then the others.
             comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
                 
+                if (recentCellData1.spaceChildInfo && !recentCellData2.spaceChildInfo)
+                {
+                    return NSOrderedDescending;
+                }
+                if (recentCellData2.spaceChildInfo && !recentCellData1.spaceChildInfo)
+                {
+                    return NSOrderedAscending;
+                }
+
                 if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
                     && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
                 {
@@ -1474,6 +1520,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             // Sort each rooms collection by considering first the rooms with some unread messages then the others.
             comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
                 
+                if (recentCellData1.spaceChildInfo && !recentCellData2.spaceChildInfo)
+                {
+                    return NSOrderedDescending;
+                }
+                if (recentCellData2.spaceChildInfo && !recentCellData1.spaceChildInfo)
+                {
+                    return NSOrderedAscending;
+                }
+
                 if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
                     && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
                 {
@@ -1546,6 +1601,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     
     MXLogDebug(@"[RecentsDataSource] refreshRoomsSections: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
+    MXLogDebug(@"[Spaces] refreshRoomsSections with %ld suggested room", suggestedRoomCellDataArray.count);
 
     return [[RecentsDataSourceState alloc]
             initWithInvitesCellDataArray:invitesCellDataArray
@@ -1554,6 +1610,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             conversationCellDataArray:conversationCellDataArray
             lowPriorityCellDataArray:lowPriorityCellDataArray
             serverNoticeCellDataArray:serverNoticeCellDataArray
+            suggestedRoomCellDataArray:suggestedRoomCellDataArray
             favouriteMissedDiscussionsCount:favouriteMissedDiscussionsCount
             directMissedDiscussionsCount:directMissedDiscussionsCount
             groupMissedDiscussionsCount:groupMissedDiscussionsCount

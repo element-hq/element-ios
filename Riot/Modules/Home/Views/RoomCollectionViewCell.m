@@ -147,7 +147,14 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
         
-        [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+        if (roomCellData.roomSummary)
+        {
+            [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+        }
+        else
+        {
+            [roomCellData.spaceChildInfo setRoomAvatarImageIn:self.roomAvatar mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
+        }
     }
 }
 
@@ -188,7 +195,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     if (roomCellData)
     {
-        return roomCellData.roomSummary.roomId;
+        return roomCellData.spaceChildInfo ? roomCellData.spaceChildInfo.childRoomId : roomCellData.roomSummary.roomId;
     }
     return nil;
 }

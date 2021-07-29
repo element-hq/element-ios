@@ -856,7 +856,8 @@
     + recentsDataSource.peopleCellDataArray.count
     + recentsDataSource.conversationCellDataArray.count
     + recentsDataSource.lowPriorityCellDataArray.count
-    + recentsDataSource.serverNoticeCellDataArray.count;
+    + recentsDataSource.serverNoticeCellDataArray.count
+    + recentsDataSource.suggestedRoomCellDataArray.count;
 }
 
 @end
