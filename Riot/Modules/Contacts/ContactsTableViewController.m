@@ -246,7 +246,7 @@
             {
                 [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
                 
-                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self.presentedViewController completionHandler:^(BOOL granted) {
+                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
                     
                     if (granted)
                     {
