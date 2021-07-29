@@ -1854,16 +1854,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [account addObserver:self forKeyPath:@"enableInAppNotifications" options:0 context:nil];
         }
         
-        // Load the local contacts on first account creation.
-        if ([MXKAccountManager sharedManager].accounts.count == 1)
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                [self refreshLocalContacts];
-                
-            });
-        }
-        
         [self.delegate legacyAppDelegate:self didAddAccount:account];
     }];
     
@@ -1976,14 +1966,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // during this blocking task.
         dispatch_after(dispatch_walltime(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[MXKContactManager sharedManager] addMatrixSession:mxSession];
-
-            // Load the local contacts on first account
-            if ([MXKAccountManager sharedManager].accounts.count == 1)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self refreshLocalContacts];
-                });
-            }
         });
 
         // Register the session to the widgets manager
@@ -2937,54 +2919,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self.masterTabBarController selectContact:contact];
 
     }];
-}
-
-- (void)refreshLocalContacts
-{
-    if (!BuildSettings.allowLocalContactsAccess)
-    {
-        return;
-    }
-    
-    // Do not scan local contacts in background if the user has not decided yet about using
-    // an identity server
-    BOOL doRefreshLocalContacts = NO;
-    for (MXSession *session in mxSessionArray)
-    {
-        if (session.hasAccountDataIdentityServerValue)
-        {
-            doRefreshLocalContacts = YES;
-            break;
-        }
-    }
-
-    // Check whether the application is allowed to access the local contacts.
-    if (doRefreshLocalContacts
-        && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
-    {
-        // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
-        if (![MXKAppSettings standardAppSettings].syncLocalContacts)
-        {
-            // Check whether it was not requested yet.
-            if (![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
-            {
-                [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
-                
-                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self.presentedViewController completionHandler:^(BOOL granted) {
-                    
-                    if (granted)
-                    {
-                        // Allow local contacts sync in order to discover matrix users.
-                        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-                    }
-                    
-                }];
-            }
-        }
-        
-        // Refresh the local contacts list.
-        [[MXKContactManager sharedManager] refreshLocalContacts];
-    }
 }
 
 #pragma mark - Matrix Groups handling
