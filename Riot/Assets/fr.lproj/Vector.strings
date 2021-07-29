@@ -97,7 +97,6 @@
 "room_creation_invite_another_user" = "Rechercher/inviter par identifiant, nom ou e-mail";
 // Room recents
 "room_recents_directory_section" = "RÉPERTOIRE DES SALONS";
-"room_recents_directory_section_network" = "Réseau";
 "room_recents_favourites_section" = "FAVORIS";
 "room_recents_people_section" = "PERSONNES";
 "room_recents_conversations_section" = "SALONS";

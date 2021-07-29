@@ -184,7 +184,6 @@
 "room_creation_invite_another_user" = "透過使用者ID、名稱、電子郵件地址來搜尋/邀請";
 // Room recents
 "room_recents_directory_section" = "聊天室目錄";
-"room_recents_directory_section_network" = "網路";
 "room_recents_favourites_section" = "收藏夾";
 "room_recents_people_section" = "聯絡人";
 "room_recents_conversations_section" = "聊天室";

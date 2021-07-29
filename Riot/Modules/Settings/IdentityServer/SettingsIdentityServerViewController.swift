@@ -142,7 +142,6 @@ final class SettingsIdentityServerViewController: UIViewController {
         self.identityServerLabel.text = VectorL10n.identityServerSettingsTitle
 
         self.identityServerTextField.placeholder = VectorL10n.identityServerSettingsPlaceHolder
-        self.identityServerTextField.keyboardType = .URL
         self.identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidChange(_:)), for: .editingChanged)
         self.identityServerTextField.addTarget(self, action: #selector(identityServerTextFieldDidEndOnExit(_:)), for: .editingDidEndOnExit)
 
@@ -346,7 +345,12 @@ final class SettingsIdentityServerViewController: UIViewController {
     private func addOrChangeAction() {
         self.identityServerTextField.resignFirstResponder()
 
-        guard let displayMode = self.displayMode, let identityServer = self.identityServerTextField.text else {
+        guard
+            let displayMode = displayMode,
+            let identityServer = identityServerTextField.text?.trimmingCharacters(in: .whitespaces),
+            !identityServer.isEmpty
+        else {
+            viewModel.process(viewAction: .load)
             return
         }
         

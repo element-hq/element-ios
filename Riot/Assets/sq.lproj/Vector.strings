@@ -84,7 +84,6 @@
 "room_creation_make_private" = "Bëje private";
 // Room recents
 "room_recents_directory_section" = "DREJTORI DHOMASH";
-"room_recents_directory_section_network" = "Rrjet";
 "room_recents_people_section" = "PERSONA";
 "room_recents_conversations_section" = "DHOMA";
 "room_recents_no_conversation" = "S’ka dhoma";
