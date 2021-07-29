@@ -10,6 +10,7 @@ Changes to be released in next version
  * Notifications: Show decrypted content is enabled by default (#4519).
  * People Tab: Remove the local contacts section (#4523).
  * Contacts: Delay access to local contacts until they're needed for display (#4616).
+ * RecentsDataSource: Factorize section reset in one place (target #4591).
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)
