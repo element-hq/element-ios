@@ -105,7 +105,6 @@
 "room_creation_invite_another_user" = "ユーザID, 表示名, 電子メールで検索と招待";
 // Room recents
 "room_recents_directory_section" = "ルーム一覧";
-"room_recents_directory_section_network" = "通信回線";
 "room_recents_favourites_section" = "お気に入り";
 "room_recents_people_section" = "対話";
 "room_recents_conversations_section" = "ルーム";

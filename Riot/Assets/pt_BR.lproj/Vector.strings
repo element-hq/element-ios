@@ -101,7 +101,6 @@
 "room_creation_make_private" = "Fazer privado";
 "room_creation_wait_for_creation" = "Uma sala já está sendo criada. Por favor espere.";
 "room_creation_invite_another_user" = "Buscar / convidar por ID de usuária(o), Nome ou email";
-"room_recents_directory_section_network" = "Rede";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PESSOAS";
 "room_recents_conversations_section" = "SALAS";
@@ -1393,3 +1392,10 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Notifique-me para";
 "room_details_notifs" = "Notificações";
+"voice_message_remaining_recording_time" = "%@s restando";
+"voice_message_stop_locked_mode_recording" = "Toque no comprimento de onda para parar e dar playback";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Segure para gravar, solte para enviar";
+"settings_labs_voice_messages" = "Mensagens de voz";
