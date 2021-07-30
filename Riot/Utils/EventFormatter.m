@@ -408,6 +408,96 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     return senderAvatarUrl;
 }
 
+#pragma mark - MXRoomSummaryUpdating
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
+{
+    BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
+    
+    // Customisation for EMS Functional Members
+    MXEvent *functionalMembersEvent = [self functionalMembersEventFromStateEvents:stateEvents];
+    
+    if (functionalMembersEvent)
+    {
+        MXEvent *existingFunctionalMembersEvent = [self previousFunctionalMembersEventFromStateEvents:roomState.stateEvents];
+        
+        // If there isn't an existing functional members event we're done, the state has changed.
+        if (!existingFunctionalMembersEvent)
+        {
+            MXLogDebug(@"[EventFormatter] A functional members event has been added to the room.")
+            return YES;
+        }
+        
+        NSArray<NSString*> *serviceMemberIDs = functionalMembersEvent.content[@"service_members"] ?: @[];
+        NSArray<NSString*> *existingServiceMemberIDs = existingFunctionalMembersEvent.content[@"service_members"] ?: @[];
+        
+        // If the new service members differ from the existing ones, the state has changed.
+        if (![serviceMemberIDs isEqualToArray:existingServiceMemberIDs])
+        {
+            MXLogDebug(@"[EventFormatter] The functional members event has changed.")
+            return YES;
+        }
+    }
+    
+    return updated;
+}
+
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withServerRoomSummary:(MXRoomSyncSummary *)serverRoomSummary roomState:(MXRoomState *)roomState
+{
+    BOOL updated = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
+
+    // Customisation for EMS Functional Members
+    MXEvent *functionalMembersEvent = [self functionalMembersEventFromStateEvents:roomState.stateEvents];
+    
+    if (functionalMembersEvent)
+    {
+        MXLogDebug(@"[EventFormatter] Computing the room name and avatar excluding functional members.")
+        
+        NSArray<NSString*> *serviceMemberIDs = functionalMembersEvent.content[@"service_members"] ?: @[];
+        
+        updated |= [defaultRoomSummaryUpdater updateSummaryDisplayname:summary
+                                                               session:session
+                                                 withServerRoomSummary:serverRoomSummary
+                                                             roomState:roomState
+                                                      excludingUserIDs:serviceMemberIDs];
+
+        updated |= [defaultRoomSummaryUpdater updateSummaryAvatar:summary
+                                                         session:session
+                                           withServerRoomSummary:serverRoomSummary
+                                                       roomState:roomState
+                                                excludingUserIDs:serviceMemberIDs];
+    }
+
+    return updated;
+}
+
+/**
+ Gets the newest state event of type `io.element.functional_members` from the supplied array of state events.
+ @return An event of type `io.element.functional_members`, or nil if the event wasn't found.
+ */
+- (MXEvent *)functionalMembersEventFromStateEvents:(NSArray<MXEvent *> *)stateEvents
+{
+    NSPredicate *functionalMembersPredicate = [NSPredicate predicateWithFormat:@"type == %@", @"io.element.functional_members"];
+    return [stateEvents filteredArrayUsingPredicate:functionalMembersPredicate].lastObject;
+}
+
+/**
+ Gets the last but one state event of type `io.element.functional_members` from the supplied array of state events.
+ @return An event of type `io.element.functional_members`, or nil if the event wasn't found.
+ */
+- (MXEvent *)previousFunctionalMembersEventFromStateEvents:(NSArray<MXEvent *> *)stateEvents
+{
+    NSPredicate *functionalMembersPredicate = [NSPredicate predicateWithFormat:@"type == %@", @"io.element.functional_members"];
+    NSArray<MXEvent *> *events = [stateEvents filteredArrayUsingPredicate:functionalMembersPredicate];
+    
+    if (events.count <= 1)
+    {
+        // There are no previous events, return nil.
+        return nil;
+    }
+    
+    return events[events.count - 2];
+}
+
 #pragma mark - Timestamp formatting
 
 - (NSString*)dateStringFromDate:(NSDate *)date withTime:(BOOL)time
