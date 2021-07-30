@@ -100,8 +100,6 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  */
 @property (nonatomic) PublicRoomsDirectoryDataSource *publicRoomsDirectoryDataSource;
 
-@property (nonatomic, strong) MXSpace *currentSpace;
-
 /**
  Refresh the recents data source and notify its delegate.
  */
