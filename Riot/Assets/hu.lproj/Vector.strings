@@ -1411,3 +1411,23 @@
 "settings_ui_theme_picker_message_invert_colours" = "„Autó” az eszközöd „invertált színek” beállítását használja";
 "room_recents_unknown_room_error_message" = "A szoba nem található. Győződj meg róla, hogy létezik";
 "room_creation_dm_error" = "Nem lehet elkészíteni a közvetlen beszélgetést. Ellenőrizd a meghívni kívánt felhasználót és próbáld újra.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Beolvasás ezzel az eszközzel";
+"room_notifs_settings_encrypted_room_notice" = "Megjegyzendő, hogy titkosított szobákban a megemlítésekre és kulcsszavakra való értesítés mobil eszközökön nem érhető el.";
+"room_notifs_settings_account_settings" = "Fiók beállítások";
+"room_notifs_settings_manage_notifications" = "Értesítések kezelése itt: %@";
+"room_notifs_settings_cancel_action" = "Mégsem";
+"room_notifs_settings_done_action" = "Kész";
+"room_notifs_settings_none" = "Semmi";
+"room_notifs_settings_mentions_and_keywords" = "Csak megemlítések és kulcsszavak";
+"room_notifs_settings_all_messages" = "Minden üzenet";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Értesítés ezért:";
+"room_details_notifs" = "Értesítések";
+"voice_message_stop_locked_mode_recording" = "Megállításhoz és visszajátszáshoz koppints a hullámhosszra";
+"voice_message_remaining_recording_time" = "%@s távozott";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Felvételhez tartsd nyomva, a küldéshez engedd el";
+"settings_labs_voice_messages" = "Hang üzenetek";
