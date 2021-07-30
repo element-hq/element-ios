@@ -101,6 +101,8 @@ platform :ios do
     sh "chmod 775 #{appVariantScript}"
     # Run app variant script with variant name
     sh(appVariantScript, options[:name]) 
+    # Force reloading env variables
+    Dotenv.overload(".env.default")
   end
 
   desc "Build the app for simulator to ensure it compiles"
