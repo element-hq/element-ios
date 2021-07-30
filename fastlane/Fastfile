@@ -44,6 +44,21 @@ platform :ios do
     build_release(options)
   end
 
+  desc "Builds an Alpha ipa for pull request branches"
+  lane :alpha do
+    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
+            
+    # Generate the "Alpha" app variant    
+    setup_app_variant(name: "Alpha")    
+    # Builds an Ad Hoc IPA
+    adhoc
+    # Upload to Diawi
+    diawi(
+      token: ENV["DIAWI_API_TOKEN"],
+      wall_of_apps: false
+    )
+  end
+
   desc "Builds the ipa for the AppStore, then uploads it"
   lane :deploy_release do |options|
     # build the IPA
@@ -157,6 +172,7 @@ platform :ios do
 
     xcargs = xcargs_hash.map { |k, v| "#{k}=#{v.shellescape}" }.join(" ")
 
+    # Generate the project
     xcodegen(spec: "project.yml")
     
     # Clear derived data
