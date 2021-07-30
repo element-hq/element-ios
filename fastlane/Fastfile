@@ -79,6 +79,15 @@ platform :ios do
     edit_podfile(branch_pattern: mx_git_branch) unless mx_git_branch.to_s.empty?
   end
 
+  desc "Use an app variant. An app variant overwrite default project configuration or ressource files with custom values"
+  lane :setup_app_variant do |options|
+    appVariantScript = "../Variants/setup_app_variant.sh"    
+    # Make sure app variant script can be executed
+    sh "chmod 775 #{appVariantScript}"
+    # Run app variant script with variant name
+    sh(appVariantScript, options[:name]) 
+  end
+
   desc "Build the app for simulator to ensure it compiles"
   lane :build do |options|
     xcodegen(spec: "project.yml")
