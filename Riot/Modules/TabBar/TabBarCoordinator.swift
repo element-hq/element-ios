@@ -50,6 +50,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let masterNavigationController: UINavigationController
     
+    private var currentSpaceId: String?
+    
     // MARK: Public
 
     // Must be used only internally
@@ -72,21 +74,32 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        let masterTabBarController = self.createMasterTabBarController()
-        masterTabBarController.masterTabBarDelegate = self
-        self.masterTabBarController = masterTabBarController
-        self.navigationRouter.setRootModule(masterTabBarController)
+        self.start(with: nil)
+    }
         
-        // Add existing Matrix sessions if any
-        for userSession in self.parameters.userSessionsService.userSessions {
-            self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+    func start(with spaceId: String?) {
+        self.currentSpaceId = spaceId
+        
+        // If start has been done once do setup view controllers again
+        if self.masterTabBarController == nil {
+            let masterTabBarController = self.createMasterTabBarController()
+            masterTabBarController.masterTabBarDelegate = self
+            self.masterTabBarController = masterTabBarController
+            self.navigationRouter.setRootModule(masterTabBarController)
+            
+            // Add existing Matrix sessions if any
+            for userSession in self.parameters.userSessionsService.userSessions {
+                self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+            }
+            
+            if BuildSettings.enableSideMenu {
+                self.setupSideMenuGestures()
+            }
+            
+            self.registerUserSessionsServiceNotifications()
         }
-        
-        if BuildSettings.enableSideMenu {
-            self.setupSideMenuGestures()
-        }
-        
-        self.registerUserSessionsServiceNotifications()
+                
+        self.updateMasterTabBarController(with: spaceId)
     }
     
     func toPresentable() -> UIViewController {
@@ -248,6 +261,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if let rootViewController = self.masterNavigationController.viewControllers.first {
             self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: rootViewController.view)
         }
+    }
+    
+    private func updateMasterTabBarController(with spaceId: String?) {
+                
+        let currentMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession
+        
+        // TODO: Implement filtering logic inside this method
+        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: currentMatrixSession)
     }
     
     // MARK: Navigation

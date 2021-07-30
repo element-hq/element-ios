@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,16 @@
 // limitations under the License.
 //
 
-import UIKit
+import Foundation
 import Reusable
 
-final class RoomAvatarView: AvatarView, NibOwnerLoadable {
+final class SpaceAvatarView: AvatarView, NibOwnerLoadable {
+    
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let cornerRadius: CGFloat = 8.0
+    }
     
     // MARK: - Properties
 
@@ -51,7 +57,7 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.avatarImageView.layer.cornerRadius = self.avatarImageView.bounds.height/2
+        self.avatarImageView.layer.cornerRadius = Constants.cornerRadius
     }
     
     // MARK: - Public
@@ -69,9 +75,9 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
     
     override func updateAccessibilityTraits() {
         if self.isUserInteractionEnabled {
-            self.vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel, hint: VectorL10n.roomAvatarViewAccessibilityHint, isEnabled: true)
+            self.vc_setupAccessibilityTraitsButton(withTitle: VectorL10n.spaceAvatarViewAccessibilityLabel, hint: VectorL10n.spaceAvatarViewAccessibilityHint, isEnabled: true)
         } else {
-            self.vc_setupAccessibilityTraitsImage(withTitle: VectorL10n.roomAvatarViewAccessibilityLabel)
+            self.vc_setupAccessibilityTraitsImage(withTitle: VectorL10n.spaceAvatarViewAccessibilityLabel)
         }
     }
     
@@ -87,5 +93,11 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
         }
         
         self.cameraBadgeContainerView.isHidden = hideCameraBadge
+    }
+    
+    override func update(theme: Theme) {
+        super.update(theme: theme)
+        
+        self.avatarImageView.defaultBackgroundColor = theme.colors.tile
     }
 }

@@ -22,10 +22,14 @@ import SideMenu
 import SafariServices
 
 class SideMenuCoordinatorParameters {
+    let appNavigator: AppNavigatorProtocol
     let userSessionsService: UserSessionsService
     let appInfo: AppInfo
     
-    init(userSessionsService: UserSessionsService, appInfo: AppInfo) {
+    init(appNavigator: AppNavigatorProtocol,
+         userSessionsService: UserSessionsService,
+         appInfo: AppInfo) {
+        self.appNavigator = appNavigator
         self.userSessionsService = userSessionsService
         self.appInfo = appInfo
     }
@@ -33,12 +37,21 @@ class SideMenuCoordinatorParameters {
 
 final class SideMenuCoordinator: SideMenuCoordinatorType {
     
+    // MARK: - Constants
+    
+    private enum SideMenu {
+        static let widthRatio: CGFloat = 0.82
+        static let maxWidthiPad: CGFloat = 320.0
+    }
+    
     // MARK: - Properties
     
     // MARK: Private
     
     private let parameters: SideMenuCoordinatorParameters
     private var sideMenuViewModel: SideMenuViewModelType
+    
+    private weak var spaceListCoordinator: SpaceListCoordinatorType?
     
     private lazy var sideMenuNavigationViewController: SideMenuNavigationController = {
         return self.createSideMenuNavigationController(with: self.sideMenuViewController)
@@ -72,6 +85,9 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         
         // Set the sideMenuNavigationViewController as default left menu
         SideMenuManager.default.leftMenuNavigationController = self.sideMenuNavigationViewController
+        
+        self.addSpaceListIfNeeded()
+        self.registerUserSessionsServiceNotifications()
     }
     
     func toPresentable() -> UIViewController {
@@ -92,13 +108,61 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
 
         var sideMenuSettings = SideMenuSettings()
         sideMenuSettings.presentationStyle = .viewSlideOut
+        sideMenuSettings.menuWidth = self.getMenuWidth()
         
         let navigationController = SideMenuNavigationController(rootViewController: rootViewController, settings: sideMenuSettings)
-                
-        // Present side menu to the left
-        navigationController.leftSide = true
+        
+        // FIX: SideMenuSettings are not taken into account at init apply them again
+        navigationController.settings = sideMenuSettings
 
         return navigationController
+    }
+    
+    private func getMenuWidth() -> CGFloat {
+        let appScreenRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
+        let minimumSize = min(appScreenRect.width, appScreenRect.height)
+        
+        let menuWidth: CGFloat
+        
+        if UIDevice.current.isPhone {
+            menuWidth = round(minimumSize * SideMenu.widthRatio)
+        } else {
+            // Set a max menu width on iPad
+            menuWidth = min(round(minimumSize * SideMenu.widthRatio), SideMenu.maxWidthiPad * SideMenu.widthRatio)
+        }
+        
+        return menuWidth
+    }
+    
+    private func addSpaceListIfNeeded() {
+        guard self.spaceListCoordinator == nil else {
+            return
+        }
+        
+        guard let mainMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+        
+        self.addSpaceList(with: mainMatrixSession)
+    }
+
+    private func addSpaceList(with matrixSession: MXSession) {
+        let parameters = SpaceListCoordinatorParameters(session: matrixSession)
+        
+        let spaceListCoordinator = SpaceListCoordinator(parameters: parameters)
+        spaceListCoordinator.delegate = self
+        spaceListCoordinator.start()
+        
+        let spaceListPresentable = spaceListCoordinator.toPresentable()
+            
+        // sideMenuViewController.spaceListContainerView can be nil, load controller view to avoid this case
+        self.sideMenuViewController.loadViewIfNeeded()
+        
+        self.sideMenuViewController.vc_addChildViewController(viewController: spaceListPresentable, onView: self.sideMenuViewController.spaceListContainerView)
+        
+        self.add(childCoordinator: spaceListCoordinator)
+        
+        self.spaceListCoordinator = spaceListCoordinator
     }
     
     private func createSettingsViewController() -> SettingsViewController {
@@ -142,6 +206,20 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         let inviteFriendsPresenter = InviteFriendsPresenter()
         inviteFriendsPresenter.present(for: myUserId, from: self.sideMenuViewController, sourceView: sourceView, animated: true)
     }
+    
+    // MARK: UserSessions management
+    
+    private func registerUserSessionsServiceNotifications() {
+        
+        // Listen only notifications from the current UserSessionsService instance
+        let userSessionService = self.parameters.userSessionsService
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(userSessionsServiceDidAddUserSession(_:)), name: UserSessionsService.didAddUserSession, object: userSessionService)
+    }
+    
+    @objc private func userSessionsServiceDidAddUserSession(_ notification: Notification) {
+        self.addSpaceListIfNeeded()
+    }
 }
 
 // MARK: - SideMenuViewModelCoordinatorDelegate
@@ -177,5 +255,22 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
     }
     
     func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) {
+    }
+}
+
+// MARK: - SideMenuNavigationControllerDelegate
+extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
+    func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {                
+        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+            
+        }
+        self.parameters.appNavigator.navigate(to: .homeSpace)
+    }
+    
+    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectSpaceWithId spaceId: String) {
+        self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
+            
+        }
+        self.parameters.appNavigator.navigate(to: .space(spaceId))
     }
 }

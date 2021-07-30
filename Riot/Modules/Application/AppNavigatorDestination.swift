@@ -16,11 +16,12 @@
 
 import Foundation
 
-/// AppNavigatorProtocol abstract a navigator at app level.
-/// It enables to perform the navigation within the global app scope (open the side menu, open a room and so on)
-/// Note: Use a destination enum like presented here https://www.swiftbysundell.com/articles/navigation-in-swift/#where-to-navigator or use simple methods like Element Android Navigator
-protocol AppNavigatorProtocol {
+/// Supported destinations used by AppNavigator to navigate in screen hierarchy
+enum AppNavigatorDestination {
     
-    var sideMenu: SideMenuPresentable { get }
-    var alert: AlertPresentable { get }
+    /// Show home space
+    case homeSpace
+        
+    /// Show a space with specific id
+    case space(_ spaceId: String)
 }

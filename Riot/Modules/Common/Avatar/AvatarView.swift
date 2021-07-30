@@ -32,7 +32,7 @@ class AvatarView: UIView, Themable {
     
     // MARK: Private
 
-    private var theme: Theme?
+    private(set) var theme: Theme?
     
     // MARK: Public
     
@@ -106,7 +106,18 @@ class AvatarView: UIView, Themable {
             return
         }
         
-        let defaultavatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.matrixItemId, withDisplayName: viewData.displayName)
+        let defaultAvatarImage: UIImage?
+        var defaultAvatarImageContentMode: UIView.ContentMode = .scaleAspectFill
+        
+        switch viewData.fallbackImage {
+        case .matrixItem(let matrixItemId, let matrixItemDisplayName):
+            defaultAvatarImage = AvatarGenerator.generateAvatar(forMatrixItem: matrixItemId, withDisplayName: matrixItemDisplayName)
+        case .image(let image, let contentMode):
+            defaultAvatarImage = image
+            defaultAvatarImageContentMode = contentMode ?? .scaleAspectFill
+        case .none:
+            defaultAvatarImage = nil
+        }
                 
         if let avatarUrl = viewData.avatarUrl {
             avatarImageView.setImageURI(avatarUrl,
@@ -114,13 +125,13 @@ class AvatarView: UIView, Themable {
                                         andImageOrientation: .up,
                                         toFitViewSize: avatarImageView.frame.size,
                                         with: MXThumbnailingMethodScale,
-                                        previewImage: defaultavatarImage,
+                                        previewImage: defaultAvatarImage,
                                         mediaManager: viewData.mediaManager)
+            avatarImageView.contentMode = .scaleAspectFill
         } else {
-            avatarImageView.image = defaultavatarImage
+            avatarImageView.image = defaultAvatarImage
+            avatarImageView.contentMode = defaultAvatarImageContentMode
         }
-        
-        avatarImageView.contentMode = .scaleAspectFill
     }
     
     func updateView() {

@@ -16,17 +16,10 @@
 
 import Foundation
 
-struct UserAvatarViewData: AvatarViewDataProtocol {
-    let userId: String
-    let displayName: String?
-    let avatarUrl: String?
-    let mediaManager: MXMediaManager
+class SpaceListCoordinatorParameters {
+    let session: MXSession
     
-    var matrixItemId: String {
-        return userId
-    }
-    
-    var fallbackImage: AvatarFallbackImage? {
-        return .matrixItem(matrixItemId, displayName)
+    init(session: MXSession) {
+        self.session = session
     }
 }

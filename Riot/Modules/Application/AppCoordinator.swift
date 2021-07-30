@@ -55,6 +55,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     private var mainMatrixSession: MXSession? {
         return self.userSessionsService.mainUserSession?.matrixSession
     }
+        
+    private var currentSpaceId: String?
   
     // MARK: Public
     
@@ -129,7 +131,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func addSideMenu() {
         let appInfo = AppInfo.current
-        let coordinatorParameters = SideMenuCoordinatorParameters(userSessionsService: self.userSessionsService, appInfo: appInfo)
+        let coordinatorParameters = SideMenuCoordinatorParameters(appNavigator: self.appNavigator, userSessionsService: self.userSessionsService, appInfo: appInfo)
         
         let coordinator = SideMenuCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
@@ -167,6 +169,29 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         #if DEBUG
         FLEXManager.shared.showExplorer()
         #endif
+    }
+    
+    fileprivate func navigate(to destination: AppNavigatorDestination) {
+        switch destination {
+        case .homeSpace:
+            MXLog.verbose("Switch to home space")
+            self.navigateToSpace(with: nil)
+        case .space(let spaceId):
+            MXLog.verbose("Switch to space with id: \(spaceId)")
+            self.navigateToSpace(with: spaceId)
+        }
+    }
+    
+    private func navigateToSpace(with spaceId: String?) {
+        guard spaceId != self.currentSpaceId else {
+            MXLog.verbose("Space with id: \(String(describing: spaceId)) is already selected")
+            return
+        }
+        
+        self.currentSpaceId = spaceId
+        
+        // Reload split view with selected space id
+        self.splitViewCoordinator?.start(with: spaceId)
     }
 }
 
@@ -220,6 +245,8 @@ extension AppCoordinator: SideMenuCoordinatorDelegate {
 fileprivate class AppNavigator: AppNavigatorProtocol {
 // swiftlint:enable private_over_fileprivate
     
+    // MARK: - Properties
+    
     private unowned let appCoordinator: AppCoordinator
     
     let alert: AlertPresentable
@@ -232,8 +259,16 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         return SideMenuPresenter(sideMenuCoordinator: sideMenuCoordinator)
     }()
     
+    // MARK: - Setup
+    
     init(appCoordinator: AppCoordinator) {
         self.appCoordinator = appCoordinator
         self.alert = AppAlertPresenter(legacyAppDelegate: appCoordinator.legacyAppDelegate)
+    }
+    
+    // MARK: - Public
+    
+    func navigate(to destination: AppNavigatorDestination) {
+        self.appCoordinator.navigate(to: destination)
     }
 }
