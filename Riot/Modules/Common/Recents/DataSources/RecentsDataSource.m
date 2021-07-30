@@ -166,16 +166,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return state.unsentMessagesGroupDiscussionsCount;
 }
 
-- (void)setCurrentSpace:(MXSpace *)currentSpace
-{
-    MXLogDebug(@"[Spaces] setCurrentSpace %@", currentSpace.spaceId);
-    
-    _currentSpace = currentSpace;
-    [self refreshRoomsSection:^{
-        [self.delegate dataSource:self didCellChange:nil];
-    }];
-}
-
 #pragma mark -
 
 - (void)setDelegate:(id<MXKDataSourceDelegate>)delegate andRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
@@ -1165,17 +1155,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         NSMutableArray<id<MXKRecentCellDataStoring>> *cells = [NSMutableArray new];
         NSInteger count = recentsDataSource.numberOfCells;
 
-        NSDate *startDate = [NSDate new];
-        MXLogDebug(@"[Spaces] starting filtering rooms");
         for (NSUInteger index = 0; index < count; index++)
         {
             id<MXKRecentCellDataStoring> cell = [recentsDataSource cellDataAtIndex:index];
-            if (self.currentSpace == nil || [self.mxSession.spaceService isRoomWithId:cell.roomSummary.roomId descendantOf:self.currentSpace.spaceId])
-            {
-                [cells addObject:cell];
-            }
+            [cells addObject:cell];
         }
-        MXLogDebug(@"[Spaces] ended filtering rooms after %f", [[NSDate new] timeIntervalSinceDate:startDate]);
 
         MXWeakify(self);
         [self computeStateAsyncWithCells:cells recentsDataSourceMode:self.recentsDataSourceMode matrixSession:recentsDataSource.mxSession onComplete:^(RecentsDataSourceState *newState) {
