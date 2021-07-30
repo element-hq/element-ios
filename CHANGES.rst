@@ -17,7 +17,7 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * Support building Ad Hoc alpha release (#4635).
 
 Others
  * 
