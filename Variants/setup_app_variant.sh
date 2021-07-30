@@ -24,6 +24,9 @@ fi
 
 echo "Applying app variant: ${VARIANT_NAME}"
 
+# Replace fastlane environment variable file
+cp -f "${variant_root_folder}/.env.default" fastlane/.env.default
+
 # Replace build identifiers and provisioning profiles
 cp -f "${variant_root_folder}/AppIdentifiers.xcconfig" Config/AppIdentifiers.xcconfig
 
