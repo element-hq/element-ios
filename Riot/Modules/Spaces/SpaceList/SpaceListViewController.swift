@@ -40,6 +40,7 @@ final class SpaceListViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
     
     private var sections: [SpaceListSection] = []
+    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0)
 
     // MARK: - Setup
     
@@ -100,6 +101,7 @@ final class SpaceListViewController: UIViewController {
         self.tableView.separatorStyle = .none
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
+        self.tableView.allowsSelection = true
         self.tableView.register(cellType: SpaceListViewCell.self)
         self.tableView.tableFooterView = UIView()
     }
@@ -117,12 +119,16 @@ final class SpaceListViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        if let selectedRow = self.tableView.indexPathForSelectedRow {
+            self.tableView.deselectRow(at: selectedRow, animated: true)
+        }
     }
     
     private func renderLoaded(sections: [SpaceListSection]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.sections = sections
         self.tableView.reloadData()
+        self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
     }
     
     private func render(error: Error) {
@@ -134,9 +140,13 @@ final class SpaceListViewController: UIViewController {
 
 // MARK: - SpaceListViewModelViewDelegate
 extension SpaceListViewController: SpaceListViewModelViewDelegate {
-
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState) {
         self.render(viewState: viewSate)
+    }
+    
+    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceAt indexPath: IndexPath) {
+        self.selectedIndexPath = IndexPath(row: indexPath.row, section: indexPath.section)
+        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
     }
 }
 
@@ -179,7 +189,7 @@ extension SpaceListViewController: UITableViewDataSource {
         
         cell.update(theme: self.theme)
         cell.fill(with: viewData)
-        cell.selectionStyle = .blue
+        cell.selectionStyle = .none
         
         return cell
     }
@@ -189,7 +199,8 @@ extension SpaceListViewController: UITableViewDataSource {
 extension SpaceListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        self.viewModel.process(viewAction: .selectRow(at: indexPath))
+        if selectedIndexPath != indexPath {
+            self.viewModel.process(viewAction: .selectRow(at: indexPath))
+        }
     }
 }

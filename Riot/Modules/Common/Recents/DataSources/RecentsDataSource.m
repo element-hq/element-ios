@@ -92,10 +92,16 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         // Set default data and view classes
         [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
+        
+        [self registerSpaceServiceDidBuildGraphNotification];
     }
     return self;
 }
 
+- (void)dealloc
+{
+    [self unregisterSpaceServiceDidBuildGraphNotification];
+}
 
 #pragma mark - Properties
 
@@ -160,7 +166,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return state.unsentMessagesGroupDiscussionsCount;
 }
 
-
 #pragma mark -
 
 - (void)setDelegate:(id<MXKDataSourceDelegate>)delegate andRecentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
@@ -205,6 +210,23 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     shrinkedSectionsBitMask = savedShrinkedSectionsBitMask;
 
     return stickyHeader;
+}
+
+#pragma mark - Space Service notifications
+
+- (void)registerSpaceServiceDidBuildGraphNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spaceServiceDidBuildGraphNotification:) name:MXSpaceService.didBuildSpaceGraph object:nil];
+}
+
+- (void)spaceServiceDidBuildGraphNotification:(NSNotification*)notification
+{
+    [self forceRefresh];
+}
+
+- (void)unregisterSpaceServiceDidBuildGraphNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MXSpaceService.didBuildSpaceGraph object:nil];
 }
 
 #pragma mark - Key backup setup banner
@@ -1130,13 +1152,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         NSMutableArray<id<MXKRecentCellDataStoring>> *cells = [NSMutableArray new];
         NSInteger count = recentsDataSource.numberOfCells;
-        
+
         for (NSUInteger index = 0; index < count; index++)
         {
             id<MXKRecentCellDataStoring> cell = [recentsDataSource cellDataAtIndex:index];
             [cells addObject:cell];
         }
-        
+
         MXWeakify(self);
         [self computeStateAsyncWithCells:cells recentsDataSourceMode:self.recentsDataSourceMode matrixSession:recentsDataSource.mxSession onComplete:^(RecentsDataSourceState *newState) {
             MXStrongifyAndReturnIfNil(self);

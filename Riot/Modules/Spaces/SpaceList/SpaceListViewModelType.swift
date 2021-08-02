@@ -20,6 +20,7 @@ import Foundation
 
 protocol SpaceListViewModelViewDelegate: class {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState)
+    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceAt indexPath: IndexPath)
 }
 
 protocol SpaceListViewModelCoordinatorDelegate: class {

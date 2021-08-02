@@ -19,6 +19,8 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+@class MXSpace;
+
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.

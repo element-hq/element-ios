@@ -38,6 +38,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     init(session: MXSession) {
         self.session = session
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.sessionDidSync(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
+
     }
     
     deinit {
@@ -59,20 +62,26 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 let spaceViewData = viewDataList[indexPath.row]
                 self.selectSpace(with: spaceViewData.spaceId)
             }
+            self.viewDelegate?.spaceListViewModel(self, didSelectSpaceAt: indexPath)
         }
     }
     
     // MARK: - Private
     
+    @objc private func sessionDidSync(notification: Notification) {
+        loadData()
+    }
+    
     private func loadData() {
+        guard session.mediaManager != nil else {
+            return
+        }
 
         self.update(viewState: .loading)
                 
         let homeViewData = self.createHomeViewData()
         
-        // TODO: Manage space list
-        let spacesViewDataList: [SpaceListItemViewData] = [
-        ]
+        let spacesViewDataList = getSpacesViewData()
         
         let sections: [SpaceListSection] = [
             .home(homeViewData),
@@ -98,6 +107,13 @@ final class SpaceListViewModel: SpaceListViewModelType {
         let homeViewData = SpaceListItemViewData(spaceId: "home",
                                                  title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData)
         return homeViewData
+    }
+    
+    private func getSpacesViewData() -> [SpaceListItemViewData] {
+        return session.spaceService.rootSpaceSummaries.map { summary in
+            let avatarViewData = AvatarViewData(avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+            return SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData)
+        }
     }
     
     private func update(viewState: SpaceListViewState) {

@@ -23,6 +23,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     
     @IBOutlet private weak var avatarView: SpaceAvatarView!
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var selectionView: UIView!
     
     private var theme: Theme?
     
@@ -30,13 +31,17 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+
+        self.selectionView.layer.cornerRadius = 8.0
+        self.selectionView.layer.masksToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+        UIView.animate(withDuration: animated ? 0.3 : 0.0) {
+            self.selectionView.alpha = selected ? 1.0 : 0.0
+        }
     }
 
     // MARK: - Public
@@ -52,5 +57,6 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
         self.avatarView.update(theme: theme)
         self.titleLabel.textColor = theme.colors.primaryContent
         self.titleLabel.font = theme.fonts.bodySB
+        self.selectionView.backgroundColor = theme.colors.separator
     }
 }

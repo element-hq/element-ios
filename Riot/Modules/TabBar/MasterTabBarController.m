@@ -31,7 +31,7 @@
 
 #import "Riot-Swift.h"
 
-@interface MasterTabBarController () <AuthenticationViewControllerDelegate>
+@interface MasterTabBarController () <AuthenticationViewControllerDelegate, UITabBarControllerDelegate>
 {
     // Array of `MXSession` instances.
     NSMutableArray<MXSession*> *mxSessionArray;    
@@ -61,6 +61,9 @@
     
     // The groups data source
     GroupsDataSource *groupsDataSource;
+    
+    // Custom title view of the navigation bar
+    MainTitleView *titleView;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -105,22 +108,29 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    self.delegate = self;
+    
     _authenticationInProgress = NO;
     
     // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
     [self vc_removeBackTitle];
+    
+    [self setupTitleView];
+    titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
     
     childViewControllers = [NSMutableArray array];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    id<Theme> theme = ThemeService.shared.theme;
+    [theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    [ThemeService.shared.theme applyStyleOnTabBar:self.tabBar];
+    [theme applyStyleOnTabBar:self.tabBar];
     
-    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    
+    self.view.backgroundColor = theme.backgroundColor;
+    [titleView updateWithTheme:theme];
+
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -763,8 +773,9 @@
 - (void)filterRoomsWithParentId:(NSString*)roomParentId
                 inMatrixSession:(MXSession*)mxSession
 {
-    // TODO: Update recentsDataSource in order to keep only rooms with given parent id.
-    // When updating the data source, if needed, screens should also update their title view subtitle with the space name
+    titleView.subtitleLabel.text = roomParentId ? [mxSession roomSummaryWithRoomId:roomParentId].displayname : nil;
+
+    recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
 }
 
 #pragma mark -
@@ -845,6 +856,12 @@
             _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
+}
+
+-(void)setupTitleView
+{
+    titleView = [MainTitleView new];
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
@@ -1234,6 +1251,32 @@
 {
     _authenticationInProgress = NO;
     [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
+}
+
+#pragma mark - UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    if ([viewController isKindOfClass:HomeViewController.class])
+    {
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:FavouritesViewController.class])
+    {
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:PeopleViewController.class])
+    {
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:RoomsViewController.class])
+    {
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
+    }
+    else if ([viewController isKindOfClass:GroupsViewController.class])
+    {
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
+    }
 }
 
 @end
