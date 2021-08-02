@@ -364,21 +364,23 @@ class NotificationService: UNNotificationServiceExtension {
                             if roomDisplayName != nil && roomDisplayName != eventSenderName {
                                 notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
                                 
-                                if msgType == kMXMessageTypeText {
+                                switch msgType {
+                                case kMXMessageTypeText, kMXMessageTypeNotice:
                                     notificationBody = messageContent
-                                } else if msgType == kMXMessageTypeEmote {
+                                case kMXMessageTypeEmote:
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                } else if msgType == kMXMessageTypeImage {
+                                case kMXMessageTypeImage:
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                } else {
+                                default:
                                     // Encrypted messages falls here
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
+                                    break
                                 }
                             } else {
                                 notificationTitle = eventSenderName
                                 
                                 switch msgType {
-                                    case kMXMessageTypeText:
+                                    case kMXMessageTypeText, kMXMessageTypeNotice:
                                         notificationBody = messageContent
                                         break
                                     case kMXMessageTypeEmote:
