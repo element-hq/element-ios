@@ -62,11 +62,8 @@
     // The groups data source
     GroupsDataSource *groupsDataSource;
     
-    // Title label in the navigation bar
-    UILabel *titleLabel;
-    
-    // Subtitle label in the navigation bar
-    UILabel *subtitleLabel;
+    // Custom title view of the navigation bar
+    MainTitleView *titleView;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -119,7 +116,7 @@
     [self vc_removeBackTitle];
     
     [self setupTitleView];
-    titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
     
     childViewControllers = [NSMutableArray array];
 }
@@ -132,10 +129,7 @@
     [theme applyStyleOnTabBar:self.tabBar];
     
     self.view.backgroundColor = theme.backgroundColor;
-    titleLabel.textColor = theme.colors.primaryContent;
-    titleLabel.font = theme.fonts.calloutSB;
-    subtitleLabel.textColor = theme.colors.tertiaryContent;
-    subtitleLabel.font = theme.fonts.footnote;
+    [titleView updateWithTheme:theme];
 
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -779,7 +773,7 @@
 - (void)filterRoomsWithParentId:(NSString*)roomParentId
                 inMatrixSession:(MXSession*)mxSession
 {
-    subtitleLabel.text = roomParentId ? [mxSession roomSummaryWithRoomId:roomParentId].displayname : nil;
+    titleView.subtitleLabel.text = roomParentId ? [mxSession roomSummaryWithRoomId:roomParentId].displayname : nil;
 
     recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
 }
@@ -866,23 +860,8 @@
 
 -(void)setupTitleView
 {
-    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    titleLabel.backgroundColor = UIColor.clearColor;
-    titleLabel.textColor = UIColor.grayColor;
-    titleLabel.font = [UIFont boldSystemFontOfSize:17];
-
-    subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    subtitleLabel.backgroundColor = UIColor.clearColor;
-    subtitleLabel.textColor = UIColor.blackColor;
-    subtitleLabel.font = [UIFont boldSystemFontOfSize:12];
-    
-    UIStackView *stackView = [[UIStackView alloc] initWithArrangedSubviews:@[titleLabel, subtitleLabel]];
-    stackView.distribution = UIStackViewDistributionEqualCentering;
-    stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.alignment = UIStackViewAlignmentCenter;
-    stackView.spacing = 0.5;
-    
-    self.navigationItem.titleView = stackView;
+    titleView = [MainTitleView new];
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
@@ -1280,23 +1259,23 @@
 {
     if ([viewController isKindOfClass:HomeViewController.class])
     {
-        titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
     }
     else if ([viewController isKindOfClass:FavouritesViewController.class])
     {
-        titleLabel.text = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
     }
     else if ([viewController isKindOfClass:PeopleViewController.class])
     {
-        titleLabel.text = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
     }
     else if ([viewController isKindOfClass:RoomsViewController.class])
     {
-        titleLabel.text = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
     }
     else if ([viewController isKindOfClass:GroupsViewController.class])
     {
-        titleLabel.text = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
+        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
     }
 }
 

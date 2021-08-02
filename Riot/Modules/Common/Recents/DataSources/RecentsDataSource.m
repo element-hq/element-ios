@@ -439,8 +439,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)forceRefresh
 {
-    MXLogDebug(@"[Spaces] forceRefresh \n%@", [NSThread callStackSymbols]);
-    
     // Refresh is disabled during drag&drop animation"
     if (!self.droppingCellIndexPath)
     {
@@ -1620,8 +1618,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
-    MXLogDebug(@"[Spaces] dataSource didCellChange");
-    
     // Refresh is disabled during drag&drop animation
     if (self.droppingCellIndexPath)
     {

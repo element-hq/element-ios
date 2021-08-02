@@ -45,7 +45,6 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     deinit {
         self.cancelOperations()
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Public
