@@ -298,7 +298,6 @@
 "settings_global_settings_info" = "Глобални настройки на известия са налични на Вашия %@ уеб клиент";
 "settings_pin_rooms_with_missed_notif" = "Закачане на стаи с пропуснати известия";
 "settings_pin_rooms_with_unread" = "Закачане на стаи с непрочетени съобщения";
-"settings_on_denied_notification" = "Известията са отказани за %@. Моля, включете ги в настройките на устройството";
 "settings_enable_callkit" = "Интегрирани разговори";
 "settings_callkit_info" = "Получаване на входящи повиквания при заключен екран. Показване на Element разговори в историята на системата. Ако iCloud е включен, историята на разговорите се споделя с Apple.";
 "settings_ui_language" = "Език";

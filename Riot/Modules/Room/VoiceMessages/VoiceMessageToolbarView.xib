@@ -23,7 +23,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="544" height="72"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8fP-9K-WTa">
-                            <rect key="frame" x="492" y="-90" width="44" height="152"/>
+                            <rect key="frame" x="492" y="-80" width="44" height="152"/>
                             <subviews>
                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kvc-OZ-peC">
                                     <rect key="frame" x="0.0" y="0.0" width="44" height="152"/>
@@ -120,15 +120,15 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-1F-5qT">
-                            <rect key="frame" x="488" y="10" width="52" height="52"/>
+                            <rect key="frame" x="478" y="0.0" width="72" height="72"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BDj-Sw-VQ5">
-                                    <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="72" height="72"/>
                                     <state key="normal" image="voice_message_record_button_default"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rel-Fo-ROL">
-                                    <rect key="frame" x="0.0" y="0.0" width="52" height="52"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="72" height="72"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                     <state key="normal" image="voice_message_record_button_recording"/>
                                 </button>
                             </subviews>
@@ -136,14 +136,14 @@
                             <constraints>
                                 <constraint firstItem="BDj-Sw-VQ5" firstAttribute="leading" secondItem="7OQ-1F-5qT" secondAttribute="leading" id="2Xv-EI-etf"/>
                                 <constraint firstAttribute="trailing" secondItem="BDj-Sw-VQ5" secondAttribute="trailing" id="2ZQ-3v-0W7"/>
-                                <constraint firstAttribute="height" constant="52" id="4XA-Gb-5NO"/>
+                                <constraint firstAttribute="height" constant="72" id="4XA-Gb-5NO"/>
                                 <constraint firstAttribute="trailing" secondItem="BDj-Sw-VQ5" secondAttribute="trailing" id="Dki-cT-7xX"/>
                                 <constraint firstAttribute="bottom" secondItem="BDj-Sw-VQ5" secondAttribute="bottom" id="fzv-iX-c1Y"/>
                                 <constraint firstItem="BDj-Sw-VQ5" firstAttribute="top" secondItem="7OQ-1F-5qT" secondAttribute="top" id="mNa-EU-ZKQ"/>
                                 <constraint firstAttribute="bottom" secondItem="BDj-Sw-VQ5" secondAttribute="bottom" id="phX-gD-B2H"/>
                                 <constraint firstItem="BDj-Sw-VQ5" firstAttribute="top" secondItem="7OQ-1F-5qT" secondAttribute="top" id="pv8-li-wP8"/>
                                 <constraint firstItem="BDj-Sw-VQ5" firstAttribute="leading" secondItem="7OQ-1F-5qT" secondAttribute="leading" id="ynJ-4x-1jv"/>
-                                <constraint firstAttribute="width" constant="52" id="zPb-1B-JyA"/>
+                                <constraint firstAttribute="width" constant="72" id="zPb-1B-JyA"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -152,7 +152,7 @@
                         <constraint firstItem="dyu-ha-046" firstAttribute="leading" secondItem="XRB-CY-ijK" secondAttribute="leading" id="BoC-Ut-chI"/>
                         <constraint firstAttribute="bottom" secondItem="dyu-ha-046" secondAttribute="bottom" id="U4h-FY-D3W"/>
                         <constraint firstItem="8fP-9K-WTa" firstAttribute="bottom" secondItem="7OQ-1F-5qT" secondAttribute="bottom" id="X4v-7T-LgP"/>
-                        <constraint firstAttribute="trailing" secondItem="7OQ-1F-5qT" secondAttribute="trailing" constant="4" id="giC-4J-EUL"/>
+                        <constraint firstAttribute="trailing" secondItem="7OQ-1F-5qT" secondAttribute="trailing" constant="-6" id="giC-4J-EUL"/>
                         <constraint firstItem="dyu-ha-046" firstAttribute="top" secondItem="XRB-CY-ijK" secondAttribute="top" id="ra2-Me-23b"/>
                         <constraint firstItem="8fP-9K-WTa" firstAttribute="centerX" secondItem="7OQ-1F-5qT" secondAttribute="centerX" id="xL5-g3-aHb"/>
                         <constraint firstAttribute="trailing" secondItem="dyu-ha-046" secondAttribute="trailing" id="xME-WZ-OMX"/>
@@ -280,7 +280,7 @@
         <image name="voice_message_lock_icon_locked" width="24" height="24"/>
         <image name="voice_message_lock_icon_unlocked" width="16" height="16"/>
         <image name="voice_message_record_button_default" width="22" height="26.5"/>
-        <image name="voice_message_record_button_recording" width="52" height="52"/>
+        <image name="voice_message_record_button_recording" width="72" height="72"/>
         <image name="voice_message_record_icon" width="10" height="10"/>
     </resources>
 </document>

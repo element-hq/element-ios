@@ -72,18 +72,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         processingQueue = dispatch_queue_create("RecentsDataSource", DISPATCH_QUEUE_SERIAL);
         
         _crossSigningBannerDisplay = CrossSigningBannerDisplayNone;
-        crossSigningBannerSection = -1;
-        
         _secureBackupBannerDisplay = SecureBackupBannerDisplayNone;
-        secureBackupBannerSection = -1;
-        directorySection = -1;
-        invitesSection = -1;
-        favoritesSection = -1;
-        peopleSection = -1;
-        conversationSection = -1;
-        lowPrioritySection = -1;
-        serverNoticeSection = -1;
-        suggestedRoomsSection = -1;
+        
+        [self resetSectionIndexes];
         
         _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
@@ -103,6 +94,20 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (void)dealloc
 {
     [self unregisterSpaceServiceDidBuildGraphNotification];
+}
+
+- (void)resetSectionIndexes
+{
+    crossSigningBannerSection = -1;
+    secureBackupBannerSection = -1;
+    directorySection = -1;
+    invitesSection = -1;
+    favoritesSection = -1;
+    peopleSection = -1;
+    conversationSection = -1;
+    lowPrioritySection = -1;
+    serverNoticeSection = -1;
+    suggestedRoomsSection = -1;
 }
 
 #pragma mark - Properties
@@ -473,10 +478,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Check whether all data sources are ready before rendering recents
     if (self.state == MXKDataSourceStateReady)
     {
-        
-        MXLogDebug(@"[Spaces] numberOfSectionsInTableView: suggestedRoomCellDataArray %ld", self->state.suggestedRoomCellDataArray.count);
-
-        crossSigningBannerSection = secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = invitesSection = serverNoticeSection = -1;
+        [self resetSectionIndexes];
         
         if (self.crossSigningBannerDisplay != CrossSigningBannerDisplayNone)
         {
@@ -1204,10 +1206,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 #pragma mark - MXKDataSourceDelegate
 
-- (void)refreshRoomsSection:(void (^)(void))onComplete;
+- (void)refreshRoomsSection:(void (^)(void))onComplete
 {
-    secureBackupBannerSection = directorySection = favoritesSection = peopleSection = conversationSection = lowPrioritySection = serverNoticeSection = suggestedRoomsSection = invitesSection = -1;
-
     if (displayedRecentsDataSourceArray.count > 0)
     {
         // FIXME manage multi accounts
