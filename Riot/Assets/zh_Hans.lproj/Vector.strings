@@ -1445,3 +1445,6 @@
 "room_notifs_settings_notify_me_for" = "通知内容";
 "room_details_notifs" = "通知";
 "settings_labs_voice_messages" = "语音消息";
+"settings_notifications_disabled_alert_message" = "要启用通知，请转到您的设备设置。";
+"settings_notifications_disabled_alert_title" = "已禁用通知";
+"settings_device_notifications" = "设备通知";
