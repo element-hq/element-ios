@@ -92,6 +92,11 @@
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ new messages in %@, %@ and others";
 
+/** Reactions **/
+
+/* A user has reacted to a message */
+"REACTION_FROM_USER" = "%@ sent a reaction"
+
 /** Invites **/
 
 /* A user has invited you to a chat */
@@ -102,6 +107,17 @@
 
 /* A user has invited you to a named room */
 "USER_INVITE_TO_NAMED_ROOM" = "%@ has invited you to %@";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ changed their name to %@";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ changed their avatar";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ updated their details";
 
 /** Calls **/
 

@@ -359,12 +359,7 @@ class NotificationService: UNNotificationServiceExtension {
                             let msgType = event.content["msgtype"] as? String
                             let messageContent = event.content["body"] as? String
                             
-                            // Display the room name only if it is different than the sender name
-                            if roomDisplayName != nil && roomDisplayName != eventSenderName {
-                                notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
-                            } else {
-                                notificationTitle = eventSenderName
-                            }
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             
                             if event.isEncrypted && !self.showDecryptedContentInNotifications {
                                 // Hide the content
@@ -382,19 +377,38 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationBody = messageContent
                             }
                         case .roomMember:
-                            if roomDisplayName != nil && roomDisplayName != eventSenderName {
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments: [eventSenderName as Any, roomDisplayName as Any])
+                            // If the user is already joined, display updated displayname/avatar events.
+                            if NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId)?.membership == .join {
+                                notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                                
+                                if event.content["membership"] as? String == "join",
+                                   let prevContent = event.prevContent,
+                                   prevContent["membership"] as? String == "join" {
+                                    if let displayname = event.content["displayname"] as? String,
+                                       let oldDisplayname = prevContent["displayname"] as? String,
+                                       displayname != oldDisplayname {
+                                        notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_DISPLAYNAME", arguments: [oldDisplayname, displayname])
+                                    } else {
+                                        notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_AVATAR", arguments: [eventSenderName])
+                                    }
+                                } else {
+                                    #warning("Join and leave?")
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_MEMBERSHIP_UPDATED", arguments: [eventSenderName])
+                                }
+                            // Otherwise treat the notification as an invite.
                             } else {
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_CHAT", arguments: [eventSenderName as Any])
+                                if roomDisplayName != nil && roomDisplayName != eventSenderName {
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments: [eventSenderName, roomDisplayName as Any])
+                                } else {
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_CHAT", arguments: [eventSenderName])
+                                }
                             }
                         case .sticker:
-                            if roomDisplayName != nil && roomDisplayName != eventSenderName {
-                                notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
-                            } else {
-                                notificationTitle = eventSenderName
-                            }
-                            
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
+                        case .reaction:
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            notificationBody = NSString.localizedUserNotificationString(forKey: "REACTION_FROM_USER", arguments: [eventSenderName])
                         case .custom:
                             if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
                                let type = event.content?["type"] as? String,
@@ -442,6 +456,20 @@ class NotificationService: UNNotificationServiceExtension {
                     onComplete(nil)
             }
         })
+    }
+    
+    /// Returns the default title for message notifications.
+    /// - Parameters:
+    ///   - eventSenderName: The displayname of the sender.
+    ///   - roomDisplayName: The displayname of the room the message was sent in.
+    /// - Returns: A string to be used for the notification's title.
+    private func messageTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
+        // Display the room name only if it is different than the sender name
+        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
+            return NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
+        } else {
+            return eventSenderName
+        }
     }
     
     /// Get the context of an event.
