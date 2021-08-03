@@ -1361,7 +1361,7 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Teavita mind";
 "room_details_notifs" = "Teavitused";
-"voice_message_stop_locked_mode_recording" = "Salvestuse peatamiseks ja taasesituseks vajuta lainekese nuppu";
+"voice_message_stop_locked_mode_recording" = "Salvestuse peatamiseks ja taasesituseks vajuta salvestuse vaadet";
 "voice_message_remaining_recording_time" = "salvestusaega jäänud %@s";
 
 // Mark: - Voice Messages
