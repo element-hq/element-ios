@@ -189,8 +189,10 @@ class NotificationService: UNNotificationServiceExtension {
         guard let roomSummary = NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId) else { return }
         guard let roomDisplayName = roomSummary.displayname else { return }
         if roomSummary.isDirect == true {
+            bestAttemptContents[eventId]?.title = roomDisplayName
             bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [roomDisplayName as Any])
         } else {
+            bestAttemptContents[eventId]?.title = roomDisplayName
             bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [roomDisplayName as Any])
         }
     }
@@ -326,6 +328,7 @@ class NotificationService: UNNotificationServiceExtension {
                             } else {
                                 MXLog.debug("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
                             }
+                        #warning("Handle .roomEncrypted separately.")
                         case .roomMessage, .roomEncrypted:
                             if isRoomMentionsOnly {
                                 // A local notification will be displayed only for highlighted notification.
@@ -345,6 +348,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                                 
                                 if !isHighlighted {
+                                    #warning("In practice, this only hides the notification's content. An empty notification may be less useful in this instance?")
                                     // Ignore this notif.
                                     MXLog.debug("[NotificationService] notificationContentForEvent: Ignore non highlighted notif in mentions only room")
                                     onComplete(nil)
@@ -352,50 +356,31 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                             }
                             
-                            var msgType = event.content["msgtype"] as? String
+                            let msgType = event.content["msgtype"] as? String
                             let messageContent = event.content["body"] as? String
-                            
-                            if event.isEncrypted && !self.showDecryptedContentInNotifications {
-                                // Hide the content
-                                msgType = nil
-                            }
                             
                             // Display the room name only if it is different than the sender name
                             if roomDisplayName != nil && roomDisplayName != eventSenderName {
                                 notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
-                                
-                                switch msgType {
-                                case kMXMessageTypeText, kMXMessageTypeNotice:
-                                    notificationBody = messageContent
-                                case kMXMessageTypeEmote:
-                                    notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                case kMXMessageTypeImage:
-                                    notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                default:
-                                    // Encrypted messages falls here
-                                    notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
-                                    break
-                                }
                             } else {
                                 notificationTitle = eventSenderName
-                                
-                                switch msgType {
-                                    case kMXMessageTypeText, kMXMessageTypeNotice:
-                                        notificationBody = messageContent
-                                        break
-                                    case kMXMessageTypeEmote:
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                        break
-                                    case kMXMessageTypeImage:
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                        break
-                                    default:
-                                        // Encrypted messages falls here
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
-                                        break
-                                }
                             }
-                            break
+                            
+                            if event.isEncrypted && !self.showDecryptedContentInNotifications {
+                                // Hide the content
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
+                                break
+                            }
+                            
+                            switch msgType {
+                            case kMXMessageTypeEmote:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                            case kMXMessageTypeImage:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                            default:
+                                // All other message types such as text, notice etc
+                                notificationBody = messageContent
+                            }
                         case .roomMember:
                             if roomDisplayName != nil && roomDisplayName != eventSenderName {
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments: [eventSenderName as Any, roomDisplayName as Any])
