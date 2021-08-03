@@ -98,6 +98,14 @@
 - (instancetype)initWithPublicRoom:(MXPublicRoom*)publicRoom andSession:(MXSession*)mxSession;
 
 /**
+ Contructors.
+ 
+ @param childInfo MXSpaceChildInfo instance that describes the child.
+ @param mxSession the session to open the room preview with.
+ */
+- (instancetype)initWithSpaceChildInfo:(MXSpaceChildInfo*)childInfo andSession:(MXSession*)mxSession;
+
+/**
  Attempt to peek into the room to get room data (state, messages history, etc).
 
  The operation succeeds only if the room history is world_readable.

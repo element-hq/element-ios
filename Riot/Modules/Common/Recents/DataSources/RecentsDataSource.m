@@ -57,7 +57,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @property (nonatomic, assign, readwrite) CrossSigningBannerDisplay crossSigningBannerDisplay;
 
 @property (nonatomic, strong) CrossSigningService *crossSigningService;
-@property (nonatomic, strong) NSArray<MXSpaceChildInfo *> *lastSuggestedRooms;
 
 @end
 
@@ -1301,7 +1300,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }
             else if (recentCellDataStoring.spaceChildInfo != nil)
             {
-                [suggestedRoomCellDataArray addObject:recentCellDataStoring];
+                MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:recentCellDataStoring.spaceChildInfo.childRoomId];
+                BOOL isJoined = roomSummary.membership == MXMembershipJoin || roomSummary.membershipTransitionState == MXMembershipTransitionStateJoined;
+                if (!isJoined)
+                {
+                    [suggestedRoomCellDataArray addObject:recentCellDataStoring];
+                }
             }
             else
             {
@@ -1343,7 +1347,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         {
             if (recentCellDataStoring.spaceChildInfo)
             {
-                [suggestedRoomCellDataArray addObject:recentCellDataStoring];
+                MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:recentCellDataStoring.spaceChildInfo.childRoomId];
+                BOOL isJoined = roomSummary.membership == MXMembershipJoin || roomSummary.membershipTransitionState == MXMembershipTransitionStateJoined;
+                if (!isJoined)
+                {
+                    [suggestedRoomCellDataArray addObject:recentCellDataStoring];
+                }
             }
             // Consider only non direct rooms.
             else if (!room.isDirect)

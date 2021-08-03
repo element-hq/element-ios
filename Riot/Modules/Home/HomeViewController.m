@@ -557,7 +557,14 @@
         
         id<MXKRecentCellDataStoring> renderedCellData = (id<MXKRecentCellDataStoring>)roomCollectionViewCell.renderedCellData;
         
-        [self.delegate recentListViewController:self didSelectRoom:renderedCellData.roomSummary.roomId inMatrixSession:renderedCellData.roomSummary.room.mxSession];
+        if (renderedCellData.spaceChildInfo)
+        {
+            [self.delegate recentListViewController:self didSelectSuggestedRoom:renderedCellData.spaceChildInfo];
+        }
+        else
+        {
+            [self.delegate recentListViewController:self didSelectRoom:renderedCellData.roomSummary.roomId inMatrixSession:renderedCellData.roomSummary.room.mxSession];
+        }
     }
     
     // Hide the keyboard when user select a room
