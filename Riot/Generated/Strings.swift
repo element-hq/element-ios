@@ -4898,7 +4898,7 @@ internal enum VectorL10n {
   internal static func voiceMessageRemainingRecordingTime(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "voice_message_remaining_recording_time", p1)
   }
-  /// Tap on the wavelength to stop and playback
+  /// Tap on your recording to stop or listen
   internal static var voiceMessageStopLockedModeRecording: String { 
     return VectorL10n.tr("Vector", "voice_message_stop_locked_mode_recording") 
   }

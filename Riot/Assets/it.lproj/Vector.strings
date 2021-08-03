@@ -1394,3 +1394,10 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Inviami notifiche per";
 "room_details_notifs" = "Notifiche";
+"voice_message_stop_locked_mode_recording" = "Tocca la registrazione per fermare o ascoltare";
+"voice_message_remaining_recording_time" = "%@s rimasti";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Tieni premuto per registrare, rilascia per inviare";
+"settings_labs_voice_messages" = "Messaggi vocali";

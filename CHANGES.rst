@@ -5,14 +5,68 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
+ * Settings: Adds a link to open the Settings app to quickly configure app notifications.
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Changes in 1.4.9 (2021-08-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Voice Messages: Increased recording state microphone icon size
+ * Voice Messages: Using "Voice message - MM.dd.yyyy HH.mm.ss" as the format for recorded audio files
+
+🐛 Bugfix
+ * Voice Messages: Fixed race conditions when sending voice messages (#4641)
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
+Changes in 1.4.8 (2021-07-29)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
  * Rooms Tab: Remove the directory section (#4521).
  * Notifications: Show decrypted content is enabled by default (#4519).
  * People Tab: Remove the local contacts section (#4523).
  * Contacts: Delay access to local contacts until they're needed for display (#4616).
  * RecentsDataSource: Factorize section reset in one place (target #4591).
- * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
- * Settings: Adds a link to open the Settings app to quickly configure app notifications.
+ * Voice Messages: Tap/hold to send voice messages isn't intuitive (#4601).
+ * Voice Messages: copy could be improved (#4604).
+ * Slide to lock should be more generous (#4602).
 
 🐛 Bugfix
  * Room: Fixed mentioning users from room info member details (#4583)
@@ -20,6 +74,7 @@ Changes to be released in next version
  * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
  * AuthenticationViewController: Fix crash on authentication if an intermediate view was presented (#4606).
  * Room: Fixed crash when opening a read-only room (#4620).
+ * Voice Messages: Tapping on waveform in composer glitches UI (#4603).
 
 ⚠️ API Changes
  * 
@@ -33,6 +88,9 @@ Changes to be released in next version
 Others
  * Separated CI jobs into individual actions
  * Update Gemfile.lock
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.6)).
 
 Changes in 1.4.7 (2021-07-22)
 =================================================
