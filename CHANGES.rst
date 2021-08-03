@@ -5,10 +5,11 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Voice Messages: Increased recording state microphone icon size
+ * Voice Messages: Using "Voice message - MM.dd.yyyy HH.mm.ss" as the format for recorded audio files
 
 🐛 Bugfix
- * 
+ * Voice Messages: Fixed race conditions when sending voice messages (#4641)
 
 ⚠️ API Changes
  * 
