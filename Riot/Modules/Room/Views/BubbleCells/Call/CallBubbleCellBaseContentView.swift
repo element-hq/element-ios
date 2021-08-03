@@ -102,7 +102,7 @@ extension CallBubbleCellBaseContentView: Themable {
         
         bgView.backgroundColor = theme.colors.tile
         callerNameLabel.textColor = theme.textPrimaryColor
-        callIconView.tintColor = theme.textTertiaryColor
+        callIconView.tintColor = theme.textSecondaryColor
         callStatusLabel.textColor = theme.textSecondaryColor
         
         if let bottomContainerView = bottomContainerView as? Themable {
