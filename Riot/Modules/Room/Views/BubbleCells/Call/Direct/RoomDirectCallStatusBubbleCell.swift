@@ -207,7 +207,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         case .ringing:
             if call.isIncoming {
                 viewState = .ringing
-                statusText = nil
+                statusText = isVideoCall ? VectorL10n.eventFormatterCallIncomingVideo : VectorL10n.eventFormatterCallIncomingVoice
             } else {
                 viewState = .active
                 statusText = isVideoCall ? VectorL10n.eventFormatterCallActiveVideo : VectorL10n.eventFormatterCallActiveVoice

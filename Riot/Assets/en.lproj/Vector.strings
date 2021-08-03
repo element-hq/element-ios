@@ -847,6 +847,8 @@ Tap the + to start adding people.";
 "event_formatter_call_connecting" = "Connecting…";
 "event_formatter_call_ringing" = "Ringing…";
 "event_formatter_call_has_ended" = "Call ended %@";
+"event_formatter_call_incoming_voice" = "Incoming voice call";
+"event_formatter_call_incoming_video" = "Incoming video call";
 "event_formatter_call_active_voice" = "Active voice call";
 "event_formatter_call_active_video" = "Active video call";
 "event_formatter_call_you_declined" = "Call declined";
