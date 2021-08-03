@@ -102,26 +102,27 @@ final class BuildSettings: NSObject {
     // MARK: - Server configuration
     
     // Default servers proposed on the authentication screen
-    static let serverConfigDefaultHomeserverUrlString = "https://matrix.org"
-    static let serverConfigDefaultIdentityServerUrlString = "https://vector.im"
+    static let serverConfigDefaultHomeserverUrlString = "https://im.server.vpubchain.net"
+//    static let serverConfigDefaultIdentityServerUrlString = "https://vector.im"
+    static let serverConfigDefaultIdentityServerUrlString = "https://im.identity.vpubchain.net"
     
-    static let serverConfigSygnalAPIUrlString = "https://matrix.org/_matrix/push/v1/notify"
+    static let serverConfigSygnalAPIUrlString = "https://im.push.vpubchain.net/_matrix/push/v1/notify"
     
     
     // MARK: - Legal URLs
     
     // Note: Set empty strings to hide the related entry in application settings
-    static let applicationCopyrightUrlString = "https://element.io/copyright"
-    static let applicationPrivacyPolicyUrlString = "https://element.io/privacy"
-    static let applicationTermsConditionsUrlString = "https://element.io/terms-of-service"
+    static let applicationCopyrightUrlString = "https://www.vpubchain.info/#/applegal"
+    static let applicationPrivacyPolicyUrlString = "https://www.vpubchain.info/#/appPrivacy"
+    static let applicationTermsConditionsUrlString = "https://www.vpubchain.info/#/applegal"
     static let applicationHelpUrlString =
-    "https://element.io/help"
+    "https://im.to.vpubchain.net/#/#lianchat:vpubchain.net"
     
     
     // MARk: - Matrix permalinks
     // Paths for URLs that will considered as Matrix permalinks. Those permalinks are opened within the app
     static let matrixPermalinkPaths: [String: [String]] = [
-        "app.element.io": [],
+        "im.app.vpubchain.net": [],
         "staging.element.io": [],
         "develop.element.io": [],
         "mobile.element.io": [""],
@@ -131,8 +132,11 @@ final class BuildSettings: NSObject {
         "vector.im": ["/app", "/staging", "/develop"],
         "www.vector.im": ["/app", "/staging", "/develop"],
         // Official Matrix ones
-        "matrix.to": ["/"],
+        "vpubchain.net": ["/"],
+        "im.server.vpubchain.net": ["/"],
+        "im.to.vpubchain.net": ["/"],
         "www.matrix.to": ["/"],
+        "matrix.to": ["/"],
     ]
     
     
@@ -144,7 +148,7 @@ final class BuildSettings: NSObject {
         return false
         #endif
     }
-    static let stunServerFallbackUrlString: String? = "stun:turn.matrix.org"
+    static let stunServerFallbackUrlString: String? = "stun:im.turn.vpubchain.net"
     
     
     // MARK: -  Public rooms Directory
@@ -152,8 +156,8 @@ final class BuildSettings: NSObject {
     static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
-        "matrix.org",
-        "gitter.im"
+        "vpubchain.net",
+        "matrix.org"
     ]
     
     // MARK: -  Rooms Screen
@@ -165,24 +169,28 @@ final class BuildSettings: NSObject {
     
     
     // MARK: - Bug report
-    static let bugReportEndpointUrlString = "https://riot.im/bugreports"
+    static let bugReportEndpointUrlString = "https://www.vpubchain.net/bugreports"
     // Use the name allocated by the bug report server
-    static let bugReportApplicationId = "riot-ios"
+    static let bugReportApplicationId = "lianchat-ios"
     
     
     // MARK: - Integrations
-    static let integrationsUiUrlString = "https://scalar.vector.im/"
-    static let integrationsRestApiUrlString = "https://scalar.vector.im/api"
-    // Widgets in those paths require a scalar token
-    static let integrationsScalarWidgetsPaths = [
-        "https://scalar.vector.im/_matrix/integrations/v1",
-        "https://scalar.vector.im/api",
-        "https://scalar-staging.vector.im/_matrix/integrations/v1",
-        "https://scalar-staging.vector.im/api",
-        "https://scalar-staging.riot.im/scalar/api",
-    ]
-    // Jitsi server used outside integrations to create conference calls from the call button in the timeline
-    static let jitsiServerUrl: URL = URL(string: "https://jitsi.riot.im")!
+    //    static let integrationsUiUrlString = "https://scalar.vector.im/"
+    //    static let integrationsRestApiUrlString = "https://scalar.vector.im/api"
+    //    // Widgets in those paths require a scalar token
+    //    static let integrationsScalarWidgetsPaths = [
+    //        "https://scalar.vector.im/_matrix/integrations/v1",
+    //        "https://scalar.vector.im/api",
+    //        "https://scalar-staging.vector.im/_matrix/integrations/v1",
+    //        "https://scalar-staging.vector.im/api",
+    //        "https://scalar-staging.riot.im/scalar/api",
+    //    ]
+        static let integrationsUiUrlString = ""
+        static let integrationsRestApiUrlString = ""
+        // Widgets in those paths require a scalar token
+        static let integrationsScalarWidgetsPaths = ""
+        // Jitsi server used outside integrations to create conference calls from the call button in the timeline
+        static let jitsiServerUrl: URL = URL(string: "https://im.jitsi.vpubchain.net")!
 
     
     // MARK: - Features
@@ -235,7 +243,7 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowAddingEmailThreepids: Bool = true
     static let settingsScreenAllowAddingPhoneThreepids: Bool = true
     static let settingsScreenShowThreepidExplanatory: Bool = true
-    static let settingsScreenShowDiscoverySettings: Bool = true
+    static let settingsScreenShowDiscoverySettings: Bool = false  //发现
     static let settingsScreenAllowIdentityServerConfig: Bool = true
     static let settingsScreenShowAdvancedSettings: Bool = true
     static let settingsScreenShowLabSettings: Bool = true
@@ -272,7 +280,7 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowVoIPForNonDirectRoom: Bool = true
     static let roomScreenAllowCameraAction: Bool = true
     static let roomScreenAllowMediaLibraryAction: Bool = true
-    static let roomScreenAllowStickerAction: Bool = true
+    static let roomScreenAllowStickerAction: Bool = false    //集成
     static let roomScreenAllowFilesAction: Bool = true
     
     // MARK: - Room Contextual Menu
@@ -283,7 +291,7 @@ final class BuildSettings: NSObject {
 
     // MARK: - Room Info Screen
     
-    static let roomInfoScreenShowIntegrations: Bool = true
+    static let roomInfoScreenShowIntegrations: Bool = false
 
     // MARK: - Room Settings Screen
     
