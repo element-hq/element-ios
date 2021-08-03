@@ -1,3 +1,31 @@
+Changes in 1.4.9 (2021-08-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Voice Messages: Increased recording state microphone icon size
+ * Voice Messages: Using "Voice message - MM.dd.yyyy HH.mm.ss" as the format for recorded audio files
+
+🐛 Bugfix
+ * Voice Messages: Fixed race conditions when sending voice messages (#4641)
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
 Changes in 1.4.8 (2021-07-29)
 =================================================
 
