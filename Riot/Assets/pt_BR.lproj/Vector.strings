@@ -317,7 +317,6 @@
 "settings_enable_push_notif" = "Notificações neste dispositivo";
 "settings_show_decrypted_content" = "Mostrar conteúdo decriptado";
 "settings_global_settings_info" = "Configurações de notificação globais estão disponíveis em seu cliente web %@";
-"settings_on_denied_notification" = "Notificações são negadas para %@, por favor permita-as nas configurações de seu dispositivo";
 "settings_enable_callkit" = "Chamamento integrado";
 "settings_callkit_info" = "Receba chamadas chegando em sua tela de bloqueio. Veja suas chamadas Element no histórico de chamadas do sistema. Se iCloud está ativado, este histórico de chamadas vai ser compartilhado com Apple.";
 "settings_ui_language" = "Língua";

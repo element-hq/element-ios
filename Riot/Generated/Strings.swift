@@ -4114,6 +4114,10 @@ internal enum VectorL10n {
   internal static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
   }
+  /// Device notifications
+  internal static var settingsDeviceNotifications: String { 
+    return VectorL10n.tr("Vector", "settings_device_notifications") 
+  }
   /// SESSIONS
   internal static var settingsDevices: String { 
     return VectorL10n.tr("Vector", "settings_devices") 
@@ -4390,6 +4394,14 @@ internal enum VectorL10n {
   internal static var settingsNightMode: String { 
     return VectorL10n.tr("Vector", "settings_night_mode") 
   }
+  /// To enable notifications, go to your device settings.
+  internal static var settingsNotificationsDisabledAlertMessage: String { 
+    return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_message") 
+  }
+  /// Notifications disabled
+  internal static var settingsNotificationsDisabledAlertTitle: String { 
+    return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_title") 
+  }
   /// NOTIFICATION SETTINGS
   internal static var settingsNotificationsSettings: String { 
     return VectorL10n.tr("Vector", "settings_notifications_settings") 
@@ -4401,10 +4413,6 @@ internal enum VectorL10n {
   /// Olm Version %@
   internal static func settingsOlmVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_olm_version", p1)
-  }
-  /// Notifications are denied for %@, please allow them in your device settings
-  internal static func settingsOnDeniedNotification(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_on_denied_notification", p1)
   }
   /// OTHER
   internal static var settingsOther: String { 

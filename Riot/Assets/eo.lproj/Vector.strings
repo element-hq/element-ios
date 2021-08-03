@@ -975,7 +975,6 @@
 "settings_calls_stun_server_fallback_description" = "Permesi repaŝan servilon %@ asistan je vokoj, kiam la hejmservilo ne provizas servilon (via IP-adreso ne doniĝus dum voko).";
 "settings_calls_stun_server_fallback_button" = "Permesi repaŝan servilon asistan je vokoj";
 "settings_callkit_info" = "Ricevi vokpetojn ĉe via ŝlosa ekrano. Vidi viajn vokojn de Element ĉe la sistema vokhistorio. Se iCloud estas ŝaltita, la vokhistorio doniĝas ankaŭ al Apple.";
-"settings_on_denied_notification" = "Sciigo por %s estas malŝaltitaj, bonvole permesu ilin per la agordoj de via aparato";
 "settings_pin_rooms_with_unread" = "Alpingli ĉambrojn kun nelegitaj mesaĝoj";
 "settings_pin_rooms_with_missed_notif" = "Alpinigli ĉambrojn kun nerimarkitaj sciigoj";
 "settings_show_decrypted_content" = "Montri malĉifritajn enhavojn";

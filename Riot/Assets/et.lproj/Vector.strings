@@ -497,7 +497,6 @@
 "settings_global_settings_info" = "Üldised teavituste seadistused leiduvad sinu %@ veebikliendis";
 "settings_pin_rooms_with_missed_notif" = "Klammerda jututoad, kus leidub lugemata teavitusi";
 "settings_pin_rooms_with_unread" = "Klammerda jututoad, kus leidub lugemata sõnumeid";
-"settings_on_denied_notification" = "Teavitused on %@ jaoks keelatud, palun luba nad oma seadme seadistustes";
 "settings_enable_callkit" = "Lõimitud helistamine";
 "settings_callkit_info" = "Vasta kõnedele lukustuskuvalt. Vaata Element'i kõnesid süsteemi kõnelogist. Kui iCloud on kasutusel, siis kõnede ajalugu jagatakse Applega.";
 "settings_calls_stun_server_fallback_button" = "Kasuta kõnehõlbustusserverit";

@@ -5,7 +5,8 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
+ * Settings: Adds a link to open the Settings app to quickly configure app notifications.
 
 🐛 Bugfix
  * 
