@@ -493,7 +493,6 @@
 "settings_sign_out_e2e_warn" = "Do të humbni kyçet tuaj të fshehtëzimit skaj-më-skaj. Kjo do të thotë se s’do të jeni më në gjendje të lexoni mesazhe të vjetër te dhoma të fshehtëzuara në këtë pajisje.";
 "settings_surname" = "Mbiemër";
 "settings_global_settings_info" = "Rregullimet globale për njoftime i gjeni te klienti juaj %@ web";
-"settings_on_denied_notification" = "Njoftimet për %@ s’pranohen, ju lutemi, lejojini që nga rregullimet e pajisjes tuaj";
 "settings_enable_callkit" = "Thirrje të integruara";
 "settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Element te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" përdor rregullimet \"Përmbysi Ngjyrat\" të pajisjes tuaj";
