@@ -1523,3 +1523,13 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Stuur een melding voor";
 "room_details_notifs" = "Meldingen";
+"voice_message_stop_locked_mode_recording" = "Tik op uw opname om te stoppen of te luisteren";
+"voice_message_remaining_recording_time" = "%@s is vertrokken";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Vasthouden om op te nemen, loslaten om te verzenden";
+"settings_labs_voice_messages" = "Spraakberichten";
+"settings_notifications_disabled_alert_message" = "Om in te schakelen, ga naar uw apparaatinstellingen.";
+"settings_notifications_disabled_alert_title" = "Meldingen uitgeschakeld";
+"settings_device_notifications" = "Apparaatmeldingen";
