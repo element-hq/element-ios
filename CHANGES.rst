@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * SSO: Stable ids for MSC 2858 (#4362).
 
 🐛 Bugfix
  * 
