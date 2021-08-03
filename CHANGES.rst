@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * VoIP: Text & icon changes on call tiles (#4642).
 
 🐛 Bugfix
  * 
