@@ -33,8 +33,9 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     weak var viewDelegate: SpaceMenuViewModelViewDelegate?
 
     var menuItems: [SpaceMenuListItemViewData] = [
-        SpaceMenuListItemViewData(actionId: ActionId.members.rawValue, style: .normal, title: VectorL10n.roomDetailsPeople, icon: UIImage(named: "space_menu_members")),
-        SpaceMenuListItemViewData(actionId: ActionId.rooms.rawValue, style: .normal, title: VectorL10n.groupDetailsRooms, icon: UIImage(named: "space_menu_rooms")),
+        // TODO: Add list item when implementing actions
+//        SpaceMenuListItemViewData(actionId: ActionId.members.rawValue, style: .normal, title: VectorL10n.roomDetailsPeople, icon: UIImage(named: "space_menu_members")),
+//        SpaceMenuListItemViewData(actionId: ActionId.rooms.rawValue, style: .normal, title: VectorL10n.groupDetailsRooms, icon: UIImage(named: "space_menu_rooms")),
         SpaceMenuListItemViewData(actionId: ActionId.leave.rawValue, style: .destructive, title: VectorL10n.leave, icon: UIImage(named: "space_menu_leave"))
     ]
     
