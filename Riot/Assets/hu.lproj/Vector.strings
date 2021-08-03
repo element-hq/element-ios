@@ -1424,7 +1424,7 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Értesítés ezért:";
 "room_details_notifs" = "Értesítések";
-"voice_message_stop_locked_mode_recording" = "Megállításhoz és visszajátszáshoz koppints a hullámhosszra";
+"voice_message_stop_locked_mode_recording" = "Megállításhoz és visszajátszáshoz koppints a felvételre";
 "voice_message_remaining_recording_time" = "%@s távozott";
 
 // Mark: - Voice Messages
