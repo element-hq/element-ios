@@ -278,7 +278,6 @@
 "settings_global_settings_info" = "Les paramètres de notification globaux sont disponibles sur votre client web %@";
 "settings_pin_rooms_with_missed_notif" = "Épingler les salons avec des notifications non lues";
 "settings_pin_rooms_with_unread" = "Épingler les salons avec des messages non lus";
-"settings_on_denied_notification" = "Les notifications sont refusées pour %@, merci de les autoriser dans les paramètres de votre appareil";
 "settings_unignore_user" = "Afficher tous les messages de %@ ?";
 "settings_contacts_discover_matrix_users" = "Utiliser un e-mail ou un numéro de téléphone pour retrouver des utilisateurs";
 "settings_contacts_phonebook_country" = "Pays pour le répertoire téléphonique";

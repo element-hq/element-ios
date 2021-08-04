@@ -5,6 +5,8 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
+ * Settings: Adds a link to open the Settings app to quickly configure app notifications.
  * VoIP: Text & icon changes on call tiles (#4642).
 
 🐛 Bugfix
@@ -21,6 +23,34 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.4.9 (2021-08-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Voice Messages: Increased recording state microphone icon size
+ * Voice Messages: Using "Voice message - MM.dd.yyyy HH.mm.ss" as the format for recorded audio files
+
+🐛 Bugfix
+ * Voice Messages: Fixed race conditions when sending voice messages (#4641)
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
 
 Changes in 1.4.8 (2021-07-29)
 =================================================

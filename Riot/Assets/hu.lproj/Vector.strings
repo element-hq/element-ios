@@ -311,7 +311,6 @@
 "settings_global_settings_info" = "Globális értesítési beállításokat a webes kliensedben találod: %@";
 "settings_pin_rooms_with_missed_notif" = "Szobák kitűzése elszalasztott értesítésekkel";
 "settings_pin_rooms_with_unread" = "Szobák kitűzése olvasatlan üzenetekkel";
-"settings_on_denied_notification" = "Az értesítések tiltva vannak ehhez: %@, kérlek engedélyezd az eszköz beállításaiban";
 "settings_enable_callkit" = "Beépített hívás";
 "settings_callkit_info" = "Hívások fogadása a zárolt képernyőn. Element hívások megjelenítése a rendszer hívás naplójában. Ha az iCloud engedélyezett akkor a hívásnapló az Apple-el megosztásra kerül.";
 "settings_ui_language" = "Nyelv";
@@ -1424,7 +1423,7 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Értesítés ezért:";
 "room_details_notifs" = "Értesítések";
-"voice_message_stop_locked_mode_recording" = "Megállításhoz és visszajátszáshoz koppints a hullámhosszra";
+"voice_message_stop_locked_mode_recording" = "Megállításhoz és visszajátszáshoz koppints a felvételre";
 "voice_message_remaining_recording_time" = "%@s távozott";
 
 // Mark: - Voice Messages
