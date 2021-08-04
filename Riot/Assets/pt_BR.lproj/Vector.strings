@@ -318,7 +318,7 @@
 "settings_show_decrypted_content" = "Mostrar conteúdo decriptado";
 "settings_global_settings_info" = "Configurações de notificação globais estão disponíveis em seu cliente web %@";
 "settings_enable_callkit" = "Chamamento integrado";
-"settings_callkit_info" = "Receba chamadas chegando em sua tela de bloqueio. Veja suas chamadas Element no histórico de chamadas do sistema. Se iCloud está habilitado, este histórico de chamadas vai ser compartilhado com Apple.";
+"settings_callkit_info" = "Receba chamadas entrantes em sua tela de bloqueio. Veja suas chamadas Element no histórico de chamadas do sistema. Se iCloud está habilitado, este histórico de chamadas vai ser compartilhado com Apple.";
 "settings_ui_language" = "Língua";
 "settings_ui_theme" = "Tema";
 "settings_ui_theme_auto" = "Auto";
@@ -485,14 +485,14 @@
 "camera_access_not_granted" = "%@ não tem permissão para usar Câmera, por favor mude configurações de privacidade";
 "large_badge_value_k_format" = "%.1fK";
 // Call
-"call_incoming_voice_prompt" = "Chamada de voz recebendo de %@";
-"call_incoming_video_prompt" = "Chamada de vídeo recebendo de %@";
-"call_incoming_voice" = "Chamada recebendo…";
-"call_incoming_video" = "Chamada de vídeo recebendo…";
+"call_incoming_voice_prompt" = "Chamada de voz entrante de %@";
+"call_incoming_video_prompt" = "Chamada de vídeo entrante de %@";
+"call_incoming_voice" = "Chamada entrante…";
+"call_incoming_video" = "Chamada de vídeo entrante…";
 "call_already_displayed" = "Já existe uma chamada em progresso.";
 "call_jitsi_error" = "Falha para se juntar a chamada de conferência.";
 // No VoIP support
-"no_voip_title" = "Chamada recebendo";
+"no_voip_title" = "Chamada entrante";
 "no_voip" = "%@ está chamando você mas %@ não suporta chamadas ainda.\nVocê pode ignorar esta notificação e atender a chamada de um outro dispositivo ou você pode rejeitá-la.";
 // Crash report
 "google_analytics_use_prompt" = "Você gostaria de ajudar a melhorar %@ ao reportar automaticamente reportes de crash e dados de uso anônimos?";
@@ -729,7 +729,7 @@
 "service_terms_modal_description_for_integration_manager" = "Usar Bots, bridges, widgets e pacotes de stickers";
 "device_verification_cancelled" = "A outra parte cancelou a verificação.";
 // Mark: Incoming
-"device_verification_incoming_title" = "Requisição de Verificação Recebendo";
+"device_verification_incoming_title" = "Requisição de Verificação Entrante";
 "device_verification_start_wait_partner" = "Esperando por parceira(o) aceitar…";
 "device_verification_self_verify_start_waiting" = "Esperando…";
 "device_verification_verify_wait_partner" = "Esperando por parceira(o) confirmar…";
@@ -1272,7 +1272,7 @@
 "call_transfer_contacts_all" = "Todos";
 "call_transfer_contacts_recent" = "Recentes";
 "call_transfer_users" = "Usuárias(os)";
-"event_formatter_call_has_ended" = "Terminou %@";
+"event_formatter_call_has_ended" = "Chamada terminou %@";
 "room_intro_cell_information_multiple_dm_sentence2" = "Somente vocês estão nesta conversa, a menos que algum(a) de você convide alguém para se juntar.";
 "room_intro_cell_information_dm_sentence2" = "Somente vocês dois/duas estão nesta conversa, ninguém mais pode juntar-se.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
@@ -1297,7 +1297,7 @@
 "dialpad_title" = "Pad de disco";
 "call_actions_unhold" = "Retomar";
 "event_formatter_call_back" = "Ligar de volta";
-"event_formatter_call_you_declined" = "Você declinou esta chamada";
+"event_formatter_call_you_declined" = "Chamada declinada";
 "event_formatter_call_you_currently_in" = "Chamada ativa";
 "event_formatter_call_video" = "Chamada de vídeo";
 "event_formatter_call_voice" = "Chamada de voz";
@@ -1401,3 +1401,9 @@
 "settings_notifications_disabled_alert_title" = "Notificações desabilitadas";
 "settings_notifications_disabled_alert_message" = "Para habilitar notificações, vá para suas configurações de dispositivo.";
 "settings_device_notifications" = "Notificações de dispositivo";
+"event_formatter_call_incoming_video" = "Chamada de vídeo entrante";
+"event_formatter_call_incoming_voice" = "Chamada de voz entrante";
+"event_formatter_call_missed_video" = "Chamada de vídeo perdida";
+"event_formatter_call_missed_voice" = "Chamada de voz perdida";
+"event_formatter_call_active_video" = "Chamada de vídeo ativa";
+"event_formatter_call_active_voice" = "Chamada de voz ativa";
