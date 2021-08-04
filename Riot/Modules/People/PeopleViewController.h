@@ -20,7 +20,7 @@
 /**
  'PeopleViewController' instance is used to display/filter the direct rooms and a list of contacts.
  */
-@interface PeopleViewController : RecentsViewController <UITableViewDataSource, MXKDataSourceDelegate>
+@interface PeopleViewController : RecentsViewController
 
 + (instancetype)instantiate;
 

@@ -272,7 +272,6 @@
 "settings_global_settings_info" = "全局通知设置可在 %@ 的网页客户端中修改";
 "settings_pin_rooms_with_missed_notif" = "置顶含有错过的通知的聊天室";
 "settings_pin_rooms_with_unread" = "置顶含有未读消息的聊天室";
-"settings_on_denied_notification" = "%@ 的通知请求被拒绝，请在系统设置中允许";
 "settings_unignore_user" = "显示所有来自 %@ 的消息？";
 "settings_contacts_discover_matrix_users" = "使用电子邮件和手机号码来发现用户";
 "settings_contacts_phonebook_country" = "电话本国家";
@@ -1426,3 +1425,23 @@
 "settings_ui_theme_picker_message_invert_colours" = "“自动”使用您设备的“反转颜色”设置";
 "room_recents_unknown_room_error_message" = "找不到这个房间。 确保它存在";
 "room_creation_dm_error" = "我们无法创建您的 DM。 请检查您要邀请的用户，然后重试。";
+"voice_message_stop_locked_mode_recording" = "轻按录音停止或收听";
+"voice_message_remaining_recording_time" = "剩 %@s";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "按住录音，松开发送";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "用这部设备扫描";
+"room_notifs_settings_encrypted_room_notice" = "请注意，移动设备上的加密聊天室不提供提及和关键字通知。";
+"room_notifs_settings_account_settings" = "账户设置";
+"room_notifs_settings_manage_notifications" = "你可以管理 %@ 中的消息";
+"room_notifs_settings_cancel_action" = "取消";
+"room_notifs_settings_done_action" = "完成";
+"room_notifs_settings_none" = "无";
+"room_notifs_settings_mentions_and_keywords" = "仅提及和关键词";
+"room_notifs_settings_all_messages" = "所有消息";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "通知内容";
+"room_details_notifs" = "通知";
+"settings_labs_voice_messages" = "语音消息";
