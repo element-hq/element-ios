@@ -23,6 +23,12 @@
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
 
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ replied";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ replied in %@";
+
 /** Single, end-to-end encrypted messages (ie. we don't know what they say) */
 
 /* New message from a specific person, not referencing a room */
@@ -75,12 +81,6 @@
 
 /* New message with hidden content due to PIN enabled */
 "MESSAGE_PROTECTED" = "New Message";
-
-/* New message reply from a specific person, not referencing a room. */
-"REPLY_FROM_USER" = "%@ replied";
-
-/* New message reply from a specific person in a named room. */
-"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ replied in %@";
 
 /** Coalesced messages **/
 
