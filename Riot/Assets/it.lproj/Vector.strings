@@ -1401,3 +1401,6 @@
 
 "voice_message_release_to_send" = "Tieni premuto per registrare, rilascia per inviare";
 "settings_labs_voice_messages" = "Messaggi vocali";
+"settings_notifications_disabled_alert_message" = "Per attivare le notifiche, vai nelle impostazioni del tuo dispositivo.";
+"settings_notifications_disabled_alert_title" = "Notifiche disattivate";
+"settings_device_notifications" = "Notifiche del dispositivo";

@@ -1430,3 +1430,6 @@
 
 "voice_message_release_to_send" = "Felvételhez tartsd nyomva, a küldéshez engedd el";
 "settings_labs_voice_messages" = "Hang üzenetek";
+"settings_notifications_disabled_alert_message" = "Az értesítések engedélyezéséhez lépj be az eszköz beállításokba.";
+"settings_notifications_disabled_alert_title" = "Értesítések tiltva";
+"settings_device_notifications" = "Eszköz értesítések";
