@@ -329,8 +329,10 @@ class NotificationService: UNNotificationServiceExtension {
                             } else {
                                 MXLog.debug("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
                             }
-                        #warning("Handle .roomEncrypted separately.")
-                        case .roomMessage, .roomEncrypted:
+                        case .roomEncrypted:
+                            // If unable to decrypt the event, use the fallback.
+                            break
+                        case .roomMessage:
                             if isRoomMentionsOnly {
                                 // A local notification will be displayed only for highlighted notification.
                                 var isHighlighted = false
