@@ -108,6 +108,9 @@ class NotificationService: UNNotificationServiceExtension {
         //  no need to check before, if it's nil, the badge will remain unchanged
         content.badge = userInfo["unread_count"] as? NSNumber
         
+        //  update the fallback body to read "Notification" which aligns with the system body when previews are hidden.
+        content.body = NSString.localizedUserNotificationString(forKey: "NOTIFICATION", arguments: [])
+        
         bestAttemptContents[eventId] = content
         contentHandlers[eventId] = contentHandler
         
@@ -186,15 +189,13 @@ class NotificationService: UNNotificationServiceExtension {
             MXLog.debug("[NotificationService] preprocessPayload: Do not preprocess because app protection is set")
             return
         }
+        
+        // If a room summary is available, use the displayname for the best attempt title.
         guard let roomSummary = NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId) else { return }
         guard let roomDisplayName = roomSummary.displayname else { return }
-        if roomSummary.isDirect == true {
-            bestAttemptContents[eventId]?.title = roomDisplayName
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [roomDisplayName as Any])
-        } else {
-            bestAttemptContents[eventId]?.title = roomDisplayName
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [roomDisplayName as Any])
-        }
+        bestAttemptContents[eventId]?.title = roomDisplayName
+        
+        // At this stage we don't know the message type, so leave the body as set in didReceive.
     }
     
     private func fetchEvent(withEventId eventId: String, roomId: String, allowSync: Bool = true) {
@@ -242,10 +243,10 @@ class NotificationService: UNNotificationServiceExtension {
                 isUnwantedNotification = true
             }
             
-            //  modify the best attempt content, to be able to use in future
-            self.bestAttemptContents[event.eventId] = content
-            
             if self.ongoingVoIPPushRequests[event.eventId] == true {
+                //  modify the best attempt content, to be able to use in the future
+                self.bestAttemptContents[event.eventId] = content
+                
                 //  There is an ongoing VoIP Push request for this event, wait for it to be completed.
                 //  When it completes, it'll continue with the bestAttemptContent.
                 return
@@ -377,7 +378,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationBody = messageContent
                             }
                         case .roomMember:
-                            // If the user is already joined, display updated displayname/avatar events.
+                            // If the current user is already joined, display updated displayname/avatar events.
                             if NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId)?.membership == .join {
                                 notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                                 
@@ -392,7 +393,6 @@ class NotificationService: UNNotificationServiceExtension {
                                         notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_AVATAR", arguments: [eventSenderName])
                                     }
                                 } else {
-                                    #warning("Join and leave?")
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "USER_MEMBERSHIP_UPDATED", arguments: [eventSenderName])
                                 }
                             // Otherwise treat the notification as an invite.

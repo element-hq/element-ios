@@ -14,6 +14,12 @@
  limitations under the License.
  */
 
+/** General **/
+
+"NOTIFICATION" = "Notification";
+
+/** Titles **/
+
 /* Message title for a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM_TITLE" = "%@ in %@";
 
@@ -95,7 +101,7 @@
 /** Reactions **/
 
 /* A user has reacted to a message */
-"REACTION_FROM_USER" = "%@ sent a reaction"
+"REACTION_FROM_USER" = "%@ sent a reaction";
 
 /** Invites **/
 
