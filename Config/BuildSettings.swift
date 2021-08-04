@@ -204,6 +204,9 @@ final class BuildSettings: NSObject {
     
     static let enableSideMenu: Bool = true
     
+    /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
+    static let supportFunctionalMembers: Bool = false
+    
     // MARK: - Feature Specifics
     
     /// Not allowed pin codes. User won't be able to select one of the pin in the list.

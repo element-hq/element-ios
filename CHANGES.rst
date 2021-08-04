@@ -5,7 +5,7 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * Add support for Functional Members.
+ * Add support for Functional Members (#4609).
 
 🐛 Bugfix
  * 
