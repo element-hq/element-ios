@@ -361,8 +361,13 @@ class NotificationService: UNNotificationServiceExtension {
                             
                             let msgType = event.content["msgtype"] as? String
                             let messageContent = event.content["body"] as? String
+                            let isReply = event.isReply()
                             
-                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            if isReply {
+                                notificationTitle = self.replyTitle(for: eventSenderName, in: roomDisplayName)
+                            } else {
+                                notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            }
                             
                             if event.isEncrypted && !self.showDecryptedContentInNotifications {
                                 // Hide the content
@@ -375,9 +380,16 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
                             case kMXMessageTypeImage:
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                            
+                            // All other message types such as text, notice etc
                             default:
-                                // All other message types such as text, notice etc
-                                notificationBody = messageContent
+                                if event.isReply() {
+                                    let parser = MXReplyEventParser()
+                                    let replyParts = parser.parse(event)
+                                    notificationBody = replyParts.bodyParts.replyText
+                                } else {
+                                    notificationBody = messageContent
+                                }
                             }
                         case .roomMember:
                             // If the current user is already joined, display updated displayname/avatar events.
@@ -471,6 +483,15 @@ class NotificationService: UNNotificationServiceExtension {
             return NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
         } else {
             return eventSenderName
+        }
+    }
+    
+    private func replyTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
+        // Display the room name only if it is different than the sender name
+        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
+            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
+        } else {
+            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER", arguments: [eventSenderName])
         }
     }
     
