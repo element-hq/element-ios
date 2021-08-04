@@ -377,11 +377,17 @@ class NotificationService: UNNotificationServiceExtension {
                             
                             switch msgType {
                             case kMXMessageTypeEmote:
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName, messageContent as Any])
                             case kMXMessageTypeImage:
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                            case kMXMessageTypeVideo:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                            case kMXMessageTypeAudio:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "AUDIO_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                            case kMXMessageTypeFile:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "FILE_FROM_USER", arguments: [eventSenderName, messageContent as Any])
                             
-                            // All other message types such as text, notice etc
+                            // All other message types such as text, notice, server notice etc
                             default:
                                 if event.isReply() {
                                     let parser = MXReplyEventParser()
