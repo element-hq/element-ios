@@ -1364,9 +1364,9 @@
 "event_formatter_call_back" = "回拨";
 "event_formatter_call_connection_failed" = "连接失败";
 "event_formatter_call_you_missed" = "你错过此通话";
-"event_formatter_call_you_declined" = "你拒绝了此通话";
+"event_formatter_call_you_declined" = "拒绝了通话";
 "event_formatter_call_you_currently_in" = "当前通话";
-"event_formatter_call_has_ended" = "结束 %@";
+"event_formatter_call_has_ended" = "通话结束 %@";
 "event_formatter_call_ringing" = "响铃中……";
 "event_formatter_call_connecting" = "连接中……";
 "event_formatter_call_video" = "视频通话";
@@ -1448,3 +1448,9 @@
 "settings_notifications_disabled_alert_message" = "要启用通知，请转到您的设备设置。";
 "settings_notifications_disabled_alert_title" = "已禁用通知";
 "settings_device_notifications" = "设备通知";
+"event_formatter_call_missed_video" = "未接视频通话";
+"event_formatter_call_missed_voice" = "未接语音通话";
+"event_formatter_call_active_video" = "活跃视频通话";
+"event_formatter_call_active_voice" = "活跃语音通话";
+"event_formatter_call_incoming_voice" = "语音来电";
+"event_formatter_call_incoming_video" = "视频来电";
