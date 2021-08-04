@@ -224,7 +224,6 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         self.widgetEvent = widgetEvent
         self.widgetId = widgetId
         innerContentView.callIconView.image = Asset.Images.callVideoIcon.image
-        innerContentView.callTypeLabel.text = VectorL10n.eventFormatterCallVideo
         
         if isIncoming && !isJoined &&
             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
@@ -285,7 +284,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
             if widget.isActive {
                 if !self.isIncoming {
                     self.viewState = .active
-                    self.statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                    self.statusText = VectorL10n.eventFormatterCallActiveVideo
                 } else if !self.isJoined &&
                             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
                     
@@ -298,7 +297,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
                     }
                 } else {
                     self.viewState = .active
-                    self.statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                    self.statusText = VectorL10n.eventFormatterCallActiveVideo
                 }
             } else {
                 self.viewState = .ended
