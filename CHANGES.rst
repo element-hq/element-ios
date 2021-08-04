@@ -5,10 +5,12 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * 
+ * Notifications: Replies now hide the referenced content (#4660).
+ * Notifications: Show the body of all message event types (#4653).
+ * Notifications: Replace "Message" fallback with "Notification" as the event may not be a message.
 
 🐛 Bugfix
- * 
+ * Notifications: Name/Avatar changes were displayed as invites (#4659).
 
 ⚠️ API Changes
  * 
