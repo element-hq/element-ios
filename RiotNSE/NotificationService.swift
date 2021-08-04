@@ -383,7 +383,11 @@ class NotificationService: UNNotificationServiceExtension {
                             case kMXMessageTypeVideo:
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_FROM_USER", arguments: [eventSenderName, messageContent as Any])
                             case kMXMessageTypeAudio:
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "AUDIO_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                                if event.isVoiceMessage() {
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_MESSAGE_FROM_USER", arguments: [eventSenderName])
+                                } else {
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "AUDIO_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                                }
                             case kMXMessageTypeFile:
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "FILE_FROM_USER", arguments: [eventSenderName, messageContent as Any])
                             

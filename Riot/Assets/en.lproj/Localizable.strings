@@ -65,6 +65,9 @@
 /* New audio message from a specific person, not referencing a room. */
 "AUDIO_FROM_USER" = "%@ sent an audio file %@";
 
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ sent a voice message";
+
 /* New file message from a specific person, not referencing a room. */
 "FILE_FROM_USER" = "%@ sent a file %@";
 
