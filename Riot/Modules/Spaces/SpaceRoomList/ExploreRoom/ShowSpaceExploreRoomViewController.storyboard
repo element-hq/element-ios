@@ -29,6 +29,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="V8j-Lb-PgC" id="vHE-eI-RwY"/>
+                                    <outlet property="delegate" destination="V8j-Lb-PgC" id="8rv-Fk-eQ1"/>
                                 </connections>
                             </tableView>
                         </subviews>

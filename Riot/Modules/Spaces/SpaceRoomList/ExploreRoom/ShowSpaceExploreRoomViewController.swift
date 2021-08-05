@@ -123,6 +123,8 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
         self.titleView = MainTitleView()
         self.titleView.titleLabel.text = VectorL10n.titleRooms
         self.navigationItem.titleView = self.titleView
@@ -144,8 +146,8 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .spaceFound(let space):
-            self.titleView.subtitleLabel.text = space.summary?.displayname
+        case .spaceNameFound(let spaceName):
+            self.titleView.subtitleLabel.text = spaceName
         case .loaded(let children):
             self.renderLoaded(children: children)
         case .error(let error):
@@ -169,10 +171,6 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
 
     
     // MARK: - Actions
-
-    @IBAction private func doneButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
-    }
 
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
@@ -206,6 +204,14 @@ extension ShowSpaceExploreRoomViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         
         return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension ShowSpaceExploreRoomViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.viewModel.process(viewAction: .complete(self.itemDataList[indexPath.row]))
     }
 }
 

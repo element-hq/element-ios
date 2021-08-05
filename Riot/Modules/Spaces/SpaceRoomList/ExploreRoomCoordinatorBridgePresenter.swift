@@ -78,12 +78,24 @@ final class ExploreRoomCoordinatorBridgePresenter: NSObject {
             }
         }
     }
+    
+    // MARK: - Private
+    
+    func navigate(to item: SpaceExploreRoomListItemViewData) {
+        if item.childInfo.roomType == .space {
+            self.coordinator?.pushSpace(with: item)
+        }
+    }
 }
 
 // MARK: - ExploreRoomCoordinatorDelegate
 extension ExploreRoomCoordinatorBridgePresenter: ExploreRoomCoordinatorDelegate {
-    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
+    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType, withSelectedIem item: SpaceExploreRoomListItemViewData?) {
+        guard let item = item else {
+            self.delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
+            return
+        }
+        self.navigate(to: item)
     }
 }
 

@@ -26,6 +26,7 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
 
     private let session: MXSession
     private let spaceId: String
+    private let spaceName: String?
 
     private var currentOperation: MXHTTPOperation?
     
@@ -52,9 +53,10 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceId: String) {
+    init(session: MXSession, spaceId: String, spaceName: String?) {
         self.session = session
         self.spaceId = spaceId
+        self.spaceName = spaceName
     }
     
     deinit {
@@ -67,8 +69,8 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
-        case .complete:
-            self.coordinatorDelegate?.showSpaceExploreRoomViewModel(self)
+        case .complete(let selectedItem):
+            self.coordinatorDelegate?.showSpaceExploreRoomViewModel(self, didSelect: selectedItem)
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.showSpaceExploreRoomViewModelDidCancel(self)
@@ -80,12 +82,9 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
     // MARK: - Private
     
     private func loadData() {
-        guard let space = session.spaceService.getSpace(withId: self.spaceId) else {
-            MXLog.error("[ShowSpaceExploreRoomViewModel] loadData : space with id \(self.spaceId) not found")
-            return
+        if let spaceName = self.spaceName {
+            self.update(viewState: .spaceNameFound(spaceName))
         }
-        
-        self.update(viewState: .spaceFound(space))
 
         self.update(viewState: .loading)
         

@@ -39,11 +39,11 @@ final class ShowSpaceExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorType
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceId: String) {
+    init(session: MXSession, spaceId: String, spaceName: String?) {
         self.session = session
         self.spaceId = spaceId
         
-        let showSpaceExploreRoomViewModel = ShowSpaceExploreRoomViewModel(session: self.session, spaceId: self.spaceId)
+        let showSpaceExploreRoomViewModel = ShowSpaceExploreRoomViewModel(session: self.session, spaceId: self.spaceId, spaceName: spaceName)
         let showSpaceExploreRoomViewController = ShowSpaceExploreRoomViewController.instantiate(with: showSpaceExploreRoomViewModel)
         self.showSpaceExploreRoomViewModel = showSpaceExploreRoomViewModel
         self.showSpaceExploreRoomViewController = showSpaceExploreRoomViewController
@@ -62,9 +62,8 @@ final class ShowSpaceExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorType
 
 // MARK: - ShowSpaceExploreRoomViewModelCoordinatorDelegate
 extension ShowSpaceExploreRoomCoordinator: ShowSpaceExploreRoomViewModelCoordinatorDelegate {
-    
-    func showSpaceExploreRoomViewModel(_ viewModel: ShowSpaceExploreRoomViewModelType) {
-        self.delegate?.showSpaceExploreRoomCoordinator(self)
+    func showSpaceExploreRoomViewModel(_ viewModel: ShowSpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData) {
+        self.delegate?.showSpaceExploreRoomCoordinator(self, didSelect: item)
     }
     
     func showSpaceExploreRoomViewModelDidCancel(_ viewModel: ShowSpaceExploreRoomViewModelType) {

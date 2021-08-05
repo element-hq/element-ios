@@ -48,23 +48,32 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
     
     func start() {
 
-        let rootCoordinator = self.createShowSpaceExploreRoomCoordinator()
+        let rootCoordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: self.spaceId, spaceName: self.session.spaceService.getSpace(withId: self.spaceId)?.summary?.displayname)
 
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
 
         self.navigationRouter.setRootModule(rootCoordinator)
-      }
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
     }
     
+    func pushSpace(with item: SpaceExploreRoomListItemViewData) {
+        let coordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: item.childInfo.childRoomId, spaceName: item.childInfo.name)
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.push(coordinator.toPresentable(), animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+    
     // MARK: - Private methods
 
-    private func createShowSpaceExploreRoomCoordinator() -> ShowSpaceExploreRoomCoordinator {
-        let coordinator = ShowSpaceExploreRoomCoordinator(session: self.session, spaceId: self.spaceId)
+    private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> ShowSpaceExploreRoomCoordinator {
+        let coordinator = ShowSpaceExploreRoomCoordinator(session: session, spaceId: spaceId, spaceName: spaceName)
         coordinator.delegate = self
         return coordinator
     }
@@ -72,11 +81,11 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
 
 // MARK: - ShowSpaceExploreRoomCoordinatorDelegate
 extension ExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorDelegate {
-    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorDidComplete(self)
+    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData) {
+        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: item)
     }
     
     func showSpaceExploreRoomCoordinatorDidCancel(_ coordinator: ShowSpaceExploreRoomCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorDidComplete(self)
+        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil)
     }
 }

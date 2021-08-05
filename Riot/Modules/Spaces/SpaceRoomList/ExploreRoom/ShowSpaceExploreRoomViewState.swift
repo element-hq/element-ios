@@ -21,7 +21,7 @@ import Foundation
 /// ShowSpaceExploreRoomViewController view state
 enum ShowSpaceExploreRoomViewState {
     case loading
-    case spaceFound(_ space: MXSpace)
+    case spaceNameFound(_ spaceName: String)
     case loaded(_ children: [SpaceExploreRoomListItemViewData])
     case error(Error)
 }
