@@ -264,11 +264,17 @@ fileprivate extension MXRoom {
     }
     
     var overridePushRule: MXPushRule? {
-        getRoomRule(from: mxSession.notificationCenter.rules.global.override)
+        guard let overrideRules = mxSession.notificationCenter.rules.global.override else {
+            return nil
+          }
+        return getRoomRule(from: overrideRules)
     }
     
     var roomPushRule: MXPushRule? {
-        getRoomRule(from: mxSession.notificationCenter.rules.global.room)
+        guard let roomRules = mxSession.notificationCenter.rules.global.room else {
+            return nil
+          }
+        return getRoomRule(from: roomRules)
     }
     
     var notificationState: RoomNotificationState {

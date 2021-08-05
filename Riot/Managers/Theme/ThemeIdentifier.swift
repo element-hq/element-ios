@@ -34,3 +34,10 @@ enum ThemeIdentifier: String, RawRepresentable {
         }
     }
 }
+
+extension ThemeIdentifier {
+    var theme: Theme {
+        ThemeService.shared().theme(withThemeId: self.rawValue)
+    }
+}
+

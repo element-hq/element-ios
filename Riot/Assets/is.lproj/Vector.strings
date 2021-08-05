@@ -63,7 +63,6 @@
 "room_creation_appearance_name" = "Heiti";
 "room_creation_privacy" = "Meðferð persónuupplýsinga";
 "room_creation_make_private" = "Gera einka";
-"room_recents_directory_section_network" = "Netkerfi";
 "room_recents_favourites_section" = "Eftirlæti";
 "room_recents_people_section" = "FÓLK";
 "room_recents_conversations_section" = "SPJALLRÁSIR";
@@ -443,7 +442,6 @@
 "settings_fail_to_update_profile" = "Mistókst að uppfæra notandasnið";
 "settings_pin_rooms_with_missed_notif" = "Festa spjallrásir með óskoðuðum tilkynningum";
 "settings_pin_rooms_with_unread" = "Festa spjallrásir með ólesnum skilaboðum";
-"settings_on_denied_notification" = "Tilkynningum er hafnað fyrir %@, leyfðu þær í stillingum tækisins";
 "settings_ui_theme_picker_message" = "\"Sjálfvirkt\" notar \"Umsnúa litum\" stillingar tækisins";
 "settings_contacts_discover_matrix_users" = "Notaðu tölvupóstföng og símanúmer til að finna notendur";
 "settings_labs_e2e_encryption_prompt_message" = "Til að ljúka við uppsetningu á dulritun verðurðu að skrá þig inn aftur.";

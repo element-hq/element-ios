@@ -100,7 +100,6 @@
 "room_creation_make_private" = "Gör privat";
 "room_creation_wait_for_creation" = "Ett rum håller redan på att skapas. Vänligen vänta.";
 "room_creation_invite_another_user" = "Sök / bjud in efter användar-ID, namn eller e-postadress";
-"room_recents_directory_section_network" = "Nätverk";
 "room_recents_favourites_section" = "FAVORITER";
 "room_recents_people_section" = "PERSONER";
 "room_recents_conversations_section" = "RUM";
@@ -310,7 +309,6 @@
 "settings_show_decrypted_content" = "Visa avkrypterat innehåll";
 "settings_pin_rooms_with_missed_notif" = "Fäst rum med missade aviseringar";
 "settings_pin_rooms_with_unread" = "Fäst rum med olästa meddelanden";
-"settings_on_denied_notification" = "Aviseringar har nekats för %@, vänligen tillåt dem i dina enhetsinställningar";
 "settings_enable_callkit" = "Integrerade samtal";
 "settings_integrations_allow_button" = "Hantera integrationer";
 "settings_ui_language" = "Språk";

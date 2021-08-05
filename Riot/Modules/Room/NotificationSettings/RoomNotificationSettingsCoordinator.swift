@@ -18,6 +18,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordinatorType {
     
@@ -25,7 +26,8 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     // MARK: Private
     private var roomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType
-    private let roomNotificationSettingsViewController: RoomNotificationSettingsViewController
+//    private let roomNotificationSettingsViewController: RoomNotificationSettingsViewController
+    private let roomNotificationSettingsViewController: UIViewController
     
     // MARK: Public
 
@@ -45,10 +47,19 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
             avatarUrl: room.summary.avatar,
             mediaManager: room.mxSession.mediaManager
         ) : nil
+        
         let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationService: repository, roomEncrypted: room.summary.isEncrypted, avatarViewData: avatarData)
-        let roomNotificationSettingsViewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
+        
+        let viewController: UIViewController
+        if #available(iOS 13.0.0, *) {
+//            let sampleViewState = RoomNotificationSettingsViewState(roomEncrypted: true, saving: false, notificationState: .mute, avatarData: nil)
+            let view = RoomNotificationSettingsView(viewModel: roomNotificationSettingsViewModel, presentedModally: true)
+            viewController = UIHostingController(rootView: view)
+        } else {
+            viewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
+        }
         self.roomNotificationSettingsViewModel = roomNotificationSettingsViewModel
-        self.roomNotificationSettingsViewController = roomNotificationSettingsViewController
+        self.roomNotificationSettingsViewController = viewController
     }
 
     // MARK: - Public methods

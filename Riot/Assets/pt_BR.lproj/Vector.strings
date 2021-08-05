@@ -101,7 +101,6 @@
 "room_creation_make_private" = "Fazer privado";
 "room_creation_wait_for_creation" = "Uma sala já está sendo criada. Por favor espere.";
 "room_creation_invite_another_user" = "Buscar / convidar por ID de usuária(o), Nome ou email";
-"room_recents_directory_section_network" = "Rede";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PESSOAS";
 "room_recents_conversations_section" = "SALAS";
@@ -318,7 +317,6 @@
 "settings_enable_push_notif" = "Notificações neste dispositivo";
 "settings_show_decrypted_content" = "Mostrar conteúdo decriptado";
 "settings_global_settings_info" = "Configurações de notificação globais estão disponíveis em seu cliente web %@";
-"settings_on_denied_notification" = "Notificações são negadas para %@, por favor permita-as nas configurações de seu dispositivo";
 "settings_enable_callkit" = "Chamamento integrado";
 "settings_callkit_info" = "Receba chamadas chegando em sua tela de bloqueio. Veja suas chamadas Element no histórico de chamadas do sistema. Se iCloud está ativado, este histórico de chamadas vai ser compartilhado com Apple.";
 "settings_ui_language" = "Língua";
@@ -1380,3 +1378,23 @@
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" usa as configurações \"Inverter Cores\" de seu dispositivo";
 "room_recents_unknown_room_error_message" = "Não dá para encontrar esta sala. Assegure que ela existe";
 "room_creation_dm_error" = "Nós não conseguimos criar sua DM. Por favor cheque as/os usuárias(os) que você quer convidar e tente de novo.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scannar com este dispositivo";
+"room_notifs_settings_encrypted_room_notice" = "Por favor note que notificações de menções & palavrachave não estão disponíveis em salas encriptadas no celular.";
+"room_notifs_settings_account_settings" = "Configurações de conta";
+"room_notifs_settings_manage_notifications" = "Você pode gerenciar notificações em %@";
+"room_notifs_settings_cancel_action" = "Cancelar";
+"room_notifs_settings_done_action" = "Feito";
+"room_notifs_settings_none" = "Nenhuma";
+"room_notifs_settings_mentions_and_keywords" = "Menções e Palavrachaves somente";
+"room_notifs_settings_all_messages" = "Todas as Mensagens";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Notifique-me para";
+"room_details_notifs" = "Notificações";
+"voice_message_remaining_recording_time" = "%@s restando";
+"voice_message_stop_locked_mode_recording" = "Toque em sua gravação para parar ou escutar";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Segure para gravar, solte para enviar";
+"settings_labs_voice_messages" = "Mensagens de voz";

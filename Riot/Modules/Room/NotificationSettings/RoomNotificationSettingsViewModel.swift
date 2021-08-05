@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import SwiftUI
 
 final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType {
     
@@ -30,6 +31,9 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
             update(viewState: newValue)
         }
     }
+    @available(iOS 13.0.0, *)
+    @Published var viewState: RoomNotificationSettingsViewState!
+    
     // MARK: Public
 
     weak var viewDelegate: RoomNotificationSettingsViewModelViewDelegate?
@@ -42,12 +46,19 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
         self.roomNotificationService = roomNotificationService
         
         let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationService.notificationState)
-        self.state = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatarData: avatarViewData)
+        let initialState = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatarData: avatarViewData)
+        self.state = initialState
+        
+        if #available(iOS 13.0.0, *) {
+            self.viewState = initialState
+        }
+        
         self.roomNotificationService.observeNotificationState { [weak self] state in
             guard let self = self else { return }
-            
+
             self.state.notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: state)
         }
+
     }
     
     // MARK: - Public 
@@ -81,9 +92,14 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
         }
     }
     
-    private func update(viewState: RoomNotificationSettingsViewStateType) {
+    private func update(viewState: RoomNotificationSettingsViewState) {
         self.viewDelegate?.roomNotificationSettingsViewModel(self, didUpdateViewState: viewState)
+        
+        if #available(iOS 13.0.0, *) {
+            self.viewState = viewState
+        }
     }
-    
-
 }
+
+@available(iOS 13.0, *)
+extension RoomNotificationSettingsViewModel: ObservableObject {}

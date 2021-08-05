@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="cGR-49-HWB" customClass="VoiceMessagePlaybackView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="427" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LPc-i8-8UC">
+                    <rect key="frame" x="0.0" y="0.0" width="427" height="44"/>
+                    <color key="backgroundColor" red="0.8901960784313725" green="0.90980392156862744" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="999" constant="44" id="RFF-Im-d7x"/>
+                    </constraints>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ZQ2-Ij-mYr">
+                    <rect key="frame" x="8" y="0.0" width="411" height="44"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voice_message_record_icon" translatesAutoresizingMaskIntoConstraints="NO" id="REB-gl-h0h">
+                            <rect key="frame" x="0.0" y="17" width="10" height="10"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GL1-b8-dZK">
+                            <rect key="frame" x="14" y="6" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="5Pl-ej-HIg"/>
+                                <constraint firstAttribute="width" constant="32" id="dXM-KA-xzM"/>
+                            </constraints>
+                            <state key="normal" image="voice_message_play_button"/>
+                            <connections>
+                                <action selector="onPlayButtonTap" destination="cGR-49-HWB" eventType="touchUpInside" id="B5j-st-pUp"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eAi-HM-Wvj">
+                            <rect key="frame" x="50" y="0.0" width="40" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="iuv-MD-XYg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fl-yZ-dZB">
+                            <rect key="frame" x="94" y="7" width="317" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="7Fl-yZ-dZB" firstAttribute="height" secondItem="ZQ2-Ij-mYr" secondAttribute="height" constant="-14" id="PiL-fv-hP1"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Ugy-Dx-gcs"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Ugy-Dx-gcs" firstAttribute="trailing" secondItem="LPc-i8-8UC" secondAttribute="trailing" id="2AH-VU-Kcc"/>
+                <constraint firstAttribute="bottom" secondItem="ZQ2-Ij-mYr" secondAttribute="bottom" id="BSe-tM-f0V"/>
+                <constraint firstItem="LPc-i8-8UC" firstAttribute="leading" secondItem="Ugy-Dx-gcs" secondAttribute="leading" id="FnY-Ab-FVL"/>
+                <constraint firstItem="ZQ2-Ij-mYr" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" id="KRu-5w-kGE"/>
+                <constraint firstAttribute="bottom" secondItem="LPc-i8-8UC" secondAttribute="bottom" id="apf-b1-yIb"/>
+                <constraint firstItem="ZQ2-Ij-mYr" firstAttribute="leading" secondItem="cGR-49-HWB" secondAttribute="leading" constant="8" id="fDO-rh-Jbl"/>
+                <constraint firstAttribute="trailing" secondItem="ZQ2-Ij-mYr" secondAttribute="trailing" constant="8" id="fM3-nY-rDV"/>
+                <constraint firstItem="LPc-i8-8UC" firstAttribute="top" secondItem="cGR-49-HWB" secondAttribute="top" id="zl5-Sf-qSF"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="backgroundView" destination="LPc-i8-8UC" id="mfD-md-nTj"/>
+                <outlet property="elapsedTimeLabel" destination="eAi-HM-Wvj" id="z70-aJ-O90"/>
+                <outlet property="playButton" destination="GL1-b8-dZK" id="5u7-CG-d99"/>
+                <outlet property="recordingIcon" destination="REB-gl-h0h" id="uL1-nI-bhF"/>
+                <outlet property="waveformContainerView" destination="7Fl-yZ-dZB" id="f9u-wS-jvG"/>
+            </connections>
+            <point key="canvasLocation" x="-1742.753623188406" y="-299.33035714285711"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="voice_message_play_button" width="12.5" height="15"/>
+        <image name="voice_message_record_icon" width="10" height="10"/>
+    </resources>
+</document>

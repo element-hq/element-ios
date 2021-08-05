@@ -86,7 +86,6 @@
 "room_creation_appearance" = "Wygląd";
 "room_creation_appearance_name" = "Nazwa";
 "room_creation_privacy" = "Prywatność";
-"room_recents_directory_section_network" = "Sieć";
 "room_recents_favourites_section" = "ULUBIONE";
 "room_recents_people_section" = "OSOBY";
 "room_recents_conversations_section" = "POKOJE";
@@ -504,7 +503,6 @@
 "settings_key_backup" = "KOPIA ZAPASOWA KLUCZY";
 "settings_enable_push_notif" = "Powiadomienia na tym urządzeniu";
 "settings_global_settings_info" = "Globalne i szczegółowe ustawienia powiadomień są dostępne z poziomu klienta webowego: %@";
-"settings_on_denied_notification" = "Powiadomienia dla aplikacji %@ są wyłączone. Proszę zezwól na nie w ustawieniach urządzenia";
 "settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia Element w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" używa ustawienia \"Odwróć kolory\" Twojego urządzenia";
 "close" = "Zamknij";

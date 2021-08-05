@@ -17,6 +17,7 @@
  */
 
 import Foundation
+import SwiftUI
 
 protocol RoomNotificationSettingsViewModelViewDelegate: AnyObject {
     func roomNotificationSettingsViewModel(_ viewModel: RoomNotificationSettingsViewModelType, didUpdateViewState viewState: RoomNotificationSettingsViewStateType)

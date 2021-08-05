@@ -58,7 +58,6 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
 
 @property (weak, nonatomic) IBOutlet UIButton *attachMediaButton;
@@ -70,6 +69,7 @@ typedef enum : NSUInteger
 @property (weak, nonatomic) IBOutlet UILabel *inputContextLabel;
 @property (weak, nonatomic) IBOutlet UIButton *inputContextButton;
 @property (weak, nonatomic) IBOutlet RoomActionsBar *actionsBar;
+@property (weak, nonatomic) UIView *voiceMessageToolbarView;
 
 /**
  Tell whether the filled data will be sent encrypted. NO by default.

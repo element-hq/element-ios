@@ -105,7 +105,6 @@
 "room_creation_invite_another_user" = "Tìm / mời bằng ID người dùng, tên hoặc email";
 // Room recents
 "room_recents_directory_section" = "DANH MỤC PHÒNG";
-"room_recents_directory_section_network" = "Mạng";
 "room_recents_favourites_section" = "YÊU THÍCH";
 "room_recents_people_section" = "DANH BẠ";
 "room_recents_conversations_section" = "PHÒNG";
@@ -291,7 +290,6 @@
 "settings_global_settings_info" = "Cài đặt thông báo toàn cầu khả dụng trên %@ trình duyệt khách của bạn";
 "settings_pin_rooms_with_missed_notif" = "Neo phòng có thông báo bỏ lỡ";
 "settings_pin_rooms_with_unread" = "Neo phòng có tin nhắn chưa đọc";
-"settings_on_denied_notification" = "Thông báo bị từ chối cho %@, vui lòng cho phép trong cài đặt thiết bị của bạn";
 "settings_enable_callkit" = "Cuộc gọi tích hợp";
 "settings_callkit_info" = "Nhận cuộc gọi tới trên màn hình khóa. Xem lịch sử cuộc gọi trong lịch sử cuộc gọi của hệ thống. Nếu iCloud được kích hoạt, lịch sử cuộc gọi sẽ được chia sẻ với Apple.";
 "settings_ui_language" = "Ngôn ngữ";

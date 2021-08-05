@@ -112,7 +112,6 @@
 "room_creation_invite_another_user" = "Zoeken/uitnodigen met gebruikers-ID, naam of e-mailadres";
 // Room recents
 "room_recents_directory_section" = "GESPREKSCATALOGUS";
-"room_recents_directory_section_network" = "Netwerk";
 "room_recents_favourites_section" = "FAVORIETEN";
 "room_recents_people_section" = "PERSONEN";
 "room_recents_conversations_section" = "GESPREKKEN";
@@ -290,7 +289,6 @@
 "settings_global_settings_info" = "Globale meldingsinstellingen zijn beschikbaar op uw %@-webcliënt";
 "settings_pin_rooms_with_missed_notif" = "Gesprekken met gemiste meldingen vastprikken";
 "settings_pin_rooms_with_unread" = "Gesprekken met ongelezen berichten vastprikken";
-"settings_on_denied_notification" = "Meldingen worden geweigerd voor %@, sta ze toe in uw apparaatinstellingen";
 //"settings_enable_all_notif" = "Alle notificaties aanzetten";
 //"settings_messages_my_display_name" = "Bericht dat mijn naam bevat";
 //"settings_messages_my_user_name" = "Bericht dat mijn gebruikersnaam bevat";
@@ -1512,3 +1510,16 @@
 "settings_ui_theme_picker_message_invert_colours" = "‘Automatisch’ gebruikt de instelling ‘Kleurweergave omkeren’ van uw apparaat";
 "room_recents_unknown_room_error_message" = "Dit gesprek is niet gevonden. Controleer of het bestaat";
 "room_creation_dm_error" = "Uw direct gesprek kon niet aangemaakt worden. Controleer de gebruikers die u wilt uitnodigen en probeer het opnieuw.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scan met dit apparaat";
+"room_notifs_settings_encrypted_room_notice" = "Let op dat vermeldingen & trefwoorden-meldingen niet beschikbaar zijn in versleutelde gesprekken op mobiel.";
+"room_notifs_settings_account_settings" = "Accountinstellingen";
+"room_notifs_settings_manage_notifications" = "U kunt uw meldingen beheren in %@";
+"room_notifs_settings_cancel_action" = "Annuleer";
+"room_notifs_settings_done_action" = "Klaar";
+"room_notifs_settings_none" = "Geen";
+"room_notifs_settings_mentions_and_keywords" = "Alleen vermeldingen en trefwoorden";
+"room_notifs_settings_all_messages" = "Alle berichten";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Stuur een melding voor";
+"room_details_notifs" = "Meldingen";

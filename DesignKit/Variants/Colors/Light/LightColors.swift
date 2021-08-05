@@ -32,6 +32,8 @@ public class LightColors: Colors {
     
     public let quarterlyContent: UIColor = UIColor(rgb: 0xC1C6CD)
     
+    public let quinaryContent: UIColor = UIColor(rgb: 0xE3E8F0)
+
     public let separator: UIColor = UIColor(rgb: 0xE3E8F0)
     
     public let tile: UIColor = UIColor(rgb: 0xF3F8FD)

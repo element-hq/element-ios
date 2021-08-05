@@ -106,7 +106,6 @@
 "room_creation_invite_another_user" = "Cerca / convida per l'identificador d'usuari, nom o correu electrònic";
 // Room recents
 "room_recents_directory_section" = "Directori de Sales";
-"room_recents_directory_section_network" = "Xarxa";
 "room_recents_favourites_section" = "Favorits";
 "room_recents_people_section" = "Contactes";
 "room_recents_conversations_section" = "Sales";
@@ -296,7 +295,6 @@
 "settings_global_settings_info" = "Els paràmetres de notificació globals estan disponibles al teu client web %@";
 "settings_pin_rooms_with_missed_notif" = "Fixa sales amb notificacions pendents";
 "settings_pin_rooms_with_unread" = "Fixa sales amb missatges pendents";
-"settings_on_denied_notification" = "%@ no permet notificacions, si us plau activa-les en els ajustos del teu dispositiu";
 "settings_enable_callkit" = "Trucades integrades";
 "settings_callkit_info" = "Rep les trucades entrants a la pantalla de bloqueig. Consulta les trucades de Element a l'historial de trucades del sistema. Si està habilitat iCloud, aquest historial de trucades es compartirà amb Apple.";
 "settings_ui_language" = "Llenguatge";

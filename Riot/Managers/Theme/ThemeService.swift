@@ -25,3 +25,23 @@ extension ThemeService {
         return ThemeIdentifier(rawValue: themeId)
     }    
 }
+
+import SwiftUI
+private struct ThemeKey: EnvironmentKey {
+    static let defaultValue = ThemeService.shared().theme
+}
+
+@available(iOS 13.0, *)
+extension EnvironmentValues {
+  var theme: Theme {
+    get { self[ThemeKey.self] }
+    set { self[ThemeKey.self] = newValue }
+  }
+}
+
+@available(iOS 13.0, *)
+extension View {
+  func theme(_ theme: Theme) -> some View {
+    environment(\.theme, theme)
+  }
+}
