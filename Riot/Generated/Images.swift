@@ -74,6 +74,7 @@ internal enum Asset {
     internal static let touchidIcon = ImageAsset(name: "touchid_icon")
     internal static let addGroupParticipant = ImageAsset(name: "add_group_participant")
     internal static let removeIconBlue = ImageAsset(name: "remove_icon_blue")
+    internal static let contactsRequestFacepile = ImageAsset(name: "contacts_request_facepile")
     internal static let captureAvatar = ImageAsset(name: "capture_avatar")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")

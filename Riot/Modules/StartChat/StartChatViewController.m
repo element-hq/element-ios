@@ -20,7 +20,7 @@
 #import "Riot-Swift.h"
 #import "MXSession+Riot.h"
 
-@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate, RequestContactsAccessFooterViewDelegate>
+@interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate>
 {
     // The contact used to describe the current user.
     MXKContact *userContact;
@@ -48,8 +48,6 @@
 
 @property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
 @property (nonatomic, weak) InviteFriendsHeaderView *inviteFriendsHeaderView;
-
-@property (nonatomic, strong) RequestContactsAccessFooterView *requestContactsAccessFooterView;
 
 @end
 
@@ -160,25 +158,6 @@
     }
 }
 
-- (void)updateFooterView
-{
-    if (!RiotSettings.shared.allowInviteExernalUsers
-        || [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized
-        || self.contactsTableView.numberOfSections > 0)
-    {
-        // Hide line separators of empty cells
-        // FIXME: Store this?
-        self.contactsTableView.tableFooterView = [[UIView alloc] init];
-        return;
-    }
-    
-    RequestContactsAccessFooterView *contactsAccessView = self.requestContactsAccessFooterView ?: [RequestContactsAccessFooterView instantiate];
-    contactsAccessView.delegate = self;
-    self.contactsTableView.tableFooterView = contactsAccessView;
-    
-    self.requestContactsAccessFooterView = contactsAccessView;
-}
-
 - (void)userInterfaceThemeDidChange
 {
     [super userInterfaceThemeDidChange];
@@ -247,8 +226,6 @@
         // Refresh display
         [self refreshContactsTable];
     }
-    
-    [self updateFooterView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -263,36 +240,6 @@
 {
     [super viewDidLayoutSubviews];
     [self.contactsTableView vc_relayoutHeaderView];
-    [self updateRequestContactsAccessFooterViewHeight];
-}
-
-- (void)updateRequestContactsAccessFooterViewHeight
-{
-    if (self.requestContactsAccessFooterView && self.requestContactsAccessFooterView == self.contactsTableView.tableFooterView)
-    {
-        CGSize footerSize = [self.requestContactsAccessFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        CGFloat gapHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom;
-        
-        if (self.contactsTableView.tableHeaderView)
-        {
-            gapHeight -= self.contactsTableView.tableHeaderView.frame.size.height;
-        }
-        
-        if (gapHeight > footerSize.height)
-        {
-            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
-                                                                    self.requestContactsAccessFooterView.frame.origin.y,
-                                                                    self.requestContactsAccessFooterView.frame.size.width,
-                                                                    gapHeight);
-        }
-        else
-        {
-            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
-                                                                    self.requestContactsAccessFooterView.frame.origin.y,
-                                                                    self.requestContactsAccessFooterView.frame.size.width,
-                                                                    footerSize.height);
-        }
-    }
 }
 
 #pragma mark -
@@ -765,11 +712,6 @@
     return YES;
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-    [self updateFooterView];
-}
-
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     searchBar.text = nil;
@@ -780,11 +722,6 @@
     
     // Leave search
     [searchBar resignFirstResponder];
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-    [self updateFooterView];
 }
 
 #pragma mark - ContactsTableViewControllerDelegate
@@ -839,23 +776,6 @@
 
 {
     [self showInviteFriendsFromSourceView:button];
-}
-
-#pragma mark - RequestContactsAccessFooterViewDelegate
-
-- (void)didRequestContactsAccess
-{
-    [MXKTools checkAccessForContacts:@"Contacts access has been disabled in the Settings app." showPopUpInViewController:self completionHandler:^(BOOL granted) {
-        if (granted)
-        {
-            // Hide the request access view.
-            [self updateFooterView];
-            
-            // Enable sync local contacts and refresh the contacts manager.
-            MXKAppSettings.standardAppSettings.syncLocalContacts = YES;
-            [MXKContactManager.sharedManager refreshLocalContacts];
-        }
-    }];
 }
 
 @end

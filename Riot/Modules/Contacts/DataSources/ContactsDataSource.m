@@ -660,6 +660,11 @@
 
 #pragma mark -
 
+- (BOOL)hasLocalContacts
+{
+    return filteredLocalContacts.count;
+}
+
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath
 {
     NSInteger row = indexPath.row;

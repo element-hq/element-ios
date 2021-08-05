@@ -16,25 +16,25 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="67f-7H-bSH">
-                    <rect key="frame" x="16" y="38.5" width="288" height="330.5"/>
+                    <rect key="frame" x="16" y="22.5" width="288" height="346.5"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_participant" translatesAutoresizingMaskIntoConstraints="NO" id="q3p-2U-JA5">
-                            <rect key="frame" x="129" y="40" width="30" height="30"/>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contacts_request_filepile" translatesAutoresizingMaskIntoConstraints="NO" id="q3p-2U-JA5">
+                            <rect key="frame" x="89" y="40" width="110" height="46"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start by listing your friends" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9oC-ce-hpT">
-                            <rect key="frame" x="20" y="110" width="248" height="21"/>
+                            <rect key="frame" x="20" y="126" width="248" height="21"/>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let Element show your contacts so you can quickly start chatting with those you know best." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B3j-1i-EAf">
-                            <rect key="frame" x="20" y="139" width="248" height="61"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let Element show your contacts so you can quickly start chatting with those you know best." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B3j-1i-EAf">
+                            <rect key="frame" x="20" y="155" width="248" height="61"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v93-cs-jXa" customClass="CustomRoundedButton" customModule="Riot" customModuleProvider="target">
-                            <rect key="frame" x="16" y="225" width="256" height="45"/>
+                            <rect key="frame" x="16" y="241" width="256" height="45"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="Spc-d4-SvP"/>
                             </constraints>
@@ -43,8 +43,8 @@
                                 <action selector="requestContactsAccess:" destination="iN0-l3-epB" eventType="touchUpInside" id="XLO-8r-P8S"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your contacts will not be stored or shared without your permission." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0A6-6s-nu6">
-                            <rect key="frame" x="20" y="282" width="248" height="31.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your contacts will not be stored or shared without your permission." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0A6-6s-nu6">
+                            <rect key="frame" x="20" y="298" width="248" height="31.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -59,6 +59,7 @@
                         <constraint firstAttribute="trailing" secondItem="B3j-1i-EAf" secondAttribute="trailing" constant="20" symbolic="YES" id="Hg6-yF-XYk"/>
                         <constraint firstAttribute="trailing" secondItem="0A6-6s-nu6" secondAttribute="trailing" constant="20" symbolic="YES" id="HpJ-VI-vji"/>
                         <constraint firstItem="v93-cs-jXa" firstAttribute="top" secondItem="B3j-1i-EAf" secondAttribute="bottom" constant="25" id="NCh-1k-Wmw"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="343" id="Ty6-Fa-X0Y"/>
                         <constraint firstItem="v93-cs-jXa" firstAttribute="leading" secondItem="67f-7H-bSH" secondAttribute="leading" constant="16" id="aF8-bI-HgQ"/>
                         <constraint firstItem="9oC-ce-hpT" firstAttribute="leading" secondItem="67f-7H-bSH" secondAttribute="leading" constant="20" symbolic="YES" id="bli-Ms-T40"/>
                         <constraint firstItem="B3j-1i-EAf" firstAttribute="top" secondItem="9oC-ce-hpT" secondAttribute="bottom" constant="8" symbolic="YES" id="dAh-bo-3yO"/>
@@ -74,8 +75,9 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="67f-7H-bSH" secondAttribute="bottom" constant="16" id="6sY-dx-OLw"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="67f-7H-bSH" secondAttribute="trailing" constant="16" id="NHG-OU-6GO"/>
-                <constraint firstItem="67f-7H-bSH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="fqj-2T-EL6"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="67f-7H-bSH" secondAttribute="trailing" constant="16" id="NHG-OU-6GO"/>
+                <constraint firstItem="67f-7H-bSH" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="QLf-8P-5HB"/>
+                <constraint firstItem="67f-7H-bSH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="fqj-2T-EL6"/>
                 <constraint firstItem="67f-7H-bSH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="yU6-gF-alq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -90,7 +92,7 @@
         </view>
     </objects>
     <resources>
-        <image name="add_participant" width="30" height="30"/>
+        <image name="contacts_request_filepile" width="110" height="46"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

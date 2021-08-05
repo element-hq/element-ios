@@ -28,7 +28,7 @@
 #define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
 #define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
 
-@interface ContactsTableViewController ()
+@interface ContactsTableViewController () <RequestContactsAccessFooterViewDelegate>
 {
     /**
      Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
@@ -40,6 +40,9 @@
      */
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
+
+@property (nonatomic, strong) RequestContactsAccessFooterView *requestContactsAccessFooterView;
+@property (nonatomic) BOOL shouldHideFooterView;
 
 @end
 
@@ -92,6 +95,7 @@
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
+    self.shouldHideFooterView = NO;
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -150,20 +154,6 @@
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:_screenName];
 
-    if (BuildSettings.allowLocalContactsAccess)
-    {
-        // Check whether the access to the local contacts has not been already asked
-        // and check that the user has decided to use or not to use an identity server
-        if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusNotDetermined
-            || !contactsDataSource.mxSession.hasAccountDataIdentityServerValue)
-        {
-            // Allow by default the local contacts sync in order to discover matrix users.
-            // This setting change will trigger the loading of the local contacts, which will automatically
-            // ask user permission to access their local contacts.
-            [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-        }
-    }
-
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
@@ -179,8 +169,14 @@
     [super viewDidAppear:animated];
     
     // Load the local contacts for display.
-    // In viewDidAppear as it may trigger a request for contacts access.
     [self refreshLocalContacts];
+    [self updateFooterView];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self updateRequestContactsAccessFooterViewHeight];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -202,6 +198,71 @@
 }
 
 #pragma mark -
+
+- (RequestContactsAccessFooterView*)makeFooterView
+{
+    RequestContactsAccessFooterView *footerView = [RequestContactsAccessFooterView instantiate];
+    footerView.delegate = self;
+    
+    self.requestContactsAccessFooterView = footerView;
+    
+    return footerView;
+}
+
+- (void)updateFooterView
+{
+    if (!RiotSettings.shared.allowInviteExernalUsers || self->contactsDataSource.hasLocalContacts)
+    {
+        self.contactsTableView.tableFooterView = nil;
+        return;
+    }
+    
+    if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized
+        && MXKAppSettings.standardAppSettings.syncLocalContacts
+        && contactsDataSource.mxSession.hasAccountDataIdentityServerValue)
+    {
+        self.contactsTableView.tableFooterView = nil;
+        return;
+    }
+    
+    if (self.shouldHideFooterView)
+    {
+        self.contactsTableView.tableFooterView = nil;
+        return;
+    }
+    
+    self.contactsTableView.tableFooterView = self.requestContactsAccessFooterView ?: [self makeFooterView];
+    [self updateRequestContactsAccessFooterViewHeight];
+}
+
+- (void)updateRequestContactsAccessFooterViewHeight
+{
+    if (self.requestContactsAccessFooterView && self.requestContactsAccessFooterView == self.contactsTableView.tableFooterView)
+    {
+        CGSize footerSize = [self.requestContactsAccessFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        CGFloat gapHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom;
+        
+        if (self.contactsTableView.tableHeaderView)
+        {
+            gapHeight -= self.contactsTableView.tableHeaderView.frame.size.height;
+        }
+        
+        if (gapHeight > footerSize.height)
+        {
+            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
+                                                                    self.requestContactsAccessFooterView.frame.origin.y,
+                                                                    self.requestContactsAccessFooterView.frame.size.width,
+                                                                    gapHeight);
+        }
+        else
+        {
+            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
+                                                                    self.requestContactsAccessFooterView.frame.origin.y,
+                                                                    self.requestContactsAccessFooterView.frame.size.width,
+                                                                    footerSize.height);
+        }
+    }
+}
 
 - (void)displayList:(ContactsDataSource*)listDataSource
 {
@@ -228,39 +289,25 @@
         return;
     }
     
-    // Do not scan local contacts in background if the user has not decided yet about using
-    // an identity server
-    BOOL doRefreshLocalContacts = NO;
-    for (MXSession *session in self.mxSessions)
-    {
-        if (session.hasAccountDataIdentityServerValue)
-        {
-            doRefreshLocalContacts = YES;
-            break;
-        }
-    }
-
+    // Check whether the user has not decided yet about using an identity server
     // Check whether the application is allowed to access the local contacts.
-    if (doRefreshLocalContacts
+    if (contactsDataSource.mxSession.hasAccountDataIdentityServerValue
         && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
     {
-        // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
+        // If the user hasn't enabled local contact sync in the app...
         if (![MXKAppSettings standardAppSettings].syncLocalContacts)
         {
-            // Check whether it was not requested yet.
-            if (![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
+            // ... Check whether they have been directed to the Settings app to enable contact access.
+            if ([MXKAppSettings standardAppSettings].syncLocalContactsPermissionOpenedSystemSettings)
             {
-                [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
-                
-                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
-                    
-                    if (granted)
-                    {
-                        // Allow local contacts sync in order to discover matrix users.
-                        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-                    }
-                    
-                }];
+                // If they have enable local contact sync and reset the system settings app flag.
+                [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+                [MXKAppSettings standardAppSettings].syncLocalContactsPermissionOpenedSystemSettings = NO;
+            }
+            else
+            {
+                // Otherwise local contact sync is disabled so we're done.
+                return;
             }
         }
         
@@ -426,6 +473,18 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [contactsDataSource searchWithPattern:searchText forceReset:NO];
+    
+    // FIXME: This should be based off of the data source as it doesn't work in StartChat.
+    if (searchText.length && self.contactsTableView.tableFooterView)
+    {
+        self.shouldHideFooterView = YES;
+        [self updateFooterView];
+    }
+    else if (!searchText.length && !self.contactsTableView.tableFooterView)
+    {
+        self.shouldHideFooterView = NO;
+        [self updateFooterView];
+    }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -458,6 +517,27 @@
     [searchBar resignFirstResponder];
     
     [self withdrawViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - RequestContactsAccessFooterViewDelegate
+
+- (void)didRequestContactsAccess
+{
+    
+    [MXKTools checkAccessForContacts:@"Contacts disabled"
+             withManualChangeMessage:@"To enable contacts, go to your device settings."
+           showPopUpInViewController:self
+                   completionHandler:^(BOOL granted) {
+        if (granted)
+        {
+            // Hide the request access view.
+            [self updateFooterView];
+            
+            // Enable sync local contacts and refresh the contacts manager.
+            MXKAppSettings.standardAppSettings.syncLocalContacts = YES;
+            [self refreshLocalContacts];
+        }
+    }];
 }
 
 @end

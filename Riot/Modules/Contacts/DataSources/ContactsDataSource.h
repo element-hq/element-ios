@@ -51,6 +51,11 @@ typedef enum : NSUInteger
 }
 
 /**
+ Whether or not the data source has any local contacts loaded.
+ */
+- (BOOL)hasLocalContacts;
+
+/**
  Get the contact at the given index path.
  
  @param indexPath the index of the cell
