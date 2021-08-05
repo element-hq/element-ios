@@ -234,6 +234,11 @@ internal enum StoryboardScene {
 
     internal static let searchableDirectoryViewController = SceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
   }
+  internal enum ShowSpaceExploreRoomViewController: StoryboardType {
+    internal static let storyboardName = "ShowSpaceExploreRoomViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.ShowSpaceExploreRoomViewController>(storyboard: ShowSpaceExploreRoomViewController.self)
+  }
   internal enum SideMenuViewController: StoryboardType {
     internal static let storyboardName = "SideMenuViewController"
 

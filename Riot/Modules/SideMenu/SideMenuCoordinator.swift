@@ -60,6 +60,8 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
     private let sideMenuViewController: SideMenuViewController
     
     let spaceMenuPresenter = SpaceMenuPresenter()
+    
+    private var exploreRoomCoordimator: ExploreRoomCoordinatorBridgePresenter?
 
     // MARK: Public
 
@@ -84,6 +86,7 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         self.sideMenuViewModel.coordinatorDelegate = self
         
         self.sideMenuNavigationViewController.sideMenuDelegate = self
+        self.sideMenuNavigationViewController.dismissOnRotation = false
         
         // Set the sideMenuNavigationViewController as default left menu
         SideMenuManager.default.leftMenuNavigationController = self.sideMenuNavigationViewController
@@ -213,6 +216,7 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
+        self.spaceMenuPresenter.delegate = self
         self.spaceMenuPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
@@ -284,12 +288,31 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
     }
     
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
-//        if UIDevice.current.isPhone {
-//            self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-//                self.showMenu(forSpaceWithId: spaceId, from: sourceView)
-//            }
-//        } else {
-            self.showMenu(forSpaceWithId: spaceId, from: sourceView)
-//        }
+        self.showMenu(forSpaceWithId: spaceId, from: sourceView)
+    }
+}
+
+// MARK: - SpaceMenuPresenterDelegate
+extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
+    func spaceMenuPresenter(_ presenter: SpaceMenuPresenter, didCompleteWith action: SpaceMenuPresenter.Actions, forSpaceWithId spaceId: String, with session: MXSession) {
+        presenter.dismiss(animated: false) {
+            switch action {
+            case .exploreRooms:
+                self.exploreRoomCoordimator = ExploreRoomCoordinatorBridgePresenter(session: session, spaceId: spaceId)
+                self.exploreRoomCoordimator?.delegate = self
+                self.exploreRoomCoordimator?.present(from: self.sideMenuNavigationViewController, animated: true)
+            case .exploreMembers:
+                // TODO present members list
+                break
+            }
+        }
+    }
+}
+
+// MARK: - ExploreRoomCoordinatorBridgePresenterDelegate
+extension SideMenuCoordinator: ExploreRoomCoordinatorBridgePresenterDelegate {
+    func exploreRoomCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: ExploreRoomCoordinatorBridgePresenter) {
+        self.exploreRoomCoordimator = nil
+        coordinatorBridgePresenter.dismiss(animated: true, completion: nil)
     }
 }

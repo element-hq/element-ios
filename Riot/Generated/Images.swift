@@ -185,6 +185,7 @@ internal enum Asset {
     internal static let spaceMenuLeave = ImageAsset(name: "space_menu_leave")
     internal static let spaceMenuMembers = ImageAsset(name: "space_menu_members")
     internal static let spaceMenuRooms = ImageAsset(name: "space_menu_rooms")
+    internal static let spaceUserIcon = ImageAsset(name: "space_user_icon")
     internal static let spacesMore = ImageAsset(name: "spaces_more")
     internal static let tabFavourites = ImageAsset(name: "tab_favourites")
     internal static let tabGroups = ImageAsset(name: "tab_groups")
