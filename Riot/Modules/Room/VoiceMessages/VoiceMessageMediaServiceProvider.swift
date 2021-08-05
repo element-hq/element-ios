@@ -20,10 +20,12 @@ import MediaPlayer
 @objc public class VoiceMessageMediaServiceProvider: NSObject, VoiceMessageAudioPlayerDelegate, VoiceMessageAudioRecorderDelegate {
     
     private enum Constants {
-        static let roomAvatarImageSize: CGFloat = 100.0
+        static let roomAvatarImageSize: CGSize = CGSize(width: 600, height: 600)
         static let roomAvatarFontSize: CGFloat = 40.0
+        static let roomAvatarMimetype: String = "image/jpeg"
     }
     
+    private var roomAvatarLoader: MXMediaLoader?
     private let audioPlayers: NSMapTable<NSString, VoiceMessageAudioPlayer>
     private let audioRecorders: NSHashTable<VoiceMessageAudioRecorder>
     
@@ -37,10 +39,48 @@ import MediaPlayer
     private var roomAvatar: UIImage?
     @objc public var currentRoomSummary: MXRoomSummary? {
         didSet {
+            //  set avatar placeholder for now
             roomAvatar = AvatarGenerator.generateAvatar(forMatrixItem: currentRoomSummary?.roomId,
                                                         withDisplayName: currentRoomSummary?.displayname,
-                                                        size: Constants.roomAvatarImageSize,
+                                                        size: Constants.roomAvatarImageSize.width,
                                                         andFontSize: Constants.roomAvatarFontSize)
+            
+            guard let avatarUrl = currentRoomSummary?.avatar else {
+                return
+            }
+            
+            if let cachePath = MXMediaManager.thumbnailCachePath(forMatrixContentURI: avatarUrl,
+                                                                 andType: Constants.roomAvatarMimetype,
+                                                                 inFolder: currentRoomSummary?.roomId,
+                                                                 toFitViewSize: Constants.roomAvatarImageSize,
+                                                                 with: MXThumbnailingMethodCrop),
+               FileManager.default.fileExists(atPath: cachePath) {
+                //  found in the cache, load it
+                roomAvatar = MXMediaManager.loadThroughCache(withFilePath: cachePath)
+            } else {
+                //  cancel previous loader first
+                roomAvatarLoader?.cancel()
+                roomAvatarLoader = nil
+                
+                guard let mediaManager = currentRoomSummary?.mxSession.mediaManager else {
+                    return
+                }
+                
+                //  not found in the cache, download it
+                roomAvatarLoader = mediaManager.downloadThumbnail(fromMatrixContentURI: avatarUrl,
+                                                                  withType: Constants.roomAvatarMimetype,
+                                                                  inFolder: currentRoomSummary?.roomId,
+                                                                  toFitViewSize: Constants.roomAvatarImageSize,
+                                                                  with: MXThumbnailingMethodCrop,
+                                                                  success: { filePath in
+                                                                    if let filePath = filePath {
+                                                                        self.roomAvatar = MXMediaManager.loadThroughCache(withFilePath: filePath)
+                                                                    }
+                                                                    self.roomAvatarLoader = nil
+                                                                  }, failure: { error in
+                                                                    self.roomAvatarLoader = nil
+                                                                  })
+            }
         }
     }
     
@@ -204,7 +244,7 @@ import MediaPlayer
             return
         }
         
-        let artwork = MPMediaItemArtwork(boundsSize: .init(width: Constants.roomAvatarImageSize, height: Constants.roomAvatarImageSize)) { [weak self] size in
+        let artwork = MPMediaItemArtwork(boundsSize: Constants.roomAvatarImageSize) { [weak self] size in
             return self?.roomAvatar ?? UIImage()
         }
         
