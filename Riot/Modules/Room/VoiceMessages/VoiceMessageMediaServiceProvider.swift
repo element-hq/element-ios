@@ -249,7 +249,7 @@ import MediaPlayer
         }
         
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
-        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: audioPlayer.displayName ?? "Voice message",
+        nowPlayingInfoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: audioPlayer.displayName ?? VectorL10n.voiceMessageLockScreenPlaceholder,
                                                MPMediaItemPropertyArtist: currentRoomSummary?.displayname as Any,
                                                MPMediaItemPropertyArtwork: artwork,
                                                MPMediaItemPropertyPlaybackDuration: audioPlayer.duration as Any,
