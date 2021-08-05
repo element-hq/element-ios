@@ -94,6 +94,9 @@ enum
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
+    NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX,
 };
 
 enum
@@ -156,6 +159,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 #pragma mark - SettingsViewController
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
+NotificationSettingsCoordinatorBridgePresenterDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
@@ -241,6 +245,7 @@ TableViewSectionsDelegate>
 @property (nonatomic) UNNotificationSettings *systemNotificationSettings;
 
 @property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
+@property (nonatomic, strong) NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter;
 @property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
@@ -361,10 +366,18 @@ TableViewSectionsDelegate>
     {
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
     }
-    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
+    if (![BuildSettings showNotificationsV2]){
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
+    }
+
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
-    sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
+    if ([BuildSettings showNotificationsV2]){
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX];
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX];
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX];
+    }
+    sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications", @"Vector", nil);
     [tmpSections addObject:sectionNotificationSettings];
     
     if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
@@ -1896,6 +1909,23 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX || row == NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX || row == NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX)
+        {
+            cell = [self getDefaultTableViewCell:tableView];
+            if (row == NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_default", @"Vector", nil);
+            }
+            else if (row == NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_meantions_and_keywords", @"Vector", nil);
+            }
+            else if (row == NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
+            }
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+        }
     }
     else if (section == SECTION_TAG_CALLS)
     {
@@ -2711,6 +2741,10 @@ TableViewSectionsDelegate>
                     break;
                 }
             }
+        }
+        else if (section == SECTION_TAG_NOTIFICATIONS)
+        {
+            [self showNotificationSettings];
         }
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -4045,6 +4079,35 @@ TableViewSectionsDelegate>
 {
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - NotificationSettingsCoordinatorBridgePresenter
+
+- (void)showNotificationSettings
+{
+    
+    NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter = [[NotificationSettingsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    notificationSettingsBridgePresenter.delegate = self;
+    
+    MXWeakify(self);
+    
+    [notificationSettingsBridgePresenter pushFrom:self.navigationController animated:YES popCompletion:^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        self.notificationSettingsBridgePresenter = nil;
+    }];
+
+    
+    self.notificationSettingsBridgePresenter = notificationSettingsBridgePresenter;
+}
+
+#pragma mark - NotificationSettingsCoordinatorBridgePresenterDelegate
+
+- (void)notificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(NotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self.notificationSettingsBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.notificationSettingsBridgePresenter = nil;
+}
+
 
 #pragma mark - SecureBackupSetupCoordinatorBridgePresenter
 
