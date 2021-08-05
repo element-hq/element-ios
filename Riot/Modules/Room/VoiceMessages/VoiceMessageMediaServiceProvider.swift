@@ -20,7 +20,7 @@ import MediaPlayer
 @objc public class VoiceMessageMediaServiceProvider: NSObject, VoiceMessageAudioPlayerDelegate, VoiceMessageAudioRecorderDelegate {
     
     private enum Constants {
-        static let roomAvatarImageSize: CGSize = CGSize(width: 100, height: 100)
+        static let roomAvatarImageSize: CGSize = CGSize(width: 600, height: 600)
         static let roomAvatarFontSize: CGFloat = 40.0
         static let roomAvatarMimetype: String = "image/jpeg"
     }
