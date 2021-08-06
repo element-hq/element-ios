@@ -69,8 +69,8 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
-        case .complete(let selectedItem):
-            self.coordinatorDelegate?.showSpaceExploreRoomViewModel(self, didSelect: selectedItem)
+        case .complete(let selectedItem, let sourceView):
+            self.coordinatorDelegate?.showSpaceExploreRoomViewModel(self, didSelect: selectedItem, from: sourceView)
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.showSpaceExploreRoomViewModelDidCancel(self)

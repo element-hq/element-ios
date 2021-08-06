@@ -62,8 +62,8 @@ final class ShowSpaceExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorType
 
 // MARK: - ShowSpaceExploreRoomViewModelCoordinatorDelegate
 extension ShowSpaceExploreRoomCoordinator: ShowSpaceExploreRoomViewModelCoordinatorDelegate {
-    func showSpaceExploreRoomViewModel(_ viewModel: ShowSpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData) {
-        self.delegate?.showSpaceExploreRoomCoordinator(self, didSelect: item)
+    func showSpaceExploreRoomViewModel(_ viewModel: ShowSpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
+        self.delegate?.showSpaceExploreRoomCoordinator(self, didSelect: item, from: sourceView)
     }
     
     func showSpaceExploreRoomViewModelDidCancel(_ viewModel: ShowSpaceExploreRoomViewModelType) {

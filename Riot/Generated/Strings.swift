@@ -4714,6 +4714,10 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
+  /// Explore rooms
+  internal static var spacesExploreRooms: String { 
+    return VectorL10n.tr("Vector", "spaces_explore_rooms") 
+  }
   /// Home
   internal static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 

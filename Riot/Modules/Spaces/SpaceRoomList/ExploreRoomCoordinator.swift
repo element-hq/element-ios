@@ -28,6 +28,11 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
+    private weak var roomDetailCoordinator: ShowSpaceChildRoomDetailCoordinator?
+
+    private lazy var slidingModalPresenter: SlidingModalPresenter = {
+        return SlidingModalPresenter()
+    }()
 
     // MARK: Public
 
@@ -70,6 +75,30 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         }
     }
     
+    func presentRoom(with item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
+        if let currentCoordinator = self.roomDetailCoordinator {
+            self.remove(childCoordinator: currentCoordinator)
+        }
+
+        let coordinator = self.createShowSpaceRoomDetailCoordinator(session: self.session, childInfo: item.childInfo)
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        self.roomDetailCoordinator = coordinator
+        
+        if UIDevice.current.isPhone {
+            slidingModalPresenter.present(coordinator.toSlidingPresentable(), from: self.navigationRouter.toPresentable(), animated: true, completion: nil)
+        } else {
+            let viewController = coordinator.toPresentable()
+            viewController.modalPresentationStyle = .popover
+            if let sourceView = sourceView, let popoverPresentationController = viewController.popoverPresentationController {
+                popoverPresentationController.sourceView = sourceView
+                popoverPresentationController.sourceRect = sourceView.bounds
+            }
+
+            self.navigationRouter.present(viewController, animated: true)
+        }
+    }
+    
     // MARK: - Private methods
 
     private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> ShowSpaceExploreRoomCoordinator {
@@ -77,15 +106,40 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         coordinator.delegate = self
         return coordinator
     }
+    
+    private func createShowSpaceRoomDetailCoordinator(session: MXSession, childInfo: MXSpaceChildInfo) -> ShowSpaceChildRoomDetailCoordinator {
+        let coordinator = ShowSpaceChildRoomDetailCoordinator(session: session, childInfo: childInfo)
+        coordinator.delegate = self
+        return coordinator
+    }
 }
 
 // MARK: - ShowSpaceExploreRoomCoordinatorDelegate
 extension ExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorDelegate {
-    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData) {
-        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: item)
+    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
+        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: item, from: sourceView)
     }
     
     func showSpaceExploreRoomCoordinatorDidCancel(_ coordinator: ShowSpaceExploreRoomCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil)
+        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil, from: nil)
+    }
+}
+
+// MARK: - ShowSpaceChildRoomDetailCoordinator
+extension ExploreRoomCoordinator: ShowSpaceChildRoomDetailCoordinatorDelegate {
+    func showSpaceChildRoomDetailCoordinator(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
+        if UIDevice.current.isPhone {
+            self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil, from: nil)
+        } else {
+            self.navigationRouter.toPresentable().dismiss(animated: true) {
+                if let lastCoordinator = self.roomDetailCoordinator {
+                    self.remove(childCoordinator: lastCoordinator)
+                }
+            }
+        }
+    }
+    
+    func showSpaceChildRoomDetailCoordinatorDidCancel(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType) {
+        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil, from: nil)
     }
 }

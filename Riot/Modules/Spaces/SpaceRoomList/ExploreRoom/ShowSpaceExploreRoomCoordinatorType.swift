@@ -19,7 +19,7 @@
 import Foundation
 
 protocol ShowSpaceExploreRoomCoordinatorDelegate: AnyObject {
-    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData)
+    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?)
     func showSpaceExploreRoomCoordinatorDidCancel(_ coordinator: ShowSpaceExploreRoomCoordinatorType)
 }
 

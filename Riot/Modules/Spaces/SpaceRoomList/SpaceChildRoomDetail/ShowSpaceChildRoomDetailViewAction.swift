@@ -1,5 +1,5 @@
-// File created from FlowTemplate
-// $ createRootCoordinator.sh Spaces/SpaceRoomList ExploreRoom ShowSpaceExploreRoom
+// File created from ScreenTemplate
+// $ createScreen.sh Spaces/SpaceRoomList/SpaceChildRoomDetail ShowSpaceChildRoomDetail
 /*
  Copyright 2021 New Vector Ltd
  
@@ -18,11 +18,9 @@
 
 import Foundation
 
-protocol ExploreRoomCoordinatorDelegate: AnyObject {
-    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType, withSelectedIem item: SpaceExploreRoomListItemViewData?, from sourceView: UIView?)
-}
-
-/// `ExploreRoomCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol ExploreRoomCoordinatorType: Coordinator, Presentable {
-    var delegate: ExploreRoomCoordinatorDelegate? { get }
+/// ShowSpaceChildRoomDetailViewController view actions exposed to view model
+enum ShowSpaceChildRoomDetailViewAction {
+    case loadData
+    case complete
+    case cancel
 }

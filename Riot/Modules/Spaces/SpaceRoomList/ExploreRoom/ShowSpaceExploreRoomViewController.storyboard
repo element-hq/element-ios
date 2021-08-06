@@ -25,7 +25,7 @@
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ky8-xS-gvY">
-                                <rect key="frame" x="0.0" y="95" width="414" height="767"/>
+                                <rect key="frame" x="0.0" y="95" width="414" height="801"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="V8j-Lb-PgC" id="vHE-eI-RwY"/>
@@ -38,7 +38,7 @@
                         <constraints>
                             <constraint firstItem="fwb-Dw-htn" firstAttribute="trailing" secondItem="bFg-jh-JZB" secondAttribute="trailing" id="1m4-vY-zCQ"/>
                             <constraint firstItem="fwb-Dw-htn" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" id="9bh-C3-kLv"/>
-                            <constraint firstItem="bFg-jh-JZB" firstAttribute="bottom" secondItem="Ky8-xS-gvY" secondAttribute="bottom" id="dbv-EQ-GRC"/>
+                            <constraint firstAttribute="bottom" secondItem="Ky8-xS-gvY" secondAttribute="bottom" id="dbv-EQ-GRC"/>
                             <constraint firstItem="Ky8-xS-gvY" firstAttribute="top" secondItem="fwb-Dw-htn" secondAttribute="bottom" id="m0F-5M-lcc"/>
                             <constraint firstItem="bFg-jh-JZB" firstAttribute="trailing" secondItem="Ky8-xS-gvY" secondAttribute="trailing" id="nNg-MQ-Qp7"/>
                             <constraint firstItem="fwb-Dw-htn" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" id="oJ3-YU-v8W"/>

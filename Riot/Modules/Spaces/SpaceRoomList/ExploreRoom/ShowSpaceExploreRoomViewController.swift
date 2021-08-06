@@ -211,7 +211,7 @@ extension ShowSpaceExploreRoomViewController: UITableViewDataSource {
 extension ShowSpaceExploreRoomViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        self.viewModel.process(viewAction: .complete(self.itemDataList[indexPath.row]))
+        self.viewModel.process(viewAction: .complete(self.itemDataList[indexPath.row], tableView.cellForRow(at: indexPath)))
     }
 }
 

@@ -23,7 +23,7 @@ protocol ShowSpaceExploreRoomViewModelViewDelegate: AnyObject {
 }
 
 protocol ShowSpaceExploreRoomViewModelCoordinatorDelegate: AnyObject {
-    func showSpaceExploreRoomViewModel(_ viewModel: ShowSpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData)
+    func showSpaceExploreRoomViewModel(_ viewModel: ShowSpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?)
     func showSpaceExploreRoomViewModelDidCancel(_ viewModel: ShowSpaceExploreRoomViewModelType)
 }
 

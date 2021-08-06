@@ -1673,6 +1673,7 @@ Tap the + to start adding people.";
 "spaces_home_space_title" = "Home";
 "spaces_left_panel_title" = "Spaces";
 "leave_space_message" = "Are you sure you want to leave %@?";
+"spaces_explore_rooms" = "Explore rooms";
 
 // Mark: Avatar
 
