@@ -12,6 +12,7 @@ Changes to be released in next version
  * Voice messages: Allow voice message playback control from the iOS lock screen and control center (#4655)
  * Voice messages: Improve audio recording quality
  * Voice messages: Remove labs setting and enable them by default
+ * VoIP: Additional changes on call tiles (#4642).
 
 🐛 Bugfix
  * 
