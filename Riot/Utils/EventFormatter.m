@@ -416,9 +416,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 {
     BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
     
-    if (BuildSettings.supportFunctionalMembers)
+    // Customisation for EMS Functional Members in direct rooms
+    if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
     {
-        // Customisation for EMS Functional Members
         if ([self functionalMembersEventFromStateEvents:stateEvents])
         {
             MXLogDebug(@"[EventFormatter] The functional members event has been updated.")
@@ -433,9 +433,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 {
     BOOL updated = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
     
-    if (BuildSettings.supportFunctionalMembers)
+    // Customisation for EMS Functional Members in direct rooms
+    if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
     {
-        // Customisation for EMS Functional Members
         MXEvent *functionalMembersEvent = [self functionalMembersEventFromStateEvents:roomState.stateEvents];
         
         if (functionalMembersEvent)
@@ -463,6 +463,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 /**
  Gets the latest state event of type `io.element.functional_members` from the supplied array of state events.
+ Note: This function will be expensive on big rooms, recommended for use only on DMs.
  @return An event of type `io.element.functional_members`, or nil if the event wasn't found.
  */
 - (MXEvent *)functionalMembersEventFromStateEvents:(NSArray<MXEvent *> *)stateEvents
