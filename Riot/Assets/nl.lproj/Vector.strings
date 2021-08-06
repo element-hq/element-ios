@@ -289,7 +289,6 @@
 "settings_global_settings_info" = "Globale meldingsinstellingen zijn beschikbaar op uw %@-webcliënt";
 "settings_pin_rooms_with_missed_notif" = "Gesprekken met gemiste meldingen vastprikken";
 "settings_pin_rooms_with_unread" = "Gesprekken met ongelezen berichten vastprikken";
-"settings_on_denied_notification" = "Meldingen worden geweigerd voor %@, sta ze toe in uw apparaatinstellingen";
 //"settings_enable_all_notif" = "Alle notificaties aanzetten";
 //"settings_messages_my_display_name" = "Bericht dat mijn naam bevat";
 //"settings_messages_my_user_name" = "Bericht dat mijn gebruikersnaam bevat";

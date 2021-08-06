@@ -857,7 +857,6 @@
 "room_details_photo_for_dm" = "Bilde";
 "room_details_photo" = "Rombilde";
 "settings_flair" = "Vis kobling hvor tillatt";
-"settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
 "settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
 "room_info_list_several_members" = "%@ medlemmer";
 "pin_protection_not_allowed_pin" = "Av sikkerhetsårsaker er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";
