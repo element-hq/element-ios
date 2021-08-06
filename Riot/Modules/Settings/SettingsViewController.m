@@ -429,7 +429,7 @@ TableViewSectionsDelegate>
         [sectionIntegrations addRowWithTag:INTEGRATIONS_INDEX];
         [sectionIntegrations addRowWithTag:INTEGRATIONS_DESCRIPTION_INDEX];
         sectionIntegrations.headerTitle = NSLocalizedStringFromTable(@"settings_integrations", @"Vector", nil);
-        [tmpSections addObject:sectionIntegrations];
+//        [tmpSections addObject:sectionIntegrations];
     }
     
     Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
@@ -461,7 +461,7 @@ TableViewSectionsDelegate>
     {
         [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
     }
-    [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
+//    [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
     if (RiotSettings.shared.settingsScreenShowNsfwRoomsOption)
     {
         [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
@@ -2115,9 +2115,9 @@ TableViewSectionsDelegate>
             MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
 
             copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
-            
+
             [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
+
             cell = copyrightCell;
         }
         else if (row == OTHER_PRIVACY_INDEX)
