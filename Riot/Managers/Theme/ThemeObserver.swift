@@ -22,7 +22,7 @@ class ThemeServiceObserver: ObservableObject {
     
     static let shared = ThemeServiceObserver()
     
-    var cancelable: Cancellable? = nil
+    var cancelable: Cancellable?
     
     init() {
         let themePubliser = NotificationCenter.default.publisher(for: NSNotification.Name.themeServiceDidChangeTheme).map { _ in
@@ -33,5 +33,5 @@ class ThemeServiceObserver: ObservableObject {
             self.themeId = id
         }
     }
-    @Published var themeId: ThemeIdentifier? = nil
+    @Published var themeId: ThemeIdentifier?
 }
