@@ -25,23 +25,21 @@ struct FormPickerItem: View {
     
     var title: String
     var selected: Bool
-    var onClick: ClickCallback?
+    var onClick: ClickCallback
     
     var body: some View {
-        HStack {
-            Text(title)
-                .font(Font(theme.fonts.body))
-                .foregroundColor(Color(theme.textPrimaryColor))
-            Spacer()
-            if selected {
+        Button(action: onClick) {
+            HStack {
+                Text(title)
+                    .font(Font(theme.fonts.body))
+                    .foregroundColor(Color(theme.textPrimaryColor))
+                Spacer()
                 Image("checkmark")
                     .foregroundColor(Color(theme.tintColor))
+                    .opacity(selected ? 1 : 0)
             }
-        }
-        .listRowBackground(Color(theme.backgroundColor))
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onClick?()
+            .listRowBackground(Color(theme.backgroundColor))
+            .contentShape(Rectangle())
         }
     }
 }
@@ -50,9 +48,9 @@ struct FormPickerItem: View {
 struct FormPickerCell_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            FormPickerItem(title: "Item 1", selected: true, onClick: nil)
-            FormPickerItem(title: "Item 2", selected: false, onClick: nil)
-            FormPickerItem(title: "Item 3", selected: false, onClick: nil)
+            FormPickerItem(title: "Item 1", selected: true, onClick: { })
+            FormPickerItem(title: "Item 2", selected: false, onClick: { })
+            FormPickerItem(title: "Item 3", selected: false, onClick: { })
         }.listStyle(GroupedListStyle())
         
     }

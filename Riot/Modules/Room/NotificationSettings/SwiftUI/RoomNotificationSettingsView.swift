@@ -25,16 +25,22 @@ struct RoomNotificationSettingsView: View {
     
     @State var notificationState: RoomNotificationState = RoomNotificationState.all
     
-    
-    var body: some View {
-        let leftButton = presentedModally ?
+    @ViewBuilder
+    var leftButton: some View {
+        if presentedModally {
             SwiftUI.Button(VectorL10n.cancel) {
                 viewModel.process(viewAction: .cancel)
             }
-            : nil
-        let rightButton = SwiftUI.Button(VectorL10n.save) {
+        }
+    }
+    
+    var rightButton: some View {
+        Button(VectorL10n.save) {
             viewModel.process(viewAction: .save)
         }
+    }
+    
+    var body: some View {
         VectorForm {
             SwiftUI.Section(
                 header: FormSectionHeader(text: VectorL10n.roomNotifsSettingsNotifyMeFor),
@@ -79,7 +85,7 @@ fileprivate extension RoomNotificationSettingsViewState {
 }
 
 extension RoomNotificationState: Identifiable {
-    var id: String { UUID().uuidString }
+    var id: Int { self.rawValue }
 }
 
 
