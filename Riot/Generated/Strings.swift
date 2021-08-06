@@ -1274,9 +1274,13 @@ internal enum VectorL10n {
   internal static var eventFormatterCallEndCall: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_end_call") 
   }
-  /// Call ended %@
-  internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)
+  /// Call ended
+  internal static var eventFormatterCallHasEnded: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended") 
+  }
+  /// Call ended • %@
+  internal static func eventFormatterCallHasEndedWithTime(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended_with_time", p1)
   }
   /// Incoming video call
   internal static var eventFormatterCallIncomingVideo: String { 
