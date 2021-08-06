@@ -112,7 +112,7 @@ final class BuildSettings: NSObject {
     // MARK: - Legal URLs
     
     // Note: Set empty strings to hide the related entry in application settings
-    static let applicationCopyrightUrlString = "https://www.vpubchain.info/#/applegal"
+    static let applicationCopyrightUrlString = ""
     static let applicationPrivacyPolicyUrlString = "https://www.vpubchain.info/#/appPrivacy"
     static let applicationTermsConditionsUrlString = "https://www.vpubchain.info/#/applegal"
     static let applicationHelpUrlString =
@@ -247,15 +247,15 @@ final class BuildSettings: NSObject {
     static let settingsScreenAllowIdentityServerConfig: Bool = true
     static let settingsScreenShowAdvancedSettings: Bool = true
     static let settingsScreenShowLabSettings: Bool = true
-    static let settingsScreenAllowChangingRageshakeSettings: Bool = true
-    static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = true
+    static let settingsScreenAllowChangingRageshakeSettings: Bool = false // 摇一摇报告Bug
+    static let settingsScreenAllowChangingCrashUsageDataSettings: Bool = false // 发送崩溃和使用数据
     static let settingsScreenAllowBugReportingManually: Bool = true
     static let settingsScreenAllowDeactivatingAccount: Bool = true
     static let settingsScreenShowChangePassword:Bool = true
     static let settingsScreenShowInviteFriends:Bool = true
     static let settingsScreenShowEnableStunServerFallback: Bool = true
     static let settingsScreenShowNotificationDecodedContentOption: Bool = true
-    static let settingsScreenShowNsfwRoomsOption: Bool = true
+    static let settingsScreenShowNsfwRoomsOption: Bool = false // 显示 NSFW 公共聊天室
     static let settingsSecurityScreenShowSessions:Bool = true
     static let settingsSecurityScreenShowSetupBackup:Bool = true
     static let settingsSecurityScreenShowRestoreBackup:Bool = true

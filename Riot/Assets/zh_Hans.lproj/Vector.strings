@@ -75,7 +75,7 @@
 "auth_reset_password_email_validation_message" = "一封邮件已经发送到 %@。当您已经按照其中的链接操作以后，请点下面。";
 "auth_reset_password_next_step_button" = "我已经验证了我的邮箱地址";
 "auth_reset_password_error_unauthorized" = "验证邮箱地址失败：请确认您已经点击了邮件里的链接";
-"auth_reset_password_error_not_found" = "您的邮箱地址可能没有与此主服务器上的 Matrix ID 绑定。";
+"auth_reset_password_error_not_found" = "您的邮箱地址可能没有与此主服务器上的 ID 绑定。";
 "auth_reset_password_success_message" = "您的密码已重置。\n\n您的所有会话都会被登出并且不会收到推送通知。要想重新收到通知，请在每个设备上重新登录。";
 "auth_add_email_and_phone_warning" = "在 API 出现之前，还不支持使用邮箱地址或手机号码直接注册。只有手机号码会和此账户绑定。您可以在设置中添加邮箱地址。";
 // Chat creation
@@ -96,6 +96,7 @@
 "room_creation_invite_another_user" = "通过用户 ID、名称或电子邮件进行搜索/邀请";
 // Room recents
 "room_recents_directory_section" = "聊天室目录";
+"room_recents_directory_section_network" = "网络";
 "room_recents_favourites_section" = "收藏夹";
 "room_recents_people_section" = "联系人";
 "room_recents_conversations_section" = "聊天室";
@@ -131,10 +132,10 @@
 "directory_search_fail" = "获取数据失败";
 // Contacts
 "contacts_address_book_section" = "本地联系人";
-"contacts_address_book_matrix_users_toggle" = "只有 Matrix 用户";
+"contacts_address_book_matrix_users_toggle" = "只显示vpubchain.net用户";
 "contacts_address_book_no_contact" = "没有本地联系人";
 "contacts_address_book_permission_required" = "需要权限以便访问本地联系人";
-"contacts_address_book_permission_denied" = "你没有允许 Element 访问本地联系人";
+"contacts_address_book_permission_denied" = "你没有允许 Lianchat 访问本地联系人";
 "contacts_matrix_users_section" = "已知联系人";
 // Chat participants
 "room_participants_title" = "参加者";
@@ -151,7 +152,7 @@
 "room_participants_filter_room_members" = "筛选聊天室成员";
 "room_participants_invite_another_user" = "通过用户 ID、名称或电子邮件搜索 / 邀请";
 "room_participants_invite_malformed_id_title" = "邀请错误";
-"room_participants_invite_malformed_id" = "ID 格式错误。必须是一个电子邮件或者 Matrix ID 类似“@本地部分:域名”";
+"room_participants_invite_malformed_id" = "ID 格式错误。必须是一个电子邮件或者 Lianchat ID 类似“@本地部分:域名”";
 "room_participants_invited_section" = "已邀请";
 "room_participants_online" = "在线";
 "room_participants_offline" = "离线";
@@ -254,8 +255,8 @@
 "settings_sign_out" = "离开";
 "settings_sign_out_confirmation" = "你确定？";
 "settings_sign_out_e2e_warn" = "您将丢失所有端对端加密密钥。这意味着在此设备上您将再也无法阅读已加密聊天室里的旧消息。";
-"settings_profile_picture" = "档案图片";
-"settings_display_name" = "显示名";
+"settings_profile_picture" = "头像设置";
+"settings_display_name" = "显示昵称";
 "settings_first_name" = "名称";
 "settings_surname" = "姓氏";
 "settings_remove_prompt_title" = "确认";
@@ -272,7 +273,6 @@
 "settings_global_settings_info" = "全局通知设置可在 %@ 的网页客户端中修改";
 "settings_pin_rooms_with_missed_notif" = "置顶含有错过的通知的聊天室";
 "settings_pin_rooms_with_unread" = "置顶含有未读消息的聊天室";
-"settings_on_denied_notification" = "%@ 的通知请求被拒绝，请在系统设置中允许";
 "settings_unignore_user" = "显示所有来自 %@ 的消息？";
 "settings_contacts_discover_matrix_users" = "使用电子邮件和手机号码来发现用户";
 "settings_contacts_phonebook_country" = "电话本国家";
@@ -280,8 +280,9 @@
 "settings_labs_e2e_encryption_prompt_message" = "为了应用加密设置，您须重新登录。";
 "settings_version" = "版本 %@";
 "settings_olm_version" = "Olm 版本 %@";
+"settings_term_conditions" = "用户协议";
 "settings_copyright" = "版权";
-"settings_term_conditions" = "条款和条件";
+"settings_user_conditions" = "用户协议";
 "settings_privacy_policy" = "隐私政策";
 "settings_third_party_notices" = "第三方通知";
 "settings_send_crash_report" = "发送崩溃和使用数据";
@@ -310,8 +311,8 @@
 "room_details_mute_notifs" = "静音通知";
 "room_details_access_section" = "谁能访问此聊天室？";
 "room_details_access_section_invited_only" = "只有邀请的人";
-"room_details_access_section_anyone_apart_from_guest" = "任何知道此聊天室链接的人，除了访客";
-"room_details_access_section_anyone" = "任何知道此聊天室链接的人，包括访客";
+"room_details_access_section_anyone_apart_from_guest" = "任何知道此聊天室链接的人，除了游客";
+"room_details_access_section_anyone" = "任何知道此聊天室链接的人，包括游客";
 "room_details_access_section_no_address_warning" = "要链接一个聊天室必须设置地址";
 "room_details_access_section_directory_toggle" = "将此聊天室列入聊天室目录";
 "room_details_history_section" = "谁可以阅读历史？";
@@ -340,7 +341,7 @@
 "room_details_fail_to_update_avatar" = "更新聊天室图片失败";
 "room_details_fail_to_update_room_name" = "更新聊天室名称失败";
 "room_details_fail_to_update_topic" = "更新话题失败";
-"room_details_fail_to_update_room_guest_access" = "更新聊天室访客访问失败";
+"room_details_fail_to_update_room_guest_access" = "更新聊天室游客访问失败";
 "room_details_fail_to_update_room_join_rule" = "更新加入规则失败";
 "room_details_fail_to_update_room_directory_visibility" = "更新聊天室目录可见性失败";
 "room_details_fail_to_update_history_visibility" = "更新历史可见性失败";
@@ -364,9 +365,9 @@
 "directory_title" = "目录";
 "directory_server_picker_title" = "选择一个目录";
 "directory_server_all_rooms" = "%@ 服务器上的所有聊天室";
-"directory_server_all_native_rooms" = "所有本地 Matrix 聊天室";
+"directory_server_all_native_rooms" = "所有本地聊天室";
 "directory_server_type_homeserver" = "输入一个主服务器来列出公共聊天室";
-"directory_server_placeholder" = "matrix.org";
+"directory_server_placeholder" = "vpubchain.net";
 // Others
 "or" = "或";
 "you" = "您";
@@ -388,7 +389,7 @@
 // Crash report
 "google_analytics_use_prompt" = "您打算通过自动报告匿名的崩溃报告和使用数据来帮助提升 %@ 吗？";
 // Crypto
-"e2e_enabling_on_app_update" = "Element 现在支持端到端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后从应用程序设置中选择开启。";
+"e2e_enabling_on_app_update" = "Lianchat 现在支持端到端加密，但是您需要重新登录以启用它。\n\n您可以现在重新登录，也可以之后从应用程序设置中选择开启。";
 "e2e_need_log_in_again" = "您需要登录回来以便为此会话生成端对端加密密钥并提交公钥到您的主服务器。\n这只需要做一次；很抱歉造成打扰。";
 // Bug report
 "bug_report_title" = "Bug 报告";
@@ -411,8 +412,8 @@
 "settings_ui_dark_theme" = "暗色主题";
 // Events formatter
 "event_formatter_member_updates" = "%tu 的成员身份变化";
-"auth_home_server_placeholder" = "URL（例如 https://matrix.org）";
-"auth_identity_server_placeholder" = "URL（例如 https://vector.im）";
+"auth_home_server_placeholder" = "URL（例如 https://im.server.vpubchain.net）";
+"auth_identity_server_placeholder" = "URL（例如 https://im.identity.vpubchain.net）";
 "contacts_user_directory_section" = "用户目录";
 "contacts_user_directory_offline_section" = "用户目录（离线）";
 "room_ongoing_conference_call_with_close" = "收到会议通话。以 %@ 或 %@.%@ 加入。";
@@ -486,7 +487,7 @@
 "room_details_flair_invalid_id_prompt_msg" = "%@ 不是有效的社区 ID";
 "room_details_fail_to_update_room_communities" = "相关社区更新失败";
 "group_invitation_format" = "%@ 邀请您加入此社区";
-"group_participants_invite_malformed_id" = "ID 格式错误。一个 Matrix ID 看起来应该像是 “@localpart:domain”";
+"group_participants_invite_malformed_id" = "ID 格式错误。一个 Lianchat ID 看起来应该像是 “@localpart:domain”";
 // Widget
 "widget_no_power_to_manage" = "你需要相关权限以管理此聊天室的挂件";
 "widget_creation_failure" = "挂件创建失败";
@@ -516,7 +517,7 @@
 "deactivate_account_password_alert_title" = "停用账户";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "请求已发送";
-"settings_callkit_info" = "在锁屏上接收来电。在系统通话记录中查看你的Element通话。如果启用iCloud，此通话记录将与苹果公司共享。";
+"settings_callkit_info" = "在锁屏上接收来电。在系统通话记录中查看你的Lianchat通话。如果启用iCloud，此通话记录将与苹果公司共享。";
 "room_replacement_link" = "对话自此继续。";
 "room_predecessor_information" = "这个聊天室是另一个对话的延续。";
 "room_predecessor_link" = "点击此处查看更早的消息。";
@@ -526,7 +527,7 @@
 "room_resource_usage_limit_reached_message_contact_3" = " 以提高限制。";
 // String for App Store
 "store_short_description" = "安全、去中心化的聊天及 VoIP 应用";
-"store_full_description" = "Element 是一种新型的通讯与协作应用：\n\n1. 使您可以掌控您的隐私\n2. 使您与 Matrix 网络中的任何人交流，甚至可以通过集成功能与如 Slack 之类的其他应用通讯\n3. 保护您免受广告，大数据挖掘和封闭服务的侵害\n4. 通过端到端加密保证安全，通过交叉签名验证其他人\n\nElement 与其他通讯与协作应用完全不同，因为它是去中心化且开源的。\n\nElement 允许您自托管——或者选择托管商——因此，您能拥有数据和会话的隐私权，所有权和控制权。它允许您访问开放网络；因此，您可以与 Element 用户以外的人交流。并且它非常安全。\n\nElement 之所以可以做到这些，是因为它在 Matrix 上运行——开放，去中心化通讯的标准。\n\n通过让您选择由谁来托管您的会话，Element 让您掌控一切。在 Element 应用中，您可以选择不同的托管方式：\n\n1. 在由 Matrix 开发者托管的 matrix.org 公共服务器上获取免费帐户，或从志愿者托管的上千个公共服务器中选择\n2. 在您自己的硬件上运行服务器，自托管您的会话\n3. 通过订阅 Element Matrix Services 托管平台，简单地在自定义服务器上注册账户\n\n为什么选择 Element？\n\n掌控您的数据：您来决定存放您的数据和消息的位置。拥有并控制它的是您，而不是挖掘您的数据或与第三方分享的巨型企业。\n\n开放通讯与协作：您可以与 Matrix 网络中的任何人聊天，不论他们使用 Element 还是其他 Matrix 应用，甚至/即使他们在使用不同的通讯系统，例如 Slack，IRC 或 XMPP。\n\n超级安全：支持真正的端到端加密（仅有会话中的人可以解密消息），还有能够验证会话参与方的设备的交叉签名。\n\n完善的通讯方式：消息，语音和视频通话，文件共享，屏幕共享和大量集成功能，机器人和挂件。建立房间与社区，保持联系并完成工作。\n\n随时随地：消息历史可在您的全部设备和 https://app.element.io 网页端之间完全同步，无论您在哪里，都可以保持联系。";
+"store_full_description" = "Lianchat 是一种新型的通讯与协作应用：\n\n1. 使您可以掌控您的隐私\n2. 使您与网络中的任何人交流，甚至可以通过集成功能与如 Slack 之类的其他应用通讯\n3. 保护您免受广告，大数据挖掘和封闭服务的侵害\n4. 通过端到端加密保证安全，通过交叉签名验证其他人\n\nLianchat 与其他通讯与协作应用完全不同，因为它是去中心化且开源的。\n\nLianchat 允许您自托管——或者选择托管商——因此，您能拥有数据和会话的隐私权，所有权和控制权。它允许您访问开放网络；因此，您可以与 Lianchat 用户以外的人交流。并且它非常安全。\n\nLianchat 之所以可以做到这些，是因为它在 Matrix 上运行——开放，去中心化通讯的标准。\n\n通过让您选择由谁来托管您的会话，Lianchat 让您掌控一切。在 Lianchat 应用中，您可以选择不同的托管方式：\n\n1. 选择一个托管服务器\n2. 在您自己的硬件上运行服务器，自托管您的会话\n3. 通过订阅 Lianchat Services 托管平台，简单地在自定义服务器上注册账户\n\n为什么选择 Lianchat？\n\n掌控您的数据：您来决定存放您的数据和消息的位置。拥有并控制它的是您，而不是挖掘您的数据或与第三方分享的巨型企业。\n\n开放通讯与协作：您可以与网络中的任何人聊天，不论他们使用 Lianchat 还是其他 Matrix 应用，甚至/即使他们在使用不同的通讯系统，例如 Slack，IRC 或 XMPP。\n\n超级安全：支持真正的端到端加密（仅有会话中的人可以解密消息），还有能够验证会话参与方的设备的交叉签名。\n\n完善的通讯方式：消息，语音和视频通话，文件共享，屏幕共享和大量集成功能，机器人和挂件。建立房间与社区，保持联系并完成工作。\n\n随时随地：消息历史可在您的全部设备和 https://im.app.vpubchain.net 网页端之间完全同步，无论您在哪里，都可以保持联系。";
 "auth_accept_policies" = "请查看并接受此主页服务器的服务条款：";
 "room_replacement_information" = "这个聊天室已被替换，不再有效。";
 "settings_flair" = "在允许的地方显示个性徽章";
@@ -583,11 +584,11 @@
 "deactivate_account_informations_part2_emphasize" = "此项操作无法逆转。";
 "deactivate_account_informations_part3" = "\n\n正在停用您的账号 ";
 "deactivate_account_informations_part4_emphasize" = "默认情况下不会导致我们忘记您发送的消息。 ";
-"deactivate_account_informations_part5" = "如果您希望我们忘记您的消息，请勾选下面的框\n\nMatrix中的消息可见性与电子邮件类似。 我们忘记您的消息意味着您已发送的消息将不会再与任何新用户或未注册用户共享，但已有权访问这些消息的注册用户仍可访问其副本。";
+"deactivate_account_informations_part5" = "如果您希望我们忘记您的消息，请勾选下面的框中的消息可见性与电子邮件类似。 我们忘记您的消息意味着您已发送的消息将不会再与任何新用户或未注册用户共享，但已有权访问这些消息的注册用户仍可访问其副本。";
 "deactivate_account_forget_messages_information_part1" = "当我的帐户被停用时，请忘记我发送的所有消息（";
 "deactivate_account_forget_messages_information_part3" = ": 这会导致将来加入的用户看到的是一段不完整的对话）";
 "deactivate_account_password_alert_message" = "要继续，请输入您的密码";
-"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动Element，这样它就可以将密钥发送到此会话。";
+"rerequest_keys_alert_message" = "请在另一台可以解密消息的设备上启动Lianchat，这样它就可以将密钥发送到此会话。";
 "key_backup_setup_title" = "密钥备份";
 "key_backup_setup_skip_alert_title" = "您确定吗？";
 "key_backup_setup_skip_alert_message" = "如果您登出或丢失设备，可能会丢失安全消息。";
@@ -983,10 +984,10 @@
 "user_verification_session_details_verify_action_current_user" = "交互式验证";
 "user_verification_session_details_verify_action_other_user" = "手动验证";
 // MARK: Clients
-"client_desktop_name" = "Element 桌面版";
-"client_web_name" = "Element 网页版";
-"client_ios_name" = "Element iOS版";
-"client_android_name" = "Element 安卓版";
+"client_desktop_name" = "Lianchat 桌面版";
+"client_web_name" = "Lianchat 网页版";
+"client_ios_name" = "Lianchat iOS版";
+"client_android_name" = "Lianchat 安卓版";
 "room_participants_action_security_status_complete_security" = "完整安全性";
 "room_participants_action_security_status_loading" = "正在加载…";
 "room_member_power_level_admin_in" = "管理员（%@）";
@@ -1007,7 +1008,7 @@
 "security_settings_cryptography" = "加密";
 "security_settings_complete_security_alert_title" = "绝对安全";
 "security_settings_complete_security_alert_message" = "您应该先完成当前会话的安全防护。";
-"security_settings_coming_soon" = "对不起。这个操作在 Element iOS 版本上还不可用。请使用另一个 Matrix 客户端来设置它。Elment iOS 会沿用其他客户端的设置。";
+"security_settings_coming_soon" = "对不起。这个操作在 Lianchat iOS 版本上还不可用。请使用另一个客户端来设置它。Elment iOS 会沿用其他客户端的设置。";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "备份恢复中…";
 // MARK: - Device Verification
@@ -1031,8 +1032,8 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "检查";
 "device_verification_self_verify_wait_title" = "绝对安全";
 "device_verification_self_verify_wait_new_sign_in_title" = "验证此登录名";
-"device_verification_self_verify_wait_information" = "从您的其他会话之一验证此会话，授予它访问加密消息的权限。\n\n在您的其他设备上使用最新版的Element:";
-"device_verification_self_verify_wait_additional_information" = "这适用于Element和其他支持交叉签名的Matrix客户端。";
+"device_verification_self_verify_wait_information" = "从您的其他会话之一验证此会话，授予它访问加密消息的权限。\n\n在您的其他设备上使用最新版的Lianchat:";
+"device_verification_self_verify_wait_additional_information" = "这适用于Lianchat和其他支持交叉签名的客户端。";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "使用安全密钥";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "使用安全口令或密钥";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "如果您无法访问一个现有会话";
@@ -1178,7 +1179,7 @@
 "dialpad_title" = "拨号键盘";
 "room_info_list_section_other" = "其他";
 "create_room_section_footer_encryption" = "加密一经启用，便无法禁用。";
-"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_placeholder_address" = "#testroom:vpubchain.net";
 "create_room_section_header_address" = "聊天室地址";
 "create_room_section_header_type" = "聊天室类型";
 "create_room_enable_encryption" = "启用加密";
@@ -1219,7 +1220,7 @@
 
 // MARK: - Major update
 
-"major_update_title" = "Riot 现已成为 Element";
+"major_update_title" = "更新 Lianchat";
 "secrets_reset_reset_action" = "重置";
 "secrets_setup_recovery_passphrase_summary_title" = "保存您的安全密语";
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "确认口令";
@@ -1261,7 +1262,7 @@
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " 让大家知道此聊天室是做什么的。";
 "room_intro_cell_information_room_sentence1_part1" = "这是一切的开始： ";
 "invite_friends_share_text" = "嗨，在 %@ 跟我说：%@";
-"favourites_empty_view_information" = "你可以选择几种方法 - 最快只需按住。点击星星，它们会自动出现在这里，以确保安全。";
+"favourites_empty_view_information" = "向左拉动对话项，点击星星即可加入收藏。";
 "home_empty_view_information" = "团队、朋友和组织的一体化安全聊天应用程序。 点击下面的「+」按钮添加人员和聊天室。";
 "create_room_show_in_directory" = "在目录中显示聊天室";
 "create_room_section_footer_type" = "人们只有在收到聊天室邀请后才可以进入私有房间。";
@@ -1377,8 +1378,8 @@
 "room_details_advanced_room_id_for_dm" = "ID：";
 "room_details_no_local_addresses_for_dm" = "此聊天室没有本地地址";
 "room_details_access_section_directory_toggle_for_dm" = "在聊天室列表中列出";
-"room_details_access_section_anyone_for_dm" = "任何知道此聊天室链接的人，除了访客";
-"room_details_access_section_anyone_apart_from_guest_for_dm" = "任何知道此聊天室链接的人，除了访客";
+"room_details_access_section_anyone_for_dm" = "任何知道此聊天室链接的人，除了游客";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "任何知道此聊天室链接的人，除了游客";
 "room_details_access_section_for_dm" = "谁可以访问此？";
 "room_details_room_name_for_dm" = "名称";
 "room_details_photo_for_dm" = "照片";
@@ -1403,6 +1404,7 @@
 "side_menu_action_feedback" = "反馈";
 "side_menu_action_help" = "帮助";
 "side_menu_action_settings" = "设置";
+"side_menu_action_wallet" = "钱包";
 "side_menu_action_invite_friends" = "邀请好友";
 
 // Mark: - Side menu
@@ -1426,7 +1428,7 @@
 "settings_ui_theme_picker_message_invert_colours" = "“自动”使用您设备的“反转颜色”设置";
 "room_recents_unknown_room_error_message" = "找不到这个房间。 确保它存在";
 "room_creation_dm_error" = "我们无法创建您的 DM。 请检查您要邀请的用户，然后重试。";
-"voice_message_stop_locked_mode_recording" = "轻按波长停止和回放消息";
+"voice_message_stop_locked_mode_recording" = "轻按录音停止或收听";
 "voice_message_remaining_recording_time" = "剩 %@s";
 
 // Mark: - Voice Messages
