@@ -24,7 +24,7 @@ enum VoiceMessageAudioConverterError: Error {
 
 struct VoiceMessageAudioConverter {
     static func convertToOpusOgg(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
-        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a libopus -b:a -b:a 24k \"\(destinationURL.path)\""
+        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a libopus -b:a 24k \"\(destinationURL.path)\""
         executeCommand(command, completion: completion)
     }
     
