@@ -184,7 +184,6 @@
 "room_creation_invite_another_user" = "透過使用者ID、名稱、電子郵件地址來搜尋/邀請";
 // Room recents
 "room_recents_directory_section" = "聊天室目錄";
-"room_recents_directory_section_network" = "網路";
 "room_recents_favourites_section" = "收藏夾";
 "room_recents_people_section" = "聯絡人";
 "room_recents_conversations_section" = "聊天室";
@@ -345,7 +344,6 @@
 "room_ongoing_conference_call_with_close" = "群組通話進行中。 以 %@ 或 %@ 加入。%@ 該通話。";
 "settings_pin_rooms_with_missed_notif" = "釘選含有錯過的通知的聊天室";
 "settings_pin_rooms_with_unread" = "釘選含有未讀訊息的聊天室";
-"settings_on_denied_notification" = "因 %@ 的通知不被允許，請在裝置設定中允許";
 "settings_enable_callkit" = "整合式通話";
 "settings_callkit_info" = "在鎖定畫面接聽 Element 來電、在通話紀錄中顯示 Element 通話。 如果您已啟用 iCloud ，則這些通話紀錄會與蘋果公司共享。";
 "settings_ui_language" = "語言";

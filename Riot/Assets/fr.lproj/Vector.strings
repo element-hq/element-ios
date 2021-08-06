@@ -97,7 +97,6 @@
 "room_creation_invite_another_user" = "Rechercher/inviter par identifiant, nom ou e-mail";
 // Room recents
 "room_recents_directory_section" = "RÉPERTOIRE DES SALONS";
-"room_recents_directory_section_network" = "Réseau";
 "room_recents_favourites_section" = "FAVORIS";
 "room_recents_people_section" = "PERSONNES";
 "room_recents_conversations_section" = "SALONS";
@@ -279,7 +278,6 @@
 "settings_global_settings_info" = "Les paramètres de notification globaux sont disponibles sur votre client web %@";
 "settings_pin_rooms_with_missed_notif" = "Épingler les salons avec des notifications non lues";
 "settings_pin_rooms_with_unread" = "Épingler les salons avec des messages non lus";
-"settings_on_denied_notification" = "Les notifications sont refusées pour %@, merci de les autoriser dans les paramètres de votre appareil";
 "settings_unignore_user" = "Afficher tous les messages de %@ ?";
 "settings_contacts_discover_matrix_users" = "Utiliser un e-mail ou un numéro de téléphone pour retrouver des utilisateurs";
 "settings_contacts_phonebook_country" = "Pays pour le répertoire téléphonique";
@@ -1426,3 +1424,16 @@
 "settings_ui_theme_picker_message_invert_colours" = "« Auto » utilise le paramètre « Inverser les couleurs » de l’appreil";
 "room_recents_unknown_room_error_message" = "Aucun résultat dans ce salon. Assurez vous de son existence";
 "room_creation_dm_error" = "Nous n’avons pas pu créer votre message direct. Merci de vérifier les utilisateurs que vous voulez inviter et réessayer.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Scanner avec cet appareil";
+"room_notifs_settings_encrypted_room_notice" = "Veuillez noter que les mentions et mots-clés ne sont pas disponibles dans les salons chiffrés sur mobile.";
+"room_notifs_settings_account_settings" = "Paramètres du compte";
+"room_notifs_settings_manage_notifications" = "Vous pouvez gérer les notifications dans %@";
+"room_notifs_settings_cancel_action" = "Annuler";
+"room_notifs_settings_done_action" = "Terminé";
+"room_notifs_settings_none" = "Aucun";
+"room_notifs_settings_mentions_and_keywords" = "Seulement les mentions et les mots-clés";
+"room_notifs_settings_all_messages" = "Tous les messages";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Me notifier pour";
+"room_details_notifs" = "Notifications";

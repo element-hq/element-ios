@@ -238,7 +238,6 @@
 "room_creation_invite_another_user" = "Bilatu / gonbidatu erabiltzaile ID-a, izena edo e-maila erabiliz";
 // Room recents
 "room_recents_directory_section" = "GELEN DIREKTORIOA";
-"room_recents_directory_section_network" = "Sarea";
 "room_recents_favourites_section" = "GOGOKOAK";
 "room_recents_invites_section" = "GONBIDAPENAK";
 // People tab
@@ -397,7 +396,6 @@
 "room_participants_remove_third_party_invite_msg" = "Hirugarrengoen gonbidapenak kentzea ez da onartzen APIa ez dagoen bitartean";
 "settings_sign_out_e2e_warn" = "Zure muturretik muturrerako zifratze gakoak galduko dituzu. Horrek esan nahi du ezin izango dituzula mezu zaharrak gehiago irakurri zifratutako geletan gailu honetatik.";
 "settings_global_settings_info" = "Jakinarazpen orokorren ezarpenak eskuragarri daude zure %@ web bezeroan";
-"settings_on_denied_notification" = "Jakinarazpenak ukatu dira %@(e)n, baimendu zure gailuaren ezarpenetan";
 "room_details_history_section_prompt_msg" = "Historiala nork irakurri dezakeen aldatzea gelak honetara aurrerantzean bidalitako mezuei besterik ez zaie aplikatuko. Badagoen historialaren ikusgaitasuna ez da aldatuko.";
 // Call
 "call_incoming_voice_prompt" = "%@ erabiltzailearen deia jasotzen";

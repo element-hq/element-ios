@@ -17,7 +17,7 @@
 import UIKit
 import ZXingObjC
 
-protocol QRCodeReaderViewControllerDelegate: class {
+protocol QRCodeReaderViewControllerDelegate: AnyObject {
     func qrCodeReaderViewController(_ viewController: QRCodeReaderViewController, didFound payloadData: Data)
     func qrCodeReaderViewControllerDidCancel(_ viewController: QRCodeReaderViewController)
 }

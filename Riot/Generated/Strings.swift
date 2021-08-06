@@ -1242,6 +1242,14 @@ internal enum VectorL10n {
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
+  /// Active video call
+  internal static var eventFormatterCallActiveVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_active_video") 
+  }
+  /// Active voice call
+  internal static var eventFormatterCallActiveVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_active_voice") 
+  }
   /// Answer
   internal static var eventFormatterCallAnswer: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_answer") 
@@ -1266,9 +1274,25 @@ internal enum VectorL10n {
   internal static var eventFormatterCallEndCall: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_end_call") 
   }
-  /// Ended %@
+  /// Call ended %@
   internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)
+  }
+  /// Incoming video call
+  internal static var eventFormatterCallIncomingVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_incoming_video") 
+  }
+  /// Incoming voice call
+  internal static var eventFormatterCallIncomingVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_incoming_voice") 
+  }
+  /// Missed video call
+  internal static var eventFormatterCallMissedVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_missed_video") 
+  }
+  /// Missed voice call
+  internal static var eventFormatterCallMissedVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_missed_voice") 
   }
   /// Retry
   internal static var eventFormatterCallRetry: String { 
@@ -1278,25 +1302,9 @@ internal enum VectorL10n {
   internal static var eventFormatterCallRinging: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_ringing") 
   }
-  /// Video call
-  internal static var eventFormatterCallVideo: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_video") 
-  }
-  /// Voice call
-  internal static var eventFormatterCallVoice: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_voice") 
-  }
-  /// Active call
-  internal static var eventFormatterCallYouCurrentlyIn: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_you_currently_in") 
-  }
-  /// You declined this call
+  /// Call declined
   internal static var eventFormatterCallYouDeclined: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_declined") 
-  }
-  /// You missed this call
-  internal static var eventFormatterCallYouMissed: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_you_missed") 
   }
   /// Group call
   internal static var eventFormatterGroupCall: String { 
@@ -2014,6 +2022,10 @@ internal enum VectorL10n {
   internal static var keyVerificationVerifyQrCodeScanCodeAction: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_code_action") 
   }
+  /// Scan with this device
+  internal static var keyVerificationVerifyQrCodeScanCodeOtherDeviceAction: String { 
+    return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_code_other_device_action") 
+  }
   /// QR code has been successfully validated.
   internal static var keyVerificationVerifyQrCodeScanOtherCodeSuccessMessage: String { 
     return VectorL10n.tr("Vector", "key_verification_verify_qr_code_scan_other_code_success_message") 
@@ -2710,6 +2722,10 @@ internal enum VectorL10n {
   internal static var roomDetailsNoLocalAddressesForDm: String { 
     return VectorL10n.tr("Vector", "room_details_no_local_addresses_for_dm") 
   }
+  /// Notifications
+  internal static var roomDetailsNotifs: String { 
+    return VectorL10n.tr("Vector", "room_details_notifs") 
+  }
   /// Members
   internal static var roomDetailsPeople: String { 
     return VectorL10n.tr("Vector", "room_details_people") 
@@ -3018,6 +3034,42 @@ internal enum VectorL10n {
   internal static var roomNoPrivilegesToCreateGroupCall: String { 
     return VectorL10n.tr("Vector", "room_no_privileges_to_create_group_call") 
   }
+  /// Account settings
+  internal static var roomNotifsSettingsAccountSettings: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_account_settings") 
+  }
+  /// All Messages
+  internal static var roomNotifsSettingsAllMessages: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_all_messages") 
+  }
+  /// Cancel
+  internal static var roomNotifsSettingsCancelAction: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_cancel_action") 
+  }
+  /// Done
+  internal static var roomNotifsSettingsDoneAction: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_done_action") 
+  }
+  /// Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.
+  internal static var roomNotifsSettingsEncryptedRoomNotice: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_encrypted_room_notice") 
+  }
+  /// You can manage notifications in %@
+  internal static func roomNotifsSettingsManageNotifications(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_notifs_settings_manage_notifications", p1)
+  }
+  /// Mentions and Keywords only
+  internal static var roomNotifsSettingsMentionsAndKeywords: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_mentions_and_keywords") 
+  }
+  /// None
+  internal static var roomNotifsSettingsNone: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_none") 
+  }
+  /// Notify me for
+  internal static var roomNotifsSettingsNotifyMeFor: String { 
+    return VectorL10n.tr("Vector", "room_notifs_settings_notify_me_for") 
+  }
   /// Connectivity to the server has been lost.
   internal static var roomOfflineNotification: String { 
     return VectorL10n.tr("Vector", "room_offline_notification") 
@@ -3313,10 +3365,6 @@ internal enum VectorL10n {
   /// ROOM DIRECTORY
   internal static var roomRecentsDirectorySection: String { 
     return VectorL10n.tr("Vector", "room_recents_directory_section") 
-  }
-  /// Network
-  internal static var roomRecentsDirectorySectionNetwork: String { 
-    return VectorL10n.tr("Vector", "room_recents_directory_section_network") 
   }
   /// FAVOURITES
   internal static var roomRecentsFavouritesSection: String { 
@@ -4074,6 +4122,10 @@ internal enum VectorL10n {
   internal static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
   }
+  /// Device notifications
+  internal static var settingsDeviceNotifications: String { 
+    return VectorL10n.tr("Vector", "settings_device_notifications") 
+  }
   /// SESSIONS
   internal static var settingsDevices: String { 
     return VectorL10n.tr("Vector", "settings_devices") 
@@ -4334,6 +4386,10 @@ internal enum VectorL10n {
   internal static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
   }
+  /// Voice messages
+  internal static var settingsLabsVoiceMessages: String { 
+    return VectorL10n.tr("Vector", "settings_labs_voice_messages") 
+  }
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
@@ -4346,6 +4402,14 @@ internal enum VectorL10n {
   internal static var settingsNightMode: String { 
     return VectorL10n.tr("Vector", "settings_night_mode") 
   }
+  /// To enable notifications, go to your device settings.
+  internal static var settingsNotificationsDisabledAlertMessage: String { 
+    return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_message") 
+  }
+  /// Notifications disabled
+  internal static var settingsNotificationsDisabledAlertTitle: String { 
+    return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_title") 
+  }
   /// NOTIFICATION SETTINGS
   internal static var settingsNotificationsSettings: String { 
     return VectorL10n.tr("Vector", "settings_notifications_settings") 
@@ -4357,10 +4421,6 @@ internal enum VectorL10n {
   /// Olm Version %@
   internal static func settingsOlmVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_olm_version", p1)
-  }
-  /// Notifications are denied for %@, please allow them in your device settings
-  internal static func settingsOnDeniedNotification(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_on_denied_notification", p1)
   }
   /// OTHER
   internal static var settingsOther: String { 
@@ -4837,6 +4897,22 @@ internal enum VectorL10n {
   /// Voice
   internal static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
+  }
+  /// Voice message
+  internal static var voiceMessageLockScreenPlaceholder: String { 
+    return VectorL10n.tr("Vector", "voice_message_lock_screen_placeholder") 
+  }
+  /// Hold to record, release to send
+  internal static var voiceMessageReleaseToSend: String { 
+    return VectorL10n.tr("Vector", "voice_message_release_to_send") 
+  }
+  /// %@s left
+  internal static func voiceMessageRemainingRecordingTime(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "voice_message_remaining_recording_time", p1)
+  }
+  /// Tap on your recording to stop or listen
+  internal static var voiceMessageStopLockedModeRecording: String { 
+    return VectorL10n.tr("Vector", "voice_message_stop_locked_mode_recording") 
   }
   /// Warning
   internal static var warning: String { 

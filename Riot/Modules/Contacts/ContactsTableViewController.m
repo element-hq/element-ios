@@ -174,6 +174,15 @@
     [self refreshContactsTable];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Load the local contacts for display.
+    // In viewDidAppear as it may trigger a request for contacts access.
+    [self refreshLocalContacts];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -209,6 +218,54 @@
     {
         // Set up table data source
         self.contactsTableView.dataSource = contactsDataSource;
+    }
+}
+
+- (void)refreshLocalContacts
+{
+    if (!BuildSettings.allowLocalContactsAccess)
+    {
+        return;
+    }
+    
+    // Do not scan local contacts in background if the user has not decided yet about using
+    // an identity server
+    BOOL doRefreshLocalContacts = NO;
+    for (MXSession *session in self.mxSessions)
+    {
+        if (session.hasAccountDataIdentityServerValue)
+        {
+            doRefreshLocalContacts = YES;
+            break;
+        }
+    }
+
+    // Check whether the application is allowed to access the local contacts.
+    if (doRefreshLocalContacts
+        && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
+    {
+        // Check the user permission for syncing local contacts. This permission was handled independently on previous application version.
+        if (![MXKAppSettings standardAppSettings].syncLocalContacts)
+        {
+            // Check whether it was not requested yet.
+            if (![MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested)
+            {
+                [MXKAppSettings standardAppSettings].syncLocalContactsPermissionRequested = YES;
+                
+                [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
+                    
+                    if (granted)
+                    {
+                        // Allow local contacts sync in order to discover matrix users.
+                        [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+                    }
+                    
+                }];
+            }
+        }
+        
+        // Refresh the local contacts list.
+        [[MXKContactManager sharedManager] refreshLocalContacts];
     }
 }
 

@@ -135,7 +135,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate>
 {
     
     // The preview header
@@ -240,6 +240,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 
+@property (nonatomic, strong) VoiceMessageController *voiceMessageController;
+
 @end
 
 @implementation RoomViewController
@@ -313,6 +315,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Show / hide actions button in document preview according BuildSettings
     self.allowActionsInDocumentPreview = BuildSettings.messageDetailsAllowShare;
+    
+    _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
+    self.voiceMessageController.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -385,6 +390,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.bubblesTableView registerClass:RoomCreationIntroCell.class forCellReuseIdentifier:RoomCreationIntroCell.defaultReuseIdentifier];
     
     [self.bubblesTableView registerNib:RoomTypingBubbleCell.nib forCellReuseIdentifier:RoomTypingBubbleCell.defaultReuseIdentifier];
+    
+    [self.bubblesTableView registerClass:VoiceMessageBubbleCell.class forCellReuseIdentifier:VoiceMessageBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:VoiceMessageWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:VoiceMessageWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
     
@@ -607,6 +616,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.roomDataSource.showReadMarker = YES;
     self.updateRoomReadMarker = NO;
     isAppeared = NO;
+    
+    [VoiceMessageMediaServiceProvider.sharedProvider stopAllServices];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -987,6 +998,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     [self refreshRoomInputToolbar];
+    
+    [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
 }
 
 - (void)onRoomDataSourceReady
@@ -1114,6 +1127,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (!self.inputToolbarView || ![self.inputToolbarView isMemberOfClass:roomInputToolbarViewClass])
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
+        
+        // The voice message toolbar cannot be set on DisabledInputToolbarView.
+        if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+        {
+            [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        }
+        
         [self updateInputToolBarViewHeight];
     }
 }
@@ -2359,6 +2379,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             cellViewClass = RoomGroupCallStatusBubbleCell.class;
         }
+        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
+        {
+            if (bubbleData.isPaginationFirstBubble) {
+                cellViewClass = VoiceMessageWithPaginationTitleBubbleCell.class;
+            } else if (bubbleData.shouldHideSenderInformation) {
+                cellViewClass = VoiceMessageWithoutSenderInfoBubbleCell.class;
+            } else {
+                cellViewClass = VoiceMessageBubbleCell.class;
+            }
+        }
         else if (bubbleData.isIncoming)
         {
             if (bubbleData.isAttachmentWithThumbnail)
@@ -2718,12 +2748,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                  [actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.answerAction])
         {
             MXWeakify(self);
-            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
             // Check app permissions first
             [MXKTools checkAccessForCall:YES
-             manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-             manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+             manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], AppInfo.current.displayName]
+             manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], AppInfo.current.displayName]
                showPopUpInViewController:self completionHandler:^(BOOL granted) {
                 
                 MXStrongifyAndReturnIfNil(self);
@@ -3715,12 +3744,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     __weak __typeof(self) weakSelf = self;
     
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    
     // Check app permissions first
     [MXKTools checkAccessForCall:video
-     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], appDisplayName]
-     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], appDisplayName]
+     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], AppInfo.current.displayName]
+     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], AppInfo.current.displayName]
        showPopUpInViewController:self completionHandler:^(BOOL granted) {
         
         if (weakSelf)
@@ -3934,13 +3961,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView
 {
     [self cancelEventSelection];
-}
-
-#pragma mark - RoomParticipantsViewControllerDelegate
-
-- (void)roomParticipantsViewController:(RoomParticipantsViewController *)roomParticipantsViewController mention:(MXRoomMember*)member
-{
-    [self mention:member];
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -5810,7 +5830,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     
     RoomContextualMenuItem *replyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReply];
-    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId];
+    replyMenuItem.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
     replyMenuItem.action = ^{
         MXStrongifyAndReturnIfNil(self);
         
@@ -6056,7 +6076,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedVideo:url isPhotoLibraryAsset:NO];
+        AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
+        [roomInputToolbarView sendSelectedVideoAsset:selectedVideo isPhotoLibraryAsset:NO];
     }
 }
 
@@ -6080,7 +6101,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
-- (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectVideoAt:(NSURL *)url
+- (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectVideo:(AVAsset *)videoAsset
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.mediaPickerPresenter = nil;
@@ -6088,7 +6109,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedVideo:url isPhotoLibraryAsset:YES];
+        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:YES];
     }
 }
 
@@ -6118,6 +6139,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.roomInfoCoordinatorBridgePresenter = nil;
+}
+
+- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didRequestMentionForMember:(MXRoomMember *)member
+{
+    [self mention:member];
 }
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
@@ -6150,6 +6176,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXStrongifyAndReturnIfNil(self);
         [self showJitsiErrorAsAlert:error];
         [self stopActivityIndicator];
+    }];
+}
+
+#pragma mark - VoiceMessageControllerDelegate
+
+- (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
+{
+    NSString *message = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_voice_message"], AppInfo.current.displayName];
+    
+    [MXKTools checkAccessForMediaType:AVMediaTypeAudio
+                  manualChangeMessage: message
+            showPopUpInViewController:self completionHandler:^(BOOL granted) {
+        
+    }];
+}
+
+- (void)voiceMessageController:(VoiceMessageController *)voiceMessageController
+    didRequestSendForFileAtURL:(NSURL *)url
+                      duration:(NSUInteger)duration
+                       samples:(NSArray<NSNumber *> *)samples
+                    completion:(void (^)(BOOL))completion
+{
+    [self.roomDataSource sendVoiceMessage:url mimeType:nil duration:duration samples:samples success:^(NSString *eventId) {
+        MXLogDebug(@"Success with event id %@", eventId);
+        completion(YES);
+    } failure:^(NSError *error) {
+        MXLogError(@"Failed sending voice message");
+        completion(NO);
     }];
 }
 

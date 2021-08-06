@@ -23,7 +23,7 @@ import UIKit
     case topLeft
 }
 
-@objc protocol PiPViewDelegate: class {
+@objc protocol PiPViewDelegate: AnyObject {
     @objc optional func pipView(_ view: PiPView, didMoveTo position: PiPViewPosition)
     @objc optional func pipViewDidTap(_ view: PiPView)
 }

@@ -173,7 +173,7 @@ UINavigationControllerDelegate
  Log out all the accounts without confirmation.
  Show the authentication screen on successful logout.
 
- @param sendLogoutRequest Indicate whether send logout request to homeserver.
+ @param sendLogoutServerRequest Indicate whether send logout request to homeserver.
  @param completion the block to execute at the end of the operation.
  */
 - (void)logoutSendingRequestServer:(BOOL)sendLogoutServerRequest
@@ -183,7 +183,7 @@ UINavigationControllerDelegate
  Present incoming key verification request to accept.
 
  @param incomingKeyVerificationRequest The incoming key verification request.
- @param The matrix session.
+ @param session The matrix session.
  @return Indicate NO if the key verification screen could not be presented.
  */
 - (BOOL)presentIncomingKeyVerificationRequest:(MXKeyVerificationRequest*)incomingKeyVerificationRequest

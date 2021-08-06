@@ -144,7 +144,6 @@
 "room_creation_invite_another_user" = "Buscar / invitar por ID de Usuario, Nombre o correo electrónico";
 // Room recents
 "room_recents_directory_section" = "DIRECTORIO DE SALAS";
-"room_recents_directory_section_network" = "Red";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PERSONAS";
 "room_recents_conversations_section" = "SALAS";
@@ -322,7 +321,6 @@
 "settings_global_settings_info" = "Los ajustes de notificación globales están disponibles en tu cliente web %@";
 "settings_pin_rooms_with_missed_notif" = "Fijar salas con notificaciones pendientes";
 "settings_pin_rooms_with_unread" = "Fijar salas con mensajes no leídos";
-"settings_on_denied_notification" = "Las notificaciones están denegadas para %@, por favor habilita notificaciones en los ajustes de tu dispositivo";
 "settings_enable_callkit" = "Integración de llamadas";
 "settings_callkit_info" = "Recibe llamadas entrantes en tu pantalla de bloqueo. Ve tus llamadas de Element en el historial de llamadas del sistema. Si iCloud está habilitado, este historial de llamadas se compartirá con Apple.";
 "settings_ui_language" = "Idioma";

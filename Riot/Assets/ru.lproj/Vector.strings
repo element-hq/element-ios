@@ -98,7 +98,6 @@
 "room_creation_invite_another_user" = "Поиск / приглашение по идентификатору пользователя, имени или адресу электронной почты";
 // Room recents
 "room_recents_directory_section" = "КАТАЛОГ КОМНАТ";
-"room_recents_directory_section_network" = "Сеть";
 "room_recents_favourites_section" = "ИЗБРАННЫЕ";
 "room_recents_people_section" = "ЛЮДИ";
 "room_recents_conversations_section" = "КОМНАТЫ";
@@ -260,7 +259,6 @@
 "settings_fail_to_update_profile" = "Не удалось обновить профиль";
 "settings_enable_push_notif" = "Уведомления на этом устройстве";
 "settings_global_settings_info" = "Глобальные настройки уведомлений доступны в вашем %@ веб-клиенте";
-"settings_on_denied_notification" = "Уведомления для %@ запрещены, пожалуйста, разрешите их в настройках вашего устройства";
 "settings_ui_language" = "Язык";
 "settings_unignore_user" = "Показать все сообщения от %@?";
 "settings_labs_e2e_encryption" = "Сквозное шифрование";

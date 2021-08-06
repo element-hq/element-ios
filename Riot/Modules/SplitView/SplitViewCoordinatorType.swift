@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol SplitViewCoordinatorDelegate: class {
+protocol SplitViewCoordinatorDelegate: AnyObject {
     // TODO: Remove this method, authentication should not be handled by SplitViewCoordinator
     func splitViewCoordinatorDidCompleteAuthentication(_ coordinator: SplitViewCoordinatorType)
 }

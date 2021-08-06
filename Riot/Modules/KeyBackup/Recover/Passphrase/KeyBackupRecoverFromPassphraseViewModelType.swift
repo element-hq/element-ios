@@ -16,11 +16,11 @@
 
 import Foundation
 
-protocol KeyBackupRecoverFromPassphraseViewModelViewDelegate: class {
+protocol KeyBackupRecoverFromPassphraseViewModelViewDelegate: AnyObject {
     func keyBackupRecoverFromPassphraseViewModel(_ viewModel: KeyBackupRecoverFromPassphraseViewModelType, didUpdateViewState viewSate: KeyBackupRecoverFromPassphraseViewState)
 }
 
-protocol KeyBackupRecoverFromPassphraseViewModelCoordinatorDelegate: class {
+protocol KeyBackupRecoverFromPassphraseViewModelCoordinatorDelegate: AnyObject {
     func keyBackupRecoverFromPassphraseViewModelDidRecover(_ viewModel: KeyBackupRecoverFromPassphraseViewModelType)
     func keyBackupRecoverFromPassphraseViewModelDidCancel(_ viewModel: KeyBackupRecoverFromPassphraseViewModelType)
     func keyBackupRecoverFromPassphraseViewModelDoNotKnowPassphrase(_ viewModel: KeyBackupRecoverFromPassphraseViewModelType)

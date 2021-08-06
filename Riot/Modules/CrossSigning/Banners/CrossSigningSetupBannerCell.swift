@@ -16,7 +16,7 @@
 
 import UIKit
 
-@objc protocol CrossSigningSetupBannerCellDelegate: class {
+@objc protocol CrossSigningSetupBannerCellDelegate: AnyObject {
     func crossSigningSetupBannerCellDidTapCloseAction(_ cell: CrossSigningSetupBannerCell)
 }
 

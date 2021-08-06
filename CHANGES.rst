@@ -5,13 +5,15 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
+ * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
+ * Settings: Adds a link to open the Settings app to quickly configure app notifications.
+ * VoIP: Text & icon changes on call tiles (#4642).
+ * Voice messages: Stop recording and go into locked mode when the application becomes inactive (#4656)
+ * Voice messages: Allow voice message playback control from the iOS lock screen and control center (#4655)
  * MXSessionState: Use Swifty versions.
 
 🐛 Bugfix
- * VoIP: Do not present ended calls.
- * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
- * Fix crash on Apple Silicon Macs.
- * Media Picker: Generate video thumbnails with the correct orientation (#4515).
+ * 
 
 ⚠️ API Changes
  * 
@@ -24,6 +26,164 @@ Changes to be released in next version
 
 Others
  * 
+
+Changes in 1.4.9 (2021-08-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Voice Messages: Increased recording state microphone icon size
+ * Voice Messages: Using "Voice message - MM.dd.yyyy HH.mm.ss" as the format for recorded audio files
+
+🐛 Bugfix
+ * Voice Messages: Fixed race conditions when sending voice messages (#4641)
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+
+
+Changes in 1.4.8 (2021-07-29)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
+ * Rooms Tab: Remove the directory section (#4521).
+ * Notifications: Show decrypted content is enabled by default (#4519).
+ * People Tab: Remove the local contacts section (#4523).
+ * Contacts: Delay access to local contacts until they're needed for display (#4616).
+ * RecentsDataSource: Factorize section reset in one place (target #4591).
+ * Voice Messages: Tap/hold to send voice messages isn't intuitive (#4601).
+ * Voice Messages: copy could be improved (#4604).
+ * Slide to lock should be more generous (#4602).
+
+🐛 Bugfix
+ * Room: Fixed mentioning users from room info member details (#4583)
+ * Settings: Disabled autocorrection when entering an identity server (#4593).
+ * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
+ * AuthenticationViewController: Fix crash on authentication if an intermediate view was presented (#4606).
+ * Room: Fixed crash when opening a read-only room (#4620).
+ * Voice Messages: Tapping on waveform in composer glitches UI (#4603).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * Separated CI jobs into individual actions
+ * Update Gemfile.lock
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.6)).
+
+Changes in 1.4.7 (2021-07-22)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * Updated issue templates.
+
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.5)).
+
+Changes in 1.4.6 (2021-07-16)
+=================================================
+
+✨ Features
+ * 
+>>>>>>> develop
+
+🙌 Improvements
+ * Room Notification Settings: Ability to change between "All Messages", "Mentions and Keywords" and "None". Not yet exposed in Element UI. (#4458).
+ * Add support for sending slow motion videos (#4483).
+
+🐛 Bugfix
+ * VoIP: Do not present ended calls.
+ * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
+ * Fix crash on Apple Silicon Macs.
+ * Media Picker: Generate video thumbnails with the correct orientation (#4515).
+ * Directory List (pop-up one): Fix duplicate rooms being shown (#4537).
+ * Use different title for scan button for self verification (#4525).
+ * it's easy for the back button to trigger a leftpanel reveal (#4438).
+ * Show / hide reset button in secrets recovery screen (#4546).
+ * Share Extension: Fix layout when searching (#4258).
+ * Timeline: Fix incorrect crop of media thumbnails (#4552).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * Silenced some documentation, deprecations and SwiftLint warnings.
+ 
+Improvements:
+ * Upgrade MatrixKit version ([v0.15.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.4)).
+
+Changes in 1.4.5 (2021-07-07)
+=================================================
+
+✨ Features
+ *
+
+🙌 Improvements
+ *
+
+🐛 Bugfix
+ * Notifications: Fix an issue where the app is unresponsive after getting some notifications (#4534).
+
+⚠️ API Changes
+ *
+
+🗣 Translations
+ *
+
+🧱 Build
+ *
+
+Others
+ *
 
 Changes in 1.4.4 (2021-06-30)
 =================================================
