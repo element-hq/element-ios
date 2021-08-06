@@ -22,11 +22,6 @@
 
 #import "MXRoomSummary+Riot.h"
 
-#pragma mark - Defines & Constants
-
-static const CGFloat kDirectRoomBorderColorAlpha = 0.75;
-static const CGFloat kDirectRoomBorderWidth = 3.0;
-
 @implementation RoomTableViewCell
 
 #pragma mark - Class methods
@@ -36,16 +31,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     [super customizeTableViewCellRendering];
     
     self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    
-    // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
-    
-    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
-    self.directRoomBorderView.clipsToBounds = YES;
-    self.directRoomBorderView.layer.borderColor = directRoomBorderColor;
-    self.directRoomBorderView.layer.borderWidth = kDirectRoomBorderWidth;
-    
-    CFRelease(directRoomBorderColor);
     
     self.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -64,15 +49,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     [room.summary setRoomAvatarImageIn:self.avatarImageView];
     
     self.titleLabel.text = room.summary.displayname;
-    
-    self.directRoomBorderView.hidden = !room.isDirect;
-}
-
-- (void)prepareForReuse
-{
-    [super prepareForReuse];
-    
-    self.directRoomBorderView.hidden = YES;
 }
 
 + (CGFloat)cellHeight
