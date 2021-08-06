@@ -24,12 +24,12 @@ enum VoiceMessageAudioConverterError: Error {
 
 struct VoiceMessageAudioConverter {
     static func convertToOpusOgg(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
-        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a libopus \"\(destinationURL.path)\""
+        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a libopus -b:a -b:a 24k \"\(destinationURL.path)\""
         executeCommand(command, completion: completion)
     }
     
     static func convertToMPEG4AAC(sourceURL: URL, destinationURL: URL, completion: @escaping (Result<Void, VoiceMessageAudioConverterError>) -> Void) {
-        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a aac_at -b:a 192k \"\(destinationURL.path)\""
+        let command = "-hide_banner -y -i \"\(sourceURL.path)\" -c:a aac_at \"\(destinationURL.path)\""
         executeCommand(command, completion: completion)
     }
     
