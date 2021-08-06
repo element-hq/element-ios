@@ -82,10 +82,6 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
 {
-    if (RiotSettings.shared.enableVoiceMessages == NO) {
-        return;
-    }
-    
     _voiceMessageToolbarView = voiceMessageToolbarView;
     self.voiceMessageToolbarView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.voiceMessageToolbarView];
@@ -407,10 +403,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
         [UIView animateWithDuration:kActionMenuContentAlphaAnimationDuration delay:_actionMenuOpened ? 0 : .1 options:UIViewAnimationOptionCurveEaseIn animations:^{
             self->messageComposerContainer.alpha = actionMenuOpened ? 0 : 1;
             self.rightInputToolbarButton.alpha = self->growingTextView.text.length == 0 || actionMenuOpened ? 0 : 1;
-            if (RiotSettings.shared.enableVoiceMessages)
-            {
-                self.voiceMessageToolbarView.alpha = self->growingTextView.text.length > 0 || actionMenuOpened ? 0 : 1;
-            }
+            self.voiceMessageToolbarView.alpha = self->growingTextView.text.length > 0 || actionMenuOpened ? 0 : 1;
         } completion:nil];
         
         [UIView animateWithDuration:kActionMenuComposerHeightAnimationDuration animations:^{
@@ -442,16 +435,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 - (void)updateUIWithTextMessage:(NSString *)textMessage animated:(BOOL)animated
 {
     self.actionMenuOpened = NO;
-    
-    if (RiotSettings.shared.enableVoiceMessages == NO) {
-        self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
-        self.messageComposerContainerTrailingConstraint.constant = (textMessage.length ? self.frame.size.width - self.rightInputToolbarButton.frame.origin.x : 0.0f) + kComposerContainerTrailingPadding;
-
-        [self layoutIfNeeded];
         
-        return;
-    }
-    
     [UIView animateWithDuration:(animated ? 0.15f : 0.0f) animations:^{
         self.rightInputToolbarButton.alpha = textMessage.length ? 1.0f : 0.0f;
         self.voiceMessageToolbarView.alpha = textMessage.length ? 0.0f : 1.0;

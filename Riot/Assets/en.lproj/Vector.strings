@@ -1691,3 +1691,4 @@ Tap the + to start adding people.";
 "voice_message_release_to_send" = "Hold to record, release to send";
 "voice_message_remaining_recording_time" = "%@s left";
 "voice_message_stop_locked_mode_recording" = "Tap on your recording to stop or listen";
+"voice_message_lock_screen_placeholder" = "Voice message";

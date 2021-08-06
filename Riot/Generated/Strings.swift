@@ -4898,6 +4898,10 @@ internal enum VectorL10n {
   internal static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
   }
+  /// Voice message
+  internal static var voiceMessageLockScreenPlaceholder: String { 
+    return VectorL10n.tr("Vector", "voice_message_lock_screen_placeholder") 
+  }
   /// Hold to record, release to send
   internal static var voiceMessageReleaseToSend: String { 
     return VectorL10n.tr("Vector", "voice_message_release_to_send") 
