@@ -13,6 +13,7 @@ Changes to be released in next version
  * Voice messages: Improve audio recording quality
  * Voice messages: Remove labs setting and enable them by default
  * Room: Remove the green border from direct message room avatars (#4520).
+ * VoIP: Additional changes on call tiles (#4642).
 
 🐛 Bugfix
  * 
