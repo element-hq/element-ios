@@ -37,7 +37,11 @@
         _naviView.backgroundColor = UIColor.whiteColor;
         YXWeakSelf
         _naviView.backBlock = ^{
-            weakSelf.walletCancelPayView.hidden = NO;
+            if ([weakSelf.sendDataInfo.action isEqualToString:@"pending"]) {//待处理
+                weakSelf.walletCancelPayView.hidden = NO;
+            }else{
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
         };
  
     }

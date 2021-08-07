@@ -217,6 +217,7 @@ internal enum Asset {
     internal static let homeTopTixian = ImageAsset(name: "home_top_tixian")
     internal static let homeWait = ImageAsset(name: "home_wait")
     internal static let homeZizhuan = ImageAsset(name: "home_zizhuan")
+    internal static let iconNothing = ImageAsset(name: "icon_nothing")
     internal static let imgScanningLine = ImageAsset(name: "img_scanning_line")
     internal static let imgScanningQr = ImageAsset(name: "img_scanning_qr")
     internal static let jiedianWorking = ImageAsset(name: "jiedian_working")

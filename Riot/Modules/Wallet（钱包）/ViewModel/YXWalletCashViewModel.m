@@ -13,7 +13,7 @@
 #import "YXWalletCashRecordTableViewCell.h"
 #import "YXWalletPaymentAccountViewModel.h"
 #import "YXWalletPasswordManager.h"
-
+#import "YXWalletRecordNoDataTableViewCell.h"
 @interface YXWalletCashViewModel ()
 @property (nonatomic , strong) YXWalletPaymentAccountViewModel *accountViewModel;
 @property (nonatomic , strong) YXWalletCashModel *cashViewModel;
@@ -196,6 +196,12 @@
         SCETRowItem *lineItem = [SCETRowItem rowItemWithRowData:kBgColor cellClassString:NSStringFromClass([YXLineTableViewCell class])];
         lineItem.cellHeight = 30;
         [rowItems addObject:lineItem];
+        
+        if (array.count == 0) {
+            SCETRowItem *noData = [SCETRowItem rowItemWithRowData:kBgColor cellClassString:NSStringFromClass([YXWalletRecordNoDataTableViewCell class])];
+            noData.cellHeight = 240;
+            [rowItems addObject:noData];
+        }
     }
 
     //资产列表
