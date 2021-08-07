@@ -107,6 +107,11 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         return viewController
     }
     
+    private func createWalletViewController() -> YXWalletViewController {
+        let viewController: YXWalletViewController = YXWalletViewController.init()
+        return viewController
+    }
+    
     private func showSettings() {
         let viewController = self.createSettingsViewController()
         
@@ -136,6 +141,20 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         self.sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
     }
     
+    private func showWallet() {
+        var phoneNum: String = ""
+        phoneNum = UserDefaults.standard.string(forKey: "settings_phone_number") ?? ""
+        if  phoneNum.count < 10 {
+            MBProgressHUD.showSuccess("请前往设置添加手机号码")
+            return
+        }
+       
+        let viewController = self.createWalletViewController()
+        
+        // Push view controller and dismiss side menu
+        self.sideMenuNavigationViewController.pushViewController(viewController, animated: true)
+    }
+    
     private func showInviteFriends(from sourceView: UIView?) {
         let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
         
@@ -158,6 +177,8 @@ extension SideMenuCoordinator: SideMenuViewModelCoordinatorDelegate {
             self.showHelp()
         case .feedback:
             self.showBugReport()
+        case .wallet:
+            self.showWallet()
         }
         
         self.delegate?.sideMenuCoordinator(self, didTapMenuItem: menuItem, fromSourceView: sourceView)

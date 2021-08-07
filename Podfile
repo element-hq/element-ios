@@ -58,7 +58,11 @@ abstract_target 'RiotPods' do
   # Tools
   pod 'SwiftGen', '~> 6.3'
   pod 'SwiftLint', '~> 0.43.0'
-
+  pod 'MJExtension', '~> 3.0.10'
+  pod 'SDWebImage'
+  pod 'MJRefresh', '3.1.15'
+  pod 'MBProgressHUD', '~> 1.0.0'
+  pod 'MMPopupView', '~> 1.7.2'
   target "Riot" do
     import_MatrixKit
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
@@ -73,7 +77,7 @@ abstract_target 'RiotPods' do
     pod 'ffmpeg-kit-ios-audio', '~> 4.4.LTS'
 
     pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
-
+    pod 'LookinServer',             :configurations => ['Debug'] #iOS UI调试工具
     target 'RiotTests' do
       inherit! :search_paths
     end

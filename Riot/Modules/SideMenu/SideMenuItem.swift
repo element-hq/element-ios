@@ -22,6 +22,7 @@ enum SideMenuItem {
     case settings
     case help
     case feedback
+    case wallet
 }
 
 extension SideMenuItem {
@@ -38,6 +39,8 @@ extension SideMenuItem {
             title = VectorL10n.sideMenuActionHelp
         case .feedback:
             title = VectorL10n.sideMenuActionFeedback
+        case .wallet:
+            title = VectorL10n.sideMenuActionWallet
         }
 
         return title
@@ -55,6 +58,8 @@ extension SideMenuItem {
             icon = Asset.Images.sideMenuActionIconHelp.image
         case .feedback:
             icon = Asset.Images.sideMenuActionIconFeedback.image
+        case .wallet:
+            icon = Asset.Images.sideMenuActionIconWallet.image
         }
 
         return icon

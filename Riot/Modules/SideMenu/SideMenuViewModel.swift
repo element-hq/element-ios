@@ -99,6 +99,7 @@ final class SideMenuViewModel: SideMenuViewModelType {
         let sideMenuItems: [SideMenuItem] = [
             .inviteFriends,
             .settings,
+            .wallet,//钱包
             .help,
             .feedback
         ]

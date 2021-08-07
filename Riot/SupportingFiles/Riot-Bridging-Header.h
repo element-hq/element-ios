@@ -38,3 +38,5 @@
 #import "SettingsViewController.h"
 #import "BugReportViewController.h"
 #import "BuildInfo.h"
+#import "YXWalletViewController.h"
+#import "MBProgressHUD+MJ.h"

@@ -55,6 +55,8 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
+  - LookinServer (1.0.3)
+  - Masonry (1.1.0)
   - MatomoTracker (7.4.1):
     - MatomoTracker/Core (= 7.4.1)
   - MatomoTracker/Core (7.4.1)
@@ -83,6 +85,11 @@ PODS:
   - MatrixSDK/JingleCallStack (0.19.6):
     - JitsiMeetSDK (= 3.5.0)
     - MatrixSDK/Core
+  - MBProgressHUD (1.0.0)
+  - MJExtension (3.0.17)
+  - MJRefresh (3.1.15)
+  - MMPopupView (1.7.2):
+    - Masonry
   - OLMKit (3.2.4):
     - OLMKit/olmc (= 3.2.4)
     - OLMKit/olmcpp (= 3.2.4)
@@ -97,6 +104,9 @@ PODS:
     - Reusable/View (= 4.1.1)
   - Reusable/Storyboard (4.1.1)
   - Reusable/View (4.1.1)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
   - SideMenu (6.5.0)
   - SwiftBase32 (0.9.0)
   - SwiftGen (6.4.0)
@@ -123,13 +133,19 @@ DEPENDENCIES:
   - HPGrowingTextView
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
+  - LookinServer
   - MatomoTracker (~> 7.4.1)
   - MatrixKit (= 0.15.6)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
+  - MBProgressHUD (~> 1.0.0)
+  - MJExtension (~> 3.0.10)
+  - MJRefresh (= 3.1.15)
+  - MMPopupView (~> 1.7.2)
   - OLMKit
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
+  - SDWebImage
   - SideMenu (~> 6.5)
   - SwiftBase32 (~> 0.9.0)
   - SwiftGen (~> 6.3)
@@ -163,13 +179,20 @@ SPEC REPOS:
     - libPhoneNumber-iOS
     - LoggerAPI
     - Logging
+    - LookinServer
+    - Masonry
     - MatomoTracker
     - MatrixKit
     - MatrixSDK
+    - MBProgressHUD
+    - MJExtension
+    - MJRefresh
+    - MMPopupView
     - OLMKit
     - ReadMoreTextView
     - Realm
     - Reusable
+    - SDWebImage
     - SideMenu
     - SwiftBase32
     - SwiftGen
@@ -203,13 +226,20 @@ SPEC CHECKSUMS:
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
+  LookinServer: 5e1d44b7e4a2a98793f1eaf319c583e1e946b830
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
   MatrixKit: 740fee40187fe84099678c56b2f080d877dd7a65
   MatrixSDK: 04a7f15b03b3def5af644444f3364b8272fb8efc
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MJExtension: 74ec83124a68891619fb7ba9c5c811bbf1691076
+  MJRefresh: 9af70f5f9327a2cf87f0fb5929f35fcc2fa638ea
+  MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
   OLMKit: 2d73cd67d149b5c3e3a8eb8ecae93d0b429d8a02
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   SwiftBase32: 9399c25a80666dc66b51e10076bf591e3bbb8f17
   SwiftGen: 67860cc7c3cfc2ed25b9b74cfd55495fc89f9108
@@ -219,6 +249,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: c1f1d1137ebacb6c74706cb28d5c10f26d6fe655
+PODFILE CHECKSUM: 169962b3bccba8da77a5c87eebbf6b6790708000
 
 COCOAPODS: 1.10.1

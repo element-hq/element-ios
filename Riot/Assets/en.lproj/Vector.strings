@@ -1682,6 +1682,7 @@ Tap the + to start adding people.";
 "side_menu_reveal_action_accessibility_label" = "Left panel";
 "side_menu_action_invite_friends" = "Invite friends";
 "side_menu_action_settings" = "Settings";
+"side_menu_action_wallet" = "wallet";
 "side_menu_action_help" = "Help";
 "side_menu_action_feedback" = "Feedback";
 "side_menu_app_version" = "Version %@";

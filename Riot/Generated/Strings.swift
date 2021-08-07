@@ -4598,6 +4598,10 @@ internal enum VectorL10n {
   internal static var sideMenuActionSettings: String { 
     return VectorL10n.tr("Vector", "side_menu_action_settings") 
   }
+  /// wallet
+  internal static var sideMenuActionWallet: String { 
+    return VectorL10n.tr("Vector", "side_menu_action_wallet") 
+  }
   /// Version %@
   internal static func sideMenuAppVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "side_menu_app_version", p1)
