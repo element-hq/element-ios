@@ -1305,7 +1305,7 @@
 "dialpad_title" = "Wähltastatur";
 "call_actions_unhold" = "Fortsetzen";
 "event_formatter_call_back" = "Zurückrufen";
-"event_formatter_call_you_declined" = "Du lehntest diesen Anruf ab";
+"event_formatter_call_you_declined" = "Anruf abgelehnt";
 "event_formatter_call_you_currently_in" = "Aktueller Anruf";
 "event_formatter_call_has_ended" = "%@ beendet";
 "event_formatter_call_video" = "Videoanruf";
@@ -1400,3 +1400,8 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Benachrichtige mich bei";
 "room_details_notifs" = "Benachrichtigungen";
+"event_formatter_call_missed_voice" = "Verpasster Anruf";
+"event_formatter_call_incoming_voice" = "Eingehender Anruf";
+"settings_labs_voice_messages" = "Sprachnachrichten";
+"settings_notifications_disabled_alert_message" = "Öffne die Systemeinstellungen um Benachrichtigungen zu aktivieren.";
+"settings_notifications_disabled_alert_title" = "Benachrichtigungen deaktiviert";
