@@ -14,6 +14,7 @@ Changes to be released in next version
  * Voice messages: Remove labs setting and enable them by default
  * Room: Remove the green border from direct message room avatars (#4520).
  * VoIP: Additional changes on call tiles (#4642).
+ * SSO: Stable ids for MSC 2858 (#4362).
 
 🐛 Bugfix
  * 
