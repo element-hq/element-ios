@@ -312,10 +312,6 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowCopyMedia: Bool = true
     static let messageDetailsAllowPasteMedia: Bool = true
     
-    // MARK: - Voice Message
-    
-    static let voiceMessagesEnabled = false
-    
     // MARK: - Notifications
     static let decryptNotificationsByDefault: Bool = true
     

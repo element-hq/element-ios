@@ -144,7 +144,6 @@ enum
 enum
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
-    LABS_ENABLE_VOICE_MESSAGES = 1
 };
 
 enum
@@ -495,7 +494,6 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        [sectionLabs addRowWithTag:LABS_ENABLE_VOICE_MESSAGES];
         sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
         if (sectionLabs.hasAnyRows)
         {
@@ -2316,17 +2314,6 @@ TableViewSectionsDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
-        } else if (row == LABS_ENABLE_VOICE_MESSAGES)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_voice_messages", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableVoiceMessages;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableVoiceMessages:) forControlEvents:UIControlEventValueChanged];
-            
-            cell = labelAndSwitchCell;
         }
     }
     else if (section == SECTION_TAG_FLAIR)
@@ -3032,11 +3019,6 @@ TableViewSectionsDelegate>
 - (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
     RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
-}
-
-- (void)toggleEnableVoiceMessages:(UISwitch *)sender
-{
-    RiotSettings.shared.enableVoiceMessages = sender.isOn;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
