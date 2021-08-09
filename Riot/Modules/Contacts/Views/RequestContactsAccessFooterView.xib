@@ -18,7 +18,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="67f-7H-bSH">
                     <rect key="frame" x="16" y="22.5" width="288" height="346.5"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contacts_request_filepile" translatesAutoresizingMaskIntoConstraints="NO" id="q3p-2U-JA5">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contacts_request_facepile" translatesAutoresizingMaskIntoConstraints="NO" id="q3p-2U-JA5">
                             <rect key="frame" x="89" y="40" width="110" height="46"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start by listing your friends" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9oC-ce-hpT">
@@ -92,7 +92,7 @@
         </view>
     </objects>
     <resources>
-        <image name="contacts_request_filepile" width="110" height="46"/>
+        <image name="contacts_request_facepile" width="110" height="46"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
