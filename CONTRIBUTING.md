@@ -1,6 +1,6 @@
 # Contributing code to Matrix
 
-Please read Synapse [contributing guide](https://github.com/matrix-org/synapse/blob/master/CONTRIBUTING.md).
+Please read the matrix-ios-sdk [contributing guide](https://github.com/matrix-org/matrix-ios-sdk/blob/develop/CONTRIBUTING.md).
 
 # Contributing code to Element iOS
 

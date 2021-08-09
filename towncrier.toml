@@ -1,0 +1,45 @@
+[tool.towncrier]
+name = "Changes in"
+filename = "CHANGES.md"
+directory = "changelog.d"
+template = "changelog.d/_template.md.jinja"
+
+[[tool.towncrier.type]]
+    directory = "feature"
+    name = "✨ Features"
+    showcontent = true
+
+[[tool.towncrier.type]]
+    directory = "change"
+    name = "🙌 Improvements"
+    showcontent = true
+
+[[tool.towncrier.type]]
+    directory = "bugfix"
+    name = "🐛 Bugfixes"
+    showcontent = true
+
+[[tool.towncrier.type]]
+    directory = "api"
+    name = "⚠️ API Changes"
+    showcontent = true
+
+[[tool.towncrier.type]]
+    directory = "i18n"
+    name = "🗣 Translations"
+    showcontent = true
+
+[[tool.towncrier.type]]
+    directory = "build"
+    name = "🧱 Build"
+    showcontent = true
+
+[[tool.towncrier.type]]
+    directory = "doc"
+    name = "📄 Documentation"
+    showcontent = true
+
+[[tool.towncrier.type]]
+    directory = "misc"
+    name = "Others"
+    showcontent = true
