@@ -51,9 +51,10 @@ typedef enum : NSUInteger
 }
 
 /**
- Whether or not the data source has any local contacts loaded.
+ Whether the data source should include local contacts in the table view.
+ Note: Updating this property does not automatically refresh the data source.
  */
-- (BOOL)hasLocalContacts;
+@property (nonatomic) BOOL showLocalContacts;
 
 /**
  Get the contact at the given index path.

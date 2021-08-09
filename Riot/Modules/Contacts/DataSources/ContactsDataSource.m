@@ -467,7 +467,7 @@
         }
         
         // Keep visible the header for the both contact sections, even if they're are empty.
-        if (BuildSettings.allowLocalContactsAccess && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
+        if (BuildSettings.allowLocalContactsAccess && self.showLocalContacts && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
         {
             filteredLocalContactsSection = count++;
         }
@@ -482,7 +482,7 @@
         }
         
         // Keep visible the local contact header, even if the section is empty.
-        if (BuildSettings.allowLocalContactsAccess && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
+        if (BuildSettings.allowLocalContactsAccess && self.showLocalContacts && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
         {
             filteredLocalContactsSection = count++;
         }
@@ -659,11 +659,6 @@
 }
 
 #pragma mark -
-
-- (BOOL)hasLocalContacts
-{
-    return filteredLocalContacts.count;
-}
 
 -(MXKContact *)contactAtIndexPath:(NSIndexPath*)indexPath
 {

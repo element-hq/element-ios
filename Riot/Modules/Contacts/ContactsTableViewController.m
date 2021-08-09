@@ -211,20 +211,22 @@
 
 - (void)updateFooterView
 {
-    if (!RiotSettings.shared.allowInviteExernalUsers || self->contactsDataSource.hasLocalContacts)
+    if (!BuildSettings.allowLocalContactsAccess)
     {
-        self.contactsTableView.tableFooterView = nil;
+        self.contactsTableView.tableFooterView = [[UIView alloc] init];
         return;
     }
     
+    // With contacts access granted, contact sync enabled and an identity server, the footer can be hidden.
     if ([CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized
         && MXKAppSettings.standardAppSettings.syncLocalContacts
         && contactsDataSource.mxSession.hasAccountDataIdentityServerValue)
     {
-        self.contactsTableView.tableFooterView = nil;
+        self.contactsTableView.tableFooterView = [[UIView alloc] init];
         return;
     }
     
+    // If the footer should be shown, don't show it when searching the identity server.
     if (self.shouldHideFooterView)
     {
         self.contactsTableView.tableFooterView = nil;
@@ -274,6 +276,7 @@
     
     contactsDataSource = listDataSource;
     contactsDataSource.delegate = self;
+    contactsDataSource.showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts;
     
     if (self.contactsTableView)
     {
@@ -530,12 +533,15 @@
                    completionHandler:^(BOOL granted) {
         if (granted)
         {
+            // Enable local contacts sync and display.
+            MXKAppSettings.standardAppSettings.syncLocalContacts = YES;
+            self->contactsDataSource.showLocalContacts = YES;
+            
+            // Refresh the contacts manager.
+            [self refreshLocalContacts];
+            
             // Hide the request access view.
             [self updateFooterView];
-            
-            // Enable sync local contacts and refresh the contacts manager.
-            MXKAppSettings.standardAppSettings.syncLocalContacts = YES;
-            [self refreshLocalContacts];
         }
     }];
 }
