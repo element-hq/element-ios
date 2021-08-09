@@ -1,10 +1,7 @@
 Changes to be released in next version
-=================================================
-
-✨ Features
- * 
 
 🙌 Improvements
+
  * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
  * Settings: Adds a link to open the Settings app to quickly configure app notifications.
  * VoIP: Text & icon changes on call tiles (#4642).
@@ -15,56 +12,31 @@ Changes to be released in next version
  * Room: Remove the green border from direct message room avatars (#4520).
  * VoIP: Additional changes on call tiles (#4642).
 
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
 🧱 Build
+
  * Add a script to initialize quickly and easily the project.
 
 Others
+
  * Docs: Add reference to AppIdentifiers.xcconfig in INSTALL.md
 
-Changes in 1.4.9 (2021-08-03)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.4.9 (2021-08-03)
 
 🙌 Improvements
+
  * Voice Messages: Increased recording state microphone icon size
  * Voice Messages: Using "Voice message - MM.dd.yyyy HH.mm.ss" as the format for recorded audio files
 
 🐛 Bugfix
+
  * Voice Messages: Fixed race conditions when sending voice messages (#4641)
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
-Improvements:
-
-
-Changes in 1.4.8 (2021-07-29)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.4.8 (2021-07-29)
 
 🙌 Improvements
+
  * Room: Added support for Voice Messages (#4090, #4091, #4092, #4094, #4095, #4096)
  * Rooms Tab: Remove the directory section (#4521).
  * Notifications: Show decrypted content is enabled by default (#4519).
@@ -76,6 +48,7 @@ Changes in 1.4.8 (2021-07-29)
  * Slide to lock should be more generous (#4602).
 
 🐛 Bugfix
+
  * Room: Fixed mentioning users from room info member details (#4583)
  * Settings: Disabled autocorrection when entering an identity server (#4593).
  * Room Notification Settings: Fix Crash when opening the new Room Notification Settings Screen (Not yet released) (#4599).
@@ -83,60 +56,34 @@ Changes in 1.4.8 (2021-07-29)
  * Room: Fixed crash when opening a read-only room (#4620).
  * Voice Messages: Tapping on waveform in composer glitches UI (#4603).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
 Others
+
  * Separated CI jobs into individual actions
  * Update Gemfile.lock
 
 Improvements:
  * Upgrade MatrixKit version ([v0.15.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.6)).
 
-Changes in 1.4.7 (2021-07-22)
-=================================================
+## Changes in 1.4.7 (2021-07-22)
 
-✨ Features
- * 
-
-🙌 Improvements
- * 
-
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
 Others
+
  * Updated issue templates.
 
 Improvements:
  * Upgrade MatrixKit version ([v0.15.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.5)).
 
-Changes in 1.4.6 (2021-07-16)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.4.6 (2021-07-16)
 
 🙌 Improvements
+
  * Room Notification Settings: Ability to change between "All Messages", "Mentions and Keywords" and "None". Not yet exposed in Element UI. (#4458).
  * Add support for sending slow motion videos (#4483).
 
 🐛 Bugfix
+
  * VoIP: Do not present ended calls.
  * More fixes to Main.storyboard layout on iPhone 12 Pro Max (#4527)
  * Fix crash on Apple Silicon Macs.
@@ -148,109 +95,59 @@ Changes in 1.4.6 (2021-07-16)
  * Share Extension: Fix layout when searching (#4258).
  * Timeline: Fix incorrect crop of media thumbnails (#4552).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
 Others
+
  * Silenced some documentation, deprecations and SwiftLint warnings.
  
 Improvements:
  * Upgrade MatrixKit version ([v0.15.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.4)).
 
-Changes in 1.4.5 (2021-07-07)
-=================================================
-
-✨ Features
- *
-
-🙌 Improvements
- *
+## Changes in 1.4.5 (2021-07-07)
 
 🐛 Bugfix
+
  * Notifications: Fix an issue where the app is unresponsive after getting some notifications (#4534).
 
-⚠️ API Changes
- *
-
-🗣 Translations
- *
-
-🧱 Build
- *
-
-Others
- *
-
-Changes in 1.4.4 (2021-06-30)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.4.4 (2021-06-30)
 
 🙌 Improvements
+
  * DesignKit: Add Fonts (#4356).
  * VoIP: Implement audio output router menu in call screen.
 
 🐛 Bugfix
+
  * SSO: Handle login callback URL with HTML entities (#4129).
  * Share extension: Fix theme in dark mode (#4486).
  * Theme: Fix authentication activity indicator colour when using a dark theme (#4485).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.15.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.3)).
 
-Changes in 1.4.3 (2021-06-24)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.4.3 (2021-06-24)
 
 🙌 Improvements
+
  * Room lists: Hide invited rooms if auto-accept option enabled.
 
 🐛 Bugfix
+
  * Fixed retain cycle between the RoomTitleView and RoomViewController
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.15.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.2)).
 
-Changes in 1.4.2 (2021-06-21)
-=================================================
+## Changes in 1.4.2 (2021-06-21)
 
 ✨ Features
+
  * Add left panel (#4398).
 
 🙌 Improvements
+
  * MXRoomSummary: Adapt room summary changes on MatrixSDK (#4360).
  * EncryptionKeyManager: Create keys for room last message data type.
  * Integrated FLEX for debug builds.
@@ -263,6 +160,7 @@ Changes in 1.4.2 (2021-06-21)
  * Room lists: Avoid app freezes by building them on a separated thread (#3777).
 
 🐛 Bugfix
+
  * StartChatViewController: Add more helpful message when trying to start DM with a user that does not exist (#224).
  * RoomDirectCallStatusBubbleCell: Fix crash when entering a DM after a call is hung-up/rejected while being answered (#4403).
  * ContactsDataSource: iPad Crashes when you select a contact in search and then collapse a section or clear the query text (#4414).
@@ -273,53 +171,29 @@ Changes in 1.4.2 (2021-06-21)
  * NSE: Recreate background sync service if credentials changed (#3695).
  * HomeViewController: Don't clip the home view when searching for rooms on iPhone 12 Pro Max (#4450).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
 🧱 Build
+
  * GH Actions: Make sure we use the latest version of MatrixKit.
 
 Others
+
  *
  
 Improvements:
  * Upgrade MatrixKit version ([v0.15.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.1)).
 
- Changes in 1.4.1 (2021-06-08)
-=================================================
-
-✨ Features
- *
-
-🙌 Improvements
- *
+ ## Changes in 1.4.1 (2021-06-08)
 
 🐛 Bugfix
+
  * SettingsViewController: Fix crash when changing the app language (#4377).
  * UserSessionsService: Fix room lists lost after a reset cache (#4395).
 
-⚠️ API Changes
- *
-
-🗣 Translations
- *
-    
-🧱 Build
- *
-
-Others
- *
-
-Changes in 1.4.0 (2021-06-03)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.4.0 (2021-06-03)
 
 🙌 Improvements
+
  * Crypto: Do not decrypt synchronously. It asynchronously happens upstream now (#4306). 
  * Navigation: Start decoupling view controllers managed by MasterTabBarController (#3596 and #3618).
  * Jitsi: Include optional server name field on JitsiJWTPayloadContextMatrix.
@@ -327,115 +201,52 @@ Changes in 1.4.0 (2021-06-03)
  * Logging: Adopted MXLog throughout the application (vector-im/element-ios/issues/4351).
 
 🐛 Bugfix
+
  * buildRelease.sh: Make bundler operations in the cloned repository folder.
  * VoIP: Fix call bar layout issue for landscape.
 
-⚠️ API Changes
- * 
-
 🗣 Translations
+
  * Fix missing translation files for Icelandic.
  * Enable Esperanto, Portuguese (Brazil), Kabyle, Norwegian Bokmål (nb), Swedish, Japanese and Welsh.
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.15.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.0)).
 
-Changes in 1.3.9 (2021-05-18)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
+## Changes in 1.3.9 (2021-05-18)
 
 🐛 Bugfix
+
  * RecentsDataSource: Present the secure backup banner only if key backup is disabled.
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
-Improvements:
-
-
-Changes in 1.3.8 (2021-05-17)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
+## Changes in 1.3.8 (2021-05-17)
 
 🐛 Bugfix
+
  * RecentsDataSource: Do not display secure backup banner when keys upload is in process.
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
-Improvements:
-
-
-Changes in 1.3.7 (2021-05-12)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.3.7 (2021-05-12)
 
 🙌 Improvements
+
  * NSE: Add logs for notification delay.
  * Templates: Update bridge presenter template to auto-implement iOS 13 pull-down gesture.
 
 🐛 Bugfix
+
  * NSE: Fixes to avoid PushKit crashes (#4269).
  * Handle pull-down gesture for reactions history view (#4293).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.12](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.12)).
 
-Changes in 1.3.6 (2021-05-07)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.3.6 (2021-05-07)
 
 🙌 Improvements
+
  * Jitsi: Use Jitsi server from homeserver's Well Known, if present, to create conferences (#3158).
  * RoomMemberDetailsVC: Enable / disable "Hide all messages from this user" from settings (#4281).
  * RoomVC: Show / Hide More and Report Content contextual menu from settings (#4285).
@@ -450,34 +261,25 @@ Changes in 1.3.6 (2021-05-07)
  * Advertise that spaces are not available when tapping on a space link or a space invite (#4279).
 
 🐛 Bugfix
+
  * RoomVC: Avoid navigation to integration management using integration popup with settings set to integration disabled (#4261).
  * RiotSettings: Logging out resets RiotSettings (#4259).
  * RoomVC: Crash in `setScrollToBottomHidden` method (#4270).
  * Notifications: Make them work in debug mode (#4274).
  * VoIP: Fix call bar layout issue (#4300).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
 🧱 Build
- * GH Actions: Make jobs use the right version of MatrixKit and MatrixSDK.
 
-Others
- * 
+ * GH Actions: Make jobs use the right version of MatrixKit and MatrixSDK.
 
 Improvements:
  * Upgrade MatrixKit version ([v0.14.11](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.11)).
 
-Changes in 1.3.5 (2021-04-22)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.3.5 (2021-04-22)
 
 🙌 Improvements
+
  * Add `gitter.im` to list of default room directories
  * MasterTabBarController: Show/Hide Home Screen tabs (#4234).
  * RoomVC: Enable / Disable VoIP feature in Rooms (#4236).
@@ -488,143 +290,59 @@ Changes in 1.3.5 (2021-04-22)
  * RoomVC: Show / Hide integrations and actions (#4245).
 
 🐛 Bugfix
+
  * PublicRoomsDirectoryDataSource: Fix search when NSFW filter is off.
  * RoomVC: Fix navigation issue when a room left.
  * RoomVC: Fix a crash when scroll to bottom tapped on a left room.
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
 🧱 Build
- * GH Actions: Start using them for CI to check simulator build and tests.
 
-Others
- * 
+ * GH Actions: Start using them for CI to check simulator build and tests.
 
 Improvements:
  * Upgrade MatrixKit version ([v0.14.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.10)).
 
-Changes in 1.3.4 (2021-04-19)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
+## Changes in 1.3.4 (2021-04-19)
 
 🐛 Bugfix
+
  * RoomVC: Crash in refreshTypingNotification (#4230).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
+## Changes in 1.3.3 (2021-04-16)
 
-Others
- * 
-
-Improvements:
-
-
-Changes in 1.3.3 (2021-04-16)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
-
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.9)).
 
-Changes in 1.3.2 (2021-04-16)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
+## Changes in 1.3.2 (2021-04-16)
 
 🐛 Bugfix
+
  * Self-verification: Fix compatibility with Element-Web (#4217).
  * Notifications: Fix sender display name that can miss (#4222). 
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.9)).
 
-Changes in 1.3.1 (2021-04-14)
-=================================================
+## Changes in 1.3.1 (2021-04-14)
 
-✨ Features
- * 
-
-🙌 Improvements
- * 
-
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.8)).
 
-Changes in 1.3.0 (2021-04-09)
-=================================================
+## Changes in 1.3.0 (2021-04-09)
 
 ✨ Features
+
  * Composer Update - Typing and sending a message (#4085)
  * Switching composer between text mode & action mode (#4087)
  * Explore typing notifications inspired by web (#4134)
 
 🙌 Improvements
+
  * Make the application settings more configurable (#4171)
  * Possibility to lock some room creation parameters from settings (#4181)
  * Enable / disable external friends invite (#4173)
@@ -634,6 +352,7 @@ Changes in 1.3.0 (2021-04-09)
  * Consider displaying names in typing notifications (#4175)
 
 🐛 Bugfix
+
  * If you start typing while the new attachment sending mode is on, the send button appears (#4155)
  * The final frames of the appearance animation of the new composer buttons are missing (#4160)
  * Crash in [RoomViewController setupActions] (#4162)
@@ -642,284 +361,127 @@ Changes in 1.3.0 (2021-04-09)
  * Vertical layout of typing notifs can go wonky (#4159)
  * Crash in [RoomViewController refreshTypingNotification] (#4161)
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.7)).
 
-Changes in 1.2.8 (2021-03-26)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
+## Changes in 1.2.8 (2021-03-26)
 
 🐛 Bugfix
+
  * Xcodegen: Unit tests are broken (#4152).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
-Improvements:
-
-
-Changes in 1.2.7 (2021-03-24)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.2.7 (2021-03-24)
 
 🙌 Improvements
+
  * Pods: Update FlowCommoniOS, GBDeviceInfo, KeychainAccess, MatomoTracker, SwiftJWT, SwiftLint (#4120).
  * Room lists: Remove shields on room avatars (#4115).
 
 🐛 Bugfix
+
  * RoomVC: Fix timeline blink on sending.
  * RoomVC: Fix not visible last bubble issue.
  * Room directory: Fix crash (#4137).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.6)).
 
-Changes in 1.2.6 (2021-03-11)
-=================================================
+## Changes in 1.2.6 (2021-03-11)
 
 ✨ Features
+
  * Improve the status of send messages (sending, sent, received, failed) (#4014)
  * Retrying & deleting failed messages (#4013)
  * Composer Update - Typing and sending a message (#4085)
 
-🙌 Improvements
- * 
-
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.5)).
 
-Changes in 1.2.5 (2021-03-03)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.2.5 (2021-03-03)
 
 🙌 Improvements
+
  * Settings: Add option to show NSFW public rooms (off by default).
 
 🐛 Bugfix
+
  * Emoji store: Include short name when searching emojis (#4063).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.4)).
 
-Changes in 1.2.4 (2021-03-01)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
+## Changes in 1.2.4 (2021-03-01)
 
 🐛 Bugfix
+
  * Social login: Fix a crash when selecting a social login provider.
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
+## Changes in 1.2.3 (2021-02-26)
 
-Others
- * 
-
-Improvements:
-
-
-Changes in 1.2.3 (2021-02-26)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
-
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.3)).
 
-Changes in 1.2.2 (2021-02-24)
-=================================================
+## Changes in 1.2.2 (2021-02-24)
 
 ✨ Features
+
  * Enable encryption for accounts, contacts and keys in the crypto database (#3867).
 
 🙌 Improvements
+
  * Home: Show room directory on join room action (#3775).
  * RoomVC: Add quick actions in timeline on room creation (#3776).
 
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
 🧱 Build
+
  * XcodeGen: .xcodeproj files are now built from readable yml file: [New Build instructions](README.md#build-instructions) (#3812).
  * Podfile: Use MatrixKit for all targets and remove MatrixKit/AppExtension.
  * Fastlane: Use the "New Build System" to build releases.
  * Fastlane: Re-enable parallelised builds.
 
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.2)).
 
-Changes in 1.2.1 (2021-02-12)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.2.1 (2021-02-12)
 
 🙌 Improvements
+
  * User-Interactive Authentication: Add UIA support for device deletion and add user 3PID action (#4016).
 
 🐛 Bugfix
+
  * NSE: Wait for VoIP push request if any before calling contentHandler (#4018).
  * VoIP: Show dial pad option only if PSTN is supported (#4029).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.1)).
 
-Changes in 1.2.0 (2021-02-11)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.2.0 (2021-02-11)
 
 🙌 Improvements
+
  * Cross-signing: Setup cross-signing without authentication parameters when a grace period is enabled after login (#4006).
  * VoIP: Implement DTMF on call screen (#3929).
  * VoIP: Implement call transfer screen (#3962).
  * VoIP: Implement call tiles on timeline (#3955).
 
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.14.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.14.0)).
 
-Changes in 1.1.7 (2021-02-03)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.1.7 (2021-02-03)
 
 🙌 Improvements
+
  * Social login: Handle new identity provider brand field in order to customize buttons (#3980).
  * Widgets: Support $matrix_room_id and $matrix_widget_id parameters (#3987).
  * matrix.to: Support room preview when the permalink has parameters (like "via=").
@@ -927,207 +489,112 @@ Changes in 1.1.7 (2021-02-03)
  * Handle User-Interactive Authentication fallback (#3995).
 
 🐛 Bugfix
+
  * Push: Fix PushKit crashes due to undecryptable call invites (#3986).
  * matrix.to: Cannot open links with query parameters (#3990).
  * matrix.to: Cannot open/preview a new room given by alias (#3991).
  * matrix.to: The app does not open a permalink from matrix.to (#3993).
  * Logs: Add a size limitation so that we can upload them in bug reports (#3903).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.9)).
 
-Changes in 1.1.6 (2021-01-27)
-=================================================
-
-✨ Features
- * 
-
-🙌 Improvements
- * 
+## Changes in 1.1.6 (2021-01-27)
 
 🐛 Bugfix
+
  * Navigation: Unable to open a room from a room list (#3863).
  * AuthVC: Fix social login layout issue.
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.8)).
 
-Changes in 1.1.5 (2021-01-18)
-=================================================
+## Changes in 1.1.5 (2021-01-18)
 
-✨ Features
- * 
-
-🙌 Improvements
- * 
-
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.7)).
 
-Changes in 1.1.4 (2021-01-15)
-=================================================
+## Changes in 1.1.4 (2021-01-15)
 
 ✨ Features
+
  * Change Pin inside the app (#3881)
  * AuthVC: Add social login (#3846).
  * Invite friends: Add the ability to invite friends outside of Element in a few places (#3840).
 
 🙌 Improvements
+
  * Bug report: Add "Continue in background" button  (#3816).
  * Show user id in the room invite preview screen (#3839)
  * AuthVC: SSO authentication now use redirect URL instead of fallback page (#3846).
 
 🐛 Bugfix
+
  * Crash report cannot be submitted (on small phones) (#3819)
  * Prevent navigation controller from pushing same view controller (#3924)
  * AuthVC: Fix recaptcha view cropping (#3940).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.6)).
 
-Changes in 1.1.3 (2020-12-18)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.1.3 (2020-12-18)
 
 🙌 Improvements
+
  * AuthVC: Update SSO button wording.
  * Log NSE memory footprint for debugging purposes.
 
 🐛 Bugfix
+
  * Refresh account details on NSE runs (#3719).
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.3)).
  * Upgrade MatrixKit version ([v0.13.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.4)).
 
-Changes in 1.1.2 (2020-12-02)
-=================================================
+## Changes in 1.1.2 (2020-12-02)
 
 ✨ Features
+
  * Added blur background support for iPhone and iPad (#3842)
 
 🙌 Improvements
+
  * Room History: Remove the report option for outgoing messages.
  * Empty views: Add empty screen when there is nothing to display on home, people, favourites and rooms screen (#3836).
  * BuildSettings.messageDetailsAllowShare now hide /show action button in document preview (#3864).
 
 🐛 Bugfix
+
  * Restore the modular widget events in the rooms histories.
 
 ⚠️ API Changes
+
  * Slight API changes for SlidingModalPresenter to avoid race conditions while sharing a presenter. (#3842)
 
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.2)).
 
-Changes in 1.1.1 (2020-11-24)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.1.1 (2020-11-24)
 
 🙌 Improvements
+
  * Home: Add empty screen when there is nothing to display (#3823).
 
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.1)).
 
-Changes in 1.1.0 (2020-11-17)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.1.0 (2020-11-17)
 
 🙌 Improvements
+
  * Upgrade to Xcode 12 (#3712).
  * Xcode 12: Make Xcode 12 and fastlane(xcodebuild) happy while some pods are not updated.
  * Update Gemfile.lock.
@@ -1138,33 +605,24 @@ Changes in 1.1.0 (2020-11-17)
  * Room invites: Allow to accept a room invite without preview.
 
 🐛 Bugfix
+
  * Fix analytics in order to track performance improvements.
  * Fix long placeholder cropping in room input toolbar. Prevent long placeholder to be displayed on small devices (#3790).
 
 ⚠️ API Changes
+
  * Xcode 12 is now mandatory to build the project.
  * CocoaPods 1.10.0 is mandatory.
  * Remove MXDecryptionFailureDelegate in flavor of agnostic MXAnalyticsDelegate.
 
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.13.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.13.0)).
 
-Changes in 1.0.18 (2020-10-27)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.0.18 (2020-10-27)
 
 🙌 Improvements
+
  * Secure backup: Add possibility to not expose recovery key when creating a secure backup.
  * BuildSettings: Centralise RoomInputToolbar compression mode setting.
  * Update GBDeviceInfo to 6.4.0 (#3570).
@@ -1176,86 +634,39 @@ Changes in 1.0.18 (2020-10-27)
  * NSE: Utilize MXBackgroundService on pushes, to make messages available when the app is foregrounded (#3579).
 
 🐛 Bugfix
+
  * Fix typos in UI
 
-⚠️ API Changes
- *
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.12.26](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.26)).
 
-Changes in 1.0.17 (2020-10-14)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.0.17 (2020-10-14)
 
 🙌 Improvements
+
  * Device verification: Do not check for existing key backup after SSSS & Cross-Signing reset.
  * Cross-signing: Detect when cross-signing keys have been changed.
  * Make copying & pasting media configurable.
 
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.12.25](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.25)).
 
-Changes in 1.0.16 (2020-10-13)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.0.16 (2020-10-13)
 
 🙌 Improvements
+
  * Self-verification: Update complete security screen wording (#3743).
 
-🐛 Bugfix
- * 
-
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.12.24](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.24)).
 
-Changes in 1.0.15 (2020-10-09)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.0.15 (2020-10-09)
 
 🙌 Improvements
+
  * Room: Make topic links tappable (#3713).
  * Room: Add more to long room topics (#3715).
  * Security screens: Update automatically shields when the trust changes.
@@ -1263,34 +674,22 @@ Changes in 1.0.15 (2020-10-09)
  * Pasteboard: Use MXKPasteboardManager.pasteboard on copy operations (#3732).
 
 🐛 Bugfix
+
  * Push: Check crypto has keys to decrypt an event before decryption attempt, avoid sync loops on failure.
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.12.23](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.23)).
 
-Changes in 1.0.14 (2020-10-02)
-=================================================
-
-✨ Features
- * 
+## Changes in 1.0.14 (2020-10-02)
 
 🙌 Improvements
+
  * i18n: Add Estonian (et).
  * MXSession: Make vc_canSetupSecureBackup reusable.
 
 🐛 Bugfix
+
  * Settings: New phone number is invisible in dark theme (#3218).
  * Handle call actions on other devices on VoIP pushes (#3677).
  * Fix "Unable to open the link" error when using non-Safari browsers (#3673).
@@ -1299,28 +698,14 @@ Changes in 1.0.14 (2020-10-02)
  * PIN: Fix layout on small screens.
  * PIN: Fix code bypass on fast switching.
 
-⚠️ API Changes
- * 
-
-🗣 Translations
- * 
     
-🧱 Build
- * 
-
-Others
- * 
-
 Improvements:
  * Upgrade MatrixKit version ([v0.12.22](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.22)).
 
-Changes in 1.0.13 (2020-09-30)
-=================================================
-
-✨ Features
- *
+## Changes in 1.0.13 (2020-09-30)
 
 🙌 Improvements
+
  * Room: Differentiate wordings for DMs.
  * Room: New Room Settings screen.
  * PIN code: Implement not allowed PINs feature. There is no restriction by default.
@@ -1332,6 +717,7 @@ Changes in 1.0.13 (2020-09-30)
  * Architecture: Create AppDelegate.handleAppState() as central point to handle application state.
 
 🐛 Bugfix
+
  * Timeline: Hide encrypted history (pre-invite) (#3660).
  * PIN Code: Do not show verification dialog at the top of PIN code.
  * Complete Security: Let the authentication flow display it if this flow is not complete yet.
@@ -1340,107 +726,62 @@ Changes in 1.0.13 (2020-09-30)
  * Various theme fixes.
  * Room: Fix message not shown after push issue (#3672).
 
-⚠️ API Changes
- *
-
-🗣 Translations
- *
-    
-🧱 Build
- *
-
-Others
- *
-
-Changes in 1.0.12 (2020-09-16)
-
-✨ Features
- *
-
-🙌 Improvements
- *
+## Changes in 1.0.12 (2020-09-16)
 
 🐛 Bugfix
- *
 
-⚠️ API Changes
- *
-
-🗣 Translations
- *
-    
-🧱 Build
- *
-
-Others
  *
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.21](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.21)).
  * Upgrade MatrixKit version ([v0.12.20](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.20)).
 
-Changes in 1.0.11 (2020-09-15)
-=================================================
-
-✨ Features
- *
+## Changes in 1.0.11 (2020-09-15)
 
 🙌 Improvements
+
  * Room: Collapse state messages on room creation (#3629).
  * AuthVC: Make force PIN working for registration as well.
  * AppDelegate: Do not show incoming key verification requests while authenticating.
 
 🐛 Bugfix
+
  * AuthVC: Fix PIN setup that broke cross-signing bootstrap.
  * Loading animation: Fix the bug where, after authentication, the animation disappeared too early and made auth screen flashed.
 
-⚠️ API Changes
- *
-
-🗣 Translations
- *
-    
-🧱 Build
- *
-
 Others
+
  * buildRelease.sh: Pass a `git_tag` parameter to fastlane because fastlane `git_branch` method can fail.
 
-Improvements:
-
-
-Changes in 1.0.10 (2020-09-08)
-=================================================
+## Changes in 1.0.10 (2020-09-08)
 
 ✨ Features
+
  *
     
 🙌 Improvements
+
  * AppDelegate: Convert to Swift (#3594).
  * Contextualize floating button actions per tab (#3627).
     
 🐛 Bugfix
+
  * Show pin code screen on every foreground (#3620).
  * Close keyboard on pin code screen (#3622).
  * Fix content leakage on pin code protection (#3624).
     
 ⚠️ API Changes
- *
-    
-🗣 Translations
+
  *
     
 🧱 Build
+
  * buildRelease.sh: Make sure it works for both branches and tags
     
-Others
- *
-
 Improvements:
  * Upgrade MatrixKit version ([v0.12.18](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.18)).
 
-Changes in 1.0.9 (2020-09-03)
-=================================================
+## Changes in 1.0.9 (2020-09-03)
 
 Features:
  * 
@@ -1467,8 +808,7 @@ Build:
 Test:
  * 
 
-Changes in 1.0.8 (2020-09-03)
-=================================================
+## Changes in 1.0.8 (2020-09-03)
 
 Features:
  * 
@@ -1496,8 +836,7 @@ Build:
 Test:
  * 
 
-Changes in 1.0.7 (2020-08-28)
-=================================================
+## Changes in 1.0.7 (2020-08-28)
 
 Features:
  * 
@@ -1526,8 +865,7 @@ Build:
 Test:
  * 
 
-Changes in 1.0.6 (2020-08-26)
-=================================================
+## Changes in 1.0.6 (2020-08-26)
 
 Features:
  * 
@@ -1562,8 +900,7 @@ Build:
 Test:
  * 
 
-Changes in 1.0.5 (2020-08-13)
-=================================================
+## Changes in 1.0.5 (2020-08-13)
 
 Features:
  * 
@@ -1592,8 +929,7 @@ Build:
 Test:
  * 
 
-Changes in 1.0.4 (2020-08-07)
-=================================================
+## Changes in 1.0.4 (2020-08-07)
 
 Features:
  * 
@@ -1620,8 +956,7 @@ Build:
 Test:
  * 
 
-Changes in 1.0.3 (2020-08-05)
-===============================================
+## Changes in 1.0.3 (2020-08-05)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.10](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.10)).
@@ -1641,15 +976,13 @@ Bug fix:
  * AuthenticationViewController: Fix custom homeserver textfield scroll issue (#3467).
  * Rebranding: Update provisioning universal link domain (#3483).
 
-Changes in 1.0.2 (2020-07-28)
-===============================================
+## Changes in 1.0.2 (2020-07-28)
 
 Bug fix:
  * Registration: Do not display the skip button if email is mandatory (#3417).
  * NotificationService: Do not cache showDecryptedContentInNotifications setting (#3444).
 
-Changes in 1.0.1 (2020-07-17)
-===============================================
+## Changes in 1.0.1 (2020-07-17)
  
 Bug fix:
  * SettingsViewController: Fix crash when scrolling to Discovery (#3401).
@@ -1659,8 +992,7 @@ Bug fix:
  * RecentsViewController: Fix crash on dequeue some cells (#3433).
  * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
 
-Changes in 1.0.0 (2020-07-13)
-===============================================
+## Changes in 1.0.0 (2020-07-13)
 
 Improvements:
  * Rename Riot to Element
@@ -1703,8 +1035,7 @@ Bug fix:
  * RecentsViewController: Fix crash on dequeue some cells (#3433).
  * NotificationService: Fix losing sound when not showing decrypted content in notifications (#3423).
 
-Changes in 0.11.6 (2020-06-30)
-===============================================
+## Changes in 0.11.6 (2020-06-30)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.7)).
@@ -1724,25 +1055,22 @@ Bug fix:
  * CallVC: Declined calls now properly reset call view controller, thanks to @Legi429 (#2877).
  * PreviewRoomTitleView: Fix inviter display name (#2520).
 
-Changes in 0.11.5 (2020-05-18)
-===============================================
+## Changes in 0.11.5 (2020-05-18)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.6)).
 
 Bug fix:
- * AuthenticationViewController: Adapt UIWebView changes in MatrixKit (PR #3242).
+ * AuthenticationViewController: Adapt UIWebView ## Changes in MatrixKit (PR #3242).
  * Share extension & Siri intent: Do not fail when sending to locally unverified devices (#3252).
  * CountryPickerVC: Search field is invisible in dark theme (#3219).
 
-Changes in 0.11.4 (2020-05-08)
-===============================================
+## Changes in 0.11.4 (2020-05-08)
 
 Bug fix:
  * App asks to verify all devices on every startup for no valid reason (#3221).
 
-Changes in 0.11.3 (2020-05-07)
-===============================================
+## Changes in 0.11.3 (2020-05-07)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.3)).
@@ -1754,8 +1082,7 @@ Bug fix:
  * KeyVerificationSelfVerifyStartViewController has no navigation (#3195).
  * Self-verification: QR code scanning screen refers to other-person scanning (#3189).
 
-Changes in 0.11.2 (2020-05-01)
-===============================================
+## Changes in 0.11.2 (2020-05-01)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.2)).
@@ -1770,8 +1097,7 @@ Improvements:
 Bug fix:
  * AuthenticationViewController: Remove fallback to matrix.org when authentication failed (PR #3165).
 
-Changes in 0.11.1 (2020-04-24)
-===============================================
+## Changes in 0.11.1 (2020-04-24)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.1)).
@@ -1784,8 +1110,7 @@ Bug fix:
  * Settings: Security, present complete security when my device is not trusted (#3127).
  * Settings: Security: Do not ask to complete security if there is no cross-signing (#3147).
 
-Changes in 0.11.0 (2020-04-17)
-===============================================
+## Changes in 0.11.0 (2020-04-17)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.12.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.12.0)).
@@ -1811,8 +1136,7 @@ Bug fix:
 Bug fix:
  * Considered safe area insets for some screens (PR #3084).
 
-Changes in 0.10.5 (2020-04-01)
-===============================================
+## Changes in 0.10.5 (2020-04-01)
 
 Bug fix:
  * Fix error when joining some public rooms, thanks to @chrismoos (PR #2888).
@@ -1820,8 +1144,7 @@ Bug fix:
  * Push notifications: Avoid any automatic deactivation (vector-im/riot-ios#3017).
  * Fix links breaking user out of SSO flow, thanks to @schultetwin (#3039).
 
-Changes in 0.10.4 (2019-12-11)
-===============================================
+## Changes in 0.10.4 (2019-12-11)
 
 Improvements:
  * ON/OFF Cross-signing development in a Lab setting (#2855).
@@ -1829,8 +1152,7 @@ Improvements:
 Bug fix:
  * Device Verification: Stay in infinite waiting (#2878).
 
-Changes in 0.10.3 (2019-12-05)
-===============================================
+## Changes in 0.10.3 (2019-12-05)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.11.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.3)).
@@ -1851,14 +1173,12 @@ Bug fix:
  * RoomVC: Tapping on location links gives 'unable to open link' (#2803).
  * RoomVC: Reply to links fail with 'unable to open link' (#2804).
 
-Changes in 0.10.2 (2019-11-15)
-===============================================
+## Changes in 0.10.2 (2019-11-15)
 
 Bug fix:
  * Integrations: Fix terms consent display when they are required.
 
-Changes in 0.10.1 (2019-11-06)
-===============================================
+## Changes in 0.10.1 (2019-11-06)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.11.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.2)).
@@ -1873,8 +1193,7 @@ Bug fix:
  * Device Verification: Selecting 'start verification' from a keyshare request wedges you in an entirely blank verification screen (#2504).
  * Tab bar icons are not centered vertically on iOS 13 (#2802).
 
-Changes in 0.10.0 (2019-10-11)
-===============================================
+## Changes in 0.10.0 (2019-10-11)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.11.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.11.1)).
@@ -1906,8 +1225,7 @@ Improvements:
 Bug fix:
  * Theme: Make button theming work (#2734).
 
-Changes in 0.9.5 (2019-09-20)
-===============================================
+## Changes in 0.9.5 (2019-09-20)
 
 Bug fix:
  * VoiceOver: RoomVC: Fix some missing accessibility labels for buttons (#2722).
@@ -1915,21 +1233,18 @@ Bug fix:
  * VoiceOver: RoomVC: Do not lose the focus on the timeline when paginating (with 3 fingers) (#2720).
  * VoiceOver: RoomVC: No VoiceOver on media (#2726).
 
-Changes in 0.9.4 (2019-09-13)
-===============================================
+## Changes in 0.9.4 (2019-09-13)
 
 Improvements:
  * Authentication: Improve the webview used for SSO (#2715).
 
-Changes in 0.9.3 (2019-09-10)
-===============================================
+## Changes in 0.9.3 (2019-09-10)
 
 Improvements:
  * Support Riot configuration link to customise HS and IS (#2703).
  * Authentication: Create a way to filter and prioritise flows (with handleSupportedFlowsInAuthenticationSession).
 
-Changes in 0.9.2 (2019-08-08)
-===============================================
+## Changes in 0.9.2 (2019-08-08)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.10.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.2)).
@@ -1946,14 +1261,12 @@ Bug fix:
  * Fix crash for search bar customisation in iOS13 (#2626).
  * Build: Fix build based on git tag.
 
-Changes in 0.9.1 (2019-07-17)
-===============================================
+## Changes in 0.9.1 (2019-07-17)
 
 Bug fix:
  * Edits history: Original event is missing (#2585).
 
-Changes in 0.9.0 (2019-07-16)
-===============================================
+## Changes in 0.9.0 (2019-07-16)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.10.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.10.1)).
@@ -1987,15 +1300,13 @@ Bug fix:
  * Reactions: It lets you react to join/leave events (#2476).
  * Adjust size of the insert button in the People tab, thanks to @dcordero (PR #2473).
 
-Changes in 0.8.6 (2019-05-06)
-===============================================
+## Changes in 0.8.6 (2019-05-06)
 
 Bug fix:
  * Device Verification: Fix bell emoji name.
  * Device Verification: Fix buttons colors in dark theme.
 
-Changes in 0.8.5 (2019-05-03)
-===============================================
+## Changes in 0.8.5 (2019-05-03)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.9.9](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.9)).
@@ -2018,8 +1329,7 @@ Bug fix:
  * Avoid crashes with tableview reload animation in settings and room settings (PR #2364).
  * Media picker: Fix some retain cycles (PR #2382).
 
-Changes in 0.8.4 (2019-03-21)
-===============================================
+## Changes in 0.8.4 (2019-03-21)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.9.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.8)).
@@ -2028,8 +1338,7 @@ Improvements:
 Bug fix:
  * Unable to open a file attachment of a room message (#2338).
 
-Changes in 0.8.3 (2019-03-13)
-===============================================
+## Changes in 0.8.3 (2019-03-13)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.9.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.7)).
@@ -2039,8 +1348,7 @@ Bug fix:
  * Widgets: Pass scalar_token only when required.
 
 
-Changes in 0.8.2 (2019-03-11)
-===============================================
+## Changes in 0.8.2 (2019-03-11)
 
 Improvements:
  * Upgrade MatrixKit version ([v0.9.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.6)).
@@ -2065,8 +1373,7 @@ Bug fix:
  * 3D touching a link can lock the app (#1818).
  * Do not display key backup UI if the user has no e2e rooms (#2304).
 
-Changes in 0.8.1 (2019-02-19)
-===============================================
+## Changes in 0.8.1 (2019-02-19)
 
 Improvements:
  * Key backup: avoid to refresh the home room list on every backup state change (#2265).
@@ -2076,8 +1383,7 @@ Bug fix:
  * Fix navigation bar background after accepting an invite (PR #2261)
  * Tabs at the top of Room Details are hard to see in dark theme (#2260).
 
-Changes in 0.8.0 (2019-02-15)
-===============================================
+## Changes in 0.8.0 (2019-02-15)
 
 Improvements:
  * Upgrade MatrixKit version (v0.9.5 - https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.9.5).
@@ -2111,21 +1417,18 @@ Bug fix:
  * Reskin: Jump to first unread message doesn't show up in 0.7.12 TF (#2218).
  * Reskin: Sometimes the roomVC navigation bar is tranparent (#2252).
 
-Changes in 0.7.11 (2019-01-08)
-===============================================
+## Changes in 0.7.11 (2019-01-08)
 
 Improvements:
  * Upgrade MatrixKit version (v0.9.3).
  * Fix almost all the warnings caused by -Wstrict-prototypes, thanks to @fridtjof (PR #2155).
 
-Changes in 0.7.10 (2019-01-04)
-===============================================
+## Changes in 0.7.10 (2019-01-04)
 
 Bug fix:
  * Share extension: Fix screenshot sharing (#2022). Improve image sharing performance to avoid out of memory crash.
 
-Changes in 0.7.9 (2019-01-04)
-===============================================
+## Changes in 0.7.9 (2019-01-04)
 
 Improvements:
  * Upgrade MatrixKit version (v0.9.2).
@@ -2133,8 +1436,7 @@ Improvements:
 Bug fix:
  * Registration: email or phone number is no more skippable (#2140).
 
-Changes in 0.7.8 (2018-12-12)
-===============================================
+## Changes in 0.7.8 (2018-12-12)
 
 Improvements:
  * Upgrade MatrixKit version (v0.9.1).
@@ -2146,8 +1448,7 @@ Improvements:
 Bug fix:
  * Registration: reCAPTCHA does not work anymore on iOS 10 (#2119).
 
-Changes in 0.7.7 (2018-10-31)
-===============================================
+## Changes in 0.7.7 (2018-10-31)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.6).
@@ -2155,21 +1456,18 @@ Improvements:
 Bug fix:
  * Notifications: old notifications can reappear (#1985).
 
-Changes in 0.7.6 (2018-10-05)
-===============================================
+## Changes in 0.7.6 (2018-10-05)
 
 Bug fix:
  * Wrong version number.
 
-Changes in 0.7.5 (2018-10-05)
-===============================================
+## Changes in 0.7.5 (2018-10-05)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.5).
  * Server Quota Notices: Implement the blue banner (#1937).
 
-Changes in 0.7.4 (2018-09-26)
-===============================================
+## Changes in 0.7.4 (2018-09-26)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.4).
@@ -2183,8 +1481,7 @@ Bug fix:
  * Fix missing read receipts when lazy-loading room members.
  * Weird text color when selecting a message (#2046).
 
-Changes in 0.7.3 (2018-08-27)
-===============================================
+## Changes in 0.7.3 (2018-08-27)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.3).
@@ -2193,8 +1490,7 @@ Bug fix:
  * Fix input toolbar reset in RoomViewController on MXSession state change (#2006 and #2008).
  * Fix user interaction disabled in master view of UISplitViewContoller when selecting a room (#2005).
 
-Changes in 0.7.2 (2018-08-24)
-===============================================
+## Changes in 0.7.2 (2018-08-24)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.2).
@@ -2205,8 +1501,7 @@ Bug fix:
  * Recents: Avoid to open a room twice (it crashed on room creation on quick HSes).
  * Riot-bot: Do not try to create a room with it if the user homeserver is not federated.
 
-Changes in 0.7.1 (2018-08-17)
-===============================================
+## Changes in 0.7.1 (2018-08-17)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.1).
@@ -2216,8 +1511,7 @@ Bug fix:
  * Direct rooms can be lost on an initial /sync (vector-im/riot-ios/issues/1983).
  * Fix possible race conditions in direct rooms management.
 
-Changes in 0.7.0 (2018-08-10)
-===============================================
+## Changes in 0.7.0 (2018-08-10)
 
 Improvements:
  * Upgrade MatrixKit version (v0.8.0).
@@ -2238,22 +1532,19 @@ Improvements:
 Bug fix:
  * Multiple rooms can be opened (#1967).
 
-Changes in 0.6.20 (2018-07-13)
-===============================================
+## Changes in 0.6.20 (2018-07-13)
 
 Improvements:
  * Update contact permission text in order to be clearer about the reasons for access to the address book.
 
-Changes in 0.6.19 (2018-07-05)
-===============================================
+## Changes in 0.6.19 (2018-07-05)
 
 Improvements:
 
 Bug fix:
 * RoomVC: Fix duplicated read receipts (regression due to read receipts performance improvement).
 
-Changes in 0.6.18 (2018-07-03)
-===============================================
+## Changes in 0.6.18 (2018-07-03)
 
 Improvements:
  * RoomVC: Add a re-request keys button on message unable to decrypt (#1879).
@@ -2268,8 +1559,7 @@ Bug fix:
  * Lag in typing (#1820).
  * E2E messages not decrypted in notifs after logging back in (#1914).
 
-Changes in 0.6.17 (2018-06-01)
-===============================================
+## Changes in 0.6.17 (2018-06-01)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.14).
@@ -2285,8 +1575,7 @@ Bug fix:
 Translations:
  * Enable Icelandic.
 
-Changes in 0.6.16 (2018-05-23)
-===============================================
+## Changes in 0.6.16 (2018-05-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.12).
@@ -2301,8 +1590,7 @@ Bug fix:
  * Timestamps say 'Yesterday' when it is today (#1274), thanks to @pixlwave (PR #1865).
  * RoomVC: messages with link blink forever #1869
 
-Changes in 0.6.15 (2018-04-23)
-===============================================
+## Changes in 0.6.15 (2018-04-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.11).
@@ -2310,8 +1598,7 @@ Improvements:
 Bug fix:
  * Regression: Sending a photo from the photo library causes a crash.
  
-Changes in 0.6.14 (2018-04-20)
-===============================================
+## Changes in 0.6.14 (2018-04-20)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.10).
@@ -2326,8 +1613,7 @@ Bug fixes:
  * All rooms showing the same avatar (#1673).
  * App fails to logout on unknown token (#1839).
 
-Changes in 0.6.13 (2018-03-30)
-===============================================
+## Changes in 0.6.13 (2018-03-30)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.9).
@@ -2336,8 +1622,7 @@ Improvements:
 Bug fixes:
  * Room summary is not updated after redaction of the room display name (vector-im/riot-ios#1822). 
 
-Changes in 0.6.12 (2018-03-12)
-===============================================
+## Changes in 0.6.12 (2018-03-12)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.8).
@@ -2357,8 +1642,7 @@ Bug Fix:
  * Crypto: e2e devices list not shown (#1782).
  * Direct Chat: a room was marked as direct by mistake when I joined it.
  
-Changes in 0.6.11 (2018-02-27)
-===============================================
+## Changes in 0.6.11 (2018-02-27)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.7).
@@ -2366,8 +1650,7 @@ Improvements:
 Bug Fix:
  * My communities screen is empty despite me being in several groups (#1792).
 
-Changes in 0.6.10 (2018-02-14)
-===============================================
+## Changes in 0.6.10 (2018-02-14)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.6).
@@ -2377,8 +1660,7 @@ Bug Fix:
  * App crashes on cold start if no account is defined.
  * flair labels are a bit confusing (#1772).
 
-Changes in 0.6.9 (2018-02-10)
-===============================================
+## Changes in 0.6.9 (2018-02-10)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.5).
@@ -2403,8 +1685,7 @@ Bug Fix:
 Translations:
  * Catalan, added thanks to @sim6 and @salvadorpla (PR #1767).
 
-Changes in 0.6.8 (2018-01-03)
-===============================================
+## Changes in 0.6.8 (2018-01-03)
 
 Improvements:
  * AppDelegate: Enable log to file earlier.
@@ -2413,8 +1694,7 @@ Bug Fix:
  * AppDelegate: Disable again loop on [application isProtectedDataAvailable] because it sometimes makes an OS watchdog kill the app.
  * Missing Push Notifications (#1696): Show a notification even if the app fails to sync with its hs.
 
-Changes in 0.6.7 (2017-12-27)
-===============================================
+## Changes in 0.6.7 (2017-12-27)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.4).
@@ -2426,27 +1706,23 @@ Bug Fix:
  * Should fix missing push notifications (#1696).
  * Should fix the application crash on "Failed to grow buffer" when loading local phonebook contacts (https://github.com/matrix-org/riot-ios-rageshakes/issues/779).
 
-Changes in 0.6.6 (2017-12-21)
-===============================================
+## Changes in 0.6.6 (2017-12-21)
 
 Bug Fix:
  * Widget: Integrate widget data into widget URL (https://github.com/vector-im/riot-meta/issues/125).
  * VoIP: increase call invite lifetime from 30 to 60s (https://github.com/vector-im/riot-meta/issues/129).
 
-Changes in 0.6.5 (2017-12-19)
-===============================================
+## Changes in 0.6.5 (2017-12-19)
 
 Bug Fix:
  * Push Notifications: Missing push notifications (#1696).
 
-Changes in 0.6.4 (2017-12-05)
-===============================================
+## Changes in 0.6.4 (2017-12-05)
 
 Bug Fix:
  * Crypto: The share key dialog can appear with a 'null' device (#1683).
 
-Changes in 0.6.3 (2017-11-30)
-===============================================
+## Changes in 0.6.3 (2017-11-30)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.3).
@@ -2469,8 +1745,7 @@ Translations:
  * Japanese, updated thanks to @yuurii and @libraryxhime.
  * Russian, updated thanks to @Walter.
 
-Changes in 0.6.2 (2017-11-13)
-===============================================
+## Changes in 0.6.2 (2017-11-13)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.2).
@@ -2479,8 +1754,7 @@ Bug Fix:
  * Share extension silently fails on big pics - eg panoramas (#1627).
  * Share extension improvements: display the search input by default,... (#1611).
 
-Changes in 0.6.1 (2017-10-27)
-===============================================
+## Changes in 0.6.1 (2017-10-27)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.1).
@@ -2491,8 +1765,7 @@ Bug Fix:
  * CallKit - When I reject or answer a call on one device, it should stop ringing on all other iOS devices (#1618).
  * The Call View Controller is displayed whereas the call has been cancelled.
 
-Changes in 0.6.0 (2017-10-23)
-===============================================
+## Changes in 0.6.0 (2017-10-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.7.0).
@@ -2516,8 +1789,7 @@ Bug Fix:
  * Member Info page avatars are systematically cropped (iOS 11) (#1590, PR #1604).
  * Room Preview: the room name and avatar are missing for somepublic rooms (#1603, PR #1605).
 
-Changes in 0.5.6 (2017-10-05)
-===============================================
+## Changes in 0.5.6 (2017-10-05)
 
 Improvements:
  * Settings: Pin rooms with missed notifs and unread msg by default (PR #1556).
@@ -2525,8 +1797,7 @@ Improvements:
 Bug Fix:
  * Fix RAM peak usage when doing an initial sync with large rooms (PR #1553).
 
-Changes in 0.5.5 (2017-10-04)
-===============================================
+## Changes in 0.5.5 (2017-10-04)
 
 Improvements:
  * Rageshake: Add a setting to enable (disable) it (PR #1552).
@@ -2534,8 +1805,7 @@ Improvements:
 Bug Fix:
  * Some rooms have gone nameless after upgrade (PR #1551).
 
-Changes in 0.5.4 (2017-10-03)
-===============================================
+## Changes in 0.5.4 (2017-10-03)
 
 Improvements:
  * Upgrade MatrixKit version (v0.6.3).
@@ -2570,8 +1840,7 @@ Translations:
  * Enable Basque, thanks to @osoitz.
  * Enable Simplified Chinese, thanks to @tonghuix (Note: the push notifications are not translated yet).
 
-Changes in 0.5.3 (2017-08-25)
-===============================================
+## Changes in 0.5.3 (2017-08-25)
 
 Improvements:
  * Upgrade MatrixKit version (v0.6.2).
@@ -2587,22 +1856,19 @@ Bug Fixes:
 Translations:
  * Enable Russian.
 
-Changes in 0.5.2 (2017-08-01)
-===============================================
+## Changes in 0.5.2 (2017-08-01)
 
 Improvements:
  * Upgrade MatrixKit version (v0.6.1).
  * Emojis: Boost size of messages containing only emojis (not only one).
  * Bug Report: Make the crash dump appear in GH issues created for crashes
 
-Changes in 0.5.1 (2017-08-01)
-===============================================
+## Changes in 0.5.1 (2017-08-01)
 
 Improvements:
  * Fix a build issue that appeared after merging to master.
 
-Changes in 0.5.0 (2017-08-01)
-===============================================
+## Changes in 0.5.0 (2017-08-01)
 
 Improvements:
  * Upgrade MatrixKit version (v0.6.0).
@@ -2634,15 +1900,13 @@ Bug fixes:
  * Fix the wrong preview layout on iPad described in PR #1372.
  * Room settings: ticks are badly refreshed (#681).
 
-Changes in 0.4.3 (2017-07-05)
-===============================================
+## Changes in 0.4.3 (2017-07-05)
 
 Improvement:
  * Update the application title with "Riot.im".
 
 
-Changes in 0.4.2 (2017-06-30)
-===============================================
+## Changes in 0.4.2 (2017-06-30)
 
 Improvements:
  * Upgrade MatrixKit version (v0.5.2).
@@ -2659,8 +1923,7 @@ Bug fixes:
  * Bug report: Remove the old requirement for an existing email account.
  * Crash report: Do not loose what the user typed when debackgrounding the app.
 
-Changes in 0.4.1 (2017-06-23)
-===============================================
+## Changes in 0.4.1 (2017-06-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.5.1).
@@ -2680,8 +1943,7 @@ Bug fixes:
  * tapping on an unread room on home page takes you to the wrong room (#1304).
  * Read marker: when being kicked, the "Jump to first unread message" shouldn't be displayed (#1338).
 
-Changes in 0.4.0 (2017-06-16)
-===============================================
+## Changes in 0.4.0 (2017-06-16)
 
 Improvements:
  * Upgrade MatrixKit version (v0.5.0).
@@ -2703,8 +1965,7 @@ Bug fixes:
  * Fix crash in [MXKContactManager localContactsSplitByContactMethod] (https://github.com/matrix-org/riot-ios-rageshakes#36).
  * Fix App crashes on [AvatarGenerator imageFromText:withBackgroundColor:] (#657).
 
-Changes in 0.3.13 (2017-03-23)
-===============================================
+## Changes in 0.3.13 (2017-03-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.11).
@@ -2713,8 +1974,7 @@ Bug fixes:
  * Chat screen: image thumbnails management is broken (#1121).
  * Image viewer repeatedly loses overlay menu (#1109).
 
-Changes in 0.3.12 (2017-03-21)
-===============================================
+## Changes in 0.3.12 (2017-03-21)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.10).
@@ -2724,8 +1984,7 @@ Bug fixes:
  * Chat screen - The missed discussions badge is missing in the navigation bar.
 
 
-Changes in 0.3.11 (2017-03-16)
-===============================================
+## Changes in 0.3.11 (2017-03-16)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.9).
@@ -2736,8 +1995,7 @@ Bug fixes:
  * MSIDSN registration.
  * [Tablet / split mode] The room member details page is not popped after signing out (#1062).
 
-Changes in 0.3.10 (2017-03-10)
-===============================================
+## Changes in 0.3.10 (2017-03-10)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.8).
@@ -2765,8 +2023,7 @@ Bug fixes:
  * Resend msgs now? needs cancel button if you want to discard them (#306).
  * Crypto: After importing keys, the newly decrypted msg have a forbidden icon (#1028).
 
-Changes in 0.3.9 (2017-02-08)
-===============================================
+## Changes in 0.3.9 (2017-02-08)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.7).
@@ -2791,8 +2048,7 @@ Bug fixes:
  * App crash: [MXKRoomInputToolbarView contentEditingInputsForAssets:withResult:onComplete:] (#1015).
  * App crash: [__NSCFString replaceCharactersInRange:withString:]: nil argument (#990).
 
-Changes in 0.3.8 (2017-01-24)
-===============================================
+## Changes in 0.3.8 (2017-01-24)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.6).
@@ -2807,8 +2063,7 @@ Bug fixes:
  * Room details members: wrong unknown wording (#941).
  * App may crash when user rotates the device while he joins a room.
 
-Changes in 0.3.7 (2017-01-19)
-===============================================
+## Changes in 0.3.7 (2017-01-19)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.5).
@@ -2833,14 +2088,12 @@ Bug fixes:
  * Crash on Create a room button (#935).
  * Local contacts are missing when the user logs in again (PR #942).
 
-Changes in 0.3.6 (2016-12-23)
-===============================================
+## Changes in 0.3.6 (2016-12-23)
 
 Improvements:
  * Add descriptions for access permissions to Camera, Microphone, Photo Gallery and Contacts.
 
-Changes in 0.3.5 (2016-12-19)
-===============================================
+## Changes in 0.3.5 (2016-12-19)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.4).
@@ -2864,8 +2117,7 @@ Bug fixes:
  * Messages: App crashes during drag and drop.
  * Possible fix of app crash on exception: "UITableView dataSource is not set".
 
-Changes in 0.3.4 (2016-11-23)
-===============================================
+## Changes in 0.3.4 (2016-11-23)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.3).
@@ -2877,8 +2129,7 @@ Bug fixes:
  * Crypto: Do not allow to redact the event that enabled encryption in a room.
  * Crypto: Made attachments work better cross platform.
 
-Changes in 0.3.3 (2016-11-22)
-===============================================
+## Changes in 0.3.3 (2016-11-22)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.2).
@@ -2887,8 +2138,7 @@ Improvements:
 Bug fixes:
  * Crypto: Do not allow to redact the event that enabled encryption in a room.
 
-Changes in 0.3.2 (2016-11-18)
-===============================================
+## Changes in 0.3.2 (2016-11-18)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.1).
@@ -2898,15 +2148,13 @@ Bug fixes:
  * Wrong thumbnail shown whilst uploading e2e image  (https://github.com/vector-im/vector-ios#795).
  * [Register flow] Register with a mail address fails (https://github.com/vector-im/vector-ios#799).
 
-Changes in 0.3.1 (2016-11-17)
-===============================================
+## Changes in 0.3.1 (2016-11-17)
 
 Bug fixes:
  * Fix padlock icons on text messages.
  * Fix a random crash when uploading an e2e attachment.
 
-Changes in 0.3.0 (2016-11-17)
-===============================================
+## Changes in 0.3.0 (2016-11-17)
 
 Improvements:
  * Upgrade MatrixKit version (v0.4.0).
@@ -2923,8 +2171,7 @@ Bug fixes:
  * Search messages tab: background picture covering up the tabs when device is turned horizontaly #654.
  * Changing notif setting from swipe menu should change the room apparence in the list #525
 
-Changes in 0.2.3 (2016-09-30)
-===============================================
+## Changes in 0.2.3 (2016-09-30)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.19).
@@ -2936,8 +2183,7 @@ Bug fixes:
  * Room message search: the message date & time are not displayed #361.
  * Room message search: the search pattern is not highlighted in results #660.
 
-Changes in 0.2.2 (2016-09-27)
-===============================================
+## Changes in 0.2.2 (2016-09-27)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.18).
@@ -2953,15 +2199,13 @@ Bug fixes:
  * Crash due to a race condition in read receipts management #645.
  * App may crash when the user logs out while a request is pending.
 
-Changes in 0.2.1 (2016-09-15)
-===============================================
+## Changes in 0.2.1 (2016-09-15)
 
 Bug fixes:
  * Use Apple version for T&C.
  * Revert the default IS.
 
-Changes in 0.2.0 (2016-09-15)
-===============================================
+## Changes in 0.2.0 (2016-09-15)
 
 Improvements:
  * Update name & icons
@@ -2978,8 +2222,7 @@ Bug fixes:
  * iOS10: App crashes when it wants to access user's data (Photos, Contacts, Camera, Mic) #605.
  * Chat screen: Hang up icon overlap the send button #614.
 
-Changes in Vector iOS in 0.1.17 (2016-09-08)
-===============================================
+## Changes in Vector iOS in 0.1.17 (2016-09-08)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.16).
@@ -3031,8 +2274,7 @@ Bug fixes:
  * Sync has got stuck while the app was backgrounded #506.
  * Handle 404 (Event not found) on permalinks #484.
 
-Changes in Vector iOS in 0.1.16 (2016-08-25)
-===============================================
+## Changes in Vector iOS in 0.1.16 (2016-08-25)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.15).
@@ -3041,8 +2283,7 @@ Bug fixes:
  * Rooms list: Fix crash when computing recents.
  * Settings: Fix crash when logging out.
 
-Changes in Vector iOS in 0.1.15 (2016-08-25)
-===============================================
+## Changes in Vector iOS in 0.1.15 (2016-08-25)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.14).
@@ -3071,8 +2312,7 @@ Bug fixes:
  * MXHTTPClient: Fix crash: "Task created in a session that has been invalidated" #490.
  * Call: the remote and local video are not scaled to fill the video container #537.
  
-Changes in Vector iOS in 0.1.14 (2016-08-01)
-===============================================
+## Changes in Vector iOS in 0.1.14 (2016-08-01)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.13).
@@ -3092,8 +2332,7 @@ Bug fixes:
  * Fixed crash in the room screen reported by GA.
  * Fixed crash in [AppDelegate applicationDidBecomeActive:] #489.
 
-Changes in Vector iOS in 0.1.13 (2016-07-26)
-===============================================
+## Changes in Vector iOS in 0.1.13 (2016-07-26)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.12).
@@ -3103,8 +2342,7 @@ Bug fixes:
  * Confirmation prompt before opping someone to same power level #461.
  * Room Settings: The room privacy setting text doesn't fit in phone mode #429.
 
-Changes in Vector iOS in 0.1.12 (2016-07-15)
-===============================================
+## Changes in Vector iOS in 0.1.12 (2016-07-15)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.11).
@@ -3125,8 +2363,7 @@ Bug fixes:
  * Room Settings: check room permissions and grey out those boxes (disable) if you can't change them #430.
  * Room Settings: if there isn't a topic (new rooms) you can't actually change/set it. #441.
 
-Changes in Vector iOS in 0.1.11 (2016-07-01)
-===============================================
+## Changes in Vector iOS in 0.1.11 (2016-07-01)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.10).
@@ -3163,8 +2400,7 @@ Bug fixes:
  * Room members: double loading wheel #180.
  * App crashes on '/join' command when no param is provided.
 
-Changes in Vector iOS in 0.1.10 (2016-06-04)
-===============================================
+## Changes in Vector iOS in 0.1.10 (2016-06-04)
 
 Improvements:
  * Directory section is displayed by default in Messages when recents list is empty.
@@ -3172,8 +2408,7 @@ Improvements:
  * Room Participants: Increase the search field from 44px to 50px high to give it slightly more prominence.
  * Room Participants - Search bar: Adjust green separator to make it more obviously tappable and less like a header.
 
-Changes in Vector iOS in 0.1.9 (2016-06-02)
-===============================================
+## Changes in Vector iOS in 0.1.9 (2016-06-02)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.9).
@@ -3185,8 +2420,7 @@ Bug fixes:
  * Room avatars on matrix.org are badly rendered in the directory from a vector.im account #355.
  * Authentication: "Send Reset Email" is truncated on iPhone 4S.
 
-Changes in Vector iOS in 0.1.8 (2016-06-01)
-===============================================
+## Changes in Vector iOS in 0.1.8 (2016-06-01)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.8).
@@ -3227,8 +2461,7 @@ Bug fixes:
  * Settings: Profile avatar is not clickable #351.
  * Default text in the memberlist search box would be less confusing if it was 'Search/invite by...' instead of the other way around #349.
 
-Changes in Vector iOS in 0.1.6 (2016-05-04)
-===============================================
+## Changes in Vector iOS in 0.1.6 (2016-05-04)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.7).
@@ -3250,8 +2483,7 @@ Bug fixes:
  * Media Picker: Fix icons used on video preview.
  * Room Participants - Search session: the return key must be 'Done' instead of 'Search' #292.
 
-Changes in Vector iOS in 0.1.5 (2016-04-27)
-===============================================
+## Changes in Vector iOS in 0.1.5 (2016-04-27)
 
 Improvements:
  * Chat Screen: Ability to copy event permalinks into the pasteboard from the edit menu #225
@@ -3260,8 +2492,7 @@ Bug fixes:
  * Fix crash when rotating 6+ or iPad at app start-up.
  * Universal link on an unjoined room + an event iD is not properly managed #246.
 
-Changes in Vector iOS in 0.1.4 (2016-04-26)
-===============================================
+## Changes in Vector iOS in 0.1.4 (2016-04-26)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.6).
@@ -3297,8 +2528,7 @@ Bug fixes:
  * Chat header: Room details opening is delayed #181.
  * Messages: Room creation button does not respond #249.
 
-Changes in Vector iOS in 0.1.3 (2016-04-08)
-===============================================
+## Changes in Vector iOS in 0.1.3 (2016-04-08)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.5).
@@ -3322,8 +2552,7 @@ Bug fixes:
  * Chat screen: Resume on empty room (Please select a room) #128.
  * Room members: Keyboard is dismissed at each tap (when search result has been scrolled once).
 
-Changes in Vector iOS in 0.1.2 (2016-03-17)
-===============================================
+## Changes in Vector iOS in 0.1.2 (2016-03-17)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.4).
@@ -3348,8 +2577,7 @@ Bug fixes:
  * Chat: scrolling to bottom when opening new rooms seems unreliable #148.
  * Chat: persistent unsent messages #164.
 
-Changes in Vector iOS in 0.1.1 (2016-03-07)
-===============================================
+## Changes in Vector iOS in 0.1.1 (2016-03-07)
 
 Improvements:
  * Upgrade MatrixKit version (v0.3.3).
@@ -3377,13 +2605,11 @@ Bug fixes:
  * Media Picker: fix layout issues.
  * Media Picker: Launch must be speed up.
 
-Changes in Vector iOS in 0.1.0 (2016-01-29)
-===============================================
+## Changes in Vector iOS in 0.1.0 (2016-01-29)
 
  * Upgrade MatrixKit version (v0.3.1).
  * Implement Visual Design v1.3 (80% done).
 
-Changes in Vector iOS in 0.0.1 (2015-11-16)
-===============================================
+## Changes in Vector iOS in 0.0.1 (2015-11-16)
 
  * Creation : The first implementation of Vector application based on Matrix iOS Kit v0.2.7.
