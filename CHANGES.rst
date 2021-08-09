@@ -25,7 +25,7 @@ Changes to be released in next version
  * 
     
 🧱 Build
- * 
+ * Add a script to initialize quickly and easily the project.
 
 Others
  * Docs: Add reference to AppIdentifiers.xcconfig in INSTALL.md
