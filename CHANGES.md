@@ -8,7 +8,6 @@
 🐛 Bugfix
 
  * Voice Messages: Fixed race conditions when sending voice messages (#4641)
-
     
 ## Changes in 1.4.8 (2021-07-29)
 
@@ -33,7 +32,6 @@
  * Room: Fixed crash when opening a read-only room (#4620).
  * Voice Messages: Tapping on waveform in composer glitches UI (#4603).
 
-    
 Others
 
  * Separated CI jobs into individual actions
@@ -43,7 +41,6 @@ Improvements:
  * Upgrade MatrixKit version ([v0.15.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.6)).
 
 ## Changes in 1.4.7 (2021-07-22)
-
     
 Others
 
