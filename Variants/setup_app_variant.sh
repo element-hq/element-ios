@@ -14,7 +14,9 @@ VARIANTS_ROOT_FOLDER="Variants/"
 cd ..
 
 # Get the variant root folder
-variant_root_folder="${VARIANTS_ROOT_FOLDER}${VARIANT_NAME}"
+variant_root_folder="${VARIANTS_ROOT_FOLDER}${VARIANT_NAME}/"
+
+project_root_folder="./"
 
 # Check if variant folder exists
 if [ ! -d "$variant_root_folder" ]; then
@@ -24,11 +26,5 @@ fi
 
 echo "Applying app variant: ${VARIANT_NAME}"
 
-# Replace fastlane environment variable file
-cp -f "${variant_root_folder}/.env.default" fastlane/.env.default
-
-# Replace build identifiers and provisioning profiles
-cp -f "${variant_root_folder}/AppIdentifiers.xcconfig" Config/AppIdentifiers.xcconfig
-
-# Replace app icon
-rsync -a "${variant_root_folder}/AppIcon.appiconset/" Riot/Assets/SharedImages.xcassets/AppIcon.appiconset/
+# Merge variant directory into project directory
+rsync -a "${variant_root_folder}" "${project_root_folder}"
