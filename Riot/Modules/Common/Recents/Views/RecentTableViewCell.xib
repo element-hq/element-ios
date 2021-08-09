@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -32,14 +32,6 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="42" id="7Ys-gS-ja8"/>
                             <constraint firstAttribute="height" constant="42" id="WPC-tL-hnM"/>
-                        </constraints>
-                    </view>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8CY-Ku-0qh">
-                        <rect key="frame" x="13" y="15" width="42" height="42"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="42" id="ize-F0-OeQ"/>
-                            <constraint firstAttribute="width" constant="42" id="t6V-Zm-EM3"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="RoomTitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lg1-xQ-AGn">
@@ -109,7 +101,6 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="F6K-PV-15f" firstAttribute="trailing" secondItem="360-Go-RcG" secondAttribute="trailing" id="3qB-Na-Eqs"/>
-                    <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerX" secondItem="RX5-eD-c3c" secondAttribute="centerX" id="FVh-1h-VkB"/>
                     <constraint firstItem="360-Go-RcG" firstAttribute="leading" secondItem="OeZ-wN-eil" secondAttribute="trailing" constant="8" id="KuE-8m-e9A"/>
                     <constraint firstItem="e7r-zL-9bw" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" id="PUW-if-ewh"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="leading" secondItem="RX5-eD-c3c" secondAttribute="trailing" constant="14" id="Pgp-JM-oQd"/>
@@ -127,13 +118,11 @@
                     <constraint firstAttribute="trailing" secondItem="dQt-mN-T6b" secondAttribute="trailing" constant="30" id="t2m-pb-5zd"/>
                     <constraint firstItem="Lg1-xQ-AGn" firstAttribute="top" secondItem="aXz-IR-jj5" secondAttribute="top" constant="14" id="tY3-6V-A3B"/>
                     <constraint firstItem="RX5-eD-c3c" firstAttribute="leading" secondItem="aXz-IR-jj5" secondAttribute="leading" constant="13" id="tgy-cX-Wxm"/>
-                    <constraint firstItem="8CY-Ku-0qh" firstAttribute="centerY" secondItem="RX5-eD-c3c" secondAttribute="centerY" id="ukJ-yz-Kit"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RecentTableViewCell"/>
             <connections>
-                <outlet property="directRoomBorderView" destination="8CY-Ku-0qh" id="vKk-ZO-TQq"/>
                 <outlet property="encryptedRoomIcon" destination="NAZ-zd-MHS" id="ZsH-Zr-Q4K"/>
                 <outlet property="lastEventDate" destination="360-Go-RcG" id="Y0L-Dj-ZVn"/>
                 <outlet property="lastEventDecriptionLabelTrailingConstraint" destination="t2m-pb-5zd" id="cxp-7Z-bEg"/>

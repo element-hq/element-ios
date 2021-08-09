@@ -45,6 +45,7 @@ class VoiceMessageAudioPlayer: NSObject {
     private let delegateContainer = DelegateContainer()
     
     private(set) var url: URL?
+    private(set) var displayName: String?
     
     var isPlaying: Bool {
         guard let audioPlayer = audioPlayer else {
@@ -68,12 +69,13 @@ class VoiceMessageAudioPlayer: NSObject {
         removeObservers()
     }
     
-    func loadContentFromURL(_ url: URL) {
+    func loadContentFromURL(_ url: URL, displayName: String? = nil) {
         if self.url == url {
             return
         }
         
         self.url = url
+        self.displayName = displayName
         
         removeObservers()
         

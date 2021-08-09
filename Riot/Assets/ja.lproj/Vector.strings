@@ -289,7 +289,6 @@
 "settings_show_decrypted_content" = "復号化された文章を表示";
 "settings_global_settings_info" = "あなたの %@ webクライアント上で、全体の通知設定が可能です";
 "settings_pin_rooms_with_missed_notif" = "通知の届かなかった部屋をピン止めする";
-"settings_on_denied_notification" = "%@で通知されないように設定されています。あなたの端末設定で許可してください";
 "settings_callkit_info" = "画面がロックされているときに着信がありました。Elementの着信はシステムの通話履歴で確認できます。 iCloudが有効になっている場合、この通話履歴はAppleと共有されます。";
 "settings_ui_language" = "言語";
 "settings_ui_theme" = "外観";
