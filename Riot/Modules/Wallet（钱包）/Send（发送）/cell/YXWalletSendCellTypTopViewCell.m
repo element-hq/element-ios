@@ -126,9 +126,8 @@
 }
 
 -(void)setupCellWithRowData:(YXWalletSendModel *)rowData{
-    self.titleLabel.text = rowData.title;
-    self.desLabel.text = rowData.desc;
-    
+    self.titleLabel.text = @(rowData.sendDataInfo.amount).stringValue;
+    self.desLabel.text = [NSString stringWithFormat:@"%.2f%%",(rowData.sendDataInfo.fees * 100)];
     if ([rowData.sendDataInfo.action isEqualToString:@"sent"]) {//发送
         _detailSendImage.image = [UIImage imageNamed:@"home_send"];
     }else if ([rowData.sendDataInfo.action isEqualToString:@"received"]) {//接受
