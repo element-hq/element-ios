@@ -89,6 +89,7 @@ enum
 enum
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
+    NOTIFICATION_SETTINGS_SYSTEM_SETTINGS,
     NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
@@ -143,7 +144,6 @@ enum
 enum
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
-    LABS_ENABLE_VOICE_MESSAGES = 1
 };
 
 enum
@@ -234,6 +234,11 @@ TableViewSectionsDelegate>
  Flag indicating whether the user is typing a phone number to bind.
  */
 @property (nonatomic) BOOL newPhoneEditingEnabled;
+
+/**
+ The current `UNUserNotificationCenter` notification settings for the app.
+ */
+@property (nonatomic) UNNotificationSettings *systemNotificationSettings;
 
 @property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
 @property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
@@ -351,6 +356,7 @@ TableViewSectionsDelegate>
     
     Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX];
+    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SYSTEM_SETTINGS];
     if (RiotSettings.shared.settingsScreenShowNotificationDecodedContentOption)
     {
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
@@ -488,7 +494,6 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        [sectionLabs addRowWithTag:LABS_ENABLE_VOICE_MESSAGES];
         sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
         if (sectionLabs.hasAnyRows)
         {
@@ -1231,6 +1236,24 @@ TableViewSectionsDelegate>
         [self editNewPhoneNumberTextField];
         keepNewPhoneNumberEditing = NO;
     }
+    
+    // Update notification access
+    [self refreshSystemNotificationSettings];
+}
+
+- (void)refreshSystemNotificationSettings
+{
+    MXWeakify(self);
+    
+    // Get the system notification settings to check authorization status and configuration.
+    [UNUserNotificationCenter.currentNotificationCenter getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            MXStrongifyAndReturnIfNil(self);
+            
+            self.systemNotificationSettings = settings;
+            [self.tableView reloadData];
+        });
+    }];
 }
 
 - (void)formatNewPhoneNumber
@@ -1791,12 +1814,37 @@ TableViewSectionsDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = account.pushNotificationServiceIsActive;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
             
+            BOOL isPushEnabled = account.pushNotificationServiceIsActive;
+            
+            // Even if push is enabled for the account, the user may have turned off notifications in system settings
+            if (isPushEnabled && self.systemNotificationSettings)
+            {
+                isPushEnabled = self.systemNotificationSettings.authorizationStatus == UNAuthorizationStatusAuthorized;
+            }
+            
+            labelAndSwitchCell.mxkSwitch.on = isPushEnabled;
+            
             cell = labelAndSwitchCell;
+        }
+        else if (row == NOTIFICATION_SETTINGS_SYSTEM_SETTINGS)
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kSettingsViewControllerPhoneBookCountryCellId];
+            }
+
+            cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+
+            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_device_notifications", @"Vector", nil);
+            cell.detailTextLabel.text = @"";
+
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
         else if (row == NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT)
         {
@@ -2266,17 +2314,6 @@ TableViewSectionsDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
-        } else if (row == LABS_ENABLE_VOICE_MESSAGES)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_voice_messages", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableVoiceMessages;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableVoiceMessages:) forControlEvents:UIControlEventValueChanged];
-            
-            cell = labelAndSwitchCell;
         }
     }
     else if (section == SECTION_TAG_FLAIR)
@@ -2500,6 +2537,10 @@ TableViewSectionsDelegate>
         {
             UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
             [self showInviteFriendsFromSourceView:selectedCell];
+        }
+        else if (section == SECTION_TAG_NOTIFICATIONS && row == NOTIFICATION_SETTINGS_SYSTEM_SETTINGS)
+        {
+            [self openSystemSettingsApp];
         }
         else if (section == SECTION_TAG_DISCOVERY)
         {
@@ -2804,20 +2845,20 @@ TableViewSectionsDelegate>
 
 - (void)togglePushNotifications:(UISwitch *)sender
 {
-    // Check first whether the user allow notification from device settings
-    UIUserNotificationType currentUserNotificationTypes = UIApplication.sharedApplication.currentUserNotificationSettings.types;
-    if (currentUserNotificationTypes == UIUserNotificationTypeNone)
+    // Check first whether the user allow notification from system settings
+    if (self.systemNotificationSettings.authorizationStatus == UNAuthorizationStatusDenied)
     {
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
         __weak typeof(self) weakSelf = self;
-
-        NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_on_denied_notification", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+        NSString *title = NSLocalizedStringFromTable(@"settings_notifications_disabled_alert_title", @"Vector", nil);
+        NSString *message = NSLocalizedStringFromTable(@"settings_notifications_disabled_alert_message", @"Vector", nil);
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
-                                                         style:UIAlertActionStyleDefault
+        currentAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                         style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
                                                            if (weakSelf)
@@ -2827,6 +2868,21 @@ TableViewSectionsDelegate>
                                                            }
                                                            
                                                        }]];
+        
+        UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings"]
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action) {
+                                                            if (weakSelf)
+                                                            {
+                                                                typeof(self) self = weakSelf;
+                                                                self->currentAlert = nil;
+                                                                
+                                                                [self openSystemSettingsApp];
+                                                            }
+                                                        }];
+        
+        [currentAlert addAction:settingsAction];
+        currentAlert.preferredAction = settingsAction;
         
         [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCPushNotificationsAlert"];
         [self presentViewController:currentAlert animated:YES completion:nil];
@@ -2869,6 +2925,12 @@ TableViewSectionsDelegate>
             }];
         }
     }
+}
+
+- (void)openSystemSettingsApp
+{
+    NSURL *settingsAppURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    [[UIApplication sharedApplication] openURL:settingsAppURL options:@{} completionHandler:nil];
 }
 
 - (void)toggleCallKit:(UISwitch *)sender
@@ -2957,11 +3019,6 @@ TableViewSectionsDelegate>
 - (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
     RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
-}
-
-- (void)toggleEnableVoiceMessages:(UISwitch *)sender
-{
-    RiotSettings.shared.enableVoiceMessages = sender.isOn;
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender

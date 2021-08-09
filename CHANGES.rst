@@ -5,10 +5,43 @@ Changes to be released in next version
  * 
 
 🙌 Improvements
- * Tools: Add a script to initialize quickly and easily the project.
+ * Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled (#2368).
+ * Settings: Adds a link to open the Settings app to quickly configure app notifications.
+ * VoIP: Text & icon changes on call tiles (#4642).
+ * Voice messages: Stop recording and go into locked mode when the application becomes inactive (#4656)
+ * Voice messages: Allow voice message playback control from the iOS lock screen and control center (#4655)
+ * Voice messages: Improve audio recording quality
+ * Voice messages: Remove labs setting and enable them by default
+ * Room: Remove the green border from direct message room avatars (#4520).
+ * VoIP: Additional changes on call tiles (#4642).
 
 🐛 Bugfix
  * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * Add a script to initialize quickly and easily the project.
+
+Others
+ * Docs: Add reference to AppIdentifiers.xcconfig in INSTALL.md
+
+Changes in 1.4.9 (2021-08-03)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Voice Messages: Increased recording state microphone icon size
+ * Voice Messages: Using "Voice message - MM.dd.yyyy HH.mm.ss" as the format for recorded audio files
+
+🐛 Bugfix
+ * Voice Messages: Fixed race conditions when sending voice messages (#4641)
 
 ⚠️ API Changes
  * 
@@ -21,6 +54,9 @@ Changes to be released in next version
 
 Others
  * 
+
+Improvements:
+
 
 Changes in 1.4.8 (2021-07-29)
 =================================================

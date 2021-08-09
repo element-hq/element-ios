@@ -29,12 +29,13 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         static let maximumAudioRecordingDuration: TimeInterval = 120.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
         static let elapsedTimeFormat = "m:ss"
+        static let fileNameFormat = "'Voice message - 'MM.dd.yyyy HH.mm.ss"
         static let minimumRecordingDuration = 1.0
     }
     
     private let themeService: ThemeService
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
-    private let temporaryFileURL: URL
+    private var temporaryFileURL: URL!
     
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
     private var displayLink: CADisplayLink!
@@ -48,9 +49,15 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     private var isInLockedMode: Bool = false
     private var notifiedRemainingTime = false
     
-    private static let timeFormatter: DateFormatter = {
+    private static let elapsedTimeFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = Constants.elapsedTimeFormat
+        return dateFormatter
+    }()
+    
+    private static let fileNameDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = Constants.fileNameFormat
         return dateFormatter
     }()
     
@@ -68,9 +75,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         self.themeService = themeService
         self.mediaServiceProvider = mediaServiceProvider
         
-        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
-        
         _voiceMessageToolbarView = VoiceMessageToolbarView.loadFromNib()
         
         super.init()
@@ -83,6 +87,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeServiceDidChangeTheme, object: nil)
         updateTheme()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
         
         updateUI()
     }
@@ -107,6 +113,11 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         audioRecorder = mediaServiceProvider.audioRecorder()
         audioRecorder?.registerDelegate(self)
+        
+        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        let fileName = VoiceMessageController.fileNameDateFormatter.string(from: Date())
+        temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("m4a")
+        
         audioRecorder?.recordWithOutputURL(temporaryFileURL)
     }
     
@@ -260,7 +271,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         })
         
         dispatchGroup.enter()
-        let destinationURL = sourceURL.deletingPathExtension().appendingPathExtension("opus")
+        let destinationURL = sourceURL.deletingPathExtension().appendingPathExtension("ogg")
         VoiceMessageAudioConverter.convertToOpusOgg(sourceURL: sourceURL, destinationURL: destinationURL) { result in
             switch result {
             case .success:
@@ -303,6 +314,10 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         _voiceMessageToolbarView.update(theme: themeService.theme)
     }
     
+    @objc private func applicationWillResignActive() {
+        finishRecording()
+    }
+    
     @objc private func handleDisplayLinkTick() {
         updateUI()
     }
@@ -342,7 +357,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (isRecording ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: currentTime))
+        details.elapsedTime = VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: currentTime))
         details.audioSamples = audioSamples
         
         if isRecording {
@@ -391,7 +406,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = VoiceMessageController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
+        details.elapsedTime = VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
         details.audioSamples = audioSamples
         details.isPlaying = audioPlayer.isPlaying
         details.progress = (audioPlayer.isPlaying ? (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0) : 0.0)
