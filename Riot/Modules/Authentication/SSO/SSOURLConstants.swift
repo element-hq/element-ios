@@ -24,6 +24,6 @@ enum SSOURLConstants {
     }
     
     enum Paths {
-        static let redirect = "/_matrix/client/r0/login/sso/redirect"
+        static let redirect = "/_matrix/client/r0/login/sso/redirect/"
     }
 }
