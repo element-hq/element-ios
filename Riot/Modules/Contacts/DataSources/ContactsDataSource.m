@@ -80,6 +80,7 @@
         _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
         
+        _showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts;
         hideNonMatrixEnabledContacts = NO;
         
         _displaySearchInputInContactsList = NO;

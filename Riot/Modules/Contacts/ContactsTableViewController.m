@@ -276,7 +276,6 @@
     
     contactsDataSource = listDataSource;
     contactsDataSource.delegate = self;
-    contactsDataSource.showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts;
     
     if (self.contactsTableView)
     {

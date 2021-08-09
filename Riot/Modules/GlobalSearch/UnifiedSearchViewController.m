@@ -245,6 +245,7 @@
         
         // Init the search for people
         peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
+        peopleSearchDataSource.showLocalContacts = NO;
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
         peopleSearchDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;

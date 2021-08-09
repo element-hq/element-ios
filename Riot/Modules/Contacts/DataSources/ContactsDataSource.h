@@ -51,8 +51,10 @@ typedef enum : NSUInteger
 }
 
 /**
- Whether the data source should include local contacts in the table view.
- Note: Updating this property does not automatically refresh the data source.
+ Whether the data source should include local contacts in the table view. The default
+ value is set at initialisation to match the `MXKAppSettings` value for `syncLocalContacts`.
+ Note: After updating this property, the table view's data will need to be reloaded for it to have
+ any effect.
  */
 @property (nonatomic) BOOL showLocalContacts;
 
