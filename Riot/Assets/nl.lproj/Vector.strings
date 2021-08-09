@@ -361,7 +361,7 @@
 "room_details_advanced_e2e_encryption_disabled" = "Versleuteling is niet ingeschakeld in deze kamer.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
 "room_details_advanced_e2e_encryption_prompt_message" = "End-to-endbeveiliging is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van voordat ze de ruimte betraden nog niet ontsleutelen.\n\nZodra de versleuteling aan staat kan het (voorlopig) niet worden uitgezet.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op programma's die geen versleuteling ondersteunen.";
-"room_details_fail_to_update_avatar" = "Bijwerken van kamerfoto is mislukt";
+"room_details_fail_to_update_avatar" = "Bijwerken van kamerafbeelding is mislukt";
 "room_details_fail_to_update_room_name" = "Bijwerken van kamernaam is mislukt";
 "room_details_fail_to_update_topic" = "Bijwerken van gespreksonderwerp is mislukt";
 "room_details_fail_to_update_room_guest_access" = "Bijwerken van gasttoegang voor kamer is mislukt";
@@ -896,11 +896,11 @@
 // Mark: - Room creation introduction cell
 
 "room_intro_cell_add_participants_action" = "Personen toevoegen";
-"room_avatar_view_accessibility_hint" = "Kamerfoto wijzigen";
+"room_avatar_view_accessibility_hint" = "Kamerafbeelding wijzigen";
 
 // Mark: - Room avatar view
 
-"room_avatar_view_accessibility_label" = "profielfoto";
+"room_avatar_view_accessibility_label" = "afbeelding";
 "invite_friends_share_text" = "Hoi, start een gesprek met me op %@: %@";
 
 // MARK: - Invite friends
@@ -1255,7 +1255,7 @@
 "room_widget_permission_widget_id_permission" = "Widget-ID";
 "room_widget_permission_theme_permission" = "Uw thema";
 "room_widget_permission_user_id_permission" = "Uw gebruikers-ID";
-"room_widget_permission_avatar_url_permission" = "Uw profielfoto-URL";
+"room_widget_permission_avatar_url_permission" = "Uw afbeelding-URL";
 "room_widget_permission_display_name_permission" = "Uw weergavenaam";
 "room_widget_permission_information_title" = "Dit gebruiken kan gegevens delen met %@:\n";
 "room_widget_permission_webview_information_title" = "Dit gebruiken kan cookies toevoegen en gegevens delen met %@:\n";
@@ -1492,11 +1492,11 @@
 // Mark: - Side menu
 
 "side_menu_reveal_action_accessibility_label" = "Linkerpaneel";
-"user_avatar_view_accessibility_hint" = "Avatar veranderen";
+"user_avatar_view_accessibility_hint" = "Afbeelding veranderen";
 
 // Mark: - User avatar view
 
-"user_avatar_view_accessibility_label" = "avatar";
+"user_avatar_view_accessibility_label" = "afbeelding";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Voor uw veiligheidssleutel in om door te gaan.";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Voer uw veiligheidswachtwoord in om door te gaan.";
 
