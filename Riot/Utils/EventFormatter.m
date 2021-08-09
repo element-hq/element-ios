@@ -422,6 +422,12 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         if ([self functionalMembersEventFromStateEvents:stateEvents])
         {
             MXLogDebug(@"[EventFormatter] The functional members event has been updated.")
+            
+            // The stateEvents parameter contains state events that may change the room summary. If service members are found,
+            // it's likely that something changed. As they aren't stored, the only reliable check would be to compute the
+            // room name which we'll do twice more in updateRoomSummary:withServerRoomSummary:roomState: anyway.
+            //
+            // So return YES and let that happen there.
             return YES;
         }
     }
