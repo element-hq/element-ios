@@ -200,6 +200,7 @@
             MXWeakify(self);
 
             hsUserDirectoryOperation = [self.mxSession.matrixRestClient searchUsers:searchText limit:50 success:^(MXUserSearchResponse *userSearchResponse) {
+                
                 MXStrongifyAndReturnIfNil(self);
                 
                 self->filteredMatrixContacts = [NSMutableArray arrayWithCapacity:userSearchResponse.results.count];
@@ -237,6 +238,7 @@
     MXWeakify(self);
 
     dispatch_async(searchProcessingQueue, ^{
+        
         MXStrongifyAndReturnIfNil(self);
         
         // Reset the current arrays if it is required
@@ -287,13 +289,12 @@
         
         self->searchProcessingText = searchText;
         
+        MXWeakify(self);
+        
         dispatch_sync(dispatch_get_main_queue(), ^{
             
             // Sanity check: check whether self has been destroyed.
-            if (!self->searchProcessingQueue)
-            {
-                return;
-            }
+            MXStrongifyAndReturnIfNil(self);
             
             // Render the search result only if there is no other search in progress.
             self->searchProcessingCount --;
