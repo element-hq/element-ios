@@ -23,7 +23,7 @@ protocol ShowSpaceChildRoomDetailViewModelViewDelegate: AnyObject {
 }
 
 protocol ShowSpaceChildRoomDetailViewModelCoordinatorDelegate: AnyObject {
-    func showSpaceChildRoomDetailViewModel(_ viewModel: ShowSpaceChildRoomDetailViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func showSpaceChildRoomDetailViewModelDidComplete(_ viewModel: ShowSpaceChildRoomDetailViewModelType)
     func showSpaceChildRoomDetailViewModelDidCancel(_ viewModel: ShowSpaceChildRoomDetailViewModelType)
 }
 

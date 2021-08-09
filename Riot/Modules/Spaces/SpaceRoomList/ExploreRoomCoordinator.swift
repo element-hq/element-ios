@@ -127,14 +127,10 @@ extension ExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorDelegate {
 
 // MARK: - ShowSpaceChildRoomDetailCoordinator
 extension ExploreRoomCoordinator: ShowSpaceChildRoomDetailCoordinatorDelegate {
-    func showSpaceChildRoomDetailCoordinator(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        if UIDevice.current.isPhone {
-            self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil, from: nil)
-        } else {
-            self.navigationRouter.toPresentable().dismiss(animated: true) {
-                if let lastCoordinator = self.roomDetailCoordinator {
-                    self.remove(childCoordinator: lastCoordinator)
-                }
+    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType) {
+        self.navigationRouter.toPresentable().dismiss(animated: true) {
+            if let lastCoordinator = self.roomDetailCoordinator {
+                self.remove(childCoordinator: lastCoordinator)
             }
         }
     }

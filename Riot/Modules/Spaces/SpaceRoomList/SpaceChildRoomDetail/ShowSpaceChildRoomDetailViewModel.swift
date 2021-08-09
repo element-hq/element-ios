@@ -53,7 +53,17 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
         case .loadData:
             self.loadData()
         case .complete:
-            self.coordinatorDelegate?.showSpaceChildRoomDetailViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
+            self.update(viewState: .loading)
+            self.session.joinRoom(self.childInfo.childRoomId) { [weak self] (response) in
+                guard let self = self else { return }
+                switch response {
+                case .success:
+                    self.loadData()
+                    self.coordinatorDelegate?.showSpaceChildRoomDetailViewModelDidComplete(self)
+                case .failure(let error):
+                    self.update(viewState: .error(error))
+                }
+            }
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.showSpaceChildRoomDetailViewModelDidCancel(self)

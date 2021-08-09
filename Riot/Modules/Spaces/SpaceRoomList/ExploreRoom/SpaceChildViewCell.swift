@@ -24,12 +24,17 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
     @IBOutlet private weak var spaceAvatarView: SpaceAvatarView!
     @IBOutlet private weak var roomAvatarView: RoomAvatarView!
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var titleLabelTrailingMargin: NSLayoutConstraint!
     @IBOutlet private weak var selectionView: UIView!
     @IBOutlet private weak var userIconView: UIImageView!
     @IBOutlet private weak var membersLabel: UILabel!
     @IBOutlet private weak var topicLabel: UILabel!
+    @IBOutlet private weak var suggestedLabel: UILabel!
+
+    // MARK: - Private
     
     private var theme: Theme?
+    private var titleLabelDefaultTrailingMargin: CGFloat = 0
     
     // MARK: - Life cycle
     
@@ -38,6 +43,7 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
 
         self.selectionView.layer.cornerRadius = 8.0
         self.selectionView.layer.masksToBounds = true
+        self.titleLabelDefaultTrailingMargin = self.titleLabelTrailingMargin.constant
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -61,6 +67,9 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
         self.titleLabel.text = viewData.childInfo.name
         self.membersLabel.text = "\(viewData.childInfo.activeMemberCount)"
         self.topicLabel.text = viewData.childInfo.topic
+        self.suggestedLabel.text = viewData.childInfo.suggested ? VectorL10n.spacesSuggestedRoom : nil
+        self.titleLabelTrailingMargin.constant = viewData.childInfo.suggested ? self.titleLabelDefaultTrailingMargin : 0
+        self.titleLabel.layoutIfNeeded()
     }
     
     func update(theme: Theme) {
@@ -76,5 +85,7 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
         self.topicLabel.font = theme.fonts.caption1
         self.topicLabel.textColor = theme.colors.tertiaryContent
         self.userIconView.tintColor = theme.colors.tertiaryContent
+        self.suggestedLabel.font = theme.fonts.caption2
+        self.suggestedLabel.textColor = theme.colors.tertiaryContent
     }
 }

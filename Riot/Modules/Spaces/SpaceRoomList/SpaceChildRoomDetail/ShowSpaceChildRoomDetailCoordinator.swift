@@ -66,9 +66,8 @@ final class ShowSpaceChildRoomDetailCoordinator: ShowSpaceChildRoomDetailCoordin
 
 // MARK: - ShowSpaceChildRoomDetailViewModelCoordinatorDelegate
 extension ShowSpaceChildRoomDetailCoordinator: ShowSpaceChildRoomDetailViewModelCoordinatorDelegate {
-    
-    func showSpaceChildRoomDetailViewModel(_ viewModel: ShowSpaceChildRoomDetailViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.showSpaceChildRoomDetailCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
+    func showSpaceChildRoomDetailViewModelDidComplete(_ viewModel: ShowSpaceChildRoomDetailViewModelType) {
+        self.delegate?.showSpaceChildRoomDetailCoordinatorDidComplete(self)
     }
     
     func showSpaceChildRoomDetailViewModelDidCancel(_ viewModel: ShowSpaceChildRoomDetailViewModelType) {

@@ -19,7 +19,7 @@
 import Foundation
 
 protocol ShowSpaceChildRoomDetailCoordinatorDelegate: AnyObject {
-    func showSpaceChildRoomDetailCoordinator(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType)
     func showSpaceChildRoomDetailCoordinatorDidCancel(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType)
 }
 
