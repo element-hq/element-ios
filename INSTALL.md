@@ -125,7 +125,7 @@ Each target has its own YAML file in the folder Targets folder.
 
 ### Generate the project in one line without effort
 
-If you want to generate the project easily and quickly there is a local script called `setup_project.sh` that creates the `xcodeproj` and `xcworkspace` with all source files and dependencies with commands described before. It select automatically the right dependencies based on your local Git branch or your Podfile local modifications. All you have to do is to go in the project root folder and run the script:
+If you want to generate the project easily and quickly, there is a local script called `setup_project.sh` that creates the `xcodeproj` and `xcworkspace` with all source files and dependencies with commands described before. It automatically selects the right dependencies based on your local Git branch or your Podfile local modifications. All you have to do is to go in the project root folder and run the script:
 
 ```
 $ ./setup_project.sh
