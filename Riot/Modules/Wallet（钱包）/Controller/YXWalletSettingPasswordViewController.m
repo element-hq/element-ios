@@ -134,11 +134,24 @@
         YXWeakSelf
         _verifyPasswordView.touchBlock = ^{
             
+            //创建成功，验证密码没密码提醒用户去创建密码
+            if (![YXWalletPasswordManager sharedYXWalletPasswordManager].isHavePassword) {
+                [MBProgressHUD showSuccess:@"未设置密码请求前往设置"];
+                return;
+            }
+            
             if (weakSelf.verifyPasswordView.password.length < 6) {
                 weakSelf.verifyPasswordView.showError = YES;
                 weakSelf.verifyPasswordView.error = @"输入密码长度不足";
                 //这里还需要验证之前的密码是否正确
                 
+                return;
+            }
+            
+            NSString *md5Pw = [Tool stringToMD5:weakSelf.verifyPasswordView.password];
+            NSString *currentMd5 = [YXWalletPasswordManager sharedYXWalletPasswordManager].model.data;
+            if (![md5Pw isEqualToString:currentMd5]) {
+                [MBProgressHUD showError:@"密码错误"];
                 return;
             }
             
