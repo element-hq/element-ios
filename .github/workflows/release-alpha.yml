@@ -54,6 +54,8 @@ jobs:
         env:
           # Make the git branch for a PR available to our Fastfile
           MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+          # Automaticaly bypass 2FA upgrade if possible on Apple account.
+          SPACESHIP_SKIP_2FA_UPGRADE: true
           APPLE_ID: ${{ secrets.FASTLANE_USER }}
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
