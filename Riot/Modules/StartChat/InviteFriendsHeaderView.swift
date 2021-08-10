@@ -59,12 +59,10 @@ final class InviteFriendsHeaderView: UIView, NibLoadable, Themable {
     // MARK: - Public
     
     func update(theme: Theme) {
-        backgroundColor = theme.backgroundColor
-        
         button.layer.borderColor = theme.tintColor.cgColor
         button.setTitleColor(theme.tintColor, for: .normal)
         button.setTitleColor(theme.tintColor.withAlphaComponent(Constants.buttonHighlightedAlpha), for: .highlighted)
-        button.vc_setBackgroundColor(theme.backgroundColor, for: .normal)
+        button.vc_setBackgroundColor(theme.baseColor, for: .normal)
         
         let buttonImage = Asset.Images.shareActionButton.image.vc_tintedImage(usingColor: theme.tintColor)
         

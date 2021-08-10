@@ -115,7 +115,7 @@
     createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"start", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
     self.navigationItem.rightBarButtonItem = createBarButtonItem;
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_creation_invite_another_user", @"Vector", nil);
+    _searchBarView.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;    
     [self refreshSearchBarItemsColor:_searchBarView];
@@ -165,10 +165,11 @@
     [self refreshSearchBarItemsColor:_searchBarView];
     
     // Check the table view style to select its bg color.
-    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
-    self.navigationController.navigationBar.barTintColor = self.contactsTableView.backgroundColor;
+    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.baseColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
     self.contactsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
+    
+    _searchBarHeaderBorder.backgroundColor = self.contactsTableView.backgroundColor;
     
     if (self.contactsTableView.dataSource)
     {
@@ -676,7 +677,6 @@
 {
     // bar tint color
     searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.tintColor;
-    searchBar.tintColor = ThemeService.shared.theme.tintColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
 
@@ -693,8 +693,8 @@
     // The effect views are needed due to minimal style.
     // With default style there is a border above the search bar.
     searchBarTextField.backgroundColor = ThemeService.shared.theme.textQuinaryColor;
-    UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
-    UIView *effectBackgroundBottom =  [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
+    UIView *effectBackgroundTop = [searchBarTextField valueForKey:@"_effectBackgroundTop"];
+    UIView *effectBackgroundBottom = [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
     effectBackgroundTop.hidden = YES;
     effectBackgroundBottom.hidden = YES;
 }
