@@ -2,12 +2,12 @@ name: Build CI
 
 on:
   # Triggers the workflow on any pull request and push to develop
-  push:
-    branches: [ develop ]
-  pull_request:
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+#  push:
+#    branches: [ develop ]
+#  pull_request:
+#
+#  # Allows you to run this workflow manually from the Actions tab
+#  workflow_dispatch:
 
 env:
   # Make the git branch for a PR available to our Fastfile
