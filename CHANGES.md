@@ -1,3 +1,35 @@
+## Changes in 1.4.10 (2021-08-10)
+
+✨ Features
+
+- Voice messages: Remove labs setting and enable them by default. ([#4671](https://github.com/vector-im/element-ios/issues/4671))
+
+🙌 Improvements
+
+- Settings: The notifications toggle no longer detects the system's "Deliver Quietly" configuration as disabled. ([#2368](https://github.com/vector-im/element-ios/issues/2368))
+- SSO: Stable ids for MSC 2858. ([#4362](https://github.com/vector-im/element-ios/issues/4362))
+- Room: Remove the green border from direct message room avatars. ([#4520](https://github.com/vector-im/element-ios/issues/4520))
+- Settings: Adds a link to open the Settings app to quickly configure app notifications. ([#4575](https://github.com/vector-im/element-ios/issues/4575))
+- VoIP: Additional changes on call tiles. ([#4642](https://github.com/vector-im/element-ios/issues/4642))
+- Voice messages: Allow voice message playback control from the iOS lock screen and control center. ([#4655](https://github.com/vector-im/element-ios/issues/4655))
+- Voice messages: Stop recording and go into locked mode when the application becomes inactive. ([#4656](https://github.com/vector-im/element-ios/issues/4656))
+- Voice messages: Improve audio recording quality. ([#4671](https://github.com/vector-im/element-ios/issues/4671))
+
+🧱 Build
+
+- CHANGES.md: Use towncrier to manage the change log. More info in [CONTRIBUTING](CONTRIBUTING.md#changelog). ([#4393](https://github.com/vector-im/element-ios/issues/4393))
+- Add a script to initialize quickly and easily the project. ([#4596](https://github.com/vector-im/element-ios/issues/4596))
+
+📄 Documentation
+
+- Convert CHANGES to MarkDown. ([#4393](https://github.com/vector-im/element-ios/issues/4393))
+- Add reference to AppIdentifiers.xcconfig in INSTALL.md. ([#4674](https://github.com/vector-im/element-ios/issues/4674))
+
+Others
+
+- Contacts: Fix implicitly retained self warnings. ([#4677](https://github.com/vector-im/element-ios/issues/4677))
+
+
 ## Changes in 1.4.9 (2021-08-03)
 
 🙌 Improvements
