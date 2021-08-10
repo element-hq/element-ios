@@ -29,7 +29,6 @@ Changes to be released in next version
 
 Others
  * Docs: Add reference to AppIdentifiers.xcconfig in INSTALL.md
- * Contacts: Fix implicitly retained self warnings.
 
 Changes in 1.4.9 (2021-08-03)
 =================================================
