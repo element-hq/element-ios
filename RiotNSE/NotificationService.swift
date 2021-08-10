@@ -501,7 +501,7 @@ class NotificationService: UNNotificationServiceExtension {
         if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
             return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
         } else {
-            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER", arguments: [eventSenderName])
+            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_TITLE", arguments: [eventSenderName])
         }
     }
     
