@@ -62,6 +62,7 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
     let spaceMenuPresenter = SpaceMenuPresenter()
     
     private var exploreRoomCoordimator: ExploreRoomCoordinatorBridgePresenter?
+    private var memberListCoordinator: SpaceMemberListCoordinatorBridgePresenter?
 
     // MARK: Public
 
@@ -302,8 +303,9 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
                 self.exploreRoomCoordimator?.delegate = self
                 self.exploreRoomCoordimator?.present(from: self.sideMenuNavigationViewController, animated: true)
             case .exploreMembers:
-                // TODO present members list
-                break
+                self.memberListCoordinator = SpaceMemberListCoordinatorBridgePresenter(session: session, spaceId: spaceId)
+                self.memberListCoordinator?.delegate = self
+                self.memberListCoordinator?.present(from: self.sideMenuNavigationViewController, animated: true)
             }
         }
     }
@@ -313,6 +315,14 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
 extension SideMenuCoordinator: ExploreRoomCoordinatorBridgePresenterDelegate {
     func exploreRoomCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: ExploreRoomCoordinatorBridgePresenter) {
         self.exploreRoomCoordimator = nil
+        coordinatorBridgePresenter.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - SpaceMemberListCoordinatorBridgePresenterDelegate
+extension SideMenuCoordinator: SpaceMemberListCoordinatorBridgePresenterDelegate {
+    func spaceMemberListCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SpaceMemberListCoordinatorBridgePresenter) {
+        self.memberListCoordinator = nil
         coordinatorBridgePresenter.dismiss(animated: true, completion: nil)
     }
 }
