@@ -91,6 +91,7 @@
     [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
     peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
     peopleSearchViewController.contactsTableViewControllerDelegate = self;
+    peopleSearchViewController.hideRequestContactAccessFooter = YES;
     [viewControllers addObject:peopleSearchViewController];
     
     // add Files tab

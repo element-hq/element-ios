@@ -67,6 +67,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *contactsTableView;
 
 /**
+ When true, the footer that allows the user to grant access to their contacts will
+ never be shown. When false, the footer will shown when the required access is
+ not available.
+ */
+@property (nonatomic) BOOL hideRequestContactAccessFooter;
+
+/**
  If YES, the table view will scroll at the top on the next data source refresh.
  It comes back to NO after each refresh.
  */

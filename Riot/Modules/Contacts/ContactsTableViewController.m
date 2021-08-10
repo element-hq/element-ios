@@ -68,6 +68,9 @@
 {
     [super finalizeInit];
     
+    // Allow the contact access footer to be shown when necessary.
+    self.hideRequestContactAccessFooter = NO;
+    
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
@@ -211,7 +214,7 @@
 
 - (void)updateFooterView
 {
-    if (!BuildSettings.allowLocalContactsAccess)
+    if (!BuildSettings.allowLocalContactsAccess || self.hideRequestContactAccessFooter)
     {
         self.contactsTableView.tableFooterView = [[UIView alloc] init];
         return;
