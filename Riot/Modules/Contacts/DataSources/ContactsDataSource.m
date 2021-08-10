@@ -80,7 +80,6 @@
         _areSectionsShrinkable = NO;
         shrinkedSectionsBitMask = 0;
         
-        _showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts;
         hideNonMatrixEnabledContacts = NO;
         
         _displaySearchInputInContactsList = NO;
@@ -89,6 +88,16 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactsNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onContactManagerDidUpdate:) name:kMXKContactManagerDidUpdateLocalContactMatrixIDsNotification object:nil];
+    }
+    return self;
+}
+
+- (instancetype)initWithMatrixSession:(MXSession *)mxSession
+{
+    self = [super initWithMatrixSession:mxSession];
+    if (self) {
+        // Only show local contacts when contact sync is enabled and the identity server terms of service have been accepted.
+        _showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts && self.mxSession.hasAccountDataIdentityServerValue;
     }
     return self;
 }
