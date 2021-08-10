@@ -2,8 +2,8 @@ name: Build CI
 
 on:
   # Triggers the workflow on any pull request and push to develop
-#  push:
-#    branches: [ develop ]
+  push:
+    branches: [ master ]
 #  pull_request:
 #
 #  # Allows you to run this workflow manually from the Actions tab
