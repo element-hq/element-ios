@@ -8,7 +8,7 @@ configs:
 
 fileGroups:
     - README.md
-    - CHANGES.rst
+    - CHANGES.md
     - AUTHORS.rst
     - Podfile
     - project.yml
