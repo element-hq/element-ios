@@ -35,6 +35,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
+      # Common setup
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Bundle install
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
       - name: Import signing certificate
         uses: apple-actions/import-codesign-certs@v1
         with:
