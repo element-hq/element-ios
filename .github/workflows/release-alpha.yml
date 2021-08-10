@@ -37,13 +37,13 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gems-
-            
+
       - name: Import signing certificate
         uses: apple-actions/import-codesign-certs@v1
         with:
           p12-file-base64: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
           p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
-    
+
       # Main step
       - name: Build Ad-hoc release and send it to Diawi
         run: bundle exec fastlane alpha
@@ -52,4 +52,3 @@ jobs:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
-          
