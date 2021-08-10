@@ -125,6 +125,14 @@ $ open Riot.xcworkspace
 **Note**: If you have multiple Xcode versions installed don't forget to use the right version of Command Line Tools when you are building the app. To check the Command Line Tools version go to `Xcode > Preferences > Locations > Command Line Tools` and check that the displayed version match your Xcode version.
 
 
+### Generate the project in one line without effort
+
+If you want to generate the project easily and quickly, there is a local script called `setup_project.sh` that creates the `xcodeproj` and `xcworkspace` with all source files and dependencies with commands described before. It automatically selects the right dependencies based on your local Git branch or your Podfile local modifications. All you have to do is to go in the project root folder and run the script:
+
+```
+$ ./setup_project.sh
+```
+
 ## Generate IPA
 
 To build the IPA we are currently using [fastlane](https://fastlane.tools/).
