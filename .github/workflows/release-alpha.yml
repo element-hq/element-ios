@@ -64,14 +64,15 @@ jobs:
 #          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
 #          DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
 
-      # Get last Git commit short SHA
-      - name: Set outputs
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      # Get last PR commit short SHA
+      - name: Get last PR commit hash
+        id: commit_hash        
+        run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ github.event.pull_request.head.sha }})"
+        # run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
 
       - name: Set QR code file name
         id: qrcode_filename
-        run: echo "::set-output name=filename::diawi_link_qrcode_${{ steps.vars.outputs.sha_short }}.png"
+        run: echo "::set-output name=filename::diawi_link_qrcode_${{ steps.commit_hash.outputs.sha_short }}.png"
 
       - name: Echo QR code file name
         run: |
