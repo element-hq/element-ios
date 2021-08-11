@@ -1,3 +1,10 @@
+## Changes in 1.5.1 (2021-08-11)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.15.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.8)).
+
+
 ## Changes in 1.5.0 (2021-08-11)
 
 ✨ Features
