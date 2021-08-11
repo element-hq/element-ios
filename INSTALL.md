@@ -77,7 +77,14 @@ Every time you change the `$matrixKitVersion` variable in the `Podfile`, you hav
 
 ## Build
 
-## Generate Xcode project
+### Configure project
+
+You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the bundle identifier, application group identifier and app name in the `Config/AppIdentifiers.xcconfig` file to your new identifiers.
+
+More advanced build configuration can be found in the `project.yml` file and each target has a `target.yml` file in its respective folder.
+
+
+### Generate Xcode project
 
 In order to get rid of git conflicts, the `Riot.xcodeproj` is not pushed into the git repository anymore but generated using `XcodeGen`. To generate the `xcodeproj` file simply run the following command line from the root folder :
 
@@ -117,12 +124,14 @@ $ open Riot.xcworkspace
 
 **Note**: If you have multiple Xcode versions installed don't forget to use the right version of Command Line Tools when you are building the app. To check the Command Line Tools version go to `Xcode > Preferences > Locations > Command Line Tools` and check that the displayed version match your Xcode version.
 
-### Configure project
 
-You may need to change the bundle identifier and app group identifier to be unique to get Xcode to build the app. Make sure to change the bundle identifier, application group identifier and app name in the `project.yml` file to your new identifiers.
+### Generate the project in one line without effort
 
-Each target has its own YAML file in the folder Targets folder.
+If you want to generate the project easily and quickly, there is a local script called `setup_project.sh` that creates the `xcodeproj` and `xcworkspace` with all source files and dependencies with commands described before. It automatically selects the right dependencies based on your local Git branch or your Podfile local modifications. All you have to do is to go in the project root folder and run the script:
 
+```
+$ ./setup_project.sh
+```
 
 ## Generate IPA
 

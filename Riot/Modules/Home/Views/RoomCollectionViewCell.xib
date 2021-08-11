@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,16 +24,8 @@
                             <constraint firstAttribute="width" secondItem="T1Q-RS-8o6" secondAttribute="height" multiplier="1:1" id="zmb-Nw-TEX"/>
                         </constraints>
                     </view>
-                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xws-BR-H47">
-                        <rect key="frame" x="10" y="10" width="60" height="60"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="60" id="3OW-3y-Rg7"/>
-                            <constraint firstAttribute="width" secondItem="xws-BR-H47" secondAttribute="height" multiplier="1:1" id="bEP-hL-5lg"/>
-                        </constraints>
-                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="scs-Ov-Tjv" customClass="BadgeLabel" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="56" y="8" width="16.5" height="16.5"/>
+                        <rect key="frame" x="62" y="9" width="4.5" height="14.5"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -81,9 +73,8 @@
                 <constraint firstItem="oxX-IL-dG4" firstAttribute="top" secondItem="T1Q-RS-8o6" secondAttribute="bottom" constant="4" id="2DB-H2-E2v"/>
                 <constraint firstAttribute="bottom" secondItem="jta-3V-4wL" secondAttribute="bottom" id="3rt-Ig-1rG"/>
                 <constraint firstItem="oxX-IL-dG4" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="4" id="6gu-JD-Gb1"/>
-                <constraint firstItem="scs-Ov-Tjv" firstAttribute="centerY" secondItem="xws-BR-H47" secondAttribute="top" constant="6" id="CRF-wK-Lcp"/>
+                <constraint firstItem="scs-Ov-Tjv" firstAttribute="centerY" secondItem="T1Q-RS-8o6" secondAttribute="top" constant="6" id="CRF-wK-Lcp"/>
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="centerX" secondItem="oxX-IL-dG4" secondAttribute="centerX" id="K9T-eO-WNb"/>
-                <constraint firstItem="xws-BR-H47" firstAttribute="centerX" secondItem="T1Q-RS-8o6" secondAttribute="centerX" id="Lo3-Ov-Bw8"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="centerX" secondItem="oxX-IL-dG4" secondAttribute="centerX" id="OQy-tF-e3Z"/>
                 <constraint firstItem="jta-3V-4wL" firstAttribute="centerX" secondItem="eCk-zY-LXq" secondAttribute="centerX" id="R87-mq-SlO"/>
                 <constraint firstItem="5Yd-df-HbB" firstAttribute="bottom" secondItem="T1Q-RS-8o6" secondAttribute="bottom" constant="2" id="RQU-MS-Qfr"/>
@@ -91,8 +82,7 @@
                 <constraint firstItem="X8H-1U-wc3" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="7" id="XU5-Lv-9Xn"/>
                 <constraint firstItem="T1Q-RS-8o6" firstAttribute="top" secondItem="eCk-zY-LXq" secondAttribute="top" constant="10" id="cc7-bg-15Z"/>
                 <constraint firstItem="Jkz-Zp-aaG" firstAttribute="leading" secondItem="eCk-zY-LXq" secondAttribute="leading" constant="7" id="fPh-Lb-Bv9"/>
-                <constraint firstItem="xws-BR-H47" firstAttribute="centerY" secondItem="T1Q-RS-8o6" secondAttribute="centerY" id="faX-hg-WfP"/>
-                <constraint firstItem="scs-Ov-Tjv" firstAttribute="centerX" secondItem="xws-BR-H47" secondAttribute="trailing" priority="750" constant="-6" id="fgA-Sf-Y4E"/>
+                <constraint firstItem="scs-Ov-Tjv" firstAttribute="centerX" secondItem="T1Q-RS-8o6" secondAttribute="trailing" priority="750" constant="-6" id="fgA-Sf-Y4E"/>
                 <constraint firstAttribute="trailing" secondItem="oxX-IL-dG4" secondAttribute="trailing" constant="4" id="hDl-X9-M4n"/>
                 <constraint firstItem="T1Q-RS-8o6" firstAttribute="centerX" secondItem="eCk-zY-LXq" secondAttribute="centerX" id="hmB-fl-oN2"/>
                 <constraint firstAttribute="trailing" secondItem="X8H-1U-wc3" secondAttribute="trailing" constant="7" id="o5i-7H-n0G"/>
@@ -103,7 +93,6 @@
             </constraints>
             <connections>
                 <outlet property="badgeLabel" destination="scs-Ov-Tjv" id="KPV-Qb-cnT"/>
-                <outlet property="directRoomBorderView" destination="xws-BR-H47" id="34A-hu-DXq"/>
                 <outlet property="editionArrowView" destination="jta-3V-4wL" id="XLj-Cx-3bn"/>
                 <outlet property="encryptedRoomIcon" destination="5Yd-df-HbB" id="5pc-Vi-wMZ"/>
                 <outlet property="roomAvatar" destination="T1Q-RS-8o6" id="4sR-Wm-jwz"/>
@@ -116,11 +105,11 @@
     </objects>
     <designables>
         <designable name="scs-Ov-Tjv">
-            <size key="intrinsicContentSize" width="16.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="4.5" height="14.5"/>
         </designable>
     </designables>
     <resources>
-        <image name="encryption_normal" width="16" height="16"/>
+        <image name="encryption_normal" width="12" height="12"/>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
