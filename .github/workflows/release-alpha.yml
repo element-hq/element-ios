@@ -72,7 +72,7 @@ jobs:
       - name: Generate QR code for Ad-hoc release
         uses: snow-actions/qrcode@v1.0.0
         with:
-          text: ${{ DIAWI_FILE_LINK }}
+          text: ${{ env.DIAWI_FILE_LINK }}
           path: diawi_link_qrcode_${{ steps.vars.outputs.sha_short }}.png
 
       - name: Add or update PR comment with Ad-hoc release informations
