@@ -17,46 +17,64 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
+#      - uses: actions/checkout@v2
+#
+#      # Common cache
+#      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+#      - uses: actions/cache@v2
+#        with:
+#          path: Pods
+#          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-pods-
+#
+#      - uses: actions/cache@v2
+#        with:
+#          path: vendor/bundle
+#          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gems-
+#
+#      # Common setup
+#      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+#      - name: Bundle install
+#        run: |
+#          bundle config path vendor/bundle
+#          bundle install --jobs 4 --retry 3
+#
+#      - name: Import signing certificate
+#        uses: apple-actions/import-codesign-certs@v1
+#        with:
+#          p12-file-base64: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
+#          p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
+#
+#      # Main step
+#      - name: Build Ad-hoc release and send it to Diawi
+#        run: bundle exec fastlane alpha
+#        env:
+#          # Make the git branch for a PR available to our Fastfile
+#          MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+#          # Automaticaly bypass 2FA upgrade if possible on Apple account.
+#          SPACESHIP_SKIP_2FA_UPGRADE: true
+#          APPLE_ID: ${{ secrets.FASTLANE_USER }}
+#          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+#          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+#          DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
 
-      # Common cache
-      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - uses: actions/cache@v2
+      - name: Generate QR code for Ad-hoc release
+        uses: snow-actions/qrcode@v1.0.0
         with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-
-      - uses: actions/cache@v2
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-gems-
-
-      # Common setup
-      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-
-      - name: Import signing certificate
-        uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
-          p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
-
-      # Main step
-      - name: Build Ad-hoc release and send it to Diawi
-        run: bundle exec fastlane alpha
+          text: ${{ DIAWI_FILE_LINK }}
+          path: diawi_link_qrcode_${{ GITHUB_SHA }}.png
         env:
-          # Make the git branch for a PR available to our Fastfile
-          MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
-          # Automaticaly bypass 2FA upgrade if possible on Apple account.
-          SPACESHIP_SKIP_2FA_UPGRADE: true
-          APPLE_ID: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-          DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
+          DIAWI_FILE_LINK: "https://i.diawi.com/yZ7tDg"
+
+      - name: Add or update PR comment with Ad-hoc release informations
+        uses: NejcZdovc/comment-pr@v1
+        with:
+          message: ":lock: This is a QR code for access to the preview website.\n:iphone: Scan a code with your device.
+    ![QR code](diawi_link_qrcode_${ GITHUB_SHA }.png)"
+          # enables to identify and update Ad-hoc release message on new commit in the PR
+          identifier: "GITHUB_COMMENT_ADHOC_RELEASE"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
