@@ -10,6 +10,9 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+  env:
+    DIAWI_FILE_LINK: "https://i.diawi.com/yZ7tDg"
 
 jobs:
   build:
@@ -66,8 +69,6 @@ jobs:
         with:
           text: ${{ DIAWI_FILE_LINK }}
           path: diawi_link_qrcode_${{ GITHUB_SHA }}.png
-        env:
-          DIAWI_FILE_LINK: "https://i.diawi.com/yZ7tDg"
 
       - name: Add or update PR comment with Ad-hoc release informations
         uses: NejcZdovc/comment-pr@v1
