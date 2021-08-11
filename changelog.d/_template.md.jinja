@@ -25,13 +25,19 @@
         {%- set gh_issue = value.replace("#", "") -%}
         {{- links.append( "[#%s](%s/issues/%s)" | format(gh_issue, gh_element, gh_issue) ) | default("", True) -}}
     {%- elif value.startswith("pr-") %}
-        {%- set pr = value.replace("pr-", "#") -%}
-        {{- links.append(pr) | default("", True) -}}
+        {%- set pr = value.replace("pr-", "") -%}
+        {{- links.append( "[#%s](%s/pull/%s)" | format(pr, gh_element, pr) ) | default("", True) -}}
+    {%- elif value.startswith("x-nolink-") %}
+        {{- nil | default("", True) -}}
     {% else %}
         {{- links.append(value) | default("", True) -}}
     {% endif -%}
 {% endfor -%}
+{% if links|length == 0 %}
+- {{ text }}
+{% else %}
 - {{ text }} ({{ links | join(', ') }})
+{% endif %}
 {% endfor %}
 {% else %}
 - {{ sections[section][category]['']|join(', ') }}
