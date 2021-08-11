@@ -60,7 +60,8 @@
 
     YXWalletPrivateKeyModel *address = [[YXWalletPrivateKeyModel alloc]init];
     address.title = infoModel.address;
-    SCETRowItem *addressItem = [SCETRowItem rowItemWithRowData:address.title cellClassString:NSStringFromClass([YXWalletPrivatekeyTableViewCell class])];
+    address.des = @"地址：";
+    SCETRowItem *addressItem = [SCETRowItem rowItemWithRowData:address cellClassString:NSStringFromClass([YXWalletPrivatekeyTableViewCell class])];
     addressItem.cellHeight = 76 + address.cellHeight;
     [rowItems addObject:addressItem];
     
@@ -70,7 +71,8 @@
     
     YXWalletPrivateKeyModel *privateKey = [[YXWalletPrivateKeyModel alloc]init];
     privateKey.title = infoModel.privateKey;
-    SCETRowItem *privateKeyItem = [SCETRowItem rowItemWithRowData:privateKey.title cellClassString:NSStringFromClass([YXWalletPrivatekeyTableViewCell class])];
+    privateKey.des = @"私钥：";
+    SCETRowItem *privateKeyItem = [SCETRowItem rowItemWithRowData:privateKey cellClassString:NSStringFromClass([YXWalletPrivatekeyTableViewCell class])];
     privateKeyItem.cellHeight = 76 + privateKey.cellHeight;
     [rowItems addObject:privateKeyItem];
     

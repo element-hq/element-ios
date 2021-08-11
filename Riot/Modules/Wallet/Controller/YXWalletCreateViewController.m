@@ -208,6 +208,8 @@
         [_inputWorldView setNextBlock:^{
             if (weakSelf.inputWorldView.helpWorld.length > 0) {
                 [weakSelf creatWalletWith:weakSelf.inputWorldView.helpWorld];
+            }else{
+                [MBProgressHUD showSuccess:@"请输入助记词"];
             }
         }];
     }

@@ -7,7 +7,7 @@
 //
 
 #import "YXWalletPrivatekeyTableViewCell.h"
-
+#import "YXWalletPrivateKeyModel.h"
 @interface YXWalletPrivatekeyTableViewCell ()
 @property (nonatomic , strong)UIView *bgView;
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -83,8 +83,9 @@
     }];
 }
 
--(void)setupCellWithRowData:(NSString *)rowData{
-    self.desLabel.text = rowData;
+-(void)setupCellWithRowData:(YXWalletPrivateKeyModel *)rowData{
+    self.titleLabel.text = rowData.des;
+    self.desLabel.text = rowData.title;
 }
 
 @end

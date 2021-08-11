@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface YXWalletPrivateKeyModel : NSObject
+@property (nonatomic , copy) NSString *des;
 @property (nonatomic , copy) NSString *title;
 @property (nonatomic , assign) CGFloat cellHeight;
 @end

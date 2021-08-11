@@ -39,6 +39,7 @@
 -(UITextView *)textView{
     if (!_textView) {
         _textView = [[UITextView alloc]init];
+        _textView.delegate = self;
         _textView.layer.cornerRadius = 10;
         _textView.clipsToBounds = YES;
         _textView.textColor = UIColor51;
@@ -77,6 +78,7 @@
 }
 
 - (void)nextLabelAction{
+    [self.textView resignFirstResponder];
     if (self.nextBlock) {
         self.nextBlock();
     }

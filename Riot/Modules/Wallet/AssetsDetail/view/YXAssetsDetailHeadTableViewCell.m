@@ -137,6 +137,7 @@ extern NSString *const kYXJumpWalletAssetsDetail;
         make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(12);
         make.left.mas_equalTo(15);
         make.height.mas_equalTo(20);
+        make.width.mas_equalTo(140);
     }];
     
     [self.countLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -175,7 +176,7 @@ extern NSString *const kYXJumpWalletAssetsDetail;
     _titleLabel.text = rowData.coinName;
     _desLabel.text = [NSString stringWithFormat:@"￥%@",rowData.fundValue];
     _countLabel.text = @(rowData.balance).stringValue;//余额
-    _numLabel.text = [NSString stringWithFormat:@"≈￥%@",@(rowData.fundValue.floatValue * rowData.balance).stringValue];
+    _numLabel.text = [NSString stringWithFormat:@"≈￥%.4f",rowData.fundValue.floatValue * rowData.balance];
 }
 
 @end
