@@ -316,7 +316,6 @@
 "settings_global_settings_info" = "Globale Benachrichtigungseinstellungen sind auf deinem %@ web-Client verfügbar";
 "settings_pin_rooms_with_missed_notif" = "Pinnen von Räumen mit verpassten Benachrichtigungen";
 "settings_pin_rooms_with_unread" = "Pinnen von Räumen mit ungelesenen Nachrichten";
-"settings_on_denied_notification" = "Benachrichtigungen verboten für %@, bitte in den Geräte-Einstellungen erlauben";
 "settings_contacts_discover_matrix_users" = "Entdecke andere Benutzer mittels E-Mail-Adressen oder Telefonnummern";
 "settings_labs_e2e_encryption_prompt_message" = "Zum Fertigstellen der Verschlüsselung bitte neu anmelden.";
 "settings_third_party_notices" = "Anmerkungen von Dritten";
@@ -1306,7 +1305,7 @@
 "dialpad_title" = "Wähltastatur";
 "call_actions_unhold" = "Fortsetzen";
 "event_formatter_call_back" = "Zurückrufen";
-"event_formatter_call_you_declined" = "Du lehntest diesen Anruf ab";
+"event_formatter_call_you_declined" = "Anruf abgelehnt";
 "event_formatter_call_you_currently_in" = "Aktueller Anruf";
 "event_formatter_call_has_ended" = "%@ beendet";
 "event_formatter_call_video" = "Videoanruf";
@@ -1401,3 +1400,8 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Benachrichtige mich bei";
 "room_details_notifs" = "Benachrichtigungen";
+"event_formatter_call_missed_voice" = "Verpasster Anruf";
+"event_formatter_call_incoming_voice" = "Eingehender Anruf";
+"settings_labs_voice_messages" = "Sprachnachrichten";
+"settings_notifications_disabled_alert_message" = "Öffne die Systemeinstellungen um Benachrichtigungen zu aktivieren.";
+"settings_notifications_disabled_alert_title" = "Benachrichtigungen deaktiviert";

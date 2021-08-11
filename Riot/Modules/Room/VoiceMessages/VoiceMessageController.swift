@@ -88,6 +88,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeServiceDidChangeTheme, object: nil)
         updateTheme()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+        
         updateUI()
     }
     
@@ -310,6 +312,10 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     @objc private func updateTheme() {
         _voiceMessageToolbarView.update(theme: themeService.theme)
+    }
+    
+    @objc private func applicationWillResignActive() {
+        finishRecording()
     }
     
     @objc private func handleDisplayLinkTick() {

@@ -57,6 +57,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
     private var viewState: ViewState = .unknown {
         didSet {
             updateBottomContentView()
+            updateCallIcon()
         }
     }
     
@@ -78,11 +79,24 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         return formatter
     }
     
+    private func updateCallIcon() {
+        switch viewState {
+        case .missed:
+            innerContentView.callIconView.image = isVideoCall ?
+                Asset.Images.callMissedVideo.image :
+                Asset.Images.callMissedVoice.image
+        default:
+            innerContentView.callIconView.image = isVideoCall ?
+                Asset.Images.callVideoIcon.image :
+                Asset.Images.voiceCallHangonIcon.image
+        }
+    }
+    
     private func updateBottomContentView() {
         bottomContentView = bottomView(for: viewState)
     }
     
-    private var callTypeIcon: UIImage {
+    private var callButtonIcon: UIImage {
         if isVideoCall {
             return Asset.Images.callVideoIcon.image
         } else {
@@ -112,7 +126,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             view.secondButton.style = .positive
             view.secondButton.setTitle(VectorL10n.eventFormatterCallAnswer, for: .normal)
-            view.secondButton.setImage(callTypeIcon, for: .normal)
+            view.secondButton.setImage(callButtonIcon, for: .normal)
             view.secondButton.removeTarget(nil, action: nil, for: .touchUpInside)
             view.secondButton.addTarget(self, action: #selector(answerCallAction(_:)), for: .touchUpInside)
             
@@ -134,7 +148,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             view.firstButton.style = .positive
             view.firstButton.setTitle(VectorL10n.eventFormatterCallBack, for: .normal)
-            view.firstButton.setImage(callTypeIcon, for: .normal)
+            view.firstButton.setImage(callButtonIcon, for: .normal)
             view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
             view.firstButton.addTarget(self, action: #selector(callBackAction(_:)), for: .touchUpInside)
             
@@ -145,7 +159,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             view.firstButton.style = .positive
             view.firstButton.setTitle(VectorL10n.eventFormatterCallBack, for: .normal)
-            view.firstButton.setImage(callTypeIcon, for: .normal)
+            view.firstButton.setImage(callButtonIcon, for: .normal)
             view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
             view.firstButton.addTarget(self, action: #selector(callBackAction(_:)), for: .touchUpInside)
             
@@ -158,7 +172,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             view.firstButton.style = .positive
             view.firstButton.setTitle(VectorL10n.eventFormatterCallRetry, for: .normal)
-            view.firstButton.setImage(callTypeIcon, for: .normal)
+            view.firstButton.setImage(callButtonIcon, for: .normal)
             view.firstButton.removeTarget(nil, action: nil, for: .touchUpInside)
             view.firstButton.addTarget(self, action: #selector(callBackAction(_:)), for: .touchUpInside)
             
@@ -174,13 +188,13 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             .connecting:
             viewState = .active
             if call.isIncoming {
-                statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                statusText = isVideoCall ? VectorL10n.eventFormatterCallActiveVideo : VectorL10n.eventFormatterCallActiveVoice
             } else {
                 statusText = VectorL10n.eventFormatterCallConnecting
             }
         case .inviteSent:
             if call.isIncoming {
-                statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                statusText = isVideoCall ? VectorL10n.eventFormatterCallActiveVideo : VectorL10n.eventFormatterCallActiveVoice
             } else {
                 statusText = VectorL10n.eventFormatterCallRinging
             }
@@ -189,14 +203,14 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
              .onHold,
              .remotelyOnHold:
             viewState = .active
-            statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+            statusText = isVideoCall ? VectorL10n.eventFormatterCallActiveVideo : VectorL10n.eventFormatterCallActiveVoice
         case .ringing:
             if call.isIncoming {
                 viewState = .ringing
-                statusText = nil
+                statusText = isVideoCall ? VectorL10n.eventFormatterCallIncomingVideo : VectorL10n.eventFormatterCallIncomingVoice
             } else {
                 viewState = .active
-                statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                statusText = isVideoCall ? VectorL10n.eventFormatterCallActiveVideo : VectorL10n.eventFormatterCallActiveVoice
             }
         case .ended:
             switch call.endReason {
@@ -206,27 +220,27 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
                  .remoteHangup,
                  .answeredElseWhere:
                 viewState = .ended
-                statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+                updateStatusTextForEndedCall()
             case .missed:
                 if call.isIncoming {
                     viewState = .missed
-                    statusText = VectorL10n.eventFormatterCallYouMissed
+                    statusText = isVideoCall ? VectorL10n.eventFormatterCallMissedVideo : VectorL10n.eventFormatterCallMissedVoice
                 } else {
-                    statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+                    updateStatusTextForEndedCall()
                 }
             case .busy:
                 configureForRejectedCall(call: call)
             @unknown default:
                 viewState = .ended
-                statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+                updateStatusTextForEndedCall()
             }
         case .inviteExpired,
              .answeredElseWhere:
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         @unknown default:
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         }
     }
     
@@ -247,21 +261,21 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             statusText = VectorL10n.eventFormatterCallYouDeclined
         } else {
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         }
     }
     
     private func configureForHangupCall(withEvent event: MXEvent) {
         guard let hangupEventContent = MXCallHangupEventContent(fromJSON: event.content) else {
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
             return
         }
         
         switch hangupEventContent.reasonType {
         case .userHangup:
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         default:
             viewState = .failed
             statusText = VectorL10n.eventFormatterCallConnectionFailed
@@ -272,11 +286,19 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         if isIncoming {
             //  missed call
             viewState = .missed
-            statusText = VectorL10n.eventFormatterCallYouMissed
+            statusText = isVideoCall ? VectorL10n.eventFormatterCallMissedVideo : VectorL10n.eventFormatterCallMissedVoice
         } else {
             //  outgoing unanswered call
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
+        }
+    }
+    
+    private func updateStatusTextForEndedCall() {
+        if callDurationString.count > 0 {
+            statusText = VectorL10n.eventFormatterCallHasEndedWithTime(callDurationString)
+        } else {
+            statusText = VectorL10n.eventFormatterCallHasEnded
         }
     }
     
@@ -366,11 +388,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         callDurationString = readableCallDuration(from: events)
         isIncoming = inviteEvent.sender != bubbleCellData.mxSession.myUserId
         callInviteEvent = inviteEvent
-        innerContentView.callIconView.image = self.callTypeIcon
-        innerContentView.callTypeLabel.text = isVideoCall ?
-            VectorL10n.eventFormatterCallVideo :
-            VectorL10n.eventFormatterCallVoice
-        
+        updateCallIcon()
         let callId = callInviteEventContent.callId
         guard let call = bubbleCellData.mxSession.callManager.call(withCallId: callId) else {
             
@@ -394,7 +412,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             //  there is no reject or hangup event, we can just say this call has ended
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
             return
         }
         

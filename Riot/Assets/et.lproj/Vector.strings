@@ -497,7 +497,6 @@
 "settings_global_settings_info" = "Üldised teavituste seadistused leiduvad sinu %@ veebikliendis";
 "settings_pin_rooms_with_missed_notif" = "Klammerda jututoad, kus leidub lugemata teavitusi";
 "settings_pin_rooms_with_unread" = "Klammerda jututoad, kus leidub lugemata sõnumeid";
-"settings_on_denied_notification" = "Teavitused on %@ jaoks keelatud, palun luba nad oma seadme seadistustes";
 "settings_enable_callkit" = "Lõimitud helistamine";
 "settings_callkit_info" = "Vasta kõnedele lukustuskuvalt. Vaata Element'i kõnesid süsteemi kõnelogist. Kui iCloud on kasutusel, siis kõnede ajalugu jagatakse Applega.";
 "settings_calls_stun_server_fallback_button" = "Kasuta kõnehõlbustusserverit";
@@ -1267,7 +1266,7 @@
 "dialpad_title" = "Numbriklahvistik";
 "call_actions_unhold" = "Jätka";
 "event_formatter_call_back" = "Helista tagasi";
-"event_formatter_call_you_declined" = "Sina keeldusid sellest kõnest";
+"event_formatter_call_you_declined" = "Osapool keeldus kõnest";
 "event_formatter_call_you_currently_in" = "Kõne on käsil";
 "event_formatter_call_has_ended" = "%@ kõne on lõppenud";
 "event_formatter_call_video" = "Videokõne";
@@ -1368,3 +1367,12 @@
 
 "voice_message_release_to_send" = "Salvestamiseks vajuta nuppu, saatmiseks lase nupp lahti";
 "settings_labs_voice_messages" = "Häälsõnumid";
+"event_formatter_call_missed_video" = "Vastamata videokõne";
+"event_formatter_call_missed_voice" = "Vastamata kõne";
+"event_formatter_call_active_video" = "Pooleliolev videokõne";
+"event_formatter_call_active_voice" = "Pooleliolev kõne";
+"event_formatter_call_incoming_video" = "Saabuv videokõne";
+"event_formatter_call_incoming_voice" = "Saabuv häälkõne";
+"settings_notifications_disabled_alert_message" = "Teavituste kasutamiseks ava seadistuste vaade.";
+"settings_notifications_disabled_alert_title" = "Teavitused on välja lülitatud";
+"settings_device_notifications" = "Teavitused seadmes";

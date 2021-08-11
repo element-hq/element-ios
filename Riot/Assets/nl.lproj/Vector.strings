@@ -18,7 +18,7 @@
 "title_home" = "Thuis";
 "title_favourites" = "Favorieten";
 "title_people" = "Personen";
-"title_rooms" = "Gesprekken";
+"title_rooms" = "Kamers";
 "warning" = "Waarschuwing";
 // Actions
 "view" = "Weergeven";
@@ -84,18 +84,18 @@
 "auth_msisdn_validation_title" = "Verificatie in afwachting";
 "auth_msisdn_validation_message" = "We hebben een sms met een activatiecode gestuurd. Voer deze code hieronder in.";
 "auth_msisdn_validation_error" = "Kan het telefoonnummer niet verifiëren.";
-"auth_recaptcha_message" = "Deze thuisserver wil er graag zeker van zijn dat u geen robot bent";
+"auth_recaptcha_message" = "Deze server wil er graag zeker van zijn dat u geen robot bent";
 "auth_reset_password_message" = "Voer het e-mailadres dat met uw account verbonden is in om uw wachtwoord opnieuw in te stellen:";
 "auth_reset_password_missing_email" = "Het e-mailadres dat met uw account verbonden is moet ingevoerd worden.";
 "auth_reset_password_missing_password" = "Er moet een nieuw wachtwoord ingevoerd worden.";
 "auth_reset_password_email_validation_message" = "Er is een e-mail naar %@ gestuurd. Klik hieronder zodra u de koppeling erin hebt gevolgd.";
 "auth_reset_password_next_step_button" = "Ik heb mijn e-mailadres geverifieerd";
 "auth_reset_password_error_unauthorized" = "Verifiëren van e-mailadres is mislukt: wees er zeker van dat u op de koppeling in de e-mail hebt getikt";
-"auth_reset_password_error_not_found" = "Het ziet er niet naar uit dat uw e-mailadres met een Matrix-ID op deze thuisserver is verbonden.";
+"auth_reset_password_error_not_found" = "Het ziet er niet naar uit dat uw e-mailadres met een Matrix-ID is verbonden op deze server.";
 "auth_reset_password_success_message" = "Uw wachtwoord is opnieuw ingesteld.\n\nU bent op alle apparaten afgemeld en u zult geen pushmeldingen meer ontvangen. Om meldingen weer in te schakelen, meldt u zich op elk apparaat opnieuw aan.";
 "auth_add_email_and_phone_warning" = "Registratie met e-mailadres en telefoonnummer tegelijkertijd wordt, totdat de API bestaat, nog niet ondersteund. Alleen het telefoonnummer zal worden gebruikt. U kunt uw e-mailadres later aan uw profiel in de instellingen toevoegen.";
 // Chat creation
-"room_creation_title" = "Nieuw gesprek";
+"room_creation_title" = "Nieuwe chat";
 "room_creation_account" = "Account";
 "room_creation_appearance" = "Uiterlijk";
 "room_creation_appearance_name" = "Naam";
@@ -108,29 +108,29 @@
 "room_creation_make_public_prompt_msg" = "Weet u zeker dat u dit gesprek publiek wilt maken? Iedereen kan uw berichten lezen en aan het gesprek deelnemen.";
 "room_creation_keep_private" = "Privé houden";
 "room_creation_make_private" = "Privé maken";
-"room_creation_wait_for_creation" = "Er wordt al een gesprek aangemaakt. Even geduld.";
+"room_creation_wait_for_creation" = "Er wordt al een kamer aangemaakt. Even geduld.";
 "room_creation_invite_another_user" = "Zoeken/uitnodigen met gebruikers-ID, naam of e-mailadres";
 // Room recents
-"room_recents_directory_section" = "GESPREKSCATALOGUS";
+"room_recents_directory_section" = "KAMERGIDS";
 "room_recents_favourites_section" = "FAVORIETEN";
 "room_recents_people_section" = "PERSONEN";
-"room_recents_conversations_section" = "GESPREKKEN";
-"room_recents_no_conversation" = "Geen gesprekken";
+"room_recents_conversations_section" = "KAMERS";
+"room_recents_no_conversation" = "Geen kamers";
 "room_recents_low_priority_section" = "LAGE PRIORITEIT";
 "room_recents_invites_section" = "UITNODIGINGEN";
 "room_recents_start_chat_with" = "Gesprek beginnen";
-"room_recents_create_empty_room" = "Gesprek aanmaken";
-"room_recents_join_room" = "Gesprek toetreden";
-"room_recents_join_room_title" = "Neem aan een gesprek deel";
-"room_recents_join_room_prompt" = "Voer een gespreks(bij)naam in";
+"room_recents_create_empty_room" = "Kamer aanmaken";
+"room_recents_join_room" = "Kamer toetreden";
+"room_recents_join_room_title" = "Kamer toetreden";
+"room_recents_join_room_prompt" = "Voer een kamer-ID of kameralias in";
 // People tab
 "people_invites_section" = "UITNODIGINGEN";
 "people_conversation_section" = "GESPREKKEN";
 "people_no_conversation" = "Geen gesprekken";
 // Rooms tab
-"room_directory_no_public_room" = "Geen publieke gesprekken beschikbaar";
+"room_directory_no_public_room" = "Geen publieke kamers beschikbaar";
 // Search
-"search_rooms" = "Gesprekken";
+"search_rooms" = "Kamers";
 "search_messages" = "Berichten";
 "search_people" = "Personen";
 "search_files" = "Bestanden";
@@ -139,7 +139,7 @@
 "search_no_result" = "Geen resultaten";
 // Directory
 "directory_cell_title" = "Bladeren door de catalogus";
-"directory_cell_description" = "%tu gesprekken";
+"directory_cell_description" = "%tu kamers";
 "directory_search_results_title" = "Bladeren door catalogusresultaten";
 "directory_search_results" = "%tu resultaten gevonden voor %@";
 "directory_search_results_more_than" = ">%tu resultaten gevonden voor %@";
@@ -156,14 +156,14 @@
 "room_participants_add_participant" = "Deelnemer toevoegen";
 "room_participants_one_participant" = "1 deelnemer";
 "room_participants_multi_participants" = "%d deelnemers";
-"room_participants_leave_prompt_title" = "Gesprek verlaten";
-"room_participants_leave_prompt_msg" = "Weet u zeker dat u het gesprek wilt verlaten?";
+"room_participants_leave_prompt_title" = "Kamer verlaten";
+"room_participants_leave_prompt_msg" = "Weet u zeker dat u de kamer wilt verlaten?";
 "room_participants_remove_prompt_title" = "Bevestiging";
 "room_participants_remove_prompt_msg" = "Weet u zeker dat u %@ uit dit gesprek wilt verwijderen?";
 "room_participants_remove_third_party_invite_msg" = "Verwijderen van uitnodigingen door derde partijen wordt, totdat de API bestaat, nog niet ondersteund";
 "room_participants_invite_prompt_title" = "Bevestiging";
 "room_participants_invite_prompt_msg" = "Weet u zeker dat u %@ in dit gesprek wilt uitnodigen?";
-"room_participants_filter_room_members" = "Filter gespreksleden";
+"room_participants_filter_room_members" = "Kamerleden filteren";
 "room_participants_invite_another_user" = "Zoeken/uitnodigen met gebruikers-ID, naam of e-mailadres";
 "room_participants_invite_malformed_id_title" = "Uitnodigingsfout";
 "room_participants_invite_malformed_id" = "Ongeldige ID. Dit zou een e-mailadres of een Matrix-ID zoals ‘@gebruikersnaam:domein’ moeten zijn";
@@ -179,9 +179,9 @@
 "room_participants_action_section_devices" = "Apparaten";
 "room_participants_action_section_other" = "Overige";
 "room_participants_action_invite" = "Uitnodigen";
-"room_participants_action_leave" = "Dit gesprek verlaten";
-"room_participants_action_remove" = "Verwijderen uit dit gesprek";
-"room_participants_action_ban" = "Verbannen uit dit gesprek";
+"room_participants_action_leave" = "Deze kamer verlaten";
+"room_participants_action_remove" = "Verwijderen uit deze kamer";
+"room_participants_action_ban" = "Verbannen uit deze kamer";
 "room_participants_action_unban" = "Ontbannen";
 "room_participants_action_ignore" = "Alle berichten van deze gebruiker verbergen";
 "room_participants_action_unignore" = "Alle berichten van deze gebruiker tonen";
@@ -226,28 +226,28 @@
 "room_event_action_cancel_upload" = "Uploaden annuleren";
 "room_event_action_cancel_download" = "Downloaden annuleren";
 "room_event_action_view_encryption" = "Versleutelingsinformatie";
-"room_warning_about_encryption" = "Eind-tot-eindversleuteling is in bèta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van vóór ze het gesprek betraden nog niet ontsleutelen.\n\nVersleutelde berichten zullen niet zichtbaar zijn op cliënten die nog geen versleuteling ondersteunen.";
+"room_warning_about_encryption" = "Eind-tot-eindversleuteling is in bèta en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van vóór ze de kamer betraden nog niet ontsleutelen.\n\nVersleutelde berichten zullen niet zichtbaar zijn op cliënten die nog geen versleuteling ondersteunen.";
 // Unknown devices
-"unknown_devices_alert_title" = "Gesprek bevat onbekende sessies";
-"unknown_devices_alert" = "Dit gesprek bevat onbekende apparaten die niet geverifieerd zijn.\nDit betekent dat er geen garantie is dat de apparaten bij de gebruikers horen waarbij ze beweren te horen.\nWe raden u aan om bij elk apparaat door het verificatieproces heen te gaan voordat u verdergaat, maar u kunt het bericht ook zonder verificatie opnieuw versturen.";
+"unknown_devices_alert_title" = "Kamer bevat onbekende sessies";
+"unknown_devices_alert" = "Deze kamer bevat onbekende apparaten die niet geverifieerd zijn.\nDit betekent dat er geen garantie is dat de apparaten bij de personen horen waarbij ze beweren te horen.\nWe raden u aan om bij elk apparaat door het verificatieproces heen te gaan voordat u verdergaat, maar u kunt het bericht ook zonder verificatie opnieuw versturen.";
 "unknown_devices_send_anyway" = "Alsnog versturen";
 "unknown_devices_call_anyway" = "Alsnog bellen";
 "unknown_devices_answer_anyway" = "Alsnog beantwoorden";
 "unknown_devices_verify" = "Verifiëren…";
 "unknown_devices_title" = "Onbekende apparaten";
 // Room Title
-"room_title_new_room" = "Nieuw gesprek";
+"room_title_new_room" = "Nieuwe kamer";
 "room_title_multiple_active_members" = "%@/%@ actieve leden";
 "room_title_one_active_member" = "%@/%@ actief lid";
 "room_title_invite_members" = "Leden uitnodigen";
 "room_title_members" = "%@ leden";
 "room_title_one_member" = "1 lid";
 // Room Preview
-"room_preview_invitation_format" = "U bent door %@ uitgenodigd om dit gesprek toe te treden";
-"room_preview_subtitle" = "Dit is een voorvertoning van dit gesprek. Gespreksinteracties zijn uitgeschakeld.";
+"room_preview_invitation_format" = "U bent door %@ uitgenodigd om deze kamer toe te treden";
+"room_preview_subtitle" = "Dit is een voorvertoning van deze kamer. Kamerinteracties zijn uitgeschakeld.";
 "room_preview_unlinked_email_warning" = "Deze uitnodiging is naar %@ verstuurd, maar dat is niet geassocieerd met deze account. U kunt zich met een andere account aanmelden, of dit e-mailadres aan deze account toevoegen.";
 "room_preview_try_join_an_unknown_room" = "U probeert toegang te verkrijgen tot %@. Zou u willen toetreden om aan het gesprek deel te nemen?";
-"room_preview_try_join_an_unknown_room_default" = "een gesprek";
+"room_preview_try_join_an_unknown_room_default" = "een kamer";
 // Settings
 "settings_title" = "Instellingen";
 "account_logout_all" = "Alle accounts afmelden";
@@ -255,7 +255,7 @@
 "settings_mark_all_as_read" = "Alle berichten als gelezen markeren";
 "settings_report_bug" = "Fout rapporteren";
 "settings_clear_cache" = "Cache verwijderen";
-"settings_config_home_server" = "Thuisserver is %@";
+"settings_config_home_server" = "Server is %@";
 "settings_config_identity_server" = "Identiteitsserver is %@";
 "settings_config_user_id" = "Aangemeld als %@";
 "settings_user_settings" = "GEBRUIKERSINSTELLINGEN";
@@ -269,7 +269,7 @@
 "settings_cryptography" = "CRYPTOGRAFIE";
 "settings_sign_out" = "Afmelden";
 "settings_sign_out_confirmation" = "Weet u het zeker?";
-"settings_sign_out_e2e_warn" = "U zult uw sleutels voor eind-tot-eind-versleuteling kwijtraken. Dat betekent dat u op dit apparaat geen oude berichten in versleutelde gesprekken meer zult kunnen lezen.";
+"settings_sign_out_e2e_warn" = "U zult uw sleutels voor eind-tot-eindversleuteling kwijtraken. Dat betekent dat u op dit apparaat geen oude berichten in versleutelde gesprekken meer zult kunnen lezen.";
 "settings_profile_picture" = "Profielfoto";
 "settings_display_name" = "Weergavenaam";
 "settings_first_name" = "Voornaam";
@@ -287,9 +287,8 @@
 "settings_fail_to_update_profile" = "Bijwerken van profiel is mislukt";
 "settings_enable_push_notif" = "Meldingen op dit apparaat";
 "settings_global_settings_info" = "Globale meldingsinstellingen zijn beschikbaar op uw %@-webcliënt";
-"settings_pin_rooms_with_missed_notif" = "Gesprekken met gemiste meldingen vastprikken";
-"settings_pin_rooms_with_unread" = "Gesprekken met ongelezen berichten vastprikken";
-"settings_on_denied_notification" = "Meldingen worden geweigerd voor %@, sta ze toe in uw apparaatinstellingen";
+"settings_pin_rooms_with_missed_notif" = "Kamers met gemiste meldingen vastprikken";
+"settings_pin_rooms_with_unread" = "Kamers met ongelezen berichten vastprikken";
 //"settings_enable_all_notif" = "Alle notificaties aanzetten";
 //"settings_messages_my_display_name" = "Bericht dat mijn naam bevat";
 //"settings_messages_my_user_name" = "Bericht dat mijn gebruikersnaam bevat";
@@ -323,71 +322,71 @@
 "settings_crypto_export" = "Sleutels exporteren";
 "settings_crypto_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
 // Room Details
-"room_details_title" = "Gespreksdetails";
+"room_details_title" = "Kamerdetails";
 "room_details_people" = "Leden";
 "room_details_files" = "Bestanden";
 "room_details_settings" = "Instellingen";
-"room_details_photo" = "Gespreksfoto";
-"room_details_room_name" = "Gespreksnaam";
+"room_details_photo" = "Kamerfoto";
+"room_details_room_name" = "Kamernaam";
 "room_details_topic" = "Onderwerp";
 "room_details_favourite_tag" = "Favoriet";
 "room_details_low_priority_tag" = "Lage prioriteit";
 "room_details_mute_notifs" = "Meldingen dempen";
-"room_details_access_section" = "Wie kan er tot dit gesprek toetreden?";
+"room_details_access_section" = "Wie kan er tot deze kamer toetreden?";
 "room_details_access_section_invited_only" = "Alleen personen die zijn uitgenodigd";
-"room_details_access_section_anyone_apart_from_guest" = "Iedereen die de koppeling van het gesprek kent, behalve gasten";
-"room_details_access_section_anyone" = "Iedereen die de koppeling van het gesprek kent, inclusief gasten";
-"room_details_access_section_no_address_warning" = "Het gesprek moet een adres hebben om ernaar te verwijzen";
-"room_details_access_section_directory_toggle" = "Gesprek tonen in gesprekscatalogus";
+"room_details_access_section_anyone_apart_from_guest" = "Iedereen die het adres van deze kamer kent, behalve gasten";
+"room_details_access_section_anyone" = "Iedereen die het adres van deze kamer kent, inclusief gasten";
+"room_details_access_section_no_address_warning" = "De kamer moet een adres hebben om ernaar te verwijzen";
+"room_details_access_section_directory_toggle" = "Kamer tonen in de kamersgids";
 "room_details_history_section" = "Wie kan er de geschiedenis lezen?";
 "room_details_history_section_anyone" = "Iedereen";
 "room_details_history_section_members_only" = "Alleen leden (vanaf het moment dat deze optie geselecteerd wordt)";
 "room_details_history_section_members_only_since_invited" = "Alleen leden (vanaf het moment dat ze uitgenodigd zijn)";
 "room_details_history_section_members_only_since_joined" = "Alleen leden (vanaf het moment dat ze toetreden)";
 "room_details_history_section_prompt_title" = "Privacywaarschuwing";
-"room_details_history_section_prompt_msg" = "Veranderingen aan wie de geschiedenis kan lezen zullen alleen gelden voor toekomstige berichten in dit gesprek. De zichtbaarheid van de bestaande geschiedenis zal onveranderd blijven.";
+"room_details_history_section_prompt_msg" = "Veranderingen aan wie de geschiedenis kan lezen zullen alleen gelden voor toekomstige berichten in deze kamer. De zichtbaarheid van de bestaande geschiedenis zal onveranderd blijven.";
 "room_details_addresses_section" = "Adressen";
-"room_details_no_local_addresses" = "Dit gesprek heeft geen lokale adressen";
+"room_details_no_local_addresses" = "Deze kamer heeft geen lokale adressen";
 "room_details_new_address" = "Nieuw adres toevoegen";
 "room_details_new_address_placeholder" = "Nieuw adres toevoegen (bv. #foo%@)";
 "room_details_addresses_invalid_address_prompt_title" = "Ongeldig bijnaamformaat";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ is geen geldig formaat voor een bijnaam";
 "room_details_addresses_disable_main_address_prompt_title" = "Hoofdadreswaarschuwing";
-"room_details_addresses_disable_main_address_prompt_msg" = "U heeft geen hoofdadres opgegeven. Het standaardhoofdadres voor dit gesprek zal willekeurig gekozen worden";
+"room_details_addresses_disable_main_address_prompt_msg" = "U heeft geen hoofdadres opgegeven. Het standaardhoofdadres voor deze kamer zal willekeurig gekozen worden";
 "room_details_banned_users_section" = "Verbannen gebruikers";
 "room_details_advanced_section" = "Geavanceerd";
-"room_details_advanced_room_id" = "Gespreks-ID:";
+"room_details_advanced_room_id" = "Kamer-ID:";
 "room_details_advanced_enable_e2e_encryption" = "Versleuteling inschakelen (let op: dit kan niet meer worden uitgeschakeld!)";
-"room_details_advanced_e2e_encryption_enabled" = "Versleuteling is ingeschakeld in dit gesprek";
-"room_details_advanced_e2e_encryption_disabled" = "Versleuteling is niet ingeschakeld in dit gesprek.";
+"room_details_advanced_e2e_encryption_enabled" = "Versleuteling is ingeschakeld in deze kamer";
+"room_details_advanced_e2e_encryption_disabled" = "Versleuteling is niet ingeschakeld in deze kamer.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Alleen naar geverifieerde apparaten versleutelen";
 "room_details_advanced_e2e_encryption_prompt_message" = "End-to-endbeveiliging is experimenteel en kan onbetrouwbaar zijn.\n\nHet is beter om het nog niet met gevoelige gegevens te vertrouwen.\n\nApparaten kunnen de geschiedenis van voordat ze de ruimte betraden nog niet ontsleutelen.\n\nZodra de versleuteling aan staat kan het (voorlopig) niet worden uitgezet.\n\nVersleutelde berichten zullen nog niet zichtbaar zijn op programma's die geen versleuteling ondersteunen.";
-"room_details_fail_to_update_avatar" = "Bijwerken van gespreksfoto is mislukt";
-"room_details_fail_to_update_room_name" = "Bijwerken van gespreksnaam is mislukt";
+"room_details_fail_to_update_avatar" = "Bijwerken van kamerafbeelding is mislukt";
+"room_details_fail_to_update_room_name" = "Bijwerken van kamernaam is mislukt";
 "room_details_fail_to_update_topic" = "Bijwerken van gespreksonderwerp is mislukt";
-"room_details_fail_to_update_room_guest_access" = "Bijwerken van gasttoegang tot gesprek is mislukt";
+"room_details_fail_to_update_room_guest_access" = "Bijwerken van gasttoegang voor kamer is mislukt";
 "room_details_fail_to_update_room_join_rule" = "Bijwerken van toetredingsregel is mislukt";
-"room_details_fail_to_update_room_directory_visibility" = "Bijwerken van zichtbaarheid in de gesprekscatalogus is mislukt";
+"room_details_fail_to_update_room_directory_visibility" = "Bijwerken van zichtbaarheid in de kamersgids is mislukt";
 "room_details_fail_to_update_history_visibility" = "Bijwerken van zichtbaarheid van geschiedenis is mislukt";
-"room_details_fail_to_add_room_aliases" = "Toevoegen van nieuwe gespreksadressen is mislukt";
-"room_details_fail_to_remove_room_aliases" = "Verwijderen van gespreksadressen is mislukt";
+"room_details_fail_to_add_room_aliases" = "Toevoegen van nieuwe kameradressen is mislukt";
+"room_details_fail_to_remove_room_aliases" = "Verwijderen van kameradressen is mislukt";
 "room_details_fail_to_update_room_canonical_alias" = "Bijwerken van hoofdadres is mislukt";
-"room_details_fail_to_enable_encryption" = "Inschakelen van versleuteling in dit gesprek is mislukt";
+"room_details_fail_to_enable_encryption" = "Inschakelen van versleuteling in deze kamer is mislukt";
 "room_details_save_changes_prompt" = "Wilt u de wijzigingen opslaan?";
 "room_details_set_main_address" = "Instellen als hoofdadres";
 "room_details_unset_main_address" = "Niet instellen als hoofdadres";
-"room_details_copy_room_id" = "Gespreks-ID kopiëren";
-"room_details_copy_room_address" = "Gespreksadres kopiëren";
-"room_details_copy_room_url" = "Gespreks-URL kopiëren";
+"room_details_copy_room_id" = "Kamer-ID kopiëren";
+"room_details_copy_room_address" = "Kameradres kopiëren";
+"room_details_copy_room_url" = "Kamer-URL kopiëren";
 // Media picker
 "media_picker_library" = "Bibliotheek";
 "media_picker_select" = "Selecteren";
 // Directory
 "directory_title" = "Catalogus";
 "directory_server_picker_title" = "Selecteer een catalogus";
-"directory_server_all_rooms" = "Alle gesprekken op server %@";
-"directory_server_all_native_rooms" = "Alle lokale Matrix-gesprekken";
-"directory_server_type_homeserver" = "Voer een thuisserver in om de publieke gesprekken ervan weer te geven";
+"directory_server_all_rooms" = "Alle kamers op server %@";
+"directory_server_all_native_rooms" = "Alle lokale Matrix-kamers";
+"directory_server_type_homeserver" = "Voer een server in om de publieke kamers ervan weer te geven";
 "directory_server_placeholder" = "matrix.org";
 // Others
 "or" = "of";
@@ -395,7 +394,7 @@
 "today" = "Vandaag";
 "yesterday" = "Gisteren";
 "network_offline_prompt" = "Het ziet er naar uit dat de internetverbinding offline is.";
-"public_room_section_title" = "Publieke gesprekken (op %@):";
+"public_room_section_title" = "Publieke kamers (op %@):";
 "bug_report_prompt" = "De app is de vorige keer gecrasht. Wilt u een crashrapport indienen?";
 "rage_shake_prompt" = "Het ziet er naar uit dat u de telefoon in frustratie schudt. Wilt u een foutmelding indienen?";
 "camera_access_not_granted" = "%@ heeft geen toestemming om de camera te gebruiken, pas de privacy-instellingen aan";
@@ -410,7 +409,7 @@
 "google_analytics_use_prompt" = "Wilt u helpen met het verbeteren van %@ door anonieme crashrapporten en gebruiksstatistieken te versturen?";
 // Crypto
 "e2e_enabling_on_app_update" = "Element ondersteunt nu eind-tot-eind-versleuteling, maar u moet zich opnieuw aanmelden om het in te schakelen.\n\nU kunt dit nu of later doen vanuit de app-instellingen.";
-"e2e_need_log_in_again" = "U moet zich opnieuw aanmelden om sleutels voor eind-tot-eind-versleuteling te genereren voor dit apparaat, en om de publieke sleutel naar uw thuisserver te sturen.\nDit is eenmalig; excuses voor het ongemak.";
+"e2e_need_log_in_again" = "U moet zich opnieuw aanmelden om sleutels voor eind-tot-eind-versleuteling te genereren voor dit apparaat, en om de publieke sleutel naar uw server te sturen.\nDit is eenmalig; excuses voor het ongemak.";
 // Bug report
 "bug_report_title" = "Foutmelding";
 "bug_report_description" = "Beschrijf de foutmelding. Wat heeft u gedaan? Wat verwachtte u dat er zou gebeuren? Wat is er echt gebeurd?";
@@ -440,12 +439,12 @@
 "auth_identity_server_placeholder" = "URL (bv. https://vector.im)";
 "room_ongoing_conference_call_with_close" = "Er is een vergadergesprek gaande. Neem deel met %@ of %@. %@ het.";
 "room_ongoing_conference_call_close" = "Sluiten";
-"room_conference_call_no_power" = "U heeft toestemming nodig om vergadergesprekken in dit groepsgesprek te beheren";
+"room_conference_call_no_power" = "U heeft toestemming nodig om vergaderingen in deze kamer te beheren";
 "settings_labs_create_conference_with_jitsi" = "Maak vergadergesprekken met jitsi";
 "call_already_displayed" = "Er is al een oproep aan de gang.";
 "call_jitsi_error" = "Deelnemen aan het vergadergesprek is mislukt.";
 // Widget
-"widget_no_power_to_manage" = "U heeft toestemming nodig om widgets in dit gesprek te beheren";
+"widget_no_power_to_manage" = "U heeft toestemming nodig om widgets in deze kamer te beheren";
 "widget_creation_failure" = "Aanmaken van widget is mislukt";
 "send_to" = "Stuur naar %@";
 "sending" = "Wordt verstuurd";
@@ -465,7 +464,7 @@
 "settings_ui_theme_picker_message" = "‘Automatisch’ gebruikt de instelling ‘Kleurweergave omkeren’ van uw apparaat";
 "settings_enable_rageshake" = "Schud de telefoon om een fout te rapporteren";
 "room_details_direct_chat" = "Tweegesprek";
-"room_details_fail_to_update_room_direct" = "Bijwerken van de tweegespreksvlag in dit gesprek is mislukt";
+"room_details_fail_to_update_room_direct" = "Bijwerken van de directe chat-vlag in deze kamer is mislukt";
 "event_formatter_widget_added" = "%@ widget toegevoegd door %@";
 "event_formatter_widget_removed" = "%@ widget verwijderd door %@";
 "event_formatter_jitsi_widget_added" = "VoIP-vergadergesprek toegevoegd door %@";
@@ -477,16 +476,16 @@
 "widget_integration_need_to_be_able_to_invite" = "U moet gebruikers kunnen uitnodigen om dat te kunnen doen.";
 "widget_integration_unable_to_create" = "Kan widget niet aanmaken.";
 "widget_integration_failed_to_send_request" = "Versturen van verzoek is mislukt.";
-"widget_integration_room_not_recognised" = "Dit gesprek wordt niet herkend.";
+"widget_integration_room_not_recognised" = "Deze kamer wordt niet herkend.";
 "widget_integration_positive_power_level" = "Het machtsniveau moet een positief geheel getal zijn.";
-"widget_integration_must_be_in_room" = "U zit niet in dit gesprek.";
-"widget_integration_no_permission_in_room" = "U heeft geen toestemming om dat in dit gesprek te doen.";
-"widget_integration_missing_room_id" = "room_id ontbreekt in het verzoek.";
+"widget_integration_must_be_in_room" = "U zit niet in deze kamer.";
+"widget_integration_no_permission_in_room" = "U heeft geen toestemming om dat in deze kamer te doen.";
+"widget_integration_missing_room_id" = "kamer_id ontbreekt in het verzoek.";
 "widget_integration_missing_user_id" = "user_id ontbreekt in het verzoek.";
-"widget_integration_room_not_visible" = "Gesprek %@ is niet zichtbaar.";
+"widget_integration_room_not_visible" = "Kamer %@ is niet zichtbaar.";
 // Share extension
 "share_extension_auth_prompt" = "Meld u aan in de hoofdapp om inhoud te delen";
-"share_extension_failed_to_encrypt" = "Versturen is mislukt. Controleer in de hoofdapp de versleutelingsinstellingen van dit gesprek";
+"share_extension_failed_to_encrypt" = "Versturen is mislukt. Controleer in de hoofdapp de versleutelingsinstellingen van deze kamer";
 // Room key request dialog
 "e2e_room_key_request_title" = "Versleutelingssleutelverzoek";
 "e2e_room_key_request_message" = "Uw ongeverifieerde apparaat ‘%@’ vraagt naar versleutelingssleutels.";
@@ -497,7 +496,7 @@
 // Groups tab
 "group_invite_section" = "UITNODIGINGEN";
 "group_section" = "GEMEENSCHAPPEN";
-"room_do_not_have_permission_to_post" = "U heeft geen toestemming om in dit gesprek te posten";
+"room_do_not_have_permission_to_post" = "U heeft geen toestemming om in deze kamer te plaatsen";
 "settings_flair" = "Badge weergeven waar toegestaan";
 "room_details_flair_section" = "Badge voor gemeenschappen weergeven";
 "room_details_new_flair_placeholder" = "Nieuwe gemeenschaps-ID toevoegen (bv. +foo%@)";
@@ -508,12 +507,12 @@
 "group_details_title" = "Gemeenschapsdetails";
 "group_details_home" = "Thuis";
 "group_details_people" = "Personen";
-"group_details_rooms" = "Gesprekken";
+"group_details_rooms" = "Kamers";
 // Group Home
 "group_home_one_member_format" = "1 lid";
 "group_home_multi_members_format" = "%tu leden";
-"group_home_one_room_format" = "1 gesprek";
-"group_home_multi_rooms_format" = "%tu gesprekken";
+"group_home_one_room_format" = "1 kamer";
+"group_home_multi_rooms_format" = "%tu kamers";
 "group_invitation_format" = "%@ heeft u uitgenodigd om tot deze gemeenschap toe te treden";
 // Group participants
 "group_participants_add_participant" = "Deelnemer toevoegen";
@@ -529,12 +528,12 @@
 "group_participants_invite_malformed_id" = "Misvormde ID. Dit moet een Matrix-ID zijn, zoals ‘@gebruikersnaam:domein’";
 "group_participants_invited_section" = "UITGENODIGD";
 // Group rooms
-"group_rooms_filter_rooms" = "Gemeenschapsgesprekken filteren";
+"group_rooms_filter_rooms" = "Gemeenschapskamers filteren";
 "e2e_room_key_request_message_new_device" = "U heeft een nieuw apparaat ‘%@’ toegevoegd, dat vraagt naar versleutelingssleutels.";
 "room_event_action_kick_prompt_reason" = "Reden voor het verwijderen van deze gebruiker";
 "room_event_action_ban_prompt_reason" = "Reden voor het verbannen van deze gebruiker";
 // GDPR
-"gdpr_consent_not_given_alert_message" = "Om de %@-thuisserver te blijven gebruiken moet u de algemene voorwaarden lezen en er mee akkoord gaan.";
+"gdpr_consent_not_given_alert_message" = "Om de %@-server te blijven gebruiken moet u de algemene voorwaarden lezen en er mee akkoord gaan.";
 "gdpr_consent_not_given_alert_review_now_action" = "Nu lezen";
 "room_action_send_photo_or_video" = "Foto of video versturen";
 "room_action_send_sticker" = "Sticker versturen";
@@ -549,7 +548,7 @@
 "widget_sticker_picker_no_stickerpacks_alert" = "U heeft momenteel geen stickerpakketten ingeschakeld.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Wilt u er nu een paar toevoegen?";
 "deactivate_account_title" = "Account deactiveren";
-"deactivate_account_informations_part1" = "Dit zal uw account voorgoed onbruikbaar maken. U zult zich niet meer kunnen aanmelden, en niemand anders zal zich met dezelfde gebruikers-ID kunnen registreren. Dit zal er voor zorgen dat uw account alle gesprekken verlaat waar deze momenteel lid van is, en het verwijdert uw accountgegevens van de identiteitsserver. ";
+"deactivate_account_informations_part1" = "Dit zal uw account voorgoed onbruikbaar maken. U zult zich niet meer kunnen aanmelden, en niemand anders zal zich met dezelfde persoon-ID kunnen registreren. Dit zal er voor zorgen dat uw account alle kamers verlaat waar deze momenteel lid van is, en het verwijdert uw gegevens van de identiteitsserver. ";
 "deactivate_account_informations_part2_emphasize" = "Deze actie is onomkeerbaar.";
 "deactivate_account_informations_part3" = "\n\nHet deactiveren van uw account ";
 "deactivate_account_informations_part4_emphasize" = "zal er standaard niet voor zorgen dat de berichten die u heeft verzonden worden vergeten. ";
@@ -565,21 +564,21 @@
 "room_message_reply_to_short_placeholder" = "Stuur een antwoord…";
 // String for App Store
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
-"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw gesprekken, gemeenschappen, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
+"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, spaces, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
-"auth_accept_policies" = "Gelieve het beleid van deze thuisserver te lezen en aanvaarden:";
-"auth_autodiscover_invalid_response" = "Ongeldig thuisserverontdekkingsantwoord";
+"auth_accept_policies" = "Gelieve het beleid van deze server te lezen en aanvaarden:";
+"auth_autodiscover_invalid_response" = "Ongeldig server-ontdekkings-antwoord";
 "room_recents_server_notice_section" = "SYSTEEMMELDINGEN";
 "room_message_unable_open_link_error_message" = "Kan de koppeling niet openen.";
-"room_replacement_information" = "Dit gesprek is vervangen en is niet langer actief.";
+"room_replacement_information" = "Deze kamer is vervangen en is niet langer actief.";
 "room_replacement_link" = "Het gesprek gaat hier verder.";
-"room_predecessor_information" = "Dit gesprek is een voortzetting van een ander gesprek.";
+"room_predecessor_information" = "Deze kamer is een voortzetting van een eerdere kamer.";
 "room_predecessor_link" = "Tik hier om oudere berichten te zien.";
 "room_resource_limit_exceeded_message_contact_1" = " Gelieve ";
 "room_resource_limit_exceeded_message_contact_2_link" = "contact op te nemen met uw dienstbeheerder";
 "room_resource_limit_exceeded_message_contact_3" = " om deze dienst te blijven gebruiken.";
-"room_resource_usage_limit_reached_message_1_default" = "Deze thuisserver heeft één van zijn bronlimieten overschreden, dus ";
-"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Deze thuisserver heeft zijn limiet voor maandelijks actieve gebruikers overschreden, dus ";
+"room_resource_usage_limit_reached_message_1_default" = "Deze server heeft één van zijn bronlimieten overschreden, dus ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Deze server heeft zijn limiet voor maandelijks actieve gebruikers overschreden, dus ";
 "room_resource_usage_limit_reached_message_2" = "sommige gebruikers zullen zich niet kunnen aanmelden.";
 "room_resource_usage_limit_reached_message_contact_3" = " om deze limiet te verhogen.";
 "settings_key_backup" = "SLEUTELBACK-UP";
@@ -606,7 +605,7 @@
 "settings_key_backup_button_delete" = "Back-up verwijderen";
 "settings_key_backup_delete_confirmation_prompt_title" = "Back-up verwijderen";
 "settings_key_backup_delete_confirmation_prompt_msg" = "Weet u het zeker? Als uw sleutels niet correct geback-upt zijn, zult u uw versleutelde berichten verliezen.";
-"homeserver_connection_lost" = "Kon geen verbinding maken met de thuisserver.";
+"homeserver_connection_lost" = "Kon geen verbinding maken met de server.";
 "room_does_not_exist" = "%@ bestaat niet";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nieuwe sleutelback-up";
@@ -618,7 +617,7 @@
 "key_backup_setup_skip_alert_message" = "U verliest mogelijk uw versleutelde berichten als u zich afmeldt of uw apparaat verliest.";
 "key_backup_setup_skip_alert_skip_action" = "Overslaan";
 "key_backup_setup_intro_title" = "Verlies nooit uw versleutelde berichten";
-"key_backup_setup_intro_info" = "Berichten in versleutelde gesprekken worden versleuteld met eind-tot-eind-beveiliging. Enkel de ontvanger(s) en u hebben de sleutels om deze berichten te lezen.\n\nMaak een veilige back-up van uw sleutels om deze niet te verliezen.";
+"key_backup_setup_intro_info" = "Berichten in versleutelde kamers worden versleuteld met eind-tot-eind-versleuteling. Enkel de ontvanger(s) en u hebben de sleutels om deze berichten te lezen.\n\nMaak een veilige back-up van uw sleutels om deze niet te verliezen.";
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Begin sleutelback-up te gebruiken";
 "key_backup_setup_intro_manual_export_info" = "(Geavanceerd)";
 "key_backup_setup_intro_manual_export_action" = "Sleutels handmatig exporteren";
@@ -788,7 +787,7 @@
 "close" = "Sluiten";
 "auth_softlogout_signed_out" = "U bent afgemeld";
 "auth_softlogout_sign_in" = "Aanmelden";
-"auth_softlogout_reason" = "De beheerder van uw thuisserver (%1$@) heeft u van uw account %2$@ afgemeld (%3$@).";
+"auth_softlogout_reason" = "De beheerder van uw server (%1$@) heeft u van uw account %2$@ afgemeld (%3$@).";
 "auth_softlogout_recover_encryption_keys" = "Meld u aan om de versleutelingssleutels te herstellen die uitsluitend op dit apparaat worden opgeslagen. U heeft ze nodig om uw versleutelde berichten op al uw apparaten te kunnen lezen.";
 "auth_softlogout_clear_data" = "Persoonlijke gegevens wissen";
 "auth_softlogout_clear_data_message_1" = "Let op: uw persoonlijke gegevens (inclusief versleutelingssleutels) worden nog altijd op dit apparaat opgeslagen.";
@@ -835,7 +834,7 @@
 "service_terms_modal_description_for_identity_server" = "Wees vindbaar voor anderen";
 "service_terms_modal_description_for_integration_manager" = "Gebruik bots, bruggen, widgets en stickerpakketten";
 // Errors
-"error_user_already_logged_in" = "Het lijkt alsof u probeert te verbinden met een andere thuisserver. Wilt u zich afmelden?";
+"error_user_already_logged_in" = "Het lijkt alsof u probeert te verbinden met een andere server. Wilt u zich afmelden?";
 "room_participants_remove_third_party_invite_prompt_msg" = "Weet u zeker dat u deze uitnodiging wilt intrekken?";
 "room_accessiblity_scroll_to_bottom" = "Scrollen naar onderen";
 "room_accessibility_search" = "Zoeken";
@@ -888,7 +887,7 @@
 "room_intro_cell_information_dm_sentence2" = "Alleen u twee zijn in dit gesprek, niemand anders kan deelnemen.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
 "room_intro_cell_information_dm_sentence1_part1" = "Dit is het begin van uw directe gesprek met ";
-"room_intro_cell_information_room_without_topic_sentence2_part2" = " om personen te laten weten waar dit gesprek over gaat.";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " om personen te laten weten waar deze kamer over gaat.";
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "Voeg een onderwerp toe";
 "room_intro_cell_information_room_with_topic_sentence2" = "Onderwerp: %@";
 "room_intro_cell_information_room_sentence1_part3" = ". ";
@@ -897,11 +896,11 @@
 // Mark: - Room creation introduction cell
 
 "room_intro_cell_add_participants_action" = "Personen toevoegen";
-"room_avatar_view_accessibility_hint" = "Gespreksfoto wijzigen";
+"room_avatar_view_accessibility_hint" = "Kamerafbeelding wijzigen";
 
 // Mark: - Room avatar view
 
-"room_avatar_view_accessibility_label" = "profielfoto";
+"room_avatar_view_accessibility_label" = "afbeelding";
 "invite_friends_share_text" = "Hoi, start een gesprek met me op %@: %@";
 
 // MARK: - Invite friends
@@ -911,8 +910,8 @@
 
 // MARK: - Favourites
 
-"favourites_empty_view_title" = "Favoriete gesprekken en personen";
-"home_empty_view_information" = "De alles-in-één veilige chat-app voor teams, vrienden en organisaties. Druk op de + knop hieronder om personen en gesprekken toe te voegen.";
+"favourites_empty_view_title" = "Favoriete kamers en personen";
+"home_empty_view_information" = "De alles-in-één veilige chat-app voor teams, vrienden en organisaties. Druk op de + knop hieronder om personen en kamers toe te voegen.";
 
 // MARK: - Home
 
@@ -935,30 +934,30 @@
 
 "room_info_list_one_member" = "1 persoon";
 "room_info_list_several_members" = "%@ personen";
-"create_room_placeholder_address" = "#testroom:matrix.org";
-"create_room_section_header_address" = "Adres";
-"create_room_show_in_directory" = "Gesprek weergeven in de catalogus";
-"create_room_section_footer_type" = "Mensen kunnen alleen met een uitnodiging deelnemen aan een privégesprek.";
-"create_room_type_public" = "Openbaar gesprek";
-"create_room_type_private" = "Privégesprek";
-"create_room_section_header_type" = "Type gesprek";
+"create_room_placeholder_address" = "#testkamer:matrix.org";
+"create_room_section_header_address" = "Kameradres";
+"create_room_show_in_directory" = "Kamer weergeven in de gids";
+"create_room_section_footer_type" = "Personen kunnen alleen met een uitnodiging deelnemen aan een privékamer.";
+"create_room_type_public" = "Publieke Kamer";
+"create_room_type_private" = "Privékamer";
+"create_room_section_header_type" = "Type kamer";
 "create_room_section_footer_encryption" = "Versleuteling kan achteraf niet worden uitgeschakeld.";
 "create_room_enable_encryption" = "Versleuteling inschakelen";
-"create_room_section_header_encryption" = "Gespreksversleuteling";
+"create_room_section_header_encryption" = "Kamerversleuteling";
 "create_room_placeholder_topic" = "Onderwerp";
-"create_room_section_header_topic" = "Onderwerp (optioneel)";
+"create_room_section_header_topic" = "Kameronderwerp (optioneel)";
 "create_room_placeholder_name" = "Naam";
-"create_room_section_header_name" = "Naam";
+"create_room_section_header_name" = "Kamernaam";
 
 // MARK: - Create Room
 
-"create_room_title" = "Nieuw Gesprek";
+"create_room_title" = "Nieuwe Kamer";
 "searchable_directory_search_placeholder" = "Naam of ID";
 "searchable_directory_x_network" = "%@-netwerk";
 
 // MARK: - Searchable Directory View Controller
 
-"searchable_directory_create_new_room" = "Maak een nieuw gesprek";
+"searchable_directory_create_new_room" = "Maak een nieuwe kamer";
 "biometrics_cant_unlocked_alert_message_retry" = "Opnieuw proberen";
 "biometrics_cant_unlocked_alert_message_login" = "Log opnieuw in";
 "biometrics_cant_unlocked_alert_message_x" = "Gebruik %@ om te ontgrendelen of log opnieuw in en schakel %@ opnieuw in";
@@ -1080,7 +1079,7 @@
 "user_verification_sessions_list_session_untrusted" = "Niet vertrouwd";
 "user_verification_sessions_list_session_trusted" = "Vertrouwd";
 "user_verification_sessions_list_table_title" = "Sessies";
-"user_verification_sessions_list_information" = "Berichten met deze gebruiker zijn eind-tot-eind versleuteld en kunnen niet door derde partijen gelezen worden.";
+"user_verification_sessions_list_information" = "Berichten met deze persoon in deze kamer zijn eind-tot-eind versleuteld en kunnen niet door derde partijen gelezen worden.";
 "user_verification_sessions_list_user_trust_level_unknown_title" = "Onbekend";
 "user_verification_sessions_list_user_trust_level_warning_title" = "Waarschuwing";
 
@@ -1252,11 +1251,11 @@
 "service_terms_modal_description_for_identity_server_2" = "Wees vindbaar via telefoonnummer of e-mailadres";
 "service_terms_modal_description_for_identity_server_1" = "Vind anderen via telefoonnummer of e-mailadres";
 "service_terms_modal_decline_button" = "Weigeren";
-"room_widget_permission_room_id_permission" = "Gespreks-ID";
+"room_widget_permission_room_id_permission" = "Kamer-ID";
 "room_widget_permission_widget_id_permission" = "Widget-ID";
 "room_widget_permission_theme_permission" = "Uw thema";
 "room_widget_permission_user_id_permission" = "Uw gebruikers-ID";
-"room_widget_permission_avatar_url_permission" = "Uw profielfoto-URL";
+"room_widget_permission_avatar_url_permission" = "Uw afbeelding-URL";
 "room_widget_permission_display_name_permission" = "Uw weergavenaam";
 "room_widget_permission_information_title" = "Dit gebruiken kan gegevens delen met %@:\n";
 "room_widget_permission_webview_information_title" = "Dit gebruiken kan cookies toevoegen en gegevens delen met %@:\n";
@@ -1274,7 +1273,7 @@
 "call_actions_unhold" = "Hervatten";
 "call_no_stun_server_error_use_fallback_button" = "Probeer %@ te gebruiken";
 "call_no_stun_server_error_message_2" = "U kunt ook de publieke server op %@ gebruiken, maar dit zal minder betrouwbaar zijn, en zal uw IP-adres met die server delen. U kunt dit ook beheren in de Instellingen";
-"call_no_stun_server_error_message_1" = "Vraag uw thuisserverbeheerder %@ een TURN-server te configureren teneinde oproepen betrouwbaar te doen werken.";
+"call_no_stun_server_error_message_1" = "Vraag uw serverbeheerder %@ een TURN-server te configureren teneinde oproepen betrouwbaar te doen werken.";
 "call_no_stun_server_error_title" = "Oproep mislukt door verkeerd geconfigureerde server";
 "event_formatter_jitsi_widget_removed_by_you" = "U heeft een VoIP-vergadering verwijderd";
 "event_formatter_jitsi_widget_added_by_you" = "U heeft een VoIP-vergadering toegevoegd";
@@ -1283,16 +1282,16 @@
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "U heeft deze widget toegevoegd: %@";
 "event_formatter_call_back" = "Terugbellen";
-"event_formatter_call_you_declined" = "U heeft de oproep afgewezen";
+"event_formatter_call_you_declined" = "Oproep geweigerd";
 "event_formatter_call_you_currently_in" = "Actieve oproep";
-"event_formatter_call_has_ended" = "Beëindigd %@";
+"event_formatter_call_has_ended" = "Oproep beëindigd %@";
 "event_formatter_call_video" = "Video-oproep";
 "event_formatter_call_voice" = "Audio-oproep";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Versleuteling is hier niet ingeschakeld.";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Versleuteling is hier ingeschakeld";
 "room_details_advanced_room_id_for_dm" = "ID:";
 "room_details_no_local_addresses_for_dm" = "Geen lokaaladres bekend";
-"room_details_access_section_directory_toggle_for_dm" = "Weergeven in publieke groepsgesprekkencatalogus";
+"room_details_access_section_directory_toggle_for_dm" = "Weergeven in publieke kamersgids";
 "room_details_access_section_anyone_for_dm" = "Iedereen die de koppeling kent, inclusief gasten";
 "room_details_access_section_anyone_apart_from_guest_for_dm" = "Iedereen die de koppeling kent, behalve gasten";
 "room_details_access_section_for_dm" = "Wie heeft toegang?";
@@ -1322,7 +1321,7 @@
 "identity_server_settings_title" = "Identiteitsserver";
 
 // AuthenticatedSessionViewControllerFactory
-"authenticated_session_flow_not_supported" = "Deze app ondersteunt de verificatiemethode op uw homeserver niet.";
+"authenticated_session_flow_not_supported" = "Deze app ondersteunt de verificatiemethode op uw server niet.";
 "manage_session_sign_out" = "Deze sessie afmelden";
 "manage_session_not_trusted" = "Niet vertrouwd";
 "manage_session_trusted" = "Door u vertrouwd";
@@ -1360,7 +1359,7 @@
 
 // Security settings
 "security_settings_title" = "Beveiliging";
-"settings_show_NSFW_public_rooms" = "NSFW openbare gesprekken weergeven";
+"settings_show_NSFW_public_rooms" = "NSFW publieke kamers weergeven";
 "settings_identity_server_no_is_description" = "U gebruikt momenteel geen identiteitsserver. Voeg er hierboven één toe om bekenden te kunnen vinden en voor hen vindbaar te zijn.";
 "settings_identity_server_no_is" = "Geen identiteitsserver geconfigureerd";
 "settings_identity_server_description" = "Met de hierboven ingestelde identiteitsserver kan u uw contacten vinden en bent u vindbaar voor uw contacten.";
@@ -1368,14 +1367,14 @@
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "E-mailbevestiging afbreken";
 "settings_discovery_three_pid_details_revoke_action" = "Intrekken";
 "settings_discovery_three_pid_details_share_action" = "Delen";
-"settings_discovery_three_pid_details_information_phone_number" = "Beheer de voorkeuren voor dit telefoonnummer, dat andere gebruikers kunnen gebruiken om u te vinden en u uit te nodigen tot gesprekken. Telefoonnummers toevoegen of verwijderen in Accounts.";
+"settings_discovery_three_pid_details_information_phone_number" = "Beheer de voorkeuren voor dit telefoonnummer, dat andere personen kunnen gebruiken om u te vinden en u uit te nodigen tot gesprekken. Telefoonnummers toevoegen of verwijderen in Accounts.";
 "settings_discovery_three_pid_details_title_phone_number" = "Beheer telefoonnummer";
-"settings_discovery_three_pid_details_information_email" = "Beheer de voorkeuren voor dit e-mailadres, dat andere gebruikers kunnen gebruiken om u te vinden en u uit te nodigen tot gesprekken. E-mailadressen toevoegen of verwijderen in Accounts.";
+"settings_discovery_three_pid_details_information_email" = "Beheer de voorkeuren voor dit e-mailadres, dat andere personen kunnen gebruiken om u te vinden en u uit te nodigen tot gesprekken. E-mailadressen toevoegen of verwijderen in Accounts.";
 "settings_discovery_three_pid_details_title_email" = "E-mail beheren";
 "settings_discovery_error_message" = "Er is een fout opgetreden. Probeer het opnieuw.";
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_discovery_three_pids_management_information_part2" = "Gebruikersinstellingen";
-"settings_discovery_three_pids_management_information_part1" = "Beheer e-mailadressen en telefoonnummers die andere gebruikers kunnen gebruiken om u te vinden en u uit te nodigen voor een gesprekken. E-mailadressen of telefoonnummers toevoegen of verwijderen van deze lijst kan in ";
+"settings_discovery_three_pids_management_information_part1" = "Beheer e-mailadressen en telefoonnummers die andere personen kunnen gebruiken om u te vinden en u uit te nodigen voor kamers. E-mailadressen of telefoonnummers toevoegen of verwijderen van deze lijst kan in ";
 "settings_discovery_terms_not_signed" = "Aanvaard de gebruikersvoorwaarden van de identiteitsserver (%@) om vindbaar te zijn op e-mailadres of telefoonnummer.";
 "settings_discovery_no_identity_server" = "U gebruikt momenteel geen identiteitsserver. Om door de u bekende contacten vindbaar te zijn, voeg er een toe.";
 "settings_devices_description" = "De publieke naam van een sessie is zichtbaar voor de personen waarmee u communiceert";
@@ -1383,9 +1382,9 @@
 "settings_add_3pid_password_message" = "Geef uw wachtwoord om verder te gaan";
 "settings_add_3pid_password_title_msidsn" = "Telefoonnummer toevoegen";
 "settings_add_3pid_password_title_email" = "E-mailadres toevoegen";
-"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, gespreksuitnodigingen versturen en bestuursniveaus instellen namens u.";
+"settings_integrations_allow_description" = "Gebruik een integratiebeheerder om bots, bruggen, widgets en stickerpakketten te beheren.\n\nIntegratiebeheerders ontvangen configuratiedata en kunnen widgets aanpassen, kameruitnodigingen versturen en bestuursniveaus instellen namens u.";
 "settings_integrations_allow_button" = "Beheer integraties";
-"settings_calls_stun_server_fallback_description" = "Sta de terugvalserver voor oproepbijstand %@ toe wanneer uw homeserver er geen aanbiedt (uw IP-adres wordt gedeeld gedurende een oproep).";
+"settings_calls_stun_server_fallback_description" = "Sta de terugvalserver voor oproepbijstand %@ toe wanneer uw server er geen aanbiedt (uw IP-adres wordt gedeeld gedurende een oproep).";
 "settings_calls_stun_server_fallback_button" = "Terugvalserver voor oproepen toestaan";
 "settings_security" = "BEVEILIGING";
 "settings_three_pids_management_information_part3" = ".";
@@ -1400,7 +1399,7 @@
 "room_place_voice_call" = "Audio-oproep";
 "room_event_action_delete_confirmation_message" = "Weet u zeker dat u alle niet verzonden berichten wilt verwijderen?";
 "room_event_action_delete_confirmation_title" = "Niet verzonden berichten verwijderen";
-"room_unsent_messages_cancel_message" = "Weet u zeker dat u alle niet verzonden berichten in dit gesprek wilt verwijderen?";
+"room_unsent_messages_cancel_message" = "Weet u zeker dat u alle niet verzonden berichten in deze kamer wilt verwijderen?";
 "room_unsent_messages_cancel_title" = "Niet verzonden berichten verwijderen";
 "room_member_power_level_short_custom" = "Aangepast";
 "room_member_power_level_short_moderator" = "Mod";
@@ -1409,9 +1408,9 @@
 "room_member_power_level_moderator_in" = "Moderator in %@";
 "room_member_power_level_admin_in" = "Beheerder in %@";
 "room_participants_security_information_room_encrypted_for_dm" = "Berichten zijn hier eind-tot-eind versleuteld.\n\nUw berichten zijn met een digitale sleutel beveiligd, alleen u en de ontvanger hebben de unieke sleutels om deze berichten te ontgrendelen.";
-"room_participants_security_information_room_encrypted" = "Berichten in dit gesprek zijn eind-tot-eind versleuteld.\n\nUw berichten zijn met een digitale sleutel beveiligd, alleen u en de ontvanger hebben de unieke sleutels om deze berichten te ontgrendelen.";
+"room_participants_security_information_room_encrypted" = "Berichten in deze kamer zijn eind-tot-eind versleuteld.\n\nUw berichten zijn met een sleutel beveiligd, alleen u en de ontvanger hebben de unieke sleutels om deze berichten te ontgrendelen.";
 "room_participants_security_information_room_not_encrypted_for_dm" = "Berichten zijn hier niet eind-tot-eind versleuteld.";
-"room_participants_security_information_room_not_encrypted" = "Berichten in dit gesprek zijn niet eind-tot-eind versleuteld.";
+"room_participants_security_information_room_not_encrypted" = "Berichten in deze kamer zijn niet eind-tot-eind versleuteld.";
 "room_participants_security_loading" = "Laden…";
 "room_participants_action_security_status_loading" = "Laden…";
 "room_participants_action_security_status_warning" = "Waarschuwing";
@@ -1423,8 +1422,8 @@
 "room_participants_leave_prompt_msg_for_dm" = "Weet u zeker dat u het gesprek wilt verlaten?";
 "room_participants_leave_prompt_title_for_dm" = "Verlaten";
 "contacts_address_book_no_identity_server" = "Geen identiteitsserver geconfigureerd";
-"rooms_empty_view_information" = "Groepsgesprekken zijn geschikt voor alle gesprekken, privé of publiek. Klik op de + om de bestaande groepen te verkennen of maak een nieuwe.";
-"rooms_empty_view_title" = "Gesprekken";
+"rooms_empty_view_information" = "Kamers zijn geschikt voor alle groepsgesprekken, privé of publiek. Klik op de + om de bestaande kamers te verkennen of maak een nieuwe aan.";
+"rooms_empty_view_title" = "Kamers";
 "people_empty_view_information" = "Veilig communiceren met iedereen. Druk op + om personen toe te voegen.";
 "people_empty_view_title" = "Personen";
 "social_login_button_title_sign_up" = "Registreren met %@";
@@ -1450,7 +1449,7 @@
 "joined" = "Toegetreden";
 "store_promotional_text" = "Privacy-beschermende chat- en samenwerkingsapp, op een open netwerk. Gedecentraliseerd, zodat u de controle hebt. Geen datamining, geen achterdeurtjes en geen toegang voor derden.";
 "room_details_integrations" = "Integraties";
-"room_details_search" = "Zoek in gesprek";
+"room_details_search" = "Kamer doorzoeken";
 "room_multiple_typing_notification" = "%@ en anderen";
 "room_accessibility_video_call" = "Video-oproep";
 "room_message_replying_to" = "Antwoord aan %@";
@@ -1474,8 +1473,8 @@
 
 // Chat
 "room_slide_to_end_group_call" = "Schuif om voor iedereen de oproep te beëindigen";
-"space_beta_announce_information" = "Spaces zijn de nieuwe manier om gesprekken en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu gebruiken op Web en Desktop.";
-"space_feature_unavailable_information" = "Spaces zijn de nieuwe manier om gesprekken en personen te groeperen. \n\nZe zijn binnenkort beschikbaar. U kan aan spaces deelnemen via andere platformen en die gesprekken worden dan hier beschikbaar.";
+"space_beta_announce_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu al gebruiken op Web en Desktop.";
+"space_feature_unavailable_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. \n\nHet is binnenkort beschikbaar. U kan aan spaces deelnemen via andere platformen en die kamer worden dan hier beschikbaar.";
 "space_beta_announce_subtitle" = "De nieuwe versie van gemeenschappen";
 "space_beta_announce_title" = "Spaces komen binnenkort";
 "space_beta_announce_badge" = "BETA";
@@ -1493,11 +1492,11 @@
 // Mark: - Side menu
 
 "side_menu_reveal_action_accessibility_label" = "Linkerpaneel";
-"user_avatar_view_accessibility_hint" = "Avatar veranderen";
+"user_avatar_view_accessibility_hint" = "Afbeelding veranderen";
 
 // Mark: - User avatar view
 
-"user_avatar_view_accessibility_label" = "avatar";
+"user_avatar_view_accessibility_label" = "afbeelding";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Voor uw veiligheidssleutel in om door te gaan.";
 "secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Voer uw veiligheidswachtwoord in om door te gaan.";
 
@@ -1509,10 +1508,10 @@
 "security_settings_secure_backup_info_checking" = "Controleren…";
 "settings_ui_theme_picker_message_match_system_theme" = "'Automatisch' gebruikt uw apparaat thema instelling";
 "settings_ui_theme_picker_message_invert_colours" = "‘Automatisch’ gebruikt de instelling ‘Kleurweergave omkeren’ van uw apparaat";
-"room_recents_unknown_room_error_message" = "Dit gesprek is niet gevonden. Controleer of het bestaat";
+"room_recents_unknown_room_error_message" = "Deze kamer is niet gevonden. Controleer of het bestaat";
 "room_creation_dm_error" = "Uw direct gesprek kon niet aangemaakt worden. Controleer de gebruikers die u wilt uitnodigen en probeer het opnieuw.";
 "key_verification_verify_qr_code_scan_code_other_device_action" = "Scan met dit apparaat";
-"room_notifs_settings_encrypted_room_notice" = "Let op dat vermeldingen & trefwoorden-meldingen niet beschikbaar zijn in versleutelde gesprekken op mobiel.";
+"room_notifs_settings_encrypted_room_notice" = "Let op dat vermeldingen & trefwoorden-meldingen niet beschikbaar zijn in versleutelde kamers op mobiel.";
 "room_notifs_settings_account_settings" = "Accountinstellingen";
 "room_notifs_settings_manage_notifications" = "U kunt uw meldingen beheren in %@";
 "room_notifs_settings_cancel_action" = "Annuleer";
@@ -1524,3 +1523,19 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Stuur een melding voor";
 "room_details_notifs" = "Meldingen";
+"voice_message_stop_locked_mode_recording" = "Tik op uw opname om te stoppen of te luisteren";
+"voice_message_remaining_recording_time" = "%@s is vertrokken";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Vasthouden om op te nemen, loslaten om te verzenden";
+"settings_labs_voice_messages" = "Spraakberichten";
+"settings_notifications_disabled_alert_message" = "Om in te schakelen, ga naar uw apparaatinstellingen.";
+"settings_notifications_disabled_alert_title" = "Meldingen uitgeschakeld";
+"settings_device_notifications" = "Apparaatmeldingen";
+"event_formatter_call_missed_video" = "Video-oproep gemist";
+"event_formatter_call_missed_voice" = "Audio-oproep gemist";
+"event_formatter_call_active_video" = "Actieve video-oproep";
+"event_formatter_call_active_voice" = "Actieve audio-oproep";
+"event_formatter_call_incoming_video" = "Inkomende video-oproep";
+"event_formatter_call_incoming_voice" = "Inkomende audio-oproep";
