@@ -554,7 +554,7 @@ Tap the + to start adding people.";
 "settings_fail_to_update_password" = "Fail to update password";
 "settings_password_updated" = "Your password has been updated";
 
-"settings_add_3pid_password_title_email" = "Add email adress";
+"settings_add_3pid_password_title_email" = "Add email address";
 "settings_add_3pid_password_title_msidsn" = "Add phone number";
 "settings_add_3pid_password_message" = "To continue, please enter your password";
 "settings_add_3pid_invalid_password_message" = "Invalid credentials";
