@@ -1306,9 +1306,9 @@
 "bug_report_background_mode" = "Vazhdo në prapaskenë";
 "call_actions_unhold" = "Rimerre";
 "event_formatter_call_back" = "Ktheji thirrjen";
-"event_formatter_call_you_declined" = "Hodhët poshtë këtë thirrje";
+"event_formatter_call_you_declined" = "Thirrja u hodh poshtë";
 "event_formatter_call_you_currently_in" = "Thirrje aktive";
-"event_formatter_call_has_ended" = "Përfundoi %@";
+"event_formatter_call_has_ended" = "Thirrja përfundoi %@";
 "event_formatter_call_video" = "Thirrje video";
 "event_formatter_call_voice" = "Thirrje audio";
 "security_settings_crosssigning_reset" = "Rikthe te parazgjedhjet";
@@ -1412,3 +1412,19 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Njoftomëni për";
 "room_details_notifs" = "Njoftime";
+"voice_message_stop_locked_mode_recording" = "Për ta ndalur ose regjistruar, prekni mbi regjistrimin tuaj";
+"voice_message_remaining_recording_time" = "Edhe %@s";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Mbajeni, që të regjistrojë, lëshojeni që të dërgohet";
+"event_formatter_call_missed_video" = "Thirrje video e humbur";
+"event_formatter_call_missed_voice" = "Thirrje zanore e humbur";
+"event_formatter_call_active_video" = "Thirrje video aktive";
+"event_formatter_call_active_voice" = "Thirrje zanore aktive";
+"event_formatter_call_incoming_video" = "Thirrje video ardhëse";
+"event_formatter_call_incoming_voice" = "Thirrje zanore ardhëse";
+"settings_labs_voice_messages" = "Mesazhe zanore";
+"settings_notifications_disabled_alert_message" = "Që të aktivizoni njoftimet, kaloni te rregullimet e pajisjes tuaj.";
+"settings_notifications_disabled_alert_title" = "Njoftime të çaktivizuara";
+"settings_device_notifications" = "Njoftime pajisjesh";

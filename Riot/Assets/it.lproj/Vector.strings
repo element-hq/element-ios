@@ -1299,9 +1299,9 @@
 "dialpad_title" = "Tastierino numerico";
 "call_actions_unhold" = "Riprendi";
 "event_formatter_call_back" = "Richiama";
-"event_formatter_call_you_declined" = "Hai rifiutato questa chiamata";
+"event_formatter_call_you_declined" = "Chiamata rifiutata";
 "event_formatter_call_you_currently_in" = "Chiamata attiva";
-"event_formatter_call_has_ended" = "Terminato %@";
+"event_formatter_call_has_ended" = "Chiamata terminata %@";
 "event_formatter_call_video" = "Videochiamata";
 "event_formatter_call_voice" = "Telefonata";
 "settings_show_NSFW_public_rooms" = "Mostra stanze pubbliche per adulti";
@@ -1401,3 +1401,12 @@
 
 "voice_message_release_to_send" = "Tieni premuto per registrare, rilascia per inviare";
 "settings_labs_voice_messages" = "Messaggi vocali";
+"settings_notifications_disabled_alert_message" = "Per attivare le notifiche, vai nelle impostazioni del tuo dispositivo.";
+"settings_notifications_disabled_alert_title" = "Notifiche disattivate";
+"settings_device_notifications" = "Notifiche del dispositivo";
+"event_formatter_call_missed_video" = "Videochiamata persa";
+"event_formatter_call_missed_voice" = "Telefonata persa";
+"event_formatter_call_active_video" = "Videochiamata attiva";
+"event_formatter_call_active_voice" = "Telefonata attiva";
+"event_formatter_call_incoming_video" = "Videochiamata in arrivo";
+"event_formatter_call_incoming_voice" = "Telefonata in arrivo";

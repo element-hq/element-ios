@@ -70,3 +70,38 @@
 
 // Titles
 "title_home" = "Beranda";
+"auth_email_validation_message" = "Silakan periksa surel Anda untuk melanjutkan pendaftaran";
+"auth_use_server_options" = "Gunakan opsi server khusus (lanjutan)";
+"auth_email_not_found" = "Gagal mengirim surel: Alamat email ini tidak ditemukan";
+"auth_forgot_password_error_no_configured_identity_server" = "Tidak ada server identitas yang dikonfigurasikan: tambahkan satu untuk mengatur ulang kata sandi Anda.";
+"auth_forgot_password" = "Lupa kata sandi?";
+"auth_username_in_use" = "Nama pengguna sudah dipakai";
+"auth_password_dont_match" = "Kata sandi tidak cocok";
+"auth_untrusted_id_server" = "Server identitas tidak dipercaya";
+"auth_phone_is_required" = "Tidak ada server identitas yang dikonfigurasi sehingga Anda tidak dapat menambahkan nomor telepon untuk mengatur ulang kata sandi Anda di masa depan.";
+"auth_email_is_required" = "Tidak ada server identitas yang dikonfigurasi sehingga Anda tidak dapat menambahkan alamat email untuk mengatur ulang kata sandi Anda di masa depan.";
+"auth_phone_in_use" = "Nomor telepon ini sudah dipakai";
+"auth_email_in_use" = "Surel ini sudah dipakai";
+"auth_missing_email_or_phone" = "Tidak ada surel atau nomor telepon";
+"auth_missing_phone" = "Tidak ada nomor telepon";
+"auth_missing_email" = "Tidak ada surel";
+"auth_add_email_phone_message_2" = "Tetapkan surel untuk pemulihan akun. Gunakan email atau telepon selanjutnya untuk dapat ditemukan oleh orang-orang yang mengenal Anda secara opsional.";
+"auth_add_phone_message_2" = "Atur telepon, dan nanti dapat ditemukan oleh orang-orang yang mengenal Anda secara opsional.";
+"auth_add_email_message_2" = "Tetapkan surel untuk pemulihan akun, dan nanti dapat ditemukan oleh orang-orang yang mengenal Anda secara opsional.";
+"auth_missing_password" = "Tidak ada kata sandi";
+"auth_invalid_phone" = "Ini tidak terlihat seperti nomor telepon yang valid";
+"auth_invalid_email" = "Ini tidak terlihat seperti surel yang valid";
+"auth_invalid_password" = "Kata sandi terlalu pendek (min 6)";
+"auth_invalid_user_name" = "Nama pengguna hanya dapat berisi huruf, angka, titik, tanda hubung, dan garis bawah";
+"auth_send_reset_email" = "Kirim Reset Email";
+"auth_submit" = "Kirim";
+
+// Accessibility
+"accessibility_checkbox_label" = "centang";
+"callbar_only_single_active_group" = "Ketuk untuk Bergabung panggilan grup (%@)";
+"joined" = "Bergabung";
+"collapse" = "tutup";
+"store_promotional_text" = "Aplikasi perpesanan dan kolaborasi yang menjaga privasi, pada jaringan terbuka. Terdesentralisasi untuk Anda kendali. Tidak ada penambangan data, tidak ada backdoor dan tidak ada akses pihak ketiga.";
+"store_full_description" = "Element adalah aplikasi messenger dan kolaborasi tipe baru yang:\n\n1. Menempatkan Anda dalam kendali untuk mempertahankan privasi Anda\n2. Memungkinkan Anda berkomunikasi dengan siapa pun di jaringan Matrix, dan bahkan di luar dengan mengintegrasikan dengan aplikasi seperti Slack\n3. Melindungi Anda dari iklan, menambangan data, backdoor, dan taman berdinding\n4. Mengamankan Anda melalui enkripsi ujung-ke-ujung, dengan penandatanganan-silang untuk memverifikasi orang lain\n\nElement benar-benar berbeda dari aplikasi perpesanan dan kolaborasi lain karena terdesentralisasi dan sumber terbuka.\n\nElement memungkinkan Anda host sendiri - atau memilih host - sehingga Anda memiliki privasi, kepemilikan, dan kontrol data dan percakapan Anda. Ini memberi Anda akses ke jaringan terbuka; jadi Anda tidak hanya terjebak berbicara dengan pengguna Element. Itu sangat aman.\n\nElement dapat melakukan semua ini karena beroperasi pada Matrix - standar untuk komunikasi terdesentralisasi terbuka.\n\nElement menempatkan Anda dalam kendali dengan membiarkan Anda memilih siapa yang meng-host percakapan Anda. Dari aplikasi Element, Anda dapat memilih untuk meng-host dengan cara yang berbeda:\n\n1. Dapatkan akun gratis pada server publik matrix.org\n2. Host sendiri akun Anda dengan menjalankan server pada perangkat keras Anda sendiri\n3. Mendaftar untuk akun di server khusus dengan hanya berlangganan platform hosting Element Matrix Services\n\nMengapa memilih Element?\n\nMILIKI DATA ANDA: Anda memutuskan di mana harus menyimpan data dan pesan Anda. Anda memilikinya dan mengendalikannya, bukan perusahaan besar yang menambang data Anda atau memberikan akses ke pihak ketiga.\n\nPESAN DAN KOLABORASI TERBUKA: Anda dapat mengobrol dengan orang lain di jaringan Matrix, jika mereka menggunakan Element atau aplikasi Matrix lain, dan bahkan jika mereka menggunakan sistem perpesanan seperti Slack, IRC atau XMPP.\n\nSUPER-AMAN: Enkripsi ujung-ke-ujung (hanya mereka yang dalam percakapan dapat mendekripsi pesan), dan penandatanganan-silang untuk memverifikasi perangkat peserta percakapan.\n\nKOMUNIKASI LENGKAP: Pesan, panggilan suara dan video, berbagi file, berbagi layar dan banyak integrasi, bot dan widget. Buat ruangan, komunitas, tetap terhubung dan selesaikan hal-hal.\n\nDI MANA PUN ANDA BERADA: Tetap berkomunikasi di mana pun Anda berada dengan riwayat pesan yang sepenuhnya disinkronkan di semua perangkat Anda dan di web di https://element.io/app.";
+// String for App Store
+"store_short_description" = "Obrolan/VoIP terdesentralisasi aman";
