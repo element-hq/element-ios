@@ -1308,7 +1308,7 @@
 "event_formatter_call_back" = "Ktheji thirrjen";
 "event_formatter_call_you_declined" = "Thirrja u hodh poshtë";
 "event_formatter_call_you_currently_in" = "Thirrje aktive";
-"event_formatter_call_has_ended" = "Thirrja përfundoi %@";
+"event_formatter_call_has_ended" = "Thirrja përfundoi";
 "event_formatter_call_video" = "Thirrje video";
 "event_formatter_call_voice" = "Thirrje audio";
 "security_settings_crosssigning_reset" = "Rikthe te parazgjedhjet";
@@ -1428,3 +1428,5 @@
 "settings_notifications_disabled_alert_message" = "Që të aktivizoni njoftimet, kaloni te rregullimet e pajisjes tuaj.";
 "settings_notifications_disabled_alert_title" = "Njoftime të çaktivizuara";
 "settings_device_notifications" = "Njoftime pajisjesh";
+"voice_message_lock_screen_placeholder" = "Mesazh zanor";
+"event_formatter_call_has_ended_with_time" = "Thirrja përfundoi • %@";
