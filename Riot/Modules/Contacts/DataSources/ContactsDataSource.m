@@ -97,7 +97,7 @@
     self = [super initWithMatrixSession:mxSession];
     if (self) {
         // Only show local contacts when contact sync is enabled and the identity server terms of service have been accepted.
-        _showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts && self.mxSession.hasAccountDataIdentityServerValue;
+        _showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts && self.mxSession.identityService.areAllTermsAgreed;
     }
     return self;
 }
