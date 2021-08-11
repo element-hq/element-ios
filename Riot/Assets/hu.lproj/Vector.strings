@@ -1331,7 +1331,7 @@
 "event_formatter_call_back" = "Visszahívás";
 "event_formatter_call_you_declined" = "Hívás elutasítva";
 "event_formatter_call_you_currently_in" = "Aktív hívás";
-"event_formatter_call_has_ended" = "Hívás vége: %@";
+"event_formatter_call_has_ended" = "Hívás vége";
 "event_formatter_call_video" = "Videóhívás";
 "event_formatter_call_voice" = "Hang hívás";
 "room_open_dialpad" = "Tárcsázó számlap";
@@ -1439,3 +1439,5 @@
 "event_formatter_call_active_voice" = "Hanghívás folyamatban";
 "event_formatter_call_incoming_video" = "Bejövő videó hívás";
 "event_formatter_call_incoming_voice" = "Bejövő hanghívás";
+"voice_message_lock_screen_placeholder" = "Hang üzenet";
+"event_formatter_call_has_ended_with_time" = "Hívás vége • %@";
