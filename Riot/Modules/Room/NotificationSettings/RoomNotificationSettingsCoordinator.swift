@@ -44,10 +44,11 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
         let avatarData: AvatarInputOption?
         let showAvatar = presentedModally
         if #available(iOS 14.0.0, *) {
-            avatarData = showAvatar ? .swiftUI(AvatarInput(mxContentUri: room.summary.avatar,
-                                     itemId: room.roomId,
-                                     displayName: room.summary.displayname
-                )) : nil
+            avatarData = showAvatar ? .swiftUI(AvatarInput(
+                mxContentUri: room.summary.avatar,
+                itemId: room.roomId,
+                displayName: room.summary.displayname
+            )) : nil
         } else {
             avatarData = showAvatar ? .uiKit(RoomAvatarViewData(
                 roomId: room.roomId,

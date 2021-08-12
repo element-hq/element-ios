@@ -29,6 +29,9 @@ extension EnvironmentValues {
   }
 }
 
+/**
+    A theme modifier for setting the theme for this view all it's decendants in the hierarchy.
+ */
 @available(iOS 14.0, *)
 extension View {
   func theme(_ theme: Theme) -> some View {

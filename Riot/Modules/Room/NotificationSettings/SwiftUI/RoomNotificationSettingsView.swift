@@ -27,7 +27,7 @@ struct RoomNotificationSettingsView: View {
     @ViewBuilder
     private var leftButton: some View {
         if presentedModally {
-            SwiftUI.Button(VectorL10n.cancel) {
+            Button(VectorL10n.cancel) {
                 viewModel.process(viewAction: .cancel)
             }
         }

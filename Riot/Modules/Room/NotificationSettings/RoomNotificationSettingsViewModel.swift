@@ -36,7 +36,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     @available(iOS 14.0, *)
     @Published var viewState: RoomNotificationSettingsViewState!
     @available(iOS 14.0, *)
-    lazy var bag = Set<AnyCancellable>()
+    lazy var cancelables = Set<AnyCancellable>()
     
     // MARK: Public
     
@@ -72,13 +72,13 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
            let avatarData = avatarData,
            case let AvatarInputOption.swiftUI(data) = avatarData {
             avatarService.avatarImage(inputData: data)
-                .sink{ image in
+                .sink { image in
                     var newState = self.state
                     newState.avatar = image
                     newState.displayName = data.displayName
                     self.state = newState
                 }
-                .store(in: &bag)
+                .store(in: &cancelables)
         }
     }
     

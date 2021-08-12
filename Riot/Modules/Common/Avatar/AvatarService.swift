@@ -40,14 +40,22 @@ class AvatarService: AvatarServiceType {
         static let avatarDownloadSize = AvatarSize.xxLarge.size
     }
     
-    let avatarGenerator: AvatarGenerator
-    let mediaManager: MXMediaManager
+    private let avatarGenerator: AvatarGenerator
+    private let mediaManager: MXMediaManager
     
     init(avatarGenerator: AvatarGenerator, mediaManager: MXMediaManager) {
         self.avatarGenerator = avatarGenerator
         self.mediaManager = mediaManager
     }
     
+    /**
+     Given an avatar inpute this function returns a publisher of UIImage.
+     If possible to retrieve the actualy image it will from network or cache.
+     While waiting ont he netowrk or if one can't be retrieved it will return the generated acatar.
+     
+    - Parameter inputData: data required to fetch the avatar or generate the image
+    - Returns: A publisher of UIImage? that doesn't error(always possible to generate the image)
+     */
     @available(iOS 14.0, *)
     func avatarImage(inputData: AvatarInputType) -> AnyPublisher<UIImage?, Never> {
         

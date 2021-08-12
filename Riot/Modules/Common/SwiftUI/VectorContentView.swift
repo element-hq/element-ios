@@ -23,11 +23,11 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct VectorContentModifier: ViewModifier {
     
-    @StateObject var themeObservor = ThemeObserver.shared
+    @StateObject private var themeObserver = ThemeObserver.shared
     
     func body(content: Content) -> some View {
         content
-            .theme(themeObservor.theme)
+            .theme(themeObserver.theme)
     }
 }
 
