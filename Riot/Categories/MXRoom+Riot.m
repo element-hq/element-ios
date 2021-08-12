@@ -658,28 +658,32 @@
 
 #pragma mark - Unread messages
 
-- (RoomSentStatus)sentStatus
+- (void)sentStatusWithCompletion:(void (^)(RoomSentStatus))completion
 {
-    RoomSentStatus status = RoomSentStatusOk;
-    NSArray<MXEvent*> *outgoingMsgs = self.outgoingMessages;
-
-    for (MXEvent *event in outgoingMsgs)
-    {
-        if (event.sentState == MXEventSentStateFailed)
+    [self outgoingMessagesWithCompletion:^(NSArray<MXEvent *> * _Nullable outgoingMsgs) {
+        RoomSentStatus status = RoomSentStatusOk;
+        
+        for (MXEvent *event in outgoingMsgs)
         {
-            status = RoomSentStatusSentFailed;
-
-            // Check if the error is due to unknown devices
-            if ([event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
-                && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+            if (event.sentState == MXEventSentStateFailed)
             {
-                status = RoomSentStatusSentFailedDueToUnknownDevices;
-                break;
+                status = RoomSentStatusSentFailed;
+
+                // Check if the error is due to unknown devices
+                if ([event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+                    && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+                {
+                    status = RoomSentStatusSentFailedDueToUnknownDevices;
+                    break;
+                }
             }
         }
-    }
-    
-    return status;
+        
+        if (completion)
+        {
+            completion(status);
+        }
+    }];
 }
 
 @end
