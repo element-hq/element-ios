@@ -533,8 +533,8 @@
     MXWeakify(self);
     
     // Check for contacts access, showing a pop-up if necessary.
-    [MXKTools checkAccessForContacts:@"Contacts disabled"
-             withManualChangeMessage:@"To enable contacts, go to your device settings."
+    [MXKTools checkAccessForContacts:NSLocalizedStringFromTable(@"contacts_address_book_permission_denied_alert_title", @"Vector", nil)
+             withManualChangeMessage:NSLocalizedStringFromTable(@"contacts_address_book_permission_denied_alert_message", @"Vector", nil)
            showPopUpInViewController:self
                    completionHandler:^(BOOL granted) {
         

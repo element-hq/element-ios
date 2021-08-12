@@ -241,6 +241,8 @@ Tap the + to start adding people.";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
 "contacts_address_book_permission_denied" = "You didn't allow Element to access your local contacts";
+"contacts_address_book_permission_denied_alert_title" = "Contacts disabled";
+"contacts_address_book_permission_denied_alert_message" = "To enable contacts, go to your device settings.";
 "contacts_user_directory_section" = "USER DIRECTORY";
 "contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
 

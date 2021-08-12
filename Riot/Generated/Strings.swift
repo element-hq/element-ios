@@ -558,6 +558,14 @@ internal enum VectorL10n {
   internal static var contactsAddressBookPermissionDenied: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_permission_denied") 
   }
+  /// To enable contacts, go to your device settings.
+  internal static var contactsAddressBookPermissionDeniedAlertMessage: String { 
+    return VectorL10n.tr("Vector", "contacts_address_book_permission_denied_alert_message") 
+  }
+  /// Contacts disabled
+  internal static var contactsAddressBookPermissionDeniedAlertTitle: String { 
+    return VectorL10n.tr("Vector", "contacts_address_book_permission_denied_alert_title") 
+  }
   /// Permission required to access local contacts
   internal static var contactsAddressBookPermissionRequired: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_permission_required") 
@@ -4014,7 +4022,7 @@ internal enum VectorL10n {
   internal static var settingsAdd3pidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_password_message") 
   }
-  /// Add email adress
+  /// Add email address
   internal static var settingsAdd3pidPasswordTitleEmail: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_password_title_email") 
   }
