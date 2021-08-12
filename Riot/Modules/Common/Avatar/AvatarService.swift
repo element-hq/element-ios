@@ -65,9 +65,10 @@ class AvatarService: AvatarServiceType {
             toFitViewSize: Constants.avatarDownloadSize,
             with: Constants.thumbnailMethod)
         
-        if let image = MXMediaManager.loadThroughCache(withFilePath: cachePath) {
+        if let image = MXMediaManager.loadThroughCache(withFilePath: cachePath),
+           let imageUp = Self.orientImageUp(image: image) {
             // Already cached, complete with the avatar
-            return Just(Self.orientImageUp(image: image))
+            return Just(imageUp)
                 .eraseToAnyPublisher()
         }
         
@@ -83,8 +84,12 @@ class AvatarService: AvatarServiceType {
                     return
                 }
                 
-                let image = MXMediaManager.loadThroughCache(withFilePath: path)
-                promise(.success(Self.orientImageUp(image: image)))
+                guard let image = MXMediaManager.loadThroughCache(withFilePath: path),
+                      let imageUp = Self.orientImageUp(image: image) else {
+                    promise(.failure(AvatarServiceError.loadingImageFailed(nil)))
+                    return
+                }
+                promise(.success(imageUp))
             } failure: { error in
                 promise(.failure(AvatarServiceError.loadingImageFailed(error)))
             }
@@ -101,8 +106,8 @@ class AvatarService: AvatarServiceType {
             .eraseToAnyPublisher()
     }
     
-    private static func orientImageUp(image: UIImage?) -> UIImage? {
-        guard let image = image?.cgImage else { return nil }
+    private static func orientImageUp(image: UIImage) -> UIImage? {
+        guard let image = image.cgImage else { return nil }
         return UIImage(cgImage: image, scale: 1.0, orientation: .up)
     }
 }
