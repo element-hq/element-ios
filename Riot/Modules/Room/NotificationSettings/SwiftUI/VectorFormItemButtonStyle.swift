@@ -15,23 +15,15 @@
 //
 
 import Foundation
-import Combine
+import SwiftUI
 
-@available(iOS 13.0, *)
-class ThemeServiceObserver: ObservableObject {
-    
-    static let shared = ThemeServiceObserver()
-    
-    var cancelable: Cancellable?
-    
-    init() {
-        let themePubliser = NotificationCenter.default.publisher(for: NSNotification.Name.themeServiceDidChangeTheme).map { _ in
-            ThemeService.shared().themeIdentifier
-        }
-        cancelable = themePubliser.sink { [weak self] id in
-            guard let self = self else { return }
-            self.themeId = id
-        }
+@available(iOS 14.0, *)
+struct VectorFormItemButtonStyle: ButtonStyle {
+    @Environment(\.theme) var theme: Theme
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? Color(theme.selectedBackgroundColor) : Color(theme.backgroundColor))
+            .foregroundColor(Color(theme.textPrimaryColor))
+            .font(Font(theme.fonts.body))
     }
-    @Published var themeId: ThemeIdentifier?
 }

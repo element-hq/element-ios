@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,23 @@
 //
 
 import Foundation
+import SwiftUI
 
-extension ThemeService {
-    
-    var themeIdentifier: ThemeIdentifier? {
-        guard let themeId = self.themeId else {
-            return nil
-        }        
-        return ThemeIdentifier(rawValue: themeId)
-    }    
+private struct ThemeKey: EnvironmentKey {
+    static let defaultValue = ThemeService.shared().theme
+}
+
+@available(iOS 14.0, *)
+extension EnvironmentValues {
+  var theme: Theme {
+    get { self[ThemeKey.self] }
+    set { self[ThemeKey.self] = newValue }
+  }
+}
+
+@available(iOS 14.0, *)
+extension View {
+  func theme(_ theme: Theme) -> some View {
+    environment(\.theme, theme)
+  }
 }

@@ -14,16 +14,26 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
+/**
+ A Modifier to be called from the topmost SwiftUI view before being added to a HostViewController
+ Provides any app level configuration the SwiftUI hierarchy might need(E.g. to monitor theme changes).
+ */
+@available(iOS 14.0, *)
+struct VectorContentModifier: ViewModifier {
+    
+    @StateObject var themeObservor = ThemeObserver.shared
+    
+    func body(content: Content) -> some View {
+        content
+            .theme(themeObservor.theme)
+    }
 }
 
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
+@available(iOS 14.0, *)
+extension View {
+  func vectorContent() -> some View {
+    self.modifier(VectorContentModifier())
+  }
 }

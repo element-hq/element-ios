@@ -18,6 +18,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType {
     
@@ -26,39 +27,59 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     // MARK: Private
     
     private let roomNotificationService: RoomNotificationSettingsServiceType
+    private let avatarService: AvatarServiceType
     private var state: RoomNotificationSettingsViewState {
         willSet {
             update(viewState: newValue)
         }
     }
-    @available(iOS 13.0.0, *)
+    @available(iOS 14.0, *)
     @Published var viewState: RoomNotificationSettingsViewState!
+    @available(iOS 14.0, *)
+    lazy var bag = Set<AnyCancellable>()
     
     // MARK: Public
-
+    
     weak var viewDelegate: RoomNotificationSettingsViewModelViewDelegate?
     
     weak var coordinatorDelegate: RoomNotificationSettingsViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(roomNotificationService: RoomNotificationSettingsServiceType, roomEncrypted: Bool, avatarViewData: AvatarViewDataProtocol?) {
+    init(
+        roomNotificationService: RoomNotificationSettingsServiceType,
+        avatarService: AvatarServiceType,
+        avatarData: AvatarInputOption?,
+        roomEncrypted: Bool
+    ) {
         self.roomNotificationService = roomNotificationService
+        self.avatarService = avatarService
         
         let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationService.notificationState)
-        let initialState = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatarData: avatarViewData)
+        let initialState = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatar: nil)
         self.state = initialState
         
-        if #available(iOS 13.0.0, *) {
+        if #available(iOS 14.0, *) {
             self.viewState = initialState
         }
         
         self.roomNotificationService.observeNotificationState { [weak self] state in
             guard let self = self else { return }
-
             self.state.notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: state)
         }
-
+        
+        if #available(iOS 14.0, *),
+           let avatarData = avatarData,
+           case let AvatarInputOption.swiftUI(data) = avatarData {
+            avatarService.avatarImage(inputData: data)
+                .sink{ image in
+                    var newState = self.state
+                    newState.avatar = image
+                    newState.displayName = data.displayName
+                    self.state = newState
+                }
+                .store(in: &bag)
+        }
     }
     
     // MARK: - Public 
@@ -95,11 +116,11 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     private func update(viewState: RoomNotificationSettingsViewState) {
         self.viewDelegate?.roomNotificationSettingsViewModel(self, didUpdateViewState: viewState)
         
-        if #available(iOS 13.0.0, *) {
+        if #available(iOS 14.0, *) {
             self.viewState = viewState
         }
     }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 extension RoomNotificationSettingsViewModel: ObservableObject {}

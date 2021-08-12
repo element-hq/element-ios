@@ -16,32 +16,40 @@
 
 import SwiftUI
 
-@available(iOS 13.0.0, *)
+@available(iOS 14.0.0, *)
 struct RoomNotificationSettingsView: View {
     
     @Environment(\.theme) var theme: Theme
     @ObservedObject var viewModel: RoomNotificationSettingsViewModel
+    
     let presentedModally: Bool
     
-    @State var notificationState: RoomNotificationState = RoomNotificationState.all
-    
-    
-    var body: some View {
-        let leftButton = presentedModally ?
+    @ViewBuilder
+    var leftButton: some View {
+        if presentedModally {
             SwiftUI.Button(VectorL10n.cancel) {
                 viewModel.process(viewAction: .cancel)
             }
-            : nil
-        let rightButton = SwiftUI.Button(VectorL10n.save) {
+        }
+    }
+
+    var rightButton: some View {
+        Button(VectorL10n.save) {
             viewModel.process(viewAction: .save)
         }
-        VectorForm {
+    }
+    
+    var body: some View {
+        VectorFormView {
+            if let image = viewModel.viewState.avatar {
+                RoomNotificationSettingsHeaderView(image: image, displayName: viewModel.viewState.displayName)
+            }
             SwiftUI.Section(
-                header: FormSectionHeader(text: VectorL10n.roomNotifsSettingsNotifyMeFor),
-                footer: FormSectionFooter(text: viewModel.viewState.roomEncryptedString)
+                header: FormSectionHeaderView(text: VectorL10n.roomNotifsSettingsNotifyMeFor),
+                footer: FormSectionFooterView(text: viewModel.viewState.roomEncryptedString)
             ) {
                 ForEach(viewModel.viewState.notificationOptions) { option in
-                    FormPickerItem(title: option.title, selected: viewModel.viewState.notificationState == option) {
+                    FormPickerItemView(title: option.title, selected: viewModel.viewState.notificationState == option) {
                         viewModel.process(viewAction: .selectNotificationState(option))
                     }
                 }
@@ -56,8 +64,6 @@ struct RoomNotificationSettingsView: View {
         }
     }
 }
-    
-
 
 fileprivate extension RoomNotificationState {
     var title: String {
@@ -78,25 +84,26 @@ fileprivate extension RoomNotificationSettingsViewState {
     }
 }
 
-extension RoomNotificationState: Identifiable {
-    var id: String { UUID().uuidString }
-}
-
-
 @available(iOS 14.0, *)
 struct RoomNotificationSettingsView_Previews: PreviewProvider {
-    
+
     static let mockViewModel = RoomNotificationSettingsViewModel(
         roomNotificationService: MockRoomNotificationSettingsService.example,
-        roomEncrypted: true,
-        avatarViewData: nil
+        avatarService: MockAvatarService.example,
+        avatarData: .swiftUI(AvatarInput(mxContentUri: nil, itemId: "", displayName: "Alice")),
+        roomEncrypted: true
     )
-    
+
     static var previews: some View {
         Group {
             NavigationView {
                 RoomNotificationSettingsView(viewModel: mockViewModel, presentedModally: true)
                     .navigationBarTitleDisplayMode(.inline)
+            }
+            NavigationView {
+                RoomNotificationSettingsView(viewModel: mockViewModel, presentedModally: true)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .theme(ThemeIdentifier.dark.theme)
             }
         }
     }

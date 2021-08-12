@@ -26,7 +26,6 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     // MARK: Private
     private var roomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType
-//    private let roomNotificationSettingsViewController: RoomNotificationSettingsViewController
     private let roomNotificationSettingsViewController: UIViewController
     
     // MARK: Public
@@ -38,23 +37,37 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     // MARK: - Setup
     
-    init(room: MXRoom, showAvatar: Bool = true) {
-        let repository = RoomNotificationSettingsService(room: room)
+    init(room: MXRoom, presentedModally: Bool = true) {
+        let roomNotificationService = RoomNotificationSettingsService(room: room)
+        let avatarService = AvatarService(avatarGenerator: AvatarGenerator(), mediaManager: room.mxSession.mediaManager)
         
-        let avatarData = showAvatar ? RoomAvatarViewData(
-            roomId: room.roomId,
-            displayName: room.summary.displayname,
-            avatarUrl: room.summary.avatar,
-            mediaManager: room.mxSession.mediaManager
-        ) : nil
+        let avatarData: AvatarInputOption?
+        let showAvatar = presentedModally
+        if #available(iOS 14.0.0, *) {
+            avatarData = showAvatar ? .swiftUI(AvatarInput(mxContentUri: room.summary.avatar,
+                                     itemId: room.roomId,
+                                     displayName: room.summary.displayname
+                )) : nil
+        } else {
+            avatarData = showAvatar ? .uiKit(RoomAvatarViewData(
+                roomId: room.roomId,
+                displayName: room.summary.displayname,
+                avatarUrl: room.summary.avatar,
+                mediaManager: room.mxSession.mediaManager
+            )) : nil
+        }
         
-        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(roomNotificationService: repository, roomEncrypted: room.summary.isEncrypted, avatarViewData: avatarData)
+        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(
+            roomNotificationService: roomNotificationService,
+            avatarService: avatarService,
+            avatarData: avatarData,
+            roomEncrypted: room.summary.isEncrypted)
         
         let viewController: UIViewController
-        if #available(iOS 13.0.0, *) {
-//            let sampleViewState = RoomNotificationSettingsViewState(roomEncrypted: true, saving: false, notificationState: .mute, avatarData: nil)
-            let view = RoomNotificationSettingsView(viewModel: roomNotificationSettingsViewModel, presentedModally: true)
-            viewController = UIHostingController(rootView: view)
+        if #available(iOS 14.0.0, *) {
+            let view = RoomNotificationSettingsView(viewModel: roomNotificationSettingsViewModel, presentedModally: presentedModally)
+                .vectorContent()
+            viewController = VectorHostingViewController(rootView: view)
         } else {
             viewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
         }

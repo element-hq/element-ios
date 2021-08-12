@@ -15,30 +15,30 @@
 //
 
 import SwiftUI
+import DesignKit
 
-@available(iOS 13.0, *)
-struct FormSectionFooter: View {
+@available(iOS 14.0, *)
+struct VectorAvatarView: View {
     
-    @Environment(\.theme) var theme: Theme
-    var text: String
+    var image: UIImage
+    var size: AvatarSize
     
     var body: some View {
-        Text(text)
-            .foregroundColor(Color(theme.textSecondaryColor))
-            .padding(.top)
-            .font(Font(theme.fonts.callout))
+        Image(uiImage: image)
+            .resizable()
+            .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue), alignment: .center)
+            .clipShape(Circle())
     }
 }
 
-@available(iOS 13.0, *)
-struct FormSectionFooter_Previews: PreviewProvider {
+@available(iOS 14.0, *)
+struct AvatarView_Previews: PreviewProvider {
+    static let image = UIImage(imageLiteralResourceName: "app_symbol")
     static var previews: some View {
-        List {
-            SwiftUI.Section(footer: FormSectionFooter(text: "Footer Text")) {
-                Text("Item 1")
-                Text("Item 2")
-                Text("Item 3")
-            }
-        }.listStyle(GroupedListStyle())
+        VStack {
+            VectorAvatarView(image: image, size: .xSmall)
+            VectorAvatarView(image: image, size: .medium)
+            VectorAvatarView(image: image, size: .xLarge)
+        }
     }
 }

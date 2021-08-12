@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,16 @@
 //
 
 import Foundation
+import Combine
 
-extension ThemeService {
-    
-    var themeIdentifier: ThemeIdentifier? {
-        guard let themeId = self.themeId else {
-            return nil
-        }        
-        return ThemeIdentifier(rawValue: themeId)
-    }    
+@available(iOS 14.0, *)
+class MockAvatarService: AvatarServiceType {
+    static let example = MockAvatarService()
+    func avatarImage(inputData: AvatarInputType) -> AnyPublisher<UIImage?, Never> {
+        guard let image = AvatarGenerator.generateAvatar(forText: inputData.displayName ?? "") else {
+            fatalError()
+        }
+        return Just(image)
+            .eraseToAnyPublisher()
+    }
 }

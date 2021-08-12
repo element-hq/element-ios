@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,28 +15,21 @@
 //
 
 import Foundation
+import Combine
 
-enum ThemeIdentifier: String, RawRepresentable {
-    case light = "default"
-    case dark = "dark"
-    case black = "black"
-    
-    init?(rawValue: String) {
-        switch rawValue {
-        case "default":
-            self = .light
-        case "dark":
-            self = .dark
-        case "black":
-            self = .black
-        default:
-            return nil
+/**
+ Sams as `assign(to:on:)` but maintains a weak reference to object(Useful in cases where you want to pass self and not cause a retain cycle.)
+ - SeeAlso:
+ [assign(to:on:)](https://developer.apple.com/documentation/combine/just/assign(to:on:))
+ */
+@available(iOS 14.0, *)
+extension Publisher where Failure == Never {
+    func weakAssign<T: AnyObject>(
+        to keyPath: ReferenceWritableKeyPath<T, Output>,
+        on object: T
+    ) -> AnyCancellable {
+        sink { [weak object] value in
+            object?[keyPath: keyPath] = value
         }
-    }
-}
-
-extension ThemeIdentifier {
-    var theme: Theme {
-        ThemeService.shared().theme(withThemeId: self.rawValue)
     }
 }

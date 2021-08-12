@@ -16,8 +16,8 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
-struct FormSectionHeader: View {
+@available(iOS 14.0, *)
+struct FormSectionFooterView: View {
     
     @Environment(\.theme) var theme: Theme
     var text: String
@@ -26,19 +26,21 @@ struct FormSectionHeader: View {
         Text(text)
             .foregroundColor(Color(theme.textSecondaryColor))
             .padding(.top)
-            .font(Font(theme.fonts.footnote))
+            .padding(.leading)
+            .padding(.trailing)
+            .font(Font(theme.fonts.callout))
     }
 }
 
-@available(iOS 13.0, *)
-struct FormSectionHeader_Previews: PreviewProvider {
+@available(iOS 14.0, *)
+struct FormSectionFooter_Previews: PreviewProvider {
     static var previews: some View {
-        List {
-            SwiftUI.Section(header: FormSectionHeader(text: "Section Header")) {
-                Text("Item 1")
-                Text("Item 2")
-                Text("Item 3")
+        VectorFormView {
+            SwiftUI.Section(footer: FormSectionFooterView(text: "Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.")) {
+                FormPickerItemView(title: "Item 1", selected: false)
+                FormPickerItemView(title: "Item 2", selected: false)
+                FormPickerItemView(title: "Item 3", selected: false)
             }
-        }.listStyle(GroupedListStyle())
+        }
     }
 }

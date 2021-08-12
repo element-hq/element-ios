@@ -144,7 +144,7 @@ final class RoomNotificationSettingsViewController: UIViewController {
             activityPresenter.removeCurrentActivityIndicator(animated: true)
         }
         self.viewState = viewState
-        if let avatarData = viewState.avatarData {
+        if let avatarData = viewState.legacyAvatarData {
             mainTableView.tableHeaderView = avatarView
             avatarView.configure(viewData: avatarData)
             avatarView.update(theme: theme)
