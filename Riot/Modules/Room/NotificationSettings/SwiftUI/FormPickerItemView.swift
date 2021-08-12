@@ -36,9 +36,10 @@ struct FormPickerItemView: View {
                 HStack {
                     Text(title)
                     Spacer()
-                    Image("checkmark")
-                        .foregroundColor(Color(theme.tintColor))
-                        .gone(!selected)
+                    if selected {
+                        Image("checkmark")
+                            .foregroundColor(Color(theme.tintColor))
+                    }
                 }
                 .padding(.trailing)
                 Spacer()
