@@ -3,7 +3,7 @@ name: Tests CI
 on:
   # Triggers the workflow on any pull request and push to develop
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
 
   # Allows you to run this workflow manually from the Actions tab
