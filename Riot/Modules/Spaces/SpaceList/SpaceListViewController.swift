@@ -31,6 +31,7 @@ final class SpaceListViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var titleLabel: UILabel!
     
     // MARK: Private
 
@@ -83,6 +84,9 @@ final class SpaceListViewController: UIViewController {
         self.tableView.backgroundColor = theme.colors.background
         
         self.tableView.reloadData()
+        
+        self.titleLabel.textColor = theme.colors.primaryContent
+        self.titleLabel.font = theme.fonts.bodySB
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -95,6 +99,7 @@ final class SpaceListViewController: UIViewController {
     
     private func setupViews() {
         self.setupTableView()
+        self.titleLabel.text = VectorL10n.spacesLeftPanelTitle
     }
     
     private func setupTableView() {
@@ -190,6 +195,7 @@ extension SpaceListViewController: UITableViewDataSource {
         cell.update(theme: self.theme)
         cell.fill(with: viewData)
         cell.selectionStyle = .none
+        cell.delegate = self
         
         return cell
     }
@@ -202,5 +208,17 @@ extension SpaceListViewController: UITableViewDelegate {
         if selectedIndexPath != indexPath {
             self.viewModel.process(viewAction: .selectRow(at: indexPath))
         }
+    }
+}
+
+// MARK: - SpaceListViewCellDelegate
+extension SpaceListViewController: SpaceListViewCellDelegate {
+
+    func spaceListViewCell(_ cell: SpaceListViewCell, didPressMore button: UIButton) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
+            MXLog.warning("[SpaceListViewController] didPressMore called from invalid cell.")
+            return
+        }
+        self.viewModel.process(viewAction: .moreAction(at: indexPath, from: button))
     }
 }

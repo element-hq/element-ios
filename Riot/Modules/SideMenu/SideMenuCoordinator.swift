@@ -59,6 +59,8 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
     
     private let sideMenuViewController: SideMenuViewController
     
+    let spaceMenuPresenter = SpaceMenuPresenter()
+
     // MARK: Public
 
     // Must be used only internally
@@ -207,6 +209,13 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         inviteFriendsPresenter.present(for: myUserId, from: self.sideMenuViewController, sourceView: sourceView, animated: true)
     }
     
+    private func showMenu(forSpaceWithId spaceId: String, from sourceView: UIView?) {
+        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+        self.spaceMenuPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
+    }
+    
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -272,5 +281,9 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
             
         }
         self.parameters.appNavigator.navigate(to: .space(spaceId))
+    }
+    
+    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
+        self.showMenu(forSpaceWithId: spaceId, from: sourceView)
     }
 }

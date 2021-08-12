@@ -18,14 +18,15 @@
 
 import Foundation
 
-protocol SpaceListViewModelViewDelegate: class {
+protocol SpaceListViewModelViewDelegate: AnyObject {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState)
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceAt indexPath: IndexPath)
 }
 
-protocol SpaceListViewModelCoordinatorDelegate: class {
+protocol SpaceListViewModelCoordinatorDelegate: AnyObject {
     func spaceListViewModelDidSelectHomeSpace(_ viewModel: SpaceListViewModelType)
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceWithId spaceId: String)
+    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView)
 }
 
 /// Protocol describing the view model used by `SpaceListViewController`
