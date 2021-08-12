@@ -2,9 +2,9 @@ name: Release Alpha
 # test: #1
 
 on:
-  # TO REMOVE
-  # Triggers the workflow on any push just for testing
-  push:
+  # # TO REMOVE
+  # # Triggers the workflow on any push just for testing
+  # push:
 
   # Triggers the workflow on any pull request
   pull_request:
@@ -12,8 +12,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
-  DIAWI_FILE_LINK: "https://i.diawi.com/yZ7tDg"
+# env:
+#   DIAWI_FILE_LINK: "https://i.diawi.com/yZ7tDg"
 
 jobs:
   build:
@@ -21,88 +21,88 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      #      - uses: actions/checkout@v2
-      #
-      #      # Common cache
-      #      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      #      - uses: actions/cache@v2
-      #        with:
-      #          path: Pods
-      #          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-      #          restore-keys: |
-      #            ${{ runner.os }}-pods-
-      #
-      #      - uses: actions/cache@v2
-      #        with:
-      #          path: vendor/bundle
-      #          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-      #          restore-keys: |
-      #            ${{ runner.os }}-gems-
-      #
-      #      # Common setup
-      #      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
-      #      - name: Bundle install
-      #        run: |
-      #          bundle config path vendor/bundle
-      #          bundle install --jobs 4 --retry 3
-      #
-      #      - name: Import signing certificate
-      #        uses: apple-actions/import-codesign-certs@v1
-      #        with:
-      #          p12-file-base64: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
-      #          p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
-      #
-      #      # Main step
-      #      - name: Build Ad-hoc release and send it to Diawi
-      #        run: bundle exec fastlane alpha
-      #        env:
-      #          # Make the git branch for a PR available to our Fastfile
-      #          MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
-      #          # Automaticaly bypass 2FA upgrade if possible on Apple account.
-      #          SPACESHIP_SKIP_2FA_UPGRADE: true
-      #          APPLE_ID: ${{ secrets.FASTLANE_USER }}
-      #          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-      #          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-      #          DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
+      - uses: actions/checkout@v2
 
-      # Get last PR commit short SHA
-      - name: Get last PR commit hash
-        id: commit_hash
-        run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ github.event.pull_request.head.sha }})"
+      # Common cache
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
-        # run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-      - name: Set QR code file name
-        id: qrcode_filename
-        run: echo "::set-output name=filename::diawi_link_qrcode_${{ steps.commit_hash.outputs.sha_short }}.png"
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
 
-      - name: Echo QR code file name
+      # Common setup
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Bundle install
         run: |
-          echo "${{ steps.qrcode_filename.outputs.filename }}"
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
 
-      - name: Generate QR code for Ad-hoc release
-        uses: snow-actions/qrcode@v1.0.0
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v1
         with:
-          text: ${{ env.DIAWI_FILE_LINK }}
-          path: ${{ steps.qrcode_filename.outputs.filename }}
+          p12-file-base64: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
 
-      - name: You can upload it to artifact.
-        uses: actions/upload-artifact@v1
-        with:
-          name: qrcode
-          path: ${{ steps.qrcode_filename.outputs.filename }}
+      # Main step
+      # The Ad-hoc release link will be referenced as 'DIAWI_FILE_LINK' when the Diawi upload succeed
+      - name: Build Ad-hoc release and send it to Diawi
+        run: bundle exec fastlane alpha
+        env:
+          # Make the git branch for a PR available to our Fastfile
+          MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+          # Automaticaly bypass 2FA upgrade if possible on Apple account.
+          SPACESHIP_SKIP_2FA_UPGRADE: true
+          APPLE_ID: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
 
       - name: Add or update PR comment with Ad-hoc release informations
         uses: NejcZdovc/comment-pr@v1
         with:
           message: |
-            :lock: This is a QR code for access to the preview website.
-            :iphone: Scan a code with your device.
-            ![QR code](${{ steps.qrcode_filename.outputs.filename }})
+            :lock: This is the Ad-hoc release link for this PR. It's only accessible for a small subset of person.
+            :iphone: Open the link and scan the QR code with your device.
+            ${{ env.DIAWI_FILE_LINK }}
           # enables to identify and update existing Ad-hoc release message on new commit in the PR
           identifier: "GITHUB_COMMENT_ADHOC_RELEASE"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # TODO: Generate the QR code image and add it to the PR comment
+
+      # # Get last PR commit short SHA
+      # - name: Get last PR commit hash
+      #   id: commit_hash
+      #   run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ github.event.pull_request.head.sha }})"
+      #   # run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      # - name: Set QR code file name
+      #   id: qrcode_filename
+      #   run: echo "::set-output name=filename::diawi_link_qrcode_${{ steps.commit_hash.outputs.sha_short }}.png"
+      # - name: Echo QR code file name
+      #   run: |
+      #     echo "${{ steps.qrcode_filename.outputs.filename }}"
+      # - name: Generate QR code for Ad-hoc release
+      #   uses: snow-actions/qrcode@v1.0.0
+      #   with:
+      #     text: ${{ env.DIAWI_FILE_LINK }}
+      #     path: ${{ steps.qrcode_filename.outputs.filename }}
+      # - name: Upload QR code image to artifact.
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: qrcode
+      #     path: ${{ steps.qrcode_filename.outputs.filename }}
+      # # TODO: Find a way to upload the QR code image and get a public URL
+      # # - name: Get QR code image URL.
       # - name: Add or update PR comment with Ad-hoc release informations
       #   uses: NejcZdovc/comment-pr@v1
       #   with:
@@ -114,12 +114,3 @@ jobs:
       #     identifier: "GITHUB_COMMENT_ADHOC_RELEASE"
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - uses: kentaro-m/qr-code-commenter-action@v0.1.2
-      #   with:
-      #     repo-token: "${{ secrets.GITHUB_TOKEN }}"
-      #     # Use a text outputted from the other action
-      #     content: "${{ env.DIAWI_FILE_LINK }}"
-      #     comment: |
-      #       :lock: This is a QR code for access to the preview website.
-      #       :iphone: Scan a code with your device.
-      #       {qrcode}
