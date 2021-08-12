@@ -99,6 +99,12 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
                 return
             }
             self.update(viewState: .accepted)
+            
+            // Send a notification to update the identity service immediately.
+            let userInfo = [MXIdentityServiceNotificationIdentityServerKey: self.serviceTerms.baseUrl]
+            NotificationCenter.default.post(name: .MXIdentityServiceTermsAccepted, object: nil, userInfo: userInfo)
+            
+            // Notify the delegate.
             self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidAccept(self)
 
             }, failure: { [weak self] (error) in
