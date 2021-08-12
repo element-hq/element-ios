@@ -1284,7 +1284,7 @@
 "event_formatter_call_back" = "Terugbellen";
 "event_formatter_call_you_declined" = "Oproep geweigerd";
 "event_formatter_call_you_currently_in" = "Actieve oproep";
-"event_formatter_call_has_ended" = "Oproep beëindigd %@";
+"event_formatter_call_has_ended" = "Oproep beëindigd";
 "event_formatter_call_video" = "Video-oproep";
 "event_formatter_call_voice" = "Audio-oproep";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Versleuteling is hier niet ingeschakeld.";
@@ -1539,3 +1539,5 @@
 "event_formatter_call_active_voice" = "Actieve audio-oproep";
 "event_formatter_call_incoming_video" = "Inkomende video-oproep";
 "event_formatter_call_incoming_voice" = "Inkomende audio-oproep";
+"voice_message_lock_screen_placeholder" = "Spraakbericht";
+"event_formatter_call_has_ended_with_time" = "Oproep beëindigd • %@";
