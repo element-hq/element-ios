@@ -88,7 +88,9 @@
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
-        self.unsentImageView.hidden = roomCellData.roomSummary.room.sentStatus == RoomSentStatusOk;
+        [roomCellData.roomSummary.room sentStatusWithCompletion:^(RoomSentStatus sentStatus) {
+            self.unsentImageView.hidden = sentStatus == RoomSentStatusOk;
+        }];
         self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
 
         // Notify unreads and bing

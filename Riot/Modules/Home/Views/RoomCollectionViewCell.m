@@ -100,35 +100,36 @@
             }
         }
         
-        // Notify unreads and bing
-        if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite
-                 || roomCellData.roomSummary.room.sentStatus != RoomSentStatusOk)
-        {
-            self.badgeLabel.hidden = NO;
-            self.badgeLabel.badgeColor = ThemeService.shared.theme.noticeColor;
-            self.badgeLabel.text = @"!";
-
-            // Use bold font for the room title
-            self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
-        }
-        else if (roomCellData.hasUnread)
-        {
-            if (0 < roomCellData.notificationCount)
+        [roomCellData.roomSummary.room sentStatusWithCompletion:^(RoomSentStatus sentStatus) {
+            // Notify unreads and bing
+            if (self->roomCellData.roomSummary.room.summary.membership == MXMembershipInvite
+                     || sentStatus != RoomSentStatusOk)
             {
                 self.badgeLabel.hidden = NO;
-                self.badgeLabel.badgeColor = roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
-                self.badgeLabel.text = roomCellData.notificationCountStringValue;
+                self.badgeLabel.badgeColor = ThemeService.shared.theme.noticeColor;
+                self.badgeLabel.text = @"!";
+
+                // Use bold font for the room title
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
             }
-            
-            // Use bold font for the room title
-            self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
-        }
-        else
-        {
-            // The room title is not bold anymore            
-            self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
-            
-        }
+            else if (self->roomCellData.hasUnread)
+            {
+                if (0 < self->roomCellData.notificationCount)
+                {
+                    self.badgeLabel.hidden = NO;
+                    self.badgeLabel.badgeColor = self->roomCellData.highlightCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
+                    self.badgeLabel.text = self->roomCellData.notificationCountStringValue;
+                }
+                
+                // Use bold font for the room title
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBold];
+            }
+            else
+            {
+                // The room title is not bold anymore
+                self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
+            }
+        }];
         
         [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
     }
