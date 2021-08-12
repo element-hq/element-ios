@@ -28,7 +28,7 @@ struct FormSectionHeaderView: View {
             .padding(.top)
             .padding(.leading)
             .padding(.bottom, 8)
-            .font(Font(theme.fonts.footnote))
+            .font(Font(theme.fonts.subheadline))
             .textCase(.uppercase)
     }
 }
