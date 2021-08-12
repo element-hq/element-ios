@@ -36,7 +36,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     @available(iOS 14.0, *)
     @Published var viewState: RoomNotificationSettingsViewState!
     @available(iOS 14.0, *)
-    lazy var cancelables = Set<AnyCancellable>()
+    lazy var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
     
@@ -78,7 +78,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
                     newState.displayName = data.displayName
                     self.state = newState
                 }
-                .store(in: &cancelables)
+                .store(in: &cancellables)
         }
     }
     
