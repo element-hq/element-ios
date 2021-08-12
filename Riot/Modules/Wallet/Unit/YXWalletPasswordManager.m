@@ -30,15 +30,13 @@ singleton_implementation(YXWalletPasswordManager)
 }
 
 -(NSString *)phomeNum{
+    
     MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    NSString *userPhomeNum = [MXKTools readableMSISDN:account.linkedPhoneNumbers[0]];
     
-//    if (userPhomeNum.length > 0) {
-//        [[NSUserDefaults standardUserDefaults] setObject:userPhomeNum forKey:@"settings_phone_number"];
-//    }
+    if (account.linkedPhoneNumbers.count == 0) return @"";
     
+    NSString *userPhomeNum = [MXKTools readableMSISDN:account.linkedPhoneNumbers.firstObject];
     return userPhomeNum;
-
 }
 
 -(NSString *)userId{
@@ -52,7 +50,6 @@ singleton_implementation(YXWalletPasswordManager)
         phomeNum = str2;
     }
     return phomeNum;
-//    return @"15197287803";
 }
 
 -(void)setModel:(YXWalletPasswordModel *)model{
