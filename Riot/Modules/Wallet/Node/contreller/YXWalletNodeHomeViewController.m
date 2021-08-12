@@ -60,7 +60,6 @@
 {
     //背景
     self.view.backgroundColor = kBgColor;
-    self.navigationController.navigationBarHidden = YES;
     [self initMagicView];
     
 }

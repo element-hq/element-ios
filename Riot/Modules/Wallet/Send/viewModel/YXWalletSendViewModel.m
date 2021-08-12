@@ -78,10 +78,10 @@
     [MBProgressHUD showMessage:@""];
     
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
-    [paramDict setObject:walletId forKey:@"walletId"];
-    [paramDict setObject:acceptAddr forKey:@"acceptAddr"];
-    [paramDict setObject:amount forKey:@"amount"];
-    [paramDict setObject:message forKey:@"message"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(walletId) forKey:@"walletId"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(acceptAddr) forKey:@"acceptAddr"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(amount) forKey:@"amount"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(message) forKey:@"message"];
 
     [NetWorkManager POST:kURL(@"/transaction/create") parameters:paramDict success:^(id  _Nonnull responseObject) {
         

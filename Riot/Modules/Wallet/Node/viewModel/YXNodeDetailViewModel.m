@@ -60,7 +60,7 @@
 - (void)getPledegTxData:(YXNodeListdata *)model{
     YXWeakSelf
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
-    [paramDict setObject:model.walletId forKey:@"walletId"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(model.walletId) forKey:@"walletId"];
     [NetWorkManager GET:kURL(@"/node/pledeg_tx") parameters:paramDict success:^(id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:NSDictionary.class]) {
             YXNodeConfigModelPledeg *detailList = [YXNodeConfigModelPledeg mj_objectWithKeyValues:responseObject];
@@ -77,8 +77,8 @@
 - (void)getNodeInfo:(YXNodeListdata *)model{
     YXWeakSelf
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
-    [paramDict setObject:model.ID forKey:@"id"];
-    [paramDict setObject:model.walletId forKey:@"walletId"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(model.ID) forKey:@"id"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(model.walletId) forKey:@"walletId"];
     [NetWorkManager GET:kURL(@"/node/info") parameters:paramDict success:^(id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:NSDictionary.class]) {
             NSDictionary *dic = responseObject[@"data"];
@@ -95,11 +95,11 @@
     
     YXWeakSelf
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
-    [paramDict setObject:walletId forKey:@"walletId"];
-    [paramDict setObject:txid forKey:@"txid"];
-    [paramDict setObject:vout forKey:@"vout"];
-    [paramDict setObject:ip forKey:@"ip"];
-    [paramDict setObject:privateKey forKey:@"privateKey"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(walletId) forKey:@"walletId"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(txid) forKey:@"txid"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(vout) forKey:@"vout"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(ip) forKey:@"ip"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(privateKey) forKey:@"privateKey"];
     [NetWorkManager POST:kURL(@"/node/activity") parameters:paramDict success:^(id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:NSDictionary.class]) {
             if (complete) {

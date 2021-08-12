@@ -132,7 +132,13 @@ extern NSString *const kEndEditFieldTextNotification;
 -(void)setupCellWithRowData:(YXWalletSendModel *)rowData{
     self.rowData = rowData;
     self.titleLabel.text = rowData.name;
-    self.desLabel.text = rowData.desc;
+    if ([rowData.name isEqualToString:@"发送数量"]) {
+        NSString *count = [NSString stringWithFormat:@"可用：%.4f",rowData.currentSelectModel.balance];
+        self.desLabel.text = [NSString stringWithFormat:@"（可用：%@ %@）",count,rowData.currentSelectModel.baseSymbol];
+    }else{
+        self.desLabel.text = rowData.desc;
+    }
+   
     self.textField.placeholder = rowData.placedholder;
 }
 

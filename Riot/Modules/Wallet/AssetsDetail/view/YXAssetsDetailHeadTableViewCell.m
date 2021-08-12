@@ -137,7 +137,7 @@ extern NSString *const kYXJumpWalletAssetsDetail;
         make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(12);
         make.left.mas_equalTo(15);
         make.height.mas_equalTo(20);
-        make.width.mas_equalTo(140);
+        make.right.mas_equalTo(-100);
     }];
     
     [self.countLabel mas_remakeConstraints:^(MASConstraintMaker *make) {

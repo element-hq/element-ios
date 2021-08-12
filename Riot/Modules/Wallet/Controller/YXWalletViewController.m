@@ -163,24 +163,41 @@
         }];
 
         [_viewModel setJumpSendEditDetailBlock:^{
+            
+            if ([weakSelf showWalletAddView]) return;
+            
             YXWalletSendViewController *sendDetail = [[YXWalletSendViewController alloc]init];
             [weakSelf.navigationController pushViewController:sendDetail animated:YES];
         }];
         
         [_viewModel setJumpReceiveCodeBlock:^{
+            
+            if ([weakSelf showWalletAddView]) return;
+            
             YXWalletReceiveCodeViewController *receiveCode = [[YXWalletReceiveCodeViewController alloc]init];
             [weakSelf.navigationController pushViewController:receiveCode animated:YES];
         }];
         
         [_viewModel setJumpCashVCDetailBlock:^{
             
+            if ([weakSelf showWalletAddView]) return;
             weakSelf.assetsSelectView.hidden = NO;
+            
         }];
-        
-        
-        
+         
     }
     return _viewModel;
+}
+
+- (BOOL)showWalletAddView{
+    BOOL show = NO;
+    if (self.viewModel.coinModel.data.count == 0) {
+        [MBProgressHUD showSuccess:@"请先添加资产"];
+        self.walletAddView.hidden = NO;
+        self.walletAddView.coinModel = self.viewModel.coinModel;
+        show = YES;
+    }
+    return show;
 }
 
 - (YXWalletProxy *)proxy{
