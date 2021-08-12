@@ -123,40 +123,41 @@ final class CallTransferSelectContactViewController: UIViewController {
     private func updateSections() {
         var tmpSections: [Section] = []
         
-        let users = session.callManager.getRecentCalledUsers(Constants.maxNumberOfRecentContacts,
-                                                             ignoredUserIds: ignoredUserIds)
-        var recentRows: [Row] = []
-        for (index, user) in users.enumerated() {
-            let indexPath = IndexPath(row: index, section: 0)
-            let accessoryType: UITableViewCell.AccessoryType = indexPath == selectedIndexPath ? .checkmark : .none
-            let row = Row(contact: MXKContact(matrixContactWithDisplayName: user.displayname,
-                                              matrixID: user.userId,
-                                              andMatrixAvatarURL: user.avatarUrl),
-                          accessoryType: accessoryType)
-            
-            recentRows.append(row)
-        }
-        let recentsSection = Section(header: VectorL10n.callTransferContactsRecent, rows: recentRows)
-        tmpSections.append(recentsSection)
-        
-        let sectionOffset = tmpSections.count
-        
-        for section in 0..<contactsDataSource.numberOfSections(in: mainTableView) {
-            var rows: [Row] = []
-            for row in 0..<contactsDataSource.tableView(mainTableView, numberOfRowsInSection: section) {
-                let sourceIndexPath = IndexPath(row: row, section: section)
-                let tableIndexPath = IndexPath(row: row, section: section + sectionOffset)
-                let accessoryType: UITableViewCell.AccessoryType = tableIndexPath == selectedIndexPath ? .checkmark : .none
-                if let contact = contactsDataSource.contact(at: sourceIndexPath) {
-                    rows.append(Row(contact: contact,
-                                    accessoryType: accessoryType))
-                }
+        session.callManager.getRecentCalledUsers(Constants.maxNumberOfRecentContacts,
+                                                 ignoredUserIds: ignoredUserIds) { users in
+            var recentRows: [Row] = []
+            for (index, user) in users.enumerated() {
+                let indexPath = IndexPath(row: index, section: 0)
+                let accessoryType: UITableViewCell.AccessoryType = indexPath == self.selectedIndexPath ? .checkmark : .none
+                let row = Row(contact: MXKContact(matrixContactWithDisplayName: user.displayname,
+                                                  matrixID: user.userId,
+                                                  andMatrixAvatarURL: user.avatarUrl),
+                              accessoryType: accessoryType)
+                
+                recentRows.append(row)
             }
-            let sectionTitle = rows.isEmpty ? nil : contactsDataSource.tableView(mainTableView, titleForHeaderInSection: section)
-            tmpSections.append(Section(header: sectionTitle, rows: rows))
+            let recentsSection = Section(header: VectorL10n.callTransferContactsRecent, rows: recentRows)
+            tmpSections.append(recentsSection)
+            
+            let sectionOffset = tmpSections.count
+            
+            for section in 0..<self.contactsDataSource.numberOfSections(in: self.mainTableView) {
+                var rows: [Row] = []
+                for row in 0..<self.contactsDataSource.tableView(self.mainTableView, numberOfRowsInSection: section) {
+                    let sourceIndexPath = IndexPath(row: row, section: section)
+                    let tableIndexPath = IndexPath(row: row, section: section + sectionOffset)
+                    let accessoryType: UITableViewCell.AccessoryType = tableIndexPath == self.selectedIndexPath ? .checkmark : .none
+                    if let contact = self.contactsDataSource.contact(at: sourceIndexPath) {
+                        rows.append(Row(contact: contact,
+                                        accessoryType: accessoryType))
+                    }
+                }
+                let sectionTitle = rows.isEmpty ? nil : self.contactsDataSource.tableView(self.mainTableView, titleForHeaderInSection: section)
+                tmpSections.append(Section(header: sectionTitle, rows: rows))
+            }
+            
+            self.sections = tmpSections
         }
-        
-        sections = tmpSections
     }
     
     private func setupViews() {
