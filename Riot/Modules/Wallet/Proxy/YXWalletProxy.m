@@ -32,6 +32,7 @@ NSString *const kYXWalletPrivateKeyNext = @"kYXWalletPrivateKeyNext";
 NSString *const kYXWalletPrivateKeyCopy = @"kYXWalletPrivateKeyCopy";
 NSString *const kYXWalletRefreshAddress = @"kYXWalletRefreshAddress";
 NSString *const kYXWalletSendConfirmPay = @"kYXWalletSendConfirmPay";
+NSString *const kYXWalletActivationNode = @"kYXWalletActivationNode";
 @interface YXWalletProxy ()
 @property (nonatomic, strong) NSDictionary *tempEventProxy;
 @end
@@ -74,6 +75,7 @@ NSString *const kYXWalletSendConfirmPay = @"kYXWalletSendConfirmPay";
             kYXWalletPrivateKeyCopy:[self createInvocationForSelector:@selector(walletPrivateKeyCopy)],
             kYXWalletRefreshAddress:[self createInvocationForSelector:@selector(refreshAddress)],
             kYXWalletSendConfirmPay:[self createInvocationForSelector:@selector(walletSendConfirmPay)],
+            kYXWalletActivationNode:[self createInvocationForSelector:@selector(walletActivationNode)],
         };
     }
     return _tempEventProxy;
@@ -210,5 +212,12 @@ NSString *const kYXWalletSendConfirmPay = @"kYXWalletSendConfirmPay";
 //确认支付
 - (void)walletSendConfirmPay{
     [self.sendViewModel walletSendConfirmPay];
+}
+
+//重新激活节点
+- (void)walletActivationNode{
+    if (self.detailViewModel.activationNodeBlock) {
+        self.detailViewModel.activationNodeBlock();
+    }
 }
 @end

@@ -33,6 +33,9 @@
         _walletPopupView.cancelBlock = ^{
             weakSelf.walletPopupView.hidden = YES;
             [weakSelf.navigationController popViewControllerAnimated:YES];
+            if (weakSelf.reloadDataBlock) {
+                weakSelf.reloadDataBlock();
+            }
         };
         _walletPopupView.hidden = YES;
     }
@@ -153,8 +156,14 @@
 }
 
 - (void)activationAction{
+    
+    if (self.configData.confirmations < 15) {
+        [MBProgressHUD showSuccess:[NSString stringWithFormat:@"质押交易需要15个区块确认，现还需要%ld区块确认",(15 - self.configData.confirmations)]];
+        return;
+    }
+    
     YXWeakSelf
-    [self.viewModel configNodeActivityWalletId:self.nodeListModel.walletId txid:self.configData.txid vout:@(self.configData.vout).stringValue ip:self.noteInfo.ip privateKey:self.configData.publicKeys.firstObject Complete:^{
+    [self.viewModel configNodeActivityWalletId:self.nodeListModel.walletId txid:self.configData.txid vout:@(self.configData.vout).stringValue ip:self.noteInfo.ip privateKey:self.nodeListModel.genkey Complete:^{
         weakSelf.walletPopupView.hidden = NO;
     }];
 }

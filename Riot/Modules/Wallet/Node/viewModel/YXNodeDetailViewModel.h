@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong)YXNodeConfigModelPledeg *pledegModel;
 @property (nonatomic , strong)YXNodeListdata *nodeInfoModel;
 @property (nonatomic , copy)dispatch_block_t reloadData;
+@property (nonatomic , copy)dispatch_block_t activationNodeBlock;
 @property (nonatomic , copy)void (^jumpNodeDetailBlock)(id model);
 - (void)reloadNewData:(YXNodeListdata *)model;
 - (void)getPledegTxData:(YXNodeListdata *)model;//获取质押交易记录

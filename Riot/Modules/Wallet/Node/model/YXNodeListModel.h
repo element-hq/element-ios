@@ -84,4 +84,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong) NSNumber              * actualSucess;
 @end
 
+@interface YXNodeActivityModel : NSObject
+@property (nonatomic , copy) NSString              * localDateTime;
+@property (nonatomic , strong) NSNumber              * status;
+@property (nonatomic , strong) id               data;
+@property (nonatomic , copy) NSString              * msg;
+@property (nonatomic , copy) NSString              * path;
+@property (nonatomic , strong) NSNumber              * actualSucess;
+@end
+
 NS_ASSUME_NONNULL_END

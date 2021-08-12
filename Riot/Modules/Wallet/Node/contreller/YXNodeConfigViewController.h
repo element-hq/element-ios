@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface YXNodeConfigViewController : YXBaseViewController
 @property (nonatomic , strong)YXNodeListdata *nodeListModel;
+@property (nonatomic , copy)dispatch_block_t reloadDataBlock;
 @end
 
 NS_ASSUME_NONNULL_END

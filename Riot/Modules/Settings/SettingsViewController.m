@@ -1746,7 +1746,7 @@ TableViewSectionsDelegate>
                         
                         if (!countryCode)
                         {
-                            countryCode = @"GB";
+                            countryCode = @"CN";
                         }
                     }
                     newPhoneCell.isoCountryCode = countryCode;

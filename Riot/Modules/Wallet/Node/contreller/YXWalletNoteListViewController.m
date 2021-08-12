@@ -65,11 +65,16 @@
         [_viewModel setTouchNodeListForDetailBlock:^(YXNodeListdata * _Nonnull model) {
             YXNodeDetailViewController *detailVc = [[YXNodeDetailViewController alloc]init];
             detailVc.nodeListModel = model;
+            detailVc.nodeListModel.walletId = weakSelf.model.walletId;
             [weakSelf.navigationController pushViewController:detailVc animated:YES];
         }];
         
         [_viewModel setConfigNodeListForDetailBlock:^(YXNodeListdata * _Nonnull model) {
             YXNodeConfigViewController *configVc = [[YXNodeConfigViewController alloc]init];
+            //配置成功需要刷新当前页面
+            [configVc setReloadDataBlock:^{
+                [weakSelf.viewModel reloadNewData:weakSelf.model];
+            }];
             model.walletId = weakSelf.model.walletId;
             configVc.nodeListModel = model;
             [weakSelf.navigationController pushViewController:configVc animated:YES];

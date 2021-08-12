@@ -17,6 +17,8 @@
 @implementation YXNodeDetailViewModel
 - (void)reloadNewData:(YXNodeListdata *)model{
     
+    [self.sectionItems removeAllObjects];
+    
     NSMutableArray<SCETRowItem *> *rowItems = [NSMutableArray new];
     
     SCETRowItem *headItem = [SCETRowItem rowItemWithRowData:@"test cell" cellClassString:NSStringFromClass([YXNodeDetailHeadTableViewCell class])];
@@ -93,7 +95,6 @@
 
 - (void)configNodeActivityWalletId:(NSString *)walletId txid:(NSString *)txid vout:(NSString *)vout ip:(NSString *)ip privateKey:(NSString *)privateKey Complete:(void (^)(void))complete{
     
-    YXWeakSelf
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
     [paramDict setObject:GET_A_NOT_NIL_STRING(walletId) forKey:@"walletId"];
     [paramDict setObject:GET_A_NOT_NIL_STRING(txid) forKey:@"txid"];
@@ -102,13 +103,19 @@
     [paramDict setObject:GET_A_NOT_NIL_STRING(privateKey) forKey:@"privateKey"];
     [NetWorkManager POST:kURL(@"/node/activity") parameters:paramDict success:^(id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:NSDictionary.class]) {
-            if (complete) {
-                complete();
+            YXNodeActivityModel *model = [YXNodeActivityModel mj_objectWithKeyValues:responseObject];
+            if (model.status.intValue == 200) {
+                if (complete) {
+                    complete();
+                }
             }
+  
+        }else{
+            [MBProgressHUD showError:@"激活失败"];
         }
         
     } failure:^(NSError * _Nonnull error) {
-            
+        [MBProgressHUD showError:@"激活失败"];
     }];
     
 }

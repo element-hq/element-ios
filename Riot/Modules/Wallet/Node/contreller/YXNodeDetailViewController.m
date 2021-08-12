@@ -9,6 +9,8 @@
 #import "YXNodeDetailViewController.h"
 #import "YXNodeDetailViewModel.h"
 #import "YXWalletProxy.h"
+#import "YXNodeConfigViewController.h"
+
 @interface YXNodeDetailViewController ()
 @property (nonatomic , strong)UITableView *tableView;
 @property (nonatomic , strong)YXNodeDetailViewModel *viewModel;
@@ -70,6 +72,16 @@
             [weakSelf.tableView reloadData];
         }];
         
+        //重新激活
+        [_viewModel setActivationNodeBlock:^{
+            YXNodeConfigViewController *configVc = [[YXNodeConfigViewController alloc]init];
+            //配置成功需要刷新当前页面
+            [configVc setReloadDataBlock:^{
+                [weakSelf.viewModel reloadNewData:weakSelf.nodeListModel];
+            }];
+            configVc.nodeListModel = weakSelf.nodeListModel;
+            [weakSelf.navigationController pushViewController:configVc animated:YES];
+        }];
 
     }
     return _viewModel;

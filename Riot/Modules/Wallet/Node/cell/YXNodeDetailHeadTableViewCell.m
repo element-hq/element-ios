@@ -7,6 +7,7 @@
 //
 
 #import "YXNodeDetailHeadTableViewCell.h"
+extern NSString *const kYXWalletActivationNode;
 @interface YXNodeDetailHeadTableViewCell ()
 @property (nonatomic , strong)UIImageView *bgImageView;
 @property (nonatomic , strong)UIView *activationView;
@@ -32,8 +33,8 @@
         _activationView = [[UIView alloc]init];
         _activationView.backgroundColor = RGBA(255, 255, 255, 0.3);
         _activationView.layer.cornerRadius = 25;
-        _activationLabel.layer.masksToBounds = YES;
-        _activationLabel.userInteractionEnabled = YES;
+        _activationView.layer.masksToBounds = YES;
+        _activationView.userInteractionEnabled = YES;
     }
     return _activationView;
 }
@@ -71,8 +72,9 @@
         _activationLabel.layer.cornerRadius = 20;
         _activationLabel.layer.masksToBounds = YES;
         _activationLabel.backgroundColor = kWhiteColor;
+        YXWeakSelf
         [_activationLabel addTapAction:^(UITapGestureRecognizer *sender) {
-                    
+            [weakSelf routerEventForName:kYXWalletActivationNode paramater:nil];
         }];
     }
     return _activationLabel;

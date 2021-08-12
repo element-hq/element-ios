@@ -113,7 +113,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     // Set a default country code
     // Note: this value is used only when no MCC and no local country code is available.
-    defaultCountryCode = @"GB";
+    defaultCountryCode = @"CN";
     
     didCheckFalseAuthScreenDisplay = NO;
     
