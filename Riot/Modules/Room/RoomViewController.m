@@ -2262,7 +2262,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
             
-            previewHeader.roomAvatar.alpha = 1;
+            self->previewHeader.roomAvatar.alpha = 1;
             
             // Force to render the view
             [self forceLayoutRefresh];
@@ -4430,7 +4430,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     kMXCallStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         MXCall *call = notif.object;
-        if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([call.room.roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
@@ -4439,7 +4439,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
         }
@@ -4447,7 +4447,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     kMXCallManagerConferenceFinishedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceFinished object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
