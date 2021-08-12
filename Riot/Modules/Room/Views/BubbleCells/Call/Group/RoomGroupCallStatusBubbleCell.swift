@@ -158,6 +158,14 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         }
     }
     
+    private func updateStatusTextForEndedCall() {
+        if callDurationString.count > 0 {
+            statusText = VectorL10n.eventFormatterCallHasEndedWithTime(callDurationString)
+        } else {
+            statusText = VectorL10n.eventFormatterCallHasEnded
+        }
+    }
+    
     //  MARK: - Actions
     
     @objc
@@ -265,7 +273,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
             in: room,
             with: roomState) else {
                 self.viewState = .ended
-                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                self.updateStatusTextForEndedCall()
                 return
             }
             
@@ -277,7 +285,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
 
             guard let widget = widgets.first(where: { $0.widgetId == widgetId }) else {
                 self.viewState = .ended
-                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                self.updateStatusTextForEndedCall()
                 return
             }
 
@@ -301,7 +309,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
                 }
             } else {
                 self.viewState = .ended
-                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                self.updateStatusTextForEndedCall()
             }
         }
     }

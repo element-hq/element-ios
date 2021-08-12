@@ -220,27 +220,27 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
                  .remoteHangup,
                  .answeredElseWhere:
                 viewState = .ended
-                statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+                updateStatusTextForEndedCall()
             case .missed:
                 if call.isIncoming {
                     viewState = .missed
                     statusText = isVideoCall ? VectorL10n.eventFormatterCallMissedVideo : VectorL10n.eventFormatterCallMissedVoice
                 } else {
-                    statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+                    updateStatusTextForEndedCall()
                 }
             case .busy:
                 configureForRejectedCall(call: call)
             @unknown default:
                 viewState = .ended
-                statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+                updateStatusTextForEndedCall()
             }
         case .inviteExpired,
              .answeredElseWhere:
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         @unknown default:
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         }
     }
     
@@ -261,21 +261,21 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             statusText = VectorL10n.eventFormatterCallYouDeclined
         } else {
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         }
     }
     
     private func configureForHangupCall(withEvent event: MXEvent) {
         guard let hangupEventContent = MXCallHangupEventContent(fromJSON: event.content) else {
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
             return
         }
         
         switch hangupEventContent.reasonType {
         case .userHangup:
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
         default:
             viewState = .failed
             statusText = VectorL10n.eventFormatterCallConnectionFailed
@@ -290,7 +290,15 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
         } else {
             //  outgoing unanswered call
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
+        }
+    }
+    
+    private func updateStatusTextForEndedCall() {
+        if callDurationString.count > 0 {
+            statusText = VectorL10n.eventFormatterCallHasEndedWithTime(callDurationString)
+        } else {
+            statusText = VectorL10n.eventFormatterCallHasEnded
         }
     }
     
@@ -404,7 +412,7 @@ class RoomDirectCallStatusBubbleCell: RoomBaseCallBubbleCell {
             
             //  there is no reject or hangup event, we can just say this call has ended
             viewState = .ended
-            statusText = VectorL10n.eventFormatterCallHasEnded(callDurationString)
+            updateStatusTextForEndedCall()
             return
         }
         

@@ -1266,7 +1266,7 @@
 "dialpad_title" = "Numbriklahvistik";
 "call_actions_unhold" = "Jätka";
 "event_formatter_call_back" = "Helista tagasi";
-"event_formatter_call_you_declined" = "Sina keeldusid sellest kõnest";
+"event_formatter_call_you_declined" = "Osapool keeldus kõnest";
 "event_formatter_call_you_currently_in" = "Kõne on käsil";
 "event_formatter_call_has_ended" = "%@ kõne on lõppenud";
 "event_formatter_call_video" = "Videokõne";
@@ -1367,3 +1367,12 @@
 
 "voice_message_release_to_send" = "Salvestamiseks vajuta nuppu, saatmiseks lase nupp lahti";
 "settings_labs_voice_messages" = "Häälsõnumid";
+"event_formatter_call_missed_video" = "Vastamata videokõne";
+"event_formatter_call_missed_voice" = "Vastamata kõne";
+"event_formatter_call_active_video" = "Pooleliolev videokõne";
+"event_formatter_call_active_voice" = "Pooleliolev kõne";
+"event_formatter_call_incoming_video" = "Saabuv videokõne";
+"event_formatter_call_incoming_voice" = "Saabuv häälkõne";
+"settings_notifications_disabled_alert_message" = "Teavituste kasutamiseks ava seadistuste vaade.";
+"settings_notifications_disabled_alert_title" = "Teavitused on välja lülitatud";
+"settings_device_notifications" = "Teavitused seadmes";

@@ -34,6 +34,9 @@ NSString *const EventFormatterOnReRequestKeysLinkAction = @"EventFormatterOnReRe
 NSString *const EventFormatterLinkActionSeparator = @"/";
 NSString *const EventFormatterEditedEventLinkAction = @"EventFormatterEditedEventLinkAction";
 
+NSString *const FunctionalMembersStateEventType = @"io.element.functional_members";
+NSString *const FunctionalMembersServiceMembersKey = @"service_members";
+
 static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 @interface EventFormatter ()
@@ -406,6 +409,73 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     }
     
     return senderAvatarUrl;
+}
+
+#pragma mark - MXRoomSummaryUpdating
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withStateEvents:(NSArray<MXEvent *> *)stateEvents roomState:(MXRoomState *)roomState
+{
+    BOOL updated = [super session:session updateRoomSummary:summary withStateEvents:stateEvents roomState:roomState];
+    
+    // Customisation for EMS Functional Members in direct rooms
+    if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
+    {
+        if ([self functionalMembersEventFromStateEvents:stateEvents])
+        {
+            MXLogDebug(@"[EventFormatter] The functional members event has been updated.")
+            
+            // The stateEvents parameter contains state events that may change the room summary. If service members are found,
+            // it's likely that something changed. As they aren't stored, the only reliable check would be to compute the
+            // room name which we'll do twice more in updateRoomSummary:withServerRoomSummary:roomState: anyway.
+            //
+            // So return YES and let that happen there.
+            return YES;
+        }
+    }
+    
+    return updated;
+}
+
+- (BOOL)session:(MXSession *)session updateRoomSummary:(MXRoomSummary *)summary withServerRoomSummary:(MXRoomSyncSummary *)serverRoomSummary roomState:(MXRoomState *)roomState
+{
+    BOOL updated = [super session:session updateRoomSummary:summary withServerRoomSummary:serverRoomSummary roomState:roomState];
+    
+    // Customisation for EMS Functional Members in direct rooms
+    if (BuildSettings.supportFunctionalMembers && summary.room.isDirect)
+    {
+        MXEvent *functionalMembersEvent = [self functionalMembersEventFromStateEvents:roomState.stateEvents];
+        
+        if (functionalMembersEvent)
+        {
+            MXLogDebug(@"[EventFormatter] Computing the room name and avatar excluding functional members.")
+            
+            NSArray<NSString*> *serviceMemberIDs = functionalMembersEvent.content[FunctionalMembersServiceMembersKey] ?: @[];
+            
+            updated |= [defaultRoomSummaryUpdater updateSummaryDisplayname:summary
+                                                                   session:session
+                                                     withServerRoomSummary:serverRoomSummary
+                                                                 roomState:roomState
+                                                          excludingUserIDs:serviceMemberIDs];
+            
+            updated |= [defaultRoomSummaryUpdater updateSummaryAvatar:summary
+                                                              session:session
+                                                withServerRoomSummary:serverRoomSummary
+                                                            roomState:roomState
+                                                     excludingUserIDs:serviceMemberIDs];
+        }
+    }
+
+    return updated;
+}
+
+/**
+ Gets the latest state event of type `io.element.functional_members` from the supplied array of state events.
+ Note: This function will be expensive on big rooms, recommended for use only on DMs.
+ @return An event of type `io.element.functional_members`, or nil if the event wasn't found.
+ */
+- (MXEvent *)functionalMembersEventFromStateEvents:(NSArray<MXEvent *> *)stateEvents
+{
+    NSPredicate *functionalMembersPredicate = [NSPredicate predicateWithFormat:@"type == %@", FunctionalMembersStateEventType];
+    return [stateEvents filteredArrayUsingPredicate:functionalMembersPredicate].lastObject;
 }
 
 #pragma mark - Timestamp formatting
