@@ -51,6 +51,8 @@
     if ([rowData isKindOfClass:YXWalletAccountModel.class]) {
         YXWalletAccountModel *model = (YXWalletAccountModel *)rowData;
         self.titleLabel.text = model.desc;
+    }else if ([rowData isKindOfClass:NSString.class]){
+        self.titleLabel.text = (NSString *)rowData;
     }
     
     

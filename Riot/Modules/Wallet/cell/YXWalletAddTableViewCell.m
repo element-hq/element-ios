@@ -40,6 +40,7 @@ extern NSString *const kYXWalletShowAddViewFountion;
 - (void)addBtnAction{
     if (!WalletManager.isHavePassword) {
         [MBProgressHUD showSuccess:@"请先设置密码"];
+        return;
     }
     
     [self routerEventForName:kYXWalletShowAddViewFountion paramater:nil];
