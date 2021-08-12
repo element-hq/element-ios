@@ -20,6 +20,12 @@ import Foundation
 
 final class SpaceListViewModel: SpaceListViewModelType {
     
+    // MARK: - Constants
+    
+    enum Constants {
+        static let homeSpaceId: String = "home"
+    }
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -112,7 +118,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
     private func createHomeViewData() -> SpaceListItemViewData {
         let avatarViewData = AvatarViewData(avatarUrl: nil, mediaManager: self.session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
         
-        let homeViewData = SpaceListItemViewData(spaceId: "home",
+        let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
                                                  title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData)
         return homeViewData
     }

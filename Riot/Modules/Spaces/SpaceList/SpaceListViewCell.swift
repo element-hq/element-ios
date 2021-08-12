@@ -56,7 +56,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     func fill(with viewData: SpaceListItemViewData) {
         self.avatarView.fill(with: viewData.avatarViewData)
         self.titleLabel.text = viewData.title
-        self.moreButton.isHidden = viewData.spaceId == "home"
+        self.moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.homeSpaceId
     }
     
     func update(theme: Theme) {

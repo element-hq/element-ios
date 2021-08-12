@@ -284,12 +284,6 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
     }
     
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
-//        if UIDevice.current.isPhone {
-//            self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
-//                self.showMenu(forSpaceWithId: spaceId, from: sourceView)
-//            }
-//        } else {
-            self.showMenu(forSpaceWithId: spaceId, from: sourceView)
-//        }
+        self.showMenu(forSpaceWithId: spaceId, from: sourceView)
     }
 }
