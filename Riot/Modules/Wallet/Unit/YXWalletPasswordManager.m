@@ -13,8 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
+#import <MatrixKit/MatrixKit.h>
 #import "YXWalletPasswordManager.h"
+#import "MXKTools.h"
 @implementation YXWalletPasswordModel
 @end
 
@@ -29,7 +30,15 @@ singleton_implementation(YXWalletPasswordManager)
 }
 
 -(NSString *)phomeNum{
-    return [[NSUserDefaults standardUserDefaults] stringForKey:@"settings_phone_number"];
+    MXKAccount* account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+    NSString *userPhomeNum = [MXKTools readableMSISDN:account.linkedPhoneNumbers[0]];
+    
+//    if (userPhomeNum.length > 0) {
+//        [[NSUserDefaults standardUserDefaults] setObject:userPhomeNum forKey:@"settings_phone_number"];
+//    }
+    
+    return userPhomeNum;
+
 }
 
 -(NSString *)userId{
