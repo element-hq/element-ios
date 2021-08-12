@@ -1,3 +1,10 @@
+## Changes in 1.5.1 (2021-08-12)
+
+🐛 Bugfixes
+
+- People Tab: Fix crash when showing an invite. ([#4698](https://github.com/vector-im/element-ios/issues/4698))
+
+
 ## Changes in 1.5.0 (2021-08-11)
 
 ✨ Features
