@@ -55,11 +55,11 @@
 /** Invites **/
 
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ heeft u voor een gesprek uitgenodigd";
+"USER_INVITE_TO_CHAT" = "%@ heeft u uitgenodigd om te chatten";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ heeft u in een groepsgesprek uitgenodigd";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ heeft u uitgenodigd in een groepschat";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ heeft u in %@ uitgenodigd";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ heeft u in %@-kamer uitgenodigd";
 /** Calls **/
 
 /* Incoming one-to-one voice call */
