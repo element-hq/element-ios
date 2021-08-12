@@ -1910,6 +1910,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Add observer on settings changes.
     [[MXKAppSettings standardAppSettings] addObserver:self forKeyPath:@"showAllEventsInRoomHistory" options:0 context:nil];
     
+    // Override the default notification content. This must happen before the account manager prepares the session.
+    MXKAppSettings.standardAppSettings.notificationBodyLocalizationKey = @"NOTIFICATION";
+    
     // Prepare account manager
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
