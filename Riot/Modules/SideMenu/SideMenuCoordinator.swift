@@ -144,6 +144,11 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
     private func showWallet() {
         var phoneNum: String = ""
         let account = MXKAccountManager.shared().activeAccounts.first
+        if account?.linkedPhoneNumbers.count == 0 {
+            MBProgressHUD.showSuccess("请前往设置添加手机号码")
+            return
+        }
+        
         phoneNum = MXKTools.readableMSISDN(account?.linkedPhoneNumbers.first)
         if  phoneNum.count < 10 {
             MBProgressHUD.showSuccess("请前往设置添加手机号码")
