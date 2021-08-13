@@ -200,16 +200,6 @@
 
 #pragma mark -
 
-- (void)setContactsAreFilteredWithSearch:(BOOL)contactsAreFilteredWithSearch
-{
-    // Filter out redundant assignments.
-    if (_contactsAreFilteredWithSearch != contactsAreFilteredWithSearch)
-    {
-        _contactsAreFilteredWithSearch = contactsAreFilteredWithSearch;
-        [self updateFooterView];
-    }
-}
-
 - (RequestContactsAccessFooterView*)makeFooterView
 {
     RequestContactsAccessFooterView *footerView = [RequestContactsAccessFooterView instantiate];
@@ -378,6 +368,16 @@
         {
             [self.contactsTableView deselectRowAtIndexPath:indexPath animated:NO];
         }
+    }
+}
+
+- (void)setContactsAreFilteredWithSearch:(BOOL)contactsAreFilteredWithSearch
+{
+    // Filter out redundant assignments.
+    if (_contactsAreFilteredWithSearch != contactsAreFilteredWithSearch)
+    {
+        _contactsAreFilteredWithSearch = contactsAreFilteredWithSearch;
+        [self updateFooterView];
     }
 }
 
