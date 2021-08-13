@@ -5162,7 +5162,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
         
-        if (jitsiWidget && self.canEditJitsiWidget)
+        if (jitsiWidget && self.canEditJitsiWidget && !self.roomDataSource.room.isDirect)
         {
             [self.removeJitsiWidgetView reset];
             self.removeJitsiWidgetContainer.hidden = NO;
