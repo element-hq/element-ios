@@ -106,7 +106,7 @@ final class RoomInfoListViewModel: NSObject, RoomInfoListViewModelType {
         self.room.leave { (response) in
             switch response {
             case .success:
-                self.coordinatorDelegate?.roomInfoListViewModelDidCancel(self)
+                self.coordinatorDelegate?.roomInfoListViewModelDidLeaveRoom(self)
             case .failure(let error):
                 self.startObservingSummaryChanges()
                 self.update(viewState: .error(error))
