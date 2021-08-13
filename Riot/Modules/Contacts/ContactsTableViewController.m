@@ -166,15 +166,11 @@
         
     }];
     
-    [self refreshContactsTable];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
     // Load the local contacts for display.
     [self refreshLocalContacts];
+    [self refreshContactsTable];
+    
+    // Show the contacts access footer if necessary.
     [self updateFooterView];
 }
 
