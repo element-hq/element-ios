@@ -46,7 +46,8 @@ jobs:
           p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
 
       # Main step
-      # The Ad-hoc release link will be referenced as 'DIAWI_FILE_LINK' when the Diawi upload succeed
+      # The Ad-hoc release link will be referenced as 'DIAWI_FILE_LINK'
+      # and QR link as 'DIAWI_QR_CODE_LINK' when the Diawi upload succeed
       - name: Build Ad-hoc release and send it to Diawi
         run: bundle exec fastlane alpha
         env:
@@ -65,7 +66,7 @@ jobs:
           message: |
             :lock: This is the Ad-hoc release link for this PR. It's only accessible for a small subset of person.
             :iphone: Open the link and scan the QR code with your device.
-            ${{ env.DIAWI_FILE_LINK }}
+            ${{ env.DIAWI_QR_CODE_LINK }}
           # Enables to identify and update existing Ad-hoc release message on new commit in the PR
           identifier: "GITHUB_COMMENT_ADHOC_RELEASE"
         env:
