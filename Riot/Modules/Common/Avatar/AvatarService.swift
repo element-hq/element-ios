@@ -49,7 +49,7 @@ class AvatarService: AvatarServiceType {
     }
     
     /**
-     Given an avatar inpute this function returns a publisher of UIImage.
+     Given an avatar input, this function returns a publisher of UIImage.
      If possible to retrieve the actualy image it will from network or cache.
      While waiting ont he netowrk or if one can't be retrieved it will return the generated acatar.
      
