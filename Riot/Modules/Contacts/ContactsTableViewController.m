@@ -202,8 +202,12 @@
 
 - (void)setContactsAreFilteredWithSearch:(BOOL)contactsAreFilteredWithSearch
 {
-    _contactsAreFilteredWithSearch = contactsAreFilteredWithSearch;
-    [self updateFooterView];
+    // Filter out redundant assignments.
+    if (_contactsAreFilteredWithSearch != contactsAreFilteredWithSearch)
+    {
+        _contactsAreFilteredWithSearch = contactsAreFilteredWithSearch;
+        [self updateFooterView];
+    }
 }
 
 - (RequestContactsAccessFooterView*)makeFooterView
@@ -483,14 +487,7 @@
 {
     [contactsDataSource searchWithPattern:searchText forceReset:NO];
     
-    if (searchText.length && !self.contactsAreFilteredWithSearch)
-    {
-        self.contactsAreFilteredWithSearch = YES;
-    }
-    else if (!searchText.length && self.contactsAreFilteredWithSearch)
-    {
-        self.contactsAreFilteredWithSearch = NO;
-    }
+    self.contactsAreFilteredWithSearch = searchText.length ? YES : NO;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

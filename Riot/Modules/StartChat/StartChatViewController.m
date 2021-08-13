@@ -703,14 +703,7 @@
 {
     [contactsDataSource searchWithPattern:searchText forceReset:NO];
     
-    if (searchText.length && !self.contactsAreFilteredWithSearch)
-    {
-        self.contactsAreFilteredWithSearch = YES;
-    }
-    else if (!searchText.length && self.contactsAreFilteredWithSearch)
-    {
-        self.contactsAreFilteredWithSearch = NO;
-    }
+    self.contactsAreFilteredWithSearch = searchText.length ? YES : NO;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
