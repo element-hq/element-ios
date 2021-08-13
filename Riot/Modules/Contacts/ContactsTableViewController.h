@@ -74,6 +74,13 @@
 @property (nonatomic) BOOL hideRequestContactAccessFooter;
 
 /**
+ Indicates when there's an active search. This is used to indicate that the contacts
+ access footer should be hidden as even without local contacts, there will still be
+ results to be shown from the server.
+ */
+@property (nonatomic) BOOL contactsAreFilteredWithSearch;
+
+/**
  If YES, the table view will scroll at the top on the next data source refresh.
  It comes back to NO after each refresh.
  */

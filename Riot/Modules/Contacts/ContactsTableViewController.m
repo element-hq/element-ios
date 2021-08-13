@@ -42,7 +42,6 @@
 }
 
 @property (nonatomic, strong) RequestContactsAccessFooterView *requestContactsAccessFooterView;
-@property (nonatomic) BOOL shouldHideFooterView;
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
@@ -70,7 +69,8 @@
 {
     [super finalizeInit];
     
-    // Allow the contact access footer to be shown when necessary.
+    // By default, allow the contact access footer to be shown
+    // when sufficient permissions are not available.
     self.hideRequestContactAccessFooter = NO;
     
     // Setup `MXKViewControllerHandling` properties
@@ -100,7 +100,7 @@
     
     // Hide line separators of empty cells
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
-    self.shouldHideFooterView = NO;
+    self.contactsAreFilteredWithSearch = NO;
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -200,6 +200,12 @@
 
 #pragma mark -
 
+- (void)setContactsAreFilteredWithSearch:(BOOL)contactsAreFilteredWithSearch
+{
+    _contactsAreFilteredWithSearch = contactsAreFilteredWithSearch;
+    [self updateFooterView];
+}
+
 - (RequestContactsAccessFooterView*)makeFooterView
 {
     RequestContactsAccessFooterView *footerView = [RequestContactsAccessFooterView instantiate];
@@ -227,10 +233,10 @@
         return;
     }
     
-    // If the footer should be shown, don't show it when searching the identity server.
-    if (self.shouldHideFooterView)
+    // If the footer is to be shown, hide it when there's an active search.
+    if (self.contactsAreFilteredWithSearch)
     {
-        self.contactsTableView.tableFooterView = nil;
+        self.contactsTableView.tableFooterView = [[UIView alloc] init];
         return;
     }
     
@@ -477,16 +483,13 @@
 {
     [contactsDataSource searchWithPattern:searchText forceReset:NO];
     
-    // FIXME: This should be based off of the data source as it doesn't work in StartChat.
-    if (searchText.length && self.contactsTableView.tableFooterView)
+    if (searchText.length && !self.contactsAreFilteredWithSearch)
     {
-        self.shouldHideFooterView = YES;
-        [self updateFooterView];
+        self.contactsAreFilteredWithSearch = YES;
     }
-    else if (!searchText.length && !self.contactsTableView.tableFooterView)
+    else if (!searchText.length && self.contactsAreFilteredWithSearch)
     {
-        self.shouldHideFooterView = NO;
-        [self updateFooterView];
+        self.contactsAreFilteredWithSearch = NO;
     }
 }
 

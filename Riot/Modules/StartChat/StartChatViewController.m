@@ -702,6 +702,15 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [contactsDataSource searchWithPattern:searchText forceReset:NO];
+    
+    if (searchText.length && !self.contactsAreFilteredWithSearch)
+    {
+        self.contactsAreFilteredWithSearch = YES;
+    }
+    else if (!searchText.length && self.contactsAreFilteredWithSearch)
+    {
+        self.contactsAreFilteredWithSearch = NO;
+    }
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
