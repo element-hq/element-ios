@@ -1,4 +1,4 @@
-name: Release Alpha
+name: Build alpha release
 
 on:
 
@@ -66,7 +66,7 @@ jobs:
             :lock: This is the Ad-hoc release link for this PR. It's only accessible for a small subset of person.
             :iphone: Open the link and scan the QR code with your device.
             ${{ env.DIAWI_FILE_LINK }}
-          # enables to identify and update existing Ad-hoc release message on new commit in the PR
+          # Enables to identify and update existing Ad-hoc release message on new commit in the PR
           identifier: "GITHUB_COMMENT_ADHOC_RELEASE"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
