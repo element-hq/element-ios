@@ -8,6 +8,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  # Make the git branch for a PR available to our Fastfile
+  MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+
 jobs:
   build:
     name: Release
@@ -61,8 +65,6 @@ jobs:
       - name: Build Ad-hoc release and send it to Diawi
         run: bundle exec fastlane alpha
         env:
-          # Make the git branch for a PR available to our Fastfile
-          MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
           # Automaticaly bypass 2FA upgrade if possible on Apple account.
           SPACESHIP_SKIP_2FA_UPGRADE: true
           APPLE_ID: ${{ secrets.FASTLANE_USER }}
