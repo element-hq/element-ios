@@ -12,6 +12,7 @@
 
 min_fastlane_version('2.156.0')
 fastlane_require "dotenv"
+fastlane_require "uri"
 
 default_platform(:ios)
 platform :ios do
@@ -67,12 +68,18 @@ platform :ios do
     )
 
     # Get the Diawi link from Diawi action shared value
-    diawi_link = lane_context[SharedValues::UPLOADED_FILE_LINK_TO_DIAWI]    
-    UI.command_output("Diawi link:\n" + diawi_link.to_s)    
+    diawi_link = lane_context[SharedValues::UPLOADED_FILE_LINK_TO_DIAWI]
+    UI.command_output("Diawi link: " + diawi_link.to_s)
+
+    # Generate the Diawi QR code file link
+    diawi_app_id = URI(diawi_link).path.split('/').last
+    diawi_qr_code_link = "https://www.diawi.com/qrcode/link/#{diawi_app_id}"
+    UI.command_output("Diawi QR code link: " + diawi_qr_code_link.to_s)
 
     # Set "DIAWI_FILE_LINK" to GitHub environment variables for Github actions
     if is_ci 
       sh("echo DIAWI_FILE_LINK=#{diawi_link} >> $GITHUB_ENV")
+      sh("echo DIAWI_QR_CODE_LINK=#{diawi_qr_code_link} >> $GITHUB_ENV")
     end
   end
 
