@@ -30,7 +30,7 @@ extension EnvironmentValues {
 }
 
 /**
-    A theme modifier for setting the theme for this view all it's decendants in the hierarchy.
+ A theme modifier for setting the theme for this view and all its descendants in the hierarchy.
  */
 @available(iOS 14.0, *)
 extension View {
