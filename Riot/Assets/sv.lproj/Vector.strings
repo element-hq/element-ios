@@ -309,7 +309,6 @@
 "settings_show_decrypted_content" = "Visa avkrypterat innehåll";
 "settings_pin_rooms_with_missed_notif" = "Fäst rum med missade aviseringar";
 "settings_pin_rooms_with_unread" = "Fäst rum med olästa meddelanden";
-"settings_on_denied_notification" = "Aviseringar har nekats för %@, vänligen tillåt dem i dina enhetsinställningar";
 "settings_enable_callkit" = "Integrerade samtal";
 "settings_integrations_allow_button" = "Hantera integrationer";
 "settings_ui_language" = "Språk";

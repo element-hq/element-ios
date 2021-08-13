@@ -27,11 +27,6 @@
 
 #import "MXRoomSummary+Riot.h"
 
-#pragma mark - Defines & Constants
-
-static const CGFloat kDirectRoomBorderColorAlpha = 0.75;
-static const CGFloat kDirectRoomBorderWidth = 3.0;
-
 @implementation RecentTableViewCell
 
 #pragma mark - Class methods
@@ -53,16 +48,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.lastEventDescription.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.lastEventDate.textColor = ThemeService.shared.theme.textSecondaryColor;
     self.missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
-    
-    // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
-    
-    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
-    self.directRoomBorderView.clipsToBounds = YES;
-    self.directRoomBorderView.layer.borderColor = directRoomBorderColor;
-    self.directRoomBorderView.layer.borderWidth = kDirectRoomBorderWidth;
-    
-    CFRelease(directRoomBorderColor);
     
     self.roomAvatar.defaultBackgroundColor = [UIColor clearColor];
 }
@@ -138,8 +123,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             // The room title is not bold anymore            
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
-        
-        self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
 
         [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
     }

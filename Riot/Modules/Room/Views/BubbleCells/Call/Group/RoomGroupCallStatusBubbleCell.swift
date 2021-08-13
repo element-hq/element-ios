@@ -158,6 +158,14 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         }
     }
     
+    private func updateStatusTextForEndedCall() {
+        if callDurationString.count > 0 {
+            statusText = VectorL10n.eventFormatterCallHasEndedWithTime(callDurationString)
+        } else {
+            statusText = VectorL10n.eventFormatterCallHasEnded
+        }
+    }
+    
     //  MARK: - Actions
     
     @objc
@@ -224,7 +232,6 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
         self.widgetEvent = widgetEvent
         self.widgetId = widgetId
         innerContentView.callIconView.image = Asset.Images.callVideoIcon.image
-        innerContentView.callTypeLabel.text = VectorL10n.eventFormatterCallVideo
         
         if isIncoming && !isJoined &&
             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
@@ -266,7 +273,7 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
             in: room,
             with: roomState) else {
                 self.viewState = .ended
-                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                self.updateStatusTextForEndedCall()
                 return
             }
             
@@ -278,14 +285,14 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
 
             guard let widget = widgets.first(where: { $0.widgetId == widgetId }) else {
                 self.viewState = .ended
-                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                self.updateStatusTextForEndedCall()
                 return
             }
 
             if widget.isActive {
                 if !self.isIncoming {
                     self.viewState = .active
-                    self.statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                    self.statusText = VectorL10n.eventFormatterCallActiveVideo
                 } else if !self.isJoined &&
                             TimeInterval(widgetEvent.age)/MSEC_PER_SEC < Constants.secondsToDisplayAnswerDeclineOptions {
                     
@@ -298,11 +305,11 @@ class RoomGroupCallStatusBubbleCell: RoomBaseCallBubbleCell {
                     }
                 } else {
                     self.viewState = .active
-                    self.statusText = VectorL10n.eventFormatterCallYouCurrentlyIn
+                    self.statusText = VectorL10n.eventFormatterCallActiveVideo
                 }
             } else {
                 self.viewState = .ended
-                self.statusText = VectorL10n.eventFormatterCallHasEnded(self.callDurationString)
+                self.updateStatusTextForEndedCall()
             }
         }
     }

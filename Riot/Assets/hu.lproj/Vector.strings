@@ -311,7 +311,6 @@
 "settings_global_settings_info" = "Globális értesítési beállításokat a webes kliensedben találod: %@";
 "settings_pin_rooms_with_missed_notif" = "Szobák kitűzése elszalasztott értesítésekkel";
 "settings_pin_rooms_with_unread" = "Szobák kitűzése olvasatlan üzenetekkel";
-"settings_on_denied_notification" = "Az értesítések tiltva vannak ehhez: %@, kérlek engedélyezd az eszköz beállításaiban";
 "settings_enable_callkit" = "Beépített hívás";
 "settings_callkit_info" = "Hívások fogadása a zárolt képernyőn. Element hívások megjelenítése a rendszer hívás naplójában. Ha az iCloud engedélyezett akkor a hívásnapló az Apple-el megosztásra kerül.";
 "settings_ui_language" = "Nyelv";
@@ -1330,9 +1329,9 @@
 "dialpad_title" = "Tárcsázó számlap";
 "call_actions_unhold" = "Folytatás";
 "event_formatter_call_back" = "Visszahívás";
-"event_formatter_call_you_declined" = "Elutasította ezt a hívást";
+"event_formatter_call_you_declined" = "Hívás elutasítva";
 "event_formatter_call_you_currently_in" = "Aktív hívás";
-"event_formatter_call_has_ended" = "Befejeződött: %@";
+"event_formatter_call_has_ended" = "Hívás vége: %@";
 "event_formatter_call_video" = "Videóhívás";
 "event_formatter_call_voice" = "Hang hívás";
 "room_open_dialpad" = "Tárcsázó számlap";
@@ -1424,10 +1423,19 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Értesítés ezért:";
 "room_details_notifs" = "Értesítések";
-"voice_message_stop_locked_mode_recording" = "Megállításhoz és visszajátszáshoz koppints a hullámhosszra";
+"voice_message_stop_locked_mode_recording" = "Megállításhoz és visszajátszáshoz koppints a felvételre";
 "voice_message_remaining_recording_time" = "%@s távozott";
 
 // Mark: - Voice Messages
 
 "voice_message_release_to_send" = "Felvételhez tartsd nyomva, a küldéshez engedd el";
 "settings_labs_voice_messages" = "Hang üzenetek";
+"settings_notifications_disabled_alert_message" = "Az értesítések engedélyezéséhez lépj be az eszköz beállításokba.";
+"settings_notifications_disabled_alert_title" = "Értesítések tiltva";
+"settings_device_notifications" = "Eszköz értesítések";
+"event_formatter_call_missed_video" = "Nem fogadott videóhívás";
+"event_formatter_call_missed_voice" = "Nem fogadott hanghívás";
+"event_formatter_call_active_video" = "Videó hívás folyamatban";
+"event_formatter_call_active_voice" = "Hanghívás folyamatban";
+"event_formatter_call_incoming_video" = "Bejövő videó hívás";
+"event_formatter_call_incoming_voice" = "Bejövő hanghívás";
