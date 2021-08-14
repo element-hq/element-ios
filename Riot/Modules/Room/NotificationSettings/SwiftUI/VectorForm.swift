@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct VectorFormView<Content: View>: View {
+struct VectorForm<Content: View>: View {
     
     @Environment(\.theme) var theme: Theme
     var content: () -> Content
@@ -48,15 +48,15 @@ struct VectorForm_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
-            VectorFormView {
-                SwiftUI.Section(header: FormSectionHeaderView(text: "Section Header")) {
-                    FormPickerItemView(title: "Item 1", selected: true)
-                    FormPickerItemView(title: "Item 2", selected: false)
-                    FormPickerItemView(title: "Item 3", selected: false)
+            VectorForm {
+                SwiftUI.Section(header: FormSectionHeader(text: "Section Header")) {
+                    FormPickerItem(title: "Item 1", selected: true)
+                    FormPickerItem(title: "Item 2", selected: false)
+                    FormPickerItem(title: "Item 3", selected: false)
                 }
             }
-            VectorFormView {
-                FormPickerItemView(title: "Item 1", selected: true)
+            VectorForm {
+                FormPickerItem(title: "Item 1", selected: true)
             }.theme(ThemeIdentifier.dark.theme)
         }
     }

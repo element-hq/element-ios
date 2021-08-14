@@ -16,27 +16,25 @@
 
 import Foundation
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
-}
-
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
+struct DependencyInjector {
+    private static var dependencyList: [String:Any] = [:]
+    
+    static func resolve<T>() -> T {
+        guard let t = dependencyList[String(describing: T.self)] as? T else {
+            fatalError("No provider registered for type \(T.self)")
         }
+        return t
+    }
+    
+    static func register<T>(dependency: T) {
+        dependencyList[String(describing: T.self)] = dependency
+    }
+}
+
+@propertyWrapper struct Inject<T> {
+    var wrappedValue: T
+    
+    init() {
+        self.wrappedValue = DependencyInjector.resolve()
     }
 }

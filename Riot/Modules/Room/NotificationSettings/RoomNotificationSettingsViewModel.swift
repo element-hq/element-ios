@@ -27,7 +27,6 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     // MARK: Private
     
     private let roomNotificationService: RoomNotificationSettingsServiceType
-    private let avatarService: AvatarServiceType
     private var state: RoomNotificationSettingsViewState {
         willSet {
             update(viewState: newValue)
@@ -48,15 +47,20 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
     
     init(
         roomNotificationService: RoomNotificationSettingsServiceType,
-        avatarService: AvatarServiceType,
         avatarData: AvatarInputOption?,
+        displayName: String?,
         roomEncrypted: Bool
     ) {
         self.roomNotificationService = roomNotificationService
-        self.avatarService = avatarService
         
         let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationService.notificationState)
-        let initialState = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatar: nil)
+        let initialState = RoomNotificationSettingsViewState(
+            roomEncrypted: roomEncrypted,
+            saving: false,
+            notificationState: notificationState,
+            avatarData: avatarData,
+            displayName: displayName
+        )
         self.state = initialState
         
         if #available(iOS 14.0, *) {
@@ -66,19 +70,6 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
         self.roomNotificationService.observeNotificationState { [weak self] state in
             guard let self = self else { return }
             self.state.notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: state)
-        }
-        
-        if #available(iOS 14.0, *),
-           let avatarData = avatarData,
-           case let AvatarInputOption.swiftUI(data) = avatarData {
-            avatarService.avatarImage(inputData: data)
-                .sink { image in
-                    var newState = self.state
-                    newState.avatar = image
-                    newState.displayName = data.displayName
-                    self.state = newState
-                }
-                .store(in: &cancellables)
         }
     }
     

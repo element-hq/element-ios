@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0.0, *)
-struct RoomNotificationSettingsView: View {
+struct RoomNotificationSettings: View {
     
     @Environment(\.theme) var theme: Theme
     @ObservedObject var viewModel: RoomNotificationSettingsViewModel
@@ -32,7 +32,8 @@ struct RoomNotificationSettingsView: View {
             }
         }
     }
-
+    
+    @ViewBuilder
     private var rightButton: some View {
         Button(VectorL10n.save) {
             viewModel.process(viewAction: .save)
@@ -40,70 +41,57 @@ struct RoomNotificationSettingsView: View {
     }
     
     var body: some View {
-        VectorFormView {
-            if let image = viewModel.viewState.avatar {
-                RoomNotificationSettingsHeaderView(image: image, displayName: viewModel.viewState.displayName)
+        VectorForm {
+            if case let .swiftUI(avatarData) = viewModel.viewState.avatarData {
+                RoomNotificationSettingsHeader(
+                    avatarData: avatarData,
+                    displayName: viewModel.viewState.displayName
+                )
             }
             SwiftUI.Section(
-                header: FormSectionHeaderView(text: VectorL10n.roomNotifsSettingsNotifyMeFor),
-                footer: FormSectionFooterView(text: viewModel.viewState.roomEncryptedString)
+                header: FormSectionHeader(text: VectorL10n.roomNotifsSettingsNotifyMeFor),
+                footer: FormSectionFooter(text: viewModel.viewState.roomEncryptedString)
             ) {
                 ForEach(viewModel.viewState.notificationOptions) { option in
-                    FormPickerItemView(title: option.title, selected: viewModel.viewState.notificationState == option) {
+                    FormPickerItem(title: option.title, selected: viewModel.viewState.notificationState == option) {
                         viewModel.process(viewAction: .selectNotificationState(option))
                     }
                 }
             }
+            .navigationBarTitle(VectorL10n.roomDetailsNotifs)
+            .navigationBarItems(
+                leading: leftButton,
+                trailing: rightButton
+            )
+            .onAppear {
+                viewModel.process(viewAction: .load)
+            }
         }
-        .navigationBarTitle(VectorL10n.roomDetailsNotifs)
-        .navigationBarItems(
-            leading: leftButton,
-            trailing: rightButton
-        ).onAppear {
-            viewModel.process(viewAction: .load)
-        }
-    }
-}
-
-fileprivate extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
-        }
-    }
-}
-
-fileprivate extension RoomNotificationSettingsViewState {
-    var roomEncryptedString: String {
-        roomEncrypted ? VectorL10n.roomNotifsSettingsEncryptedRoomNotice : ""
     }
 }
 
 @available(iOS 14.0, *)
-struct RoomNotificationSettingsView_Previews: PreviewProvider {
-
+struct RoomNotificationSettings_Previews: PreviewProvider {
+    
     static let mockViewModel = RoomNotificationSettingsViewModel(
         roomNotificationService: MockRoomNotificationSettingsService.example,
-        avatarService: MockAvatarService.example,
-        avatarData: .swiftUI(AvatarInput(mxContentUri: nil, itemId: "", displayName: "Alice")),
+        avatarData: .swiftUI(MockAvatarInput.example),
+        displayName: MockAvatarInput.example.displayName,
         roomEncrypted: true
     )
-
+    
     static var previews: some View {
         Group {
             NavigationView {
-                RoomNotificationSettingsView(viewModel: mockViewModel, presentedModally: true)
+                RoomNotificationSettings(viewModel: mockViewModel, presentedModally: true)
                     .navigationBarTitleDisplayMode(.inline)
+                    .addDependency(MockAvatarService.example)
             }
             NavigationView {
-                RoomNotificationSettingsView(viewModel: mockViewModel, presentedModally: true)
+                RoomNotificationSettings(viewModel: mockViewModel, presentedModally: true)
                     .navigationBarTitleDisplayMode(.inline)
                     .theme(ThemeIdentifier.dark.theme)
+                    .addDependency(MockAvatarService.example)
             }
         }
     }

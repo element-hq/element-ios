@@ -18,13 +18,13 @@ import Foundation
 
 protocol AvatarInputType {
     var mxContentUri: String? { get }
-    var itemId: String { get }
+    var matrixItemId: String { get }
     var displayName: String? { get }
 }
 
 struct AvatarInput: AvatarInputType {
     let mxContentUri: String?
-    let itemId: String
+    var matrixItemId: String
     let displayName: String?
 }
 

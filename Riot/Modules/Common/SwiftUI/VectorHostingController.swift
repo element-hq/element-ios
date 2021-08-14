@@ -22,10 +22,16 @@ import SwiftUI
  (E.g. vectorContent modifier and themeing to the NavigationController container.
  */
 @available(iOS 14.0, *)
-class VectorHostingViewController: UIHostingController<AnyView> {
+class VectorHostingController: UIHostingController<AnyView> {
+    
+    // MARK: Private
+    
+    private var theme: Theme
+    private var dependencyContainer = DependencyContainer()
     
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
+        
         super.init(rootView: AnyView(rootView.vectorContent()))
     }
     
@@ -33,16 +39,16 @@ class VectorHostingViewController: UIHostingController<AnyView> {
         fatalError("VectorHostingViewController does not currently support init from nibs")
     }
     
-    // MARK: Private
-    
-    private var theme: Theme
-    
     // MARK: - Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+    }
+    
+    func add<T>(dependency: T) {
+        dependencyContainer.register(dependency: dependency)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -61,4 +67,3 @@ class VectorHostingViewController: UIHostingController<AnyView> {
         }
     }
 }
-

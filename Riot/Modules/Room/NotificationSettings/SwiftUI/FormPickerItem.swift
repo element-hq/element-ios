@@ -17,19 +17,19 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct FormPickerItemView: View {
+struct FormPickerItem: View {
     
-    typealias ClickCallback = () -> Void
+    typealias TapCallback = () -> Void
     
     @Environment(\.theme) var theme: Theme
     
     var title: String
     var selected: Bool
-    var onClick: ClickCallback?
+    var onTap: TapCallback?
     
     var body: some View {
         Button {
-            onClick?()
+            onTap?()
         } label: {
             VStack {
                 Spacer()
@@ -47,20 +47,20 @@ struct FormPickerItemView: View {
             }
             .padding(.leading)
         }
-        .buttonStyle(VectorFormItemButtonStyle())
+        .buttonStyle(FormItemButtonStyle())
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, idealHeight: 44, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
     }
 }
 
 @available(iOS 14.0, *)
-struct FormPickerCell_Previews: PreviewProvider {
+struct FormPickerItem_Previews: PreviewProvider {
     static let items = ["Item 1", "Item 2", "Item 3"]
     static var selected: String = items[0]
     static var previews: some View {
-        VectorFormView {
+        VectorForm {
             ForEach(items, id: \.self) { item in
-                FormPickerItemView(title: item, selected: selected == item)
+                FormPickerItem(title: item, selected: selected == item)
             }
         }
     }

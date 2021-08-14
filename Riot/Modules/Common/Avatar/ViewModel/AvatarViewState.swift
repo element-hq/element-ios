@@ -15,15 +15,7 @@
 //
 
 import Foundation
-import SwiftUI
 
-@available(iOS 14.0, *)
-struct VectorFormItemButtonStyle: ButtonStyle {
-    @Environment(\.theme) var theme: Theme
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .background(configuration.isPressed ? Color(theme.selectedBackgroundColor) : Color(theme.backgroundColor))
-            .foregroundColor(Color(theme.textPrimaryColor))
-            .font(Font(theme.fonts.body))
-    }
+struct AvatarViewState {
+    var avatarImage: UIImage?
 }

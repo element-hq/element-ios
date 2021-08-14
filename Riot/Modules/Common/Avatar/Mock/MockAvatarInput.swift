@@ -15,16 +15,7 @@
 //
 
 import Foundation
-import Combine
 
-@available(iOS 14.0, *)
-class MockAvatarService: AvatarServiceType {
-    static let example = MockAvatarService()
-    func avatarImage(inputData: AvatarInputType) -> AnyPublisher<UIImage?, Never> {
-        guard let image = AvatarGenerator.generateAvatar(forText: inputData.displayName ?? "") else {
-            fatalError()
-        }
-        return Just(image)
-            .eraseToAnyPublisher()
-    }
+class MockAvatarInput {
+    static let example = AvatarInput(mxContentUri: "faveUri", matrixItemId: "id123", displayName: "Alice")
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +14,32 @@
 // limitations under the License.
 //
 
+import Foundation
 import SwiftUI
-import DesignKit
 
-@available(iOS 14.0, *)
-struct VectorAvatarView: View {
-    
-    var image: UIImage
-    var size: AvatarSize
-    
-    var body: some View {
-        Image(uiImage: image)
-            .resizable()
-            .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue), alignment: .center)
-            .clipShape(Circle())
-    }
+private struct DependencyContainerKey: EnvironmentKey {
+    static let defaultValue = DependencyContainer()
 }
 
 @available(iOS 14.0, *)
-struct AvatarView_Previews: PreviewProvider {
-    static let image = UIImage(imageLiteralResourceName: "app_symbol")
-    static var previews: some View {
-        VStack {
-            VectorAvatarView(image: image, size: .xSmall)
-            VectorAvatarView(image: image, size: .medium)
-            VectorAvatarView(image: image, size: .xLarge)
+extension EnvironmentValues {
+    var dependencies: DependencyContainer {
+        get { self[DependencyContainerKey.self] }
+        set { self[DependencyContainerKey.self] = newValue }
+    }
+}
+
+/**
+ */
+@available(iOS 14.0, *)
+extension View {
+    func setDependencies(_ container: DependencyContainer) -> some View {
+        environment(\.dependencies, container)
+    }
+    
+    func addDependency<T>(_ dependency: T) -> some View {
+        transformEnvironment(\.dependencies) { container in
+            container.register(dependency: dependency)
         }
     }
 }

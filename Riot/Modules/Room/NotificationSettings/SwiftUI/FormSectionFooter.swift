@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct FormSectionHeaderView: View {
+struct FormSectionFooter: View {
     
     @Environment(\.theme) var theme: Theme
     var text: String
@@ -27,20 +27,19 @@ struct FormSectionHeaderView: View {
             .foregroundColor(Color(theme.textSecondaryColor))
             .padding(.top)
             .padding(.leading)
-            .padding(.bottom, 8)
-            .font(Font(theme.fonts.subheadline))
-            .textCase(.uppercase)
+            .padding(.trailing)
+            .font(Font(theme.fonts.callout))
     }
 }
 
 @available(iOS 14.0, *)
-struct FormSectionHeader_Previews: PreviewProvider {
+struct FormSectionFooter_Previews: PreviewProvider {
     static var previews: some View {
-        VectorFormView {
-            SwiftUI.Section(header: FormSectionHeaderView(text: "Section Header")) {
-                FormPickerItemView(title: "Item 1", selected: false)
-                FormPickerItemView(title: "Item 2", selected: false)
-                FormPickerItemView(title: "Item 3", selected: false)
+        VectorForm {
+            SwiftUI.Section(footer: FormSectionFooter(text: "Please note that mentions & keyword notifications are not available in encrypted rooms on mobile.")) {
+                FormPickerItem(title: "Item 1", selected: false)
+                FormPickerItem(title: "Item 2", selected: false)
+                FormPickerItem(title: "Item 3", selected: false)
             }
         }
     }

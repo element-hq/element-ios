@@ -17,17 +17,17 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct RoomNotificationSettingsHeaderView: View {
+struct RoomNotificationSettingsHeader: View {
     
     @Environment(\.theme) var theme: Theme
-    var image: UIImage
+    var avatarData: AvatarInputType
     var displayName: String?
     
     var body: some View {
         HStack {
             Spacer()
             VStack(alignment: .center) {
-                VectorAvatarView(image: image, size: .xxLarge)
+                AvatarImage(avatarData: avatarData, size: .xxLarge)
                 if let displayName = displayName {
                     Text(displayName)
                         .font(Font(theme.fonts.title3SB))
@@ -43,10 +43,11 @@ struct RoomNotificationSettingsHeaderView: View {
 }
 
 @available(iOS 14.0, *)
-struct RoomNotificationSettingsHeaderView_Previews: PreviewProvider {
+struct RoomNotificationSettingsHeader_Previews: PreviewProvider {
     static let image = UIImage(imageLiteralResourceName: "app_symbol")
     static let name = "Element"
     static var previews: some View {
-        RoomNotificationSettingsHeaderView(image: image, displayName: name)
+        RoomNotificationSettingsHeader(avatarData: MockAvatarInput.example, displayName: name)
+            .addDependency(MockAvatarService.example)
     }
 }

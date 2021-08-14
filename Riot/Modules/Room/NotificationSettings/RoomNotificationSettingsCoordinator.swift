@@ -39,14 +39,12 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     init(room: MXRoom, presentedModally: Bool = true) {
         let roomNotificationService = RoomNotificationSettingsService(room: room)
-        let avatarService = AvatarService(avatarGenerator: AvatarGenerator(), mediaManager: room.mxSession.mediaManager)
-        
         let avatarData: AvatarInputOption?
         let showAvatar = presentedModally
         if #available(iOS 14.0.0, *) {
             avatarData = showAvatar ? .swiftUI(AvatarInput(
                 mxContentUri: room.summary.avatar,
-                itemId: room.roomId,
+                matrixItemId: room.roomId,
                 displayName: room.summary.displayname
             )) : nil
         } else {
@@ -60,15 +58,16 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
         
         let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(
             roomNotificationService: roomNotificationService,
-            avatarService: avatarService,
             avatarData: avatarData,
+            displayName: room.summary.displayname,
             roomEncrypted: room.summary.isEncrypted)
         
         let viewController: UIViewController
         if #available(iOS 14.0.0, *) {
-            let view = RoomNotificationSettingsView(viewModel: roomNotificationSettingsViewModel, presentedModally: presentedModally)
-                .vectorContent()
-            viewController = VectorHostingViewController(rootView: view)
+            let view = RoomNotificationSettings(viewModel: roomNotificationSettingsViewModel, presentedModally: presentedModally)
+            let host = VectorHostingController(rootView: view)
+            host.add(dependency: AvatarService(mediaManager: room.mxSession.mediaManager))
+            viewController = host
         } else {
             viewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
         }

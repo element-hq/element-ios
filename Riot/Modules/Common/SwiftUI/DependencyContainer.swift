@@ -16,27 +16,20 @@
 
 import Foundation
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
-}
+struct DependencyContainer {
 
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
+    private var dependencyList: [String: Any] = [:]
+    
+    func resolve<T>() -> T {
+        let key = String(describing: T.self)
+        guard let t = dependencyList[key] as? T else {
+            fatalError("No provider registered for type \(T.self)")
         }
+        return t
+    }
+    
+    mutating func register<T>(dependency: T) {
+        let key = String(describing: T.self)
+        dependencyList[key] = dependency
     }
 }
