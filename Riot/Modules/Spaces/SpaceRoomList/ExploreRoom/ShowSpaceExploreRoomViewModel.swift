@@ -42,7 +42,15 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
     }
     private var filteredItemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
-            self.update(viewState: .loaded(self.filteredItemDataList))
+            if self.filteredItemDataList.isEmpty {
+                if self.itemDataList.isEmpty {
+                    self.update(viewState: .emptySpace)
+                } else {
+                    self.update(viewState: .emptyFilterResult)
+                }
+            } else {
+                self.update(viewState: .loaded(self.filteredItemDataList))
+            }
         }
     }
     
@@ -95,7 +103,11 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
             
             switch response {
             case .success(let spaceSummary):
-                self.itemDataList = spaceSummary.childInfos.map({ childInfo in
+                self.itemDataList = spaceSummary.childInfos.compactMap({ childInfo in
+                    guard childInfo.parentIds.contains(self.spaceId) else {
+                        return nil
+                    }
+                    
                     let avatarViewData = AvatarViewData(avatarUrl: childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
                     return SpaceExploreRoomListItemViewData(childInfo: childInfo, avatarViewData: avatarViewData)
                 })

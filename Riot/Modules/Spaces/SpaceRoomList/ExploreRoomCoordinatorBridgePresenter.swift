@@ -102,7 +102,6 @@ extension ExploreRoomCoordinatorBridgePresenter: ExploreRoomCoordinatorDelegate 
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
-
 extension ExploreRoomCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
     func exploreRoomCoordinatorDidComplete(_ presentationController: UIPresentationController) {

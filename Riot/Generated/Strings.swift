@@ -4714,6 +4714,26 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
+  /// space
+  internal static var spaceTag: String { 
+    return VectorL10n.tr("Vector", "space_tag") 
+  }
+  /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that on your computer.
+  internal static var spacesComingSoonDetail: String { 
+    return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
+  }
+  /// Coming soon
+  internal static var spacesComingSoonTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_coming_soon_title") 
+  }
+  /// Some rooms may be hidden because they’re private and you need an invite.
+  internal static var spacesEmptySpaceDetail: String { 
+    return VectorL10n.tr("Vector", "spaces_empty_space_detail") 
+  }
+  /// This space has no rooms (yet)
+  internal static var spacesEmptySpaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_empty_space_title") 
+  }
   /// Explore rooms
   internal static var spacesExploreRooms: String { 
     return VectorL10n.tr("Vector", "spaces_explore_rooms") 
@@ -4725,6 +4745,18 @@ internal enum VectorL10n {
   /// Spaces
   internal static var spacesLeftPanelTitle: String { 
     return VectorL10n.tr("Vector", "spaces_left_panel_title") 
+  }
+  /// Looking for someone not in Space name? For now, you can invite them on web or desktop.
+  internal static var spacesNoMemberFoundDetail: String { 
+    return VectorL10n.tr("Vector", "spaces_no_member_found_detail") 
+  }
+  /// No results found
+  internal static var spacesNoResultFoundTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_no_result_found_title") 
+  }
+  /// Some results may be hidden because they’re private and you need an invite to join them.
+  internal static var spacesNoRoomFoundDetail: String { 
+    return VectorL10n.tr("Vector", "spaces_no_room_found_detail") 
   }
   /// Suggested
   internal static var spacesSuggestedRoom: String { 
