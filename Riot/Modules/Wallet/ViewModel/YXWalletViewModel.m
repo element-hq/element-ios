@@ -18,6 +18,7 @@
 
 @implementation YXWalletViewModel
 - (void)reloadNewData{
+    
     self.currentPage = 1;
     [self.sectionItems removeAllObjects];
     
