@@ -145,22 +145,21 @@
     }];
     
     [self.stateIcon mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(50);
-        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(55);
+        make.height.mas_equalTo(55);
         make.top.mas_equalTo(15);;
         make.centerX.mas_equalTo(self.mas_centerX);
     }];
     
     [self.titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(120);
         make.height.mas_equalTo(19);
         make.top.mas_equalTo(self.stateIcon.mas_bottom).offset(10);
         make.centerX.mas_equalTo(self.mas_centerX);
     }];
     
     [self.desLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(55);
-        make.right.mas_equalTo(-55);
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(-20);
         make.top.mas_equalTo(self.titleLabel.mas_bottom).offset(10);
         make.centerX.mas_equalTo(self.mas_centerX);
     }];
@@ -244,8 +243,8 @@
             
             break;
         case WalletPopupViewJDDQType:{//主节点-节点详情（到期）
-            [self showPopupUIWith:@"节点服务器到期" des:@"您的节点服务器已经到期，此服务器我们将为您保留15日，为避免造成损失，请及时续费！" State:WalletPopupViewWalletState center:NO];
-            
+            [self showPopupUIWith:@"节点服务器到期" des:@"您的节点服务器已经到期，此服务器我们将为您保留15日，为避免造成损失，请及时续费！" State:WalletPopupViewWalletState center:YES];
+            _cancel.text = @"知道了";
         }
             
             break;
@@ -256,9 +255,12 @@
         case WalletPopupViewXGCGType:{//修改成功
             [self showPopupUIWith:@"修改成功" des:@"您的钱包密码修改成功，请牢记您的新密码" State:WalletPopupViewSuccessState center:YES];
         }
-            
             break;
-            
+        case WalletPopupViewJYZDType:{//解冻质押
+            [self showPopupUIWith:@"解冻质押" des:@"该操作将解冻质押链分并回收服务器，请确认？" State:WalletPopupViewWalletState center:YES];
+            _cancel.text = @"确定解冻";
+        }
+            break;
         default:
             break;
     }
@@ -295,3 +297,4 @@
 }
 
 @end
+

@@ -33,6 +33,7 @@ NSString *const kYXWalletPrivateKeyCopy = @"kYXWalletPrivateKeyCopy";
 NSString *const kYXWalletRefreshAddress = @"kYXWalletRefreshAddress";
 NSString *const kYXWalletSendConfirmPay = @"kYXWalletSendConfirmPay";
 NSString *const kYXWalletActivationNode = @"kYXWalletActivationNode";
+NSString *const kYXWalletArmingFlagNode = @"kYXWalletArmingFlagNode";
 @interface YXWalletProxy ()
 @property (nonatomic, strong) NSDictionary *tempEventProxy;
 @end
@@ -76,6 +77,7 @@ NSString *const kYXWalletActivationNode = @"kYXWalletActivationNode";
             kYXWalletRefreshAddress:[self createInvocationForSelector:@selector(refreshAddress)],
             kYXWalletSendConfirmPay:[self createInvocationForSelector:@selector(walletSendConfirmPay)],
             kYXWalletActivationNode:[self createInvocationForSelector:@selector(walletActivationNode)],
+            kYXWalletArmingFlagNode:[self createInvocationForSelector:@selector(walletArmingFlagNode)],
         };
     }
     return _tempEventProxy;
@@ -220,4 +222,11 @@ NSString *const kYXWalletActivationNode = @"kYXWalletActivationNode";
         self.detailViewModel.activationNodeBlock();
     }
 }
+
+- (void)walletArmingFlagNode{
+    if (self.detailViewModel.walletArmingFlagNodeBlock) {
+        self.detailViewModel.walletArmingFlagNodeBlock();
+    }
+}
 @end
+

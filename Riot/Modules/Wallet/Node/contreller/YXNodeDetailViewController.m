@@ -10,12 +10,14 @@
 #import "YXNodeDetailViewModel.h"
 #import "YXWalletProxy.h"
 #import "YXNodeConfigViewController.h"
-
+#import "YXWalletPopupView.h"
 @interface YXNodeDetailViewController ()
 @property (nonatomic , strong)UITableView *tableView;
 @property (nonatomic , strong)YXNodeDetailViewModel *viewModel;
 @property (nonatomic , strong)YXWalletProxy *proxy;
-@property (nonatomic , strong) YXNaviView *naviView;
+@property (nonatomic , strong)YXNaviView *naviView;
+@property (nonatomic , strong)YXWalletPopupView *walletPopupView;
+@property (nonatomic , strong)YXWalletPopupView *walletArmingFlagView;
 @end
 
 @implementation YXNodeDetailViewController
@@ -27,6 +29,38 @@
     return _proxy;
 }
 
+-(YXWalletPopupView *)walletPopupView{
+    if (!_walletPopupView) {
+        _walletPopupView = [[YXWalletPopupView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) type:WalletPopupViewJDDQType];
+        YXWeakSelf
+        _walletPopupView.cancelBlock = ^{
+            weakSelf.walletPopupView.hidden = YES;
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        };
+        _walletPopupView.hidden = YES;
+    }
+    return _walletPopupView;
+}
+
+-(YXWalletPopupView *)walletArmingFlagView{
+    if (!_walletArmingFlagView) {
+        _walletArmingFlagView = [[YXWalletPopupView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) type:WalletPopupViewJYZDType];
+        YXWeakSelf
+        _walletArmingFlagView.cancelBlock = ^{
+            weakSelf.walletArmingFlagView.hidden = YES;
+            [weakSelf walletArmingFlagViewAction];
+        };
+        _walletArmingFlagView.hidden = YES;
+    }
+    return _walletArmingFlagView;
+}
+
+- (void)walletArmingFlagViewAction{
+    YXWeakSelf
+    [self.viewModel pledgeUnfreezeNode:self.nodeListModel Complete:^{
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    }];
+}
 
 -(YXNaviView *)naviView{
     if (!_naviView) {
@@ -43,6 +77,22 @@
     return _naviView;
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (!self.walletPopupView.superview) {
+        [UIApplication.sharedApplication.keyWindow addSubview:self.walletPopupView];
+    }
+    if (!self.walletArmingFlagView.superview) {
+        [UIApplication.sharedApplication.keyWindow addSubview:self.walletArmingFlagView];
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if (self.nodeListModel.maturity) {
+        self.walletPopupView.hidden = NO;
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -83,6 +133,11 @@
             [weakSelf.navigationController pushViewController:configVc animated:YES];
         }];
 
+        //解冻质押
+        [_viewModel setWalletArmingFlagNodeBlock:^{
+            weakSelf.walletArmingFlagView.hidden = NO;
+        }];
+        
     }
     return _viewModel;
 }
@@ -113,3 +168,4 @@
 
 
 @end
+

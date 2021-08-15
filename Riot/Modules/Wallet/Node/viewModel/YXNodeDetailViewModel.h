@@ -15,10 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong)YXNodeListdata *nodeInfoModel;
 @property (nonatomic , copy)dispatch_block_t reloadData;
 @property (nonatomic , copy)dispatch_block_t activationNodeBlock;
+@property (nonatomic , copy)dispatch_block_t walletArmingFlagNodeBlock;
 @property (nonatomic , copy)void (^jumpNodeDetailBlock)(id model);
 - (void)reloadNewData:(YXNodeListdata *)model;
 - (void)getPledegTxData:(YXNodeListdata *)model;//获取质押交易记录
 - (void)getNodeInfo:(YXNodeListdata *)model;//获取节点信息
+- (void)pledgeUnfreezeNode:(YXNodeListdata *)model
+                  Complete:(void (^)(void))complete;//解冻质押
 - (void)configNodeActivityWalletId:(NSString *)walletId
                               txid:(NSString *)txid
                               vout:(NSString *)vout
@@ -28,3 +31,4 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+

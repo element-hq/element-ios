@@ -73,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy) NSString              * orderId;
 @property (nonatomic , copy) NSString              * sentinelstate;
 @property (nonatomic , copy) NSString              * walletId;
+@property (nonatomic , assign) BOOL maturity;//是否到期
 @end
 
 @interface YXNodeListModel : NSObject

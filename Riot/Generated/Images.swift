@@ -220,6 +220,7 @@ internal enum Asset {
     internal static let iconNothing = ImageAsset(name: "icon_nothing")
     internal static let imgScanningLine = ImageAsset(name: "img_scanning_line")
     internal static let imgScanningQr = ImageAsset(name: "img_scanning_qr")
+    internal static let jiedianDiaox = ImageAsset(name: "jiedian_diaox")
     internal static let jiedianWorking = ImageAsset(name: "jiedian_working")
     internal static let jiluDui = ImageAsset(name: "jilu_dui")
     internal static let jiluDuiFail = ImageAsset(name: "jilu_dui_fail")

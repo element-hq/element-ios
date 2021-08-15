@@ -10,28 +10,40 @@
 #import "YXNodeDetailHeadTableViewCell.h"
 #import "YXNodeDetailFooterTableViewCell.h"
 #import "YXNodeDetailModel.h"
+#import "YXNodeArmingFlagTableViewCell.h"
+
 @interface YXNodeDetailViewModel ()
 @property (nonatomic , strong)YXNodeDetailModel *detailModel;
 @end
 
 @implementation YXNodeDetailViewModel
 - (void)reloadNewData:(YXNodeListdata *)model{
-    
+ 
     [self.sectionItems removeAllObjects];
     
     NSMutableArray<SCETRowItem *> *rowItems = [NSMutableArray new];
+
+    NSString *headTitle = [model.armingFlag isEqualToString:@"0"] ? @"解冻质押" : @"重新激活";
     
-    SCETRowItem *headItem = [SCETRowItem rowItemWithRowData:@"test cell" cellClassString:NSStringFromClass([YXNodeDetailHeadTableViewCell class])];
+    SCETRowItem *headItem = [SCETRowItem rowItemWithRowData:headTitle cellClassString:NSStringFromClass([YXNodeDetailHeadTableViewCell class])];
     headItem.cellHeight = 260;
     [rowItems addObject:headItem];
     
-    NSMutableArray <YXNodeDetailModel *>* editUIArray = [self.detailModel getCellArray:model];
     
-    [editUIArray enumerateObjectsUsingBlock:^(YXNodeDetailModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        SCETRowItem *detailItem = [SCETRowItem rowItemWithRowData:obj cellClassString:obj.cellName];
-        detailItem.cellHeight = obj.cellHeight;
-        [rowItems addObject:detailItem];
-    }];
+    if ([model.armingFlag isEqualToString:@"0"]) {
+        SCETRowItem *armingFlagtem = [SCETRowItem rowItemWithRowData:@"test cell" cellClassString:NSStringFromClass([YXNodeArmingFlagTableViewCell class])];
+        armingFlagtem.cellHeight = 260;
+        [rowItems addObject:armingFlagtem];
+    }else{
+        NSMutableArray <YXNodeDetailModel *>* editUIArray = [self.detailModel getCellArray:model];
+        
+        [editUIArray enumerateObjectsUsingBlock:^(YXNodeDetailModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            SCETRowItem *detailItem = [SCETRowItem rowItemWithRowData:obj cellClassString:obj.cellName];
+            detailItem.cellHeight = obj.cellHeight;
+            [rowItems addObject:detailItem];
+        }];
+    }
+
     
     SCETRowItem *footertem = [SCETRowItem rowItemWithRowData:@"test cell" cellClassString:NSStringFromClass([YXNodeDetailFooterTableViewCell class])];
     footertem.cellHeight = 37;
@@ -120,4 +132,23 @@
     
 }
 
+///解冻质押
+- (void)pledgeUnfreezeNode:(YXNodeListdata *)model Complete:(nonnull void (^)(void))complete{
+    [MBProgressHUD showMessage:@""];
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(model.ID) forKey:@"id"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(model.ip) forKey:@"ip"];
+    [NetWorkManager POST:kURL(@"/node/pledge_unfreeze") parameters:paramDict success:^(id  _Nonnull responseObject) {
+        if ([responseObject isKindOfClass:NSDictionary.class]) {
+            if (complete) {
+                complete();
+            }
+        }
+        [MBProgressHUD hideHUD];
+    } failure:^(NSError * _Nonnull error) {
+        [MBProgressHUD hideHUD];
+    }];
+}
+
 @end
+

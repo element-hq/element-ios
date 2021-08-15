@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger , WalletPopupViewType) {
     WalletPopupViewJDDQType,        //主节点-节点详情（到期）
     WalletPopupViewPZCGType,        //主节点配置成功
     WalletPopupViewXGCGType,        //修改成功
+    WalletPopupViewJYZDType,        //解冻质押
 };
 
 typedef NS_ENUM(NSInteger , WalletPopupViewState) {
@@ -36,3 +37,4 @@ typedef NS_ENUM(NSInteger , WalletPopupViewState) {
 @end
 
 NS_ASSUME_NONNULL_END
+

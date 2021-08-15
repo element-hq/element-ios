@@ -8,6 +8,7 @@
 
 #import "YXNodeDetailHeadTableViewCell.h"
 extern NSString *const kYXWalletActivationNode;
+extern NSString *const kYXWalletArmingFlagNode;
 @interface YXNodeDetailHeadTableViewCell ()
 @property (nonatomic , strong)UIImageView *bgImageView;
 @property (nonatomic , strong)UIView *activationView;
@@ -74,7 +75,11 @@ extern NSString *const kYXWalletActivationNode;
         _activationLabel.backgroundColor = kWhiteColor;
         YXWeakSelf
         [_activationLabel addTapAction:^(UITapGestureRecognizer *sender) {
-            [weakSelf routerEventForName:kYXWalletActivationNode paramater:nil];
+            if ([weakSelf.activationLabel.text isEqualToString:@"重新激活"]) {
+                [weakSelf routerEventForName:kYXWalletActivationNode paramater:nil];
+            }else{
+                [weakSelf routerEventForName:kYXWalletArmingFlagNode paramater:nil];
+            }
         }];
     }
     return _activationLabel;
@@ -132,4 +137,16 @@ extern NSString *const kYXWalletActivationNode;
 
 }
 
+-(void)setupCellWithRowData:(NSString *)rowData{
+    _activationLabel.text = rowData;
+    if ([rowData isEqualToString:@"重新激活"]) {
+        _bgImageView.image = [UIImage imageNamed:@"jiedian_working"];
+        _titleLabel.hidden = NO;
+    }else{
+        _bgImageView.image = [UIImage imageNamed:@"jiedian_diaox"];
+        _titleLabel.hidden = YES;
+    }
+}
+
 @end
+
