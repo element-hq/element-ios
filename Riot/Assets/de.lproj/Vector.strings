@@ -1406,3 +1406,4 @@
 "settings_notifications_disabled_alert_message" = "Öffne die Systemeinstellungen um Benachrichtigungen zu aktivieren.";
 "settings_notifications_disabled_alert_title" = "Benachrichtigungen deaktiviert";
 "event_formatter_call_incoming_video" = "Eingehendes Videotelefonat";
+"event_formatter_call_has_ended_with_time" = "Anruf beendet • %@";
