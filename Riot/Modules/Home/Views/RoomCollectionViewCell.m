@@ -149,11 +149,11 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         
         if (roomCellData.roomSummary)
         {
-            [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.roomSummary.avatar displayName:roomCellData.roomSummary.displayname mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
         }
         else
         {
-            [roomCellData.spaceChildInfo setRoomAvatarImageIn:self.roomAvatar mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl displayName:roomCellData.spaceChildInfo.name mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
         }
     }
 }
