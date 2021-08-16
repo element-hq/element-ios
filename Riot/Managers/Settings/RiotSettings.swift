@@ -47,12 +47,13 @@ final class RiotSettings: NSObject {
         static let settingsSecurityScreenShowCryptographyInfo = "settingsSecurityScreenShowCryptographyInfo"
         static let settingsSecurityScreenShowCryptographyExport = "settingsSecurityScreenShowCryptographyExport"
         static let settingsSecurityScreenShowAdvancedUnverifiedDevices = "settingsSecurityScreenShowAdvancedBlacklistUnverifiedDevices"
-        static let roomInputToolbarCompressionMode = "roomInputToolbarCompressionMode"
         static let roomCreationScreenAllowEncryptionConfiguration = "roomCreationScreenAllowEncryptionConfiguration"
         static let roomCreationScreenRoomIsEncrypted = "roomCreationScreenRoomIsEncrypted"
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
+        static let roomInputToolbarCompressionMode = "roomInputToolbarCompressionMode"
+        static let promptForVideoConversionPreset = "promptForVideoConversionPreset"
         static let enableRingingForGroupCalls = "enableRingingForGroupCalls"
         static let roomSettingsScreenShowLowPriorityOption = "roomSettingsScreenShowLowPriorityOption"
         static let roomSettingsScreenShowDirectChatOption = "roomSettingsScreenShowDirectChatOption"
@@ -98,7 +99,8 @@ final class RiotSettings: NSObject {
     private override init() {
         super.init()
         defaults.register(defaults: [
-            UserDefaultsKeys.roomInputToolbarCompressionMode: BuildSettings.roomInputToolbarCompressionMode.rawValue
+            UserDefaultsKeys.roomInputToolbarCompressionMode: BuildSettings.roomInputToolbarCompressionMode.rawValue,
+            UserDefaultsKeys.promptForVideoConversionPreset: false
         ])
     }
     
@@ -399,16 +401,6 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.roomMemberScreenShowIgnore)
         }
     }
-    
-    // MARK: - Room Input Toolbar
-    var roomInputToolbarCompressionMode: MXKRoomInputToolbarCompressionMode {
-        get {
-            MXKRoomInputToolbarCompressionMode(UInt(defaults.integer(forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)))
-        } set {
-            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)
-        }
-    }
-
     // MARK: - Room Creation Screen
 
     var roomCreationScreenAllowEncryptionConfiguration: Bool {
@@ -464,6 +456,23 @@ final class RiotSettings: NSObject {
             defaults.set(newValue, forKey: UserDefaultsKeys.allowInviteExernalUsers)
         }
     }
+    
+    var roomInputToolbarCompressionMode: MXKRoomInputToolbarCompressionMode {
+        get {
+            MXKRoomInputToolbarCompressionMode(UInt(defaults.integer(forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)))
+        } set {
+            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)
+        }
+    }
+    
+    var promptForVideoConversionPreset: Bool {
+        get {
+            defaults.bool(forKey: UserDefaultsKeys.promptForVideoConversionPreset)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.promptForVideoConversionPreset)
+        }
+    }
+
     
     // MARK: - Main Tabs
     

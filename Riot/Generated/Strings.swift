@@ -4082,6 +4082,10 @@ internal enum VectorL10n {
   internal static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
   }
+  /// Confirm video size before sending
+  internal static var settingsConfirmVideoSize: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_video_size") 
+  }
   /// LOCAL CONTACTS
   internal static var settingsContacts: String { 
     return VectorL10n.tr("Vector", "settings_contacts") 
