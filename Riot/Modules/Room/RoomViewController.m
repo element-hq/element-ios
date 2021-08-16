@@ -998,6 +998,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     [self refreshRoomInputToolbar];
+    
+    [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
 }
 
 - (void)onRoomDataSourceReady
@@ -1078,6 +1080,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.jumpToLastUnreadBannerContainer.hidden = YES;
     
     [super leaveRoomOnEvent:event];
+    
+    [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
 }
 
 // Set the input toolbar according to the current display
@@ -1126,7 +1130,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [super setRoomInputToolbarViewClass:roomInputToolbarViewClass];
         
-        [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        // The voice message toolbar cannot be set on DisabledInputToolbarView.
+        if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class])
+        {
+            [(RoomInputToolbarView *)self.inputToolbarView setVoiceMessageToolbarView:self.voiceMessageController.voiceMessageToolbarView];
+        }
         
         [self updateInputToolBarViewHeight];
     }
@@ -6138,6 +6146,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didRequestMentionForMember:(MXRoomMember *)member
 {
     [self mention:member];
+}
+
+- (void)roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
 }
 
 #pragma mark - RemoveJitsiWidgetViewDelegate

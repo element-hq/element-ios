@@ -204,6 +204,9 @@ final class BuildSettings: NSObject {
     
     static let enableSideMenu: Bool = true
     
+    /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
+    static let supportFunctionalMembers: Bool = true
+    
     // MARK: - Feature Specifics
     
     /// Not allowed pin codes. User won't be able to select one of the pin in the list.
@@ -309,10 +312,6 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowSave: Bool = true
     static let messageDetailsAllowCopyMedia: Bool = true
     static let messageDetailsAllowPasteMedia: Bool = true
-    
-    // MARK: - Voice Message
-    
-    static let voiceMessagesEnabled = false
     
     // MARK: - Notifications
     static let decryptNotificationsByDefault: Bool = true
