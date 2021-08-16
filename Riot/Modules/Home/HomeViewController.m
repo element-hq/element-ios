@@ -557,7 +557,7 @@
         
         id<MXKRecentCellDataStoring> renderedCellData = (id<MXKRecentCellDataStoring>)roomCollectionViewCell.renderedCellData;
         
-        if (renderedCellData.spaceChildInfo)
+        if (renderedCellData.isSuggestedRoom)
         {
             [self.delegate recentListViewController:self didSelectSuggestedRoom:renderedCellData.spaceChildInfo];
         }

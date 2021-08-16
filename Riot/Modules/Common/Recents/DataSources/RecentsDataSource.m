@@ -1298,7 +1298,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             {
                 [peopleCellDataArray addObject:recentCellDataStoring];
             }
-            else if (recentCellDataStoring.spaceChildInfo != nil)
+            else if (recentCellDataStoring.isSuggestedRoom)
             {
                 MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:recentCellDataStoring.spaceChildInfo.childRoomId];
                 BOOL isJoined = roomSummary.membership == MXMembershipJoin || roomSummary.membershipTransitionState == MXMembershipTransitionStateJoined;
@@ -1345,7 +1345,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         }
         else if (recentsDataSourceMode == RecentsDataSourceModeRooms)
         {
-            if (recentCellDataStoring.spaceChildInfo)
+            if (recentCellDataStoring.isSuggestedRoom)
             {
                 MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:recentCellDataStoring.spaceChildInfo.childRoomId];
                 BOOL isJoined = roomSummary.membership == MXMembershipJoin || roomSummary.membershipTransitionState == MXMembershipTransitionStateJoined;
