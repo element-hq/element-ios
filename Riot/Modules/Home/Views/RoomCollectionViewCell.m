@@ -147,7 +147,14 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
         
-        [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+        if (roomCellData.roomSummary)
+        {
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.roomSummary.avatar displayName:roomCellData.roomSummary.displayname mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
+        }
+        else
+        {
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl displayName:roomCellData.spaceChildInfo.name mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
+        }
     }
 }
 
@@ -188,7 +195,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 {
     if (roomCellData)
     {
-        return roomCellData.roomSummary.roomId;
+        return roomCellData.spaceChildInfo ? roomCellData.spaceChildInfo.childRoomId : roomCellData.roomSummary.roomId;
     }
     return nil;
 }

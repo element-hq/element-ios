@@ -91,7 +91,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         self.lastEventDate.text = roomCellData.lastEventDate;
         
         // Manage lastEventAttributedTextMessage optional property
-        if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
+        if (!roomCellData.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
             // Force the default text color for the last message (cancel highlighted message color)
             NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
@@ -141,7 +141,14 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
         
         self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
 
-        [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+        if (roomCellData.spaceChildInfo)
+        {
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl displayName:roomCellData.spaceChildInfo.name mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
+        }
+        else
+        {
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.roomSummary.avatar displayName:roomCellData.roomSummary.displayname mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
+        }
     }
     else
     {

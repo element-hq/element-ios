@@ -3402,6 +3402,10 @@ internal enum VectorL10n {
   internal static var roomRecentsStartChatWith: String { 
     return VectorL10n.tr("Vector", "room_recents_start_chat_with") 
   }
+  /// SUGGESTED ROOMS
+  internal static var roomRecentsSuggestedRoomsSection: String { 
+    return VectorL10n.tr("Vector", "room_recents_suggested_rooms_section") 
+  }
   /// Can't find this room. Make sure it exists
   internal static var roomRecentsUnknownRoomErrorMessage: String { 
     return VectorL10n.tr("Vector", "room_recents_unknown_room_error_message") 

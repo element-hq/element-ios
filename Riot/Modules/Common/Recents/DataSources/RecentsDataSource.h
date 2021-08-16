@@ -74,6 +74,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger conversationSection;
 @property (nonatomic) NSInteger lowPrioritySection;
 @property (nonatomic) NSInteger serverNoticeSection;
+@property (nonatomic) NSInteger suggestedRoomsSection;
 
 @property (nonatomic, readonly) NSArray* invitesCellDataArray;
 @property (nonatomic, readonly) NSArray* favoriteCellDataArray;
@@ -81,6 +82,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic, readonly) NSArray* conversationCellDataArray;
 @property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
 @property (nonatomic, readonly) NSArray* serverNoticeCellDataArray;
+@property (nonatomic, readonly) NSArray* suggestedRoomCellDataArray;
 
 @property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
 @property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;
