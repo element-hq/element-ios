@@ -103,8 +103,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // Hide the header to merge Invites and Rooms into a single list.
-    return 0.0;
+    if ([tableView numberOfSections] <= 1)
+    {
+        // Hide the header to merge Invites and Rooms into a single list.
+        return 0.0;
+    }
+    
+    return [super tableView:tableView heightForHeaderInSection:section];
 }
 
 #pragma mark - 
@@ -155,7 +160,8 @@
 - (NSUInteger)totalItemCounts
 {
     return recentsDataSource.conversationCellDataArray.count
-    + recentsDataSource.invitesCellDataArray.count;
+    + recentsDataSource.invitesCellDataArray.count
+    + recentsDataSource.suggestedRoomCellDataArray.count;
 }
 
 @end

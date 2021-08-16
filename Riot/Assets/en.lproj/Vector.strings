@@ -63,6 +63,7 @@
 "switch" = "Switch";
 "more" = "More";
 "less" = "Less";
+"open" = "Open";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -189,6 +190,7 @@
 "room_recents_low_priority_section" = "LOW PRIORITY";
 "room_recents_server_notice_section" = "SYSTEM ALERTS";
 "room_recents_invites_section" = "INVITES";
+"room_recents_suggested_rooms_section" = "SUGGESTED ROOMS";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
 "room_recents_join_room" = "Join room";
@@ -1675,6 +1677,14 @@ Tap the + to start adding people.";
 "leave_space_message" = "Are you sure you want to leave %@?";
 "spaces_explore_rooms" = "Explore rooms";
 "spaces_suggested_room" = "Suggested";
+"space_tag" = "space";
+"spaces_empty_space_title" = "This space has no rooms (yet)";
+"spaces_empty_space_detail" = "Some rooms may be hidden because they’re private and you need an invite.";
+"spaces_no_result_found_title" = "No results found";
+"spaces_no_room_found_detail" = "Some results may be hidden because they’re private and you need an invite to join them.";
+"spaces_no_member_found_detail" = "Looking for someone not in space name? For now, you can invite them on web or desktop.";
+"spaces_coming_soon_title" = "Coming soon";
+"spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.";
 
 // Mark: Avatar
 

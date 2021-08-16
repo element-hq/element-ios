@@ -79,7 +79,23 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         if let currentCoordinator = self.roomDetailCoordinator {
             self.remove(childCoordinator: currentCoordinator)
         }
+        
+        let summary = self.session.roomSummary(withRoomId: item.childInfo.childRoomId)
+        var isJoined = false
+        if let summary = summary {
+            isJoined = summary.membership == .join || summary.membershipTransitionState == .joined
+        }
 
+        if isJoined {
+            self.navigateTo(roomWith: item.childInfo.childRoomId)
+        } else {
+            self.showRoomPreview(with: item, from: sourceView)
+        }
+    }
+    
+    // MARK: - Private methods
+    
+    private func showRoomPreview(with item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
         let coordinator = self.createShowSpaceRoomDetailCoordinator(session: self.session, childInfo: item.childInfo)
         coordinator.start()
         self.add(childCoordinator: coordinator)
@@ -98,8 +114,6 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
             self.navigationRouter.present(viewController, animated: true)
         }
     }
-    
-    // MARK: - Private methods
 
     private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> ShowSpaceExploreRoomCoordinator {
         let coordinator = ShowSpaceExploreRoomCoordinator(session: session, spaceId: spaceId, spaceName: spaceName)
@@ -111,6 +125,22 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         let coordinator = ShowSpaceChildRoomDetailCoordinator(session: session, childInfo: childInfo)
         coordinator.delegate = self
         return coordinator
+    }
+    
+    private func navigateTo(roomWith roomId: String) {
+        let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+        roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
+                return
+            }
+            
+            self?.navigationRouter.push(roomViewController, animated: true, popCompletion: nil)
+            roomViewController.displayRoom(roomDataSource)
+            roomViewController.navigationItem.leftItemsSupplementBackButton = true
+            roomViewController.showMissedDiscussionsBadge = false
+        })
     }
 }
 
@@ -127,15 +157,30 @@ extension ExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorDelegate {
 
 // MARK: - ShowSpaceChildRoomDetailCoordinator
 extension ExploreRoomCoordinator: ShowSpaceChildRoomDetailCoordinatorDelegate {
-    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType) {
+    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType, openRoomWith roomId: String) {
         self.navigationRouter.toPresentable().dismiss(animated: true) {
             if let lastCoordinator = self.roomDetailCoordinator {
                 self.remove(childCoordinator: lastCoordinator)
             }
+            self.navigateTo(roomWith: roomId)
         }
     }
     
     func showSpaceChildRoomDetailCoordinatorDidCancel(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil, from: nil)
+        if UIDevice.current.isPhone {
+            slidingModalPresenter.dismiss(animated: true) {
+                if let roomDetailCoordinator = self.roomDetailCoordinator {
+                    self.remove(childCoordinator: roomDetailCoordinator)
+                    self.roomDetailCoordinator = nil
+                }
+            }
+        } else {
+            self.roomDetailCoordinator?.toPresentable().dismiss(animated: true, completion: {
+                if let roomDetailCoordinator = self.roomDetailCoordinator {
+                    self.remove(childCoordinator: roomDetailCoordinator)
+                    self.roomDetailCoordinator = nil
+                }
+            })
+        }
     }
 }

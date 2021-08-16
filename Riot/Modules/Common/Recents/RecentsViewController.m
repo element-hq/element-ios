@@ -34,7 +34,7 @@
 
 #import "Riot-Swift.h"
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, ExploreRoomCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -69,6 +69,8 @@
 @property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
+
+@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
@@ -1937,7 +1939,13 @@
         return;
     }
     
-    if (RiotSettings.shared.roomsAllowToJoinPublicRooms)
+    if (self.dataSource.currentSpace)
+    {
+        self.exploreRoomsCoordinatorBridgePresenter = [[ExploreRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.exploreRoomsCoordinatorBridgePresenter.delegate = self;
+        [self.exploreRoomsCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else if (RiotSettings.shared.roomsAllowToJoinPublicRooms)
     {
         self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[self.recentsDataSource.publicRoomsDirectoryDataSource copy]];
         self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
@@ -2049,6 +2057,18 @@
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
     [self dispayRoomWithRoomId:roomId inMatrixSession:matrixSession];
+}
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+{
+    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
+    [self startActivityIndicator];
+    MXWeakify(self);
+    [previewData peekInRoom:^(BOOL succeeded) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        [[AppDelegate theDelegate].masterTabBarController showRoomPreview:previewData];
+    }];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -2255,6 +2275,16 @@
             }
         }];
     }
+}
+
+#pragma mark - ExploreRoomCoordinatorBridgePresenterDelegate
+
+- (void)exploreRoomCoordinatorBridgePresenterDelegateDidComplete:(ExploreRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter {
+    MXWeakify(self);
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        self.exploreRoomsCoordinatorBridgePresenter = nil;
+    }];
 }
 
 #pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate

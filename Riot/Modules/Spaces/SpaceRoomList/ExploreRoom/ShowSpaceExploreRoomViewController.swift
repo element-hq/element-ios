@@ -26,10 +26,9 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         static let estimatedRowHeight: CGFloat = 64
     }
 
-    // MARK: - Properties
-    
     // MARK: Outlets
 
+    @IBOutlet private var tableSearchBar: UISearchBar!
     @IBOutlet private var tableView: UITableView!
     
     // MARK: Private
@@ -40,10 +39,25 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var titleView: MainTitleView!
+    private var emptyView: RootTabEmptyView!
+    private var plusButtonImageView: UIImageView!
     
     private var itemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
             tableView.reloadData()
+        }
+    }
+    
+    private var emptyViewArtwork: UIImage {
+        return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.roomsEmptyScreenArtworkDark.image : Asset.Images.roomsEmptyScreenArtwork.image
+    }
+    
+    private var scrollViewHidden = true {
+        didSet {
+            UIView.animate(withDuration: 0.2) {
+                self.tableView.alpha = self.scrollViewHidden ? 0 : 1
+                self.emptyView.alpha = self.scrollViewHidden ? 1 : 0
+            }
         }
     }
 
@@ -53,6 +67,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         let viewController = StoryboardScene.ShowSpaceExploreRoomViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
+        viewController.emptyView = RootTabEmptyView.instantiate()
         return viewController
     }
     
@@ -106,6 +121,8 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.titleView.update(theme: theme)
         self.tableView.backgroundColor = theme.colors.background
         self.tableView.reloadData()
+        self.emptyView.update(theme: theme)
+        theme.applyStyle(onSearchBar: self.tableSearchBar)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -123,14 +140,25 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.vc_removeBackTitle()
 
         self.titleView = MainTitleView()
         self.titleView.titleLabel.text = VectorL10n.titleRooms
         self.navigationItem.titleView = self.titleView
         
+        self.tableSearchBar.placeholder = VectorL10n.searchDefaultPlaceholder
+
         self.tableView.keyboardDismissMode = .interactive
         self.setupTableView()
+        
+        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.roomsEmptyViewTitle, informationText: VectorL10n.roomsEmptyViewInformation)
+        
+        self.plusButtonImageView = self.vc_addFAB(withImage: Asset.Images.roomsFloatingAction.image, target: self, action: #selector(addRoomAction(semder:)))
+        
+        self.emptyView.frame = CGRect(x: 0, y: self.tableSearchBar.frame.maxY, width: self.view.bounds.width, height: self.view.bounds.height - self.tableSearchBar.frame.maxY)
+        self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        self.emptyView.alpha = 0
+        self.view.insertSubview(self.emptyView, at: 0)
     }
     
     private func setupTableView() {
@@ -139,6 +167,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
         self.tableView.allowsSelection = true
         self.tableView.register(cellType: SpaceChildViewCell.self)
+        self.tableView.register(cellType: SpaceChildSpaceViewCell.self)
         self.tableView.tableFooterView = UIView()
     }
 
@@ -150,6 +179,10 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
             self.titleView.subtitleLabel.text = spaceName
         case .loaded(let children):
             self.renderLoaded(children: children)
+        case .emptySpace:
+            self.renderEmptySpace()
+        case .emptyFilterResult:
+            self.renderEmptyFilterResult()
         case .error(let error):
             self.render(error: error)
         }
@@ -162,6 +195,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
     private func renderLoaded(children: [SpaceExploreRoomListItemViewData]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.itemDataList = children
+        self.scrollViewHidden = false
     }
     
     private func render(error: Error) {
@@ -169,6 +203,17 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
+    private func renderEmptySpace() {
+        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesEmptySpaceTitle, informationText: VectorL10n.spacesEmptySpaceDetail)
+        self.scrollViewHidden = true
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    }
+
+    private func renderEmptyFilterResult() {
+        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesNoResultFoundTitle, informationText: VectorL10n.spacesNoRoomFoundDetail)
+        self.scrollViewHidden = true
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+    }
     
     // MARK: - Actions
 
@@ -176,6 +221,10 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.viewModel.process(viewAction: .cancel)
     }
     
+    @objc private func addRoomAction(semder: UIView) {
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+    }
+
     // MARK: - UISearchBarDelegate
     
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -195,9 +244,9 @@ extension ShowSpaceExploreRoomViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SpaceChildViewCell.self)
-        
         let viewData = self.itemDataList[indexPath.row]
+        
+        let cell = viewData.childInfo.roomType == .space ? tableView.dequeueReusableCell(for: indexPath, cellType: SpaceChildSpaceViewCell.self) : tableView.dequeueReusableCell(for: indexPath, cellType: SpaceChildViewCell.self)
         
         cell.update(theme: self.theme)
         cell.fill(with: viewData)

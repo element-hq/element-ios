@@ -23,19 +23,22 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
     // MARK: - Constants
     
     private enum Constants {
-        static let aConstant: Int = 666
+        static let popoverWidth: CGFloat = 300
+        static let topicMaxHeight: CGFloat = 105
     }
-    
-    // MARK: - Properties
     
     // MARK: Outlets
 
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private weak var closeButton: UIButton!
+    @IBOutlet private weak var joinButton: UIButton!
+    @IBOutlet private weak var joinButtonTopMargin: NSLayoutConstraint!
+    @IBOutlet private weak var joinButtonBottomMargin: NSLayoutConstraint!
     @IBOutlet private weak var avatarView: RoomAvatarView!
     @IBOutlet private weak var userIconView: UIImageView!
     @IBOutlet private weak var membersLabel: UILabel!
     @IBOutlet private weak var topicLabel: UILabel!
+    @IBOutlet private weak var topicScrollView: UIScrollView!
 
     // MARK: Private
 
@@ -78,7 +81,7 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
     
     override var preferredContentSize: CGSize {
         get {
-            return CGSize(width: 320, height: 300)
+            return CGSize(width: Constants.popoverWidth, height: self.intrisicHeight(with: Constants.popoverWidth))
         }
         set {
             super.preferredContentSize = newValue
@@ -97,15 +100,17 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
         }
 
         self.titleLabel.textColor = theme.textPrimaryColor
-        self.titleLabel.font = theme.fonts.calloutSB
-        self.doneButton.backgroundColor = theme.colors.accent
-        self.doneButton.tintColor = theme.colors.background
-        self.doneButton.setTitleColor(theme.colors.background, for: .normal)
+        self.titleLabel.font = theme.fonts.title3SB
+        self.joinButton.backgroundColor = theme.colors.accent
+        self.joinButton.tintColor = theme.colors.background
+        self.joinButton.setTitleColor(theme.colors.background, for: .normal)
         self.membersLabel.font = theme.fonts.caption1
         self.membersLabel.textColor = theme.colors.tertiaryContent
         self.topicLabel.font = theme.fonts.caption1
         self.topicLabel.textColor = theme.colors.tertiaryContent
         self.userIconView.tintColor = theme.colors.tertiaryContent
+        self.closeButton.backgroundColor = theme.roomInputTextBorder
+        self.closeButton.tintColor = theme.noticeSecondaryColor
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -117,24 +122,21 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
-        }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-        
+        self.closeButton.layer.masksToBounds = true
+        self.closeButton.layer.cornerRadius = self.closeButton.bounds.height / 2
+
         self.title = VectorL10n.roomDetailsTitle
-        self.doneButton.layer.masksToBounds = true
-        self.doneButton.layer.cornerRadius = 8.0
-        self.doneButton.setTitle(VectorL10n.join, for: .normal)
+        self.joinButton.layer.masksToBounds = true
+        self.joinButton.layer.cornerRadius = 8.0
+        self.joinButton.setTitle(VectorL10n.join, for: .normal)
     }
 
     private func render(viewState: ShowSpaceChildRoomDetailViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let roomInfo, let avatarViewData):
-            self.renderLoaded(roomInfo: roomInfo, avatarViewData: avatarViewData)
+        case .loaded(let roomInfo, let avatarViewData, let isJoined):
+            self.renderLoaded(roomInfo: roomInfo, avatarViewData: avatarViewData, isJoined: isJoined)
         case .error(let error):
             self.render(error: error)
         }
@@ -144,28 +146,33 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(roomInfo: MXSpaceChildInfo, avatarViewData: AvatarViewData) {
+    private func renderLoaded(roomInfo: MXSpaceChildInfo, avatarViewData: AvatarViewData, isJoined: Bool) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        self.titleLabel.text = roomInfo.name
+        self.titleLabel.text = roomInfo.displayName
         self.avatarView.fill(with: avatarViewData)
-        self.membersLabel.text = "\(roomInfo.activeMemberCount)"
+        self.membersLabel.text = roomInfo.activeMemberCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(roomInfo.activeMemberCount)")
         self.topicLabel.text = roomInfo.topic
+        self.joinButton .setTitle(isJoined ? VectorL10n.open : VectorL10n.join, for: .normal)
     }
     
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
-
     
-    // MARK: - Actions
-
-    @IBAction private func doneButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+    private func intrisicHeight(with width: CGFloat) -> CGFloat {
+        let topicHeight = min(self.topicLabel.sizeThatFits(CGSize(width: width - self.topicScrollView.frame.minX * 2, height: 0)).height, Constants.topicMaxHeight)
+        return self.topicScrollView.frame.minY + topicHeight + self.joinButton.frame.height
     }
 
-    private func cancelButtonAction() {
+    // MARK: - IBActions
+    
+    @IBAction private func closeAction(sender: UIButton) {
         self.viewModel.process(viewAction: .cancel)
+    }
+    
+    @IBAction private func doneButtonAction(_ sender: Any) {
+        self.viewModel.process(viewAction: .complete)
     }
 }
 
@@ -187,7 +194,7 @@ extension ShowSpaceChildRoomDetailViewController: SlidingModalPresentable {
     }
     
     func layoutHeightFittingWidth(_ width: CGFloat) -> CGFloat {
-        return self.preferredContentSize.height
+        return self.intrisicHeight(with: width) + self.joinButtonTopMargin.constant + self.joinButtonBottomMargin.constant
     }
-    
+
 }

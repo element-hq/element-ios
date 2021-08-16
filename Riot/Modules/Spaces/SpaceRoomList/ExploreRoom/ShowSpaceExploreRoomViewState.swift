@@ -23,5 +23,7 @@ enum ShowSpaceExploreRoomViewState {
     case loading
     case spaceNameFound(_ spaceName: String)
     case loaded(_ children: [SpaceExploreRoomListItemViewData])
+    case emptySpace
+    case emptyFilterResult
     case error(Error)
 }

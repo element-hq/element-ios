@@ -21,15 +21,14 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
 
     // MARK: - Properties
     
-    @IBOutlet private weak var spaceAvatarView: SpaceAvatarView!
-    @IBOutlet private weak var roomAvatarView: RoomAvatarView!
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var titleLabelTrailingMargin: NSLayoutConstraint!
-    @IBOutlet private weak var selectionView: UIView!
-    @IBOutlet private weak var userIconView: UIImageView!
-    @IBOutlet private weak var membersLabel: UILabel!
-    @IBOutlet private weak var topicLabel: UILabel!
-    @IBOutlet private weak var suggestedLabel: UILabel!
+    @IBOutlet internal weak var avatarView: AvatarView!
+    @IBOutlet internal weak var titleLabel: UILabel!
+    @IBOutlet internal weak var titleLabelTrailingMargin: NSLayoutConstraint!
+    @IBOutlet internal weak var selectionView: UIView!
+    @IBOutlet internal weak var userIconView: UIImageView!
+    @IBOutlet internal weak var membersLabel: UILabel!
+    @IBOutlet internal weak var topicLabel: UILabel!
+    @IBOutlet internal weak var suggestedLabel: UILabel!
 
     // MARK: - Private
     
@@ -57,14 +56,8 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
     // MARK: - Public
     
     func fill(with viewData: SpaceExploreRoomListItemViewData) {
-        self.spaceAvatarView.isHidden = viewData.childInfo.roomType != .space
-        self.roomAvatarView.isHidden = viewData.childInfo.roomType == .space
-        if viewData.childInfo.roomType == .space {
-            self.spaceAvatarView.fill(with: viewData.avatarViewData)
-        } else {
-            self.roomAvatarView.fill(with: viewData.avatarViewData)
-        }
-        self.titleLabel.text = viewData.childInfo.name
+        self.avatarView.fill(with: viewData.avatarViewData)
+        self.titleLabel.text = viewData.childInfo.name ?? viewData.childInfo.canonicalAlias
         self.membersLabel.text = "\(viewData.childInfo.activeMemberCount)"
         self.topicLabel.text = viewData.childInfo.topic
         self.suggestedLabel.text = viewData.childInfo.suggested ? VectorL10n.spacesSuggestedRoom : nil
@@ -75,8 +68,7 @@ class SpaceChildViewCell: UITableViewCell, Themable, NibReusable {
     func update(theme: Theme) {
         self.theme = theme
         self.backgroundColor = theme.colors.background
-        self.spaceAvatarView.update(theme: theme)
-        self.roomAvatarView.update(theme: theme)
+        self.avatarView.update(theme: theme)
         self.titleLabel.textColor = theme.colors.primaryContent
         self.titleLabel.font = theme.fonts.calloutSB
         self.selectionView.backgroundColor = theme.colors.separator
