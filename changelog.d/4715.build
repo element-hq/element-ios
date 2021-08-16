@@ -1,0 +1,1 @@
+Move app version from AppIdentifiers.xcconfig into a dedicated config file (#4715).

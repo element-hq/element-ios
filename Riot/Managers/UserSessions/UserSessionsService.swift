@@ -151,7 +151,7 @@ class UserSessionsService: NSObject {
         let isSessionStateValid: Bool
         
         switch mxSession.state {
-        case MXSessionStateClosed, MXSessionStateUnknownToken:
+        case .closed, .unknownToken:
             isSessionStateValid = false
         default:
             isSessionStateValid = true
