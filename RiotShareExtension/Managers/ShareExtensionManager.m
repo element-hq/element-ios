@@ -1153,39 +1153,57 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
-    [self didStartSendingToRoom:room];
-    if (!videoLocalUrl)
-    {
-        MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
-        if (failureBlock)
-        {
-            failureBlock(nil);
-        }
-        return;
-    }
-    
-    // Retrieve the video frame at 1 sec to define the video thumbnail
     AVURLAsset *videoAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
-    AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
-    assetImageGenerator.appliesPreferredTrackTransform = YES;
-    CMTime time = CMTimeMake(1, 1);
-    CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
-    // Finalize video attachment
-    UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
-    CFRelease(imageRef);
     
-    [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
-        if (successBlock)
+    MXWeakify(self);
+    
+    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString * _Nullable presetName) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        // If the preset name is nil, the user cancelled.
+        if (!presetName)
         {
-            successBlock();
+            return;
         }
-    } failure:^(NSError *error) {
-        MXLogDebug(@"[ShareExtensionManager] sendVideo failed.");
-        if (failureBlock)
+        
+        // Set the chosen video conversion preset.
+        [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
+        
+        [self didStartSendingToRoom:room];
+        if (!videoLocalUrl)
         {
-            failureBlock(error);
+            MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+            if (failureBlock)
+            {
+                failureBlock(nil);
+            }
+            return;
         }
+        
+        // Retrieve the video frame at 1 sec to define the video thumbnail
+        AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
+        assetImageGenerator.appliesPreferredTrackTransform = YES;
+        CMTime time = CMTimeMake(1, 1);
+        CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
+        // Finalize video attachment
+        UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+        CFRelease(imageRef);
+        
+        [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+            if (successBlock)
+            {
+                successBlock();
+            }
+        } failure:^(NSError *error) {
+            MXLogDebug(@"[ShareExtensionManager] sendVideo failed.");
+            if (failureBlock)
+            {
+                failureBlock(error);
+            }
+        }];
     }];
+    
+    [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
 }
 
 
