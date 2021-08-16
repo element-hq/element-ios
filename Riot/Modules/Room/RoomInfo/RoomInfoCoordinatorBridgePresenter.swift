@@ -21,6 +21,7 @@ import Foundation
 @objc protocol RoomInfoCoordinatorBridgePresenterDelegate {
     func roomInfoCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
     func roomInfoCoordinatorBridgePresenter(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter, didRequestMentionForMember member: MXRoomMember)
+    func roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(_ coordinatorBridgePresenter: RoomInfoCoordinatorBridgePresenter)
 }
 
 /// RoomInfoCoordinatorBridgePresenter enables to start RoomInfoCoordinator from a view controller.
@@ -120,6 +121,9 @@ extension RoomInfoCoordinatorBridgePresenter: RoomInfoCoordinatorDelegate {
         self.delegate?.roomInfoCoordinatorBridgePresenter(self, didRequestMentionForMember: member)
     }
     
+    func roomInfoCoordinatorDidLeaveRoom(_ coordinator: RoomInfoCoordinatorType) {
+        self.delegate?.roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom(self)
+    }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
