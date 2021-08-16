@@ -2178,6 +2178,10 @@ internal enum VectorL10n {
   internal static var on: String { 
     return VectorL10n.tr("Vector", "on") 
   }
+  /// Open
+  internal static var `open`: String { 
+    return VectorL10n.tr("Vector", "open") 
+  }
   /// or
   internal static var or: String { 
     return VectorL10n.tr("Vector", "or") 
@@ -4722,7 +4726,7 @@ internal enum VectorL10n {
   internal static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
-  /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that on your computer.
+  /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
   internal static var spacesComingSoonDetail: String { 
     return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
   }
@@ -4750,7 +4754,7 @@ internal enum VectorL10n {
   internal static var spacesLeftPanelTitle: String { 
     return VectorL10n.tr("Vector", "spaces_left_panel_title") 
   }
-  /// Looking for someone not in Space name? For now, you can invite them on web or desktop.
+  /// Looking for someone not in space name? For now, you can invite them on web or desktop.
   internal static var spacesNoMemberFoundDetail: String { 
     return VectorL10n.tr("Vector", "spaces_no_member_found_detail") 
   }

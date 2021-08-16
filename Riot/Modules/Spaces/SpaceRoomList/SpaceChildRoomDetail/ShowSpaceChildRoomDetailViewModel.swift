@@ -29,6 +29,14 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
     
     private var currentOperation: MXHTTPOperation?
     private var userDisplayName: String?
+    private var isRoomJoined: Bool {
+        let summary = self.session.roomSummary(withRoomId: self.childInfo.childRoomId)
+        var isJoined = false
+        if let summary = summary {
+            isJoined = summary.membership == .join || summary.membershipTransitionState == .joined
+        }
+        return isJoined
+    }
     
     // MARK: Public
 
@@ -53,16 +61,10 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
         case .loadData:
             self.loadData()
         case .complete:
-            self.update(viewState: .loading)
-            self.session.joinRoom(self.childInfo.childRoomId) { [weak self] (response) in
-                guard let self = self else { return }
-                switch response {
-                case .success:
-                    self.loadData()
-                    self.coordinatorDelegate?.showSpaceChildRoomDetailViewModelDidComplete(self)
-                case .failure(let error):
-                    self.update(viewState: .error(error))
-                }
+            if self.isRoomJoined {
+                self.coordinatorDelegate?.showSpaceChildRoomDetailViewModelDidComplete(self, openRoomWith: self.childInfo.childRoomId)
+            } else {
+                joinRoom()
             }
         case .cancel:
             self.cancelOperations()
@@ -74,7 +76,7 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
     
     private func loadData() {
         let avatarViewData = AvatarViewData(avatarUrl: self.childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(self.childInfo.childRoomId, self.childInfo.name))
-        self.update(viewState: .loaded(self.childInfo, avatarViewData))
+        self.update(viewState: .loaded(self.childInfo, avatarViewData, self.isRoomJoined))
     }
     
     private func update(viewState: ShowSpaceChildRoomDetailViewState) {
@@ -83,5 +85,18 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
     
     private func cancelOperations() {
         self.currentOperation?.cancel()
+    }
+    
+    private func joinRoom() {
+        self.update(viewState: .loading)
+        self.session.joinRoom(self.childInfo.childRoomId) { [weak self] (response) in
+            guard let self = self else { return }
+            switch response {
+            case .success:
+                self.loadData()
+            case .failure(let error):
+                self.update(viewState: .error(error))
+            }
+        }
     }
 }

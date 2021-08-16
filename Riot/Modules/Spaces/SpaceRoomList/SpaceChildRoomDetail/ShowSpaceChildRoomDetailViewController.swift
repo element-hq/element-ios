@@ -135,8 +135,8 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let roomInfo, let avatarViewData):
-            self.renderLoaded(roomInfo: roomInfo, avatarViewData: avatarViewData)
+        case .loaded(let roomInfo, let avatarViewData, let isJoined):
+            self.renderLoaded(roomInfo: roomInfo, avatarViewData: avatarViewData, isJoined: isJoined)
         case .error(let error):
             self.render(error: error)
         }
@@ -146,12 +146,13 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(roomInfo: MXSpaceChildInfo, avatarViewData: AvatarViewData) {
+    private func renderLoaded(roomInfo: MXSpaceChildInfo, avatarViewData: AvatarViewData, isJoined: Bool) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.titleLabel.text = roomInfo.displayName
         self.avatarView.fill(with: avatarViewData)
         self.membersLabel.text = roomInfo.activeMemberCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(roomInfo.activeMemberCount)")
         self.topicLabel.text = roomInfo.topic
+        self.joinButton .setTitle(isJoined ? VectorL10n.open : VectorL10n.join, for: .normal)
     }
     
     private func render(error: Error) {

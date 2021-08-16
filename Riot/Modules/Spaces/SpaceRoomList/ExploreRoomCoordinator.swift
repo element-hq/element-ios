@@ -87,18 +87,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         }
 
         if isJoined {
-            let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
-            roomDataSourceManager?.roomDataSource(forRoom: item.childInfo.childRoomId, create: true, onComplete: { [weak self] roomDataSource in
-                
-                let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-                guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
-                    return
-                }
-                
-                self?.navigationRouter.push(roomViewController, animated: true, popCompletion: nil)
-                roomViewController.displayRoom(roomDataSource)
-                roomViewController.navigationItem.leftItemsSupplementBackButton = true
-            })
+            self.navigateTo(roomWith: item.childInfo.childRoomId)
         } else {
             self.showRoomPreview(with: item, from: sourceView)
         }
@@ -137,6 +126,22 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         coordinator.delegate = self
         return coordinator
     }
+    
+    private func navigateTo(roomWith roomId: String) {
+        let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+        roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
+                return
+            }
+            
+            self?.navigationRouter.push(roomViewController, animated: true, popCompletion: nil)
+            roomViewController.displayRoom(roomDataSource)
+            roomViewController.navigationItem.leftItemsSupplementBackButton = true
+            roomViewController.showMissedDiscussionsBadge = false
+        })
+    }
 }
 
 // MARK: - ShowSpaceExploreRoomCoordinatorDelegate
@@ -152,11 +157,12 @@ extension ExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorDelegate {
 
 // MARK: - ShowSpaceChildRoomDetailCoordinator
 extension ExploreRoomCoordinator: ShowSpaceChildRoomDetailCoordinatorDelegate {
-    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType) {
+    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType, openRoomWith roomId: String) {
         self.navigationRouter.toPresentable().dismiss(animated: true) {
             if let lastCoordinator = self.roomDetailCoordinator {
                 self.remove(childCoordinator: lastCoordinator)
             }
+            self.navigateTo(roomWith: roomId)
         }
     }
     

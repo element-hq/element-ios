@@ -143,7 +143,7 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
 
         if (roomCellData.spaceChildInfo)
         {
-            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl displayName:roomCellData.spaceChildInfo.name mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl displayName:roomCellData.spaceChildInfo.displayName mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
         }
         else
         {

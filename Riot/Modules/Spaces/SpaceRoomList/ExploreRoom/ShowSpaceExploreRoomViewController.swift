@@ -28,6 +28,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
 
     // MARK: Outlets
 
+    @IBOutlet private var tableSearchBar: UISearchBar!
     @IBOutlet private var tableView: UITableView!
     
     // MARK: Private
@@ -88,10 +89,6 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.viewModel.viewDelegate = self
 
         self.viewModel.process(viewAction: .loadData)
-        
-        self.emptyView.frame = CGRect(x: 0, y: self.searchBar.frame.maxY, width: self.view.bounds.width, height: self.view.bounds.height - self.searchBar.frame.maxY)
-        self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        self.view.insertSubview(self.emptyView, at: 0)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +122,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.tableView.backgroundColor = theme.colors.background
         self.tableView.reloadData()
         self.emptyView.update(theme: theme)
+        theme.applyStyle(onSearchBar: self.tableSearchBar)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -148,12 +146,19 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.titleView.titleLabel.text = VectorL10n.titleRooms
         self.navigationItem.titleView = self.titleView
         
+        self.tableSearchBar.placeholder = VectorL10n.searchDefaultPlaceholder
+
         self.tableView.keyboardDismissMode = .interactive
         self.setupTableView()
         
         self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.roomsEmptyViewTitle, informationText: VectorL10n.roomsEmptyViewInformation)
         
         self.plusButtonImageView = self.vc_addFAB(withImage: Asset.Images.roomsFloatingAction.image, target: self, action: #selector(addRoomAction(semder:)))
+        
+        self.emptyView.frame = CGRect(x: 0, y: self.tableSearchBar.frame.maxY, width: self.view.bounds.width, height: self.view.bounds.height - self.tableSearchBar.frame.maxY)
+        self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        self.emptyView.alpha = 0
+        self.view.insertSubview(self.emptyView, at: 0)
     }
     
     private func setupTableView() {
@@ -199,7 +204,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
     }
 
     private func renderEmptySpace() {
-        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesEmptySpaceTitle, informationText: VectorL10n.spacesEmptySpaceTitle)
+        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesEmptySpaceTitle, informationText: VectorL10n.spacesEmptySpaceDetail)
         self.scrollViewHidden = true
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
