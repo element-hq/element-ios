@@ -2051,6 +2051,18 @@
     [self dispayRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+{
+    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
+    [self startActivityIndicator];
+    MXWeakify(self);
+    [previewData peekInRoom:^(BOOL succeeded) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        [[AppDelegate theDelegate].masterTabBarController showRoomPreview:previewData];
+    }];
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
