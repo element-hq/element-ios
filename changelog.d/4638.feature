@@ -1,0 +1,1 @@
+Media: Add an (optional) prompt when sending video to select the resolution of the sent video.
