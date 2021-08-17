@@ -24,6 +24,7 @@ import SwiftUI
 struct ActivityIndicatorModifier: ViewModifier {
     var show: Bool
 
+    @ViewBuilder
     func body(content: Content) -> some View {
         if show {
             content
