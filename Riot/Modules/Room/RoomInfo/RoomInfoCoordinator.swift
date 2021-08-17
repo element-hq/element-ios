@@ -188,6 +188,10 @@ extension RoomInfoCoordinator: RoomInfoListCoordinatorDelegate {
     func roomInfoListCoordinatorDidCancel(_ coordinator: RoomInfoListCoordinatorType) {
         self.delegate?.roomInfoCoordinatorDidComplete(self)
     }
+    
+    func roomInfoListCoordinatorDidLeaveRoom(_ coordinator: RoomInfoListCoordinatorType) {
+        self.delegate?.roomInfoCoordinatorDidLeaveRoom(self)
+    }
 
 }
 
