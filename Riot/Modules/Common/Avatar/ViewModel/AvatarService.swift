@@ -46,8 +46,8 @@ class AvatarService: AvatarServiceType {
     }
     
     /**
-     Given an mxContentUri, this function returns a future of UIImage.
-     If possible to retrieve the actual image it will from network or cache, otherwise it will error.
+     Given an mxContentUri, this function returns a Future of UIImage.
+     If possible it will retrieve the image from network or cache, otherwise it will error.
      
     - Parameter mxContentUri: matrix uri of the avatar to fetch
     - Parameter avatarSize: The size of avatar to retrieve as defined in the DesignKit spec.
