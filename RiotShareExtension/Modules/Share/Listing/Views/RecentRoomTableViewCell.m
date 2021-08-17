@@ -23,7 +23,6 @@
 @interface RecentRoomTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet MXKImageView *avatarImageView;
-@property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;
 @property (weak, nonatomic) IBOutlet UILabel *roomTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
 
@@ -79,7 +78,6 @@
             self.roomTitleLabel.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
         }  
         
-        self.directRoomBorderView.hidden = !roomCellData.roomSummary.isDirect;
         self.encryptedRoomIcon.hidden = YES;
     }
 }

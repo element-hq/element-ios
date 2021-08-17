@@ -32,8 +32,6 @@ class CallBubbleCellBaseContentView: UIView {
     @IBOutlet weak var avatarImageView: MXKImageView!
     @IBOutlet weak var callerNameLabel: UILabel!
     @IBOutlet weak var callIconView: UIImageView!
-    @IBOutlet weak var callTypeLabel: UILabel!
-    @IBOutlet weak var dotLabel: UILabel!
     @IBOutlet private weak var callStatusLabel: UILabel!
     @IBOutlet private weak var callSummaryHeightConstraint: NSLayoutConstraint!
     
@@ -51,7 +49,6 @@ class CallBubbleCellBaseContentView: UIView {
     
     var statusText: String? {
         didSet {
-            dotLabel.isHidden = statusText == nil
             callStatusLabel.text = statusText
         }
     }
@@ -105,9 +102,7 @@ extension CallBubbleCellBaseContentView: Themable {
         
         bgView.backgroundColor = theme.colors.tile
         callerNameLabel.textColor = theme.textPrimaryColor
-        callIconView.tintColor = theme.textTertiaryColor
-        callTypeLabel.textColor = theme.textSecondaryColor
-        dotLabel.textColor = theme.textSecondaryColor
+        callIconView.tintColor = theme.textSecondaryColor
         callStatusLabel.textColor = theme.textSecondaryColor
         
         if let bottomContainerView = bottomContainerView as? Themable {

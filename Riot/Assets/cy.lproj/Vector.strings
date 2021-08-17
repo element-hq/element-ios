@@ -130,7 +130,6 @@
 "room_creation_error_invite_user_by_email_without_identity_server" = "Nid oes unrhyw weinydd adnabod wedi'i osod felly ni allwch ychwanegu cyfranogwr gydag e-bost.";
 // Room recents
 "room_recents_directory_section" = "CYFEIRIADUR YSTAFELLOEDD";
-"room_recents_directory_section_network" = "Rhwydwaith";
 "room_recents_favourites_section" = "FFEFRYNAU";
 "room_recents_people_section" = "POBL";
 "room_recents_conversations_section" = "YSTAFELLOEDD";
@@ -374,7 +373,6 @@
 "settings_global_settings_info" = "Mae gosodiadau hysbysu eang ar gael ar eich cleient %@ gwe";
 "settings_pin_rooms_with_missed_notif" = "Pinio ystafelloedd gyda hysbysiadau heb eu gweld";
 "settings_pin_rooms_with_unread" = "Pinio ystafelloedd gyda negeseuon heb eu darllen";
-"settings_on_denied_notification" = "Gwrthodir hysbysiadau i %@, caniatewch nhw yn eich gosodiadau dyfais";
 "settings_enable_callkit" = "Galw integredig";
 "settings_callkit_info" = "Derbyn galwadau sy'n dod i mewn ar eich sgrin clo. Gwelwch eich galwadau Element yn hanes galwadau'r system. Os yw iCloud wedi'i alluogi, bydd yr hanes galw hwn yn cael ei rannu gydag Apple.";
 "settings_calls_stun_server_fallback_button" = "Caniatáu gweinydd cymorth galw wrth gefn";

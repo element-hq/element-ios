@@ -64,7 +64,6 @@
 "room_creation_appearance" = "Utseende";
 "room_creation_appearance_name" = "Navn";
 "room_creation_privacy" = "Personvern";
-"room_recents_directory_section_network" = "Nettverk";
 "room_recents_create_empty_room" = "Opprett et rom";
 "room_recents_join_room" = "Bli med i rommet";
 "room_recents_join_room_title" = "Bli med i et rom";
@@ -858,7 +857,6 @@
 "room_details_photo_for_dm" = "Bilde";
 "room_details_photo" = "Rombilde";
 "settings_flair" = "Vis kobling hvor tillatt";
-"settings_on_denied_notification" = "Varsler er ikke tillat for %@, vennligst tillat dem i enhetens innstillinger";
 "settings_pin_rooms_with_missed_notif" = "Fest rom med tapte varsler";
 "room_info_list_several_members" = "%@ medlemmer";
 "pin_protection_not_allowed_pin" = "Av sikkerhetsårsaker er denne PIN-koden ikke tilgjengelig. Prøv en annen PIN-kode";

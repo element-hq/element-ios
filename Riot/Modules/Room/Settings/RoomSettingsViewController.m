@@ -3494,7 +3494,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            [self startActivityIndicator];
                                                            [self->mxRoom leave:^{
                                                                
-                                                               [self withdrawViewControllerAnimated:YES completion:nil];
+                                                               [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
                                                                
                                                            } failure:^(NSError *error) {
                                                                

@@ -70,5 +70,9 @@ extension RoomInfoListCoordinator: RoomInfoListViewModelCoordinatorDelegate {
     func roomInfoListViewModelDidCancel(_ viewModel: RoomInfoListViewModelType) {
         self.delegate?.roomInfoListCoordinatorDidCancel(self)
     }
+    
+    func roomInfoListViewModelDidLeaveRoom(_ viewModel: RoomInfoListViewModelType) {
+        self.delegate?.roomInfoListCoordinatorDidLeaveRoom(self)
+    }
 
 }

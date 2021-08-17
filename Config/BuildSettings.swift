@@ -148,7 +148,7 @@ final class BuildSettings: NSObject {
     
     
     // MARK: -  Public rooms Directory
-    static let publicRoomsShowDirectory: Bool = true
+    #warning("Unused build setting: should this be implemented in ShowDirectory?")
     static let publicRoomsAllowServerChange: Bool = true
     // List of homeservers for the public rooms directory
     static let publicRoomsDirectoryServers = [
@@ -203,6 +203,9 @@ final class BuildSettings: NSObject {
     static let allowInviteExernalUsers: Bool = true
     
     static let enableSideMenu: Bool = true
+    
+    /// Whether to read the `io.element.functional_members` state event and exclude any service members when computing a room's name and avatar.
+    static let supportFunctionalMembers: Bool = true
     
     // MARK: - Feature Specifics
     
@@ -308,6 +311,9 @@ final class BuildSettings: NSObject {
     static let messageDetailsAllowSave: Bool = true
     static let messageDetailsAllowCopyMedia: Bool = true
     static let messageDetailsAllowPasteMedia: Bool = true
+    
+    // MARK: - Notifications
+    static let decryptNotificationsByDefault: Bool = true
     
     // MARK: - HTTP
     /// Additional HTTP headers will be sent by all requests. Not recommended to use request-specific headers, like `Authorization`.

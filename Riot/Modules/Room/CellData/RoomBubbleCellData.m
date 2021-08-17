@@ -1032,6 +1032,9 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         case MXKAttachmentTypeAudio:
             accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_audio", @"Vector", nil);
             break;
+        case MXKAttachmentTypeVoiceMessage:
+            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_audio", @"Vector", nil);
+            break;
         case MXKAttachmentTypeVideo:
             accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_video", @"Vector", nil);
             break;

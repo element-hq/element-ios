@@ -12,6 +12,7 @@
 
 min_fastlane_version('2.156.0')
 fastlane_require "dotenv"
+fastlane_require "uri"
 
 default_platform(:ios)
 platform :ios do
@@ -42,6 +43,44 @@ platform :ios do
       options = { build_number: build_number }.merge(options)
     end
     build_release(options)
+  end
+
+  desc "Builds an Alpha ipa for pull request branches"
+  lane :alpha do
+    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
+            
+    # Generate the "Alpha" app variant    
+    setup_app_variant(name: "Alpha")    
+    # Builds an Ad Hoc IPA
+    adhoc
+    # Upload to Diawi
+    upload_to_diawi
+  end
+
+  desc "Upload IPA to Diawi"
+  lane :upload_to_diawi do
+    UI.user_error!("'DIAWI_API_TOKEN' environment variable should be set to use this lane") unless !ENV["DIAWI_API_TOKEN"].to_s.empty?
+
+    # Upload to Diawi
+    diawi(
+      token: ENV["DIAWI_API_TOKEN"],
+      wall_of_apps: false
+    )
+
+    # Get the Diawi link from Diawi action shared value
+    diawi_link = lane_context[SharedValues::UPLOADED_FILE_LINK_TO_DIAWI]
+    UI.command_output("Diawi link: " + diawi_link.to_s)
+
+    # Generate the Diawi QR code file link
+    diawi_app_id = URI(diawi_link).path.split('/').last
+    diawi_qr_code_link = "https://www.diawi.com/qrcode/link/#{diawi_app_id}"
+    UI.command_output("Diawi QR code link: " + diawi_qr_code_link.to_s)
+
+    # Set "DIAWI_FILE_LINK" to GitHub environment variables for Github actions
+    if is_ci 
+      sh("echo DIAWI_FILE_LINK=#{diawi_link} >> $GITHUB_ENV")
+      sh("echo DIAWI_QR_CODE_LINK=#{diawi_qr_code_link} >> $GITHUB_ENV")
+    end
   end
 
   desc "Builds the ipa for the AppStore, then uploads it"
@@ -77,6 +116,17 @@ platform :ios do
   desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
   lane :point_dependencies_to_same_feature do
     edit_podfile(branch_pattern: mx_git_branch) unless mx_git_branch.to_s.empty?
+  end
+
+  desc "Use an app variant. An app variant overwrite default project configuration or ressource files with custom values"
+  lane :setup_app_variant do |options|
+    appVariantScript = "../Variants/setup_app_variant.sh"    
+    # Make sure app variant script can be executed
+    sh "chmod 775 #{appVariantScript}"
+    # Run app variant script with variant name
+    sh(appVariantScript, options[:name]) 
+    # Force reloading env variables
+    Dotenv.overload(".env.default")
   end
 
   desc "Build the app for simulator to ensure it compiles"
@@ -148,6 +198,7 @@ platform :ios do
 
     xcargs = xcargs_hash.map { |k, v| "#{k}=#{v.shellescape}" }.join(" ")
 
+    # Generate the project
     xcodegen(spec: "project.yml")
     
     # Clear derived data

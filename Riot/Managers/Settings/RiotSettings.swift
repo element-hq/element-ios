@@ -93,6 +93,10 @@ final class RiotSettings: NSObject {
         return userDefaults
     }()
     
+    private override init() {
+        super.init()
+    }
+    
     // MARK: Servers
     
     var homeserverUrlString: String {
