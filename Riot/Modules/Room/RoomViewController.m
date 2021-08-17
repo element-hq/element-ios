@@ -4705,7 +4705,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
-                self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
+                [roomDataSource partialTextMessageWithCompletion:^(NSString *partialTextMessage) {
+                    self.inputToolbarView.textMessage = partialTextMessage;
+                }];
             }
         }];
     }
@@ -5218,16 +5220,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 // Check whether the read marker event is anterior to the first event displayed in the first rendered cell.
                 MXKRoomBubbleComponent *component = roomBubbleTableViewCell.bubbleData.bubbleComponents.firstObject;
                 MXEvent *firstDisplayedEvent = component.event;
-                MXEvent *currentReadMarkerEvent = [self.roomDataSource.mxSession.store eventWithEventId:self.roomDataSource.room.accountData.readMarkerEventId inRoom:self.roomDataSource.roomId];
-                
-                if (!currentReadMarkerEvent || (currentReadMarkerEvent.originServerTs < firstDisplayedEvent.originServerTs))
-                {
-                    self.jumpToLastUnreadBannerContainer.hidden = NO;
-                }
-                else
-                {
-                    self.jumpToLastUnreadBannerContainer.hidden = YES;
-                }
+                [self.roomDataSource.mxSession.store eventWithEventId:self.roomDataSource.room.accountData.readMarkerEventId
+                                                               inRoom:self.roomDataSource.roomId
+                                                           completion:^(MXEvent * _Nullable currentReadMarkerEvent) {
+                    if (!currentReadMarkerEvent || (currentReadMarkerEvent.originServerTs < firstDisplayedEvent.originServerTs))
+                    {
+                        self.jumpToLastUnreadBannerContainer.hidden = NO;
+                    }
+                    else
+                    {
+                        self.jumpToLastUnreadBannerContainer.hidden = YES;
+                    }
+                }];
             }
         }
     }

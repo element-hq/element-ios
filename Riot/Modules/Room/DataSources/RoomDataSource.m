@@ -108,25 +108,27 @@ const CGFloat kTypingCellHeight = 24;
 
     // Sadly, we need to make sure we have fetched all room members from the HS
     // to be able to display read receipts
-    if (![self.mxSession.store hasLoadedAllRoomMembersForRoom:self.roomId])
-    {
-        [self.room members:^(MXRoomMembers *roomMembers) {
-            MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
+    [self.mxSession.store hasLoadedAllRoomMembersForRoom:self.room.roomId completion:^(BOOL hasLoadedAllRoomMembers) {
+        if (!hasLoadedAllRoomMembers)
+        {
+            [self.room members:^(MXRoomMembers *roomMembers) {
+                MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: All room members have been retrieved");
 
-            // Refresh the full table
-            [self.delegate dataSource:self didCellChange:nil];
+                // Refresh the full table
+                [self.delegate dataSource:self didCellChange:nil];
 
-        } failure:^(NSError *error) {
-            MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
-        }];
-    }
+            } failure:^(NSError *error) {
+                MXLogDebug(@"[MXKRoomDataSource] finalizeRoomDataSource: Cannot retrieve all room members");
+            }];
+        }
 
-    if (self.room.summary.isEncrypted)
-    {
-        // Make sure we have the trust shield value
-        [self.room.summary enableTrustTracking:YES];
-        [self fetchEncryptionTrustedLevel];
-    }
+        if (self.room.summary.isEncrypted)
+        {
+            // Make sure we have the trust shield value
+            [self.room.summary enableTrustTracking:YES];
+            [self fetchEncryptionTrustedLevel];
+        }
+    }];
 }
 
 - (id<RoomDataSourceDelegate>)roomDataSourceDelegate
