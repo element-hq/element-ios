@@ -50,7 +50,6 @@ struct AvatarImage: View {
         }
         .onAppear {
             viewModel.inject(dependencies: dependencies)
-            MXLog.debug("injected dependencies, \(dependencies)")
             viewModel.loadAvatar(
                 mxContentUri: mxContentUri,
                 avatarSize: size
