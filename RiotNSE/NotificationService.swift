@@ -403,6 +403,7 @@ class NotificationService: UNNotificationServiceExtension {
                             }
                         case .roomMember:
                             // If the current user is already joined, display updated displayname/avatar events.
+                            // This is an unexpected path, but has been seen in some circumstances.
                             if NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId)?.membership == .join {
                                 notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                                 
@@ -427,6 +428,7 @@ class NotificationService: UNNotificationServiceExtension {
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "USER_MEMBERSHIP_UPDATED", arguments: [eventSenderName])
                                 }
                             // Otherwise treat the notification as an invite.
+                            // This is the expected notification content for a membership event.
                             } else {
                                 if roomDisplayName != nil && roomDisplayName != eventSenderName {
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments: [eventSenderName, roomDisplayName as Any])
@@ -434,9 +436,12 @@ class NotificationService: UNNotificationServiceExtension {
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_CHAT", arguments: [eventSenderName])
                                 }
                             }
+                            
                         case .sticker:
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
+                        
+                        // Reactions are unexpected notification types, but have been seen in some circumstances.
                         case .reaction:
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             if let reactionKey = event.relatesTo?.key {
@@ -446,6 +451,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 // Otherwise show a generic reaction.
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "GENERIC_REACTION_FROM_USER", arguments: [eventSenderName])
                             }
+                            
                         case .custom:
                             if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
                                let type = event.content?["type"] as? String,
