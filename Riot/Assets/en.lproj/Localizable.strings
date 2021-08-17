@@ -54,13 +54,13 @@
 /** Media Messages **/
 
 /* New image message from a specific person, not referencing a room. */
-"IMAGE_FROM_USER" = "%@ sent a picture %@";
+"PICTURE_FROM_USER" = "%@ sent a picture";
 
 /* New image message from a specific person in a named room. */
 "IMAGE_FROM_USER_IN_ROOM" = "%@ posted a picture %@ in %@";
 
 /* New video message from a specific person, not referencing a room. */
-"VIDEO_FROM_USER" = "%@ sent a video %@";
+"VIDEO_FROM_USER" = "%@ sent a video";
 
 /* New audio message from a specific person, not referencing a room. */
 "AUDIO_FROM_USER" = "%@ sent an audio file %@";
@@ -142,7 +142,7 @@
 "USER_UPDATED_AVATAR" = "%@ changed their avatar";
 
 /* A user's membership has updated in an unknown way */
-"USER_MEMBERSHIP_UPDATED" = "%@ updated their details";
+"USER_MEMBERSHIP_UPDATED" = "%@ updated their profile";
 
 /** Calls **/
 

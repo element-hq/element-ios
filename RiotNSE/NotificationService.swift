@@ -379,9 +379,9 @@ class NotificationService: UNNotificationServiceExtension {
                             case kMXMessageTypeEmote:
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName, messageContent as Any])
                             case kMXMessageTypeImage:
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "PICTURE_FROM_USER", arguments: [eventSenderName])
                             case kMXMessageTypeVideo:
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_FROM_USER", arguments: [eventSenderName])
                             case kMXMessageTypeAudio:
                                 if event.isVoiceMessage() {
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_MESSAGE_FROM_USER", arguments: [eventSenderName])
@@ -406,17 +406,24 @@ class NotificationService: UNNotificationServiceExtension {
                             if NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId)?.membership == .join {
                                 notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                                 
+                                // If the sender's membership is join and hasn't changed.
                                 if event.content["membership"] as? String == "join",
-                                   let prevContent = event.prevContent,
-                                   prevContent["membership"] as? String == "join" {
+                                   let previousContent = event.prevContent,
+                                   previousContent["membership"] as? String == "join" {
+                                    
+                                    // Check for display name changes
                                     if let displayname = event.content["displayname"] as? String,
-                                       let oldDisplayname = prevContent["displayname"] as? String,
+                                       let oldDisplayname = previousContent["displayname"] as? String,
                                        displayname != oldDisplayname {
+                                        
                                         notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_DISPLAYNAME", arguments: [oldDisplayname, displayname])
                                     } else {
+                                        // If the display name hasn't changed, handle as an avatar change.
                                         notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_AVATAR", arguments: [eventSenderName])
                                     }
                                 } else {
+                                    // No known reports of having reached this situation for a membership notification
+                                    // So use a generic membership updated fallback.
                                     notificationBody = NSString.localizedUserNotificationString(forKey: "USER_MEMBERSHIP_UPDATED", arguments: [eventSenderName])
                                 }
                             // Otherwise treat the notification as an invite.
