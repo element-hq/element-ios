@@ -16,6 +16,19 @@
 
 import Foundation
 
-protocol Injectable {
-    var dependencies: DependencyContainer! { get }
+/**
+ A protocol for classes that can be injected with a dependency container
+ */
+protocol Injectable: AnyObject {
+    var dependencies: DependencyContainer! { get set }
+}
+
+
+extension Injectable {
+    /**
+     Used to inject the dependency container into an Injectable.
+     */
+    func inject(dependencies: DependencyContainer) {
+        self.dependencies = dependencies
+    }
 }

@@ -44,7 +44,6 @@ struct RoomNotificationSettingsHeader: View {
 
 @available(iOS 14.0, *)
 struct RoomNotificationSettingsHeader_Previews: PreviewProvider {
-    static let image = UIImage(imageLiteralResourceName: "app_symbol")
     static let name = "Element"
     static var previews: some View {
         RoomNotificationSettingsHeader(avatarData: MockAvatarInput.example, displayName: name)

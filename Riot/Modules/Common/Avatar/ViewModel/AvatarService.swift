@@ -50,6 +50,7 @@ class AvatarService: AvatarServiceType {
      If possible to retrieve the actual image it will from network or cache, otherwise it will error.
      
     - Parameter mxContentUri: matrix uri of the avatar to fetch
+    - Parameter avatarSize: The size of avatar to retrieve as defined in the DesignKit spec.
     - Returns: A Future of UIImage that returns an error if it fails to fetch the image
      */
     @available(iOS 14.0, *)

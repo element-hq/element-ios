@@ -64,9 +64,10 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
         
         let viewController: UIViewController
         if #available(iOS 14.0.0, *) {
+            let avatarService: AvatarServiceType = AvatarService(mediaManager: room.mxSession.mediaManager)
             let view = RoomNotificationSettings(viewModel: roomNotificationSettingsViewModel, presentedModally: presentedModally)
+                .addDependency(avatarService)
             let host = VectorHostingController(rootView: view)
-            host.add(dependency: AvatarService(mediaManager: room.mxSession.mediaManager))
             viewController = host
         } else {
             viewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)

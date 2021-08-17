@@ -31,10 +31,25 @@ extension EnvironmentValues {
 
 /**
  A theme modifier for setting the theme for this view and all its descendants in the hierarchy.
+ - Parameters:
+  - theme: a Theme to be set as the environment value.
  */
 @available(iOS 14.0, *)
 extension View {
   func theme(_ theme: Theme) -> some View {
     environment(\.theme, theme)
+  }
+}
+
+/**
+ A theme modifier for setting the theme by id for this view and all its descendants in the hierarchy.
+ - Parameters:
+  - themeId: ThemeIdentifier of a theme to be set as the environment value.
+ */
+@available(iOS 14.0, *)
+extension View {
+  func theme(_ themeId: ThemeIdentifier) -> some View {
+    let theme = ThemeService.shared().theme(withThemeId: themeId.rawValue)
+    return environment(\.theme, theme)
   }
 }

@@ -17,8 +17,8 @@
 import SwiftUI
 
 /**
- A Modifier to be called from the topmost SwiftUI view before being added to a HostViewController
- Provides any app level configuration the SwiftUI hierarchy might need(E.g. to monitor theme changes).
+ A Modifier to be called from the top-most SwiftUI view before being added to a HostViewController
+ Provides any app level configuration the SwiftUI hierarchy might need (E.g. to monitor theme changes).
  */
 @available(iOS 14.0, *)
 struct VectorContentModifier: ViewModifier {

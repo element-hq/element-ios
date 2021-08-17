@@ -26,7 +26,7 @@ struct AvatarImage: View {
     
     var mxContentUri: String?
     var matrixItemId: String
-    var displayName: String = ""
+    var displayName: String?
     var size: AvatarSize
     
     var body: some View {
@@ -43,12 +43,14 @@ struct AvatarImage: View {
                     .foregroundColor(.white)
                     .background(stableColor)
                     .clipShape(Circle())
+                    // Make the text resizable (i.e. Make it large and then allow it to scale down)
                     .font(.system(size: 200))
                     .minimumScaleFactor(0.001)
             }
         }
         .onAppear {
-            viewModel.dependencies = dependencies
+            viewModel.inject(dependencies: dependencies)
+            MXLog.debug("injected dependencies, \(dependencies)")
             viewModel.loadAvatar(
                 mxContentUri: mxContentUri,
                 avatarSize: size
@@ -56,17 +58,23 @@ struct AvatarImage: View {
         }
     }
     
-    private func firstCharacterCapitalized(_ string: String) -> String {
-        guard let character = string.first else {
+    private func firstCharacterCapitalized(_ string: String?) -> String {
+        guard let character = string?.first else {
             return ""
         }
         return String(character).capitalized
     }
     
-    var stableColor: Color {
+    /**
+     Provides the same color each time for a specified matrixId.
+     Same algorithm as in AvatarGenerator.
+     */
+    private var stableColor: Color {
+        // Sum all characters
         let sum = matrixItemId.utf8
             .map({ UInt($0) })
             .reduce(0, +)
+        // modulo the color count
         let index = Int(sum) % theme.avatarColors.count
         return Color(theme.avatarColors[index])
     }
@@ -78,7 +86,7 @@ extension AvatarImage {
         self.init(
             mxContentUri: avatarData.mxContentUri,
             matrixItemId: avatarData.matrixItemId,
-            displayName: avatarData.displayName ?? "",
+            displayName: avatarData.displayName,
             size: size
         )
     }

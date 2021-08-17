@@ -57,7 +57,8 @@ struct VectorForm_Previews: PreviewProvider {
             }
             VectorForm {
                 FormPickerItem(title: "Item 1", selected: true)
-            }.theme(ThemeIdentifier.dark.theme)
+            }
+            .theme(ThemeIdentifier.dark)
         }
     }
 }

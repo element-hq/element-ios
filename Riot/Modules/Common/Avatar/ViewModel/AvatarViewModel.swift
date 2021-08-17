@@ -18,10 +18,12 @@ import Foundation
 import Combine
 import DesignKit
 
+/**
+Simple ViewModel that supports loading an avatar image of a particular size
+ as specified in DesignKit and delivering the UIImage to the UI if possible.
+ */
 @available(iOS 14.0, *)
-class AvatarViewModel: ObservableObject, Injectable {
-    
-    var dependencies: DependencyContainer!
+class AvatarViewModel: InjectableObject, ObservableObject {
     
     @Inject var avatarService: AvatarServiceType
     

@@ -17,6 +17,10 @@
 import Foundation
 import SwiftUI
 
+/**
+ An Environment Key for retrieving runtime dependencies to be injected into `ObservableObjects`
+ that are owned by a View (i.e. `@StateObject`'s, such as ViewModels owned by the View).
+ */
 private struct DependencyContainerKey: EnvironmentKey {
     static let defaultValue = DependencyContainer()
 }
@@ -29,14 +33,15 @@ extension EnvironmentValues {
     }
 }
 
-/**
- */
 @available(iOS 14.0, *)
 extension View {
-    func setDependencies(_ container: DependencyContainer) -> some View {
-        environment(\.dependencies, container)
-    }
     
+    /**
+     A modifier for adding a dependency to the SwiftUI view hierarchy's dependency container.
+     Important: When adding a dependency to cast it to the type in which it will be injected.
+     So if adding `MockDependency` but type at injection is `Dependency` remmeber to cast
+     to `Dependency`first.
+     */
     func addDependency<T>(_ dependency: T) -> some View {
         transformEnvironment(\.dependencies) { container in
             container.register(dependency: dependency)

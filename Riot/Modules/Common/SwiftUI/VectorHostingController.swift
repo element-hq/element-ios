@@ -18,8 +18,8 @@ import Foundation
 import SwiftUI
 
 /**
- UIHostingController that applies some level-app specific configuration
- (E.g. vectorContent modifier and themeing to the NavigationController container.
+ UIHostingController that applies some app-level specific configuration
+ (E.g. `vectorContent` modifier and themeing to the NavigationController container.
  */
 @available(iOS 14.0, *)
 class VectorHostingController: UIHostingController<AnyView> {
@@ -27,11 +27,9 @@ class VectorHostingController: UIHostingController<AnyView> {
     // MARK: Private
     
     private var theme: Theme
-    private var dependencyContainer = DependencyContainer()
     
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
-        
         super.init(rootView: AnyView(rootView.vectorContent()))
     }
     
@@ -45,10 +43,6 @@ class VectorHostingController: UIHostingController<AnyView> {
         super.viewDidLoad()
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
-    }
-    
-    func add<T>(dependency: T) {
-        dependencyContainer.register(dependency: dependency)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {

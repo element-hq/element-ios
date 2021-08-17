@@ -16,20 +16,33 @@
 
 import Foundation
 
+/**
+ Used for storing and resolving dependencies at runtime.
+ */
 struct DependencyContainer {
-
-    private var dependencyList: [String: Any] = [:]
     
+    // Stores the dependencies with type information removed.
+    private var dependencyStore: [String: Any] = [:]
+    
+    /**
+     Resolve a dependency by type.
+     Given a particlar `Type` (Inferred from return type),
+     generate a key and retrieve from storage.
+     */
     func resolve<T>() -> T {
         let key = String(describing: T.self)
-        guard let t = dependencyList[key] as? T else {
+        guard let t = dependencyStore[key] as? T else {
             fatalError("No provider registered for type \(T.self)")
         }
         return t
     }
     
+    /**
+     Register a dependency.
+     Given a dependency, generate a key from it's `Type` and save in storage.
+     */
     mutating func register<T>(dependency: T) {
         let key = String(describing: T.self)
-        dependencyList[key] = dependency
+        dependencyStore[key] = dependency
     }
 }

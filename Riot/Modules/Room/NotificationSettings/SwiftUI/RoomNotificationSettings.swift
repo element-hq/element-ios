@@ -90,8 +90,8 @@ struct RoomNotificationSettings_Previews: PreviewProvider {
             NavigationView {
                 RoomNotificationSettings(viewModel: mockViewModel, presentedModally: true)
                     .navigationBarTitleDisplayMode(.inline)
-                    .theme(ThemeIdentifier.dark.theme)
                     .addDependency(MockAvatarService.example)
+                    .theme(ThemeIdentifier.dark)
             }
         }
     }

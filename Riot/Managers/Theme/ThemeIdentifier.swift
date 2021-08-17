@@ -34,13 +34,3 @@ enum ThemeIdentifier: String, RawRepresentable {
         }
     }
 }
-
-/**
- A Convenience extension for getting the theme given a specific Id.
- E.g. in  SwiftUI preview to set a theme via `ThemeIdentifier.dark.theme`
- */
-extension ThemeIdentifier {
-    var theme: Theme {
-        ThemeService.shared().theme(withThemeId: self.rawValue)
-    }
-}

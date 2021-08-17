@@ -16,6 +16,11 @@
 
 import Foundation
 
+/**
+ A property wrapped used to inject from the dependency
+ container on the instance to instance properties.
+ E.g. ```@Inject var someCalss: SomeClass```
+ */
 @propertyWrapper struct Inject<Value> {
     
     static subscript<T: Injectable>(
@@ -24,19 +29,18 @@ import Foundation
         storage storageKeyPath: ReferenceWritableKeyPath<T, Self>
     ) -> Value {
         get {
+            // Resolve dependencies from enclosing instance's `dependencies` property
             let v: Value = instance.dependencies.resolve()
             return v
         }
         set {
-            fatalError()
+            fatalError("Only subscript get is supported for injection")
         }
     }
     
-    @available(*, unavailable,
-    message: "@Published can only be applied to classes"
-    )
+    @available(*, unavailable, message:  "This property wrapper can only be applied to classes")
     var wrappedValue: Value {
-        get { fatalError() }
-        set { fatalError(" \(newValue)" ) }
+        get { fatalError("wrappedValue get no used") }
+        set { fatalError("wrappedValue set not used. \(newValue)" ) }
     }
 }
