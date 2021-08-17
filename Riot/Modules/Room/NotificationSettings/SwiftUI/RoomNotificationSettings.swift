@@ -20,7 +20,7 @@ import SwiftUI
 struct RoomNotificationSettings: View {
     
     @Environment(\.theme) var theme: Theme
-    @ObservedObject var viewModel: RoomNotificationSettingsViewModel
+    @ObservedObject var viewModel: RoomNotificationSettingsSwiftUIViewModel
     
     let presentedModally: Bool
     
@@ -74,7 +74,7 @@ struct RoomNotificationSettings: View {
 @available(iOS 14.0, *)
 struct RoomNotificationSettings_Previews: PreviewProvider {
     
-    static let mockViewModel = RoomNotificationSettingsViewModel(
+    static let mockViewModel = RoomNotificationSettingsSwiftUIViewModel(
         roomNotificationService: MockRoomNotificationSettingsService.example,
         avatarData: .swiftUI(MockAvatarInput.example),
         displayName: MockAvatarInput.example.displayName,

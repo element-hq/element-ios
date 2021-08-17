@@ -56,23 +56,30 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
             )) : nil
         }
         
-        let roomNotificationSettingsViewModel = RoomNotificationSettingsViewModel(
-            roomNotificationService: roomNotificationService,
-            avatarData: avatarData,
-            displayName: room.summary.displayname,
-            roomEncrypted: room.summary.isEncrypted)
         
+        let viewModel: RoomNotificationSettingsViewModel
         let viewController: UIViewController
         if #available(iOS 14.0.0, *) {
+            let swiftUIViewModel = RoomNotificationSettingsSwiftUIViewModel(
+                roomNotificationService: roomNotificationService,
+                avatarData: avatarData,
+                displayName: room.summary.displayname,
+                roomEncrypted: room.summary.isEncrypted)
             let avatarService: AvatarServiceType = AvatarService(mediaManager: room.mxSession.mediaManager)
-            let view = RoomNotificationSettings(viewModel: roomNotificationSettingsViewModel, presentedModally: presentedModally)
+            let view = RoomNotificationSettings(viewModel: swiftUIViewModel, presentedModally: presentedModally)
                 .addDependency(avatarService)
             let host = VectorHostingController(rootView: view)
+            viewModel = swiftUIViewModel
             viewController = host
         } else {
-            viewController = RoomNotificationSettingsViewController.instantiate(with: roomNotificationSettingsViewModel)
+            viewModel = RoomNotificationSettingsViewModel(
+                roomNotificationService: roomNotificationService,
+                avatarData: avatarData,
+                displayName: room.summary.displayname,
+                roomEncrypted: room.summary.isEncrypted)
+            viewController = RoomNotificationSettingsViewController.instantiate(with: viewModel)
         }
-        self.roomNotificationSettingsViewModel = roomNotificationSettingsViewModel
+        self.roomNotificationSettingsViewModel = viewModel
         self.roomNotificationSettingsViewController = viewController
     }
 
