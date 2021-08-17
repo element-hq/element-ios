@@ -5575,8 +5575,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     NSString *selectedEventId = event.eventId;
     
     NSArray<RoomContextualMenuItem*>* contextualMenuItems = [self contextualMenuItemsForEvent:event andCell:cell];
-    ReactionsMenuViewModel *reactionsMenuViewModel;
+    __block ReactionsMenuViewModel *reactionsMenuViewModel;
     CGRect bubbleComponentFrameInOverlayView = CGRectNull;
+    
+    dispatch_group_t dispatchGroup = dispatch_group_create();
     
     if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class] && [self.roomDataSource canReactToEventWithId:event.eventId])
     {
@@ -5601,33 +5603,40 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         NSString *roomId = self.roomDataSource.roomId;
         MXAggregations *aggregations = self.mainSession.aggregations;
-        MXAggregatedReactions *aggregatedReactions = [aggregations aggregatedReactionsOnEvent:selectedEventId inRoom:roomId];
         
-        reactionsMenuViewModel = [[ReactionsMenuViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:selectedEventId];
-        reactionsMenuViewModel.coordinatorDelegate = self;
+        dispatch_group_enter(dispatchGroup);
+        [aggregations aggregatedReactionsOnEvent:selectedEventId
+                                          inRoom:roomId
+                                      completion:^(MXAggregatedReactions * _Nullable aggregatedReactions) {
+            reactionsMenuViewModel = [[ReactionsMenuViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:selectedEventId];
+            reactionsMenuViewModel.coordinatorDelegate = self;
+            dispatch_group_leave(dispatchGroup);
+        }];
     }
     
-    if (!self.roomContextualMenuViewController)
-    {
-        self.roomContextualMenuViewController = [RoomContextualMenuViewController instantiate];
-        self.roomContextualMenuViewController.delegate = self;
-    }
-    
-    [self.roomContextualMenuViewController updateWithContextualMenuItems:contextualMenuItems reactionsMenuViewModel:reactionsMenuViewModel];
-    
-    [self enableOverlayContainerUserInteractions:YES];
-    
-    [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:self.roomContextualMenuViewController
-                                                                             from:self
-                                                                               on:self.overlayContainerView
-                                                              contentToReactFrame:bubbleComponentFrameInOverlayView
-                                                             fromSingleTapGesture:usedSingleTapGesture
-                                                                         animated:animated
-                                                                       completion:^{
-    }];
-    
-    preventBubblesTableViewScroll = YES;
-    [self selectEventWithId:selectedEventId];
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+        if (!self.roomContextualMenuViewController)
+        {
+            self.roomContextualMenuViewController = [RoomContextualMenuViewController instantiate];
+            self.roomContextualMenuViewController.delegate = self;
+        }
+        
+        [self.roomContextualMenuViewController updateWithContextualMenuItems:contextualMenuItems reactionsMenuViewModel:reactionsMenuViewModel];
+        
+        [self enableOverlayContainerUserInteractions:YES];
+        
+        [self.roomContextualMenuPresenter presentWithRoomContextualMenuViewController:self.roomContextualMenuViewController
+                                                                                 from:self
+                                                                                   on:self.overlayContainerView
+                                                                  contentToReactFrame:bubbleComponentFrameInOverlayView
+                                                                 fromSingleTapGesture:usedSingleTapGesture
+                                                                             animated:animated
+                                                                           completion:^{
+        }];
+        
+        self->preventBubblesTableViewScroll = YES;
+        [self selectEventWithId:selectedEventId];
+    });
 }
 
 - (void)hideContextualMenuAnimated:(BOOL)animated

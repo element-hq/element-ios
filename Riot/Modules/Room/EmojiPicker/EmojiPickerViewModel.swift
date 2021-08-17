@@ -31,9 +31,7 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
     private let emojiStore: EmojiStore
     private let processingQueue: DispatchQueue
     
-    private lazy var aggregatedReactionsByEmoji: [String: MXReactionCount] = {
-        return self.buildAggregatedReactionsByEmoji()
-    }()
+    private lazy var aggregatedReactionsByEmoji: [String: MXReactionCount] = [:]
     
     // MARK: Public
 
@@ -78,7 +76,10 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
         if self.emojiStore.getAll().isEmpty == false {
             let emojiCategories = self.emojiStore.getAll()
             let emojiCatagoryViewDataList = self.emojiCatagoryViewDataList(from: emojiCategories)
-            self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
+            buildAggregatedReactionsByEmoji { result in
+                self.aggregatedReactionsByEmoji = result
+                self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
+            }
         } else {
             self.update(viewState: .loading)
             self.emojiService.getEmojiCategories { response in
@@ -88,7 +89,8 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
                     self.emojiStore.set(emojiCategories)
                     
                     let emojiCatagoryViewDataList = self.emojiCatagoryViewDataList(from: emojiCategories)
-                    DispatchQueue.main.async {
+                    self.buildAggregatedReactionsByEmoji { result in
+                        self.aggregatedReactionsByEmoji = result
                         self.update(viewState: .loaded(emojiCategories: emojiCatagoryViewDataList))
                     }
                 case .failure(let error):
@@ -139,15 +141,24 @@ final class EmojiPickerViewModel: EmojiPickerViewModelType {
         return reactionCount.myUserHasReacted
     }
     
-    private func buildAggregatedReactionsByEmoji() -> [String: MXReactionCount] {
-        guard let aggregatedReactions = self.session.aggregations.aggregatedReactions(onEvent: self.eventId, inRoom: self.roomId) else {
-            return [:]
-        }
-        
-        let initial: [String: MXReactionCount] = [:]
-        
-        return aggregatedReactions.reactions.reduce(into: initial) { (aggregatedReactionsByEmoji, reactionCount) in
-            aggregatedReactionsByEmoji[reactionCount.reaction] = reactionCount
+    private func buildAggregatedReactionsByEmoji(completion: @escaping ([String: MXReactionCount]) -> Void) {
+        self.session.aggregations.aggregatedReactions(onEvent: self.eventId,
+                                                      inRoom: self.roomId) { aggregatedReactions in
+            guard let aggregatedReactions = aggregatedReactions else {
+                DispatchQueue.main.async {
+                    completion([:])
+                }
+                return
+            }
+            let initial: [String: MXReactionCount] = [:]
+            
+            let result = aggregatedReactions.reactions.reduce(into: initial) { (aggregatedReactionsByEmoji, reactionCount) in
+                aggregatedReactionsByEmoji[reactionCount.reaction] = reactionCount
+            }
+            
+            DispatchQueue.main.async {
+                completion(result)
+            }
         }
     }
 }
