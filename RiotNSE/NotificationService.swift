@@ -439,7 +439,13 @@ class NotificationService: UNNotificationServiceExtension {
                             notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
                         case .reaction:
                             notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
-                            notificationBody = NSString.localizedUserNotificationString(forKey: "REACTION_FROM_USER", arguments: [eventSenderName])
+                            if let reactionKey = event.relatesTo?.key {
+                                // Try to show the reaction key in the notification.
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "REACTION_FROM_USER", arguments: [eventSenderName, reactionKey])
+                            } else {
+                                // Otherwise show a generic reaction.
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "GENERIC_REACTION_FROM_USER", arguments: [eventSenderName])
+                            }
                         case .custom:
                             if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
                                let type = event.content?["type"] as? String,
