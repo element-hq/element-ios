@@ -58,14 +58,15 @@ struct RoomNotificationSettings: View {
                     }
                 }
             }
-            .navigationBarTitle(VectorL10n.roomDetailsNotifs)
-            .navigationBarItems(
-                leading: leftButton,
-                trailing: rightButton
-            )
-            .onAppear {
-                viewModel.process(viewAction: .load)
-            }
+        }
+        .activityIndicator(show: viewModel.viewState.saving)
+        .navigationBarTitle(VectorL10n.roomDetailsNotifs)
+        .navigationBarItems(
+            leading: leftButton,
+            trailing: rightButton
+        )
+        .onAppear {
+            viewModel.process(viewAction: .load)
         }
     }
 }
@@ -90,8 +91,8 @@ struct RoomNotificationSettings_Previews: PreviewProvider {
             NavigationView {
                 RoomNotificationSettings(viewModel: mockViewModel, presentedModally: true)
                     .navigationBarTitleDisplayMode(.inline)
-                    .addDependency(MockAvatarService.example)
                     .theme(ThemeIdentifier.dark)
+                    .addDependency(MockAvatarService.example)
             }
         }
     }
