@@ -25,7 +25,7 @@ class RoomNotificationSettingsSwiftUIViewModel: RoomNotificationSettingsViewMode
     lazy var cancellables = Set<AnyCancellable>()
     
     override init(roomNotificationService: RoomNotificationSettingsServiceType, initialState: RoomNotificationSettingsViewState) {
-    self.viewState = initialState
+        self.viewState = initialState
         super.init(roomNotificationService: roomNotificationService, initialState: initialState)
     }
     
