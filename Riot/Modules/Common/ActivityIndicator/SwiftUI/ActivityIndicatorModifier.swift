@@ -15,28 +15,30 @@
 //
 
 import Foundation
+import SwiftUI
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
-}
+/**
+ A modifier for showing the activity indcator centered over a view.
+ */
+@available(iOS 14.0, *)
+struct ActivityIndicatorModifier: ViewModifier {
+    var show: Bool
 
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if show {
+            content
+                .overlay(ActivityIndicator(), alignment: .center)
+        } else {
+            content
         }
+    }
+}
+
+@available(iOS 14.0, *)
+extension View {
+    @available(iOS 14.0, *)
+    func activityIndicator(show: Bool) -> some View {
+        self.modifier(ActivityIndicatorModifier(show: show))
     }
 }

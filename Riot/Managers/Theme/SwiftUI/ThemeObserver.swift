@@ -15,28 +15,17 @@
 //
 
 import Foundation
+import Combine
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
-}
-
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
-        }
+@available(iOS 14.0, *)
+class ThemeObserver: ObservableObject {
+    
+    static let shared = ThemeObserver()
+    
+    init() {
+        NotificationCenter.default.publisher(for: NSNotification.Name.themeServiceDidChangeTheme).map { _ in
+            ThemeService.shared().theme
+        }.assign(to: &$theme)
     }
+    @Published var theme: Theme = ThemeService.shared().theme
 }

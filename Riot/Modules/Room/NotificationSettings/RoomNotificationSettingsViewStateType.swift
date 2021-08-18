@@ -23,6 +23,11 @@ struct RoomNotificationSettingsViewState: RoomNotificationSettingsViewStateType 
     let roomEncrypted: Bool
     var saving: Bool
     var notificationState: RoomNotificationState
+    var avatarData: AvatarInputOption?
+    var displayName: String?
+}
+
+extension RoomNotificationSettingsViewState {
     var notificationOptions: [RoomNotificationState] {
         if roomEncrypted {
             return [.all, .mute]
@@ -30,7 +35,6 @@ struct RoomNotificationSettingsViewState: RoomNotificationSettingsViewStateType 
             return RoomNotificationState.allCases
         }
     }
-    let avatarData: AvatarViewDataProtocol?
 }
 
 protocol RoomNotificationSettingsViewStateType {
@@ -38,5 +42,12 @@ protocol RoomNotificationSettingsViewStateType {
     var roomEncrypted: Bool { get }
     var notificationOptions: [RoomNotificationState] { get }
     var notificationState: RoomNotificationState { get }
-    var avatarData: AvatarViewDataProtocol? { get }
+    var avatarData: AvatarInputOption? { get }
+    var displayName: String? { get }
+}
+
+extension RoomNotificationSettingsViewState {
+    var roomEncryptedString: String {
+        roomEncrypted ? VectorL10n.roomNotifsSettingsEncryptedRoomNotice : ""
+    }
 }
