@@ -17,32 +17,36 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct FormSectionHeader: View {
+struct Chip: View {
     
     @Environment(\.theme) var theme: Theme
-    var text: String
+    
+    let titleKey: String
+    let onClose: () -> Void
     
     var body: some View {
-        Text(text)
-            .foregroundColor(Color(theme.textSecondaryColor))
-            .padding(.top, 32)
-            .padding(.leading)
-            .padding(.bottom, 8)
-            .font(Font(theme.fonts.subheadline))
-            .textCase(.uppercase)
-            .frame(maxWidth: .infinity, alignment: .leading)
+        HStack {
+            Text(titleKey)
+                .font(Font(theme.fonts.body))
+                .lineLimit(1)
+            Image(systemName: "xmark.circle.fill")
+                .frame(width: 16, height: 16, alignment: .center)
+                .onTapGesture(perform: onClose)
+        }
+        .padding(.leading, 12)
+        .padding(.top, 6)
+        .padding(.bottom, 6)
+        .padding(.trailing, 8)
+        .background(Color(theme.tintColor))
+        .foregroundColor(Color.white)
+        .cornerRadius(20)
+        
     }
 }
 
 @available(iOS 14.0, *)
-struct FormSectionHeader_Previews: PreviewProvider {
+struct Chip_Previews: PreviewProvider {
     static var previews: some View {
-        VectorForm {
-            SwiftUI.Section(header: FormSectionHeader(text: "Section Header")) {
-                FormPickerItem(title: "Item 1", selected: false)
-                FormPickerItem(title: "Item 2", selected: false)
-                FormPickerItem(title: "Item 3", selected: false)
-            }
-        }
+        Chip(titleKey: "My great chip", onClose: { })
     }
 }

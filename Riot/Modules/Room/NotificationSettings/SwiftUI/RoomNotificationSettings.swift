@@ -19,7 +19,6 @@ import SwiftUI
 @available(iOS 14.0.0, *)
 struct RoomNotificationSettings: View {
     
-    @Environment(\.theme) var theme: Theme
     @ObservedObject var viewModel: RoomNotificationSettingsSwiftUIViewModel
     
     let presentedModally: Bool

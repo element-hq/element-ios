@@ -501,9 +501,22 @@ Tap the + to start adding people.";
 "settings_notifications_disabled_alert_message" = "To enable notifications, go to your device settings.";
 "settings_on_denied_notification" = "Notifications are denied for %@, please allow them in your device settings";
 "settings_default" = "Default Notifications";
-"settings_meantions_and_keywords" = "Mentions and Keywords";
+"settings_mentions_and_keywords" = "Mentions and Keywords";
 "settings_other" = "Other";
-//"settings_call_invitations" = "Call invitations";
+"settings_notify_me_for" = "Notify me for";
+"settings_direct_messages" = "Direct messages";
+"settings_encrypted_direct_messages" = "Encrypted direct messages";
+"settings_group_messages" = "Group messages";
+"settings_encrypted_group_messages" = "Encrypted group messages";
+"settings_messages_containing_display_name" = "Messages containing my display name";
+"settings_messages_containing_user_name" = "Messages containing my display name";
+"settings_messages_containing_at_room" = "Messages containing @room";
+"settings_messages_containing_keywords" = "Messages containing keywords";
+"settings_room_invitations" = "Room invitations";
+"settings_call_invitations" = "Call invitations";
+"settings_messages_by_a_bot" = "Messages by a bot";
+"settings_room_upgrades" = "Room upgrades";
+
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";

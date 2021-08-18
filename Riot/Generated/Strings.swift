@@ -4034,6 +4034,10 @@ internal enum VectorL10n {
   internal static var settingsAdvanced: String { 
     return VectorL10n.tr("Vector", "settings_advanced") 
   }
+  /// Call invitations
+  internal static var settingsCallInvitations: String { 
+    return VectorL10n.tr("Vector", "settings_call_invitations") 
+  }
   /// Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.
   internal static var settingsCallkitInfo: String { 
     return VectorL10n.tr("Vector", "settings_callkit_info") 
@@ -4126,6 +4130,10 @@ internal enum VectorL10n {
   internal static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
   }
+  /// Default Notifications
+  internal static var settingsDefault: String { 
+    return VectorL10n.tr("Vector", "settings_default") 
+  }
   /// Device notifications
   internal static var settingsDeviceNotifications: String { 
     return VectorL10n.tr("Vector", "settings_device_notifications") 
@@ -4137,6 +4145,10 @@ internal enum VectorL10n {
   /// A session's public name is visible to people you communicate with
   internal static var settingsDevicesDescription: String { 
     return VectorL10n.tr("Vector", "settings_devices_description") 
+  }
+  /// Direct messages
+  internal static var settingsDirectMessages: String { 
+    return VectorL10n.tr("Vector", "settings_direct_messages") 
   }
   /// An error occured. Please retry.
   internal static var settingsDiscoveryErrorMessage: String { 
@@ -4222,6 +4234,14 @@ internal enum VectorL10n {
   internal static var settingsEnableRageshake: String { 
     return VectorL10n.tr("Vector", "settings_enable_rageshake") 
   }
+  /// Encrypted direct messages
+  internal static var settingsEncryptedDirectMessages: String { 
+    return VectorL10n.tr("Vector", "settings_encrypted_direct_messages") 
+  }
+  /// Encrypted group messages
+  internal static var settingsEncryptedGroupMessages: String { 
+    return VectorL10n.tr("Vector", "settings_encrypted_group_messages") 
+  }
   /// Fail to update password
   internal static var settingsFailToUpdatePassword: String { 
     return VectorL10n.tr("Vector", "settings_fail_to_update_password") 
@@ -4241,6 +4261,10 @@ internal enum VectorL10n {
   /// Global notification settings are available on your %@ web client
   internal static func settingsGlobalSettingsInfo(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_global_settings_info", p1)
+  }
+  /// Group messages
+  internal static var settingsGroupMessages: String { 
+    return VectorL10n.tr("Vector", "settings_group_messages") 
   }
   /// Using the identity server set above, you can discover and be discoverable by existing contacts you know.
   internal static var settingsIdentityServerDescription: String { 
@@ -4398,6 +4422,30 @@ internal enum VectorL10n {
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
   }
+  /// Mentions and Keywords
+  internal static var settingsMentionsAndKeywords: String { 
+    return VectorL10n.tr("Vector", "settings_mentions_and_keywords") 
+  }
+  /// Messages by a bot
+  internal static var settingsMessagesByABot: String { 
+    return VectorL10n.tr("Vector", "settings_messages_by_a_bot") 
+  }
+  /// Messages containing @room
+  internal static var settingsMessagesContainingAtRoom: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_at_room") 
+  }
+  /// Messages containing my display name
+  internal static var settingsMessagesContainingDisplayName: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_display_name") 
+  }
+  /// Messages containing keywords
+  internal static var settingsMessagesContainingKeywords: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_keywords") 
+  }
+  /// Messages containing my display name
+  internal static var settingsMessagesContainingUserName: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_user_name") 
+  }
   /// new password
   internal static var settingsNewPassword: String { 
     return VectorL10n.tr("Vector", "settings_new_password") 
@@ -4405,6 +4453,10 @@ internal enum VectorL10n {
   /// Night Mode
   internal static var settingsNightMode: String { 
     return VectorL10n.tr("Vector", "settings_night_mode") 
+  }
+  /// NOTIFICATIONS
+  internal static var settingsNotifications: String { 
+    return VectorL10n.tr("Vector", "settings_notifications") 
   }
   /// To enable notifications, go to your device settings.
   internal static var settingsNotificationsDisabledAlertMessage: String { 
@@ -4414,9 +4466,9 @@ internal enum VectorL10n {
   internal static var settingsNotificationsDisabledAlertTitle: String { 
     return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_title") 
   }
-  /// NOTIFICATION SETTINGS
-  internal static var settingsNotificationsSettings: String { 
-    return VectorL10n.tr("Vector", "settings_notifications_settings") 
+  /// Notify me for
+  internal static var settingsNotifyMeFor: String { 
+    return VectorL10n.tr("Vector", "settings_notify_me_for") 
   }
   /// old password
   internal static var settingsOldPassword: String { 
@@ -4426,7 +4478,11 @@ internal enum VectorL10n {
   internal static func settingsOlmVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_olm_version", p1)
   }
-  /// OTHER
+  /// Notifications are denied for %@, please allow them in your device settings
+  internal static func settingsOnDeniedNotification(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "settings_on_denied_notification", p1)
+  }
+  /// Other
   internal static var settingsOther: String { 
     return VectorL10n.tr("Vector", "settings_other") 
   }
@@ -4469,6 +4525,14 @@ internal enum VectorL10n {
   /// Report bug
   internal static var settingsReportBug: String { 
     return VectorL10n.tr("Vector", "settings_report_bug") 
+  }
+  /// Room invitations
+  internal static var settingsRoomInvitations: String { 
+    return VectorL10n.tr("Vector", "settings_room_invitations") 
+  }
+  /// Room upgrades
+  internal static var settingsRoomUpgrades: String { 
+    return VectorL10n.tr("Vector", "settings_room_upgrades") 
   }
   /// SECURITY
   internal static var settingsSecurity: String { 

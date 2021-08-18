@@ -17,8 +17,9 @@
  */
 
 import Foundation
-import UIKit
+import SwiftUI
 
+@available(iOS 14.0, *)
 final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType {
     
     // MARK: - Properties
@@ -27,7 +28,7 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
     
     private let session: MXSession
     private var notificationSettingsViewModel: NotificationSettingsViewModelType
-    private let notificationSettingsViewController: NotificationSettingsViewController
+    private let notificationSettingsViewController: UIViewController
     
     // MARK: Public
 
@@ -38,13 +39,13 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, screen: NotificationSettingsScreen) {
         self.session = session
         
-        let notificationSettingsViewModel = NotificationSettingsViewModel(session: self.session)
-        let notificationSettingsViewController = NotificationSettingsViewController.instantiate(with: notificationSettingsViewModel)
-        self.notificationSettingsViewModel = notificationSettingsViewModel
-        self.notificationSettingsViewController = notificationSettingsViewController
+        let viewModel = NotificationSettingsViewModel(rules: screen.pushRules)
+        let viewController = VectorHostingController(rootView: NotificationSettings(viewModel: viewModel, footer: Text("footer")))
+        self.notificationSettingsViewModel = viewModel
+        self.notificationSettingsViewController = viewController
     }
     
     // MARK: - Public methods
@@ -59,6 +60,7 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
 }
 
 // MARK: - NotificationSettingsViewModelCoordinatorDelegate
+@available(iOS 14.0, *)
 extension NotificationSettingsCoordinator: NotificationSettingsViewModelCoordinatorDelegate {
     
     func notificationSettingsViewModel(_ viewModel: NotificationSettingsViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {

@@ -17,27 +17,32 @@
  */
 
 import Foundation
+import Combine
+import SwiftUI
 
-final class NotificationSettingsViewModel: NotificationSettingsViewModelType {
+@available(iOS 14.0, *)
+final class NotificationSettingsViewModel: NotificationSettingsViewModelType, ObservableObject {
     
     // MARK: - Properties
     
     // MARK: Private
-
-    private let session: MXSession
-    
-    private var currentOperation: MXHTTPOperation?
-    private var userDisplayName: String?
     
     // MARK: Public
 
     weak var viewDelegate: NotificationSettingsViewModelViewDelegate?
     weak var coordinatorDelegate: NotificationSettingsViewModelCoordinatorDelegate?
     
+    @Published var viewState: NotificationSettingsViewState
+    
     // MARK: - Setup
     
-    init(session: MXSession) {
-        self.session = session
+    init(initialState: NotificationSettingsViewState) {
+        self.viewState = initialState
+    }
+    
+    convenience init(rules: [PushRuleId]) {
+        let ruleSate = rules.map({ PushRuleSelectedState(ruleId: $0, selected: false) })
+        self.init(initialState: NotificationSettingsViewState(saving: false, selectionState: ruleSate))
     }
     
     deinit {
@@ -48,13 +53,15 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType {
     
     func process(viewAction: NotificationSettingsViewAction) {
         switch viewAction {
-        case .loadData:
+        case .load:
             self.loadData()
-        case .complete:
-            self.coordinatorDelegate?.notificationSettingsViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
+        case .save:
+            break
         case .cancel:
             self.cancelOperations()
-            self.coordinatorDelegate?.notificationSettingsViewModelDidCancel(self)
+//            self.coordinatorDelegate?.notificationSettingsViewModelDidCancel(self)
+        case .selectNotification(_, _):
+            break
         }
     }
     
@@ -62,30 +69,13 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType {
     
     private func loadData() {
 
-        self.update(viewState: .loading)
-
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
-
-            guard let self = self else {
-                return
-            }
-            
-            switch response {
-            case .success(let userDisplayName):
-                self.update(viewState: .loaded(userDisplayName))
-                self.userDisplayName = userDisplayName
-            case .failure(let error):
-                self.update(viewState: .error(error))
-            }
-        }
     }
     
     private func update(viewState: NotificationSettingsViewState) {
-        self.viewDelegate?.notificationSettingsViewModel(self, didUpdateViewState: viewState)
+//        self.viewDelegate?.notificationSettingsViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {
-        self.currentOperation?.cancel()
+    
     }
 }

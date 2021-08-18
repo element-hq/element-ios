@@ -38,7 +38,6 @@ struct RoomNotificationSettingsHeader: View {
             Spacer()
         }
         .padding(.top, 36)
-        .padding(.bottom, 20)
     }
 }
 

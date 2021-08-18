@@ -20,7 +20,8 @@ import Foundation
 
 /// NotificationSettingsViewController view actions exposed to view model
 enum NotificationSettingsViewAction {
-    case loadData
-    case complete
+    case load
+    case selectNotification(PushRuleId, Bool)
+    case save
     case cancel
 }
