@@ -40,7 +40,7 @@ import Foundation
     
     @available(*, unavailable, message:  "This property wrapper can only be applied to classes")
     var wrappedValue: Value {
-        get { fatalError("wrappedValue get no used") }
+        get { fatalError("wrappedValue get not used") }
         set { fatalError("wrappedValue set not used. \(newValue)" ) }
     }
 }
