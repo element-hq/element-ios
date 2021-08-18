@@ -1366,7 +1366,7 @@
 "event_formatter_call_you_missed" = "你错过此通话";
 "event_formatter_call_you_declined" = "拒绝了通话";
 "event_formatter_call_you_currently_in" = "当前通话";
-"event_formatter_call_has_ended" = "通话结束 %@";
+"event_formatter_call_has_ended" = "通话结束";
 "event_formatter_call_ringing" = "响铃中……";
 "event_formatter_call_connecting" = "连接中……";
 "event_formatter_call_video" = "视频通话";
@@ -1454,3 +1454,5 @@
 "event_formatter_call_active_voice" = "活跃语音通话";
 "event_formatter_call_incoming_voice" = "语音来电";
 "event_formatter_call_incoming_video" = "视频来电";
+"voice_message_lock_screen_placeholder" = "语音消息";
+"event_formatter_call_has_ended_with_time" = "通话结束 • %@";

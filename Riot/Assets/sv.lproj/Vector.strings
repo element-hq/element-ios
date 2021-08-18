@@ -1264,9 +1264,9 @@
 "dialpad_title" = "Knappsats";
 "call_actions_unhold" = "Återuppta";
 "event_formatter_call_back" = "Ring tillbaka";
-"event_formatter_call_you_declined" = "Du avslog det här samtalet";
+"event_formatter_call_you_declined" = "Samtal avslaget";
 "event_formatter_call_you_currently_in" = "Aktivt samtal";
-"event_formatter_call_has_ended" = "Avslutade %@";
+"event_formatter_call_has_ended" = "Samtal avslutat";
 "event_formatter_call_video" = "Videosamtal";
 "event_formatter_call_voice" = "Röstsamtal";
 "settings_show_NSFW_public_rooms" = "Visa NSFW offentliga rum";
@@ -1346,3 +1346,34 @@
 "security_settings_secure_backup_reset" = "Återställ";
 "security_settings_secure_backup_info_valid" = "Den här sessionen säkerhetskopierar dina nycklar.";
 "security_settings_secure_backup_info_checking" = "Kontrollerar…";
+"voice_message_lock_screen_placeholder" = "Röstmeddelande";
+"voice_message_stop_locked_mode_recording" = "Tryck på dina inspelningar för att stoppa eller lyssna";
+"voice_message_remaining_recording_time" = "%@s kvar";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Håll in för att spela in, släpp för att skicka";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Skanna med den här enheten";
+"event_formatter_call_missed_video" = "Missat videosamtal";
+"event_formatter_call_missed_voice" = "Missat videosamtal";
+"event_formatter_call_active_video" = "Aktivt videosamtal";
+"event_formatter_call_active_voice" = "Aktivt röstsamtal";
+"event_formatter_call_incoming_video" = "Inkommande videosamtal";
+"event_formatter_call_incoming_voice" = "Inkommande röstsamtal";
+"event_formatter_call_has_ended_with_time" = "Samtal avslutat • %@";
+"room_notifs_settings_encrypted_room_notice" = "Observera att aviseringar för omnämningar och nyckelord inte är tillgängliga i krypterade rum på mobil.";
+"room_notifs_settings_account_settings" = "Kontoinställningar";
+"room_notifs_settings_manage_notifications" = "Du kan hantera aviseringar i %@";
+"room_notifs_settings_cancel_action" = "Avbryt";
+"room_notifs_settings_done_action" = "Klar";
+"room_notifs_settings_none" = "Inga";
+"room_notifs_settings_mentions_and_keywords" = "Endast omnämnanden och nyckelord";
+"room_notifs_settings_all_messages" = "Alla meddelanden";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Avisera mig för";
+"room_details_notifs" = "Aviseringar";
+"settings_labs_voice_messages" = "Röstmeddelanden";
+"settings_notifications_disabled_alert_message" = "För att aktivera aviseringar, gå till din enhets inställningar.";
+"settings_notifications_disabled_alert_title" = "Aviseringar inaktiverade";
+"settings_device_notifications" = "Enhetsaviseringar";

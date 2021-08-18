@@ -1307,7 +1307,7 @@
 "event_formatter_call_back" = "Zurückrufen";
 "event_formatter_call_you_declined" = "Anruf abgelehnt";
 "event_formatter_call_you_currently_in" = "Aktueller Anruf";
-"event_formatter_call_has_ended" = "%@ beendet";
+"event_formatter_call_has_ended" = "Anruf beendet";
 "event_formatter_call_video" = "Videoanruf";
 "event_formatter_call_voice" = "Sprachanruf";
 "settings_show_NSFW_public_rooms" = "Öffentliche Räume mit anstößigen Inhalte anzeigen";
@@ -1405,3 +1405,16 @@
 "settings_labs_voice_messages" = "Sprachnachrichten";
 "settings_notifications_disabled_alert_message" = "Öffne die Systemeinstellungen um Benachrichtigungen zu aktivieren.";
 "settings_notifications_disabled_alert_title" = "Benachrichtigungen deaktiviert";
+"event_formatter_call_incoming_video" = "Eingehender Videoanruf";
+"event_formatter_call_has_ended_with_time" = "Anruf beendet • %@";
+"voice_message_stop_locked_mode_recording" = "Klicke, um die Aufnahme zu starten oder stoppen";
+"settings_device_notifications" = "Gerätbenachrichtigungen";
+"voice_message_lock_screen_placeholder" = "Sprachnachricht";
+"voice_message_remaining_recording_time" = "%@s übrig";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Halten zum Aufnehmen, Loslassen zum Senden";
+"event_formatter_call_missed_video" = "Verpasster Videoanruf";
+"event_formatter_call_active_voice" = "Aktiver Sprachanruf";
+"event_formatter_call_active_video" = "Aktiver Videoanruf";
