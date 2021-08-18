@@ -164,8 +164,6 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
         
         self.state = .stopped
-        self.loading = true
-        self.samples = []
         updateUI()
         
         let requiredNumberOfSamples = playbackView.getRequiredNumberOfSamples()
