@@ -19,7 +19,7 @@ import Foundation
 /**
  A property wrapped used to inject from the dependency
  container on the instance to instance properties.
- E.g. ```@Inject var someCalss: SomeClass```
+ E.g. ```@Inject var someClass: SomeClass```
  */
 @propertyWrapper struct Inject<Value> {
     
