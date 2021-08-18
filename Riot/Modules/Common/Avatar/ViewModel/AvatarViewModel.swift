@@ -27,20 +27,54 @@ class AvatarViewModel: InjectableObject, ObservableObject {
     
     @Inject var avatarService: AvatarServiceType
     
-    @Published private(set) var viewState = AvatarViewState()
+    @Published private(set) var viewState = AvatarViewState.empty
     
     private var cancellables = Set<AnyCancellable>()
     
-    func loadAvatar(mxContentUri: String?, avatarSize: AvatarSize) {
+    func loadAvatar(
+        mxContentUri: String?,
+        matrixItemId: String,
+        displayName: String?,
+        colorCount: Int,
+        avatarSize: AvatarSize) {
+        
+        self.viewState = .placeholder(
+            firstCharacterCapitalized(displayName),
+            stableColorIndex(matrixItemId: matrixItemId, colorCount: colorCount)
+        )
+        
         guard let mxContentUri = mxContentUri else { return }
         avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
             .sink { error in
                 MXLog.error("[AvatarService] Failed to retrieve avatar.")
                 // TODO: Report non-fatal error when we have Sentry or similar.
             } receiveValue: { image in
-                self.viewState.avatarImage = image
+                self.viewState = .avatar(image)
             }
             .store(in: &cancellables)
+    }
+    
+    /**
+     Get the first character of a string capialized or else an empty string.
+     */
+    private func firstCharacterCapitalized(_ string: String?) -> String {
+        guard let character = string?.first else {
+            return ""
+        }
+        return String(character).capitalized
+    }
+    
+    /**
+     Provides the same color each time for a specified matrixId.
+     Same algorithm as in AvatarGenerator.
+     */
+    private func stableColorIndex(matrixItemId: String, colorCount: Int) -> Int {
+        // Sum all characters
+        let sum = matrixItemId.utf8
+            .map({ UInt($0) })
+            .reduce(0, +)
+        // modulo the color count
+        return Int(sum) % colorCount
     }
     
 }

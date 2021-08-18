@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import SwiftUI
 import Combine
 
 @available(iOS 14.0, *)

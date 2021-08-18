@@ -31,51 +31,36 @@ struct AvatarImage: View {
     
     var body: some View {
         Group {
-            if let image = viewModel.viewState.avatarImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
-                    .clipShape(Circle())
-            } else {
-                Text(firstCharacterCapitalized(displayName))
+            switch viewModel.viewState {
+            case .empty:
+                ProgressView()
+            case .placeholder(let firstCharacter, let colorIndex):
+                Text(firstCharacter)
                     .padding(4)
                     .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
                     .foregroundColor(.white)
-                    .background(stableColor)
+                    .background(Color(theme.avatarColors[colorIndex]))
                     .clipShape(Circle())
                     // Make the text resizable (i.e. Make it large and then allow it to scale down)
                     .font(.system(size: 200))
                     .minimumScaleFactor(0.001)
+            case .avatar(let image):
+                Image(uiImage: image)
+                    .resizable()
+                    .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
+                    .clipShape(Circle())
             }
         }
         .onAppear {
             viewModel.inject(dependencies: dependencies)
             viewModel.loadAvatar(
                 mxContentUri: mxContentUri,
+                matrixItemId: matrixItemId,
+                displayName: displayName,
+                colorCount: theme.avatarColors.count,
                 avatarSize: size
             )
         }
-    }
-    
-    private func firstCharacterCapitalized(_ string: String?) -> String {
-        guard let character = string?.first else {
-            return ""
-        }
-        return String(character).capitalized
-    }
-    
-    /**
-     Provides the same color each time for a specified matrixId.
-     Same algorithm as in AvatarGenerator.
-     */
-    private var stableColor: Color {
-        // Sum all characters
-        let sum = matrixItemId.utf8
-            .map({ UInt($0) })
-            .reduce(0, +)
-        // modulo the color count
-        let index = Int(sum) % theme.avatarColors.count
-        return Color(theme.avatarColors[index])
     }
 }
 

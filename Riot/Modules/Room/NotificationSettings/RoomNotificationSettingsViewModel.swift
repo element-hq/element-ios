@@ -17,7 +17,6 @@
  */
 
 import Foundation
-import SwiftUI
 import Combine
 
 class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType {

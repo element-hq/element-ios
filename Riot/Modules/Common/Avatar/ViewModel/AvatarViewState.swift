@@ -16,6 +16,8 @@
 
 import Foundation
 
-struct AvatarViewState {
-    var avatarImage: UIImage?
+enum AvatarViewState {
+    case empty
+    case placeholder(String, Int)
+    case avatar(UIImage)
 }
