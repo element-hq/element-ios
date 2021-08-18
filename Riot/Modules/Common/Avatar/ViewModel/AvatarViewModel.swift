@@ -19,7 +19,7 @@ import Combine
 import DesignKit
 
 /**
-Simple ViewModel that supports loading an avatar image of a particular size
+ Simple ViewModel that supports loading an avatar image of a particular size
  as specified in DesignKit and delivering the UIImage to the UI if possible.
  */
 @available(iOS 14.0, *)
@@ -45,8 +45,9 @@ class AvatarViewModel: InjectableObject, ObservableObject {
         
         guard let mxContentUri = mxContentUri else { return }
         avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
-            .sink { error in
-                MXLog.error("[AvatarService] Failed to retrieve avatar.")
+            .sink { completion in
+                guard case let .failure(error) = completion else { return }
+                MXLog.error("[AvatarService] Failed to retrieve avatar: \(error)")
                 // TODO: Report non-fatal error when we have Sentry or similar.
             } receiveValue: { image in
                 self.viewState = .avatar(image)
