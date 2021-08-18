@@ -141,6 +141,9 @@
 /* A user has change their name to a new name */
 "USER_UPDATED_DISPLAYNAME" = "%@ changed their name to %@";
 
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ changed their name";
+
 /* A user has change their avatar */
 "USER_UPDATED_AVATAR" = "%@ changed their avatar";
 

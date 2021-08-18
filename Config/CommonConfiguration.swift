@@ -41,6 +41,9 @@ class CommonConfiguration: NSObject, Configurable {
         // Enable lazy loading
         settings.syncWithLazyLoadOfRoomMembers = true
         
+        // Customize the default notification content
+        settings.notificationBodyLocalizationKey = "NOTIFICATION"
+        
         settings.messageDetailsAllowSharing = BuildSettings.messageDetailsAllowShare
         settings.messageDetailsAllowSaving = BuildSettings.messageDetailsAllowSave
         settings.messageDetailsAllowCopyingMedia = BuildSettings.messageDetailsAllowCopyMedia

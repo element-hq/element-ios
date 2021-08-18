@@ -108,9 +108,6 @@ class NotificationService: UNNotificationServiceExtension {
         //  no need to check before, if it's nil, the badge will remain unchanged
         content.badge = userInfo["unread_count"] as? NSNumber
         
-        //  update the fallback body to read "Notification" which aligns with the system body when previews are hidden.
-        content.body = NSString.localizedUserNotificationString(forKey: "NOTIFICATION", arguments: [])
-        
         bestAttemptContents[eventId] = content
         contentHandlers[eventId] = contentHandler
         
@@ -408,16 +405,22 @@ class NotificationService: UNNotificationServiceExtension {
                                 notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                                 
                                 // If the sender's membership is join and hasn't changed.
-                                if event.content["membership"] as? String == "join",
-                                   let previousContent = event.prevContent,
-                                   previousContent["membership"] as? String == "join" {
+                                if let newContent = MXRoomMemberEventContent(fromJSON: event.content),
+                                   let prevContentDict = event.prevContent,
+                                   let oldContent = MXRoomMemberEventContent(fromJSON: prevContentDict),
+                                   newContent.membership == kMXMembershipStringJoin,
+                                   oldContent.membership == kMXMembershipStringJoin {
                                     
                                     // Check for display name changes
-                                    if let displayname = event.content["displayname"] as? String,
-                                       let oldDisplayname = previousContent["displayname"] as? String,
-                                       displayname != oldDisplayname {
-                                        
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_DISPLAYNAME", arguments: [oldDisplayname, displayname])
+                                    if newContent.displayname != oldContent.displayname {
+                                        // If there was a change, use the sender's userID if one was blank and show the change.
+                                        if let oldDisplayname = oldContent.displayname ?? event.sender,
+                                           let displayname = newContent.displayname ?? event.sender {
+                                            notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_DISPLAYNAME", arguments: [oldDisplayname, displayname])
+                                        } else {
+                                            // Should never be reached as the event should always have a sender.
+                                            notificationBody = NSString.localizedUserNotificationString(forKey: "GENERIC_USER_UPDATED_DISPLAYNAME", arguments: [eventSenderName])
+                                        }
                                     } else {
                                         // If the display name hasn't changed, handle as an avatar change.
                                         notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_AVATAR", arguments: [eventSenderName])
