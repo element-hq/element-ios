@@ -52,7 +52,8 @@ typedef NS_ENUM(NSUInteger, RoomSentStatus)
 @property (nonatomic) id notificationCenterDidUpdateObserver;
 
 /// Check if all messages have been sent.
-@property (nonatomic, readonly) RoomSentStatus sentStatus;
+/// @param completion Completion block
+- (void)sentStatusWithCompletion:(void (^)(RoomSentStatus))completion;
 
 /**
  Update the room tag.

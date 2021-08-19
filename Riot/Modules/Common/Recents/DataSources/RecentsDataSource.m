@@ -1160,16 +1160,21 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                         onComplete:(void (^)(RecentsDataSourceState *newState))onComplete
 {
     dispatch_async(processingQueue, ^{
-        RecentsDataSourceState *newState = [RecentsDataSource computeStateWithCells:cells recentsDataSourceMode:recentsDataSourceMode matrixSession:mxSession];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            onComplete(newState);
-        });
+        [RecentsDataSource computeStateWithCells:cells
+                           recentsDataSourceMode:recentsDataSourceMode
+                                   matrixSession:mxSession
+                                      completion:^(RecentsDataSourceState * newState) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                onComplete(newState);
+            });
+        }];
     });
 }
 
-+ (RecentsDataSourceState *)computeStateWithCells:(NSArray<id<MXKRecentCellDataStoring>> *)cells
-                            recentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
-                                    matrixSession:(MXSession*)mxSession
++ (void)computeStateWithCells:(NSArray<id<MXKRecentCellDataStoring>> *)cells
+        recentsDataSourceMode:(RecentsDataSourceMode)recentsDataSourceMode
+                matrixSession:(MXSession*)mxSession
+                   completion:(void (^)(RecentsDataSourceState *))completion
 {
     NSDate *startDate = [NSDate date];
     
@@ -1183,8 +1188,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     MissedDiscussionsCount *favouriteMissedDiscussionsCount = [MissedDiscussionsCount new];
     MissedDiscussionsCount *directMissedDiscussionsCount = [MissedDiscussionsCount new];
     MissedDiscussionsCount *groupMissedDiscussionsCount = [MissedDiscussionsCount new];
-    NSUInteger unsentMessagesDirectDiscussionsCount = 0;
-    NSUInteger unsentMessagesGroupDiscussionsCount = 0;
+    __block NSUInteger unsentMessagesDirectDiscussionsCount = 0;
+    __block NSUInteger unsentMessagesGroupDiscussionsCount = 0;
+    
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    
+    //  roomId -> sentStatus map
+    __block NSMutableDictionary<NSString *, NSNumber *> *sentStatusesMap = [NSMutableDictionary dictionaryWithCapacity:cells.count];
     
     for (id<MXKRecentCellDataStoring> recentCellDataStoring in cells)
     {
@@ -1324,74 +1334,123 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }
         }
         
-        if (room.sentStatus != RoomSentStatusOk)
-        {
-            if (room.isDirect)
+        dispatch_group_enter(dispatchGroup);
+        [room sentStatusWithCompletion:^(RoomSentStatus sentStatus) {
+            if (sentStatus != RoomSentStatusOk)
             {
-                unsentMessagesDirectDiscussionsCount ++;
+                if (room.isDirect)
+                {
+                    unsentMessagesDirectDiscussionsCount ++;
+                }
+                else
+                {
+                    unsentMessagesGroupDiscussionsCount ++;
+                }
             }
-            else
-            {
-                unsentMessagesGroupDiscussionsCount ++;
-            }
-        }
+            sentStatusesMap[room.roomId] = @(sentStatus);
+            dispatch_group_leave(dispatchGroup);
+        }];
     }
     
-    if (recentsDataSourceMode == RecentsDataSourceModeHome)
-    {
-        BOOL pinMissedNotif = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
-        BOOL pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;
-        NSComparator comparator = nil;
-        
-        if (pinMissedNotif)
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+        if (recentsDataSourceMode == RecentsDataSourceModeHome)
         {
-            // Sort each rooms collection by considering first the rooms with some missed notifs, the rooms with unread, then the others.
-            comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
-                
-                if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
-                    && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
-                {
-                    return NSOrderedAscending;
-                }
-                
-                if (recentCellData2.roomSummary.room.sentStatus != RoomSentStatusOk
-                    && recentCellData1.roomSummary.room.sentStatus == RoomSentStatusOk)
-                {
-                    return NSOrderedDescending;
-                }
-                
-                if (recentCellData1.highlightCount)
-                {
-                    if (recentCellData2.highlightCount)
-                    {
-                        return NSOrderedSame;
-                    }
-                    else
+            BOOL pinMissedNotif = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
+            BOOL pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;
+            NSComparator comparator = nil;
+            
+            if (pinMissedNotif)
+            {
+                // Sort each rooms collection by considering first the rooms with some missed notifs, the rooms with unread, then the others.
+                comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                    
+                    RoomSentStatus sentStatus1 = (RoomSentStatus)[sentStatusesMap[recentCellData1.roomSummary.roomId] integerValue];
+                    RoomSentStatus sentStatus2 = (RoomSentStatus)[sentStatusesMap[recentCellData2.roomSummary.roomId] integerValue];
+                    
+                    if (sentStatus1 != RoomSentStatusOk
+                        && sentStatus2 == RoomSentStatusOk)
                     {
                         return NSOrderedAscending;
                     }
-                }
-                else if (recentCellData2.highlightCount)
-                {
-                    return NSOrderedDescending;
-                }
-                else if (recentCellData1.notificationCount)
-                {
-                    if (recentCellData2.notificationCount)
+                    
+                    if (sentStatus2 != RoomSentStatusOk
+                        && sentStatus1 == RoomSentStatusOk)
                     {
-                        return NSOrderedSame;
+                        return NSOrderedDescending;
                     }
-                    else
+                    
+                    if (recentCellData1.highlightCount)
+                    {
+                        if (recentCellData2.highlightCount)
+                        {
+                            return NSOrderedSame;
+                        }
+                        else
+                        {
+                            return NSOrderedAscending;
+                        }
+                    }
+                    else if (recentCellData2.highlightCount)
+                    {
+                        return NSOrderedDescending;
+                    }
+                    else if (recentCellData1.notificationCount)
+                    {
+                        if (recentCellData2.notificationCount)
+                        {
+                            return NSOrderedSame;
+                        }
+                        else
+                        {
+                            return NSOrderedAscending;
+                        }
+                    }
+                    else if (recentCellData2.notificationCount)
+                    {
+                        return NSOrderedDescending;
+                    }
+                    else if (pinUnread)
+                    {
+                        if (recentCellData1.hasUnread)
+                        {
+                            if (recentCellData2.hasUnread)
+                            {
+                                return NSOrderedSame;
+                            }
+                            else
+                            {
+                                return NSOrderedAscending;
+                            }
+                        }
+                        else if (recentCellData2.hasUnread)
+                        {
+                            return NSOrderedDescending;
+                        }
+                    }
+                    
+                    return NSOrderedSame;
+                };
+            }
+            else if (pinUnread)
+            {
+                // Sort each rooms collection by considering first the rooms with some unread messages then the others.
+                comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                    
+                    RoomSentStatus sentStatus1 = (RoomSentStatus)[sentStatusesMap[recentCellData1.roomSummary.roomId] integerValue];
+                    RoomSentStatus sentStatus2 = (RoomSentStatus)[sentStatusesMap[recentCellData2.roomSummary.roomId] integerValue];
+                    
+                    if (sentStatus1 != RoomSentStatusOk
+                        && sentStatus2 == RoomSentStatusOk)
                     {
                         return NSOrderedAscending;
                     }
-                }
-                else if (recentCellData2.notificationCount)
-                {
-                    return NSOrderedDescending;
-                }
-                else if (pinUnread)
-                {
+                    
+                    if (sentStatus2 != RoomSentStatusOk
+                        && sentStatus1 == RoomSentStatusOk)
+                    {
+                        return NSOrderedDescending;
+                    }
+                    
                     if (recentCellData1.hasUnread)
                     {
                         if (recentCellData2.hasUnread)
@@ -1407,101 +1466,68 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                     {
                         return NSOrderedDescending;
                     }
-                }
-                
-                return NSOrderedSame;
-            };
+                    
+                    return NSOrderedSame;
+                };
+            }
+            
+            if (comparator)
+            {
+                // Sort the rooms collections
+                [favoriteCellDataArray sortUsingComparator:comparator];
+                [peopleCellDataArray sortUsingComparator:comparator];
+                [conversationCellDataArray sortUsingComparator:comparator];
+                [lowPriorityCellDataArray sortUsingComparator:comparator];
+                [serverNoticeCellDataArray sortUsingComparator:comparator];
+            }
         }
-        else if (pinUnread)
+        else if (favoriteCellDataArray.count > 0 && recentsDataSourceMode == RecentsDataSourceModeFavourites)
         {
-            // Sort each rooms collection by considering first the rooms with some unread messages then the others.
-            comparator = ^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+            // Sort them according to their tag order
+            [favoriteCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
                 
-                if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
-                    && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
+                return [mxSession compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
+                
+            }];
+        }
+        else if (conversationCellDataArray.count > 0 && (recentsDataSourceMode == RecentsDataSourceModeRooms || recentsDataSourceMode == RecentsDataSourceModePeople))
+        {
+            [conversationCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
+                
+                RoomSentStatus sentStatus1 = (RoomSentStatus)[sentStatusesMap[recentCellData1.roomSummary.roomId] integerValue];
+                RoomSentStatus sentStatus2 = (RoomSentStatus)[sentStatusesMap[recentCellData2.roomSummary.roomId] integerValue];
+                
+                if (sentStatus1 != RoomSentStatusOk
+                    && sentStatus2 == RoomSentStatusOk)
                 {
                     return NSOrderedAscending;
                 }
                 
-                if (recentCellData2.roomSummary.room.sentStatus != RoomSentStatusOk
-                    && recentCellData1.roomSummary.room.sentStatus == RoomSentStatusOk)
+                if (sentStatus2 != RoomSentStatusOk
+                    && sentStatus1 == RoomSentStatusOk)
                 {
                     return NSOrderedDescending;
                 }
                 
-                if (recentCellData1.hasUnread)
-                {
-                    if (recentCellData2.hasUnread)
-                    {
-                        return NSOrderedSame;
-                    }
-                    else
-                    {
-                        return NSOrderedAscending;
-                    }
-                }
-                else if (recentCellData2.hasUnread)
-                {
-                    return NSOrderedDescending;
-                }
-                
-                return NSOrderedSame;
-            };
+                return NSOrderedAscending;
+            }];
         }
         
-        if (comparator)
-        {
-            // Sort the rooms collections
-            [favoriteCellDataArray sortUsingComparator:comparator];
-            [peopleCellDataArray sortUsingComparator:comparator];
-            [conversationCellDataArray sortUsingComparator:comparator];
-            [lowPriorityCellDataArray sortUsingComparator:comparator];
-            [serverNoticeCellDataArray sortUsingComparator:comparator];
-        }
-    }
-    else if (favoriteCellDataArray.count > 0 && recentsDataSourceMode == RecentsDataSourceModeFavourites)
-    {
-        // Sort them according to their tag order
-        [favoriteCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
-            
-            return [mxSession compareRoomsByTag:kMXRoomTagFavourite room1:recentCellData1.roomSummary.room room2:recentCellData2.roomSummary.room];
-            
-        }];
-    }
-    else if (conversationCellDataArray.count > 0 && (recentsDataSourceMode == RecentsDataSourceModeRooms || recentsDataSourceMode == RecentsDataSourceModePeople))
-    {
-        [conversationCellDataArray sortUsingComparator:^NSComparisonResult(id<MXKRecentCellDataStoring> recentCellData1, id<MXKRecentCellDataStoring> recentCellData2) {
-            
-            if (recentCellData1.roomSummary.room.sentStatus != RoomSentStatusOk
-                && recentCellData2.roomSummary.room.sentStatus == RoomSentStatusOk)
-            {
-                return NSOrderedAscending;
-            }
-            
-            if (recentCellData2.roomSummary.room.sentStatus != RoomSentStatusOk
-                && recentCellData1.roomSummary.room.sentStatus == RoomSentStatusOk)
-            {
-                return NSOrderedDescending;
-            }
-            
-            return NSOrderedAscending;
-        }];
-    }
-    
-    MXLogDebug(@"[RecentsDataSource] refreshRoomsSections: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
+        MXLogDebug(@"[RecentsDataSource] refreshRoomsSections: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
 
-    return [[RecentsDataSourceState alloc]
-            initWithInvitesCellDataArray:invitesCellDataArray
-            favoriteCellDataArray:favoriteCellDataArray
-            peopleCellDataArray:peopleCellDataArray
-            conversationCellDataArray:conversationCellDataArray
-            lowPriorityCellDataArray:lowPriorityCellDataArray
-            serverNoticeCellDataArray:serverNoticeCellDataArray
-            favouriteMissedDiscussionsCount:favouriteMissedDiscussionsCount
-            directMissedDiscussionsCount:directMissedDiscussionsCount
-            groupMissedDiscussionsCount:groupMissedDiscussionsCount
-            unsentMessagesDirectDiscussionsCount:unsentMessagesDirectDiscussionsCount
-            unsentMessagesGroupDiscussionsCount:unsentMessagesGroupDiscussionsCount];
+        completion([[RecentsDataSourceState alloc]
+                    initWithInvitesCellDataArray:invitesCellDataArray
+                    favoriteCellDataArray:favoriteCellDataArray
+                    peopleCellDataArray:peopleCellDataArray
+                    conversationCellDataArray:conversationCellDataArray
+                    lowPriorityCellDataArray:lowPriorityCellDataArray
+                    serverNoticeCellDataArray:serverNoticeCellDataArray
+                    favouriteMissedDiscussionsCount:favouriteMissedDiscussionsCount
+                    directMissedDiscussionsCount:directMissedDiscussionsCount
+                    groupMissedDiscussionsCount:groupMissedDiscussionsCount
+                    unsentMessagesDirectDiscussionsCount:unsentMessagesDirectDiscussionsCount
+                    unsentMessagesGroupDiscussionsCount:unsentMessagesGroupDiscussionsCount]);
+    });
 }
 
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes

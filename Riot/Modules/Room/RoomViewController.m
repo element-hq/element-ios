@@ -4621,47 +4621,52 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }
             }];
         }
-        else if ([self checkUnsentMessages] == NO)
+        else
         {
-            // Show "scroll to bottom" icon when the most recent message is not visible,
-            // or when the timelime is not live (this icon is used to go back to live).
-            // Note: we check if `currentEventIdAtTableBottom` is set to know whether the table has been rendered at least once.
-            if (!self.roomDataSource.isLive || (currentEventIdAtTableBottom && [self isBubblesTableScrollViewAtTheBottom] == NO))
-            {
-                if (self.roomDataSource.room)
+            [self checkUnsentMessagesWithCompletion:^(BOOL result) {
+                if (result == NO)
                 {
-                    // Retrieve the unread messages count
-                    NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
-                    
-                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
-                    self.scrollToBottomHidden = NO;
-                }
-                else
-                {
-                    //  will be here for left rooms
-                    self.scrollToBottomBadgeLabel.text = nil;
-                    self.scrollToBottomHidden = YES;
-                }
-            }
-            else if (serverNotices.usageLimit && serverNotices.usageLimit.isServerNoticeUsageLimit)
-            {
-                self.scrollToBottomHidden = YES;
-                self.activitiesViewExpanded = YES;
-                [roomActivitiesView showResourceUsageLimitNotice:serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContactURL) {
-                    [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
-                        if (!success)
+                    // Show "scroll to bottom" icon when the most recent message is not visible,
+                    // or when the timelime is not live (this icon is used to go back to live).
+                    // Note: we check if `currentEventIdAtTableBottom` is set to know whether the table has been rendered at least once.
+                    if (!self.roomDataSource.isLive || (self->currentEventIdAtTableBottom && [self isBubblesTableScrollViewAtTheBottom] == NO))
+                    {
+                        if (self.roomDataSource.room)
                         {
-                            MXLogDebug(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                            // Retrieve the unread messages count
+                            NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
+                            
+                            self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                            self.scrollToBottomHidden = NO;
                         }
-                    }];
-                }];
-            }
-            else
-            {
-                self.scrollToBottomHidden = YES;
-                self.activitiesViewExpanded = NO;
-                [self refreshTypingNotification];
-            }
+                        else
+                        {
+                            //  will be here for left rooms
+                            self.scrollToBottomBadgeLabel.text = nil;
+                            self.scrollToBottomHidden = YES;
+                        }
+                    }
+                    else if (self->serverNotices.usageLimit && self->serverNotices.usageLimit.isServerNoticeUsageLimit)
+                    {
+                        self.scrollToBottomHidden = YES;
+                        self.activitiesViewExpanded = YES;
+                        [roomActivitiesView showResourceUsageLimitNotice:self->serverNotices.usageLimit onAdminContactTapped:^(NSURL *adminContactURL) {
+                            [[UIApplication sharedApplication] vc_open:adminContactURL completionHandler:^(BOOL success) {
+                                if (!success)
+                                {
+                                    MXLogDebug(@"[RoomVC] refreshActivitiesViewDisplay: adminContact(%@) cannot be opened", adminContactURL);
+                                }
+                            }];
+                        }];
+                    }
+                    else
+                    {
+                        self.scrollToBottomHidden = YES;
+                        self.activitiesViewExpanded = NO;
+                        [self refreshTypingNotification];
+                    }
+                }
+            }];
         }
         
         // Recognize swipe downward to dismiss keyboard if any
@@ -4782,87 +4787,92 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 #pragma mark - Unsent Messages Handling
 
--(BOOL)checkUnsentMessages
+-(void)checkUnsentMessagesWithCompletion:(void (^)(BOOL))completion;
 {
-    RoomSentStatus sentStatus = RoomSentStatusOk;
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
-        sentStatus = self.roomDataSource.room.sentStatus;
-        
-        if (sentStatus != RoomSentStatusOk)
-        {
-            NSString *notification = sentStatus == RoomSentStatusSentFailedDueToUnknownDevices ?
-            NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
-            NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
+        [self.roomDataSource.room sentStatusWithCompletion:^(RoomSentStatus sentStatus) {
+            if (sentStatus != RoomSentStatusOk)
+            {
+                NSString *notification = sentStatus == RoomSentStatusSentFailedDueToUnknownDevices ?
+                NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
+                NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
+                
+                RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
+                self.activitiesViewExpanded = YES;
+                [roomActivitiesView displayUnsentMessagesNotification:notification withResendLink:^{
+                    
+                    [self resendAllUnsentMessages];
+                    
+                } andCancelLink:^{
+                    
+                    [self cancelAllUnsentMessages];
+                    
+                } andIconTapGesture:^{
+                    
+                    if (self->currentAlert)
+                    {
+                        [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
+                    }
+                    
+                    __weak __typeof(self) weakSelf = self;
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                    
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_resend_unsent_messages", @"Vector", nil)
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action) {
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            [self resendAllUnsentMessages];
+                            self->currentAlert = nil;
+                        }
+                        
+                    }]];
+                    
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_delete_unsent_messages", @"Vector", nil)
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action) {
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            [self cancelAllUnsentMessages];
+                            self->currentAlert = nil;
+                        }
+                        
+                    }]];
+                    
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:^(UIAlertAction * action) {
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            self->currentAlert = nil;
+                        }
+                        
+                    }]];
+                    
+                    [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnsentMessagesMenuAlert"];
+                    [self->currentAlert popoverPresentationController].sourceView = roomActivitiesView;
+                    [self->currentAlert popoverPresentationController].sourceRect = roomActivitiesView.bounds;
+                    [self presentViewController:self->currentAlert animated:YES completion:nil];
+                    
+                }];
+            }
             
-            RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
-            self.activitiesViewExpanded = YES;
-            [roomActivitiesView displayUnsentMessagesNotification:notification withResendLink:^{
-                
-                [self resendAllUnsentMessages];
-                
-            } andCancelLink:^{
-                
-                [self cancelAllUnsentMessages];
-                
-            } andIconTapGesture:^{
-                
-                if (currentAlert)
-                {
-                    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-                }
-                
-                __weak __typeof(self) weakSelf = self;
-                currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_resend_unsent_messages", @"Vector", nil)
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
-                    
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        [self resendAllUnsentMessages];
-                        self->currentAlert = nil;
-                    }
-                    
-                }]];
-                
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_delete_unsent_messages", @"Vector", nil)
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
-                    
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        [self cancelAllUnsentMessages];
-                        self->currentAlert = nil;
-                    }
-                    
-                }]];
-                
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
-                                                                 style:UIAlertActionStyleCancel
-                                                               handler:^(UIAlertAction * action) {
-                    
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        self->currentAlert = nil;
-                    }
-                    
-                }]];
-                
-                [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnsentMessagesMenuAlert"];
-                [currentAlert popoverPresentationController].sourceView = roomActivitiesView;
-                [currentAlert popoverPresentationController].sourceRect = roomActivitiesView.bounds;
-                [self presentViewController:currentAlert animated:YES completion:nil];
-                
-            }];
-        }
+            completion(sentStatus != RoomSentStatusOk);
+        }];
     }
-    
-    return sentStatus != RoomSentStatusOk;
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completion(NO);
+        });
+    }
 }
 
 - (void)eventDidChangeSentState:(NSNotification *)notif
@@ -4883,62 +4893,63 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // List all unknown devices
         unknownDevices  = [[MXUsersDevicesMap alloc] init];
         
-        NSArray<MXEvent*> *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
-        for (MXEvent *event in outgoingMsgs)
-        {
-            if (event.sentState == MXEventSentStateFailed
-                && [event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
-                && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+        [self.roomDataSource.room outgoingMessagesWithCompletion:^(NSArray<MXEvent *> * _Nullable outgoingMsgs) {
+            for (MXEvent *event in outgoingMsgs)
             {
-                MXUsersDevicesMap<MXDeviceInfo*> *eventUnknownDevices = event.sentError.userInfo[MXEncryptingErrorUnknownDeviceDevicesKey];
-                
-                [unknownDevices addEntriesFromMap:eventUnknownDevices];
-            }
-        }
-        
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
-                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
-                                                    preferredStyle:UIAlertControllerStyleAlert];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-                
-                [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
-            }
-            
-        }]];
-        
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
-            
-            if (weakSelf)
-            {
-                typeof(self) self = weakSelf;
-                self->currentAlert = nil;
-                
-                // Acknowledge the existence of all devices
-                [self startActivityIndicator];
-                [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+                if (event.sentState == MXEventSentStateFailed
+                    && [event.sentError.domain isEqualToString:MXEncryptingErrorDomain]
+                    && event.sentError.code == MXEncryptingErrorUnknownDeviceCode)
+                {
+                    MXUsersDevicesMap<MXDeviceInfo*> *eventUnknownDevices = event.sentError.userInfo[MXEncryptingErrorUnknownDeviceDevicesKey];
                     
-                    self->unknownDevices = nil;
-                    [self stopActivityIndicator];
-                    
-                    // And resend pending messages
-                    [self resendAllUnsentMessages];
-                }];
+                    [self->unknownDevices addEntriesFromMap:eventUnknownDevices];
+                }
             }
             
-        }]];
-        
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+            self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
+                                                                     message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    self->currentAlert = nil;
+                    
+                    [self performSegueWithIdentifier:@"showUnknownDevices" sender:self];
+                }
+                
+            }]];
+            
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                
+                if (weakSelf)
+                {
+                    typeof(self) self = weakSelf;
+                    self->currentAlert = nil;
+                    
+                    // Acknowledge the existence of all devices
+                    [self startActivityIndicator];
+                    [self.mainSession.crypto setDevicesKnown:self->unknownDevices complete:^{
+                        
+                        self->unknownDevices = nil;
+                        [self stopActivityIndicator];
+                        
+                        // And resend pending messages
+                        [self resendAllUnsentMessages];
+                    }];
+                }
+                
+            }]];
+            
+            [self->currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
+            [self presentViewController:self->currentAlert animated:YES completion:nil];
+        }];
     }
 }
 
@@ -4958,19 +4969,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)resendAllUnsentMessages
 {
     // List unsent event ids
-    NSArray *outgoingMsgs = self.roomDataSource.room.outgoingMessages;
-    NSMutableArray *failedEventIds = [NSMutableArray arrayWithCapacity:outgoingMsgs.count];
-    
-    for (MXEvent *event in outgoingMsgs)
-    {
-        if (event.sentState == MXEventSentStateFailed)
+    [self.roomDataSource.room outgoingMessagesWithCompletion:^(NSArray<MXEvent *> * _Nullable outgoingMsgs) {
+        NSMutableArray *failedEventIds = [NSMutableArray arrayWithCapacity:outgoingMsgs.count];
+        
+        for (MXEvent *event in outgoingMsgs)
         {
-            [failedEventIds addObject:event.eventId];
+            if (event.sentState == MXEventSentStateFailed)
+            {
+                [failedEventIds addObject:event.eventId];
+            }
         }
-    }
-    
-    // Launch iterative operation
-    [self resendFailedEvent:0 inArray:failedEventIds];
+        
+        // Launch iterative operation
+        [self resendFailedEvent:0 inArray:failedEventIds];
+    }];
 }
 
 - (void)resendFailedEvent:(NSUInteger)index inArray:(NSArray*)failedEventIds
@@ -5011,20 +5023,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         // Remove unsent event ids
-        for (NSUInteger index = 0; index < self.roomDataSource.room.outgoingMessages.count;)
-        {
-            MXEvent *event = self.roomDataSource.room.outgoingMessages[index];
-            if (event.sentState == MXEventSentStateFailed)
+        [self.roomDataSource.room outgoingMessagesWithCompletion:^(NSArray<MXEvent *> * _Nullable outgoingMessages) {
+            for (MXEvent *event in outgoingMessages)
             {
-                [self.roomDataSource removeEventWithEventId:event.eventId];
+                if (event.sentState == MXEventSentStateFailed)
+                {
+                    [self.roomDataSource removeEventWithEventId:event.eventId];
+                }
             }
-            else
-            {
-                index ++;
-            }
-        }
-        
-        [self refreshActivitiesViewDisplay];
+            
+            [self refreshActivitiesViewDisplay];
+        }];
     }]];
     
     [self presentViewController:currentAlert animated:YES completion:nil];
@@ -5143,19 +5152,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                                  animations:^{
                     
-                    readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
-                    readMarkerTableViewCell.readMarkerView.alpha = 0;
+                    self->readMarkerTableViewCell.readMarkerViewLeadingConstraint.constant = self->readMarkerTableViewCell.readMarkerViewTrailingConstraint.constant = self->readMarkerTableViewCell.bubbleOverlayContainer.frame.size.width / 2;
+                    self->readMarkerTableViewCell.readMarkerView.alpha = 0;
                     
                     // Force to render the view
-                    [readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
+                    [self->readMarkerTableViewCell.bubbleOverlayContainer layoutIfNeeded];
                     
                 }
                                  completion:^(BOOL finished){
                     
-                    readMarkerTableViewCell.readMarkerView.hidden = YES;
-                    readMarkerTableViewCell.readMarkerView.alpha = 1;
+                    self->readMarkerTableViewCell.readMarkerView.hidden = YES;
+                    self->readMarkerTableViewCell.readMarkerView.alpha = 1;
                     
-                    readMarkerTableViewCell = nil;
+                    self->readMarkerTableViewCell = nil;
                 }];
                 
             });
