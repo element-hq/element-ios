@@ -12,9 +12,14 @@
 #import "YXWalletCopyTableViewCell.h"
 #import "YXWalletAccountModel.h"
 
+@interface YXWalletAccountDetailViewModel ()
+@property (nonatomic , strong)YXWalletPaymentAccountRecordsItem *model;
+@end
+
 @implementation YXWalletAccountDetailViewModel
 
 - (void)reloadNewData:(YXWalletPaymentAccountRecordsItem *)model{
+    self.model = model;
     model.isDetail = YES;
     NSMutableArray<SCETRowItem *> *rowItems = [NSMutableArray new];
     
@@ -56,9 +61,13 @@
     bottomItem.cellHeight = 60;
     [rowItems addObject:bottomItem];
     
-    SCETRowItem *copyItem = [SCETRowItem rowItemWithRowData:@"解除绑定" cellClassString:NSStringFromClass([YXWalletCopyTableViewCell class])];
-    copyItem.cellHeight = 40;
-    [rowItems addObject:copyItem];
+    //只有银行卡有开户行
+    if ([model.type isEqualToString:@"1"]) {
+        SCETRowItem *copyItem = [SCETRowItem rowItemWithRowData:@"解除绑定" cellClassString:NSStringFromClass([YXWalletCopyTableViewCell class])];
+        copyItem.cellHeight = 40;
+        [rowItems addObject:copyItem];
+    }
+
     
     SCETSectionItem *totalCountsectionItem = [SCETSectionItem sc_sectionItemWithRowItems:rowItems];
     [self.sectionItems addObject:totalCountsectionItem];
@@ -84,9 +93,11 @@
 
 
 - (void)walletAddAccountUnBinding{
+    
+    
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
 
-    [paramDict setObject:@"1404735292388151298" forKey:@"id"];
+    [paramDict setObject:self.model.ID forKey:@"id"];
     
     [NetWorkManager POST:kURL(@"/account/unbind") parameters:paramDict success:^(id  _Nonnull responseObject) {
         
@@ -97,11 +108,13 @@
                 if (self.unBindingSuccessBlock) {
                     self.unBindingSuccessBlock();
                 }
+            }else{
+                [MBProgressHUD showError:model.msg];
             }
         }
-        
+
     } failure:^(NSError * _Nonnull error) {
-        [MBProgressHUD showError:@"添加失败"];
+        [MBProgressHUD showError:@"解除失败"];
     }];
     
 }

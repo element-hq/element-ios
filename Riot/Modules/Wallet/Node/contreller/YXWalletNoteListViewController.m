@@ -15,9 +15,19 @@
 @property (nonatomic , strong)UITableView *tableView;
 @property (nonatomic , strong)YXNodeListViewModel *viewModel;
 @property (nonatomic , strong)YXWalletProxy *proxy;
+@property (nonatomic , strong)NSTimer *timer;
 @end
 
 @implementation YXWalletNoteListViewController
+
+- (void)deleteTimer{
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
+-(void)dealloc{
+  
+}
 
 - (YXWalletProxy *)proxy{
     if (!_proxy) {
@@ -32,11 +42,42 @@
     [self reloadNewData];
     self.proxy.nodeListViewModel = self.viewModel;
     self.eventProxy = self.proxy;
+    
+    // 添加定时器
+    [self seupTimer];
+    
+    [self addNoti];
 }
+
+- (void)seupTimer{
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:60 * 3 target:self selector:@selector(reloadNewData) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)addNoti{
+    //进入后台
+    YXWeakSelf
+    [[NSNotificationCenter defaultCenter]
+     addObserverForName:UIApplicationDidEnterBackgroundNotification
+     object:nil queue:[NSOperationQueue mainQueue]
+     usingBlock:^(NSNotification * _Nonnull note) {
+         [weakSelf.timer setFireDate:[NSDate distantFuture]];
+     }];
+    
+    //进入前台
+    [[NSNotificationCenter defaultCenter]
+     addObserverForName:UIApplicationWillEnterForegroundNotification
+     object:nil queue:[NSOperationQueue mainQueue]
+     usingBlock:^(NSNotification * _Nonnull note) {
+         [weakSelf.timer setFireDate:[NSDate date]];
+     }];
+}
+
 
 - (void)reloadNewData{
     [self.viewModel reloadNewData:self.model];
 }
+
 
 
 -(void)viewDidAppear:(BOOL)animated{

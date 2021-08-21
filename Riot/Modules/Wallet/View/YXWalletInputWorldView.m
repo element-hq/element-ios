@@ -65,7 +65,7 @@
     if (!_nextLabel) {
         _nextLabel = [[UILabel alloc]init];
         _nextLabel.numberOfLines = 0;
-        _nextLabel.text = @"下一个";
+        _nextLabel.text = @"下一步";
         _nextLabel.font = [UIFont fontWithName:@"PingFang SC" size: 15];
         _nextLabel.backgroundColor = kWhiteColor;
         _nextLabel.textColor = WalletColor;

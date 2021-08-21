@@ -58,7 +58,6 @@ static const char *kQRCodeScanQueueName = "QRCodeScanQueue";
     [super viewWillDisappear:animated];
     [self stopScan];
     [self.timer invalidate];
-
 }
 
 

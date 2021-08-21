@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong)YXWalletMyWalletRecordsItem *model;
 @property (nonatomic , copy)void (^requestNodeSuccessBlock)(YXNodeListModel *model);
 - (void)reloadNewData;
+- (void)deleteTimer;
 @end
 
 NS_ASSUME_NONNULL_END

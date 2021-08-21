@@ -9,6 +9,7 @@
 #import "YXWalletNodeHomeViewController.h"
 #import "YXWalletNoteListViewController.h"
 #import "YXNodeListModel.h"
+#import "YXNodeListViewModel.h"
 @interface YXWalletNodeHomeViewController ()
 @property (nonatomic, strong) NSMutableArray *menuList;
 @property (nonatomic, strong) YXWalletNoteListViewController *allNode;
@@ -18,10 +19,17 @@
 @property (nonatomic, copy) NSString *allTitle;
 @property (nonatomic, copy) NSString *alreadylTitle;
 @property (nonatomic, copy) NSString *willTitle;
+
 @end
 
 @implementation YXWalletNodeHomeViewController
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.allNode deleteTimer];
+    [self.alreadylConfigure deleteTimer];
+    [self.willConfigure deleteTimer];
+}
 
 -(void)dealloc{
     
@@ -52,6 +60,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initUI];
+    self.allNode.view.backgroundColor = UIColor.whiteColor;
+
+    self.alreadylConfigure.view.backgroundColor = UIColor.whiteColor;
+
+    self.willConfigure.view.backgroundColor = UIColor.whiteColor;
 }
 
 #pragma mark - UI
@@ -203,6 +216,7 @@
     }
     return _willConfigure;
 }
+
 
 - (YXWalletMyWalletRecordsItem *)getConfigModel{
     NSDictionary *dic = self.model.mj_keyValues;

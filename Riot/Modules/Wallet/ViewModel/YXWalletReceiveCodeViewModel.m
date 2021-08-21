@@ -22,6 +22,8 @@
             YXWalletMyWalletAddressModel *myWalletModel = [YXWalletMyWalletAddressModel mj_objectWithKeyValues:responseObject];
             if (myWalletModel.status == 200) {
                 [weakSelf updataUIWith:model andaddress:myWalletModel.data];
+            }else{
+                [MBProgressHUD showError:@"接口请求报错，稍后再试"];
             }
         }
         [MBProgressHUD hideHUD];

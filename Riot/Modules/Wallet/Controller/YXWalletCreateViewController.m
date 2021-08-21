@@ -91,7 +91,15 @@
         _naviView.backgroundColor = UIColor.whiteColor;
         YXWeakSelf
         _naviView.backBlock = ^{
-            [weakSelf.navigationController popViewControllerAnimated:YES];
+            
+            if (!weakSelf.helpWordView.hidden) {
+                weakSelf.helpWordView.hidden = YES;
+                weakSelf.createWorldView.hidden = NO;
+            }else{
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+            
+ 
         };
  
     }
@@ -207,7 +215,7 @@
         YXWeakSelf
         [_inputWorldView setNextBlock:^{
             if (weakSelf.inputWorldView.helpWorld.length > 0) {
-                [weakSelf creatWalletWith:weakSelf.inputWorldView.helpWorld];
+                [weakSelf creatWalletWith:weakSelf.inputWorldView.helpWorld import:YES];
             }else{
                 [MBProgressHUD showSuccess:@"请输入助记词"];
             }
@@ -227,16 +235,16 @@
             weakSelf.helpWordView.showTip = isEqual;
             if (isEqual) {//助记词正确创建钱包
                 NSString *helpWord = [array componentsJoinedByString:@" "];
-                [weakSelf creatWalletWith:helpWord];
+                [weakSelf creatWalletWith:helpWord import:NO];
             }
         }];
     }
     return _helpWordView;
 }
 
-- (void)creatWalletWith:(NSString *)helpWord{
+- (void)creatWalletWith:(NSString *)helpWord import:(BOOL)import{
     YXWeakSelf
-    [self.viewModel createWalletCreateHelpWord:helpWord walletName:self.textField.text andCoinid:self.coinModel.ID complete:^(NSDictionary * _Nonnull responseObject) {
+    [self.viewModel createWalletCreateHelpWord:helpWord walletName:self.textField.text andCoinid:self.coinModel.ID import:import complete:^(NSDictionary * _Nonnull responseObject) {
         YXWalletCreateModel *createModel = [YXWalletCreateModel mj_objectWithKeyValues:responseObject];
         if (createModel.status == 200) {
             //创建成功

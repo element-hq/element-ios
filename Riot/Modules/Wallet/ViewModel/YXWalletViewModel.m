@@ -33,6 +33,9 @@
             YXWalletMyWalletModel *myWalletModel = [YXWalletMyWalletModel mj_objectWithKeyValues:responseObject];
             if (myWalletModel.status == 200) {
                 [weakSelf setupListHeadData:myWalletModel.data.records];
+            }else{
+                //错误处理
+                [weakSelf setupListHeadData:[NSArray array]];
             }
         }
    

@@ -31,13 +31,20 @@
 }
 
 - (void)createWalletCreateHelpWord:(NSString *)mnemonic walletName:(NSString *)walletName andCoinid:(NSString *)coinId complete:(nullable void (^)(NSDictionary *responseObject))complete{
+    
+    [self createWalletCreateHelpWord:mnemonic walletName:walletName andCoinid:coinId import:NO complete:complete];
+}
+
+- (void)createWalletCreateHelpWord:(NSString *)mnemonic walletName:(NSString *)walletName andCoinid:(NSString *)coinId import:(BOOL)import complete:(nullable void (^)(NSDictionary *responseObject))complete{
+    
     [MBProgressHUD showMessage:@"创建钱包中"];
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
     [paramDict setObject:walletName forKey:@"walletName"];
     [paramDict setObject:coinId forKey:@"coinId"];
     [paramDict setObject:mnemonic forKey:@"mnemonic"];
     [paramDict setObject:WalletManager.userId forKey:@"userId"];
-    [NetWorkManager POST:kURL(@"/wallet/save_wallet") parameters:paramDict success:^(id  _Nonnull responseObject) {
+    NSString *URLString = import ? kURL(@"/wallet/import_wallet") : kURL(@"/wallet/save_wallet");
+    [NetWorkManager POST:URLString parameters:paramDict success:^(id  _Nonnull responseObject) {
         if (complete) {
             complete(responseObject);
         }
@@ -45,5 +52,6 @@
     } failure:^(NSError * _Nonnull error) {
         [MBProgressHUD hideHUD];
     }];
+    
 }
 @end

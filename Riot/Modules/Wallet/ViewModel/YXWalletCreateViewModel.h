@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)getWalletCreateHelpWord:(NSString *)walletName andCoinid:(NSString *)coinId complete:(nullable void (^)(NSDictionary *responseObject))complete;
 
 - (void)createWalletCreateHelpWord:(NSString *)mnemonic walletName:(NSString *)walletName andCoinid:(NSString *)coinId complete:(nullable void (^)(NSDictionary *responseObject))complete;
+
+- (void)createWalletCreateHelpWord:(NSString *)mnemonic walletName:(NSString *)walletName andCoinid:(NSString *)coinId import:(BOOL)import complete:(nullable void (^)(NSDictionary *responseObject))complete;
 @end
 
 NS_ASSUME_NONNULL_END

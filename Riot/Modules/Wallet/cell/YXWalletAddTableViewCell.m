@@ -11,7 +11,7 @@
 extern NSString *const kYXWalletShowAddViewFountion;
 @interface YXWalletAddTableViewCell ()
 @property (nonatomic , strong) UILabel *titleLabel;
-@property (nonatomic , strong)UIButton *addBtn;
+@property (nonatomic , strong) UIButton *addBtn;
 @end
 
 @implementation YXWalletAddTableViewCell
