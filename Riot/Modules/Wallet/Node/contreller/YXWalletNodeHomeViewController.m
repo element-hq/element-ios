@@ -135,6 +135,12 @@
     return vc;
 }
 
+-(void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex{
+    YXWalletNoteListViewController *vc = [magicView.viewControllers objectAtIndex:itemIndex];
+    [vc reloadNewData];
+}
+
+
 #pragma mark - Lazy
 
 - (NSMutableArray *)menuList {

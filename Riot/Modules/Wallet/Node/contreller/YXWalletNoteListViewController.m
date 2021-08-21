@@ -29,14 +29,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupUI];
-    [self.viewModel reloadNewData:self.model];
+    [self reloadNewData];
     self.proxy.nodeListViewModel = self.viewModel;
     self.eventProxy = self.proxy;
 }
 
+- (void)reloadNewData{
+    [self.viewModel reloadNewData:self.model];
+}
+
+
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-//    [self.viewModel reloadNewData:self.model];
 }
 
 - (void)setupUI{

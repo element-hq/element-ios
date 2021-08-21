@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YXWalletNoteListViewController : YXBaseViewController
 @property (nonatomic , strong)YXWalletMyWalletRecordsItem *model;
 @property (nonatomic , copy)void (^requestNodeSuccessBlock)(YXNodeListModel *model);
+- (void)reloadNewData;
 @end
 
 NS_ASSUME_NONNULL_END

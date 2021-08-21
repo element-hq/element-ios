@@ -44,8 +44,12 @@
     NSMutableArray<SCETRowItem *> *rowItems = [NSMutableArray new];
     
     YXWeakSelf
-    
+    __block BOOL haveAccount = NO;
+    __block YXWalletPaymentAccountRecordsItem *firstModel = nil;
     [array enumerateObjectsUsingBlock:^(YXWalletPaymentAccountRecordsItem * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx == 0) {
+            firstModel = obj;
+        }
         obj.isDetail = NO;
         SCETRowItem *lineItem = [SCETRowItem rowItemWithRowData:@"test cell" cellClassString:NSStringFromClass([YXLineTableViewCell class])];
         lineItem.cellHeight = 30;
@@ -58,17 +62,25 @@
         if ([obj.acquiescence isEqualToString:@"1"]) {
             if (weakSelf.getDefaultAccountBlock) {
                 weakSelf.getDefaultAccountBlock(obj);
+                haveAccount = YES;
             }
         }
         
         if (array.count == 1) {//如果用户只设置了一个账号，默认是默认账户
             if (weakSelf.getDefaultAccountBlock) {
                 weakSelf.getDefaultAccountBlock(obj);
+                haveAccount = YES;
             }
         }
         
     }];
     
+    if (!haveAccount && firstModel) {
+        if (weakSelf.getDefaultAccountBlock) {
+            weakSelf.getDefaultAccountBlock(firstModel);
+            haveAccount = YES;
+        }
+    }
     
     SCETSectionItem *totalCountsectionItem = [SCETSectionItem sc_sectionItemWithRowItems:rowItems];
     [self.sectionItems addObject:totalCountsectionItem];
