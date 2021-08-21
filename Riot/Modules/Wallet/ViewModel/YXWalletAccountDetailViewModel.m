@@ -91,15 +91,14 @@
     
 }
 
-
+//解除绑定
 - (void)walletAddAccountUnBinding{
-    
     
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
 
     [paramDict setObject:self.model.ID forKey:@"id"];
     
-    [NetWorkManager POST:kURL(@"/account/unbind") parameters:paramDict success:^(id  _Nonnull responseObject) {
+    [NetWorkManager DELETE:kURL(@"/account") parameters:paramDict success:^(id  _Nonnull responseObject) {
         
         if ([responseObject isKindOfClass:NSDictionary.class]) {
             NSDictionary *dic = responseObject;
