@@ -113,7 +113,11 @@
     
     self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
     
-    if (self.mxRoom.isDirect)
+    if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+    {
+        _searchBarView.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    }
+    else if (self.mxRoom.isDirect)
     {
         _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
     }
@@ -340,7 +344,11 @@
         {
             self.searchBarHeader.hidden = NO;
             
-            if (self.mxRoom.isDirect)
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+            }
+            else if (self.mxRoom.isDirect)
             {
                 self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
             }
@@ -870,6 +878,19 @@
     }
 }
 
+- (void)showDetailFor:(MXRoomMember* _Nonnull)member from:(UIView* _Nullable)sourceView {
+    memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+    
+    // Set delegate to handle action on member (start chat, mention)
+    memberDetailsViewController.delegate = self;
+    memberDetailsViewController.enableMention = _enableMention;
+    memberDetailsViewController.enableVoipCall = NO;
+    
+    [memberDetailsViewController displayRoomMember:member withMatrixRoom:self.mxRoom];
+    
+    [self pushViewController:memberDetailsViewController];
+}
+
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -1185,16 +1206,8 @@
     
     if (contact.mxMember)
     {
-        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
-        
-        // Set delegate to handle action on member (start chat, mention)
-        memberDetailsViewController.delegate = self;
-        memberDetailsViewController.enableMention = _enableMention;
-        memberDetailsViewController.enableVoipCall = NO;
-        
-        [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
-        
-        [self pushViewController:memberDetailsViewController];
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        [self showDetailFor:contact.mxMember from:selectedCell];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

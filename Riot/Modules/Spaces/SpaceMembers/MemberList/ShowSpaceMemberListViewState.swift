@@ -21,6 +21,6 @@ import Foundation
 /// ShowSpaceMemberListViewController view state
 enum ShowSpaceMemberListViewState {
     case loading
-    case loaded(_ displayName: String)
+    case loaded(_ space: MXSpace)
     case error(Error)
 }

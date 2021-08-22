@@ -18,37 +18,32 @@
 
 import UIKit
 
-final class ShowSpaceMemberListViewController: UIViewController {
+final class ShowSpaceMemberListViewController: RoomParticipantsViewController {
     
     // MARK: - Constants
     
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
-    
     // MARK: - Properties
-    
-    // MARK: Outlets
-
-    @IBOutlet private weak var scrollView: UIScrollView!
-    
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var doneButton: UIButton!
     
     // MARK: Private
 
     private var viewModel: ShowSpaceMemberListViewModelType!
     private var theme: Theme!
-    private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private var titleView: MainTitleView!
+    private var emptyView: RootTabEmptyView!
 
+    private var emptyViewArtwork: UIImage {
+        return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
+    }
+    
     // MARK: - Setup
     
     class func instantiate(with viewModel: ShowSpaceMemberListViewModelType) -> ShowSpaceMemberListViewController {
-        let viewController = StoryboardScene.ShowSpaceMemberListViewController.initialScene.instantiate()
+        let viewController = ShowSpaceMemberListViewController()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
+        viewController.emptyView = RootTabEmptyView.instantiate()
         return viewController
     }
     
@@ -60,7 +55,6 @@ final class ShowSpaceMemberListViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -70,20 +64,10 @@ final class ShowSpaceMemberListViewController: UIViewController {
         self.viewModel.viewDelegate = self
 
         self.viewModel.process(viewAction: .loadData)
+        
+        self.title = ""
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.keyboardAvoider?.startAvoiding()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        self.keyboardAvoider?.stopAvoiding()
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }
@@ -98,13 +82,9 @@ final class ShowSpaceMemberListViewController: UIViewController {
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
-
-
-        // TODO: Set view colors here
-        self.informationLabel.textColor = theme.textPrimaryColor
-
-        self.doneButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        
+        theme.applyStyle(onSearchBar: self.searchBarView)
+        self.titleView.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -122,19 +102,23 @@ final class ShowSpaceMemberListViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
-        self.title = "Template"
+        self.titleView = MainTitleView()
+        self.titleView.titleLabel.text = VectorL10n.roomDetailsPeople
+        self.navigationItem.titleView = self.titleView
         
-        self.scrollView.keyboardDismissMode = .interactive
-        
-        self.informationLabel.text = "VectorL10n.showSpaceMemberListTitle"
+        self.emptyView.frame = CGRect(x: 0, y: self.searchBarView.frame.maxY, width: self.view.bounds.width, height: self.view.bounds.height - self.searchBarView.frame.maxY)
+        self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        self.emptyView.alpha = 0
+        self.view.insertSubview(self.emptyView, at: 0)
+        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesNoResultFoundTitle, informationText: VectorL10n.spacesNoMemberFoundDetail)
     }
 
     private func render(viewState: ShowSpaceMemberListViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let displayName):
-            self.renderLoaded(displayName: displayName)
+        case .loaded(let space):
+            self.renderLoaded(space: space)
         case .error(let error):
             self.render(error: error)
         }
@@ -142,13 +126,12 @@ final class ShowSpaceMemberListViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        self.informationLabel.text = "Fetch display name"
     }
     
-    private func renderLoaded(displayName: String) {
+    private func renderLoaded(space: MXSpace) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-        self.informationLabel.text = "You display name: \(displayName)"
+        self.mxRoom = space.room
+        self.titleView.subtitleLabel.text = space.summary?.displayname
     }
     
     private func render(error: Error) {
@@ -156,15 +139,48 @@ final class ShowSpaceMemberListViewController: UIViewController {
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
+    @objc private func showDetail(for member: MXRoomMember, from sourceView: UIView?) {
+        self.viewModel.process(viewAction: .complete(member, sourceView))
+    }
     
     // MARK: - Actions
 
-    @IBAction private func doneButtonAction(_ sender: Any) {
-        self.viewModel.process(viewAction: .complete)
+    @objc private func onAddParticipantButtonPressed() {
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
     }
-
+    
     private func cancelButtonAction() {
         self.viewModel.process(viewAction: .cancel)
+    }
+    
+    // MARK: - UISearchBarDelegate
+
+    override func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
+    
+    override func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        return true
+    }
+    
+    override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        super.searchBar(searchBar, textDidChange: searchText)
+        
+        UIView.animate(withDuration: 0.2) {
+            self.emptyView.alpha = self.tableView.numberOfSections == 0 ? 1 : 0
+            self.tableView.alpha = self.tableView.numberOfSections == 0 ? 0 : 1
+        }
+    }
+    
+    // MARK: - MXKRoomMemberDetailsViewControllerDelegate
+
+    override func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId matrixId: String!, completion: (() -> Void)!) {
+        completion()
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+    }
+
+    override func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, placeVoipCallWithMemberId matrixId: String!, andVideo isVideoCall: Bool) {
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
     }
 }
 

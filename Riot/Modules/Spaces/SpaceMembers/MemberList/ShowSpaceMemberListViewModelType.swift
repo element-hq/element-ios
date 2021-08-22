@@ -23,7 +23,7 @@ protocol ShowSpaceMemberListViewModelViewDelegate: AnyObject {
 }
 
 protocol ShowSpaceMemberListViewModelCoordinatorDelegate: AnyObject {
-    func showSpaceMemberListViewModel(_ viewModel: ShowSpaceMemberListViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func showSpaceMemberListViewModel(_ viewModel: ShowSpaceMemberListViewModelType, didSelect member: MXRoomMember, from sourceView: UIView?)
     func showSpaceMemberListViewModelDidCancel(_ viewModel: ShowSpaceMemberListViewModelType)
 }
 

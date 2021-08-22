@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Spaces/SpaceMembers/MemberList ShowSpaceMemberList
+// $ createScreen.sh Spaces/SpaceMembers/MemberDetail ShowSpaceMemberDetail
 /*
  Copyright 2021 New Vector Ltd
  
@@ -18,9 +18,9 @@
 
 import Foundation
 
-/// ShowSpaceMemberListViewController view actions exposed to view model
-enum ShowSpaceMemberListViewAction {
-    case loadData
-    case complete(_ selectedMember: MXRoomMember, _ sourceView: UIView?)
+/// ShowSpaceMemberDetailViewController view actions exposed to view model
+enum ShowSpaceMemberDetailViewAction {
+    case openRoom(_ roomId: String)
+    case createRoom(_ memberId: String)
     case cancel
 }

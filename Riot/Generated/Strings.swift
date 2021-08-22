@@ -4722,6 +4722,14 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
+  /// Ban from this space
+  internal static var spaceParticipantsActionBan: String { 
+    return VectorL10n.tr("Vector", "space_participants_action_ban") 
+  }
+  /// Remove from this space
+  internal static var spaceParticipantsActionRemove: String { 
+    return VectorL10n.tr("Vector", "space_participants_action_remove") 
+  }
   /// space
   internal static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 

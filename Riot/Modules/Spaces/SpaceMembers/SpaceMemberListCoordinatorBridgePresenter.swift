@@ -50,11 +50,6 @@ final class SpaceMemberListCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Public
     
-    // NOTE: Default value feature is not compatible with Objective-C.
-    // func present(from viewController: UIViewController, animated: Bool) {
-    //     self.present(from: viewController, animated: animated)
-    // }
-    
     func present(from viewController: UIViewController, animated: Bool) {
         let spaceMemberListCoordinator = SpaceMemberListCoordinator(session: self.session, spaceId: self.spaceId)
         spaceMemberListCoordinator.delegate = self
@@ -78,12 +73,22 @@ final class SpaceMemberListCoordinatorBridgePresenter: NSObject {
             }
         }
     }
+    
+    // MARK: - Private
+    
+    func navigate(to member: MXRoomMember, from sourceView: UIView?) {
+        self.coordinator?.presentMemberDetail(with: member, from: sourceView)
+    }
 }
 
 // MARK: - SpaceMemberListCoordinatorDelegate
 extension SpaceMemberListCoordinatorBridgePresenter: SpaceMemberListCoordinatorDelegate {
-    func spaceMemberListCoordinatorDidComplete(_ coordinator: SpaceMemberListCoordinatorType) {
+    func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType) {
         self.delegate?.spaceMemberListCoordinatorBridgePresenterDelegateDidComplete(self)
+    }
+    
+    func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
+        self.navigate(to: member, from: sourceView)
     }
 }
 

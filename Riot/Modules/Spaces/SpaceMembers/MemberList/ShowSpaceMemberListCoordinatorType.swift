@@ -19,7 +19,7 @@
 import Foundation
 
 protocol ShowSpaceMemberListCoordinatorDelegate: AnyObject {
-    func showSpaceMemberListCoordinator(_ coordinator: ShowSpaceMemberListCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
+    func showSpaceMemberListCoordinator(_ coordinator: ShowSpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?)
     func showSpaceMemberListCoordinatorDidCancel(_ coordinator: ShowSpaceMemberListCoordinatorType)
 }
 

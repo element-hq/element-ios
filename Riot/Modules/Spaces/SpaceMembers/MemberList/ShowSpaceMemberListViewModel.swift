@@ -25,6 +25,7 @@ final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
     // MARK: Private
 
     private let session: MXSession
+    private let spaceId: String
     
     private var currentOperation: MXHTTPOperation?
     private var userDisplayName: String?
@@ -36,8 +37,9 @@ final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, spaceId: String) {
         self.session = session
+        self.spaceId = spaceId
     }
     
     deinit {
@@ -50,8 +52,8 @@ final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
-        case .complete:
-            self.coordinatorDelegate?.showSpaceMemberListViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
+        case .complete(let selectedMember, let sourceView):
+            self.coordinatorDelegate?.showSpaceMemberListViewModel(self, didSelect: selectedMember, from: sourceView)
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.showSpaceMemberListViewModelDidCancel(self)
@@ -61,23 +63,8 @@ final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
     // MARK: - Private
     
     private func loadData() {
-
-        self.update(viewState: .loading)
-
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
-
-            guard let self = self else {
-                return
-            }
-            
-            switch response {
-            case .success(let userDisplayName):
-                self.update(viewState: .loaded(userDisplayName))
-                self.userDisplayName = userDisplayName
-            case .failure(let error):
-                self.update(viewState: .error(error))
-            }
+        if let space = self.session.spaceService.getSpace(withId: spaceId) {
+            self.update(viewState: .loaded(space))
         }
     }
     

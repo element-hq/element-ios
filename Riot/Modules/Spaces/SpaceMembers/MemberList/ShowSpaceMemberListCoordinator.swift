@@ -29,7 +29,6 @@ final class ShowSpaceMemberListCoordinator: ShowSpaceMemberListCoordinatorType {
     private let spaceId: String
     private var showSpaceMemberListViewModel: ShowSpaceMemberListViewModelType
     private let showSpaceMemberListViewController: ShowSpaceMemberListViewController
-    private let roomParticipantsViewController: RoomParticipantsViewController
     
     // MARK: Public
 
@@ -44,32 +43,28 @@ final class ShowSpaceMemberListCoordinator: ShowSpaceMemberListCoordinatorType {
         self.session = session
         self.spaceId = spaceId
         
-        let showSpaceMemberListViewModel = ShowSpaceMemberListViewModel(session: self.session)
+        let showSpaceMemberListViewModel = ShowSpaceMemberListViewModel(session: self.session, spaceId: self.spaceId)
         let showSpaceMemberListViewController = ShowSpaceMemberListViewController.instantiate(with: showSpaceMemberListViewModel)
         self.showSpaceMemberListViewModel = showSpaceMemberListViewModel
         self.showSpaceMemberListViewController = showSpaceMemberListViewController
-        // TODO adapt RoomParticipantsViewController to work with the view model
-        self.roomParticipantsViewController = RoomParticipantsViewController()
-        self.roomParticipantsViewController.mxRoom = self.session.room(withRoomId: self.spaceId)
     }
     
     // MARK: - Public methods
     
     func start() {            
-//        self.showSpaceMemberListViewModel.coordinatorDelegate = self
-//        self.roomParticipantsViewController.mxRoom = self.session.room(withRoomId: self.spaceId)
+        self.showSpaceMemberListViewModel.coordinatorDelegate = self
     }
     
     func toPresentable() -> UIViewController {
-        return self.roomParticipantsViewController
+        return self.showSpaceMemberListViewController
     }
 }
 
 // MARK: - ShowSpaceMemberListViewModelCoordinatorDelegate
 extension ShowSpaceMemberListCoordinator: ShowSpaceMemberListViewModelCoordinatorDelegate {
-    
-    func showSpaceMemberListViewModel(_ viewModel: ShowSpaceMemberListViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.showSpaceMemberListCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
+
+    func showSpaceMemberListViewModel(_ viewModel: ShowSpaceMemberListViewModelType, didSelect member: MXRoomMember, from sourceView: UIView?) {
+        self.delegate?.showSpaceMemberListCoordinator(self, didSelect: member, from: sourceView)
     }
     
     func showSpaceMemberListViewModelDidCancel(_ viewModel: ShowSpaceMemberListViewModelType) {

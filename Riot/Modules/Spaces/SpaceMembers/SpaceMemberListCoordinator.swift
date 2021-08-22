@@ -28,7 +28,8 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
-    
+    private weak var memberDetailCoordinator: ShowSpaceMemberDetailCoordinator?
+
     // MARK: Public
 
     // Must be used only internally
@@ -61,6 +62,30 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
         return self.navigationRouter.toPresentable()
     }
     
+    func presentMemberDetail(with member: MXRoomMember, from sourceView: UIView?) {
+        let coordinator = self.createShowSpaceMemberDetailCoordinator(with: member)
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        self.memberDetailCoordinator = coordinator
+        
+        if UIDevice.current.isPhone {
+            self.navigationRouter.push(coordinator.toPresentable(), animated: true) {
+                if let memberDetailCoordinator = self.memberDetailCoordinator {
+                    self.remove(childCoordinator: memberDetailCoordinator)
+                }
+            }
+        } else {
+            let viewController = coordinator.toPresentable()
+            viewController.modalPresentationStyle = .popover
+            if let sourceView = sourceView, let popoverPresentationController = viewController.popoverPresentationController {
+                popoverPresentationController.sourceView = sourceView
+                popoverPresentationController.sourceRect = sourceView.bounds
+            }
+
+            self.navigationRouter.present(viewController, animated: true)
+        }
+    }
+    
     // MARK: - Private methods
 
     private func createShowSpaceMemberListCoordinator() -> ShowSpaceMemberListCoordinator {
@@ -68,15 +93,54 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
         coordinator.delegate = self
         return coordinator
     }
+    
+    private func createShowSpaceMemberDetailCoordinator(with member: MXRoomMember) -> ShowSpaceMemberDetailCoordinator {
+        let coordinator = ShowSpaceMemberDetailCoordinator(session: self.session, member: member, spaceId: self.spaceId)
+        coordinator.delegate = self
+        return coordinator
+    }
+    
+    private func navigateTo(roomWith roomId: String) {
+        let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+        roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            guard let roomViewController = storyboard.instantiateViewController(withIdentifier: "RoomViewControllerStoryboardId") as? RoomViewController else {
+                return
+            }
+            
+            self?.navigationRouter.push(roomViewController, animated: true, popCompletion: nil)
+            roomViewController.displayRoom(roomDataSource)
+            roomViewController.navigationItem.leftItemsSupplementBackButton = true
+            roomViewController.showMissedDiscussionsBadge = false
+        })
+    }
 }
 
 // MARK: - ShowSpaceMemberListCoordinatorDelegate
 extension SpaceMemberListCoordinator: ShowSpaceMemberListCoordinatorDelegate {
-    func showSpaceMemberListCoordinator(_ coordinator: ShowSpaceMemberListCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.spaceMemberListCoordinatorDidComplete(self)
+    func showSpaceMemberListCoordinator(_ coordinator: ShowSpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
+        self.delegate?.spaceMemberListCoordinator(self, didSelect: member, from: sourceView)
     }
     
     func showSpaceMemberListCoordinatorDidCancel(_ coordinator: ShowSpaceMemberListCoordinatorType) {
-        self.delegate?.spaceMemberListCoordinatorDidComplete(self)
+        self.delegate?.spaceMemberListCoordinatorDidCancel(self)
+    }
+}
+
+extension SpaceMemberListCoordinator: ShowSpaceMemberDetailCoordinatorDelegate {
+    func showSpaceMemberDetailCoordinator(_ coordinator: ShowSpaceMemberDetailCoordinatorType, showRoomWithId roomId: String) {
+        if !UIDevice.current.isPhone, let memberDetailCoordinator = self.memberDetailCoordinator {
+            memberDetailCoordinator.toPresentable().dismiss(animated: true, completion: {
+                self.memberDetailCoordinator = nil
+                self.navigateTo(roomWith: roomId)
+            })
+        } else {
+            self.navigateTo(roomWith: roomId)
+        }
+    }
+    
+    func showSpaceMemberDetailCoordinatorDidCancel(_ coordinator: ShowSpaceMemberDetailCoordinatorType) {
+        self.delegate?.spaceMemberListCoordinatorDidCancel(self)
     }
 }

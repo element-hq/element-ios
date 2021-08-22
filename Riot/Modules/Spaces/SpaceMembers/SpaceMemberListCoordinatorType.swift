@@ -19,7 +19,8 @@
 import Foundation
 
 protocol SpaceMemberListCoordinatorDelegate: AnyObject {
-    func spaceMemberListCoordinatorDidComplete(_ coordinator: SpaceMemberListCoordinatorType)
+    func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType)
+    func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?)
 }
 
 /// `SpaceMemberListCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
