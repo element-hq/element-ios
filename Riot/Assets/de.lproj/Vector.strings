@@ -622,7 +622,7 @@
 "key_backup_recover_from_recovery_key_info" = "Nutze deinen Sicherungsschlüssel, um deine Chatverläufe zu entschlüsseln";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Eingeben";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Sicherungsschlüssel eingeben";
-"key_backup_recover_from_recovery_key_recover_action" = "Historie entschlüsseln";
+"key_backup_recover_from_recovery_key_recover_action" = "Verlauf entschlüsseln";
 "key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Hast du deinen Sicherungsschlüssel verloren? Du kannst in den Einstellungen einen neuen einrichten.";
 "key_backup_recover_success_info" = "Sicherung wiederhergestellt!";
 "key_backup_recover_done_action" = "Erledigt";
