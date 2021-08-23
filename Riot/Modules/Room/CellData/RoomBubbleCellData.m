@@ -135,7 +135,10 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
             case MXEventTypeRoomMessage:
             {
                 // If the message contains a URL, store it in the cell data.
-                self.link = [event vc_firstURLInBody];
+                if (!self.isEncryptedRoom)
+                {
+                    self.link = [event vc_firstURLInBody];
+                }
             }
                 break;
             case MXEventTypeCallInvite:
@@ -807,7 +810,7 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                     {
                         // FIXME: This should be for all event types, not just messages.
                         // Don't add it if there is already a link in the cell data
-                        if (self.link)
+                        if (self.link && !self.isEncryptedRoom)
                         {
                             shouldAddEvent = NO;
                         }
@@ -885,7 +888,10 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         shouldAddEvent = [super addEvent:event andRoomState:roomState];
     }
     
-    if (shouldAddEvent)
+    // When adding events, if there is a link they should be going before and
+    // so not have links in. If there isn't a link the could come after and
+    // contain a link, so update the link property if necessary
+    if (shouldAddEvent && !self.link && !self.isEncryptedRoom)
     {
         self.link = [event vc_firstURLInBody];
     }

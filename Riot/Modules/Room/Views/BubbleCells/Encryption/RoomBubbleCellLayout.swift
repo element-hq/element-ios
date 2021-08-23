@@ -20,6 +20,12 @@ import Foundation
 @objcMembers
 final class RoomBubbleCellLayout: NSObject {
     
+    // URL Previews
+    
+    static let urlPreviewViewTopMargin: CGFloat = 8.0
+    static let urlPreviewViewHeight: CGFloat = 247.0
+    static let urlPreviewViewWidth: CGFloat = 267.0
+    
     // Reactions
     
     static let reactionsViewTopMargin: CGFloat = 1.0

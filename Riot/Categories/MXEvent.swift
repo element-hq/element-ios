@@ -20,14 +20,26 @@ extension MXEvent {
     /// Gets the first URL contained in a text message event's body.
     /// - Returns: A URL if detected, otherwise nil.
     @objc func vc_firstURLInBody() -> NSURL? {
-        guard
-            type == kMXEventTypeStringRoomMessage,
-            content["msgtype"] as? String == kMXMessageTypeText,
-            let textMessage = content["body"] as? String,
-            let url = textMessage.vc_firstURLDetected()
-        else {
-            return nil
+        // Only get URLs for un-redacted message events that are text, notice or emote.
+        guard isRedactedEvent() == false,
+              eventType == .roomMessage,
+              let messageType = content["msgtype"] as? String,
+              messageType == kMXMessageTypeText || messageType == kMXMessageTypeNotice || messageType == kMXMessageTypeEmote
+        else { return nil }
+        
+        // Make sure not to parse any quoted reply text.
+        let body: String?
+        if isReply() {
+            body = MXReplyEventParser().parse(self).bodyParts.replyText
+        } else {
+            body = content["body"] as? String
         }
+        
+        // Find the first url and make sure it's https or http.
+        guard let textMessage = body,
+              let url = textMessage.vc_firstURLDetected(),
+              url.scheme == "https" || url.scheme == "http"
+        else { return nil }
         
         return url
     }

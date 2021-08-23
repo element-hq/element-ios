@@ -31,6 +31,7 @@
 @protocol LegacyAppDelegateDelegate;
 @class CallBar;
 @class CallPresenter;
+@class PreviewManager;
 
 #pragma mark - Notifications
 /**
@@ -103,6 +104,9 @@ UINavigationControllerDelegate
 
 // Associated matrix sessions (empty by default).
 @property (nonatomic, readonly) NSArray *mxSessions;
+
+#warning Move this elsewhere.
+@property (nonatomic, readonly) PreviewManager *previewManager;
 
 // Current selected room id. nil if no room is presently visible.
 @property (strong, nonatomic) NSString *visibleRoomId;
