@@ -186,13 +186,13 @@ class NotificationService: UNNotificationServiceExtension {
             MXLog.debug("[NotificationService] preprocessPayload: Do not preprocess because app protection is set")
             return
         }
+        
+        // If a room summary is available, use the displayname for the best attempt title.
         guard let roomSummary = NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId) else { return }
         guard let roomDisplayName = roomSummary.displayname else { return }
-        if roomSummary.isDirect == true {
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_FROM_X", arguments: [roomDisplayName as Any])
-        } else {
-            bestAttemptContents[eventId]?.body = NSString.localizedUserNotificationString(forKey: "MESSAGE_IN_X", arguments: [roomDisplayName as Any])
-        }
+        bestAttemptContents[eventId]?.title = roomDisplayName
+        
+        // At this stage we don't know the message type, so leave the body as set in didReceive.
     }
     
     private func fetchEvent(withEventId eventId: String, roomId: String, allowSync: Bool = true) {
@@ -240,10 +240,10 @@ class NotificationService: UNNotificationServiceExtension {
                 isUnwantedNotification = true
             }
             
-            //  modify the best attempt content, to be able to use in future
-            self.bestAttemptContents[event.eventId] = content
-            
             if self.ongoingVoIPPushRequests[event.eventId] == true {
+                //  modify the best attempt content, to be able to use in the future
+                self.bestAttemptContents[event.eventId] = content
+                
                 //  There is an ongoing VoIP Push request for this event, wait for it to be completed.
                 //  When it completes, it'll continue with the bestAttemptContent.
                 return
@@ -326,7 +326,10 @@ class NotificationService: UNNotificationServiceExtension {
                             } else {
                                 MXLog.debug("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
                             }
-                        case .roomMessage, .roomEncrypted:
+                        case .roomEncrypted:
+                            // If unable to decrypt the event, use the fallback.
+                            break
+                        case .roomMessage:
                             if isRoomMentionsOnly {
                                 // A local notification will be displayed only for highlighted notification.
                                 var isHighlighted = false
@@ -345,6 +348,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                                 
                                 if !isHighlighted {
+                                    #warning("In practice, this only hides the notification's content. An empty notification may be less useful in this instance?")
                                     // Ignore this notif.
                                     MXLog.debug("[NotificationService] notificationContentForEvent: Ignore non highlighted notif in mentions only room")
                                     onComplete(nil)
@@ -352,62 +356,105 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                             }
                             
-                            var msgType = event.content["msgtype"] as? String
+                            let msgType = event.content["msgtype"] as? String
                             let messageContent = event.content["body"] as? String
+                            let isReply = event.isReply()
+                            
+                            if isReply {
+                                notificationTitle = self.replyTitle(for: eventSenderName, in: roomDisplayName)
+                            } else {
+                                notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            }
                             
                             if event.isEncrypted && !self.showDecryptedContentInNotifications {
                                 // Hide the content
-                                msgType = nil
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
+                                break
                             }
                             
-                            // Display the room name only if it is different than the sender name
-                            if roomDisplayName != nil && roomDisplayName != eventSenderName {
-                                notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
-                                
-                                if msgType == kMXMessageTypeText {
-                                    notificationBody = messageContent
-                                } else if msgType == kMXMessageTypeEmote {
-                                    notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                } else if msgType == kMXMessageTypeImage {
-                                    notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
+                            switch msgType {
+                            case kMXMessageTypeEmote:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                            case kMXMessageTypeImage:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "PICTURE_FROM_USER", arguments: [eventSenderName])
+                            case kMXMessageTypeVideo:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "VIDEO_FROM_USER", arguments: [eventSenderName])
+                            case kMXMessageTypeAudio:
+                                if event.isVoiceMessage() {
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "VOICE_MESSAGE_FROM_USER", arguments: [eventSenderName])
                                 } else {
-                                    // Encrypted messages falls here
-                                    notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "AUDIO_FROM_USER", arguments: [eventSenderName, messageContent as Any])
                                 }
-                            } else {
-                                notificationTitle = eventSenderName
-                                
-                                switch msgType {
-                                    case kMXMessageTypeText:
-                                        notificationBody = messageContent
-                                        break
-                                    case kMXMessageTypeEmote:
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                        break
-                                    case kMXMessageTypeImage:
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "IMAGE_FROM_USER", arguments: [eventSenderName as Any, messageContent as Any])
-                                        break
-                                    default:
-                                        // Encrypted messages falls here
-                                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
-                                        break
+                            case kMXMessageTypeFile:
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "FILE_FROM_USER", arguments: [eventSenderName, messageContent as Any])
+                            
+                            // All other message types such as text, notice, server notice etc
+                            default:
+                                if event.isReply() {
+                                    let parser = MXReplyEventParser()
+                                    let replyParts = parser.parse(event)
+                                    notificationBody = replyParts.bodyParts.replyText
+                                } else {
+                                    notificationBody = messageContent
                                 }
                             }
-                            break
                         case .roomMember:
-                            if roomDisplayName != nil && roomDisplayName != eventSenderName {
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments: [eventSenderName as Any, roomDisplayName as Any])
+                            // If the current user is already joined, display updated displayname/avatar events.
+                            // This is an unexpected path, but has been seen in some circumstances.
+                            if NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId)?.membership == .join {
+                                notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                                
+                                // If the sender's membership is join and hasn't changed.
+                                if let newContent = MXRoomMemberEventContent(fromJSON: event.content),
+                                   let prevContentDict = event.prevContent,
+                                   let oldContent = MXRoomMemberEventContent(fromJSON: prevContentDict),
+                                   newContent.membership == kMXMembershipStringJoin,
+                                   oldContent.membership == kMXMembershipStringJoin {
+                                    
+                                    // Check for display name changes
+                                    if newContent.displayname != oldContent.displayname {
+                                        // If there was a change, use the sender's userID if one was blank and show the change.
+                                        if let oldDisplayname = oldContent.displayname ?? event.sender,
+                                           let displayname = newContent.displayname ?? event.sender {
+                                            notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_DISPLAYNAME", arguments: [oldDisplayname, displayname])
+                                        } else {
+                                            // Should never be reached as the event should always have a sender.
+                                            notificationBody = NSString.localizedUserNotificationString(forKey: "GENERIC_USER_UPDATED_DISPLAYNAME", arguments: [eventSenderName])
+                                        }
+                                    } else {
+                                        // If the display name hasn't changed, handle as an avatar change.
+                                        notificationBody = NSString.localizedUserNotificationString(forKey: "USER_UPDATED_AVATAR", arguments: [eventSenderName])
+                                    }
+                                } else {
+                                    // No known reports of having reached this situation for a membership notification
+                                    // So use a generic membership updated fallback.
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_MEMBERSHIP_UPDATED", arguments: [eventSenderName])
+                                }
+                            // Otherwise treat the notification as an invite.
+                            // This is the expected notification content for a membership event.
                             } else {
-                                notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_CHAT", arguments: [eventSenderName as Any])
-                            }
-                        case .sticker:
-                            if roomDisplayName != nil && roomDisplayName != eventSenderName {
-                                notificationTitle = NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName as Any, roomDisplayName as Any])
-                            } else {
-                                notificationTitle = eventSenderName
+                                if roomDisplayName != nil && roomDisplayName != eventSenderName {
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_NAMED_ROOM", arguments: [eventSenderName, roomDisplayName as Any])
+                                } else {
+                                    notificationBody = NSString.localizedUserNotificationString(forKey: "USER_INVITE_TO_CHAT", arguments: [eventSenderName])
+                                }
                             }
                             
+                        case .sticker:
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
                             notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
+                        
+                        // Reactions are unexpected notification types, but have been seen in some circumstances.
+                        case .reaction:
+                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            if let reactionKey = event.relatesTo?.key {
+                                // Try to show the reaction key in the notification.
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "REACTION_FROM_USER", arguments: [eventSenderName, reactionKey])
+                            } else {
+                                // Otherwise show a generic reaction.
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "GENERIC_REACTION_FROM_USER", arguments: [eventSenderName])
+                            }
+                            
                         case .custom:
                             if (event.type == kWidgetMatrixEventTypeString || event.type == kWidgetModularEventTypeString),
                                let type = event.content?["type"] as? String,
@@ -455,6 +502,29 @@ class NotificationService: UNNotificationServiceExtension {
                     onComplete(nil)
             }
         })
+    }
+    
+    /// Returns the default title for message notifications.
+    /// - Parameters:
+    ///   - eventSenderName: The displayname of the sender.
+    ///   - roomDisplayName: The displayname of the room the message was sent in.
+    /// - Returns: A string to be used for the notification's title.
+    private func messageTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
+        // Display the room name only if it is different than the sender name
+        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
+            return NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
+        } else {
+            return eventSenderName
+        }
+    }
+    
+    private func replyTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
+        // Display the room name only if it is different than the sender name
+        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
+            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
+        } else {
+            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_TITLE", arguments: [eventSenderName])
+        }
     }
     
     /// Get the context of an event.

@@ -2425,11 +2425,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
         {
-            if (bubbleData.isPaginationFirstBubble) {
+            if (bubbleData.isPaginationFirstBubble)
+            {
                 cellViewClass = VoiceMessageWithPaginationTitleBubbleCell.class;
-            } else if (bubbleData.shouldHideSenderInformation) {
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
                 cellViewClass = VoiceMessageWithoutSenderInfoBubbleCell.class;
-            } else {
+            }
+            else
+            {
                 cellViewClass = VoiceMessageBubbleCell.class;
             }
         }
