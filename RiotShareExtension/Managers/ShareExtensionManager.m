@@ -323,8 +323,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                              dispatch_group_leave(requestsGroup);
                          }
                          
-                         // Only prompt for image resize if all items are images and the setting is enabled.
-                         if (RiotSettings.shared.showMediaCompressionPrompt && areAllAttachmentsImages)
+                         // Only prompt for image resize if all items are images
+                         // Ignore showMediaCompressionPrompt setting due to memory constraints with full size images.
+                         if (areAllAttachmentsImages)
                          {
                              if ([self areAttachmentsFullyLoaded])
                              {
@@ -1157,6 +1158,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     MXWeakify(self);
     
+    // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
     UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString * _Nullable presetName) {
         MXStrongifyAndReturnIfNil(self);
         
