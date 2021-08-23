@@ -15,28 +15,21 @@
 //
 
 import Foundation
+import UIKit
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
+// Figma Avatar Sizes: https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1258%3A19678
+public enum AvatarSize: Int {
+    case xxSmall = 16
+    case xSmall = 32
+    case small = 36
+    case medium = 42
+    case large = 44
+    case xLarge = 52
+    case xxLarge = 80
 }
 
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
-        }
+extension AvatarSize {
+    public var size: CGSize {
+        return CGSize(width: self.rawValue, height: self.rawValue)
     }
 }

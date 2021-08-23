@@ -15,28 +15,21 @@
 //
 
 import Foundation
+import Combine
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
-}
-
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
+/**
+ Sams as `assign(to:on:)` but maintains a weak reference to object(Useful in cases where you want to pass self and not cause a retain cycle.)
+ - SeeAlso:
+ [assign(to:on:)](https://developer.apple.com/documentation/combine/just/assign(to:on:))
+ */
+@available(iOS 14.0, *)
+extension Publisher where Failure == Never {
+    func weakAssign<T: AnyObject>(
+        to keyPath: ReferenceWritableKeyPath<T, Output>,
+        on object: T
+    ) -> AnyCancellable {
+        sink { [weak object] value in
+            object?[keyPath: keyPath] = value
         }
     }
 }

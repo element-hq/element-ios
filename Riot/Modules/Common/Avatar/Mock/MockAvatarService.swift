@@ -15,28 +15,15 @@
 //
 
 import Foundation
+import Combine
+import DesignKit
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
-}
-
-extension RoomNotificationState: CaseIterable { }
-
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
+@available(iOS 14.0, *)
+class MockAvatarService: AvatarServiceType {
+    static let example: AvatarServiceType = MockAvatarService()
+    func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error> {
+        Future { promise in
+            promise(.success(Asset.Images.appSymbol.image))
         }
     }
 }

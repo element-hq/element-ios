@@ -16,27 +16,19 @@
 
 import Foundation
 
-enum RoomNotificationState: Int {
-    case all
-    case mentionsAndKeywordsOnly
-    case mute
+/**
+ A protocol for classes that can be injected with a dependency container
+ */
+protocol Injectable: AnyObject {
+    var dependencies: DependencyContainer! { get set }
 }
 
-extension RoomNotificationState: CaseIterable { }
 
-extension RoomNotificationState: Identifiable {
-    var id: Int { self.rawValue }
-}
-
-extension RoomNotificationState {
-    var title: String {
-        switch self {
-        case .all:
-            return VectorL10n.roomNotifsSettingsAllMessages
-        case .mentionsAndKeywordsOnly:
-            return VectorL10n.roomNotifsSettingsMentionsAndKeywords
-        case .mute:
-            return VectorL10n.roomNotifsSettingsNone
-        }
+extension Injectable {
+    /**
+     Used to inject the dependency container into an Injectable.
+     */
+    func inject(dependencies: DependencyContainer) {
+        self.dependencies = dependencies
     }
 }
