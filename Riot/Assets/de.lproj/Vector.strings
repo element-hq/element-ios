@@ -847,7 +847,7 @@
 "settings_discovery_three_pid_details_revoke_action" = "Widerrufen";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "E-Mail-Überprüfung abbrechen";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Gib den SMS-Aktivierungscode ein";
-"settings_identity_server_no_is" = "Kein Integrationsserver konfiguriert";
+"settings_identity_server_no_is" = "Kein Identitätsserver konfiguriert";
 // Identity server settings
 "identity_server_settings_title" = "Identitätsserver";
 "identity_server_settings_place_holder" = "Gib einen neuen Identitätsserver ein";
