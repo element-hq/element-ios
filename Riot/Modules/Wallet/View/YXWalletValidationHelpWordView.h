@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy)void (^backBlock)(void);
 @property (nonatomic , strong)NSMutableArray *tagsArray;
 @property (nonatomic , assign)BOOL showTip;
+-(void)removeTagViewData;
 @end
 
 NS_ASSUME_NONNULL_END

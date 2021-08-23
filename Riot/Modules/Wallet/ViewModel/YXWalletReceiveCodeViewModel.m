@@ -33,6 +33,28 @@
     
 }
 
+- (void)refreshAddress:(YXWalletMyWalletRecordsItem *)model{
+    [MBProgressHUD showMessage:@""];
+    YXWeakSelf
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
+    [paramDict setObject:model.walletId forKey:@"id"];
+    [NetWorkManager GET:kURL(@"/wallet/new_address") parameters:paramDict success:^(id  _Nonnull responseObject) {
+        
+        if ([responseObject isKindOfClass:NSDictionary.class]) {
+            YXWalletMyWalletAddressModel *myWalletModel = [YXWalletMyWalletAddressModel mj_objectWithKeyValues:responseObject];
+            if (myWalletModel.status == 200) {
+                [weakSelf updataUIWith:model andaddress:myWalletModel.data];
+            }else{
+                [MBProgressHUD showError:@"接口请求报错，稍后再试"];
+            }
+        }
+        [MBProgressHUD hideHUD];
+    } failure:^(NSError * _Nonnull error) {
+        [MBProgressHUD hideHUD];
+    }];
+    
+}
+
 - (void)updataUIWith:(YXWalletMyWalletRecordsItem *)model andaddress:(NSString *)address{
     [self.sectionItems removeAllObjects];
     model.address = address;

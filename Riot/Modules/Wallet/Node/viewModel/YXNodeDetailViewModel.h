@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , strong)YXNodeConfigModelPledeg *pledegModel;
 @property (nonatomic , strong)YXNodeListdata *nodeInfoModel;
 @property (nonatomic , copy)dispatch_block_t reloadData;
+@property (nonatomic , copy)dispatch_block_t getNodeInfoBlock;
 @property (nonatomic , copy)dispatch_block_t activationNodeBlock;
 @property (nonatomic , copy)dispatch_block_t walletArmingFlagNodeBlock;
 @property (nonatomic , copy)void (^jumpNodeDetailBlock)(id model);

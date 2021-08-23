@@ -46,6 +46,11 @@
 -(YXNodeDetailViewModel *)viewModel{
     if (!_viewModel) {
         _viewModel = [[YXNodeDetailViewModel alloc]init];
+        YXWeakSelf
+        [_viewModel setGetNodeInfoBlock:^{
+            weakSelf.nodeConfigView.nodeText = [NSString stringWithFormat:@"IP:%@\n%@", weakSelf.viewModel.nodeInfoModel.ip, weakSelf.viewModel.nodeInfoModel.genkey];
+        }];;
+
     }
     return _viewModel;
 }

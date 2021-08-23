@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy)dispatch_block_t refreshAddressBlock;
 @property (nonatomic , copy)dispatch_block_t showSelectAssetsViewBlock;
 - (void)reloadNewData:(YXWalletMyWalletRecordsItem *)model;
+- (void)refreshAddress:(YXWalletMyWalletRecordsItem *)model;
 @end
 
 NS_ASSUME_NONNULL_END

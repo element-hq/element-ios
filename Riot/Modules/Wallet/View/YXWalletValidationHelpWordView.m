@@ -279,5 +279,17 @@
     self.tipLabel.hidden = showTip;
 }
 
+-(void)removeTagViewData{
+    if (self.tagView.tagsArray.count > 0) {
+        NSMutableArray *tagsArray = [NSMutableArray array];
+        [tagsArray addObjectsFromArray:[self.tagView.tagsArray mutableCopy]];
+            YXWeakSelf
+            [tagsArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [weakSelf.tagView removeTag:obj];
+            }];
+        }
+    }
+
+
 @end
 

@@ -134,7 +134,7 @@ extern NSString *const kEndEditFieldTextNotification;
     self.titleLabel.text = rowData.name;
     if ([rowData.name isEqualToString:@"发送数量"]) {
         NSString *count = [NSString stringWithFormat:@"可用：%.4f",rowData.currentSelectModel.balance];
-        self.desLabel.text = [NSString stringWithFormat:@"（可用：%@ %@）",count,rowData.currentSelectModel.baseSymbol];
+        self.desLabel.text = [NSString stringWithFormat:@"（%@ %@）",count,rowData.currentSelectModel.baseSymbol];
     }else{
         self.desLabel.text = rowData.desc;
     }

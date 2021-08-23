@@ -200,6 +200,7 @@
             weakSelf.desLabel.text = @"请记录好生成的助记词，下一页将会验证助记词的合法性。";
             weakSelf.createWorldView.hidden = YES;
             weakSelf.helpWordView.hidden = NO;
+            [weakSelf.helpWordView removeTagViewData];
             weakSelf.helpWordView.tagsArray = [[weakSelf mub_randomArray:weakSelf.helpWordModel.data] mutableCopy];
             
         }];
@@ -215,6 +216,11 @@
         YXWeakSelf
         [_inputWorldView setNextBlock:^{
             if (weakSelf.inputWorldView.helpWorld.length > 0) {
+                NSArray *array = [weakSelf.inputWorldView.helpWorld componentsSeparatedByString:@" "];
+                if (array.count < 12 || array.count > 12) {
+                    [MBProgressHUD showSuccess:@"请输入12个助记词"];
+                    return;
+                }
                 [weakSelf creatWalletWith:weakSelf.inputWorldView.helpWorld import:YES];
             }else{
                 [MBProgressHUD showSuccess:@"请输入助记词"];
@@ -249,6 +255,8 @@
         if (createModel.status == 200) {
             //创建成功
             weakSelf.walletPopupView.hidden = NO;
+        }else{
+            [MBProgressHUD showError:@"创建失败"];
         }
     }];
 }

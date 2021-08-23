@@ -61,14 +61,11 @@
     bottomItem.cellHeight = 60;
     [rowItems addObject:bottomItem];
     
-    //只有银行卡有开户行
-    if ([model.type isEqualToString:@"1"]) {
-        SCETRowItem *copyItem = [SCETRowItem rowItemWithRowData:@"解除绑定" cellClassString:NSStringFromClass([YXWalletCopyTableViewCell class])];
-        copyItem.cellHeight = 40;
-        [rowItems addObject:copyItem];
-    }
+  
+    SCETRowItem *copyItem = [SCETRowItem rowItemWithRowData:@"解除绑定" cellClassString:NSStringFromClass([YXWalletCopyTableViewCell class])];
+    copyItem.cellHeight = 40;
+    [rowItems addObject:copyItem];
 
-    
     SCETSectionItem *totalCountsectionItem = [SCETSectionItem sc_sectionItemWithRowItems:rowItems];
     [self.sectionItems addObject:totalCountsectionItem];
     

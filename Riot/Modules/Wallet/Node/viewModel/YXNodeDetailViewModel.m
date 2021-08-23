@@ -98,6 +98,9 @@
             NSDictionary *dic = responseObject[@"data"];
             YXNodeListdata *detailList = [YXNodeListdata mj_objectWithKeyValues:dic];
             weakSelf.nodeInfoModel = detailList;
+            if (weakSelf.getNodeInfoBlock) {
+                weakSelf.getNodeInfoBlock();
+            }
         }
         
     } failure:^(NSError * _Nonnull error) {

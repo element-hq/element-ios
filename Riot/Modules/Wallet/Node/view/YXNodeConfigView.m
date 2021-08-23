@@ -119,12 +119,12 @@
         _mainNodeLabe.font = [UIFont fontWithName:@"PingFang SC" size: 16];
         _mainNodeLabe.textColor = UIColor170;
         _mainNodeLabe.textAlignment = NSTextAlignmentLeft;
-        YXWeakSelf
-        [_mainNodeLabe addTapAction:^(UITapGestureRecognizer *sender) {
-            if (weakSelf.mainNodeBlock) {
-                weakSelf.mainNodeBlock();
-            }
-        }];
+//        YXWeakSelf
+//        [_mainNodeLabe addTapAction:^(UITapGestureRecognizer *sender) {
+//            if (weakSelf.mainNodeBlock) {
+//                weakSelf.mainNodeBlock();
+//            }
+//        }];
     }
     return _mainNodeLabe;
 }

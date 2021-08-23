@@ -128,6 +128,7 @@
             //配置成功需要刷新当前页面
             [configVc setReloadDataBlock:^{
                 [weakSelf.viewModel reloadNewData:weakSelf.nodeListModel];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Reload_Node_Notification" object:nil];
             }];
             configVc.nodeListModel = weakSelf.nodeListModel;
             [weakSelf.navigationController pushViewController:configVc animated:YES];

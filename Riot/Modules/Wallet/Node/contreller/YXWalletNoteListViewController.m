@@ -26,7 +26,7 @@
 }
 
 -(void)dealloc{
-  
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (YXWalletProxy *)proxy{
@@ -91,6 +91,8 @@
         make.left.right.bottom.top.offset(0);
     }];
    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewData) name:@"Reload_Node_Notification" object:nil];
+  
 }
 
 -(YXNodeListViewModel *)viewModel{

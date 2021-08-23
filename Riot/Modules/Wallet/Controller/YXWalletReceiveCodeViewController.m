@@ -53,7 +53,7 @@
         }];
         
         [_viewModel setRefreshAddressBlock:^{
-            [weakSelf.viewModel reloadNewData:weakSelf.currentSelectModel];
+            [weakSelf.viewModel refreshAddress:weakSelf.currentSelectModel];
         }];
         
     }
