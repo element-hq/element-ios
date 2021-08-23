@@ -490,8 +490,7 @@ Tap the + to start adding people.";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
 
-"settings_confirm_image_size" = "Confirm image size before sending";
-"settings_confirm_video_size" = "Confirm video size before sending";
+"settings_confirm_media_size" = "Confirm media size before sending";
 
 "settings_security" = "SECURITY";
 

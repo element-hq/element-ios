@@ -323,8 +323,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                              dispatch_group_leave(requestsGroup);
                          }
                          
-                         // Only prompt for image resize if prompt is requested and all items are images
-                         if (RiotSettings.shared.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt && areAllAttachmentsImages)
+                         // Only prompt for image resize if all items are images and the setting is enabled.
+                         if (RiotSettings.shared.showMediaCompressionPrompt && areAllAttachmentsImages)
                          {
                              if ([self areAttachmentsFullyLoaded])
                              {

@@ -89,8 +89,7 @@ enum
 
 enum
 {
-    MEDIA_SETTINGS_CONFIRM_IMAGE_SIZE = 0,
-    MEDIA_SETTINGS_CONFIRM_VIDEO_SIZE
+    MEDIA_SETTINGS_CONFIRM_MEDIA_SIZE = 0
 };
 
 enum
@@ -359,8 +358,7 @@ TableViewSectionsDelegate>
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_MEDIA];
-        [sectionMedia addRowWithTag:MEDIA_SETTINGS_CONFIRM_IMAGE_SIZE];
-        [sectionMedia addRowWithTag:MEDIA_SETTINGS_CONFIRM_VIDEO_SIZE];
+        [sectionMedia addRowWithTag:MEDIA_SETTINGS_CONFIRM_MEDIA_SIZE];
         sectionMedia.headerTitle = NSLocalizedStringFromTable(@"settings_media", @"Vector", nil);
         [tmpSections addObject:sectionMedia];
     }
@@ -1825,27 +1823,15 @@ TableViewSectionsDelegate>
     }
     else if (section == SECTION_TAG_MEDIA)
     {
-        if (row == MEDIA_SETTINGS_CONFIRM_IMAGE_SIZE)
+        if (row == MEDIA_SETTINGS_CONFIRM_MEDIA_SIZE)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_confirm_image_size", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt;
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_confirm_media_size", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on =  RiotSettings.shared.showMediaCompressionPrompt;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleConfirmImageSize:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell = labelAndSwitchCell;
-        }
-        else if (row == MEDIA_SETTINGS_CONFIRM_VIDEO_SIZE)
-        {
-            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-    
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_confirm_video_size", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.promptForVideoConversionPreset;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleConfirmVideoSize:) forControlEvents:UIControlEventTouchUpInside];
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleConfirmMediaSize:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
         }
@@ -2886,14 +2872,9 @@ TableViewSectionsDelegate>
     }
 }
 
-- (void)toggleConfirmImageSize:(UISwitch *)sender
+- (void)toggleConfirmMediaSize:(UISwitch *)sender
 {
-    RiotSettings.shared.roomInputToolbarCompressionMode = sender.on ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
-}
-
-- (void)toggleConfirmVideoSize:(UISwitch *)sender
-{
-    RiotSettings.shared.promptForVideoConversionPreset = sender.on;
+    RiotSettings.shared.showMediaCompressionPrompt = sender.on;
 }
 
 - (void)togglePushNotifications:(UISwitch *)sender

@@ -4074,17 +4074,13 @@ internal enum VectorL10n {
   internal static func settingsConfigUserId(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_user_id", p1)
   }
-  /// Confirm image size before sending
-  internal static var settingsConfirmImageSize: String { 
-    return VectorL10n.tr("Vector", "settings_confirm_image_size") 
+  /// Confirm media size before sending
+  internal static var settingsConfirmMediaSize: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_media_size") 
   }
   /// confirm password
   internal static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
-  }
-  /// Confirm video size before sending
-  internal static var settingsConfirmVideoSize: String { 
-    return VectorL10n.tr("Vector", "settings_confirm_video_size") 
   }
   /// LOCAL CONTACTS
   internal static var settingsContacts: String { 

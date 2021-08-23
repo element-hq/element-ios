@@ -15,7 +15,6 @@
  */
 
 import Foundation
-import MatrixKit
 
 /// Store Riot specific app settings.
 @objcMembers
@@ -52,8 +51,7 @@ final class RiotSettings: NSObject {
         static let roomCreationScreenAllowRoomTypeConfiguration = "roomCreationScreenAllowRoomTypeConfiguration"
         static let roomCreationScreenRoomIsPublic = "roomCreationScreenRoomIsPublic"
         static let allowInviteExernalUsers = "allowInviteExernalUsers"
-        static let roomInputToolbarCompressionMode = "roomInputToolbarCompressionMode"
-        static let promptForVideoConversionPreset = "promptForVideoConversionPreset"
+        static let showMediaCompressionPrompt = "showMediaCompressionPrompt"
         static let enableRingingForGroupCalls = "enableRingingForGroupCalls"
         static let roomSettingsScreenShowLowPriorityOption = "roomSettingsScreenShowLowPriorityOption"
         static let roomSettingsScreenShowDirectChatOption = "roomSettingsScreenShowDirectChatOption"
@@ -99,8 +97,7 @@ final class RiotSettings: NSObject {
     private override init() {
         super.init()
         defaults.register(defaults: [
-            UserDefaultsKeys.roomInputToolbarCompressionMode: BuildSettings.roomInputToolbarCompressionMode.rawValue,
-            UserDefaultsKeys.promptForVideoConversionPreset: false
+            UserDefaultsKeys.showMediaCompressionPrompt: false
         ])
     }
     
@@ -457,22 +454,15 @@ final class RiotSettings: NSObject {
         }
     }
     
-    var roomInputToolbarCompressionMode: MXKRoomInputToolbarCompressionMode {
+    /// When set to false the original image is sent and a 1080p preset is used for videos.
+    /// If `BuildSettings.roomInputToolbarCompressionMode` has a value other than prompt, the build setting takes priority for images.
+    var showMediaCompressionPrompt: Bool {
         get {
-            MXKRoomInputToolbarCompressionMode(UInt(defaults.integer(forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)))
+            defaults.bool(forKey: UserDefaultsKeys.showMediaCompressionPrompt)
         } set {
-            defaults.set(newValue.rawValue, forKey: UserDefaultsKeys.roomInputToolbarCompressionMode)
+            defaults.set(newValue, forKey: UserDefaultsKeys.showMediaCompressionPrompt)
         }
     }
-    
-    var promptForVideoConversionPreset: Bool {
-        get {
-            defaults.bool(forKey: UserDefaultsKeys.promptForVideoConversionPreset)
-        } set {
-            defaults.set(newValue, forKey: UserDefaultsKeys.promptForVideoConversionPreset)
-        }
-    }
-
     
     // MARK: - Main Tabs
     

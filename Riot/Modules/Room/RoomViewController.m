@@ -2008,7 +2008,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 /**
  Send a video asset via the room input toolbar prompting the user for the conversion preset to use
- if the `promptForVideoConversionPreset` setting has been enabled.
+ if the `showMediaCompressionPrompt` setting has been enabled.
  @param videoAsset The video asset to send
  @param isPhotoLibraryAsset Whether the asset was picked from the user's photo library.
  */
@@ -2020,7 +2020,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         return;
     }
     
-    if (RiotSettings.shared.promptForVideoConversionPreset)
+    if (RiotSettings.shared.showMediaCompressionPrompt)
     {
         // Show the video conversion prompt for the user to select what size video they would like to send.
         UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset
@@ -6108,7 +6108,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:RiotSettings.shared.roomInputToolbarCompressionMode isPhotoLibraryAsset:NO];
+        MXKRoomInputToolbarCompressionMode compressionMode;
+        if (BuildSettings.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt)
+        {
+            compressionMode = RiotSettings.shared.showMediaCompressionPrompt ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
+        }
+        else
+        {
+            compressionMode = BuildSettings.roomInputToolbarCompressionMode;
+        }
+        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:compressionMode isPhotoLibraryAsset:NO];
     }
 }
 
@@ -6137,7 +6146,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:RiotSettings.shared.roomInputToolbarCompressionMode isPhotoLibraryAsset:YES];
+        MXKRoomInputToolbarCompressionMode compressionMode;
+        if (BuildSettings.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt)
+        {
+            compressionMode = RiotSettings.shared.showMediaCompressionPrompt ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
+        }
+        else
+        {
+            compressionMode = BuildSettings.roomInputToolbarCompressionMode;
+        }
+        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:compressionMode isPhotoLibraryAsset:YES];
     }
 }
 
@@ -6160,7 +6178,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // Set a 1080p video conversion preset as compression mode only has an effect on the images.
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
-        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:RiotSettings.shared.roomInputToolbarCompressionMode];
+        MXKRoomInputToolbarCompressionMode compressionMode;
+        if (BuildSettings.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt)
+        {
+            compressionMode = RiotSettings.shared.showMediaCompressionPrompt ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
+        }
+        else
+        {
+            compressionMode = BuildSettings.roomInputToolbarCompressionMode;
+        }
+        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:compressionMode];
     }
 }
 
