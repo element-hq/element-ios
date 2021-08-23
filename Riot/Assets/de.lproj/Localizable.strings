@@ -107,3 +107,12 @@
 /** General **/
 
 "NOTIFICATION" = "Benachrichtigung";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ hat die Datei %@ gesendet";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ hat die Audiodatei %@ gesendet";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "Profil von %@ geupdatet";
