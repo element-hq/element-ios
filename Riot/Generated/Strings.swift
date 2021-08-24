@@ -4890,6 +4890,46 @@ internal enum VectorL10n {
   internal static func userVerificationStartWaitingPartner(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_verification_start_waiting_partner", p1)
   }
+  /// We are no longer supporting Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.
+  internal static func versionCheckBannerSubtitleDeprecated(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_subtitle_deprecated", p1)
+  }
+  /// We will soon be ending support for Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.
+  internal static func versionCheckBannerSubtitleSupported(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_subtitle_supported", p1)
+  }
+  /// We’re no longer supporting iOS %@
+  internal static func versionCheckBannerTitleDeprecated(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_title_deprecated", p1)
+  }
+  /// We’re ending support for iOS %@
+  internal static func versionCheckBannerTitleSupported(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_title_supported", p1)
+  }
+  /// Find out how
+  internal static var versionCheckModalActionTitleDeprecated: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_action_title_deprecated") 
+  }
+  /// Got it
+  internal static var versionCheckModalActionTitleSupported: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_action_title_supported") 
+  }
+  /// We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.
+  internal static var versionCheckModalSubtitleDeprecated: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_subtitle_deprecated") 
+  }
+  /// We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not compatible with some of those fixes and will no longer be supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.
+  internal static var versionCheckModalSubtitleSupported: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_subtitle_supported") 
+  }
+  /// We’re no longer supporting iOS %@
+  internal static func versionCheckModalTitleDeprecated(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_modal_title_deprecated", p1)
+  }
+  /// We’re ending support for iOS %@
+  internal static func versionCheckModalTitleSupported(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_modal_title_supported", p1)
+  }
   /// Video
   internal static var video: String { 
     return VectorL10n.tr("Vector", "video") 

@@ -64,7 +64,7 @@ final class SignOutAlertPresenter: NSObject {
     // MARK: - Private
     
     private func presentExistingBackupAlert(animated: Bool) {
-        let alertContoller = UIAlertController(title: VectorL10n.signOutExistingKeyBackupAlertTitle,
+        let alertController = UIAlertController(title: VectorL10n.signOutExistingKeyBackupAlertTitle,
                                                message: nil,
                                                preferredStyle: .actionSheet)
         
@@ -74,14 +74,14 @@ final class SignOutAlertPresenter: NSObject {
         
         let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel)
         
-        alertContoller.addAction(signoutAction)
-        alertContoller.addAction(cancelAction)
+        alertController.addAction(signoutAction)
+        alertController.addAction(cancelAction)
         
-        self.present(alertController: alertContoller, animated: animated)
+        self.present(alertController: alertController, animated: animated)
     }
     
     private func presentNonExistingBackupAlert(animated: Bool) {
-        let alertContoller = UIAlertController(title: VectorL10n.signOutNonExistingKeyBackupAlertTitle,
+        let alertController = UIAlertController(title: VectorL10n.signOutNonExistingKeyBackupAlertTitle,
                                                message: nil,
                                                preferredStyle: .actionSheet)
         
@@ -95,15 +95,15 @@ final class SignOutAlertPresenter: NSObject {
         
         let cancelAction = UIAlertAction(title: VectorL10n.cancel, style: .cancel)
         
-        alertContoller.addAction(doNotWantKeyBackupAction)
-        alertContoller.addAction(setUpKeyBackupAction)
-        alertContoller.addAction(cancelAction)
+        alertController.addAction(doNotWantKeyBackupAction)
+        alertController.addAction(setUpKeyBackupAction)
+        alertController.addAction(cancelAction)
         
-        self.present(alertController: alertContoller, animated: animated)
+        self.present(alertController: alertController, animated: animated)
     }
     
     private func presentNonExistingBackupSignOutConfirmationAlert(animated: Bool) {
-        let alertContoller = UIAlertController(title: VectorL10n.signOutNonExistingKeyBackupSignOutConfirmationAlertTitle,
+        let alertController = UIAlertController(title: VectorL10n.signOutNonExistingKeyBackupSignOutConfirmationAlertTitle,
                                                message: VectorL10n.signOutNonExistingKeyBackupSignOutConfirmationAlertMessage,
                                                preferredStyle: .alert)
         
@@ -115,14 +115,14 @@ final class SignOutAlertPresenter: NSObject {
             self.delegate?.signOutAlertPresenterDidTapBackupAction(self)
         }
         
-        alertContoller.addAction(signOutAction)
-        alertContoller.addAction(setUpKeyBackupAction)
+        alertController.addAction(signOutAction)
+        alertController.addAction(setUpKeyBackupAction)
         
-        self.present(alertController: alertContoller, animated: animated)
+        self.present(alertController: alertController, animated: animated)
     }
     
     private func presentBackupInProgressAlert(animated: Bool) {
-        let alertContoller = UIAlertController(title: VectorL10n.signOutKeyBackupInProgressAlertTitle,
+        let alertController = UIAlertController(title: VectorL10n.signOutKeyBackupInProgressAlertTitle,
                                                message: nil,
                                                preferredStyle: .actionSheet)
         
@@ -132,10 +132,10 @@ final class SignOutAlertPresenter: NSObject {
         
         let cancelAction = UIAlertAction(title: VectorL10n.signOutKeyBackupInProgressAlertCancelAction, style: .cancel)
         
-        alertContoller.addAction(discardKeyBackupAction)
-        alertContoller.addAction(cancelAction)
+        alertController.addAction(discardKeyBackupAction)
+        alertController.addAction(cancelAction)
         
-        self.present(alertController: alertContoller, animated: animated)
+        self.present(alertController: alertController, animated: animated)
     }
     
     private func present(alertController: UIAlertController, animated: Bool) {

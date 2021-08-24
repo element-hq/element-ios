@@ -1693,3 +1693,19 @@ Tap the + to start adding people.";
 "voice_message_remaining_recording_time" = "%@s left";
 "voice_message_stop_locked_mode_recording" = "Tap on your recording to stop or listen";
 "voice_message_lock_screen_placeholder" = "Voice message";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "We’re ending support for iOS %@";
+"version_check_banner_subtitle_supported" = "We will soon be ending support for Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.";
+
+"version_check_banner_title_deprecated" = "We’re no longer supporting iOS %@";
+"version_check_banner_subtitle_deprecated" = "We are no longer supporting Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.";
+
+"version_check_modal_title_supported" = "We’re ending support for iOS %@";
+"version_check_modal_subtitle_supported" = "We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not compatible with some of those fixes and will no longer be supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.";
+"version_check_modal_action_title_supported" = "Got it";
+
+"version_check_modal_title_deprecated" = "We’re no longer supporting iOS %@";
+"version_check_modal_subtitle_deprecated" = "We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.";
+"version_check_modal_action_title_deprecated" = "Find out how";
