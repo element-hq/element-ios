@@ -23,7 +23,8 @@ class URLPreviewViewModel: NSObject, URLPreviewViewModelType {
     // MARK: - Properties
     
     // MARK: Private
-
+    
+    /// The original (un-sanitized) URL to be previewed.
     private let url: URL
     private let session: MXSession
     
@@ -76,6 +77,7 @@ class URLPreviewViewModel: NSObject, URLPreviewViewModelType {
     }
     
     private func openURL() {
+        // Open the original (un-sanitized) URL stored in the view model.
         UIApplication.shared.open(url)
     }
     

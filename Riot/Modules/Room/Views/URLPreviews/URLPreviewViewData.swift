@@ -18,7 +18,8 @@ import Foundation
 
 @objc
 class URLPreviewViewData: NSObject {
-    /// The URL that's represented by the preview data.
+    /// The URL that's represented by the preview data. This may have been sanitized.
+    /// Note: The original URL, is stored in ``URLPreviewViewModel``.
     let url: URL
     
     /// The OpenGraph site name for the URL.
