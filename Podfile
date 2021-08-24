@@ -63,6 +63,9 @@ abstract_target 'RiotPods' do
   pod 'MJRefresh', '3.1.15'
   pod 'MBProgressHUD', '~> 1.0.0'
   pod 'MMPopupView', '~> 1.7.2'
+  
+  pod 'Firebase/Analytics'
+  
   target "Riot" do
     import_MatrixKit
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'

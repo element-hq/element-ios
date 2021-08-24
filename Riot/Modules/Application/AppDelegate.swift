@@ -16,6 +16,7 @@
 
 import UIKit
 import PushKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -71,6 +72,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Call legacy AppDelegate
         self.legacyAppDelegate.window = window
         self.legacyAppDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        FirebaseApp.configure()
         
         return true
     }

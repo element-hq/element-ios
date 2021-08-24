@@ -48,6 +48,9 @@
         }];
         
         [_viewModel setUnBindingSuccessBlock:^{
+            if (weakSelf.unBindingSuccessBlock) {
+                weakSelf.unBindingSuccessBlock();
+            }
             [weakSelf.navigationController popViewControllerAnimated:YES];
         }];
 

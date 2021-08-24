@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface YXWalletAccountDeatilViewController : YXBaseViewController
+@property (nonatomic , copy)dispatch_block_t unBindingSuccessBlock;
 @property (nonatomic , strong)YXWalletPaymentAccountRecordsItem *model;
 @end
 

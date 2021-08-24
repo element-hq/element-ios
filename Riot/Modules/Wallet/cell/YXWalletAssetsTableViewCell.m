@@ -149,7 +149,7 @@
 }
 
 -(void)setupCellWithRowData:(YXWalletMyWalletRecordsItem *)rowData{
-    _titleLabel.text = rowData.coinName;
+    _titleLabel.text = rowData.walletName;
     _desLabel.text = [NSString stringWithFormat:@"￥%@",rowData.fundValue];
     _countLabel.text = @(rowData.balance).stringValue;//余额
     _numLabel.text = [NSString stringWithFormat:@"≈￥%.4f",rowData.fundValue.floatValue * rowData.balance];

@@ -173,7 +173,7 @@ extern NSString *const kYXJumpWalletAssetsDetail;
 }
 
 -(void)setupCellWithRowData:(YXWalletMyWalletRecordsItem *)rowData{
-    _titleLabel.text = rowData.coinName;
+    _titleLabel.text = rowData.walletName;
     _desLabel.text = @(rowData.balance).stringValue;//余额
     _countLabel.text = [NSString stringWithFormat:@"≈￥%.4f",rowData.fundValue.floatValue * rowData.balance];
     _numLabel.text = [NSString stringWithFormat:@"￥%@",rowData.fundValue];

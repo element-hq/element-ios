@@ -64,6 +64,9 @@
         [_viewModel setTouchSettingBlock:^(YXWalletPaymentAccountRecordsItem * _Nonnull model) {
             YXWalletAccountDeatilViewController *detailVC = [[YXWalletAccountDeatilViewController alloc]init];
             detailVC.model = model;
+            detailVC.unBindingSuccessBlock = ^{
+//                [weakSelf.viewModel reloadNewData];
+            };
             [weakSelf.navigationController pushViewController:detailVC animated:YES];
         }];
         
@@ -89,6 +92,10 @@
     return _proxy;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.viewModel reloadNewData];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

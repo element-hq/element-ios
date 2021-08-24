@@ -49,6 +49,7 @@
         YXWeakSelf
         [_viewModel setGetNodeInfoBlock:^{
             weakSelf.nodeConfigView.nodeText = [NSString stringWithFormat:@"IP:%@\n%@", weakSelf.viewModel.nodeInfoModel.ip, weakSelf.viewModel.nodeInfoModel.genkey];
+            weakSelf.noteInfo =  weakSelf.viewModel.nodeInfoModel;
         }];;
 
     }
@@ -153,7 +154,7 @@
 
 - (void)changeSendUI{
     
-    if (_is_pledeg && _is_noteInfo) {
+    if (_is_pledeg) {
         _nodeConfigView.sendLabel.backgroundColor = RGBA(255,160,0,1);
         _nodeConfigView.sendLabel.userInteractionEnabled = YES;
     }

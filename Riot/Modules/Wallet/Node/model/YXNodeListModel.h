@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YXNodeConfigDataItem :NSObject
 @property (nonatomic , copy) NSString              * address;
 @property (nonatomic , assign) NSInteger              satoshis;
-@property (nonatomic , assign) NSInteger              amount;
+@property (nonatomic , assign) CGFloat              amount;
 @property (nonatomic , copy) NSString              * scriptPubKey;
 @property (nonatomic , copy) NSString              * txid;
 @property (nonatomic , assign) NSInteger              vout;
