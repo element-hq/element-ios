@@ -23,7 +23,7 @@ import Combine
 @available(iOS 14.0, *)
 protocol NotificationSettingsServiceType {
     /*
-     Publisher of all push rules
+     Publisher of all push rules.
      */
     var rulesPublisher: AnyPublisher<[MXPushRule], Never> { get }
     /*
@@ -34,24 +34,24 @@ protocol NotificationSettingsServiceType {
      Adds a keword.
      
      - Parameters:
-     - keyword: The keyword to add
-     - enabled: Wether the keyword should be added in the enabled or disabled state.
+      - keyword: The keyword to add.
+      - enabled: Whether the keyword should be added in the enabled or disabled state.
      */
     func add(keyword: String, enabled: Bool)
     /*
      Removes a keword.
      
      - Parameters:
-     - keyword: The keyword to remove
+      - keyword: The keyword to remove.
      */
     func remove(keyword: String)
     /*
      Updates the push rule actions.
      
      - Parameters:
-     - ruleId: The id of the rule.
-     - enabled: Wether the rule should be enabled or disabled.
-     - actions: The actions to update with.
+      - ruleId: The id of the rule.
+      - enabled: Wether the rule should be enabled or disabled.
+      - actions: The actions to update with.
      */
     func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?)
 }
@@ -75,7 +75,7 @@ class NotificationSettingsService: NotificationSettingsServiceType {
     
     init(session: MXSession) {
         self.session = session
-        // publisher of all rule updates
+        // Publisher of all rule updates
         let rulesUpdated = NotificationCenter.default.publisher(for: NSNotification.Name(rawValue: kMXNotificationCenterDidUpdateRules))
         
         // Set initial value of the content rules

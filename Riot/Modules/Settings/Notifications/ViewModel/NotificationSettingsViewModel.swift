@@ -33,8 +33,8 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     private let ruleIds: [NotificationPushRuleId]
     private var cancellables = Set<AnyCancellable>()
     
-    // The set of keywords the UI displays. We use an Ordered set to keep a consistent ordering
-    // so that the keywords don't jump around.
+    // The set of keywords the UI displays.
+    // We use an ordered set to keep a consistent ordering so that the keywords don't jump around.
     @Published private var keywordsSet = OrderedSet<String>()
     
     // MARK: Public
@@ -50,14 +50,14 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         self.ruleIds = ruleIds
         self.viewState = initialState
         
-        // Observe whent he rules updated to update the state of the settings.
+        // Observe when the rules are updated, to subsequently update the state of the settings.
         notificationSettingsService.rulesPublisher
             .sink(receiveValue: rulesUpdated(newRules:))
             .store(in: &cancellables)
         
-        // Only observe keywords if this settings view has it as an id
+        // Only observe keywords if the current settings view displays it.
         if ruleIds.contains(.keywords) {
-            // Publisher of all the keyword push rules(do not start with '.')
+            // Publisher of all the keyword push rules (keyword rules do not start with '.')
             let keywordsRules = notificationSettingsService.contentRulesPublisher
                 .map { $0.filter { !$0.ruleId.starts(with: ".")} }
             
@@ -69,8 +69,8 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             keywords
                 .sink { [weak self] updatedKeywords in
                     guard let self = self else { return }
-                    // We don't just assign the new set as it would cause all keywords to get sorted lexigraphically.
-                    // We first sort lexigraphically by preserve the order the user added them.
+                    // We avoid simply assigning the new set as it would cause all keywords to get sorted lexigraphically.
+                    // We first sort lexigraphically, and secondly preserve the order the user added them.
                     // The following adds/removes any updates while preserving that ordering.
                     let newKeywordSet = OrderedSet<String>(updatedKeywords.sorted())
                     self.keywordsSet.removeAll { keyword in
@@ -82,7 +82,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                 }
                 .store(in: &cancellables)
             
-            // Keword rules were updates, may need to update the setting.
+            // Keword rules were updates, check if we need to update the setting.
             keywordsRules
                 .map { $0.contains { $0.enabled } }
                 .sink(receiveValue: keywordRuleUpdated(anyEnabled:))
@@ -110,7 +110,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             handleCheckKeywords(checked: checked)
             return
         }
-        // Get the static definition and update the actions/enabled state.
+        // Get the static definition and update the actions and enabled state.
         guard let standardActions = ruleID.standardActions(for: index) else { return }
         let enabled = standardActions != .disabled
         notificationSettingsService.updatePushRuleActions(
@@ -125,7 +125,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             self.viewState.selectionState[.keywords]?.toggle()
             return
         }
-        // Get the static definition and update the actions/enabled state for every keyword.
+        // Get the static definition and update the actions and enabled state for every keyword.
         let index = NotificationIndex.index(enabled: checked)
         guard let standardActions = NotificationPushRuleId.keywords.standardActions(for: index) else { return }
         let enabled = standardActions != .disabled
@@ -164,9 +164,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     }
     
     /**
-     Given a push rule check which index/checked state does it match.
+     Given a push rule check which index/checked state  it matches.
      Matcing is done by comparing the rule against the static definitions for that rule.
-     Same logic is used on android.
+     The same logic is used on android.
      */
     private func isChecked(rule: MXPushRule) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else { return false }
@@ -182,7 +182,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         return index.enabled
     }
     /*
-     Given a rule does it match the actions int he static definition.
+     Given a rule, check it match the actions in the static definition.
      */
     private func ruleMaches(rule: MXPushRule, targetRule: NotificationStandardActions?) -> Bool {
         guard let targetRule = targetRule else {

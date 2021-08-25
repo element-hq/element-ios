@@ -17,9 +17,9 @@
 import SwiftUI
 
 /*
- Renders the push rule settings that can enabled/disable.
+ Renders the push rule settings that can be enabled/disable.
  Also renders an optional bottom section
- (Used in the case of keywords for the keyword chips and input).
+ (used in the case of keywords, for the keyword chips and input).
  */
 @available(iOS 14.0, *)
 struct NotificationSettings<BottomSection: View>: View {
@@ -60,7 +60,10 @@ struct NotificationSettings_Previews: PreviewProvider {
             ForEach(NotificationSettingsScreen.allCases) { screen in
                 NavigationView {
                     NotificationSettings(
-                        viewModel: NotificationSettingsViewModel(notificationSettingsService: MockNotificationSettingsService.example, ruleIds: screen.pushRules)
+                        viewModel: NotificationSettingsViewModel(
+                            notificationSettingsService: MockNotificationSettingsService.example,
+                            ruleIds: screen.pushRules
+                        )
                     )
                     .navigationBarTitleDisplayMode(.inline)
                 }

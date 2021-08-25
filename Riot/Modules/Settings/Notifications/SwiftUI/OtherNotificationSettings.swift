@@ -32,7 +32,8 @@ struct OtherNotifications_Previews: PreviewProvider {
         NavigationView {
             DefaultNotificationSettings(
                 viewModel: NotificationSettingsViewModel(
-                    notificationSettingsService: MockNotificationSettingsService.example, ruleIds: NotificationSettingsScreen.other.pushRules
+                    notificationSettingsService: MockNotificationSettingsService.example,
+                    ruleIds: NotificationSettingsScreen.other.pushRules
                 )
             )
             .navigationBarTitleDisplayMode(.inline)
