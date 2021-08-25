@@ -4486,10 +4486,6 @@ internal enum VectorL10n {
   internal static func settingsOlmVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_olm_version", p1)
   }
-  /// Notifications are denied for %@, please allow them in your device settings
-  internal static func settingsOnDeniedNotification(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_on_denied_notification", p1)
-  }
   /// Other
   internal static var settingsOther: String { 
     return VectorL10n.tr("Vector", "settings_other") 

@@ -499,7 +499,6 @@ Tap the + to start adding people.";
 "settings_pin_rooms_with_unread" = "Pin rooms with unread messages";
 "settings_notifications_disabled_alert_title" = "Notifications disabled";
 "settings_notifications_disabled_alert_message" = "To enable notifications, go to your device settings.";
-"settings_on_denied_notification" = "Notifications are denied for %@, please allow them in your device settings";
 "settings_default" = "Default Notifications";
 "settings_mentions_and_keywords" = "Mentions and Keywords";
 "settings_other" = "Other";
