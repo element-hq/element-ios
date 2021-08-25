@@ -104,7 +104,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     // MARK: - Public
     
     func check(ruleID: NotificationPushRuleId, checked: Bool) {
-        let index = NotificationIndex.index(enabled: checked)
+        let index = NotificationIndex.index(when: checked)
         if ruleID == .keywords {
             // Keywords is handled differently to other settings
             handleCheckKeywords(checked: checked)
@@ -126,7 +126,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             return
         }
         // Get the static definition and update the actions and enabled state for every keyword.
-        let index = NotificationIndex.index(enabled: checked)
+        let index = NotificationIndex.index(when: checked)
         guard let standardActions = NotificationPushRuleId.keywords.standardActions(for: index) else { return }
         let enabled = standardActions != .disabled
         keywordsSet.forEach { keyword in

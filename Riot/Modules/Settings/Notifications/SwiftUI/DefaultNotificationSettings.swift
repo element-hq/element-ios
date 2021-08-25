@@ -23,7 +23,7 @@ struct DefaultNotificationSettings: View {
     
     var body: some View {
         NotificationSettings(viewModel: viewModel)
-        .navigationBarTitle(VectorL10n.settingsDefault)
+            .navigationBarTitle(VectorL10n.settingsDefault)
     }
 }
 
@@ -34,7 +34,7 @@ struct DefaultNotifications_Previews: PreviewProvider {
             DefaultNotificationSettings(
                 viewModel: NotificationSettingsViewModel(
                     notificationSettingsService: MockNotificationSettingsService.example,
-                    ruleIds: NotificationSettingsScreen.defaultNotificaitons.pushRules
+                    ruleIds: NotificationSettingsScreen.defaultNotifications.pushRules
                 )
             )
             .navigationBarTitleDisplayMode(.inline)

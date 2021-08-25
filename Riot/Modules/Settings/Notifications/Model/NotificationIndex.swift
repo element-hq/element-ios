@@ -33,7 +33,7 @@ extension NotificationIndex {
     /**
      Used to map the on/off checkmarks to an index used in the static push rule definitions.
      */
-    static func index(enabled: Bool) -> NotificationIndex {
+    static func index(when enabled: Bool) -> NotificationIndex {
         return enabled ? .noisy : .off
     }
     

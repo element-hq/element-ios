@@ -45,7 +45,7 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
         let viewModel = NotificationSettingsViewModel(notificationSettingsService: notificationSettingsService, ruleIds: screen.pushRules)
         let viewController: UIViewController
         switch screen {
-        case .defaultNotificaitons:
+        case .defaultNotifications:
             viewController = VectorHostingController(rootView: DefaultNotificationSettings(viewModel: viewModel))
         case .mentionsAndKeywords:
             viewController = VectorHostingController(rootView: MentionsAndKeywordNotificationSettings(viewModel: viewModel))

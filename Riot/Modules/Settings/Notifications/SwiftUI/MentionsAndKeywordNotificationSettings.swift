@@ -26,7 +26,7 @@ struct MentionsAndKeywordNotificationSettings: View {
             header: FormSectionHeader(text: VectorL10n.settingsYourKeywords),
             footer: FormSectionFooter(text: VectorL10n.settingsMentionsAndKeywordsEncryptionNotice)
         ) {
-            Keywords(viewModel: viewModel)
+            NotificationSettingsKeywords(viewModel: viewModel)
         }
     }
     var body: some View {

@@ -20,7 +20,7 @@ import SwiftUI
  Renders the keywords input, driven by 'NotificationSettingsViewModel'.
  */
 @available(iOS 14.0, *)
-struct Keywords: View {
+struct NotificationSettingsKeywords: View {
     @ObservedObject var viewModel: NotificationSettingsViewModel
     var body: some View {
         ChipsInput(
@@ -41,6 +41,6 @@ struct Keywords_Previews: PreviewProvider {
         ruleIds: NotificationSettingsScreen.mentionsAndKeywords.pushRules
     )
     static var previews: some View {
-        Keywords(viewModel: viewModel)
+        NotificationSettingsKeywords(viewModel: viewModel)
     }
 }

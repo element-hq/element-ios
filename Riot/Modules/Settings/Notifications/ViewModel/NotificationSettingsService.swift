@@ -17,20 +17,20 @@
 import Foundation
 import Combine
 
-/*
+/**
  A service for changing notification settings and keywords
  */
 @available(iOS 14.0, *)
 protocol NotificationSettingsServiceType {
-    /*
+    /**
      Publisher of all push rules.
      */
     var rulesPublisher: AnyPublisher<[MXPushRule], Never> { get }
-    /*
+    /**
      Publisher of content rules.
      */
     var contentRulesPublisher: AnyPublisher<[MXPushRule], Never> { get }
-    /*
+    /**
      Adds a keword.
      
      - Parameters:
@@ -38,19 +38,19 @@ protocol NotificationSettingsServiceType {
       - enabled: Whether the keyword should be added in the enabled or disabled state.
      */
     func add(keyword: String, enabled: Bool)
-    /*
+    /**
      Removes a keword.
      
      - Parameters:
       - keyword: The keyword to remove.
      */
     func remove(keyword: String)
-    /*
+    /**
      Updates the push rule actions.
      
      - Parameters:
       - ruleId: The id of the rule.
-      - enabled: Wether the rule should be enabled or disabled.
+      - enabled: Whether the rule should be enabled or disabled.
       - actions: The actions to update with.
      */
     func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?)
@@ -99,7 +99,7 @@ class NotificationSettingsService: NotificationSettingsServiceType {
     }
     
     func add(keyword: String, enabled: Bool) {
-        let index = NotificationIndex.index(enabled: enabled)
+        let index = NotificationIndex.index(when: enabled)
         guard let actions = NotificationPushRuleId.keywords.standardActions(for: index)?.actions
         else {
             return

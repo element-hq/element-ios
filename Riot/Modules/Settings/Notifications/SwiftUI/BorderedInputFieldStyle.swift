@@ -61,7 +61,7 @@ struct BorderedInputFieldStyle: TextFieldStyle {
         return Color(theme.colors.background)
     }
     
-    private var borderWdith: CGFloat {
+    private var borderWidth: CGFloat {
         return isEditing || isError ? 2 : 1.5
     }
     
@@ -75,7 +75,7 @@ struct BorderedInputFieldStyle: TextFieldStyle {
             .padding(.horizontal, 8)
             .background(backgroundColor)
             .clipShape(rect)
-            .overlay(rect.stroke(borderColor, lineWidth: borderWdith))
+            .overlay(rect.stroke(borderColor, lineWidth: borderWidth))
     }
 }
 

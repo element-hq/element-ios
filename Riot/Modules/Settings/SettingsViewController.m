@@ -2751,16 +2751,18 @@ TableViewSectionsDelegate>
         }
         else if (section == SECTION_TAG_NOTIFICATIONS)
         {
-            switch (row) {
-                case NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX:
-                    [self showNotificationSettings:NotificationSettingsScreenDefaultNotificaitons];
-                    break;
-                case NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX:
-                    [self showNotificationSettings:NotificationSettingsScreenMentionsAndKeywords];
-                    break;
-                case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
-                    [self showNotificationSettings:NotificationSettingsScreenOther];
-                    break;
+            if (@available(iOS 14.0, *)) {
+                switch (row) {
+                    case NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX:
+                        [self showNotificationSettings:NotificationSettingsScreenDefaultNotifications];
+                        break;
+                    case NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX:
+                        [self showNotificationSettings:NotificationSettingsScreenMentionsAndKeywords];
+                        break;
+                    case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
+                        [self showNotificationSettings:NotificationSettingsScreenOther];
+                        break;
+                }
             }
         }
         
@@ -4099,30 +4101,24 @@ TableViewSectionsDelegate>
 
 #pragma mark - NotificationSettingsCoordinatorBridgePresenter
 
-- (void)showNotificationSettings: (NotificationSettingsScreen) screen
+- (void)showNotificationSettings: (NotificationSettingsScreen)screen API_AVAILABLE(ios(14.0))
 {
-    //New notification screens are only supported on iOS 14+
-    if (@available(iOS 14.0, *)) {
-        NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter = [[NotificationSettingsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
-        notificationSettingsBridgePresenter.delegate = self;
-        
-        MXWeakify(self);
-        
-        [notificationSettingsBridgePresenter pushFrom:self.navigationController animated:YES screen:screen popCompletion:^{
-            MXStrongifyAndReturnIfNil(self);
-            
-            self.notificationSettingsBridgePresenter = nil;
-        }];
-        
-        
-        self.notificationSettingsBridgePresenter = notificationSettingsBridgePresenter;
-    }
+    NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter = [[NotificationSettingsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    notificationSettingsBridgePresenter.delegate = self;
+    
+    MXWeakify(self);
+    [notificationSettingsBridgePresenter pushFrom:self.navigationController animated:YES screen:screen popCompletion:^{
+        MXStrongifyAndReturnIfNil(self);
+        self.notificationSettingsBridgePresenter = nil;
+    }];
+    
+    self.notificationSettingsBridgePresenter = notificationSettingsBridgePresenter;
 }
 
 #pragma mark - NotificationSettingsCoordinatorBridgePresenterDelegate
 
-- (void)notificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(NotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter
-API_AVAILABLE(ios(14.0)){
+- (void)notificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(NotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter API_AVAILABLE(ios(14.0))
+{
     [self.notificationSettingsBridgePresenter dismissWithAnimated:YES completion:nil];
     self.notificationSettingsBridgePresenter = nil;
 }

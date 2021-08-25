@@ -22,7 +22,7 @@ struct OtherNotificationSettings: View {
     
     var body: some View {
         NotificationSettings(viewModel: viewModel)
-        .navigationTitle(VectorL10n.settingsOther)
+            .navigationTitle(VectorL10n.settingsOther)
     }
 }
 
