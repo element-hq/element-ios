@@ -50,7 +50,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let masterNavigationController: UINavigationController
     
-    private var versionCheckCoordinator: VersionCheckCoordinator!
     private var homeViewControllerWrapperViewController: HomeViewControllerWithBannerWrapperViewController?
     
     // MARK: Public
@@ -92,10 +91,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.registerUserSessionsServiceNotifications()
         
         if let homeViewController = homeViewControllerWrapperViewController {
-            versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
+            let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
                                                               bannerPresenter: homeViewController,
                                                               themeService: ThemeService.shared())
-            versionCheckCoordinator.performVersionCheck()
+            versionCheckCoordinator.start()
+            add(childCoordinator: versionCheckCoordinator)
         }
     }
     

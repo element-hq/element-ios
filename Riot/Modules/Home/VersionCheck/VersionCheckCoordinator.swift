@@ -16,19 +16,28 @@
 
 import Foundation
 
-private let osVersionToBeDropped = 11
-private let hasOSVersionBeenDropped = false
-
-class VersionCheckCoordinator: VersionCheckBannerViewDelegate, VersionCheckAlertViewControllerDelegate {
+class VersionCheckCoordinator: Coordinator, VersionCheckBannerViewDelegate, VersionCheckAlertViewControllerDelegate {
+    private enum Constants {
+        static let osVersionToBeDropped = 15
+        static let hasOSVersionBeenDropped = false
+        static let supportURL = URL(string: "https://support.apple.com/en-gb/guide/iphone/iph3e504502/ios")
+    }
+    
+    // MARK: - Properties
+    
+    // MARK: Private
     
     private let rootViewController: UIViewController
     private let bannerPresenter: BannerPresentationProtocol
     private let themeService: ThemeService
-    
-    @UserDefaultsBacked(key: "versionCheckCoordinatorNextDisplayDateTimeInterval")
-    private var nextDisplayDateTimeInterval: Double?
-    
     private var versionCheckBannerView: VersionCheckBannerView?
+    
+    // MARK: Public
+    
+    // Must be used only internally
+    var childCoordinators: [Coordinator] = []
+    
+    // MARK: - Setup
     
     init(rootViewController: UIViewController, bannerPresenter: BannerPresentationProtocol, themeService: ThemeService) {
         self.rootViewController = rootViewController
@@ -38,15 +47,18 @@ class VersionCheckCoordinator: VersionCheckBannerViewDelegate, VersionCheckAlert
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeServiceDidChangeTheme, object: nil)
     }
     
-    func performVersionCheck() {
+    // MARK: - Public methods
+    
+    func start() {
         let majorOSVersion = ProcessInfo().operatingSystemVersion.majorVersion
         
-        guard majorOSVersion < osVersionToBeDropped else {
+        guard majorOSVersion < Constants.osVersionToBeDropped else {
             return
         }
         
-        if let timeInterval = nextDisplayDateTimeInterval {
-            let nextDisplayDate = Date(timeIntervalSince1970: timeInterval)
+        let versionCheckNextDisplayDateTimeInterval = RiotSettings.shared.versionCheckNextDisplayDateTimeInterval
+        if versionCheckNextDisplayDateTimeInterval > 0 {
+            let nextDisplayDate = Date(timeIntervalSince1970: versionCheckNextDisplayDateTimeInterval)
             if nextDisplayDate > Date() {
                 return
             }
@@ -56,12 +68,12 @@ class VersionCheckCoordinator: VersionCheckBannerViewDelegate, VersionCheckAlert
         versionCheckBannerView.delegate = self
         versionCheckBannerView.update(theme: themeService.theme)
         
-        if hasOSVersionBeenDropped {
-            versionCheckBannerView.configureWithDetails(VersionCheckBannerViewDetails(title: VectorL10n.versionCheckBannerTitleDeprecated(String(osVersionToBeDropped)),
-                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleDeprecated(String(osVersionToBeDropped))))
+        if Constants.hasOSVersionBeenDropped {
+            versionCheckBannerView.configureWithDetails(VersionCheckBannerViewDetails(title: VectorL10n.versionCheckBannerTitleDeprecated(String(Constants.osVersionToBeDropped)),
+                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleDeprecated(String(Constants.osVersionToBeDropped))))
         } else {
-            versionCheckBannerView.configureWithDetails(VersionCheckBannerViewDetails(title: VectorL10n.versionCheckBannerTitleSupported(String(osVersionToBeDropped)),
-                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleSupported(String(osVersionToBeDropped))))
+            versionCheckBannerView.configureWithDetails(VersionCheckBannerViewDetails(title: VectorL10n.versionCheckBannerTitleSupported(String(Constants.osVersionToBeDropped)),
+                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleSupported(String(Constants.osVersionToBeDropped))))
         }
         
         bannerPresenter.presentBannerView(versionCheckBannerView, animated: true)
@@ -79,12 +91,12 @@ class VersionCheckCoordinator: VersionCheckBannerViewDelegate, VersionCheckAlert
         let versionCheckAlertViewController = VersionCheckAlertViewController.instantiate(themeService: themeService)
         versionCheckAlertViewController.delegate = self
         
-        if hasOSVersionBeenDropped {
-            versionCheckAlertViewController.configureWithDetails(VersionCheckAlertViewControllerDetails(title: VectorL10n.versionCheckModalTitleDeprecated(String(osVersionToBeDropped)),
+        if Constants.hasOSVersionBeenDropped {
+            versionCheckAlertViewController.configureWithDetails(VersionCheckAlertViewControllerDetails(title: VectorL10n.versionCheckModalTitleDeprecated(String(Constants.osVersionToBeDropped)),
                                                                                                         subtitle: VectorL10n.versionCheckModalSubtitleDeprecated,
                                                                                                         actionButtonTitle: VectorL10n.versionCheckModalActionTitleDeprecated))
         } else {
-            versionCheckAlertViewController.configureWithDetails(VersionCheckAlertViewControllerDetails(title: VectorL10n.versionCheckModalTitleSupported(String(osVersionToBeDropped)),
+            versionCheckAlertViewController.configureWithDetails(VersionCheckAlertViewControllerDetails(title: VectorL10n.versionCheckModalTitleSupported(String(Constants.osVersionToBeDropped)),
                                                                                                         subtitle: VectorL10n.versionCheckModalSubtitleSupported,
                                                                                                         actionButtonTitle: VectorL10n.versionCheckModalActionTitleSupported))
         }
@@ -103,22 +115,22 @@ class VersionCheckCoordinator: VersionCheckBannerViewDelegate, VersionCheckAlert
     func alertViewControllerDidRequestAction(_ alertViewController: VersionCheckAlertViewController) {
         rootViewController.dismiss(animated: true, completion: nil)
         
-        guard hasOSVersionBeenDropped else {
+        guard Constants.hasOSVersionBeenDropped else {
             return
         }
         
-        if let url = URL(string: "https://support.apple.com/en-gb/guide/iphone/iph3e504502/ios") {
+        if let url = Constants.supportURL {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
     
-    // MARK: - Private
+    // MARK: - Private methods
     
     private func dismissVersionCheckBanner() {
         bannerPresenter.dismissBannerView(animated: true)
         
         let nextDisplayDate = Calendar.current.date(byAdding: .month, value: 1, to: Date())
-        nextDisplayDateTimeInterval = nextDisplayDate?.timeIntervalSince1970
+        RiotSettings.shared.versionCheckNextDisplayDateTimeInterval = nextDisplayDate?.timeIntervalSince1970 ?? 0.0
     }
     
     @objc private func updateTheme() {
