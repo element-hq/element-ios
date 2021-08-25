@@ -31,7 +31,7 @@ protocol NotificationSettingsServiceType {
      */
     var contentRulesPublisher: AnyPublisher<[MXPushRule], Never> { get }
     /**
-     Adds a keword.
+     Adds a keyword.
      
      - Parameters:
       - keyword: The keyword to add.
@@ -39,7 +39,7 @@ protocol NotificationSettingsServiceType {
      */
     func add(keyword: String, enabled: Bool)
     /**
-     Removes a keword.
+     Removes a keyword.
      
      - Parameters:
       - keyword: The keyword to remove.

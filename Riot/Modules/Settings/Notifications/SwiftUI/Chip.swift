@@ -25,7 +25,7 @@ struct Chip: View {
     @Environment(\.isEnabled) var isEnabled
     @Environment(\.theme) var theme: Theme
     
-    let chip: String
+    let title: String
     let onDelete: () -> Void
     
     var backgroundColor: Color {
@@ -44,12 +44,13 @@ struct Chip: View {
     
     var body: some View {
         HStack {
-            Text(chip)
+            Text(title)
                 .font(Font(theme.fonts.body))
                 .lineLimit(1)
-            Image(systemName: "xmark.circle.fill")
-                .frame(width: 16, height: 16, alignment: .center)
-                .onTapGesture(perform: onDelete)
+            Button(action: onDelete) {
+                Image(systemName: "xmark.circle.fill")
+                    .frame(width: 16, height: 16, alignment: .center)
+            }
         }
         .padding(.leading, 12)
         .padding(.top, 6)
@@ -66,8 +67,8 @@ struct Chip: View {
 struct Chip_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            Chip(chip: "My great chip", onDelete: { })
-            Chip(chip: "My great chip", onDelete: { })
+            Chip(title: "My great chip", onDelete: { })
+            Chip(title: "My great chip", onDelete: { })
                 .theme(.dark)
         }
     }

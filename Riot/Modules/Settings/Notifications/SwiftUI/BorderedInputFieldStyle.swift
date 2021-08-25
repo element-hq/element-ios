@@ -23,11 +23,12 @@ import SwiftUI
  */
 @available(iOS 14.0, *)
 struct BorderedInputFieldStyle: TextFieldStyle {
+    
     @Environment(\.theme) var theme: Theme
+    @Environment(\.isEnabled) var isEnabled: Bool
     
     var isEditing: Bool = false
     var isError: Bool = false
-    var isEnabled: Bool = true
     
     private var borderColor: Color {
         if !isEnabled {
@@ -93,7 +94,8 @@ struct BorderedInputFieldStyle_Previews: PreviewProvider {
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(BorderedInputFieldStyle(isEditing: true))
                 TextField("Placeholder", text: .constant("Web"))
-                    .textFieldStyle(BorderedInputFieldStyle(isEnabled: false))
+                    .textFieldStyle(BorderedInputFieldStyle())
+                    .disabled(true)
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(BorderedInputFieldStyle(isEditing: true, isError: true))
             }
@@ -108,7 +110,8 @@ struct BorderedInputFieldStyle_Previews: PreviewProvider {
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(BorderedInputFieldStyle(isEditing: true))
                 TextField("Placeholder", text: .constant("Web"))
-                    .textFieldStyle(BorderedInputFieldStyle(isEnabled: false))
+                    .textFieldStyle(BorderedInputFieldStyle())
+                    .disabled(true)
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(BorderedInputFieldStyle(isEditing: true, isError: true))
             }

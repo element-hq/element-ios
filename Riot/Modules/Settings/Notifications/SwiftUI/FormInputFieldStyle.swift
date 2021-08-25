@@ -22,10 +22,9 @@ import SwiftUI
  */
 @available(iOS 14.0, *)
 struct FormInputFieldStyle: TextFieldStyle {
-    @Environment(\.theme) var theme: Theme
     
-    var isEditing: Bool = false
-    var isEnabled: Bool = true
+    @Environment(\.theme) var theme: Theme
+    @Environment(\.isEnabled) var isEnabled
     
     private var textColor: Color {
         if !isEnabled {
@@ -59,28 +58,22 @@ struct FormInputFieldStyle_Previews: PreviewProvider {
             VectorForm {
                 TextField("Placeholder", text: .constant(""))
                     .textFieldStyle(FormInputFieldStyle())
-                TextField("Placeholder", text: .constant(""))
-                    .textFieldStyle(FormInputFieldStyle(isEditing: true))
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(FormInputFieldStyle())
                 TextField("Placeholder", text: .constant("Web"))
-                    .textFieldStyle(FormInputFieldStyle(isEditing: true))
-                TextField("Placeholder", text: .constant("Web"))
-                    .textFieldStyle(FormInputFieldStyle(isEnabled: false))
+                    .textFieldStyle(FormInputFieldStyle())
+                    .disabled(true)
                 
             }
             .padding()
             VectorForm {
                 TextField("Placeholder", text: .constant(""))
                     .textFieldStyle(FormInputFieldStyle())
-                TextField("Placeholder", text: .constant(""))
-                    .textFieldStyle(FormInputFieldStyle(isEditing: true))
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(FormInputFieldStyle())
                 TextField("Placeholder", text: .constant("Web"))
-                    .textFieldStyle(FormInputFieldStyle(isEditing: true))
-                TextField("Placeholder", text: .constant("Web"))
-                    .textFieldStyle(FormInputFieldStyle(isEnabled: false))
+                    .textFieldStyle(FormInputFieldStyle())
+                    .disabled(true)
                 
             }
             .padding()

@@ -28,28 +28,25 @@ struct ChipsInput: View {
     @Environment(\.isEnabled) var isEnabled
     
     @State private var chipText: String = ""
-    @State private var isEditing: Bool = false
     
     
-    var chips: [String]
+    let titles: [String]
+    let didAddChip: (String) -> Void
+    let didDeleteChip: (String) -> Void
     var placeholder: String = ""
-    var didAddChip: (String) -> Void
-    var didDeleteChip: (String) -> Void
     
     
     var body: some View {
         VStack(spacing: 16) {
-            TextField(placeholder, text: $chipText) { editing in
-                isEditing = editing
-            } onCommit: {
+            TextField(placeholder, text: $chipText, onCommit: {
                 didAddChip(chipText)
                 chipText = ""
-            }
+            })
             .disabled(!isEnabled)
             .disableAutocorrection(true)
             .autocapitalization(.none)
             .textFieldStyle(FormInputFieldStyle())
-            Chips(chips: chips, didDeleteChip: didDeleteChip)
+            Chips(titles: titles, didDeleteChip: didDeleteChip)
                 .padding(.horizontal)
         }
     }
@@ -59,7 +56,7 @@ struct ChipsInput: View {
 struct ChipsInput_Previews: PreviewProvider {
     static var chips = Set<String>(["Website", "Element", "Design", "Matrix/Element"])
     static var previews: some View {
-        ChipsInput(chips: Array(chips)) { chip in
+        ChipsInput(titles: Array(chips)) { chip in
             chips.insert(chip)
         } didDeleteChip: { chip in
             chips.remove(chip)

@@ -22,12 +22,12 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct Chips: View {
     
-    @State private var totalHeight: CGFloat = 0
+    @State private var frame: CGRect = CGRect.zero
     
-    var chips: [String]
-    var didDeleteChip: (String) -> Void
-    var verticalSpacing: CGFloat = 16
-    var horizontalSpacing: CGFloat = 12
+    let titles: [String]
+    let didDeleteChip: (String) -> Void
+    let verticalSpacing: CGFloat = 16
+    let horizontalSpacing: CGFloat = 12
     
     var body: some View {
         Group {
@@ -36,8 +36,8 @@ struct Chips: View {
                 var y = CGFloat.zero
                 GeometryReader { geo in
                     ZStack(alignment: .topLeading, content: {
-                        ForEach(chips, id: \.self) { chip in
-                            Chip(chip: chip) {
+                        ForEach(titles, id: \.self) { chip in
+                            Chip(title: chip) {
                                 didDeleteChip(chip)
                             }
                             .alignmentGuide(.leading) { dimension in
@@ -50,7 +50,7 @@ struct Chips: View {
                                 
                                 let result = x
                                 
-                                if chip == chips.last {
+                                if chip == titles.last {
                                     // Reset x if it's the last.
                                     x = 0
                                 } else {
@@ -62,30 +62,17 @@ struct Chips: View {
                             .alignmentGuide(.top) { dimension in
                                 // Use next y value and reset if its the last.
                                 let result = y
-                                if chip == chips.last {
+                                if chip == titles.last {
                                     y = 0
                                 }
                                 return result
                             }
                         }
                     })
-                    .background(viewHeightReader($totalHeight))
+                    .background(ViewFrameReader(frame: $frame))
                 }
             }
-            .frame(height: totalHeight)
-        }
-    }
-    
-    /**
-     As the flow layout uses a `ZStack` and alignmentGuides to overlay the chips we need to use
-     Geometry to report back the calculated size
-     */
-    private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View {
-        return GeometryReader { geo -> Color in
-            DispatchQueue.main.async {
-                binding.wrappedValue = geo.frame(in: .local).size.height
-            }
-            return .clear
+            .frame(height: frame.size.height)
         }
     }
 }
@@ -95,8 +82,8 @@ struct Chips_Previews: PreviewProvider {
     static var chips: [String] = ["Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6"]
     static var previews: some View {
         Group {
-            Chips(chips: chips, didDeleteChip: { _ in })
-            Chips(chips: chips, didDeleteChip: { _ in })
+            Chips(titles: chips, didDeleteChip: { _ in })
+            Chips(titles: chips, didDeleteChip: { _ in })
                 .theme(.dark)
         }
         

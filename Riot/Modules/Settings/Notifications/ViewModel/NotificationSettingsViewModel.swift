@@ -60,7 +60,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             let keywordsRules = notificationSettingsService.contentRulesPublisher
                 .map { $0.filter { !$0.ruleId.starts(with: ".")} }
             
-            // Map to just the keword strings
+            // Map to just the keyword strings
             let keywords = keywordsRules
                 .map { Set($0.compactMap { $0.ruleId }) }
             
@@ -87,7 +87,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                 }
                 .store(in: &cancellables)
             
-            // Keword rules were updates, check if we need to update the setting.
+            // Keyword rules were updates, check if we need to update the setting.
             keywordsRules
                 .map { $0.contains { $0.enabled } }
                 .sink(receiveValue: keywordRuleUpdated(anyEnabled:))
@@ -107,11 +107,11 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     
     // MARK: - Public
     
-    func check(ruleID: NotificationPushRuleId, checked: Bool) {
-        let index = NotificationIndex.index(when: checked)
+    func update(ruleID: NotificationPushRuleId, isChecked: Bool) {
+        let index = NotificationIndex.index(when: isChecked)
         if ruleID == .keywords {
             // Keywords is handled differently to other settings
-            handleCheckKeywords(checked: checked)
+            updateKeywords(isChecked: isChecked)
             return
         }
         // Get the static definition and update the actions and enabled state.
@@ -124,13 +124,13 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         )
     }
     
-    private func handleCheckKeywords(checked: Bool) {
+    private func updateKeywords(isChecked: Bool) {
         guard !keywordsOrdered.isEmpty else {
             self.viewState.selectionState[.keywords]?.toggle()
             return
         }
         // Get the static definition and update the actions and enabled state for every keyword.
-        let index = NotificationIndex.index(when: checked)
+        let index = NotificationIndex.index(when: isChecked)
         guard let standardActions = NotificationPushRuleId.keywords.standardActions(for: index) else { return }
         let enabled = standardActions != .disabled
         keywordsOrdered.forEach { keyword in

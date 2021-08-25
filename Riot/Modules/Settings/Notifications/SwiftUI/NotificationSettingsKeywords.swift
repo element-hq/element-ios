@@ -24,10 +24,10 @@ struct NotificationSettingsKeywords: View {
     @ObservedObject var viewModel: NotificationSettingsViewModel
     var body: some View {
         ChipsInput(
-            chips: viewModel.viewState.keywords,
-            placeholder: VectorL10n.settingsNewKeyword,
+            titles: viewModel.viewState.keywords,
             didAddChip: viewModel.add(keyword:),
-            didDeleteChip: viewModel.remove(keyword:)
+            didDeleteChip: viewModel.remove(keyword:),
+            placeholder: VectorL10n.settingsNewKeyword
         )
         .disabled(!(viewModel.viewState.selectionState[.keywords] ?? false))
 
