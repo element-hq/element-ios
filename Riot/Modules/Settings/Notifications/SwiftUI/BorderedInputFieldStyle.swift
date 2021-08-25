@@ -67,7 +67,7 @@ struct BorderedInputFieldStyle: TextFieldStyle {
     
     func _body(configuration: TextField<_Label>) -> some View {
         let rect = RoundedRectangle(cornerRadius: 8)
-        configuration
+        return configuration
             .font(Font(theme.fonts.callout))
             .foregroundColor(textColor)
             .accentColor(accentColor)
@@ -75,12 +75,7 @@ struct BorderedInputFieldStyle: TextFieldStyle {
             .padding(.horizontal, 8)
             .background(backgroundColor)
             .clipShape(rect)
-            .overlay(
-                rect
-                    .stroke(borderColor, lineWidth: borderWdith)
-            )
-
-        
+            .overlay(rect.stroke(borderColor, lineWidth: borderWdith))
     }
 }
 
@@ -101,7 +96,6 @@ struct BorderedInputFieldStyle_Previews: PreviewProvider {
                     .textFieldStyle(BorderedInputFieldStyle(isEnabled: false))
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(BorderedInputFieldStyle(isEditing: true, isError: true))
-                
             }
             .padding()
             VStack {
@@ -117,7 +111,6 @@ struct BorderedInputFieldStyle_Previews: PreviewProvider {
                     .textFieldStyle(BorderedInputFieldStyle(isEnabled: false))
                 TextField("Placeholder", text: .constant("Web"))
                     .textFieldStyle(BorderedInputFieldStyle(isEditing: true, isError: true))
-                
             }
             .padding()
             .theme(ThemeIdentifier.dark)
