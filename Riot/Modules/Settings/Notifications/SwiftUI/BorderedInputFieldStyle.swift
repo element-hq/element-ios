@@ -17,7 +17,7 @@
 import Foundation
 import SwiftUI
 
-/*
+/**
  A bordered style of text input as defined in:
  https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=2039%3A26415
  */

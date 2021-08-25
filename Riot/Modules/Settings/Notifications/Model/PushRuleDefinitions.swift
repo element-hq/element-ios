@@ -18,7 +18,7 @@ import Foundation
 
 
 extension NotificationPushRuleId {
-    /*
+    /**
      A static definition of the push rule actions.
      It is defined similarly across Web and Android.
      */

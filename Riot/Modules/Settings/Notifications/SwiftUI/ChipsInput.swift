@@ -17,7 +17,7 @@
 import SwiftUI
 
 
-/*
+/**
  Renders an input field and a collection of chips
  with callbacks for addition and deletion.
  */

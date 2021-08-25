@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-/*
+/**
  Renders the keywords input, driven by 'NotificationSettingsViewModel'.
  */
 @available(iOS 14.0, *)

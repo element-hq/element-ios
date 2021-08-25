@@ -16,7 +16,7 @@
 
 import SwiftUI
 
-/*
+/**
  Renders the push rule settings that can be enabled/disable.
  Also renders an optional bottom section
  (used in the case of keywords, for the keyword chips and input).
