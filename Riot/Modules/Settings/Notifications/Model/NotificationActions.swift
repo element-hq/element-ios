@@ -17,7 +17,7 @@
 import Foundation
 
 /**
- The actions defined on a push rule, used int he static push rule definitions.
+ The actions defined on a push rule, used in the static push rule definitions.
  */
 struct NotificationActions {
     let notify: Bool

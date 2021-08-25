@@ -18,7 +18,7 @@ import Foundation
 
 /**
  Index that determines the state of the push setting.
- Silent case is un-unsed on iOS but keepingin for consistency of
+ Silent case is un-unsed on iOS but keeping in for consistency of
  definition across the platforms.
  */
 enum NotificationIndex {
@@ -31,7 +31,7 @@ extension NotificationIndex: CaseIterable { }
 
 extension NotificationIndex {
     /**
-     Used to map the on/off checkarks to an index used in the static push rule definitions.
+     Used to map the on/off checkmarks to an index used in the static push rule definitions.
      */
     static func index(enabled: Bool) -> NotificationIndex {
         return enabled ? .noisy : .off
