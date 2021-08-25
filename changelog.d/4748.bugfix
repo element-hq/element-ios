@@ -1,0 +1,1 @@
+Fixed cached callbacks race condition, serialized all async operations, properly cleaning up callbacks on failure.
