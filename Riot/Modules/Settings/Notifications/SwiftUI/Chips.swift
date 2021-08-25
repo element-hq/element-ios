@@ -16,52 +16,75 @@
 
 import SwiftUI
 
+/**
+ Renders multiple chips in a flow layout.
+ */
 @available(iOS 14.0, *)
 struct Chips: View {
     
+    @State private var totalHeight: CGFloat = 0
+    
     var chips: [String]
+    var didDeleteChip: (String) -> Void
+    var verticalSpacing: CGFloat = 16
+    var horizontalSpacing: CGFloat = 12
     
     var body: some View {
-        var width = CGFloat.zero
-        var height = CGFloat.zero
-        return GeometryReader { geo in
-                ZStack(alignment: .topLeading, content: {
-                    ForEach(chips, id: \.self) { chip in
-                        Chip(titleKey: chip) {
-                            
+        Group {
+            VStack {
+                var x = CGFloat.zero
+                var y = CGFloat.zero
+                GeometryReader { geo in
+                    ZStack(alignment: .topLeading, content: {
+                        ForEach(chips, id: \.self) { chip in
+                            Chip(chip: chip) {
+                                didDeleteChip(chip)
+                            }
+                            .alignmentGuide(.leading) { dimension in
+                                if abs(x - dimension.width) > geo.size.width {
+                                    x = 0
+                                    y -= dimension.height + verticalSpacing
+                                }
+                                
+                                let result = x
+                                if chip == chips.last {
+                                    x = 0
+                                } else {
+                                    x -= dimension.width + horizontalSpacing
+                                }
+                                return result
+                            }
+                            .alignmentGuide(.top) { dimension in
+                                let result = y
+                                if chip == chips.last {
+                                    y = 0
+                                }
+                                return result
+                            }
                         }
-                        .padding(.all, 5)
-                        .alignmentGuide(.leading) { dimension in
-                            if abs(width - dimension.width) > geo.size.width {
-                                width = 0
-                                height -= dimension.height
-                            }
-                            
-                            let result = width
-                            if chip == chips.last {
-                                width = 0
-                            } else {
-                                width -= dimension.width
-                            }
-                            return result
-                          }
-                        .alignmentGuide(.top) { dimension in
-                            let result = height
-                            if chip == chips.last {
-                                height = 0
-                            }
-                            return result
-                        }
+                    })
+                    .background(viewHeightReader($totalHeight))
                 }
-            })
-        }.padding(.all, 10)
+            }
+            .frame(height: totalHeight)
+        }
+    }
+    
+    private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View {
+        return GeometryReader { geo -> Color in
+            DispatchQueue.main.async {
+                binding.wrappedValue = geo.frame(in: .local).size.height
+            }
+            return .clear
+        }
     }
 }
 
 @available(iOS 14.0, *)
 struct Chips_Previews: PreviewProvider {
+    static var chips: [String] = ["Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6"]
     static var previews: some View {
-        Chips(chips: ["Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6"])
-            .frame(width: .infinity, height: 400, alignment: .leading)
+        Chips(chips: chips, didDeleteChip: { _ in })
+        
     }
 }

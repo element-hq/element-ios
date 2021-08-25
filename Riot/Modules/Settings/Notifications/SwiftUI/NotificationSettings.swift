@@ -16,40 +16,40 @@
 
 import SwiftUI
 
+/*
+ Renders the push rule settings that can enabled/disable.
+ Also renders an optional bottom section
+ (Used in the case of keywords for the keyword chips and input).
+ */
 @available(iOS 14.0, *)
-struct NotificationSettings<Footer: View>: View {
+struct NotificationSettings<BottomSection: View>: View {
     
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
-    var footer: Footer
-    
-    @ViewBuilder
-    private var rightButton: some View {
-        Button(VectorL10n.save) {
-            viewModel.process(viewAction: .save)
-        }
-    }
+    var bottomSection: BottomSection?
     
     var body: some View {
         VectorForm {
             SwiftUI.Section(
-                header: FormSectionHeader(text: VectorL10n.roomNotifsSettingsNotifyMeFor),
-                footer: footer
+                header: FormSectionHeader(text: VectorL10n.settingsNotifyMeFor)
             ) {
-                ForEach(viewModel.viewState.selectionState) { item in
-                    FormPickerItem(title: item.title ?? "", selected: item.selected) {
-                        viewModel.process(viewAction: .selectNotification(item.ruleId, !item.selected))
+                ForEach(viewModel.viewState.ruleIds) { ruleId in
+                    let checked = viewModel.viewState.selectionState[ruleId] ?? false
+                    FormPickerItem(title: ruleId.title, selected: checked) {
+                        viewModel.check(ruleID: ruleId, checked: !checked)
                     }
                 }
             }
+            bottomSection
         }
         .activityIndicator(show: viewModel.viewState.saving)
-        .navigationBarItems(
-            trailing: rightButton
-        )
-        .onAppear {
-            viewModel.process(viewAction: .load)
-        }
+    }
+}
+
+@available(iOS 14.0, *)
+extension NotificationSettings where BottomSection == EmptyView {
+    init(viewModel: NotificationSettingsViewModel) {
+        self.init(viewModel: viewModel, bottomSection: nil)
     }
 }
 
@@ -60,8 +60,7 @@ struct NotificationSettings_Previews: PreviewProvider {
             ForEach(NotificationSettingsScreen.allCases) { screen in
                 NavigationView {
                     NotificationSettings(
-                        viewModel: NotificationSettingsViewModel(rules: screen.pushRules),
-                        footer: EmptyView()
+                        viewModel: NotificationSettingsViewModel(notificationSettingsService: MockNotificationSettingsService.example, ruleIds: screen.pushRules)
                     )
                     .navigationBarTitleDisplayMode(.inline)
                 }

@@ -41,9 +41,17 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
     
     init(session: MXSession, screen: NotificationSettingsScreen) {
         self.session = session
-        
-        let viewModel = NotificationSettingsViewModel(rules: screen.pushRules)
-        let viewController = VectorHostingController(rootView: NotificationSettings(viewModel: viewModel, footer: Text("footer")))
+        let notificationSettingsService = NotificationSettingsService(session: session)
+        let viewModel = NotificationSettingsViewModel(notificationSettingsService: notificationSettingsService, ruleIds: screen.pushRules)
+        let viewController: UIViewController
+        switch screen {
+        case .defaultNotificaitons:
+            viewController = VectorHostingController(rootView: DefaultNotificationSettings(viewModel: viewModel))
+        case .mentionsAndKeywords:
+            viewController = VectorHostingController(rootView: MentionsAndKeywordNotificationSettings(viewModel: viewModel))
+        case .other:
+            viewController = VectorHostingController(rootView: OtherNotificationSettings(viewModel: viewModel))
+        }
         self.notificationSettingsViewModel = viewModel
         self.notificationSettingsViewController = viewController
     }

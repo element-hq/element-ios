@@ -18,52 +18,9 @@
 
 import Foundation
 
-/// NotificationSettingsViewController view state
-
-struct PushRuleSelectedState {
-    let ruleId: PushRuleId
-    let selected: Bool
-}
-
-extension PushRuleSelectedState: Identifiable {
-    var id: String { ruleId.rawValue }
-}
-
-extension PushRuleSelectedState {
-    var title: String? {
-        switch ruleId {
-        case .suppressBots:
-            return VectorL10n.settingsMessagesByABot
-        case .inviteMe:
-            return VectorL10n.settingsRoomInvitations
-        case .containDisplayName:
-            return VectorL10n.settingsMessagesContainingDisplayName
-        case .tombstone:
-            return VectorL10n.settingsRoomUpgrades
-        case .roomNotif:
-            return VectorL10n.settingsMessagesContainingAtRoom
-        case .containUserName:
-            return VectorL10n.settingsMessagesContainingUserName
-        case .call:
-            return VectorL10n.settingsCallInvitations
-        case .oneToOneEncryptedRoom:
-            return VectorL10n.settingsEncryptedDirectMessages
-        case .oneToOneRoom:
-            return VectorL10n.settingsDirectMessages
-        case .allOtherMessages:
-            return VectorL10n.settingsGroupMessages
-        case .encrypted:
-            return VectorL10n.settingsEncryptedGroupMessages
-        case .keywords:
-            return VectorL10n.settingsMessagesContainingKeywords
-        default:
-            return nil
-        }
-    }
-}
-
-
 struct NotificationSettingsViewState {
     var saving: Bool
-    var selectionState: [PushRuleSelectedState]
+    var ruleIds: [NotificationPushRuleId]
+    var selectionState: [NotificationPushRuleId: Bool]
+    var keywords = [String]()
 }

@@ -16,6 +16,9 @@
 
 import Foundation
 
+/**
+The notification settings screen definitions, used when calling the coordinator.
+ */
 @objc enum NotificationSettingsScreen: Int {
     case defaultNotificaitons
     case mentionsAndKeywords
@@ -29,7 +32,10 @@ extension NotificationSettingsScreen: Identifiable {
 }
 
 extension NotificationSettingsScreen {
-    var pushRules: [PushRuleId] {
+    /**
+     Defines which rules are handled by each of the screens.
+     */
+    var pushRules: [NotificationPushRuleId] {
         switch self {
         case .defaultNotificaitons:
             return [.oneToOneRoom, .allOtherMessages, .oneToOneEncryptedRoom, .encrypted]

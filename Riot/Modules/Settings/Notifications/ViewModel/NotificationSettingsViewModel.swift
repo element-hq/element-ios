@@ -19,6 +19,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import OrderedCollections
 
 @available(iOS 14.0, *)
 final class NotificationSettingsViewModel: NotificationSettingsViewModelType, ObservableObject {
@@ -27,55 +28,222 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     
     // MARK: Private
     
+    private let notificationSettingsService: NotificationSettingsServiceType
+    // The rule ids this view model allows the ui to enabled/disable.
+    private let ruleIds: [NotificationPushRuleId]
+    private var cancellables = Set<AnyCancellable>()
+    
+    // The set of keywords the UI displays. We use an Ordered set to keep a consistent ordering
+    // so that the keywords don't jump around.
+    @Published private var keywordsSet = OrderedSet<String>()
+    
     // MARK: Public
-
-    weak var viewDelegate: NotificationSettingsViewModelViewDelegate?
-    weak var coordinatorDelegate: NotificationSettingsViewModelCoordinatorDelegate?
     
     @Published var viewState: NotificationSettingsViewState
     
+    weak var coordinatorDelegate: NotificationSettingsViewModelCoordinatorDelegate?
+    
     // MARK: - Setup
     
-    init(initialState: NotificationSettingsViewState) {
+    init(notificationSettingsService: NotificationSettingsServiceType, ruleIds: [NotificationPushRuleId], initialState: NotificationSettingsViewState) {
+        self.notificationSettingsService = notificationSettingsService
+        self.ruleIds = ruleIds
         self.viewState = initialState
+        
+        // Observe whent he rules updated to update the state of the settings.
+        notificationSettingsService.rulesPublisher
+            .sink(receiveValue: rulesUpdated(newRules:))
+            .store(in: &cancellables)
+        
+        // Only observe keywords if this settings view has it as an id
+        if ruleIds.contains(.keywords) {
+            // Publisher of all the keyword push rules(do not start with '.')
+            let keywordsRules = notificationSettingsService.contentRulesPublisher
+                .map { $0.filter { !$0.ruleId.starts(with: ".")} }
+            
+            // Map to just the keword strings
+            let keywords = keywordsRules
+                .map { Set($0.compactMap { $0.ruleId }) }
+            
+            // Update the keyword set
+            keywords
+                .sink { [weak self] updatedKeywords in
+                    guard let self = self else { return }
+                    // We don't just assign the new set as it would cause all keywords to get sorted lexigraphically.
+                    // We first sort lexigraphically by preserve the order the user added them.
+                    // The following adds/removes any updates while preserving that ordering.
+                    let newKeywordSet = OrderedSet<String>(updatedKeywords.sorted())
+                    self.keywordsSet.removeAll { keyword in
+                        !newKeywordSet.contains(keyword)
+                    }
+                    newKeywordSet.forEach { keyword in
+                        self.keywordsSet.append(keyword)
+                    }
+                }
+                .store(in: &cancellables)
+            
+            // Keword rules were updates, may need to update the setting.
+            keywordsRules
+                .map { $0.contains { $0.enabled } }
+                .sink(receiveValue: keywordRuleUpdated(anyEnabled:))
+                .store(in: &cancellables)
+            
+            // Update the viewState with the final keywords to be displayed.
+            $keywordsSet
+                .map(Array.init)
+                .weakAssign(to: \.viewState.keywords, on: self)
+                .store(in: &cancellables)
+        }
     }
     
-    convenience init(rules: [PushRuleId]) {
-        let ruleSate = rules.map({ PushRuleSelectedState(ruleId: $0, selected: false) })
-        self.init(initialState: NotificationSettingsViewState(saving: false, selectionState: ruleSate))
-    }
-    
-    deinit {
-        self.cancelOperations()
+    convenience init(notificationSettingsService: NotificationSettingsServiceType, ruleIds: [NotificationPushRuleId]) {
+        let ruleState = Dictionary(uniqueKeysWithValues: ruleIds.map({ ($0, selected: false) }))
+        self.init(notificationSettingsService: notificationSettingsService, ruleIds: ruleIds, initialState: NotificationSettingsViewState(saving: false, ruleIds: ruleIds, selectionState: ruleState))
     }
     
     // MARK: - Public
     
-    func process(viewAction: NotificationSettingsViewAction) {
-        switch viewAction {
-        case .load:
-            self.loadData()
-        case .save:
-            break
-        case .cancel:
-            self.cancelOperations()
-//            self.coordinatorDelegate?.notificationSettingsViewModelDidCancel(self)
-        case .selectNotification(_, _):
-            break
+    func check(ruleID: NotificationPushRuleId, checked: Bool) {
+        let index = NotificationIndex.index(enabled: checked)
+        if ruleID == .keywords {
+            // Keywords is handled differently to other settings
+            handleCheckKeywords(checked: checked)
+            return
+        }
+        // Get the static definition and update the actions/enabled state.
+        guard let standardActions = ruleID.standardActions(for: index) else { return }
+        let enabled = standardActions != .disabled
+        notificationSettingsService.updatePushRuleActions(
+            for: ruleID.rawValue,
+            enabled: enabled,
+            actions: standardActions.actions
+        )
+    }
+    
+    private func handleCheckKeywords(checked: Bool) {
+        guard !keywordsSet.isEmpty else {
+            self.viewState.selectionState[.keywords]?.toggle()
+            return
+        }
+        // Get the static definition and update the actions/enabled state for every keyword.
+        let index = NotificationIndex.index(enabled: checked)
+        guard let standardActions = NotificationPushRuleId.keywords.standardActions(for: index) else { return }
+        let enabled = standardActions != .disabled
+        keywordsSet.forEach { keyword in
+            notificationSettingsService.updatePushRuleActions(
+                for: keyword,
+                enabled: enabled,
+                actions: standardActions.actions
+            )
         }
     }
     
+    func add(keyword: String) {
+        keywordsSet.append(keyword)
+        notificationSettingsService.add(keyword: keyword, enabled: true)
+    }
+    
+    func remove(keyword: String) {
+        keywordsSet.remove(keyword)
+        notificationSettingsService.remove(keyword: keyword)
+    }
+    
     // MARK: - Private
+    private func rulesUpdated(newRules: [MXPushRule]) {
+        for rule in newRules {
+            guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
+                  ruleIds.contains(ruleId) else { continue }
+            self.viewState.selectionState[ruleId] = self.isChecked(rule: rule)
+        }
+    }
     
-    private func loadData() {
+    private func keywordRuleUpdated(anyEnabled: Bool) {
+        if !keywordsSet.isEmpty {
+            self.viewState.selectionState[.keywords] = anyEnabled
+        }
+    }
+    
+    /**
+     Given a push rule check which index/checked state does it match.
+     Matcing is done by comparing the rule against the static definitions for that rule.
+     Same logic is used on android.
+     */
+    private func isChecked(rule: MXPushRule) -> Bool {
+        guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else { return false }
+        
+        let firstIndex = NotificationIndex.allCases.first { nextIndex in
+            return ruleMaches(rule: rule, targetRule: ruleId.standardActions(for: nextIndex))
+        }
+        
+        guard let index = firstIndex else {
+            return false
+        }
+        
+        return index.enabled
+    }
+    /*
+     Given a rule does it match the actions int he static definition.
+     */
+    private func ruleMaches(rule: MXPushRule, targetRule: NotificationStandardActions?) -> Bool {
+        guard let targetRule = targetRule else {
+            return false
+        }
+        if !rule.enabled && targetRule == .disabled {
+            return true
+        }
+        
+        if rule.enabled,
+           let actions = targetRule.actions,
+           rule.highlight == actions.highlight,
+           rule.sound == actions.sound,
+           rule.notify == actions.notify,
+           rule.dontNotify == !actions.notify {
+            return true
+        }
+        return false
+    }
+    
+}
 
+fileprivate extension MXPushRule {
+    func getAction(actionType: MXPushRuleActionType, tweakType: String? = nil) -> MXPushRuleAction? {
+        guard let actions = actions as? [MXPushRuleAction] else {
+            return nil
+        }
+        
+        return actions.first { action in
+            var match = action.actionType == actionType
+            MXLog.debug("action \(action)")
+            if let tweakType = tweakType,
+               let actionTweak = action.parameters?["set_tweak"] as? String {
+                match = match && (tweakType == actionTweak)
+            }
+            return match
+        }
     }
     
-    private func update(viewState: NotificationSettingsViewState) {
-//        self.viewDelegate?.notificationSettingsViewModel(self, didUpdateViewState: viewState)
+    var highlight: Bool {
+        guard let action = getAction(actionType: MXPushRuleActionTypeSetTweak, tweakType: "highlight") else {
+            return false
+        }
+        if let highlight = action.parameters["value"] as? Bool {
+            return highlight
+        }
+        return true
     }
     
-    private func cancelOperations() {
+    var sound: String? {
+        guard let action = getAction(actionType: MXPushRuleActionTypeSetTweak, tweakType: "sound") else {
+            return nil
+        }
+        return action.parameters["value"] as? String
+    }
     
+    var notify: Bool {
+        return getAction(actionType: MXPushRuleActionTypeNotify) != nil
+    }
+    
+    var dontNotify: Bool {
+        return getAction(actionType: MXPushRuleActionTypeDontNotify) != nil
     }
 }

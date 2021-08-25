@@ -25,6 +25,11 @@ options:
   useBaseInternationalization: true
   postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
 
+packages:
+  swift-collections:
+    url: https://github.com/apple/swift-collections
+    majorVersion: 0.0.5
+    
 include:
   - path: Riot/target.yml
   - path: RiotTests/target.yml

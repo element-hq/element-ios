@@ -18,20 +18,12 @@
 
 import Foundation
 
-protocol NotificationSettingsViewModelViewDelegate: AnyObject {
-    func notificationSettingsViewModel(_ viewModel: NotificationSettingsViewModelType, didUpdateViewState viewSate: NotificationSettingsViewState)
-}
-
 protocol NotificationSettingsViewModelCoordinatorDelegate: AnyObject {
     func notificationSettingsViewModel(_ viewModel: NotificationSettingsViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
     func notificationSettingsViewModelDidCancel(_ viewModel: NotificationSettingsViewModelType)
 }
 
 /// Protocol describing the view model used by `NotificationSettingsViewController`
-protocol NotificationSettingsViewModelType {        
-        
-    var viewDelegate: NotificationSettingsViewModelViewDelegate? { get set }
+protocol NotificationSettingsViewModelType {
     var coordinatorDelegate: NotificationSettingsViewModelCoordinatorDelegate? { get set }
-    
-    func process(viewAction: NotificationSettingsViewAction)
 }

@@ -17,28 +17,28 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct OtherNotifications: View {
+struct DefaultNotificationSettings: View {
+    
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
     var body: some View {
-        NotificationSettings(
-            viewModel: viewModel,
-            footer: EmptyView()
-        )
-        .navigationTitle(VectorL10n.settingsOther)
+        NotificationSettings(viewModel: viewModel)
+        .navigationBarTitle(VectorL10n.settingsDefault)
     }
 }
 
 @available(iOS 14.0, *)
-struct OtherNotifications_Previews: PreviewProvider {
+struct DefaultNotifications_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DefaultNotifications(
+            DefaultNotificationSettings(
                 viewModel: NotificationSettingsViewModel(
-                    rules: NotificationSettingsScreen.other.pushRules
+                    notificationSettingsService: MockNotificationSettingsService.example,
+                    ruleIds: NotificationSettingsScreen.defaultNotificaitons.pushRules
                 )
             )
             .navigationBarTitleDisplayMode(.inline)
         }
+
     }
 }

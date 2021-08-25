@@ -16,12 +16,10 @@
 
 import Foundation
 
-enum NotificationAction {
-    case notify(Bool)
-    case highlight(Bool)
-    case sound(String)
-}
-
+/*
+ A static definition of the different actions that can be defined on push rules.
+ It is defined similarly across Web and Android.
+ */
 enum NotificationStandardActions {
     case notify
     case notifyDefaultSound
@@ -31,20 +29,20 @@ enum NotificationStandardActions {
     case dontNotify
     case disabled
     
-    var actions: [NotificationAction]? {
+    var actions: NotificationActions? {
         switch self {
         case .notify:
-            return [.notify(true)]
+            return NotificationActions(notify: true)
         case .notifyDefaultSound:
-            return [.notify(true), .sound("default")]
+            return NotificationActions(notify: true, sound: "default")
         case .notifyRingSound:
-            return [.notify(true), .sound("ring")]
+            return NotificationActions(notify: true, sound: "ring")
         case .highlight:
-            return [.notify(true), .highlight(true)]
+            return NotificationActions(notify: true, highlight: true)
         case .highlightDefaultSound:
-            return [.notify(true), .highlight(true), .sound("default")]
+            return NotificationActions(notify: true, highlight: true, sound: "default")
         case .dontNotify:
-            return [.notify(false)]
+            return NotificationActions(notify: false)
         case .disabled:
             return nil
         }

@@ -16,23 +16,31 @@
 
 import SwiftUI
 
+/*
+ Renders the keywords input, driven by 'NotificationSettingsViewModel'.
+ */
 @available(iOS 14.0, *)
 struct Keywords: View {
-    
-    @ObservedObject var viewModel: KeywordsViewModel
-    @State var keywordText: String = ""
-    
+    @ObservedObject var viewModel: NotificationSettingsViewModel
     var body: some View {
-        VStack {
-            TextField("New Keyword", text: $keywordText)
-            Chips(chips: viewModel.keywords)
-        }
+        ChipsInput(
+            chips: viewModel.viewState.keywords,
+            placeholder: VectorL10n.settingsNewKeyword,
+            didAddChip: viewModel.add(keyword:),
+            didDeleteChip: viewModel.remove(keyword:)
+        )
+        .disabled(!(viewModel.viewState.selectionState[.keywords] ?? false))
+
     }
 }
 
 @available(iOS 14.0, *)
 struct Keywords_Previews: PreviewProvider {
+    static let viewModel = NotificationSettingsViewModel(
+        notificationSettingsService: MockNotificationSettingsService.example,
+        ruleIds: NotificationSettingsScreen.mentionsAndKeywords.pushRules
+    )
     static var previews: some View {
-        Keywords(viewModel: KeywordsViewModel())
+        Keywords(viewModel: viewModel)
     }
 }

@@ -4426,25 +4426,33 @@ internal enum VectorL10n {
   internal static var settingsMentionsAndKeywords: String { 
     return VectorL10n.tr("Vector", "settings_mentions_and_keywords") 
   }
+  /// You won’t get notifications for mentions & keywords in encrypted rooms on mobile.
+  internal static var settingsMentionsAndKeywordsEncryptionNotice: String { 
+    return VectorL10n.tr("Vector", "settings_mentions_and_keywords_encryption_notice") 
+  }
   /// Messages by a bot
   internal static var settingsMessagesByABot: String { 
     return VectorL10n.tr("Vector", "settings_messages_by_a_bot") 
   }
-  /// Messages containing @room
+  /// @room
   internal static var settingsMessagesContainingAtRoom: String { 
     return VectorL10n.tr("Vector", "settings_messages_containing_at_room") 
   }
-  /// Messages containing my display name
+  /// My display name
   internal static var settingsMessagesContainingDisplayName: String { 
     return VectorL10n.tr("Vector", "settings_messages_containing_display_name") 
   }
-  /// Messages containing keywords
+  /// Keywords
   internal static var settingsMessagesContainingKeywords: String { 
     return VectorL10n.tr("Vector", "settings_messages_containing_keywords") 
   }
-  /// Messages containing my display name
+  /// My username
   internal static var settingsMessagesContainingUserName: String { 
     return VectorL10n.tr("Vector", "settings_messages_containing_user_name") 
+  }
+  /// Add new Keyword
+  internal static var settingsNewKeyword: String { 
+    return VectorL10n.tr("Vector", "settings_new_keyword") 
   }
   /// new password
   internal static var settingsNewPassword: String { 
@@ -4641,6 +4649,10 @@ internal enum VectorL10n {
   /// Version %@
   internal static func settingsVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_version", p1)
+  }
+  /// Your Keywords
+  internal static var settingsYourKeywords: String { 
+    return VectorL10n.tr("Vector", "settings_your_keywords") 
   }
   /// Login in the main app to share content
   internal static var shareExtensionAuthPrompt: String { 

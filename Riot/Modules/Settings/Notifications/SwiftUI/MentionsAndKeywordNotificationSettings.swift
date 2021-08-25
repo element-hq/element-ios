@@ -17,30 +17,38 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct DefaultNotifications: View {
+struct MentionsAndKeywordNotificationSettings: View {
     
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
+    var keywordSection: some View {
+        SwiftUI.Section(
+            header: FormSectionHeader(text: VectorL10n.settingsYourKeywords),
+            footer: FormSectionFooter(text: VectorL10n.settingsMentionsAndKeywordsEncryptionNotice)
+        ) {
+            Keywords(viewModel: viewModel)
+        }
+    }
     var body: some View {
         NotificationSettings(
             viewModel: viewModel,
-            footer: EmptyView()
+            bottomSection: keywordSection
         )
-        .navigationBarTitle(VectorL10n.settingsDefault)
+        .navigationTitle(VectorL10n.settingsMentionsAndKeywords)
     }
 }
 
 @available(iOS 14.0, *)
-struct DefaultNotifications_Previews: PreviewProvider {
+struct MentionsAndKeywords_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            DefaultNotifications(
+            MentionsAndKeywordNotificationSettings(
                 viewModel: NotificationSettingsViewModel(
-                    rules: NotificationSettingsScreen.defaultNotificaitons.pushRules
+                    notificationSettingsService: MockNotificationSettingsService.example,
+                    ruleIds: NotificationSettingsScreen.mentionsAndKeywords.pushRules
                 )
             )
             .navigationBarTitleDisplayMode(.inline)
         }
-
     }
 }

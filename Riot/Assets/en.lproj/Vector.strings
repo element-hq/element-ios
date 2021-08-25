@@ -508,15 +508,17 @@ Tap the + to start adding people.";
 "settings_encrypted_direct_messages" = "Encrypted direct messages";
 "settings_group_messages" = "Group messages";
 "settings_encrypted_group_messages" = "Encrypted group messages";
-"settings_messages_containing_display_name" = "Messages containing my display name";
-"settings_messages_containing_user_name" = "Messages containing my display name";
-"settings_messages_containing_at_room" = "Messages containing @room";
-"settings_messages_containing_keywords" = "Messages containing keywords";
+"settings_messages_containing_display_name" = "My display name";
+"settings_messages_containing_user_name" = "My username";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_keywords" = "Keywords";
 "settings_room_invitations" = "Room invitations";
 "settings_call_invitations" = "Call invitations";
 "settings_messages_by_a_bot" = "Messages by a bot";
 "settings_room_upgrades" = "Room upgrades";
-
+"settings_your_keywords" = "Your Keywords";
+"settings_new_keyword" = "Add new Keyword";
+"settings_mentions_and_keywords_encryption_notice" = "You won’t get notifications for mentions & keywords in encrypted rooms on mobile.";
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";

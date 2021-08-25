@@ -16,29 +16,47 @@
 
 import SwiftUI
 
+/**
+ A single rounded rect chip to be rendered within `Chips` collection
+ */
 @available(iOS 14.0, *)
 struct Chip: View {
     
+    @Environment(\.isEnabled) var isEnabled
     @Environment(\.theme) var theme: Theme
     
-    let titleKey: String
-    let onClose: () -> Void
+    let chip: String
+    let onDelete: () -> Void
+    
+    var backgroundColor: Color {
+        if !isEnabled {
+            return Color(theme.colors.quinaryContent)
+        }
+        return Color(theme.colors.accent)
+    }
+    
+    var foregroundColor: Color {
+        if !isEnabled {
+            return Color(theme.colors.tertiaryContent)
+        }
+        return Color(theme.colors.background)
+    }
     
     var body: some View {
         HStack {
-            Text(titleKey)
+            Text(chip)
                 .font(Font(theme.fonts.body))
                 .lineLimit(1)
             Image(systemName: "xmark.circle.fill")
                 .frame(width: 16, height: 16, alignment: .center)
-                .onTapGesture(perform: onClose)
+                .onTapGesture(perform: onDelete)
         }
         .padding(.leading, 12)
         .padding(.top, 6)
         .padding(.bottom, 6)
         .padding(.trailing, 8)
-        .background(Color(theme.tintColor))
-        .foregroundColor(Color.white)
+        .background(backgroundColor)
+        .foregroundColor(foregroundColor)
         .cornerRadius(20)
         
     }
@@ -47,6 +65,6 @@ struct Chip: View {
 @available(iOS 14.0, *)
 struct Chip_Previews: PreviewProvider {
     static var previews: some View {
-        Chip(titleKey: "My great chip", onClose: { })
+        Chip(chip: "My great chip", onDelete: { })
     }
 }

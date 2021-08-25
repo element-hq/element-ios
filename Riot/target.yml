@@ -35,6 +35,8 @@ targets:
     - target: SiriIntents
     - target: RiotNSE
     - target: DesignKit
+    - package: swift-collections
+      product: OrderedCollections
 
     configFiles:
       Debug: Debug.xcconfig

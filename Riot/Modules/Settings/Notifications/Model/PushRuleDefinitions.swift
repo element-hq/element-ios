@@ -16,104 +16,86 @@
 
 import Foundation
 
-enum NotificationIndex {
-    case off
-    case silent
-    case noisy
-}
 
-enum PushRuleId: String {
-    
-    // Default Override Rules
-    case disableAll = ".m.rule.master"
-    case suppressBots = ".m.rule.suppress_notices"
-    case inviteMe = ".m.rule.invite_for_me"
-    case peopleJoinLeave = ".m.rule.member_event"
-    case containDisplayName = ".m.rule.contains_display_name"
-    case tombstone = ".m.rule.tombstone"
-    case roomNotif = ".m.rule.roomnotif"
-    // Default Content Rules
-    case containUserName = ".m.rule.contains_user_name"
-    case keywords = "_keywords"
-    // Default Underride Rules
-    case call = ".m.rule.call"
-    case oneToOneEncryptedRoom = ".m.rule.encrypted_room_one_to_one"
-    case oneToOneRoom = ".m.rule.room_one_to_one"
-    case allOtherMessages = ".m.rule.message"
-    case encrypted = ".m.rule.encrypted"
-    // Not documented
-    case fallback = ".m.rule.fallback"
-    case reaction = ".m.rule.reaction"
-}
-
-func standardActions(for ruleId: PushRuleId, index: NotificationIndex) -> NotificationStandardActions? {
-    switch ruleId {
-    case .containDisplayName:
-        switch index {
-        case .off: return .disabled
-        case .silent: return .notify
-        case .noisy: return .highlightDefaultSound
+extension NotificationPushRuleId {
+    /*
+     A static definition of the push rule actions.
+     It is defined similarly across Web and Android.
+     */
+    func standardActions(for index: NotificationIndex) -> NotificationStandardActions? {
+        switch self {
+        case .containDisplayName:
+            switch index {
+            case .off: return .disabled
+            case .silent: return .notify
+            case .noisy: return .highlightDefaultSound
+            }
+        case .containUserName:
+            switch index {
+            case .off: return .disabled
+            case .silent: return .notify
+            case .noisy: return .highlightDefaultSound
+            }
+        case .roomNotif:
+            switch index {
+            case .off: return .disabled
+            case .silent: return .notify
+            case .noisy: return .highlight
+            }
+        case .oneToOneRoom:
+            switch index {
+            case .off: return .dontNotify
+            case .silent: return .notify
+            case .noisy: return .notifyDefaultSound
+            }
+        case .oneToOneEncryptedRoom:
+            switch index {
+            case .off: return .dontNotify
+            case .silent: return .notify
+            case .noisy: return .notifyDefaultSound
+            }
+        case .allOtherMessages:
+            switch index {
+            case .off: return .dontNotify
+            case .silent: return .notify
+            case .noisy: return .notifyDefaultSound
+            }
+        case .encrypted:
+            switch index {
+            case .off: return .dontNotify
+            case .silent: return .notify
+            case .noisy: return .notifyDefaultSound
+            }
+        case .inviteMe:
+            switch index {
+            case .off: return .disabled
+            case .silent: return .notify
+            case .noisy: return .notifyDefaultSound
+            }
+        case .call:
+            switch index {
+            case .off: return .disabled
+            case .silent: return .notify
+            case .noisy: return .notifyRingSound
+            }
+        case .suppressBots:
+            switch index {
+            case .off: return .dontNotify
+            case .silent: return .disabled
+            case .noisy: return .notifyDefaultSound
+            }
+        case .tombstone:
+            switch index {
+            case .off: return .disabled
+            case .silent: return .notify
+            case .noisy: return .highlight
+            }
+        case .keywords:
+            switch index {
+            case .off: return .disabled
+            case .silent: return .notify
+            case .noisy: return .highlightDefaultSound
+            }
         }
-    case .containUserName:
-        switch index {
-        case .off: return .disabled
-        case .silent: return .notify
-        case .noisy: return .highlightDefaultSound
-        }
-    case .roomNotif:
-        switch index {
-        case .off: return .disabled
-        case .silent: return .notify
-        case .noisy: return .highlight
-        }
-    case .oneToOneRoom:
-        switch index {
-        case .off: return .dontNotify
-        case .silent: return .notify
-        case .noisy: return .notifyDefaultSound
-        }
-    case .oneToOneEncryptedRoom:
-        switch index {
-        case .off: return .dontNotify
-        case .silent: return .notify
-        case .noisy: return .notifyDefaultSound
-        }
-    case .allOtherMessages:
-        switch index {
-        case .off: return .dontNotify
-        case .silent: return .notify
-        case .noisy: return .notifyDefaultSound
-        }
-    case .encrypted:
-        switch index {
-        case .off: return .dontNotify
-        case .silent: return .notify
-        case .noisy: return .notifyDefaultSound
-        }
-    case .inviteMe:
-        switch index {
-        case .off: return .disabled
-        case .silent: return .notify
-        case .noisy: return .notifyDefaultSound
-        }
-    case .call:
-        switch index {
-        case .off: return .disabled
-        case .silent: return .notify
-        case .noisy: return .notifyRingSound
-        }
-    case .suppressBots:
-        switch index {
-        case .off: return .dontNotify
-        case .silent: return .disabled
-        case .noisy: return .notifyDefaultSound
-        }
-    case .tombstone:
-        switch index {
-        case .off: return .disabled
-        case .silent: return .notify
-        case .noisy: return .highlight
-        }
-    default: return nil
     }
 }

@@ -17,28 +17,22 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct MentionsAndKeywords: View {
-    
-    @ObservedObject var keywordsViewModel: KeywordsViewModel
+struct OtherNotificationSettings: View {
     @ObservedObject var viewModel: NotificationSettingsViewModel
     
     var body: some View {
-        NotificationSettings(
-            viewModel: viewModel,
-            footer: Keywords(viewModel: keywordsViewModel)
-        )
-        .navigationTitle(VectorL10n.settingsMentionsAndKeywords)
+        NotificationSettings(viewModel: viewModel)
+        .navigationTitle(VectorL10n.settingsOther)
     }
 }
 
 @available(iOS 14.0, *)
-struct MentionsAndKeywords_Previews: PreviewProvider {
+struct OtherNotifications_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            MentionsAndKeywords(
-                keywordsViewModel: KeywordsViewModel(),
+            DefaultNotificationSettings(
                 viewModel: NotificationSettingsViewModel(
-                    rules: NotificationSettingsScreen.mentionsAndKeywords.pushRules
+                    notificationSettingsService: MockNotificationSettingsService.example, ruleIds: NotificationSettingsScreen.other.pushRules
                 )
             )
             .navigationBarTitleDisplayMode(.inline)
