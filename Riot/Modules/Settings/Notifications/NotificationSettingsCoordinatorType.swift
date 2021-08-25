@@ -19,8 +19,7 @@
 import Foundation
 
 protocol NotificationSettingsCoordinatorDelegate: AnyObject {
-    func notificationSettingsCoordinator(_ coordinator: NotificationSettingsCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
-    func notificationSettingsCoordinatorDidCancel(_ coordinator: NotificationSettingsCoordinatorType)
+    func notificationSettingsCoordinatorDidComplete(_ coordinator: NotificationSettingsCoordinatorType)
 }
 
 /// `NotificationSettingsCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.

@@ -19,8 +19,7 @@
 import Foundation
 
 protocol NotificationSettingsViewModelCoordinatorDelegate: AnyObject {
-    func notificationSettingsViewModel(_ viewModel: NotificationSettingsViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
-    func notificationSettingsViewModelDidCancel(_ viewModel: NotificationSettingsViewModelType)
+    func notificationSettingsViewModelDidComplete(_ viewModel: NotificationSettingsViewModelType)
 }
 
 /// Protocol describing the view model used by `NotificationSettingsViewController`

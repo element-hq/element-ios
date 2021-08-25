@@ -70,12 +70,7 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
 // MARK: - NotificationSettingsViewModelCoordinatorDelegate
 @available(iOS 14.0, *)
 extension NotificationSettingsCoordinator: NotificationSettingsViewModelCoordinatorDelegate {
-    
-    func notificationSettingsViewModel(_ viewModel: NotificationSettingsViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.notificationSettingsCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
-    }
-    
-    func notificationSettingsViewModelDidCancel(_ viewModel: NotificationSettingsViewModelType) {
-        self.delegate?.notificationSettingsCoordinatorDidCancel(self)
+    func notificationSettingsViewModelDidComplete(_ viewModel: NotificationSettingsViewModelType) {
+        self.delegate?.notificationSettingsCoordinatorDidComplete(self)
     }
 }

@@ -84,11 +84,7 @@ final class NotificationSettingsCoordinatorBridgePresenter: NSObject {
 // MARK: - NotificationSettingsCoordinatorDelegate
 @available(iOS 14.0, *)
 extension NotificationSettingsCoordinatorBridgePresenter: NotificationSettingsCoordinatorDelegate {
-    func notificationSettingsCoordinator(_ coordinator: NotificationSettingsCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.notificationSettingsCoordinatorBridgePresenterDelegateDidComplete(self)
-    }
-    
-    func notificationSettingsCoordinatorDidCancel(_ coordinator: NotificationSettingsCoordinatorType) {
+    func notificationSettingsCoordinatorDidComplete(_ coordinator: NotificationSettingsCoordinatorType) {
         self.delegate?.notificationSettingsCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }
