@@ -19,7 +19,6 @@
 import Foundation
 import Combine
 import SwiftUI
-import OrderedCollections
 
 @available(iOS 14.0, *)
 final class NotificationSettingsViewModel: NotificationSettingsViewModelType, ObservableObject {
@@ -33,9 +32,9 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     private let ruleIds: [NotificationPushRuleId]
     private var cancellables = Set<AnyCancellable>()
     
-    // The set of keywords the UI displays.
-    // We use an ordered set to keep a consistent ordering so that the keywords don't jump around.
-    @Published private var keywordsSet = OrderedSet<String>()
+    // The ordered array of keywords the UI displays.
+    // We keep it ordered so keywords don't jump around when being added and removed.
+    @Published private var keywordsOrdered = [String]()
     
     // MARK: Public
     
@@ -72,13 +71,19 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                     // We avoid simply assigning the new set as it would cause all keywords to get sorted lexigraphically.
                     // We first sort lexigraphically, and secondly preserve the order the user added them.
                     // The following adds/removes any updates while preserving that ordering.
-                    let newKeywordSet = OrderedSet<String>(updatedKeywords.sorted())
-                    self.keywordsSet.removeAll { keyword in
-                        !newKeywordSet.contains(keyword)
+                    
+                    // Remove keywords not in the updated set.
+                    var newKeywordsOrdered = self.keywordsOrdered.filter { keyword in
+                        updatedKeywords.contains(keyword)
                     }
-                    newKeywordSet.forEach { keyword in
-                        self.keywordsSet.append(keyword)
+                    // Append items in the updated set if they are not already added.
+                    // O(n)² here. Will change keywordsOrdered back to an `OrderedSet` in future to fix this.
+                    updatedKeywords.sorted().forEach { keyword in
+                        if !newKeywordsOrdered.contains(keyword) {
+                            newKeywordsOrdered.append(keyword)
+                        }
                     }
+                    self.keywordsOrdered = newKeywordsOrdered
                 }
                 .store(in: &cancellables)
             
@@ -89,8 +94,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
                 .store(in: &cancellables)
             
             // Update the viewState with the final keywords to be displayed.
-            $keywordsSet
-                .map(Array.init)
+            $keywordsOrdered
                 .weakAssign(to: \.viewState.keywords, on: self)
                 .store(in: &cancellables)
         }
@@ -121,7 +125,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     }
     
     private func handleCheckKeywords(checked: Bool) {
-        guard !keywordsSet.isEmpty else {
+        guard !keywordsOrdered.isEmpty else {
             self.viewState.selectionState[.keywords]?.toggle()
             return
         }
@@ -129,7 +133,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         let index = NotificationIndex.index(when: checked)
         guard let standardActions = NotificationPushRuleId.keywords.standardActions(for: index) else { return }
         let enabled = standardActions != .disabled
-        keywordsSet.forEach { keyword in
+        keywordsOrdered.forEach { keyword in
             notificationSettingsService.updatePushRuleActions(
                 for: keyword,
                 enabled: enabled,
@@ -139,12 +143,14 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     }
     
     func add(keyword: String) {
-        keywordsSet.append(keyword)
+        if !keywordsOrdered.contains(keyword) {
+            keywordsOrdered.append(keyword)
+        }
         notificationSettingsService.add(keyword: keyword, enabled: true)
     }
     
     func remove(keyword: String) {
-        keywordsSet.remove(keyword)
+        keywordsOrdered = keywordsOrdered.filter({ $0 != keyword })
         notificationSettingsService.remove(keyword: keyword)
     }
     
@@ -158,7 +164,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     }
     
     private func keywordRuleUpdated(anyEnabled: Bool) {
-        if !keywordsSet.isEmpty {
+        if !keywordsOrdered.isEmpty {
             self.viewState.selectionState[.keywords] = anyEnabled
         }
     }
