@@ -84,7 +84,11 @@ struct Chips: View {
 struct Chips_Previews: PreviewProvider {
     static var chips: [String] = ["Chip1", "Chip2", "Chip3", "Chip4", "Chip5", "Chip6"]
     static var previews: some View {
-        Chips(chips: chips, didDeleteChip: { _ in })
+        Group {
+            Chips(chips: chips, didDeleteChip: { _ in })
+            Chips(chips: chips, didDeleteChip: { _ in })
+                .theme(.dark)
+        }
         
     }
 }

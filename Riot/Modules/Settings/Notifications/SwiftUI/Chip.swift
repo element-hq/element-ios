@@ -39,7 +39,7 @@ struct Chip: View {
         if !isEnabled {
             return Color(theme.colors.tertiaryContent)
         }
-        return Color(theme.colors.background)
+        return Color.white
     }
     
     var body: some View {
@@ -65,6 +65,10 @@ struct Chip: View {
 @available(iOS 14.0, *)
 struct Chip_Previews: PreviewProvider {
     static var previews: some View {
-        Chip(chip: "My great chip", onDelete: { })
+        Group {
+            Chip(chip: "My great chip", onDelete: { })
+            Chip(chip: "My great chip", onDelete: { })
+                .theme(.dark)
+        }
     }
 }
