@@ -14,7 +14,7 @@
     NSMutableArray *array = [NSMutableArray array];
     
 
-    [array addObject:[self createModelWithCellName:@"YXNodeDetailTableViewCell" cellHeight:52 desc:[model.status isEqualToString:@"ENABLED"] ? @"正常运行" : @"节点掉线" title:@"节点状态" showLine:YES]];
+    [array addObject:[self createModelWithCellName:@"YXNodeDetailTableViewCell" cellHeight:52 desc:([model.status isEqualToString:@"ENABLED"] || [model.status isEqualToString:@"PRE_ENABLED"]) ? @"正常运行" : @"节点掉线" title:@"节点状态" showLine:YES]];
     [array addObject:[self createModelWithCellName:@"YXNodeDetailTableViewCell" cellHeight:52 desc:model.createTime title:@"激活时间" showLine:YES]];
     [array addObject:[self createModelWithCellName:@"YXNodeDetailTableViewCell" cellHeight:52 desc:model.payee title:@"收益地址" showLine:YES]];
     [array addObject:[self createModelWithCellName:@"YXNodeDetailTableViewCell" cellHeight:52 desc:model.genkey title:@"质押信息" showLine:YES]];

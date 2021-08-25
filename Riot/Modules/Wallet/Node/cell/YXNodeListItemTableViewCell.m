@@ -216,7 +216,7 @@ extern NSString *const kYXConfigNodeListForDetail;
     self.configLabel.text = rowData.ip;
     self.titleLabel.text = rowData.ip;
     
-    if ([rowData.status isEqualToString:@"ENABLED"]) {
+    if ([rowData.status isEqualToString:@"ENABLED"] || [rowData.status isEqualToString:@"PRE_ENABLED"]) {
         _stateLabel.text = @"正常运行";
         _stateLabel.backgroundColor = RGBA(0,255,0,0.4);
     }else{

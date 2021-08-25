@@ -9,6 +9,7 @@
 #import "YXWalletCashNoteTableViewCell.h"
 #import "YXWalletCashModel.h"
 extern NSString *const kEndEditFieldTextNotification;
+extern NSString *const kAllCrashNotification;
 @interface YXWalletCashNoteTableViewCell ()<UITextFieldDelegate>
 @property (nonatomic , strong)UILabel *titleLabel;
 @property (nonatomic , strong)UILabel *desLabel;
@@ -57,7 +58,10 @@ extern NSString *const kEndEditFieldTextNotification;
 }
 
 - (void)allLabelAction{
-    _textField.text = @(self.rowData.walletModel.balance).stringValue;
+    
+    NSString *balance = @(self.rowData.walletModel.balance).stringValue;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAllCrashNotification object:balance];
 }
 
 -(UILabel *)desLabel{

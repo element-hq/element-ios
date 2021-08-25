@@ -8,6 +8,14 @@
 
 #import "YXWalletCashModel.h"
 
+@implementation YXWalletCashCreateData
+
+@end
+
+@implementation YXWalletCashCreateModel
+
+@end
+
 @implementation YXWalletCashRecordsItem
 
 @end

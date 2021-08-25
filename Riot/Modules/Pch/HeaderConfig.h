@@ -44,4 +44,5 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/UIButton+WebCache.h>
 #import <SDWebImage/SDWebImageDownloader.h>
+#import "YXWalletNomalModel.h"
 #endif /* HeaderConfig_h */

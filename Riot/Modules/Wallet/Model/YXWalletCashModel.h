@@ -11,6 +11,29 @@
 #import "YXWalletPaymentAccountModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
+@interface YXWalletCashCreateData :NSObject
+@property (nonatomic , copy) NSString              * id;
+@property (nonatomic , copy) NSString              * walletId;
+@property (nonatomic , copy) NSString              * accoutId;
+@property (nonatomic , copy) NSString              * userId;
+@property (nonatomic , assign) CGFloat              amount;
+@property (nonatomic , copy) NSString              * cashFees;
+@property (nonatomic , copy) NSString              * message;
+@property (nonatomic , copy) NSString              * transcationId;
+@property (nonatomic , copy) NSString              * createDate;
+@property (nonatomic , assign) NSInteger              flag;
+@property (nonatomic , assign) NSInteger              status;
+
+@end
+
+@interface YXWalletCashCreateModel :NSObject
+@property (nonatomic , copy) NSString              * localDateTime;
+@property (nonatomic , assign) NSInteger              status;
+@property (nonatomic , copy) NSString              * msg;
+@property (nonatomic , strong) YXWalletCashCreateData              * data;
+@property (nonatomic , assign) BOOL              actualSucess;
+
+@end
 
 @interface YXWalletCashRecordsItem :NSObject
 @property (nonatomic , copy) NSString              * id;

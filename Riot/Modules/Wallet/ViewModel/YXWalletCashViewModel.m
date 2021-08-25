@@ -19,6 +19,7 @@
 @property (nonatomic , strong) YXWalletCashModel *cashViewModel;
 @property (nonatomic , assign) NSInteger currentPage;
 @property (nonatomic , strong) YXWalletMyWalletRecordsItem *walletModel;
+@property (nonatomic , strong) YXWalletCashCreateModel *cashCreateModel;
 @end
 
 @implementation YXWalletCashViewModel
@@ -48,6 +49,8 @@
 }
 
 - (void)reloadNewData:(YXWalletPaymentAccountRecordsItem *)model{
+    
+    self.walletModel.accountId = model.ID;
     
     [self.sectionItems removeAllObjects];
     YXWeakSelf
@@ -255,31 +258,47 @@
             return;
         }
         
-        if (weakSelf.showInputPasswordViewBlock) {
-            weakSelf.showInputPasswordViewBlock();
+        YXWalletCashCreateModel *model = [YXWalletCashCreateModel mj_objectWithKeyValues:responseObject];
+        weakSelf.cashCreateModel = model;
+        if (model.status == 200) {
+            if (weakSelf.showInputPasswordViewBlock) {
+                weakSelf.showInputPasswordViewBlock();
+            }
+        }else{
+            [MBProgressHUD showError:model.msg];
         }
-        
+    
         
     } failure:^(NSError * _Nonnull error) {
-            
+        [MBProgressHUD showError:@"兑现失败"];
     }];
     
 }
 
 - (void)confirmToCash{
     
+
     YXWeakSelf
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
-    [paramDict setObject:@"1412226345381285889" forKey:@"id"];
+    
+    NSString *accoutId = weakSelf.cashCreateModel.data.id;
+    [paramDict setObject:GET_A_NOT_NIL_STRING(accoutId) forKey:@"id"];
 
     [NetWorkManager POST:kURL(@"/cash/confirm") parameters:paramDict success:^(id  _Nonnull responseObject) {
-    
-        if (weakSelf.confirmCashSuccessBlock) {
-            weakSelf.confirmCashSuccessBlock();
-        }
         
+        YXWalletNomalModel *model = [YXWalletNomalModel mj_objectWithKeyValues:responseObject];
+        if (model.status.intValue == 200) {
+            if (weakSelf.confirmCashSuccessBlock) {
+                weakSelf.confirmCashSuccessBlock();
+            }
+        }else{
+            [MBProgressHUD showError:model.msg];
+        }
+
+   
     } failure:^(NSError * _Nonnull error) {
         [MBProgressHUD showError:@"兑现失败"];
+        [MBProgressHUD hideHUD];
     }];
 }
 

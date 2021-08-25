@@ -40,6 +40,15 @@
     self.navigationController.navigationBar.hidden = YES;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    [self.allNode reloadNewData];
+    [self.alreadylConfigure reloadNewData];
+    [self.willConfigure reloadNewData];
+    
+}
+
 
 -(YXNaviView *)naviView{
     if (!_naviView) {
@@ -149,8 +158,12 @@
 }
 
 -(void)magicView:(VTMagicView *)magicView didSelectItemAtIndex:(NSUInteger)itemIndex{
-    YXWalletNoteListViewController *vc = [magicView.viewControllers objectAtIndex:itemIndex];
-    [vc reloadNewData];
+    
+    if (magicView.viewControllers.count > itemIndex) {
+        YXWalletNoteListViewController *vc = [magicView.viewControllers objectAtIndex:itemIndex];
+        [vc reloadNewData];
+    }
+
 }
 
 

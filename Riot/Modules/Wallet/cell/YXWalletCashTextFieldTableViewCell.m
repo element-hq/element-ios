@@ -8,6 +8,7 @@
 
 #import "YXWalletCashTextFieldTableViewCell.h"
 #import "YXWalletCashModel.h"
+NSString *const kAllCrashNotification = @"kAllCrashNotification";
 extern NSString *const kEndEditFieldTextNotification;
 @interface YXWalletCashTextFieldTableViewCell ()<UITextFieldDelegate>
 @property (nonatomic , strong)UILabel *titleLabel;
@@ -57,7 +58,7 @@ extern NSString *const kEndEditFieldTextNotification;
         self.backgroundColor = kWhiteColor;
         [self setupUI];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endEditFieldTextNotification) name:kEndEditFieldTextNotification object:nil];
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allCrashNotification:) name:kAllCrashNotification object:nil];
     }
     return self;
 }
@@ -111,5 +112,9 @@ extern NSString *const kEndEditFieldTextNotification;
     [self.textField resignFirstResponder];
 }
 
+- (void)allCrashNotification:(NSNotification *)notification{
+    NSString *balance = notification.object;
+    self.textField.text = balance;
+}
 
 @end

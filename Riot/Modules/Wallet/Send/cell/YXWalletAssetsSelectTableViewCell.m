@@ -171,7 +171,7 @@
     
     _titleLabel.text = rowData.currentSelectModel.coinName;
     CGFloat baliance = rowData.currentSelectModel.fundValue.floatValue * rowData.currentSelectModel.balance;
-    _tipLabel.text = [NSString stringWithFormat:@"%@总余额：%@",rowData.currentSelectModel.coinName,[NSString stringWithFormat:@"≈￥%.4f",baliance]];
+    _tipLabel.text = [NSString stringWithFormat:@"%@总余额：%@",rowData.currentSelectModel.coinName,[NSString stringWithFormat:@"≈￥%.2f",baliance]];
     
     NSString *url = kImageURL(GET_A_NOT_NIL_STRING(rowData.currentSelectModel.image));
     YXWeakSelf

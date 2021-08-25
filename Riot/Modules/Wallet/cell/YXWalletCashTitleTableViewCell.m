@@ -91,7 +91,7 @@
     
     if ([rowData.name isEqualToString:@"当前价值"]) {
         self.titleLabel.text = @"当前价值";
-        self.desLabel.text = [NSString stringWithFormat:@"￥%@",@(rowData.walletModel.fundValue.floatValue * rowData.walletModel.balance).stringValue];
+        self.desLabel.text = [NSString stringWithFormat:@"≈￥%.4f",rowData.walletModel.fundValue.floatValue * rowData.walletModel.balance];   
     }else if ([rowData.name isEqualToString:@"手续费"]){
         self.titleLabel.text = @"手续费";
         self.desLabel.text = [NSString stringWithFormat:@"%@%%",rowData.walletModel.cashFee];
