@@ -41,20 +41,26 @@ struct Chips: View {
                                 didDeleteChip(chip)
                             }
                             .alignmentGuide(.leading) { dimension in
+                                // Align with leading side and move vertically down to next line
+                                // if chip does not fit on trailing side.
                                 if abs(x - dimension.width) > geo.size.width {
                                     x = 0
                                     y -= dimension.height + verticalSpacing
                                 }
                                 
                                 let result = x
+                                
                                 if chip == chips.last {
+                                    // Reset x if it's the last.
                                     x = 0
                                 } else {
+                                    // Align next chip to the end of the current one.
                                     x -= dimension.width + horizontalSpacing
                                 }
                                 return result
                             }
                             .alignmentGuide(.top) { dimension in
+                                // Use next y value and reset if its the last.
                                 let result = y
                                 if chip == chips.last {
                                     y = 0
@@ -70,6 +76,10 @@ struct Chips: View {
         }
     }
     
+    /**
+     As the flow layout uses a `ZStack` and alignmentGuides to overlay the chips we need to use
+     Geometry to report back the calculated size
+     */
     private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View {
         return GeometryReader { geo -> Color in
             DispatchQueue.main.async {
