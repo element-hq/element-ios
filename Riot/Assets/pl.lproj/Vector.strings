@@ -1506,3 +1506,35 @@
 "settings_device_notifications" = "Powiadomienia";
 "room_recents_unknown_room_error_message" = "Nie mogę znaleźć tego pokoju. Upewnij się, że on istnieje";
 "room_creation_dm_error" = "Nie mogliśmy utworzyć pokoju. Sprawdź użytkowników, których chcesz zaprosić, i spróbuj ponownie.";
+"version_check_modal_action_title_deprecated" = "Dowiedz się jak";
+"version_check_modal_subtitle_deprecated" = "Pracowaliśmy nad ulepszeniem Elementu, aby polepszyć korzystanie z aplikacji. Niestety Twoja aktualna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie jest już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
+"version_check_modal_title_deprecated" = "Nie obsługujemy już iOS %@";
+"version_check_modal_action_title_supported" = "Rozumiem";
+"version_check_modal_subtitle_supported" = "Pracowaliśmy nad ulepszeniem Elementu, aby polepszyć korzystanie z aplikacji. Niestety Twoja obecna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie będzie już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
+"version_check_modal_title_supported" = "Kończymy wsparcie dla iOS %@";
+"version_check_banner_subtitle_deprecated" = "Nie obsługujemy już Elementu na iOS %@. Aby nadal korzystać z pełnego potencjału Elementu, radzimy uaktualnić swoją wersję systemu iOS.";
+"version_check_banner_title_deprecated" = "Nie obsługujemy już iOS %@";
+"version_check_banner_subtitle_supported" = "Wkrótce zakończymy wsparcie dla Elementu na iOS %@. Aby nadal korzystać z pełnego potencjału Elementu, radzimy uaktualnić swoją wersję systemu iOS.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Kończymy wsparcie dla iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "Nie będziesz otrzymywać powiadomień o oznaczeniach i słowach kluczowych w zaszyfrowanych pokojach na telefonie komórkowym.";
+"settings_new_keyword" = "Dodaj nowe słowo kluczowe";
+"settings_your_keywords" = "Twoje słowa kluczowe";
+"settings_room_upgrades" = "Ulepszenia pokoju";
+"settings_messages_by_a_bot" = "Wiadomości od bota";
+"settings_call_invitations" = "Zaproszenia do połączeń";
+"settings_room_invitations" = "Zaproszenia do pokoju";
+"settings_messages_containing_keywords" = "Słowa kluczowe";
+"settings_messages_containing_at_room" = "@pokój";
+"settings_messages_containing_user_name" = "Moja nazwa użytkownika";
+"settings_messages_containing_display_name" = "Moja wyświetlana nazwa";
+"settings_encrypted_group_messages" = "Szyfrowane wiadomości grupowe";
+"settings_group_messages" = "Wiadomości grupowe";
+"settings_encrypted_direct_messages" = "Szyfrowane wiadomości bezpośrednie";
+"settings_direct_messages" = "Wiadomości bezpośrednie";
+"settings_notify_me_for" = "Powiadom mnie o";
+"settings_mentions_and_keywords" = "Oznaczanie i słowa kluczowe";
+"settings_default" = "Domyślne Powiadomienia";
+"settings_notifications" = "POWIADOMIENIA";
