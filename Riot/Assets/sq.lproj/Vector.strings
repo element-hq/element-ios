@@ -1430,3 +1430,34 @@
 "settings_device_notifications" = "Njoftime pajisjesh";
 "voice_message_lock_screen_placeholder" = "Mesazh zanor";
 "event_formatter_call_has_ended_with_time" = "Thirrja përfundoi • %@";
+"version_check_modal_action_title_deprecated" = "Shihni se si";
+"version_check_modal_subtitle_deprecated" = "Jemi marrë me thellimin e Element-it për një funksionim më të shpejtë dhe më të rafinuar. Mjerisht, versioni juaj i tanishëm i iOS-it nuk është i përputhshëm me disa nga këto ndreqje dhe nuk mbulohet më.\nJu këshillojmë të përmirësoni sistemin tuaj operativ, që Element-in ta përdorni në potencialin e tij të plotë.";
+"version_check_modal_title_deprecated" = "Nuk e mbulojmë më iOS %@";
+"version_check_modal_action_title_supported" = "E mora vesh";
+"version_check_modal_subtitle_supported" = "Jemi marrë me thellimin e Element-it për një funksionim më të shpejtë dhe më të rafinuar. Mjerisht, versioni juaj i tanishëm i iOS-it nuk është i përputhshëm me këto ndreqje dhe nuk do të mbulohet më.\nJu këshillojmë të përmirësoni sistemin tuaj operativ, që Element-in ta përdorni në potencialin e tij të plotë.";
+"version_check_modal_title_supported" = "Po i japim fund mbulimit të iOS %@";
+"version_check_banner_subtitle_deprecated" = "Nuk e mbulojmë më Element-in në iOS %@. Që të vazhdoni përdorimin e Element-it në potencialin e tij të plotë, ju këshillojmë të përmirësoni versionin tuaj të iOS-it.";
+"version_check_banner_title_deprecated" = "Nuk e mbulojmë më iOS %@";
+"version_check_banner_subtitle_supported" = "Së shpejti do t’i japim fund mbulimit për Element në iOS %@. Që të vazhdoni përdorimin e Element-it me potencialin e tij të plotë, ju këshillojmë të përmirësoni versionin tuaj të iOS-it.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Po i japim fund asistencës për iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "Në dhoma të fshehtëzuara, kur jeni në celular, s’do të merrni njoftime për përmendje & fjalëkyçe.";
+"settings_new_keyword" = "Shtoni Fjalëkyç të ri";
+"settings_your_keywords" = "Fjalëkyçat Tuaj";
+"settings_room_upgrades" = "Përmirësime dhome";
+"settings_messages_by_a_bot" = "Mesazhe nga një robot";
+"settings_call_invitations" = "Ftesa thirrjesh";
+"settings_room_invitations" = "Ftesa dhome";
+"settings_messages_containing_keywords" = "Fjalëkyçe";
+"settings_messages_containing_user_name" = "Emri im i përdoruesit";
+"settings_messages_containing_display_name" = "Emri im në ekran";
+"settings_encrypted_group_messages" = "Mesazhe të fshehtëzuar grupi";
+"settings_group_messages" = "Mesazhe grupi";
+"settings_encrypted_direct_messages" = "Mesazhe të drejtpërdrejtë të fshehtëzuar";
+"settings_direct_messages" = "Mesazhe të drejtpërdrejtë";
+"settings_notify_me_for" = "Njoftomë për";
+"settings_mentions_and_keywords" = "Përmendje dhe Fjalëkyçe";
+"settings_default" = "Njoftime Parazgjedhje";
+"settings_notifications" = "NJOFTIME";
