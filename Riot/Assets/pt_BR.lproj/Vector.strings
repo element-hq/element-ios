@@ -1272,7 +1272,7 @@
 "call_transfer_contacts_all" = "Todos";
 "call_transfer_contacts_recent" = "Recentes";
 "call_transfer_users" = "Usuárias(os)";
-"event_formatter_call_has_ended" = "Chamada terminou %@";
+"event_formatter_call_has_ended" = "Chamada terminou";
 "room_intro_cell_information_multiple_dm_sentence2" = "Somente vocês estão nesta conversa, a menos que algum(a) de você convide alguém para se juntar.";
 "room_intro_cell_information_dm_sentence2" = "Somente vocês dois/duas estão nesta conversa, ninguém mais pode juntar-se.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
@@ -1407,3 +1407,5 @@
 "event_formatter_call_missed_voice" = "Chamada de voz perdida";
 "event_formatter_call_active_video" = "Chamada de vídeo ativa";
 "event_formatter_call_active_voice" = "Chamada de voz ativa";
+"voice_message_lock_screen_placeholder" = "Mensagem de voz";
+"event_formatter_call_has_ended_with_time" = "Chamada terminou • %@";

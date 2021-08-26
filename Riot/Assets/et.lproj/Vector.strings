@@ -1268,7 +1268,7 @@
 "event_formatter_call_back" = "Helista tagasi";
 "event_formatter_call_you_declined" = "Osapool keeldus kõnest";
 "event_formatter_call_you_currently_in" = "Kõne on käsil";
-"event_formatter_call_has_ended" = "%@ kõne on lõppenud";
+"event_formatter_call_has_ended" = "Kõne on lõppenud";
 "event_formatter_call_video" = "Videokõne";
 "event_formatter_call_voice" = "Häälkõne";
 "room_open_dialpad" = "Numbriklahvistik";
@@ -1376,3 +1376,5 @@
 "settings_notifications_disabled_alert_message" = "Teavituste kasutamiseks ava seadistuste vaade.";
 "settings_notifications_disabled_alert_title" = "Teavitused on välja lülitatud";
 "settings_device_notifications" = "Teavitused seadmes";
+"voice_message_lock_screen_placeholder" = "Häälsõnum";
+"event_formatter_call_has_ended_with_time" = "Kõne lõppes • %@";

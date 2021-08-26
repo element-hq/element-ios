@@ -1313,7 +1313,7 @@
 "event_formatter_call_back" = "Перезвонить";
 "event_formatter_call_you_declined" = "Вызов отклонён";
 "event_formatter_call_you_currently_in" = "Вы в этом вызове";
-"event_formatter_call_has_ended" = "Вызов закончен %@";
+"event_formatter_call_has_ended" = "Вызов закончен";
 "event_formatter_call_video" = "Видео вызов";
 "event_formatter_call_voice" = "Голосовой вызов";
 "settings_show_NSFW_public_rooms" = "Показать публичные комнаты с чувствительным контентом";
@@ -1420,3 +1420,5 @@
 "room_recents_unknown_room_error_message" = "Не удалось найти эту комнату. Убедитесь, что она существует";
 "room_creation_dm_error" = "Мы не смогли создать ваш диалог. Пожалуйста, проверьте пользователей, которых вы хотите пригласить, и повторите попытку.";
 "callbar_only_single_active_group" = "Нажмите для присоединения к групповому вызову (%@)";
+"voice_message_lock_screen_placeholder" = "Голосовое сообщение";
+"event_formatter_call_has_ended_with_time" = "Вызов закончен • %@";
