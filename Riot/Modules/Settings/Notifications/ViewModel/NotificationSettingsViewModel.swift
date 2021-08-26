@@ -101,7 +101,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     }
     
     convenience init(notificationSettingsService: NotificationSettingsServiceType, ruleIds: [NotificationPushRuleId]) {
-        let ruleState = Dictionary(uniqueKeysWithValues: ruleIds.map({ ($0, selected: false) }))
+        let ruleState = Dictionary(uniqueKeysWithValues: ruleIds.map({ ($0, selected: true) }))
         self.init(notificationSettingsService: notificationSettingsService, ruleIds: ruleIds, initialState: NotificationSettingsViewState(saving: false, ruleIds: ruleIds, selectionState: ruleState))
     }
     
