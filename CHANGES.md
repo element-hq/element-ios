@@ -1,3 +1,34 @@
+## Changes in 1.5.2 (2021-08-26)
+
+✨ Features
+
+- Account Notification Settings: Enable/disable notification settings (Default, Mentions & Keywords and Other) and edit Keywords. ([#4467](https://github.com/vector-im/element-ios/issues/4467))
+- Implemented dialogs to inform users about Element iOS11 deprecation. ([#4693](https://github.com/vector-im/element-ios/issues/4693))
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.15.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.8)).
+- Popping the user back to the home screen after leaving a room. ([#1482](https://github.com/vector-im/element-ios/issues/1482))
+- Notifications: Replace "Message" fallback with "Notification" as the event may not be a message. ([#4132](https://github.com/vector-im/element-ios/issues/4132))
+- MXSessionState: Use Swifty versions. ([#4471](https://github.com/vector-im/element-ios/issues/4471))
+- Notifications: Show the body of all message event types. ([#4653](https://github.com/vector-im/element-ios/issues/4653))
+- Notifications: Replies now hide the referenced content. ([#4660](https://github.com/vector-im/element-ios/issues/4660))
+- Room Notification Settings: This screen is now implemented in SwiftUI for users on iOS14 or above. ([#4669](https://github.com/vector-im/element-ios/issues/4669))
+
+🐛 Bugfixes
+
+- Fixed flickering voice message cells while being sent. ([#4714](https://github.com/vector-im/element-ios/issues/4714))
+- Fastfile: Update build number in AppVersion.xcconfig instead of AppIdentifiers.xcconfig. ([#4726](https://github.com/vector-im/element-ios/issues/4726))
+- Disabled the create room button while creating a room, preventing duplicates from being created. ([#4746](https://github.com/vector-im/element-ios/issues/4746))
+- Fixed cached callbacks race condition, serialized all async operations, properly cleaning up callbacks on failure. ([#4748](https://github.com/vector-im/element-ios/issues/4748))
+- Notification Settings: Keywords Notification Setting should be "On" by default. ([#4759](https://github.com/vector-im/element-ios/issues/4759))
+
+🧱 Build
+
+- Support building Ad-hoc alpha release on pull request (#4635). ([#4635](https://github.com/vector-im/element-ios/issues/4635))
+- Move app version from AppIdentifiers.xcconfig into a dedicated config file (#4715). ([#4715](https://github.com/vector-im/element-ios/issues/4715))
+
+
 ## Changes in 1.5.1 (2021-08-12)
 
 🐛 Bugfixes

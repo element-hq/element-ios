@@ -1,1 +1,0 @@
-Notifications: Replace "Message" fallback with "Notification" as the event may not be a message.
