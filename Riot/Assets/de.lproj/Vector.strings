@@ -622,7 +622,7 @@
 "key_backup_recover_from_recovery_key_info" = "Nutze deinen Sicherungsschlüssel, um deine Chatverläufe zu entschlüsseln";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Eingeben";
 "key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Sicherungsschlüssel eingeben";
-"key_backup_recover_from_recovery_key_recover_action" = "Historie entschlüsseln";
+"key_backup_recover_from_recovery_key_recover_action" = "Verlauf entschlüsseln";
 "key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Hast du deinen Sicherungsschlüssel verloren? Du kannst in den Einstellungen einen neuen einrichten.";
 "key_backup_recover_success_info" = "Sicherung wiederhergestellt!";
 "key_backup_recover_done_action" = "Erledigt";
@@ -847,7 +847,7 @@
 "settings_discovery_three_pid_details_revoke_action" = "Widerrufen";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "E-Mail-Überprüfung abbrechen";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Gib den SMS-Aktivierungscode ein";
-"settings_identity_server_no_is" = "Kein Integrationsserver konfiguriert";
+"settings_identity_server_no_is" = "Kein Identitätsserver konfiguriert";
 // Identity server settings
 "identity_server_settings_title" = "Identitätsserver";
 "identity_server_settings_place_holder" = "Gib einen neuen Identitätsserver ein";
@@ -1307,7 +1307,7 @@
 "event_formatter_call_back" = "Zurückrufen";
 "event_formatter_call_you_declined" = "Anruf abgelehnt";
 "event_formatter_call_you_currently_in" = "Aktueller Anruf";
-"event_formatter_call_has_ended" = "%@ beendet";
+"event_formatter_call_has_ended" = "Anruf beendet";
 "event_formatter_call_video" = "Videoanruf";
 "event_formatter_call_voice" = "Sprachanruf";
 "settings_show_NSFW_public_rooms" = "Öffentliche Räume mit anstößigen Inhalte anzeigen";
@@ -1405,3 +1405,16 @@
 "settings_labs_voice_messages" = "Sprachnachrichten";
 "settings_notifications_disabled_alert_message" = "Öffne die Systemeinstellungen um Benachrichtigungen zu aktivieren.";
 "settings_notifications_disabled_alert_title" = "Benachrichtigungen deaktiviert";
+"event_formatter_call_incoming_video" = "Eingehender Videoanruf";
+"event_formatter_call_has_ended_with_time" = "Anruf beendet • %@";
+"voice_message_stop_locked_mode_recording" = "Klicke, um die Aufnahme zu starten oder stoppen";
+"settings_device_notifications" = "Gerätbenachrichtigungen";
+"voice_message_lock_screen_placeholder" = "Sprachnachricht";
+"voice_message_remaining_recording_time" = "%@s übrig";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Halten zum Aufnehmen, Loslassen zum Senden";
+"event_formatter_call_missed_video" = "Verpasster Videoanruf";
+"event_formatter_call_active_voice" = "Aktiver Sprachanruf";
+"event_formatter_call_active_video" = "Aktiver Videoanruf";

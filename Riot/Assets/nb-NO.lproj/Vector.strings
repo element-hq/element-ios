@@ -507,11 +507,11 @@
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Lås den opp";
 "secure_key_backup_setup_existing_backup_error_delete_it" = "Slett den";
 "secure_key_backup_setup_cancel_alert_title" = "Er du sikker?";
-"key_backup_setup_passphrase_passphrase_placeholder" = "Skriv inn passordfrase";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Skriv inn frase";
 "key_backup_setup_passphrase_passphrase_invalid" = "Prøv å legge til et ord";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Bekreft passordfrasen";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Passordfrasen samsvarer ikke";
-"key_backup_setup_passphrase_set_passphrase_action" = "Velg passordfrase";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Bekreft frasen";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "frasen samsvarer ikke";
+"key_backup_setup_passphrase_set_passphrase_action" = "Velg frase";
 "key_backup_setup_success_from_recovery_key_recovery_key_title" = "Sikkerhetsnøkkel";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Lag en kpi";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Jeg har laget en kopi";
@@ -1020,7 +1020,7 @@
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "Du la til widget: %@";
-"event_formatter_call_you_declined" = "Du avviste denne samtalen";
+"event_formatter_call_you_declined" = "Samtalen ble avslått";
 "event_formatter_call_you_currently_in" = "Du er for øyeblikket i denne samtalen";
 "event_formatter_call_video" = "Videoanrop";
 "event_formatter_call_voice" = "Taleanrop";
@@ -1034,7 +1034,7 @@
 // Events formatter
 "event_formatter_member_updates" = "%tu endringer i medlemskap";
 "directory_server_type_homeserver" = "Skriv inn en hjemmeserver å liste offentlige rom fra";
-"event_formatter_call_has_ended" = "Denne samtalen er avsluttet";
+"event_formatter_call_has_ended" = "Anrop avsluttet";
 "call_no_stun_server_error_message_1" = "Vennligst be administratoren for din hjemmeserver %@ om å konfigurere en TURN server for pålitelige anrop.";
 "call_no_stun_server_error_title" = "Anrop feilet på grunn av feilkonfigurert server";
 "call_jitsi_error" = "Forsøk på å bli med i konferansesamtale feilet.";
@@ -1165,16 +1165,16 @@
 "key_backup_recover_title" = "Krypterte meldinger";
 
 // Success from recovery key
-"key_backup_setup_success_from_recovery_key_info" = "Nøklene dine blir sikkerhetskopiert.\n\nKopier denne gjenopprettingsnøkkelen og lagre den på et trygt sted.";
+"key_backup_setup_success_from_recovery_key_info" = "Nøklene dine blir sikkerhetskopiert.\n\nTa en kopi av denne sikkerhetsnøkkelen og oppbevar den.";
 "key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Lagre sikkerhetsnøkkel";
 
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Nøklene dine blir sikkerhetskopiert.\n\nGjenopprettingsnøkkelen din er et sikkerhetsnett - du kan bruke den til å gjenopprette tilgangen til de krypterte meldingene dine hvis du glemmer passordfrasen.\n\nLagre gjenopprettingsnøkkelen din på en trygg måte, f.eks. ved hjelp av en passordadministrator (eller i en safe).";
+"key_backup_setup_success_from_passphrase_info" = "Nøklene dine blir sikkerhetskopiert.\n\nSikkerhetsnøkkelen din er et sikkerhetsnett - du kan bruke den til å gjenopprette tilgangen til de krypterte meldingene hvis du glemmer passordfrasen.\n\nOppbevar sikkerhetsnøkkelen et sted veldig sikkert, for eksempel en passordbehandling (eller en safe).";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(Avansert) Sett opp med sikkerhetsnøkkel";
 "key_backup_recover_invalid_passphrase" = "Sikkerhetskopiering kunne ikke dekrypteres med denne setningen: bekreft at du har skrevet riktig sikkerhetsfrase.";
 "key_backup_recover_invalid_passphrase_title" = "Feil sikkerhetsfrase";
 "key_backup_recover_invalid_recovery_key" = "Sikkerhetskopiering kunne ikke dekrypteres med denne nøkkelen: bekreft at du har angitt riktig sikkerhetsnøkkel.";
-"key_backup_recover_invalid_recovery_key_title" = "Feil i gjenopprettingsnøkkel";
+"key_backup_recover_invalid_recovery_key_title" = "Feil i sikkerhetsnøkkelen";
 
 // Recover from passphrase
 
@@ -1463,3 +1463,26 @@
 "room_slide_to_end_group_call" = "Skyv for å avslutte samtalen for alle";
 "room_recents_unknown_room_error_message" = "Finner ikke dette rommet. Forsikre deg om at den eksisterer";
 "room_creation_dm_error" = "Vi kunne ikke opprette DM. Kontroller brukerne du vil invitere, og prøv på nytt.";
+"event_formatter_call_missed_video" = "Ubesvart videosamtale";
+"event_formatter_call_missed_voice" = "Ubesvarte taleanrop";
+"event_formatter_call_active_video" = "Aktiv videosamtale";
+"event_formatter_call_active_voice" = "Aktivt taleanrop";
+"event_formatter_call_incoming_video" = "Innkommende videosamtale";
+"event_formatter_call_incoming_voice" = "Innkommende taleanrop";
+"event_formatter_call_has_ended_with_time" = "Anrop avsluttet • %@";
+"room_notifs_settings_encrypted_room_notice" = "Vær oppmerksom på at omtaler og søkeordvarsler ikke er tilgjengelige i krypterte rom på mobilen.";
+"room_notifs_settings_account_settings" = "Kontoinnstillinger";
+"room_notifs_settings_manage_notifications" = "Du kan administrere varsler i %@";
+"room_notifs_settings_cancel_action" = "Avbryt";
+"room_notifs_settings_done_action" = "Ferdig";
+"room_notifs_settings_none" = "Ingen";
+"room_notifs_settings_mentions_and_keywords" = "Bare omtale og søkeord";
+"room_notifs_settings_all_messages" = "Alle meldinger";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Gi meg beskjed for";
+"room_details_notifs" = "Varsler";
+"settings_labs_voice_messages" = "Talemeldinger";
+"settings_notifications_disabled_alert_message" = "For å aktivere varsler, gå til enhetsinnstillingene.";
+"settings_notifications_disabled_alert_title" = "Varsler deaktivert";
+"settings_device_notifications" = "Enhetsvarsler";

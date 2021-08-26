@@ -1235,7 +1235,7 @@
 "settings_key_backup_info_valid" = "Ĉi tiu salutaĵo savkopias viajn ŝlosilojn.";
 "settings_key_backup_info_algorithm" = "Algoritmo: %@";
 "settings_key_backup_info_version" = "Savkopia Versio: %@";
-"settings_key_backup_info_signout_warning" = "Konektu ĉi tiun salutaĵon savkopie antaŭ ol vi adiaŭas, por eviti la perdiĝon de ŝlosiloj nurlokaj.";
+"settings_key_backup_info_signout_warning" = "Savkopiu viajn ŝlosilojn antaŭ ol vi adiaŭas, por eviti ilian perdiĝon.";
 "settings_key_backup_info_none" = "Viaj ŝlosiloj estas nesavkopiataj por ĉi tiu salutaĵo.";
 "settings_key_backup_info_checking" = "Kontrolante…";
 "settings_key_backup_info" = "Mesaĝoj en ĉifritaj ĉambroj estas sekurigitaj per tutvoja ĉifrado. Nur vi kaj la adresato(j) havas la ŝlosilojn por malĉifri tiujn ĉi mesaĝojn.";
@@ -1518,3 +1518,6 @@
 // Chat
 "room_slide_to_end_group_call" = "Glitu por fini la vokon por ĉiuj";
 "callbar_only_single_active_group" = "Tuŝetu por aliĝi al la grupa voko (%@)";
+"settings_labs_voice_messages" = "Voĉmesaĝoj";
+"settings_notifications_disabled_alert_message" = "Por ŝalti sciigojn, iru al agordoj de via aparato.";
+"settings_device_notifications" = "Aparataj sciigoj";
