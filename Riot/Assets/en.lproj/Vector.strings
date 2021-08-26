@@ -1,13 +1,13 @@
 /*
  Copyright 2015 OpenMarket Ltd
  Copyright 2017 Vector Creations Ltd
- 
+
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
- 
+
  http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -450,7 +450,7 @@ Tap the + to start adding people.";
 "settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
-"settings_notifications_settings" = "NOTIFICATION SETTINGS";
+"settings_notifications" = "NOTIFICATIONS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
 "settings_identity_server_settings" = "IDENTITY SERVER";
@@ -499,13 +499,25 @@ Tap the + to start adding people.";
 "settings_pin_rooms_with_unread" = "Pin rooms with unread messages";
 "settings_notifications_disabled_alert_title" = "Notifications disabled";
 "settings_notifications_disabled_alert_message" = "To enable notifications, go to your device settings.";
-//"settings_enable_all_notif" = "Enable all notifications";
-//"settings_messages_my_display_name" = "Msg containing my display name";
-//"settings_messages_my_user_name" = "Msg containing my user name";
-//"settings_messages_sent_to_me" = "Messages sent to me";
-//"settings_invited_to_room" = "When i'm invited to a room";
-//"settings_join_leave_rooms" = "When people join or leave rooms";
-//"settings_call_invitations" = "Call invitations";
+"settings_default" = "Default Notifications";
+"settings_mentions_and_keywords" = "Mentions and Keywords";
+"settings_other" = "Other";
+"settings_notify_me_for" = "Notify me for";
+"settings_direct_messages" = "Direct messages";
+"settings_encrypted_direct_messages" = "Encrypted direct messages";
+"settings_group_messages" = "Group messages";
+"settings_encrypted_group_messages" = "Encrypted group messages";
+"settings_messages_containing_display_name" = "My display name";
+"settings_messages_containing_user_name" = "My username";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_keywords" = "Keywords";
+"settings_room_invitations" = "Room invitations";
+"settings_call_invitations" = "Call invitations";
+"settings_messages_by_a_bot" = "Messages by a bot";
+"settings_room_upgrades" = "Room upgrades";
+"settings_your_keywords" = "Your Keywords";
+"settings_new_keyword" = "Add new Keyword";
+"settings_mentions_and_keywords_encryption_notice" = "You won’t get notifications for mentions & keywords in encrypted rooms on mobile.";
 
 "settings_enable_callkit" = "Integrated calling";
 "settings_callkit_info" = "Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";

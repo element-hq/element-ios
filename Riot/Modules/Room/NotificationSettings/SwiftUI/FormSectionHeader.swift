@@ -25,7 +25,7 @@ struct FormSectionHeader: View {
     var body: some View {
         Text(text)
             .foregroundColor(Color(theme.textSecondaryColor))
-            .padding(.top)
+            .padding(.top, 32)
             .padding(.leading)
             .padding(.bottom, 8)
             .font(Font(theme.fonts.subheadline))
