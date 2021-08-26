@@ -1409,3 +1409,35 @@
 "event_formatter_call_active_voice" = "Chamada de voz ativa";
 "voice_message_lock_screen_placeholder" = "Mensagem de voz";
 "event_formatter_call_has_ended_with_time" = "Chamada terminou • %@";
+"version_check_modal_action_title_deprecated" = "Descobrir como";
+"version_check_modal_subtitle_deprecated" = "Nós temos estado trabalhando em melhorar Element para uma experiência mais rápida e polida. Infelizmente sua versão de iOS atual não é compatível com alguns desses consertos e não é mais suportada.\nNós estamos te aconselhando a fazer upgrade de seu sistema operacional para usar Element em seu potencial completo.";
+"version_check_modal_title_deprecated" = "Nós não estamos mais suportando iOS %@";
+"version_check_modal_action_title_supported" = "Entendido";
+"version_check_modal_subtitle_supported" = "Nós temos estado trabalhando em melhorar Element para uma experiência mais rápida e polida. Infelizmente sua versão de iOS atual não é compatível com alguns desses consertos e não vai mais ser suportada.\nNós estamos te aconselhando a fazer upgrade de seu sistema operacional para usar Element em seu potencial completo.";
+"version_check_modal_title_supported" = "Nós estamos terminando suporte para iOS %@";
+"version_check_banner_subtitle_deprecated" = "Nós não estamos mais suportando Element em iOS %@. Para continuar usando Element em seu potencial completo, nós te aconselhamos a fazer upgrade de sua versão de iOS.";
+"version_check_banner_title_deprecated" = "Nós não estamos mais suportando iOS %@";
+"version_check_banner_subtitle_supported" = "Nós vamos em breve estar terminando suporte para Element em iOS %@. Para continuar usando Element em seu potencial completo, nós te aconselhamos a fazer upgrade de sua versão de iOS.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Nós estamos terminando suporte para iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "Você não vai ter notificações para menções & palavrachaves em salas encriptadas no celular.";
+"settings_new_keyword" = "Adicionar nova Palavrachave";
+"settings_your_keywords" = "Suas Palavrachaves";
+"settings_room_upgrades" = "Upgrades de sala";
+"settings_messages_by_a_bot" = "Mensagens por um bot";
+"settings_call_invitations" = "Convites de chamada";
+"settings_room_invitations" = "Convites de sala";
+"settings_messages_containing_keywords" = "Palavrachaves";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "Meu nome de usuária(o)";
+"settings_messages_containing_display_name" = "Meu nome de exibição";
+"settings_encrypted_group_messages" = "Mensagens de grupo encriptadas";
+"settings_group_messages" = "Mensagens de grupo";
+"settings_encrypted_direct_messages" = "Mensagens diretas encriptadas";
+"settings_direct_messages" = "Mensagens diretas";
+"settings_notify_me_for" = "Notifique-me para";
+"settings_mentions_and_keywords" = "Menções e Palavrachaves";
+"settings_default" = "Notificações Default";
+"settings_notifications" = "NOTIFICAÇÕES";
