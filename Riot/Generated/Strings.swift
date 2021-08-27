@@ -4074,9 +4074,13 @@ internal enum VectorL10n {
   internal static func settingsConfigUserId(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_user_id", p1)
   }
-  /// Confirm media size before sending
+  /// Confirm size when sending
   internal static var settingsConfirmMediaSize: String { 
     return VectorL10n.tr("Vector", "settings_confirm_media_size") 
+  }
+  /// When this is on, you’ll be asked to confirm what size images and videos will be sent as.
+  internal static var settingsConfirmMediaSizeDescription: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_media_size_description") 
   }
   /// confirm password
   internal static var settingsConfirmPassword: String { 
@@ -4402,10 +4406,6 @@ internal enum VectorL10n {
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
   }
-  /// MEDIA
-  internal static var settingsMedia: String { 
-    return VectorL10n.tr("Vector", "settings_media") 
-  }
   /// new password
   internal static var settingsNewPassword: String { 
     return VectorL10n.tr("Vector", "settings_new_password") 
@@ -4485,6 +4485,10 @@ internal enum VectorL10n {
   /// Send anon crash & usage data
   internal static var settingsSendCrashReport: String { 
     return VectorL10n.tr("Vector", "settings_send_crash_report") 
+  }
+  /// SENDING IMAGES AND VIDEOS
+  internal static var settingsSendingMedia: String { 
+    return VectorL10n.tr("Vector", "settings_sending_media") 
   }
   /// Show decrypted content
   internal static var settingsShowDecryptedContent: String { 

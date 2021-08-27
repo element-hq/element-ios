@@ -450,7 +450,7 @@ Tap the + to start adding people.";
 "settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
-"settings_media" = "MEDIA";
+"settings_sending_media" = "SENDING IMAGES AND VIDEOS";
 "settings_notifications_settings" = "NOTIFICATION SETTINGS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
@@ -490,7 +490,8 @@ Tap the + to start adding people.";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
 
-"settings_confirm_media_size" = "Confirm media size before sending";
+"settings_confirm_media_size" = "Confirm size when sending";
+"settings_confirm_media_size_description" = "When this is on, you’ll be asked to confirm what size images and videos will be sent as.";
 
 "settings_security" = "SECURITY";
 
