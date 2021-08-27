@@ -45,12 +45,19 @@
     [paramDict setObject:WalletManager.userId forKey:@"userId"];
     NSString *URLString = import ? kURL(@"/wallet/import_wallet") : kURL(@"/wallet/save_wallet");
     [NetWorkManager POST:URLString parameters:paramDict success:^(id  _Nonnull responseObject) {
-        if (complete) {
-            complete(responseObject);
+        YXWalletNomalModel *model = [YXWalletNomalModel mj_objectWithKeyValues:responseObject];
+        if (model.status.intValue == 200) {
+            if (complete) {
+                complete(responseObject);
+            }
+        }else{
+            [MBProgressHUD showMessage:model.msg];
         }
+
         [MBProgressHUD hideHUD];
     } failure:^(NSError * _Nonnull error) {
         [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:@"创建失败"];
     }];
     
 }

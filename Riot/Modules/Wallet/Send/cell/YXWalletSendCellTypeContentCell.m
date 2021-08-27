@@ -134,7 +134,7 @@
     }else if ([rowData.title isEqualToString:@"手续费"]) {
         self.desLabel.text = [NSString stringWithFormat:@"%.2f%%",sendInfo.fees * 100];
     }else if ([rowData.title isEqualToString:@"交易单号"]) {
-        self.desLabel.text = sendInfo.txId;
+        self.desLabel.text = sendInfo.txHash;
     }else{
         self.desLabel.text = rowData.content;
         self.tipLabel.text = rowData.desc;

@@ -19,7 +19,7 @@
 - (void)reloadNewData:(YXWalletMyWalletRecordsItem *)model{
     self.currentPage = 1;
     [self.sectionItems removeAllObjects];
-    
+    [MBProgressHUD showMessage:@""];
     YXWeakSelf
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
     [paramDict setObject:model.walletId forKey:@"walletId"];
@@ -33,9 +33,9 @@
                 [weakSelf setupListHeadData:detailList.data.records andunProcess:detailList.data.unProcess andModel:model];
             }
         }
-   
+        [MBProgressHUD hideHUD];
     } failure:^(NSError * _Nonnull error) {
-            
+        [MBProgressHUD hideHUD];
     }];
     
     

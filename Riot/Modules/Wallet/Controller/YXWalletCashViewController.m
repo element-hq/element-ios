@@ -33,7 +33,7 @@
 -(YXNaviView *)naviView{
     if (!_naviView) {
         _naviView = [[YXNaviView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, STATUS_AND_NAVIGATION_HEIGHT)];
-        _naviView.title = @"接收码";
+        _naviView.title = @"兑现";
         _naviView.leftImage = [UIImage imageNamed:@"back_b_black"];
         _naviView.backgroundColor = UIColor.whiteColor;
         _naviView.showRightLabel = YES;

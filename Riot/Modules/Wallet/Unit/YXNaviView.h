@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy)dispatch_block_t moreBlock;
 @property (nonatomic , copy)dispatch_block_t rightLabelBlock;
 @property (nonatomic , copy)NSString *title;
+@property (nonatomic , copy)NSString *rightText;
 @property (nonatomic , strong)UIColor *titleColor;
 @property (nonatomic , assign)BOOL showBackBtn;
 @property (nonatomic , assign)BOOL showMoreBtn;

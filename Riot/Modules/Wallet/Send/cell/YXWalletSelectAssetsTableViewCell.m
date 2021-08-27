@@ -93,8 +93,9 @@
 -(void)setModel:(YXWalletMyWalletRecordsItem *)model{
     _model = model;
 
-    _titleLabel.text = model.coinName;
-    _desLabel.text = [NSString stringWithFormat:@"≈￥%@",@(model.fundValue.floatValue * model.balance).stringValue];
+    _titleLabel.text = model.walletName;
+    
+    _desLabel.text = [NSString stringWithFormat:@"%.2f",(model.fundValue.floatValue * model.balance)];
     
     NSString *url = kImageURL(GET_A_NOT_NIL_STRING(model.image));
     YXWeakSelf

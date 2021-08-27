@@ -43,6 +43,7 @@ typedef NS_ENUM(NSInteger , YXWalletSendCellType) {
 @interface YXWalletSendDataInfo : NSObject
 @property (nonatomic , copy) NSString              * ID;
 @property (nonatomic , copy) NSString              * txId;
+@property (nonatomic , copy) NSString              * txHash;
 @property (nonatomic , copy) NSString              * walletId;
 @property (nonatomic , copy) NSString              * action;
 @property (nonatomic , copy) NSString              * type;

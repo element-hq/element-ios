@@ -35,13 +35,16 @@
         _naviView.titleColor = UIColor51;
         _naviView.leftImage = [UIImage imageNamed:@"back_b_black"];
         _naviView.backgroundColor = UIColor.whiteColor;
+        if ([self.sendDataInfo.action isEqualToString:@"pending"]) {//待处理
+            _naviView.showRightLabel = YES;
+            _naviView.rightText = @"取消支付";
+        }
         YXWeakSelf
         _naviView.backBlock = ^{
-            if ([weakSelf.sendDataInfo.action isEqualToString:@"pending"]) {//待处理
-                weakSelf.walletCancelPayView.hidden = NO;
-            }else{
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        };
+        _naviView.rightLabelBlock = ^{
+            weakSelf.walletCancelPayView.hidden = NO;
         };
  
     }

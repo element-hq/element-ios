@@ -159,4 +159,9 @@
     self.rightLabel.hidden = !showRightLabel;
 }
 
+-(void)setRightText:(NSString *)rightText{
+    _rightText = rightText;
+    self.rightLabel.text = rightText;
+}
+
 @end
