@@ -32,6 +32,12 @@ final class TemplateScreenViewModel: TemplateScreenViewModelType {
     weak var viewDelegate: TemplateScreenViewModelViewDelegate?
     weak var coordinatorDelegate: TemplateScreenViewModelCoordinatorDelegate?
     
+    private(set) var viewState: TemplateScreenViewState = .idle {
+        didSet {
+            self.viewDelegate?.templateScreenViewModel(self, didUpdateViewState: viewState)
+        }
+    }
+    
     // MARK: - Setup
     
     init(session: MXSession) {
@@ -60,7 +66,7 @@ final class TemplateScreenViewModel: TemplateScreenViewModelType {
     
     private func loadData() {
 
-        self.update(viewState: .loading)
+        viewState = .loading
 
         // Check first that the user homeserver is federated with the  Riot-bot homeserver
         self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
@@ -71,18 +77,14 @@ final class TemplateScreenViewModel: TemplateScreenViewModelType {
             
             switch response {
             case .success(let userDisplayName):
-                self.update(viewState: .loaded(userDisplayName))
+                self.viewState = .loaded(userDisplayName)
                 self.userDisplayName = userDisplayName
             case .failure(let error):
-                self.update(viewState: .error(error))
+                self.viewState = .error(error)
             }
         }
     }
-    
-    private func update(viewState: TemplateScreenViewState) {
-        self.viewDelegate?.templateScreenViewModel(self, didUpdateViewState: viewState)
-    }
-    
+        
     private func cancelOperations() {
         self.currentOperation?.cancel()
     }

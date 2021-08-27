@@ -37,7 +37,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // MARK: Private
     
-    let parameters: TabBarCoordinatorParameters
+    private let parameters: TabBarCoordinatorParameters
     
     /// Completion called when `popToHomeAnimated:` has been completed.
     private var popToHomeViewControllerCompletion: (() -> Void)?
@@ -49,6 +49,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // TODO: Embed UINavigationController in each tab like recommended by Apple and remove these properties. UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086).
     private let navigationRouter: NavigationRouterType
     private let masterNavigationController: UINavigationController
+    
+    private var homeViewControllerWrapperViewController: HomeViewControllerWithBannerWrapperViewController?
     
     // MARK: Public
 
@@ -87,6 +89,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.registerUserSessionsServiceNotifications()
+        
+        if let homeViewController = homeViewControllerWrapperViewController {
+            let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
+                                                              bannerPresenter: homeViewController,
+                                                              themeService: ThemeService.shared())
+            versionCheckCoordinator.start()
+            add(childCoordinator: versionCheckCoordinator)
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -191,11 +201,15 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return tabBarController
     }
     
-    private func createHomeViewController() -> HomeViewController {
+    private func createHomeViewController() -> UIViewController {
         let homeViewController: HomeViewController = HomeViewController.instantiate()
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
+        homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
-        return homeViewController
+        
+        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)
+        homeViewControllerWrapperViewController = wrapperViewController
+        return wrapperViewController
     }
     
     private func createFavouritesViewController() -> FavouritesViewController {

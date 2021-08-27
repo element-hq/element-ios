@@ -81,16 +81,6 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         }
     }
     
-    private func showActivityIndicator() {
-        if self.activityPresenter.isPresenting == false {
-            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        }
-    }
-    
-    private func hideActivityIndicator() {
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-    }
-    
     private func updateSections() {
         let row_0_0 = Row(type: .avatar(image: viewModel.roomCreationParameters.avatarImage), text: nil, accessoryType: .none) {
             // open image picker
@@ -238,7 +228,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.mainTableView.reloadData()
+        mainTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -276,12 +266,14 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     private func render(viewState: EnterNewRoomDetailsViewState) {
         switch viewState {
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
             updateSections()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
+        
+        updateCreateButtonState()
     }
     
     private func renderLoading() {
@@ -301,6 +293,15 @@ final class EnterNewRoomDetailsViewController: UIViewController {
     
     private func createButtonAction() {
         self.viewModel.process(viewAction: .create)
+    }
+    
+    private func updateCreateButtonState() {
+        switch viewModel.viewState {
+        case .loading:
+            createBarButtonItem.isEnabled = false
+        default:
+            createBarButtonItem.isEnabled = (viewModel.roomCreationParameters.name?.count ?? 0 > Constants.roomNameMinimumNumberOfChars)
+        }
     }
 }
 
@@ -539,6 +540,7 @@ extension EnterNewRoomDetailsViewController: UITextFieldDelegate {
             let result = resultCount <= Constants.roomNameMaximumNumberOfChars
             if result {
                 viewModel.roomCreationParameters.name = resultString
+                updateCreateButtonState()
             }
             return result
         case Constants.roomAddressTextFieldTag:

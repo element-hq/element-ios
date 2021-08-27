@@ -17,40 +17,61 @@
  */
 
 import Foundation
+import Combine
 
-final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType {
+class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType {
     
     // MARK: - Properties
     
     // MARK: Private
     
     private let roomNotificationService: RoomNotificationSettingsServiceType
-    private var state: RoomNotificationSettingsViewState {
+    var state: RoomNotificationSettingsViewState {
         willSet {
             update(viewState: newValue)
         }
     }
-    // MARK: Public
 
+    // MARK: Public
+    
     weak var viewDelegate: RoomNotificationSettingsViewModelViewDelegate?
     
     weak var coordinatorDelegate: RoomNotificationSettingsViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(roomNotificationService: RoomNotificationSettingsServiceType, roomEncrypted: Bool, avatarViewData: AvatarViewDataProtocol?) {
+    init(
+        roomNotificationService: RoomNotificationSettingsServiceType,
+        initialState: RoomNotificationSettingsViewState
+    ) {
         self.roomNotificationService = roomNotificationService
+        self.state = initialState
         
-        let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationService.notificationState)
-        self.state = RoomNotificationSettingsViewState(roomEncrypted: roomEncrypted, saving: false, notificationState: notificationState, avatarData: avatarViewData)
         self.roomNotificationService.observeNotificationState { [weak self] state in
             guard let self = self else { return }
-            
-            self.state.notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: state)
+            self.state.notificationState = Self.mapNotificationStateOnRead(encrypted: self.state.roomEncrypted, state: state)
         }
     }
     
-    // MARK: - Public
+    convenience init(
+        roomNotificationService: RoomNotificationSettingsServiceType,
+        avatarData: AvatarInputOption?,
+        displayName: String?,
+        roomEncrypted: Bool
+    ) {
+        let notificationState = Self.mapNotificationStateOnRead(encrypted: roomEncrypted, state: roomNotificationService.notificationState)
+        
+        let initialState = RoomNotificationSettingsViewState(
+            roomEncrypted: roomEncrypted,
+            saving: false,
+            notificationState: notificationState,
+            avatarData: avatarData,
+            displayName: displayName
+        )
+        self.init(roomNotificationService: roomNotificationService, initialState: initialState)
+    }
+    
+    // MARK: - Public 
     
     func process(viewAction: RoomNotificationSettingsViewAction) {
         switch viewAction {
@@ -81,9 +102,7 @@ final class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModel
         }
     }
     
-    private func update(viewState: RoomNotificationSettingsViewStateType) {
+    func update(viewState: RoomNotificationSettingsViewState) {
         self.viewDelegate?.roomNotificationSettingsViewModel(self, didUpdateViewState: viewState)
     }
-    
-
 }
