@@ -155,7 +155,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     }
     
     // MARK: - Private
-    private func rulesUpdated(newRules: [MXPushRule]) {
+    private func rulesUpdated(newRules: [NotificationPushRule]) {
         for rule in newRules {
             guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
                   ruleIds.contains(ruleId) else { continue }
@@ -174,11 +174,11 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
      Matcing is done by comparing the rule against the static definitions for that rule.
      The same logic is used on android.
      */
-    private func isChecked(rule: MXPushRule) -> Bool {
+    private func isChecked(rule: NotificationPushRule) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else { return false }
         
         let firstIndex = NotificationIndex.allCases.first { nextIndex in
-            return ruleMaches(rule: rule, targetRule: ruleId.standardActions(for: nextIndex))
+            return rule.matches(standardActions: ruleId.standardActions(for: nextIndex))
         }
         
         guard let index = firstIndex else {
@@ -187,69 +187,5 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
         
         return index.enabled
     }
-    /*
-     Given a rule, check it match the actions in the static definition.
-     */
-    private func ruleMaches(rule: MXPushRule, targetRule: NotificationStandardActions?) -> Bool {
-        guard let targetRule = targetRule else {
-            return false
-        }
-        if !rule.enabled && targetRule == .disabled {
-            return true
-        }
-        
-        if rule.enabled,
-           let actions = targetRule.actions,
-           rule.highlight == actions.highlight,
-           rule.sound == actions.sound,
-           rule.notify == actions.notify,
-           rule.dontNotify == !actions.notify {
-            return true
-        }
-        return false
-    }
-    
-}
 
-fileprivate extension MXPushRule {
-    func getAction(actionType: MXPushRuleActionType, tweakType: String? = nil) -> MXPushRuleAction? {
-        guard let actions = actions as? [MXPushRuleAction] else {
-            return nil
-        }
-        
-        return actions.first { action in
-            var match = action.actionType == actionType
-            MXLog.debug("action \(action)")
-            if let tweakType = tweakType,
-               let actionTweak = action.parameters?["set_tweak"] as? String {
-                match = match && (tweakType == actionTweak)
-            }
-            return match
-        }
-    }
-    
-    var highlight: Bool {
-        guard let action = getAction(actionType: MXPushRuleActionTypeSetTweak, tweakType: "highlight") else {
-            return false
-        }
-        if let highlight = action.parameters["value"] as? Bool {
-            return highlight
-        }
-        return true
-    }
-    
-    var sound: String? {
-        guard let action = getAction(actionType: MXPushRuleActionTypeSetTweak, tweakType: "sound") else {
-            return nil
-        }
-        return action.parameters["value"] as? String
-    }
-    
-    var notify: Bool {
-        return getAction(actionType: MXPushRuleActionTypeNotify) != nil
-    }
-    
-    var dontNotify: Bool {
-        return getAction(actionType: MXPushRuleActionTypeDontNotify) != nil
-    }
 }

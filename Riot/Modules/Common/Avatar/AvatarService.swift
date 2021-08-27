@@ -19,14 +19,6 @@ import MatrixSDK
 import Combine
 import DesignKit
 
-/**
- Provides a simple api to retrieve and cache avatar images
- */
-protocol AvatarServiceType {
-    @available(iOS 14.0, *)
-    func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error>
-}
-
 enum AvatarServiceError: Error {
     case pathNotfound
     case loadingImageFailed(Error?)

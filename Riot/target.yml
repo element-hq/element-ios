@@ -26,6 +26,18 @@ schemes:
       - RiotTests
 
 targets:
+  RiotSwiftUI:
+    type: framework
+    platform: iOS
+    dependencies:
+    - target: DesignKit
+    sources:
+    - path: ModulesSwiftUI
+    - path: Generated/Strings.swift
+    - path: Generated/Images.swift
+    - path: Managers/Theme/Theme.swift
+    - path: Managers/Theme/ThemeIdentifier.swift
+    - path: Categories/UIColor.swift
   Riot:
     type: application
     platform: iOS
@@ -35,6 +47,7 @@ targets:
     - target: SiriIntents
     - target: RiotNSE
     - target: DesignKit
+    - target: RiotSwiftUI
 
     configFiles:
       Debug: Debug.xcconfig

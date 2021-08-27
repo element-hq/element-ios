@@ -23,7 +23,7 @@ struct RoomNotificationSettingsViewState: RoomNotificationSettingsViewStateType 
     let roomEncrypted: Bool
     var saving: Bool
     var notificationState: RoomNotificationState
-    var avatarData: AvatarInputOption?
+    var avatarData: AvatarType?
     var displayName: String?
 }
 
@@ -42,7 +42,7 @@ protocol RoomNotificationSettingsViewStateType {
     var roomEncrypted: Bool { get }
     var notificationOptions: [RoomNotificationState] { get }
     var notificationState: RoomNotificationState { get }
-    var avatarData: AvatarInputOption? { get }
+    var avatarData: AvatarType? { get }
     var displayName: String? { get }
 }
 

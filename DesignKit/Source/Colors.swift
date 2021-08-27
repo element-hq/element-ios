@@ -16,53 +16,60 @@
 
 import Foundation
 import UIKit
+import SwiftUI
+
+public protocol DesignKitColorType { }
+
+extension UIColor: DesignKitColorType { }
+
+extension Color : DesignKitColorType { }
 
 /// Colors at https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1255%3A1104
-@objc public protocol Colors {
+public protocol Colors {
     
     /// - Focused/Active states
     /// - CTAs
-    var accent: UIColor { get }
+    var accent: DesignKitColorType { get }
     
     /// - Error messages
     /// - Content requiring user attention
     /// - Notification, alerts
-    var alert: UIColor { get }
+    var alert: DesignKitColorType { get }
     
     /// - Text
     /// - Icons
-    var primaryContent: UIColor { get }
+    var primaryContent: DesignKitColorType { get }
     
     /// - Text
     /// - Icons
-    var secondaryContent: UIColor { get }
+    var secondaryContent: DesignKitColorType { get }
     
     /// - Text
     /// - Icons
-    var tertiaryContent: UIColor { get }
+    var tertiaryContent: DesignKitColorType { get }
     
     /// - Text
     /// - Icons
-    var quarterlyContent: UIColor { get }
+    var quarterlyContent: DesignKitColorType { get }
     
     /// - Text
     /// - Icons
-    var quinaryContent: UIColor { get }
+    var quinaryContent: DesignKitColorType { get }
     
     /// Separating line
-    var separator: UIColor { get }
+    var separator: DesignKitColorType { get }
     
     //  Cards, tiles
-    var tile: UIColor { get }
+    var tile: DesignKitColorType { get }
     
     /// Top navigation background on iOS
-    var navigation: UIColor { get }
+    var navigation: DesignKitColorType { get }
     
     /// Background UI color
-    var background: UIColor { get }
+    var background: DesignKitColorType { get }
     
     /// - Names in chat timeline
     /// - Avatars default states that include first name letter
-    var namesAndAvatars: [UIColor] { get }
+    var namesAndAvatars: [DesignKitColorType] { get }
     
 }

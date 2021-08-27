@@ -16,17 +16,8 @@
 
 import Foundation
 
-/// AvatarViewDataProtocol describe a view data that should be given to an AvatarView sublcass
-protocol AvatarViewDataProtocol: AvatarType {
-    /// Matrix item identifier (user id or room id)
-    var matrixItemId: String { get }
-    
-    /// Matrix item display name (user or room display name)
-    var displayName: String? { get }
-    
-    /// Matrix item avatar URL (user or room avatar url)
-    var avatarUrl: String? { get }
-        
-    /// Matrix media handler
-    var mediaManager: MXMediaManager { get }
+protocol NotificationPushRule {
+    var ruleId: String { get }
+    var enabled: Bool { get }
+    func matches(standardActions: NotificationStandardActions?) -> Bool
 }

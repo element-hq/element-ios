@@ -29,3 +29,8 @@ class ThemeObserver: ObservableObject {
     }
     @Published var theme: Theme = ThemeService.shared().theme
 }
+
+
+class ThemePublisher: ObservableObject {
+    static let shared = ThemePublisher()
+}

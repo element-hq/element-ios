@@ -16,8 +16,14 @@
 
 import Foundation
 
-enum AvatarViewState {
-    case empty
-    case placeholder(String, Int)
-    case avatar(UIImage)
+protocol AvatarInputType: AvatarType {
+    var mxContentUri: String? { get }
+    var matrixItemId: String { get }
+    var displayName: String? { get }
+}
+
+struct AvatarInput: AvatarInputType {
+    let mxContentUri: String?
+    var matrixItemId: String
+    let displayName: String?
 }

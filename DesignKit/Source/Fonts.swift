@@ -15,69 +15,77 @@
 //
 
 import UIKit
+import SwiftUI
+
+public protocol DesignKitFontType { }
+
+extension UIFont: DesignKitFontType { }
+
+extension Font : DesignKitFontType { }
+
 
 /// Describe fonts used in the application.
 /// Font names are based on Element typograhy  https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1362%3A0 which is based on Apple font text styles (UIFont.TextStyle): https://developer.apple.com/documentation/uikit/uifonttextstyle
 /// Create a custom TextStyle enum (like DesignKit.Fonts.TextStyle) is also a possiblity
-@objc public protocol Fonts {
+public protocol Fonts {
     
     /// The font for large titles.
-    var largeTitle: UIFont { get }
+    var largeTitle: DesignKitFontType { get }
     
     /// `largeTitle` with a Bold weight.
-    var largeTitleB: UIFont { get }
+    var largeTitleB: DesignKitFontType { get }
     
     /// The font for first-level hierarchical headings.
-    var title1: UIFont { get }
+    var title1: DesignKitFontType { get }
         
     /// `title1` with a Bold weight.
-    var title1B: UIFont { get }
+    var title1B: DesignKitFontType { get }
     
     /// The font for second-level hierarchical headings.
-    var title2: UIFont { get }
+    var title2: DesignKitFontType { get }
     
     /// `title2` with a Bold weight.
-    var title2B: UIFont { get }
+    var title2B: DesignKitFontType { get }
     
     /// The font for third-level hierarchical headings.
-    var title3: UIFont { get }
+    var title3: DesignKitFontType { get }
     
     /// `title3` with a Semi Bold weight.
-    var title3SB: UIFont { get }
+    var title3SB: DesignKitFontType { get }
     
     /// The font for headings.
-    var headline: UIFont { get }
+    var headline: DesignKitFontType { get }
     
     /// The font for subheadings.
-    var subheadline: UIFont { get }
+    var subheadline: DesignKitFontType { get }
     
     /// The font for body text.
-    var body: UIFont { get }
+    var body: DesignKitFontType { get }
     
     /// `body` with a Semi Bold weight.
-    var bodySB: UIFont { get }
+    var bodySB: DesignKitFontType { get }
     
     /// The font for callouts.
-    var callout: UIFont { get }
+    var callout: DesignKitFontType { get }
     
     /// `callout` with a Semi Bold weight.
-    var calloutSB: UIFont { get }
+    var calloutSB: DesignKitFontType { get }
     
     /// The font for footnotes.
-    var footnote: UIFont { get }
+    var footnote: DesignKitFontType { get }
     
     /// `footnote` with a Semi Bold weight.
-    var footnoteSB: UIFont { get }
+    var footnoteSB: DesignKitFontType { get }
     
     /// The font for standard captions.
-    var caption1: UIFont { get }
+    var caption1: DesignKitFontType { get }
 
     /// `caption1` with a Semi Bold weight.
-    var caption1SB: UIFont { get }
+    var caption1SB: DesignKitFontType { get }
     
     /// The font for alternate captions.
-    var caption2: UIFont { get }
+    var caption2: DesignKitFontType { get }
     
     /// `caption2` with a Semi Bold weight.
-    var caption2SB: UIFont { get }
+    var caption2SB: DesignKitFontType { get }
 }

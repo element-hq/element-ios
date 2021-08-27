@@ -15,20 +15,16 @@
 //
 
 import Foundation
+import Combine
+import DesignKit
+import UIKit
 
-protocol AvatarInputType {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
-}
-
-struct AvatarInput: AvatarInputType {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-enum AvatarInputOption {
-    case swiftUI(AvatarInputType)
-    case uiKit(AvatarViewDataProtocol)
+@available(iOS 14.0, *)
+class MockAvatarService: AvatarServiceType {
+    static let example: AvatarServiceType = MockAvatarService()
+    func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error> {
+        Future { promise in
+            promise(.success(Asset.Images.appSymbol.image))
+        }
+    }
 }

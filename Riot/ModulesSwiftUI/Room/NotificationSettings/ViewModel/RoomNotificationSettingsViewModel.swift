@@ -55,7 +55,7 @@ class RoomNotificationSettingsViewModel: RoomNotificationSettingsViewModelType {
     
     convenience init(
         roomNotificationService: RoomNotificationSettingsServiceType,
-        avatarData: AvatarInputOption?,
+        avatarData: AvatarType?,
         displayName: String?,
         roomEncrypted: Bool
     ) {

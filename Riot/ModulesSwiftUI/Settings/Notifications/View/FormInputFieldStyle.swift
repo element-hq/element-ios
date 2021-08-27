@@ -34,7 +34,7 @@ struct FormInputFieldStyle: TextFieldStyle {
     }
     
     private var backgroundColor: Color {
-        if !isEnabled && (theme is DarkTheme) {
+        if !isEnabled && (theme.identifier == ThemeIdentifier.dark.rawValue) {
             return Color(theme.colors.quinaryContent)
         }
         return Color(theme.colors.background)

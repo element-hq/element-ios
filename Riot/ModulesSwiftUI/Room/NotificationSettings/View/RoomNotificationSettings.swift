@@ -75,7 +75,7 @@ struct RoomNotificationSettings_Previews: PreviewProvider {
     
     static let mockViewModel = RoomNotificationSettingsSwiftUIViewModel(
         roomNotificationService: MockRoomNotificationSettingsService.example,
-        avatarData: .swiftUI(MockAvatarInput.example),
+        avatarData: MockAvatarInput.example,
         displayName: MockAvatarInput.example.displayName,
         roomEncrypted: true
     )

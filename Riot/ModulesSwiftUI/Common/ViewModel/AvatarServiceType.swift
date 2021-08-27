@@ -15,15 +15,14 @@
 //
 
 import Foundation
-import Combine
 import DesignKit
+import Combine
+import UIKit
 
-@available(iOS 14.0, *)
-class MockAvatarService: AvatarServiceType {
-    static let example: AvatarServiceType = MockAvatarService()
-    func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error> {
-        Future { promise in
-            promise(.success(Asset.Images.appSymbol.image))
-        }
-    }
+/**
+ Provides a simple api to retrieve and cache avatar images
+ */
+protocol AvatarServiceType {
+    @available(iOS 14.0, *)
+    func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error>
 }
