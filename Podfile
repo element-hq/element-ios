@@ -1,3 +1,5 @@
+source 'https://cdn.cocoapods.org/'
+
 # Uncomment this line to define a global platform for your project
 platform :ios, '11.0'
 
