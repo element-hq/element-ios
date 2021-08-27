@@ -511,7 +511,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         __weak typeof(self) weakSelf = self;
         
-        compressionPrompt = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt"] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        compressionPrompt = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt_title"]
+                                                                message:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt_message"]
+                                                         preferredStyle:UIAlertControllerStyleActionSheet];
         
         if (compressionSizes.small.fileSize)
         {
