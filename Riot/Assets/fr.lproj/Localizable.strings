@@ -68,3 +68,51 @@
 
 /* A user added a Jitsi call to a room */
 "GROUP_CALL_STARTED" = "L’appel de groupe a démarré";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ a mis à jour son profil";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ a changé de nom";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ a changé d’avatar";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ a changé son nom pour %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ a envoyé une réaction";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ a supprimé %@";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ a envoyé un fichier %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ a envoyé un message vocal";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ a envoyé un fichier audio %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ a envoyé une vidéo";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ a envoyé une image";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ a répondu dans %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ a répondu";
+/** General **/
+
+"NOTIFICATION" = "Notification";

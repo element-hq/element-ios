@@ -1315,8 +1315,8 @@
 "bug_report_background_mode" = "Poursuivre en arrière-plan";
 "call_actions_unhold" = "Reprendre";
 "event_formatter_call_back" = "Rappeler";
-"event_formatter_call_you_declined" = "Vous avez refusé cet appel";
-"event_formatter_call_has_ended" = "Appel %@ terminé";
+"event_formatter_call_you_declined" = "Appel rejeté";
+"event_formatter_call_has_ended" = "Appel terminé";
 "event_formatter_call_video" = "Appel vidéo";
 "event_formatter_call_voice" = "Appel audio";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Le chiffrement n’est pas activé ici.";
@@ -1437,3 +1437,21 @@
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Me notifier pour";
 "room_details_notifs" = "Notifications";
+"voice_message_lock_screen_placeholder" = "Message vocal";
+"voice_message_stop_locked_mode_recording" = "Touchez l’enregistrement pour l’arrêter ou l’écouter";
+"voice_message_remaining_recording_time" = "%@s restantes";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Maintenir pour enregistrer, relâcher pour envoyer";
+"event_formatter_call_missed_video" = "Appel vidéo manqué";
+"event_formatter_call_missed_voice" = "Appel audio manqué";
+"event_formatter_call_active_video" = "Appel vidéo en cours";
+"event_formatter_call_active_voice" = "Appel audio en cours";
+"event_formatter_call_incoming_video" = "Appel vidéo entrant";
+"event_formatter_call_incoming_voice" = "Appel audio entrant";
+"event_formatter_call_has_ended_with_time" = "Appel terminé • %@";
+"settings_labs_voice_messages" = "Messages vocaux";
+"settings_notifications_disabled_alert_message" = "Pour activer les notifications, rendez vous dans les paramètres de l’appareil.";
+"settings_notifications_disabled_alert_title" = "Notifications désactivées";
+"settings_device_notifications" = "Notifications sur l’appareil";

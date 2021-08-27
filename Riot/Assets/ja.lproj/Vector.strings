@@ -719,7 +719,7 @@
 "settings_add_3pid_invalid_password_message" = "無効な認証情報";
 "settings_add_3pid_password_title_email" = "メールアドレスを追加する";
 "settings_integrations_allow_description" = "インテグレーションマネージャー（%@）を使用して、ボット、ブリッジ、ウィジェット、ステッカーパックを管理します。\n\n設定データを受け取り、お客様に代わってウィジェットの変更、ルーム招待の送信、権限の設定を行うことができます。";
-"settings_integrations_allow_button" = "マネージインテグレーション";
+"settings_integrations_allow_button" = "インテグレーションを管理";
 "settings_calls_stun_server_fallback_button" = "フォールバックコールアシストサーバを許可する";
 "settings_key_backup" = "キーのバックアップ";
 "settings_integrations" = "インテグレーション";
@@ -754,7 +754,7 @@
 "rooms_empty_view_information" = "ルームはプライベートでもパブリックでも、あらゆるグループチャットに最適です。+をタップすると、既にあるルームを見つけたり、新しいルームを作ることができます。";
 "rooms_empty_view_title" = "ルーム";
 "people_empty_view_information" = "誰とでも安全にチャットできます。＋をタップすると会話相手を追加できます。";
-"people_empty_view_title" = "人々";
+"people_empty_view_title" = "参加者";
 "room_creation_error_invite_user_by_email_without_identity_server" = "IDサーバーが設定されていないため、メールで参加者を追加することができません。";
 
 // Errors
@@ -774,8 +774,8 @@
 "auth_softlogout_clear_data_message_2" = "このデバイスの使用を終了する場合や、別のアカウントにサインインしたい場合は、クリアしてください。";
 "auth_softlogout_clear_data_message_1" = "警告: 個人データ（暗号化キーを含む）がこのデバイスにまだ保存されています。";
 "callbar_return" = "かけ直す";
-"callbar_active_and_multiple_paused" = "1つのアクティブな通話(%@) · %@ 通話の一時停止";
-"callbar_only_multiple_paused" = "%@ 通話の一時停止";
+"callbar_active_and_multiple_paused" = "アクティブな通話 (%@) · %@ の一時停止された通話";
+"callbar_only_multiple_paused" = "一時停止した%@の通話";
 "callbar_only_single_paused" = "通話の一時停止";
 "store_promotional_text" = "オープンネットワーク上でプライバシーを保護したチャットアプリ。あなた自身でコントロールできるように非中央集権化（分散化）されています。データマイニング、バックドア、サードパーティによるアクセスはありません。";
 "auth_softlogout_clear_data" = "個人データをクリアする";
@@ -874,9 +874,9 @@
 "settings_labs_message_reaction" = "絵文字でメッセージに反応する";
 "settings_calls_stun_server_fallback_description" = "ホームサーバーがフォールバックコールアシストサーバーを提供していない場合は％@を許可します（IPアドレスは通話中に共有されます）。";
 "settings_security" = "セキュリティー";
-"settings_three_pids_management_information_part3" = "。";
+"settings_three_pids_management_information_part3" = "";
 "settings_three_pids_management_information_part2" = "ディスカバリー";
-"store_full_description" = "Elementはまったく新しいタイプのメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでも通信できることはもちろん、Slackなどのアプリとの連携によって他のネットワークとも通信ができます。\n3. 広告、データ収集、バックドア、ユーザーの囲い込みから逃れることができます。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは非中央集権型でオープンソースであるため、他のメッセンジャーアプリとは完全に異なっています。\n\nElementはあなた自身でサーバーをホストすることも、サーバーを選ぶこともできます。これによってあなたのデータと会話に関するプライバシーや所有権はあなた自身で管理できるようになります。さらに、あなたは他のElementユーザーと話せるだけでなくオープンネットワークへのアクセスも可能です。とてもセキュアです。\n\nElementは、オープンな分散型通信の標準規格であるMatrixで動作するため、これらすべてを実現することができています。\n\nElementではあなたの会話をどのサーバーでホストするか決めることができます。アプリでは、さまざまな方法で選択できます。\n\n1. matrix.orgの公開サーバーで無料のアカウントを取得します。\n2. あなた自身のハードウェアでサーバーを動かし、アカウントを管理します。\n3. Element Matrix Servicesのホスティングプラットフォームに登録することで、カスタムサーバー上のアカウントを取得できます。\n\nなぜElementを選ぶべきなのか？\n\nデータの所有権: 自分でデータやメッセージを保管する場所を決めることができます。あなたが所有権を持ってコントロールすることで、第三者にあなたのデータを渡したり、ビッグデータを収集する巨大テック企業に依存する必要がなくなります。\n\n開かれたネットワークと共同作業: Matrixネットワーク内の他の誰とでも、あるいはElementや他のMatrixアプリを使っているかどうかに関わらず、またSlack、IRC、XMPPのような他のメッセージングシステムを使っているかどうかに関わらず、チャットすることができます。\n\nはるかに安全: 本物のエンドツーエンド暗号化（会話に参加している者のみがメッセージを読める）と会話参加者の真正性を確認するためクロス署名によって。\n\n完全なるコミュニケーションの訪れ: テキスト、音声通話、ビデオ通話、ファイル共有、画面共有、連携機能、ボット、ウィジェットなどのコミュニケーションに必要な機能の全てが実装されています。ルームやコミュニティを立ち上げて連絡を取り合い、物事をスムーズに成し遂げることができます。\n\nいつでもどこでも！: すべてのデバイスとウェブ（https://app.element.io）でメッセージの履歴が完全に同期されるため、どこにいても連絡を取ることができます。";
+"store_full_description" = "Elementはまったく新しいメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでも通信できることはもちろん、Slackなどのアプリとの連携によって他のネットワークとも通信ができます。\n3. 広告、データ収集、バックドア、ユーザーの囲い込みから逃れることができます。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは分散型（非中央集権型）でオープンソースであるため、他のメッセンジャーアプリと完全に異なっています。\n\nElementはあなた自身でサーバーをホストすることも、サーバーを選ぶこともできます。これによってあなたのデータと会話に関するプライバシーや所有権はあなた自身で管理できるようになります。さらに、あなたは他のElementユーザーと話せるだけでなくオープンネットワークへのアクセスも可能です。\n\nElementは、オープンな分散型通信の標準規格であるMatrixで動作するため、これらすべてを実現することができています。\n\nどのサーバーがホストするか決めることができます。さまざまな方法で選択できます。\n\n1. 開発者がホストするmatrix.orgの公開サーバーで無料のアカウントを取得します。\n2. あなた自身がサーバーを動かし、アカウントを管理します。\n3. Element Matrix Servicesのホスティングプラットフォームに登録することで、カスタムサーバー上のアカウントを取得できます。\n\nなぜElementを選ぶべきなのか？\n\nデータを所有する: 自分でデータやメッセージを保管する場所を決めることができます。あなたが所有権を持ってコントロールすることで、第三者にあなたのデータを渡したり、ビッグデータを収集する巨大テック企業に依存する必要がなくなります。\n\n開かれたネットワークと共同作業: Matrixネットワーク内の他の誰とでも、あるいはElementや他のMatrixアプリを使っているかどうかに関わらず、またSlack、IRC、XMPPのような他のメッセージングシステムを使っているかどうかに関わらず、チャットすることができます。\n\nとても安全: 本物のエンドツーエンド暗号化（会話に参加している者のみがメッセージを読める）と会話参加者の真正性を確認するためクロス署名によって。\n\n完全なるコミュニケーションの訪れ: テキスト、音声通話、ビデオ通話、ファイル共有、画面共有、連携機能、ボット、ウィジェットなどのコミュニケーションに必要な機能の全てが実装されています。ルームやコミュニティを立ち上げて連絡を取り合い、物事をスムーズに成し遂げることができます。\n\nいつでもどこにいても: すべてのデバイスとウェブでメッセージの履歴が同期されるため、どこにいても連絡を取ることができます。https://app.element.io";
 "user_verification_session_details_additional_information_untrusted_other_user" = "ユーザーがこのセッションを信頼するまでは、セッションとの間で送受信されるメッセージには警告が表示されます。また、手動で検証することもできます。";
 "user_verification_session_details_information_untrusted_other_user" = " 新しいセッションを使ってサインインしました:";
 "user_verification_session_details_information_untrusted_current_user" = "このセッションを検証することで、信頼できるものとしてマークし、暗号化されたメッセージへのアクセスを許可します。";
@@ -1020,7 +1020,7 @@
 "room_action_send_file" = "ファイルを送る";
 "room_action_camera" = "写真やビデオの撮影";
 "room_event_action_reaction_history" = "反応の履歴";
-"room_event_action_reaction_show_less" = "すべて閉じる";
+"room_event_action_reaction_show_less" = "表示しない";
 "room_event_action_reaction_show_all" = "すべてを見る";
 "room_event_action_edit" = "編集";
 "room_event_action_reply" = "返信";

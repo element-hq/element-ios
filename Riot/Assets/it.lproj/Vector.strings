@@ -1301,7 +1301,7 @@
 "event_formatter_call_back" = "Richiama";
 "event_formatter_call_you_declined" = "Chiamata rifiutata";
 "event_formatter_call_you_currently_in" = "Chiamata attiva";
-"event_formatter_call_has_ended" = "Chiamata terminata %@";
+"event_formatter_call_has_ended" = "Chiamata terminata";
 "event_formatter_call_video" = "Videochiamata";
 "event_formatter_call_voice" = "Telefonata";
 "settings_show_NSFW_public_rooms" = "Mostra stanze pubbliche per adulti";
@@ -1410,3 +1410,5 @@
 "event_formatter_call_active_voice" = "Telefonata attiva";
 "event_formatter_call_incoming_video" = "Videochiamata in arrivo";
 "event_formatter_call_incoming_voice" = "Telefonata in arrivo";
+"voice_message_lock_screen_placeholder" = "Messaggio vocale";
+"event_formatter_call_has_ended_with_time" = "Chiamata terminata • %@";
