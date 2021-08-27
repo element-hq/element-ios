@@ -12,10 +12,15 @@
 @implementation YXWalletReceiveCodeViewModel
 - (void)reloadNewData:(YXWalletMyWalletRecordsItem *)model{
     
+    if (model.walletId.length == 0) {
+        [MBProgressHUD showSuccess:@"请先创建钱包"];
+        return;
+    }
+    
     [MBProgressHUD showMessage:@""];
     YXWeakSelf
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
-    [paramDict setObject:model.walletId forKey:@"id"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(model.walletId) forKey:@"id"];
     [NetWorkManager GET:kURL(@"/wallet/address") parameters:paramDict success:^(id  _Nonnull responseObject) {
         
         if ([responseObject isKindOfClass:NSDictionary.class]) {

@@ -93,6 +93,7 @@
                                                                               @"image/*"]];
     manager.requestSerializer.timeoutInterval = 20;
     
+    [self configRequreHeadWith:manager];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -137,6 +138,8 @@
                                                                               @"image/*"]];
     manager.requestSerializer.timeoutInterval = 20;
     
+    [self configRequreHeadWith:manager];
+    
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES]; // 开启状态栏动画
     
     [manager POST:URLString parameters:parameters headers:nil progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -175,6 +178,8 @@
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [self configRequreHeadWith:manager];
     
     AFJSONResponseSerializer *reponse = [AFJSONResponseSerializer serializer];
     
@@ -230,6 +235,7 @@
                                                          @"text/html",
                                                          @"image/jpeg", nil];
     
+    [self configRequreHeadWith:manager];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES]; // 开启状态栏动画
     
@@ -282,6 +288,8 @@
     
     [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
+    [self configRequreHeadWith:manager];
+    
     AFJSONResponseSerializer *reponse = [AFJSONResponseSerializer serializer];
     
     reponse.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/plain", @"text/javascript", @"text/json", @"text/html", @"image/png", nil];
@@ -328,6 +336,8 @@
 - (void)downLoadWithURL:(NSString *)URLString progress:(Progress)progress destination:(Destination)destination downLoadSuccess:(DownLoadSuccess)downLoadSuccess failure:(Failure)failure
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    
+    [self configRequreHeadWith:manager];
     
     NSURL *url = [NSURL URLWithString:URLString];
     
@@ -377,6 +387,7 @@
                                                                               @"image/*"]];
     manager.requestSerializer.timeoutInterval = 20;
     
+    [self configRequreHeadWith:manager];
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
@@ -397,5 +408,11 @@
 
     
 }
+
+- (void)configRequreHeadWith:(AFHTTPSessionManager *)manager{
+    [manager.requestSerializer setValue:GET_A_NOT_NIL_STRING([YXWalletPasswordManager sharedYXWalletPasswordManager].userId) forHTTPHeaderField:@"x-uid"];//用户手机号
+    [manager.requestSerializer setValue:GET_A_NOT_NIL_STRING([YXWalletPasswordManager sharedYXWalletPasswordManager].passWord) forHTTPHeaderField:@"x-password"];
+}
+
 @end
 

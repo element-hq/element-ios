@@ -151,7 +151,7 @@
 -(void)setupCellWithRowData:(YXWalletMyWalletRecordsItem *)rowData{
     _titleLabel.text = rowData.walletName;
     _desLabel.text = [NSString stringWithFormat:@"￥%@",rowData.fundValue];
-    _countLabel.text = [NSString stringWithFormat:@"%@ %@",@(rowData.balance).stringValue,rowData.coinName];//余额
+    _countLabel.text = [NSString stringWithFormat:@"%@ %@",@(rowData.balance).stringValue,rowData.baseSymbol];//余额
     _numLabel.text = [NSString stringWithFormat:@"≈￥%.4f",rowData.fundValue.floatValue * rowData.balance];
     
     NSString *url = kImageURL(GET_A_NOT_NIL_STRING(rowData.image));

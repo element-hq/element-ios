@@ -149,7 +149,7 @@
             }
             
             NSString *md5Pw = [Tool stringToMD5:weakSelf.verifyPasswordView.password];
-            NSString *currentMd5 = [YXWalletPasswordManager sharedYXWalletPasswordManager].model.data;
+            NSString *currentMd5 = [YXWalletPasswordManager sharedYXWalletPasswordManager].passWord;
             if (![md5Pw isEqualToString:currentMd5]) {
                 [MBProgressHUD showError:@"密码错误"];
                 return;
@@ -192,7 +192,6 @@
         }];
         self.settingPasswordView.hidden = YES;
     }
-    
 }
 
 

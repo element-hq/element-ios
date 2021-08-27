@@ -132,11 +132,21 @@
     [MBProgressHUD showMessage:@"修改中..."];
     NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
     [paramDict setObject:userId forKey:@"userId"];
+    
+    [paramDict setObject:GET_A_NOT_NIL_STRING([YXWalletPasswordManager sharedYXWalletPasswordManager].passWord) forKey:@"oldPassword"];
+    
     [paramDict setObject:[Tool stringToMD5:password] forKey:@"password"];
     [NetWorkManager POST:kURL(@"/wallet/password") parameters:paramDict success:^(id  _Nonnull responseObject) {
-        if (complete) {
-            complete(responseObject);
+        YXWalletNomalModel *model = [YXWalletNomalModel mj_objectWithKeyValues:responseObject];
+        if (model.status.intValue == 200) {
+            if (complete) {
+                complete(responseObject);
+            }
+            [YXWalletPasswordManager sharedYXWalletPasswordManager].passWord = password;
+        }else{
+            
         }
+
         [MBProgressHUD hideHUD];
     } failure:^(NSError * _Nonnull error) {
         [MBProgressHUD hideHUD];

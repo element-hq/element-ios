@@ -33,7 +33,7 @@ singleton_interface(YXWalletPasswordManager)
 @property (nonatomic , assign) BOOL isHavePhomeNum;
 @property (nonatomic , copy) NSString *phomeNum;
 @property (nonatomic , copy) NSString *userId;
-
+@property (nonatomic , copy) NSString *passWord;//获取用户密码
 @end
 
 NS_ASSUME_NONNULL_END

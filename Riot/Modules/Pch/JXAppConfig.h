@@ -9,6 +9,7 @@
 #ifndef JXAppConfig_h
 #define JXAppConfig_h
 
+#define GET_A_NOT_NIL_STRING(string) (string ? string : @"")
 
 #define NetWorkManager [YXNetWorkManager sharedInstance]
 
@@ -54,7 +55,7 @@ if ([NSThread isMainThread]) {\
 
 // 弱引用
 #define YXWeakSelf __weak typeof(self) weakSelf = self;
-#define GET_A_NOT_NIL_STRING(string) (string ? string : @"")
+
 #define SCREEN_HEIGHT       [[UIScreen mainScreen] bounds].size.height
 #define SCREEN_WIDTH        [[UIScreen mainScreen] bounds].size.width
 

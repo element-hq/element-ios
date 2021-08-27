@@ -17,6 +17,9 @@
 #import "YXWalletPasswordManager.h"
 #import "MXKTools.h"
 @implementation YXWalletPasswordModel
+
+
+
 @end
 
 @implementation YXWalletPasswordManager
@@ -55,5 +58,18 @@ singleton_implementation(YXWalletPasswordManager)
 -(void)setModel:(YXWalletPasswordModel *)model{
     _model = model;
 }
+
+-(NSString *)passWord{
+    NSString *pwd = [[NSUserDefaults standardUserDefaults] stringForKey:@"Wallet_PassWord"];
+    return pwd;
+}
+
+-(void)setPassWord:(NSString *)passWord{
+    
+    NSString *mdPassWord = [Tool stringToMD5:passWord];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:mdPassWord forKey:@"Wallet_PassWord"];
+}
+
 
 @end
