@@ -82,6 +82,7 @@ final class RiotSettings: NSObject {
         static let unifiedSearchScreenShowPublicDirectory = "unifiedSearchScreenShowPublicDirectory"
         static let hideSpaceBetaAnnounce = "hideSpaceBetaAnnounce"
         static let secretsRecoveryAllowReset = "secretsRecoveryAllowReset"
+        static let versionCheckNextDisplayDateTimeInterval = "versionCheckNextDisplayDateTimeInterval"
     }
     
     static let shared = RiotSettings()
@@ -746,6 +747,16 @@ final class RiotSettings: NSObject {
             return defaults.bool(forKey: UserDefaultsKeys.hideSpaceBetaAnnounce)
         } set {
             defaults.set(newValue, forKey: UserDefaultsKeys.hideSpaceBetaAnnounce)
+        }
+    }
+    
+    // MARK: - Version check
+    
+    var versionCheckNextDisplayDateTimeInterval: TimeInterval {
+        get {
+            return defaults.double(forKey: UserDefaultsKeys.versionCheckNextDisplayDateTimeInterval)
+        } set {
+            defaults.set(newValue, forKey: UserDefaultsKeys.versionCheckNextDisplayDateTimeInterval)
         }
     }
 }
