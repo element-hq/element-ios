@@ -17,27 +17,6 @@
 import XCTest
 @testable import Riot
 
-
-class MockRoomNotificationSettingsService: RoomNotificationSettingsServiceType {
-    
-    var listener: RoomNotificationStateCallback?
-    var notificationState: RoomNotificationState
-    
-    init(initialState: RoomNotificationState) {
-        notificationState = initialState
-    }
-    
-    func observeNotificationState(listener: @escaping RoomNotificationStateCallback) {
-        self.listener = listener
-    }
-    
-    func update(state: RoomNotificationState, completion: @escaping UpdateRoomNotificationStateCompletion) {
-        self.notificationState = state
-        completion()
-        listener?(state)
-    }
-}
-
 class MockRoomNotificationSettingsView: RoomNotificationSettingsViewModelViewDelegate {
     
     var viewState: RoomNotificationSettingsViewStateType?
@@ -81,8 +60,8 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
     }
     
     func setupViewModel(roomEncrypted: Bool, showAvatar: Bool) {
-        let avatarData = showAvatar ? Constants.avatarData : nil
-        let viewModel = RoomNotificationSettingsViewModel(roomNotificationService: service, roomEncrypted: roomEncrypted, avatarViewData: avatarData)
+        let avatarData: AvatarInputOption? = showAvatar ? .uiKit(Constants.avatarData) : nil
+        let viewModel = RoomNotificationSettingsViewModel(roomNotificationService: service, avatarData: avatarData, displayName: Constants.roomDisplayName, roomEncrypted: roomEncrypted)
         viewModel.viewDelegate = view
         viewModel.coordinatorDelegate = coordinator
         self.viewModel = viewModel
@@ -110,8 +89,11 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
     func testAvatar() throws {
         setupViewModel(roomEncrypted: true, showAvatar: true)
         viewModel.process(viewAction: .load)
-        XCTAssertNotNil(view.viewState?.avatarData)
-        XCTAssertEqual(view.viewState!.avatarData!.avatarUrl, Constants.avatarUrl)
+        guard case let .uiKit(avatarData) = view.viewState?.avatarData else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(avatarData.avatarUrl, Constants.avatarUrl)
     }
 
     func testSelectionUpdateAndSave() throws {

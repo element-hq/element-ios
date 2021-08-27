@@ -172,7 +172,7 @@ final class SecureBackupSetupIntroViewController: UIViewController {
         // we need to get this private key first. Ask the user to make a key backup restore to catch it
         if keyBackup.keyBackupVersion != nil && keyBackup.hasPrivateKeyInCryptoStore == false {
             
-            let alertContoller = UIAlertController(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorTitle,
+            let alertController = UIAlertController(title: VectorL10n.secureKeyBackupSetupExistingBackupErrorTitle,
                                                    message: VectorL10n.secureKeyBackupSetupExistingBackupErrorInfo,
                                                    preferredStyle: .alert)
 
@@ -188,11 +188,11 @@ final class SecureBackupSetupIntroViewController: UIViewController {
                 self.delegate?.secureBackupSetupIntroViewControllerDidCancel(self, showSkipAlert: false)
             }
             
-            alertContoller.addAction(connectAction)
-            alertContoller.addAction(resetAction)
-            alertContoller.addAction(cancelAction)
+            alertController.addAction(connectAction)
+            alertController.addAction(resetAction)
+            alertController.addAction(cancelAction)
             
-            self.present(alertContoller, animated: true)
+            self.present(alertController, animated: true)
         }
     }
     

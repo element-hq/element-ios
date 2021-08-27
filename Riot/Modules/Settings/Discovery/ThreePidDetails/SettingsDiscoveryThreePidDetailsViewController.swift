@@ -212,9 +212,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     }
     
     private func renderLoading() {
-        if self.activityPresenter.isPresenting == false {
-            self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        }
+        self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
         self.operationButton.isEnabled = false
     }
     

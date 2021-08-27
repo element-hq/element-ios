@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VersionCheckAlertViewController" customModule="Riot" customModuleProvider="target">
+            <connections>
+                <outlet property="actionButton" destination="EbY-m0-XSs" id="63P-Xf-QDA"/>
+                <outlet property="alertContainerView" destination="KIG-b9-Tyx" id="U06-A9-P9c"/>
+                <outlet property="dismissButton" destination="fGK-xG-RKK" id="udW-wA-Anp"/>
+                <outlet property="subtitleLabel" destination="zgc-27-11w" id="EEW-oJ-npn"/>
+                <outlet property="titleLabel" destination="KmG-fj-orS" id="Xcy-ek-zHo"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="680" height="614"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KIG-b9-Tyx">
+                    <rect key="frame" x="42.5" y="186" width="595" height="242"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fGK-xG-RKK">
+                            <rect key="frame" x="547" y="4" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="44" id="8Pq-sX-5mB"/>
+                                <constraint firstAttribute="height" constant="44" id="Wyp-3I-uEw"/>
+                            </constraints>
+                            <state key="normal" image="version_check_close_icon"/>
+                            <connections>
+                                <action selector="onDismissButtonTap:" destination="-1" eventType="touchUpInside" id="doW-WY-0Gv"/>
+                            </connections>
+                        </button>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="s18-lG-O4e">
+                            <rect key="frame" x="16" y="52" width="563" height="174"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Ter-fV-mb4">
+                                    <rect key="frame" x="0.0" y="0.0" width="563" height="114"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We’re ending support for iOS 11" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KmG-fj-orS">
+                                            <rect key="frame" x="156.5" y="0.0" width="250.5" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <color key="textColor" red="0.090196078431372548" green="0.098039215686274508" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zgc-27-11w">
+                                            <rect key="frame" x="0.0" y="32.5" width="563" height="81.5"/>
+                                            <string key="text">We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not compatible with some of those fixes and will no longer be supported. We're advising you to upgrade your operating system to use Element to its full potential.</string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.45098039215686275" green="0.49019607843137253" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EbY-m0-XSs">
+                                    <rect key="frame" x="200" y="134" width="163" height="40"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                    <inset key="contentEdgeInsets" minX="62" minY="11" maxX="62" maxY="11"/>
+                                    <state key="normal" title="Got it"/>
+                                    <connections>
+                                        <action selector="onActionButtonTap:" destination="-1" eventType="touchUpInside" id="sg4-JL-L3g"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="EWq-BN-h4D"/>
+                        <constraint firstAttribute="trailing" secondItem="s18-lG-O4e" secondAttribute="trailing" constant="16" id="IGg-Uc-Vj7"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="600" id="Kq2-HB-3xI"/>
+                        <constraint firstItem="s18-lG-O4e" firstAttribute="top" secondItem="fGK-xG-RKK" secondAttribute="bottom" constant="4" id="SVY-JE-eRa"/>
+                        <constraint firstItem="fGK-xG-RKK" firstAttribute="top" secondItem="KIG-b9-Tyx" secondAttribute="top" constant="4" id="aHW-7J-fAP"/>
+                        <constraint firstItem="s18-lG-O4e" firstAttribute="leading" secondItem="KIG-b9-Tyx" secondAttribute="leading" constant="16" id="hUS-p8-LYF"/>
+                        <constraint firstAttribute="trailing" secondItem="fGK-xG-RKK" secondAttribute="trailing" constant="4" id="qel-Uc-gCm"/>
+                        <constraint firstAttribute="bottom" secondItem="s18-lG-O4e" secondAttribute="bottom" constant="16" id="x0D-6M-ENQ"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.090196078431372548" green="0.098039215686274508" blue="0.10980392156862745" alpha="0.75" colorSpace="custom" customColorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="KIG-b9-Tyx" secondAttribute="bottom" constant="27" id="O2i-3j-Zdq"/>
+                <constraint firstItem="KIG-b9-Tyx" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="gla-Ua-rd6"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="KIG-b9-Tyx" secondAttribute="trailing" constant="27" id="hZu-FV-h9a"/>
+                <constraint firstItem="KIG-b9-Tyx" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="rdh-sM-1Me"/>
+                <constraint firstItem="KIG-b9-Tyx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="27" id="s7X-L5-bfF"/>
+                <constraint firstItem="KIG-b9-Tyx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="27" id="uyT-Zm-oWx"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="330.43478260869568" y="58.928571428571423"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="version_check_close_icon" width="16" height="16"/>
+    </resources>
+</document>

@@ -24,7 +24,7 @@ options:
   createIntermediateGroups: true
   useBaseInternationalization: true
   postGenCommand: sh Tools/XcodeGen/postGenCommand.sh
-
+    
 include:
   - path: Riot/target.yml
   - path: RiotTests/target.yml

@@ -37,4 +37,6 @@ protocol EnterNewRoomDetailsViewModelType {
     func process(viewAction: EnterNewRoomDetailsViewAction)
     
     var roomCreationParameters: RoomCreationParameters { get set }
+    
+    var viewState: EnterNewRoomDetailsViewState { get }
 }

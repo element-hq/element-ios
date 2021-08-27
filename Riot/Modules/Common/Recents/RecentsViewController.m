@@ -1034,7 +1034,7 @@
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
-        if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+        if ([BuildSettings showNotificationsV2])
         {
             [self changeEditedRoomNotificationSettings];
         }
@@ -1049,7 +1049,7 @@
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage;
-    if([BuildSettings roomSettingsScreenShowNotificationsV2])
+    if([BuildSettings showNotificationsV2])
     {
         notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
     }

@@ -348,7 +348,7 @@
             tableViewCell.notificationsButton.tag = room.isMute || room.isMentionsOnly;
             [tableViewCell.notificationsButton addTarget:self action:@selector(onNotificationsButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             
-            if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+            if ([BuildSettings showNotificationsV2])
             {
                 tableViewCell.notificationsImageView.image = tableViewCell.notificationsButton.tag ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
             }
@@ -672,7 +672,7 @@
         MXRoom *room = [self.mainSession roomWithRoomId:editedRoomId];
         if (room)
         {
-            if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+            if ([BuildSettings showNotificationsV2])
             {
                 [self changeEditedRoomNotificationSettings];
             }

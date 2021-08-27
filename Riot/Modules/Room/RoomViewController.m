@@ -1080,6 +1080,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.jumpToLastUnreadBannerContainer.hidden = YES;
     
     [super leaveRoomOnEvent:event];
+    
+    [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
 }
 
 // Set the input toolbar according to the current display
@@ -2381,11 +2383,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
         {
-            if (bubbleData.isPaginationFirstBubble) {
+            if (bubbleData.isPaginationFirstBubble)
+            {
                 cellViewClass = VoiceMessageWithPaginationTitleBubbleCell.class;
-            } else if (bubbleData.shouldHideSenderInformation) {
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
                 cellViewClass = VoiceMessageWithoutSenderInfoBubbleCell.class;
-            } else {
+            }
+            else
+            {
                 cellViewClass = VoiceMessageBubbleCell.class;
             }
         }
@@ -6144,6 +6151,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didRequestMentionForMember:(MXRoomMember *)member
 {
     [self mention:member];
+}
+
+- (void)roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
 }
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
