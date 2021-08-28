@@ -257,8 +257,9 @@
         }
             break;
         case WalletPopupViewJYZDType:{//解冻质押
-            [self showPopupUIWith:@"解冻质押" des:@"该操作将解冻质押链分并回收服务器，请确认？" State:WalletPopupViewWalletState center:YES];
+            [self showPopupUIWith:@"解冻质押" des:@"该操作将解冻质押链分并回收服务器，请确认？" State:WalletPopupViewWalletState center:NO];
             _cancel.text = @"确定解冻";
+            _determine.text = @"取消";
         }
             break;
         default:

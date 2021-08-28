@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger , YXWalletAccountBindingType) {
 
 @interface YXWalletAccountOptionsModel : NSObject
 @property (nonatomic , copy) NSString *nick;
-@property (nonatomic , copy) NSString *userName;
+@property (nonatomic , copy) NSString *name;
 @property (nonatomic , copy) NSString *account;
 @property (nonatomic , copy) NSString *bank;
 @property (nonatomic , copy) NSString *subbranch;

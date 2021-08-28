@@ -50,6 +50,9 @@
             weakSelf.walletArmingFlagView.hidden = YES;
             [weakSelf walletArmingFlagViewAction];
         };
+        _walletArmingFlagView.determineBlock = ^{
+            weakSelf.walletArmingFlagView.hidden = YES;
+        };
         _walletArmingFlagView.hidden = YES;
     }
     return _walletArmingFlagView;

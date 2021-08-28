@@ -157,7 +157,7 @@
         [MBProgressHUD showMessage:@"添加中..."];
         
         YXWalletAccountOptionsModel *optionsModel = [[YXWalletAccountOptionsModel alloc]init];
-        optionsModel.userName = userName;
+        optionsModel.name = userName;
         optionsModel.account = account;
         optionsModel.subbranch = subbranch;
         optionsModel.bank = bank;
@@ -220,7 +220,7 @@
         [MBProgressHUD showMessage:@"添加中..."];
         
         YXWalletAccountOptionsModel *optionsModel = [[YXWalletAccountOptionsModel alloc]init];
-        optionsModel.userName = userName;
+        optionsModel.name = userName;
         optionsModel.account = account;
         
         NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
@@ -274,7 +274,7 @@
         
         
         YXWalletAccountOptionsModel *optionsModel = [[YXWalletAccountOptionsModel alloc]init];
-        optionsModel.userName = userName;
+        optionsModel.name = userName;
         optionsModel.nick = nick;
         optionsModel.account = account;
         
