@@ -9,6 +9,7 @@
 #import "YXNodeListItemTableViewCell.h"
 #import "YXNodeListModel.h"
 extern NSString *const kYXConfigNodeListForDetail;
+extern NSString *const kYXArmingFlagNodeListForDetail;
 @interface YXNodeListItemTableViewCell ()
 @property (nonatomic , strong)UILabel *titleLabel;
 @property (nonatomic , strong)UILabel *desLabel;
@@ -18,6 +19,7 @@ extern NSString *const kYXConfigNodeListForDetail;
 @property (nonatomic , strong)UIView *configView;
 @property (nonatomic , strong)UILabel *configLabel;
 @property (nonatomic , strong)UIButton *configBtn;
+@property (nonatomic , strong)UIButton *armingFlagBtn;
 @property (nonatomic , strong)YXNodeListdata *rowData;
 @end
 
@@ -77,6 +79,26 @@ extern NSString *const kYXConfigNodeListForDetail;
 
 - (void)configBtnAction{
     [self routerEventForName:kYXConfigNodeListForDetail paramater:self.rowData];
+}
+
+-(UIButton *)armingFlagBtn{
+    if (!_armingFlagBtn) {
+        _armingFlagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_armingFlagBtn addTarget:self action:@selector(armingFlagBtnAction) forControlEvents:UIControlEventTouchUpInside];
+        [_armingFlagBtn setTitle:@"解冻质押" forState:UIControlStateNormal];
+        _armingFlagBtn.titleLabel.textColor = UIColor.whiteColor;
+        [_armingFlagBtn setBackgroundColor:RGBA(255,160,0,1)];
+        _armingFlagBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [_armingFlagBtn setTitleColor:kWhiteColor forState:UIControlStateNormal];
+        _armingFlagBtn.layer.cornerRadius = 15;
+        _armingFlagBtn.layer.masksToBounds = YES;
+        _armingFlagBtn.userInteractionEnabled = YES;
+    }
+    return _armingFlagBtn;
+}
+
+- (void)armingFlagBtnAction{
+    [self routerEventForName:kYXArmingFlagNodeListForDetail paramater:self.rowData];
 }
 
 -(UILabel *)desLabel{
@@ -142,6 +164,7 @@ extern NSString *const kYXConfigNodeListForDetail;
     [self.bgImageView addSubview:self.desLabel];
     [self.bgImageView addSubview:self.stateLabel];
     [self.bgImageView addSubview:self.titleImageView];
+    [self.contentView addSubview:self.armingFlagBtn];
     
     //立刻配置
     [self.contentView addSubview:self.configView];
@@ -200,6 +223,13 @@ extern NSString *const kYXConfigNodeListForDetail;
         make.top.mas_equalTo(self.configLabel.mas_bottom).offset(17);
     }];
     
+    [self.armingFlagBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(30);
+        make.width.mas_equalTo(100);
+        make.centerY.mas_equalTo(self.contentView.mas_centerY);
+        make.right.mas_equalTo(self.contentView.mas_right).offset(-35);
+    }];
+    
     [self setupConfigView:NO];
 }
 
@@ -208,6 +238,13 @@ extern NSString *const kYXConfigNodeListForDetail;
     self.titleLabel.hidden = !config;
     self.desLabel.hidden = !config;
     self.stateLabel.hidden = !config;
+
+    if ([self.rowData.armingFlag isEqualToString:@"0"]) {
+        self.armingFlagBtn.hidden = !config;
+    }else{
+        self.armingFlagBtn.hidden = YES;
+    }
+ 
 }
 
 - (void)setupCellWithRowData:(YXNodeListdata *)rowData{

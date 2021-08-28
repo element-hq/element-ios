@@ -11,6 +11,7 @@ NSString *const kYXWalletNextCloseTipView = @"kYXWalletNextCloseTipView";
 NSString *const kYXWalletHelpWordCloseTipView = @"kYXWalletHelpWordCloseTipView";
 NSString *const kYXJumpWalletAssetsDetail = @"kYXJumpWalletAssetsDetail";
 NSString *const kYXConfigNodeListForDetail = @"kYXConfigNodeListForDetail";
+NSString *const kYXArmingFlagNodeListForDetail = @"kYXArmingFlagNodeListForDetail";
 NSString *const kYXWalletShowAddViewFountion = @"kYXWalletShowAddViewFountion";
 NSString *const kYXWalletJumpSendEditDetail = @"kYXWalletJumpSendEditDetail";
 NSString *const kYXWalletJumpReceiveCodeVC = @"kYXWalletJumpReceiveCodeVC";
@@ -55,6 +56,7 @@ NSString *const kYXWalletArmingFlagNode = @"kYXWalletArmingFlagNode";
             kYXWalletShowAddViewFountion:[self createInvocationForSelector:@selector(walletShowAddViewFountion)],
             kYXWalletHelpWordCloseTipView:[self createInvocationForSelector:@selector(walletHelpWordCloseTipView:)],
             kYXJumpWalletAssetsDetail:[self createInvocationForSelector:@selector(jumpWalletAssetsDetail)],
+            kYXArmingFlagNodeListForDetail:[self createInvocationForSelector:@selector(armingFlagNodeListForDetail:)],
             kYXConfigNodeListForDetail:[self createInvocationForSelector:@selector(configNodeListForDetail:)],
             kYXWalletJumpSendEditDetail:[self createInvocationForSelector:@selector(jumpSendEditDetail)],
             kYXWalletJumpReceiveCodeVC:[self createInvocationForSelector:@selector(jumpReceiveCodeDetail)],
@@ -124,6 +126,12 @@ NSString *const kYXWalletArmingFlagNode = @"kYXWalletArmingFlagNode";
 -(void)configNodeListForDetail:(id)model{
     if (self.nodeListViewModel.configNodeListForDetailBlock) {
         self.nodeListViewModel.configNodeListForDetailBlock(model);
+    }
+}
+
+-(void)armingFlagNodeListForDetail:(id)model{
+    if (self.nodeListViewModel.touchNodeListForDetailBlock) {
+        self.nodeListViewModel.touchNodeListForDetailBlock(model);
     }
 }
 

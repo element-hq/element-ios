@@ -95,7 +95,7 @@
 
     _titleLabel.text = model.walletName;
     
-    _desLabel.text = [NSString stringWithFormat:@"%.2f",(model.fundValue.floatValue * model.balance)];
+    _desLabel.text = [NSString stringWithFormat:@"%@ %@",[NSString stringWithFormat:@"%.2f", model.balance],model.baseSymbol];
     
     NSString *url = kImageURL(GET_A_NOT_NIL_STRING(model.image));
     YXWeakSelf
