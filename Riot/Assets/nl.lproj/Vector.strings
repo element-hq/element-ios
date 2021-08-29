@@ -1559,3 +1559,17 @@
 "settings_mentions_and_keywords" = "Vermeldingen en Trefwoorden";
 "settings_default" = "Standaard Notificaties";
 "settings_notifications" = "NOTIFICATIES";
+"version_check_modal_action_title_deprecated" = "Ontdek hoe";
+"version_check_modal_subtitle_deprecated" = "We hebben gewerkt aan het verbeteren van Element voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor sommige van deze verbeteringen en worden deze niet langer ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om Element volledig te kunnen gebruiken.";
+"version_check_modal_title_deprecated" = "We ondersteunen iOS %@ niet langer";
+"version_check_modal_action_title_supported" = "Ik heb hem";
+"version_check_modal_subtitle_supported" = "We hebben gewerkt aan het verbeteren van Element voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor een aantal van deze verbeteringen en zal deze niet langer worden ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om het volledige potentieel van Element te kunnen benutten.";
+"version_check_modal_title_supported" = "We stoppen de ondersteuning voor iOS %@";
+"version_check_banner_subtitle_deprecated" = "We ondersteunen Element niet langer op iOS %@. Om het volledige potentieel van Element te blijven gebruiken, adviseren wij u om uw iOS-versie te upgraden.";
+"version_check_banner_title_deprecated" = "We ondersteunen iOS %@ niet langer";
+"version_check_banner_subtitle_supported" = "We zullen binnenkort de ondersteuning voor Element op iOS %@ stoppen. Om het volledige potentieel van Element te blijven gebruiken, adviseren wij u om uw iOS-versie te upgraden.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "We stoppen de ondersteuning voor iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "U krijgt geen meldingen voor vermeldingen en trefwoorden in versleutelde kamers op mobiele telefoons.";
