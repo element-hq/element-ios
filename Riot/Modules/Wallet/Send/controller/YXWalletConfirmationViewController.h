@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YXWalletConfirmationViewController : YXBaseViewController
 @property (nonatomic , strong)YXWalletSendDataInfo *sendDataInfo;
 @property (nonatomic , copy)NSString *naviTitle;
+@property (nonatomic , copy)dispatch_block_t reloadRecordData;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -67,8 +67,14 @@
         }];
         
         [_viewModel setConfirmPaySuccessBlock:^{
+   
             weakSelf.inputPasswordView.hidden = YES;
             weakSelf.walletPaySuccesView.hidden = NO;
+
+            if (weakSelf.reloadRecordData) {
+                weakSelf.reloadRecordData();
+            }
+            
         }];
         
         [_viewModel setConfirmPayFailError:^{
@@ -78,6 +84,20 @@
             });
         }];
         
+        [_viewModel setCancelPayBlock:^{
+            [MBProgressHUD showError:@"取消成功"];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+            if (weakSelf.reloadRecordData) {
+                weakSelf.reloadRecordData();
+            }
+        }];
+        
+        [_viewModel setCancelPayFailBlock:^{
+            [MBProgressHUD showError:@"取消失败"];
+            weakSelf.walletCancelPayView.hidden = NO;
+            
+        }];
+    
     }
     return _viewModel;
 }
@@ -116,18 +136,7 @@
         YXWeakSelf
         _walletPaySuccesView.cancelBlock = ^{
             weakSelf.walletPaySuccesView.hidden = YES;
-            UINavigationController *navigationVC = weakSelf.navigationController;
-            UIViewController *currentVC;
-            for (UIViewController *vc in navigationVC.viewControllers) {
-                if ([vc isKindOfClass:YXWalletViewController.class]) {
-                    currentVC = vc;
-                }
-            }
-            if (currentVC) {
-                [weakSelf.navigationController popToViewController:currentVC animated:YES];
-            }else{
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
+            [weakSelf.navigationController popViewControllerAnimated:YES];
         };
         _walletPaySuccesView.hidden = YES;
     }
@@ -159,28 +168,17 @@
     if (!_walletCancelPayView) {
         _walletCancelPayView = [[YXWalletPopupView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT) type:WalletPopupViewCXZFType];
         YXWeakSelf
+        //继续支付
         _walletCancelPayView.cancelBlock = ^{
             weakSelf.walletCancelPayView.hidden = YES;
             [weakSelf showInputPasswordView];
         };
         
-        //继续支付
+        //取消支付
         _walletCancelPayView.determineBlock = ^{
-            
-            
             weakSelf.walletCancelPayView.hidden = YES;
-            UINavigationController *navigationVC = weakSelf.navigationController;
-            UIViewController *currentVC;
-            for (UIViewController *vc in navigationVC.viewControllers) {
-                if ([vc isKindOfClass:YXWalletViewController.class]) {
-                    currentVC = vc;
-                }
-            }
-            if (currentVC) {
-                [weakSelf.navigationController popToViewController:currentVC animated:YES];
-            }else{
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
+            [weakSelf.viewModel cancelPay];
+       
         };
         
         _walletCancelPayView.hidden = YES;

@@ -80,6 +80,9 @@
             YXNodeConfigModelPledeg *detailList = [YXNodeConfigModelPledeg mj_objectWithKeyValues:responseObject];
             if (detailList.status == 200) {
                 weakSelf.pledegModel = detailList;
+                if (weakSelf.getNodePledegBlock) {
+                    weakSelf.getNodePledegBlock();
+                }
             }
         }
         

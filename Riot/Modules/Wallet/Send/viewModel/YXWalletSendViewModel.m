@@ -142,6 +142,28 @@
     
 }
 
+- (void)cancelPay{
+    YXWeakSelf
+    NSMutableDictionary *paramDict = [[NSMutableDictionary alloc]init];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(self.sendDataInfo.walletId) forKey:@"walletId"];
+    [paramDict setObject:GET_A_NOT_NIL_STRING(self.sendDataInfo.txId) forKey:@"txId"];
+
+    [NetWorkManager POST:kURL(@"/transaction/giveup") parameters:paramDict success:^(id  _Nonnull responseObject) {
+        
+        YXWalletSendConfirmPayModel *model = [YXWalletSendConfirmPayModel mj_objectWithKeyValues:responseObject];
+        if (model.status == 200) {
+            if (weakSelf.cancelPayBlock) {
+                weakSelf.cancelPayBlock();
+            }
+        }
+
+    } failure:^(NSError * _Nonnull error) {
+        if (weakSelf.cancelPayFailBlock) {
+            weakSelf.cancelPayFailBlock();
+        }
+    }];
+}
+
 //联系方式数据
 - (void)reloadContactData:(YXWalletMyWalletRecordsItem *)model{
     YXWeakSelf

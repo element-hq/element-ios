@@ -183,7 +183,7 @@
     
     _desLabel.text = _desLabel.text = rowData.message;
     _numLabel.text = rowData.coinDate;
-    _countLabel.text = [NSString stringWithFormat:@"%@ %@",[NSString stringWithFormat:@"%.2f", rowData.amount],GET_A_NOT_NIL_STRING(rowData.baseSybol)];
+    _countLabel.text = [NSString stringWithFormat:@"%@ %@",[NSString stringWithFormat:@"%.4f", rowData.amount],GET_A_NOT_NIL_STRING(rowData.baseSybol)];
     
     
 }

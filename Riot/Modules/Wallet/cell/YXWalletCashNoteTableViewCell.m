@@ -147,7 +147,8 @@ extern NSString *const kAllCrashNotification;
 
 -(void)setupCellWithRowData:(YXWalletCashModel *)rowData{
     _rowData = rowData;
-    _desLabel.text = [NSString stringWithFormat:@"可兑换数量%@  %@",@(rowData.walletModel.balance).stringValue,rowData.walletModel.coinName];
+    
+    _desLabel.text = [NSString stringWithFormat:@"可兑换数量%@  %@",[NSString stringWithFormat:@"≈￥%.4f",rowData.walletModel.balance],rowData.walletModel.coinName];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{

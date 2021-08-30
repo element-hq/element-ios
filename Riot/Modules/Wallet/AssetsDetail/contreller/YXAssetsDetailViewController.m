@@ -141,6 +141,9 @@
             NSDictionary *dic = model.mj_keyValues;
             confirmatVc.sendDataInfo = [YXWalletSendDataInfo mj_objectWithKeyValues:dic];
             confirmatVc.sendDataInfo.title = confirmatVc.naviTitle;
+            confirmatVc.reloadRecordData = ^{
+                [weakSelf refreshHeaderAction];
+            };
             [weakSelf.navigationController pushViewController:confirmatVc animated:YES];
         }];
     }

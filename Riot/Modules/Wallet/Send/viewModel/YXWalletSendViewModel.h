@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic , copy)dispatch_block_t showInputPasswordViewBlock;
 @property (nonatomic , copy)dispatch_block_t confirmPaySuccessBlock;
 @property (nonatomic , copy)dispatch_block_t confirmPayFailError;
+@property (nonatomic , copy)dispatch_block_t cancelPayBlock;
+@property (nonatomic , copy)dispatch_block_t cancelPayFailBlock;
 @property (nonatomic , copy)void (^nextBlock)(YXWalletSendDataInfo *model);
 @property (nonatomic , copy)void (^selectFirendBlock)(NSString *walletAddr);
 - (void)nextSendOperation;
@@ -28,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)reloadConfirmationData:(YXWalletSendDataInfo *)model;
 - (void)walletSendConfirmPay;
 - (void)confirmPay;
+- (void)cancelPay;//取消交易
 @end
 
 NS_ASSUME_NONNULL_END
