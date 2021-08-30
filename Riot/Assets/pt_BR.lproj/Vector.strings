@@ -85,7 +85,7 @@
 "auth_reset_password_email_validation_message" = "Um email tem sido enviado para %@. Uma vez que você tenha seguido o link que ele contém, clique abaixo.";
 "auth_reset_password_next_step_button" = "Eu tenho verificado meu endereço de email";
 "auth_reset_password_error_unauthorized" = "Falha para verificar endereço de email: assegure que você clicou no link no email";
-"auth_reset_password_error_not_found" = "Seu endereço de email não parece estar associado a uma ID Matrix neste servidorcasa.";
+"auth_reset_password_error_not_found" = "Seu endereço de email não parece estar associado com uma ID Matrix neste servidorcasa.";
 "auth_reset_password_success_message" = "Sua senha tem sido resettada.\n\nVocê tem sido feito logout de todas as sessões e não vai mais receber notificações push. Para re-habilitar notificações, refaça login em cada dispositivo.";
 "auth_add_email_and_phone_warning" = "Registro com email e número de telefone ao mesmo tempo não é suportado ainda até que a api exista. Somente o número de telefone vai ser levado em conta. Você pode adicionar seu email a seu perfil em configurações.";
 "room_creation_appearance" = "Aparência";
@@ -268,10 +268,10 @@
 "room_title_members" = "%@ membros";
 "room_title_one_member" = "1 membro";
 // Room Preview
-"room_preview_invitation_format" = "Você tem sido convidada(o) a juntar-se a esta sala por %@";
+"room_preview_invitation_format" = "Você tem sido convidada(o) para se juntar a esta sala por %@";
 "unknown_devices_alert" = "Esta sala contém sessões desconhecidas que não têm sido verificadas.\nIsto significa que não há nenhuma garantia que as sessões pertencem às/aos usuárias(os) às/aos quais elas clamam pertencer.\nNós recomendamos que você passe pelo processo de verificação para cada sessão antes de continuar, mas você pode reenviar a mensagem sem verificar se você preferir.";
 "room_preview_subtitle" = "Esta é uma previsualização desta sala. Interações de sala têm sido desabilitadas.";
-"room_preview_unlinked_email_warning" = "Este convite foi enviado para %@, que não está associada(o) a esta conta. Você pode desejar fazer login com uma conta diferente, ou adicionar este email a sua conta.";
+"room_preview_unlinked_email_warning" = "Este convite foi enviado para %@, que não está associada(o) com esta conta. Você pode desejar fazer login com uma conta diferente, ou adicionar este email a sua conta.";
 "room_preview_try_join_an_unknown_room" = "Você está tentando acessar %@. Você gostaria de se juntar para participar na discussão?";
 "room_preview_try_join_an_unknown_room_default" = "uma sala";
 // Settings
@@ -780,9 +780,9 @@
 "settings_three_pids_management_information_part1" = "Gerencie quais endereços de email ou números de telefone você pode usar para fazer login ou recuperar sua conta aqui. Controle quem pode encontrar você em ";
 "settings_calls_stun_server_fallback_button" = "Permitir servidor fallback de assistência de chamadas";
 "settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do Servidor de Identidade (%@) para permitir que você mesma(o) seja descobertável por endereço de email ou número de telefone.";
-"settings_discovery_three_pids_management_information_part1" = "Gerencie quais endereços de email ou números de telefone outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você a salas. Adicione ou remova endereços de email ou números de telefone desta lista em ";
+"settings_discovery_three_pids_management_information_part1" = "Gerencie quais endereços de email ou números de telefone outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você para salas. Adicione ou remova endereços de email ou números de telefone desta lista em ";
 "settings_discovery_three_pid_details_title_email" = "Gerenciar email";
-"settings_discovery_three_pid_details_information_email" = "Gerencie preferências para este endereço de email, que outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você a salas. Adicione ou remova endereços de email em Contas.";
+"settings_discovery_three_pid_details_information_email" = "Gerencie preferências para este endereço de email, que outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você para salas. Adicione ou remova endereços de email em Contas.";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Cancelar validação de email";
 "security_settings_crosssigning" = "ASSINATURA CRUZADA";
 "security_settings_crosssigning_info_not_bootstrapped" = "Assinatura cruzada não está ainda configurada.";
@@ -864,7 +864,7 @@
 "settings_discovery_no_identity_server" = "Você não está atualmente usando um servidor de identidade. Para ser descobertável por contatos existentes, adicione um.";
 "settings_discovery_error_message" = "Um erro ocorreu. Por favor retente.";
 "settings_discovery_three_pid_details_title_phone_number" = "Gerenciar número de telefone";
-"settings_discovery_three_pid_details_information_phone_number" = "Gerencie preferências para este número de telefone, que outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você a salas. Adicione ou remova números de telefone em Contas.";
+"settings_discovery_three_pid_details_information_phone_number" = "Gerencie preferências para este número de telefone, que outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você para salas. Adicione ou remova números de telefone em Contas.";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Entrar código de ativação de SMS";
 "settings_identity_server_description" = "Usando o servidor de identidade definido acima, você pode descobrir e ser descobertável por contatos existentes que você conhece.";
 "settings_identity_server_no_is" = "Nenhum servidor de identidade configurado";
@@ -1272,9 +1272,9 @@
 "call_transfer_contacts_all" = "Todos";
 "call_transfer_contacts_recent" = "Recentes";
 "call_transfer_users" = "Usuárias(os)";
-"event_formatter_call_has_ended" = "Chamada terminou";
-"room_intro_cell_information_multiple_dm_sentence2" = "Somente vocês estão nesta conversa, a menos que algum(a) de você convide alguém para se juntar.";
-"room_intro_cell_information_dm_sentence2" = "Somente vocês dois/duas estão nesta conversa, ninguém mais pode juntar-se.";
+"event_formatter_call_has_ended" = "Chamada terminada";
+"room_intro_cell_information_multiple_dm_sentence2" = "Somente vocês estão nesta conversa, a menos que algum(a) de vocês convide alguém para se juntar.";
+"room_intro_cell_information_dm_sentence2" = "Somente vocês dois/duas estão nesta conversa, ninguém mais pode se juntar.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
 "room_intro_cell_information_dm_sentence1_part1" = "Este é o começo de sua mensagem direta com ";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " para deixar pessoas saberem do que esta sala se trata.";
@@ -1320,7 +1320,7 @@
 "room_message_editing" = "Editando";
 
 // Chat
-"room_slide_to_end_group_call" = "Deslizar para terminar a chamada para todas as pessoas";
+"room_slide_to_end_group_call" = "Deslize para terminar a chamada para todas as pessoas";
 "callbar_only_single_active_group" = "Toque para Juntar-Se à chamada de grupo (%@)";
 "room_details_integrations" = "Integrações";
 "room_details_search" = "Pesquisar sala";
@@ -1408,7 +1408,7 @@
 "event_formatter_call_active_video" = "Chamada de vídeo ativa";
 "event_formatter_call_active_voice" = "Chamada de voz ativa";
 "voice_message_lock_screen_placeholder" = "Mensagem de voz";
-"event_formatter_call_has_ended_with_time" = "Chamada terminou • %@";
+"event_formatter_call_has_ended_with_time" = "Chamada terminada • %@";
 "version_check_modal_action_title_deprecated" = "Descobrir como";
 "version_check_modal_subtitle_deprecated" = "Nós temos estado trabalhando em melhorar Element para uma experiência mais rápida e polida. Infelizmente sua versão de iOS atual não é compatível com alguns desses consertos e não é mais suportada.\nNós estamos te aconselhando a fazer upgrade de seu sistema operacional para usar Element em seu potencial completo.";
 "version_check_modal_title_deprecated" = "Nós não estamos mais suportando iOS %@";
