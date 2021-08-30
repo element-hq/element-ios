@@ -2037,8 +2037,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (clearCache)
     {
-        // clear the media cache
-        [MXMediaManager clearCache];
+        [self clearCache];
     }
 }
 
@@ -2140,7 +2139,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self.pushNotificationService deregisterRemoteNotifications];
 
     // Clear cache
-    [MXMediaManager clearCache];
+    [self clearCache];
     
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
@@ -4317,6 +4316,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
+}
+
+#pragma mark - Private
+
+- (void)clearCache
+{
+    [MXMediaManager clearCache];
+    [MXKAttachment clearCache];
+    [VoiceMessageAttachmentCacheManagerBridge clearCache];
 }
 
 @end
