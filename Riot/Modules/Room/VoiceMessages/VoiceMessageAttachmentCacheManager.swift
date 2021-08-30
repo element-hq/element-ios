@@ -26,6 +26,7 @@ enum VoiceMessageAttachmentCacheManagerError: Error {
     case durationError(Error?)
     case invalidNumberOfSamples
     case samplingError
+    case cancelled
 }
 
 /**
@@ -51,6 +52,12 @@ struct VoiceMessageAttachmentCacheManagerLoadResult {
     let samples: [Float]
 }
 
+@objc class VoiceMessageAttachmentCacheManagerBridge: NSObject {
+    @objc static func clearCache() {
+        VoiceMessageAttachmentCacheManager.sharedManager.clearCache()
+    }
+}
+
 class VoiceMessageAttachmentCacheManager {
     
     private struct Constants {
@@ -67,6 +74,10 @@ class VoiceMessageAttachmentCacheManager {
     private let workQueue: DispatchQueue
     private let operationQueue: OperationQueue
     
+    private var temporaryFilesFolderURL: URL {
+        return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent("VoiceMessages")
+    }
+    
     private init() {
         workQueue = DispatchQueue(label: "io.element.VoiceMessageAttachmentCacheManager.queue", qos: .userInitiated)
         operationQueue = OperationQueue()
@@ -76,16 +87,27 @@ class VoiceMessageAttachmentCacheManager {
     func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
         guard attachment.type == MXKAttachmentTypeVoiceMessage else {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidAttachmentType))
+            MXLog.error("[VoiceMessageAttachmentCacheManager] Invalid attachment type, ignoring request.")
             return
         }
         
         guard let identifier = attachment.eventId else {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidEventId))
+            MXLog.error("[VoiceMessageAttachmentCacheManager] Invalid event id, ignoring request.")
             return
         }
         
         guard numberOfSamples > 0 else {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidNumberOfSamples))
+            MXLog.error("[VoiceMessageAttachmentCacheManager] Invalid number of samples, ignoring request.")
+            return
+        }
+        
+        do {
+            try setupTemporaryFilesFolder()
+        } catch {
+            completion(Result.failure(VoiceMessageAttachmentCacheManagerError.preparationError(error)))
+            MXLog.error("[VoiceMessageAttachmentCacheManager] Failed creating temporary files folder with error: \(error)")
             return
         }
         
@@ -102,6 +124,23 @@ class VoiceMessageAttachmentCacheManager {
             }
             
             self.enqueueLoadAttachment(attachment, identifier: identifier, numberOfSamples: numberOfSamples, completion: completion)
+        }
+    }
+    
+    func clearCache() {
+        for key in completionCallbacks.keys {
+            invokeFailureCallbacksForIdentifier(key.eventIdentifier, requiredNumberOfSamples: key.requiredNumberOfSamples, error: VoiceMessageAttachmentCacheManagerError.cancelled)
+        }
+        
+        operationQueue.cancelAllOperations()
+        samples.removeAll()
+        durations.removeAll()
+        finalURLs.removeAll()
+        
+        do {
+            try FileManager.default.removeItem(at: temporaryFilesFolderURL)
+        } catch {
+            MXLog.error("[VoiceMessageAttachmentCacheManager] Failed clearing cached disk files with error: \(error)")
         }
     }
     
@@ -169,8 +208,7 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let newURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
+        let newURL = temporaryFilesFolderURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
         
         VoiceMessageAudioConverter.convertToMPEG4AAC(sourceURL: URL(fileURLWithPath: filePath), destinationURL: newURL) { result in
             self.workQueue.async {
@@ -274,5 +312,10 @@ class VoiceMessageAttachmentCacheManager {
         self.completionCallbacks[callbackKey] = nil
         
         MXLog.debug("[VoiceMessageAttachmentCacheManager] Failed task with error: \(error)")
+    }
+    
+    private func setupTemporaryFilesFolder() throws {
+        let url = temporaryFilesFolderURL
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
     }
 }
