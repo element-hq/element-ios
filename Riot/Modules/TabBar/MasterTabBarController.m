@@ -75,8 +75,8 @@
 
 - (HomeViewController *)homeViewController
 {
-    HomeViewControllerWithBannerWrapperViewController *wrapperVC = [self viewControllerForClass:HomeViewControllerWithBannerWrapperViewController.class];
-    return wrapperVC.homeViewController;
+    UIViewController *wrapperVC = [self viewControllerForClass:HomeViewControllerWithBannerWrapperViewController.class];
+    return [(HomeViewControllerWithBannerWrapperViewController *)wrapperVC homeViewController];
 }
 
 - (FavouritesViewController *)favouritesViewController
