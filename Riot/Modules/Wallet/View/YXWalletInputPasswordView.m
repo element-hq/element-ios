@@ -146,5 +146,11 @@
     
 }
 
+- (void)showView:(BOOL)isShow{
+    self.hidden = isShow;
+    if (!isShow) {
+        [self.code1View clickMaskView];
+    }
+}
 
 @end

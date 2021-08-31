@@ -58,6 +58,7 @@
                 YXNodeConfigDataItem *model = weakSelf.viewModel.pledegModel.data.firstObject;
                 weakSelf.nodeConfigView.pledgeText = model.txid;
                 weakSelf.is_pledeg = YES;
+                weakSelf.configData = model;
             }
         }];
 

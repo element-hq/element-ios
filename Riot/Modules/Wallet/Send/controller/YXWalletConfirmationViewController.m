@@ -68,7 +68,7 @@
         
         [_viewModel setConfirmPaySuccessBlock:^{
    
-            weakSelf.inputPasswordView.hidden = YES;
+            [weakSelf.inputPasswordView showView:YES];
             weakSelf.walletPaySuccesView.hidden = NO;
 
             if (weakSelf.reloadRecordData) {
@@ -105,7 +105,7 @@
 -(YXWalletInputPasswordView *)inputPasswordView{
     if (!_inputPasswordView) {
         _inputPasswordView = [[YXWalletInputPasswordView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        _inputPasswordView.hidden = YES;
+        [_inputPasswordView showView:YES];
         YXWeakSelf
         [_inputPasswordView setEndEditBlock:^(NSString * _Nonnull password) {
             //验证密码是否正确
@@ -114,7 +114,7 @@
             if ([md5Pw isEqualToString:currentMd5]) {
                 [weakSelf.viewModel confirmPay];
             }else{
-                weakSelf.inputPasswordView.hidden = YES;
+                [weakSelf.inputPasswordView showView:YES];
                 weakSelf.walletPayFailView.hidden = NO;
             }
             
@@ -260,7 +260,7 @@
     [self.inputPasswordView removeFromSuperview];
     self.inputPasswordView = nil;
     [UIApplication.sharedApplication.keyWindow addSubview:self.inputPasswordView];
-    self.inputPasswordView.hidden = NO;
+    [self.inputPasswordView showView:NO];
 
 }
 

@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface YXWalletInputPasswordView : UIView
 @property (nonatomic, copy) void (^endEditBlock)(NSString *password);
 @property (nonatomic, copy) void (^cloaseBtnBlock)(void);
+- (void)showView:(BOOL)isShow;
 @end
 
 NS_ASSUME_NONNULL_END
