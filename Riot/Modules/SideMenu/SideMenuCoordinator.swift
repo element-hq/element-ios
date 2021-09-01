@@ -35,7 +35,7 @@ class SideMenuCoordinatorParameters {
     }
 }
 
-final class SideMenuCoordinator: SideMenuCoordinatorType {
+final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     // MARK: - Constants
     
@@ -61,7 +61,7 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
     
     let spaceMenuPresenter = SpaceMenuPresenter()
     
-    private var exploreRoomCoordimator: ExploreRoomCoordinatorBridgePresenter?
+    private var exploreRoomCoordinator: ExploreRoomCoordinator?
 
     // MARK: Public
 
@@ -205,6 +205,17 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         self.sideMenuNavigationViewController.present(safariViewController, animated: true, completion: nil)
     }
     
+    private func showExploreRooms(spaceId: String, session: MXSession) {
+        let exploreRoomCoordinator = ExploreRoomCoordinator(session: session, spaceId: spaceId)
+        exploreRoomCoordinator.delegate = self
+        let presentable = exploreRoomCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+        exploreRoomCoordinator.start()
+        
+        self.exploreRoomCoordinator = exploreRoomCoordinator
+    }
+
     private func showInviteFriends(from sourceView: UIView?) {
         let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
         
@@ -220,6 +231,14 @@ final class SideMenuCoordinator: SideMenuCoordinatorType {
         self.spaceMenuPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
+    func navigate(to item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
+        if item.childInfo.roomType == .space {
+            self.exploreRoomCoordinator?.pushSpace(with: item)
+        } else if item.childInfo.roomType == .room {
+            self.exploreRoomCoordinator?.presentRoom(with: item, from: sourceView)
+        }
+    }
+
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -298,9 +317,7 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
         presenter.dismiss(animated: false) {
             switch action {
             case .exploreRooms:
-                self.exploreRoomCoordimator = ExploreRoomCoordinatorBridgePresenter(session: session, spaceId: spaceId)
-                self.exploreRoomCoordimator?.delegate = self
-                self.exploreRoomCoordimator?.present(from: self.sideMenuNavigationViewController, animated: true)
+                self.showExploreRooms(spaceId: spaceId, session: session)
             case .exploreMembers:
                 // TODO present members list
                 break
@@ -309,10 +326,26 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
     }
 }
 
-// MARK: - ExploreRoomCoordinatorBridgePresenterDelegate
-extension SideMenuCoordinator: ExploreRoomCoordinatorBridgePresenterDelegate {
-    func exploreRoomCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: ExploreRoomCoordinatorBridgePresenter) {
-        self.exploreRoomCoordimator = nil
-        coordinatorBridgePresenter.dismiss(animated: true, completion: nil)
+// MARK: - ExploreRoomCoordinatorDelegate
+extension SideMenuCoordinator: ExploreRoomCoordinatorDelegate {
+    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType, withSelectedIem item: SpaceExploreRoomListItemViewData?, from sourceView: UIView?) {
+        guard let item = item else {
+            self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
+                self.exploreRoomCoordinator = nil
+            }
+            return
+        }
+        self.navigate(to: item, from: sourceView)
     }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
+    
+    func exploreRoomCoordinatorDidComplete(_ presentationController: UIPresentationController) {
+        self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
+            self.exploreRoomCoordinator = nil
+        }
+    }
+    
 }

@@ -18,7 +18,7 @@
 
 import Foundation
 
-final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModelType {
+final class SpaceChildRoomDetailViewModel: SpaceChildRoomDetailViewModelType {
     
     // MARK: - Properties
     
@@ -31,23 +31,19 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
     private var userDisplayName: String?
     private var isRoomJoined: Bool {
         let summary = self.session.roomSummary(withRoomId: self.childInfo.childRoomId)
-        var isJoined = false
-        if let summary = summary {
-            isJoined = summary.membership == .join || summary.membershipTransitionState == .joined
-        }
-        return isJoined
+        return summary?.isJoined ?? false
     }
     
     // MARK: Public
 
-    weak var viewDelegate: ShowSpaceChildRoomDetailViewModelViewDelegate?
-    weak var coordinatorDelegate: ShowSpaceChildRoomDetailViewModelCoordinatorDelegate?
+    weak var viewDelegate: SpaceChildRoomDetailViewModelViewDelegate?
+    weak var coordinatorDelegate: SpaceChildRoomDetailViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(session: MXSession, childInfo: MXSpaceChildInfo) {
-        self.session = session
-        self.childInfo = childInfo
+    init(parameters: SpaceChildRoomDetailCoordinatorParameters) {
+        self.session = parameters.session
+        self.childInfo = parameters.childInfo
     }
     
     deinit {
@@ -56,19 +52,19 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
     
     // MARK: - Public
     
-    func process(viewAction: ShowSpaceChildRoomDetailViewAction) {
+    func process(viewAction: SpaceChildRoomDetailViewAction) {
         switch viewAction {
         case .loadData:
             self.loadData()
         case .complete:
             if self.isRoomJoined {
-                self.coordinatorDelegate?.showSpaceChildRoomDetailViewModelDidComplete(self, openRoomWith: self.childInfo.childRoomId)
+                self.coordinatorDelegate?.spaceChildRoomDetailViewModel(self, didOpenRoomWith: self.childInfo.childRoomId)
             } else {
                 joinRoom()
             }
         case .cancel:
             self.cancelOperations()
-            self.coordinatorDelegate?.showSpaceChildRoomDetailViewModelDidCancel(self)
+            self.coordinatorDelegate?.spaceChildRoomDetailViewModelDidCancel(self)
         }
     }
     
@@ -79,8 +75,8 @@ final class ShowSpaceChildRoomDetailViewModel: ShowSpaceChildRoomDetailViewModel
         self.update(viewState: .loaded(self.childInfo, avatarViewData, self.isRoomJoined))
     }
     
-    private func update(viewState: ShowSpaceChildRoomDetailViewState) {
-        self.viewDelegate?.showSpaceChildRoomDetailViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: SpaceChildRoomDetailViewState) {
+        self.viewDelegate?.spaceChildRoomDetailViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {

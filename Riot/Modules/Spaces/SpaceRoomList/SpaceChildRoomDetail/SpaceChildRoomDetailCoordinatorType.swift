@@ -18,12 +18,12 @@
 
 import Foundation
 
-protocol ShowSpaceChildRoomDetailCoordinatorDelegate: AnyObject {
-    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType, openRoomWith roomId: String)
-    func showSpaceChildRoomDetailCoordinatorDidCancel(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType)
+protocol SpaceChildRoomDetailCoordinatorDelegate: AnyObject {
+    func spaceChildRoomDetailCoordinator(_ coordinator: SpaceChildRoomDetailCoordinatorType, didOpenRoomWith roomId: String)
+    func spaceChildRoomDetailCoordinatorDidCancel(_ coordinator: SpaceChildRoomDetailCoordinatorType)
 }
 
-/// `ShowSpaceChildRoomDetailCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
-protocol ShowSpaceChildRoomDetailCoordinatorType: Coordinator, Presentable {
-    var delegate: ShowSpaceChildRoomDetailCoordinatorDelegate? { get }
+/// `SpaceChildRoomDetailCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
+protocol SpaceChildRoomDetailCoordinatorType: Coordinator, Presentable {
+    var delegate: SpaceChildRoomDetailCoordinatorDelegate? { get }
 }

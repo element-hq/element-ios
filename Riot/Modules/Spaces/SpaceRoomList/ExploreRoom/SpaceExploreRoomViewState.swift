@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Spaces/SpaceRoomList/SpaceChildRoomDetail ShowSpaceChildRoomDetail
+// $ createScreen.sh Spaces/SpaceRoomList/ExploreRoom ShowSpaceExploreRoom
 /*
  Copyright 2021 New Vector Ltd
  
@@ -18,9 +18,12 @@
 
 import Foundation
 
-/// ShowSpaceChildRoomDetailViewController view state
-enum ShowSpaceChildRoomDetailViewState {
+/// SpaceExploreRoomViewController view state
+enum SpaceExploreRoomViewState {
     case loading
-    case loaded(_ roomInfo: MXSpaceChildInfo, _ avatarViewData: AvatarViewData, _ isJoined: Bool)
+    case spaceNameFound(_ spaceName: String)
+    case loaded(_ children: [SpaceExploreRoomListItemViewData])
+    case emptySpace
+    case emptyFilterResult
     case error(Error)
 }
