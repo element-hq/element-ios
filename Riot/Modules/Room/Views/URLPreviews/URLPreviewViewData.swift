@@ -16,11 +16,17 @@
 
 import Foundation
 
-@objc
+@objcMembers
 class URLPreviewViewData: NSObject {
     /// The URL that's represented by the preview data. This may have been sanitized.
-    /// Note: The original URL, is stored in ``URLPreviewViewModel``.
+    /// Note: The original URL, can be found in the bubble components with `eventID` and `roomID`.
     let url: URL
+    
+    /// The ID of the event that created this preview.
+    let eventID: String
+    
+    /// The ID of the room that this preview is from.
+    let roomID: String
     
     /// The OpenGraph site name for the URL.
     let siteName: String?
@@ -34,10 +40,13 @@ class URLPreviewViewData: NSObject {
     /// The OpenGraph image for the URL.
     var image: UIImage?
     
-    init(url: URL, siteName: String?, title: String?, text: String?) {
+    init(url: URL, eventID: String, roomID: String, siteName: String?, title: String?, text: String?) {
         self.url = url
+        self.eventID = eventID
+        self.roomID = roomID
         self.siteName = siteName
         self.title = title
-        self.text = text
+        // Remove line breaks from the description text
+        self.text = text?.replacingOccurrences(of: "\n", with: " ")
     }
 }

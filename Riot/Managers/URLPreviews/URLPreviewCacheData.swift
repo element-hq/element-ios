@@ -32,10 +32,15 @@ extension URLPreviewCacheData {
         creationDate = date
     }
     
-    func preview() -> URLPreviewViewData? {
+    func preview(for event: MXEvent) -> URLPreviewViewData? {
         guard let url = url else { return nil }
         
-        let viewData = URLPreviewViewData(url: url, siteName: siteName, title: title, text: text)
+        let viewData = URLPreviewViewData(url: url,
+                                          eventID: event.eventId,
+                                          roomID: event.roomId,
+                                          siteName: siteName,
+                                          title: title,
+                                          text: text)
         viewData.image = image as? UIImage
         
         return viewData

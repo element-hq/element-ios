@@ -24,8 +24,11 @@
 #import "BubbleReactionsViewSizer.h"
 
 #import "Riot-Swift.h"
+#import <MatrixKit/MXKSwiftHeader.h>
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
+
+NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotification";
 
 @interface RoomBubbleCellData()
 
@@ -132,15 +135,6 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 self.collapsed = YES;
             }
                 break;
-            case MXEventTypeRoomMessage:
-            {
-                // If the message contains a URL, store it in the cell data.
-                if (!self.isEncryptedRoom)
-                {
-                    self.link = [event vc_firstURLInBody];
-                }
-            }
-                break;
             case MXEventTypeCallInvite:
             case MXEventTypeCallAnswer:
             case MXEventTypeCallHangup:
@@ -185,6 +179,12 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
         // Reset attributedTextMessage to force reset MXKRoomCellData parameters
         self.attributedTextMessage = nil;
+        
+        // Load a url preview if a link was detected
+        if (self.hasLink)
+        {
+            [self loadURLPreview];
+        }
     }
     
     return self;
@@ -592,8 +592,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         });
 
         BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
-        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        height = [bubbleReactionsViewSizer heightForViewModel:viemModel fittingWidth:bubbleReactionsViewWidth] + RoomBubbleCellLayout.reactionsViewTopMargin;
+        BubbleReactionsViewModel *viewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
+        height = [bubbleReactionsViewSizer heightForViewModel:viewModel fittingWidth:bubbleReactionsViewWidth] + RoomBubbleCellLayout.reactionsViewTopMargin;
     }
     
     return height;
@@ -800,17 +800,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                     break;
                 }
                 
-                NSDate *eventDate = [NSDate dateWithTimeIntervalSince1970:(double)event.originServerTs/1000];
-                
-                if (self.mostRecentComponentIndex != NSNotFound)
+                if (self.bubbleComponents.lastObject)
                 {
-                    MXKRoomBubbleComponent *lastComponent = self.bubbleComponents[self.mostRecentComponentIndex];
+                    MXKRoomBubbleComponent *lastComponent = self.bubbleComponents.lastObject;
                     // If the new event comes after the last bubble component
-                    if ([lastComponent.date earlierDate:eventDate] == lastComponent.date)
+                    if (event.originServerTs > lastComponent.event.originServerTs)
                     {
                         // FIXME: This should be for all event types, not just messages.
                         // Don't add it if there is already a link in the cell data
-                        if (self.link && !self.isEncryptedRoom)
+                        if (self.hasLink && !self.isEncryptedRoom)
                         {
                             shouldAddEvent = NO;
                         }
@@ -818,15 +816,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                     }
                 }
                     
-                if (self.oldestComponentIndex != NSNotFound)
+                if (self.bubbleComponents.firstObject)
                 {
-                    MXKRoomBubbleComponent *firstComponent = self.bubbleComponents[self.oldestComponentIndex];
+                    MXKRoomBubbleComponent *firstComponent = self.bubbleComponents.firstObject;
                     // If the new event event comes before the first bubble component
-                    if ([firstComponent.date laterDate:eventDate] == firstComponent.date)
+                    if (event.originServerTs < firstComponent.event.originServerTs)
                     {
                         // Don't add it to the cell data if it contains a link
                         NSString *messageBody = event.content[@"body"];
-                        if (messageBody && [messageBody vc_containsURL])
+                        if (messageBody && [messageBody mxk_firstURLDetected])
                         {
                             shouldAddEvent = NO;
                         }
@@ -885,15 +883,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     
     if (shouldAddEvent)
     {
+        BOOL hadLink = self.hasLink;
+        
         shouldAddEvent = [super addEvent:event andRoomState:roomState];
-    }
-    
-    // When adding events, if there is a link they should be going before and
-    // so not have links in. If there isn't a link the could come after and
-    // contain a link, so update the link property if necessary
-    if (shouldAddEvent && !self.link && !self.isEncryptedRoom)
-    {
-        self.link = [event vc_firstURLInBody];
+        
+        // If the cell data now contains a link, set the preview data.
+        if (shouldAddEvent && self.hasLink && !hadLink)
+        {
+            [self loadURLPreview];
+        }
     }
     
     return shouldAddEvent;
@@ -1060,5 +1058,38 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
     return accessibilityLabel;
 }
+
+#pragma mark - URL Previews
+
+- (void)loadURLPreview
+{
+    // Get the last bubble component as that contains the link.
+    MXKRoomBubbleComponent *lastComponent = bubbleComponents.lastObject;
+    if (!lastComponent)
+    {
+        return;
+    }
+    
+    // Check that the preview hasn't been dismissed already.
+    if ([LegacyAppDelegate.theDelegate.previewManager hasClosedPreviewFrom:lastComponent.event])
+    {
+        return;
+    }
+    
+    // Set the preview data.
+    MXWeakify(self);
+    
+    [LegacyAppDelegate.theDelegate.previewManager previewFor:lastComponent.link and:lastComponent.event success:^(URLPreviewViewData * _Nonnull urlPreviewData) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        // Update the preview data and send a notification for refresh
+        self.urlPreviewData = urlPreviewData;
+        [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:self];
+        
+    } failure:^(NSError * _Nullable error) {
+        MXLogDebug(@"[RoomBubbleCellData] Failed to get url preview")
+    }];
+}
+
 
 @end

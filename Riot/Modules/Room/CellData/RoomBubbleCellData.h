@@ -15,6 +15,9 @@
  */
 
 #import <MatrixKit/MatrixKit.h>
+@class URLPreviewViewData;
+
+extern NSString *const URLPreviewDidUpdateNotification;
 
 // Custom tags for MXKRoomBubbleCellDataStoring.tag
 typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
@@ -81,7 +84,7 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 /**
  A link if the textMessage contains one, otherwise nil.
  */
-@property (nonatomic) NSURL *link;
+@property (nonatomic) URLPreviewViewData *urlPreviewData;
 
 /**
  MXKeyVerification object associated to key verification event when using key verification by direct message.

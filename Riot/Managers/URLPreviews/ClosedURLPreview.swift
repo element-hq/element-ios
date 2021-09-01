@@ -16,14 +16,7 @@
 
 import Foundation
 
-protocol URLPreviewViewModelViewDelegate: AnyObject {
-    func urlPreviewViewModel(_ viewModel: URLPreviewViewModelType, didUpdateViewState viewState: URLPreviewViewState)
-}
-
-/// Protocol describing the view model used by `URLPreviewView`
-protocol URLPreviewViewModelType {
-        
-    var viewDelegate: URLPreviewViewModelViewDelegate? { get set }
-    
-    func process(viewAction: URLPreviewViewAction)
+extension ClosedURLPreview {
+    // Nothing to extend, however having this file stops Xcode
+    // complaining that it can't find ClosedURLPreview.
 }

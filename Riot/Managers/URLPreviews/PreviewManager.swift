@@ -18,22 +18,22 @@ import Foundation
 
 @objcMembers
 class PreviewManager: NSObject {
-    let restClient: MXRestClient
-    let mediaManager: MXMediaManager
+    private let restClient: MXRestClient
+    private let mediaManager: MXMediaManager
     
     // Core Data cache to reduce network requests
-    let cache = URLPreviewCache()
+    private let cache = URLPreviewCache()
     
     init(restClient: MXRestClient, mediaManager: MXMediaManager) {
         self.restClient = restClient
         self.mediaManager = mediaManager
     }
     
-    func preview(for url: URL, success: @escaping (URLPreviewViewData) -> Void, failure: @escaping (Error?) -> Void) {
+    func preview(for url: URL, and event: MXEvent, success: @escaping (URLPreviewViewData) -> Void, failure: @escaping (Error?) -> Void) {
         // Sanitize the URL before checking cache or performing lookup
         let sanitizedURL = sanitize(url)
         
-        if let preview = cache.preview(for: sanitizedURL) {
+        if let preview = cache.preview(for: sanitizedURL, and: event) {
             MXLog.debug("[PreviewManager] Using preview from cache")
             success(preview)
             return
@@ -43,7 +43,7 @@ class PreviewManager: NSObject {
             MXLog.debug("[PreviewManager] Preview not found in cache. Requesting from homeserver.")
             
             if let preview = preview {
-                self.makePreviewData(for: sanitizedURL, from: preview) { previewData in
+                self.makePreviewData(for: sanitizedURL, and: event, from: preview) { previewData in
                     self.cache.store(previewData)
                     success(previewData)
                 }
@@ -52,8 +52,13 @@ class PreviewManager: NSObject {
         }, failure: failure)
     }
     
-    func makePreviewData(for url: URL, from preview: MXURLPreview, completion: @escaping (URLPreviewViewData) -> Void) {
-        let previewData = URLPreviewViewData(url: url, siteName: preview.siteName, title: preview.title, text: preview.text)
+    func makePreviewData(for url: URL, and event: MXEvent, from preview: MXURLPreview, completion: @escaping (URLPreviewViewData) -> Void) {
+        let previewData = URLPreviewViewData(url: url,
+                                             eventID: event.eventId,
+                                             roomID: event.roomId,
+                                             siteName: preview.siteName,
+                                             title: preview.title,
+                                             text: preview.text)
         
         guard let imageURL = preview.imageURL else {
             completion(previewData)
@@ -81,19 +86,27 @@ class PreviewManager: NSObject {
         }
     }
     
-    func sanitize(_ url: URL) -> URL {
-        // Remove the fragment from the URL.
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        components?.fragment = nil
-        
-        return components?.url ?? url
-    }
-    
     func removeExpiredItemsFromCache() {
         cache.removeExpiredItems()
     }
     
     func clearCache() {
         cache.clear()
+    }
+    
+    func closePreview(for eventID: String, in roomID: String) {
+        cache.closePreview(for: eventID, in: roomID)
+    }
+    
+    func hasClosedPreview(from event: MXEvent) -> Bool {
+        cache.hasClosedPreview(for: event.eventId, in: event.roomId)
+    }
+    
+    private func sanitize(_ url: URL) -> URL {
+        // Remove the fragment from the URL.
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        components?.fragment = nil
+        
+        return components?.url ?? url
     }
 }

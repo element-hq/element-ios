@@ -16,10 +16,8 @@
 
 import Foundation
 
-/// URLPreviewView state
-enum URLPreviewViewState {
-    case loading(_ url: URL)
-    case loaded(_ preview: URLPreviewViewData)
-    case error(Error)
-    case hidden
+@objc
+protocol URLPreviewViewDelegate: AnyObject {
+    func didOpenURLFromPreviewView(_ previewView: URLPreviewView, for eventID: String, in roomID: String)
+    func didCloseURLPreviewView(_ previewView: URLPreviewView, for eventID: String, in roomID: String)
 }

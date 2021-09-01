@@ -137,6 +137,8 @@ internal enum Asset {
     internal static let videoCall = ImageAsset(name: "video_call")
     internal static let voiceCallHangonIcon = ImageAsset(name: "voice_call_hangon_icon")
     internal static let voiceCallHangupIcon = ImageAsset(name: "voice_call_hangup_icon")
+    internal static let urlPreviewClose = ImageAsset(name: "url_preview_close")
+    internal static let urlPreviewCloseDark = ImageAsset(name: "url_preview_close_dark")
     internal static let voiceMessageCancelGradient = ImageAsset(name: "voice_message_cancel_gradient")
     internal static let voiceMessageLockChevron = ImageAsset(name: "voice_message_lock_chevron")
     internal static let voiceMessageLockIconLocked = ImageAsset(name: "voice_message_lock_icon_locked")

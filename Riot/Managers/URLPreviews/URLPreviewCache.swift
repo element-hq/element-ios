@@ -87,7 +87,7 @@ class URLPreviewCache {
     /// if the preview is older than the ``dataValidityTime`` the returned value will be nil.
     /// - Parameter url: The URL to fetch the preview for.
     /// - Returns: The preview if found, otherwise nil.
-    func preview(for url: URL) -> URLPreviewViewData? {
+    func preview(for url: URL, and event: MXEvent) -> URLPreviewViewData? {
         // Create a request for the url excluding any expired items
         let request: NSFetchRequest<URLPreviewCacheData> = URLPreviewCacheData.fetchRequest()
         request.predicate = NSCompoundPredicate(type: .and, subpredicates: [
@@ -101,7 +101,7 @@ class URLPreviewCache {
         else { return nil }
         
         // Convert and return
-        return cachedPreview.preview()
+        return cachedPreview.preview(for: event)
     }
     
     func count() -> Int {
@@ -123,9 +123,28 @@ class URLPreviewCache {
     func clear() {
         do {
             _ = try context.execute(NSBatchDeleteRequest(fetchRequest: URLPreviewCacheData.fetchRequest()))
+            _ = try context.execute(NSBatchDeleteRequest(fetchRequest: ClosedURLPreview.fetchRequest()))
         } catch {
             MXLog.error("[URLPreviewCache] Error executing batch delete request: \(error.localizedDescription)")
         }
+    }
+    
+    func closePreview(for eventID: String, in roomID: String) {
+        let closedPreview = ClosedURLPreview(context: context)
+        closedPreview.eventID = eventID
+        closedPreview.roomID = roomID
+        save()
+    }
+    
+    func hasClosedPreview(for eventID: String, in roomID: String) -> Bool {
+        // Create a request for the url excluding any expired items
+        let request: NSFetchRequest<ClosedURLPreview> = ClosedURLPreview.fetchRequest()
+        request.predicate = NSCompoundPredicate(type: .and, subpredicates: [
+            NSPredicate(format: "eventID == %@", eventID),
+            NSPredicate(format: "roomID == %@", roomID)
+        ])
+        
+        return (try? context.count(for: request)) ?? 0 > 0
     }
     
     // MARK: - Private
