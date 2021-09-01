@@ -17,29 +17,44 @@
 import XCTest
 @testable import Riot
 
-class URLPreviewCacheTests: XCTestCase {
-    var cache: URLPreviewCache!
+class URLPreviewStoreTests: XCTestCase {
+    var store: URLPreviewStore!
     
-    func matrixPreview() -> URLPreviewViewData {
-        let preview = URLPreviewViewData(url: URL(string: "https://www.matrix.org/")!,
-                                         siteName: "Matrix",
-                                         title: "Home",
-                                         text: "An open network for secure, decentralized communication")
+    /// Creates mock URL preview data for matrix.org
+    func matrixPreview() -> URLPreviewData {
+        let preview = URLPreviewData(url: URL(string: "https://www.matrix.org/")!,
+                                     eventID: "",
+                                     roomID: "",
+                                     siteName: "Matrix",
+                                     title: "Home",
+                                     text: "An open network for secure, decentralized communication")
         preview.image = Asset.Images.appSymbol.image
         
         return preview
     }
     
-    func elementPreview() -> URLPreviewViewData {
-        URLPreviewViewData(url: URL(string: "https://element.io/")!,
-                           siteName: "Element",
-                           title: "Home",
-                           text: "Secure and independent communication, connected via Matrix")
+    /// Creates mock URL preview data for element.io
+    func elementPreview() -> URLPreviewData {
+        URLPreviewData(url: URL(string: "https://element.io/")!,
+                       eventID: "",
+                       roomID: "",
+                       siteName: "Element",
+                       title: "Home",
+                       text: "Secure and independent communication, connected via Matrix")
+    }
+    
+    
+    /// Creates a fake `MXEvent` object to be passed to the store as needed.
+    func fakeEvent() -> MXEvent {
+        let event = MXEvent()
+        event.eventId = ""
+        event.roomId = ""
+        return event
     }
     
     override func setUpWithError() throws {
         // Create a fresh in-memory cache for each test.
-        cache = URLPreviewCache(inMemory: true)
+        store = URLPreviewStore(inMemory: true)
     }
     
     func testStoreAndRetrieve() {
@@ -47,9 +62,9 @@ class URLPreviewCacheTests: XCTestCase {
         let preview = matrixPreview()
         
         // When storing and retrieving that preview.
-        cache.store(preview)
+        store.store(preview)
         
-        guard let cachedPreview = cache.preview(for: preview.url) else {
+        guard let cachedPreview = store.preview(for: preview.url, and: fakeEvent()) else {
             XCTFail("The cache should return a preview after storing one with the same URL.")
             return
         }
@@ -65,35 +80,40 @@ class URLPreviewCacheTests: XCTestCase {
     func testUpdating() {
         // Given a preview stored in the cache.
         let preview = matrixPreview()
-        cache.store(preview)
+        store.store(preview)
         
-        guard let cachedPreview = cache.preview(for: preview.url) else {
+        guard let cachedPreview = store.preview(for: preview.url, and: fakeEvent()) else {
             XCTFail("The cache should return a preview after storing one with the same URL.")
             return
         }
         XCTAssertEqual(cachedPreview.text, preview.text, "The text should match the original preview's text.")
-        XCTAssertEqual(cache.count(), 1, "There should be 1 item in the cache.")
+        XCTAssertEqual(store.cacheCount(), 1, "There should be 1 item in the cache.")
         
         // When storing an updated version of that preview.
-        let updatedPreview = URLPreviewViewData(url: preview.url, siteName: "Matrix", title: "Home", text: "We updated our website.")
-        cache.store(updatedPreview)
+        let updatedPreview = URLPreviewData(url: preview.url,
+                                            eventID: "",
+                                            roomID: "",
+                                            siteName: "Matrix",
+                                            title: "Home",
+                                            text: "We updated our website.")
+        store.store(updatedPreview)
         
         // Then the store should update the original preview.
-        guard let updatedCachedPreview = cache.preview(for: preview.url) else {
+        guard let updatedCachedPreview = store.preview(for: preview.url, and: fakeEvent()) else {
             XCTFail("The cache should return a preview after storing one with the same URL.")
             return
         }
         XCTAssertEqual(updatedCachedPreview.text, updatedPreview.text, "The text should match the updated preview's text.")
-        XCTAssertEqual(cache.count(), 1, "There should still only be 1 item in the cache.")
+        XCTAssertEqual(store.cacheCount(), 1, "There should still only be 1 item in the cache.")
     }
     
     func testPreviewExpiry() {
         // Given a preview generated 30 days ago.
         let preview = matrixPreview()
-        cache.store(preview, generatedOn: Date().addingTimeInterval(-60 * 60 * 24 * 30))
+        store.store(preview, generatedOn: Date().addingTimeInterval(-60 * 60 * 24 * 30))
         
         // When retrieving that today.
-        let cachedPreview = cache.preview(for: preview.url)
+        let cachedPreview = store.preview(for: preview.url, and: fakeEvent())
         
         // Then no preview should be returned.
         XCTAssertNil(cachedPreview, "The expired preview should not be returned.")
@@ -103,15 +123,15 @@ class URLPreviewCacheTests: XCTestCase {
         // Given a cache with 2 items, one of which has expired.
         testPreviewExpiry()
         let preview = elementPreview()
-        cache.store(preview)
-        XCTAssertEqual(cache.count(), 2, "There should be 2 items in the cache.")
+        store.store(preview)
+        XCTAssertEqual(store.cacheCount(), 2, "There should be 2 items in the cache.")
         
         // When removing expired items.
-        cache.removeExpiredItems()
+        store.removeExpiredItems()
         
         // Then only the expired item should have been removed.
-        XCTAssertEqual(cache.count(), 1, "Only 1 item should have been removed from the cache.")
-        if cache.preview(for: preview.url) == nil {
+        XCTAssertEqual(store.cacheCount(), 1, "Only 1 item should have been removed from the cache.")
+        if store.preview(for: preview.url, and: fakeEvent()) == nil {
             XCTFail("The valid preview should still be in the cache.")
         }
     }
@@ -120,13 +140,13 @@ class URLPreviewCacheTests: XCTestCase {
         // Given a cache with 2 items.
         testStoreAndRetrieve()
         let preview = elementPreview()
-        cache.store(preview)
-        XCTAssertEqual(cache.count(), 2, "There should be 2 items in the cache.")
+        store.store(preview)
+        XCTAssertEqual(store.cacheCount(), 2, "There should be 2 items in the cache.")
         
         // When clearing the cache.
-        cache.clear()
+        store.deleteAll()
         
         // Then no items should be left in the cache
-        XCTAssertEqual(cache.count(), 0, "The cache should be empty.")
+        XCTAssertEqual(store.cacheCount(), 0, "The cache should be empty.")
     }
 }

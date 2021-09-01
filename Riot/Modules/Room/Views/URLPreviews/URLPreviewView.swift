@@ -17,6 +17,12 @@
 import UIKit
 import Reusable
 
+@objc
+protocol URLPreviewViewDelegate: AnyObject {
+    func didOpenURLFromPreviewView(_ previewView: URLPreviewView, for eventID: String, in roomID: String)
+    func didCloseURLPreviewView(_ previewView: URLPreviewView, for eventID: String, in roomID: String)
+}
+
 @objcMembers
 class URLPreviewView: UIView, NibLoadable, Themable {
     // MARK: - Constants
@@ -32,7 +38,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     
     // MARK: - Properties
     
-    var preview: URLPreviewViewData? {
+    var preview: URLPreviewData? {
         didSet {
             guard let preview = preview else { return }
             renderLoaded(preview)
@@ -100,7 +106,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         closeButton.setImage(closeButtonAsset.image, for: .normal)
     }
     
-    static func contentViewHeight(for preview: URLPreviewViewData) -> CGFloat {
+    static func contentViewHeight(for preview: URLPreviewData) -> CGFloat {
         sizingView.renderLoaded(preview)
         
         return sizingView.systemLayoutSizeFitting(sizingView.intrinsicContentSize).height
@@ -116,7 +122,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         descriptionLabel.text = ""
     }
     
-    private func renderLoaded(_ preview: URLPreviewViewData) {
+    private func renderLoaded(_ preview: URLPreviewData) {
         if let image = preview.image {
             imageView.image = image
             showImageContainer()

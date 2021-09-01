@@ -548,7 +548,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXMediaManager reduceCacheSizeToInsert:0];
     
     // Remove expired URL previews from the cache
-    [self.previewManager removeExpiredItemsFromCache];
+    [URLPreviewManager.shared removeExpiredCacheData];
     
     // Hide potential notification
     if (self.mxInAppNotification)
@@ -1983,10 +1983,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self checkDeviceId:mxSession];
         
         [self.delegate legacyAppDelegate:self didAddMatrixSession:mxSession];
-        
-        #warning Move this elsewhere
-        self->_previewManager = [[PreviewManager alloc] initWithRestClient:mxSession.matrixRestClient
-                                                              mediaManager:mxSession.mediaManager];
     }
 }
 

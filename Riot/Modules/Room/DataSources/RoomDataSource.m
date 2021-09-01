@@ -1259,7 +1259,7 @@ const CGFloat kTypingCellHeight = 24;
     }
     
     // Remember that the user closed the preview so it isn't shown again.
-    [LegacyAppDelegate.theDelegate.previewManager closePreviewFor:eventID in:roomID];
+    [URLPreviewManager.shared closePreviewFor:eventID in:roomID];
     
     // Remove the preview data and refresh the cells.
     cellData.urlPreviewData = nil;

@@ -17,7 +17,7 @@
 import Foundation
 
 @objcMembers
-class URLPreviewViewData: NSObject {
+class URLPreviewData: NSObject {
     /// The URL that's represented by the preview data. This may have been sanitized.
     /// Note: The original URL, can be found in the bubble components with `eventID` and `roomID`.
     let url: URL

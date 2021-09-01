@@ -1071,7 +1071,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }
     
     // Check that the preview hasn't been dismissed already.
-    if ([LegacyAppDelegate.theDelegate.previewManager hasClosedPreviewFrom:lastComponent.event])
+    if ([URLPreviewManager.shared hasClosedPreviewFrom:lastComponent.event])
     {
         return;
     }
@@ -1079,7 +1079,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     // Set the preview data.
     MXWeakify(self);
     
-    [LegacyAppDelegate.theDelegate.previewManager previewFor:lastComponent.link and:lastComponent.event success:^(URLPreviewViewData * _Nonnull urlPreviewData) {
+    [URLPreviewManager.shared previewFor:lastComponent.link
+                                     and:lastComponent.event
+                                    with:self.mxSession
+                                 success:^(URLPreviewData * _Nonnull urlPreviewData) {
         MXStrongifyAndReturnIfNil(self);
         
         // Update the preview data and send a notification for refresh

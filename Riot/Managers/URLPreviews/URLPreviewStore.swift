@@ -17,7 +17,7 @@
 import CoreData
 
 /// A cache for URL previews backed by Core Data.
-class URLPreviewCache {
+class URLPreviewStore {
     
     // MARK: - Properties
     
@@ -46,7 +46,7 @@ class URLPreviewCache {
         ValueTransformer.setValueTransformer(URLPreviewImageTransformer(), forName: .urlPreviewImageTransformer)
         
         // Create the container, updating it's path if storing the data in memory.
-        container = NSPersistentContainer(name: "URLPreviewCache")
+        container = NSPersistentContainer(name: "URLPreviewStore")
         
         if inMemory {
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
@@ -55,7 +55,7 @@ class URLPreviewCache {
         // Load the persistent stores into the container
         container.loadPersistentStores { storeDescription, error in
             if let error = error {
-                MXLog.error("[URLPreviewCache] Core Data container error: \(error.localizedDescription)")
+                MXLog.error("[URLPreviewStore] Core Data container error: \(error.localizedDescription)")
             }
         }
     }
@@ -65,7 +65,7 @@ class URLPreviewCache {
     /// Store a preview in the cache. If a preview already exists with the same URL it will be updated from the new preview.
     /// - Parameter preview: The preview to add to the cache.
     /// - Parameter date: Optional: The date the preview was generated.
-    func store(_ preview: URLPreviewViewData, generatedOn generationDate: Date? = nil) {
+    func store(_ preview: URLPreviewData, generatedOn generationDate: Date? = nil) {
         // Create a fetch request for an existing preview.
         let request: NSFetchRequest<URLPreviewCacheData> = URLPreviewCacheData.fetchRequest()
         request.predicate = NSPredicate(format: "url == %@", preview.url as NSURL)
@@ -87,7 +87,7 @@ class URLPreviewCache {
     /// if the preview is older than the ``dataValidityTime`` the returned value will be nil.
     /// - Parameter url: The URL to fetch the preview for.
     /// - Returns: The preview if found, otherwise nil.
-    func preview(for url: URL, and event: MXEvent) -> URLPreviewViewData? {
+    func preview(for url: URL, and event: MXEvent) -> URLPreviewData? {
         // Create a request for the url excluding any expired items
         let request: NSFetchRequest<URLPreviewCacheData> = URLPreviewCacheData.fetchRequest()
         request.predicate = NSCompoundPredicate(type: .and, subpredicates: [
@@ -104,11 +104,13 @@ class URLPreviewCache {
         return cachedPreview.preview(for: event)
     }
     
-    func count() -> Int {
+    /// Returns the number of URL previews cached in the store.
+    func cacheCount() -> Int {
         let request: NSFetchRequest<NSFetchRequestResult> = URLPreviewCacheData.fetchRequest()
         return (try? context.count(for: request)) ?? 0
     }
     
+    /// Removes any expired cache data from the store.
     func removeExpiredItems() {
         let request: NSFetchRequest<NSFetchRequestResult> = URLPreviewCacheData.fetchRequest()
         request.predicate = NSPredicate(format: "creationDate < %@", expiryDate as NSDate)
@@ -116,23 +118,22 @@ class URLPreviewCache {
         do {
             try context.execute(NSBatchDeleteRequest(fetchRequest: request))
         } catch {
-            MXLog.error("[URLPreviewCache] Error executing batch delete request: \(error.localizedDescription)")
+            MXLog.error("[URLPreviewStore] Error executing batch delete request: \(error.localizedDescription)")
         }
     }
     
-    func clear() {
+    /// Deletes all cache data and all closed previews from the store.
+    func deleteAll() {
         do {
             _ = try context.execute(NSBatchDeleteRequest(fetchRequest: URLPreviewCacheData.fetchRequest()))
             _ = try context.execute(NSBatchDeleteRequest(fetchRequest: ClosedURLPreview.fetchRequest()))
         } catch {
-            MXLog.error("[URLPreviewCache] Error executing batch delete request: \(error.localizedDescription)")
+            MXLog.error("[URLPreviewStore] Error executing batch delete request: \(error.localizedDescription)")
         }
     }
     
     func closePreview(for eventID: String, in roomID: String) {
-        let closedPreview = ClosedURLPreview(context: context)
-        closedPreview.eventID = eventID
-        closedPreview.roomID = roomID
+        _ = ClosedURLPreview(context: context, eventID: eventID, roomID: roomID)
         save()
     }
     

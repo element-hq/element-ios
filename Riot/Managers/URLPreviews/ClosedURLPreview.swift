@@ -14,9 +14,12 @@
 // limitations under the License.
 //
 
-import Foundation
+import CoreData
 
 extension ClosedURLPreview {
-    // Nothing to extend, however having this file stops Xcode
-    // complaining that it can't find ClosedURLPreview.
+    convenience init(context: NSManagedObjectContext, eventID: String, roomID: String) {
+        self.init(context: context)
+        self.eventID = eventID
+        self.roomID = roomID
+    }
 }
