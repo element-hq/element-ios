@@ -21,7 +21,7 @@ schemes:
 
 targets:
   RiotSwiftUI:
-    type: framework
+    type: application
     platform: iOS
     dependencies:
     - target: DesignKit
@@ -34,6 +34,8 @@ targets:
     - path: ../Riot/Assets/en.lproj/Vector.strings
       buildPhase: resources
     - path: ../Riot/Assets/Images.xcassets
+      buildPhase: resources
+    - path: ../Riot/Assets/SharedImages.xcassets
       buildPhase: resources
     configFiles:
       Debug: Debug.xcconfig

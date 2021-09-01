@@ -15,7 +15,6 @@
 //
 
 import UIKit
-import SwiftUI
 
 /// Describe fonts used in the application.
 /// Font names are based on Element typograhy  https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1362%3A0 which is based on Apple font text styles (UIFont.TextStyle): https://developer.apple.com/documentation/uikit/uifonttextstyle

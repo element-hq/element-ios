@@ -13,18 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+import SwiftUI
 
-import Foundation
-import Combine
-import DesignKit
-import UIKit
-
+/**
+ Just needed so the application target has an entry point for the moment.
+ Could use to render the different screens.
+ */
 @available(iOS 14.0, *)
-class MockAvatarService: AvatarServiceType {
-    static let example: AvatarServiceType = MockAvatarService()
-    func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error> {
-        Future { promise in
-            promise(.success(Asset.Images.appSymbol.image))
+@main
+struct testApp: App {
+    var body: some Scene {
+        WindowGroup {
+            Text("app")
         }
     }
 }

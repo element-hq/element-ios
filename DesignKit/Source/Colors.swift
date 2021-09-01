@@ -15,8 +15,6 @@
 //
 
 import Foundation
-import UIKit
-import SwiftUI
 
 /// Colors at https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1255%3A1104
 public protocol Colors {
