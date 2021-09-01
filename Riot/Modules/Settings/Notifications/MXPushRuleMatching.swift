@@ -15,23 +15,26 @@
 //
 
 import Foundation
+import DesignKit
 
-
-fileprivate extension MXPushRule {
+/**
+ Conformance of MXPushRule to the abstraction `NotificationPushRule` for use in `NotificationSettingsViewModel`.
+ */
+extension MXPushRule: NotificationPushRule {
     
     /*
      Given a rule, check it match the actions in the static definition.
      */
-    private func maches(targetRule: NotificationStandardActions?) -> Bool {
-        guard let targetRule = targetRule else {
+    func matches(standardActions: NotificationStandardActions?) -> Bool {
+        guard let standardActions = standardActions else {
             return false
         }
-        if !enabled && targetRule == .disabled {
+        if !enabled && standardActions == .disabled {
             return true
         }
         
         if enabled,
-           let actions = targetRule.actions,
+           let actions = standardActions.actions,
            highlight == actions.highlight,
            sound == actions.sound,
            notify == actions.notify,
@@ -41,14 +44,13 @@ fileprivate extension MXPushRule {
         return false
     }
     
-    func getAction(actionType: MXPushRuleActionType, tweakType: String? = nil) -> MXPushRuleAction? {
+    private func getAction(actionType: MXPushRuleActionType, tweakType: String? = nil) -> MXPushRuleAction? {
         guard let actions = actions as? [MXPushRuleAction] else {
             return nil
         }
         
         return actions.first { action in
             var match = action.actionType == actionType
-            MXLog.debug("action \(action)")
             if let tweakType = tweakType,
                let actionTweak = action.parameters?["set_tweak"] as? String {
                 match = match && (tweakType == actionTweak)

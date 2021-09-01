@@ -39,23 +39,22 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     init(room: MXRoom, presentedModally: Bool = true) {
         let roomNotificationService = RoomNotificationSettingsService(room: room)
-        let avatarData: AvatarInputOption?
+        let avatarData: AvatarType?
         let showAvatar = presentedModally
         if #available(iOS 14.0.0, *) {
-            avatarData = showAvatar ? .swiftUI(AvatarInput(
+            avatarData = showAvatar ? AvatarInput(
                 mxContentUri: room.summary.avatar,
                 matrixItemId: room.roomId,
                 displayName: room.summary.displayname
-            )) : nil
+            ) : nil
         } else {
-            avatarData = showAvatar ? .uiKit(RoomAvatarViewData(
+            avatarData = showAvatar ? RoomAvatarViewData(
                 roomId: room.roomId,
                 displayName: room.summary.displayname,
                 avatarUrl: room.summary.avatar,
                 mediaManager: room.mxSession.mediaManager
-            )) : nil
+            ) : nil
         }
-        
         
         let viewModel: RoomNotificationSettingsViewModel
         let viewController: UIViewController

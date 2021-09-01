@@ -1,0 +1,40 @@
+name: RiotSwiftUI
+
+schemes:
+  RiotSwiftUI:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        RiotSwiftUI:
+        - running
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+
+targets:
+  RiotSwiftUI:
+    type: framework
+    platform: iOS
+    dependencies:
+    - target: DesignKit
+    sources:
+    - path: .
+    - path: ../Riot/Generated/Strings.swift
+    - path: ../Riot/Generated/Images.swift
+    - path: ../Riot/Managers/Theme/ThemeIdentifier.swift
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Assets/en.lproj/Vector.strings
+      buildPhase: resources
+    - path: ../Riot/Assets/Images.xcassets
+      buildPhase: resources
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig

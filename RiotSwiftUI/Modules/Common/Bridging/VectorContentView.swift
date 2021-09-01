@@ -14,30 +14,26 @@
 // limitations under the License.
 //
 
-import Foundation
-import UIKit
+import SwiftUI
 
-/// Theme v2. May be named again as `Theme` when the migration completed.
-@objc public protocol ThemeV2 {
+/**
+ A Modifier to be called from the top-most SwiftUI view before being added to a HostViewController
+ Provides any app level configuration the SwiftUI hierarchy might need (E.g. to monitor theme changes).
+ */
+@available(iOS 14.0, *)
+struct VectorContentModifier: ViewModifier {
     
-    /// Colors object
-    var colors: ColorsUIKit { get }
+    @ObservedObject private var themePublisher = ThemePublisher.shared
     
-    /// Fonts object
-    var fonts: FontsUIKit { get }
-    
-    /// may contain more design components in future, like icons, audio files etc.
+    func body(content: Content) -> some View {
+        content
+            .theme(themePublisher.theme)
+    }
 }
 
-/// Theme v2 for SwiftUI.
 @available(iOS 14.0, *)
-public protocol ThemeSwiftUIType {
-    
-    /// Colors object
-    var colors: ColorSwiftUI { get }
-    
-    /// Fonts object
-    var fonts: FontSwiftUI { get }
-    
-    /// may contain more design components in future, like icons, audio files etc.
+extension View {
+    func vectorContent() -> some View {
+        self.modifier(VectorContentModifier())
+    }
 }

@@ -17,27 +17,34 @@
 import Foundation
 import UIKit
 
-/// Theme v2. May be named again as `Theme` when the migration completed.
-@objc public protocol ThemeV2 {
+/**
+ Struct for holding colour values for a particular theme.
+ */
+public struct ColorValues: Colors {
     
-    /// Colors object
-    var colors: ColorsUIKit { get }
+    public let accent: UIColor
     
-    /// Fonts object
-    var fonts: FontsUIKit { get }
+    public let alert: UIColor
     
-    /// may contain more design components in future, like icons, audio files etc.
-}
-
-/// Theme v2 for SwiftUI.
-@available(iOS 14.0, *)
-public protocol ThemeSwiftUIType {
+    public let primaryContent: UIColor
     
-    /// Colors object
-    var colors: ColorSwiftUI { get }
+    public let secondaryContent: UIColor
     
-    /// Fonts object
-    var fonts: FontSwiftUI { get }
+    public let tertiaryContent: UIColor
     
-    /// may contain more design components in future, like icons, audio files etc.
+    public let quarterlyContent: UIColor
+    
+    public let quinaryContent: UIColor
+    
+    public let separator: UIColor
+    
+    public let system: UIColor
+    
+    public let tile: UIColor
+    
+    public let navigation: UIColor
+    
+    public let background: UIColor
+    
+    public let namesAndAvatars: [UIColor]
 }

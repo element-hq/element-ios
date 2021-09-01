@@ -26,18 +26,6 @@ schemes:
       - RiotTests
 
 targets:
-  RiotSwiftUI:
-    type: framework
-    platform: iOS
-    dependencies:
-    - target: DesignKit
-    sources:
-    - path: ModulesSwiftUI
-    - path: Generated/Strings.swift
-    - path: Generated/Images.swift
-    - path: Managers/Theme/Theme.swift
-    - path: Managers/Theme/ThemeIdentifier.swift
-    - path: Categories/UIColor.swift
   Riot:
     type: application
     platform: iOS
@@ -47,7 +35,6 @@ targets:
     - target: SiriIntents
     - target: RiotNSE
     - target: DesignKit
-    - target: RiotSwiftUI
 
     configFiles:
       Debug: Debug.xcconfig
@@ -64,6 +51,10 @@ targets:
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
     sources:
+    - path: ../RiotSwiftUI/Modules
+      # Riot will provide it's own LocaleProviderType so exclude.
+      excludes:
+      - "Common/Locale/LocaleProvider.swift"
     - path: ../Tools
       excludes:
         - "Logs"

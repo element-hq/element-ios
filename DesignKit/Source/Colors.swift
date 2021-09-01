@@ -18,58 +18,56 @@ import Foundation
 import UIKit
 import SwiftUI
 
-public protocol DesignKitColorType { }
-
-extension UIColor: DesignKitColorType { }
-
-extension Color : DesignKitColorType { }
-
 /// Colors at https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1255%3A1104
 public protocol Colors {
     
+    associatedtype ColorType
+    
     /// - Focused/Active states
     /// - CTAs
-    var accent: DesignKitColorType { get }
+    var accent: ColorType { get }
     
     /// - Error messages
     /// - Content requiring user attention
     /// - Notification, alerts
-    var alert: DesignKitColorType { get }
+    var alert: ColorType { get }
     
     /// - Text
     /// - Icons
-    var primaryContent: DesignKitColorType { get }
+    var primaryContent: ColorType { get }
     
     /// - Text
     /// - Icons
-    var secondaryContent: DesignKitColorType { get }
+    var secondaryContent: ColorType { get }
     
     /// - Text
     /// - Icons
-    var tertiaryContent: DesignKitColorType { get }
+    var tertiaryContent: ColorType { get }
     
     /// - Text
     /// - Icons
-    var quarterlyContent: DesignKitColorType { get }
+    var quarterlyContent: ColorType { get }
     
-    /// - Text
-    /// - Icons
-    var quinaryContent: DesignKitColorType { get }
+    /// - separating lines and other UI components
+    var quinaryContent: ColorType { get }
+    
+    /// - System-based areas and backgrounds
+    var system: ColorType { get }
     
     /// Separating line
-    var separator: DesignKitColorType { get }
+    var separator: ColorType { get }
     
     //  Cards, tiles
-    var tile: DesignKitColorType { get }
+    var tile: ColorType { get }
     
     /// Top navigation background on iOS
-    var navigation: DesignKitColorType { get }
+    var navigation: ColorType { get }
     
     /// Background UI color
-    var background: DesignKitColorType { get }
+    var background: ColorType { get }
     
     /// - Names in chat timeline
     /// - Avatars default states that include first name letter
-    var namesAndAvatars: [DesignKitColorType] { get }
+    var namesAndAvatars: [ColorType] { get }
     
 }

@@ -26,12 +26,12 @@ class NotificationSettingsService: NotificationSettingsServiceType {
     @Published private var contentRules = [MXPushRule]()
     @Published private var rules = [MXPushRule]()
     
-    var rulesPublisher: AnyPublisher<[MXPushRule], Never> {
-        $rules.eraseToAnyPublisher()
+    var rulesPublisher: AnyPublisher<[NotificationPushRule], Never> {
+        $rules.map({ $0.map({ $0 as NotificationPushRule }) }).eraseToAnyPublisher()
     }
     
-    var contentRulesPublisher: AnyPublisher<[MXPushRule], Never> {
-        $contentRules.eraseToAnyPublisher()
+    var contentRulesPublisher: AnyPublisher<[NotificationPushRule], Never> {
+        $contentRules.map({ $0.map({ $0 as NotificationPushRule }) }).eraseToAnyPublisher()
     }
     
     init(session: MXSession) {
