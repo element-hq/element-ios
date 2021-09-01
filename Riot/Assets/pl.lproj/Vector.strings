@@ -219,7 +219,7 @@
 "settings_ignored_users" = "IGNOROWANI UŻYTKOWNICY";
 "settings_contacts" = "LOKALNE KONTAKTY";
 "settings_advanced" = "ZAAWANSOWANE";
-"settings_other" = "POZOSTAŁE";
+"settings_other" = "Pozostałe powiadomienia";
 "settings_devices" = "SESJE";
 "settings_cryptography" = "KRYPTOGRAFIA";
 "settings_deactivate_account" = "DEZAKTYWUJ KONTO";
@@ -228,7 +228,7 @@
 "settings_display_name" = "Wyświetlana nazwa";
 "settings_remove_prompt_title" = "Potwierdzenie";
 "settings_pin_rooms_with_missed_notif" = "Przypnij pokoje z ominiętymi powiadomieniami";
-"settings_pin_rooms_with_unread" = "Przypnij pokoje z nieprzeczytanych wiadomościami";
+"settings_pin_rooms_with_unread" = "Przypnij pokoje z nieprzeczytanymi wiadomościami";
 "settings_ui_language" = "Język";
 "settings_ui_theme" = "Motyw";
 "settings_ui_theme_auto" = "Auto";
@@ -1503,7 +1503,7 @@
 "settings_ui_theme_picker_message_invert_colours" = "„Auto” używa ustawień „Odwróć kolory” urządzenia";
 "settings_notifications_disabled_alert_message" = "Aby włączyć powiadomienia, przejdź do ustawień urządzenia.";
 "settings_notifications_disabled_alert_title" = "Powiadomienia wyłączone";
-"settings_device_notifications" = "Powiadomienia";
+"settings_device_notifications" = "Systemowe ustawienia powiadomień";
 "room_recents_unknown_room_error_message" = "Nie mogę znaleźć tego pokoju. Upewnij się, że on istnieje";
 "room_creation_dm_error" = "Nie mogliśmy utworzyć pokoju. Sprawdź użytkowników, których chcesz zaprosić, i spróbuj ponownie.";
 "version_check_modal_action_title_deprecated" = "Dowiedz się jak";
@@ -1535,6 +1535,6 @@
 "settings_encrypted_direct_messages" = "Szyfrowane wiadomości bezpośrednie";
 "settings_direct_messages" = "Wiadomości bezpośrednie";
 "settings_notify_me_for" = "Powiadom mnie o";
-"settings_mentions_and_keywords" = "Oznaczanie i słowa kluczowe";
-"settings_default" = "Domyślne Powiadomienia";
+"settings_mentions_and_keywords" = "Oznaczenia i słowa kluczowe";
+"settings_default" = "Powiadomienia dotyczące wiadomości";
 "settings_notifications" = "POWIADOMIENIA";
