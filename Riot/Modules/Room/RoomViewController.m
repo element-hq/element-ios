@@ -570,7 +570,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
+        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.adjustedContentInset.left, -self.bubblesTableView.adjustedContentInset.top) animated:YES];
     }];
     
     if ([self.roomDataSource.roomId isEqualToString:[LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush])
@@ -764,7 +764,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         CGRect frame = previewHeader.bottomBorderView.frame;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
-        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
+        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
     }
     else
     {
@@ -2356,7 +2356,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
             
-            self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
+            self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
             
             previewHeader.roomAvatar.alpha = 1;
             
@@ -4202,7 +4202,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
     if (!self.roomDataSource.isLive && ![self isRoomPreview])
     {
-        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
+        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
         {
             [self goBackToLive];
@@ -5186,12 +5186,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (readMarkerTableViewCell && isAppeared && !self.isBubbleTableViewDisplayInTransition)
     {
         // Check whether the read marker is visible
-        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
+        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.adjustedContentInset.top;
         CGFloat readMarkerViewPosY = readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y;
         if (contentTopPosY <= readMarkerViewPosY)
         {
             // Compute the max vertical position visible according to contentOffset
-            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
+            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
             if (readMarkerViewPosY <= contentBottomPosY)
             {
                 // Launch animation
@@ -5299,7 +5299,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 // The read marker display is still enabled (see roomDataSource.showReadMarker flag),
                 // this means the read marker was not been visible yet.
                 // We show the banner if the marker is located in the top hidden part of the cell.
-                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
+                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.adjustedContentInset.top;
                 CGFloat readMarkerViewPosY = roomBubbleTableViewCell.frame.origin.y + roomBubbleTableViewCell.readMarkerView.frame.origin.y;
                 self.jumpToLastUnreadBannerContainer.hidden = (contentTopPosY < readMarkerViewPosY);
             }

@@ -37,7 +37,7 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.18):
     - DTFoundation/Core
-  - ffmpeg-kit-ios-audio (4.4.LTS)
+  - ffmpeg-kit-ios-audio (4.4)
   - FLEX (4.4.1)
   - FlowCommoniOS (1.10.0)
   - GBDeviceInfo (6.6.0):
@@ -116,7 +116,7 @@ PODS:
 DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - DSWaveformImage (~> 6.1.1)
-  - ffmpeg-kit-ios-audio (~> 4.4.LTS)
+  - ffmpeg-kit-ios-audio (~> 4.4)
   - FLEX (~> 4.4.1)
   - FlowCommoniOS (~> 1.10.0)
   - GBDeviceInfo (~> 6.6.0)
@@ -189,7 +189,7 @@ SPEC CHECKSUMS:
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
   DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
-  ffmpeg-kit-ios-audio: 1c365080b8c76aa77b87c926f9f66ac07859b342
+  ffmpeg-kit-ios-audio: ddfc3dac6f574e83d53f8ae33586711162685d3e
   FLEX: 7ca2c8cd3a435ff501ff6d2f2141e9bdc934eaab
   FlowCommoniOS: bcdf81a5f30717e711af08a8c812eb045411ba94
   GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
@@ -219,6 +219,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 1f5ce3d0f93688632aaf046398de5a2c6347ffc4
+PODFILE CHECKSUM: fb064b7e46b1b13cf36073762d0ebf44d1fe9002
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2
