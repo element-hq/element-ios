@@ -61,3 +61,4 @@ targets:
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Managers/Widgets/WidgetConstants.m
+    - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift

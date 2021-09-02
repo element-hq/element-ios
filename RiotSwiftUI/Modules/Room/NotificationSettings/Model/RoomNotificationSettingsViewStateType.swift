@@ -18,25 +18,6 @@
 
 import Foundation
 
-/// RoomNotificationSettingsViewController view state
-struct RoomNotificationSettingsViewState: RoomNotificationSettingsViewStateType {
-    let roomEncrypted: Bool
-    var saving: Bool
-    var notificationState: RoomNotificationState
-    var avatarData: AvatarType?
-    var displayName: String?
-}
-
-extension RoomNotificationSettingsViewState {
-    var notificationOptions: [RoomNotificationState] {
-        if roomEncrypted {
-            return [.all, .mute]
-        } else {
-            return RoomNotificationState.allCases
-        }
-    }
-}
-
 protocol RoomNotificationSettingsViewStateType {
     var saving: Bool { get }
     var roomEncrypted: Bool { get }
@@ -46,8 +27,3 @@ protocol RoomNotificationSettingsViewStateType {
     var displayName: String? { get }
 }
 
-extension RoomNotificationSettingsViewState {
-    var roomEncryptedString: String {
-        roomEncrypted ? VectorL10n.roomNotifsSettingsEncryptedRoomNotice : ""
-    }
-}

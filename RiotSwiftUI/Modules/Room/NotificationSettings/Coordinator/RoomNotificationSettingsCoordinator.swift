@@ -38,7 +38,7 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     // MARK: - Setup
     
     init(room: MXRoom, presentedModally: Bool = true) {
-        let roomNotificationService = RoomNotificationSettingsService(room: room)
+        let roomNotificationService = MXRoomNotificationSettingsService(room: room)
         let avatarData: AvatarType?
         let showAvatar = presentedModally
         if #available(iOS 14.0.0, *) {

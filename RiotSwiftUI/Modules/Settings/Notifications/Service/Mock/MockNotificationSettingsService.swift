@@ -22,10 +22,10 @@ class MockNotificationSettingsService: NotificationSettingsServiceType, Observab
     static let example = MockNotificationSettingsService()
     
     @Published var keywords = Set<String>()
-    @Published var rules = [NotificationPushRule]()
-    @Published var contentRules = [NotificationPushRule]()
+    @Published var rules = [NotificationPushRuleType]()
+    @Published var contentRules = [NotificationPushRuleType]()
     
-    var contentRulesPublisher: AnyPublisher<[NotificationPushRule], Never> {
+    var contentRulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> {
         $contentRules.eraseToAnyPublisher()
     }
     
@@ -33,7 +33,7 @@ class MockNotificationSettingsService: NotificationSettingsServiceType, Observab
         $keywords.eraseToAnyPublisher()
     }
     
-    var rulesPublisher: AnyPublisher<[NotificationPushRule], Never> {
+    var rulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> {
         $rules.eraseToAnyPublisher()
     }
     

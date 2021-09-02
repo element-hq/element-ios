@@ -27,6 +27,10 @@ targets:
     - target: DesignKit
     sources:
     - path: .
+      excludes:
+      # Don't include service implementations and coordinator/bridges in target.
+      - "**/MatrixSDK/**"
+      - "**/Coordinator/**"
     - path: ../Riot/Generated/Strings.swift
     - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Theme/ThemeIdentifier.swift

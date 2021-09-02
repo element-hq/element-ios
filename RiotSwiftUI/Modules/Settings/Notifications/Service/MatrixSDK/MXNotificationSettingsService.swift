@@ -18,7 +18,7 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class NotificationSettingsService: NotificationSettingsServiceType {
+class MXNotificationSettingsService: NotificationSettingsServiceType {
     
     private let session: MXSession
     private var cancellables = Set<AnyCancellable>()
@@ -26,12 +26,12 @@ class NotificationSettingsService: NotificationSettingsServiceType {
     @Published private var contentRules = [MXPushRule]()
     @Published private var rules = [MXPushRule]()
     
-    var rulesPublisher: AnyPublisher<[NotificationPushRule], Never> {
-        $rules.map({ $0.map({ $0 as NotificationPushRule }) }).eraseToAnyPublisher()
+    var rulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> {
+        $rules.map({ $0.map({ $0 as NotificationPushRuleType }) }).eraseToAnyPublisher()
     }
     
-    var contentRulesPublisher: AnyPublisher<[NotificationPushRule], Never> {
-        $contentRules.map({ $0.map({ $0 as NotificationPushRule }) }).eraseToAnyPublisher()
+    var contentRulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> {
+        $contentRules.map({ $0.map({ $0 as NotificationPushRuleType }) }).eraseToAnyPublisher()
     }
     
     init(session: MXSession) {

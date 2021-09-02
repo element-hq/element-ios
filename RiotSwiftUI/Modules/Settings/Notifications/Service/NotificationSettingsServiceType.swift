@@ -25,11 +25,11 @@ protocol NotificationSettingsServiceType {
     /**
      Publisher of all push rules.
      */
-    var rulesPublisher: AnyPublisher<[NotificationPushRule], Never> { get }
+    var rulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> { get }
     /**
      Publisher of content rules.
      */
-    var contentRulesPublisher: AnyPublisher<[NotificationPushRule], Never> { get }
+    var contentRulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> { get }
     /**
      Adds a keyword.
      

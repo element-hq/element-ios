@@ -155,7 +155,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
     }
     
     // MARK: - Private
-    private func rulesUpdated(newRules: [NotificationPushRule]) {
+    private func rulesUpdated(newRules: [NotificationPushRuleType]) {
         for rule in newRules {
             guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId),
                   ruleIds.contains(ruleId) else { continue }
@@ -174,7 +174,7 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
      Matcing is done by comparing the rule against the static definitions for that rule.
      The same logic is used on android.
      */
-    private func isChecked(rule: NotificationPushRule) -> Bool {
+    private func isChecked(rule: NotificationPushRuleType) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else { return false }
         
         let firstIndex = NotificationIndex.allCases.first { nextIndex in

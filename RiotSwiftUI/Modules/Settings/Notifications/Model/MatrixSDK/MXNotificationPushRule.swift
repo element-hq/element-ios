@@ -20,7 +20,7 @@ import DesignKit
 /**
  Conformance of MXPushRule to the abstraction `NotificationPushRule` for use in `NotificationSettingsViewModel`.
  */
-extension MXPushRule: NotificationPushRule {
+extension MXPushRule: NotificationPushRuleType {
     
     /*
      Given a rule, check it match the actions in the static definition.
