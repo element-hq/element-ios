@@ -18,7 +18,7 @@
 
 import Foundation
 
-final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
+final class SpaceMemberListViewModel: SpaceMemberListViewModelType {
     
     // MARK: - Properties
     
@@ -32,8 +32,8 @@ final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
     
     // MARK: Public
 
-    weak var viewDelegate: ShowSpaceMemberListViewModelViewDelegate?
-    weak var coordinatorDelegate: ShowSpaceMemberListViewModelCoordinatorDelegate?
+    weak var viewDelegate: SpaceMemberListViewModelViewDelegate?
+    weak var coordinatorDelegate: SpaceMemberListViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -48,15 +48,15 @@ final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
     
     // MARK: - Public
     
-    func process(viewAction: ShowSpaceMemberListViewAction) {
+    func process(viewAction: SpaceMemberListViewAction) {
         switch viewAction {
         case .loadData:
             self.loadData()
         case .complete(let selectedMember, let sourceView):
-            self.coordinatorDelegate?.showSpaceMemberListViewModel(self, didSelect: selectedMember, from: sourceView)
+            self.coordinatorDelegate?.spaceMemberListViewModel(self, didSelect: selectedMember, from: sourceView)
         case .cancel:
             self.cancelOperations()
-            self.coordinatorDelegate?.showSpaceMemberListViewModelDidCancel(self)
+            self.coordinatorDelegate?.spaceMemberListViewModelDidCancel(self)
         }
     }
     
@@ -68,8 +68,8 @@ final class ShowSpaceMemberListViewModel: ShowSpaceMemberListViewModelType {
         }
     }
     
-    private func update(viewState: ShowSpaceMemberListViewState) {
-        self.viewDelegate?.showSpaceMemberListViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: SpaceMemberListViewState) {
+        self.viewDelegate?.spaceMemberListViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {

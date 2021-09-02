@@ -1,5 +1,5 @@
 // File created from ScreenTemplate
-// $ createScreen.sh Spaces/SpaceMembers/MemberDetail ShowSpaceMemberDetail
+// $ createScreen.sh Spaces/SpaceMembers/MemberList ShowSpaceMemberList
 /*
  Copyright 2021 New Vector Ltd
  
@@ -18,9 +18,12 @@
 
 import Foundation
 
-/// ShowSpaceMemberDetailViewController view state
-enum ShowSpaceMemberDetailViewState {
-    case loading
-    case loaded
-    case error(Error)
+protocol SpaceMemberListCoordinatorDelegate: AnyObject {
+    func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?)
+    func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType)
+}
+
+/// `SpaceMemberListCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
+protocol SpaceMemberListCoordinatorType: Coordinator, Presentable {
+    var delegate: SpaceMemberListCoordinatorDelegate? { get }
 }

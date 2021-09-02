@@ -62,7 +62,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     let spaceMenuPresenter = SpaceMenuPresenter()
     
     private var exploreRoomCoordinator: ExploreRoomCoordinator?
-    private var memberListCoordinator: SpaceMemberListCoordinatorBridgePresenter?
+    private var membersCoordinator: SpaceMembersCoordinator?
 
     // MARK: Public
 
@@ -216,6 +216,17 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         
         self.exploreRoomCoordinator = exploreRoomCoordinator
     }
+    
+    private func showMembers(spaceId: String, session: MXSession) {
+        let spaceMembersCoordinator = SpaceMembersCoordinator(session: session, spaceId: spaceId)
+        spaceMembersCoordinator.delegate = self
+        let presentable = spaceMembersCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+        spaceMembersCoordinator.start()
+        
+        self.membersCoordinator = spaceMembersCoordinator
+    }
 
     private func showInviteFriends(from sourceView: UIView?) {
         let myUserId = self.parameters.userSessionsService.mainUserSession?.userId ?? ""
@@ -238,6 +249,10 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         } else if item.childInfo.roomType == .room {
             self.exploreRoomCoordinator?.presentRoom(with: item, from: sourceView)
         }
+    }
+
+    func navigate(to member: MXRoomMember, from sourceView: UIView?) {
+        self.membersCoordinator?.presentMemberDetail(with: member, from: sourceView)
     }
 
     // MARK: UserSessions management
@@ -320,9 +335,7 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .exploreRooms:
                 self.showExploreRooms(spaceId: spaceId, session: session)
             case .exploreMembers:
-                self.memberListCoordinator = SpaceMemberListCoordinatorBridgePresenter(session: session, spaceId: spaceId)
-                self.memberListCoordinator?.delegate = self
-                self.memberListCoordinator?.present(from: self.sideMenuNavigationViewController, animated: true)
+                self.showMembers(spaceId: spaceId, session: session)
             }
         }
     }
@@ -341,20 +354,24 @@ extension SideMenuCoordinator: ExploreRoomCoordinatorDelegate {
     }
 }
 
-// MARK: - UIAdaptivePresentationControllerDelegate
-extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
-    
-    func exploreRoomCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
-            self.exploreRoomCoordinator = nil
+// MARK: - SpaceMembersCoordinatorDelegate
+extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
+    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
+        self.membersCoordinator?.toPresentable().dismiss(animated: true) {
+            self.membersCoordinator = nil
         }
+    }
+    
+    func spaceMembersCoordinator(_ coordinator: SpaceMembersCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
+        self.navigate(to: member, from: sourceView)
     }
 }
 
-// MARK: - SpaceMemberListCoordinatorBridgePresenterDelegate
-extension SideMenuCoordinator: SpaceMemberListCoordinatorBridgePresenterDelegate {
-    func spaceMemberListCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SpaceMemberListCoordinatorBridgePresenter) {
-        self.memberListCoordinator = nil
-        coordinatorBridgePresenter.dismiss(animated: true, completion: nil)
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.exploreRoomCoordinator = nil
+        self.membersCoordinator = nil
     }
 }

@@ -18,9 +18,9 @@
 
 import Foundation
 
-/// ShowSpaceMemberListViewController view actions exposed to view model
-enum ShowSpaceMemberListViewAction {
-    case loadData
-    case complete(_ selectedMember: MXRoomMember, _ sourceView: UIView?)
-    case cancel
+/// SpaceMemberListViewController view state
+enum SpaceMemberListViewState {
+    case loading
+    case loaded(_ space: MXSpace)
+    case error(Error)
 }

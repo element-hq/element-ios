@@ -18,15 +18,15 @@
 
 import Foundation
 
-@objc protocol SpaceMemberListCoordinatorBridgePresenterDelegate {
-    func spaceMemberListCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SpaceMemberListCoordinatorBridgePresenter)
+@objc protocol SpaceMembersCoordinatorBridgePresenterDelegate {
+    func spaceMembersCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SpaceMembersCoordinatorBridgePresenter)
 }
 
-/// SpaceMemberListCoordinatorBridgePresenter enables to start SpaceMemberListCoordinator from a view controller.
+/// SpaceMembersCoordinatorBridgePresenter enables to start SpaceMemberListCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
 /// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
-final class SpaceMemberListCoordinatorBridgePresenter: NSObject {
+final class SpaceMembersCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Properties
     
@@ -34,11 +34,11 @@ final class SpaceMemberListCoordinatorBridgePresenter: NSObject {
     
     private let session: MXSession
     private let spaceId: String
-    private var coordinator: SpaceMemberListCoordinator?
+    private var coordinator: SpaceMembersCoordinator?
     
     // MARK: Public
     
-    weak var delegate: SpaceMemberListCoordinatorBridgePresenterDelegate?
+    weak var delegate: SpaceMembersCoordinatorBridgePresenterDelegate?
     
     // MARK: - Setup
     
@@ -51,7 +51,7 @@ final class SpaceMemberListCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let spaceMemberListCoordinator = SpaceMemberListCoordinator(session: self.session, spaceId: self.spaceId)
+        let spaceMemberListCoordinator = SpaceMembersCoordinator(session: self.session, spaceId: self.spaceId)
         spaceMemberListCoordinator.delegate = self
         let presentable = spaceMemberListCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
@@ -81,23 +81,23 @@ final class SpaceMemberListCoordinatorBridgePresenter: NSObject {
     }
 }
 
-// MARK: - SpaceMemberListCoordinatorDelegate
-extension SpaceMemberListCoordinatorBridgePresenter: SpaceMemberListCoordinatorDelegate {
-    func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType) {
-        self.delegate?.spaceMemberListCoordinatorBridgePresenterDelegateDidComplete(self)
+// MARK: - SpaceMembersCoordinatorDelegate
+extension SpaceMembersCoordinatorBridgePresenter: SpaceMembersCoordinatorDelegate {
+    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
+        self.delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
-    func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
+    func spaceMembersCoordinator(_ coordinator: SpaceMembersCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
         self.navigate(to: member, from: sourceView)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
-extension SpaceMemberListCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+extension SpaceMembersCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
-    func spaceMemberListCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        self.delegate?.spaceMemberListCoordinatorBridgePresenterDelegateDidComplete(self)
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
 }

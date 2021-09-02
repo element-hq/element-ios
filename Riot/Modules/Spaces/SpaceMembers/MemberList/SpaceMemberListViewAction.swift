@@ -18,12 +18,9 @@
 
 import Foundation
 
-protocol ShowSpaceMemberListCoordinatorDelegate: AnyObject {
-    func showSpaceMemberListCoordinator(_ coordinator: ShowSpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?)
-    func showSpaceMemberListCoordinatorDidCancel(_ coordinator: ShowSpaceMemberListCoordinatorType)
-}
-
-/// `ShowSpaceMemberListCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
-protocol ShowSpaceMemberListCoordinatorType: Coordinator, Presentable {
-    var delegate: ShowSpaceMemberListCoordinatorDelegate? { get }
+/// SpaceMemberListViewController view actions exposed to view model
+enum SpaceMemberListViewAction {
+    case loadData
+    case complete(_ selectedMember: MXRoomMember, _ sourceView: UIView?)
+    case cancel
 }

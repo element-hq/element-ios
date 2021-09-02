@@ -18,7 +18,7 @@
 
 import UIKit
 
-final class ShowSpaceMemberDetailViewController: RoomMemberDetailsViewController {
+final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
     
     // MARK: - Constants
     
@@ -36,7 +36,7 @@ final class ShowSpaceMemberDetailViewController: RoomMemberDetailsViewController
 
     // MARK: Private
 
-    private var viewModel: ShowSpaceMemberDetailViewModelType!
+    private var viewModel: SpaceMemberDetailViewModelType!
     private var theme: Theme!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
@@ -44,8 +44,8 @@ final class ShowSpaceMemberDetailViewController: RoomMemberDetailsViewController
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: ShowSpaceMemberDetailViewModelType) -> ShowSpaceMemberDetailViewController {
-        let viewController = ShowSpaceMemberDetailViewController()
+    class func instantiate(with viewModel: SpaceMemberDetailViewModelType) -> SpaceMemberDetailViewController {
+        let viewController = SpaceMemberDetailViewController()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
@@ -114,7 +114,7 @@ final class ShowSpaceMemberDetailViewController: RoomMemberDetailsViewController
         self.navigationItem.rightBarButtonItem = cancelBarButtonItem
     }
 
-    private func render(viewState: ShowSpaceMemberDetailViewState) {
+    private func render(viewState: SpaceMemberDetailViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -152,10 +152,10 @@ final class ShowSpaceMemberDetailViewController: RoomMemberDetailsViewController
 }
 
 
-// MARK: - ShowSpaceMemberDetailViewModelViewDelegate
-extension ShowSpaceMemberDetailViewController: ShowSpaceMemberDetailViewModelViewDelegate {
+// MARK: - SpaceMemberDetailViewModelViewDelegate
+extension SpaceMemberDetailViewController: SpaceMemberDetailViewModelViewDelegate {
 
-    func showSpaceMemberDetailViewModel(_ viewModel: ShowSpaceMemberDetailViewModelType, didUpdateViewState viewSate: ShowSpaceMemberDetailViewState) {
+    func spaceMemberDetailViewModel(_ viewModel: SpaceMemberDetailViewModelType, didUpdateViewState viewSate: SpaceMemberDetailViewState) {
         self.render(viewState: viewSate)
     }
 }

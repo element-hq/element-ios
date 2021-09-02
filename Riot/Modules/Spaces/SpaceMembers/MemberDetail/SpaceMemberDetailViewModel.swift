@@ -18,7 +18,7 @@
 
 import Foundation
 
-final class ShowSpaceMemberDetailViewModel: ShowSpaceMemberDetailViewModelType {
+final class SpaceMemberDetailViewModel: SpaceMemberDetailViewModelType {
     
     // MARK: - Properties
     
@@ -31,8 +31,8 @@ final class ShowSpaceMemberDetailViewModel: ShowSpaceMemberDetailViewModelType {
     
     // MARK: Public
 
-    weak var viewDelegate: ShowSpaceMemberDetailViewModelViewDelegate?
-    weak var coordinatorDelegate: ShowSpaceMemberDetailViewModelCoordinatorDelegate?
+    weak var viewDelegate: SpaceMemberDetailViewModelViewDelegate?
+    weak var coordinatorDelegate: SpaceMemberDetailViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -47,22 +47,22 @@ final class ShowSpaceMemberDetailViewModel: ShowSpaceMemberDetailViewModelType {
     
     // MARK: - Public
     
-    func process(viewAction: ShowSpaceMemberDetailViewAction) {
+    func process(viewAction: SpaceMemberDetailViewAction) {
         switch viewAction {
         case .openRoom(let roomId):
-            self.coordinatorDelegate?.showSpaceMemberDetailViewModel(self, showRoomWithId: roomId)
+            self.coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: roomId)
         case .createRoom(let memberId):
             self.createDirectRoom(forMemberWithId: memberId)
         case .cancel:
             self.cancelOperations()
-            self.coordinatorDelegate?.showSpaceMemberDetailViewModelDidCancel(self)
+            self.coordinatorDelegate?.spaceMemberDetailViewModelDidCancel(self)
         }
     }
     
     // MARK: - Private
     
-    private func update(viewState: ShowSpaceMemberDetailViewState) {
-        self.viewDelegate?.showSpaceMemberDetailViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: SpaceMemberDetailViewState) {
+        self.viewDelegate?.spaceMemberDetailViewModel(self, didUpdateViewState: viewState)
     }
     
     private func createDirectRoom(forMemberWithId memberId: String) {
@@ -95,7 +95,7 @@ final class ShowSpaceMemberDetailViewModel: ShowSpaceMemberDetailViewModelType {
                         }
                         return
                     }
-                    self.coordinatorDelegate?.showSpaceMemberDetailViewModel(self, showRoomWithId: room.roomId)
+                    self.coordinatorDelegate?.spaceMemberDetailViewModel(self, showRoomWithId: room.roomId)
                 }
             } failure: { error in
                 self.update(viewState: .loaded)

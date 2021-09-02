@@ -18,7 +18,7 @@
 
 import UIKit
 
-final class ShowSpaceMemberListViewController: RoomParticipantsViewController {
+final class SpaceMemberListViewController: RoomParticipantsViewController {
     
     // MARK: - Constants
     
@@ -26,7 +26,7 @@ final class ShowSpaceMemberListViewController: RoomParticipantsViewController {
     
     // MARK: Private
 
-    private var viewModel: ShowSpaceMemberListViewModelType!
+    private var viewModel: SpaceMemberListViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
@@ -39,8 +39,8 @@ final class ShowSpaceMemberListViewController: RoomParticipantsViewController {
     
     // MARK: - Setup
     
-    class func instantiate(with viewModel: ShowSpaceMemberListViewModelType) -> ShowSpaceMemberListViewController {
-        let viewController = ShowSpaceMemberListViewController()
+    class func instantiate(with viewModel: SpaceMemberListViewModelType) -> SpaceMemberListViewController {
+        let viewController = SpaceMemberListViewController()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         viewController.emptyView = RootTabEmptyView.instantiate()
@@ -113,7 +113,7 @@ final class ShowSpaceMemberListViewController: RoomParticipantsViewController {
         self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesNoResultFoundTitle, informationText: VectorL10n.spacesNoMemberFoundDetail)
     }
 
-    private func render(viewState: ShowSpaceMemberListViewState) {
+    private func render(viewState: SpaceMemberListViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -185,10 +185,10 @@ final class ShowSpaceMemberListViewController: RoomParticipantsViewController {
 }
 
 
-// MARK: - ShowSpaceMemberListViewModelViewDelegate
-extension ShowSpaceMemberListViewController: ShowSpaceMemberListViewModelViewDelegate {
+// MARK: - SpaceMemberListViewModelViewDelegate
+extension SpaceMemberListViewController: SpaceMemberListViewModelViewDelegate {
 
-    func showSpaceMemberListViewModel(_ viewModel: ShowSpaceMemberListViewModelType, didUpdateViewState viewSate: ShowSpaceMemberListViewState) {
+    func spaceMemberListViewModel(_ viewModel: SpaceMemberListViewModelType, didUpdateViewState viewSate: SpaceMemberListViewState) {
         self.render(viewState: viewSate)
     }
 }

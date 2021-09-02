@@ -19,7 +19,7 @@
 import UIKit
 
 @objcMembers
-final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
+final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     
     // MARK: - Properties
     
@@ -28,14 +28,14 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
-    private weak var memberDetailCoordinator: ShowSpaceMemberDetailCoordinator?
+    private weak var memberDetailCoordinator: SpaceMemberDetailCoordinator?
 
     // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
-    weak var delegate: SpaceMemberListCoordinatorDelegate?
+    weak var delegate: SpaceMembersCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -49,7 +49,7 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
     
     func start() {
 
-        let rootCoordinator = self.createShowSpaceMemberListCoordinator()
+        let rootCoordinator = self.createSpaceMemberListCoordinator()
 
         rootCoordinator.start()
 
@@ -63,7 +63,7 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
     }
     
     func presentMemberDetail(with member: MXRoomMember, from sourceView: UIView?) {
-        let coordinator = self.createShowSpaceMemberDetailCoordinator(with: member)
+        let coordinator = self.createSpaceMemberDetailCoordinator(with: member)
         coordinator.start()
         self.add(childCoordinator: coordinator)
         self.memberDetailCoordinator = coordinator
@@ -88,14 +88,14 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
     
     // MARK: - Private methods
 
-    private func createShowSpaceMemberListCoordinator() -> ShowSpaceMemberListCoordinator {
-        let coordinator = ShowSpaceMemberListCoordinator(session: self.session, spaceId: self.spaceId)
+    private func createSpaceMemberListCoordinator() -> SpaceMemberListCoordinator {
+        let coordinator = SpaceMemberListCoordinator(session: self.session, spaceId: self.spaceId)
         coordinator.delegate = self
         return coordinator
     }
     
-    private func createShowSpaceMemberDetailCoordinator(with member: MXRoomMember) -> ShowSpaceMemberDetailCoordinator {
-        let coordinator = ShowSpaceMemberDetailCoordinator(session: self.session, member: member, spaceId: self.spaceId)
+    private func createSpaceMemberDetailCoordinator(with member: MXRoomMember) -> SpaceMemberDetailCoordinator {
+        let coordinator = SpaceMemberDetailCoordinator(session: self.session, member: member, spaceId: self.spaceId)
         coordinator.delegate = self
         return coordinator
     }
@@ -117,19 +117,19 @@ final class SpaceMemberListCoordinator: SpaceMemberListCoordinatorType {
     }
 }
 
-// MARK: - ShowSpaceMemberListCoordinatorDelegate
-extension SpaceMemberListCoordinator: ShowSpaceMemberListCoordinatorDelegate {
-    func showSpaceMemberListCoordinator(_ coordinator: ShowSpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
-        self.delegate?.spaceMemberListCoordinator(self, didSelect: member, from: sourceView)
+// MARK: - SpaceMemberListCoordinatorDelegate
+extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
+    func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
+        self.delegate?.spaceMembersCoordinator(self, didSelect: member, from: sourceView)
     }
     
-    func showSpaceMemberListCoordinatorDidCancel(_ coordinator: ShowSpaceMemberListCoordinatorType) {
-        self.delegate?.spaceMemberListCoordinatorDidCancel(self)
+    func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType) {
+        self.delegate?.spaceMembersCoordinatorDidCancel(self)
     }
 }
 
-extension SpaceMemberListCoordinator: ShowSpaceMemberDetailCoordinatorDelegate {
-    func showSpaceMemberDetailCoordinator(_ coordinator: ShowSpaceMemberDetailCoordinatorType, showRoomWithId roomId: String) {
+extension SpaceMembersCoordinator: SpaceMemberDetailCoordinatorDelegate {
+    func spaceMemberDetailCoordinator(_ coordinator: SpaceMemberDetailCoordinatorType, showRoomWithId roomId: String) {
         if !UIDevice.current.isPhone, let memberDetailCoordinator = self.memberDetailCoordinator {
             memberDetailCoordinator.toPresentable().dismiss(animated: true, completion: {
                 self.memberDetailCoordinator = nil
@@ -140,7 +140,7 @@ extension SpaceMemberListCoordinator: ShowSpaceMemberDetailCoordinatorDelegate {
         }
     }
     
-    func showSpaceMemberDetailCoordinatorDidCancel(_ coordinator: ShowSpaceMemberDetailCoordinatorType) {
-        self.delegate?.spaceMemberListCoordinatorDidCancel(self)
+    func spaceMemberDetailCoordinatorDidCancel(_ coordinator: SpaceMemberDetailCoordinatorType) {
+        self.delegate?.spaceMembersCoordinatorDidCancel(self)
     }
 }

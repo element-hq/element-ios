@@ -18,12 +18,12 @@
 
 import Foundation
 
-protocol SpaceMemberListCoordinatorDelegate: AnyObject {
-    func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType)
-    func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?)
+protocol SpaceMembersCoordinatorDelegate: AnyObject {
+    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType)
+    func spaceMembersCoordinator(_ coordinator: SpaceMembersCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?)
 }
 
-/// `SpaceMemberListCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol SpaceMemberListCoordinatorType: Coordinator, Presentable {
-    var delegate: SpaceMemberListCoordinatorDelegate? { get }
+/// `SpaceMembersCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
+protocol SpaceMembersCoordinatorType: Coordinator, Presentable {
+    var delegate: SpaceMembersCoordinatorDelegate? { get }
 }

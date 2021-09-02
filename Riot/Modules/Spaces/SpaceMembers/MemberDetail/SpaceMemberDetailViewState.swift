@@ -18,9 +18,9 @@
 
 import Foundation
 
-/// ShowSpaceMemberDetailViewController view actions exposed to view model
-enum ShowSpaceMemberDetailViewAction {
-    case openRoom(_ roomId: String)
-    case createRoom(_ memberId: String)
-    case cancel
+/// SpaceMemberDetailViewController view state
+enum SpaceMemberDetailViewState {
+    case loading
+    case loaded
+    case error(Error)
 }
