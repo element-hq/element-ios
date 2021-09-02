@@ -708,12 +708,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     _isAppForeground = YES;
-
-    if (@available(iOS 11.0, *))
-    {
-        // Riot has its own dark theme. Prevent iOS from applying its one
-        [application keyWindow].accessibilityIgnoresInvertColors = YES;
-    }
+    
+    // Riot has its own dark theme. Prevent iOS from applying its one
+    [application keyWindow].accessibilityIgnoresInvertColors = YES;
     
     [self handleAppState];
 }
@@ -2040,8 +2037,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (clearCache)
     {
-        // clear the media cache
-        [MXMediaManager clearCache];
+        [self clearCache];
     }
 }
 
@@ -2143,7 +2139,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self.pushNotificationService deregisterRemoteNotifications];
 
     // Clear cache
-    [MXMediaManager clearCache];
+    [self clearCache];
     
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
@@ -4320,6 +4316,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
+}
+
+#pragma mark - Private
+
+- (void)clearCache
+{
+    [MXMediaManager clearCache];
+    [MXKAttachment clearCache];
+    [VoiceMessageAttachmentCacheManagerBridge clearCache];
 }
 
 @end

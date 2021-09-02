@@ -58,29 +58,29 @@ PODS:
   - MatomoTracker (7.4.1):
     - MatomoTracker/Core (= 7.4.1)
   - MatomoTracker/Core (7.4.1)
-  - MatrixKit (0.15.7):
+  - MatrixKit (0.15.8):
     - Down (~> 0.11.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.15.7)
-    - MatrixSDK (= 0.19.7)
-  - MatrixKit/Core (0.15.7):
+    - MatrixKit/Core (= 0.15.8)
+    - MatrixSDK (= 0.19.8)
+  - MatrixKit/Core (0.15.8):
     - Down (~> 0.11.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.19.7)
-  - MatrixSDK (0.19.7):
-    - MatrixSDK/Core (= 0.19.7)
-  - MatrixSDK/Core (0.19.7):
+    - MatrixSDK (= 0.19.8)
+  - MatrixSDK (0.19.8):
+    - MatrixSDK/Core (= 0.19.8)
+  - MatrixSDK/Core (0.19.8):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.4)
     - Realm (= 10.7.6)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.19.7):
+  - MatrixSDK/JingleCallStack (0.19.8):
     - JitsiMeetSDK (= 3.5.0)
     - MatrixSDK/Core
   - OLMKit (3.2.4):
@@ -116,7 +116,7 @@ PODS:
 DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - DSWaveformImage (~> 6.1.1)
-  - ffmpeg-kit-ios-audio (~> 4.4.LTS)
+  - ffmpeg-kit-ios-audio (~> 4.4)
   - FLEX (~> 4.4.1)
   - FlowCommoniOS (~> 1.10.0)
   - GBDeviceInfo (~> 6.6.0)
@@ -124,7 +124,7 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.4.1)
-  - MatrixKit (= 0.15.7)
+  - MatrixKit (= 0.15.8)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -204,8 +204,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
-  MatrixKit: 5939d1b63bad3e7f709534a8f105b69f84728591
-  MatrixSDK: c0bbec5b67cc8771cffdf3b494d622bce0a51ceb
+  MatrixKit: 2945ade22970747defcc4d564cb0c7aedbd4019d
+  MatrixSDK: 4d4679b499b4802a11a90b3652f83be496bfaec1
   OLMKit: 2d73cd67d149b5c3e3a8eb8ecae93d0b429d8a02
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
@@ -219,6 +219,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 605b63b9968e2916d998f4769f162b4b7c2a2577
+PODFILE CHECKSUM: 81db0a2f4da6c24be3bfdd2c2de5b57e954f133e
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2
