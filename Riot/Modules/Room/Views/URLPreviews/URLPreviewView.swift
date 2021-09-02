@@ -30,9 +30,6 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     private static let sizingView = URLPreviewView.instantiate()
     
     private enum Constants {
-        // URL Previews
-        
-        static let maxHeight: CGFloat = 247.0
         static let width: CGFloat = 267.0
     }
     
@@ -47,22 +44,12 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     
     weak var delegate: URLPreviewViewDelegate?
     
-    @IBOutlet weak var imageContainer: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var closeButton: UIButton!
     
     @IBOutlet weak var siteNameLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
-    
-    /// The constraint that pins the top of the text container to the top of the view.
-    @IBOutlet weak var textContainerViewConstraint: NSLayoutConstraint!
-    /// The constraint that pins the top of the text container to the bottom of the image container.
-    @IBOutlet weak var textContainerImageConstraint: NSLayoutConstraint!
-    
-    override var intrinsicContentSize: CGSize {
-        CGSize(width: Constants.width, height: Constants.maxHeight)
-    }
     
     // MARK: - Setup
     
@@ -107,9 +94,17 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     }
     
     static func contentViewHeight(for preview: URLPreviewData) -> CGFloat {
-        sizingView.renderLoaded(preview)
+        sizingView.frame = CGRect(x: 0, y: 0, width: Constants.width, height: 1)
         
-        return sizingView.systemLayoutSizeFitting(sizingView.intrinsicContentSize).height
+        sizingView.renderLoaded(preview)
+
+        sizingView.setNeedsLayout()
+        sizingView.layoutIfNeeded()
+        
+        let fittingSize = CGSize(width: Constants.width, height: UIView.layoutFittingCompressedSize.height)
+        let layoutSize = sizingView.systemLayoutSizeFitting(fittingSize)
+        
+        return layoutSize.height
     }
     
     // MARK: - Private
@@ -137,21 +132,15 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     }
     
     private func showImageContainer() {
-        // When the image container has a superview it is already visible
-        guard imageContainer.superview == nil else { return }
+        imageView.isHidden = false
         
-        textContainerViewConstraint.isActive = false
-        addSubview(imageContainer)
-        textContainerImageConstraint.isActive = true
-        
-        // Ensure the close button remains visible
-        bringSubviewToFront(closeButton)
+        // TODO: Adjust spacing of site name label
     }
     
     private func hideImageContainer() {
-        textContainerImageConstraint.isActive = false
-        imageContainer.removeFromSuperview()
-        textContainerViewConstraint.isActive = true
+        imageView.isHidden = true
+        
+        // TODO: Adjust spacing of site name label
     }
     
     // MARK: - Action
