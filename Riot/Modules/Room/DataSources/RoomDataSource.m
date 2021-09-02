@@ -388,8 +388,8 @@ const CGFloat kTypingCellHeight = 24;
                     NSURL *link = component.link;
                     URLPreviewView *urlPreviewView;
                     
-                    // Encrypted rooms must not show URL previews.
-                    if (link && cellData.urlPreviewData && !self.room.summary.isEncrypted)
+                    // Show a URL preview if the component has a link that should be previewed.
+                    if (link && cellData.showURLPreview)
                     {
                         urlPreviewView = [URLPreviewView instantiate];
                         urlPreviewView.preview = cellData.urlPreviewData;
@@ -1261,7 +1261,8 @@ const CGFloat kTypingCellHeight = 24;
     // Remember that the user closed the preview so it isn't shown again.
     [URLPreviewManager.shared closePreviewFor:eventID in:roomID];
     
-    // Remove the preview data and refresh the cells.
+    // Hide the preview, remove its data and refresh the cells.
+    cellData.showURLPreview = NO;
     cellData.urlPreviewData = nil;
     [self refreshCells];
 }

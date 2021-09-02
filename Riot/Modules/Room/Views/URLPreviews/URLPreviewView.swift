@@ -37,7 +37,10 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     
     var preview: URLPreviewData? {
         didSet {
-            guard let preview = preview else { return }
+            guard let preview = preview else {
+                renderLoading()
+                return
+            }
             renderLoaded(preview)
         }
     }
@@ -47,9 +50,14 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var closeButton: UIButton!
     
+    @IBOutlet weak var textContainerView: UIView!
     @IBOutlet weak var siteNameLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    
+    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var loadingLabel: UILabel!
+    @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
     
     // Matches the label's height with the close button.
     // Use a strong reference to keep it around when deactivating.
@@ -98,14 +106,21 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         descriptionLabel.textColor = theme.colors.secondaryContent
         descriptionLabel.font = theme.fonts.caption1
         
+        loadingLabel.textColor = siteNameLabel.textColor
+        
         let closeButtonAsset = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.urlPreviewCloseDark : Asset.Images.urlPreviewClose
         closeButton.setImage(closeButtonAsset.image, for: .normal)
     }
     
-    static func contentViewHeight(for preview: URLPreviewData) -> CGFloat {
+    static func contentViewHeight(for preview: URLPreviewData?) -> CGFloat {
         sizingView.frame = CGRect(x: 0, y: 0, width: Constants.width, height: 1)
         
-        sizingView.renderLoaded(preview)
+        // Call render directly to avoid storing the preview data in the sizing view
+        if let preview = preview {
+            sizingView.renderLoaded(preview)
+        } else {
+            sizingView.renderLoading()
+        }
 
         sizingView.setNeedsLayout()
         sizingView.layoutIfNeeded()
@@ -117,16 +132,18 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     }
     
     // MARK: - Private
-    #warning("Check whether we should show a loading state.")
-    private func renderLoading(_ url: URL) {
-        imageView.image = nil
+    private func renderLoading() {
+        // hide the content
+        imageView.isHidden = true
+        textContainerView.isHidden = true
         
-        siteNameLabel.text = url.host
-        titleLabel.text = "Loading..."
-        descriptionLabel.text = ""
+        // show the loading interface
+        loadingView.isHidden = false
+        loadingActivityIndicator.startAnimating()
     }
     
     private func renderLoaded(_ preview: URLPreviewData) {
+        // update preview content
         imageView.image = preview.image
         siteNameLabel.text = preview.siteName ?? preview.url.host
         titleLabel.text = preview.title
@@ -136,6 +153,13 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     }
     
     private func updateLayout() {
+        // hide the loading interface
+        loadingView.isHidden = true
+        loadingActivityIndicator.stopAnimating()
+        
+        // show the content
+        textContainerView.isHidden = false
+        
         if imageView.image == nil {
             imageView.isHidden = true
             

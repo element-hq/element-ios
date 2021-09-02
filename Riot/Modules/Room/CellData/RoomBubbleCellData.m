@@ -1070,8 +1070,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return;
     }
     
-    // Check that the preview hasn't been dismissed already.
-    if ([URLPreviewManager.shared hasClosedPreviewFrom:lastComponent.event])
+    // Don't show the preview if it has been dismissed already.
+    self.showURLPreview = ![URLPreviewManager.shared hasClosedPreviewFrom:lastComponent.event];
+    if (!self.showURLPreview)
     {
         return;
     }

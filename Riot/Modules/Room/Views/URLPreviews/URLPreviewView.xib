@@ -10,11 +10,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <view contentMode="scaleToFill" id="dCz-KI-m5q" customClass="URLPreviewView" customModule="Riot" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="267" height="222"/>
+            <rect key="frame" x="0.0" y="0.0" width="267" height="301"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Rqc-iY-nm0">
-                    <rect key="frame" x="0.0" y="0.0" width="267" height="222"/>
+                    <rect key="frame" x="0.0" y="0.0" width="267" height="301"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4zc-0W-jb8">
                             <rect key="frame" x="0.0" y="0.0" width="267" height="140"/>
@@ -22,11 +22,11 @@
                                 <constraint firstAttribute="height" constant="140" id="QpS-Ys-x5s"/>
                             </constraints>
                         </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n9x-Yn-0qQ">
-                            <rect key="frame" x="0.0" y="140" width="267" height="82"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n9x-Yn-0qQ" userLabel="Text Container">
+                            <rect key="frame" x="0.0" y="140" width="267" height="79"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="3Wa-hg-AAN">
-                                    <rect key="frame" x="8" y="8" width="251" height="66"/>
+                                    <rect key="frame" x="8" y="8" width="251" height="63"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ay6-fT-tTb">
                                             <rect key="frame" x="0.0" y="0.0" width="56" height="25"/>
@@ -43,17 +43,13 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z30-YF-eQk">
-                                            <rect key="frame" x="0.0" y="48.5" width="250.5" height="17.5"/>
-                                            <string key="text">Description with two lines of text for testing purposes, going bigger so we can see what happens. That's not enought text, more text keep gooing!</string>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="250" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z30-YF-eQk">
+                                            <rect key="frame" x="0.0" y="48.5" width="65" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="107" id="z0T-c3-WKF"/>
-                                    </constraints>
                                 </stackView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -62,6 +58,31 @@
                                 <constraint firstItem="3Wa-hg-AAN" firstAttribute="leading" secondItem="n9x-Yn-0qQ" secondAttribute="leading" constant="8" id="9gR-Ab-8qX"/>
                                 <constraint firstItem="3Wa-hg-AAN" firstAttribute="top" secondItem="n9x-Yn-0qQ" secondAttribute="top" constant="8" id="AJk-SF-ghk"/>
                                 <constraint firstAttribute="bottom" secondItem="3Wa-hg-AAN" secondAttribute="bottom" constant="8" id="ysy-Gi-EZT"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u8r-SW-zAH">
+                            <rect key="frame" x="0.0" y="219" width="267" height="82"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading preview..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imX-n1-KLc">
+                                    <rect key="frame" x="8" y="8" width="99.5" height="25"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="25" id="g0l-y9-MQ5"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="SSJ-n0-24Z">
+                                    <rect key="frame" x="123.5" y="45" width="20" height="17"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="SSJ-n0-24Z" firstAttribute="centerX" secondItem="u8r-SW-zAH" secondAttribute="centerX" id="121-oq-4Zn"/>
+                                <constraint firstItem="imX-n1-KLc" firstAttribute="top" secondItem="u8r-SW-zAH" secondAttribute="top" constant="8" id="4HN-Oy-nLZ"/>
+                                <constraint firstAttribute="bottom" secondItem="SSJ-n0-24Z" secondAttribute="bottom" constant="20" id="JVb-WU-tHN"/>
+                                <constraint firstItem="SSJ-n0-24Z" firstAttribute="top" secondItem="imX-n1-KLc" secondAttribute="bottom" constant="12" id="Npd-t0-Acv"/>
+                                <constraint firstItem="imX-n1-KLc" firstAttribute="leading" secondItem="u8r-SW-zAH" secondAttribute="leading" constant="8" id="eHD-Rn-lPP"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -92,12 +113,16 @@
                 <outlet property="closeButton" destination="30L-fe-CQa" id="hFu-BX-zRP"/>
                 <outlet property="descriptionLabel" destination="Z30-YF-eQk" id="DJ4-Bg-MHW"/>
                 <outlet property="imageView" destination="4zc-0W-jb8" id="QRh-IX-XxR"/>
+                <outlet property="loadingActivityIndicator" destination="SSJ-n0-24Z" id="ylX-Qd-8t5"/>
+                <outlet property="loadingLabel" destination="imX-n1-KLc" id="zOH-Z7-v7v"/>
+                <outlet property="loadingView" destination="u8r-SW-zAH" id="s7r-Kl-w5h"/>
                 <outlet property="siteNameLabel" destination="ay6-fT-tTb" id="2wA-1z-lcs"/>
                 <outlet property="siteNameLabelHeightConstraint" destination="vhD-hz-f58" id="Bz9-ub-9UA"/>
+                <outlet property="textContainerView" destination="n9x-Yn-0qQ" id="Zul-rd-vrp"/>
                 <outlet property="titleLabel" destination="IVX-5S-0kr" id="PRN-5g-HiO"/>
                 <outletCollection property="gestureRecognizers" destination="rSB-1V-Kev" appends="YES" id="OOJ-ft-VIj"/>
             </connections>
-            <point key="canvasLocation" x="1860.144927536232" y="-1.3392857142857142"/>
+            <point key="canvasLocation" x="1852.8985507246377" y="14.397321428571427"/>
         </view>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tapGestureRecognizer id="rSB-1V-Kev">

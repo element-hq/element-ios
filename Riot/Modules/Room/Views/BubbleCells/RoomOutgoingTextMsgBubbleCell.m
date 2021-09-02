@@ -44,7 +44,7 @@
 {
     RoomBubbleCellData *bubbleData = (RoomBubbleCellData*)cellData;
     
-    if (bubbleData && bubbleData.urlPreviewData)
+    if (bubbleData && bubbleData.showURLPreview)
     {
         CGFloat height = [super heightForCellData:cellData withMaximumWidth:maxWidth];
         return height + RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:bubbleData.urlPreviewData];
