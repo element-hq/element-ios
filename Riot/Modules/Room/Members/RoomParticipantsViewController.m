@@ -84,6 +84,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    self.showParticipantCustomAccessoryView = YES;
 }
 
 - (void)viewDidLoad
@@ -969,6 +970,7 @@
     {
         ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:@"ParticipantTableViewCellId" forIndexPath:indexPath];
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        participantCell.showCustomAccessoryView = self.showParticipantCustomAccessoryView;
         
         participantCell.mxRoom = self.mxRoom;
         

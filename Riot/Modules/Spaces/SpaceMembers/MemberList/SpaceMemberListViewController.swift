@@ -42,6 +42,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     class func instantiate(with viewModel: SpaceMemberListViewModelType) -> SpaceMemberListViewController {
         let viewController = SpaceMemberListViewController()
         viewController.viewModel = viewModel
+        viewController.showParticipantCustomAccessoryView = false
         viewController.theme = ThemeService.shared().theme
         viewController.emptyView = RootTabEmptyView.instantiate()
         return viewController
