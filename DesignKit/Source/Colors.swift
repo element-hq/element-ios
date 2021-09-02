@@ -15,54 +15,57 @@
 //
 
 import Foundation
-import UIKit
 
 /// Colors at https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=1255%3A1104
-@objc public protocol Colors {
+public protocol Colors {
+    
+    associatedtype ColorType
     
     /// - Focused/Active states
     /// - CTAs
-    var accent: UIColor { get }
+    var accent: ColorType { get }
     
     /// - Error messages
     /// - Content requiring user attention
     /// - Notification, alerts
-    var alert: UIColor { get }
+    var alert: ColorType { get }
     
     /// - Text
     /// - Icons
-    var primaryContent: UIColor { get }
+    var primaryContent: ColorType { get }
     
     /// - Text
     /// - Icons
-    var secondaryContent: UIColor { get }
+    var secondaryContent: ColorType { get }
     
     /// - Text
     /// - Icons
-    var tertiaryContent: UIColor { get }
+    var tertiaryContent: ColorType { get }
     
     /// - Text
     /// - Icons
-    var quarterlyContent: UIColor { get }
+    var quarterlyContent: ColorType { get }
     
-    /// - Text
-    /// - Icons
-    var quinaryContent: UIColor { get }
+    /// - separating lines and other UI components
+    var quinaryContent: ColorType { get }
+    
+    /// - System-based areas and backgrounds
+    var system: ColorType { get }
     
     /// Separating line
-    var separator: UIColor { get }
+    var separator: ColorType { get }
     
     //  Cards, tiles
-    var tile: UIColor { get }
+    var tile: ColorType { get }
     
     /// Top navigation background on iOS
-    var navigation: UIColor { get }
+    var navigation: ColorType { get }
     
     /// Background UI color
-    var background: UIColor { get }
+    var background: ColorType { get }
     
     /// - Names in chat timeline
     /// - Avatars default states that include first name letter
-    var namesAndAvatars: [UIColor] { get }
+    var namesAndAvatars: [ColorType] { get }
     
 }

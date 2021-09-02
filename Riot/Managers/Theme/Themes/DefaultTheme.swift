@@ -148,12 +148,7 @@ class DefaultTheme: NSObject, Theme {
     }
     
     ///  MARK: - Theme v2
+    var colors: ColorsUIKit = LightColors.uiKit
     
-    lazy var colors: Colors = {
-        return LightColors()
-    }()
-    
-    lazy var fonts: Fonts = {
-        return ElementFonts()
-    }()
+    var fonts: FontsUIKit = FontsUIKit(values: ElementFonts())
 }

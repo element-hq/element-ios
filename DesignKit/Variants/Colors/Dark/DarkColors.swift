@@ -16,43 +16,36 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
-/// Dark theme colors. Will be a struct when things are more Swifty.
-public class DarkColors: Colors {
+/// Dark theme colors.
+public class DarkColors {
+    private static let values = ColorValues(
+        accent: UIColor(rgb:0x0DBD8B),
+        alert: UIColor(rgb:0xFF4B55),
+        primaryContent: UIColor(rgb:0xFFFFFF),
+        secondaryContent: UIColor(rgb:0xA9B2BC),
+        tertiaryContent: UIColor(rgb:0x8E99A4),
+        quarterlyContent: UIColor(rgb:0x6F7882),
+        quinaryContent: UIColor(rgb:0x394049),
+        separator: UIColor(rgb:0x21262C),
+        system: UIColor(rgb:0x21262C),
+        tile: UIColor(rgb:0x394049),
+        navigation: UIColor(rgb:0x21262C),
+        background: UIColor(rgb:0x15191E),
+        namesAndAvatars: [
+            UIColor(rgb:0x368BD6),
+            UIColor(rgb:0xAC3BA8),
+            UIColor(rgb:0x03B381),
+            UIColor(rgb:0xE64F7A),
+            UIColor(rgb:0xFF812D),
+            UIColor(rgb:0x2DC2C5),
+            UIColor(rgb:0x5C56F5),
+            UIColor(rgb:0x74D12C)
+        ]
+    )
     
-    public let accent: UIColor = UIColor(rgb: 0x0DBD8B)
-    
-    public let alert: UIColor = UIColor(rgb: 0xFF4B55)
-    
-    public let primaryContent: UIColor = UIColor(rgb: 0xFFFFFF)
-    
-    public let secondaryContent: UIColor = UIColor(rgb: 0xA9B2BC)
-    
-    public let tertiaryContent: UIColor = UIColor(rgb: 0x8E99A4)
-    
-    public let quarterlyContent: UIColor = UIColor(rgb: 0x6F7882)
-    
-    public let quinaryContent: UIColor = UIColor(rgb: 0x394049)
-    
-    public let separator: UIColor = UIColor(rgb: 0x21262C)
-    
-    public let tile: UIColor = UIColor(rgb: 0x394049)
-    
-    public let navigation: UIColor = UIColor(rgb: 0x21262C)
-    
-    public let background: UIColor = UIColor(rgb: 0x15191E)
-    
-    public let namesAndAvatars: [UIColor] = [
-        UIColor(rgb: 0x368BD6),
-        UIColor(rgb: 0xAC3BA8),
-        UIColor(rgb: 0x03B381),
-        UIColor(rgb: 0xE64F7A),
-        UIColor(rgb: 0xFF812D),
-        UIColor(rgb: 0x2DC2C5),
-        UIColor(rgb: 0x5C56F5),
-        UIColor(rgb: 0x74D12C)
-    ]
-    
-    public init() {}
-    
+    public static var uiKit = ColorsUIKit(values: values)
+    @available(iOS 14.0, *)
+    public static var swiftUI = ColorSwiftUI(values: values)
 }

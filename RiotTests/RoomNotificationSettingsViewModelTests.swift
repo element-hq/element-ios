@@ -60,7 +60,7 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
     }
     
     func setupViewModel(roomEncrypted: Bool, showAvatar: Bool) {
-        let avatarData: AvatarInputOption? = showAvatar ? .uiKit(Constants.avatarData) : nil
+        let avatarData: AvatarType? = showAvatar ? Constants.avatarData : nil
         let viewModel = RoomNotificationSettingsViewModel(roomNotificationService: service, avatarData: avatarData, displayName: Constants.roomDisplayName, roomEncrypted: roomEncrypted)
         viewModel.viewDelegate = view
         viewModel.coordinatorDelegate = coordinator
@@ -89,7 +89,7 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
     func testAvatar() throws {
         setupViewModel(roomEncrypted: true, showAvatar: true)
         viewModel.process(viewAction: .load)
-        guard case let .uiKit(avatarData) = view.viewState?.avatarData else {
+        guard let avatarData = view.viewState?.avatarData as? RoomAvatarViewData else {
             XCTFail()
             return
         }

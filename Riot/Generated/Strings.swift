@@ -5143,12 +5143,10 @@ extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
     let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
     let locale: Locale
-    if let localeIdentifier = Bundle.mxk_language() {
-       locale = Locale(identifier: localeIdentifier)
-    } else if let fallbackLocaleIdentifier = Bundle.mxk_fallbackLanguage() {
-       locale = Locale(identifier: fallbackLocaleIdentifier)
+    if let providedLocale = LocaleProvider.locale {
+      locale = providedLocale
     } else {
-       locale = Locale.current
+      locale = Locale.current
     }        
 
       return String(format: format, locale: locale, arguments: args)
