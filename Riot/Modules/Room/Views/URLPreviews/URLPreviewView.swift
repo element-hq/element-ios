@@ -51,6 +51,15 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    // Matches the label's height with the close button.
+    // Use a strong reference to keep it around when deactivating.
+    @IBOutlet var siteNameLabelHeightConstraint: NSLayoutConstraint!
+    
+    private var hasTitle: Bool {
+        guard let title = titleLabel.text else { return false }
+        return !title.isEmpty
+    }
+    
     // MARK: - Setup
     
     static func instantiate() -> Self {
@@ -118,29 +127,28 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     }
     
     private func renderLoaded(_ preview: URLPreviewData) {
-        if let image = preview.image {
-            imageView.image = image
-            showImageContainer()
-        } else {
-            imageView.image = nil
-            hideImageContainer()
-        }
-        
+        imageView.image = preview.image
         siteNameLabel.text = preview.siteName ?? preview.url.host
         titleLabel.text = preview.title
         descriptionLabel.text = preview.text
+        
+        updateLayout()
     }
     
-    private func showImageContainer() {
-        imageView.isHidden = false
-        
-        // TODO: Adjust spacing of site name label
-    }
-    
-    private func hideImageContainer() {
-        imageView.isHidden = true
-        
-        // TODO: Adjust spacing of site name label
+    private func updateLayout() {
+        if imageView.image == nil {
+            imageView.isHidden = true
+            
+            // tweak the layout of labels
+            siteNameLabelHeightConstraint.isActive = true
+            descriptionLabel.numberOfLines = hasTitle ? 3 : 5
+        } else {
+            imageView.isHidden = false
+            
+            // tweak the layout of labels
+            siteNameLabelHeightConstraint.isActive = false
+            descriptionLabel.numberOfLines = 2
+        }
     }
     
     // MARK: - Action
