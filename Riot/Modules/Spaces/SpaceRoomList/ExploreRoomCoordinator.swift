@@ -28,7 +28,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let spaceId: String
-    private weak var roomDetailCoordinator: ShowSpaceChildRoomDetailCoordinator?
+    private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
@@ -81,10 +81,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         }
         
         let summary = self.session.roomSummary(withRoomId: item.childInfo.childRoomId)
-        var isJoined = false
-        if let summary = summary {
-            isJoined = summary.membership == .join || summary.membershipTransitionState == .joined
-        }
+        let isJoined = summary?.isJoined ?? false
 
         if isJoined {
             self.navigateTo(roomWith: item.childInfo.childRoomId)
@@ -115,14 +112,14 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         }
     }
 
-    private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> ShowSpaceExploreRoomCoordinator {
-        let coordinator = ShowSpaceExploreRoomCoordinator(session: session, spaceId: spaceId, spaceName: spaceName)
+    private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> SpaceExploreRoomCoordinator {
+        let coordinator = SpaceExploreRoomCoordinator(parameters: SpaceExploreRoomCoordinatorParameters(session: session, spaceId: spaceId, spaceName: spaceName))
         coordinator.delegate = self
         return coordinator
     }
     
-    private func createShowSpaceRoomDetailCoordinator(session: MXSession, childInfo: MXSpaceChildInfo) -> ShowSpaceChildRoomDetailCoordinator {
-        let coordinator = ShowSpaceChildRoomDetailCoordinator(session: session, childInfo: childInfo)
+    private func createShowSpaceRoomDetailCoordinator(session: MXSession, childInfo: MXSpaceChildInfo) -> SpaceChildRoomDetailCoordinator {
+        let coordinator = SpaceChildRoomDetailCoordinator(parameters: SpaceChildRoomDetailCoordinatorParameters(session: session, childInfo: childInfo))
         coordinator.delegate = self
         return coordinator
     }
@@ -145,19 +142,19 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
 }
 
 // MARK: - ShowSpaceExploreRoomCoordinatorDelegate
-extension ExploreRoomCoordinator: ShowSpaceExploreRoomCoordinatorDelegate {
-    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
+extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
         self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: item, from: sourceView)
     }
     
-    func showSpaceExploreRoomCoordinatorDidCancel(_ coordinator: ShowSpaceExploreRoomCoordinatorType) {
+    func spaceExploreRoomCoordinatorDidCancel(_ coordinator: SpaceExploreRoomCoordinatorType) {
         self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil, from: nil)
     }
 }
 
 // MARK: - ShowSpaceChildRoomDetailCoordinator
-extension ExploreRoomCoordinator: ShowSpaceChildRoomDetailCoordinatorDelegate {
-    func showSpaceChildRoomDetailCoordinatorDidComplete(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType, openRoomWith roomId: String) {
+extension ExploreRoomCoordinator: SpaceChildRoomDetailCoordinatorDelegate {
+    func spaceChildRoomDetailCoordinator(_ coordinator: SpaceChildRoomDetailCoordinatorType, didOpenRoomWith roomId: String) {
         self.navigationRouter.toPresentable().dismiss(animated: true) {
             if let lastCoordinator = self.roomDetailCoordinator {
                 self.remove(childCoordinator: lastCoordinator)
@@ -166,19 +163,17 @@ extension ExploreRoomCoordinator: ShowSpaceChildRoomDetailCoordinatorDelegate {
         }
     }
     
-    func showSpaceChildRoomDetailCoordinatorDidCancel(_ coordinator: ShowSpaceChildRoomDetailCoordinatorType) {
+    func spaceChildRoomDetailCoordinatorDidCancel(_ coordinator: SpaceChildRoomDetailCoordinatorType) {
         if UIDevice.current.isPhone {
             slidingModalPresenter.dismiss(animated: true) {
                 if let roomDetailCoordinator = self.roomDetailCoordinator {
                     self.remove(childCoordinator: roomDetailCoordinator)
-                    self.roomDetailCoordinator = nil
                 }
             }
         } else {
             self.roomDetailCoordinator?.toPresentable().dismiss(animated: true, completion: {
                 if let roomDetailCoordinator = self.roomDetailCoordinator {
                     self.remove(childCoordinator: roomDetailCoordinator)
-                    self.roomDetailCoordinator = nil
                 }
             })
         }

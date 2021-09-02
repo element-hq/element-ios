@@ -18,12 +18,12 @@
 
 import Foundation
 
-protocol ShowSpaceExploreRoomCoordinatorDelegate: AnyObject {
-    func showSpaceExploreRoomCoordinator(_ coordinator: ShowSpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?)
-    func showSpaceExploreRoomCoordinatorDidCancel(_ coordinator: ShowSpaceExploreRoomCoordinatorType)
+protocol SpaceExploreRoomCoordinatorDelegate: AnyObject {
+    func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?)
+    func spaceExploreRoomCoordinatorDidCancel(_ coordinator: SpaceExploreRoomCoordinatorType)
 }
 
-/// `ShowSpaceExploreRoomCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
-protocol ShowSpaceExploreRoomCoordinatorType: Coordinator, Presentable {
-    var delegate: ShowSpaceExploreRoomCoordinatorDelegate? { get }
+/// `SpaceExploreRoomCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
+protocol SpaceExploreRoomCoordinatorType: Coordinator, Presentable {
+    var delegate: SpaceExploreRoomCoordinatorDelegate? { get }
 }

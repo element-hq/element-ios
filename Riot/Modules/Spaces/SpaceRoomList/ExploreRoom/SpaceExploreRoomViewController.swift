@@ -18,7 +18,7 @@
 
 import UIKit
 
-final class ShowSpaceExploreRoomViewController: UIViewController {
+final class SpaceExploreRoomViewController: UIViewController {
     
     // MARK: - Constants
     
@@ -33,7 +33,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
     
     // MARK: Private
 
-    private var viewModel: ShowSpaceExploreRoomViewModelType!
+    private var viewModel: SpaceExploreRoomViewModelType!
     private var theme: Theme!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
@@ -63,8 +63,8 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: ShowSpaceExploreRoomViewModelType) -> ShowSpaceExploreRoomViewController {
-        let viewController = StoryboardScene.ShowSpaceExploreRoomViewController.initialScene.instantiate()
+    class func instantiate(with viewModel: SpaceExploreRoomViewModelType) -> SpaceExploreRoomViewController {
+        let viewController = StoryboardScene.SpaceExploreRoomViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         viewController.emptyView = RootTabEmptyView.instantiate()
@@ -171,7 +171,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
         self.tableView.tableFooterView = UIView()
     }
 
-    private func render(viewState: ShowSpaceExploreRoomViewState) {
+    private func render(viewState: SpaceExploreRoomViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -233,7 +233,7 @@ final class ShowSpaceExploreRoomViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension ShowSpaceExploreRoomViewController: UITableViewDataSource {
+extension SpaceExploreRoomViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -257,17 +257,17 @@ extension ShowSpaceExploreRoomViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension ShowSpaceExploreRoomViewController: UITableViewDelegate {
+extension SpaceExploreRoomViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         self.viewModel.process(viewAction: .complete(self.itemDataList[indexPath.row], tableView.cellForRow(at: indexPath)))
     }
 }
 
-// MARK: - ShowSpaceExploreRoomViewModelViewDelegate
-extension ShowSpaceExploreRoomViewController: ShowSpaceExploreRoomViewModelViewDelegate {
+// MARK: - SpaceExploreRoomViewModelViewDelegate
+extension SpaceExploreRoomViewController: SpaceExploreRoomViewModelViewDelegate {
 
-    func showSpaceExploreRoomViewModel(_ viewModel: ShowSpaceExploreRoomViewModelType, didUpdateViewState viewSate: ShowSpaceExploreRoomViewState) {
+    func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, didUpdateViewState viewSate: SpaceExploreRoomViewState) {
         self.render(viewState: viewSate)
     }
 }

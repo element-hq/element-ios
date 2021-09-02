@@ -18,7 +18,7 @@
 
 import Foundation
 
-final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
+final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     
     // MARK: - Properties
     
@@ -56,15 +56,15 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
     
     // MARK: Public
 
-    weak var viewDelegate: ShowSpaceExploreRoomViewModelViewDelegate?
-    weak var coordinatorDelegate: ShowSpaceExploreRoomViewModelCoordinatorDelegate?
+    weak var viewDelegate: SpaceExploreRoomViewModelViewDelegate?
+    weak var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate?
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceId: String, spaceName: String?) {
-        self.session = session
-        self.spaceId = spaceId
-        self.spaceName = spaceName
+    init(parameters: SpaceExploreRoomCoordinatorParameters) {
+        self.session = parameters.session
+        self.spaceId = parameters.spaceId
+        self.spaceName = parameters.spaceName
     }
     
     deinit {
@@ -73,15 +73,15 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
     
     // MARK: - Public
     
-    func process(viewAction: ShowSpaceExploreRoomViewAction) {
+    func process(viewAction: SpaceExploreRoomViewAction) {
         switch viewAction {
         case .loadData:
             self.loadData()
         case .complete(let selectedItem, let sourceView):
-            self.coordinatorDelegate?.showSpaceExploreRoomViewModel(self, didSelect: selectedItem, from: sourceView)
+            self.coordinatorDelegate?.spaceExploreRoomViewModel(self, didSelect: selectedItem, from: sourceView)
         case .cancel:
             self.cancelOperations()
-            self.coordinatorDelegate?.showSpaceExploreRoomViewModelDidCancel(self)
+            self.coordinatorDelegate?.spaceExploreRoomViewModelDidCancel(self)
         case .searchChanged(let newText):
             self.searchKeyword = newText
         }
@@ -117,8 +117,8 @@ final class ShowSpaceExploreRoomViewModel: ShowSpaceExploreRoomViewModelType {
         })
     }
     
-    private func update(viewState: ShowSpaceExploreRoomViewState) {
-        self.viewDelegate?.showSpaceExploreRoomViewModel(self, didUpdateViewState: viewState)
+    private func update(viewState: SpaceExploreRoomViewState) {
+        self.viewDelegate?.spaceExploreRoomViewModel(self, didUpdateViewState: viewState)
     }
     
     private func cancelOperations() {

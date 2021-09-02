@@ -18,8 +18,8 @@
 
 import Foundation
 
-/// ShowSpaceChildRoomDetailViewController view actions exposed to view model
-enum ShowSpaceChildRoomDetailViewAction {
+/// SpaceChildRoomDetailViewController view actions exposed to view model
+enum SpaceChildRoomDetailViewAction {
     case loadData
     case complete
     case cancel

@@ -234,16 +234,6 @@ internal enum StoryboardScene {
 
     internal static let searchableDirectoryViewController = SceneType<Riot.ShowDirectoryViewController>(storyboard: ShowDirectoryViewController.self, identifier: "SearchableDirectoryViewController")
   }
-  internal enum ShowSpaceChildRoomDetailViewController: StoryboardType {
-    internal static let storyboardName = "ShowSpaceChildRoomDetailViewController"
-
-    internal static let initialScene = InitialSceneType<Riot.ShowSpaceChildRoomDetailViewController>(storyboard: ShowSpaceChildRoomDetailViewController.self)
-  }
-  internal enum ShowSpaceExploreRoomViewController: StoryboardType {
-    internal static let storyboardName = "ShowSpaceExploreRoomViewController"
-
-    internal static let initialScene = InitialSceneType<Riot.ShowSpaceExploreRoomViewController>(storyboard: ShowSpaceExploreRoomViewController.self)
-  }
   internal enum SideMenuViewController: StoryboardType {
     internal static let storyboardName = "SideMenuViewController"
 
@@ -253,6 +243,16 @@ internal enum StoryboardScene {
     internal static let storyboardName = "SimpleScreenTemplateViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SimpleScreenTemplateViewController>(storyboard: SimpleScreenTemplateViewController.self)
+  }
+  internal enum SpaceChildRoomDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceChildRoomDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceChildRoomDetailViewController>(storyboard: SpaceChildRoomDetailViewController.self)
+  }
+  internal enum SpaceExploreRoomViewController: StoryboardType {
+    internal static let storyboardName = "SpaceExploreRoomViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceExploreRoomViewController>(storyboard: SpaceExploreRoomViewController.self)
   }
   internal enum SpaceFeatureUnaivableViewController: StoryboardType {
     internal static let storyboardName = "SpaceFeatureUnaivableViewController"

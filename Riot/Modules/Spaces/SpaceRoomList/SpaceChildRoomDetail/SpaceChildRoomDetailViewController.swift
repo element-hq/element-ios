@@ -18,7 +18,7 @@
 
 import UIKit
 
-final class ShowSpaceChildRoomDetailViewController: UIViewController {
+final class SpaceChildRoomDetailViewController: UIViewController {
     
     // MARK: - Constants
     
@@ -42,15 +42,15 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
 
     // MARK: Private
 
-    private var viewModel: ShowSpaceChildRoomDetailViewModelType!
+    private var viewModel: SpaceChildRoomDetailViewModelType!
     private var theme: Theme!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: ShowSpaceChildRoomDetailViewModelType) -> ShowSpaceChildRoomDetailViewController {
-        let viewController = StoryboardScene.ShowSpaceChildRoomDetailViewController.initialScene.instantiate()
+    class func instantiate(with viewModel: SpaceChildRoomDetailViewModelType) -> SpaceChildRoomDetailViewController {
+        let viewController = StoryboardScene.SpaceChildRoomDetailViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
         return viewController
@@ -131,7 +131,7 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
         self.joinButton.setTitle(VectorL10n.join, for: .normal)
     }
 
-    private func render(viewState: ShowSpaceChildRoomDetailViewState) {
+    private func render(viewState: SpaceChildRoomDetailViewState) {
         switch viewState {
         case .loading:
             self.renderLoading()
@@ -177,17 +177,17 @@ final class ShowSpaceChildRoomDetailViewController: UIViewController {
 }
 
 
-// MARK: - ShowSpaceChildRoomDetailViewModelViewDelegate
-extension ShowSpaceChildRoomDetailViewController: ShowSpaceChildRoomDetailViewModelViewDelegate {
+// MARK: - SpaceChildRoomDetailViewModelViewDelegate
+extension SpaceChildRoomDetailViewController: SpaceChildRoomDetailViewModelViewDelegate {
 
-    func showSpaceChildRoomDetailViewModel(_ viewModel: ShowSpaceChildRoomDetailViewModelType, didUpdateViewState viewSate: ShowSpaceChildRoomDetailViewState) {
+    func spaceChildRoomDetailViewModel(_ viewModel: SpaceChildRoomDetailViewModelType, didUpdateViewState viewSate: SpaceChildRoomDetailViewState) {
         self.render(viewState: viewSate)
     }
 }
 
 // MARK: - SlidingModalPresentable
 
-extension ShowSpaceChildRoomDetailViewController: SlidingModalPresentable {
+extension SpaceChildRoomDetailViewController: SlidingModalPresentable {
     
     func allowsDismissOnBackgroundTap() -> Bool {
         return true
