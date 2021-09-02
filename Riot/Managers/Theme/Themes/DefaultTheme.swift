@@ -82,7 +82,6 @@ class DefaultTheme: NSObject, Theme {
     var scrollBarStyle: UIScrollView.IndicatorStyle = .default
     var keyboardAppearance: UIKeyboardAppearance = .light
     
-    @available(iOS 12.0, *)
     var userInterfaceStyle: UIUserInterfaceStyle {
         return .light
     }
@@ -149,12 +148,7 @@ class DefaultTheme: NSObject, Theme {
     }
     
     ///  MARK: - Theme v2
+    var colors: ColorsUIKit = LightColors.uiKit
     
-    lazy var colors: Colors = {
-        return LightColors()
-    }()
-    
-    lazy var fonts: Fonts = {
-        return ElementFonts()
-    }()
+    var fonts: FontsUIKit = FontsUIKit(values: ElementFonts())
 }

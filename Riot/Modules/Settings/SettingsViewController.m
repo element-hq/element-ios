@@ -94,6 +94,9 @@ enum
     NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
+    NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX,
+    NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX,
 };
 
 enum
@@ -156,6 +159,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 #pragma mark - SettingsViewController
 
 @interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
+NotificationSettingsCoordinatorBridgePresenterDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
@@ -241,6 +245,7 @@ TableViewSectionsDelegate>
 @property (nonatomic) UNNotificationSettings *systemNotificationSettings;
 
 @property (nonatomic, weak) DeactivateAccountViewController *deactivateAccountViewController;
+@property (nonatomic, strong) NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter;
 @property (nonatomic, strong) SignOutAlertPresenter *signOutAlertPresenter;
 @property (nonatomic, weak) UIButton *signOutButton;
 @property (nonatomic, strong) SingleImagePickerPresenter *imagePickerPresenter;
@@ -361,10 +366,25 @@ TableViewSectionsDelegate>
     {
         [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT];
     }
-    [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
+    
+    if (@available(iOS 14.0, *)) {
+        // Don't add Global settings message for iOS 14+
+    } else {
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
+    }
+
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX];
-    sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications_settings", @"Vector", nil);
+    
+    if (@available(iOS 14.0, *)) {
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX];
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX];
+        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX];
+    } else {
+        // Don't add new sections on pre iOS 14
+    }
+
+    sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications", @"Vector", nil);
     [tmpSections addObject:sectionNotificationSettings];
     
     if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
@@ -716,7 +736,7 @@ TableViewSectionsDelegate>
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.adjustedContentInset.left, -self.tableView.adjustedContentInset.top) animated:YES];
         
     }];
     
@@ -1896,6 +1916,23 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
+        else if (row == NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX || row == NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX || row == NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX)
+        {
+            cell = [self getDefaultTableViewCell:tableView];
+            if (row == NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_default", @"Vector", nil);
+            }
+            else if (row == NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_mentions_and_keywords", @"Vector", nil);
+            }
+            else if (row == NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX)
+            {
+                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
+            }
+            [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+        }
     }
     else if (section == SECTION_TAG_CALLS)
     {
@@ -2709,6 +2746,22 @@ TableViewSectionsDelegate>
 
                     [self pushViewController:securityViewController];
                     break;
+                }
+            }
+        }
+        else if (section == SECTION_TAG_NOTIFICATIONS)
+        {
+            if (@available(iOS 14.0, *)) {
+                switch (row) {
+                    case NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX:
+                        [self showNotificationSettings:NotificationSettingsScreenDefaultNotifications];
+                        break;
+                    case NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX:
+                        [self showNotificationSettings:NotificationSettingsScreenMentionsAndKeywords];
+                        break;
+                    case NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX:
+                        [self showNotificationSettings:NotificationSettingsScreenOther];
+                        break;
                 }
             }
         }
@@ -4045,6 +4098,31 @@ TableViewSectionsDelegate>
 {
     [deactivateAccountViewController dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - NotificationSettingsCoordinatorBridgePresenter
+
+- (void)showNotificationSettings: (NotificationSettingsScreen)screen API_AVAILABLE(ios(14.0))
+{
+    NotificationSettingsCoordinatorBridgePresenter *notificationSettingsBridgePresenter = [[NotificationSettingsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession];
+    notificationSettingsBridgePresenter.delegate = self;
+    
+    MXWeakify(self);
+    [notificationSettingsBridgePresenter pushFrom:self.navigationController animated:YES screen:screen popCompletion:^{
+        MXStrongifyAndReturnIfNil(self);
+        self.notificationSettingsBridgePresenter = nil;
+    }];
+    
+    self.notificationSettingsBridgePresenter = notificationSettingsBridgePresenter;
+}
+
+#pragma mark - NotificationSettingsCoordinatorBridgePresenterDelegate
+
+- (void)notificationSettingsCoordinatorBridgePresenterDelegateDidComplete:(NotificationSettingsCoordinatorBridgePresenter *)coordinatorBridgePresenter API_AVAILABLE(ios(14.0))
+{
+    [self.notificationSettingsBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.notificationSettingsBridgePresenter = nil;
+}
+
 
 #pragma mark - SecureBackupSetupCoordinatorBridgePresenter
 

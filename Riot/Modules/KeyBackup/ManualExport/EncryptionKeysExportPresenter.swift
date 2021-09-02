@@ -67,27 +67,26 @@ final class EncryptionKeysExportPresenter: NSObject {
                          toExportKeysToFile: self.keyExportFileURL,
                          onLoading: { [weak self] (loading) in
 
-                            guard let sself = self else {
+                            guard let self = self else {
                                 return
                             }
                             
                             if loading {
-                                sself.activityViewPresenter.removeCurrentActivityIndicator(animated: false)
-                                sself.activityViewPresenter.presentActivityIndicator(on: viewController.view, animated: true)
+                                self.activityViewPresenter.presentActivityIndicator(on: viewController.view, animated: true)
                             } else {
-                                sself.activityViewPresenter.removeCurrentActivityIndicator(animated: true)
+                                self.activityViewPresenter.removeCurrentActivityIndicator(animated: true)
                             }
         }, onComplete: { [weak self] (success) in
-            guard let sself = self else {
+            guard let self = self else {
                 return
             }
 
             guard success else {
-                sself.encryptionKeysExportView = nil
+                self.encryptionKeysExportView = nil
                 return
             }
 
-            sself.presentInteractionDocumentController()
+            self.presentInteractionDocumentController()
         })
         
         self.encryptionKeysExportView = keysExportView

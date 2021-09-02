@@ -73,3 +73,51 @@
 
 /* A user added a Jitsi call to a room */
 "GROUP_CALL_STARTED" = "群组通话已启动";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ 更新了个人资料";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ 更改了头像";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ 更改了名字";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ 将名称更改为 %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ 发送了一则回应";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ 以 %@ 回应";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ 发了个文件 %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ 发了条语音消息";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ 发了个音频文件 %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ 发了个视频";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ 发了张图";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ 回复于 %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ 回复了";
+/** General **/
+
+"NOTIFICATION" = "通知";

@@ -129,6 +129,8 @@ final class TemplateScreenViewController: UIViewController {
 
     private func render(viewState: TemplateScreenViewState) {
         switch viewState {
+        case .idle:
+            break
         case .loading:
             self.renderLoading()
         case .loaded(let displayName):

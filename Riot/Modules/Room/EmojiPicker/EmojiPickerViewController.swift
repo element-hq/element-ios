@@ -92,9 +92,7 @@ final class EmojiPickerViewController: UIViewController {
         
         // Enable to hide search bar on scrolling after first time view appear
         // Commenting out below code for now. It broke the navigation bar background. For details: https://github.com/vector-im/riot-ios/issues/3271
-//        if #available(iOS 11.0, *) {
-//            self.navigationItem.hidesSearchBarWhenScrolling = true
-//        }
+        // self.navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -140,9 +138,7 @@ final class EmojiPickerViewController: UIViewController {
         
         self.setupCollectionView()
         
-        if #available(iOS 11.0, *) {
-            self.setupSearchController()
-        }
+        self.setupSearchController()
     }
     
     private func setupCollectionView() {
@@ -158,10 +154,8 @@ final class EmojiPickerViewController: UIViewController {
             collectionViewFlowLayout.sectionInset = CollectionViewLayout.sectionInsets
             collectionViewFlowLayout.sectionHeadersPinToVisibleBounds = true // Enable sticky headers
             
-            // Avoid device notch in landascape (e.g. iPhone X)
-            if #available(iOS 11.0, *) {
-                collectionViewFlowLayout.sectionInsetReference = .fromSafeArea
-            }
+            // Avoid device notch in landscape (e.g. iPhone X)
+            collectionViewFlowLayout.sectionInsetReference = .fromSafeArea
         }
         
         self.collectionView.register(supplementaryViewType: EmojiPickerHeaderView.self, ofKind: UICollectionView.elementKindSectionHeader)
@@ -175,11 +169,9 @@ final class EmojiPickerViewController: UIViewController {
         searchController.searchBar.placeholder = VectorL10n.searchDefaultPlaceholder
         searchController.hidesNavigationBarDuringPresentation = false
         
-        if #available(iOS 11.0, *) {
-            self.navigationItem.searchController = searchController
-            // Make the search bar visible on first view appearance
-            self.navigationItem.hidesSearchBarWhenScrolling = false
-        }
+        self.navigationItem.searchController = searchController
+        // Make the search bar visible on first view appearance
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         
         self.definesPresentationContext = true
         

@@ -32,4 +32,6 @@ protocol TemplateScreenViewModelType {
     var coordinatorDelegate: TemplateScreenViewModelCoordinatorDelegate? { get set }
     
     func process(viewAction: TemplateScreenViewAction)
+    
+    var viewState: TemplateScreenViewState { get }
 }

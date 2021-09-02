@@ -18,7 +18,6 @@ import Foundation
 import AuthenticationServices
 
 /// Provides context to target where in an application's UI the authorization view should be shown.
-@available(iOS 12.0, *)
 class SSOAuthenticationSessionContextProvider: NSObject, SSOAuthenticationSessionContextProviding, ASWebAuthenticationPresentationContextProviding {
     let window: UIWindow
     
@@ -33,7 +32,6 @@ class SSOAuthenticationSessionContextProvider: NSObject, SSOAuthenticationSessio
 
 /// SSOAuthentificationSession is session used to authenticate a user through a web service on iOS 12+. It uses ASWebAuthenticationSession.
 /// More information: https://developer.apple.com/documentation/authenticationservices/authenticating_a_user_through_a_web_service
-@available(iOS 12.0, *)
 final class SSOAuthentificationSession: SSOAuthentificationSessionProtocol {
     
     // MARK: - Constants
