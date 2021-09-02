@@ -85,6 +85,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         
         theme.applyStyle(onSearchBar: self.searchBarView)
         self.titleView.update(theme: theme)
+        self.emptyView.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -110,7 +111,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         self.emptyView.alpha = 0
         self.view.insertSubview(self.emptyView, at: 0)
-        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesNoResultFoundTitle, informationText: VectorL10n.spacesNoMemberFoundDetail)
     }
 
     private func render(viewState: SpaceMemberListViewState) {
@@ -132,6 +132,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.mxRoom = space.room
         self.titleView.subtitleLabel.text = space.summary?.displayname
+        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesNoResultFoundTitle, informationText: VectorL10n.spacesNoMemberFoundDetail(space.summary?.displayname ?? ""))
     }
     
     private func render(error: Error) {

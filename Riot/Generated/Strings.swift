@@ -4762,9 +4762,9 @@ internal enum VectorL10n {
   internal static var spacesLeftPanelTitle: String { 
     return VectorL10n.tr("Vector", "spaces_left_panel_title") 
   }
-  /// Looking for someone not in space name? For now, you can invite them on web or desktop.
-  internal static var spacesNoMemberFoundDetail: String { 
-    return VectorL10n.tr("Vector", "spaces_no_member_found_detail") 
+  /// Looking for someone not in %@? For now, you can invite them on web or desktop.
+  internal static func spacesNoMemberFoundDetail(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_no_member_found_detail", p1)
   }
   /// No results found
   internal static var spacesNoResultFoundTitle: String { 
