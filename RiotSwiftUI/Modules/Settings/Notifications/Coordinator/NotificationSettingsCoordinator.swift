@@ -41,7 +41,7 @@ final class NotificationSettingsCoordinator: NotificationSettingsCoordinatorType
     
     init(session: MXSession, screen: NotificationSettingsScreen) {
         self.session = session
-        let notificationSettingsService = NotificationSettingsService(session: session)
+        let notificationSettingsService = MXNotificationSettingsService(session: session)
         let viewModel = NotificationSettingsViewModel(notificationSettingsService: notificationSettingsService, ruleIds: screen.pushRules)
         let viewController: UIViewController
         switch screen {

@@ -16,10 +16,8 @@
 
 import Foundation
 
-struct MockNotificationPushRule: NotificationPushRule {
-    var ruleId: String!
-    var enabled: Bool
-    func matches(standardActions: NotificationStandardActions?) -> Bool {
-        return false
-    }
+protocol NotificationPushRuleType {
+    var ruleId: String! { get }
+    var enabled: Bool { get }
+    func matches(standardActions: NotificationStandardActions?) -> Bool
 }

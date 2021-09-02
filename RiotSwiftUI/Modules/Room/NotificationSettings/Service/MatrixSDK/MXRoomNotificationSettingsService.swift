@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class RoomNotificationSettingsService: RoomNotificationSettingsServiceType {
+final class MXRoomNotificationSettingsService: RoomNotificationSettingsServiceType {
     
     typealias Completion = () -> Void
     
