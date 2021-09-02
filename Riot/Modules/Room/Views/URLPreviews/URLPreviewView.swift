@@ -107,6 +107,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         descriptionLabel.font = theme.fonts.caption1
         
         loadingLabel.textColor = siteNameLabel.textColor
+        loadingLabel.font = siteNameLabel.font
         
         let closeButtonAsset = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.urlPreviewCloseDark : Asset.Images.urlPreviewClose
         closeButton.setImage(closeButtonAsset.image, for: .normal)
