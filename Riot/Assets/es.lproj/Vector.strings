@@ -638,3 +638,12 @@
 "auth_email_is_required" = "No hay ningún servidor de identidad configurado, por lo que no puedes añadir una dirección de correo para recuperar tu contraseña en el futuro.";
 "auth_add_email_phone_message_2" = "Dinos tu correo para recuperar tu cuenta en un futuro. Además, también puedes activar que la gente te encuentre al buscar tu correo o número de teléfono.";
 "callbar_only_single_active_group" = "Toca para unirte a la llamada en grupo (%@)";
+"room_accessibility_integrations" = "Integraciones";
+"room_message_unable_open_link_error_message" = "No se ha podido abrir el enlace.";
+"room_accessiblity_scroll_to_bottom" = "Ir al final";
+
+// Chat
+"room_slide_to_end_group_call" = "Desliza para terminar la llamada para todo el mundo";
+"room_member_power_level_custom_in" = "Personalizado (%@) en %@";
+"room_member_power_level_moderator_in" = "Moderador en %@";
+"room_member_power_level_admin_in" = "Admin en %@";
