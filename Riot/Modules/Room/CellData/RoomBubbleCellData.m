@@ -1115,6 +1115,13 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         
     } failure:^(NSError * _Nullable error) {
         MXLogDebug(@"[RoomBubbleCellData] Failed to get url preview")
+        
+        // Don't show a preview and send a notification for refresh
+        self.showURLPreview = NO;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:self];
+        });
     }];
 }
 
