@@ -767,6 +767,19 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     BOOL shouldAddEvent = YES;
     
+    // For unencrypted rooms, don't allow any events to be added
+    // after a bubble component that contains a link so than any URL
+    // preview is for the last bubble component in the cell.
+    if (!self.isEncryptedRoom && self.hasLink && self.bubbleComponents.lastObject)
+    {
+        MXKRoomBubbleComponent *lastComponent = self.bubbleComponents.lastObject;
+        
+        if (event.originServerTs > lastComponent.event.originServerTs)
+        {
+            shouldAddEvent = NO;
+        }
+    }
+    
     switch (self.tag)
     {
         case RoomBubbleCellDataTagKeyVerificationNoDisplay:
@@ -813,29 +826,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                     break;
                 }
                 
-                if (self.bubbleComponents.lastObject)
-                {
-                    MXKRoomBubbleComponent *lastComponent = self.bubbleComponents.lastObject;
-                    // If the new event comes after the last bubble component
-                    if (event.originServerTs > lastComponent.event.originServerTs)
-                    {
-                        // FIXME: This should be for all event types, not just messages.
-                        // Don't add it if there is already a link in the cell data
-                        if (self.hasLink && !self.isEncryptedRoom)
-                        {
-                            shouldAddEvent = NO;
-                        }
-                        break;
-                    }
-                }
-                    
-                if (self.bubbleComponents.firstObject)
+                // If the message contains a link and comes before this cell data, don't add it to
+                // ensure that a URL preview is only shown for the last component on some new cell data.
+                if (!self.isEncryptedRoom && self.bubbleComponents.firstObject)
                 {
                     MXKRoomBubbleComponent *firstComponent = self.bubbleComponents.firstObject;
-                    // If the new event event comes before the first bubble component
+                    
                     if (event.originServerTs < firstComponent.event.originServerTs)
                     {
-                        // Don't add it to the cell data if it contains a link
                         NSString *messageBody = event.content[@"body"];
                         if (messageBody && [messageBody mxk_firstURLDetected])
                         {
