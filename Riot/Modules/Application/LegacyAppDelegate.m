@@ -4328,6 +4328,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXMediaManager clearCache];
     [MXKAttachment clearCache];
     [VoiceMessageAttachmentCacheManagerBridge clearCache];
+    [URLPreviewManager.shared clearStore];
 }
 
 @end
