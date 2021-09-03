@@ -389,7 +389,7 @@ const CGFloat kTypingCellHeight = 24;
                     URLPreviewView *urlPreviewView;
                     
                     // Show a URL preview if the component has a link that should be previewed.
-                    if (link && cellData.showURLPreview)
+                    if (link && RiotSettings.shared.roomScreenShowsURLPreviews && cellData.showURLPreview)
                     {
                         urlPreviewView = [URLPreviewView instantiate];
                         urlPreviewView.preview = cellData.urlPreviewData;

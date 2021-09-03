@@ -160,6 +160,9 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenAllowFilesAction", defaultValue: BuildSettings.roomScreenAllowFilesAction, storage: defaults)
     var roomScreenAllowFilesAction
     
+    @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
+    var roomScreenShowsURLPreviews
+    
     // MARK: - Room Contextual Menu
     
     @UserDefault(key: "roomContextualMenuShowMoreOptionForMessages", defaultValue: BuildSettings.roomContextualMenuShowMoreOptionForMessages, storage: defaults)
