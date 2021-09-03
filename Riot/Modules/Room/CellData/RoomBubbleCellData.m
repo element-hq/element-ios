@@ -1098,6 +1098,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     // Set the preview data.
     MXWeakify(self);
     
+    NSDictionary<NSString *, NSString*> *userInfo = @{
+        @"eventId": lastComponent.event.eventId,
+        @"roomId": self.roomId
+    };
+    
     [URLPreviewManager.shared previewFor:lastComponent.link
                                      and:lastComponent.event
                                     with:self.mxSession
@@ -1108,7 +1113,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         self.urlPreviewData = urlPreviewData;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:self];
+            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];
         });
         
     } failure:^(NSError * _Nullable error) {
@@ -1118,7 +1123,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         self.showURLPreview = NO;
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:self];
+            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];
         });
     }];
 }

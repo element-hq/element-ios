@@ -97,10 +97,17 @@ const CGFloat kTypingCellHeight = 24;
         }];
         
         // Observe URL preview updates.
-        kURLPreviewDidUpdateNotificationObserver = [NSNotificationCenter.defaultCenter addObserverForName:URLPreviewDidUpdateNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull note) {
+        kURLPreviewDidUpdateNotificationObserver = [NSNotificationCenter.defaultCenter addObserverForName:URLPreviewDidUpdateNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull notification) {
             
-            // Refresh all cells.
-            [self refreshCells];
+            if (![(NSString*)notification.userInfo[@"roomId"] isEqualToString:self.roomId] || !self.delegate)
+            {
+                return;
+            }
+            
+            // Refresh the updated cell.
+            // Note - it doesn't appear as though MXKRoomViewController actually uses the index path.
+            NSInteger index = [self indexOfCellDataWithEventId:(NSString*)notification.userInfo[@"eventId"]];
+            [self.delegate dataSource:self didCellChange:[NSIndexPath indexPathWithIndex:index]];
         }];
         
         [self registerKeyVerificationRequestNotification];
