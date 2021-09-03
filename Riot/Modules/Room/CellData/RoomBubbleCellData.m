@@ -190,6 +190,19 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     return self;
 }
 
+- (NSUInteger)updateEvent:(NSString *)eventId withEvent:(MXEvent *)event
+{
+    NSUInteger retVal = [super updateEvent:eventId withEvent:event];
+
+    // Update any URL preview data too.
+    if (self.hasLink)
+    {
+        [self loadURLPreview];
+    }
+
+    return retVal;
+}
+
 - (void)prepareBubbleComponentsPosition
 {
     if (shouldUpdateComponentsPosition)
@@ -1077,6 +1090,13 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return;
     }
     
+    // If there is existing preview data, the message has been edited
+    // Clear the data to show the loading state when the preview isn't cached
+    if (self.urlPreviewData)
+    {
+        self.urlPreviewData = nil;
+    }
+    
     // Set the preview data.
     MXWeakify(self);
     
@@ -1088,7 +1108,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         
         // Update the preview data and send a notification for refresh
         self.urlPreviewData = urlPreviewData;
-        [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:self];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:self];
+        });
         
     } failure:^(NSError * _Nullable error) {
         MXLogDebug(@"[RoomBubbleCellData] Failed to get url preview")
