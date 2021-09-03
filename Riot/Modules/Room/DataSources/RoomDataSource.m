@@ -462,14 +462,14 @@ const CGFloat kTypingCellHeight = 24;
                             }
                             
                             // The top constraint may need to include the URL preview view
-                            CGFloat topConstraintConstant;
+                            NSLayoutConstraint *topConstraint;
                             if (urlPreviewView)
                             {
-                                topConstraintConstant = bottomPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + urlPreviewView.frame.size.height + RoomBubbleCellLayout.reactionsViewTopMargin;
+                                topConstraint = [reactionsView.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor constant:RoomBubbleCellLayout.reactionsViewTopMargin];
                             }
                             else
                             {
-                                topConstraintConstant = bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin;
+                                topConstraint = [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin];
                             }
                             
                             // Force receipts container size
@@ -477,7 +477,7 @@ const CGFloat kTypingCellHeight = 24;
                              @[
                                [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
                                [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
-                               [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:topConstraintConstant]
+                               topConstraint
                                ]];
                         }
                     }
