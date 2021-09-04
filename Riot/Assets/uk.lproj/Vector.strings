@@ -163,7 +163,7 @@
 "room_participants_leave_prompt_msg_for_dm" = "Ви впевненні, що бажаєте залишити?";
 "room_participants_leave_prompt_title_for_dm" = "Вийти";
 "client_android_name" = "Element Android";
-"store_promotional_text" = "Додаток для чату та сумісної роботи, що зберігає конфіденційність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
+"store_promotional_text" = "Застосунок для бесід та співпраці, що зберігає приватність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
 "settings_three_pids_management_information_part3" = ".";
 "settings_three_pids_management_information_part1" = "Керуйте звідси адресами е-пошти чи номерами телефонів, які можна застосовувати для входу або відновлення облікового запису. Контролюйте хто і як може вас знайти ";
 "contacts_address_book_no_identity_server" = "Сервер ідентифікації не налаштований";
@@ -184,7 +184,7 @@
 "settings_remove_prompt_title" = "Підтвердження";
 "settings_surname" = "Прізвище";
 "settings_first_name" = "Ім’я";
-"settings_display_name" = "Ім’я, що відображається";
+"settings_display_name" = "Показуване ім’я";
 "settings_profile_picture" = "Зображення профілю";
 "settings_sign_out_e2e_warn" = "Ви втратите всі ваші ключі наскрізного шифрування. Це означає що ви більше не будете мати змогу читати старі повідомлення у зашифрованих кімнатах на цьому пристрої.";
 "settings_sign_out_confirmation" = "Ви впевнені?";
@@ -326,3 +326,100 @@
 "room_participants_action_invite" = "Запросити";
 "room_ongoing_conference_call_close" = "Закрити";
 "callbar_only_single_active_group" = "Торкніться, щоб приєднатися до групового виклику (%@)";
+"room_title_invite_members" = "Запросити учасників";
+"room_title_multiple_active_members" = "%@/%@ активних учасників";
+
+// Room Title
+"room_title_new_room" = "Нова кімната";
+"unknown_devices_title" = "Невідомий сеанс";
+"unknown_devices_send_anyway" = "Усе одно надіслати";
+"media_type_accessibility_sticker" = "Наліпка";
+"media_type_accessibility_file" = "Файл";
+"media_type_accessibility_location" = "Місцеперебування";
+"media_type_accessibility_video" = "Відео";
+"media_type_accessibility_audio" = "Аудіо";
+"media_type_accessibility_image" = "Зображення";
+"call_incoming_video" = "Вхідний відеовиклик…";
+"call_incoming_voice" = "Вхідний виклик…";
+"call_incoming_video_prompt" = "Вхідний відеовиклик від %@";
+
+// Call
+"call_incoming_voice_prompt" = "Вхідний голосовий виклик від %@";
+"room_does_not_exist" = "%@ не існує";
+"large_badge_value_k_format" = "%.1fK";
+"yesterday" = "Учора";
+"today" = "Сьогодні";
+"you" = "Ви";
+
+// Others
+"or" = "або";
+"event_formatter_widget_removed_by_you" = "Ви вилучили віджет: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Ви додали віджет: %@";
+"event_formatter_group_call_incoming" = "%@ у %@";
+"event_formatter_group_call_leave" = "Вийти";
+"room_join_group_call" = "Приєднатися";
+"event_formatter_group_call" = "Груповий виклик";
+"event_formatter_call_end_call" = "Завершити виклик";
+"event_formatter_call_answer" = "Відповісти";
+"service_terms_modal_decline_button" = "Відхилити";
+"key_verification_tile_request_incoming_approval_decline" = "Відхилити";
+"event_formatter_call_decline" = "Відхилити";
+"event_formatter_call_back" = "Перетелефонувати";
+"event_formatter_call_connection_failed" = "Не вдалося з'єднатися";
+"event_formatter_call_missed_video" = "Пропущений відеовиклик";
+"event_formatter_call_missed_voice" = "Пропущений голосовий виклик";
+"event_formatter_call_you_declined" = "Виклик відхилено";
+"event_formatter_call_active_video" = "Активний відеовиклик";
+"event_formatter_call_active_voice" = "Активний голосовий виклик";
+"event_formatter_call_incoming_video" = "Вхідний відеовиклик";
+"event_formatter_call_incoming_voice" = "Вхідний голосовий виклик";
+"event_formatter_call_has_ended_with_time" = "Виклик завершено • %@";
+"event_formatter_call_has_ended" = "Виклик завершено";
+"event_formatter_call_ringing" = "Виклик…";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_contacts" = "ЛОКАЛЬНІ КОНТАКТИ";
+"settings_ignored_users" = "НЕХТУВАНІ КОРИСТУВАЧІ";
+"settings_user_interface" = "КОРИСТУВАЦЬКИЙ ІНТЕРФЕЙС";
+"settings_integrations" = "ІНТЕГРАЦІЇ";
+"settings_identity_server_settings" = "СЕРВЕР ІДЕНТИФІКАЦІЇ";
+"settings_calls_settings" = "ВИКЛИКИ";
+"settings_notifications" = "СПОВІЩЕННЯ";
+"settings_user_settings" = "НАЛАШТУВАННЯ КОРИСТУВАЧА";
+"event_formatter_call_connecting" = "З'єднання…";
+"settings_config_identity_server" = "Сервер ідентифікації %@";
+"settings_config_home_server" = "Домашній сервер %@";
+"settings_clear_cache" = "Очистити кеш";
+"settings_report_bug" = "Звіт про ваду";
+"settings_mark_all_as_read" = "Позначити всі повідомлення прочитаними";
+"settings_config_no_build_info" = "Немає відомостей про збірку";
+"room_details_notifs" = "Сповіщення";
+"room_details_room_name" = "Назва кімнати";
+"room_details_photo_for_dm" = "Світлина";
+"room_details_photo" = "Світлина кімнати";
+"room_details_settings" = "Налаштування";
+"account_logout_all" = "Вийти з усіх облікових записів";
+
+// Settings
+"settings_title" = "Налаштування";
+
+// Bug report
+"bug_report_title" = "Звіт про ваду";
+"e2e_key_backup_wrong_version_button_wasme" = "Це був я";
+"e2e_key_backup_wrong_version_button_settings" = "Налаштування";
+"settings_privacy_policy" = "Політика приватності";
+"settings_term_conditions" = "Умови та положення";
+"settings_copyright" = "Авторське право";
+"settings_olm_version" = "Версія Olm %@";
+"settings_version" = "Версія %@";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Утримуйте, щоб записати, відпустіть, щоб надіслати";
+"side_menu_app_version" = "Версія %@";
+"side_menu_action_feedback" = "Відгук";
+"side_menu_action_help" = "Довідка";
+"side_menu_action_settings" = "Налаштування";
