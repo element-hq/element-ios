@@ -210,8 +210,8 @@
 
 // Contacts
 "contacts_address_book_section" = "ЛОКАЛЬНІ КОНТАКТИ";
-"directory_search_fail" = "Виникла помилка при отриманні даних";
-"directory_searching_title" = "Пошук в каталозі…";
+"directory_search_fail" = "Не вдалося отримати дані";
+"directory_searching_title" = "Пошук у каталозі…";
 "directory_cell_description" = "%tu кімнат";
 "search_no_result" = "Немає результатів";
 "search_people_placeholder" = "Пошук користувача за його ID, іменем або електронною поштою";
@@ -423,3 +423,140 @@
 "side_menu_action_feedback" = "Відгук";
 "side_menu_action_help" = "Довідка";
 "side_menu_action_settings" = "Налаштування";
+"room_preview_try_join_an_unknown_room_default" = "кімната";
+"unknown_devices_answer_anyway" = "Усе одно відповісти";
+"unknown_devices_call_anyway" = "Усе одно викликати";
+"room_multiple_typing_notification" = "%@ та інші";
+"room_place_voice_call" = "Голосовий виклик";
+"room_widget_permission_room_id_permission" = "ID кімнати";
+"room_widget_permission_widget_id_permission" = "ID віджета";
+"room_widget_permission_theme_permission" = "Ваша тема";
+"room_widget_permission_user_id_permission" = "Ваш ID користувача";
+"room_widget_permission_avatar_url_permission" = "URL-адреса вашого аватара";
+"room_widget_permission_display_name_permission" = "Ваше показуване ім'я";
+"room_widget_permission_creator_info_title" = "Цей віджет додано:";
+
+// Room widget permissions
+"room_widget_permission_title" = "Завантажити віджет";
+"widget_picker_manage_integrations" = "Керувати інтеграціями…";
+"room_accessibility_video_call" = "Відеовиклик";
+"room_accessibility_call" = "Виклик";
+"room_accessibility_upload" = "Вивантажити";
+"room_accessibility_integrations" = "Інтеграції";
+
+// Widget Picker
+"widget_picker_title" = "Інтеграції";
+"room_details_integrations" = "Інтеграції";
+"room_details_search" = "Шукати кімнату";
+"room_details_files" = "Вивантаження";
+"room_details_people" = "Учасники";
+"room_details_title_for_dm" = "Подробиці";
+
+
+// Room Details
+"room_details_title" = "Подробиці про кімнату";
+"call_transfer_error_title" = "Помилка";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Помилка";
+"emoji_picker_activity_category" = "Діяльність";
+"emoji_picker_nature_category" = "Тварини та природа";
+"emoji_picker_people_category" = "Емоджі та люди";
+"emoji_picker_flags_category" = "Прапори";
+"emoji_picker_symbols_category" = "Символи";
+"emoji_picker_objects_category" = "Об'єкти";
+"emoji_picker_places_category" = "Подорожі та місця";
+"emoji_picker_foods_category" = "Їжа та напої";
+
+// MARK: Reaction history
+"reaction_history_title" = "Реакції";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Реакції";
+"file_upload_error_unsupported_file_type_message" = "Непідтримуваний тип файлу.";
+
+// MARK: File upload
+"file_upload_error_title" = "Файл вивантажити";
+"device_verification_emoji_pin" = "Кнопка";
+"device_verification_emoji_folder" = "Тека";
+"device_verification_emoji_headphones" = "Навушники";
+"device_verification_emoji_anchor" = "Якір";
+"device_verification_emoji_bell" = "Дзвінок";
+"device_verification_emoji_trumpet" = "Труба";
+"device_verification_emoji_guitar" = "Гітара";
+"device_verification_emoji_ball" = "М'яч";
+"device_verification_emoji_trophy" = "Кубок";
+"device_verification_emoji_rocket" = "Ракета";
+"device_verification_emoji_aeroplane" = "Літак";
+"device_verification_emoji_bicycle" = "Велоcипед";
+"device_verification_emoji_train" = "Потяг";
+"device_verification_emoji_flag" = "Прапор";
+"device_verification_emoji_telephone" = "Телефон";
+"device_verification_emoji_hammer" = "Молоток";
+"device_verification_emoji_key" = "Ключ";
+"device_verification_emoji_lock" = "Замок";
+"device_verification_emoji_scissors" = "Ножиці";
+"device_verification_emoji_paperclip" = "Спиначка";
+"device_verification_emoji_pencil" = "Олівець";
+"device_verification_emoji_book" = "Книга";
+"device_verification_emoji_light bulb" = "Лампочка";
+"device_verification_emoji_gift" = "Подарунок";
+"device_verification_emoji_clock" = "Годинник";
+"device_verification_emoji_hourglass" = "Пісковий годинник";
+"device_verification_emoji_umbrella" = "Парасолька";
+"device_verification_emoji_thumbs up" = "Великий палець вгору";
+"device_verification_emoji_santa" = "Св. Миколай";
+"device_verification_emoji_spanner" = "Гайковий ключ";
+"device_verification_emoji_glasses" = "Окуляри";
+"device_verification_emoji_hat" = "Капелюх";
+"device_verification_emoji_robot" = "Робот";
+"device_verification_emoji_smiley" = "Посмішка";
+"device_verification_emoji_heart" = "Серце";
+"device_verification_emoji_cake" = "Пиріг";
+"device_verification_emoji_pizza" = "Піца";
+"device_verification_emoji_corn" = "Кукурудза";
+"device_verification_emoji_strawberry" = "Полуниця";
+"device_verification_emoji_apple" = "Яблуко";
+"device_verification_emoji_fire" = "Вогонь";
+"device_verification_emoji_cloud" = "Хмара";
+"device_verification_emoji_moon" = "Місяць";
+"device_verification_emoji_globe" = "Глобус";
+"device_verification_emoji_mushroom" = "Гриб";
+"device_verification_emoji_cactus" = "Кактус";
+"device_verification_emoji_tree" = "Дерево";
+"device_verification_emoji_flower" = "Квітка";
+"device_verification_emoji_butterfly" = "Метелик";
+"device_verification_emoji_octopus" = "Восьминіг";
+"device_verification_emoji_fish" = "Риба";
+"device_verification_emoji_turtle" = "Черепаха";
+"device_verification_emoji_penguin" = "Пінгвін";
+"device_verification_emoji_rooster" = "Півень";
+"device_verification_emoji_panda" = "Панда";
+"device_verification_emoji_rabbit" = "Кріль";
+"device_verification_emoji_elephant" = "Слон";
+"device_verification_emoji_pig" = "Порося";
+"device_verification_emoji_unicorn" = "Єдиноріг";
+"device_verification_emoji_horse" = "Кінь";
+"device_verification_emoji_lion" = "Лев";
+"device_verification_emoji_cat" = "Кіт";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Пес";
+"device_verification_emoji_banana" = "Банан";
+"room_details_banned_users_section" = "Заблоковані користувачі";
+"room_event_action_ban_prompt_reason" = "Причина блокування цього користувача";
+"room_participants_action_unban" = "Розблокувати";
+"room_participants_action_ban" = "Заблокувати у цій кімнаті";
+"room_intro_cell_information_dm_sentence1_part1" = "Це початок вашого особистого спілкування з ";
+"create_room_show_in_directory" = "Показати кімнату в каталозі";
+"directory_server_placeholder" = "matrix.org";
+"directory_server_all_rooms" = "Усі кімнати на сервері %@";
+"directory_server_picker_title" = "Вибрати каталог";
+
+// Directory
+"directory_title" = "Каталог";
+"settings_encrypted_direct_messages" = "Зашифровані особисті повідомлення";
+"settings_direct_messages" = "Особисті повідомлення";
+"directory_search_results_more_than" = ">%tu результатів знайдено для %@";
+"directory_search_results" = "%tu результатів знайдено для %@";
