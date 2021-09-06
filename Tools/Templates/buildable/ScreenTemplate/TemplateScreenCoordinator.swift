@@ -23,7 +23,7 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
     
     // MARK: Private
     
-    private let session: MXSession
+    private let parameters: TemplateScreenCoordinatorParameters
     private var templateScreenViewModel: TemplateScreenViewModelType
     private let templateScreenViewController: TemplateScreenViewController
     
@@ -36,16 +36,15 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
-        self.session = session
-        
-        let templateScreenViewModel = TemplateScreenViewModel(session: self.session)
+    init(parameters: TemplateScreenCoordinatorParameters) {
+        self.parameters = parameters
+        let templateScreenViewModel = TemplateScreenViewModel(session: self.parameters.session)
         let templateScreenViewController = TemplateScreenViewController.instantiate(with: templateScreenViewModel)
         self.templateScreenViewModel = templateScreenViewModel
         self.templateScreenViewController = templateScreenViewController
     }
     
-    // MARK: - Public methods
+    // MARK: - Public
     
     func start() {            
         self.templateScreenViewModel.coordinatorDelegate = self
