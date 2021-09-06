@@ -82,6 +82,7 @@ class DefaultTheme: NSObject, Theme {
     var scrollBarStyle: UIScrollView.IndicatorStyle = .default
     var keyboardAppearance: UIKeyboardAppearance = .light
     
+    @available(iOS 12.0, *)
     var userInterfaceStyle: UIUserInterfaceStyle {
         return .light
     }

@@ -19,7 +19,7 @@ import Foundation
 class VersionCheckCoordinator: Coordinator, VersionCheckBannerViewDelegate, VersionCheckAlertViewControllerDelegate {
     private enum Constants {
         static let osVersionToBeDropped = 11
-        static let hasOSVersionBeenDropped = true
+        static let hasOSVersionBeenDropped = false
         static let supportURL = URL(string: "https://support.apple.com/en-gb/guide/iphone/iph3e504502/ios")
     }
     

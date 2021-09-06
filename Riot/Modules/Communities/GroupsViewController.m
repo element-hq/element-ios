@@ -545,7 +545,7 @@
     {
         if (!self.groupsSearchBar.isHidden)
         {
-            if (!self.groupsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.adjustedContentInset.top > self.groupsSearchBar.frame.size.height))
+            if (!self.groupsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.mxk_adjustedContentInset.top > self.groupsSearchBar.frame.size.height))
             {
                 // Hide the search bar
                 [self hideSearchBar:YES];
@@ -590,7 +590,7 @@
 
 - (void)scrollToTop:(BOOL)animated
 {
-    [self.groupsTableView setContentOffset:CGPointMake(-self.groupsTableView.adjustedContentInset.left, -self.groupsTableView.adjustedContentInset.top) animated:animated];
+    [self.groupsTableView setContentOffset:CGPointMake(-self.groupsTableView.mxk_adjustedContentInset.left, -self.groupsTableView.mxk_adjustedContentInset.top) animated:animated];
 }
 
 #pragma mark - MXKGroupListViewControllerDelegate
