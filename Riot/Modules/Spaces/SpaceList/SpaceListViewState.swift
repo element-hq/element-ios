@@ -21,6 +21,6 @@ import Foundation
 /// SpaceListViewController view state
 enum SpaceListViewState {
     case loading
-    case loaded(_ sections: [SpaceListSection])
+    case loaded(_ sections: [SpaceListSection], _ homeIndexPath: IndexPath)
     case error(Error)
 }

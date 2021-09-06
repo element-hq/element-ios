@@ -16,10 +16,9 @@
 
 import Foundation
 
-/// SpaceListViewCell view data
-struct SpaceListItemViewData {
-    let spaceId: String
-    let title: String
-    let avatarViewData: AvatarViewDataProtocol
-    let isInvite: Bool
+/// SpaceDetailViewController view state
+enum SpaceDetailViewState {
+    case loading
+    case loaded(_ space: MXSpace, _ joinRule: MXRoomJoinRule?, _ inviterId: String?, _ inviter: MXUser?, _ membersCount: UInt)
+    case error(Error)
 }

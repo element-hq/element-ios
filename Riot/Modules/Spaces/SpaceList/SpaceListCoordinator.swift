@@ -57,6 +57,10 @@ final class SpaceListCoordinator: SpaceListCoordinatorType {
     func toPresentable() -> UIViewController {
         return self.spaceListViewController
     }
+    
+    func revertItemSelection() {
+        self.spaceListViewModel.revertItemSelection()
+    }
 }
 
 // MARK: - SpaceListViewModelCoordinatorDelegate
@@ -68,6 +72,10 @@ extension SpaceListCoordinator: SpaceListViewModelCoordinatorDelegate {
     
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceWithId spaceId: String) {
         self.delegate?.spaceListCoordinator(self, didSelectSpaceWithId: spaceId)
+    }
+    
+    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectInviteWithId spaceId: String, from sourceView: UIView?) {
+        self.delegate?.spaceListCoordinator(self, didSelectInviteWithId: spaceId, from: sourceView)
     }
     
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {

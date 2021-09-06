@@ -60,6 +60,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     private let sideMenuViewController: SideMenuViewController
     
     let spaceMenuPresenter = SpaceMenuPresenter()
+    let spaceDetailPresenter = SpaceDetailPresenter()
     
     private var exploreRoomCoordinator: ExploreRoomCoordinator?
     private var membersCoordinator: SpaceMembersCoordinator?
@@ -243,6 +244,14 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceMenuPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
+    private func showSpaceDetail(forSpaceWithId spaceId: String, from sourceView: UIView?) {
+        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+        self.spaceDetailPresenter.delegate = self
+        self.spaceDetailPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
+    }
+    
     func navigate(to item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
         if item.childInfo.roomType == .space {
             self.exploreRoomCoordinator?.pushSpace(with: item)
@@ -322,6 +331,10 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
         self.parameters.appNavigator.navigate(to: .space(spaceId))
     }
     
+    func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didSelectInviteWithId spaceId: String, from sourceView: UIView?) {
+        self.showSpaceDetail(forSpaceWithId: spaceId, from: sourceView)
+    }
+    
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
         self.showMenu(forSpaceWithId: spaceId, from: sourceView)
     }
@@ -338,6 +351,12 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
                 self.showMembers(spaceId: spaceId, session: session)
             }
         }
+    }
+}
+
+extension SideMenuCoordinator: SpaceDetailPresenterDelegate {
+    func spaceDetailPresenterDidComplete(_ presenter: SpaceDetailPresenter) {
+        self.spaceListCoordinator?.revertItemSelection()
     }
 }
 

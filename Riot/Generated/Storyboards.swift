@@ -249,6 +249,11 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SpaceChildRoomDetailViewController>(storyboard: SpaceChildRoomDetailViewController.self)
   }
+  internal enum SpaceDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceDetailViewController>(storyboard: SpaceDetailViewController.self)
+  }
   internal enum SpaceExploreRoomViewController: StoryboardType {
     internal static let storyboardName = "SpaceExploreRoomViewController"
 

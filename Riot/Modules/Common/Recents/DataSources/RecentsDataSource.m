@@ -1289,7 +1289,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             }
             else if (room.summary.membership == MXMembershipInvite)
             {
-                if (!MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
+                if (room.summary.roomType != MXRoomTypeSpace && !MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
                 {
                     [invitesCellDataArray addObject:recentCellDataStoring];
                 }
@@ -1301,8 +1301,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
             else if (recentCellDataStoring.isSuggestedRoom)
             {
                 MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:recentCellDataStoring.spaceChildInfo.childRoomId];
-                BOOL isJoined = roomSummary.membership == MXMembershipJoin || roomSummary.membershipTransitionState == MXMembershipTransitionStateJoined;
-                if (!isJoined)
+                if (!roomSummary.isJoined)
                 {
                     [suggestedRoomCellDataArray addObject:recentCellDataStoring];
                 }
@@ -1360,7 +1359,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
                 // Keep only the invites, the favourites and the rooms without tag and room type different from space
                 if (room.summary.membership == MXMembershipInvite)
                 {
-                    if (!MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
+                    if (room.summary.roomType != MXRoomTypeSpace && !MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
                     {
                         [invitesCellDataArray addObject:recentCellDataStoring];
                     }

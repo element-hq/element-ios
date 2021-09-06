@@ -21,11 +21,13 @@ import Foundation
 protocol SpaceListViewModelViewDelegate: AnyObject {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState)
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceAt indexPath: IndexPath)
+    func spaceListViewModelRevertSelection(_ viewModel: SpaceListViewModelType)
 }
 
 protocol SpaceListViewModelCoordinatorDelegate: AnyObject {
     func spaceListViewModelDidSelectHomeSpace(_ viewModel: SpaceListViewModelType)
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceWithId spaceId: String)
+    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectInviteWithId spaceId: String, from sourceView: UIView?)
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView)
 }
 
@@ -36,4 +38,5 @@ protocol SpaceListViewModelType {
     var coordinatorDelegate: SpaceListViewModelCoordinatorDelegate? { get set }
     
     func process(viewAction: SpaceListViewAction)
+    func revertItemSelection()
 }

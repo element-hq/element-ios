@@ -29,6 +29,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var selectionView: UIView!
     @IBOutlet private weak var moreButton: UIButton!
+    @IBOutlet private weak var badgeLabel: BadgeLabel!
     
     public weak var delegate: SpaceListViewCellDelegate?
     
@@ -56,7 +57,15 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     func fill(with viewData: SpaceListItemViewData) {
         self.avatarView.fill(with: viewData.avatarViewData)
         self.titleLabel.text = viewData.title
-        self.moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.homeSpaceId
+        self.moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.homeSpaceId || viewData.isInvite
+        if viewData.isInvite {
+            self.badgeLabel.isHidden = false
+            self.badgeLabel.badgeColor = ThemeService.shared().theme.colors.alert
+            self.badgeLabel.borderColor = ThemeService.shared().theme.colors.background
+            self.badgeLabel.text = "!"
+        } else {
+            self.badgeLabel.isHidden = true
+        }
     }
     
     func update(theme: Theme) {
