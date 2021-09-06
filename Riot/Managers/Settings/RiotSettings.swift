@@ -205,13 +205,8 @@ final class RiotSettings: NSObject {
     
     /// When set to false the original image is sent and a 1080p preset is used for videos.
     /// If `BuildSettings.roomInputToolbarCompressionMode` has a value other than prompt, the build setting takes priority for images.
-    var showMediaCompressionPrompt: Bool {
-        get {
-            defaults.bool(forKey: UserDefaultsKeys.showMediaCompressionPrompt)
-        } set {
-            defaults.set(newValue, forKey: UserDefaultsKeys.showMediaCompressionPrompt)
-        }
-    }
+    @UserDefault(key: "showMediaCompressionPrompt", defaultValue: false, storage: defaults)
+    var showMediaCompressionPrompt
     
     // MARK: - Main Tabs
     
