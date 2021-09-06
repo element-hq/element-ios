@@ -80,6 +80,7 @@ import DesignKit
 
     var keyboardAppearance: UIKeyboardAppearance { get }
     
+    @available(iOS 12.0, *)
     var userInterfaceStyle: UIUserInterfaceStyle { get }
 
 

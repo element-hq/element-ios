@@ -116,7 +116,7 @@ PODS:
 DEPENDENCIES:
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - DSWaveformImage (~> 6.1.1)
-  - ffmpeg-kit-ios-audio (~> 4.4)
+  - ffmpeg-kit-ios-audio (~> 4.4.LTS)
   - FLEX (~> 4.4.1)
   - FlowCommoniOS (~> 1.10.0)
   - GBDeviceInfo (~> 6.6.0)
@@ -219,6 +219,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 81db0a2f4da6c24be3bfdd2c2de5b57e954f133e
+PODFILE CHECKSUM: f9dc9d7fa1edb054941ecb97326eb31a900d2b13
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.10.1
