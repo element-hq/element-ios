@@ -40,9 +40,6 @@ final class RiotSettings: NSObject {
     
     private override init() {
         super.init()
-        defaults.register(defaults: [
-            UserDefaultsKeys.showMediaCompressionPrompt: false
-        ])
     }
     
     /// Indicate if UserDefaults suite has been migrated once.
