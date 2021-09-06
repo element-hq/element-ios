@@ -6113,11 +6113,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
+        // When the compression mode build setting hasn't been customised, use the media compression prompt setting to determine what to do.
         MXKRoomInputToolbarCompressionMode compressionMode;
         if (BuildSettings.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt)
         {
             compressionMode = RiotSettings.shared.showMediaCompressionPrompt ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
         }
+        // Otherwise use the compression mode defined in the build settings.
         else
         {
             compressionMode = BuildSettings.roomInputToolbarCompressionMode;
@@ -6151,11 +6153,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
+        // When the compression mode build setting hasn't been customised, use the media compression prompt setting to determine what to do.
         MXKRoomInputToolbarCompressionMode compressionMode;
         if (BuildSettings.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt)
         {
             compressionMode = RiotSettings.shared.showMediaCompressionPrompt ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
         }
+        // Otherwise use the compression mode defined in the build settings.
         else
         {
             compressionMode = BuildSettings.roomInputToolbarCompressionMode;
@@ -6183,11 +6187,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // Set a 1080p video conversion preset as compression mode only has an effect on the images.
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         
+        // When the compression mode build setting hasn't been customised, use the media compression prompt setting to determine what to do.
         MXKRoomInputToolbarCompressionMode compressionMode;
         if (BuildSettings.roomInputToolbarCompressionMode == MXKRoomInputToolbarCompressionModePrompt)
         {
             compressionMode = RiotSettings.shared.showMediaCompressionPrompt ? MXKRoomInputToolbarCompressionModePrompt : MXKRoomInputToolbarCompressionModeNone;
         }
+        // Otherwise use the compression mode defined in the build settings.
         else
         {
             compressionMode = BuildSettings.roomInputToolbarCompressionMode;
