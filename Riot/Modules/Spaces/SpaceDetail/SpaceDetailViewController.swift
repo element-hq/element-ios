@@ -217,11 +217,11 @@ class SpaceDetailViewController: UIViewController {
         
         var joinRuleString = ""
         switch joinRule {
-        case .invite: joinRuleString = "invite"
-        case .knock: joinRuleString = "knock"
-        case .none: joinRuleString = "none"
-        case .private: joinRuleString = "private"
-        case .public: joinRuleString = "public"
+        case .invite: joinRuleString = VectorL10n.spaceInviteJoinRule
+        case .knock: joinRuleString = VectorL10n.spaceKnockJoinRule
+        case .none: joinRuleString = VectorL10n.spaceNoneJoinRule
+        case .private: joinRuleString = VectorL10n.spacePrivateJoinRule
+        case .public: joinRuleString = VectorL10n.spacePublicJoinRule
         }
         
         let membersCount = summary.membersCount.members
