@@ -200,7 +200,7 @@
         // Preview the public room
         if (publicRoom.worldReadable)
         {
-            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithRoomId:publicRoom.roomId andSession:dataSource.mxSession];
+            RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
             
             [self startActivityIndicator];
             
