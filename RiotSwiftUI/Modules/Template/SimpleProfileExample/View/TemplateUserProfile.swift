@@ -19,32 +19,61 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct TemplateUserProfile: View {
     
+    enum Result {
+        case cancel
+        case done
+    }
+    
+    typealias Completion = (Result) -> Void
+    
+    @Environment(\.theme) var theme: ThemeSwiftUI
     @ObservedObject var viewModel: TemplateUserProfileViewModel
     
-    var header: some View {
+    var completion: Completion
+    
+    var leftButton: some View {
+        Button(VectorL10n.cancel) {
+            completion(.cancel)
+        }
+    }
+    
+    var rightButton: some View {
+        Button(VectorL10n.done) {
+            completion(.done)
+        }
+    }
+    
+    var body: some View {
         VStack {
-            if let avatar = viewModel.viewState.avatar {
-                HStack{
+            TemplateUserProfileHeader(
+                avatar: viewModel.viewState.avatar,
+                displayName: viewModel.viewState.displayName,
+                presence: viewModel.viewState.presence
+            )
+            Divider()
+            VStack{
+                HStack(alignment: .center){
                     Spacer()
-                    AvatarImage(avatarData: avatar, size: .xxLarge)
+                    Text("More great user content!")
+                        .font(theme.fonts.title2)
+                        .foregroundColor(theme.colors.secondaryContent)
                     Spacer()
                 }
             }
-            Text(viewModel.viewState.displayName ?? "")
+            .frame(maxHeight: .infinity)
         }
-
-    }
-    var body: some View {
-        VectorForm {
-            header
-        }
+        .frame(maxHeight: .infinity)
+        .navigationTitle(viewModel.viewState.displayName ?? "")
+        .navigationBarItems(leading: leftButton, trailing: rightButton)
     }
 }
 
 @available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {
     static var previews: some View {
-        TemplateUserProfile(viewModel: TemplateUserProfileViewModel(userService: TemplateMockUserService.example))
-            .addDependency(MockAvatarService.example)
+        TemplateUserProfile(viewModel: TemplateUserProfileViewModel(userService: MockTemplateUserService.example)) { _ in
+            
+        }
+        .addDependency(MockAvatarService.example)
     }
 }

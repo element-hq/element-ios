@@ -16,13 +16,27 @@
 
 import Foundation
 
-struct TemplateMockUserService: TemplateUserServiceType {
-    
-    static let example = TemplateMockUserService(userId: "123", displayName: "Alice", avatarUrl: "mx123@matrix.com", currentlyActive: true, lastActive: 123456)
-    
-    let userId: String
-    let displayName: String?
-    let avatarUrl: String?
-    let currentlyActive: Bool
-    let lastActive: UInt
+enum TemplatePresence {
+    case online
+    case idle
+    case offline
+}
+
+extension TemplatePresence {
+    var title: String {
+        switch self {
+        case .online:
+            return VectorL10n.roomParticipantsOnline
+        case .idle:
+            return VectorL10n.roomParticipantsIdle
+        case .offline:
+            return VectorL10n.roomParticipantsOffline
+        }
+    }
+}
+
+extension TemplatePresence: CaseIterable { }
+
+extension TemplatePresence: Identifiable {
+    var id: Self { self }
 }

@@ -15,20 +15,19 @@
 //
 
 import Foundation
+import Combine
 
-protocol TemplateUserServiceType: Avatarable {
-    var userId: String { get }
-    var displayName: String? { get }
-    var avatarUrl: String? { get }
-    var currentlyActive: Bool { get }
-    var lastActive: UInt { get }
-}
+@available(iOS 14.0, *)
+class MockTemplateUserService: TemplateUserServiceType, ObservableObject {
 
-extension TemplateUserServiceType {
-    var mxContentUri: String? {
-        avatarUrl
+    static let example = MockTemplateUserService()
+    @Published var presence: TemplatePresence = .online
+    var presencePublisher: AnyPublisher<TemplatePresence, Never> {
+        $presence.eraseToAnyPublisher()
     }
-    var matrixItemId: String {
-        userId
-    }
+    let userId: String = "123"
+    let displayName: String? = "Alice"
+    let avatarUrl: String? = "mx123@matrix.com"
+    let currentlyActive: Bool = true
+    let lastActive: UInt = 1630596918513
 }

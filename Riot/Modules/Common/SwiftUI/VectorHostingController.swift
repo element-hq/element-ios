@@ -27,10 +27,19 @@ class VectorHostingController: UIHostingController<AnyView> {
     // MARK: Private
     
     private var theme: Theme
+
+    init() {
+        self.theme = ThemeService.shared().theme
+        super.init(rootView: AnyView(EmptyView()))
+    }
     
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
         super.init(rootView: AnyView(rootView.vectorContent()))
+    }
+    
+    func setRoot<V: View>(view: V) {
+        rootView = AnyView(view)
     }
     
     required init?(coder aDecoder: NSCoder) {

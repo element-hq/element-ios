@@ -64,7 +64,7 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
                 avatarData: avatarData,
                 displayName: room.summary.displayname,
                 roomEncrypted: room.summary.isEncrypted)
-            let avatarService: AvatarServiceType = AvatarService(mediaManager: room.mxSession.mediaManager)
+            let avatarService: AvatarServiceType = MXAvatarService(mediaManager: room.mxSession.mediaManager)
             let view = RoomNotificationSettings(viewModel: swiftUIViewModel, presentedModally: presentedModally)
                 .addDependency(avatarService)
             let host = VectorHostingController(rootView: view)

@@ -16,8 +16,6 @@
 
 import Foundation
 
-struct TemplateUserProfileViewState {
-    let avatar: AvatarInputType?
-    let displayName: String?
-    var presence: TemplatePresence = .offline
+enum TemplateProfileStateAction {
+    case updatePresence(TemplatePresence)
 }
