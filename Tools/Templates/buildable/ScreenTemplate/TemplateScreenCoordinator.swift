@@ -17,14 +17,14 @@
 import Foundation
 import UIKit
 
-final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
+final class TemplateScreenCoordinator: TemplateScreenCoordinatorProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
     
     private let parameters: TemplateScreenCoordinatorParameters
-    private var templateScreenViewModel: TemplateScreenViewModelType
+    private var templateScreenViewModel: TemplateScreenViewModelProtocol
     private let templateScreenViewController: TemplateScreenViewController
     
     // MARK: Public
@@ -58,11 +58,11 @@ final class TemplateScreenCoordinator: TemplateScreenCoordinatorType {
 // MARK: - TemplateScreenViewModelCoordinatorDelegate
 extension TemplateScreenCoordinator: TemplateScreenViewModelCoordinatorDelegate {
     
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?) {
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
         self.delegate?.templateScreenCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
     }
     
-    func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType) {
+    func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelProtocol) {
         self.delegate?.templateScreenCoordinatorDidCancel(self)
     }
 }

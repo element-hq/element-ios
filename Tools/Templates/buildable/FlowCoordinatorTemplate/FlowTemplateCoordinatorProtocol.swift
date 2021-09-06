@@ -17,10 +17,10 @@
 import Foundation
 
 protocol FlowTemplateCoordinatorDelegate: AnyObject {
-    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType)
+    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorProtocol)
 }
 
-/// `FlowTemplateCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol FlowTemplateCoordinatorType: Coordinator, Presentable {
+/// `FlowTemplateCoordinatorProtocol` is a protocol describing a Coordinator that handle xxxxxxx navigation flow.
+protocol FlowTemplateCoordinatorProtocol: Coordinator, Presentable {
     var delegate: FlowTemplateCoordinatorDelegate? { get }
 }

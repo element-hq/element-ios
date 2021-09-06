@@ -120,7 +120,7 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
 
 // MARK: - FlowTemplateCoordinatorDelegate
 extension FlowTemplateCoordinatorBridgePresenter: FlowTemplateCoordinatorDelegate {
-    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType) {
+    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorProtocol) {
         self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }

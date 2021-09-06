@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
+final class FlowTemplateCoordinator: FlowTemplateCoordinatorProtocol {
     
     // MARK: - Properties
     
@@ -79,11 +79,11 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
 
 // MARK: - TemplateScreenCoordinatorDelegate
 extension FlowTemplateCoordinator: TemplateScreenCoordinatorDelegate {
-    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
+    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }
     
-    func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType) {
+    func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorProtocol) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }
 }
