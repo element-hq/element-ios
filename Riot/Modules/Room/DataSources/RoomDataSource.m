@@ -33,9 +33,6 @@ const CGFloat kTypingCellHeight = 24;
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
-    
-    // Observe URL preview updates to refresh cells.
-    id kURLPreviewDidUpdateNotificationObserver;
 }
 
 // Observe key verification request changes
@@ -94,20 +91,6 @@ const CGFloat kTypingCellHeight = 24;
             [self updateEventFormatter];
             [self reload];
             
-        }];
-        
-        // Observe URL preview updates.
-        kURLPreviewDidUpdateNotificationObserver = [NSNotificationCenter.defaultCenter addObserverForName:URLPreviewDidUpdateNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull notification) {
-            
-            if (![(NSString*)notification.userInfo[@"roomId"] isEqualToString:self.roomId] || !self.delegate)
-            {
-                return;
-            }
-            
-            // Refresh the updated cell.
-            // Note - it doesn't appear as though MXKRoomViewController actually uses the index path.
-            NSInteger index = [self indexOfCellDataWithEventId:(NSString*)notification.userInfo[@"eventId"]];
-            [self.delegate dataSource:self didCellChange:[NSIndexPath indexPathWithIndex:index]];
         }];
         
         [self registerKeyVerificationRequestNotification];
@@ -176,12 +159,6 @@ const CGFloat kTypingCellHeight = 24;
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
-    }
-    
-    if (kURLPreviewDidUpdateNotificationObserver)
-    {
-        [NSNotificationCenter.defaultCenter removeObserver:kURLPreviewDidUpdateNotificationObserver];
-        kURLPreviewDidUpdateNotificationObserver = nil;
     }
     
     if (self.keyVerificationRequestDidChangeNotificationObserver)
