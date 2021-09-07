@@ -56,7 +56,6 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     @IBOutlet weak var descriptionLabel: UILabel!
     
     @IBOutlet weak var loadingView: UIView!
-    @IBOutlet weak var loadingLabel: UILabel!
     @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
     
     // Matches the label's height with the close button.
@@ -106,9 +105,6 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         
         descriptionLabel.textColor = theme.colors.secondaryContent
         descriptionLabel.font = theme.fonts.caption1
-        
-        loadingLabel.textColor = siteNameLabel.textColor
-        loadingLabel.font = siteNameLabel.font
         
         let closeButtonAsset = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.urlPreviewCloseDark : Asset.Images.urlPreviewClose
         closeButton.setImage(closeButtonAsset.image, for: .normal)

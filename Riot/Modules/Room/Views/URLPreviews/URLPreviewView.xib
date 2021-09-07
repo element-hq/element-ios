@@ -63,26 +63,16 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="u8r-SW-zAH">
                             <rect key="frame" x="0.0" y="219" width="267" height="82"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading preview..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imX-n1-KLc">
-                                    <rect key="frame" x="8" y="8" width="99.5" height="25"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="25" id="g0l-y9-MQ5"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="11"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="SSJ-n0-24Z">
-                                    <rect key="frame" x="123.5" y="45" width="20" height="17"/>
+                                    <rect key="frame" x="123.5" y="32" width="20" height="18"/>
                                 </activityIndicatorView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="SSJ-n0-24Z" firstAttribute="centerX" secondItem="u8r-SW-zAH" secondAttribute="centerX" id="121-oq-4Zn"/>
-                                <constraint firstItem="imX-n1-KLc" firstAttribute="top" secondItem="u8r-SW-zAH" secondAttribute="top" constant="8" id="4HN-Oy-nLZ"/>
-                                <constraint firstAttribute="bottom" secondItem="SSJ-n0-24Z" secondAttribute="bottom" constant="20" id="JVb-WU-tHN"/>
-                                <constraint firstItem="SSJ-n0-24Z" firstAttribute="top" secondItem="imX-n1-KLc" secondAttribute="bottom" constant="12" id="Npd-t0-Acv"/>
-                                <constraint firstItem="imX-n1-KLc" firstAttribute="leading" secondItem="u8r-SW-zAH" secondAttribute="leading" constant="8" id="eHD-Rn-lPP"/>
+                                <constraint firstAttribute="bottom" secondItem="SSJ-n0-24Z" secondAttribute="bottom" constant="32" id="1fW-21-XBI"/>
+                                <constraint firstItem="SSJ-n0-24Z" firstAttribute="top" secondItem="u8r-SW-zAH" secondAttribute="top" constant="32" id="9zi-Wb-6V5"/>
+                                <constraint firstItem="SSJ-n0-24Z" firstAttribute="centerY" secondItem="u8r-SW-zAH" secondAttribute="centerY" id="Puk-Mm-Vir"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -114,7 +104,6 @@
                 <outlet property="descriptionLabel" destination="Z30-YF-eQk" id="DJ4-Bg-MHW"/>
                 <outlet property="imageView" destination="4zc-0W-jb8" id="QRh-IX-XxR"/>
                 <outlet property="loadingActivityIndicator" destination="SSJ-n0-24Z" id="ylX-Qd-8t5"/>
-                <outlet property="loadingLabel" destination="imX-n1-KLc" id="zOH-Z7-v7v"/>
                 <outlet property="loadingView" destination="u8r-SW-zAH" id="s7r-Kl-w5h"/>
                 <outlet property="siteNameLabel" destination="ay6-fT-tTb" id="2wA-1z-lcs"/>
                 <outlet property="siteNameLabelHeightConstraint" destination="vhD-hz-f58" id="Bz9-ub-9UA"/>
