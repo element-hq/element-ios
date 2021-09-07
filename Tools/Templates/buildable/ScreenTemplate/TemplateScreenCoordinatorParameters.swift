@@ -17,12 +17,8 @@
 import Foundation
 
 /// TemplateScreenCoordinator input parameters
-class TemplateScreenCoordinatorParameters {
+struct TemplateScreenCoordinatorParameters {
     
     /// The Matrix session
     let session: MXSession
-    
-    init(session: MXSession) {
-        self.session = session
-    }
 }
