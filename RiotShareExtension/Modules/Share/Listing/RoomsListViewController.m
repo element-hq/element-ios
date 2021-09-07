@@ -267,7 +267,9 @@
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     dispatch_async(dispatch_get_main_queue(), ^{
+        
         [self.recentsSearchBar setShowsCancelButton:YES animated:NO];
+        
     });
 }
 
@@ -286,7 +288,7 @@
     {
         if (!self.recentsSearchBar.isHidden)
         {
-            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
+            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.mxk_adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
             {
                 // Hide the search bar
                 [self hideSearchBar:YES];

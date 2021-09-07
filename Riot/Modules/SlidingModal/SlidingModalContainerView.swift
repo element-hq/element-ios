@@ -71,7 +71,11 @@ class SlidingModalContainerView: UIView, Themable, NibLoadable {
     private var dismissContentViewBottomConstant: CGFloat {
         let bottomSafeAreaHeight: CGFloat
         
-        bottomSafeAreaHeight = self.contentView.safeAreaInsets.bottom
+        if #available(iOS 11.0, *) {
+            bottomSafeAreaHeight = self.contentView.safeAreaInsets.bottom
+        } else {
+            bottomSafeAreaHeight = 0
+        }
         
         return -(self.contentViewHeightConstraint.constant + bottomSafeAreaHeight)
     }

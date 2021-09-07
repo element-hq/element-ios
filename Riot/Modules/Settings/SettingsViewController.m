@@ -51,6 +51,7 @@ enum
 {
     SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS,
+    SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_SECURITY,
     SECTION_TAG_NOTIFICATIONS,
     SECTION_TAG_CALLS,
@@ -84,6 +85,12 @@ enum
 {
     USER_SETTINGS_EMAILS_OFFSET = 2000,
     USER_SETTINGS_PHONENUMBERS_OFFSET = 1000
+};
+
+enum
+{
+    SENDING_MEDIA_CONFIRM_SIZE = 0,
+    SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION,
 };
 
 enum
@@ -355,6 +362,15 @@ TableViewSectionsDelegate>
     
     sectionUserSettings.headerTitle = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
     [tmpSections addObject:sectionUserSettings];
+    
+    if (BuildSettings.settingsScreenShowConfirmMediaSize)
+    {
+        Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
+        [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE];
+        [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION];
+        sectionMedia.headerTitle = NSLocalizedStringFromTable(@"settings_sending_media", @"Vector", nil);
+        [tmpSections addObject:sectionMedia];
+    }
     
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
     [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
@@ -740,7 +756,7 @@ TableViewSectionsDelegate>
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.adjustedContentInset.left, -self.tableView.adjustedContentInset.top) animated:YES];
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
         
     }];
     
@@ -1829,6 +1845,30 @@ TableViewSectionsDelegate>
             passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePwdStaticText";
             
             cell = passwordCell;
+        }
+    }
+    else if (section == SECTION_TAG_SENDING_MEDIA)
+    {
+        if (row == SENDING_MEDIA_CONFIRM_SIZE)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_confirm_media_size", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on =  RiotSettings.shared.showMediaCompressionPrompt;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleConfirmMediaSize:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION)
+        {
+            MXKTableViewCell *infoCell = [self getDefaultTableViewCell:tableView];
+            infoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_confirm_media_size_description", @"Vector", nil);
+            infoCell.textLabel.numberOfLines = 0;
+            infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            cell = infoCell;
         }
     }
     else if (section == SECTION_TAG_NOTIFICATIONS)
@@ -2920,6 +2960,11 @@ TableViewSectionsDelegate>
             [self presentViewController:currentAlert animated:YES completion:nil];
         }
     }
+}
+
+- (void)toggleConfirmMediaSize:(UISwitch *)sender
+{
+    RiotSettings.shared.showMediaCompressionPrompt = sender.on;
 }
 
 - (void)togglePushNotifications:(UISwitch *)sender

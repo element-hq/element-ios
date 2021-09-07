@@ -204,6 +204,11 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "allowInviteExernalUsers", defaultValue: BuildSettings.allowInviteExernalUsers, storage: defaults)
     var allowInviteExernalUsers
     
+    /// When set to false the original image is sent and a 1080p preset is used for videos.
+    /// If `BuildSettings.roomInputToolbarCompressionMode` has a value other than prompt, the build setting takes priority for images.
+    @UserDefault(key: "showMediaCompressionPrompt", defaultValue: false, storage: defaults)
+    var showMediaCompressionPrompt
+    
     // MARK: - Main Tabs
     
     @UserDefault(key: "homeScreenShowFavouritesTab", defaultValue: BuildSettings.homeScreenShowFavouritesTab, storage: defaults)

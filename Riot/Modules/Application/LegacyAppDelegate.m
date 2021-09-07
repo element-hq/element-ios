@@ -711,9 +711,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     _isAppForeground = YES;
-    
-    // Riot has its own dark theme. Prevent iOS from applying its one
-    [application keyWindow].accessibilityIgnoresInvertColors = YES;
+
+    if (@available(iOS 11.0, *))
+    {
+        // Riot has its own dark theme. Prevent iOS from applying its one
+        [application keyWindow].accessibilityIgnoresInvertColors = YES;
+    }
     
     [self handleAppState];
 }

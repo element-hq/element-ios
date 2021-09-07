@@ -126,6 +126,8 @@
 
 #import "TypingUserInfo.h"
 
+#import "MXSDKOptions.h"
+
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
@@ -604,7 +606,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.adjustedContentInset.left, -self.bubblesTableView.adjustedContentInset.top) animated:YES];
+        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
     }];
     
     if ([self.roomDataSource.roomId isEqualToString:[LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush])
@@ -798,7 +800,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         CGRect frame = previewHeader.bottomBorderView.frame;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
-        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
+        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
     }
     else
     {
@@ -2051,6 +2053,46 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.documentPickerPresenter = documentPickerPresenter;
 }
 
+/**
+ Send a video asset via the room input toolbar prompting the user for the conversion preset to use
+ if the `showMediaCompressionPrompt` setting has been enabled.
+ @param videoAsset The video asset to send
+ @param isPhotoLibraryAsset Whether the asset was picked from the user's photo library.
+ */
+- (void)sendVideoAsset:(AVAsset *)videoAsset isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
+{
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    if (!roomInputToolbarView)
+    {
+        return;
+    }
+    
+    if (RiotSettings.shared.showMediaCompressionPrompt)
+    {
+        // Show the video conversion prompt for the user to select what size video they would like to send.
+        UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset
+                                                                              withCompletion:^(NSString *presetName) {
+            // When the preset name is missing, the user cancelled.
+            if (!presetName)
+            {
+                return;
+            }
+            
+            // Set the chosen preset and send the video (conversion takes place in the SDK).
+            [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
+            [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+        }];
+        
+        [self presentViewController:compressionPrompt animated:YES completion:nil];
+    }
+    else
+    {
+        // Otherwise default to 1080p and send the video.
+        [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
+        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+    }
+}
+
 #pragma mark - Dialpad
 
 - (void)openDialpad
@@ -2309,7 +2351,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
             
-            self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
+            self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
             
             previewHeader.roomAvatar.alpha = 1;
             
@@ -4155,7 +4197,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
     if (!self.roomDataSource.isLive && ![self isRoomPreview])
     {
-        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
+        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
         {
             [self goBackToLive];
@@ -5139,12 +5181,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (readMarkerTableViewCell && isAppeared && !self.isBubbleTableViewDisplayInTransition)
     {
         // Check whether the read marker is visible
-        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.adjustedContentInset.top;
+        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
         CGFloat readMarkerViewPosY = readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y;
         if (contentTopPosY <= readMarkerViewPosY)
         {
             // Compute the max vertical position visible according to contentOffset
-            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
+            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
             if (readMarkerViewPosY <= contentBottomPosY)
             {
                 // Launch animation
@@ -5252,7 +5294,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 // The read marker display is still enabled (see roomDataSource.showReadMarker flag),
                 // this means the read marker was not been visible yet.
                 // We show the banner if the marker is located in the top hidden part of the cell.
-                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.adjustedContentInset.top;
+                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
                 CGFloat readMarkerViewPosY = roomBubbleTableViewCell.frame.origin.y + roomBubbleTableViewCell.readMarkerView.frame.origin.y;
                 self.jumpToLastUnreadBannerContainer.hidden = (contentTopPosY < readMarkerViewPosY);
             }
@@ -6118,7 +6160,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:BuildSettings.roomInputToolbarCompressionMode isPhotoLibraryAsset:NO];
+        [roomInputToolbarView sendSelectedImage:imageData
+                                   withMimeType:uti.mimeType
+                             andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                            isPhotoLibraryAsset:NO];
     }
 }
 
@@ -6127,12 +6172,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [cameraPresenter dismissWithAnimated:YES completion:nil];
     self.cameraPresenter = nil;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (roomInputToolbarView)
-    {
-        AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
-        [roomInputToolbarView sendSelectedVideoAsset:selectedVideo isPhotoLibraryAsset:NO];
-    }
+    AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
+    [self sendVideoAsset:selectedVideo isPhotoLibraryAsset:NO];
 }
 
 #pragma mark - MediaPickerCoordinatorBridgePresenterDelegate
@@ -6151,7 +6192,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:BuildSettings.roomInputToolbarCompressionMode isPhotoLibraryAsset:YES];
+        [roomInputToolbarView sendSelectedImage:imageData
+                                   withMimeType:uti.mimeType
+                             andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                            isPhotoLibraryAsset:YES];
     }
 }
 
@@ -6160,11 +6204,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.mediaPickerPresenter = nil;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (roomInputToolbarView)
-    {
-        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:YES];
-    }
+    [self sendVideoAsset:videoAsset isPhotoLibraryAsset:YES];
 }
 
 - (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectAssets:(NSArray<PHAsset *> *)assets
@@ -6175,7 +6215,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:BuildSettings.roomInputToolbarCompressionMode];
+        // Set a 1080p video conversion preset as compression mode only has an effect on the images.
+        [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
+        
+        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
     }
 }
 

@@ -134,7 +134,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     {
         [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
     }
-    else if (ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
+    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
         [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
     }
     
