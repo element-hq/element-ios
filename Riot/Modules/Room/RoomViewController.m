@@ -126,6 +126,8 @@
 
 #import "TypingUserInfo.h"
 
+#import "MXSDKOptions.h"
+
 #import "Riot-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
@@ -2002,6 +2004,46 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [documentPickerPresenter presentDocumentPickerWith:allowedUTIs from:self animated:YES completion:nil];
     
     self.documentPickerPresenter = documentPickerPresenter;
+}
+
+/**
+ Send a video asset via the room input toolbar prompting the user for the conversion preset to use
+ if the `showMediaCompressionPrompt` setting has been enabled.
+ @param videoAsset The video asset to send
+ @param isPhotoLibraryAsset Whether the asset was picked from the user's photo library.
+ */
+- (void)sendVideoAsset:(AVAsset *)videoAsset isPhotoLibraryAsset:(BOOL)isPhotoLibraryAsset
+{
+    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
+    if (!roomInputToolbarView)
+    {
+        return;
+    }
+    
+    if (RiotSettings.shared.showMediaCompressionPrompt)
+    {
+        // Show the video conversion prompt for the user to select what size video they would like to send.
+        UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset
+                                                                              withCompletion:^(NSString *presetName) {
+            // When the preset name is missing, the user cancelled.
+            if (!presetName)
+            {
+                return;
+            }
+            
+            // Set the chosen preset and send the video (conversion takes place in the SDK).
+            [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
+            [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+        }];
+        
+        [self presentViewController:compressionPrompt animated:YES completion:nil];
+    }
+    else
+    {
+        // Otherwise default to 1080p and send the video.
+        [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
+        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
+    }
 }
 
 #pragma mark - Dialpad
@@ -6071,7 +6113,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:BuildSettings.roomInputToolbarCompressionMode isPhotoLibraryAsset:NO];
+        [roomInputToolbarView sendSelectedImage:imageData
+                                   withMimeType:uti.mimeType
+                             andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                            isPhotoLibraryAsset:NO];
     }
 }
 
@@ -6080,12 +6125,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [cameraPresenter dismissWithAnimated:YES completion:nil];
     self.cameraPresenter = nil;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (roomInputToolbarView)
-    {
-        AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
-        [roomInputToolbarView sendSelectedVideoAsset:selectedVideo isPhotoLibraryAsset:NO];
-    }
+    AVURLAsset *selectedVideo = [AVURLAsset assetWithURL:url];
+    [self sendVideoAsset:selectedVideo isPhotoLibraryAsset:NO];
 }
 
 #pragma mark - MediaPickerCoordinatorBridgePresenterDelegate
@@ -6104,7 +6145,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedImage:imageData withMimeType:uti.mimeType andCompressionMode:BuildSettings.roomInputToolbarCompressionMode isPhotoLibraryAsset:YES];
+        [roomInputToolbarView sendSelectedImage:imageData
+                                   withMimeType:uti.mimeType
+                             andCompressionMode:MediaCompressionHelper.defaultCompressionMode
+                            isPhotoLibraryAsset:YES];
     }
 }
 
@@ -6113,11 +6157,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.mediaPickerPresenter = nil;
     
-    RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
-    if (roomInputToolbarView)
-    {
-        [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:YES];
-    }
+    [self sendVideoAsset:videoAsset isPhotoLibraryAsset:YES];
 }
 
 - (void)mediaPickerCoordinatorBridgePresenter:(MediaPickerCoordinatorBridgePresenter *)coordinatorBridgePresenter didSelectAssets:(NSArray<PHAsset *> *)assets
@@ -6128,7 +6168,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     RoomInputToolbarView *roomInputToolbarView = [self inputToolbarViewAsRoomInputToolbarView];
     if (roomInputToolbarView)
     {
-        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:BuildSettings.roomInputToolbarCompressionMode];
+        // Set a 1080p video conversion preset as compression mode only has an effect on the images.
+        [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
+        
+        [roomInputToolbarView sendSelectedAssets:assets withCompressionMode:MediaCompressionHelper.defaultCompressionMode];
     }
 }
 
