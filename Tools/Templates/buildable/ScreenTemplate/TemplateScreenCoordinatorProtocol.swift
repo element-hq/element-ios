@@ -16,11 +16,12 @@
 
 import Foundation
 
-protocol FlowTemplateCoordinatorDelegate: AnyObject {
-    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType)
+protocol TemplateScreenCoordinatorDelegate: AnyObject {
+    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorProtocol, didCompleteWithUserDisplayName userDisplayName: String?)
+    func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorProtocol)
 }
 
-/// `FlowTemplateCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
-protocol FlowTemplateCoordinatorType: Coordinator, Presentable {
-    var delegate: FlowTemplateCoordinatorDelegate? { get }
+/// `TemplateScreenCoordinatorProtocol` is a protocol describing a Coordinator that handle xxxxxxx navigation flow.
+protocol TemplateScreenCoordinatorProtocol: Coordinator, Presentable {
+    var delegate: TemplateScreenCoordinatorDelegate? { get }
 }

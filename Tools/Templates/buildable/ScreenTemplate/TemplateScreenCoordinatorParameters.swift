@@ -16,12 +16,9 @@
 
 import Foundation
 
-protocol TemplateScreenCoordinatorDelegate: AnyObject {
-    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?)
-    func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType)
-}
-
-/// `TemplateScreenCoordinatorType` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
-protocol TemplateScreenCoordinatorType: Coordinator, Presentable {
-    var delegate: TemplateScreenCoordinatorDelegate? { get }
+/// TemplateScreenCoordinator input parameters
+struct TemplateScreenCoordinatorParameters {
+    
+    /// The Matrix session
+    let session: MXSession
 }

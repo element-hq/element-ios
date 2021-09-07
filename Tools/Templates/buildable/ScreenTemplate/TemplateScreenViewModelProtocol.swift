@@ -17,16 +17,16 @@
 import Foundation
 
 protocol TemplateScreenViewModelViewDelegate: AnyObject {
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didUpdateViewState viewSate: TemplateScreenViewState)
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelProtocol, didUpdateViewState viewSate: TemplateScreenViewState)
 }
 
 protocol TemplateScreenViewModelCoordinatorDelegate: AnyObject {
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didCompleteWithUserDisplayName userDisplayName: String?)
-    func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelType)
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelProtocol, didCompleteWithUserDisplayName userDisplayName: String?)
+    func templateScreenViewModelDidCancel(_ viewModel: TemplateScreenViewModelProtocol)
 }
 
 /// Protocol describing the view model used by `TemplateScreenViewController`
-protocol TemplateScreenViewModelType {        
+protocol TemplateScreenViewModelProtocol {        
         
     var viewDelegate: TemplateScreenViewModelViewDelegate? { get set }
     var coordinatorDelegate: TemplateScreenViewModelCoordinatorDelegate? { get set }
