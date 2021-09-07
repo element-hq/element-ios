@@ -2254,61 +2254,77 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self showLaunchAnimation];
             return;
         }
-
-        [self hideLaunchAnimation];
         
-        if (self.setPinCoordinatorBridgePresenter)
+        void (^dataLoaded)(void) = ^{
+            [self hideLaunchAnimation];
+            
+            if (self.setPinCoordinatorBridgePresenter)
+            {
+                MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+                return;
+            }
+            
+            if (mainSession.crypto.crossSigning)
+            {
+                // Get the up-to-date cross-signing state
+                MXWeakify(self);
+                [mainSession.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
+                    
+                    switch (mainSession.crypto.crossSigning.state)
+                    {
+                        case MXCrossSigningStateCrossSigningExists:
+                            MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
+                            [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
+                            break;
+                        case MXCrossSigningStateCanCrossSign:
+                            MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
+                            [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
+                            break;
+                        default:
+                            break;
+                    }
+                } failure:^(NSError * _Nonnull error) {
+                    MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mainSession.crypto.crossSigning.state), error);
+                }];
+            }
+            
+            // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
+            // protect each other.
+            
+            // This is the time to check existing requests
+            MXLogDebug(@"[AppDelegate] handleAppState: Check pending verification requests");
+            [self checkPendingRoomKeyRequests];
+            [self checkPendingIncomingKeyVerificationsInSession:mainSession];
+                
+            // TODO: When we will have an application state, we will do all of this in a dedicated initialisation state
+            // For the moment, reuse an existing boolean to avoid register things several times
+            if (!self->incomingKeyVerificationObserver)
+            {
+                MXLogDebug(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
+                
+                // Enable listening of incoming key share requests
+                [self enableRoomKeyRequestObserver:mainSession];
+                
+                // Enable listening of incoming key verification requests
+                [self enableIncomingKeyVerificationObserver:mainSession];
+            }
+        };
+        
+        if (_masterTabBarController.homeViewController.isRoomListDataReady)
         {
-            MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
-            return;
+            dataLoaded();
         }
-        
-        if (mainSession.crypto.crossSigning)
+        else
         {
-            // Get the up-to-date cross-signing state
-            MXWeakify(self);
-            [mainSession.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
-                MXStrongifyAndReturnIfNil(self);
+            NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
+            __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:HomeViewControllerRoomListDataReadyNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+                [notificationCenter removeObserver:observer];
                 
-                MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
-                
-                switch (mainSession.crypto.crossSigning.state)
-                {
-                    case MXCrossSigningStateCrossSigningExists:
-                        MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
-                        [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
-                        break;
-                    case MXCrossSigningStateCanCrossSign:
-                        MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
-                        [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
-                        break;
-                    default:
-                        break;
-                }
-            } failure:^(NSError * _Nonnull error) {
-                MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mainSession.crypto.crossSigning.state), error);
+                dataLoaded();
             }];
-        }
-        
-        // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
-        // protect each other.
-        
-        // This is the time to check existing requests
-        MXLogDebug(@"[AppDelegate] handleAppState: Check pending verification requests");
-        [self checkPendingRoomKeyRequests];
-        [self checkPendingIncomingKeyVerificationsInSession:mainSession];
-            
-        // TODO: When we will have an application state, we will do all of this in a dedicated initialisation state
-        // For the moment, reuse an existing boolean to avoid register things several times
-        if (!incomingKeyVerificationObserver)
-        {
-            MXLogDebug(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
-            
-            // Enable listening of incoming key share requests
-            [self enableRoomKeyRequestObserver:mainSession];
-            
-            // Enable listening of incoming key verification requests
-            [self enableIncomingKeyVerificationObserver:mainSession];
         }
     }
 }
