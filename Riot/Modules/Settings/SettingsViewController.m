@@ -2363,6 +2363,7 @@ TableViewSectionsDelegate>
             labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenShowsURLPreviews;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
             
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableURLPreviews:) forControlEvents:UIControlEventValueChanged];
             
