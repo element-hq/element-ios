@@ -158,7 +158,7 @@
 "room_recents_join_room_prompt" = "Введіть ідентифікатор або псевдонім кімнати";
 // People tab
 "people_invites_section" = "ЗАПРОШЕННЯ";
-"people_conversation_section" = "БАЛАЧКИ";
+"people_conversation_section" = "БЕСІДИ";
 "people_no_conversation" = "Нема балачок";
 "room_participants_leave_prompt_msg_for_dm" = "Ви впевненні, що бажаєте залишити?";
 "room_participants_leave_prompt_title_for_dm" = "Вийти";
@@ -560,3 +560,18 @@
 "settings_direct_messages" = "Особисті повідомлення";
 "directory_search_results_more_than" = ">%tu результатів знайдено для %@";
 "directory_search_results" = "%tu результатів знайдено для %@";
+"secure_backup_setup_banner_subtitle" = "Захистіться від втрати доступу до зашифрованих повідомлень і даних";
+"secure_key_backup_setup_intro_info" = "Захистіться від втрати доступу до зашифрованих повідомлень і даних створенням резервної копії ключів шифрування на своєму сервері.";
+"security_settings_secure_backup" = "БЕЗПЕЧНЕ РЕЗЕРВНЕ КОПІЮВАННЯ";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Безпечне резервне копіювання";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Безпечне резервне копіювання";
+"room_details_direct_chat" = "Особиста бесіда";
+"room_participants_action_section_direct_chats" = "Особисті бесіди";
