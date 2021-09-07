@@ -119,8 +119,7 @@ enum {
 enum
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX,
-    USER_INTERFACE_SHOW_URL_PREVIEWS_INDEX,
+    USER_INTERFACE_THEME_INDEX
 };
 
 enum
@@ -148,6 +147,8 @@ enum
 enum
 {
     LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
+    LABS_SHOW_URL_PREVIEWS_INDEX,
+    LABS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX
 };
 
 enum
@@ -462,7 +463,6 @@ TableViewSectionsDelegate>
     Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
-    [sectionUserInterface addRowWithTag:USER_INTERFACE_SHOW_URL_PREVIEWS_INDEX];
     sectionUserInterface.headerTitle = NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
     [tmpSections addObject: sectionUserInterface];
     
@@ -516,6 +516,8 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
+        [sectionLabs addRowWithTag:LABS_SHOW_URL_PREVIEWS_INDEX];
+        [sectionLabs addRowWithTag:LABS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX];
         sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
         if (sectionLabs.hasAnyRows)
         {
@@ -2106,18 +2108,6 @@ TableViewSectionsDelegate>
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-        else if (row == USER_INTERFACE_SHOW_URL_PREVIEWS_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenShowsURLPreviews;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableURLPreviews:) forControlEvents:UIControlEventValueChanged];
-            
-            cell = labelAndSwitchCell;
-        }
     }
     else if (section == SECTION_TAG_IGNORED_USERS)
     {
@@ -2365,6 +2355,27 @@ TableViewSectionsDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_SHOW_URL_PREVIEWS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenShowsURLPreviews;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableURLPreviews:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == LABS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX)
+        {
+            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews_description", @"Vector", nil);
+            descriptionCell.textLabel.numberOfLines = 0;
+            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            cell = descriptionCell;
         }
     }
     else if (section == SECTION_TAG_FLAIR)
