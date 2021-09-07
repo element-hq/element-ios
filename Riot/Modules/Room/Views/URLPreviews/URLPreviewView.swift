@@ -73,6 +73,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     static func instantiate() -> Self {
         let view = Self.loadFromNib()
         view.update(theme: ThemeService.shared().theme)
+        view.translatesAutoresizingMaskIntoConstraints = false      // fixes unsatisfiable constraints encountered by the sizing view
         
         return view
     }
