@@ -15,19 +15,8 @@
 //
 
 import Foundation
-import Combine
 
-@available(iOS 14.0, *)
-class MockTemplateUserService: TemplateUserServiceProtocol, ObservableObject {
-
-    static let example = MockTemplateUserService()
-    @Published var presence: TemplatePresence = .online
-    var presencePublisher: AnyPublisher<TemplatePresence, Never> {
-        $presence.eraseToAnyPublisher()
-    }
-    let userId: String = "123"
-    let displayName: String? = "Alice"
-    let avatarUrl: String? = "mx123@matrix.com"
-    let currentlyActive: Bool = true
-    let lastActive: UInt = 1630596918513
+enum TemplateUserProfileViewModelResult {
+    case cancel
+    case done
 }

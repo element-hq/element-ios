@@ -18,7 +18,7 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-protocol TemplateUserServiceType: Avatarable {
+protocol TemplateUserServiceProtocol: Avatarable {
     var userId: String { get }
     var displayName: String? { get }
     var avatarUrl: String? { get }
@@ -26,7 +26,7 @@ protocol TemplateUserServiceType: Avatarable {
 }
 
 @available(iOS 14.0, *)
-extension TemplateUserServiceType {
+extension TemplateUserServiceProtocol {
     var mxContentUri: String? {
         avatarUrl
     }

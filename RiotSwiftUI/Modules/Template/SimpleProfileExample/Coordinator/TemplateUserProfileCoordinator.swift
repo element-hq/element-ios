@@ -20,56 +20,45 @@ import SwiftUI
 
 final class TemplateUserProfileCoordinator: Coordinator {
     
-    typealias Completion = () -> Void
     // MARK: - Properties
     
     // MARK: Private
     
     private let session: MXSession
     private let templateUserProfileViewController: UIViewController
+    private var templateUserProfileViewModel: TemplateUserProfileViewModelProtocol
     
     // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: Completion?
+    var completion: (() -> Void)?
     
     // MARK: - Setup
     
     @available(iOS 14.0, *)
     init(session: MXSession) {
         self.session = session
-        let hostViewController = VectorHostingController()
-        templateUserProfileViewController = UINavigationController(rootViewController: hostViewController)
-        let rootView = TemplateUserProfile.instantiate(session: session, completion: self.userProfileCompletion(result:))
-        hostViewController.setRoot(view: rootView)
-    }
-    
-    @available(iOS 14.0, *)
-    func userProfileCompletion(result: TemplateUserProfile.Result) {
-        switch result {
-        case .cancel, .done:
-            completion?()
-        break
-        }
+        let viewModel = TemplateUserProfileViewModel(userService: MXTemplateUserService(session: session))
+        let view = TemplateUserProfile(viewModel: viewModel)
+            .addDependency(MXAvatarService.instantiate(mediaManager: session.mediaManager))
+        templateUserProfileViewModel = viewModel
+        templateUserProfileViewController = VectorHostingController(rootView: view)
     }
     
     // MARK: - Public methods
-    
     func start() {
-        
+        templateUserProfileViewModel.completion = { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .cancel, .done:
+                self.completion?()
+            break
+            }
+        }
     }
     
     func toPresentable() -> UIViewController {
         return self.templateUserProfileViewController
-    }
-}
-
-@available(iOS 14.0, *)
-extension TemplateUserProfile {
-    static func instantiate(session: MXSession, completion: @escaping TemplateUserProfile.Completion) -> some View {
-        let templateUserProfileViewModel = TemplateUserProfileViewModel(userService: MXTemplateUserService(session: session))
-        let templateUserProfile = TemplateUserProfile(viewModel: templateUserProfileViewModel, completion: completion)
-        return templateUserProfile.addDependency(MXAvatarService.instantiate(mediaManager: session.mediaManager))
     }
 }

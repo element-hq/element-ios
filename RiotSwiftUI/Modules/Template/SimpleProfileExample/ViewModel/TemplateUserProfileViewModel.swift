@@ -16,20 +16,27 @@
 
 import SwiftUI
 import Combine
-
+    
 @available(iOS 14.0, *)
-class TemplateUserProfileViewModel: ObservableObject {
+class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewModelProtocol {
     
-    private let userService: TemplateUserServiceType
-    private var cancellables =  Set<AnyCancellable>()
+    // MARK: - Properties
     
+    // MARK: Private
+    private let userService: TemplateUserServiceProtocol
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: Public
     @Published private(set) var viewState: TemplateUserProfileViewState
     
-    private static func defaultState(userService: TemplateUserServiceType) -> TemplateUserProfileViewState {
+    var completion: ((TemplateUserProfileViewModelResult) -> Void)?
+    
+    private static func defaultState(userService: TemplateUserServiceProtocol) -> TemplateUserProfileViewState {
         return TemplateUserProfileViewState(avatar: userService.avatarData, displayName: userService.displayName)
     }
     
-    init(userService: TemplateUserServiceType, initialState: TemplateUserProfileViewState? = nil) {
+    // MARK: - Setup
+    init(userService: TemplateUserServiceProtocol, initialState: TemplateUserProfileViewState? = nil) {
         self.userService = userService
         self.viewState = initialState ?? Self.defaultState(userService: userService)
         
@@ -40,6 +47,17 @@ class TemplateUserProfileViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // MARK: - Public methods
+    func proccess(viewAction: TemplateProfileViewAction) {
+        switch viewAction {
+        case .cancel:
+            self.cancel()
+        case .done:
+            self.done()
+        }
+    }
+    
+    // MARK: - Private methods
     /**
      Send state actions to mutate the state.
      */
@@ -57,5 +75,13 @@ class TemplateUserProfileViewModel: ObservableObject {
         case .updatePresence(let presence):
             state.presence = presence
         }
+    }
+    
+    private func done() {
+        completion?(.done)
+    }
+    
+    private func cancel() {
+        completion?(.cancel)
     }
 }

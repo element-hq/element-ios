@@ -18,28 +18,19 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct TemplateUserProfile: View {
-    
-    enum Result {
-        case cancel
-        case done
-    }
-    
-    typealias Completion = (Result) -> Void
-    
+
     @Environment(\.theme) var theme: ThemeSwiftUI
     @ObservedObject var viewModel: TemplateUserProfileViewModel
-    
-    var completion: Completion
-    
+
     var leftButton: some View {
         Button(VectorL10n.cancel) {
-            completion(.cancel)
+            viewModel.proccess(viewAction: .cancel)
         }
     }
     
     var rightButton: some View {
         Button(VectorL10n.done) {
-            completion(.done)
+            viewModel.proccess(viewAction: .cancel)
         }
     }
     
@@ -71,9 +62,7 @@ struct TemplateUserProfile: View {
 @available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {
     static var previews: some View {
-        TemplateUserProfile(viewModel: TemplateUserProfileViewModel(userService: MockTemplateUserService.example)) { _ in
-            
-        }
+        TemplateUserProfile(viewModel: TemplateUserProfileViewModel(userService: MockTemplateUserService.example))
         .addDependency(MockAvatarService.example)
     }
 }

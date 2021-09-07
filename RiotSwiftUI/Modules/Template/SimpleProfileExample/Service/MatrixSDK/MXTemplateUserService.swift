@@ -18,24 +18,17 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class MXTemplateUserService: TemplateUserServiceType {
+class MXTemplateUserService: TemplateUserServiceProtocol {
     
-    let session: MXSession
-    var listenerReference: Any!
-    @Published var presence: TemplatePresence = .offline
+    // MARK: - Properties
     
-    init(session: MXSession) {
-        self.session = session
-        
-        let listenerReference = session.myUser.listen { [weak self] event in
-            guard let self = self,
-                  let event = event,
-                  case .presence = MXEventType(identifier: event.eventId)
-            else { return }
-            self.presence = TemplatePresence(mxPresence: self.session.myUser.presence)
-        }
-        self.listenerReference = listenerReference
-    }
+    // MARK: Private
+    
+    private let session: MXSession
+    private var listenerReference: Any!
+    @Published private var presence: TemplatePresence = .offline
+    
+    // MARK: Public
     
     var userId: String {
         return session.myUser.userId
@@ -53,6 +46,21 @@ class MXTemplateUserService: TemplateUserServiceType {
         $presence.eraseToAnyPublisher()
     }
     
+    // MARK: - Setup
+    
+    init(session: MXSession) {
+        self.session = session
+        
+        let listenerReference = session.myUser.listen { [weak self] event in
+            guard let self = self,
+                  let event = event,
+                  case .presence = MXEventType(identifier: event.eventId)
+            else { return }
+            self.presence = TemplatePresence(mxPresence: self.session.myUser.presence)
+        }
+        self.listenerReference = listenerReference
+    }
+
     deinit {
         session.myUser.removeListener(listenerReference)
     }
@@ -61,7 +69,6 @@ class MXTemplateUserService: TemplateUserServiceType {
 fileprivate extension TemplatePresence {
     
     init(mxPresence: MXPresence) {
-        
         switch mxPresence {
         case MXPresenceOnline:
             self = .online
