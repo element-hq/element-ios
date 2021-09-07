@@ -18,7 +18,7 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class MockTemplateUserService: TemplateUserServiceProtocol, ObservableObject {
+class MockTemplateUserService: TemplateUserServiceProtocol {
 
     static let example = MockTemplateUserService()
     @Published var presence: TemplatePresence = .online
