@@ -47,7 +47,7 @@ struct TemplateUserProfilePresenceView: View {
 }
 
 @available(iOS 14.0, *)
-struct TemplatePresenceView_Previews: PreviewProvider {
+struct TemplateUserProfilePresenceView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment:.leading){
             Text("Presence")
