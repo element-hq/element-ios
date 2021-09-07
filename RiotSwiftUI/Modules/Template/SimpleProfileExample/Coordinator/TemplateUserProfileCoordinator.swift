@@ -39,7 +39,7 @@ final class TemplateUserProfileCoordinator: Coordinator {
     @available(iOS 14.0, *)
     init(session: MXSession) {
         self.session = session
-        let viewModel = TemplateUserProfileViewModel(userService: MXTemplateUserService(session: session))
+        let viewModel = TemplateUserProfileViewModel(userService: MXTemplateUserProfileService(session: session))
         let view = TemplateUserProfile(viewModel: viewModel)
             .addDependency(MXAvatarService.instantiate(mediaManager: session.mediaManager))
         templateUserProfileViewModel = viewModel

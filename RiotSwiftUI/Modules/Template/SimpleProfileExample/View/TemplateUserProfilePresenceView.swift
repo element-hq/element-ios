@@ -17,9 +17,9 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct TemplatePresenceView: View {
+struct TemplateUserProfilePresenceView: View {
     
-    let presense: TemplatePresence
+    let presense: TemplateUserProfilePresence
     
     var foregroundColor: Color {
         switch presense {
@@ -51,8 +51,8 @@ struct TemplatePresenceView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(alignment:.leading){
             Text("Presence")
-            ForEach(TemplatePresence.allCases) { presence in
-                TemplatePresenceView(presense: presence)
+            ForEach(TemplateUserProfilePresence.allCases) { presence in
+                TemplateUserProfilePresenceView(presense: presence)
             }
         }
     }

@@ -15,28 +15,22 @@
 //
 
 import Foundation
+import Combine
 
-enum TemplatePresence {
-    case online
-    case idle
-    case offline
+@available(iOS 14.0, *)
+protocol TemplateUserProfileServiceProtocol: Avatarable {
+    var userId: String { get }
+    var displayName: String? { get }
+    var avatarUrl: String? { get }
+    var presencePublisher: AnyPublisher<TemplateUserProfilePresence, Never> { get }
 }
 
-extension TemplatePresence {
-    var title: String {
-        switch self {
-        case .online:
-            return VectorL10n.roomParticipantsOnline
-        case .idle:
-            return VectorL10n.roomParticipantsIdle
-        case .offline:
-            return VectorL10n.roomParticipantsOffline
-        }
+@available(iOS 14.0, *)
+extension TemplateUserProfileServiceProtocol {
+    var mxContentUri: String? {
+        avatarUrl
     }
-}
-
-extension TemplatePresence: CaseIterable { }
-
-extension TemplatePresence: Identifiable {
-    var id: Self { self }
+    var matrixItemId: String {
+        userId
+    }
 }

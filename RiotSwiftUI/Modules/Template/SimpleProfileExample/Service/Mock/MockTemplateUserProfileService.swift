@@ -15,7 +15,19 @@
 //
 
 import Foundation
+import Combine
 
-enum TemplateProfileStateAction {
-    case updatePresence(TemplatePresence)
+@available(iOS 14.0, *)
+class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
+
+    static let example = MockTemplateUserProfileService()
+    @Published var presence: TemplateUserProfilePresence = .online
+    var presencePublisher: AnyPublisher<TemplateUserProfilePresence, Never> {
+        $presence.eraseToAnyPublisher()
+    }
+    let userId: String = "123"
+    let displayName: String? = "Alice"
+    let avatarUrl: String? = "mx123@matrix.com"
+    let currentlyActive: Bool = true
+    let lastActive: UInt = 1630596918513
 }

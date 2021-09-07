@@ -62,7 +62,7 @@ struct TemplateUserProfile: View {
 @available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {
     static var previews: some View {
-        TemplateUserProfile(viewModel: TemplateUserProfileViewModel(userService: MockTemplateUserService.example))
+        TemplateUserProfile(viewModel: TemplateUserProfileViewModel(userService: MockTemplateUserProfileService.example))
         .addDependency(MockAvatarService.example)
     }
 }

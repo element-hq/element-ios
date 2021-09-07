@@ -15,22 +15,8 @@
 //
 
 import Foundation
-import Combine
 
-@available(iOS 14.0, *)
-protocol TemplateUserServiceProtocol: Avatarable {
-    var userId: String { get }
-    var displayName: String? { get }
-    var avatarUrl: String? { get }
-    var presencePublisher: AnyPublisher<TemplatePresence, Never> { get }
-}
-
-@available(iOS 14.0, *)
-extension TemplateUserServiceProtocol {
-    var mxContentUri: String? {
-        avatarUrl
-    }
-    var matrixItemId: String {
-        userId
-    }
+enum TemplateUserProfileViewAction {
+    case cancel
+    case done
 }

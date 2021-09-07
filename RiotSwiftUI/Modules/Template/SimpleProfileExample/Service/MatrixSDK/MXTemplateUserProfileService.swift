@@ -18,7 +18,7 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class MXTemplateUserService: TemplateUserServiceProtocol {
+class MXTemplateUserProfileService: TemplateUserProfileServiceProtocol {
     
     // MARK: - Properties
     
@@ -26,7 +26,7 @@ class MXTemplateUserService: TemplateUserServiceProtocol {
     
     private let session: MXSession
     private var listenerReference: Any!
-    @Published private var presence: TemplatePresence = .offline
+    @Published private var presence: TemplateUserProfilePresence = .offline
     
     // MARK: Public
     
@@ -42,7 +42,7 @@ class MXTemplateUserService: TemplateUserServiceProtocol {
         session.myUser.avatarUrl
     }
     
-    var presencePublisher: AnyPublisher<TemplatePresence, Never> {
+    var presencePublisher: AnyPublisher<TemplateUserProfilePresence, Never> {
         $presence.eraseToAnyPublisher()
     }
     
@@ -56,7 +56,7 @@ class MXTemplateUserService: TemplateUserServiceProtocol {
                   let event = event,
                   case .presence = MXEventType(identifier: event.eventId)
             else { return }
-            self.presence = TemplatePresence(mxPresence: self.session.myUser.presence)
+            self.presence = TemplateUserProfilePresence(mxPresence: self.session.myUser.presence)
         }
         self.listenerReference = listenerReference
     }
@@ -66,7 +66,7 @@ class MXTemplateUserService: TemplateUserServiceProtocol {
     }
 }
 
-fileprivate extension TemplatePresence {
+fileprivate extension TemplateUserProfilePresence {
     
     init(mxPresence: MXPresence) {
         switch mxPresence {

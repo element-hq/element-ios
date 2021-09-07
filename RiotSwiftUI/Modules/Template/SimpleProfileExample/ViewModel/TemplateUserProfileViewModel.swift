@@ -23,7 +23,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     // MARK: - Properties
     
     // MARK: Private
-    private let userService: TemplateUserServiceProtocol
+    private let userService: TemplateUserProfileServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
@@ -31,24 +31,24 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
     
-    private static func defaultState(userService: TemplateUserServiceProtocol) -> TemplateUserProfileViewState {
+    private static func defaultState(userService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
         return TemplateUserProfileViewState(avatar: userService.avatarData, displayName: userService.displayName)
     }
     
     // MARK: - Setup
-    init(userService: TemplateUserServiceProtocol, initialState: TemplateUserProfileViewState? = nil) {
+    init(userService: TemplateUserProfileServiceProtocol, initialState: TemplateUserProfileViewState? = nil) {
         self.userService = userService
         self.viewState = initialState ?? Self.defaultState(userService: userService)
         
         userService.presencePublisher
-            .map(TemplateProfileStateAction.updatePresence)
+            .map(TemplateUserProfileStateAction.updatePresence)
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: self.dispatch(action:))
             .store(in: &cancellables)
     }
     
     // MARK: - Public methods
-    func proccess(viewAction: TemplateProfileViewAction) {
+    func proccess(viewAction: TemplateUserProfileViewAction) {
         switch viewAction {
         case .cancel:
             self.cancel()
@@ -61,7 +61,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     /**
      Send state actions to mutate the state.
      */
-    private func dispatch(action: TemplateProfileStateAction) {
+    private func dispatch(action: TemplateUserProfileStateAction) {
         var newState = self.viewState
         reducer(state: &newState, action: action)
         self.viewState = newState
@@ -70,7 +70,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     /**
      A redux style reducer, all modifications to state happen here. Recieves a state and a state action and produces a new state.
      */
-    private func reducer(state: inout TemplateUserProfileViewState, action: TemplateProfileStateAction) {
+    private func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
         case .updatePresence(let presence):
             state.presence = presence

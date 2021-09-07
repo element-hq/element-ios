@@ -22,7 +22,7 @@ struct TemplateUserProfileHeader: View {
     @Environment(\.theme) var theme: ThemeSwiftUI
     let avatar: AvatarInputType?
     let displayName: String?
-    let presence: TemplatePresence
+    let presence: TemplateUserProfilePresence
     
     var body: some View {
         VStack {
@@ -37,7 +37,7 @@ struct TemplateUserProfileHeader: View {
             VStack(spacing: 8){
                 Text(displayName ?? "")
                     .font(theme.fonts.title3)
-                TemplatePresenceView(presense: presence)
+                TemplateUserProfilePresenceView(presense: presence)
             }
         }
     }
