@@ -26,6 +26,8 @@
 
 #import "MXRoom+Riot.h"
 
+NSString *const HomeViewControllerRoomListDataReadyNotification = @"HomeViewControllerRoomListDataReadyNotification";
+
 @interface HomeViewController () <SecureBackupSetupCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
@@ -45,6 +47,8 @@
 
 @property (nonatomic, strong) CrossSigningSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
+
+@property (nonatomic, assign, readwrite) BOOL roomListDataReady;
 
 @end
 
@@ -71,6 +75,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.roomListDataReady = NO;
     
     self.view.accessibilityIdentifier = @"HomeVCView";
     self.recentsTableView.accessibilityIdentifier = @"HomeVCTableView";
@@ -857,6 +863,20 @@
     + recentsDataSource.conversationCellDataArray.count
     + recentsDataSource.lowPriorityCellDataArray.count
     + recentsDataSource.serverNoticeCellDataArray.count;
+}
+
+- (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
+{
+    [super dataSource:dataSource didCellChange:changes];
+    
+    if (dataSource.state == MXKDataSourceStateReady)
+    {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            self.roomListDataReady = YES;
+            [[NSNotificationCenter defaultCenter] postNotificationName:HomeViewControllerRoomListDataReadyNotification object:nil];
+        });
+    }
 }
 
 @end
