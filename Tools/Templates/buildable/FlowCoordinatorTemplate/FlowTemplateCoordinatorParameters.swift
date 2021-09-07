@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import UIKit
+import Foundation
 
 /// FlowTemplateCoordinator input parameters
 class FlowTemplateCoordinatorParameters {
