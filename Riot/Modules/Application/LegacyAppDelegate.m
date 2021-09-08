@@ -229,6 +229,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) AppInfo *appInfo;
 
+/**
+ Listen RecentsViewControllerDataReadyNotification for changes.
+ */
+@property (nonatomic, assign, getter=isRoomListDataReady) BOOL roomListDataReady;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -2255,7 +2260,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             return;
         }
         
-        void (^dataLoaded)(void) = ^{
+        [self ensureRoomListDataReadyWithCompletion:^{
             [self hideLaunchAnimation];
             
             if (self.setPinCoordinatorBridgePresenter)
@@ -2311,21 +2316,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Enable listening of incoming key verification requests
                 [self enableIncomingKeyVerificationObserver:mainSession];
             }
-        };
-        
-        if (_masterTabBarController.homeViewController.isRoomListDataReady)
-        {
-            dataLoaded();
-        }
-        else
-        {
-            NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
-            __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:HomeViewControllerRoomListDataReadyNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
-                [notificationCenter removeObserver:observer];
-                
-                dataLoaded();
-            }];
-        }
+        }];
     }
 }
 
@@ -2480,6 +2471,31 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)authenticationDidComplete
 {
     [self handleAppState];
+}
+
+/**
+ Ensures room list data is ready.
+ 
+ @param completion Completion block to be called when it's ready. Not dispatched in case the data is already ready.
+ */
+- (void)ensureRoomListDataReadyWithCompletion:(void(^)(void))completion
+{
+    if (self.isRoomListDataReady)
+    {
+        completion();
+    }
+    else
+    {
+        NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
+        __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:RecentsViewControllerDataReadyNotification
+                                                                                object:nil
+                                                                                 queue:[NSOperationQueue mainQueue]
+                                                                            usingBlock:^(NSNotification * _Nonnull notification) {
+            [notificationCenter removeObserver:observer];
+            self.roomListDataReady = YES;
+            completion();
+        }];
+    }
 }
 
 #pragma mark -
