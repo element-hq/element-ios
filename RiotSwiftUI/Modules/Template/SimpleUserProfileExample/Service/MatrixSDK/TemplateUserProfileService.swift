@@ -25,7 +25,8 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     // MARK: Private
     
     private let session: MXSession
-    private var listenerReference: Any!
+    private var listenerReference: Any?
+    
     @Published private var presence: TemplateUserProfilePresence = .offline
     
     // MARK: Public
@@ -50,19 +51,28 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     
     init(session: MXSession) {
         self.session = session
-        
-        let listenerReference = session.myUser.listen { [weak self] event in
+        self.listenerReference = setupPresenceListener()
+    }
+
+    deinit {
+        guard let reference = listenerReference else { return }
+        session.myUser.removeListener(reference)
+    }
+    
+    func setupPresenceListener() -> Any? {
+        let reference = session.myUser.listen { [weak self] event in
             guard let self = self,
                   let event = event,
                   case .presence = MXEventType(identifier: event.eventId)
             else { return }
             self.presence = TemplateUserProfilePresence(mxPresence: self.session.myUser.presence)
         }
-        self.listenerReference = listenerReference
-    }
-
-    deinit {
-        session.myUser.removeListener(listenerReference)
+        guard let reference = reference else {
+            // TODO: Add log back when abstract logger added to RiotSwiftUI
+//            MXLog.error("[TemplateUserProfileService] Did not recieve a lisenter reference.")
+            return nil
+        }
+        return reference
     }
 }
 
