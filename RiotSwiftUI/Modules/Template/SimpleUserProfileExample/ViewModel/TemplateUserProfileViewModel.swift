@@ -39,7 +39,9 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
         userService.presencePublisher
             .map(TemplateUserProfileStateAction.updatePresence)
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: self.dispatch(action:))
+            .sink(receiveValue: { [weak self] action in
+                self?.dispatch(action:action)
+            })
             .store(in: &cancellables)
     }
     
