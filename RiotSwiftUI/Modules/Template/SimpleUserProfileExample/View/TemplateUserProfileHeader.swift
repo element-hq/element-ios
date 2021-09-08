@@ -24,7 +24,7 @@ struct TemplateUserProfileHeader: View {
     // MARK: Public
     
     @Environment(\.theme) var theme: ThemeSwiftUI
-    let avatar: AvatarInputType?
+    let avatar: AvatarInputProtocol?
     let displayName: String?
     let presence: TemplateUserProfilePresence
     

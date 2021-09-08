@@ -18,7 +18,7 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class MXTemplateUserProfileService: TemplateUserProfileServiceProtocol {
+class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     
     // MARK: - Properties
     

@@ -16,4 +16,4 @@
 
 import Foundation
 
-protocol AvatarType { }
+protocol AvatarProtocol { }

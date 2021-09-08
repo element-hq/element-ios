@@ -24,7 +24,7 @@ final class TemplateUserProfileCoordinator: Coordinator {
     
     // MARK: Private
     
-    private let session: MXSession
+    private let parameters: TemplateUserProfileCoordinatorParameters
     private let templateUserProfileViewController: UIViewController
     private var templateUserProfileViewModel: TemplateUserProfileViewModelProtocol
     
@@ -37,11 +37,11 @@ final class TemplateUserProfileCoordinator: Coordinator {
     // MARK: - Setup
     
     @available(iOS 14.0, *)
-    init(session: MXSession) {
-        self.session = session
-        let viewModel = TemplateUserProfileViewModel(userService: MXTemplateUserProfileService(session: session))
+    init(parameters: TemplateUserProfileCoordinatorParameters) {
+        self.parameters = parameters
+        let viewModel = TemplateUserProfileViewModel(userService: TemplateUserProfileService(session: parameters.session))
         let view = TemplateUserProfile(viewModel: viewModel)
-            .addDependency(MXAvatarService.instantiate(mediaManager: session.mediaManager))
+            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         templateUserProfileViewModel = viewModel
         templateUserProfileViewController = VectorHostingController(rootView: view)
     }

@@ -19,12 +19,12 @@ import MatrixSDK
 import Combine
 import DesignKit
 
-enum MXAvatarServiceError: Error {
+enum AvatarServiceError: Error {
     case pathNotfound
     case loadingImageFailed(Error?)
 }
 
-class MXAvatarService: AvatarServiceType {
+class AvatarService: AvatarServiceProtocol {
     
     private enum Constants {
         static let mimeType = "image/jpeg"
@@ -33,8 +33,8 @@ class MXAvatarService: AvatarServiceType {
     
     private let mediaManager: MXMediaManager
     
-    static func instantiate(mediaManager: MXMediaManager) -> AvatarServiceType {
-        return MXAvatarService(mediaManager: mediaManager)
+    static func instantiate(mediaManager: MXMediaManager) -> AvatarServiceProtocol {
+        return AvatarService(mediaManager: mediaManager)
     }
     
     init(mediaManager: MXMediaManager) {
@@ -73,18 +73,18 @@ class MXAvatarService: AvatarServiceType {
                 toFitViewSize: avatarSize.size,
                 with: Constants.thumbnailMethod) { path in
                 guard let path = path else {
-                    promise(.failure(MXAvatarServiceError.pathNotfound))
+                    promise(.failure(AvatarServiceError.pathNotfound))
                     return
                 }
                 
                 guard let image = MXMediaManager.loadThroughCache(withFilePath: path),
                       let imageUp = Self.orientImageUp(image: image) else {
-                    promise(.failure(MXAvatarServiceError.loadingImageFailed(nil)))
+                    promise(.failure(AvatarServiceError.loadingImageFailed(nil)))
                     return
                 }
                 promise(.success(imageUp))
             } failure: { error in
-                promise(.failure(MXAvatarServiceError.loadingImageFailed(error)))
+                promise(.failure(AvatarServiceError.loadingImageFailed(error)))
             }
         }
     }

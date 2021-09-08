@@ -22,7 +22,7 @@ import Foundation
   E.g. MXRoom, MxUser cna conform to this making it
  easy to grab the avatar data for display.
  */
-protocol Avatarable: AvatarInputType { }
+protocol Avatarable: AvatarInputProtocol { }
 extension Avatarable {
     var avatarData: AvatarInput {
         AvatarInput(

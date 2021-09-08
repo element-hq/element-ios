@@ -25,7 +25,7 @@ import DesignKit
 @available(iOS 14.0, *)
 class AvatarViewModel: InjectableObject, ObservableObject {
     
-    @Inject var avatarService: AvatarServiceType
+    @Inject var avatarService: AvatarServiceProtocol
     
     @Published private(set) var viewState = AvatarViewState.empty
     

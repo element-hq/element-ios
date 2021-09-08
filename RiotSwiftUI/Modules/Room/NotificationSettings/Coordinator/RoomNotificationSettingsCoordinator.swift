@@ -39,7 +39,7 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
     
     init(room: MXRoom, presentedModally: Bool = true) {
         let roomNotificationService = MXRoomNotificationSettingsService(room: room)
-        let avatarData: AvatarType?
+        let avatarData: AvatarProtocol?
         let showAvatar = presentedModally
         if #available(iOS 14.0.0, *) {
             avatarData = showAvatar ? AvatarInput(
@@ -64,7 +64,7 @@ final class RoomNotificationSettingsCoordinator: RoomNotificationSettingsCoordin
                 avatarData: avatarData,
                 displayName: room.summary.displayname,
                 roomEncrypted: room.summary.isEncrypted)
-            let avatarService: AvatarServiceType = MXAvatarService(mediaManager: room.mxSession.mediaManager)
+            let avatarService: AvatarServiceProtocol = AvatarService(mediaManager: room.mxSession.mediaManager)
             let view = RoomNotificationSettings(viewModel: swiftUIViewModel, presentedModally: presentedModally)
                 .addDependency(avatarService)
             let host = VectorHostingController(rootView: view)

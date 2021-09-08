@@ -20,7 +20,7 @@ import SwiftUI
 struct RoomNotificationSettingsHeader: View {
     
     @Environment(\.theme) var theme: ThemeSwiftUI
-    var avatarData: AvatarInputType
+    var avatarData: AvatarInputProtocol
     var displayName: String?
     
     var body: some View {

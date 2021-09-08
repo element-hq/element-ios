@@ -16,14 +16,6 @@
 
 import Foundation
 
-protocol AvatarInputType: AvatarType {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
-}
-
-struct AvatarInput: AvatarInputType {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
+struct TemplateUserProfileCoordinatorParameters {
+ let session: MXSession
 }
