@@ -46,7 +46,7 @@ final class TemplateUserProfileCoordinator: Coordinator {
         templateUserProfileViewController = VectorHostingController(rootView: view)
     }
     
-    // MARK: - Public methods
+    // MARK: - Public
     func start() {
         templateUserProfileViewModel.completion = { [weak self] result in
             guard let self = self else { return }

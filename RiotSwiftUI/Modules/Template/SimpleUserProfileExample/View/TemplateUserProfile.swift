@@ -19,20 +19,12 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct TemplateUserProfile: View {
 
+    // MARK: - Properties
+    
+    // MARK: Public
+    
     @Environment(\.theme) var theme: ThemeSwiftUI
     @ObservedObject var viewModel: TemplateUserProfileViewModel
-
-    var leftButton: some View {
-        Button(VectorL10n.cancel) {
-            viewModel.proccess(viewAction: .cancel)
-        }
-    }
-    
-    var rightButton: some View {
-        Button(VectorL10n.done) {
-            viewModel.proccess(viewAction: .cancel)
-        }
-    }
     
     var body: some View {
         VStack {
@@ -57,7 +49,23 @@ struct TemplateUserProfile: View {
         .navigationTitle(viewModel.viewState.displayName ?? "")
         .navigationBarItems(leading: leftButton, trailing: rightButton)
     }
+    
+    // MARK: Private
+    
+    private var leftButton: some View {
+        Button(VectorL10n.cancel) {
+            viewModel.proccess(viewAction: .cancel)
+        }
+    }
+    
+    private var rightButton: some View {
+        Button(VectorL10n.done) {
+            viewModel.proccess(viewAction: .cancel)
+        }
+    }
 }
+
+// MARK: - Previews
 
 @available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {

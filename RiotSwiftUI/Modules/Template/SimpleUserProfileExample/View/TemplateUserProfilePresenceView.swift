@@ -19,18 +19,10 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct TemplateUserProfilePresenceView: View {
     
-    let presense: TemplateUserProfilePresence
+    // MARK: - Properties
     
-    var foregroundColor: Color {
-        switch presense {
-        case .online:
-            return .green
-        case .idle:
-            return .orange
-        case .offline:
-            return .gray
-        }
-    }
+    // MARK: Public
+    let presense: TemplateUserProfilePresence
     
     var body: some View {
         HStack {
@@ -44,7 +36,22 @@ struct TemplateUserProfilePresenceView: View {
         .foregroundColor(foregroundColor)
         .padding(0)
     }
+    
+    // MARK: Private
+    
+    private var foregroundColor: Color {
+        switch presense {
+        case .online:
+            return .green
+        case .idle:
+            return .orange
+        case .offline:
+            return .gray
+        }
+    }
 }
+
+// MARK: - Previews
 
 @available(iOS 14.0, *)
 struct TemplateUserProfilePresenceView_Previews: PreviewProvider {

@@ -19,5 +19,5 @@ import Foundation
 struct TemplateUserProfileViewState {
     let avatar: AvatarInputType?
     let displayName: String?
-    var presence: TemplateUserProfilePresence = .offline
+    var presence: TemplateUserProfilePresence
 }

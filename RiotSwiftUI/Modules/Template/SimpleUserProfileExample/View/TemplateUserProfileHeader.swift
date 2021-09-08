@@ -19,6 +19,10 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct TemplateUserProfileHeader: View {
     
+    // MARK: - Properties
+    
+    // MARK: Public
+    
     @Environment(\.theme) var theme: ThemeSwiftUI
     let avatar: AvatarInputType?
     let displayName: String?
@@ -42,6 +46,8 @@ struct TemplateUserProfileHeader: View {
         }
     }
 }
+
+// MARK: - Previews
 
 @available(iOS 14.0, *)
 struct TemplateUserProfileHeader_Previews: PreviewProvider {

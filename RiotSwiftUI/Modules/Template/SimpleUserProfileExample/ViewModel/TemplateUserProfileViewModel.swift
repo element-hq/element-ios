@@ -31,10 +31,6 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
     
-    private static func defaultState(userService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
-        return TemplateUserProfileViewState(avatar: userService.avatarData, displayName: userService.displayName)
-    }
-    
     // MARK: - Setup
     init(userService: TemplateUserProfileServiceProtocol, initialState: TemplateUserProfileViewState? = nil) {
         self.userService = userService
@@ -47,7 +43,11 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
             .store(in: &cancellables)
     }
     
-    // MARK: - Public methods
+    private static func defaultState(userService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
+        return TemplateUserProfileViewState(avatar: userService.avatarData, displayName: userService.displayName, presence: .offline)
+    }
+    
+    // MARK: - Public
     func proccess(viewAction: TemplateUserProfileViewAction) {
         switch viewAction {
         case .cancel:
@@ -57,7 +57,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
         }
     }
     
-    // MARK: - Private methods
+    // MARK: - Private
     /**
      Send state actions to mutate the state.
      */
