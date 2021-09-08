@@ -160,7 +160,7 @@
 "people_invites_section" = "ЗАПРОШЕННЯ";
 "people_conversation_section" = "БЕСІДИ";
 "people_no_conversation" = "Нема балачок";
-"room_participants_leave_prompt_msg_for_dm" = "Ви впевненні, що бажаєте залишити?";
+"room_participants_leave_prompt_msg_for_dm" = "Ви впевнені, що хочете вийти?";
 "room_participants_leave_prompt_title_for_dm" = "Вийти";
 "client_android_name" = "Element Android";
 "store_promotional_text" = "Застосунок для бесід та співпраці, що зберігає приватність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
@@ -195,8 +195,8 @@
 "room_participants_invite_prompt_title" = "Підтвердження";
 "room_participants_remove_prompt_msg" = "Ви дійсно хочете видалити %@ із чату?";
 "room_participants_remove_prompt_title" = "Підтвердження";
-"room_participants_leave_prompt_msg" = "Ви дійсно бажаєте залишити кімнату?";
-"room_participants_leave_prompt_title" = "Залишити кімнату";
+"room_participants_leave_prompt_msg" = "Ви впевнені, що хочете вийти з кімнати?";
+"room_participants_leave_prompt_title" = "Вийти з кімнати";
 "room_participants_multi_participants" = "%d учасників";
 "room_participants_one_participant" = "1 учасник";
 "room_participants_add_participant" = "Додати учасника";
@@ -243,8 +243,8 @@
 "group_details_home" = "Домівка";
 "group_participants_invite_prompt_title" = "Підтвердження";
 "group_participants_remove_prompt_title" = "Підтвердження";
-"group_participants_leave_prompt_msg" = "Ви впевнені, що хочете покинути групу?";
-"group_participants_leave_prompt_title" = "Покинути групу";
+"group_participants_leave_prompt_msg" = "Ви впевнені, що хочете вийти з групи?";
+"group_participants_leave_prompt_title" = "Вийти з групи";
 
 // Group participants
 "group_participants_add_participant" = "Додати учасника";
@@ -353,10 +353,10 @@
 
 // Others
 "or" = "або";
-"event_formatter_widget_removed_by_you" = "Ви вилучили віджет: %@";
+"event_formatter_widget_removed_by_you" = "Ви вилучили розширення: %@";
 
 // Events formatter with you
-"event_formatter_widget_added_by_you" = "Ви додали віджет: %@";
+"event_formatter_widget_added_by_you" = "Ви додали розширення: %@";
 "event_formatter_group_call_incoming" = "%@ у %@";
 "event_formatter_group_call_leave" = "Вийти";
 "room_join_group_call" = "Приєднатися";
@@ -429,15 +429,15 @@
 "room_multiple_typing_notification" = "%@ та інші";
 "room_place_voice_call" = "Голосовий виклик";
 "room_widget_permission_room_id_permission" = "ID кімнати";
-"room_widget_permission_widget_id_permission" = "ID віджета";
+"room_widget_permission_widget_id_permission" = "ID розширення";
 "room_widget_permission_theme_permission" = "Ваша тема";
 "room_widget_permission_user_id_permission" = "Ваш ID користувача";
 "room_widget_permission_avatar_url_permission" = "URL-адреса вашого аватара";
 "room_widget_permission_display_name_permission" = "Ваше показуване ім'я";
-"room_widget_permission_creator_info_title" = "Цей віджет додано:";
+"room_widget_permission_creator_info_title" = "Це розширення додано:";
 
 // Room widget permissions
-"room_widget_permission_title" = "Завантажити віджет";
+"room_widget_permission_title" = "Завантажити розширення";
 "widget_picker_manage_integrations" = "Керувати інтеграціями…";
 "room_accessibility_video_call" = "Відеовиклик";
 "room_accessibility_call" = "Виклик";
