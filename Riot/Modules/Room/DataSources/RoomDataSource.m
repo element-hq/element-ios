@@ -1216,6 +1216,8 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)didOpenURLFromPreviewView:(URLPreviewView *)previewView for:(NSString *)eventID in:(NSString *)roomID
 {
+    // Use the link stored in the bubble component when opening the URL as we only
+    // store the sanitized URL in the preview data which may differ to the message content.
     RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
     
     if (!cellData)

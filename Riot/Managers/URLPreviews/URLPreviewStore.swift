@@ -62,10 +62,10 @@ class URLPreviewStore {
     
     // MARK: - Public
     
-    /// Store a preview in the cache. If a preview already exists with the same URL it will be updated from the new preview.
-    /// - Parameter preview: The preview to add to the cache.
-    /// - Parameter date: Optional: The date the preview was generated.
-    func store(_ preview: URLPreviewData, generatedOn generationDate: Date? = nil) {
+    /// Cache a preview in the store. If a preview already exists with the same URL it will be updated from the new preview.
+    /// - Parameter preview: The preview to add to the store.
+    /// - Parameter date: Optional: The date the preview was generated. When nil, the current date is assigned.
+    func cache(_ preview: URLPreviewData, generatedOn generationDate: Date? = nil) {
         // Create a fetch request for an existing preview.
         let request: NSFetchRequest<URLPreviewCacheData> = URLPreviewCacheData.fetchRequest()
         request.predicate = NSPredicate(format: "url == %@", preview.url as NSURL)
@@ -132,17 +132,19 @@ class URLPreviewStore {
         }
     }
     
-    func closePreview(for eventID: String, in roomID: String) {
-        _ = ClosedURLPreview(context: context, eventID: eventID, roomID: roomID)
+    /// Store the `eventId` and `roomId` of a closed preview.
+    func closePreview(for eventId: String, in roomId: String) {
+        _ = ClosedURLPreview(context: context, eventID: eventId, roomID: roomId)
         save()
     }
     
-    func hasClosedPreview(for eventID: String, in roomID: String) -> Bool {
+    /// Whether a preview for an event with the given `eventId` and `roomId` has been closed or not.
+    func hasClosedPreview(for eventId: String, in roomId: String) -> Bool {
         // Create a request for the url excluding any expired items
         let request: NSFetchRequest<ClosedURLPreview> = ClosedURLPreview.fetchRequest()
         request.predicate = NSCompoundPredicate(type: .and, subpredicates: [
-            NSPredicate(format: "eventID == %@", eventID),
-            NSPredicate(format: "roomID == %@", roomID)
+            NSPredicate(format: "eventID == %@", eventId),
+            NSPredicate(format: "roomID == %@", roomId)
         ])
         
         return (try? context.count(for: request)) ?? 0 > 0

@@ -61,8 +61,8 @@ class URLPreviewStoreTests: XCTestCase {
         // Given a URL preview
         let preview = matrixPreview()
         
-        // When storing and retrieving that preview.
-        store.store(preview)
+        // When caching and retrieving that preview.
+        store.cache(preview)
         
         guard let cachedPreview = store.preview(for: preview.url, and: fakeEvent()) else {
             XCTFail("The cache should return a preview after storing one with the same URL.")
@@ -80,7 +80,7 @@ class URLPreviewStoreTests: XCTestCase {
     func testUpdating() {
         // Given a preview stored in the cache.
         let preview = matrixPreview()
-        store.store(preview)
+        store.cache(preview)
         
         guard let cachedPreview = store.preview(for: preview.url, and: fakeEvent()) else {
             XCTFail("The cache should return a preview after storing one with the same URL.")
@@ -96,7 +96,7 @@ class URLPreviewStoreTests: XCTestCase {
                                             siteName: "Matrix",
                                             title: "Home",
                                             text: "We updated our website.")
-        store.store(updatedPreview)
+        store.cache(updatedPreview)
         
         // Then the store should update the original preview.
         guard let updatedCachedPreview = store.preview(for: preview.url, and: fakeEvent()) else {
@@ -110,7 +110,7 @@ class URLPreviewStoreTests: XCTestCase {
     func testPreviewExpiry() {
         // Given a preview generated 30 days ago.
         let preview = matrixPreview()
-        store.store(preview, generatedOn: Date().addingTimeInterval(-60 * 60 * 24 * 30))
+        store.cache(preview, generatedOn: Date().addingTimeInterval(-60 * 60 * 24 * 30))
         
         // When retrieving that today.
         let cachedPreview = store.preview(for: preview.url, and: fakeEvent())
@@ -123,7 +123,7 @@ class URLPreviewStoreTests: XCTestCase {
         // Given a cache with 2 items, one of which has expired.
         testPreviewExpiry()
         let preview = elementPreview()
-        store.store(preview)
+        store.cache(preview)
         XCTAssertEqual(store.cacheCount(), 2, "There should be 2 items in the cache.")
         
         // When removing expired items.
@@ -140,7 +140,7 @@ class URLPreviewStoreTests: XCTestCase {
         // Given a cache with 2 items.
         testStoreAndRetrieve()
         let preview = elementPreview()
-        store.store(preview)
+        store.cache(preview)
         XCTAssertEqual(store.cacheCount(), 2, "There should be 2 items in the cache.")
         
         // When clearing the cache.
