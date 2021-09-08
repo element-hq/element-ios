@@ -49,13 +49,8 @@ class CommonConfiguration: NSObject, Configurable {
         settings.messageDetailsAllowCopyingMedia = BuildSettings.messageDetailsAllowCopyMedia
         settings.messageDetailsAllowPastingMedia = BuildSettings.messageDetailsAllowPasteMedia
         
-        // Enable link detection if url previews are enabled
+        // Enable link detection if url preview are enabled
         settings.enableBubbleComponentLinkDetection = true
-        
-        // Prevent URL previews from being generated for matrix.to links
-        if let matrixDotToHost = URL(string: kMXMatrixDotToUrl)?.host {
-            settings.firstURLDetectionIgnoredHosts = [matrixDotToHost]
-        }
         
         MXKContactManager.shared().allowLocalContactsAccess = BuildSettings.allowLocalContactsAccess
     }
