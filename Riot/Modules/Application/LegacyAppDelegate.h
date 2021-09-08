@@ -241,21 +241,6 @@ UINavigationControllerDelegate
  */
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL;
 
-#pragma mark - Jitsi call
-
-/**
- Open the Jitsi view controller from a widget.
-
- @param jitsiWidget the jitsi widget.
- @param video to indicate voice or video call.
- */
-- (void)displayJitsiViewControllerWithWidget:(Widget*)jitsiWidget andVideo:(BOOL)video;
-
-/**
- The current Jitsi view controller being displayed.
- */
-@property (nonatomic, readonly) JitsiViewController *jitsiViewController;
-
 #pragma mark - App version management
 
 /**

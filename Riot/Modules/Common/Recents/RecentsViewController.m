@@ -977,11 +977,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     if (dataSource.state == MXKDataSourceStateReady)
     {
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
-                                                                object:self];
-        });
+        [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
+                                                            object:self];
     }
 }
 
