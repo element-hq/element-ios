@@ -234,6 +234,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
  */
 @property (nonatomic, assign, getter=isRoomListDataReady) BOOL roomListDataReady;
 
+/**
+ Flag to indicate whether a cache clear is being performed.
+ */
+@property (nonatomic, assign, getter=isClearingCache) BOOL clearingCache;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -378,6 +383,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     _configuration = [AppConfiguration new];
+    self.clearingCache = NO;
     
     // Log app information
     NSString *appDisplayName = self.appInfo.displayName;
@@ -2045,6 +2051,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (clearCache)
     {
+        self.clearingCache = YES;
         [self clearCache];
     }
 }
@@ -2233,6 +2240,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             {
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
+                case MXSessionStateBackgroundSyncInProgress:
+                    self.roomListDataReady = NO;
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
@@ -2244,6 +2253,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     {
                         [mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
                     }
+                    break;
+                case MXSessionStateRunning:
+                    self.clearingCache = NO;
+                    isLaunching = NO;
                     break;
                 default:
                     isLaunching = NO;
@@ -2257,6 +2270,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             MXLogDebug(@"[AppDelegate] handleAppState: LaunchLoadingView");
             [self showLaunchAnimation];
+            return;
+        }
+        
+        if (self.isClearingCache)
+        {
+            //  wait for another session state change to check room list data is ready
             return;
         }
         
