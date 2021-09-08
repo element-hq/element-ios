@@ -21,7 +21,8 @@ import Combine
 class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
 
     static let example = MockTemplateUserProfileService()
-    @Published var presence: TemplateUserProfilePresence = .online
+    static let initialPresenceState: TemplateUserProfilePresence = .offline
+    @Published var presence: TemplateUserProfilePresence = initialPresenceState
     var presencePublisher: AnyPublisher<TemplateUserProfilePresence, Never> {
         $presence.eraseToAnyPublisher()
     }
@@ -30,4 +31,8 @@ class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
     let avatarUrl: String? = "mx123@matrix.com"
     let currentlyActive: Bool = true
     let lastActive: UInt = 1630596918513
+    
+    func simulateUpdate(presence: TemplateUserProfilePresence) {
+        self.presence = presence
+    }
 }

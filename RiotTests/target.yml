@@ -65,3 +65,6 @@ targets:
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../RiotSwiftUI/Modules
+      includes:
+      - "**/Test/**"
