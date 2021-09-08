@@ -4566,6 +4566,14 @@ internal enum VectorL10n {
   internal static var settingsShowNSFWPublicRooms: String { 
     return VectorL10n.tr("Vector", "settings_show_NSFW_public_rooms") 
   }
+  /// Show inline URL previews
+  internal static var settingsShowUrlPreviews: String { 
+    return VectorL10n.tr("Vector", "settings_show_url_previews") 
+  }
+  /// Previews will only be shown in unencrypted rooms.
+  internal static var settingsShowUrlPreviewsDescription: String { 
+    return VectorL10n.tr("Vector", "settings_show_url_previews_description") 
+  }
   /// Sign Out
   internal static var settingsSignOut: String { 
     return VectorL10n.tr("Vector", "settings_sign_out") 

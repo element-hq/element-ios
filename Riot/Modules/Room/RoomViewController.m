@@ -208,6 +208,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
     
+    // Observe URL preview updates to refresh cells.
+    id URLPreviewDidUpdateNotificationObserver;
+    
     // Listener for `m.room.tombstone` event type
     id tombstoneEventNotificationsListener;
 
@@ -439,6 +442,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }];
     [self userInterfaceThemeDidChange];
+    
+    // Observe URL preview updates.
+    [self registerURLPreviewNotifications];
     
     [self setupActions];
 }
@@ -1358,6 +1364,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
         mxEventDidDecryptNotificationObserver = nil;
     }
+    if (URLPreviewDidUpdateNotificationObserver)
+    {
+        [NSNotificationCenter.defaultCenter removeObserver:URLPreviewDidUpdateNotificationObserver];
+        URLPreviewDidUpdateNotificationObserver = nil;
+    }
     
     [self removeCallNotificationsListeners];
     [self removeWidgetNotificationsListeners];
@@ -1507,6 +1518,47 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     NSInteger requiredPower = [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kWidgetModularEventTypeString];
     NSInteger myPower = [powerLevels powerLevelOfUserWithUserID:self.roomDataSource.mxSession.myUserId];
     return myPower >= requiredPower;
+}
+
+- (void)registerURLPreviewNotifications
+{
+    URLPreviewDidUpdateNotificationObserver = [NSNotificationCenter.defaultCenter addObserverForName:URLPreviewDidUpdateNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull notification) {
+        
+        // Ensure this is the correct room
+        if (![(NSString*)notification.userInfo[@"roomId"] isEqualToString:self.roomDataSource.roomId])
+        {
+            return;
+        }
+        
+        // Get the indexPath for the updated cell.
+        NSString *updatedEventId = notification.userInfo[@"eventId"];
+        NSInteger updatedEventIndex = [self.roomDataSource indexOfCellDataWithEventId:updatedEventId];
+        NSIndexPath *updatedIndexPath = [NSIndexPath indexPathForRow:updatedEventIndex inSection:0];
+        
+        // Store the content size and offset before reloading the cell
+        CGFloat originalContentSize = self.bubblesTableView.contentSize.height;
+        CGPoint contentOffset = self.bubblesTableView.contentOffset;
+        
+        // Only update the content offset if the cell is visible or above the current visible cells.
+        BOOL shouldUpdateContentOffset = NO;
+        NSIndexPath *lastVisibleIndexPath = [self.bubblesTableView indexPathsForVisibleRows].lastObject;
+        if (lastVisibleIndexPath && updatedIndexPath.row < lastVisibleIndexPath.row)
+        {
+            shouldUpdateContentOffset = YES;
+        }
+        
+        // Note: Despite passing in the index path, this reloads the whole table.
+        [self dataSource:self.roomDataSource didCellChange:updatedIndexPath];
+        
+        // Update the content offset to include any changes to the scroll view's height.
+        if (shouldUpdateContentOffset)
+        {
+            CGFloat delta = self.bubblesTableView.contentSize.height - originalContentSize;
+            contentOffset.y += delta;
+            
+            self.bubblesTableView.contentOffset = contentOffset;
+        }
+    }];
 }
 
 - (void)refreshRoomTitle
