@@ -18,19 +18,9 @@
 #import "RecentsViewController.h"
 
 /**
- Notification to be posted when room list data is ready.
- */
-FOUNDATION_EXPORT NSString *const HomeViewControllerRoomListDataReadyNotification;
-
-/**
  The `HomeViewController` screen is the main app screen.
  */
 @interface HomeViewController : RecentsViewController <UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
-
-/**
- Listen HomeViewControllerRoomListDataReadyNotification for changes.
- */
-@property (nonatomic, assign, readonly, getter=isRoomListDataReady) BOOL roomListDataReady;
 
 + (instancetype)instantiate;
 
