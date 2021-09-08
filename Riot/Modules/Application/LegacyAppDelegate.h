@@ -31,7 +31,6 @@
 @protocol LegacyAppDelegateDelegate;
 @class CallBar;
 @class CallPresenter;
-@class URLPreviewManager;
 
 #pragma mark - Notifications
 /**

@@ -1245,7 +1245,7 @@ const CGFloat kTypingCellHeight = 24;
     }
     
     // Remember that the user closed the preview so it isn't shown again.
-    [URLPreviewManager.shared closePreviewFor:eventID in:roomID];
+    [URLPreviewService.shared closePreviewFor:eventID in:roomID];
     
     // Hide the preview, remove its data and refresh the cells.
     cellData.showURLPreview = NO;

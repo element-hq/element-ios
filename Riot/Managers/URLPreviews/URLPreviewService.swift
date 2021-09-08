@@ -16,17 +16,24 @@
 
 import Foundation
 
+enum URLPreviewServiceError: Error {
+    case missingResponse
+}
+
 @objcMembers
-/// A manager for URL preview data to handle fetching, caching and clean-up
+/// A service for URL preview data that handles fetching, caching and clean-up
 /// as well as remembering which previews have been closed by the user.
-class URLPreviewManager: NSObject {
-    /// The shared manager object.
-    static let shared = URLPreviewManager()
+class URLPreviewService: NSObject {
+    
+    // MARK: - Properties
+    
+    /// The shared service object.
+    static let shared = URLPreviewService()
     
     /// A persistent store backed by Core Data to reduce network requests
     private let store = URLPreviewStore()
     
-    private override init() { }
+    // MARK: - Public
     
     /// Generates preview data for a URL to be previewed as part of the supplied event,
     /// first checking the cache, and if necessary making a request to the homeserver.
@@ -47,25 +54,50 @@ class URLPreviewManager: NSObject {
         
         // Check for a valid preview in the store, and use this if found
         if let preview = store.preview(for: sanitizedURL, and: event) {
-            MXLog.debug("[URLPreviewManager] Using cached preview.")
+            MXLog.debug("[URLPreviewService] Using cached preview.")
             success(preview)
             return
         }
         
         // Otherwise make a request to the homeserver to generate a preview
         session.matrixRestClient.preview(for: sanitizedURL, success: { previewResponse in
-            MXLog.debug("[URLPreviewManager] Cached preview not found. Requesting from homeserver.")
+            MXLog.debug("[URLPreviewService] Cached preview not found. Requesting from homeserver.")
             
-            if let previewResponse = previewResponse {
-                // Convert the response to preview data, fetching the image if provided.
-                self.makePreviewData(from: previewResponse, for: sanitizedURL, and: event, with: session) { previewData in
-                    self.store.cache(previewData)
-                    success(previewData)
-                }
+            guard let previewResponse = previewResponse else {
+                failure(URLPreviewServiceError.missingResponse)
+                return
+            }
+            
+            // Convert the response to preview data, fetching the image if provided.
+            self.makePreviewData(from: previewResponse, for: sanitizedURL, and: event, with: session) { previewData in
+                self.store.cache(previewData)
+                success(previewData)
             }
             
         }, failure: failure)
     }
+    
+    /// Removes any cached preview data that has expired.
+    func removeExpiredCacheData() {
+        store.removeExpiredItems()
+    }
+    
+    /// Deletes all cached preview data and closed previews from the store.
+    func clearStore() {
+        store.deleteAll()
+    }
+    
+    /// Store the `eventId` and `roomId` of a closed preview.
+    func closePreview(for eventId: String, in roomId: String) {
+        store.closePreview(for: eventId, in: roomId)
+    }
+    
+    /// Whether a preview for the given event has been closed or not.
+    func hasClosedPreview(from event: MXEvent) -> Bool {
+        store.hasClosedPreview(for: event.eventId, in: event.roomId)
+    }
+    
+    // MARK: - Private
     
     /// Convert an `MXURLPreview` object into `URLPreviewData` whilst also getting the image via the media manager.
     /// - Parameters:
@@ -100,7 +132,7 @@ class URLPreviewManager: NSObject {
             return
         }
         
-        // Don't de-dupe image downloads as the manager should de-dupe preview generation.
+        // Don't de-dupe image downloads as the service should de-dupe preview generation.
         
         // Otherwise download the image from the homeserver, treating an error as a preview without an image.
         session.mediaManager.downloadMedia(fromMatrixContentURI: imageURL, withType: previewResponse.imageType, inFolder: nil) { path in
@@ -113,27 +145,6 @@ class URLPreviewManager: NSObject {
         } failure: { error in
             completion(previewData)
         }
-    }
-    
-    /// Removes any cached preview data that has expired.
-    func removeExpiredCacheData() {
-        store.removeExpiredItems()
-    }
-    
-    /// Deletes all cached preview data and closed previews from the store.
-    func clearStore() {
-        store.deleteAll()
-    }
-    
-
-    /// Store the `eventId` and `roomId` of a closed preview.
-    func closePreview(for eventId: String, in roomId: String) {
-        store.closePreview(for: eventId, in: roomId)
-    }
-    
-    /// Whether a preview for the given event has been closed or not.
-    func hasClosedPreview(from event: MXEvent) -> Bool {
-        store.hasClosedPreview(for: event.eventId, in: event.roomId)
     }
     
     /// Returns a URL created from the URL passed in, with sanitizations applied to reduce

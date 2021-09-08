@@ -47,6 +47,6 @@ class URLPreviewData: NSObject {
         self.siteName = siteName
         self.title = title
         // Remove line breaks from the description text
-        self.text = text?.replacingOccurrences(of: "\n", with: " ")
+        self.text = text?.components(separatedBy: .newlines).joined(separator: " ")
     }
 }

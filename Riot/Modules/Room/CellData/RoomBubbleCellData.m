@@ -527,6 +527,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     CGFloat additionalVerticalHeight = 0;
     
+    // Add vertical whitespace in case of a URL preview.
+    if (RiotSettings.shared.roomScreenShowsURLPreviews && self.showURLPreview)
+    {
+        additionalVerticalHeight += RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:self.urlPreviewData];
+    }
+    
     // Add vertical whitespace in case of reactions.
     additionalVerticalHeight+= [self reactionHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
@@ -1082,7 +1088,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }
     
     // Don't show the preview if it has been dismissed already.
-    self.showURLPreview = ![URLPreviewManager.shared hasClosedPreviewFrom:lastComponent.event];
+    self.showURLPreview = ![URLPreviewService.shared hasClosedPreviewFrom:lastComponent.event];
     if (!self.showURLPreview)
     {
         return;
@@ -1103,7 +1109,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         @"roomId": self.roomId
     };
     
-    [URLPreviewManager.shared previewFor:lastComponent.link
+    [URLPreviewService.shared previewFor:lastComponent.link
                                      and:lastComponent.event
                                     with:self.mxSession
                                  success:^(URLPreviewData * _Nonnull urlPreviewData) {

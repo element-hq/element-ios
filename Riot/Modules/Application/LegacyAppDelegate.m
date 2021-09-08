@@ -548,7 +548,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXMediaManager reduceCacheSizeToInsert:0];
     
     // Remove expired URL previews from the cache
-    [URLPreviewManager.shared removeExpiredCacheData];
+    [URLPreviewService.shared removeExpiredCacheData];
     
     // Hide potential notification
     if (self.mxInAppNotification)
@@ -4331,7 +4331,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXMediaManager clearCache];
     [MXKAttachment clearCache];
     [VoiceMessageAttachmentCacheManagerBridge clearCache];
-    [URLPreviewManager.shared clearStore];
+    [URLPreviewService.shared clearStore];
 }
 
 @end

@@ -49,7 +49,11 @@ class URLPreviewStore {
         container = NSPersistentContainer(name: "URLPreviewStore")
         
         if inMemory {
-            container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+            if let storeDescription = container.persistentStoreDescriptions.first {
+                storeDescription.url = URL(fileURLWithPath: "/dev/null")
+            } else {
+                MXLog.error("[URLPreviewStore] persistentStoreDescription not found.")
+            }
         }
         
         // Load the persistent stores into the container
