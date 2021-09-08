@@ -71,7 +71,7 @@ class URLPreviewStore {
     /// - Parameter date: Optional: The date the preview was generated. When nil, the current date is assigned.
     func cache(_ preview: URLPreviewData, generatedOn generationDate: Date? = nil) {
         // Create a fetch request for an existing preview.
-        let request: NSFetchRequest<URLPreviewCacheData> = URLPreviewCacheData.fetchRequest()
+        let request: NSFetchRequest<URLPreviewDataMO> = URLPreviewDataMO.fetchRequest()
         request.predicate = NSPredicate(format: "url == %@", preview.url as NSURL)
         
         // Use the custom date if supplied (currently this is for testing purposes)
@@ -81,7 +81,7 @@ class URLPreviewStore {
         if let cachedPreview = try? context.fetch(request).first {
             cachedPreview.update(from: preview, on: date)
         } else {
-            _ = URLPreviewCacheData(context: context, preview: preview, creationDate: date)
+            _ = URLPreviewDataMO(context: context, preview: preview, creationDate: date)
         }
         
         save()
@@ -93,7 +93,7 @@ class URLPreviewStore {
     /// - Returns: The preview if found, otherwise nil.
     func preview(for url: URL, and event: MXEvent) -> URLPreviewData? {
         // Create a request for the url excluding any expired items
-        let request: NSFetchRequest<URLPreviewCacheData> = URLPreviewCacheData.fetchRequest()
+        let request: NSFetchRequest<URLPreviewDataMO> = URLPreviewDataMO.fetchRequest()
         request.predicate = NSCompoundPredicate(type: .and, subpredicates: [
             NSPredicate(format: "url == %@", url as NSURL),
             NSPredicate(format: "creationDate > %@", expiryDate as NSDate)
@@ -110,13 +110,13 @@ class URLPreviewStore {
     
     /// Returns the number of URL previews cached in the store.
     func cacheCount() -> Int {
-        let request: NSFetchRequest<NSFetchRequestResult> = URLPreviewCacheData.fetchRequest()
+        let request: NSFetchRequest<NSFetchRequestResult> = URLPreviewDataMO.fetchRequest()
         return (try? context.count(for: request)) ?? 0
     }
     
     /// Removes any expired cache data from the store.
     func removeExpiredItems() {
-        let request: NSFetchRequest<NSFetchRequestResult> = URLPreviewCacheData.fetchRequest()
+        let request: NSFetchRequest<NSFetchRequestResult> = URLPreviewDataMO.fetchRequest()
         request.predicate = NSPredicate(format: "creationDate < %@", expiryDate as NSDate)
         
         do {
@@ -129,26 +129,27 @@ class URLPreviewStore {
     /// Deletes all cache data and all closed previews from the store.
     func deleteAll() {
         do {
-            _ = try context.execute(NSBatchDeleteRequest(fetchRequest: URLPreviewCacheData.fetchRequest()))
-            _ = try context.execute(NSBatchDeleteRequest(fetchRequest: ClosedURLPreview.fetchRequest()))
+            _ = try context.execute(NSBatchDeleteRequest(fetchRequest: URLPreviewDataMO.fetchRequest()))
+            _ = try context.execute(NSBatchDeleteRequest(fetchRequest: URLPreviewUserDataMO.fetchRequest()))
         } catch {
             MXLog.error("[URLPreviewStore] Error executing batch delete request: \(error.localizedDescription)")
         }
     }
     
-    /// Store the `eventId` and `roomId` of a closed preview.
+    /// Store the dismissal of a preview from the event with `eventId` and `roomId`.
     func closePreview(for eventId: String, in roomId: String) {
-        _ = ClosedURLPreview(context: context, eventID: eventId, roomID: roomId)
+        _ = URLPreviewUserDataMO(context: context, eventID: eventId, roomID: roomId, dismissed: true)
         save()
     }
     
     /// Whether a preview for an event with the given `eventId` and `roomId` has been closed or not.
     func hasClosedPreview(for eventId: String, in roomId: String) -> Bool {
         // Create a request for the url excluding any expired items
-        let request: NSFetchRequest<ClosedURLPreview> = ClosedURLPreview.fetchRequest()
+        let request: NSFetchRequest<URLPreviewUserDataMO> = URLPreviewUserDataMO.fetchRequest()
         request.predicate = NSCompoundPredicate(type: .and, subpredicates: [
             NSPredicate(format: "eventID == %@", eventId),
-            NSPredicate(format: "roomID == %@", roomId)
+            NSPredicate(format: "roomID == %@", roomId),
+            NSPredicate(format: "dismissed == true")
         ])
         
         return (try? context.count(for: request)) ?? 0 > 0

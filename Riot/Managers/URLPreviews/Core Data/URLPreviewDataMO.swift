@@ -16,7 +16,7 @@
 
 import CoreData
 
-extension URLPreviewCacheData {
+extension URLPreviewDataMO {
     convenience init(context: NSManagedObjectContext, preview: URLPreviewData, creationDate: Date) {
         self.init(context: context)
         update(from: preview, on: creationDate)
