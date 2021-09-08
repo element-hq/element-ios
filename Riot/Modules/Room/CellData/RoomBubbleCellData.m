@@ -527,12 +527,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     CGFloat additionalVerticalHeight = 0;
     
-    // Add vertical whitespace in case of a URL preview.
-    if (RiotSettings.shared.roomScreenShowsURLPreviews && self.showURLPreview)
-    {
-        additionalVerticalHeight += RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:self.urlPreviewData];
-    }
-    
     // Add vertical whitespace in case of reactions.
     additionalVerticalHeight+= [self reactionHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
