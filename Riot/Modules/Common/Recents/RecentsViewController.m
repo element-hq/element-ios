@@ -34,6 +34,8 @@
 
 #import "Riot-Swift.h"
 
+NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
+
 @interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
@@ -972,6 +974,15 @@
     [super dataSource:dataSource didCellChange:changes];
     
     [self showEmptyViewIfNeeded];
+    
+    if (dataSource.state == MXKDataSourceStateReady)
+    {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
+                                                                object:self];
+        });
+    }
 }
 
 #pragma mark - Swipe actions

@@ -46,6 +46,8 @@
 @property (nonatomic, strong) CrossSigningSetupBannerCell *keyVerificationSetupBannerPrototypeCell;
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
+@property (nonatomic, assign, readwrite) BOOL roomListDataReady;
+
 @end
 
 @implementation HomeViewController
@@ -72,12 +74,15 @@
 {
     [super viewDidLoad];
     
+    self.roomListDataReady = NO;
+    
     self.view.accessibilityIdentifier = @"HomeVCView";
     self.recentsTableView.accessibilityIdentifier = @"HomeVCTableView";
     
     // Tag the recents table with the its recents data source mode.
     // This will be used by the shared RecentsDataSource instance for sanity checks (see UITableViewDataSource methods).
     self.recentsTableView.tag = RecentsDataSourceModeHome;
+    self.recentsTableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // Add the (+) button programmatically
     plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"plus_floating_action"]

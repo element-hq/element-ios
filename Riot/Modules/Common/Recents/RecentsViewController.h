@@ -19,6 +19,11 @@
 
 @class RootTabEmptyView;
 
+/**
+ Notification to be posted when recents data is ready. Notification object will be the RecentsViewController instance.
+ */
+FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
+
 @interface RecentsViewController : MXKRecentListViewController <MXKRecentListViewControllerDelegate>
 {
 @protected
