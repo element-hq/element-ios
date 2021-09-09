@@ -245,6 +245,10 @@ Tap the + to start adding people.";
 "contacts_address_book_permission_denied_alert_message" = "To enable contacts, go to your device settings.";
 "contacts_user_directory_section" = "USER DIRECTORY";
 "contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
+"contacts_access_footer_title" = "Start by listing your contacts";
+"contacts_access_footer_description" = "Let %@ show your contacts so you can quickly start chatting with those you know best.";
+"contacts_access_footer_button_title" = "Allow contacts access";
+"contacts_access_footer_footer" = "This can be disabled anytime from settings.";
 
 // Chat participants
 "room_participants_title" = "Participants";

@@ -542,6 +542,22 @@ internal enum VectorL10n {
   internal static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
   }
+  /// Allow contacts access
+  internal static var contactsAccessFooterButtonTitle: String { 
+    return VectorL10n.tr("Vector", "contacts_access_footer_button_title") 
+  }
+  /// Let %@ show your contacts so you can quickly start chatting with those you know best.
+  internal static func contactsAccessFooterDescription(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "contacts_access_footer_description", p1)
+  }
+  /// This can be disabled anytime from settings.
+  internal static var contactsAccessFooterFooter: String { 
+    return VectorL10n.tr("Vector", "contacts_access_footer_footer") 
+  }
+  /// Start by listing your contacts
+  internal static var contactsAccessFooterTitle: String { 
+    return VectorL10n.tr("Vector", "contacts_access_footer_title") 
+  }
   /// Matrix users only
   internal static var contactsAddressBookMatrixUsersToggle: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_matrix_users_toggle") 

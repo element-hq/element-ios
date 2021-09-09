@@ -24,6 +24,8 @@ import Reusable
 @objcMembers
 class RequestContactsAccessFooterView: UIView, NibLoadable, Themable {
     
+    // MARK: - Properties
+    
     weak var delegate: RequestContactsAccessFooterViewDelegate?
     
     @IBOutlet weak var containerView: UIView!
@@ -45,20 +47,33 @@ class RequestContactsAccessFooterView: UIView, NibLoadable, Themable {
         
         containerView.layer.cornerRadius = 8
         requestAccessButton.layer.cornerRadius = 8
+        
+        titleLabel.text = VectorL10n.contactsAccessFooterTitle
+        descriptionLabel.text = VectorL10n.contactsAccessFooterDescription(BuildSettings.bundleDisplayName)
+        requestAccessButton.setTitle(VectorL10n.contactsAccessFooterButtonTitle, for: .normal)
+        footerLabel.text = VectorL10n.contactsAccessFooterFooter
     }
     
     func update(theme: Theme) {
-        tintColor = theme.tintColor
+        tintColor = theme.colors.accent
         
-        containerView.backgroundColor = theme.textQuinaryColor
+        containerView.backgroundColor = theme.colors.quinaryContent
         
-        titleLabel.textColor = theme.textPrimaryColor
-        descriptionLabel.textColor = theme.textSecondaryColor
-        footerLabel.textColor = theme.textTertiaryColor
+        titleLabel.font = theme.fonts.bodySB
+        titleLabel.textColor = theme.colors.primaryContent
         
-        requestAccessButton.backgroundColor = theme.tintColor
-        requestAccessButton.setTitleColor(theme.backgroundColor, for: .normal)
+        descriptionLabel.font = theme.fonts.body
+        descriptionLabel.textColor = theme.colors.secondaryContent
+        
+        requestAccessButton.titleLabel?.font = theme.fonts.body
+        requestAccessButton.backgroundColor = theme.colors.accent
+        requestAccessButton.setTitleColor(theme.colors.background, for: .normal)
+        
+        footerLabel.font = theme.fonts.footnote.withSize(13)
+        footerLabel.textColor = theme.colors.tertiaryContent
     }
+    
+    // MARK: - Action
     
     @IBAction private func requestContactsAccess(_ sender: Any) {
         delegate?.didRequestContactsAccess()
