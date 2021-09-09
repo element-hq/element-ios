@@ -1538,3 +1538,8 @@
 "settings_mentions_and_keywords" = "Oznaczenia i słowa kluczowe";
 "settings_default" = "Powiadomienia dotyczące wiadomości";
 "settings_notifications" = "POWIADOMIENIA";
+"settings_show_url_previews_description" = "Podgląd URL będzie wyświetlany tylko w niezaszyfrowanych pokojach.";
+"settings_show_url_previews" = "Pokaż podgląd adresów URL";
+"settings_confirm_media_size_description" = "Gdy ta opcja jest włączona, zostaniesz poproszony o potwierdzenie, w jakim rozmiarze obrazy i filmy będą wysyłane.";
+"settings_confirm_media_size" = "Potwierdź rozmiar podczas wysyłania";
+"settings_sending_media" = "WYSYŁANIE ZDJĘĆ I WIDEO";
