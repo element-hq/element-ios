@@ -70,7 +70,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     }
     
     /**
-     A redux style reducer, all modifications to state happen here. Recieves a state and a state action and produces a new state.
+     A redux style reducer, all modifications to state happen here. Receives a state and a state action and produces a new state.
      */
     private func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
