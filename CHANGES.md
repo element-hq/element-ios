@@ -1,3 +1,32 @@
+## Changes in 1.5.3 (2021-09-09)
+
+✨ Features
+
+- Timeline: Add URL previews under a labs setting. ([#888](https://github.com/vector-im/element-ios/issues/888))
+- Media: Add an (optional) prompt when sending video to select the resolution of the sent video. ([#4638](https://github.com/vector-im/element-ios/issues/4638))
+
+🙌 Improvements
+
+- Camera: The quality of video when filming in-app is significantly higher. ([#4721](https://github.com/vector-im/element-ios/pull/4721))
+- Upgrade MatrixKit version ([v0.16.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.0)).
+- Media: Add settings for whether image/video resize prompts are shown when sending media (off by default). ([#4479](https://github.com/vector-im/element-ios/issues/4479))
+- Mark iOS 11 as deprecated and show different version check alerts. ([#4693](https://github.com/vector-im/element-ios/issues/4693))
+- Moved converted voice messages to their own folder. Cleaning up all temporary files on on reload and logout. ([#4770](https://github.com/vector-im/element-ios/issues/4770))
+- AppDelegate: Wait for the room list data to be ready to hide the launch animation. ([#4797](https://github.com/vector-im/element-ios/issues/4797))
+
+🐛 Bugfixes
+
+- Fixed home view being clipped when search is active. ([#4449](https://github.com/vector-im/element-ios/issues/4449))
+- DirectoryViewController: Make room preview data to use canonical alias for public rooms. ([#4778](https://github.com/vector-im/element-ios/issues/4778))
+- AppDelegate: Wait for sync response when clearing cache. ([#4801](https://github.com/vector-im/element-ios/issues/4801))
+
+Others
+
+- Issue templates: modernise and sync with element-web ([#4744](https://github.com/vector-im/element-ios/pull/4744))
+- Using a property wrapper for UserDefaults backed application settings (RiotSettings). ([#4755](https://github.com/vector-im/element-ios/pull/4755))
+- Templates: Add input parameters classes to coordinators and use `Protocol` suffix for protocols. ([#4792](https://github.com/vector-im/element-ios/issues/4792))
+
+
 ## Changes in 1.5.2 (2021-08-27)
 
 ✨ Features
