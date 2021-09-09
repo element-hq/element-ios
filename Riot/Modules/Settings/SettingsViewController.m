@@ -120,7 +120,8 @@ enum
 
 enum {
     LOCAL_CONTACTS_SYNC_INDEX,
-    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX
+    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX,
+    LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX
 };
 
 enum
@@ -451,7 +452,12 @@ TableViewSectionsDelegate>
         {
             [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX];
         }
-        sectionLocalContacts.headerTitle = NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
+        else
+        {
+            [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX];
+        }
+        NSString *localizedStringKey = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? @"settings_phone_contacts" : @"settings_contacts";
+        sectionLocalContacts.headerTitle = NSLocalizedStringFromTable(localizedStringKey, @"Vector", nil);
         [tmpSections addObject:sectionLocalContacts];
     }
     
@@ -2164,7 +2170,7 @@ TableViewSectionsDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.numberOfLines = 0;
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_enable_sync", @"Vector", nil);
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -2191,6 +2197,15 @@ TableViewSectionsDelegate>
             
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        else if (row == LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX)
+        {
+            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_enable_sync_description", @"Vector", nil);
+            descriptionCell.textLabel.numberOfLines = 0;
+            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell = descriptionCell;
         }
     }
     else if (section == SECTION_TAG_ADVANCED)

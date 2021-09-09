@@ -4114,13 +4114,17 @@ internal enum VectorL10n {
   internal static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
   }
-  /// LOCAL CONTACTS
+  /// DEVICE CONTACTS
   internal static var settingsContacts: String { 
     return VectorL10n.tr("Vector", "settings_contacts") 
   }
-  /// Use emails and phone numbers to discover users
-  internal static var settingsContactsDiscoverMatrixUsers: String { 
-    return VectorL10n.tr("Vector", "settings_contacts_discover_matrix_users") 
+  /// Find your contacts
+  internal static var settingsContactsEnableSync: String { 
+    return VectorL10n.tr("Vector", "settings_contacts_enable_sync") 
+  }
+  /// This will use your identity server to connect you with your contacts, and help them find you.
+  internal static var settingsContactsEnableSyncDescription: String { 
+    return VectorL10n.tr("Vector", "settings_contacts_enable_sync_description") 
   }
   /// Phonebook country
   internal static var settingsContactsPhonebookCountry: String { 
@@ -4525,6 +4529,10 @@ internal enum VectorL10n {
   /// Your password has been updated
   internal static var settingsPasswordUpdated: String { 
     return VectorL10n.tr("Vector", "settings_password_updated") 
+  }
+  /// PHONE CONTACTS
+  internal static var settingsPhoneContacts: String { 
+    return VectorL10n.tr("Vector", "settings_phone_contacts") 
   }
   /// Phone
   internal static var settingsPhoneNumber: String { 
