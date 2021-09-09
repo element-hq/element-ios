@@ -21,9 +21,12 @@ struct TemplateUserProfile: View {
 
     // MARK: - Properties
     
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
     // MARK: Public
     
-    @Environment(\.theme) var theme: ThemeSwiftUI
     @ObservedObject var viewModel: TemplateUserProfileViewModel
     
     var body: some View {
@@ -35,33 +38,26 @@ struct TemplateUserProfile: View {
             )
             Divider()
             VStack{
-                HStack(alignment: .center){
-                    Spacer()
-                    Text("More great user content!")
-                        .font(theme.fonts.title2)
-                        .foregroundColor(theme.colors.secondaryContent)
-                    Spacer()
-                }
+                Text("More great user content!")
+                    .font(theme.fonts.title2)
+                    .foregroundColor(theme.colors.secondaryContent)
             }
             .frame(maxHeight: .infinity)
         }
         .background(theme.colors.background)
         .frame(maxHeight: .infinity)
         .navigationTitle(viewModel.viewState.displayName ?? "")
-        .navigationBarItems(leading: leftButton, trailing: rightButton)
-    }
-    
-    // MARK: Private
-    
-    private var leftButton: some View {
-        Button(VectorL10n.cancel) {
-            viewModel.proccess(viewAction: .cancel)
-        }
-    }
-    
-    private var rightButton: some View {
-        Button(VectorL10n.done) {
-            viewModel.proccess(viewAction: .cancel)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(VectorL10n.done) {
+                    viewModel.process(viewAction: .cancel)
+                }
+            }
+            ToolbarItem(placement: .cancellationAction) {
+                Button(VectorL10n.cancel) {
+                    viewModel.process(viewAction: .cancel)
+                }
+            }
         }
     }
 }

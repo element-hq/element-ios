@@ -21,9 +21,10 @@ struct TemplateUserProfileHeader: View {
     
     // MARK: - Properties
     
-    // MARK: Public
+    // MARK: Private
+    @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @Environment(\.theme) var theme: ThemeSwiftUI
+    // MARK: Public
     let avatar: AvatarInputProtocol?
     let displayName: String?
     let presence: TemplateUserProfilePresence
@@ -31,17 +32,13 @@ struct TemplateUserProfileHeader: View {
     var body: some View {
         VStack {
             if let avatar = avatar {
-                HStack{
-                    Spacer()
-                    AvatarImage(avatarData: avatar, size: .xxLarge)
-                    Spacer()
-                }
+                AvatarImage(avatarData: avatar, size: .xxLarge)
                 .padding(.vertical)
             }
             VStack(spacing: 8){
                 Text(displayName ?? "")
                     .font(theme.fonts.title3)
-                TemplateUserProfilePresenceView(presense: presence)
+                TemplateUserProfilePresenceView(presence: presence)
             }
         }
     }

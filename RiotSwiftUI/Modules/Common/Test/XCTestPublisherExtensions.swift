@@ -19,6 +19,11 @@ import Combine
 
 /**
  XCTest utility to wait for results from publishers, so that the output can be used for assertions.
+ 
+ ```
+ let collectedEvents = somePublisher.collect(3).first()
+ XCTAssertEqual(try xcAwait(collectedEvents), [expected, values, here])
+ ```
  */
 @available(iOS 14.0, *)
 extension XCTestCase {

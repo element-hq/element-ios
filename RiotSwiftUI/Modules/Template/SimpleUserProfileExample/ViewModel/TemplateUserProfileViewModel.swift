@@ -50,12 +50,12 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     }
     
     // MARK: - Public
-    func proccess(viewAction: TemplateUserProfileViewAction) {
+    func process(viewAction: TemplateUserProfileViewAction) {
         switch viewAction {
         case .cancel:
-            self.cancel()
+            cancel()
         case .done:
-            self.done()
+            done()
         }
     }
     

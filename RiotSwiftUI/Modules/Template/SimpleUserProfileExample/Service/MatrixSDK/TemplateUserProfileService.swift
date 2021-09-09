@@ -30,7 +30,7 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     // MARK: Public
     
     var userId: String {
-        return session.myUser.userId
+        session.myUser.userId
     }
     
     var displayName: String? {
@@ -62,7 +62,7 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
                   let event = event,
                   case .presence = MXEventType(identifier: event.eventId)
             else { return }
-            self.presenceSubject.send(TemplateUserProfilePresence(mxPresence: self.session.myUser.presence)) 
+            self.presenceSubject.send(TemplateUserProfilePresence(mxPresence: self.session.myUser.presence))
         }
 //        TODO: Add log back when abstract logger added to RiotSwiftUI
 //        if reference == nil {

@@ -25,7 +25,7 @@ final class TemplateUserProfileCoordinator: Coordinator {
     // MARK: Private
     
     private let parameters: TemplateUserProfileCoordinatorParameters
-    private let templateUserProfileViewController: UIViewController
+    private let templateUserProfileHostingController: UIViewController
     private var templateUserProfileViewModel: TemplateUserProfileViewModelProtocol
     
     // MARK: Public
@@ -43,7 +43,7 @@ final class TemplateUserProfileCoordinator: Coordinator {
         let view = TemplateUserProfile(viewModel: viewModel)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         templateUserProfileViewModel = viewModel
-        templateUserProfileViewController = VectorHostingController(rootView: view)
+        templateUserProfileHostingController = VectorHostingController(rootView: view)
     }
     
     // MARK: - Public
@@ -59,6 +59,6 @@ final class TemplateUserProfileCoordinator: Coordinator {
     }
     
     func toPresentable() -> UIViewController {
-        return self.templateUserProfileViewController
+        return self.templateUserProfileHostingController
     }
 }

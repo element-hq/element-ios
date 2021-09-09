@@ -22,25 +22,24 @@ struct TemplateUserProfilePresenceView: View {
     // MARK: - Properties
     
     // MARK: Public
-    let presense: TemplateUserProfilePresence
+    let presence: TemplateUserProfilePresence
     
     var body: some View {
         HStack {
             Image(systemName: "circle.fill")
                 .resizable()
                 .frame(width: 8, height: 8)
-                .foregroundColor(foregroundColor)
-            Text(presense.title)
+            Text(presence.title)
                 .font(.subheadline)
         }
         .foregroundColor(foregroundColor)
         .padding(0)
     }
     
-    // MARK: Private
+    // MARK: View Components
     
     private var foregroundColor: Color {
-        switch presense {
+        switch presence {
         case .online:
             return .green
         case .idle:
@@ -59,7 +58,7 @@ struct TemplateUserProfilePresenceView_Previews: PreviewProvider {
         VStack(alignment:.leading){
             Text("Presence")
             ForEach(TemplateUserProfilePresence.allCases) { presence in
-                TemplateUserProfilePresenceView(presense: presence)
+                TemplateUserProfilePresenceView(presence: presence)
             }
         }
     }
