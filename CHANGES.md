@@ -1,3 +1,63 @@
+## Changes in 1.5.3 (2021-09-09)
+
+✨ Features
+
+- Timeline: Add URL previews under a labs setting. ([#888](https://github.com/vector-im/element-ios/issues/888))
+- Media: Add an (optional) prompt when sending video to select the resolution of the sent video. ([#4638](https://github.com/vector-im/element-ios/issues/4638))
+
+🙌 Improvements
+
+- Camera: The quality of video when filming in-app is significantly higher. ([#4721](https://github.com/vector-im/element-ios/pull/4721))
+- Upgrade MatrixKit version ([v0.16.0](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.0)).
+- Media: Add settings for whether image/video resize prompts are shown when sending media (off by default). ([#4479](https://github.com/vector-im/element-ios/issues/4479))
+- Mark iOS 11 as deprecated and show different version check alerts. ([#4693](https://github.com/vector-im/element-ios/issues/4693))
+- Moved converted voice messages to their own folder. Cleaning up all temporary files on on reload and logout. ([#4770](https://github.com/vector-im/element-ios/issues/4770))
+- AppDelegate: Wait for the room list data to be ready to hide the launch animation. ([#4797](https://github.com/vector-im/element-ios/issues/4797))
+
+🐛 Bugfixes
+
+- Fixed home view being clipped when search is active. ([#4449](https://github.com/vector-im/element-ios/issues/4449))
+- DirectoryViewController: Make room preview data to use canonical alias for public rooms. ([#4778](https://github.com/vector-im/element-ios/issues/4778))
+- AppDelegate: Wait for sync response when clearing cache. ([#4801](https://github.com/vector-im/element-ios/issues/4801))
+
+Others
+
+- Issue templates: modernise and sync with element-web ([#4744](https://github.com/vector-im/element-ios/pull/4744))
+- Using a property wrapper for UserDefaults backed application settings (RiotSettings). ([#4755](https://github.com/vector-im/element-ios/pull/4755))
+- Templates: Add input parameters classes to coordinators and use `Protocol` suffix for protocols. ([#4792](https://github.com/vector-im/element-ios/issues/4792))
+
+
+## Changes in 1.5.2 (2021-08-27)
+
+✨ Features
+
+- Account Notification Settings: Enable/disable notification settings (Default, Mentions & Keywords and Other) and edit Keywords. ([#4467](https://github.com/vector-im/element-ios/issues/4467))
+- Implemented dialogs to inform users about Element iOS11 deprecation. ([#4693](https://github.com/vector-im/element-ios/issues/4693))
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.15.8](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.15.8)).
+- Popping the user back to the home screen after leaving a room. ([#1482](https://github.com/vector-im/element-ios/issues/1482))
+- Notifications: Replace "Message" fallback with "Notification" as the event may not be a message. ([#4132](https://github.com/vector-im/element-ios/issues/4132))
+- MXSessionState: Use Swifty versions. ([#4471](https://github.com/vector-im/element-ios/issues/4471))
+- Notifications: Show the body of all message event types. ([#4653](https://github.com/vector-im/element-ios/issues/4653))
+- Notifications: Replies now hide the referenced content. ([#4660](https://github.com/vector-im/element-ios/issues/4660))
+- Room Notification Settings: This screen is now implemented in SwiftUI for users on iOS14 or above. ([#4669](https://github.com/vector-im/element-ios/issues/4669))
+
+🐛 Bugfixes
+
+- Fixed flickering voice message cells while being sent. ([#4714](https://github.com/vector-im/element-ios/issues/4714))
+- Fastfile: Update build number in AppVersion.xcconfig instead of AppIdentifiers.xcconfig. ([#4726](https://github.com/vector-im/element-ios/issues/4726))
+- Disabled the create room button while creating a room, preventing duplicates from being created. ([#4746](https://github.com/vector-im/element-ios/issues/4746))
+- Fixed cached callbacks race condition, serialized all async operations, properly cleaning up callbacks on failure. ([#4748](https://github.com/vector-im/element-ios/issues/4748))
+- Notification Settings: Keywords Notification Setting should be "On" by default. ([#4759](https://github.com/vector-im/element-ios/issues/4759))
+
+🧱 Build
+
+- Support building Ad-hoc alpha release on pull request (#4635). ([#4635](https://github.com/vector-im/element-ios/issues/4635))
+- Move app version from AppIdentifiers.xcconfig into a dedicated config file (#4715). ([#4715](https://github.com/vector-im/element-ios/issues/4715))
+
+
 ## Changes in 1.5.1 (2021-08-12)
 
 🐛 Bugfixes

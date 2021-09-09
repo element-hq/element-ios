@@ -228,6 +228,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (nonatomic, strong) AppInfo *appInfo;
 
+/**
+ Listen RecentsViewControllerDataReadyNotification for changes.
+ */
+@property (nonatomic, assign, getter=isRoomListDataReady) BOOL roomListDataReady;
+
+/**
+ Flag to indicate whether a cache clear is being performed.
+ */
+@property (nonatomic, assign, getter=isClearingCache) BOOL clearingCache;
+
 @end
 
 @implementation LegacyAppDelegate
@@ -372,6 +382,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] didFinishLaunchingWithOptions: isProtectedDataAvailable: %@", @([application isProtectedDataAvailable]));
 
     _configuration = [AppConfiguration new];
+    self.clearingCache = NO;
     
     // Log app information
     NSString *appDisplayName = self.appInfo.displayName;
@@ -545,6 +556,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // check if some media must be released to reduce the cache size
     [MXMediaManager reduceCacheSizeToInsert:0];
+    
+    // Remove expired URL previews from the cache
+    [URLPreviewService.shared removeExpiredCacheData];
     
     // Hide potential notification
     if (self.mxInAppNotification)
@@ -2036,8 +2050,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     if (clearCache)
     {
-        // clear the media cache
-        [MXMediaManager clearCache];
+        self.clearingCache = YES;
+        [self clearCache];
     }
 }
 
@@ -2139,7 +2153,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self.pushNotificationService deregisterRemoteNotifications];
 
     // Clear cache
-    [MXMediaManager clearCache];
+    [self clearCache];
     
     // Reset key backup banner preferences
     [SecureBackupBannerPreferences.shared reset];
@@ -2225,6 +2239,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             {
                 case MXSessionStateClosed:
                 case MXSessionStateInitialised:
+                case MXSessionStateBackgroundSyncInProgress:
+                    self.roomListDataReady = NO;
                     isLaunching = YES;
                     break;
                 case MXSessionStateStoreDataReady:
@@ -2236,6 +2252,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     {
                         [mainSession.crypto setOutgoingKeyRequestsEnabled:NO onComplete:nil];
                     }
+                    break;
+                case MXSessionStateRunning:
+                    self.clearingCache = NO;
+                    isLaunching = NO;
                     break;
                 default:
                     isLaunching = NO;
@@ -2251,62 +2271,70 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self showLaunchAnimation];
             return;
         }
-
-        [self hideLaunchAnimation];
         
-        if (self.setPinCoordinatorBridgePresenter)
+        if (self.isClearingCache)
         {
-            MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+            //  wait for another session state change to check room list data is ready
             return;
         }
         
-        if (mainSession.crypto.crossSigning)
-        {
-            // Get the up-to-date cross-signing state
-            MXWeakify(self);
-            [mainSession.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
-                MXStrongifyAndReturnIfNil(self);
+        [self ensureRoomListDataReadyWithCompletion:^{
+            [self hideLaunchAnimation];
+            
+            if (self.setPinCoordinatorBridgePresenter)
+            {
+                MXLogDebug(@"[AppDelegate] handleAppState: PIN code is presented. Do not go further");
+                return;
+            }
+            
+            if (mainSession.crypto.crossSigning)
+            {
+                // Get the up-to-date cross-signing state
+                MXWeakify(self);
+                [mainSession.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
+                    
+                    switch (mainSession.crypto.crossSigning.state)
+                    {
+                        case MXCrossSigningStateCrossSigningExists:
+                            MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
+                            [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
+                            break;
+                        case MXCrossSigningStateCanCrossSign:
+                            MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
+                            [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
+                            break;
+                        default:
+                            break;
+                    }
+                } failure:^(NSError * _Nonnull error) {
+                    MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mainSession.crypto.crossSigning.state), error);
+                }];
+            }
+            
+            // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
+            // protect each other.
+            
+            // This is the time to check existing requests
+            MXLogDebug(@"[AppDelegate] handleAppState: Check pending verification requests");
+            [self checkPendingRoomKeyRequests];
+            [self checkPendingIncomingKeyVerificationsInSession:mainSession];
                 
-                MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
+            // TODO: When we will have an application state, we will do all of this in a dedicated initialisation state
+            // For the moment, reuse an existing boolean to avoid register things several times
+            if (!self->incomingKeyVerificationObserver)
+            {
+                MXLogDebug(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
                 
-                switch (mainSession.crypto.crossSigning.state)
-                {
-                    case MXCrossSigningStateCrossSigningExists:
-                        MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
-                        [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
-                        break;
-                    case MXCrossSigningStateCanCrossSign:
-                        MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
-                        [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
-                        break;
-                    default:
-                        break;
-                }
-            } failure:^(NSError * _Nonnull error) {
-                MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mainSession.crypto.crossSigning.state), error);
-            }];
-        }
-        
-        // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
-        // protect each other.
-        
-        // This is the time to check existing requests
-        MXLogDebug(@"[AppDelegate] handleAppState: Check pending verification requests");
-        [self checkPendingRoomKeyRequests];
-        [self checkPendingIncomingKeyVerificationsInSession:mainSession];
-            
-        // TODO: When we will have an application state, we will do all of this in a dedicated initialisation state
-        // For the moment, reuse an existing boolean to avoid register things several times
-        if (!incomingKeyVerificationObserver)
-        {
-            MXLogDebug(@"[AppDelegate] handleAppState: Set up observers for the crypto module");
-            
-            // Enable listening of incoming key share requests
-            [self enableRoomKeyRequestObserver:mainSession];
-            
-            // Enable listening of incoming key verification requests
-            [self enableIncomingKeyVerificationObserver:mainSession];
-        }
+                // Enable listening of incoming key share requests
+                [self enableRoomKeyRequestObserver:mainSession];
+                
+                // Enable listening of incoming key verification requests
+                [self enableIncomingKeyVerificationObserver:mainSession];
+            }
+        }];
     }
 }
 
@@ -2461,6 +2489,31 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)authenticationDidComplete
 {
     [self handleAppState];
+}
+
+/**
+ Ensures room list data is ready.
+ 
+ @param completion Completion block to be called when it's ready. Not dispatched in case the data is already ready.
+ */
+- (void)ensureRoomListDataReadyWithCompletion:(void(^)(void))completion
+{
+    if (self.isRoomListDataReady)
+    {
+        completion();
+    }
+    else
+    {
+        NSNotificationCenter * __weak notificationCenter = [NSNotificationCenter defaultCenter];
+        __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:RecentsViewControllerDataReadyNotification
+                                                                                object:nil
+                                                                                 queue:[NSOperationQueue mainQueue]
+                                                                            usingBlock:^(NSNotification * _Nonnull notification) {
+            [notificationCenter removeObserver:observer];
+            self.roomListDataReady = YES;
+            completion();
+        }];
+    }
 }
 
 #pragma mark -
@@ -4240,6 +4293,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
+}
+
+#pragma mark - Private
+
+- (void)clearCache
+{
+    [MXMediaManager clearCache];
+    [MXKAttachment clearCache];
+    [VoiceMessageAttachmentCacheManagerBridge clearCache];
+    [URLPreviewService.shared clearStore];
 }
 
 @end

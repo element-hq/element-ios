@@ -143,12 +143,8 @@ class DarkTheme: NSObject, Theme {
     }
     
     ///  MARK: - Theme v2
+    var colors: ColorsUIKit = DarkColors.uiKit
     
-    lazy var colors: Colors = {
-        return DarkColors()
-    }()
+    var fonts: FontsUIKit = FontsUIKit(values: ElementFonts())
     
-    lazy var fonts: Fonts = {
-        return ElementFonts()
-    }()
 }

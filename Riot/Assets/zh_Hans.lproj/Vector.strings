@@ -1366,7 +1366,7 @@
 "event_formatter_call_you_missed" = "你错过此通话";
 "event_formatter_call_you_declined" = "拒绝了通话";
 "event_formatter_call_you_currently_in" = "当前通话";
-"event_formatter_call_has_ended" = "通话结束 %@";
+"event_formatter_call_has_ended" = "通话结束";
 "event_formatter_call_ringing" = "响铃中……";
 "event_formatter_call_connecting" = "连接中……";
 "event_formatter_call_video" = "视频通话";
@@ -1454,3 +1454,37 @@
 "event_formatter_call_active_voice" = "活跃语音通话";
 "event_formatter_call_incoming_voice" = "语音来电";
 "event_formatter_call_incoming_video" = "视频来电";
+"voice_message_lock_screen_placeholder" = "语音消息";
+"event_formatter_call_has_ended_with_time" = "通话结束 • %@";
+"version_check_modal_action_title_deprecated" = "了解怎么做";
+"settings_mentions_and_keywords_encryption_notice" = "您不会收到移动设备上的加密房间中提及和关键字的通知。";
+"version_check_modal_subtitle_deprecated" = "我们一直致力于增强 Element，以获得更快、更精美的体验。 不幸的是，您当前的 iOS 版本与其中一些修复不兼容，已不再受支持。\n我们建议您升级操作系统以充分发挥 Element 的潜力。";
+"version_check_modal_title_deprecated" = "我们不再支持 iOS %@";
+"version_check_modal_action_title_supported" = "知道了";
+"version_check_modal_subtitle_supported" = "我们一直致力于增强 Element，以获得更快、更精美的体验。 不幸的是，您当前的 iOS 版本与其中一些修复不兼容，将不再受支持。\n我们建议您升级操作系统以充分发挥 Element 的潜力。";
+"version_check_modal_title_supported" = "我们正结束对 iOS %@ 的支持";
+"version_check_banner_subtitle_deprecated" = "我们不再支持 iOS %@ 上的 Element。为了继续充分发挥 Element 的潜力，我们建议您升级您的 iOS 版本。";
+"version_check_banner_title_deprecated" = "我们不再支持 iOS %@";
+"version_check_banner_subtitle_supported" = "我们不久后将结束对 iOS %@ 上 Element 的支持。为了继续充分发挥 Element 的潜力，我们建议您升级您的 iOS 版本。";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "我们正结束对 iOS %@ 的支持";
+"settings_new_keyword" = "添加新关键词";
+"settings_your_keywords" = "你的关键词";
+"settings_room_upgrades" = "房间升级";
+"settings_messages_by_a_bot" = "机器人消息";
+"settings_call_invitations" = "通话邀请";
+"settings_room_invitations" = "房间邀请";
+"settings_messages_containing_keywords" = "关键词";
+"settings_messages_containing_at_room" = "@房间";
+"settings_messages_containing_user_name" = "我的用户名";
+"settings_messages_containing_display_name" = "我的显示名称";
+"settings_encrypted_group_messages" = "加密群组信消息";
+"settings_group_messages" = "群组消息";
+"settings_encrypted_direct_messages" = "加密私信";
+"settings_direct_messages" = "私信";
+"settings_notify_me_for" = "通知事项";
+"settings_mentions_and_keywords" = "提及和关键词";
+"settings_default" = "默认通知";
+"settings_notifications" = "通知";

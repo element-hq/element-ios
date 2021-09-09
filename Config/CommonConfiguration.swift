@@ -41,10 +41,16 @@ class CommonConfiguration: NSObject, Configurable {
         // Enable lazy loading
         settings.syncWithLazyLoadOfRoomMembers = true
         
+        // Customize the default notification content
+        settings.notificationBodyLocalizationKey = "NOTIFICATION"
+        
         settings.messageDetailsAllowSharing = BuildSettings.messageDetailsAllowShare
         settings.messageDetailsAllowSaving = BuildSettings.messageDetailsAllowSave
         settings.messageDetailsAllowCopyingMedia = BuildSettings.messageDetailsAllowCopyMedia
         settings.messageDetailsAllowPastingMedia = BuildSettings.messageDetailsAllowPasteMedia
+        
+        // Enable link detection if url preview are enabled
+        settings.enableBubbleComponentLinkDetection = true
         
         MXKContactManager.shared().allowLocalContactsAccess = BuildSettings.allowLocalContactsAccess
     }
