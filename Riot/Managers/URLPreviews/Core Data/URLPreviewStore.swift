@@ -50,7 +50,7 @@ class URLPreviewStore {
         
         if inMemory {
             if let storeDescription = container.persistentStoreDescriptions.first {
-                storeDescription.url = URL(fileURLWithPath: "/dev/null")
+                storeDescription.url = CoreDataHelper.inMemoryURL
             } else {
                 MXLog.error("[URLPreviewStore] persistentStoreDescription not found.")
             }
@@ -160,6 +160,10 @@ class URLPreviewStore {
     /// Saves any changes that are found on the context
     private func save() {
         guard context.hasChanges else { return }
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            MXLog.error("[URLPreviewStore] Error saving changes: \(error.localizedDescription)")
+        }
     }
 }
