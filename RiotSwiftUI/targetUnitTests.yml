@@ -1,14 +1,14 @@
-name: RiotTests
+name: RiotSwiftUnitTests
 
 schemes:
-  RiotTests:
+  RiotSwiftUnitTests:
     analyze:
       config: Debug
     archive:
       config: Release
     build:
       targets:
-        RiotTests:
+        RiotSwiftUnitTests:
         - running
         - testing
         - profiling
@@ -23,15 +23,15 @@ schemes:
       config: Debug
       disableMainThreadChecker: true
       targets:
-      - RiotTests
+      - RiotSwiftUnitTests
 
 targets:
-  RiotTests:
+  RiotSwiftUnitTests:
     type: bundle.unit-test
     platform: iOS
 
     dependencies:
-    - target: Riot
+    - target: RiotSwiftUI
 
     configFiles:
       Debug: Debug.xcconfig
@@ -39,29 +39,19 @@ targets:
 
     settings:
       base:
-        BUNDLE_LOADER: $(TEST_HOST)
         FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)
-        INFOPLIST_FILE: RiotTests/Info.plist
+        INFOPLIST_FILE: RiotSwiftUI/Info.plist
         LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks
         PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
-        PRODUCT_NAME: RiotTests
-        SWIFT_OBJC_BRIDGING_HEADER: RiotTests/RiotTests-Bridging-Header.h
-        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Riot.app/Riot
+        PRODUCT_NAME: RiotSwiftUnitTests
       configs:
         Debug:
         Release:
           PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
           PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
-
     sources:
-    - path: .
-    - path: ../Config/Configurable.swift
-    - path: ../Config/BuildSettings.swift
-    - path: ../Config/AppConfiguration.swift
-    - path: ../Config/CommonConfiguration.swift
-    - path: ../Riot/Categories/Bundle.swift
-    - path: ../Riot/Generated/InfoPlist.swift
-    - path: ../Riot/Managers/Settings/RiotSettings.swift
-    - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
-    - path: ../Riot/Managers/KeyValueStorage/
-    - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../RiotSwiftUI/Modules
+      includes:
+      - "**/Test"
+      excludes:
+      - "**/Test/UI/**"

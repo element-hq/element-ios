@@ -27,8 +27,6 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
     private let session: MXSession
     private var listenerReference: Any?
     
-    @Published private var presence: TemplateUserProfilePresence = .offline
-    
     // MARK: Public
     
     var userId: String {
@@ -43,14 +41,13 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
         session.myUser.avatarUrl
     }
     
-    var presencePublisher: AnyPublisher<TemplateUserProfilePresence, Never> {
-        $presence.eraseToAnyPublisher()
-    }
+    private(set) var presenceSubject: CurrentValueSubject<TemplateUserProfilePresence, Never>
     
     // MARK: - Setup
     
     init(session: MXSession) {
         self.session = session
+        self.presenceSubject = CurrentValueSubject(TemplateUserProfilePresence(mxPresence: session.myUser.presence))
         self.listenerReference = setupPresenceListener()
     }
 
@@ -65,7 +62,7 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
                   let event = event,
                   case .presence = MXEventType(identifier: event.eventId)
             else { return }
-            self.presence = TemplateUserProfilePresence(mxPresence: self.session.myUser.presence)
+            self.presenceSubject.send(TemplateUserProfilePresence(mxPresence: self.session.myUser.presence)) 
         }
 //        TODO: Add log back when abstract logger added to RiotSwiftUI
 //        if reference == nil {

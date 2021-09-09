@@ -36,7 +36,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
         self.userService = userService
         self.viewState = initialState ?? Self.defaultState(userService: userService)
         
-        userService.presencePublisher
+        userService.presenceSubject
             .map(TemplateUserProfileStateAction.updatePresence)
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] action in
@@ -46,7 +46,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     }
     
     private static func defaultState(userService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
-        return TemplateUserProfileViewState(avatar: userService.avatarData, displayName: userService.displayName, presence: .offline)
+        return TemplateUserProfileViewState(avatar: userService.avatarData, displayName: userService.displayName, presence: userService.presenceSubject.value)
     }
     
     // MARK: - Public

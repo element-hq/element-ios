@@ -45,6 +45,7 @@ struct TemplateUserProfile: View {
             }
             .frame(maxHeight: .infinity)
         }
+        .background(theme.colors.background)
         .frame(maxHeight: .infinity)
         .navigationTitle(viewModel.viewState.displayName ?? "")
         .navigationBarItems(leading: leftButton, trailing: rightButton)
@@ -70,7 +71,6 @@ struct TemplateUserProfile: View {
 @available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {
     static var previews: some View {
-        TemplateUserProfile(viewModel: TemplateUserProfileViewModel(userService: MockTemplateUserProfileService.example))
-        .addDependency(MockAvatarService.example)
+        MockTemplateProfileUserScreenStates.screenGroup()
     }
 }

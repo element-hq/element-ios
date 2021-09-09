@@ -16,8 +16,7 @@
 import SwiftUI
 
 /**
- Just needed so the application target has an entry point for the moment.
- Could use to render the different screens.
+ RiotSwiftUI screens rendered for UI Tests.
  */
 @available(iOS 14.0, *)
 @main

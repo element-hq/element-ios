@@ -19,20 +19,24 @@ import Combine
 
 @available(iOS 14.0, *)
 class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
-
-    static let example = MockTemplateUserProfileService()
-    static let initialPresenceState: TemplateUserProfilePresence = .offline
-    @Published var presence: TemplateUserProfilePresence = initialPresenceState
-    var presencePublisher: AnyPublisher<TemplateUserProfilePresence, Never> {
-        $presence.eraseToAnyPublisher()
+    var presenceSubject: CurrentValueSubject<TemplateUserProfilePresence, Never>
+    
+    let userId: String
+    var displayName: String?
+    let avatarUrl: String?
+    init(
+        userId: String = "123",
+        displayName:  String? = "Alice",
+        avatarUrl: String? = "mx123@matrix.com",
+        presence: TemplateUserProfilePresence = .offline
+    ) {
+        self.userId = userId
+        self.displayName = displayName
+        self.avatarUrl = avatarUrl
+        self.presenceSubject = CurrentValueSubject<TemplateUserProfilePresence, Never>(presence)
     }
-    let userId: String = "123"
-    let displayName: String? = "Alice"
-    let avatarUrl: String? = "mx123@matrix.com"
-    let currentlyActive: Bool = true
-    let lastActive: UInt = 1630596918513
     
     func simulateUpdate(presence: TemplateUserProfilePresence) {
-        self.presence = presence
+        self.presenceSubject.send(presence)
     }
 }

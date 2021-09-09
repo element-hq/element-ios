@@ -17,27 +17,30 @@
 import XCTest
 import Combine
 
-@testable import Riot
+@testable import RiotSwiftUI
 
 @available(iOS 14.0, *)
 class TemplateUserProfileViewModelTests: XCTestCase {
+    private enum Constants {
+        static let presenceInitialValue: TemplateUserProfilePresence = .offline
+        static let displayName = "Alice"
+    }
     var service: MockTemplateUserProfileService!
     var viewModel: TemplateUserProfileViewModel!
     var cancellables = Set<AnyCancellable>()
     override func setUpWithError() throws {
-        service = MockTemplateUserProfileService()
+        service = MockTemplateUserProfileService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
         viewModel = TemplateUserProfileViewModel(userService: service)
     }
     
     func testInitialState() {
-        XCTAssertEqual(viewModel.viewState.displayName, MockTemplateUserProfileService.example.displayName)
-        XCTAssertEqual(viewModel.viewState.avatar?.mxContentUri, MockTemplateUserProfileService.example.avatarUrl)
-        XCTAssertEqual(viewModel.viewState.presence, MockTemplateUserProfileService.initialPresenceState)
+        XCTAssertEqual(viewModel.viewState.displayName, Constants.displayName)
+        XCTAssertEqual(viewModel.viewState.presence, Constants.presenceInitialValue)
     }
 
     func testFirstPresenceRecieved() throws {
         let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [MockTemplateUserProfileService.initialPresenceState])
+        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
     }
     
     func testPresenceUpdatesRecieved() throws {
@@ -46,8 +49,6 @@ class TemplateUserProfileViewModelTests: XCTestCase {
         let newPresenceValue2: TemplateUserProfilePresence = .idle
         service.simulateUpdate(presence: newPresenceValue1)
         service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try xcAwait(presencePublisher), [MockTemplateUserProfileService.initialPresenceState, newPresenceValue1, newPresenceValue2])
+        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
     }
-    
-    
 }

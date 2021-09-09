@@ -22,7 +22,7 @@ protocol TemplateUserProfileServiceProtocol: Avatarable {
     var userId: String { get }
     var displayName: String? { get }
     var avatarUrl: String? { get }
-    var presencePublisher: AnyPublisher<TemplateUserProfilePresence, Never> { get }
+    var presenceSubject: CurrentValueSubject<TemplateUserProfilePresence, Never> { get }
 }
 
 @available(iOS 14.0, *)
