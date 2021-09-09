@@ -1348,13 +1348,13 @@
 "room_recents_unknown_room_error_message" = "Ei leia sellist jututuba. Palun kontrolli, et ta ikka olemas on";
 "room_creation_dm_error" = "Otsevestluse loomine ei õnnestunud. Palun kontrolli, et kasutajanimed oleks õiged ja proovi uuesti.";
 "key_verification_verify_qr_code_scan_code_other_device_action" = "Skaneeri selle seadmega";
-"room_notifs_settings_encrypted_room_notice" = "Teavitused mainimiste ja võtmesõnade esinemise puhul pole mobiilirakenduses krüptitud jututoas saadaval.";
+"room_notifs_settings_encrypted_room_notice" = "Teavitused mainimiste ja märksõnade esinemise puhul pole mobiilirakenduses krüptitud jututoas saadaval.";
 "room_notifs_settings_account_settings" = "Kasutajakonto seadistused";
 "room_notifs_settings_manage_notifications" = "Sa võid hallata teavitusi %@ jututoas";
 "room_notifs_settings_cancel_action" = "Katkesta";
 "room_notifs_settings_done_action" = "Valmis";
 "room_notifs_settings_none" = "mitte ühelgi juhul";
-"room_notifs_settings_mentions_and_keywords" = "mainimiste ja võtmesõnade leidumise puhul";
+"room_notifs_settings_mentions_and_keywords" = "mainimiste ja märksõnade leidumise puhul";
 "room_notifs_settings_all_messages" = "kõikide sõnumite puhul";
 
 // Room Notification Settings
@@ -1378,3 +1378,35 @@
 "settings_device_notifications" = "Teavitused seadmes";
 "voice_message_lock_screen_placeholder" = "Häälsõnum";
 "event_formatter_call_has_ended_with_time" = "Kõne lõppes • %@";
+"version_check_modal_action_title_deprecated" = "Vaata, kuidas";
+"version_check_modal_subtitle_deprecated" = "Me oleme arendanud Element'i kiiremaks ja mugavamaks. Sinu praegune iOS'i versioon ei oska kõiki neid uuendusi kasutada ja tema tugi on lõppenud.\nKui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_modal_title_deprecated" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppenud";
+"version_check_modal_action_title_supported" = "Selge lugu";
+"version_check_modal_subtitle_supported" = "Me oleme arendanud Element'i kiiremaks ja mugavamaks. Sinu praegune iOS'i versioon ei oska kõiki neid uuendusi kasutada ja tema tugi on lõppemas.\nKui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_modal_title_supported" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppemas";
+"version_check_banner_subtitle_deprecated" = "Me oleme lõpetanud selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_banner_title_deprecated" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppenud";
+"version_check_banner_subtitle_supported" = "Me üsna varsti lõpetame selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppemas";
+"settings_mentions_and_keywords_encryption_notice" = "Mobiilseadmes ei toimi krüptitud jututubades mainimiste ja märksõnade alusel tehtavad teavitused.";
+"settings_new_keyword" = "Lisa uus märksõna";
+"settings_your_keywords" = "Sinu märksõnad";
+"settings_room_upgrades" = "Jututubade versiooniuuendused";
+"settings_messages_by_a_bot" = "Robotite saadetud sõnumid";
+"settings_call_invitations" = "Saabuvad kõned";
+"settings_room_invitations" = "Kutsed jututubadesse";
+"settings_messages_containing_keywords" = "Märksõnad";
+"settings_messages_containing_at_room" = "@jututuba";
+"settings_messages_containing_user_name" = "Minu kasutajanimi";
+"settings_messages_containing_display_name" = "Minu kuvatav nimi";
+"settings_encrypted_group_messages" = "Krüptitud rühmavestlused";
+"settings_group_messages" = "Rühmavestlused";
+"settings_encrypted_direct_messages" = "Krüptitud otsevestlused";
+"settings_direct_messages" = "Otsevestlused";
+"settings_notify_me_for" = "Teavita mind";
+"settings_mentions_and_keywords" = "Mainimised ja märksõnad";
+"settings_default" = "Vaikimisi teavitused";
+"settings_notifications" = "TEAVITUSED";
