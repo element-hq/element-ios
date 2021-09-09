@@ -1461,3 +1461,8 @@
 "settings_mentions_and_keywords" = "Përmendje dhe Fjalëkyçe";
 "settings_default" = "Njoftime Parazgjedhje";
 "settings_notifications" = "NJOFTIME";
+"settings_show_url_previews_description" = "Paraparjet do të shfaqen vetëm në dhoma të pafshehtëzuara.";
+"settings_show_url_previews" = "Shfaq paraparje URL-sh brendazi";
+"settings_confirm_media_size_description" = "Kur kjo është aktive, do t’ju kërkohet të ripohoni se në ç’madhësi të dërgohen figurat dhe videot.";
+"settings_confirm_media_size" = "Ripoho madhësi, kur dërgohet";
+"settings_sending_media" = "DËRGIM FIGURASH DHE VIDEOSH";
