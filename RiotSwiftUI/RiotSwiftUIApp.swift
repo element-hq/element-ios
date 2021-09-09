@@ -20,7 +20,10 @@ import SwiftUI
  */
 @available(iOS 14.0, *)
 @main
-struct testApp: App {
+struct RiotSwiftUIApp: App {
+    init() {
+        UILog.configure(logger: PrintLogger.self)
+    }
     var body: some Scene {
         WindowGroup {
             Text("app")

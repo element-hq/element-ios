@@ -64,11 +64,9 @@ class TemplateUserProfileService: TemplateUserProfileServiceProtocol {
             else { return }
             self.presenceSubject.send(TemplateUserProfilePresence(mxPresence: self.session.myUser.presence))
         }
-//        TODO: Add log back when abstract logger added to RiotSwiftUI
-//        if reference == nil {
-//
-//            MXLog.error("[TemplateUserProfileService] Did not recieve a lisenter reference.")
-//        }
+        if reference == nil {
+            UILog.error("[TemplateUserProfileService] Did not recieve a lisenter reference.")
+        }
         return reference
     }
 }

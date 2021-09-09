@@ -75,8 +75,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
         case .updatePresence(let presence):
             state.presence = presence
         }
-//        TODO: Uncomment when we have an abstract logger for RiotSwiftUI
-//        MXLog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
+        UILog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
     }
     
     private func done() {

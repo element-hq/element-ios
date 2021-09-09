@@ -47,8 +47,7 @@ class AvatarViewModel: InjectableObject, ObservableObject {
         avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
             .sink { completion in
                 guard case let .failure(error) = completion else { return }
-//                MXLog.error("[AvatarService] Failed to retrieve avatar: \(error)")
-                // TODO: Report non-fatal error when we have Sentry or similar.
+                UILog.error("[AvatarService] Failed to retrieve avatar: \(error)")
             } receiveValue: { image in
                 self.viewState = .avatar(image)
             }
