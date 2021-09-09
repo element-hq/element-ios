@@ -1455,3 +1455,34 @@
 "settings_notifications_disabled_alert_message" = "Pour activer les notifications, rendez vous dans les paramètres de l’appareil.";
 "settings_notifications_disabled_alert_title" = "Notifications désactivées";
 "settings_device_notifications" = "Notifications sur l’appareil";
+"version_check_modal_action_title_deprecated" = "Découvrez comment";
+"version_check_modal_title_deprecated" = "Nous ne prenons plus en charge iOS %@";
+"version_check_modal_action_title_supported" = "Compris";
+"version_check_modal_subtitle_supported" = "Nous avons travaillé à rendre Element plus rapide et plus plaisant. Malheureusement, votre version de iOS n’est pas compatible avec certaines de ces mises à jour et ne sera plus prise en charge.\nPour continuer à utiliser Element à ses pleines capacités, nous vous recommandons de mettre à jour votre système d’exploitation.";
+"version_check_modal_title_supported" = "Nous mettons fin à la prise en charge de iOS %@";
+"version_check_banner_subtitle_deprecated" = "Nous ne prenons plus en charge Element pour iOS %@. Pour continuer à utiliser Element à ses pleines capacités, nous vous recommandons de mettre à jour votre version de iOS.";
+"version_check_banner_title_deprecated" = "Nous ne prenons plus en charge iOS %@";
+"version_check_banner_subtitle_supported" = "Nous allons bientôt mettre fin à la prise en charge de Element pour iOS %@. Pour continuer à utiliser Element à ses pleines capacités, nous vous recommandons de mettre à jour votre version de iOS.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Nous allons mettre fin à la prise en charge de iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "Vous ne recevrez pas de notification pour les mentions et mots-clés dans les salons chiffrés sur mobile.";
+"settings_new_keyword" = "Ajouter un mot-clé";
+"settings_your_keywords" = "Vos mots-clés";
+"settings_room_upgrades" = "Mises à niveau de salons";
+"settings_messages_by_a_bot" = "Messages d’un robot";
+"settings_call_invitations" = "Invitations à un appel";
+"settings_room_invitations" = "Invitations à un salon";
+"settings_messages_containing_keywords" = "Mots-clés";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "Mon nom d’utilisateur";
+"settings_messages_containing_display_name" = "Mon nom d’affichage";
+"settings_encrypted_group_messages" = "Messages de groupe chiffrés";
+"settings_group_messages" = "Messages de groupe";
+"settings_encrypted_direct_messages" = "Messages directs chiffrés";
+"settings_direct_messages" = "messages directs";
+"settings_notify_me_for" = "Me notifier pour";
+"settings_mentions_and_keywords" = "Mentions et mots-clés";
+"settings_default" = "Notifications par défaut";
+"settings_notifications" = "NOTIFICATIONS";
