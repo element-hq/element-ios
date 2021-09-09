@@ -35,7 +35,7 @@ final class TemplateScreenViewController: UIViewController {
     
     // MARK: Private
 
-    private var viewModel: TemplateScreenViewModelType!
+    private var viewModel: TemplateScreenViewModelProtocol!
     private var theme: Theme!
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
@@ -43,7 +43,7 @@ final class TemplateScreenViewController: UIViewController {
 
     // MARK: - Setup
     
-    class func instantiate(with viewModel: TemplateScreenViewModelType) -> TemplateScreenViewController {
+    class func instantiate(with viewModel: TemplateScreenViewModelProtocol) -> TemplateScreenViewController {
         let viewController = StoryboardScene.TemplateScreenViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
@@ -172,7 +172,7 @@ final class TemplateScreenViewController: UIViewController {
 // MARK: - TemplateScreenViewModelViewDelegate
 extension TemplateScreenViewController: TemplateScreenViewModelViewDelegate {
 
-    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelType, didUpdateViewState viewSate: TemplateScreenViewState) {
+    func templateScreenViewModel(_ viewModel: TemplateScreenViewModelProtocol, didUpdateViewState viewSate: TemplateScreenViewState) {
         self.render(viewState: viewSate)
     }
 }

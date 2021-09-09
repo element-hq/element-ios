@@ -49,6 +49,9 @@ class CommonConfiguration: NSObject, Configurable {
         settings.messageDetailsAllowCopyingMedia = BuildSettings.messageDetailsAllowCopyMedia
         settings.messageDetailsAllowPastingMedia = BuildSettings.messageDetailsAllowPasteMedia
         
+        // Enable link detection if url preview are enabled
+        settings.enableBubbleComponentLinkDetection = true
+        
         MXKContactManager.shared().allowLocalContactsAccess = BuildSettings.allowLocalContactsAccess
     }
     

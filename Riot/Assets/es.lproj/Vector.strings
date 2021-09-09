@@ -127,7 +127,7 @@
 "auth_reset_password_email_validation_message" = "Se envió un correo electrónico a %@. Una vez que hayas seguido el enlace que contiene, haz clic a continuación.";
 "auth_reset_password_error_unauthorized" = "No se pudo verificar la dirección de correo electrónico: asegúrate de hacer clic en el enlace del correo electrónico";
 "auth_reset_password_error_not_found" = "Tu dirección de correo electrónico no parece estar asociada a una ID de Matrix en este servidor base.";
-"auth_reset_password_success_message" = "Tu contraseña fue restablecida.\n\nSe ha cerrado sesión en todos tus dispositivos y ya no recibirás notificaciones push. Para volver a habilitar las notificaciones, vuelve a iniciar sesión en cada dispositivo.";
+"auth_reset_password_success_message" = "Has restablecido tu contraseña.\n\nHemos cerrado sesión en todos tus dispositivos, y ya no recibirás notificaciones. Para volver a activar las notificaciones, vuelve a iniciar sesión en cada dispositivo.";
 "auth_add_email_and_phone_warning" = "Todavía no es posible registrarse con correo electrónico y número telefónico a la vez, hasta que exista la API. Solo se tendrá en cuenta el número telefónico. Puedes añadir tu correo electrónico a tu perfil en ajustes.";
 // Chat creation
 "room_creation_title" = "Nueva Conversación";
@@ -184,8 +184,8 @@
 "room_participants_ago" = "hace";
 "room_participants_action_section_admin_tools" = "Herramientas de administración";
 "room_participants_action_section_direct_chats" = "Conversaciones directas";
-"room_participants_action_section_devices" = "Dispositivos";
-"room_participants_action_section_other" = "Otro";
+"room_participants_action_section_devices" = "Sesiones";
+"room_participants_action_section_other" = "Opciones";
 "room_participants_action_invite" = "Invitar";
 "room_participants_action_leave" = "Salir de esta sala";
 "room_participants_action_remove" = "Eliminar de esta sala";
@@ -228,7 +228,7 @@
 "room_delete_unsent_messages" = "Eliminar mensajes no enviados";
 "room_event_action_copy" = "Copiar";
 "room_event_action_quote" = "Citar";
-"room_event_action_redact" = "Quitar";
+"room_event_action_redact" = "Eliminar";
 "room_event_action_more" = "Más";
 "room_event_action_share" = "Compartir";
 "room_event_action_permalink" = "Enlace Permanente";
@@ -252,7 +252,7 @@
 "room_replacement_information" = "Esta sala ha sido reemplazada y ya no está activa.";
 "room_replacement_link" = "La conversación continúa aquí.";
 "room_predecessor_information" = "Esta sala es una continuación de otra conversación.";
-"room_predecessor_link" = "Haz clic aquí para ver mensajes más antiguos.";
+"room_predecessor_link" = "Toca aquí para ver mensajes más antiguos.";
 "room_resource_limit_exceeded_message_contact_1" = " Por favor ";
 "room_resource_limit_exceeded_message_contact_2_link" = "contacta al administrador de tu servicio";
 "room_resource_limit_exceeded_message_contact_3" = " para continuar utilizando este servicio.";
@@ -582,9 +582,68 @@
 "callbar_active_and_single_paused" = "1 llamada en curso (%@) · 1 llamada en espera";
 
 // Call Bar
-"callbar_only_single_active" = "Llamada en curso (%@)";
+"callbar_only_single_active" = "Toca para volver a la llamada (%@)";
 "less" = "Menos";
 "more" = "Más";
 "switch" = "Cambiar";
 "skip" = "Saltar";
 "close" = "Cerrar";
+"settings_integrations" = "INTEGRACIONES";
+"room_multiple_typing_notification" = "%@ y otros";
+"external_link_confirmation_title" = "Revisa el enlace";
+"media_type_accessibility_sticker" = "Pegatina";
+"media_type_accessibility_file" = "Archivo";
+"media_type_accessibility_location" = "Ubicación";
+"media_type_accessibility_video" = "Vídeo";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_image" = "Imagen";
+"room_join_group_call" = "Unirse";
+"room_open_dialpad" = "Teclado numérico";
+"room_place_voice_call" = "Llamada de voz";
+"room_accessibility_hangup" = "Colgar";
+"room_accessibility_video_call" = "Videollamada";
+"room_accessibility_upload" = "Adjuntar";
+"room_accessibility_call" = "Llamar";
+"room_accessibility_search" = "Buscar";
+"room_action_reply" = "Responder";
+"room_action_send_file" = "Enviar archivo";
+"room_action_camera" = "Sacar una foto o grabar un vídeo";
+"room_event_action_reaction_show_less" = "Ver menos";
+"room_event_action_reaction_show_all" = "Ver todo";
+"room_event_action_edit" = "Editar";
+"room_event_action_reply" = "Responder";
+"room_event_action_delete_confirmation_title" = "Borrar mensaje no enviado";
+"room_unsent_messages_cancel_title" = "Borrar mensajes sin enviar";
+"room_message_replying_to" = "Respondiendo a %@";
+"room_message_editing" = "Editando";
+"room_member_power_level_short_custom" = "Personalizado";
+"room_member_power_level_short_moderator" = "Mod";
+"room_member_power_level_short_admin" = "Admin";
+"room_participants_security_information_room_not_encrypted" = "Los mensajes en esta sala no están cifrados de punta a punta.";
+"room_participants_security_loading" = "Cargando…";
+"room_participants_action_security_status_loading" = "Cargando…";
+"room_participants_action_security_status_warning" = "Aviso";
+"room_participants_action_security_status_verified" = "Verificado";
+"room_participants_action_security_status_verify" = "Verificar";
+"room_participants_action_section_security" = "Seguridad";
+"room_participants_filter_room_members_for_dm" = "Filtrar miembros";
+"room_participants_remove_third_party_invite_prompt_msg" = "¿Seguro que quieres invalidar esta invitación?";
+"room_participants_leave_prompt_msg_for_dm" = "¿Seguro que quieres salir?";
+"rooms_empty_view_title" = "Salas";
+"people_empty_view_information" = "Habla de forma segura con cualquiera. Toca el + para empezar a añadir gente.";
+"room_recents_unknown_room_error_message" = "No encuentro la sala. Asegúrate de que existe de verdad";
+"auth_softlogout_clear_data_sign_out_msg" = "¿Quieres borrar todos los datos que hemos almacenado en el dispositivo? Vuelve a iniciar sesión para acceder de nuevo a tu cuenta y mensajes.";
+"auth_autodiscover_invalid_response" = "La respuesta de descubrimiento del servidor base no es válida";
+"auth_forgot_password_error_no_configured_identity_server" = "No hay ningún servidor de identidad configurado: añade uno para poder recuperar tu contraseña en el futuro.";
+"auth_email_is_required" = "No hay ningún servidor de identidad configurado, por lo que no puedes añadir una dirección de correo para recuperar tu contraseña en el futuro.";
+"auth_add_email_phone_message_2" = "Dinos tu correo para recuperar tu cuenta en un futuro. Además, también puedes activar que la gente te encuentre al buscar tu correo o número de teléfono.";
+"callbar_only_single_active_group" = "Toca para unirte a la llamada en grupo (%@)";
+"room_accessibility_integrations" = "Integraciones";
+"room_message_unable_open_link_error_message" = "No se ha podido abrir el enlace.";
+"room_accessiblity_scroll_to_bottom" = "Ir al final";
+
+// Chat
+"room_slide_to_end_group_call" = "Desliza para terminar la llamada para todo el mundo";
+"room_member_power_level_custom_in" = "Personalizado (%@) en %@";
+"room_member_power_level_moderator_in" = "Moderador en %@";
+"room_member_power_level_admin_in" = "Admin en %@";

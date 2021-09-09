@@ -17,14 +17,17 @@
 import UIKit
 
 @objcMembers
-final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
+final class FlowTemplateCoordinator: FlowTemplateCoordinatorProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
+        
+    private let parameters: FlowTemplateCoordinatorParameters
     
-    private let navigationRouter: NavigationRouterType
-    private let session: MXSession
+    private var navigationRouter: NavigationRouterType {
+        return self.parameters.navigationRouter
+    }
     
     // MARK: Public
 
@@ -35,32 +38,40 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
-        self.session = session
+    init(parameters: FlowTemplateCoordinatorParameters) {
+        self.parameters = parameters
     }    
     
-    // MARK: - Public methods
+    // MARK: - Public
     
     func start() {
 
         let rootCoordinator = self.createTemplateScreenCoordinator()
-
+        
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
-
-        self.navigationRouter.setRootModule(rootCoordinator)
+        
+        if self.navigationRouter.modules.isEmpty == false {
+            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            })
+        } else {
+            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
+                self?.remove(childCoordinator: rootCoordinator)
+            }
+        }
       }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
     }
     
-    // MARK: - Private methods
+    // MARK: - Private
 
     private func createTemplateScreenCoordinator() -> TemplateScreenCoordinator {
-        let coordinator = TemplateScreenCoordinator(session: self.session)
+        let coordinatorParameters = TemplateScreenCoordinatorParameters(session: self.parameters.session)
+        let coordinator = TemplateScreenCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
         return coordinator
     }
@@ -68,11 +79,11 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorType {
 
 // MARK: - TemplateScreenCoordinatorDelegate
 extension FlowTemplateCoordinator: TemplateScreenCoordinatorDelegate {
-    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorType, didCompleteWithUserDisplayName userDisplayName: String?) {
+    func templateScreenCoordinator(_ coordinator: TemplateScreenCoordinatorProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }
     
-    func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorType) {
+    func templateScreenCoordinatorDidCancel(_ coordinator: TemplateScreenCoordinatorProtocol) {
         self.delegate?.flowTemplateCoordinatorDidComplete(self)
     }
 }
