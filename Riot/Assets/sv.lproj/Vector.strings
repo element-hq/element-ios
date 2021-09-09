@@ -1264,9 +1264,9 @@
 "dialpad_title" = "Knappsats";
 "call_actions_unhold" = "Återuppta";
 "event_formatter_call_back" = "Ring tillbaka";
-"event_formatter_call_you_declined" = "Du avslog det här samtalet";
+"event_formatter_call_you_declined" = "Samtal avslaget";
 "event_formatter_call_you_currently_in" = "Aktivt samtal";
-"event_formatter_call_has_ended" = "Avslutade %@";
+"event_formatter_call_has_ended" = "Samtal avslutat";
 "event_formatter_call_video" = "Videosamtal";
 "event_formatter_call_voice" = "Röstsamtal";
 "settings_show_NSFW_public_rooms" = "Visa NSFW offentliga rum";
@@ -1346,3 +1346,66 @@
 "security_settings_secure_backup_reset" = "Återställ";
 "security_settings_secure_backup_info_valid" = "Den här sessionen säkerhetskopierar dina nycklar.";
 "security_settings_secure_backup_info_checking" = "Kontrollerar…";
+"voice_message_lock_screen_placeholder" = "Röstmeddelande";
+"voice_message_stop_locked_mode_recording" = "Tryck på dina inspelningar för att stoppa eller lyssna";
+"voice_message_remaining_recording_time" = "%@s kvar";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Håll in för att spela in, släpp för att skicka";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Skanna med den här enheten";
+"event_formatter_call_missed_video" = "Missat videosamtal";
+"event_formatter_call_missed_voice" = "Missat videosamtal";
+"event_formatter_call_active_video" = "Aktivt videosamtal";
+"event_formatter_call_active_voice" = "Aktivt röstsamtal";
+"event_formatter_call_incoming_video" = "Inkommande videosamtal";
+"event_formatter_call_incoming_voice" = "Inkommande röstsamtal";
+"event_formatter_call_has_ended_with_time" = "Samtal avslutat • %@";
+"room_notifs_settings_encrypted_room_notice" = "Observera att aviseringar för omnämningar och nyckelord inte är tillgängliga i krypterade rum på mobil.";
+"room_notifs_settings_account_settings" = "Kontoinställningar";
+"room_notifs_settings_manage_notifications" = "Du kan hantera aviseringar i %@";
+"room_notifs_settings_cancel_action" = "Avbryt";
+"room_notifs_settings_done_action" = "Klar";
+"room_notifs_settings_none" = "Inga";
+"room_notifs_settings_mentions_and_keywords" = "Endast omnämnanden och nyckelord";
+"room_notifs_settings_all_messages" = "Alla meddelanden";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Avisera mig för";
+"room_details_notifs" = "Aviseringar";
+"settings_labs_voice_messages" = "Röstmeddelanden";
+"settings_notifications_disabled_alert_message" = "För att aktivera aviseringar, gå till din enhets inställningar.";
+"settings_notifications_disabled_alert_title" = "Aviseringar inaktiverade";
+"settings_device_notifications" = "Enhetsaviseringar";
+"version_check_modal_action_title_deprecated" = "Ta reda på hur";
+"version_check_modal_subtitle_deprecated" = "Vi har jobbat på att förbättra Element för en snabbare och mer polerad upplevelse. Tyvärr så är din nuvarande version av iOS inte kompatibel med vissa av dessa fixar och kommer inte längre stödas.\nVi råder dig att uppgradera ditt operativsystem för att fortsätta använda Element med dess fulla potential.";
+"version_check_modal_title_deprecated" = "Vi stöder inte längre iOS %@";
+"version_check_modal_action_title_supported" = "Förstått";
+"version_check_modal_subtitle_supported" = "Vi har jobbat på att förbättra Element för en snabbare och mer polerad upplevelse. Tyvärr så är din nuvarande version av iOS inte kompatibel med vissa av dessa fixar och kommer inte längre stödas.\nVi råder dig att uppgradera ditt operativsystem för att fortsätta använda Element med dess fulla potential.";
+"version_check_modal_title_supported" = "Vi slutar stöda iOS %@";
+"version_check_banner_subtitle_deprecated" = "Vi stöder inte längre Element på iOS %@. För att fortsätta använda Element med dess fulla potential så råder vi dig att uppgradera din iOS-version.";
+"version_check_banner_title_deprecated" = "Vi stöder inte längre iOS %@";
+"version_check_banner_subtitle_supported" = "Vi kommer snart att sluta stöda Element på iOS %@. För att fortsätta använda Element med dess fulla potential så råder vi dig att uppgradera din iOS-version.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Vi slutar stöda iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "Du kommer inte att få aviseringar för omnämnanden och nyckelord på mobilen.";
+"settings_new_keyword" = "Lägg till ett nytt nyckelord";
+"settings_your_keywords" = "Dina nyckelord";
+"settings_room_upgrades" = "Rumsuppgraderingar";
+"settings_messages_by_a_bot" = "Meddelanden från en bot";
+"settings_call_invitations" = "Samtalsinbjudningar";
+"settings_room_invitations" = "Rumsinbjudningar";
+"settings_messages_containing_keywords" = "Nyckelord";
+"settings_messages_containing_at_room" = "@rum";
+"settings_messages_containing_user_name" = "Mitt användarnamn";
+"settings_messages_containing_display_name" = "Mitt visningsnamn";
+"settings_encrypted_group_messages" = "Krypterade gruppmeddelanden";
+"settings_group_messages" = "Gruppmeddelanden";
+"settings_encrypted_direct_messages" = "Krypterade direktmeddelanden";
+"settings_direct_messages" = "Direktmeddelanden";
+"settings_notify_me_for" = "Avisera mig för";
+"settings_mentions_and_keywords" = "Omnämnanden och nyckelord";
+"settings_default" = "Förvalda aviseringar";
+"settings_notifications" = "AVISERINGAR";

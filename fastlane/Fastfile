@@ -360,7 +360,7 @@ platform :ios do
     build_number = options[:build_number]
 
     update_file_content(
-      "../Config/AppIdentifiers.xcconfig",
+      "../Config/AppVersion.xcconfig",
       /(CURRENT_PROJECT_VERSION\s*=)\s*.*/ => "\\1 #{build_number}"
     )
   end

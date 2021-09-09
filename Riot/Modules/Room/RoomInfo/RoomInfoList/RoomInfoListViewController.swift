@@ -169,7 +169,7 @@ final class RoomInfoListViewController: UIViewController {
         
         var rows = [rowSettings]
         
-        if BuildSettings.roomSettingsScreenShowNotificationsV2 {
+        if BuildSettings.showNotificationsV2 {
             rows.append(roomNotifications)
         }
         if RiotSettings.shared.roomInfoScreenShowIntegrations {

@@ -1331,7 +1331,7 @@
 "event_formatter_call_back" = "Visszahívás";
 "event_formatter_call_you_declined" = "Hívás elutasítva";
 "event_formatter_call_you_currently_in" = "Aktív hívás";
-"event_formatter_call_has_ended" = "Hívás vége: %@";
+"event_formatter_call_has_ended" = "Hívás vége";
 "event_formatter_call_video" = "Videóhívás";
 "event_formatter_call_voice" = "Hang hívás";
 "room_open_dialpad" = "Tárcsázó számlap";
@@ -1439,3 +1439,37 @@
 "event_formatter_call_active_voice" = "Hanghívás folyamatban";
 "event_formatter_call_incoming_video" = "Bejövő videó hívás";
 "event_formatter_call_incoming_voice" = "Bejövő hanghívás";
+"voice_message_lock_screen_placeholder" = "Hang üzenet";
+"event_formatter_call_has_ended_with_time" = "Hívás vége • %@";
+"version_check_modal_action_title_deprecated" = "Tudd meg hogyan";
+"version_check_modal_subtitle_deprecated" = "Azon dolgozunk, hogy az Element gyorsabb és letisztultabb legyen. Sajnos a jelenlegi iOS verzió nem kompatibilis ezekkel a javításokkal és a továbbiakban nem támogatott.\nAhhoz, hogy az Element nyújtotta előnyöket továbbra is élvezhesse, javasoljuk, hogy frissítse az operációs rendszerét.";
+"version_check_modal_title_deprecated" = "Már nem támogatjuk az iOS %@ verziót";
+"version_check_modal_action_title_supported" = "Értem";
+"version_check_modal_subtitle_supported" = "Azon dolgozunk, hogy az Element gyorsabb és letisztultabb legyen. Sajnos a jelenlegi iOS verzió nem kompatibilis ezekkel a javításokkal és a továbbiakban nem támogatott.\nAhhoz, hogy az Element nyújtotta előnyöket továbbra is élvezhesse, javasoljuk, hogy frissítse az operációs rendszerét.";
+"version_check_modal_title_supported" = "Az iOS %@ támogatását befejezzük";
+"version_check_banner_subtitle_deprecated" = "Befejezzük az iOS %@ támogatását az Elementben. Ahhoz, hogy továbbra is élvezhesse az Element előnyeit, javasoljuk, hogy frissítse az iOS verzióját.";
+"version_check_banner_title_deprecated" = "Már nem támogatjuk az iOS %@ verziót";
+"version_check_banner_subtitle_supported" = "Hamarosan befejezzük az iOS %@ támogatását az Elementben. Ahhoz, hogy továbbra is élvezhesse az Element előnyeit, javasoljuk, hogy frissítse az iOS verzióját.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Az iOS %@ támogatását befejezzük";
+"settings_mentions_and_keywords_encryption_notice" = "Titkosított szobákból mobiltelefonon nem kapsz értesítést megemlítésekről és kulcsszavakról.";
+"settings_new_keyword" = "Kulcsszavak hozzáadása";
+"settings_your_keywords" = "Kulcsszavak";
+"settings_room_upgrades" = "Szoba fejlesztések";
+"settings_messages_by_a_bot" = "Üzenetek robotoktól";
+"settings_call_invitations" = "Amikor felhívnak";
+"settings_room_invitations" = "Szoba meghívók";
+"settings_messages_containing_keywords" = "Kulcsszavak";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "Felhasználói név";
+"settings_messages_containing_display_name" = "Megjelenítési név";
+"settings_encrypted_group_messages" = "Titkosított csoport beszélgetések";
+"settings_group_messages" = "Csoport üzenetek";
+"settings_encrypted_direct_messages" = "Titkosított közvetlen beszélgetések";
+"settings_direct_messages" = "Közvetlen beszélgetések";
+"settings_notify_me_for" = "Értesítés ezért:";
+"settings_mentions_and_keywords" = "Megemlítések és kulcsszavak";
+"settings_default" = "Alapértelmezett értesítések";
+"settings_notifications" = "ÉRTESÍTÉSEK";

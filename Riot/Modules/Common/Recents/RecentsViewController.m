@@ -34,6 +34,8 @@
 
 #import "Riot-Swift.h"
 
+NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
+
 @interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
@@ -972,6 +974,12 @@
     [super dataSource:dataSource didCellChange:changes];
     
     [self showEmptyViewIfNeeded];
+    
+    if (dataSource.state == MXKDataSourceStateReady)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
+                                                            object:self];
+    }
 }
 
 #pragma mark - Swipe actions
@@ -1034,7 +1042,7 @@
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
-        if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+        if ([BuildSettings showNotificationsV2])
         {
             [self changeEditedRoomNotificationSettings];
         }
@@ -1049,7 +1057,7 @@
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage;
-    if([BuildSettings roomSettingsScreenShowNotificationsV2])
+    if([BuildSettings showNotificationsV2])
     {
         notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
     }

@@ -219,7 +219,7 @@
 "settings_ignored_users" = "IGNOROWANI UŻYTKOWNICY";
 "settings_contacts" = "LOKALNE KONTAKTY";
 "settings_advanced" = "ZAAWANSOWANE";
-"settings_other" = "POZOSTAŁE";
+"settings_other" = "Pozostałe powiadomienia";
 "settings_devices" = "SESJE";
 "settings_cryptography" = "KRYPTOGRAFIA";
 "settings_deactivate_account" = "DEZAKTYWUJ KONTO";
@@ -228,7 +228,7 @@
 "settings_display_name" = "Wyświetlana nazwa";
 "settings_remove_prompt_title" = "Potwierdzenie";
 "settings_pin_rooms_with_missed_notif" = "Przypnij pokoje z ominiętymi powiadomieniami";
-"settings_pin_rooms_with_unread" = "Przypnij pokoje z nieprzeczytanych wiadomościami";
+"settings_pin_rooms_with_unread" = "Przypnij pokoje z nieprzeczytanymi wiadomościami";
 "settings_ui_language" = "Język";
 "settings_ui_theme" = "Motyw";
 "settings_ui_theme_auto" = "Auto";
@@ -727,7 +727,7 @@
 "settings_labs_message_reaction" = "Odpowiadaj na wiadomości używając emoji";
 "settings_key_backup_info" = "Zaszyfrowane wiadomości są zabezpieczone przy użyciu szyfrowania end-to-end. Tylko Ty oraz ich adresaci posiadają klucze do ich odszyfrowania.";
 "settings_key_backup_info_none" = "Twoje klucze z bieżącej sesji nie zostały przesłane do kopii zapasowej.";
-"settings_key_backup_info_signout_warning" = "Podłącz bieżącą sesję do kopii zapasowej przed wylogowaniem się, aby nie utracić kluczy, które dostępne są tylko w bieżącej sesji.";
+"settings_key_backup_info_signout_warning" = "Zrób kopię zapasową swoich kluczy przed wylogowaniem, aby ich nie utracić.";
 "settings_key_backup_info_valid" = "Ta sesja tworzy kopię zapasową kluczy.";
 "settings_key_backup_info_trust_signature_unknown" = "Kopia zapasowa posiada podpis sesji o ID: %@";
 "settings_key_backup_info_trust_signature_valid" = "Kopia zapasowa posiada prawidłowy podpis tej sesji";
@@ -872,7 +872,7 @@
 "security_settings_secure_backup" = "BEZPIECZNY BACKUP";
 "security_settings_secure_backup_setup" = "Ustaw";
 "security_settings_secure_backup_synchronise" = "Synchronizuj";
-"security_settings_secure_backup_delete" = "Usuń";
+"security_settings_secure_backup_delete" = "Usuń kopię zapasową";
 "security_settings_backup" = "BACKUP WIADOMOŚCI";
 "security_settings_crosssigning" = "CROSS-SIGNING";
 "security_settings_crosssigning_info_not_bootstrapped" = "Cross-signing nie został jeszcze skonfigurowany.";
@@ -1287,9 +1287,9 @@
 "event_formatter_jitsi_widget_removed_by_you" = "Usunąłeś(-aś) konferencję VoIP";
 "event_formatter_jitsi_widget_added_by_you" = "Dodałeś(-aś) konferencję VoIP";
 "event_formatter_call_back" = "Oddzwoń";
-"event_formatter_call_you_declined" = "Odrzuciłeś to połączenie";
+"event_formatter_call_you_declined" = "Połączenie odrzucone";
 "event_formatter_call_you_currently_in" = "Aktywne połączenie";
-"event_formatter_call_has_ended" = "Zakończono %@";
+"event_formatter_call_has_ended" = "Rozmowa została zakończona";
 "event_formatter_call_video" = "Połączenie Wideo";
 "event_formatter_call_voice" = "Połączenie głosowe";
 "room_details_advanced_e2e_encryption_disabled_for_dm" = "Szyfrowanie nie jest włączone w tym pokoju.";
@@ -1347,12 +1347,12 @@
 "security_settings_export_keys_manually" = "Eksportuj klucze ręcznie";
 "security_settings_cryptography" = "KRYPTOGRAFIA";
 "security_settings_crosssigning_complete_security" = "Konfiguracja bezpieczeństwa";
-"security_settings_crosssigning_reset" = "Zresetuj cross-signing";
-"security_settings_crosssigning_bootstrap" = "Bootstrap cross-signing";
-"security_settings_crosssigning_info_ok" = "Cross-signing jest włączony.";
+"security_settings_crosssigning_reset" = "Zresetuj";
+"security_settings_crosssigning_bootstrap" = "Ustaw";
+"security_settings_crosssigning_info_ok" = "Cross-signing jest gotowy do użycia.";
 "security_settings_crosssigning_info_trusted" = "Cross-signing jest włączony. Możesz ufać innym użytkownikom i innym sesjom opartym na cross-signing, ale nie możesz cross-sign z tej sesji, ponieważ nie ma ona kluczy prywatnych do cross-signing. Zapewnij bezpieczeństwo tej sesji.";
 "security_settings_crosssigning_info_exists" = "Twoje konto ma tożsamość cross-signing, ale nie jest jeszcze zaufane w tej sesji. Zapewnij bezpieczeństwo tej sesji.";
-"security_settings_secure_backup_description" = "Zabezpiecz się przed utratą dostępu do zaszyfrowanych wiadomości i danych wykonując kopię zapasową kluczy szyfrowania na Twoim serwerze domowym.";
+"security_settings_secure_backup_description" = "Utwórz kopię zapasową kluczy szyfrowania na wypadek utraty dostępu do sesji. Twoje klucze zostaną zabezpieczone unikalnym kluczem bezpieczeństwa.";
 "security_settings_crypto_sessions_description_2" = "Jeśli nie rozpoznajesz którejś z sesji to zmień hasło i zresetuj bezpieczną kopię zapasową.";
 "settings_show_NSFW_public_rooms" = "Pokaż publiczne pokoje NSFW";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Wydrukuj klucz i przechowuj go w bezpiecznym miejscu\n✓ Zapisz klucz na pendrive lub dysku zapasowym\n✓ Skopiuj klucz na prywatnym dysku w chmurze";
@@ -1448,3 +1448,93 @@
 "space_beta_announce_information" = "Przestrzenie to nowy sposób na grupowanie pokoi i osób. Nie ma ich jeszcze na iOS ale możesz ich teraz używać w przeglądarce i na komputerze.";
 "space_beta_announce_subtitle" = "Nowa wersja społeczności";
 "space_beta_announce_badge" = "BETA";
+"voice_message_lock_screen_placeholder" = "Wiadomość głosowa";
+"voice_message_stop_locked_mode_recording" = "Stuknij w nagranie, aby je zatrzymać lub je odsłuchać";
+"voice_message_remaining_recording_time" = "Pozostało %@s";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Przytrzymaj, aby nagrać, zwolnij, aby wysłać";
+"side_menu_app_version" = "Wersja %@";
+"side_menu_action_feedback" = "Feedback";
+"side_menu_action_help" = "Pomoc";
+"side_menu_action_settings" = "Ustawienia";
+"side_menu_action_invite_friends" = "Zaproś przyjaciół";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Lewy panel";
+"user_avatar_view_accessibility_hint" = "Zmień awatar użytkownika";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Wprowadź swoje hasło odzyskiwania, aby kontynuować.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Wprowadź swój klucz odzyskiwania, by kontynuować.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Skanuj za pomocą tego urządzenia";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Twoje klucze są backupowane.";
+"event_formatter_call_missed_video" = "Nieodebrane połączenie wideo";
+"event_formatter_call_missed_voice" = "Nieodebrane połączenie głosowe";
+"event_formatter_call_active_video" = "Aktywna rozmowa wideo";
+"event_formatter_call_active_voice" = "Aktywne połączenie głosowe";
+"event_formatter_call_incoming_video" = "Przychodząca rozmowa wideo";
+"event_formatter_call_incoming_voice" = "Przychodzące połączenie głosowe";
+"event_formatter_call_has_ended_with_time" = "Rozmowa została zakończona • %@";
+"room_notifs_settings_encrypted_room_notice" = "Pamiętaj, że powiadomienia dotyczące oznaczeń i słów kluczowych nie są dostępne w zaszyfrowanych pokojach na urządzeniach mobilnych.";
+"room_notifs_settings_account_settings" = "Ustawieniach konta";
+"room_notifs_settings_manage_notifications" = "Możesz zarządzać powiadomieniami w %@";
+"room_notifs_settings_cancel_action" = "Anuluj";
+"room_notifs_settings_done_action" = "Gotowe";
+"room_notifs_settings_none" = "Brak powiadomień";
+"room_notifs_settings_mentions_and_keywords" = "Tylko oznaczenia i słowa kluczowe";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Włącz powiadomienia dla";
+"room_notifs_settings_all_messages" = "Wszystkie wiadomości";
+"room_details_notifs" = "Powiadomienia";
+"security_settings_secure_backup_restore" = "Przywróć z kopii zapasowej";
+"security_settings_secure_backup_reset" = "Zresetuj";
+"security_settings_secure_backup_info_valid" = "Ta sesja tworzy kopię zapasową kluczy.";
+"security_settings_secure_backup_info_checking" = "Sprawdzam…";
+"settings_labs_voice_messages" = "Wiadomości głosowe";
+"settings_ui_theme_picker_message_match_system_theme" = "„Auto” dostosowuje się do motywu systemu Twojego urządzenia";
+"settings_ui_theme_picker_message_invert_colours" = "„Auto” używa ustawień „Odwróć kolory” urządzenia";
+"settings_notifications_disabled_alert_message" = "Aby włączyć powiadomienia, przejdź do ustawień urządzenia.";
+"settings_notifications_disabled_alert_title" = "Powiadomienia wyłączone";
+"settings_device_notifications" = "Systemowe ustawienia powiadomień";
+"room_recents_unknown_room_error_message" = "Nie mogę znaleźć tego pokoju. Upewnij się, że on istnieje";
+"room_creation_dm_error" = "Nie mogliśmy utworzyć pokoju. Sprawdź użytkowników, których chcesz zaprosić, i spróbuj ponownie.";
+"version_check_modal_action_title_deprecated" = "Dowiedz się jak";
+"version_check_modal_subtitle_deprecated" = "Pracowaliśmy nad ulepszeniem Elementu, aby polepszyć korzystanie z aplikacji. Niestety Twoja aktualna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie jest już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
+"version_check_modal_title_deprecated" = "Nie obsługujemy już iOS %@";
+"version_check_modal_action_title_supported" = "Rozumiem";
+"version_check_modal_subtitle_supported" = "Pracowaliśmy nad ulepszeniem Elementu, aby polepszyć korzystanie z aplikacji. Niestety Twoja obecna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie będzie już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
+"version_check_modal_title_supported" = "Kończymy wsparcie dla iOS %@";
+"version_check_banner_subtitle_deprecated" = "Nie obsługujemy już Elementu na iOS %@. Aby nadal korzystać z pełnego potencjału Elementu, radzimy uaktualnić swoją wersję systemu iOS.";
+"version_check_banner_title_deprecated" = "Nie obsługujemy już iOS %@";
+"version_check_banner_subtitle_supported" = "Wkrótce zakończymy wsparcie dla Elementu na iOS %@. Aby nadal korzystać z pełnego potencjału Elementu, radzimy uaktualnić swoją wersję systemu iOS.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Kończymy wsparcie dla iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "Nie będziesz otrzymywać powiadomień o oznaczeniach i słowach kluczowych w zaszyfrowanych pokojach na telefonie komórkowym.";
+"settings_new_keyword" = "Dodaj nowe słowo kluczowe";
+"settings_your_keywords" = "Twoje słowa kluczowe";
+"settings_room_upgrades" = "Ulepszenia pokoju";
+"settings_messages_by_a_bot" = "Wiadomości od bota";
+"settings_call_invitations" = "Zaproszenia do połączeń";
+"settings_room_invitations" = "Zaproszenia do pokoju";
+"settings_messages_containing_keywords" = "Słowa kluczowe";
+"settings_messages_containing_at_room" = "@pokój";
+"settings_messages_containing_user_name" = "Moja nazwa użytkownika";
+"settings_messages_containing_display_name" = "Moja wyświetlana nazwa";
+"settings_encrypted_group_messages" = "Szyfrowane wiadomości grupowe";
+"settings_group_messages" = "Wiadomości grupowe";
+"settings_encrypted_direct_messages" = "Szyfrowane wiadomości bezpośrednie";
+"settings_direct_messages" = "Wiadomości bezpośrednie";
+"settings_notify_me_for" = "Powiadom mnie o";
+"settings_mentions_and_keywords" = "Oznaczenia i słowa kluczowe";
+"settings_default" = "Powiadomienia dotyczące wiadomości";
+"settings_notifications" = "POWIADOMIENIA";

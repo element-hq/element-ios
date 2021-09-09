@@ -22,15 +22,23 @@ import Foundation
 
 /// FlowTemplateCoordinatorBridgePresenter enables to start FlowTemplateCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
-/// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
+/// **WARNING**: This class breaks the Coordinator abstraction and it has been introduced for **Objective-C compatibility only** (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
 final class FlowTemplateCoordinatorBridgePresenter: NSObject {
+    
+    // MARK: - Constants
+    
+    private enum NavigationType {
+        case present
+        case push
+    }
     
     // MARK: - Properties
     
     // MARK: Private
     
     private let session: MXSession
+    private var navigationType: NavigationType = .present
     private var coordinator: FlowTemplateCoordinator?
     
     // MARK: Public
@@ -52,7 +60,10 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let flowTemplateCoordinator = FlowTemplateCoordinator(session: self.session)
+        
+        let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: self.session)
+        
+        let flowTemplateCoordinator = FlowTemplateCoordinator(parameters: flowTemplateCoordinatorParameters)
         flowTemplateCoordinator.delegate = self
         let presentable = flowTemplateCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
@@ -60,13 +71,44 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
         flowTemplateCoordinator.start()
         
         self.coordinator = flowTemplateCoordinator
+        self.navigationType = .present
+    }
+    
+    func push(from navigationController: UINavigationController, animated: Bool) {
+                
+        let navigationRouter = NavigationRouter(navigationController: navigationController)
+        
+        let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: self.session, navigationRouter: navigationRouter)
+        
+        let flowTemplateCoordinator = FlowTemplateCoordinator(parameters: flowTemplateCoordinatorParameters)
+        flowTemplateCoordinator.delegate = self
+        flowTemplateCoordinator.start() // Will trigger the view controller push
+        
+        self.coordinator = flowTemplateCoordinator        
+        self.navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
         }
-        coordinator.toPresentable().dismiss(animated: animated) {
+
+        switch navigationType {
+        case .present:
+            // Dismiss modal
+            coordinator.toPresentable().dismiss(animated: animated) {
+                self.coordinator = nil
+
+                if let completion = completion {
+                    completion()
+                }
+            }
+        case .push:
+            // Pop view controller from UINavigationController
+            guard let navigationController = coordinator.toPresentable() as? UINavigationController else {
+                return
+            }
+            navigationController.popViewController(animated: animated)
             self.coordinator = nil
 
             if let completion = completion {
@@ -78,7 +120,7 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
 
 // MARK: - FlowTemplateCoordinatorDelegate
 extension FlowTemplateCoordinatorBridgePresenter: FlowTemplateCoordinatorDelegate {
-    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorType) {
+    func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorProtocol) {
         self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }
