@@ -2454,7 +2454,7 @@ internal enum VectorL10n {
   internal static var roomCreationErrorInviteUserByEmailWithoutIdentityServer: String { 
     return VectorL10n.tr("Vector", "room_creation_error_invite_user_by_email_without_identity_server") 
   }
-  /// Invite by User ID, Name or email
+  /// User ID, name or email
   internal static var roomCreationInviteAnotherUser: String { 
     return VectorL10n.tr("Vector", "room_creation_invite_another_user") 
   }
