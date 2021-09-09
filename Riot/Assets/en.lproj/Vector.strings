@@ -450,6 +450,7 @@ Tap the + to start adding people.";
 "settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
+"settings_sending_media" = "SENDING IMAGES AND VIDEOS";
 "settings_notifications" = "NOTIFICATIONS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
@@ -488,6 +489,9 @@ Tap the + to start adding people.";
 "settings_three_pids_management_information_part1" = "Manage which email addresses or phone numbers you can use to log in or recover your account here. Control who can find you in ";
 "settings_three_pids_management_information_part2" = "Discovery";
 "settings_three_pids_management_information_part3" = ".";
+
+"settings_confirm_media_size" = "Confirm size when sending";
+"settings_confirm_media_size_description" = "When this is on, you’ll be asked to confirm what size images and videos will be sent as.";
 
 "settings_security" = "SECURITY";
 
@@ -536,6 +540,9 @@ Tap the + to start adding people.";
 "settings_ui_theme_picker_title" = "Select a theme";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" uses your device's \"Invert Colours\" settings";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matches your device's system theme";
+
+"settings_show_url_previews" = "Show inline URL previews";
+"settings_show_url_previews_description" = "Previews will only be shown in unencrypted rooms.";
 
 "settings_unignore_user" = "Show all messages from %@?";
 

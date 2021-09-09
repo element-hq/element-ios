@@ -27,6 +27,8 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, Banne
         
         super.init(nibName: nil, bundle: nil)
         
+        extendedLayoutIncludesOpaqueBars = true
+        
         self.tabBarItem.tag = viewController.tabBarItem.tag
         self.tabBarItem.image = viewController.tabBarItem.image
         self.accessibilityLabel = viewController.accessibilityLabel

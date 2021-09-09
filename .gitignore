@@ -19,6 +19,7 @@ DerivedData
 out/
 .vscode/
 vendor/
+.DS_Store
 
 # CocoaPods
 #

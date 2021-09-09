@@ -24,8 +24,11 @@
 #import "BubbleReactionsViewSizer.h"
 
 #import "Riot-Swift.h"
+#import <MatrixKit/MXKSwiftHeader.h>
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
+
+NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotification";
 
 @interface RoomBubbleCellData()
 
@@ -176,9 +179,28 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
         // Reset attributedTextMessage to force reset MXKRoomCellData parameters
         self.attributedTextMessage = nil;
+        
+        // Load a url preview if a link was detected
+        if (self.hasLink)
+        {
+            [self loadURLPreview];
+        }
     }
     
     return self;
+}
+
+- (NSUInteger)updateEvent:(NSString *)eventId withEvent:(MXEvent *)event
+{
+    NSUInteger retVal = [super updateEvent:eventId withEvent:event];
+
+    // Update any URL preview data too.
+    if (self.hasLink)
+    {
+        [self loadURLPreview];
+    }
+
+    return retVal;
 }
 
 - (void)prepareBubbleComponentsPosition
@@ -583,8 +605,8 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
         });
 
         BOOL showAllReactions = [self.eventsToShowAllReactions containsObject:eventId];
-        BubbleReactionsViewModel *viemModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
-        height = [bubbleReactionsViewSizer heightForViewModel:viemModel fittingWidth:bubbleReactionsViewWidth] + RoomBubbleCellLayout.reactionsViewTopMargin;
+        BubbleReactionsViewModel *viewModel = [[BubbleReactionsViewModel alloc] initWithAggregatedReactions:aggregatedReactions eventId:eventId showAll:showAllReactions];
+        height = [bubbleReactionsViewSizer heightForViewModel:viewModel fittingWidth:bubbleReactionsViewWidth] + RoomBubbleCellLayout.reactionsViewTopMargin;
     }
     
     return height;
@@ -745,6 +767,19 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 {
     BOOL shouldAddEvent = YES;
     
+    // For unencrypted rooms, don't allow any events to be added
+    // after a bubble component that contains a link so than any URL
+    // preview is for the last bubble component in the cell.
+    if (!self.isEncryptedRoom && self.hasLink && self.bubbleComponents.lastObject)
+    {
+        MXKRoomBubbleComponent *lastComponent = self.bubbleComponents.lastObject;
+        
+        if (event.originServerTs > lastComponent.event.originServerTs)
+        {
+            shouldAddEvent = NO;
+        }
+    }
+    
     switch (self.tag)
     {
         case RoomBubbleCellDataTagKeyVerificationNoDisplay:
@@ -788,6 +823,24 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
                     shouldAddEvent = NO;
+                    break;
+                }
+                
+                // If the message contains a link and comes before this cell data, don't add it to
+                // ensure that a URL preview is only shown for the last component on some new cell data.
+                if (!self.isEncryptedRoom && self.bubbleComponents.firstObject)
+                {
+                    MXKRoomBubbleComponent *firstComponent = self.bubbleComponents.firstObject;
+                    
+                    if (event.originServerTs < firstComponent.event.originServerTs)
+                    {
+                        NSString *messageBody = event.content[@"body"];
+                        if (messageBody && [messageBody mxk_firstURLDetected])
+                        {
+                            shouldAddEvent = NO;
+                        }
+                        break;
+                    }
                 }
             }
                 break;
@@ -841,7 +894,15 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
     
     if (shouldAddEvent)
     {
+        BOOL hadLink = self.hasLink;
+        
         shouldAddEvent = [super addEvent:event andRoomState:roomState];
+        
+        // If the cell data now contains a link, set the preview data.
+        if (shouldAddEvent && self.hasLink && !hadLink)
+        {
+            [self loadURLPreview];
+        }
     }
     
     return shouldAddEvent;
@@ -1008,5 +1069,64 @@ static NSAttributedString *timestampVerticalWhitespace = nil;
 
     return accessibilityLabel;
 }
+
+#pragma mark - URL Previews
+
+- (void)loadURLPreview
+{
+    // Get the last bubble component as that contains the link.
+    MXKRoomBubbleComponent *lastComponent = bubbleComponents.lastObject;
+    if (!lastComponent)
+    {
+        return;
+    }
+    
+    // Don't show the preview if it has been dismissed already.
+    self.showURLPreview = ![URLPreviewService.shared hasClosedPreviewFrom:lastComponent.event];
+    if (!self.showURLPreview)
+    {
+        return;
+    }
+    
+    // If there is existing preview data, the message has been edited
+    // Clear the data to show the loading state when the preview isn't cached
+    if (self.urlPreviewData)
+    {
+        self.urlPreviewData = nil;
+    }
+    
+    // Set the preview data.
+    MXWeakify(self);
+    
+    NSDictionary<NSString *, NSString*> *userInfo = @{
+        @"eventId": lastComponent.event.eventId,
+        @"roomId": self.roomId
+    };
+    
+    [URLPreviewService.shared previewFor:lastComponent.link
+                                     and:lastComponent.event
+                                    with:self.mxSession
+                                 success:^(URLPreviewData * _Nonnull urlPreviewData) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        // Update the preview data and send a notification for refresh
+        self.urlPreviewData = urlPreviewData;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];
+        });
+        
+    } failure:^(NSError * _Nullable error) {
+        MXLogDebug(@"[RoomBubbleCellData] Failed to get url preview")
+        
+        // Don't show a preview and send a notification for refresh
+        self.showURLPreview = NO;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];
+        });
+    }];
+}
+
 
 @end

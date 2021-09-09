@@ -4078,6 +4078,14 @@ internal enum VectorL10n {
   internal static func settingsConfigUserId(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_user_id", p1)
   }
+  /// Confirm size when sending
+  internal static var settingsConfirmMediaSize: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_media_size") 
+  }
+  /// When this is on, you’ll be asked to confirm what size images and videos will be sent as.
+  internal static var settingsConfirmMediaSizeDescription: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_media_size_description") 
+  }
   /// confirm password
   internal static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
@@ -4546,6 +4554,10 @@ internal enum VectorL10n {
   internal static var settingsSendCrashReport: String { 
     return VectorL10n.tr("Vector", "settings_send_crash_report") 
   }
+  /// SENDING IMAGES AND VIDEOS
+  internal static var settingsSendingMedia: String { 
+    return VectorL10n.tr("Vector", "settings_sending_media") 
+  }
   /// Show decrypted content
   internal static var settingsShowDecryptedContent: String { 
     return VectorL10n.tr("Vector", "settings_show_decrypted_content") 
@@ -4553,6 +4565,14 @@ internal enum VectorL10n {
   /// Show NSFW public rooms
   internal static var settingsShowNSFWPublicRooms: String { 
     return VectorL10n.tr("Vector", "settings_show_NSFW_public_rooms") 
+  }
+  /// Show inline URL previews
+  internal static var settingsShowUrlPreviews: String { 
+    return VectorL10n.tr("Vector", "settings_show_url_previews") 
+  }
+  /// Previews will only be shown in unencrypted rooms.
+  internal static var settingsShowUrlPreviewsDescription: String { 
+    return VectorL10n.tr("Vector", "settings_show_url_previews_description") 
   }
   /// Sign Out
   internal static var settingsSignOut: String { 
@@ -5143,12 +5163,10 @@ extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
     let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
     let locale: Locale
-    if let localeIdentifier = Bundle.mxk_language() {
-       locale = Locale(identifier: localeIdentifier)
-    } else if let fallbackLocaleIdentifier = Bundle.mxk_fallbackLanguage() {
-       locale = Locale(identifier: fallbackLocaleIdentifier)
+    if let providedLocale = LocaleProvider.locale {
+      locale = providedLocale
     } else {
-       locale = Locale.current
+      locale = Locale.current
     }        
 
       return String(format: format, locale: locale, arguments: args)

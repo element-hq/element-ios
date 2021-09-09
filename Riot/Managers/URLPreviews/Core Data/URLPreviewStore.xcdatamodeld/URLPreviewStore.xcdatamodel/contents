@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="URLPreviewData" representedClassName="URLPreviewDataMO" syncable="YES" codeGenerationType="class">
+        <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="URLPreviewImageTransformer"/>
+        <attribute name="siteName" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="url" attributeType="URI"/>
+    </entity>
+    <entity name="URLPreviewUserData" representedClassName="URLPreviewUserDataMO" syncable="YES" codeGenerationType="class">
+        <attribute name="dismissed" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="eventID" attributeType="String"/>
+        <attribute name="roomID" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="eventID"/>
+                <constraint value="roomID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="URLPreviewUserData" positionX="0" positionY="45" width="128" height="74"/>
+        <element name="URLPreviewData" positionX="160" positionY="192" width="128" height="119"/>
+    </elements>
+</model>

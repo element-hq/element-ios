@@ -158,12 +158,12 @@
 "room_recents_join_room_prompt" = "Введіть ідентифікатор або псевдонім кімнати";
 // People tab
 "people_invites_section" = "ЗАПРОШЕННЯ";
-"people_conversation_section" = "БАЛАЧКИ";
+"people_conversation_section" = "БЕСІДИ";
 "people_no_conversation" = "Нема балачок";
-"room_participants_leave_prompt_msg_for_dm" = "Ви впевненні, що бажаєте залишити?";
+"room_participants_leave_prompt_msg_for_dm" = "Ви впевнені, що хочете вийти?";
 "room_participants_leave_prompt_title_for_dm" = "Вийти";
 "client_android_name" = "Element Android";
-"store_promotional_text" = "Додаток для чату та сумісної роботи, що зберігає конфіденційність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
+"store_promotional_text" = "Застосунок для бесід та співпраці, що зберігає приватність у відкритій мережі. Децентралізований, щоб надати вам контроль над даними. Без обробки даних, без бекдорів, без доступу для третіх сторін.";
 "settings_three_pids_management_information_part3" = ".";
 "settings_three_pids_management_information_part1" = "Керуйте звідси адресами е-пошти чи номерами телефонів, які можна застосовувати для входу або відновлення облікового запису. Контролюйте хто і як може вас знайти ";
 "contacts_address_book_no_identity_server" = "Сервер ідентифікації не налаштований";
@@ -184,7 +184,7 @@
 "settings_remove_prompt_title" = "Підтвердження";
 "settings_surname" = "Прізвище";
 "settings_first_name" = "Ім’я";
-"settings_display_name" = "Ім’я, що відображається";
+"settings_display_name" = "Показуване ім’я";
 "settings_profile_picture" = "Зображення профілю";
 "settings_sign_out_e2e_warn" = "Ви втратите всі ваші ключі наскрізного шифрування. Це означає що ви більше не будете мати змогу читати старі повідомлення у зашифрованих кімнатах на цьому пристрої.";
 "settings_sign_out_confirmation" = "Ви впевнені?";
@@ -195,8 +195,8 @@
 "room_participants_invite_prompt_title" = "Підтвердження";
 "room_participants_remove_prompt_msg" = "Ви дійсно хочете видалити %@ із чату?";
 "room_participants_remove_prompt_title" = "Підтвердження";
-"room_participants_leave_prompt_msg" = "Ви дійсно бажаєте залишити кімнату?";
-"room_participants_leave_prompt_title" = "Залишити кімнату";
+"room_participants_leave_prompt_msg" = "Ви впевнені, що хочете вийти з кімнати?";
+"room_participants_leave_prompt_title" = "Вийти з кімнати";
 "room_participants_multi_participants" = "%d учасників";
 "room_participants_one_participant" = "1 учасник";
 "room_participants_add_participant" = "Додати учасника";
@@ -210,8 +210,8 @@
 
 // Contacts
 "contacts_address_book_section" = "ЛОКАЛЬНІ КОНТАКТИ";
-"directory_search_fail" = "Виникла помилка при отриманні даних";
-"directory_searching_title" = "Пошук в каталозі…";
+"directory_search_fail" = "Не вдалося отримати дані";
+"directory_searching_title" = "Пошук у каталозі…";
 "directory_cell_description" = "%tu кімнат";
 "search_no_result" = "Немає результатів";
 "search_people_placeholder" = "Пошук користувача за його ID, іменем або електронною поштою";
@@ -243,8 +243,8 @@
 "group_details_home" = "Домівка";
 "group_participants_invite_prompt_title" = "Підтвердження";
 "group_participants_remove_prompt_title" = "Підтвердження";
-"group_participants_leave_prompt_msg" = "Ви впевнені, що хочете покинути групу?";
-"group_participants_leave_prompt_title" = "Покинути групу";
+"group_participants_leave_prompt_msg" = "Ви впевнені, що хочете вийти з групи?";
+"group_participants_leave_prompt_title" = "Вийти з групи";
 
 // Group participants
 "group_participants_add_participant" = "Додати учасника";
@@ -326,3 +326,252 @@
 "room_participants_action_invite" = "Запросити";
 "room_ongoing_conference_call_close" = "Закрити";
 "callbar_only_single_active_group" = "Торкніться, щоб приєднатися до групового виклику (%@)";
+"room_title_invite_members" = "Запросити учасників";
+"room_title_multiple_active_members" = "%@/%@ активних учасників";
+
+// Room Title
+"room_title_new_room" = "Нова кімната";
+"unknown_devices_title" = "Невідомий сеанс";
+"unknown_devices_send_anyway" = "Усе одно надіслати";
+"media_type_accessibility_sticker" = "Наліпка";
+"media_type_accessibility_file" = "Файл";
+"media_type_accessibility_location" = "Місцеперебування";
+"media_type_accessibility_video" = "Відео";
+"media_type_accessibility_audio" = "Аудіо";
+"media_type_accessibility_image" = "Зображення";
+"call_incoming_video" = "Вхідний відеовиклик…";
+"call_incoming_voice" = "Вхідний виклик…";
+"call_incoming_video_prompt" = "Вхідний відеовиклик від %@";
+
+// Call
+"call_incoming_voice_prompt" = "Вхідний голосовий виклик від %@";
+"room_does_not_exist" = "%@ не існує";
+"large_badge_value_k_format" = "%.1fK";
+"yesterday" = "Учора";
+"today" = "Сьогодні";
+"you" = "Ви";
+
+// Others
+"or" = "або";
+"event_formatter_widget_removed_by_you" = "Ви вилучили розширення: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Ви додали розширення: %@";
+"event_formatter_group_call_incoming" = "%@ у %@";
+"event_formatter_group_call_leave" = "Вийти";
+"room_join_group_call" = "Приєднатися";
+"event_formatter_group_call" = "Груповий виклик";
+"event_formatter_call_end_call" = "Завершити виклик";
+"event_formatter_call_answer" = "Відповісти";
+"service_terms_modal_decline_button" = "Відхилити";
+"key_verification_tile_request_incoming_approval_decline" = "Відхилити";
+"event_formatter_call_decline" = "Відхилити";
+"event_formatter_call_back" = "Перетелефонувати";
+"event_formatter_call_connection_failed" = "Не вдалося з'єднатися";
+"event_formatter_call_missed_video" = "Пропущений відеовиклик";
+"event_formatter_call_missed_voice" = "Пропущений голосовий виклик";
+"event_formatter_call_you_declined" = "Виклик відхилено";
+"event_formatter_call_active_video" = "Активний відеовиклик";
+"event_formatter_call_active_voice" = "Активний голосовий виклик";
+"event_formatter_call_incoming_video" = "Вхідний відеовиклик";
+"event_formatter_call_incoming_voice" = "Вхідний голосовий виклик";
+"event_formatter_call_has_ended_with_time" = "Виклик завершено • %@";
+"event_formatter_call_has_ended" = "Виклик завершено";
+"event_formatter_call_ringing" = "Виклик…";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_contacts" = "ЛОКАЛЬНІ КОНТАКТИ";
+"settings_ignored_users" = "НЕХТУВАНІ КОРИСТУВАЧІ";
+"settings_user_interface" = "КОРИСТУВАЦЬКИЙ ІНТЕРФЕЙС";
+"settings_integrations" = "ІНТЕГРАЦІЇ";
+"settings_identity_server_settings" = "СЕРВЕР ІДЕНТИФІКАЦІЇ";
+"settings_calls_settings" = "ВИКЛИКИ";
+"settings_notifications" = "СПОВІЩЕННЯ";
+"settings_user_settings" = "НАЛАШТУВАННЯ КОРИСТУВАЧА";
+"event_formatter_call_connecting" = "З'єднання…";
+"settings_config_identity_server" = "Сервер ідентифікації %@";
+"settings_config_home_server" = "Домашній сервер %@";
+"settings_clear_cache" = "Очистити кеш";
+"settings_report_bug" = "Звіт про ваду";
+"settings_mark_all_as_read" = "Позначити всі повідомлення прочитаними";
+"settings_config_no_build_info" = "Немає відомостей про збірку";
+"room_details_notifs" = "Сповіщення";
+"room_details_room_name" = "Назва кімнати";
+"room_details_photo_for_dm" = "Світлина";
+"room_details_photo" = "Світлина кімнати";
+"room_details_settings" = "Налаштування";
+"account_logout_all" = "Вийти з усіх облікових записів";
+
+// Settings
+"settings_title" = "Налаштування";
+
+// Bug report
+"bug_report_title" = "Звіт про ваду";
+"e2e_key_backup_wrong_version_button_wasme" = "Це був я";
+"e2e_key_backup_wrong_version_button_settings" = "Налаштування";
+"settings_privacy_policy" = "Політика приватності";
+"settings_term_conditions" = "Умови та положення";
+"settings_copyright" = "Авторське право";
+"settings_olm_version" = "Версія Olm %@";
+"settings_version" = "Версія %@";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Утримуйте, щоб записати, відпустіть, щоб надіслати";
+"side_menu_app_version" = "Версія %@";
+"side_menu_action_feedback" = "Відгук";
+"side_menu_action_help" = "Довідка";
+"side_menu_action_settings" = "Налаштування";
+"room_preview_try_join_an_unknown_room_default" = "кімната";
+"unknown_devices_answer_anyway" = "Усе одно відповісти";
+"unknown_devices_call_anyway" = "Усе одно викликати";
+"room_multiple_typing_notification" = "%@ та інші";
+"room_place_voice_call" = "Голосовий виклик";
+"room_widget_permission_room_id_permission" = "ID кімнати";
+"room_widget_permission_widget_id_permission" = "ID розширення";
+"room_widget_permission_theme_permission" = "Ваша тема";
+"room_widget_permission_user_id_permission" = "Ваш ID користувача";
+"room_widget_permission_avatar_url_permission" = "URL-адреса вашого аватара";
+"room_widget_permission_display_name_permission" = "Ваше показуване ім'я";
+"room_widget_permission_creator_info_title" = "Це розширення додано:";
+
+// Room widget permissions
+"room_widget_permission_title" = "Завантажити розширення";
+"widget_picker_manage_integrations" = "Керувати інтеграціями…";
+"room_accessibility_video_call" = "Відеовиклик";
+"room_accessibility_call" = "Виклик";
+"room_accessibility_upload" = "Вивантажити";
+"room_accessibility_integrations" = "Інтеграції";
+
+// Widget Picker
+"widget_picker_title" = "Інтеграції";
+"room_details_integrations" = "Інтеграції";
+"room_details_search" = "Шукати кімнату";
+"room_details_files" = "Вивантаження";
+"room_details_people" = "Учасники";
+"room_details_title_for_dm" = "Подробиці";
+
+
+// Room Details
+"room_details_title" = "Подробиці про кімнату";
+"call_transfer_error_title" = "Помилка";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Помилка";
+"emoji_picker_activity_category" = "Діяльність";
+"emoji_picker_nature_category" = "Тварини та природа";
+"emoji_picker_people_category" = "Емоджі та люди";
+"emoji_picker_flags_category" = "Прапори";
+"emoji_picker_symbols_category" = "Символи";
+"emoji_picker_objects_category" = "Об'єкти";
+"emoji_picker_places_category" = "Подорожі та місця";
+"emoji_picker_foods_category" = "Їжа та напої";
+
+// MARK: Reaction history
+"reaction_history_title" = "Реакції";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Реакції";
+"file_upload_error_unsupported_file_type_message" = "Непідтримуваний тип файлу.";
+
+// MARK: File upload
+"file_upload_error_title" = "Файл вивантажити";
+"device_verification_emoji_pin" = "Кнопка";
+"device_verification_emoji_folder" = "Тека";
+"device_verification_emoji_headphones" = "Навушники";
+"device_verification_emoji_anchor" = "Якір";
+"device_verification_emoji_bell" = "Дзвінок";
+"device_verification_emoji_trumpet" = "Труба";
+"device_verification_emoji_guitar" = "Гітара";
+"device_verification_emoji_ball" = "М'яч";
+"device_verification_emoji_trophy" = "Кубок";
+"device_verification_emoji_rocket" = "Ракета";
+"device_verification_emoji_aeroplane" = "Літак";
+"device_verification_emoji_bicycle" = "Велоcипед";
+"device_verification_emoji_train" = "Потяг";
+"device_verification_emoji_flag" = "Прапор";
+"device_verification_emoji_telephone" = "Телефон";
+"device_verification_emoji_hammer" = "Молоток";
+"device_verification_emoji_key" = "Ключ";
+"device_verification_emoji_lock" = "Замок";
+"device_verification_emoji_scissors" = "Ножиці";
+"device_verification_emoji_paperclip" = "Спиначка";
+"device_verification_emoji_pencil" = "Олівець";
+"device_verification_emoji_book" = "Книга";
+"device_verification_emoji_light bulb" = "Лампочка";
+"device_verification_emoji_gift" = "Подарунок";
+"device_verification_emoji_clock" = "Годинник";
+"device_verification_emoji_hourglass" = "Пісковий годинник";
+"device_verification_emoji_umbrella" = "Парасолька";
+"device_verification_emoji_thumbs up" = "Великий палець вгору";
+"device_verification_emoji_santa" = "Св. Миколай";
+"device_verification_emoji_spanner" = "Гайковий ключ";
+"device_verification_emoji_glasses" = "Окуляри";
+"device_verification_emoji_hat" = "Капелюх";
+"device_verification_emoji_robot" = "Робот";
+"device_verification_emoji_smiley" = "Посмішка";
+"device_verification_emoji_heart" = "Серце";
+"device_verification_emoji_cake" = "Пиріг";
+"device_verification_emoji_pizza" = "Піца";
+"device_verification_emoji_corn" = "Кукурудза";
+"device_verification_emoji_strawberry" = "Полуниця";
+"device_verification_emoji_apple" = "Яблуко";
+"device_verification_emoji_fire" = "Вогонь";
+"device_verification_emoji_cloud" = "Хмара";
+"device_verification_emoji_moon" = "Місяць";
+"device_verification_emoji_globe" = "Глобус";
+"device_verification_emoji_mushroom" = "Гриб";
+"device_verification_emoji_cactus" = "Кактус";
+"device_verification_emoji_tree" = "Дерево";
+"device_verification_emoji_flower" = "Квітка";
+"device_verification_emoji_butterfly" = "Метелик";
+"device_verification_emoji_octopus" = "Восьминіг";
+"device_verification_emoji_fish" = "Риба";
+"device_verification_emoji_turtle" = "Черепаха";
+"device_verification_emoji_penguin" = "Пінгвін";
+"device_verification_emoji_rooster" = "Півень";
+"device_verification_emoji_panda" = "Панда";
+"device_verification_emoji_rabbit" = "Кріль";
+"device_verification_emoji_elephant" = "Слон";
+"device_verification_emoji_pig" = "Порося";
+"device_verification_emoji_unicorn" = "Єдиноріг";
+"device_verification_emoji_horse" = "Кінь";
+"device_verification_emoji_lion" = "Лев";
+"device_verification_emoji_cat" = "Кіт";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Пес";
+"device_verification_emoji_banana" = "Банан";
+"room_details_banned_users_section" = "Заблоковані користувачі";
+"room_event_action_ban_prompt_reason" = "Причина блокування цього користувача";
+"room_participants_action_unban" = "Розблокувати";
+"room_participants_action_ban" = "Заблокувати у цій кімнаті";
+"room_intro_cell_information_dm_sentence1_part1" = "Це початок вашого особистого спілкування з ";
+"create_room_show_in_directory" = "Показати кімнату в каталозі";
+"directory_server_placeholder" = "matrix.org";
+"directory_server_all_rooms" = "Усі кімнати на сервері %@";
+"directory_server_picker_title" = "Вибрати каталог";
+
+// Directory
+"directory_title" = "Каталог";
+"settings_encrypted_direct_messages" = "Зашифровані особисті повідомлення";
+"settings_direct_messages" = "Особисті повідомлення";
+"directory_search_results_more_than" = ">%tu результатів знайдено для %@";
+"directory_search_results" = "%tu результатів знайдено для %@";
+"secure_backup_setup_banner_subtitle" = "Захистіться від втрати доступу до зашифрованих повідомлень і даних";
+"secure_key_backup_setup_intro_info" = "Захистіться від втрати доступу до зашифрованих повідомлень і даних створенням резервної копії ключів шифрування на своєму сервері.";
+"security_settings_secure_backup" = "БЕЗПЕЧНЕ РЕЗЕРВНЕ КОПІЮВАННЯ";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Безпечне резервне копіювання";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Безпечне резервне копіювання";
+"room_details_direct_chat" = "Особиста бесіда";
+"room_participants_action_section_direct_chats" = "Особисті бесіди";
