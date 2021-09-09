@@ -64,19 +64,19 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
      Send state actions to mutate the state.
      */
     private func dispatch(action: TemplateUserProfileStateAction) {
-        var newState = self.viewState
-        reducer(state: &newState, action: action)
-        self.viewState = newState
+        Self.reducer(state: &self.viewState, action: action)
     }
     
     /**
      A redux style reducer, all modifications to state happen here. Recieves a state and a state action and produces a new state.
      */
-    private func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
+    private static func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
         case .updatePresence(let presence):
             state.presence = presence
         }
+//        TODO: Uncomment when we have an abstract logger for RiotSwiftUI
+//        MXLog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
     }
     
     private func done() {
