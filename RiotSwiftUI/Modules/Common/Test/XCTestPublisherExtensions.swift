@@ -18,7 +18,7 @@ import XCTest
 import Combine
 
 /**
- XCTest utility to wat for results from publishers, so that the output can be used for assertions.
+ XCTest utility to wait for results from publishers, so that the output can be used for assertions.
  */
 @available(iOS 14.0, *)
 extension XCTestCase {

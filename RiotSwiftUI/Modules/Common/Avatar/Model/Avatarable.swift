@@ -17,9 +17,9 @@
 import Foundation
 
 /**
- A protcol that any class or struct can conform to
+ A protocol that any class or struct can conform to
  so that it can easiy produce avatar data.
-  E.g. MXRoom, MxUser cna conform to this making it
+  E.g. MXRoom, MxUser can conform to this making it
  easy to grab the avatar data for display.
  */
 protocol Avatarable: AvatarInputProtocol { }
