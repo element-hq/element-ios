@@ -22,7 +22,7 @@ class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
     var presenceSubject: CurrentValueSubject<TemplateUserProfilePresence, Never>
     
     let userId: String
-    var displayName: String?
+    let displayName: String?
     let avatarUrl: String?
     init(
         userId: String = "@alice:matrix.org",
