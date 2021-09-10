@@ -17,6 +17,7 @@
 import UserNotifications
 import MatrixKit
 import MatrixSDK
+import Intents
 
 /// The number of milliseconds in one second.
 private let MSEC_PER_SEC: TimeInterval = 1000
@@ -225,31 +226,30 @@ class NotificationService: UNNotificationServiceExtension {
         self.notificationContent(forEvent: event, forAccount: userAccount) { (notificationContent) in
             var isUnwantedNotification = false
             
-            // Modify the notification content here...
-            if let newContent = notificationContent {
-                content.title = newContent.title
-                content.subtitle = newContent.subtitle
-                content.body = newContent.body
-                content.threadIdentifier = newContent.threadIdentifier
-                content.categoryIdentifier = newContent.categoryIdentifier
-                content.userInfo = newContent.userInfo
-                content.sound = newContent.sound
-            } else {
-                //  this is an unwanted notification, mark as to be deleted when app is foregrounded again OR a new push came
+            if notificationContent == nil {
                 content.categoryIdentifier = Constants.toBeRemovedNotificationCategoryIdentifier
                 isUnwantedNotification = true
             }
             
             if self.ongoingVoIPPushRequests[event.eventId] == true {
                 //  modify the best attempt content, to be able to use in the future
-                self.bestAttemptContents[event.eventId] = content
+                if let notificationContent = notificationContent {
+                    // TODO: this will most likely break the notification context maybe there is a better way
+                    self.bestAttemptContents[event.eventId] = notificationContent.mutableCopy() as? UNMutableNotificationContent
+                } else {
+                    self.bestAttemptContents[event.eventId] = content
+                }
                 
                 //  There is an ongoing VoIP Push request for this event, wait for it to be completed.
                 //  When it completes, it'll continue with the bestAttemptContent.
                 return
             } else {
                 MXLog.debug("[NotificationService] processEvent: Calling content handler for: \(String(describing: event.eventId)), isUnwanted: \(isUnwantedNotification)")
-                self.contentHandlers[event.eventId]?(content)
+                if let notificationContent = notificationContent {
+                    self.contentHandlers[event.eventId]?(notificationContent)
+                } else {
+                    self.contentHandlers[event.eventId]?(content)
+                }
                 //  clear maps
                 self.contentHandlers.removeValue(forKey: event.eventId)
                 self.bestAttemptContents.removeValue(forKey: event.eventId)
@@ -296,6 +296,7 @@ class NotificationService: UNNotificationServiceExtension {
             switch response {
                 case .success(let (roomState, eventSenderName)):
                     var notificationTitle: String?
+                    var notificationSubTitle: String?
                     var notificationBody: String?
                     var additionalUserInfo: [AnyHashable: Any]?
                     
@@ -361,9 +362,12 @@ class NotificationService: UNNotificationServiceExtension {
                             let isReply = event.isReply()
                             
                             if isReply {
-                                notificationTitle = self.replyTitle(for: eventSenderName, in: roomDisplayName)
+                                notificationTitle = self.replyTitle(for: eventSenderName)
                             } else {
-                                notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                                notificationTitle = eventSenderName
+                            }
+                            if !(roomSummary?.isDirect ?? false) {
+                                notificationSubTitle = roomDisplayName
                             }
                             
                             if event.isEncrypted && !self.showDecryptedContentInNotifications {
@@ -402,7 +406,10 @@ class NotificationService: UNNotificationServiceExtension {
                             // If the current user is already joined, display updated displayname/avatar events.
                             // This is an unexpected path, but has been seen in some circumstances.
                             if NotificationService.backgroundSyncService.roomSummary(forRoomId: roomId)?.membership == .join {
-                                notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                                notificationTitle = eventSenderName
+                                if !(roomSummary?.isDirect ?? false) {
+                                    notificationSubTitle = roomDisplayName
+                                }
                                 
                                 // If the sender's membership is join and hasn't changed.
                                 if let newContent = MXRoomMemberEventContent(fromJSON: event.content),
@@ -441,12 +448,18 @@ class NotificationService: UNNotificationServiceExtension {
                             }
                             
                         case .sticker:
-                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            notificationTitle = eventSenderName
+                            if !(roomSummary?.isDirect ?? false) {
+                                notificationSubTitle = roomDisplayName
+                            }
                             notificationBody = NSString.localizedUserNotificationString(forKey: "STICKER_FROM_USER", arguments: [eventSenderName as Any])
                         
                         // Reactions are unexpected notification types, but have been seen in some circumstances.
                         case .reaction:
-                            notificationTitle = self.messageTitle(for: eventSenderName, in: roomDisplayName)
+                            notificationTitle = eventSenderName
+                            if !(roomSummary?.isDirect ?? false) {
+                                notificationSubTitle = roomDisplayName
+                            }
                             if let reactionKey = event.relatesTo?.key {
                                 // Try to show the reaction key in the notification.
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "REACTION_FROM_USER", arguments: [eventSenderName, reactionKey])
@@ -479,6 +492,7 @@ class NotificationService: UNNotificationServiceExtension {
                         MXLog.debug("[NotificationService] notificationContentForEvent: Resetting title and body because app protection is set")
                         notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
                         notificationTitle = nil
+                        notificationSubTitle = nil
                     }
                     
                     guard notificationBody != nil else {
@@ -486,17 +500,31 @@ class NotificationService: UNNotificationServiceExtension {
                         onComplete(nil)
                         return
                     }
-                    
+
                     let notificationContent = self.notificationContent(withTitle: notificationTitle,
+                                                                       withSubTitle: notificationSubTitle,
                                                                        body: notificationBody,
                                                                        threadIdentifier: threadIdentifier,
                                                                        userId: currentUserId,
                                                                        event: event,
                                                                        pushRule: pushRule,
                                                                        additionalInfo: additionalUserInfo)
-                    
-                    MXLog.debug("[NotificationService] notificationContentForEvent: Calling onComplete.")
-                    onComplete(notificationContent)
+
+                    if #available(iOS 15.0, *) {
+                            self.makeCommunicationNotification(
+                                forEvent: event,
+                                // TODO: use real room/user avatar
+                                senderImage: INImage.systemImageNamed("person.circle.fill"),
+                                body: notificationBody,
+                                notificationContent: notificationContent,
+                                roomDisplayName: roomDisplayName,
+                                senderName: eventSenderName,
+                                roomSummary: roomSummary,
+                                onComplete: onComplete)
+                    } else {
+                        MXLog.debug("[NotificationService] notificationContentForEvent: Calling onComplete.")
+                        onComplete(notificationContent)
+                    }
                 case .failure(let error):
                     MXLog.debug("[NotificationService] notificationContentForEvent: error: \(error)")
                     onComplete(nil)
@@ -504,27 +532,8 @@ class NotificationService: UNNotificationServiceExtension {
         })
     }
     
-    /// Returns the default title for message notifications.
-    /// - Parameters:
-    ///   - eventSenderName: The displayname of the sender.
-    ///   - roomDisplayName: The displayname of the room the message was sent in.
-    /// - Returns: A string to be used for the notification's title.
-    private func messageTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
-        // Display the room name only if it is different than the sender name
-        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
-            return NSString.localizedUserNotificationString(forKey: "MSG_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
-        } else {
-            return eventSenderName
-        }
-    }
-    
-    private func replyTitle(for eventSenderName: String, in roomDisplayName: String?) -> String {
-        // Display the room name only if it is different than the sender name
-        if let roomDisplayName = roomDisplayName, roomDisplayName != eventSenderName {
-            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_IN_ROOM_TITLE", arguments: [eventSenderName, roomDisplayName])
-        } else {
-            return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_TITLE", arguments: [eventSenderName])
-        }
+    private func replyTitle(for eventSenderName: String) -> String {
+         return NSString.localizedUserNotificationString(forKey: "REPLY_FROM_USER_TITLE", arguments: [eventSenderName])
     }
     
     /// Get the context of an event.
@@ -570,6 +579,7 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     private func notificationContent(withTitle title: String?,
+                                     withSubTitle subTitle: String?,
                                      body: String?,
                                      threadIdentifier: String?,
                                      userId: String?,
@@ -580,6 +590,9 @@ class NotificationService: UNNotificationServiceExtension {
         
         if let title = title {
             notificationContent.title = title
+        }
+        if let subTitle = subTitle {
+            notificationContent.subtitle = subTitle
         }
         if let body = body {
             notificationContent.body = body
@@ -600,6 +613,106 @@ class NotificationService: UNNotificationServiceExtension {
         return notificationContent
     }
     
+    @available(iOS 15, *)
+    private func makeCommunicationNotification(forEvent event: MXEvent,
+                                               senderImage: INImage?,
+                                               body notificationBody: String?,
+                                               notificationContent: UNNotificationContent,
+                                               roomDisplayName: String?,
+                                               senderName: String,
+                                               roomSummary: MXRoomSummary?,
+                                               onComplete: @escaping (UNNotificationContent?) -> Void) {
+        switch event.eventType {
+        case .roomMessage:
+            let intent = self.getMessageIntent(
+                    forEvent: event,
+                    body: notificationBody ?? "",
+                    groupName: roomSummary?.isDirect ?? true ? nil : roomDisplayName,
+                    senderName: senderName,
+                    senderImage: senderImage)
+            intent.setImage(senderImage, forParameterNamed: \.sender)
+            do {
+                // TODO: figure out how to set _mentionsCurrentUser and _replyToCurrentUser in the context
+                let notificationContent = try notificationContent.updating(from: intent)
+                MXLog.debug("[NotificationService] makeCommunicationNotification: Calling onComplete.")
+                onComplete(notificationContent)
+            } catch {
+                MXLog.debug("[NotificationService] makeCommunicationNotification: error (roomMessage): \(error)")
+                onComplete(notificationContent)
+            }
+        default:
+            onComplete(notificationContent)
+        }
+    }
+
+
+    @available(iOS 15, *)
+    private func getMessageIntent(forEvent event: MXEvent,
+                                  body: String,
+                                  groupName: String?,
+                                  senderName: String,
+                                  senderImage: INImage?) -> INSendMessageIntent {
+        let intentType = getMessageIntentType(event.content["msgtype"] as? String, event)
+
+        let speakableGroupName = groupName.flatMap({ INSpeakableString(spokenPhrase: $0 )})
+
+        let sender = INPerson(
+            personHandle: INPersonHandle(value: event.sender, type: .unknown),
+            nameComponents: nil,
+            displayName: senderName,
+            image: senderImage,
+            contactIdentifier: nil,
+            customIdentifier: event.sender,
+            isMe: false,
+            suggestionType: .instantMessageAddress
+        )
+
+        let incomingMessageIntent = INSendMessageIntent(
+            // TODO: check
+            recipients: [],
+            outgoingMessageType: intentType,
+            content: body,
+            speakableGroupName: speakableGroupName,
+            conversationIdentifier: event.roomId,
+            // TODO: check
+            serviceName: nil,
+            sender: sender,
+            attachments: nil
+        )
+
+        let intent = INInteraction(intent: incomingMessageIntent, response: nil)
+        intent.direction = .incoming
+
+        intent.donate(completion: nil)
+
+        return incomingMessageIntent
+    }
+
+    @available(iOS 14, *)
+    private func getMessageIntentType(_ msgType: String?, _ event: MXEvent) -> INOutgoingMessageType {
+        guard let msgType = msgType else {
+            return .unknown
+        }
+
+        switch msgType {
+        case kMXMessageTypeEmote:
+            fallthrough
+        case kMXMessageTypeImage:
+            fallthrough
+        case kMXMessageTypeVideo:
+            fallthrough
+        case kMXMessageTypeFile:
+            return .unknown
+        case kMXMessageTypeAudio:
+            if event.isVoiceMessage() {
+                return .outgoingMessageAudio
+            }
+            return .unknown
+        default:
+            return .outgoingMessageText
+        }
+    }
+
     private func notificationUserInfo(forEvent event: MXEvent,
                                       andUserId userId: String?,
                                       additionalInfo: [AnyHashable: Any]? = nil) -> [AnyHashable: Any] {
