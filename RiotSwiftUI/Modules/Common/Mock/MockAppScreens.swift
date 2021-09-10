@@ -13,20 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-import SwiftUI
 
-/**
- RiotSwiftUI screens rendered for UI Tests.
- */
+import Foundation
+
+/// The static list of mocked screens in RiotSwiftUI
 @available(iOS 14.0, *)
-@main
-struct RiotSwiftUIApp: App {
-    init() {
-        UILog.configure(logger: PrintLogger.self)
-    }
-    var body: some Scene {
-        WindowGroup {
-            ScreenList(screens: MockAppScreens.appScreens)
-        }
-    }
+enum MockAppScreens {
+    static let appScreens = [MockTemplateProfileUserScreenState.self]
 }
+

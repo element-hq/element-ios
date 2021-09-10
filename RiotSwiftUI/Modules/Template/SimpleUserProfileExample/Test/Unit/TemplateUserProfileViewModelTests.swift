@@ -38,12 +38,12 @@ class TemplateUserProfileViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.viewState.presence, Constants.presenceInitialValue)
     }
 
-    func testFirstPresenceRecieved() throws {
+    func testFirstPresenceReceived() throws {
         let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(1).first()
         XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
     }
     
-    func testPresenceUpdatesRecieved() throws {
+    func testPresenceUpdatesReceived() throws {
         let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(3).first()
         let newPresenceValue1: TemplateUserProfilePresence = .online
         let newPresenceValue2: TemplateUserProfilePresence = .idle

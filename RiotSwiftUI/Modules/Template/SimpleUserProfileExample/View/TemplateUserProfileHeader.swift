@@ -38,6 +38,9 @@ struct TemplateUserProfileHeader: View {
             VStack(spacing: 8){
                 Text(displayName ?? "")
                     .font(theme.fonts.title3)
+                    .accessibility(identifier: "displayNameText")
+                    .padding(.horizontal)
+                    .lineLimit(1)
                 TemplateUserProfilePresenceView(presence: presence)
             }
         }

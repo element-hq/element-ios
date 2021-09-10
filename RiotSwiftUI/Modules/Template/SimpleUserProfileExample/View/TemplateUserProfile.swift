@@ -67,6 +67,6 @@ struct TemplateUserProfile: View {
 @available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {
     static var previews: some View {
-        MockTemplateProfileUserScreenStates.screenGroup()
+        MockTemplateProfileUserScreenState.screenGroup()
     }
 }

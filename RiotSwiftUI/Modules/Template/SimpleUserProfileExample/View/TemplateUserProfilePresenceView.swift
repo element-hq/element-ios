@@ -31,6 +31,7 @@ struct TemplateUserProfilePresenceView: View {
                 .frame(width: 8, height: 8)
             Text(presence.title)
                 .font(.subheadline)
+                .accessibilityIdentifier("presenceText")
         }
         .foregroundColor(foregroundColor)
         .padding(0)
