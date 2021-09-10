@@ -1473,3 +1473,8 @@
 "settings_mentions_and_keywords" = "Megemlítések és kulcsszavak";
 "settings_default" = "Alapértelmezett értesítések";
 "settings_notifications" = "ÉRTESÍTÉSEK";
+"settings_show_url_previews_description" = "Csak titkosítatlan szobákban jelenik meg az előnézet.";
+"settings_show_url_previews" = "URL előnézetek megjelenítése";
+"settings_confirm_media_size_description" = "Ha ez be van kapcsolva, akkor küldésnél ki tudod választani a kép és videó méretét.";
+"settings_confirm_media_size" = "Méret megerősítése küldésnél";
+"settings_sending_media" = "KÉP ÉS VIDEÓ KÜLDÉSE";
