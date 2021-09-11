@@ -1418,3 +1418,30 @@
 "event_formatter_call_missed_video" = "Verpasster Videoanruf";
 "event_formatter_call_active_voice" = "Aktiver Sprachanruf";
 "event_formatter_call_active_video" = "Aktiver Videoanruf";
+"version_check_modal_action_title_deprecated" = "Zeige mir, wie es geht";
+"version_check_modal_action_title_supported" = "Verstanden";
+"version_check_banner_title_deprecated" = "iOS %@ wird nicht mehr unterstützt";
+"version_check_banner_subtitle_supported" = "Wir hören bald auf, iOS %@ zu unterstützen. Um Element weiterhin zu nutzen, upgrade bitte deine Version von iOS.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "iOS %@ wird nicht mehr unterstützt";
+"settings_new_keyword" = "Schlüsselwort hinzufügen";
+"settings_your_keywords" = "Deine Schlüsselwörter";
+"settings_room_upgrades" = "Raumupgrades";
+"settings_messages_by_a_bot" = "Nachrichten von Bots";
+"settings_call_invitations" = "Anrufeinladungen";
+"settings_room_invitations" = "Einladungen";
+"settings_messages_containing_keywords" = "Schlüsselwörter";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "Meinem Benutzernamen";
+"settings_messages_containing_display_name" = "Meinem Anzeigenamen";
+"settings_encrypted_group_messages" = "Verschlüsselten Gruppenchats";
+"settings_group_messages" = "Gruppenchats";
+"settings_encrypted_direct_messages" = "Verschlüsselten Direktnachrichten";
+"settings_direct_messages" = "Direktnachrichten";
+"settings_notify_me_for" = "Benachrichtige mich bei";
+"settings_mentions_and_keywords" = "Erwähnungen und Schlüsselwörter";
+"settings_confirm_media_size_description" = "Wenn dies aktiviert ist, wirst du beim Senden von Bildern und Videos gefragt, wie groß sie gesendet werden sollen.";
+"settings_confirm_media_size" = "Größe beim Senden bestätigen";
+"settings_notifications" = "BENACHRICHTIGUNGEN";
