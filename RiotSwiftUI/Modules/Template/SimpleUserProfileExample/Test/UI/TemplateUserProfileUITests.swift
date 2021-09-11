@@ -18,29 +18,33 @@ import XCTest
 import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class TestUserProfileUITests: MockScreenTest {
+class TemplateUserProfileUITests: MockScreenTest {
     
     override class var screenType: MockScreenState.Type {
-        return MockTemplateProfileUserScreenState.self
+        return MockTemplateUserProfileScreenState.self
+    }
+
+    override class func createTest() -> MockScreenTest {
+        return TemplateUserProfileUITests(selector: #selector(verifyTemplateUserProfileScreen))
     }
     
-    func testTemplateUserProfileScreen() throws {
-        guard let screenState = screenState as? MockTemplateProfileUserScreenState else { fatalError("no screen") }
+    func verifyTemplateUserProfileScreen() throws {
+        guard let screenState = screenState as? MockTemplateUserProfileScreenState else { fatalError("no screen") }
         switch screenState {
         case .presence(let presence):
-            testTemplateUserProfilePresence(presence: presence)
+            verifyTemplateUserProfilePresence(presence: presence)
         case .longDisplayName(let name):
-            testTemplateUserProfileLongName(name: name)
+            verifyTemplateUserProfileLongName(name: name)
         }
     }
     
-    func testTemplateUserProfilePresence(presence: TemplateUserProfilePresence) {
+    func verifyTemplateUserProfilePresence(presence: TemplateUserProfilePresence) {
         let presenceText = app.staticTexts["presenceText"]
         XCTAssert(presenceText.exists)
         XCTAssert(presenceText.label == presence.title)
     }
     
-    func testTemplateUserProfileLongName(name: String) {
+    func verifyTemplateUserProfileLongName(name: String) {
         let displayNameText = app.staticTexts["displayNameText"]
         XCTAssert(displayNameText.exists)
         XCTAssert(displayNameText.label == name)

@@ -30,7 +30,7 @@ class TemplateUserProfileViewModelTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
     override func setUpWithError() throws {
         service = MockTemplateUserProfileService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = TemplateUserProfileViewModel(userService: service)
+        viewModel = TemplateUserProfileViewModel(templateUserProfileService: service)
     }
     
     func testInitialState() {

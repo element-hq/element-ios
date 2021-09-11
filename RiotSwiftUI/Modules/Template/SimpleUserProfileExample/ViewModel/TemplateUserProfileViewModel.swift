@@ -23,7 +23,7 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     // MARK: - Properties
     
     // MARK: Private
-    private let userService: TemplateUserProfileServiceProtocol
+    private let templateUserProfileService: TemplateUserProfileServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
@@ -32,11 +32,11 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
     
     // MARK: - Setup
-    init(userService: TemplateUserProfileServiceProtocol, initialState: TemplateUserProfileViewState? = nil) {
-        self.userService = userService
-        self.viewState = initialState ?? Self.defaultState(userService: userService)
+    init(templateUserProfileService: TemplateUserProfileServiceProtocol, initialState: TemplateUserProfileViewState? = nil) {
+        self.templateUserProfileService = templateUserProfileService
+        self.viewState = initialState ?? Self.defaultState(templateUserProfileService: templateUserProfileService)
         
-        userService.presenceSubject
+        templateUserProfileService.presenceSubject
             .map(TemplateUserProfileStateAction.updatePresence)
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] action in
@@ -45,8 +45,12 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
             .store(in: &cancellables)
     }
     
-    private static func defaultState(userService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
-        return TemplateUserProfileViewState(avatar: userService.avatarData, displayName: userService.displayName, presence: userService.presenceSubject.value)
+    private static func defaultState(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
+        return TemplateUserProfileViewState(
+            avatar: templateUserProfileService.avatarData,
+            displayName: templateUserProfileService.displayName,
+            presence: templateUserProfileService.presenceSubject.value
+        )
     }
     
     // MARK: - Public

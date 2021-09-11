@@ -39,7 +39,7 @@ final class TemplateUserProfileCoordinator: Coordinator {
     @available(iOS 14.0, *)
     init(parameters: TemplateUserProfileCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = TemplateUserProfileViewModel(userService: TemplateUserProfileService(session: parameters.session))
+        let viewModel = TemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileService(session: parameters.session))
         let view = TemplateUserProfile(viewModel: viewModel)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         templateUserProfileViewModel = viewModel
