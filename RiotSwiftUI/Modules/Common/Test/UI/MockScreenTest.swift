@@ -31,6 +31,10 @@ class MockScreenTest: XCTestCase {
         return nil
     }
     
+    class func createTest() -> MockScreenTest {
+        return MockScreenTest()
+    }
+    
     var screenState: MockScreenState?
     var screenStateKey: String?
     let app = XCUIApplication()
@@ -48,13 +52,11 @@ class MockScreenTest: XCTestCase {
         return testSuite
     }
     
-    private class func addTestFor(screenState: MockScreenState, screenStateKey: String, toTestSuite testSuite: XCTestSuite) {
-        testInvocations.forEach { invocation in
-            let testCase = TestUserProfileUITests(invocation: invocation)
-            testCase.screenState = screenState
-            testCase.screenStateKey = screenStateKey
-            testSuite.addTest(testCase)
-        }
+    class func addTestFor(screenState: MockScreenState, screenStateKey: String, toTestSuite testSuite: XCTestSuite) {
+        let test = createTest()
+        test.screenState = screenState
+        test.screenStateKey = screenStateKey
+        testSuite.addTest(test)
     }
     
     open override func setUpWithError() throws {

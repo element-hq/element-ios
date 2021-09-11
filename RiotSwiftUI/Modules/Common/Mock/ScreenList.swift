@@ -44,6 +44,6 @@ struct ScreenList: View {
 @available(iOS 14.0, *)
 struct ScreenList_Previews: PreviewProvider {
     static var previews: some View {
-        ScreenList(screens: [MockTemplateProfileUserScreenState.self])
+        ScreenList(screens: [MockTemplateUserProfileScreenState.self])
     }
 }
