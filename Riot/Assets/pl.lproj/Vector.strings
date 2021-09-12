@@ -805,7 +805,7 @@
 "user_verification_session_details_untrusted_title" = "Niezaufany";
 "user_verification_session_details_information_trusted_current_user" = "Ta sesja jest zaufana dla bezpiecznego przesyłania wiadomości, ponieważ ją zweryfikowałeś:";
 "skip" = "Pomiń";
-"joined" = "Dołączył";
+"joined" = "Obecny(-a)";
 "switch" = "Przełącz";
 "more" = "Więcej";
 // Accessibility
@@ -882,7 +882,7 @@
 "room_intro_cell_information_multiple_dm_sentence2" = "Tylko Ty bierzesz udział w tej rozmowie, dopóki kogoś nie zaprosisz.";
 "room_intro_cell_information_dm_sentence2" = "Tylko wy dwoje uczestniczycie w tej rozmowie, nikt inny nie może się przyłączyć.";
 "room_intro_cell_information_dm_sentence1_part3" = ". ";
-"room_intro_cell_information_dm_sentence1_part1" = "Rozpocząłeś rozmowę bezpośrednią z ";
+"room_intro_cell_information_dm_sentence1_part1" = "Rozpocząłeś(-aś) rozmowę bezpośrednią z ";
 "room_intro_cell_information_room_without_topic_sentence2_part2" = " aby ludzie wiedzieli na jaki temat rozmawiać w tym pokoju.";
 "room_intro_cell_information_room_without_topic_sentence2_part1" = "Dodaj temat";
 "room_intro_cell_information_room_with_topic_sentence2" = "Temat: %@";
@@ -985,10 +985,10 @@
 "pin_protection_reset_alert_title" = "Zresetuj PIN";
 "pin_protection_forgot_pin" = "Zapomniałem(-am) PIN";
 "pin_protection_enter_pin" = "Wprowadź swój PIN";
-"pin_protection_confirm_pin_to_change" = "Potwierdź PIN, aby zmień PIN";
+"pin_protection_confirm_pin_to_change" = "Potwierdź PIN, aby go zmienić";
 "pin_protection_confirm_pin_to_disable" = "Potwierdź PIN, aby wyłączyć PIN";
 "pin_protection_confirm_pin" = "Potwierdź swój PIN";
-"pin_protection_choose_pin" = "Dla poprawy bezpieczeństwa - utwórz PIN";
+"pin_protection_choose_pin" = "Ustaw kod PIN";
 "pin_protection_choose_pin_welcome_after_register" = "Witaj.";
 
 // MARK: - PIN Protection
@@ -1382,8 +1382,8 @@
 "room_unsent_messages_cancel_title" = "Usuń niewysłane wiadomości";
 "room_message_replying_to" = "Odpisuję do %@";
 "room_message_editing" = "Edytuję";
-"room_participants_security_information_room_encrypted_for_dm" = "Wiadomości w tym pokoju są szyfrowane end-to-end.\n\nTwoje wiadomości są zabezpieczone \"zamkami\" i tylko Ty i odbiorca macie unikalne klucze do ich \"otworzenia\".";
-"room_participants_security_information_room_encrypted" = "Wiadomości w tym pokoju są szyfrowane end-to-end.\n\nTwoje wiadomości są zabezpieczone \"zamkami\" i tylko Ty i odbiorca macie unikalne klucze do ich \"otworzenia\".";
+"room_participants_security_information_room_encrypted_for_dm" = "Wiadomości w tym pokoju są szyfrowane end-to-end.\n\nTwoje wiadomości są zabezpieczone \"kłódkami\" i tylko Ty i odbiorca macie unikalne klucze do ich \"otworzenia\".";
+"room_participants_security_information_room_encrypted" = "Wiadomości w tym pokoju są szyfrowane end-to-end.\n\nTwoje wiadomości są zabezpieczone \"kłódkami\" i tylko Ty i odbiorca macie unikalne klucze do ich \"otworzenia\".";
 "room_participants_security_information_room_not_encrypted_for_dm" = "Wiadomości w tym pokoju nie są szyfrowane end-to-end.";
 "room_participants_filter_room_members_for_dm" = "Filtruj uczestników pokoju";
 "room_participants_leave_prompt_msg_for_dm" = "Czy napewno chcesz opuścić pokój?";
