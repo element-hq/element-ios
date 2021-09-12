@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -136,14 +136,14 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </stackView>
                 <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ih9-EU-BOU" userLabel="scroll Button">
-                    <rect key="frame" x="327" y="570" width="32" height="32"/>
+                    <rect key="frame" x="321" y="564" width="38" height="38"/>
                     <state key="normal" image="scrolldown"/>
                     <connections>
                         <action selector="scrollToBottomAction:" destination="-1" eventType="touchUpInside" id="TOf-aY-J6a"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHs-rM-UU8" userLabel="scroll badge" customClass="BadgeLabel" customModule="Riot" customModuleProvider="target">
-                    <rect key="frame" x="334.5" y="562" width="17.5" height="16.5"/>
+                    <rect key="frame" x="336.5" y="557.5" width="7.5" height="13.5"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -212,13 +212,13 @@
     </objects>
     <designables>
         <designable name="QHs-rM-UU8">
-            <size key="intrinsicContentSize" width="17.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="7.5" height="13.5"/>
         </designable>
     </designables>
     <resources>
         <image name="new_close" width="16" height="16"/>
         <image name="room_scroll_up" width="24" height="24"/>
-        <image name="scrolldown" width="32" height="32"/>
+        <image name="scrolldown" width="38" height="38"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

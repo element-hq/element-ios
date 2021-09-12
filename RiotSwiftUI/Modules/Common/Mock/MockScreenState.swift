@@ -48,11 +48,18 @@ extension MockScreenState {
     static func screenGroup(
         themeId: ThemeIdentifier = .light,
         locale: Locale = Locale.current,
-        sizeCategory: ContentSizeCategory = ContentSizeCategory.medium
+        sizeCategory: ContentSizeCategory = ContentSizeCategory.medium,
+        addNavigation: Bool = false
     ) -> some View {
         Group {
             ForEach(0..<screensViews.count) { index in
-                screensViews[index]
+                if addNavigation {
+                    NavigationView{
+                        screensViews[index]
+                    }
+                } else {
+                    screensViews[index]
+                }
             }
         }
         .theme(themeId)
