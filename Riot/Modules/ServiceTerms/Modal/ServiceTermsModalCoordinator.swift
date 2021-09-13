@@ -28,7 +28,6 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let serviceTerms: MXServiceTerms
-    private let outOfContext: Bool
     
     // MARK: Public
 
@@ -38,11 +37,10 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     weak var delegate: ServiceTermsModalCoordinatorDelegate?
     
     // MARK: - Setup
-    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, outOfContext: Bool, accessToken: String) {
+    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
         self.session = session
         self.serviceTerms = MXServiceTerms(baseUrl: baseUrl, serviceType: serviceType, matrixSession: session, accessToken: accessToken)
-        self.outOfContext = outOfContext
     }
     
     // MARK: - Public methods
@@ -64,7 +62,7 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     // MARK: - Private methods
 
     private func createServiceTermsModalLoadTermsScreenCoordinator() -> ServiceTermsModalScreenCoordinator {
-        let coordinator = ServiceTermsModalScreenCoordinator(serviceTerms: self.serviceTerms, outOfContext: self.outOfContext)
+        let coordinator = ServiceTermsModalScreenCoordinator(serviceTerms: self.serviceTerms)
         coordinator.delegate = self
         return coordinator
     }
@@ -87,6 +85,19 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
     @objc private func didTapCancelOnPolicyScreen() {
         self.removePolicyScreen()
     }
+    
+    /// Removes the identity server from the `MXSession` and it's account data.
+    private func disableIdentityServer() {
+        MXLog.debug("[ServiceTermsModalCoordinator] IS Terms: User has declined the use of the default IS.")
+        
+        // The user does not want to use the proposed IS.
+        // Disable IS feature on user's account
+        session.setIdentityServer(nil, andAccessToken: nil)
+        session.setAccountDataIdentityServer(nil, success: nil) { error in
+            guard let errorDescription = error?.localizedDescription else { return }
+            MXLog.error("[ServiceTermsModalCoordinator] IS Terms: Error: \(errorDescription)")
+        }
+    }
 }
 
 // MARK: - ServiceTermsModalLoadTermsScreenCoordinatorDelegate
@@ -101,10 +112,10 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
     }
 
     func serviceTermsModalScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
+        if serviceTerms.serviceType == MXServiceTypeIdentityService {
+            disableIdentityServer()
+        }
+        
         self.delegate?.serviceTermsModalCoordinatorDidDecline(self)
-    }
-
-    func serviceTermsModalScreenCoordinatorDidCancel(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
-        self.delegate?.serviceTermsModalCoordinatorDidCancel(self)
     }
 }

@@ -3998,37 +3998,25 @@ internal enum VectorL10n {
   internal static var serviceTermsModalDeclineButton: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_decline_button") 
   }
-  /// Find others by phone or email
-  internal static var serviceTermsModalDescriptionForIdentityServer1: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_description_for_identity_server_1") 
+  /// This will allow someone to find you if they have your phone number or email saved in their phone contacts.
+  internal static var serviceTermsModalDescriptionIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_description_identity_server") 
   }
-  /// Be found by phone or email
-  internal static var serviceTermsModalDescriptionForIdentityServer2: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_description_for_identity_server_2") 
+  /// This will allow you to use bots, bridges, widgets and sticker packs.
+  internal static var serviceTermsModalDescriptionIntegrationManager: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_description_integration_manager") 
   }
-  /// Use Bots, bridges, widgets and sticker packs
-  internal static var serviceTermsModalDescriptionForIntegrationManager: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_description_for_integration_manager") 
-  }
-  /// To continue you need to accept the terms of this service (%@).
-  internal static func serviceTermsModalMessage(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "service_terms_modal_message", p1)
-  }
-  /// Accept the terms of the identity server (%@) to discover contacts.
-  internal static func serviceTermsModalMessageIdentityServer(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "service_terms_modal_message_identity_server", p1)
+  /// This can be disabled anytime in settings.
+  internal static var serviceTermsModalFooter: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_footer") 
   }
   /// Check to accept %@
   internal static func serviceTermsModalPolicyCheckboxAccessibilityHint(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "service_terms_modal_policy_checkbox_accessibility_hint", p1)
   }
-  /// Terms Of Service
-  internal static var serviceTermsModalTitle: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_title") 
-  }
-  /// Contact discovery
-  internal static var serviceTermsModalTitleIdentityServer: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_title_identity_server") 
+  /// To continue, accept the below terms and conditions
+  internal static var serviceTermsModalTitleMessage: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_title_message") 
   }
   /// Invalid credentials
   internal static var settingsAdd3pidInvalidPasswordMessage: String { 

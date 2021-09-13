@@ -526,6 +526,28 @@
 
 - (void)didRequestContactsAccess
 {
+    // First check the identity if service terms have already been accepted
+    if (self->contactsDataSource.mxSession.identityService.areAllTermsAgreed)
+    {
+        // If they have we only require local contacts access.
+        [self checkAccessForContacts];
+    }
+    else
+    {
+        MXWeakify(self);
+        
+        [self->contactsDataSource.mxSession prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
+                                                                           completion:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            // Present the terms of the identity server.
+            [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
+        }];
+    }
+}
+    
+ - (void)checkAccessForContacts
+{
     MXWeakify(self);
     
     // Check for contacts access, showing a pop-up if necessary.
@@ -538,50 +560,8 @@
         
         if (granted)
         {
-            // If granted and the identity service terms have already been accepted, show the local contacts.
-            if (self->contactsDataSource.mxSession.identityService.areAllTermsAgreed)
-            {
-                [self showLocalContacts];
-            }
-            else
-            {
-                // Otherwise, get a valid identity service.
-                MXSession *session = self->contactsDataSource.mxSession;
-                MXIdentityService *identityService = session.identityService;
-                
-                if (!identityService)
-                {
-                    NSString *baseURL = session.accountDataIdentityServer ?: RiotSettings.shared.identityServerUrlString;
-                    identityService = [[MXIdentityService alloc] initWithIdentityServer:baseURL
-                                                                            accessToken:nil
-                                                                andHomeserverRestClient:session.matrixRestClient];
-                }
-                
-                // Get the identity service's access token.
-                [identityService accessTokenWithSuccess:^(NSString * _Nullable accessToken) {
-                    MXWeakify(session);
-                    
-                    // Set the identity server in the session and account data as this will be nil if
-                    // the terms were previously declined. These will be reverted if declined once more.
-                    [session setIdentityServer:identityService.identityServer andAccessToken:accessToken];
-                    [session setAccountDataIdentityServer:identityService.identityServer success:^{
-                        
-                        MXStrongifyAndReturnIfNil(session);
-                        
-                        // Present the terms of the identity server.
-                        [self presentIdentityServerTermsWithSession:session
-                                                            baseURL:identityService.identityServer
-                                                     andAccessToken:accessToken];
-                        
-                    } failure:^(NSError *error) {
-                        // Something went wrong setting the account data identity service
-                        MXLogError(@"[ContactsTableViewController] Error preparing to display identity server terms: %@", error);
-                    }];
-                } failure:^(NSError * _Nonnull error) {
-                    // Something went wrong getting the identity service's access token.
-                    MXLogError(@"[ContactsTableViewController] Error preparing to display identity server terms: %@", error);
-                }];
-            }
+            // When granted, local contacts can be shown.
+            [self showLocalContacts];
         }
     }];
 }
@@ -592,7 +572,7 @@
     MXKAppSettings.standardAppSettings.syncLocalContacts = YES;
     self->contactsDataSource.showLocalContacts = YES;
     
-    // Attempt to refresh the contacts manager - triggers identity server if necessary.
+    // Attempt to refresh the contacts manager.
     [self refreshLocalContacts];
     
     // Hide the request access view.
@@ -611,7 +591,6 @@
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
                                                                                                                                                             baseUrl:baseURL
                                                                                                                                                         serviceType:MXServiceTypeIdentityService
-                                                                                                                                                       outOfContext:YES
                                                                                                                                                         accessToken:accessToken];
     
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
@@ -624,37 +603,22 @@
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [self showLocalContacts];
-    
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        
+        [self checkAccessForContacts];
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter session:(MXSession *)session
 {
-    MXLogDebug(@"[ContactsTableViewController] IS Terms: User has declined the use of the default IS.");
-
-    // The user does not want to use the proposed IS.
-    // Disable IS feature on user's account
-    [session setIdentityServer:nil andAccessToken:nil];
-    [session setAccountDataIdentityServer:nil success:^{
-    } failure:^(NSError *error) {
-        MXLogDebug(@"[ContactsTableViewController] IS Terms: Error: %@", error);
-    }];
-
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
 
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        
-    }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
