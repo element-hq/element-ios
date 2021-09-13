@@ -1076,7 +1076,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     // Get the last bubble component as that contains the link.
     MXKRoomBubbleComponent *lastComponent = bubbleComponents.lastObject;
-    if (!lastComponent)
+    if (!lastComponent || !lastComponent.link)
     {
         return;
     }
