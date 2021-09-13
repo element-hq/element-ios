@@ -21,8 +21,15 @@ class SpaceMenuPresenter: NSObject {
     
     // MARK: - Constants
     
+    enum Actions {
+        case exploreRooms
+        case exploreMembers
+    }
+    
     // MARK: - Properties
     
+    public weak var delegate: SpaceMenuPresenterDelegate?
+
     // MARK: Private
     
     private weak var presentingViewController: UIViewController?
@@ -32,6 +39,8 @@ class SpaceMenuPresenter: NSObject {
         return SlidingModalPresenter()
     }()
     private weak var selectedSpace: MXSpace?
+    private var session: MXSession!
+    private var spaceId: String!
 
     // MARK: - Public
     
@@ -40,6 +49,9 @@ class SpaceMenuPresenter: NSObject {
                  sourceView: UIView?,
                  session: MXSession,
                  animated: Bool) {
+        self.session = session
+        self.spaceId = spaceId
+        
         self.viewModel = SpaceMenuViewModel(session: session, spaceId: spaceId)
         self.viewModel.coordinatorDelegate = self
         self.presentingViewController = viewController
@@ -94,11 +106,15 @@ extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
         switch actionId {
         case .leave: break
         case .members:
-            self.dismiss(animated: true, completion: nil)
+            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreMembers, forSpaceWithId: self.spaceId, with: self.session)
         case .rooms:
-            self.dismiss(animated: true, completion: nil)
+            self.delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreRooms, forSpaceWithId: self.spaceId, with: self.session)
         default:
             MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItemWithId: invalid itemId \(itemId)")
         }
     }
+}
+
+protocol SpaceMenuPresenterDelegate: AnyObject {
+    func spaceMenuPresenter(_ presenter: SpaceMenuPresenter, didCompleteWith action: SpaceMenuPresenter.Actions, forSpaceWithId spaceId: String, with session: MXSession)
 }

@@ -239,6 +239,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
+@property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
 
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
 
@@ -1394,12 +1395,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
-- (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
-{
-    missedDiscussionsBadgeLabel.hidden = !showMissedDiscussionsBadge;
-    missedDiscussionsDotView.hidden = !showMissedDiscussionsBadge;
-}
-
 - (void)setScrollToBottomHidden:(BOOL)scrollToBottomHidden
 {
     if (_scrollToBottomHidden != scrollToBottomHidden)
@@ -1421,6 +1416,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
         self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
     }];
+}
+
+- (void)setMissedDiscussionsBadgeHidden:(BOOL)missedDiscussionsBadgeHidden{
+    _missedDiscussionsBadgeHidden = missedDiscussionsBadgeHidden;
+    
+    missedDiscussionsBadgeLabel.hidden = missedDiscussionsBadgeHidden;
+    missedDiscussionsDotView.hidden = missedDiscussionsBadgeHidden;
 }
 
 #pragma mark - Internals
@@ -4707,16 +4709,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
-    if (!self.roomDataSource || !missedDiscussionsBadgeLabel
+    if (!self.showMissedDiscussionsBadge || !self.roomDataSource || !missedDiscussionsBadgeLabel
         || [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone
         || ([[UIScreen mainScreen] nativeBounds].size.height > 2532 && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)))
     {
-        self.showMissedDiscussionsBadge = NO;
+        self.missedDiscussionsBadgeHidden = YES;
         return;
     }
     
-    self.showMissedDiscussionsBadge = YES;
-    
+    self.missedDiscussionsBadgeHidden = NO;
+
     NSUInteger highlightCount = 0;
     NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
     
