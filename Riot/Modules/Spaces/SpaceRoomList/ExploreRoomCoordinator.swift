@@ -66,7 +66,9 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         return self.navigationRouter.toPresentable()
     }
     
-    func pushSpace(with item: SpaceExploreRoomListItemViewData) {
+    // MARK: - Private methods
+    
+    private func pushSpace(with item: SpaceExploreRoomListItemViewData) {
         let coordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: item.childInfo.childRoomId, spaceName: item.childInfo.name)
         coordinator.start()
         self.add(childCoordinator: coordinator)
@@ -75,7 +77,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         }
     }
     
-    func presentRoom(with item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
+    private func presentRoom(with item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
         if let currentCoordinator = self.roomDetailCoordinator {
             self.remove(childCoordinator: currentCoordinator)
         }
@@ -89,9 +91,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
             self.showRoomPreview(with: item, from: sourceView)
         }
     }
-    
-    // MARK: - Private methods
-    
+
     private func showRoomPreview(with item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
         let coordinator = self.createShowSpaceRoomDetailCoordinator(session: self.session, childInfo: item.childInfo)
         coordinator.start()
@@ -144,11 +144,15 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
 // MARK: - ShowSpaceExploreRoomCoordinatorDelegate
 extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
     func spaceExploreRoomCoordinator(_ coordinator: SpaceExploreRoomCoordinatorType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
-        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: item, from: sourceView)
+        if item.childInfo.roomType == .space {
+            self.pushSpace(with: item)
+        } else if item.childInfo.roomType == .room {
+            self.presentRoom(with: item, from: sourceView)
+        }
     }
-    
+
     func spaceExploreRoomCoordinatorDidCancel(_ coordinator: SpaceExploreRoomCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorDidComplete(self, withSelectedIem: nil, from: nil)
+        self.delegate?.exploreRoomCoordinatorDidComplete(self)
     }
 }
 

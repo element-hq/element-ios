@@ -243,14 +243,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceMenuPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
-    func navigate(to item: SpaceExploreRoomListItemViewData, from sourceView: UIView?) {
-        if item.childInfo.roomType == .space {
-            self.exploreRoomCoordinator?.pushSpace(with: item)
-        } else if item.childInfo.roomType == .room {
-            self.exploreRoomCoordinator?.presentRoom(with: item, from: sourceView)
-        }
-    }
-
     func navigate(to member: MXRoomMember, from sourceView: UIView?) {
         self.membersCoordinator?.presentMemberDetail(with: member, from: sourceView)
     }
@@ -343,14 +335,10 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
 
 // MARK: - ExploreRoomCoordinatorDelegate
 extension SideMenuCoordinator: ExploreRoomCoordinatorDelegate {
-    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType, withSelectedIem item: SpaceExploreRoomListItemViewData?, from sourceView: UIView?) {
-        guard let item = item else {
-            self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
-                self.exploreRoomCoordinator = nil
-            }
-            return
+    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
+        self.exploreRoomCoordinator?.toPresentable().dismiss(animated: true) {
+            self.exploreRoomCoordinator = nil
         }
-        self.navigate(to: item, from: sourceView)
     }
 }
 
