@@ -1,0 +1,1 @@
+RoomBubbleCellData: Fix crash when creating a URL preview when the link didn't end up in the last bubble component.
