@@ -17,16 +17,19 @@
 import XCTest
 import Combine
 
-/**
- XCTest utility to wait for results from publishers, so that the output can be used for assertions.
- 
- ```
- let collectedEvents = somePublisher.collect(3).first()
- XCTAssertEqual(try xcAwait(collectedEvents), [expected, values, here])
- ```
- */
 @available(iOS 14.0, *)
 extension XCTestCase {
+    /// XCTest utility to wait for results from publishers, so that the output can be used for assertions.
+    ///
+    ///  ```
+    /// let collectedEvents = somePublisher.collect(3).first()
+    /// XCTAssertEqual(try xcAwait(collectedEvents), [expected, values, here])
+    ///  ```
+    /// - Parameters:
+    ///   - publisher: The publisher to wait on.
+    ///   - timeout: A timeout after which we give up.
+    /// - Throws: If it can't get the unwrapped result.
+    /// - Returns: The unwrapped result.
     func xcAwait<T: Publisher>(
         _ publisher: T,
         timeout: TimeInterval = 10

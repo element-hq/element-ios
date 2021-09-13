@@ -15,10 +15,10 @@
 //
 
 import Foundation
-/*
- A logger for use in different application targets that can be configured
- at runtime with a suitable logger.
- */
+
+/// A logger for use in different application targets.
+///
+/// It can be configured at runtime with a suitable logger.
 class UILog: LoggerProtocol {
     
     static var _logger: LoggerProtocol.Type?
