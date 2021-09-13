@@ -120,7 +120,7 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
 // MARK: - SpaceMemberListCoordinatorDelegate
 extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
     func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
-        self.delegate?.spaceMembersCoordinator(self, didSelect: member, from: sourceView)
+        self.presentMemberDetail(with: member, from: sourceView)
     }
     
     func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType) {

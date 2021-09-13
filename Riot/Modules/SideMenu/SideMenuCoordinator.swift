@@ -243,10 +243,6 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceMenuPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
-    func navigate(to member: MXRoomMember, from sourceView: UIView?) {
-        self.membersCoordinator?.presentMemberDetail(with: member, from: sourceView)
-    }
-
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -348,10 +344,6 @@ extension SideMenuCoordinator: SpaceMembersCoordinatorDelegate {
         self.membersCoordinator?.toPresentable().dismiss(animated: true) {
             self.membersCoordinator = nil
         }
-    }
-    
-    func spaceMembersCoordinator(_ coordinator: SpaceMembersCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
-        self.navigate(to: member, from: sourceView)
     }
 }
 

@@ -22,6 +22,10 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     
     // MARK: - Constants
     
+    private enum Constants {
+        static let emptySearchViewMargin: CGFloat = 8
+    }
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -31,7 +35,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var titleView: MainTitleView!
-    private var emptyView: RootTabEmptyView!
+    private var emptyView: SearchEmptyView!
 
     private var emptyViewArtwork: UIImage {
         return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
@@ -44,7 +48,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         viewController.viewModel = viewModel
         viewController.showParticipantCustomAccessoryView = false
         viewController.theme = ThemeService.shared().theme
-        viewController.emptyView = RootTabEmptyView.instantiate()
+        viewController.emptyView = SearchEmptyView()
         return viewController
     }
     
@@ -108,7 +112,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.titleView.titleLabel.text = VectorL10n.roomDetailsPeople
         self.navigationItem.titleView = self.titleView
         
-        self.emptyView.frame = CGRect(x: 0, y: self.searchBarView.frame.maxY, width: self.view.bounds.width, height: self.view.bounds.height - self.searchBarView.frame.maxY)
+        self.emptyView.frame = CGRect(x: Constants.emptySearchViewMargin, y: self.searchBarView.frame.maxY + 2 * Constants.emptySearchViewMargin, width: self.view.bounds.width - 2 * Constants.emptySearchViewMargin, height: 0)
         self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         self.emptyView.alpha = 0
         self.view.insertSubview(self.emptyView, at: 0)
@@ -133,7 +137,9 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.mxRoom = space.room
         self.titleView.subtitleLabel.text = space.summary?.displayname
-        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesNoResultFoundTitle, informationText: VectorL10n.spacesNoMemberFoundDetail(space.summary?.displayname ?? ""))
+        self.emptyView.titleLabel.text = VectorL10n.spacesNoResultFoundTitle
+        self.emptyView.detailLabel.text = VectorL10n.spacesNoMemberFoundDetail(space.summary?.displayname ?? "")
+        self.emptyView.layoutIfNeeded()
     }
     
     private func render(error: Error) {

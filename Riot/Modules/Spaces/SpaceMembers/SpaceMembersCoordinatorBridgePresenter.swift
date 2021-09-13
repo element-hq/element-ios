@@ -73,22 +73,12 @@ final class SpaceMembersCoordinatorBridgePresenter: NSObject {
             }
         }
     }
-    
-    // MARK: - Private
-    
-    func navigate(to member: MXRoomMember, from sourceView: UIView?) {
-        self.coordinator?.presentMemberDetail(with: member, from: sourceView)
-    }
 }
 
 // MARK: - SpaceMembersCoordinatorDelegate
 extension SpaceMembersCoordinatorBridgePresenter: SpaceMembersCoordinatorDelegate {
     func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
         self.delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
-    }
-    
-    func spaceMembersCoordinator(_ coordinator: SpaceMembersCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
-        self.navigate(to: member, from: sourceView)
     }
 }
 
