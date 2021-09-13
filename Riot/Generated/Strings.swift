@@ -558,6 +558,10 @@ internal enum VectorL10n {
   internal static var contactsAccessFooterTitle: String { 
     return VectorL10n.tr("Vector", "contacts_access_footer_title") 
   }
+  /// Unable to connect to the identity server.
+  internal static var contactsAccessIdentityServiceError: String { 
+    return VectorL10n.tr("Vector", "contacts_access_identity_service_error") 
+  }
   /// Matrix users only
   internal static var contactsAddressBookMatrixUsersToggle: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_matrix_users_toggle") 

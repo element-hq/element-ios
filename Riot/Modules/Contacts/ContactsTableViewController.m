@@ -536,12 +536,32 @@
     {
         MXWeakify(self);
         
+        // The preparation can take some time so indicate this to the user
+        [self startActivityIndicator];
+        
         [self->contactsDataSource.mxSession prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
-                                                                           completion:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
+                                                                              success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
             MXStrongifyAndReturnIfNil(self);
+            
+            [self stopActivityIndicator];
             
             // Present the terms of the identity server.
             [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
+        } failure:^(NSError *error) {
+            // The error was already logged before the block is called
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self stopActivityIndicator];
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_access_identity_service_error", @"Vector", nil)
+                                                                                     message:nil
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:nil]];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
         }];
     }
 }

@@ -249,6 +249,7 @@ Tap the + to start adding people.";
 "contacts_access_footer_description" = "Let %@ show your contacts so you can quickly start chatting with those you know best.";
 "contacts_access_footer_button_title" = "Allow contacts access";
 "contacts_access_footer_footer" = "This can be disabled anytime from settings.";
+"contacts_access_identity_service_error" = "Unable to connect to the identity server.";
 
 // Chat participants
 "room_participants_title" = "Participants";
