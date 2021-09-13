@@ -64,16 +64,18 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
     }
     
     // MARK: - Private
-    /**
-     Send state actions to mutate the state.
-     */
+    /// Send state actions to mutate the state.
+    /// - Parameter action: The `TemplateUserProfileStateAction` to trigger the state change.
     private func dispatch(action: TemplateUserProfileStateAction) {
         Self.reducer(state: &self.viewState, action: action)
     }
-    
-    /**
-     A redux style reducer, all modifications to state happen here. Receives a state and a state action and produces a new state.
-     */
+      
+    /// A redux style reducer
+    ///
+    /// All modifications to state happen here.
+    /// - Parameters:
+    ///   - state: The `inout` state to be modified,
+    ///   - action: The action that defines which state modification should take place.
     private static func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
         case .updatePresence(let presence):
