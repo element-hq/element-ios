@@ -31,15 +31,25 @@ struct TemplateRoomChat: View {
     
     var body: some View {
         VStack {
-            LazyVStack {
-                
-            }.frame(maxHeight: .infinity)
+            if viewModel.viewState.bubbles.isEmpty {
+                VStack{
+                    Text("No messages")
+                }
+                .frame(maxHeight: .infinity)
+            } else {
+                LazyVStack {
+                    ForEach(viewModel.viewState.bubbles) { bubble in
+                        TemplateRoomChatBubbleView(bubble: bubble)
+                    }
+                }
+                .frame(maxHeight: .infinity, alignment: .top)
+            }
             
             HStack {
                 TextField(VectorL10n.roomMessageShortPlaceholder, text: $viewModel.input.messageInput)
                     .textFieldStyle(BorderedInputFieldStyle())
                 Button(action: {
-                    
+
                 }, label: {
                     Image(uiImage: Asset.Images.sendIcon.image)
                 })

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,31 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-struct TemplateRoomChatViewModelInput {
-    var messageInput: String
+@available(iOS 14.0, *)
+struct TemplateRoomChatBubbleMessage: View {
+
+    // MARK: - Properties
+    
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    // MARK: Public
+    
+    let messageItem: TemplateRoomChatBubbleMessageItem
+    
+    var body: some View {
+        Text(messageItem.body)
+    }
+}
+
+// MARK: - Previews
+
+@available(iOS 14.0, *)
+struct TemplateRoomChatBubbleMessage_Previews: PreviewProvider {
+    static var previews: some View {
+        EmptyView()
+    }
 }

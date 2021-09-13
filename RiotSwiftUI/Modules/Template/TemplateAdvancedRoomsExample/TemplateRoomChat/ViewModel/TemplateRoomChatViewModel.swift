@@ -55,20 +55,34 @@ class TemplateRoomChatViewModel: ObservableObject, TemplateRoomChatViewModelProt
     
     private static func makeBubbles(messages: [TemplateRoomChatMessage]) -> [TemplateRoomChatBubble] {
         
-        
+        var bubbleOrder = [String]()
+        var bubbleMap = [String:TemplateRoomChatBubble]()
         messages.enumerated().forEach { i, message in
-            let currentMessage = messages[i]
-            if i > 0 {
-                let lastMessage = messages[i-1]
-            } else {
-                TemplateRoomChatBubble(
-                    id: message.,
-                    avatar: <#T##AvatarInputProtocol#>,
-                    displayName: <#T##String?#>,
-                    items: <#T##[TemplateRoomChatBubbleItem]#>
+            if i > 0,
+                messages[i-1].sender.id == message.sender.id,
+                var existingBubble = bubbleMap[messages[i-1].id] {
+                let messageItem = TemplateRoomChatBubbleMessageItem(
+                    id: message.id,
+                    body: message.body
                 )
+                existingBubble.items.append(.message(messageItem))
+                bubbleMap[existingBubble.id] = existingBubble
+            } else {
+                let messageItem = TemplateRoomChatBubbleMessageItem(
+                    id: message.id,
+                    body: message.body
+                )
+                let bubble = TemplateRoomChatBubble(
+                    id: message.id,
+                    senderAvatar: message.sender.avatarData,
+                    senderDisplayName:  message.sender.displayName,
+                    items: [.message(messageItem)]
+                )
+                bubbleOrder.append(bubble.id)
+                bubbleMap[bubble.id] = bubble
             }
         }
+        return bubbleOrder.compactMap({ bubbleMap[$0] })
     }
     
     // MARK: - Public

@@ -19,12 +19,13 @@ import Combine
 
 @available(iOS 14.0, *)
 class MockTemplateRoomChatService: TemplateRoomChatServiceProtocol {
-    
+    static let alice = TemplateRoomChatMember(id: "@alice:matrix.org", avatarUrl: "!aaabaa:matrix.org", displayName: "Alice")
+    static let mathew = TemplateRoomChatMember(id: "@mathew:matrix.org", avatarUrl: "!bbabb:matrix.org", displayName: "Mathew")
     static let mockMessages = [
-        TemplateRoomChatMessage(id: "!aaabaa:matrix.org", body: "Shall I put it live?", sender: "@alice:matrix.org"),
-        TemplateRoomChatMessage(id: "!bbbabb:matrix.org", body: "Yea go for it! ...and then let's head to the pub", sender: "@patrice:matrix.org"),
-        TemplateRoomChatMessage(id: "!aaabaa:matrix.org", body: "Deal.", sender: "@alice:matrix.org"),
-        TemplateRoomChatMessage(id: "!aaabaa:matrix.org", body: "Ok, Done. 🍻", sender: "@alice:matrix.org"),
+        TemplateRoomChatMessage(id: "!11111:matrix.org", body: "Shall I put it live?", sender: alice),
+        TemplateRoomChatMessage(id: "!22222:matrix.org", body: "Yea go for it! ...and then let's head to the pub", sender: mathew),
+        TemplateRoomChatMessage(id: "!33333:matrix.org", body: "Deal.", sender: alice),
+        TemplateRoomChatMessage(id: "!44444:matrix.org", body: "Ok, Done. 🍻", sender: alice),
     ]
     var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>
 
