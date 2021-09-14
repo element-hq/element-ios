@@ -17,25 +17,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dxd-y5-bn4">
-                                <rect key="frame" x="374" y="16" width="24" height="24"/>
-                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="TTq-xS-O71"/>
-                                    <constraint firstAttribute="width" constant="24" id="gmo-Ip-cjr"/>
-                                </constraints>
-                                <state key="normal" image="space_menu_close"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="14"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="closeActionWithSender:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="TIh-gS-svg"/>
-                                </connections>
-                            </button>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22X-aK-4D2">
-                                <rect key="frame" x="16" y="16" width="350" height="76"/>
+                                <rect key="frame" x="16" y="16" width="382" height="76"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yVi-9K-5iE" customClass="RoomAvatarView" customModule="Riot" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="4" width="32" height="32"/>
@@ -58,7 +41,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GbA-LS-7G8">
-                                        <rect key="frame" x="0.0" y="50" width="350" height="1"/>
+                                        <rect key="frame" x="0.0" y="50" width="382" height="1"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="PSu-zU-1Vr"/>
@@ -67,7 +50,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Vw0-9q-U23" secondAttribute="trailing" id="35Q-0D-eaP"/>
+                                    <constraint firstAttribute="trailing" secondItem="Vw0-9q-U23" secondAttribute="trailing" constant="32" id="35Q-0D-eaP"/>
                                     <constraint firstItem="Vw0-9q-U23" firstAttribute="leading" secondItem="yVi-9K-5iE" secondAttribute="trailing" constant="12" id="5jU-Wj-fli"/>
                                     <constraint firstAttribute="height" constant="76" id="GXB-6p-EIC"/>
                                     <constraint firstAttribute="trailing" secondItem="GbA-LS-7G8" secondAttribute="trailing" id="HI3-0y-tyY"/>
@@ -76,11 +59,28 @@
                                     <constraint firstItem="yVi-9K-5iE" firstAttribute="leading" secondItem="22X-aK-4D2" secondAttribute="leading" id="VDT-b0-SqV"/>
                                     <constraint firstItem="oZk-F6-3nn" firstAttribute="top" secondItem="22X-aK-4D2" secondAttribute="top" id="Xkw-oz-SUD"/>
                                     <constraint firstItem="GbA-LS-7G8" firstAttribute="top" secondItem="yVi-9K-5iE" secondAttribute="bottom" constant="14" id="eWu-Q8-50q"/>
-                                    <constraint firstAttribute="trailing" secondItem="oZk-F6-3nn" secondAttribute="trailing" id="hSf-zB-m6e"/>
+                                    <constraint firstAttribute="trailing" secondItem="oZk-F6-3nn" secondAttribute="trailing" constant="32" id="hSf-zB-m6e"/>
                                     <constraint firstItem="GbA-LS-7G8" firstAttribute="leading" secondItem="22X-aK-4D2" secondAttribute="leading" id="o4Q-41-AfC"/>
                                     <constraint firstItem="yVi-9K-5iE" firstAttribute="top" secondItem="22X-aK-4D2" secondAttribute="top" constant="4" id="x9I-eQ-C0t"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dxd-y5-bn4">
+                                <rect key="frame" x="374" y="16" width="24" height="24"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="TTq-xS-O71"/>
+                                    <constraint firstAttribute="width" constant="24" id="gmo-Ip-cjr"/>
+                                </constraints>
+                                <state key="normal" image="space_menu_close"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="closeActionWithSender:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="TIh-gS-svg"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aSn-OV-epF" customClass="SpaceAvatarView" customModule="Riot" customModuleProvider="target">
                                 <rect key="frame" x="16" y="92" width="66" height="66"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -196,7 +196,7 @@
                             <constraint firstItem="aSn-OV-epF" firstAttribute="top" secondItem="22X-aK-4D2" secondAttribute="bottom" id="g4t-WH-Kbz"/>
                             <constraint firstItem="N1F-Ko-xvc" firstAttribute="top" secondItem="xQH-D8-TVA" secondAttribute="top" id="hE9-gh-tH4"/>
                             <constraint firstItem="aSn-OV-epF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="hem-oS-VnE"/>
-                            <constraint firstItem="dxd-y5-bn4" firstAttribute="leading" secondItem="22X-aK-4D2" secondAttribute="trailing" constant="8" id="oiM-Xd-7sn"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="22X-aK-4D2" secondAttribute="trailing" constant="16" id="q8c-eN-9im"/>
                             <constraint firstItem="22X-aK-4D2" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="16" id="ufQ-NF-PUt"/>
                             <constraint firstItem="22X-aK-4D2" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="vdh-02-FdI"/>
                         </constraints>

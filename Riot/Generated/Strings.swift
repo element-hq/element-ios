@@ -4722,18 +4722,6 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
-  /// Space with invite
-  internal static var spaceInviteJoinRule: String { 
-    return VectorL10n.tr("Vector", "space_invite_join_rule") 
-  }
-  /// Space with knock
-  internal static var spaceKnockJoinRule: String { 
-    return VectorL10n.tr("Vector", "space_knock_join_rule") 
-  }
-  /// Space without join rule
-  internal static var spaceNoneJoinRule: String { 
-    return VectorL10n.tr("Vector", "space_none_join_rule") 
-  }
   /// Ban from this space
   internal static var spaceParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "space_participants_action_ban") 

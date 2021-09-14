@@ -145,8 +145,12 @@ class SpaceDetailViewController: UIViewController {
         self.topicLabel.textColor = theme.colors.tertiaryContent
 
         apply(theme: theme, on: self.joinButton)
-        apply(theme: theme, on: self.declineButton)
         apply(theme: theme, on: self.acceptButton)
+        
+        self.declineButton.layer.borderColor = theme.colors.alert.cgColor
+        self.declineButton.tintColor = theme.colors.alert
+        self.declineButton.setTitleColor(theme.colors.alert, for: .normal)
+        self.declineButton.titleLabel?.font = theme.fonts.body
     }
     
     private func apply(theme: Theme, on button: UIButton) {
@@ -171,6 +175,7 @@ class SpaceDetailViewController: UIViewController {
         self.setup(button: self.joinButton, withTitle: VectorL10n.join)
         self.setup(button: self.acceptButton, withTitle: VectorL10n.accept)
         self.setup(button: self.declineButton, withTitle: VectorL10n.decline)
+        self.declineButton.layer.borderWidth = 1.0
     }
     
     private func setup(button: UIButton, withTitle title: String) {
@@ -215,14 +220,7 @@ class SpaceDetailViewController: UIViewController {
         self.avatarView.fill(with: avatarViewData)
         self.topicLabel.text = summary.topic
         
-        var joinRuleString = ""
-        switch joinRule {
-        case .invite: joinRuleString = VectorL10n.spaceInviteJoinRule
-        case .knock: joinRuleString = VectorL10n.spaceKnockJoinRule
-        case .none: joinRuleString = VectorL10n.spaceNoneJoinRule
-        case .private: joinRuleString = VectorL10n.spacePrivateJoinRule
-        case .public: joinRuleString = VectorL10n.spacePublicJoinRule
-        }
+        let joinRuleString = joinRule == .public ? VectorL10n.spacePublicJoinRule : VectorL10n.spacePrivateJoinRule
         
         let membersCount = summary.membersCount.members
         let membersString = membersCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(membersCount)")
