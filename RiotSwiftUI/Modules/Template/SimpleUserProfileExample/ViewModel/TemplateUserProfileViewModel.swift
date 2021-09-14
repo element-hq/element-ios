@@ -16,33 +16,36 @@
 
 import SwiftUI
 import Combine
-    
-@available(iOS 14.0, *)
-class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewModelProtocol {
+
+
+
+@available(iOS 14, *)
+typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState,
+                                                                 TemplateUserProfileStateAction,
+                                                                 TemplateUserProfileViewAction>
+@available(iOS 14, *)
+class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUserProfileViewModelProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
+    
     private let templateUserProfileService: TemplateUserProfileServiceProtocol
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
-    @Published private(set) var viewState: TemplateUserProfileViewState
     
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
     
     // MARK: - Setup
-    init(templateUserProfileService: TemplateUserProfileServiceProtocol, initialState: TemplateUserProfileViewState? = nil) {
+    
+    static func makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewModelProtocol {
+        return TemplateUserProfileViewModel(templateUserProfileService: templateUserProfileService)
+    }
+    
+    fileprivate init(templateUserProfileService: TemplateUserProfileServiceProtocol) {
         self.templateUserProfileService = templateUserProfileService
-        self.viewState = initialState ?? Self.defaultState(templateUserProfileService: templateUserProfileService)
-        
-        templateUserProfileService.presenceSubject
-            .map(TemplateUserProfileStateAction.updatePresence)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] action in
-                self?.dispatch(action:action)
-            })
-            .store(in: &cancellables)
+        super.init(initialViewState: Self.defaultState(templateUserProfileService: templateUserProfileService))
+        setupPresenceObserving()
     }
     
     private static func defaultState(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
@@ -53,21 +56,21 @@ class TemplateUserProfileViewModel: ObservableObject, TemplateUserProfileViewMod
         )
     }
     
+    private func setupPresenceObserving() {
+        templateUserProfileService.presenceSubject
+            .map(TemplateUserProfileStateAction.updatePresence)
+            .sinkDispatchTo(self)
+    }
+    
     // MARK: - Public
-    func process(viewAction: TemplateUserProfileViewAction) {
+    
+    override func process(viewAction: TemplateUserProfileViewAction) {
         switch viewAction {
         case .cancel:
             cancel()
         case .done:
             done()
         }
-    }
-    
-    // MARK: - Private
-    /// Send state actions to mutate the state.
-    /// - Parameter action: The `TemplateUserProfileStateAction` to trigger the state change.
-    private func dispatch(action: TemplateUserProfileStateAction) {
-        Self.reducer(state: &self.viewState, action: action)
     }
       
     /// A redux style reducer

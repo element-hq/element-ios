@@ -27,9 +27,10 @@ struct TemplateUserProfile: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: TemplateUserProfileViewModel
+    @ObservedObject var viewModel: TemplateUserProfileViewModel.Context
     
     var body: some View {
+        EmptyView()
         VStack {
             TemplateUserProfileHeader(
                 avatar: viewModel.viewState.avatar,
@@ -50,12 +51,12 @@ struct TemplateUserProfile: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button(VectorL10n.done) {
-                    viewModel.process(viewAction: .cancel)
+                    viewModel.inputActions.send(.done)
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button(VectorL10n.cancel) {
-                    viewModel.process(viewAction: .cancel)
+                    viewModel.inputActions.send(.cancel)
                 }
             }
         }
