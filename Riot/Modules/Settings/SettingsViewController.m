@@ -4568,13 +4568,13 @@ TableViewSectionsDelegate>
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
 
     }];
-    [self updateSections];
+    [self updateSections];  // Disables the contacts toggle as the terms weren't accepted.
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [self updateSections];
+    [self updateSections];  // Disables the contacts toggle as the terms weren't accepted.
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 

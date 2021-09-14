@@ -292,28 +292,10 @@
         return;
     }
     
-    // Check whether the user has not decided yet about using an identity server
-    // Check whether the application is allowed to access the local contacts.
-    if (contactsDataSource.mxSession.identityService.areAllTermsAgreed
+    if (MXKAppSettings.standardAppSettings.syncLocalContacts
+        && contactsDataSource.mxSession.identityService.areAllTermsAgreed
         && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
     {
-        // If the user hasn't enabled local contact sync in the app...
-        if (![MXKAppSettings standardAppSettings].syncLocalContacts)
-        {
-            // ... Check whether they have been directed to the Settings app to enable contact access.
-            if ([MXKAppSettings standardAppSettings].syncLocalContactsPermissionOpenedSystemSettings)
-            {
-                // If they have enable local contact sync and reset the system settings app flag.
-                [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
-                [MXKAppSettings standardAppSettings].syncLocalContactsPermissionOpenedSystemSettings = NO;
-            }
-            else
-            {
-                // Otherwise local contact sync is disabled so we're done.
-                return;
-            }
-        }
-        
         // Refresh the local contacts list.
         [[MXKContactManager sharedManager] refreshLocalContacts];
     }

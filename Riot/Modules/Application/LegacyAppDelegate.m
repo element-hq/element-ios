@@ -1821,6 +1821,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             [self checkLocalPrivateKeysInSession:mxSession];
             
             [self.pushNotificationService checkPushKitPushersInSession:mxSession];
+            
+            // Validate the availability of local contact sync for any changes to the
+            // authorization of contacts access that may have occurred since the last launch.
+            if (BuildSettings.allowLocalContactsAccess)
+            {
+                [MXKContactManager.sharedManager validateSyncLocalContactsState];
+            }
         }
         else if (mxSession.state == MXSessionStateClosed)
         {
