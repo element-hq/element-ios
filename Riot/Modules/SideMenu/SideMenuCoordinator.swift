@@ -23,13 +23,16 @@ import SafariServices
 
 class SideMenuCoordinatorParameters {
     let appNavigator: AppNavigatorProtocol
+    let appCoordinator: AppCoordinator
     let userSessionsService: UserSessionsService
     let appInfo: AppInfo
     
     init(appNavigator: AppNavigatorProtocol,
+         appCoordinator: AppCoordinator,
          userSessionsService: UserSessionsService,
          appInfo: AppInfo) {
         self.appNavigator = appNavigator
+        self.appCoordinator = appCoordinator
         self.userSessionsService = userSessionsService
         self.appInfo = appInfo
     }
@@ -218,7 +221,8 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
     
     private func showMembers(spaceId: String, session: MXSession) {
-        let spaceMembersCoordinator = SpaceMembersCoordinator(session: session, spaceId: spaceId)
+        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: parameters.appCoordinator.userSessionsService, session: session, spaceId: spaceId)
+        let spaceMembersCoordinator = SpaceMembersCoordinator(parameters: parameters)
         spaceMembersCoordinator.delegate = self
         let presentable = spaceMembersCoordinator.toPresentable()
         presentable.presentationController?.delegate = self

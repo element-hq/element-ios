@@ -32,6 +32,7 @@ final class SpaceMembersCoordinatorBridgePresenter: NSObject {
     
     // MARK: Private
     
+    private let userSessionsService: UserSessionsService
     private let session: MXSession
     private let spaceId: String
     private var coordinator: SpaceMembersCoordinator?
@@ -42,7 +43,8 @@ final class SpaceMembersCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceId: String) {
+    init(userSessionsService: UserSessionsService, session: MXSession, spaceId: String) {
+        self.userSessionsService = userSessionsService
         self.session = session
         self.spaceId = spaceId
         super.init()
@@ -51,7 +53,8 @@ final class SpaceMembersCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let spaceMemberListCoordinator = SpaceMembersCoordinator(session: self.session, spaceId: self.spaceId)
+        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: self.userSessionsService, session: self.session, spaceId: self.spaceId)
+        let spaceMemberListCoordinator = SpaceMembersCoordinator(parameters: parameters)
         spaceMemberListCoordinator.delegate = self
         let presentable = spaceMemberListCoordinator.toPresentable()
         presentable.presentationController?.delegate = self

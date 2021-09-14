@@ -19,15 +19,20 @@
 import Foundation
 import UIKit
 
+struct SpaceMemberDetailCoordinatorParameters {
+    let userSessionsService: UserSessionsService
+    let member: MXRoomMember
+    let session: MXSession
+    let spaceId: String
+}
+
 final class SpaceMemberDetailCoordinator: NSObject, SpaceMemberDetailCoordinatorType {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let session: MXSession
-    private let member: MXRoomMember
-    private let spaceId: String
+    private let parameters: SpaceMemberDetailCoordinatorParameters
     
     private var spaceMemberDetailViewModel: SpaceMemberDetailViewModelType
     private let spaceMemberDetailViewController: SpaceMemberDetailViewController
@@ -41,12 +46,10 @@ final class SpaceMemberDetailCoordinator: NSObject, SpaceMemberDetailCoordinator
     
     // MARK: - Setup
     
-    init(session: MXSession, member: MXRoomMember, spaceId: String) {
-        self.session = session
-        self.member = member
-        self.spaceId = spaceId
+    init(parameters: SpaceMemberDetailCoordinatorParameters) {
+        self.parameters = parameters
         
-        let spaceMemberDetailViewModel = SpaceMemberDetailViewModel(session: self.session, member: self.member)
+        let spaceMemberDetailViewModel = SpaceMemberDetailViewModel(userSessionsService: parameters.userSessionsService, session: parameters.session, member: parameters.member, spaceId: parameters.spaceId)
         let spaceMemberDetailViewController = SpaceMemberDetailViewController.instantiate(with: spaceMemberDetailViewModel)
         spaceMemberDetailViewController.enableMention = true
         spaceMemberDetailViewController.enableVoipCall = false
@@ -60,11 +63,6 @@ final class SpaceMemberDetailCoordinator: NSObject, SpaceMemberDetailCoordinator
     
     func start() {            
         self.spaceMemberDetailViewModel.coordinatorDelegate = self
-        if let space = self.session.spaceService.getSpace(withId: spaceId) {
-            // Set delegate to handle action on member (start chat, mention)
-            self.spaceMemberDetailViewController.delegate = self
-            self.spaceMemberDetailViewController.display(self.member, withMatrixRoom: space.room)
-        }
     }
     
     func toPresentable() -> UIViewController {

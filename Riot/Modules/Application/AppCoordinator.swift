@@ -49,7 +49,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     private weak var splitViewCoordinator: SplitViewCoordinatorType?
     fileprivate weak var sideMenuCoordinator: SideMenuCoordinatorType?
     
-    private let userSessionsService: UserSessionsService
+    let userSessionsService: UserSessionsService
         
     /// Main user Matrix session
     private var mainMatrixSession: MXSession? {
@@ -131,7 +131,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func addSideMenu() {
         let appInfo = AppInfo.current
-        let coordinatorParameters = SideMenuCoordinatorParameters(appNavigator: self.appNavigator, userSessionsService: self.userSessionsService, appInfo: appInfo)
+        let coordinatorParameters = SideMenuCoordinatorParameters(appNavigator: self.appNavigator, appCoordinator: self, userSessionsService: self.userSessionsService, appInfo: appInfo)
         
         let coordinator = SideMenuCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self

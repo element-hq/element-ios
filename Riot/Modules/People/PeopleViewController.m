@@ -30,6 +30,7 @@
 {
     NSInteger          directRoomsSectionNumber;
     RecentsDataSource *recentsDataSource;
+    UserSessionsService *userSessionsService;
 }
 
 @property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
@@ -50,6 +51,7 @@
     [super finalizeInit];
     
     directRoomsSectionNumber = 0;
+    userSessionsService = [UserSessionsService new];
     
     self.screenName = @"People";
 }
@@ -123,7 +125,7 @@
 {
     if (self.dataSource.currentSpace != nil)
     {
-        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithSession:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:userSessionsService session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
         self.spaceMembersCoordinatorBridgePresenter.delegate = self;
         [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
     }

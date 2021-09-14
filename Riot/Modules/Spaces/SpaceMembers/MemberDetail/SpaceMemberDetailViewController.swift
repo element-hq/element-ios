@@ -26,10 +26,6 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
         return UINib(nibName: "RoomMemberDetailsViewController", bundle: Bundle(for: RoomMemberDetailsViewController.self))
     }
     
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -67,6 +63,9 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
         self.update(theme: self.theme)
         
         self.viewModel.viewDelegate = self
+        self.viewModel.process(viewAction: .loadData)
+        
+        self.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -118,8 +117,8 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded:
-            self.renderLoaded()
+        case .loaded(let member, let space):
+            self.renderLoaded(member: member, space: space)
         case .error(let error):
             self.render(error: error)
         }
@@ -129,7 +128,8 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded() {
+    private func renderLoaded(member: MXRoomMember, space: MXRoom?) {
+        self.display(member, withMatrixRoom: space)
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
     }
     
@@ -158,4 +158,14 @@ extension SpaceMemberDetailViewController: SpaceMemberDetailViewModelViewDelegat
     func spaceMemberDetailViewModel(_ viewModel: SpaceMemberDetailViewModelType, didUpdateViewState viewSate: SpaceMemberDetailViewState) {
         self.render(viewState: viewSate)
     }
+}
+
+// MARK: - MXKRoomMemberDetailsViewControllerDelegate
+extension SpaceMemberDetailViewController: MXKRoomMemberDetailsViewControllerDelegate {
+
+    func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId memberId: String!, completion: (() -> Void)!) {
+        completion()
+        self.viewModel.process(viewAction: .createRoom(memberId))
+    }
+
 }
