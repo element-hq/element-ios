@@ -1,5 +1,5 @@
 // File created from FlowTemplate
-// $ createRootCoordinator.sh Spaces/SpaceRoomList ExploreRoom ShowSpaceExploreRoom
+// $ createRootCoordinator.sh Spaces/SpaceMembers SpaceMemberList ShowSpaceMemberList
 /*
  Copyright 2021 New Vector Ltd
  
@@ -18,31 +18,33 @@
 
 import Foundation
 
-@objc protocol ExploreRoomCoordinatorBridgePresenterDelegate {
-    func exploreRoomCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: ExploreRoomCoordinatorBridgePresenter)
+@objc protocol SpaceMembersCoordinatorBridgePresenterDelegate {
+    func spaceMembersCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: SpaceMembersCoordinatorBridgePresenter)
 }
 
-/// ExploreRoomCoordinatorBridgePresenter enables to start ExploreRoomCoordinator from a view controller.
+/// SpaceMembersCoordinatorBridgePresenter enables to start SpaceMemberListCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
 /// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers). Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
-final class ExploreRoomCoordinatorBridgePresenter: NSObject {
+final class SpaceMembersCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Properties
     
     // MARK: Private
     
+    private let userSessionsService: UserSessionsService
     private let session: MXSession
     private let spaceId: String
-    private var coordinator: ExploreRoomCoordinator?
+    private var coordinator: SpaceMembersCoordinator?
     
     // MARK: Public
     
-    weak var delegate: ExploreRoomCoordinatorBridgePresenterDelegate?
+    weak var delegate: SpaceMembersCoordinatorBridgePresenterDelegate?
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceId: String) {
+    init(userSessionsService: UserSessionsService, session: MXSession, spaceId: String) {
+        self.userSessionsService = userSessionsService
         self.session = session
         self.spaceId = spaceId
         super.init()
@@ -50,20 +52,16 @@ final class ExploreRoomCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Public
     
-    // NOTE: Default value feature is not compatible with Objective-C.
-    // func present(from viewController: UIViewController, animated: Bool) {
-    //     self.present(from: viewController, animated: animated)
-    // }
-    
     func present(from viewController: UIViewController, animated: Bool) {
-        let exploreRoomCoordinator = ExploreRoomCoordinator(session: self.session, spaceId: self.spaceId)
-        exploreRoomCoordinator.delegate = self
-        let presentable = exploreRoomCoordinator.toPresentable()
+        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: self.userSessionsService, session: self.session, spaceId: self.spaceId)
+        let spaceMemberListCoordinator = SpaceMembersCoordinator(parameters: parameters)
+        spaceMemberListCoordinator.delegate = self
+        let presentable = spaceMemberListCoordinator.toPresentable()
         presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
-        exploreRoomCoordinator.start()
+        spaceMemberListCoordinator.start()
         
-        self.coordinator = exploreRoomCoordinator
+        self.coordinator = spaceMemberListCoordinator
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
@@ -80,18 +78,19 @@ final class ExploreRoomCoordinatorBridgePresenter: NSObject {
     }
 }
 
-// MARK: - ExploreRoomCoordinatorDelegate
-extension ExploreRoomCoordinatorBridgePresenter: ExploreRoomCoordinatorDelegate {
-    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType) {
-        self.delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
+// MARK: - SpaceMembersCoordinatorDelegate
+extension SpaceMembersCoordinatorBridgePresenter: SpaceMembersCoordinatorDelegate {
+    func spaceMembersCoordinatorDidCancel(_ coordinator: SpaceMembersCoordinatorType) {
+        self.delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
     }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
-extension ExploreRoomCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+
+extension SpaceMembersCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.exploreRoomCoordinatorBridgePresenterDelegateDidComplete(self)
+        self.delegate?.spaceMembersCoordinatorBridgePresenterDelegateDidComplete(self)
     }
     
 }

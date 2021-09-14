@@ -4722,6 +4722,14 @@ internal enum VectorL10n {
   internal static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
+  /// Ban from this space
+  internal static var spaceParticipantsActionBan: String { 
+    return VectorL10n.tr("Vector", "space_participants_action_ban") 
+  }
+  /// Remove from this space
+  internal static var spaceParticipantsActionRemove: String { 
+    return VectorL10n.tr("Vector", "space_participants_action_remove") 
+  }
   /// space
   internal static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
@@ -4754,9 +4762,9 @@ internal enum VectorL10n {
   internal static var spacesLeftPanelTitle: String { 
     return VectorL10n.tr("Vector", "spaces_left_panel_title") 
   }
-  /// Looking for someone not in space name? For now, you can invite them on web or desktop.
-  internal static var spacesNoMemberFoundDetail: String { 
-    return VectorL10n.tr("Vector", "spaces_no_member_found_detail") 
+  /// Looking for someone not in %@? For now, you can invite them on web or desktop.
+  internal static func spacesNoMemberFoundDetail(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_no_member_found_detail", p1)
   }
   /// No results found
   internal static var spacesNoResultFoundTitle: String { 

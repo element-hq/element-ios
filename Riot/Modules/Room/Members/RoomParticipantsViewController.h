@@ -85,6 +85,7 @@
 @property (nonatomic) BOOL enableMention;
 
 @property (nonatomic) BOOL showCancelBarButtonItem;
+@property (nonatomic) BOOL showParticipantCustomAccessoryView;
 
 /**
  The delegate for the view controller.
