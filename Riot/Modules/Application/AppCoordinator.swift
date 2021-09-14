@@ -67,7 +67,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     init(router: RootRouterType, window: UIWindow) {
         self.rootRouter = router
         self.customSchemeURLParser = CustomSchemeURLParser()
-        self.userSessionsService = UserSessionsService()
+        self.userSessionsService = UserSessionsService.shared
         
         super.init()
         
