@@ -218,7 +218,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
     
     private func showMembers(spaceId: String, session: MXSession) {
-        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: parameters.userSessionsService, session: session, spaceId: spaceId)
+        let parameters = SpaceMembersCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, session: session, spaceId: spaceId)
         let spaceMembersCoordinator = SpaceMembersCoordinator(parameters: parameters)
         spaceMembersCoordinator.delegate = self
         let presentable = spaceMembersCoordinator.toPresentable()
