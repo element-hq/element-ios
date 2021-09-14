@@ -16,7 +16,7 @@
 
 import Foundation
 
-struct TemplateUserProfileViewState {
+struct TemplateUserProfileViewState: BindableState {
     let avatar: AvatarInputProtocol?
     let displayName: String?
     var presence: TemplateUserProfilePresence

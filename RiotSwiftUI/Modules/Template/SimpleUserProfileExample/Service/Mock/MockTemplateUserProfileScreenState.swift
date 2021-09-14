@@ -50,11 +50,11 @@ enum MockTemplateUserProfileScreenState: MockScreenState, CaseIterable {
         case .longDisplayName(let displayName):
             service = MockTemplateUserProfileService(displayName: displayName)
         }
-        let viewModel = TemplateUserProfileViewModel(templateUserProfileService: service)
+        let viewModel = TemplateUserProfileViewModel.makeTemplateUserProfileViewModel(templateUserProfileService: service)
         
         // can simulate service and viewModel actions here if needs be.
         
-        return AnyView(TemplateUserProfile(viewModel: viewModel)
+        return AnyView(TemplateUserProfile(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
     }
 }
