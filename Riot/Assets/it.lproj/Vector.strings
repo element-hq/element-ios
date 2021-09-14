@@ -198,7 +198,7 @@
 "room_participants_action_start_new_chat" = "Inizia nuova chat";
 "room_participants_action_start_voice_call" = "Nuova telefonata";
 "room_participants_action_start_video_call" = "Nuova videochiamata";
-"room_participants_action_mention" = "Citazione";
+"room_participants_action_mention" = "Menziona";
 // Chat
 "room_jump_to_first_unread" = "Vai ai non letti";
 "room_new_message_notification" = "%d nuovo messaggio";
