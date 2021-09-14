@@ -123,7 +123,7 @@
 {
     if (self.dataSource.currentSpace != nil)
     {
-        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithSession:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
         self.spaceMembersCoordinatorBridgePresenter.delegate = self;
         [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
     }

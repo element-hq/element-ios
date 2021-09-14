@@ -18,6 +18,12 @@
 
 import UIKit
 
+struct SpaceMembersCoordinatorParameters {
+    let userSessionsService: UserSessionsService
+    let session: MXSession
+    let spaceId: String
+}
+
 @objcMembers
 final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     
@@ -25,9 +31,8 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     
     // MARK: Private
     
+    private let parameters: SpaceMembersCoordinatorParameters
     private let navigationRouter: NavigationRouterType
-    private let session: MXSession
-    private let spaceId: String
     private weak var memberDetailCoordinator: SpaceMemberDetailCoordinator?
 
     // MARK: Public
@@ -39,11 +44,10 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceId: String) {
+    init(parameters: SpaceMembersCoordinatorParameters) {
+        self.parameters = parameters
         self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
-        self.session = session
-        self.spaceId = spaceId
-    }    
+    }
     
     // MARK: - Public methods
     
@@ -89,19 +93,20 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     // MARK: - Private methods
 
     private func createSpaceMemberListCoordinator() -> SpaceMemberListCoordinator {
-        let coordinator = SpaceMemberListCoordinator(session: self.session, spaceId: self.spaceId)
+        let coordinator = SpaceMemberListCoordinator(session: self.parameters.session, spaceId: self.parameters.spaceId)
         coordinator.delegate = self
         return coordinator
     }
     
     private func createSpaceMemberDetailCoordinator(with member: MXRoomMember) -> SpaceMemberDetailCoordinator {
-        let coordinator = SpaceMemberDetailCoordinator(session: self.session, member: member, spaceId: self.spaceId)
+        let parameters = SpaceMemberDetailCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, member: member, session: self.parameters.session, spaceId: self.parameters.spaceId)
+        let coordinator = SpaceMemberDetailCoordinator(parameters: parameters)
         coordinator.delegate = self
         return coordinator
     }
     
     private func navigateTo(roomWith roomId: String) {
-        let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
+        let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
         roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
             
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
@@ -120,7 +125,7 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
 // MARK: - SpaceMemberListCoordinatorDelegate
 extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
     func spaceMemberListCoordinator(_ coordinator: SpaceMemberListCoordinatorType, didSelect member: MXRoomMember, from sourceView: UIView?) {
-        self.delegate?.spaceMembersCoordinator(self, didSelect: member, from: sourceView)
+        self.presentMemberDetail(with: member, from: sourceView)
     }
     
     func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType) {

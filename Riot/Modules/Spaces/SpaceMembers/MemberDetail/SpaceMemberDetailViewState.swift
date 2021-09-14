@@ -21,6 +21,6 @@ import Foundation
 /// SpaceMemberDetailViewController view state
 enum SpaceMemberDetailViewState {
     case loading
-    case loaded
+    case loaded(MXRoomMember, MXRoom?)
     case error(Error)
 }

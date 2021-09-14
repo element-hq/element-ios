@@ -19,7 +19,7 @@
 import Foundation
 
 protocol ExploreRoomCoordinatorDelegate: AnyObject {
-    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType, withSelectedIem item: SpaceExploreRoomListItemViewData?, from sourceView: UIView?)
+    func exploreRoomCoordinatorDidComplete(_ coordinator: ExploreRoomCoordinatorType)
 }
 
 /// `ExploreRoomCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.
