@@ -242,28 +242,25 @@
 {
     if (self.requestContactsAccessFooterView && self.requestContactsAccessFooterView == self.contactsTableView.tableFooterView)
     {
+        // Calculate the natural size of the footer
         CGSize footerSize = [self.requestContactsAccessFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        CGFloat gapHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom;
         
+        // Calculate the height available for the footer
+        CGFloat availableHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom;
         if (self.contactsTableView.tableHeaderView)
         {
-            gapHeight -= self.contactsTableView.tableHeaderView.frame.size.height;
+            availableHeight -= self.contactsTableView.tableHeaderView.frame.size.height;
         }
         
-        if (gapHeight > footerSize.height)
-        {
-            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
-                                                                    self.requestContactsAccessFooterView.frame.origin.y,
-                                                                    self.requestContactsAccessFooterView.frame.size.width,
-                                                                    gapHeight);
-        }
-        else
-        {
-            self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
-                                                                    self.requestContactsAccessFooterView.frame.origin.y,
-                                                                    self.requestContactsAccessFooterView.frame.size.width,
-                                                                    footerSize.height);
-        }
+        // Fill all available height unless the footer is larger, in which case use its natural height
+        CGFloat finalHeight = availableHeight > footerSize.height ? availableHeight : footerSize.height;
+        self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
+                                                                self.requestContactsAccessFooterView.frame.origin.y,
+                                                                self.requestContactsAccessFooterView.frame.size.width,
+                                                                finalHeight);
+        
+        // This assignment is technically redundant, but does prompt the table view to recalculate its content size 
+        self.contactsTableView.tableFooterView = self.requestContactsAccessFooterView;
     }
 }
 

@@ -542,7 +542,7 @@ internal enum VectorL10n {
   internal static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
   }
-  /// Allow contacts access
+  /// Find your contacts
   internal static var contactsAccessFooterButtonTitle: String { 
     return VectorL10n.tr("Vector", "contacts_access_footer_button_title") 
   }
