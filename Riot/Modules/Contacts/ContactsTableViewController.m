@@ -28,7 +28,7 @@
 #define CONTACTS_TABLEVC_DEFAULT_SECTION_HEADER_HEIGHT 30.0
 #define CONTACTS_TABLEVC_LOCALCONTACTS_SECTION_HEADER_HEIGHT 65.0
 
-@interface ContactsTableViewController () <RequestContactsAccessFooterViewDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
+@interface ContactsTableViewController () <FindYourContactsFooterViewDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {
     /**
      Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
@@ -41,7 +41,7 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
-@property (nonatomic, strong) RequestContactsAccessFooterView *requestContactsAccessFooterView;
+@property (nonatomic, strong) FindYourContactsFooterView *findYourContactsFooterView;
 
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
@@ -69,9 +69,9 @@
 {
     [super finalizeInit];
     
-    // By default, allow the contact access footer to be shown
-    // when sufficient permissions are not available.
-    self.hideRequestContactAccessFooter = NO;
+    // By default, allow the find your contacts footer to be
+    // shown when local contacts sync hasn't been enabled.
+    self.disableFindYourContactsFooter = NO;
     
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
@@ -171,13 +171,13 @@
     [self refreshContactsTable];
     
     // Show the contacts access footer if necessary.
-    [self updateFooterView];
+    [self updateFooterViewVisibility];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self updateRequestContactsAccessFooterViewHeight];
+    [self updateFooterViewHeight];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -200,19 +200,19 @@
 
 #pragma mark -
 
-- (RequestContactsAccessFooterView*)makeFooterView
+- (FindYourContactsFooterView*)makeFooterView
 {
-    RequestContactsAccessFooterView *footerView = [RequestContactsAccessFooterView instantiate];
+    FindYourContactsFooterView *footerView = [FindYourContactsFooterView instantiate];
     footerView.delegate = self;
     
-    self.requestContactsAccessFooterView = footerView;
+    self.findYourContactsFooterView = footerView;
     
     return footerView;
 }
 
-- (void)updateFooterView
+- (void)updateFooterViewVisibility
 {
-    if (!BuildSettings.allowLocalContactsAccess || self.hideRequestContactAccessFooter)
+    if (!BuildSettings.allowLocalContactsAccess || self.disableFindYourContactsFooter)
     {
         self.contactsTableView.tableFooterView = [[UIView alloc] init];
         return;
@@ -234,16 +234,16 @@
         return;
     }
     
-    self.contactsTableView.tableFooterView = self.requestContactsAccessFooterView ?: [self makeFooterView];
-    [self updateRequestContactsAccessFooterViewHeight];
+    self.contactsTableView.tableFooterView = self.findYourContactsFooterView ?: [self makeFooterView];
+    [self updateFooterViewHeight];
 }
 
-- (void)updateRequestContactsAccessFooterViewHeight
+- (void)updateFooterViewHeight
 {
-    if (self.requestContactsAccessFooterView && self.requestContactsAccessFooterView == self.contactsTableView.tableFooterView)
+    if (self.findYourContactsFooterView && self.findYourContactsFooterView == self.contactsTableView.tableFooterView)
     {
         // Calculate the natural size of the footer
-        CGSize footerSize = [self.requestContactsAccessFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        CGSize footerSize = [self.findYourContactsFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
         
         // Calculate the height available for the footer
         CGFloat availableHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom;
@@ -254,13 +254,13 @@
         
         // Fill all available height unless the footer is larger, in which case use its natural height
         CGFloat finalHeight = availableHeight > footerSize.height ? availableHeight : footerSize.height;
-        self.requestContactsAccessFooterView.frame = CGRectMake(self.requestContactsAccessFooterView.frame.origin.x,
-                                                                self.requestContactsAccessFooterView.frame.origin.y,
-                                                                self.requestContactsAccessFooterView.frame.size.width,
-                                                                finalHeight);
+        self.findYourContactsFooterView.frame = CGRectMake(self.findYourContactsFooterView.frame.origin.x,
+                                                           self.findYourContactsFooterView.frame.origin.y,
+                                                           self.findYourContactsFooterView.frame.size.width,
+                                                           finalHeight);
         
-        // This assignment is technically redundant, but does prompt the table view to recalculate its content size 
-        self.contactsTableView.tableFooterView = self.requestContactsAccessFooterView;
+        // This assignment is technically redundant, but does prompt the table view to recalculate its content size
+        self.contactsTableView.tableFooterView = self.findYourContactsFooterView;
     }
 }
 
@@ -356,7 +356,7 @@
     if (_contactsAreFilteredWithSearch != contactsAreFilteredWithSearch)
     {
         _contactsAreFilteredWithSearch = contactsAreFilteredWithSearch;
-        [self updateFooterView];
+        [self updateFooterViewVisibility];
     }
 }
 
@@ -501,9 +501,9 @@
     [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - RequestContactsAccessFooterViewDelegate
+#pragma mark - FindYourContactsFooterViewDelegate
 
-- (void)didRequestContactsAccess
+- (void)didTapEnableContactsSync
 {
     // First check the identity if service terms have already been accepted
     if (self->contactsDataSource.mxSession.identityService.areAllTermsAgreed)
@@ -532,7 +532,7 @@
             
             [self stopActivityIndicator];
             
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_access_identity_service_error", @"Vector", nil)
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"find_your_contacts_identity_service_error", @"Vector", nil)
                                                                                      message:nil
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
@@ -574,8 +574,8 @@
     // Attempt to refresh the contacts manager.
     [self refreshLocalContacts];
     
-    // Hide the request access view.
-    [self updateFooterView];
+    // Hide the find your contacts footer.
+    [self updateFooterViewVisibility];
 }
 
 #pragma mark - Identity server service terms

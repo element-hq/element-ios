@@ -67,11 +67,11 @@
 @property (weak, nonatomic) IBOutlet UITableView *contactsTableView;
 
 /**
- When true, the footer that allows the user to grant access to their contacts will
- never be shown. When false, the footer will shown when the required access is
- not available.
+ When true, the footer that allows the user to enable local contacts sync will
+ never be shown. When false, the footer will shown when the user hasn't enabled
+ contact sync.
  */
-@property (nonatomic) BOOL hideRequestContactAccessFooter;
+@property (nonatomic) BOOL disableFindYourContactsFooter;
 
 /**
  Indicates when there's an active search. This is used to indicate that the contacts

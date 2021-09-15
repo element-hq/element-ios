@@ -245,11 +245,11 @@ Tap the + to start adding people.";
 "contacts_address_book_permission_denied_alert_message" = "To enable contacts, go to your device settings.";
 "contacts_user_directory_section" = "USER DIRECTORY";
 "contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
-"contacts_access_footer_title" = "Start by listing your contacts";
-"contacts_access_footer_description" = "Let %@ show your contacts so you can quickly start chatting with those you know best.";
-"contacts_access_footer_button_title" = "Find your contacts";
-"contacts_access_footer_footer" = "This can be disabled anytime from settings.";
-"contacts_access_identity_service_error" = "Unable to connect to the identity server.";
+"find_your_contacts_title" = "Start by listing your contacts";
+"find_your_contacts_message" = "Let %@ show your contacts so you can quickly start chatting with those you know best.";
+"find_your_contacts_button_title" = "Find your contacts";
+"find_your_contacts_footer" = "This can be disabled anytime from settings.";
+"find_your_contacts_identity_service_error" = "Unable to connect to the identity server.";
 
 // Chat participants
 "room_participants_title" = "Participants";

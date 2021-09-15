@@ -3139,7 +3139,7 @@ TableViewSectionsDelegate>
                 
                 [self stopActivityIndicator];
                 
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"contacts_access_identity_service_error", @"Vector", nil)
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"find_your_contacts_identity_service_error", @"Vector", nil)
                                                                                          message:nil
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
                 

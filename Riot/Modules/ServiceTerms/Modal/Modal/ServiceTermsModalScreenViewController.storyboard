@@ -29,7 +29,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gff-MZ-3bp">
                                                         <rect key="frame" x="20" y="20" width="335" height="207"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contacts_request_facepile" translatesAutoresizingMaskIntoConstraints="NO" id="XWa-N5-VF2">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="find_your_contacts_facepile" translatesAutoresizingMaskIntoConstraints="NO" id="XWa-N5-VF2">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="46"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To continue, accept the below terms and conditions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
@@ -170,7 +170,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="contacts_request_facepile" width="110" height="46"/>
+        <image name="find_your_contacts_facepile" width="110" height="46"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

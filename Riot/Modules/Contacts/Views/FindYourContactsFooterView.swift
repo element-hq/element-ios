@@ -17,21 +17,21 @@
 import UIKit
 import Reusable
 
-@objc protocol RequestContactsAccessFooterViewDelegate {
-    func didRequestContactsAccess()
+@objc protocol FindYourContactsFooterViewDelegate {
+    func didTapEnableContactsSync()
 }
 
 @objcMembers
-class RequestContactsAccessFooterView: UIView, NibLoadable, Themable {
+class FindYourContactsFooterView: UIView, NibLoadable, Themable {
     
     // MARK: - Properties
     
-    weak var delegate: RequestContactsAccessFooterViewDelegate?
+    weak var delegate: FindYourContactsFooterViewDelegate?
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var requestAccessButton: CustomRoundedButton!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var button: CustomRoundedButton!
     @IBOutlet weak var footerLabel: UILabel!
     
     // MARK: - Setup
@@ -46,12 +46,12 @@ class RequestContactsAccessFooterView: UIView, NibLoadable, Themable {
         super.awakeFromNib()
         
         containerView.layer.cornerRadius = 8
-        requestAccessButton.layer.cornerRadius = 8
+        button.layer.cornerRadius = 8
         
-        titleLabel.text = VectorL10n.contactsAccessFooterTitle
-        descriptionLabel.text = VectorL10n.contactsAccessFooterDescription(BuildSettings.bundleDisplayName)
-        requestAccessButton.setTitle(VectorL10n.contactsAccessFooterButtonTitle, for: .normal)
-        footerLabel.text = VectorL10n.contactsAccessFooterFooter
+        titleLabel.text = VectorL10n.findYourContactsTitle
+        messageLabel.text = VectorL10n.findYourContactsMessage(BuildSettings.bundleDisplayName)
+        button.setTitle(VectorL10n.findYourContactsButtonTitle, for: .normal)
+        footerLabel.text = VectorL10n.findYourContactsFooter
     }
     
     func update(theme: Theme) {
@@ -62,12 +62,12 @@ class RequestContactsAccessFooterView: UIView, NibLoadable, Themable {
         titleLabel.font = theme.fonts.bodySB
         titleLabel.textColor = theme.colors.primaryContent
         
-        descriptionLabel.font = theme.fonts.body
-        descriptionLabel.textColor = theme.colors.secondaryContent
+        messageLabel.font = theme.fonts.body
+        messageLabel.textColor = theme.colors.secondaryContent
         
-        requestAccessButton.titleLabel?.font = theme.fonts.body
-        requestAccessButton.backgroundColor = theme.colors.accent
-        requestAccessButton.setTitleColor(theme.colors.background, for: .normal)
+        button.titleLabel?.font = theme.fonts.body
+        button.backgroundColor = theme.colors.accent
+        button.setTitleColor(theme.colors.background, for: .normal)
         
         footerLabel.font = theme.fonts.footnote.withSize(13)
         footerLabel.textColor = theme.colors.tertiaryContent
@@ -75,7 +75,7 @@ class RequestContactsAccessFooterView: UIView, NibLoadable, Themable {
     
     // MARK: - Action
     
-    @IBAction private func requestContactsAccess(_ sender: Any) {
-        delegate?.didRequestContactsAccess()
+    @IBAction private func enableContactsSync(_ sender: Any) {
+        delegate?.didTapEnableContactsSync()
     }
 }

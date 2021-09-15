@@ -542,26 +542,6 @@ internal enum VectorL10n {
   internal static var collapse: String { 
     return VectorL10n.tr("Vector", "collapse") 
   }
-  /// Find your contacts
-  internal static var contactsAccessFooterButtonTitle: String { 
-    return VectorL10n.tr("Vector", "contacts_access_footer_button_title") 
-  }
-  /// Let %@ show your contacts so you can quickly start chatting with those you know best.
-  internal static func contactsAccessFooterDescription(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "contacts_access_footer_description", p1)
-  }
-  /// This can be disabled anytime from settings.
-  internal static var contactsAccessFooterFooter: String { 
-    return VectorL10n.tr("Vector", "contacts_access_footer_footer") 
-  }
-  /// Start by listing your contacts
-  internal static var contactsAccessFooterTitle: String { 
-    return VectorL10n.tr("Vector", "contacts_access_footer_title") 
-  }
-  /// Unable to connect to the identity server.
-  internal static var contactsAccessIdentityServiceError: String { 
-    return VectorL10n.tr("Vector", "contacts_access_identity_service_error") 
-  }
   /// Matrix users only
   internal static var contactsAddressBookMatrixUsersToggle: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_matrix_users_toggle") 
@@ -1425,6 +1405,26 @@ internal enum VectorL10n {
   /// File type not supported.
   internal static var fileUploadErrorUnsupportedFileTypeMessage: String { 
     return VectorL10n.tr("Vector", "file_upload_error_unsupported_file_type_message") 
+  }
+  /// Find your contacts
+  internal static var findYourContactsButtonTitle: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_button_title") 
+  }
+  /// This can be disabled anytime from settings.
+  internal static var findYourContactsFooter: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_footer") 
+  }
+  /// Unable to connect to the identity server.
+  internal static var findYourContactsIdentityServiceError: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_identity_service_error") 
+  }
+  /// Let %@ show your contacts so you can quickly start chatting with those you know best.
+  internal static func findYourContactsMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "find_your_contacts_message", p1)
+  }
+  /// Start by listing your contacts
+  internal static var findYourContactsTitle: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_title") 
   }
   /// To continue using the %@ homeserver you must review and agree to the terms and conditions.
   internal static func gdprConsentNotGivenAlertMessage(_ p1: String) -> String {
