@@ -34,7 +34,9 @@
 
 #import "Riot-Swift.h"
 
-@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate, ExploreRoomCoordinatorBridgePresenterDelegate>
+NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
+
+@interface RecentsViewController () <CreateRoomCoordinatorBridgePresenterDelegate, RoomsDirectoryCoordinatorBridgePresenterDelegate, RoomNotificationSettingsCoordinatorBridgePresenterDelegate>
 {
     // Tell whether a recents refresh is pending (suspended during editing mode).
     BOOL isRefreshPending;
@@ -751,7 +753,7 @@
             }
             
             // Look for the lowest section index visible in the bottom sticky headers.
-            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.mxk_adjustedContentInset.bottom;
+            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.adjustedContentInset.bottom;
             UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
             
             for (UIView *header in _stickyHeadersBottomContainer.subviews)
@@ -974,6 +976,12 @@
     [super dataSource:dataSource didCellChange:changes];
     
     [self showEmptyViewIfNeeded];
+    
+    if (dataSource.state == MXKDataSourceStateReady)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:RecentsViewControllerDataReadyNotification
+                                                            object:self];
+    }
 }
 
 #pragma mark - Swipe actions
@@ -1036,7 +1044,7 @@
                                                                              title:title
                                                                            handler:^(UIContextualAction * _Nonnull action, __kindof UIView * _Nonnull sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
         
-        if ([BuildSettings roomSettingsScreenShowNotificationsV2])
+        if ([BuildSettings showNotificationsV2])
         {
             [self changeEditedRoomNotificationSettings];
         }
@@ -1051,7 +1059,7 @@
     muteAction.backgroundColor = actionBackgroundColor;
     
     UIImage *notificationImage;
-    if([BuildSettings roomSettingsScreenShowNotificationsV2])
+    if([BuildSettings showNotificationsV2])
     {
         notificationImage = isMuted ? [UIImage imageNamed:@"room_action_notification_muted"] : [UIImage imageNamed:@"room_action_notification"];
     }
@@ -1544,7 +1552,7 @@
     {
         if (!self.recentsSearchBar.isHidden)
         {
-            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.mxk_adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
+            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
             {
                 // Hide the search bar
                 [self hideSearchBar:YES];
@@ -1999,7 +2007,7 @@
 
 - (void)scrollToTop:(BOOL)animated
 {
-    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.mxk_adjustedContentInset.left, -self.recentsTableView.mxk_adjustedContentInset.top) animated:animated];
+    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.adjustedContentInset.left, -self.recentsTableView.adjustedContentInset.top) animated:animated];
 }
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section

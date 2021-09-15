@@ -58,11 +58,7 @@ final class RoomContextualMenuViewController: UIViewController, Themable {
     private var hiddenToolbarViewBottomConstant: CGFloat {
         let bottomSafeAreaHeight: CGFloat
         
-        if #available(iOS 11.0, *) {
-            bottomSafeAreaHeight = self.view.safeAreaInsets.bottom
-        } else {
-            bottomSafeAreaHeight = self.bottomLayoutGuide.length
-        }
+        bottomSafeAreaHeight = self.view.safeAreaInsets.bottom
         
         return -(self.menuToolbarViewHeightConstraint.constant + bottomSafeAreaHeight)
     }

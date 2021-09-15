@@ -21,11 +21,23 @@ import UIKit
 @objc public protocol ThemeV2 {
     
     /// Colors object
-    var colors: Colors { get }
+    var colors: ColorsUIKit { get }
     
     /// Fonts object
-    var fonts: Fonts { get }
+    var fonts: FontsUIKit { get }
     
     /// may contain more design components in future, like icons, audio files etc.
+}
+
+/// Theme v2 for SwiftUI.
+@available(iOS 14.0, *)
+public protocol ThemeSwiftUIType {
     
+    /// Colors object
+    var colors: ColorSwiftUI { get }
+    
+    /// Fonts object
+    var fonts: FontSwiftUI { get }
+    
+    /// may contain more design components in future, like icons, audio files etc.
 }

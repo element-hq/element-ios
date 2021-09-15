@@ -56,8 +56,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     
     let playbackView: VoiceMessagePlaybackView
     
-    init(mediaServiceProvider: VoiceMessageMediaServiceProvider,
-         cacheManager: VoiceMessageAttachmentCacheManager) {
+    init(mediaServiceProvider: VoiceMessageMediaServiceProvider, cacheManager: VoiceMessageAttachmentCacheManager) {
         self.mediaServiceProvider = mediaServiceProvider
         self.cacheManager = cacheManager
         
@@ -93,7 +92,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
                 audioPlayer.play()
             }
         } else if let url = urlToLoad {
-            audioPlayer.loadContentFromURL(url)
+            audioPlayer.loadContentFromURL(url, displayName: attachment?.originalFileName)
             audioPlayer.play()
         }
     }
@@ -153,6 +152,7 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
                 details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
             }
         }
+        
         details.loading = self.loading
         
         playbackView.configureWithDetails(details)
@@ -164,8 +164,6 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
         
         self.state = .stopped
-        self.loading = true
-        self.samples = []
         updateUI()
         
         let requiredNumberOfSamples = playbackView.getRequiredNumberOfSamples()

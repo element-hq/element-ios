@@ -108,7 +108,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                         return nil
                     }
                     
-                    let avatarViewData = AvatarViewData(avatarUrl: childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
+                    let avatarViewData = AvatarViewData(matrixItemId: childInfo.childRoomId, displayName: childInfo.displayName, avatarUrl: childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
                     return SpaceExploreRoomListItemViewData(childInfo: childInfo, avatarViewData: avatarViewData)
                 })
             case .failure(let error):

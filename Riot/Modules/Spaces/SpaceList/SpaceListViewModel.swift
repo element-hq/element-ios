@@ -146,7 +146,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func createHomeViewData() -> SpaceListItemViewData {
-        let avatarViewData = AvatarViewData(avatarUrl: nil, mediaManager: self.session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
+        let avatarViewData = AvatarViewData(matrixItemId: Constants.homeSpaceId, displayName: nil, avatarUrl: nil, mediaManager: self.session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
         
         let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
                                                  title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData, isInvite: false)
@@ -157,7 +157,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
         var invites: [SpaceListItemViewData] = []
         var spaces: [SpaceListItemViewData] = []
         session.spaceService.rootSpaceSummaries.forEach { summary in
-            let avatarViewData = AvatarViewData(avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+            let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
             let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData, isInvite: summary.membership == .invite)
             if viewData.isInvite {
                 invites.append(viewData)

@@ -214,7 +214,7 @@ class SpaceDetailViewController: UIViewController {
             self.inviteActionPanel.isHidden = false
         }
         
-        let avatarViewData = AvatarViewData(avatarUrl: summary.avatar, mediaManager: self.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+        let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: self.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
 
         self.titleLabel.text = summary.displayname
         self.avatarView.fill(with: avatarViewData)
@@ -231,7 +231,7 @@ class SpaceDetailViewController: UIViewController {
             self.inviterTitleLabel.text = "\(parameters.inviter?.displayname ?? inviterId) invited you"
             
             if let inviter = parameters.inviter {
-                let avatarViewData = AvatarViewData(avatarUrl: inviter.avatarUrl, mediaManager: self.mediaManager, fallbackImage: .matrixItem(inviter.userId, inviter.displayname))
+                let avatarViewData = AvatarViewData(matrixItemId: inviter.userId, displayName: inviter.displayname, avatarUrl: inviter.avatarUrl, mediaManager: self.mediaManager, fallbackImage: .matrixItem(inviter.userId, inviter.displayname))
                 self.inviterAvatarView.fill(with: avatarViewData)
             }
         }

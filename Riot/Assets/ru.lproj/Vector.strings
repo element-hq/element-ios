@@ -162,7 +162,7 @@
 "room_participants_action_start_voice_call" = "Начать голосовой вызов";
 "room_participants_action_start_video_call" = "Начать видеовызов";
 // Chat
-"room_jump_to_first_unread" = "Перейти к первому непрочитанному сообщению";
+"room_jump_to_first_unread" = "Перейти к непрочитанному";
 "room_creation_appearance" = "Внешний вид";
 "directory_cell_description" = "%tu комнат";
 "directory_search_results_title" = "Просмотр результатов поиска";
@@ -585,49 +585,49 @@
 "key_backup_setup_intro_title" = "Никогда не теряйте зашифрованных сообщений";
 "key_backup_setup_intro_info" = "Сообщения в зашифрованных комнатах защищены сквозным шифрованием. Только вы и получатель(и) имеют ключи для чтения этих сообщений.\n\nСохраните ключи надежно, чтобы не потерять их.";
 "key_backup_setup_intro_setup_action" = "Настроить";
-"key_backup_setup_passphrase_info" = "Мы будем хранить зашифрованную копию ваших ключей на нашем сервере. Для безопасности, защитите резервную копию парольной фразой.\n\nДля обеспечения максимальной безопасности он должен отличаться от пароля учетной записи.";
+"key_backup_setup_passphrase_info" = "Мы будем хранить зашифрованную копию ваших ключей на нашем сервере. Для безопасности, защитите резервную копию секретной фразой.\n\nДля обеспечения максимальной безопасности она должна отличаться от пароля учетной записи.";
 "key_backup_setup_passphrase_passphrase_title" = "Ввод";
-"key_backup_setup_passphrase_passphrase_placeholder" = "Введите парольную фразу";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Введите секретную фразу";
 "key_backup_setup_passphrase_passphrase_valid" = "Отлично!";
 "key_backup_setup_passphrase_passphrase_invalid" = "Попробуйте добавить слово";
 "key_backup_setup_passphrase_confirm_passphrase_title" = "Подтвердить";
-"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Повторите парольную фразу";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Повторите секретную фразу";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "Отлично!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Парольные фразы не совпадает";
-"key_backup_setup_passphrase_set_passphrase_action" = "Установить парольную фразу";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Секретная фраза не совпадает";
+"key_backup_setup_passphrase_set_passphrase_action" = "Установить секретную фразу";
 "key_backup_setup_recovery_key_recovery_key_title" = "Ключ для восстановления";
 "key_backup_setup_recovery_key_make_copy_action" = "Сделать копию";
 "key_backup_setup_recovery_key_made_copy_action" = "Я сделал копию";
 "key_backup_recover_title" = "Безопасные Сообщения";
 "key_backup_recover_empty_backup_title" = "Пустая резервная копия";
 "key_backup_recover_empty_backup_message" = "Нет ключа для восстановления";
-"key_backup_recover_from_passphrase_info" = "Используйте парольную фразу восстановления для разблокировки истории безопасных сообщений";
+"key_backup_recover_from_passphrase_info" = "Используйте секретную фразу восстановления для разблокировки истории безопасных сообщений";
 "key_backup_recover_from_passphrase_passphrase_title" = "Ввод";
-"key_backup_recover_from_passphrase_passphrase_placeholder" = "Введите парольную фразу";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Введите секретную фразу";
 "key_backup_recover_from_passphrase_recover_action" = "Разблокировать историю";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Не знаете вашу парольную фразу для восстановления? Вы можете ";
-"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "используйте ключ восстановления";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Не знаете вашу секретную фразу для восстановления? Вы можете ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "использовать ключ безопасности";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
-"key_backup_recover_from_recovery_key_info" = "Используйте ключ восстановления для разблокировки истории безопасных сообщений";
+"key_backup_recover_from_recovery_key_info" = "Используйте ключ безопасности для разблокировки истории безопасных сообщений";
 "key_backup_recover_from_recovery_key_recovery_key_title" = "Ввод";
-"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Введите ключ восстановления";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Введите ключ безопасности";
 "key_backup_recover_from_recovery_key_recover_action" = "Разблокировать историю";
 "key_backup_recover_success_info" = "Резервная копия восстановлена!";
 "key_backup_recover_done_action" = "Готово";
-"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Потеряли ключ восстановления? В настройках вы можете создать новый.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Потеряли ключ безопасности? В настройках вы можете создать новый.";
 "key_backup_setup_banner_title_part1" = "Настройка Безопасного Восстановления Сообщений";
 "key_backup_recover_banner_title_part1" = "Запуск Безопасного Восстановления Сообщений";
 "key_backup_recover_banner_title_part2" = " для чтения истории зашифрованных сообщений на этом устройстве";
 "key_backup_setup_banner_title_part2" = " чтобы никогда не потерять зашифрованные сообщения";
 "key_backup_setup_recovery_key_info" = "Сделайте копию ключа восстановления и надёжно сохраните его.\n\nЕго можно будет использовать для восстановления истории зашифрованных сообщений, на случай если вы забудете парольную фразу восстановления.";
 "key_backup_setup_success_title" = "Успех!";
-"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Сохранить ключ восстановления";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Сохранить ключ безопасности";
 "key_backup_setup_success_from_passphrase_done_action" = "Готово";
-"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Ключ восстановления";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Ключ безопасности";
 "key_backup_setup_success_from_recovery_key_make_copy_action" = "Сделать копию";
 "key_backup_setup_success_from_recovery_key_made_copy_action" = "Я сделал копию";
-"key_backup_recover_invalid_passphrase_title" = "Неверная парольная фраза для восстановления";
-"key_backup_recover_invalid_recovery_key_title" = "Несоответствующий ключ восстановления";
+"key_backup_recover_invalid_passphrase_title" = "Неверная секретная фраза для восстановления";
+"key_backup_recover_invalid_recovery_key_title" = "Несоответствующий ключ безопасности";
 "key_backup_setup_banner_title" = "Не теряйте зашифрованные сообщения";
 "key_backup_setup_banner_subtitle" = "Начать использовать ключ восстановления";
 "key_backup_recover_banner_title" = "Не теряйте зашифрованные сообщения";
@@ -642,12 +642,12 @@
 "key_backup_setup_intro_setup_action_without_existing_backup" = "Начать использовать ключ восстановления";
 "key_backup_setup_intro_setup_action_with_existing_backup" = "Использовать ключ восстановления";
 "settings_key_backup_info" = "Зашифрованные сообщения защищены сквозным шифрованием. Только вы и получатель(и) имеют ключи для чтения этих сообщений.";
-"settings_key_backup_info_signout_warning" = "Подключите этот сеанс к резервному копированию ключей перед выходом из системы, чтобы избежать потери ключей, которые могут быть только на этом устройстве.";
-"key_backup_setup_passphrase_title" = "Защитите резервную копию парольной фразой";
-"key_backup_setup_passphrase_setup_recovery_key_info" = "Или защитите резервную копию с помощью ключа восстановления, сохранив его в безопасном месте.";
-"key_backup_setup_passphrase_setup_recovery_key_action" = "(Расширенный) Настройка с ключом восстановления";
+"settings_key_backup_info_signout_warning" = "Сделайте резервную копию ключей перед выходом, чтобы не потерять их.";
+"key_backup_setup_passphrase_title" = "Защитите резервную копию секретной фразой";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Или защитите свою резервную копию с помощью ключа безопасности, сохранив ее в безопасном месте.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Расширенный) Настройка с ключом безопасности";
 // Success from passphrase
-"key_backup_setup_success_from_passphrase_info" = "Выполняется резервная копия ключей.\n\nКлюч восстановления — это страховка — вы можете использовать его для восстановления доступа к вашим зашифрованным сообщениям, если забудете пароль.\n\nХраните ключ восстановления в очень надежном месте, например, в менеджере паролей (или сейфе).";
+"key_backup_setup_success_from_passphrase_info" = "Выполняется резервная копия ключей.\n\nКлюч безопасности — это страховка — вы можете использовать его для восстановления доступа к вашим зашифрованным сообщениям, если забудете пароль.\n\nХраните ключ безопасности в очень надежном месте, например, в менеджере паролей (или сейфе).";
 // Success from recovery key
 "key_backup_setup_success_from_recovery_key_info" = "Выполняется резервная копия ключей.\n\nСохраните его в безопасном месте.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Мне не нужны мои зашифрованные сообщения";
@@ -656,15 +656,15 @@
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Зашифрованные сообщения будут утеряны";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Мне не нужны мои зашифрованные сообщения";
 "sign_out_non_existing_key_backup_alert_title" = "Вы потеряете доступ к зашифрованным сообщениям если выйдете сейчас";
-"key_backup_recover_invalid_passphrase" = "Невозможно расшифровать резервную копию с помощью этой парольной фразы: убедитесь, что вы ввели верную парольную фразу для восстановления.";
-"key_backup_recover_invalid_recovery_key" = "Невозможно расшифровать резервную копию с помощью этого ключа: убедитесь, что вы ввели верный ключ восстановления.";
-"e2e_key_backup_wrong_version_button_settings" = "Настойки";
+"key_backup_recover_invalid_passphrase" = "Невозможно расшифровать резервную копию с помощью этой секретной фразы: убедитесь, что вы ввели верную секретную фразу для восстановления.";
+"key_backup_recover_invalid_recovery_key" = "Невозможно расшифровать резервную копию с помощью этого ключа: убедитесь, что вы ввели верный ключ безопасности.";
+"e2e_key_backup_wrong_version_button_settings" = "Настройки";
 "key_backup_setup_intro_manual_export_info" = "(Расширенный)";
 "e2e_key_backup_wrong_version_button_wasme" = "Это был я";
 "key_backup_setup_intro_manual_export_action" = "Ручной экспорт ключей";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Новая резервная копия ключей";
-"e2e_key_backup_wrong_version" = "Обнаружена новая резервная копия ключа защищенного сообщения.\n\nЕсли это не вы, установите новый пароль в настройках.";
+"e2e_key_backup_wrong_version" = "Обнаружена новая резервная копия ключа защищенного сообщения.\n\nЕсли это не вы, установите новую секретную фразу в настройках.";
 // String for App Store
 "store_short_description" = "Безопасный децентрализованный чат/VoIP";
 "store_full_description" = "Element - это новый тип мессенджера и приложения для совместной работы, которое:\n\n1. Ставит вас под контроль, чтобы сохранить вашу частную жизнь\n2. Позволяет вам общаться с кем угодно в cети Matrix и даже за ее пределами, интегрируясь с такими приложениями, как Slack\n3. Защищает вас от рекламы, сбора данных, бэкдоров и огороженных стеной садов\n4. Обеспечивает безопасность с помощью сквозного шифрования с кросс-подписью для проверки других пользователей\n\nElement полностью отличается от других приложений для обмена сообщениями и совместной работы, поскольку он децентрализован и имеет открытый исходный код.\n\nElement позволяет вам самостоятельно разместить или выбрать хост так, чтобы у вас была конфиденциальность, право собственности и контроль над вашими данными и разговорами. Это дает вам доступ к открытой сети; так чтобы вы не были ограничены, разговаривая только с другими пользователями Element. И это очень безопасно.\n\nElement способен делать все это, потому что он работает на Matrix - стандарте открытой, децентрализованной коммуникации.\n\nElement дает вам возможность контролировать, позволяя вам выбирать, кто будет вести ваши разговоры. В приложении Element вы можете выбрать размещение различными способами:\n\n1. Получите бесплатный аккаунт на сайте matrix.org - это публичный сервер\n2. Самостоятельно разместите свою учетную запись, запустив сервер на собственном оборудовании\n3. Подпишитесь на учетную запись на пользовательском сервере, просто подписавшись на хостинг-платформу Element Matrix Services\n\nПочему нужно использовать Element?\n\nВЛАДЕЙТЕ ВАШИМИ ДАННЫМИ: вы сами решаете, где хранить ваши данные и сообщения. Вы владеете ими и контролируете их, а не какая-то мегакорпорация, которая добывает ваши данные или предоставляет к ним доступ третьим лицам.\n\nОТКРЫТОЕ ОБЩЕНИЕ И СОВМЕСТНАЯ РАБОТА: вы можете общаться с кем угодно в сети Matrix, независимо от того, используют ли сам Element или другое приложение Matrix, и даже если они используют другую систему обмена сообщениями, такую как Slack, IRC или XMPP.\n\nАБСОЛЮТНАЯ БЕЗОПАСНОСТЬ: реальное сквозное шифрование (только те, кто находится в разговоре, могут расшифровывать сообщения) и кросс-подпись для проверки устройств участников разговора.\n\nСОВЕРШЕННАЯ КОММУНИКАЦИЯ: обмен сообщениями, голосовые и видеозвонки, общий доступ к файлам, общий доступ к экрану и целая куча интеграций, ботов и виджетов. Создавайте комнаты, сообщества, оставайтесь на связи и делайте все возможное.\n\nГДЕ БЫ ВЫ НЕ БЫЛИ: оставайтесь на связи, где бы вы ни находились, с полностью синхронизированной историей сообщений на всех ваших устройствах и в Интернете по адресу https://element.io/app.";
@@ -929,18 +929,18 @@
 "security_settings_crypto_sessions_loading" = "Загрузка сеансов…";
 "security_settings_crypto_sessions_description_2" = "Если вы не узнали логин, измените пароль и сбросьте Безопасное резервное копирование.";
 "security_settings_secure_backup" = "БЕЗОПАСНОЕ РЕЗЕРВНОЕ КОПИРОВАНИЕ";
-"security_settings_secure_backup_description" = "Защитите себя от потери доступа к зашифрованным сообщениям и данным, создав резервную копию ключей шифрования на своём сервере.";
+"security_settings_secure_backup_description" = "Сделайте резервную копию ключей шифрования с данными вашей учетной записи на случай, если вы потеряете доступ к своим сеансам. Ваши ключи будут защищены уникальным электронным ключом.";
 "security_settings_secure_backup_setup" = "Настроить";
 "security_settings_secure_backup_synchronise" = "Синхронизировать";
-"security_settings_secure_backup_delete" = "Удалить";
+"security_settings_secure_backup_delete" = "Удалить резервную копию";
 "security_settings_backup" = "РЕЗЕРВНОЕ КОПИРОВАНИЕ СООБЩЕНИЯ";
 "security_settings_crosssigning" = "КРОСС-ПОДПИСЬ";
 "security_settings_crosssigning_info_not_bootstrapped" = "Кросс-подпись еще не настроена.";
 "security_settings_crosssigning_info_exists" = "У вашей учётной записи есть кросс-подпись, но она еще не пользуется доверием в этом сеансе. Настройте безопасность этого сеанса.";
 "security_settings_crosssigning_info_trusted" = "Кросс-подпись включена. Вы можете доверять другим пользователям и другим своим сеансам на основе кросс-подписи, но вы не можете перекрестно подписывать из этого сеанса, потому что он не имеет закрытых ключей кросс-подписи. Завершите настройку безопасности этого сеанса.";
-"security_settings_crosssigning_info_ok" = "Кросс-подпись включена.";
-"security_settings_crosssigning_bootstrap" = "Инициализация кросс-подписи";
-"security_settings_crosssigning_reset" = "Сбросить кросс-подпись";
+"security_settings_crosssigning_info_ok" = "Кросс-подпись готова к использованию.";
+"security_settings_crosssigning_bootstrap" = "Настроить";
+"security_settings_crosssigning_reset" = "Сброс";
 "security_settings_crosssigning_complete_security" = "Завершите настройку безопасности";
 "security_settings_cryptography" = "КРИПТОГРАФИЯ";
 "security_settings_export_keys_manually" = "Экспорт ключей вручную";
@@ -1036,8 +1036,8 @@
 "device_verification_self_verify_wait_new_sign_in_title" = "Подтвердите вход";
 "device_verification_self_verify_wait_information" = "Подтвердите этот сеанс на одном из других ваших сеансов, предоставив ему доступ к зашифрованным сообщениям.\n\nИспользуйте последнюю версию Element на других ваших устройствах:";
 "device_verification_self_verify_wait_additional_information" = "Это работает с Element и другими клиентами Matrix с поддержкой кросс-подписи.";
-"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Используйте ключ восстановления";
-"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Используйте пароль восстановления или ключ";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Используйте ключ безопасности";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Используйте секретную фразу или ключ безопасности";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Если вы не можете получить доступ к существующему сеансу";
 "key_verification_verify_sas_title_emoji" = "Сравните смайлы";
 "key_verification_verify_sas_title_number" = "Сравните числа";
@@ -1115,27 +1115,27 @@
 "user_verification_session_details_verify_action_current_user" = "Интерактивная проверка";
 "user_verification_session_details_verify_action_current_user_manually" = "Ручная проверка с помощью текста";
 "user_verification_session_details_verify_action_other_user" = "Подтверждение вручную";
-"secrets_recovery_with_passphrase_title" = "Парольная фраза для восстановления";
-"secrets_recovery_with_passphrase_information_default" = "Получите доступ к своей защищённой истории сообщений и вашей личности с кросс-подписью для проверки других сеансов, введя кодовую фразу для восстановления.";
-"secrets_recovery_with_passphrase_information_verify_device" = "Используйте кодовую фразу для восстановления, чтобы проверить это устройство.";
+"secrets_recovery_with_passphrase_title" = "Секретная фраза";
+"secrets_recovery_with_passphrase_information_default" = "Получите доступ к своей защищённой истории сообщений и вашей личности с кросс-подписью для проверки других сеансов, введя секретную фразу.";
+"secrets_recovery_with_passphrase_information_verify_device" = "Используйте секретную фразу, чтобы проверить это устройство.";
 "secrets_recovery_with_passphrase_passphrase_title" = "Ввод";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Введите пароль восстановления";
-"secrets_recovery_with_passphrase_recover_action" = "Использовать парольную фразу";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Не знаете вашу парольную фразу для восстановления? Вы можете ";
-"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "используйте ключ восстановления";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Введите секретную фразу";
+"secrets_recovery_with_passphrase_recover_action" = "Использовать секретную фразу";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Не знаете вашу секретную фразу? Вы можете ";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "использовать ключ безопасности";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Невозможно получить доступ к секретному хранилищу";
-"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Убедитесь, что вы ввели правильный пароль для восстановления.";
-"secrets_recovery_with_key_title" = "Ключ для восстановления";
-"secrets_recovery_with_key_information_default" = "Получите доступ к своей защищённой истории сообщений и вашей личности с кросс-подписью для проверки других сеансов, введя ключ восстановления.";
-"secrets_recovery_with_key_information_verify_device" = "Используйте ключ восстановления, чтобы проверить это устройство.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Убедитесь, что вы ввели правильную секретную фразу.";
+"secrets_recovery_with_key_title" = "Ключ безопасности";
+"secrets_recovery_with_key_information_default" = "Получите доступ к своей защищённой истории сообщений и вашей личности с кросс-подписью для проверки других сеансов, введя ключ безопасности.";
+"secrets_recovery_with_key_information_verify_device" = "Используйте ключ безопасности, чтобы проверить это устройство.";
 "secrets_recovery_with_key_recovery_key_title" = "Ввод";
-"secrets_recovery_with_key_recovery_key_placeholder" = "Введите ключ восстановления";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Введите ключ безопасности";
 "secrets_recovery_with_key_recover_action" = "Использовать ключ";
 "secrets_recovery_with_key_invalid_recovery_key_title" = "Невозможно получить доступ к секретному хранилищу";
-"secrets_recovery_with_key_invalid_recovery_key_message" = "Убедитесь, что вы ввели правильный ключ восстановления.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Убедитесь, что вы ввели правильный ключ безопасности.";
 "secrets_setup_recovery_key_title" = "Сохраните ваш ключ безопасности";
-"secrets_setup_recovery_key_information" = "Храните ключ восстановления в надежном месте. Его можно использовать для разблокировки ваших зашифрованных сообщений и данных.";
+"secrets_setup_recovery_key_information" = "Храните ключ безопасности в надежном месте. Его можно использовать для разблокировки ваших зашифрованных сообщений и данных.";
 "secrets_setup_recovery_key_loading" = "Загрузка…";
 "secrets_setup_recovery_key_export_action" = "Сохранить";
 "secrets_setup_recovery_key_done_action" = "Готово";
@@ -1147,7 +1147,7 @@
 "secrets_setup_recovery_passphrase_validate_action" = "Готово";
 "secrets_setup_recovery_passphrase_confirm_information" = "Для подтверждения введите вашу секретную фразу ещё раз.";
 "secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Подтвердить";
-"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Подтвердить парольную фразу";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Подтвердить секретную фразу";
 "cross_signing_setup_banner_title" = "Настройка шифрования";
 "cross_signing_setup_banner_subtitle" = "Упростите проверку других ваших устройств";
 "major_update_title" = "Riot теперь Element";
@@ -1311,9 +1311,9 @@
 "callbar_return" = "Вернуться";
 "call_actions_unhold" = "Возобновить";
 "event_formatter_call_back" = "Перезвонить";
-"event_formatter_call_you_declined" = "Вы отклонили этот вызов";
+"event_formatter_call_you_declined" = "Вызов отклонён";
 "event_formatter_call_you_currently_in" = "Вы в этом вызове";
-"event_formatter_call_has_ended" = "Этот вызов закончился";
+"event_formatter_call_has_ended" = "Вызов закончен";
 "event_formatter_call_video" = "Видео вызов";
 "event_formatter_call_voice" = "Голосовой вызов";
 "settings_show_NSFW_public_rooms" = "Показать публичные комнаты с чувствительным контентом";
@@ -1329,10 +1329,97 @@
 "callbar_active_and_single_paused" = "1 активный вызов (%@) · 1 приостановленный вызов";
 
 // Call Bar
-"callbar_only_single_active" = "Активный вызов (%@)";
+"callbar_only_single_active" = "Нажмите для возврата к вызову (%@)";
 "room_details_integrations" = "Интеграции";
 "room_details_search" = "Искать комнату";
 "room_multiple_typing_notification" = "%@ и другие";
 "room_accessibility_video_call" = "Видео вызов";
 "room_message_replying_to" = "В ответ %@";
 "room_message_editing" = "Редактирование";
+"voice_message_stop_locked_mode_recording" = "Нажмите на запись, чтобы остановить или прослушать ее";
+"voice_message_remaining_recording_time" = "%@s осталось";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Удерживайте для записи, отпустите для отправки";
+"side_menu_app_version" = "Версия %@";
+"side_menu_action_feedback" = "Отзыв";
+"side_menu_action_help" = "Помощь";
+"side_menu_action_settings" = "Настойки";
+"side_menu_action_invite_friends" = "Пригласить друзей";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Левая панель";
+"user_avatar_view_accessibility_hint" = "Изменить аватар пользователя";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "аватар";
+"space_beta_announce_information" = "Пространства - это новый способ группировки комнат и людей. Их пока нет на iOS, но вы можете использовать их уже сейчас в веб-версии и настольных компьютерах.";
+"space_beta_announce_subtitle" = "Новая версия сообществ";
+"space_beta_announce_title" = "Пространства скоро появятся";
+"space_beta_announce_badge" = "БЕТА";
+"space_feature_unavailable_information" = "Пространства - это новый способ группировки комнат и людей.\n\nОни появятся здесь в ближайшее время. Пока что, если вы присоединитесь к одному из них на другой платформе, вы сможете получить доступ к любым комнатам, к которым присоединились здесь.";
+"space_feature_unavailable_subtitle" = "Пространств ещё нет на iOS, но вы уже можете использовать их в веб-версии и настольных компьютерах";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Пространств ещё нет";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Введите свой ключ безопасности, чтобы продолжить.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Введите секретную фразу, чтобы продолжить.";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Сканирование с помощью этого устройства";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Ваши ключи резервируются.";
+"event_formatter_group_call_incoming" = "%@ в %@";
+"event_formatter_group_call_leave" = "Покинуть";
+"event_formatter_group_call_join" = "Присоединиться";
+"event_formatter_group_call" = "Групповой вызов";
+"event_formatter_call_end_call" = "Завершить вызов";
+"event_formatter_call_retry" = "Повторить";
+"event_formatter_call_answer" = "Ответить";
+"event_formatter_call_decline" = "Отклонить";
+"event_formatter_call_connection_failed" = "Ошибка соединения";
+"event_formatter_call_missed_video" = "Пропущенный видеовызов";
+"event_formatter_call_missed_voice" = "Пропущенный голосовой вызов";
+"event_formatter_call_active_video" = "Активный видеовызов";
+"event_formatter_call_active_voice" = "Активный голосовой вызов";
+"event_formatter_call_incoming_video" = "Входящий видеовызов";
+"event_formatter_call_incoming_voice" = "Входящий голосовой вызов";
+"event_formatter_call_ringing" = "Звонок…";
+"event_formatter_call_connecting" = "Соединение…";
+"room_notifs_settings_encrypted_room_notice" = "Обратите внимание, что уведомления об упоминаниях и ключевых словах недоступны в зашифрованных комнатах на мобильных устройствах.";
+"room_notifs_settings_account_settings" = "Настройки аккаунта";
+"room_notifs_settings_manage_notifications" = "Вы можете управлять уведомлениями в %@";
+"room_notifs_settings_cancel_action" = "Отмена";
+"room_notifs_settings_done_action" = "Готово";
+"room_notifs_settings_none" = "Ничего";
+"room_notifs_settings_mentions_and_keywords" = "Только упоминаниях и ключевых словах";
+"room_notifs_settings_all_messages" = "Всех сообщениях";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Уведомлять меня о";
+"room_details_notifs" = "Уведомления";
+"security_settings_secure_backup_restore" = "Восстановить из резервной копии";
+"security_settings_secure_backup_reset" = "Сброс";
+"security_settings_secure_backup_info_valid" = "В этом сеансе выполняется резервное копирование ваших ключей.";
+"security_settings_secure_backup_info_checking" = "Проверка…";
+"settings_labs_voice_messages" = "Голосовые сообщения";
+"settings_labs_enable_ringing_for_group_calls" = "Звонок для групповых вызовов";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Автоматически\" соответствует системной теме вашего устройства";
+"settings_ui_theme_picker_message_invert_colours" = "\"Автоматически\" использует настройки \"Инвертировать цвета\" вашего устройства";
+"settings_notifications_disabled_alert_message" = "Чтобы включить уведомления, перейдите в настройки устройства.";
+"settings_notifications_disabled_alert_title" = "Уведомления отключены";
+"settings_device_notifications" = "Уведомления устройства";
+"room_no_privileges_to_create_group_call" = "Чтобы начать разговор, необходимо быть администратором или модератором.";
+"room_join_group_call" = "Присоединиться";
+
+// Chat
+"room_slide_to_end_group_call" = "Проведите, чтобы завершить звонок для всех";
+"room_recents_unknown_room_error_message" = "Не удалось найти эту комнату. Убедитесь, что она существует";
+"room_creation_dm_error" = "Мы не смогли создать ваш диалог. Пожалуйста, проверьте пользователей, которых вы хотите пригласить, и повторите попытку.";
+"callbar_only_single_active_group" = "Нажмите для присоединения к групповому вызову (%@)";
+"voice_message_lock_screen_placeholder" = "Голосовое сообщение";
+"event_formatter_call_has_ended_with_time" = "Вызов закончен • %@";
+"settings_notifications" = "УВЕДОМЛЕНИЯ";

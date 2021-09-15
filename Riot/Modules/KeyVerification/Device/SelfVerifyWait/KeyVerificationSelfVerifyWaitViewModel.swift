@@ -90,7 +90,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
             continueLoadData()
         } else {
             //  be sure that session has completed its first sync
-            if session.state >= MXSessionStateRunning {
+            if session.state >= .running {
                 
                 // Always send request instead of waiting for an incoming one as per recent EW changes
                 MXLog.debug("[KeyVerificationSelfVerifyWaitViewModel] loadData: Send a verification request to all devices instead of waiting")
@@ -117,7 +117,7 @@ final class KeyVerificationSelfVerifyWaitViewModel: KeyVerificationSelfVerifyWai
     
     @objc
     private func sessionStateChanged() {
-        if session.state >= MXSessionStateRunning {
+        if session.state >= .running {
             NotificationCenter.default.removeObserver(self, name: .mxSessionStateDidChange, object: session)
             continueLoadData()
         }

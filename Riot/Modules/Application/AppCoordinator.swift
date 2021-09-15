@@ -105,6 +105,21 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func setupTheme() {
         ThemeService.shared().themeId = RiotSettings.shared.userInterfaceTheme
+        if #available(iOS 14.0, *) {
+            // Set theme id from current theme.identifier, themeId can be nil.
+            if let themeId = ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) {
+                ThemePublisher.configure(themeId: themeId)
+            } else {
+                MXLog.error("[AppCoordinator] No theme id found to update ThemePublisher")
+            }
+            
+            // Always republish theme change events, and again always getting the identifier from the theme.
+            let themeIdPublisher = NotificationCenter.default.publisher(for: Notification.Name.themeServiceDidChangeTheme)
+                .compactMap({ _ in ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) })
+                .eraseToAnyPublisher()
+
+            ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
+        }
     }
     
     private func showAuthentication() {

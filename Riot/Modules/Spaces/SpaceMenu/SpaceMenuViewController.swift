@@ -119,7 +119,7 @@ class SpaceMenuViewController: UIViewController {
             return
         }
         
-        let avatarViewData = AvatarViewData(avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+        let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
 
         self.titleLabel.text = space.summary?.displayname
         // TODO: display members instead once done on android

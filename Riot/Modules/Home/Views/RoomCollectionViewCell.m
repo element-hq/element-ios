@@ -26,11 +26,6 @@
 
 #import "MXTools.h"
 
-#pragma mark - Defines & Constants
-
-static const CGFloat kDirectRoomBorderColorAlpha = 0.75;
-static const CGFloat kDirectRoomBorderWidth = 3.0;
-
 @implementation RoomCollectionViewCell
 
 #pragma mark - Class methods
@@ -66,16 +61,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
     self.roomTitle.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle1.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.roomTitle2.textColor = ThemeService.shared.theme.textPrimaryColor;
-    
-    // Prepare direct room border
-    CGColorRef directRoomBorderColor = CGColorCreateCopyWithAlpha(ThemeService.shared.theme.tintColor.CGColor, kDirectRoomBorderColorAlpha);
-    
-    [self.directRoomBorderView.layer setCornerRadius:self.directRoomBorderView.frame.size.width / 2];
-    self.directRoomBorderView.clipsToBounds = YES;
-    self.directRoomBorderView.layer.borderColor = directRoomBorderColor;
-    self.directRoomBorderView.layer.borderWidth = kDirectRoomBorderWidth;
-    
-    CFRelease(directRoomBorderColor);
     
     self.editionArrowView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
     
@@ -144,8 +129,6 @@ static const CGFloat kDirectRoomBorderWidth = 3.0;
             self.roomTitle.font = self.roomTitle1.font = self.roomTitle2.font = [UIFont systemFontOfSize:13 weight:UIFontWeightMedium];
             
         }
-        
-        self.directRoomBorderView.hidden = !roomCellData.roomSummary.room.isDirect;
         
         if (roomCellData.roomSummary)
         {

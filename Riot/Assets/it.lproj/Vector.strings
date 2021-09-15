@@ -1299,9 +1299,9 @@
 "dialpad_title" = "Tastierino numerico";
 "call_actions_unhold" = "Riprendi";
 "event_formatter_call_back" = "Richiama";
-"event_formatter_call_you_declined" = "Hai rifiutato questa chiamata";
+"event_formatter_call_you_declined" = "Chiamata rifiutata";
 "event_formatter_call_you_currently_in" = "Chiamata attiva";
-"event_formatter_call_has_ended" = "Terminato %@";
+"event_formatter_call_has_ended" = "Chiamata terminata";
 "event_formatter_call_video" = "Videochiamata";
 "event_formatter_call_voice" = "Telefonata";
 "settings_show_NSFW_public_rooms" = "Mostra stanze pubbliche per adulti";
@@ -1401,3 +1401,46 @@
 
 "voice_message_release_to_send" = "Tieni premuto per registrare, rilascia per inviare";
 "settings_labs_voice_messages" = "Messaggi vocali";
+"settings_notifications_disabled_alert_message" = "Per attivare le notifiche, vai nelle impostazioni del tuo dispositivo.";
+"settings_notifications_disabled_alert_title" = "Notifiche disattivate";
+"settings_device_notifications" = "Notifiche del dispositivo";
+"event_formatter_call_missed_video" = "Videochiamata persa";
+"event_formatter_call_missed_voice" = "Telefonata persa";
+"event_formatter_call_active_video" = "Videochiamata attiva";
+"event_formatter_call_active_voice" = "Telefonata attiva";
+"event_formatter_call_incoming_video" = "Videochiamata in arrivo";
+"event_formatter_call_incoming_voice" = "Telefonata in arrivo";
+"voice_message_lock_screen_placeholder" = "Messaggio vocale";
+"event_formatter_call_has_ended_with_time" = "Chiamata terminata • %@";
+"version_check_modal_action_title_deprecated" = "Scopri come";
+"version_check_modal_subtitle_deprecated" = "Abbiamo lavorato per migliorare Element per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare Element al suo pieno potenziale.";
+"version_check_modal_title_deprecated" = "Non supportiamo più iOS %@";
+"version_check_modal_action_title_supported" = "Capito";
+"version_check_modal_subtitle_supported" = "Abbiamo lavorato per migliorare Element per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare Element al suo pieno potenziale.";
+"version_check_modal_title_supported" = "Stiamo per terminare il supporto per iOS %@";
+"version_check_banner_subtitle_deprecated" = "Non supportiamo più Element su iOS %@. Per continuare ad usare Element al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
+"version_check_banner_title_deprecated" = "Non supportiamo più iOS %@";
+"version_check_banner_subtitle_supported" = "Presto non supporteremo più Element su iOS %@. Per continuare ad usare Element al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Stiamo per terminare il supporto per iOS %@";
+"settings_mentions_and_keywords_encryption_notice" = "Non riceverai notifiche per menzioni e parole chiave in stanze cifrate su mobile.";
+"settings_new_keyword" = "Aggiungi nuova parola chiave";
+"settings_your_keywords" = "Le tue parole chiave";
+"settings_room_upgrades" = "Aggiornamenti stanze";
+"settings_messages_by_a_bot" = "Messaggi da bot";
+"settings_call_invitations" = "Inviti a chiamate";
+"settings_room_invitations" = "Inviti a stanze";
+"settings_messages_containing_keywords" = "Parole chiave";
+"settings_messages_containing_at_room" = "@stanza";
+"settings_messages_containing_user_name" = "Il mio nome utente";
+"settings_messages_containing_display_name" = "Il mio nome";
+"settings_encrypted_group_messages" = "Messaggi di gruppo cifrati";
+"settings_group_messages" = "Messaggi di gruppo";
+"settings_encrypted_direct_messages" = "Messaggi diretti cifrati";
+"settings_direct_messages" = "Messaggi diretti";
+"settings_notify_me_for" = "Notificami per";
+"settings_mentions_and_keywords" = "Menzioni e parole chiave";
+"settings_default" = "Notifiche predefinite";
+"settings_notifications" = "NOTIFICHE";

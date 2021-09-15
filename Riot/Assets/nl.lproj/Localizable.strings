@@ -55,11 +55,11 @@
 /** Invites **/
 
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ heeft u voor een gesprek uitgenodigd";
+"USER_INVITE_TO_CHAT" = "%@ heeft u uitgenodigd om te chatten";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ heeft u in een groepsgesprek uitgenodigd";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ heeft u uitgenodigd in een groepschat";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ heeft u in %@ uitgenodigd";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ heeft u in %@-kamer uitgenodigd";
 /** Calls **/
 
 /* Incoming one-to-one voice call */
@@ -101,3 +101,51 @@
 
 /* Group call from user, CallKit caller name */
 "GROUP_CALL_FROM_USER" = "%@ (groepsgesprek)";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ profiel is bijgewerkt";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ avatar is gewijzigd";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ naam is gewijzigd";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ heeft nu %@ als naam aangenomen";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ stuurde een reactie";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ reageerde %@";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ stuurde een bestand %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ stuurde een spraakbericht";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ stuurde een audiobestand %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ stuurde een video";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ stuurde een afbeelding";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ reageerde in %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ reageerde";
+/** General **/
+
+"NOTIFICATION" = "Meldingen";

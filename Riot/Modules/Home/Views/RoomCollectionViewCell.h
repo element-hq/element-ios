@@ -36,7 +36,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView *editionArrowView;
 
-@property (weak, nonatomic) IBOutlet UIView *directRoomBorderView;
 @property (weak, nonatomic) IBOutlet MXKImageView *roomAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
 

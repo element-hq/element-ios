@@ -25,6 +25,5 @@ enum SSOURLConstants {
     
     enum Paths {
         static let redirect = "/_matrix/client/r0/login/sso/redirect"
-        static let unstableRedirect = "/_matrix/client/unstable/org.matrix.msc2858/login/sso/redirect/"
     }
 }

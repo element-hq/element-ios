@@ -1,0 +1,88 @@
+name: Build alpha release
+
+on:
+
+  # Triggers the workflow on any pull request
+  pull_request:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  # Make the git branch for a PR available to our Fastfile
+  MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+
+jobs:
+  build:
+    name: Release
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Common cache
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Cache CocoaPods libraries
+        uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Cache Ruby gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      # Make sure we use the latest version of MatrixKit
+      - name: Reset MatrixKit pod
+        run: rm -rf Pods/MatrixKit
+
+      # Common setup
+      # Note: GH actions do not support yaml anchor yet. We need to duplicate this for every job
+      - name: Bundle install
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Use right MatrixKit and MatrixSDK versions
+        run: bundle exec fastlane point_dependencies_to_related_branches
+
+      # Import alpha release private signing certificate
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.ALPHA_CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.ALPHA_CERTIFICATES_P12_PASSWORD }}
+
+      # Main step
+      # The Ad-hoc release link will be referenced as 'DIAWI_FILE_LINK'
+      # and QR link as 'DIAWI_QR_CODE_LINK' when the Diawi upload succeed
+      - name: Build Ad-hoc release and send it to Diawi
+        run: bundle exec fastlane alpha
+        env:
+          # Automaticaly bypass 2FA upgrade if possible on Apple account.
+          SPACESHIP_SKIP_2FA_UPGRADE: true
+          APPLE_ID: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          DIAWI_API_TOKEN: ${{ secrets.DIAWI_API_TOKEN }}
+
+      - name: Add or update PR comment with Ad-hoc release informations
+        uses: NejcZdovc/comment-pr@v1
+        with:
+          message: |
+            :iphone: Scan the QR code below to install the build for this PR. 
+            :lock: This build is for internal testing purpose. Only devices listed in the ad-hoc provisioning profile can install Element Alpha.  
+
+            ![QR code](${{ env.DIAWI_QR_CODE_LINK }})  
+
+            If you can't scan the QR code you can install the build via this link: ${{ env.DIAWI_FILE_LINK }}
+          # Enables to identify and update existing Ad-hoc release message on new commit in the PR
+          identifier: "GITHUB_COMMENT_ADHOC_RELEASE"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

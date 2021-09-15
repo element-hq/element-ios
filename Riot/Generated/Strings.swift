@@ -1242,6 +1242,14 @@ internal enum VectorL10n {
   internal static var errorUserAlreadyLoggedIn: String { 
     return VectorL10n.tr("Vector", "error_user_already_logged_in") 
   }
+  /// Active video call
+  internal static var eventFormatterCallActiveVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_active_video") 
+  }
+  /// Active voice call
+  internal static var eventFormatterCallActiveVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_active_voice") 
+  }
   /// Answer
   internal static var eventFormatterCallAnswer: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_answer") 
@@ -1266,9 +1274,29 @@ internal enum VectorL10n {
   internal static var eventFormatterCallEndCall: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_end_call") 
   }
-  /// Ended %@
-  internal static func eventFormatterCallHasEnded(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "event_formatter_call_has_ended", p1)
+  /// Call ended
+  internal static var eventFormatterCallHasEnded: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended") 
+  }
+  /// Call ended • %@
+  internal static func eventFormatterCallHasEndedWithTime(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "event_formatter_call_has_ended_with_time", p1)
+  }
+  /// Incoming video call
+  internal static var eventFormatterCallIncomingVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_incoming_video") 
+  }
+  /// Incoming voice call
+  internal static var eventFormatterCallIncomingVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_incoming_voice") 
+  }
+  /// Missed video call
+  internal static var eventFormatterCallMissedVideo: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_missed_video") 
+  }
+  /// Missed voice call
+  internal static var eventFormatterCallMissedVoice: String { 
+    return VectorL10n.tr("Vector", "event_formatter_call_missed_voice") 
   }
   /// Retry
   internal static var eventFormatterCallRetry: String { 
@@ -1278,25 +1306,9 @@ internal enum VectorL10n {
   internal static var eventFormatterCallRinging: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_ringing") 
   }
-  /// Video call
-  internal static var eventFormatterCallVideo: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_video") 
-  }
-  /// Voice call
-  internal static var eventFormatterCallVoice: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_voice") 
-  }
-  /// Active call
-  internal static var eventFormatterCallYouCurrentlyIn: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_you_currently_in") 
-  }
-  /// You declined this call
+  /// Call declined
   internal static var eventFormatterCallYouDeclined: String { 
     return VectorL10n.tr("Vector", "event_formatter_call_you_declined") 
-  }
-  /// You missed this call
-  internal static var eventFormatterCallYouMissed: String { 
-    return VectorL10n.tr("Vector", "event_formatter_call_you_missed") 
   }
   /// Group call
   internal static var eventFormatterGroupCall: String { 
@@ -4014,7 +4026,7 @@ internal enum VectorL10n {
   internal static var settingsAdd3pidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_password_message") 
   }
-  /// Add email adress
+  /// Add email address
   internal static var settingsAdd3pidPasswordTitleEmail: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_password_title_email") 
   }
@@ -4033,6 +4045,10 @@ internal enum VectorL10n {
   /// ADVANCED
   internal static var settingsAdvanced: String { 
     return VectorL10n.tr("Vector", "settings_advanced") 
+  }
+  /// Call invitations
+  internal static var settingsCallInvitations: String { 
+    return VectorL10n.tr("Vector", "settings_call_invitations") 
   }
   /// Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.
   internal static var settingsCallkitInfo: String { 
@@ -4073,6 +4089,14 @@ internal enum VectorL10n {
   /// Logged in as %@
   internal static func settingsConfigUserId(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_user_id", p1)
+  }
+  /// Confirm size when sending
+  internal static var settingsConfirmMediaSize: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_media_size") 
+  }
+  /// When this is on, you’ll be asked to confirm what size images and videos will be sent as.
+  internal static var settingsConfirmMediaSizeDescription: String { 
+    return VectorL10n.tr("Vector", "settings_confirm_media_size_description") 
   }
   /// confirm password
   internal static var settingsConfirmPassword: String { 
@@ -4126,6 +4150,10 @@ internal enum VectorL10n {
   internal static var settingsDeactivateMyAccount: String { 
     return VectorL10n.tr("Vector", "settings_deactivate_my_account") 
   }
+  /// Default Notifications
+  internal static var settingsDefault: String { 
+    return VectorL10n.tr("Vector", "settings_default") 
+  }
   /// Device notifications
   internal static var settingsDeviceNotifications: String { 
     return VectorL10n.tr("Vector", "settings_device_notifications") 
@@ -4137,6 +4165,10 @@ internal enum VectorL10n {
   /// A session's public name is visible to people you communicate with
   internal static var settingsDevicesDescription: String { 
     return VectorL10n.tr("Vector", "settings_devices_description") 
+  }
+  /// Direct messages
+  internal static var settingsDirectMessages: String { 
+    return VectorL10n.tr("Vector", "settings_direct_messages") 
   }
   /// An error occured. Please retry.
   internal static var settingsDiscoveryErrorMessage: String { 
@@ -4222,6 +4254,14 @@ internal enum VectorL10n {
   internal static var settingsEnableRageshake: String { 
     return VectorL10n.tr("Vector", "settings_enable_rageshake") 
   }
+  /// Encrypted direct messages
+  internal static var settingsEncryptedDirectMessages: String { 
+    return VectorL10n.tr("Vector", "settings_encrypted_direct_messages") 
+  }
+  /// Encrypted group messages
+  internal static var settingsEncryptedGroupMessages: String { 
+    return VectorL10n.tr("Vector", "settings_encrypted_group_messages") 
+  }
   /// Fail to update password
   internal static var settingsFailToUpdatePassword: String { 
     return VectorL10n.tr("Vector", "settings_fail_to_update_password") 
@@ -4241,6 +4281,10 @@ internal enum VectorL10n {
   /// Global notification settings are available on your %@ web client
   internal static func settingsGlobalSettingsInfo(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_global_settings_info", p1)
+  }
+  /// Group messages
+  internal static var settingsGroupMessages: String { 
+    return VectorL10n.tr("Vector", "settings_group_messages") 
   }
   /// Using the identity server set above, you can discover and be discoverable by existing contacts you know.
   internal static var settingsIdentityServerDescription: String { 
@@ -4398,6 +4442,38 @@ internal enum VectorL10n {
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 
   }
+  /// Mentions and Keywords
+  internal static var settingsMentionsAndKeywords: String { 
+    return VectorL10n.tr("Vector", "settings_mentions_and_keywords") 
+  }
+  /// You won’t get notifications for mentions & keywords in encrypted rooms on mobile.
+  internal static var settingsMentionsAndKeywordsEncryptionNotice: String { 
+    return VectorL10n.tr("Vector", "settings_mentions_and_keywords_encryption_notice") 
+  }
+  /// Messages by a bot
+  internal static var settingsMessagesByABot: String { 
+    return VectorL10n.tr("Vector", "settings_messages_by_a_bot") 
+  }
+  /// @room
+  internal static var settingsMessagesContainingAtRoom: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_at_room") 
+  }
+  /// My display name
+  internal static var settingsMessagesContainingDisplayName: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_display_name") 
+  }
+  /// Keywords
+  internal static var settingsMessagesContainingKeywords: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_keywords") 
+  }
+  /// My username
+  internal static var settingsMessagesContainingUserName: String { 
+    return VectorL10n.tr("Vector", "settings_messages_containing_user_name") 
+  }
+  /// Add new Keyword
+  internal static var settingsNewKeyword: String { 
+    return VectorL10n.tr("Vector", "settings_new_keyword") 
+  }
   /// new password
   internal static var settingsNewPassword: String { 
     return VectorL10n.tr("Vector", "settings_new_password") 
@@ -4405,6 +4481,10 @@ internal enum VectorL10n {
   /// Night Mode
   internal static var settingsNightMode: String { 
     return VectorL10n.tr("Vector", "settings_night_mode") 
+  }
+  /// NOTIFICATIONS
+  internal static var settingsNotifications: String { 
+    return VectorL10n.tr("Vector", "settings_notifications") 
   }
   /// To enable notifications, go to your device settings.
   internal static var settingsNotificationsDisabledAlertMessage: String { 
@@ -4414,9 +4494,9 @@ internal enum VectorL10n {
   internal static var settingsNotificationsDisabledAlertTitle: String { 
     return VectorL10n.tr("Vector", "settings_notifications_disabled_alert_title") 
   }
-  /// NOTIFICATION SETTINGS
-  internal static var settingsNotificationsSettings: String { 
-    return VectorL10n.tr("Vector", "settings_notifications_settings") 
+  /// Notify me for
+  internal static var settingsNotifyMeFor: String { 
+    return VectorL10n.tr("Vector", "settings_notify_me_for") 
   }
   /// old password
   internal static var settingsOldPassword: String { 
@@ -4426,7 +4506,7 @@ internal enum VectorL10n {
   internal static func settingsOlmVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_olm_version", p1)
   }
-  /// OTHER
+  /// Other
   internal static var settingsOther: String { 
     return VectorL10n.tr("Vector", "settings_other") 
   }
@@ -4470,6 +4550,14 @@ internal enum VectorL10n {
   internal static var settingsReportBug: String { 
     return VectorL10n.tr("Vector", "settings_report_bug") 
   }
+  /// Room invitations
+  internal static var settingsRoomInvitations: String { 
+    return VectorL10n.tr("Vector", "settings_room_invitations") 
+  }
+  /// Room upgrades
+  internal static var settingsRoomUpgrades: String { 
+    return VectorL10n.tr("Vector", "settings_room_upgrades") 
+  }
   /// SECURITY
   internal static var settingsSecurity: String { 
     return VectorL10n.tr("Vector", "settings_security") 
@@ -4478,6 +4566,10 @@ internal enum VectorL10n {
   internal static var settingsSendCrashReport: String { 
     return VectorL10n.tr("Vector", "settings_send_crash_report") 
   }
+  /// SENDING IMAGES AND VIDEOS
+  internal static var settingsSendingMedia: String { 
+    return VectorL10n.tr("Vector", "settings_sending_media") 
+  }
   /// Show decrypted content
   internal static var settingsShowDecryptedContent: String { 
     return VectorL10n.tr("Vector", "settings_show_decrypted_content") 
@@ -4485,6 +4577,14 @@ internal enum VectorL10n {
   /// Show NSFW public rooms
   internal static var settingsShowNSFWPublicRooms: String { 
     return VectorL10n.tr("Vector", "settings_show_NSFW_public_rooms") 
+  }
+  /// Show inline URL previews
+  internal static var settingsShowUrlPreviews: String { 
+    return VectorL10n.tr("Vector", "settings_show_url_previews") 
+  }
+  /// Previews will only be shown in unencrypted rooms.
+  internal static var settingsShowUrlPreviewsDescription: String { 
+    return VectorL10n.tr("Vector", "settings_show_url_previews_description") 
   }
   /// Sign Out
   internal static var settingsSignOut: String { 
@@ -4577,6 +4677,10 @@ internal enum VectorL10n {
   /// Version %@
   internal static func settingsVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_version", p1)
+  }
+  /// Your Keywords
+  internal static var settingsYourKeywords: String { 
+    return VectorL10n.tr("Vector", "settings_your_keywords") 
   }
   /// Login in the main app to share content
   internal static var shareExtensionAuthPrompt: String { 
@@ -4962,6 +5066,46 @@ internal enum VectorL10n {
   internal static func userVerificationStartWaitingPartner(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "user_verification_start_waiting_partner", p1)
   }
+  /// We are no longer supporting Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.
+  internal static func versionCheckBannerSubtitleDeprecated(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_subtitle_deprecated", p1)
+  }
+  /// We will soon be ending support for Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.
+  internal static func versionCheckBannerSubtitleSupported(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_subtitle_supported", p1)
+  }
+  /// We’re no longer supporting iOS %@
+  internal static func versionCheckBannerTitleDeprecated(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_title_deprecated", p1)
+  }
+  /// We’re ending support for iOS %@
+  internal static func versionCheckBannerTitleSupported(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_banner_title_supported", p1)
+  }
+  /// Find out how
+  internal static var versionCheckModalActionTitleDeprecated: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_action_title_deprecated") 
+  }
+  /// Got it
+  internal static var versionCheckModalActionTitleSupported: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_action_title_supported") 
+  }
+  /// We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.
+  internal static var versionCheckModalSubtitleDeprecated: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_subtitle_deprecated") 
+  }
+  /// We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not compatible with some of those fixes and will no longer be supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.
+  internal static var versionCheckModalSubtitleSupported: String { 
+    return VectorL10n.tr("Vector", "version_check_modal_subtitle_supported") 
+  }
+  /// We’re no longer supporting iOS %@
+  internal static func versionCheckModalTitleDeprecated(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_modal_title_deprecated", p1)
+  }
+  /// We’re ending support for iOS %@
+  internal static func versionCheckModalTitleSupported(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "version_check_modal_title_supported", p1)
+  }
   /// Video
   internal static var video: String { 
     return VectorL10n.tr("Vector", "video") 
@@ -4973,6 +5117,10 @@ internal enum VectorL10n {
   /// Voice
   internal static var voice: String { 
     return VectorL10n.tr("Vector", "voice") 
+  }
+  /// Voice message
+  internal static var voiceMessageLockScreenPlaceholder: String { 
+    return VectorL10n.tr("Vector", "voice_message_lock_screen_placeholder") 
   }
   /// Hold to record, release to send
   internal static var voiceMessageReleaseToSend: String { 
@@ -5099,12 +5247,10 @@ extension VectorL10n {
   static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
     let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
     let locale: Locale
-    if let localeIdentifier = Bundle.mxk_language() {
-       locale = Locale(identifier: localeIdentifier)
-    } else if let fallbackLocaleIdentifier = Bundle.mxk_fallbackLanguage() {
-       locale = Locale(identifier: fallbackLocaleIdentifier)
+    if let providedLocale = LocaleProvider.locale {
+      locale = providedLocale
     } else {
-       locale = Locale.current
+      locale = Locale.current
     }        
 
       return String(format: format, locale: locale, arguments: args)

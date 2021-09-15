@@ -323,7 +323,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                              dispatch_group_leave(requestsGroup);
                          }
                          
-                         // Only prompt for image resize only if all items are images
+                         // Only prompt for image resize if all items are images
+                         // Ignore showMediaCompressionPrompt setting due to memory constraints with full size images.
                          if (areAllAttachmentsImages)
                          {
                              if ([self areAttachmentsFullyLoaded])
@@ -510,13 +511,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         __weak typeof(self) weakSelf = self;
         
-        compressionPrompt = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt"] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        compressionPrompt = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt_title"]
+                                                                message:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt_message"]
+                                                         preferredStyle:UIAlertControllerStyleActionSheet];
         
         if (compressionSizes.small.fileSize)
         {
-            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.small.fileSize round:NO], (int)compressionSizes.small.imageSize.width, (int)compressionSizes.small.imageSize.height];
+            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.small.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_small"], resolution];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_small"], fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -542,9 +545,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         if (compressionSizes.medium.fileSize)
         {
-            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.medium.fileSize round:NO], (int)compressionSizes.medium.imageSize.width, (int)compressionSizes.medium.imageSize.height];
+            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.medium.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_medium"], resolution];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_medium"], fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -572,9 +575,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // TODO: Remove this condition when issue https://github.com/vector-im/riot-ios/issues/2341 will be fixed.
         if (compressionSizes.large.fileSize && (MAX(compressionSizes.large.imageSize.width, compressionSizes.large.imageSize.height) <= kLargeImageSizeMaxDimension))
         {
-            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.large.fileSize round:NO], (int)compressionSizes.large.imageSize.width, (int)compressionSizes.large.imageSize.height];
+            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.large.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_large"], resolution];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_large"], fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -602,9 +605,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
         if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
         {
-            NSString *resolution = [NSString stringWithFormat:@"%@ (%d x %d)", [MXTools fileSizeToString:compressionSizes.original.fileSize round:NO], (int)compressionSizes.original.imageSize.width, (int)compressionSizes.original.imageSize.height];
+            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_original"], resolution];
+            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_original"], fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -1153,39 +1156,58 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)sendVideo:(NSURL *)videoLocalUrl toRoom:(MXRoom *)room successBlock:(dispatch_block_t)successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
-    [self didStartSendingToRoom:room];
-    if (!videoLocalUrl)
-    {
-        MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
-        if (failureBlock)
-        {
-            failureBlock(nil);
-        }
-        return;
-    }
-    
-    // Retrieve the video frame at 1 sec to define the video thumbnail
     AVURLAsset *videoAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
-    AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
-    assetImageGenerator.appliesPreferredTrackTransform = YES;
-    CMTime time = CMTimeMake(1, 1);
-    CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
-    // Finalize video attachment
-    UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
-    CFRelease(imageRef);
     
-    [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
-        if (successBlock)
+    MXWeakify(self);
+    
+    // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
+    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString * _Nullable presetName) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        // If the preset name is nil, the user cancelled.
+        if (!presetName)
         {
-            successBlock();
+            return;
         }
-    } failure:^(NSError *error) {
-        MXLogDebug(@"[ShareExtensionManager] sendVideo failed.");
-        if (failureBlock)
+        
+        // Set the chosen video conversion preset.
+        [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
+        
+        [self didStartSendingToRoom:room];
+        if (!videoLocalUrl)
         {
-            failureBlock(error);
+            MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+            if (failureBlock)
+            {
+                failureBlock(nil);
+            }
+            return;
         }
+        
+        // Retrieve the video frame at 1 sec to define the video thumbnail
+        AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
+        assetImageGenerator.appliesPreferredTrackTransform = YES;
+        CMTime time = CMTimeMake(1, 1);
+        CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
+        // Finalize video attachment
+        UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+        CFRelease(imageRef);
+        
+        [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+            if (successBlock)
+            {
+                successBlock();
+            }
+        } failure:^(NSError *error) {
+            MXLogDebug(@"[ShareExtensionManager] sendVideo failed.");
+            if (failureBlock)
+            {
+                failureBlock(error);
+            }
+        }];
     }];
+    
+    [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
 }
 
 

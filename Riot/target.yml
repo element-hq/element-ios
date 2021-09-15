@@ -51,6 +51,10 @@ targets:
       script: "\"${PODS_ROOT}/SwiftGen/bin/swiftgen\" config run --config \"Tools/SwiftGen/swiftgen-config.yml\"\n"
 
     sources:
+    - path: ../RiotSwiftUI/Modules
+      # Riot will provide it's own LocaleProviderType so exclude.
+      excludes:
+      - "Common/Locale/LocaleProvider.swift"
     - path: ../Tools
       excludes:
         - "Logs"

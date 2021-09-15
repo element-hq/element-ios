@@ -1,0 +1,40 @@
+// 
+// Copyright 2021 Vector Creations Ltd
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+
+// App identity
+BUNDLE_DISPLAY_NAME = Element Alpha
+BASE_BUNDLE_IDENTIFIER = im.vector.app.alpha
+APPLICATION_GROUP_IDENTIFIER = group.im.vector.alpha
+APPLICATION_SCHEME = element
+
+
+// Team
+DEVELOPMENT_TEAM = 7J4U792NQT
+
+
+// Provisioning profiles
+RIOT_PROVISIONING_PROFILE_SPECIFIER = "Alpha Vector App Add Hoc"
+RIOT_PROVISIONING_PROFILE = a0ea2d4c-600d-4b0c-bd8f-f3c783add4cb
+
+NSE_PROVISIONING_PROFILE_SPECIFIER = "Alpha Vector NSE Ad hoc"
+NSE_PROVISIONING_PROFILE = 11b1eb20-fdfe-4242-963d-098b76e157ff
+
+SHARE_EXTENSION_PROVISIONING_PROFILE_SPECIFIER = "Alpha Vector Share Extension Ad hoc"
+SHARE_EXTENSION_PROVISIONING_PROFILE = b47f96e0-647b-4274-b2bb-8103b9a97146
+
+SIRI_INTENTS_PROVISIONING_PROFILE_SPECIFIER = "Alpha Vector Siri Intents Ad hoc"
+SIRI_INTENTS_PROVISIONING_PROFILE = a9fdb684-a68c-4207-afc2-810f3287b1f5
