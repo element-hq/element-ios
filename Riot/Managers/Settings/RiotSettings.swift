@@ -160,6 +160,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenAllowFilesAction", defaultValue: BuildSettings.roomScreenAllowFilesAction, storage: defaults)
     var roomScreenAllowFilesAction
     
+    // labs prefix added to the key can be dropped when default value becomes true
+    @UserDefault(key: "labsRoomScreenShowsURLPreviews", defaultValue: false, storage: defaults)
+    var roomScreenShowsURLPreviews
+    
     // MARK: - Room Contextual Menu
     
     @UserDefault(key: "roomContextualMenuShowMoreOptionForMessages", defaultValue: BuildSettings.roomContextualMenuShowMoreOptionForMessages, storage: defaults)
@@ -199,6 +203,11 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "allowInviteExernalUsers", defaultValue: BuildSettings.allowInviteExernalUsers, storage: defaults)
     var allowInviteExernalUsers
+    
+    /// When set to false the original image is sent and a 1080p preset is used for videos.
+    /// If `BuildSettings.roomInputToolbarCompressionMode` has a value other than prompt, the build setting takes priority for images.
+    @UserDefault(key: "showMediaCompressionPrompt", defaultValue: false, storage: defaults)
+    var showMediaCompressionPrompt
     
     // MARK: - Main Tabs
     

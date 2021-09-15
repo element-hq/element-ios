@@ -26,29 +26,32 @@ class TemplateUserProfileViewModelTests: XCTestCase {
         static let displayName = "Alice"
     }
     var service: MockTemplateUserProfileService!
-    var viewModel: TemplateUserProfileViewModel!
+    var viewModel: TemplateUserProfileViewModelProtocol!
+    var context: TemplateUserProfileViewModelType.Context!
     var cancellables = Set<AnyCancellable>()
     override func setUpWithError() throws {
         service = MockTemplateUserProfileService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = TemplateUserProfileViewModel(templateUserProfileService: service)
+        viewModel = TemplateUserProfileViewModel.makeTemplateUserProfileViewModel(templateUserProfileService: service)
+        context = viewModel.context
     }
-    
+
     func testInitialState() {
-        XCTAssertEqual(viewModel.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(viewModel.viewState.presence, Constants.presenceInitialValue)
+        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
+        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
     }
 
     func testFirstPresenceReceived() throws {
-        let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(1).first()
+        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
         XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
     }
-    
+
     func testPresenceUpdatesReceived() throws {
-        let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(3).first()
+        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
+        let awaitDeferred = xcAwaitDeferred(presencePublisher)
         let newPresenceValue1: TemplateUserProfilePresence = .online
         let newPresenceValue2: TemplateUserProfilePresence = .idle
         service.simulateUpdate(presence: newPresenceValue1)
         service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
     }
 }

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@ import RiotSwiftUI
 
 @available(iOS 14.0, *)
 class TemplateUserProfileUITests: MockScreenTest {
-    
+
     override class var screenType: MockScreenState.Type {
         return MockTemplateUserProfileScreenState.self
     }
@@ -27,7 +27,7 @@ class TemplateUserProfileUITests: MockScreenTest {
     override class func createTest() -> MockScreenTest {
         return TemplateUserProfileUITests(selector: #selector(verifyTemplateUserProfileScreen))
     }
-    
+
     func verifyTemplateUserProfileScreen() throws {
         guard let screenState = screenState as? MockTemplateUserProfileScreenState else { fatalError("no screen") }
         switch screenState {
@@ -37,13 +37,13 @@ class TemplateUserProfileUITests: MockScreenTest {
             verifyTemplateUserProfileLongName(name: name)
         }
     }
-    
+
     func verifyTemplateUserProfilePresence(presence: TemplateUserProfilePresence) {
         let presenceText = app.staticTexts["presenceText"]
         XCTAssert(presenceText.exists)
         XCTAssert(presenceText.label == presence.title)
     }
-    
+
     func verifyTemplateUserProfileLongName(name: String) {
         let displayNameText = app.staticTexts["displayNameText"]
         XCTAssert(displayNameText.exists)

@@ -25,29 +25,29 @@ typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserPro
                                                                  TemplateUserProfileViewAction>
 @available(iOS 14, *)
 class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUserProfileViewModelProtocol {
-    
+
     // MARK: - Properties
-    
+
     // MARK: Private
-    
+
     private let templateUserProfileService: TemplateUserProfileServiceProtocol
-    
+
     // MARK: Public
-    
+
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
-    
+
     // MARK: - Setup
-    
+
     static func makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewModelProtocol {
         return TemplateUserProfileViewModel(templateUserProfileService: templateUserProfileService)
     }
-    
+
     fileprivate init(templateUserProfileService: TemplateUserProfileServiceProtocol) {
         self.templateUserProfileService = templateUserProfileService
         super.init(initialViewState: Self.defaultState(templateUserProfileService: templateUserProfileService))
         setupPresenceObserving()
     }
-    
+
     private static func defaultState(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
         return TemplateUserProfileViewState(
             avatar: templateUserProfileService.avatarData,
@@ -55,15 +55,16 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             presence: templateUserProfileService.presenceSubject.value
         )
     }
-    
+
     private func setupPresenceObserving() {
-        templateUserProfileService.presenceSubject
+        let presenceUpdatePublisher = templateUserProfileService.presenceSubject
             .map(TemplateUserProfileStateAction.updatePresence)
-            .sinkDispatchTo(self)
+            .eraseToAnyPublisher()
+        dispatch(actionPublisher: presenceUpdatePublisher)
     }
-    
+
     // MARK: - Public
-    
+
     override func process(viewAction: TemplateUserProfileViewAction) {
         switch viewAction {
         case .cancel:
@@ -72,13 +73,7 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             done()
         }
     }
-      
-    /// A redux style reducer
-    ///
-    /// All modifications to state happen here.
-    /// - Parameters:
-    ///   - state: The `inout` state to be modified,
-    ///   - action: The action that defines which state modification should take place.
+
     override class func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
         case .updatePresence(let presence):
@@ -86,11 +81,11 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
         }
         UILog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
     }
-    
+
     private func done() {
         completion?(.done)
     }
-    
+
     private func cancel() {
         completion?(.cancel)
     }

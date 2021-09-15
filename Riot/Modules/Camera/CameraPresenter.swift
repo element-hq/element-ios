@@ -118,6 +118,7 @@ import AVFoundation
         imagePickerController.delegate = self
         imagePickerController.sourceType = UIImagePickerController.SourceType.camera
         imagePickerController.mediaTypes = mediaTypes
+        imagePickerController.videoQuality = .typeHigh
         imagePickerController.allowsEditing = false
         
         return imagePickerController

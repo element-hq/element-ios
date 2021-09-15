@@ -29,7 +29,7 @@
 
 const CGFloat kTypingCellHeight = 24;
 
-@interface RoomDataSource() <BubbleReactionsViewModelDelegate>
+@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -71,7 +71,7 @@ const CGFloat kTypingCellHeight = 24;
         // Replace the event formatter
         [self updateEventFormatter];
 
-        // Handle timestamp and read receips display at Vector app level (see [tableView: cellForRowAtIndexPath:])
+        // Handle timestamp and read receipts display at Vector app level (see [tableView: cellForRowAtIndexPath:])
         self.useCustomDateTimeLabel = YES;
         self.useCustomReceipts = YES;
         self.useCustomUnsentButton = YES;
@@ -343,7 +343,7 @@ const CGFloat kTypingCellHeight = 24;
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count) && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -368,7 +368,41 @@ const CGFloat kTypingCellHeight = 24;
                     {
                         continue;
                     }
-                
+                    
+                    NSURL *link = component.link;
+                    URLPreviewView *urlPreviewView;
+                    
+                    // Show a URL preview if the component has a link that should be previewed.
+                    if (link && RiotSettings.shared.roomScreenShowsURLPreviews && cellData.showURLPreview)
+                    {
+                        urlPreviewView = [URLPreviewView instantiate];
+                        urlPreviewView.preview = cellData.urlPreviewData;
+                        urlPreviewView.delegate = self;
+                        
+                        [temporaryViews addObject:urlPreviewView];
+                        
+                        if (!bubbleCell.tmpSubviews)
+                        {
+                            bubbleCell.tmpSubviews = [NSMutableArray array];
+                        }
+                        [bubbleCell.tmpSubviews addObject:urlPreviewView];
+                        
+                        urlPreviewView.translatesAutoresizingMaskIntoConstraints = NO;
+                        [bubbleCell.contentView addSubview:urlPreviewView];
+                        
+                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                        if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                        {
+                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                        }
+                        
+                        // Set the preview view's origin
+                        [NSLayoutConstraint activateConstraints: @[
+                            [urlPreviewView.leadingAnchor constraintEqualToAnchor:urlPreviewView.superview.leadingAnchor constant:leftMargin],
+                            [urlPreviewView.topAnchor constraintEqualToAnchor:urlPreviewView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin],
+                        ]];
+                    }
+                    
                     MXAggregatedReactions* reactions = cellData.reactions[componentEventId].aggregatedReactionsWithNonZeroCount;
                     
                     BubbleReactionsView *reactionsView;
@@ -411,12 +445,23 @@ const CGFloat kTypingCellHeight = 24;
                                 leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
                             }
                             
+                            // The top constraint may need to include the URL preview view
+                            NSLayoutConstraint *topConstraint;
+                            if (urlPreviewView)
+                            {
+                                topConstraint = [reactionsView.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor constant:RoomBubbleCellLayout.reactionsViewTopMargin];
+                            }
+                            else
+                            {
+                                topConstraint = [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin];
+                            }
+                            
                             // Force receipts container size
                             [NSLayoutConstraint activateConstraints:
                              @[
                                [reactionsView.leadingAnchor constraintEqualToAnchor:reactionsView.superview.leadingAnchor constant:leftMargin],
                                [reactionsView.trailingAnchor constraintEqualToAnchor:reactionsView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin],
-                               [reactionsView.topAnchor constraintEqualToAnchor:reactionsView.superview.topAnchor constant:bottomPositionY + RoomBubbleCellLayout.reactionsViewTopMargin]
+                               topConstraint
                                ]];
                         }
                     }
@@ -522,11 +567,15 @@ const CGFloat kTypingCellHeight = 24;
                                                                                                      multiplier:1.0
                                                                                                        constant:-RoomBubbleCellLayout.readReceiptsViewRightMargin];
                                 
-                                // At the bottom, we have reactions or nothing
+                                // At the bottom, we either have reactions, a URL preview or nothing
                                 NSLayoutConstraint *topConstraint;
                                 if (reactionsView)
                                 {
                                     topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                                }
+                                else if (urlPreviewView)
+                                {
+                                    topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
                                 }
                                 else
                                 {
@@ -1161,6 +1210,47 @@ const CGFloat kTypingCellHeight = 24;
             return NO;
         }];
     }
+}
+
+#pragma mark - URLPreviewViewDelegate
+
+- (void)didOpenURLFromPreviewView:(URLPreviewView *)previewView for:(NSString *)eventID in:(NSString *)roomID
+{
+    // Use the link stored in the bubble component when opening the URL as we only
+    // store the sanitized URL in the preview data which may differ to the message content.
+    RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
+    
+    if (!cellData)
+    {
+        return;
+    }
+    
+    MXKRoomBubbleComponent *lastComponent = cellData.bubbleComponents.lastObject;
+    
+    if (!lastComponent)
+    {
+        return;
+    }
+    
+    [UIApplication.sharedApplication vc_open:lastComponent.link completionHandler:nil];
+}
+
+- (void)didCloseURLPreviewView:(URLPreviewView *)previewView for:(NSString *)eventID in:(NSString *)roomID
+{
+    RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
+    
+    if (!cellData)
+    {
+        return;
+    }
+    
+    // Remember that the user closed the preview so it isn't shown again.
+    [URLPreviewService.shared closePreviewFor:eventID in:roomID];
+    
+    // Hide the preview, remove its data and refresh the cells.
+    cellData.showURLPreview = NO;
+    cellData.urlPreviewData = nil;
+    [self refreshCells];
 }
 
 @end

@@ -16,7 +16,7 @@
 
 import Foundation
 
-final class TemplateScreenViewModel: TemplateScreenViewModelType {
+final class TemplateScreenViewModel: TemplateScreenViewModelProtocol {
     
     // MARK: - Properties
     
