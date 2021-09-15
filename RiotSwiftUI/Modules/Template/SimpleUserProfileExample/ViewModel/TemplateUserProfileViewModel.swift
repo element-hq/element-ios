@@ -37,7 +37,7 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
     
     // MARK: - Setup
-    
+
     static func makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewModelProtocol {
         return TemplateUserProfileViewModel(templateUserProfileService: templateUserProfileService)
     }
@@ -72,14 +72,8 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             done()
         }
     }
-      
-    /// A redux style reducer
-    ///
-    /// All modifications to state happen here.
-    /// - Parameters:
-    ///   - state: The `inout` state to be modified,
-    ///   - action: The action that defines which state modification should take place.
-    private static func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
+    
+    override class func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
         case .updatePresence(let presence):
             state.presence = presence
