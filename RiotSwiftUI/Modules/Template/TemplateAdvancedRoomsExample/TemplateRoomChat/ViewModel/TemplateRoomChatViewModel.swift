@@ -17,27 +17,26 @@
 import SwiftUI
 import Combine
     
-@available(iOS 14.0, *)
-class TemplateRoomChatViewModel: ObservableObject, TemplateRoomChatViewModelProtocol {
+@available(iOS 14, *)
+typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState,
+                                                                 TemplateRoomChatStateAction,
+                                                                 TemplateRoomChatViewAction>
+
+@available(iOS 14, *)
+class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChatViewModelProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
     private let templateRoomChatService: TemplateRoomChatServiceProtocol
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
-    @Published var input: TemplateRoomChatViewModelInput
-    @Published private(set) var viewState: TemplateRoomChatViewState
-    
     var completion: ((TemplateRoomChatViewModelResult) -> Void)?
     
     // MARK: - Setup
-    init(templateRoomChatService: TemplateRoomChatServiceProtocol, initialState: TemplateRoomChatViewState? = nil) {
-        self.input = TemplateRoomChatViewModelInput(messageInput: "")
+    init(templateRoomChatService: TemplateRoomChatServiceProtocol) {
         self.templateRoomChatService = templateRoomChatService
-        self.viewState = initialState ?? Self.defaultState(templateRoomChatService: templateRoomChatService)
-        
+        super.init(initialViewState: Self.defaultState(templateRoomChatService: templateRoomChatService))
         templateRoomChatService.chatMessagesSubject
             .map(Self.makeBubbles(messages:))
             .map(TemplateRoomChatStateAction.updateBubbles)
@@ -50,7 +49,8 @@ class TemplateRoomChatViewModel: ObservableObject, TemplateRoomChatViewModelProt
     
     private static func defaultState(templateRoomChatService: TemplateRoomChatServiceProtocol) -> TemplateRoomChatViewState {
         let bubbles = makeBubbles(messages: templateRoomChatService.chatMessagesSubject.value)
-        return TemplateRoomChatViewState(bubbles: bubbles)
+        let bindings = TemplateRoomChatViewModelBindings(messageInput: "")
+        return TemplateRoomChatViewState(bubbles: bubbles, bindings: bindings)
     }
     
     private static func makeBubbles(messages: [TemplateRoomChatMessage]) -> [TemplateRoomChatBubble] {
@@ -86,7 +86,7 @@ class TemplateRoomChatViewModel: ObservableObject, TemplateRoomChatViewModelProt
     }
     
     // MARK: - Public
-    func process(viewAction: TemplateRoomChatViewAction) {
+    override func process(viewAction: TemplateRoomChatViewAction) {
         switch viewAction {
         case .cancel:
             cancel()
@@ -95,18 +95,10 @@ class TemplateRoomChatViewModel: ObservableObject, TemplateRoomChatViewModelProt
         }
     }
     
-    // MARK: - Private
-    /**
-     Send state actions to mutate the state.
-     */
-    private func dispatch(action: TemplateRoomChatStateAction) {
-        Self.reducer(state: &self.viewState, action: action)
-    }
-    
     /**
      A redux style reducer, all modifications to state happen here. Receives a state and a state action and produces a new state.
      */
-    private static func reducer(state: inout TemplateRoomChatViewState, action: TemplateRoomChatStateAction) {
+    override class func reducer(state: inout TemplateRoomChatViewState, action: TemplateRoomChatStateAction) {
         switch action {
         case .updateBubbles(let bubbles):
             state.bubbles = bubbles

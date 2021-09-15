@@ -16,6 +16,7 @@
 
 import Foundation
 
-struct TemplateRoomChatViewState {
+struct TemplateRoomChatViewState: BindableState {
     var bubbles: [TemplateRoomChatBubble]
+    var bindings: TemplateRoomChatViewModelBindings
 }

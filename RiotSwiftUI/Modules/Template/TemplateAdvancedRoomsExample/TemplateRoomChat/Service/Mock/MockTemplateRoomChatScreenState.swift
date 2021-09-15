@@ -46,7 +46,7 @@ enum MockTemplateRoomChatScreenState: MockScreenState, CaseIterable {
         
         // can simulate service and viewModel actions here if needs be.
         
-        return AnyView(TemplateRoomChat(viewModel: viewModel)
+        return AnyView(TemplateRoomChat(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
     }
 }

@@ -27,7 +27,7 @@ struct TemplateRoomChat: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: TemplateRoomChatViewModel
+    @ObservedObject var viewModel: TemplateRoomChatViewModel.Context
     
     var body: some View {
         VStack {
@@ -46,7 +46,7 @@ struct TemplateRoomChat: View {
             }
             
             HStack {
-                TextField(VectorL10n.roomMessageShortPlaceholder, text: $viewModel.input.messageInput)
+                TextField(VectorL10n.roomMessageShortPlaceholder, text: $viewModel.bindings.messageInput)
                     .textFieldStyle(BorderedInputFieldStyle())
                 Button(action: {
 
@@ -61,12 +61,12 @@ struct TemplateRoomChat: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button(VectorL10n.done) {
-                    viewModel.process(viewAction: .cancel)
+                    viewModel.send(viewAction: .cancel)
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button(VectorL10n.cancel) {
-                    viewModel.process(viewAction: .cancel)
+                    viewModel.send(viewAction: .cancel)
                 }
             }
         }

@@ -51,12 +51,12 @@ struct TemplateUserProfile: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button(VectorL10n.done) {
-                    viewModel.inputActions.send(.done)
+                    viewModel.send(viewAction: .done)
                 }
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button(VectorL10n.cancel) {
-                    viewModel.inputActions.send(.cancel)
+                    viewModel.send(viewAction: .cancel)
                 }
             }
         }

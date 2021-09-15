@@ -79,7 +79,7 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
     /// - Parameters:
     ///   - state: The `inout` state to be modified,
     ///   - action: The action that defines which state modification should take place.
-    private static func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
+    override class func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
         case .updatePresence(let presence):
             state.presence = presence

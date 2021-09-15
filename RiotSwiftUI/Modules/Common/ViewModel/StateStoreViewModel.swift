@@ -40,20 +40,24 @@ extension BindableState where BindStateType == Void {
 class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
    
     private var cancellables = Set<AnyCancellable>()
+    fileprivate let viewActions: PassthroughSubject<ViewAction, Never>
     
-    let inputActions: PassthroughSubject<ViewAction, Never>
-    @Published var inputState: ViewState.BindStateType
+    @Published var bindings: ViewState.BindStateType
     @Published fileprivate(set) var viewState: ViewState
 
     init(initialViewState: ViewState) {
-        self.inputState = initialViewState.bindings
-        self.inputActions = PassthroughSubject()
+        self.bindings = initialViewState.bindings
+        self.viewActions = PassthroughSubject()
         self.viewState = initialViewState
         if !(initialViewState.bindings is Void) {
-            self.$inputState
+            self.$bindings
                 .weakAssign(to: \.viewState.bindings, on: self)
                 .store(in: &cancellables)
         }
+    }
+    
+    func send(viewAction: ViewAction) {
+        viewActions.send(viewAction)
     }
 }
 
@@ -73,17 +77,18 @@ class StateStoreViewModel<State:BindableState, StateAction, ViewAction> {
         self.state = CurrentValueSubject(initialViewState)
         self.state.weakAssign(to: \.context.viewState, on: self)
             .store(in: &cancellables)
-        self.context.inputActions.sink { [weak self] action in
+        self.context.viewActions.sink { [weak self] action in
             guard let self = self else { return }
             self.process(viewAction: action)
         }
         .store(in: &cancellables)
     }
+    
     func dispatch(action: StateAction) {
-        reducer(state: &state.value, action: action)
+        Self.reducer(state: &state.value, action: action)
     }
 
-    func reducer(state: inout State, action: StateAction) {
+    class func reducer(state: inout State, action: StateAction) {
 
     }
 

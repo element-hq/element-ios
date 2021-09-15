@@ -16,6 +16,6 @@
 
 import Foundation
 
-struct TemplateRoomChatViewModelInput {
+struct TemplateRoomChatViewModelBindings {
     var messageInput: String
 }
