@@ -57,9 +57,10 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
     }
     
     private func setupPresenceObserving() {
-        templateUserProfileService.presenceSubject
+        let presenceUpdatePublisher = templateUserProfileService.presenceSubject
             .map(TemplateUserProfileStateAction.updatePresence)
-            .sinkDispatchTo(self)
+            .eraseToAnyPublisher()
+        dispatch(actionPublisher: presenceUpdatePublisher)
     }
     
     // MARK: - Public

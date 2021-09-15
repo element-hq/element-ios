@@ -72,13 +72,13 @@ class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
     }
 }
 
-@available(iOS 14, *)
 /// A common ViewModel implementation for handling of `State`, `StateAction`s and `ViewAction`s
 ///
 /// Generic type State is constrained to the BindableState protocol in that it may contain (but doesn't have to)
 /// a specific portion of state that can be safely bound to.
 /// If we decide to add more features to our state management (like doing state processing off the main thread)
 /// we can do it in this centralised place.
+@available(iOS 14, *)
 class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
     
     typealias Context = ViewModelContext<State, ViewAction>
@@ -105,7 +105,8 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
         self.context = Context(initialViewState: initialViewState)
         self.state = CurrentValueSubject(initialViewState)
         // Connect the state to context viewState, that view uses for observing (but not modifying directly) the state.
-        self.state.weakAssign(to: \.context.viewState, on: self)
+        self.state
+            .weakAssign(to: \.context.viewState, on: self)
             .store(in: &cancellables)
         // Receive events from the view and pass on to the `ViewModel` for processing.
         self.context.viewActions.sink { [weak self] action in
@@ -119,6 +120,16 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
     /// - Parameter action: The state action to send to the reducer.
     func dispatch(action: StateAction) {
         Self.reducer(state: &state.value, action: action)
+    }
+    
+    /// Send state actions from a publisher to modify the state within the reducer.
+    /// - Parameter actionPublisher: The publisher that produces actions to be sent to the reducer
+    func dispatch(actionPublisher: AnyPublisher<StateAction, Never>) {
+        actionPublisher.sink { [weak self] action in
+            guard let self = self else { return }
+            Self.reducer(state: &self.state.value, action: action)
+        }
+        .store(in: &cancellables)
     }
 
     /// Override to handle mutations to the `State`

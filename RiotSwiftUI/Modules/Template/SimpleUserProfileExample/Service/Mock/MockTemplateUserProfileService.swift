@@ -37,6 +37,6 @@ class MockTemplateUserProfileService: TemplateUserProfileServiceProtocol {
     }
     
     func simulateUpdate(presence: TemplateUserProfilePresence) {
-        self.presenceSubject.send(presence)
+        self.presenceSubject.value = presence
     }
 }
