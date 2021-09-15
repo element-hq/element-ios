@@ -4018,6 +4018,14 @@ internal enum VectorL10n {
   internal static func serviceTermsModalPolicyCheckboxAccessibilityHint(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "service_terms_modal_policy_checkbox_accessibility_hint", p1)
   }
+  /// IDENTITY SERVER TERMS
+  internal static var serviceTermsModalTableHeaderIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_table_header_identity_server") 
+  }
+  /// INTEGRATION MANAGER TERMS
+  internal static var serviceTermsModalTableHeaderIntegrationManager: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_table_header_integration_manager") 
+  }
   /// To continue, accept the below terms and conditions
   internal static var serviceTermsModalTitleMessage: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title_message") 

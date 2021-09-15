@@ -1030,6 +1030,8 @@ Tap the + to start adding people.";
 "service_terms_modal_decline_button" = "Decline";
 "service_terms_modal_footer" = "This can be disabled anytime in settings.";
 
+"service_terms_modal_table_header_identity_server" = "IDENTITY SERVER TERMS";
+"service_terms_modal_table_header_integration_manager" = "INTEGRATION MANAGER TERMS";
 "service_terms_modal_description_identity_server" = "This will allow someone to find you if they have your phone number or email saved in their phone contacts.";
 "service_terms_modal_description_integration_manager" = "This will allow you to use bots, bridges, widgets and sticker packs.";
 

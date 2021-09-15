@@ -60,6 +60,7 @@ internal enum Asset {
     internal static let errorIcon = ImageAsset(name: "error_icon")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")
     internal static let group = ImageAsset(name: "group")
+    internal static let informationButton = ImageAsset(name: "information_button")
     internal static let monitor = ImageAsset(name: "monitor")
     internal static let placeholder = ImageAsset(name: "placeholder")
     internal static let plusIcon = ImageAsset(name: "plus_icon")

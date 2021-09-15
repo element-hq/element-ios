@@ -47,6 +47,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
 
     private var policies: [MXLoginPolicyData] = []
+    
+    private var tableHeaderView: ServiceTermsModalTableHeaderView!
 
     // MARK: - Setup
     
@@ -97,6 +99,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         descriptionLabel.font = theme.fonts.body
         descriptionLabel.textColor = theme.colors.secondaryContent
         
+        tableHeaderView.update(theme: theme)
+        
         footerLabel.font = theme.fonts.footnote.withSize(13)
         footerLabel.textColor = theme.colors.secondaryContent
 
@@ -125,6 +129,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         
         self.titleLabel.text = VectorL10n.serviceTermsModalTitleMessage
         self.footerLabel.text = VectorL10n.serviceTermsModalFooter
+        
+        self.tableHeaderView.serviceURLLabel.text = viewModel.serviceUrl
 
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .normal)
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .highlighted)
@@ -135,8 +141,10 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         
         if self.viewModel.serviceType == MXServiceTypeIdentityService {
             self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIdentityServer
+            self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIdentityServer
         } else {
             self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIntegrationManager
+            self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIntegrationManager
             // TODO: Set a different image for the integration manager.
         }
     }
@@ -148,6 +156,9 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.tableView.alwaysBounceVertical = false
         self.tableView.backgroundColor = .clear
         self.tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
+        
+        tableHeaderView = ServiceTermsModalTableHeaderView.instantiate()
+        self.tableView.tableHeaderView = tableHeaderView
     }
 
     private func render(viewState: ServiceTermsModalScreenViewState) {
@@ -220,9 +231,8 @@ extension ServiceTermsModalScreenViewController: ServiceTermsModalScreenViewMode
 extension ServiceTermsModalScreenViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // The first section contains the server's URL. Then use individual
-        // sections for each policy so the cells aren't grouped together.
-        return 1 + policies.count
+        // Use individual sections for each policy so the cells aren't grouped together.
+        return policies.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -230,47 +240,19 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // The first section has header text. Modify the rest to reduce cell spacing.
-        return section == 0 ? 20 : 8
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "Identity Server Terms" : nil
+        // Reduce the height between sections to only be the footer height value.
+        return CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        // Reduce the height between sections to only be the header height value.
-        return CGFloat.leastNormalMagnitude
+        // Modify the footer size to reduce cell spacing.
+        return 8.0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            return identityServerURLCell(forRowAt: indexPath)
-        } else {
-            return policyCell(forRowAt: indexPath)
-        }
-    }
-    
-    // TODO: Handle this in the integration manager too
-    private func identityServerURLCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier, for: indexPath)
-        
-        cell.textLabel?.text = viewModel.serviceUrl
-        cell.textLabel?.font = theme.fonts.callout
-        cell.textLabel?.textColor = theme.colors.secondaryContent
-        cell.accessoryView = nil
-        cell.backgroundColor = .clear
-        cell.selectionStyle = .none
-        
-        return cell
-    }
-    
-    private func policyCell(forRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier, for: indexPath)
-        
-        let policyIndex = indexPath.section - 1
 
-        let policy = policies[policyIndex]
+        let policy = policies[indexPath.section]
 
         cell.textLabel?.text = policy.name
         cell.textLabel?.textColor = theme.colors.primaryContent
@@ -285,12 +267,8 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
 }
 
 extension ServiceTermsModalScreenViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return indexPath.section > 0 ? indexPath : nil
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let policy = policies[indexPath.section - 1]
+        let policy = policies[indexPath.section]
         viewModel.process(viewAction: .display(policy))
         tableView.deselectRow(at: indexPath, animated: true)
     }
