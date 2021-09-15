@@ -658,7 +658,7 @@
 "sign_out_non_existing_key_backup_alert_title" = "Вы потеряете доступ к зашифрованным сообщениям если выйдете сейчас";
 "key_backup_recover_invalid_passphrase" = "Невозможно расшифровать резервную копию с помощью этой секретной фразы: убедитесь, что вы ввели верную секретную фразу для восстановления.";
 "key_backup_recover_invalid_recovery_key" = "Невозможно расшифровать резервную копию с помощью этого ключа: убедитесь, что вы ввели верный ключ безопасности.";
-"e2e_key_backup_wrong_version_button_settings" = "Настойки";
+"e2e_key_backup_wrong_version_button_settings" = "Настройки";
 "key_backup_setup_intro_manual_export_info" = "(Расширенный)";
 "e2e_key_backup_wrong_version_button_wasme" = "Это был я";
 "key_backup_setup_intro_manual_export_action" = "Ручной экспорт ключей";
@@ -1422,3 +1422,4 @@
 "callbar_only_single_active_group" = "Нажмите для присоединения к групповому вызову (%@)";
 "voice_message_lock_screen_placeholder" = "Голосовое сообщение";
 "event_formatter_call_has_ended_with_time" = "Вызов закончен • %@";
+"settings_notifications" = "УВЕДОМЛЕНИЯ";
