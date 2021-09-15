@@ -29,8 +29,11 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
     private static let accountIv: KeyValueStoreKey = "accountIv"
     private static let accountAesKey: KeyValueStoreKey = "accountAesKey"
     private static let cryptoOlmPickleKey: KeyValueStoreKey = "cryptoOlmPickleKey"
+    
     private static let roomLastMessageIv: KeyValueStoreKey = "roomLastMessageIv"
     private static let roomLastMessageAesKey: KeyValueStoreKey = "roomLastMessageAesKey"
+    
+    private static let dehydrationKey: KeyValueStoreKey = "dehydrationKey"
 
     private let keychainStore: KeyValueStore = KeychainStore(withKeychain: Keychain(service: keychainService, accessGroup: BuildSettings.keychainAccessGroup))
 
@@ -64,6 +67,7 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
             || dataType == MXKAccountManagerDataType
             || dataType == MXCryptoOlmPickleKeyDataType
             || dataType == MXRoomLastMessageDataType
+            || dataType == MXDehydrationServiceKeyDataType
     }
             
     func hasKeyForData(ofType dataType: String) -> Bool {
@@ -77,6 +81,8 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
         case MXRoomLastMessageDataType:
             return keychainStore.containsObject(forKey: EncryptionKeyManager.roomLastMessageIv) &&
                 keychainStore.containsObject(forKey: EncryptionKeyManager.roomLastMessageAesKey)
+        case MXDehydrationServiceKeyDataType:
+            return keychainStore.containsObject(forKey: EncryptionKeyManager.dehydrationKey)
         default:
             return false
         }
@@ -103,10 +109,24 @@ class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {
                let aesKey = try? keychainStore.data(forKey: EncryptionKeyManager.roomLastMessageAesKey) {
                 return MXAesKeyData(iv: ivKey, key: aesKey)
             }
+        case MXDehydrationServiceKeyDataType:
+            if let key = try? keychainStore.data(forKey: EncryptionKeyManager.dehydrationKey) {
+                return MXRawDataKey(key: key)
+            }
         default:
             return nil
         }
         return nil
+    }
+    
+    // MARK: - Dehydration Key storage
+    
+    func storeDehydrationKey(_ key: Data) {
+        do {
+            try keychainStore.set(key, forKey: EncryptionKeyManager.dehydrationKey)
+        } catch {
+            MXLog.debug("[EncryptionKeyManager] storeDehydrationKey: Failed to store key: %@", error.localizedDescription)
+        }
     }
     
     // MARK: - Private methods
