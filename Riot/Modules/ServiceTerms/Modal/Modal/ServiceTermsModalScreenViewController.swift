@@ -78,6 +78,18 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.viewModel.process(viewAction: .load)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if view.frame.size.height < 568 {
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if navigationController?.isNavigationBarHidden == true {
+            navigationController?.setNavigationBarHidden(false, animated: animated)
+        }
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }

@@ -26,31 +26,33 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="voD-3Q-ryt">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="768"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gff-MZ-3bp">
-                                                        <rect key="frame" x="20" y="20" width="335" height="207"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="gff-MZ-3bp">
+                                                        <rect key="frame" x="20" y="20" width="335" height="195.66666666666666"/>
                                                         <subviews>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="find_your_contacts_facepile" translatesAutoresizingMaskIntoConstraints="NO" id="XWa-N5-VF2">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="1000" image="find_your_contacts_facepile" translatesAutoresizingMaskIntoConstraints="NO" id="XWa-N5-VF2">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="46"/>
                                                             </imageView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To continue, accept the below terms and conditions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
-                                                                <rect key="frame" x="0.0" y="46" width="335" height="100"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="100" id="1bP-8m-xrd"/>
-                                                                </constraints>
-                                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will allow someone to find you if they have your phone number or email saved in their phone contacts." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fA-rc-XMP">
-                                                                <rect key="frame" x="0.0" y="146" width="335" height="61"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <nil key="textColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="FZk-3I-Zbs">
+                                                                <rect key="frame" x="0.0" y="70" width="335" height="125.66666666666669"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="To continue, accept the below terms and conditions" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxI-mu-qng">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="335" height="40.666666666666664"/>
+                                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                                        <nil key="textColor"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will allow someone to find you if they have your phone number or email saved in their phone contacts." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fA-rc-XMP">
+                                                                        <rect key="frame" x="0.0" y="64.666666666666657" width="335" height="61"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                        <nil key="textColor"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                            </stackView>
                                                         </subviews>
                                                     </stackView>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="swq-xw-ItG">
-                                                        <rect key="frame" x="0.0" y="267" width="375" height="313"/>
+                                                        <rect key="frame" x="0.0" y="235.66666666666671" width="375" height="336.33333333333326"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <prototypes>
                                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Service Terms Cell" textLabel="inf-zH-Iu8" style="IBUITableViewCellStyleDefault" id="krZ-0R-qfI">
@@ -73,7 +75,7 @@
                                                         </prototypes>
                                                     </tableView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="dcx-ju-f0Q">
-                                                        <rect key="frame" x="20" y="588" width="335" height="146"/>
+                                                        <rect key="frame" x="20" y="580" width="335" height="146"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This can be disabled anytime in settings." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qmt-nE-Lg7">
                                                                 <rect key="frame" x="0.0" y="0.0" width="335" height="32"/>
@@ -120,7 +122,7 @@
                                                     <constraint firstItem="gff-MZ-3bp" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" constant="20" symbolic="YES" id="x7i-4D-XSX"/>
                                                     <constraint firstItem="dcx-ju-f0Q" firstAttribute="top" secondItem="swq-xw-ItG" secondAttribute="bottom" constant="8" symbolic="YES" id="zYm-2k-kvi"/>
                                                     <constraint firstItem="swq-xw-ItG" firstAttribute="leading" secondItem="voD-3Q-ryt" secondAttribute="leading" id="ze1-Iw-v9U"/>
-                                                    <constraint firstItem="swq-xw-ItG" firstAttribute="top" secondItem="gff-MZ-3bp" secondAttribute="bottom" constant="40" id="zfd-m4-7dW"/>
+                                                    <constraint firstItem="swq-xw-ItG" firstAttribute="top" secondItem="gff-MZ-3bp" secondAttribute="bottom" constant="20" id="zfd-m4-7dW"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -149,7 +151,7 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="9U2-KL-ZVA" secondAttribute="bottom" id="7Cb-nY-CsO"/>
                             <constraint firstItem="9U2-KL-ZVA" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" id="GdQ-hK-muG"/>
-                            <constraint firstItem="bFg-jh-JZB" firstAttribute="bottom" secondItem="dcx-ju-f0Q" secondAttribute="bottom" id="gIp-7G-Joa"/>
+                            <constraint firstItem="bFg-jh-JZB" firstAttribute="bottom" secondItem="dcx-ju-f0Q" secondAttribute="bottom" constant="8" id="gIp-7G-Joa"/>
                             <constraint firstItem="bFg-jh-JZB" firstAttribute="trailing" secondItem="9U2-KL-ZVA" secondAttribute="trailing" id="sbD-ek-vGJ"/>
                             <constraint firstItem="bFg-jh-JZB" firstAttribute="top" secondItem="9U2-KL-ZVA" secondAttribute="top" id="wTB-V6-IHV"/>
                         </constraints>
@@ -166,7 +168,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3198" y="-647"/>
+            <point key="canvasLocation" x="-3199.1999999999998" y="-647.29064039408865"/>
         </scene>
     </scenes>
     <resources>
