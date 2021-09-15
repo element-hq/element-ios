@@ -63,7 +63,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             return
         }
         
-        self.update(viewState: .loaded(space, nil, nil, nil, 0))
+        self.update(viewState: .loaded(SpaceDetailLoadedParameters(space: space, joinRule: nil, inviterId: nil, inviter: nil, membersCount: 0)))
         
         self.update(viewState: .loading)
         space.room.state { state in
@@ -82,7 +82,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
                 }
             })
             
-            self.update(viewState: .loaded(space, joinRule, inviterId, inviter, membersCount))
+            self.update(viewState: .loaded(SpaceDetailLoadedParameters(space: space, joinRule: joinRule, inviterId: inviterId, inviter: inviter, membersCount: membersCount)))
         }
     }
     

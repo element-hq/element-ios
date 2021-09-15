@@ -20,8 +20,6 @@ import Foundation
 
 protocol SpaceListViewModelViewDelegate: AnyObject {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState)
-    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceAt indexPath: IndexPath)
-    func spaceListViewModelRevertSelection(_ viewModel: SpaceListViewModelType)
 }
 
 protocol SpaceListViewModelCoordinatorDelegate: AnyObject {

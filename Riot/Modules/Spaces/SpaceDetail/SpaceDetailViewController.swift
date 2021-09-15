@@ -188,8 +188,8 @@ class SpaceDetailViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let space, let joinRule, let inviterId, let inviter, let membersCount):
-            self.renderLoaded(space: space, joinRule: joinRule, inviterId: inviterId, inviter: inviter, membersCount: membersCount)
+        case .loaded(let parameters):
+            self.renderLoaded(parameters: parameters)
         case .error(let error):
             self.render(error: error)
         }
@@ -199,10 +199,10 @@ class SpaceDetailViewController: UIViewController {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
-    private func renderLoaded(space: MXSpace, joinRule: MXRoomJoinRule?, inviterId: String?, inviter: MXUser?, membersCount: UInt) {
+    private func renderLoaded(parameters: SpaceDetailLoadedParameters) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        guard let summary = space.summary else {
+        guard let summary = parameters.space.summary else {
             MXLog.error("[SpaceDetailViewController] setupViews: no summary found")
             return
         }
@@ -220,17 +220,17 @@ class SpaceDetailViewController: UIViewController {
         self.avatarView.fill(with: avatarViewData)
         self.topicLabel.text = summary.topic
         
-        let joinRuleString = joinRule == .public ? VectorL10n.spacePublicJoinRule : VectorL10n.spacePrivateJoinRule
+        let joinRuleString = parameters.joinRule == .public ? VectorL10n.spacePublicJoinRule : VectorL10n.spacePrivateJoinRule
         
         let membersCount = summary.membersCount.members
         let membersString = membersCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(membersCount)")
         self.spaceTypeLabel.text = "\(joinRuleString) · \(membersString)"
         
-        self.inviterIdLabel.text = inviterId
-        if let inviterId = inviterId {
-            self.inviterTitleLabel.text = "\(inviter?.displayname ?? inviterId) invited you"
+        self.inviterIdLabel.text = parameters.inviterId
+        if let inviterId = parameters.inviterId {
+            self.inviterTitleLabel.text = "\(parameters.inviter?.displayname ?? inviterId) invited you"
             
-            if let inviter = inviter {
+            if let inviter = parameters.inviter {
                 let avatarViewData = AvatarViewData(avatarUrl: inviter.avatarUrl, mediaManager: self.mediaManager, fallbackImage: .matrixItem(inviter.userId, inviter.displayname))
                 self.inviterAvatarView.fill(with: avatarViewData)
             }

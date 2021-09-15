@@ -41,8 +41,6 @@ final class SpaceListViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
     
     private var sections: [SpaceListSection] = []
-    private var homeIndexPath: IndexPath = IndexPath(row: 0, section: 0)
-    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0)
 
     // MARK: - Setup
     
@@ -104,7 +102,6 @@ final class SpaceListViewController: UIViewController {
     }
     
     private func setupTableView() {
-        self.selectedIndexPath = self.homeIndexPath
         self.tableView.separatorStyle = .none
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
@@ -117,8 +114,10 @@ final class SpaceListViewController: UIViewController {
         switch viewState {
         case .loading:
             self.renderLoading()
-        case .loaded(let sections, let homeIndexPath):
-            self.renderLoaded(sections: sections, homeIndexPath: homeIndexPath)
+        case .loaded(let sections):
+            self.renderLoaded(sections: sections)
+        case .selectionChanged(let indexPath):
+            self.renderSelectionChanged(at: indexPath)
         case .error(let error):
             self.render(error: error)
         }
@@ -131,16 +130,14 @@ final class SpaceListViewController: UIViewController {
         }
     }
     
-    private func renderLoaded(sections: [SpaceListSection], homeIndexPath: IndexPath) {
-        let isHomeSelected = self.selectedIndexPath.section == self.homeIndexPath.section
+    private func renderLoaded(sections: [SpaceListSection]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.sections = sections
         self.tableView.reloadData()
-        self.homeIndexPath = homeIndexPath
-        if isHomeSelected {
-            self.selectedIndexPath = self.homeIndexPath
-        }
-        self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
+    }
+    
+    private func renderSelectionChanged(at indexPath: IndexPath) {
+        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
     }
     
     private func render(error: Error) {
@@ -154,15 +151,6 @@ final class SpaceListViewController: UIViewController {
 extension SpaceListViewController: SpaceListViewModelViewDelegate {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState) {
         self.render(viewState: viewSate)
-    }
-    
-    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceAt indexPath: IndexPath) {
-        self.selectedIndexPath = IndexPath(row: indexPath.row, section: indexPath.section)
-        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-    }
-    
-    func spaceListViewModelRevertSelection(_ viewModel: SpaceListViewModelType) {
-        self.tableView.selectRow(at: self.selectedIndexPath, animated: true, scrollPosition: .none)
     }
 }
 
@@ -216,9 +204,7 @@ extension SpaceListViewController: UITableViewDataSource {
 extension SpaceListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedIndexPath != indexPath {
-            self.viewModel.process(viewAction: .selectRow(at: indexPath, from: tableView.cellForRow(at: indexPath)))
-        }
+        self.viewModel.process(viewAction: .selectRow(at: indexPath, from: tableView.cellForRow(at: indexPath)))
     }
 }
 

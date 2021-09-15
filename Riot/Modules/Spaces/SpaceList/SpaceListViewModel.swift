@@ -34,7 +34,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     private var currentOperation: MXHTTPOperation?
     private var sections: [SpaceListSection] = []
-    
+    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+    private var homeIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+
     // MARK: Public
 
     weak var viewDelegate: SpaceListViewModelViewDelegate?
@@ -60,18 +62,23 @@ final class SpaceListViewModel: SpaceListViewModelType {
         case .loadData:
             self.loadData()
         case .selectRow(at: let indexPath, from: let sourceView):
+            guard self.selectedIndexPath != indexPath else {
+                return
+            }
             let section = self.sections[indexPath.section]
             switch section {
             case .home:
                 self.selectHome()
-                self.viewDelegate?.spaceListViewModel(self, didSelectSpaceAt: indexPath)
+                self.selectedIndexPath = indexPath
+                self.update(viewState: .selectionChanged(indexPath))
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
                 if spaceViewData.isInvite {
                     self.selectInvite(with: spaceViewData.spaceId, from: sourceView)
                 } else {
                     self.selectSpace(with: spaceViewData.spaceId)
-                    self.viewDelegate?.spaceListViewModel(self, didSelectSpaceAt: indexPath)
+                    self.selectedIndexPath = indexPath
+                    self.update(viewState: .selectionChanged(indexPath))
                 }
             }
         case .moreAction(at: let indexPath, from: let sourceView):
@@ -86,7 +93,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     func revertItemSelection() {
-        self.viewDelegate?.spaceListViewModelRevertSelection(self)
+        self.update(viewState: .selectionChanged(self.selectedIndexPath))
     }
     
     // MARK: - Private
@@ -118,7 +125,12 @@ final class SpaceListViewModel: SpaceListViewModelType {
         
         self.sections = sections
         let homeIndexPath = viewDataList.invites.isEmpty ? IndexPath(row: 0, section: 0) : IndexPath(row: 0, section: 1)
-        self.update(viewState: .loaded(sections, homeIndexPath))
+        if self.selectedIndexPath.section == self.homeIndexPath.section {
+            self.selectedIndexPath = homeIndexPath
+        }
+        self.homeIndexPath = homeIndexPath
+        self.update(viewState: .loaded(sections))
+        self.update(viewState: .selectionChanged(self.selectedIndexPath))
     }
     
     private func selectHome() {
