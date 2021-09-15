@@ -243,7 +243,8 @@
     if (self.findYourContactsFooterView && self.findYourContactsFooterView == self.contactsTableView.tableFooterView)
     {
         // Calculate the natural size of the footer
-        CGSize footerSize = [self.findYourContactsFooterView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        CGSize fittingSize = CGSizeMake(self.view.frame.size.width, UILayoutFittingCompressedSize.height);
+        CGSize footerSize = [self.findYourContactsFooterView systemLayoutSizeFittingSize:fittingSize];
         
         // Calculate the height available for the footer
         CGFloat availableHeight = self.contactsTableView.bounds.size.height - self.contactsTableView.adjustedContentInset.top - self.contactsTableView.adjustedContentInset.bottom;
