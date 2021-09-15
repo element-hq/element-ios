@@ -34,7 +34,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     private var currentOperation: MXHTTPOperation?
     private var sections: [SpaceListSection] = []
-    
+    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+    private var homeIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+
     // MARK: Public
 
     weak var viewDelegate: SpaceListViewModelViewDelegate?
@@ -59,16 +61,26 @@ final class SpaceListViewModel: SpaceListViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
-        case .selectRow(at: let indexPath):
+        case .selectRow(at: let indexPath, from: let sourceView):
+            guard self.selectedIndexPath != indexPath else {
+                return
+            }
             let section = self.sections[indexPath.section]
             switch section {
             case .home:
                 self.selectHome()
+                self.selectedIndexPath = indexPath
+                self.update(viewState: .selectionChanged(indexPath))
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
-                self.selectSpace(with: spaceViewData.spaceId)
+                if spaceViewData.isInvite {
+                    self.selectInvite(with: spaceViewData.spaceId, from: sourceView)
+                } else {
+                    self.selectSpace(with: spaceViewData.spaceId)
+                    self.selectedIndexPath = indexPath
+                    self.update(viewState: .selectionChanged(indexPath))
+                }
             }
-            self.viewDelegate?.spaceListViewModel(self, didSelectSpaceAt: indexPath)
         case .moreAction(at: let indexPath, from: let sourceView):
             let section = self.sections[indexPath.section]
             switch section {
@@ -78,6 +90,10 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: spaceViewData.spaceId, from: sourceView)
             }
         }
+    }
+    
+    func revertItemSelection() {
+        self.update(viewState: .selectionChanged(self.selectedIndexPath))
     }
     
     // MARK: - Private
@@ -94,17 +110,27 @@ final class SpaceListViewModel: SpaceListViewModelType {
         self.update(viewState: .loading)
                 
         let homeViewData = self.createHomeViewData()
-        
-        let spacesViewDataList = getSpacesViewData()
-        
-        let sections: [SpaceListSection] = [
-            .home(homeViewData),
-            .spaces(spacesViewDataList)
-        ]
+        let viewDataList = getSpacesViewData()
+
+        let sections: [SpaceListSection] = viewDataList.invites.isEmpty ? [
+                .home(homeViewData),
+                .spaces(viewDataList.spaces)
+            ]
+        :
+            [
+                .spaces(viewDataList.invites),
+                .home(homeViewData),
+                .spaces(viewDataList.spaces)
+            ]
         
         self.sections = sections
-        
+        let homeIndexPath = viewDataList.invites.isEmpty ? IndexPath(row: 0, section: 0) : IndexPath(row: 0, section: 1)
+        if self.selectedIndexPath.section == self.homeIndexPath.section {
+            self.selectedIndexPath = homeIndexPath
+        }
+        self.homeIndexPath = homeIndexPath
         self.update(viewState: .loaded(sections))
+        self.update(viewState: .selectionChanged(self.selectedIndexPath))
     }
     
     private func selectHome() {
@@ -115,19 +141,32 @@ final class SpaceListViewModel: SpaceListViewModelType {
         self.coordinatorDelegate?.spaceListViewModel(self, didSelectSpaceWithId: spaceId)
     }
     
+    private func selectInvite(with spaceId: String, from sourceView: UIView?) {
+        self.coordinatorDelegate?.spaceListViewModel(self, didSelectInviteWithId: spaceId, from: sourceView)
+    }
+    
     private func createHomeViewData() -> SpaceListItemViewData {
         let avatarViewData = AvatarViewData(avatarUrl: nil, mediaManager: self.session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
         
         let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
-                                                 title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData)
+                                                 title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData, isInvite: false)
         return homeViewData
     }
     
-    private func getSpacesViewData() -> [SpaceListItemViewData] {
-        return session.spaceService.rootSpaceSummaries.map { summary in
+    private func getSpacesViewData() -> (invites: [SpaceListItemViewData], spaces: [SpaceListItemViewData]) {
+        var invites: [SpaceListItemViewData] = []
+        var spaces: [SpaceListItemViewData] = []
+        session.spaceService.rootSpaceSummaries.forEach { summary in
             let avatarViewData = AvatarViewData(avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
-            return SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData)
+            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData, isInvite: summary.membership == .invite)
+            if viewData.isInvite {
+                invites.append(viewData)
+            } else {
+                spaces.append(viewData)
+            }
         }
+        
+        return (invites, spaces)
     }
     
     private func update(viewState: SpaceListViewState) {

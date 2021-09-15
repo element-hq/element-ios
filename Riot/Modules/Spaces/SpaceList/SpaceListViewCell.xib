@@ -30,6 +30,17 @@
                             <constraint firstAttribute="width" secondItem="lBS-QH-Kbp" secondAttribute="height" multiplier="1:1" id="vue-Qr-wt6"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHe-AQ-CSw" customClass="BadgeLabel" customModule="Riot" customModuleProvider="target">
+                        <rect key="frame" x="46" y="6" width="4.5" height="14.5"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VMB-P3-ogn">
                         <rect key="frame" x="66" y="18.5" width="194" height="17"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -49,12 +60,14 @@
                     </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="LHe-AQ-CSw" firstAttribute="centerY" secondItem="lBS-QH-Kbp" secondAttribute="top" constant="2" id="08y-Yf-CAf"/>
                     <constraint firstAttribute="trailing" secondItem="JKR-aN-bur" secondAttribute="trailing" constant="20" id="DnB-DW-hgc"/>
                     <constraint firstAttribute="bottom" secondItem="lBS-QH-Kbp" secondAttribute="bottom" constant="11" id="GCa-yL-d8S"/>
                     <constraint firstItem="TZK-rU-aCS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="GDx-I8-LPX"/>
                     <constraint firstItem="VMB-P3-ogn" firstAttribute="leading" secondItem="lBS-QH-Kbp" secondAttribute="trailing" constant="16" id="Jfh-Ex-s45"/>
                     <constraint firstAttribute="bottom" secondItem="TZK-rU-aCS" secondAttribute="bottom" constant="1" id="O09-dX-GuR"/>
                     <constraint firstAttribute="trailing" secondItem="TZK-rU-aCS" secondAttribute="trailing" constant="16" id="ST4-p9-7RB"/>
+                    <constraint firstItem="LHe-AQ-CSw" firstAttribute="centerX" secondItem="lBS-QH-Kbp" secondAttribute="trailing" constant="-2" id="Uj7-bX-Azm"/>
                     <constraint firstItem="VMB-P3-ogn" firstAttribute="centerY" secondItem="lBS-QH-Kbp" secondAttribute="centerY" id="Vfj-Bt-ghR"/>
                     <constraint firstItem="TZK-rU-aCS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="Xm8-aq-LMK"/>
                     <constraint firstItem="lBS-QH-Kbp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="m8q-jc-lxH"/>
@@ -68,6 +81,7 @@
             </constraints>
             <connections>
                 <outlet property="avatarView" destination="lBS-QH-Kbp" id="UYd-1N-Mn6"/>
+                <outlet property="badgeLabel" destination="LHe-AQ-CSw" id="4d6-ng-jPe"/>
                 <outlet property="moreButton" destination="JKR-aN-bur" id="ytc-WW-ew5"/>
                 <outlet property="selectionView" destination="TZK-rU-aCS" id="VCe-2o-h8G"/>
                 <outlet property="titleLabel" destination="VMB-P3-ogn" id="lDY-8e-Y8H"/>
@@ -75,6 +89,11 @@
             <point key="canvasLocation" x="137.68115942028987" y="102.45535714285714"/>
         </tableViewCell>
     </objects>
+    <designables>
+        <designable name="LHe-AQ-CSw">
+            <size key="intrinsicContentSize" width="4.5" height="14.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="spaces_more" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">

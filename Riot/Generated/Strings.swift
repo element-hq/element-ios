@@ -4730,6 +4730,14 @@ internal enum VectorL10n {
   internal static var spaceParticipantsActionRemove: String { 
     return VectorL10n.tr("Vector", "space_participants_action_remove") 
   }
+  /// Private space
+  internal static var spacePrivateJoinRule: String { 
+    return VectorL10n.tr("Vector", "space_private_join_rule") 
+  }
+  /// Public space
+  internal static var spacePublicJoinRule: String { 
+    return VectorL10n.tr("Vector", "space_public_join_rule") 
+  }
   /// space
   internal static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 

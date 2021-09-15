@@ -16,10 +16,11 @@
 
 import Foundation
 
-/// SpaceListViewCell view data
-struct SpaceListItemViewData {
-    let spaceId: String
-    let title: String
-    let avatarViewData: AvatarViewDataProtocol
-    let isInvite: Bool
+/// `SpaceDetailViewController` view actions exposed to view model
+enum SpaceDetailViewAction {
+    case loadData
+    case join
+    case leave
+    case dismiss
+    case dismissed
 }

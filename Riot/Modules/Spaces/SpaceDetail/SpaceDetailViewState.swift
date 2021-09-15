@@ -16,10 +16,17 @@
 
 import Foundation
 
-/// SpaceListViewCell view data
-struct SpaceListItemViewData {
-    let spaceId: String
-    let title: String
-    let avatarViewData: AvatarViewDataProtocol
-    let isInvite: Bool
+struct SpaceDetailLoadedParameters {
+    let space: MXSpace
+    let joinRule: MXRoomJoinRule?
+    let inviterId: String?
+    let inviter: MXUser?
+    let membersCount: UInt
+}
+
+/// SpaceDetailViewController view state
+enum SpaceDetailViewState {
+    case loading
+    case loaded(_ paremeters: SpaceDetailLoadedParameters)
+    case error(Error)
 }

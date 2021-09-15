@@ -41,7 +41,6 @@ final class SpaceListViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
     
     private var sections: [SpaceListSection] = []
-    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0)
 
     // MARK: - Setup
     
@@ -117,6 +116,8 @@ final class SpaceListViewController: UIViewController {
             self.renderLoading()
         case .loaded(let sections):
             self.renderLoaded(sections: sections)
+        case .selectionChanged(let indexPath):
+            self.renderSelectionChanged(at: indexPath)
         case .error(let error):
             self.render(error: error)
         }
@@ -133,7 +134,10 @@ final class SpaceListViewController: UIViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.sections = sections
         self.tableView.reloadData()
-        self.tableView.selectRow(at: selectedIndexPath, animated: true, scrollPosition: .none)
+    }
+    
+    private func renderSelectionChanged(at indexPath: IndexPath) {
+        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
     }
     
     private func render(error: Error) {
@@ -147,11 +151,6 @@ final class SpaceListViewController: UIViewController {
 extension SpaceListViewController: SpaceListViewModelViewDelegate {
     func spaceListViewModel(_ viewModel: SpaceListViewModelType, didUpdateViewState viewSate: SpaceListViewState) {
         self.render(viewState: viewSate)
-    }
-    
-    func spaceListViewModel(_ viewModel: SpaceListViewModelType, didSelectSpaceAt indexPath: IndexPath) {
-        self.selectedIndexPath = IndexPath(row: indexPath.row, section: indexPath.section)
-        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
     }
 }
 
@@ -205,9 +204,7 @@ extension SpaceListViewController: UITableViewDataSource {
 extension SpaceListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedIndexPath != indexPath {
-            self.viewModel.process(viewAction: .selectRow(at: indexPath))
-        }
+        self.viewModel.process(viewAction: .selectRow(at: indexPath, from: tableView.cellForRow(at: indexPath)))
     }
 }
 

@@ -22,5 +22,6 @@ import Foundation
 enum SpaceListViewState {
     case loading
     case loaded(_ sections: [SpaceListSection])
+    case selectionChanged(_ indexPath: IndexPath)
     case error(Error)
 }

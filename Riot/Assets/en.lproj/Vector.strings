@@ -1688,6 +1688,9 @@ Tap the + to start adding people.";
 "space_participants_action_remove" = "Remove from this space";
 "space_participants_action_ban" = "Ban from this space";
 
+"space_private_join_rule" = "Private space";
+"space_public_join_rule" = "Public space";
+
 // Mark: Avatar
 
 "space_avatar_view_accessibility_label" = "avatar";
