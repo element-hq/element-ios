@@ -1,3 +1,14 @@
+## Changes in 1.5.4 (2021-09-16)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.1)).
+
+🐛 Bugfixes
+
+- RoomBubbleCellData: Fix crash when creating a URL preview when the link didn't end up in the last bubble component. ([#4823](https://github.com/vector-im/element-ios/issues/4823))
+
+
 ## Changes in 1.5.3 (2021-09-09)
 
 ✨ Features
