@@ -19,7 +19,7 @@
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4zc-0W-jb8">
                             <rect key="frame" x="0.0" y="0.0" width="267" height="140"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="140" id="QpS-Ys-x5s"/>
+                                <constraint firstAttribute="width" secondItem="4zc-0W-jb8" secondAttribute="height" multiplier="267:140" id="0xq-yj-vni"/>
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n9x-Yn-0qQ" userLabel="Text Container">
@@ -109,6 +109,7 @@
                 <outlet property="siteNameLabelHeightConstraint" destination="vhD-hz-f58" id="Bz9-ub-9UA"/>
                 <outlet property="textContainerView" destination="n9x-Yn-0qQ" id="Zul-rd-vrp"/>
                 <outlet property="titleLabel" destination="IVX-5S-0kr" id="PRN-5g-HiO"/>
+                <outlet property="widthConstraint" destination="f2o-yq-NFO" id="bn0-wB-66e"/>
                 <outletCollection property="gestureRecognizers" destination="rSB-1V-Kev" appends="YES" id="OOJ-ft-VIj"/>
             </connections>
             <point key="canvasLocation" x="1852.8985507246377" y="14.397321428571427"/>
