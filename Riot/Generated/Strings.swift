@@ -4426,6 +4426,10 @@ internal enum VectorL10n {
   internal static var settingsLabsVoiceMessages: String { 
     return VectorL10n.tr("Vector", "settings_labs_voice_messages") 
   }
+  /// LINKS
+  internal static var settingsLinks: String { 
+    return VectorL10n.tr("Vector", "settings_links") 
+  }
   /// Mark all messages as read
   internal static var settingsMarkAllAsRead: String { 
     return VectorL10n.tr("Vector", "settings_mark_all_as_read") 

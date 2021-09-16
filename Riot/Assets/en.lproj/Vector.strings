@@ -451,6 +451,7 @@ Tap the + to start adding people.";
 
 "settings_user_settings" = "USER SETTINGS";
 "settings_sending_media" = "SENDING IMAGES AND VIDEOS";
+"settings_links" = "LINKS";
 "settings_notifications" = "NOTIFICATIONS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
