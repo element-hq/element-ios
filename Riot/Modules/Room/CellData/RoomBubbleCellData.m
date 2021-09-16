@@ -254,6 +254,14 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     return attributedTextMessage;
 }
 
+- (BOOL)hasLink
+{
+    // Only check the last bubble component as -addEvent:andRoomState: will break up
+    // the data that way, to always show a URL preview at the bottom of the cell.
+    MXKRoomBubbleComponent *lastComponent = bubbleComponents.lastObject;
+    return (lastComponent && lastComponent.link);
+}
+
 - (BOOL)hasNoDisplay
 {
     if (self.tag == RoomBubbleCellDataTagKeyVerificationNoDisplay)
@@ -1076,7 +1084,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     // Get the last bubble component as that contains the link.
     MXKRoomBubbleComponent *lastComponent = bubbleComponents.lastObject;
-    if (!lastComponent)
+    if (!lastComponent || !lastComponent.link)
     {
         return;
     }
