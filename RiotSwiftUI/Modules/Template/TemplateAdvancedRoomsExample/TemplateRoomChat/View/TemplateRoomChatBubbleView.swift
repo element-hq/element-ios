@@ -34,12 +34,12 @@ struct TemplateRoomChatBubbleView: View {
             AvatarImage(avatarData: bubble.sender.avatarData, size: .xSmall)
             VStack(alignment: .leading){
                 Text(bubble.sender.displayName ?? "")
-                    .foregroundColor(theme.colors.primaryContent)
+                    .foregroundColor(theme.displayNameColor(for: bubble.sender.id))
+                    .font(theme.fonts.bodySB)
                 ForEach(bubble.items) { item in
                     TemplateRoomChatBubbleContentView(bubbleItem: item)
                 }
             }
-            
             Spacer()
         }
         //add to a style

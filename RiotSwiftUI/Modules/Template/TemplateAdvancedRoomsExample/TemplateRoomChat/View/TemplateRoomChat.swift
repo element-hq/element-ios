@@ -37,13 +37,27 @@ struct TemplateRoomChat: View {
                 }
                 .frame(maxHeight: .infinity)
             } else {
-                ScrollView{
-                    LazyVStack {
-                        ForEach(viewModel.viewState.bubbles) { bubble in
-                            TemplateRoomChatBubbleView(bubble: bubble)
+                ScrollViewReader { reader in
+                    ScrollView{
+                        LazyVStack {
+                            ForEach(viewModel.viewState.bubbles) { bubble in
+                                TemplateRoomChatBubbleView(bubble: bubble)
+                                    .id(bubble.id)
+                            }
                         }
+                        .onAppear {
+                            // Start at the bottom
+                            reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
+                        }
+                        .onChange(of: itemCount) { _ in
+                            // When new items are added animate to the new items
+                            withAnimation {
+                                reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
+                            }
+                        }
+                        // When the scroll content takes less than the screen space align at the top
+                        .frame(maxHeight: .infinity, alignment: .top)
                     }
-                    .frame(maxHeight: .infinity, alignment: .top)
                 }
                 .frame(maxHeight: .infinity)
             }
@@ -59,6 +73,7 @@ struct TemplateRoomChat: View {
                     })
                 }
             }
+            // When displaying/hiding the send button slide it on/off from the right side
             .animation(.easeOut(duration: 0.25))
             .transition(.move(edge: .trailing))
             .padding(.horizontal)
@@ -77,6 +92,14 @@ struct TemplateRoomChat: View {
                 }
             }
         }
+    }
+    
+    private var itemCount: Int {
+        return viewModel.viewState
+            .bubbles
+            .map(\.items)
+            .map(\.count)
+            .reduce(0, +)
     }
 }
 

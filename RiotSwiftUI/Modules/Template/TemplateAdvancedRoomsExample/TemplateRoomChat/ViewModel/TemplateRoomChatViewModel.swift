@@ -43,14 +43,16 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     init(templateRoomChatService: TemplateRoomChatServiceProtocol) {
         self.templateRoomChatService = templateRoomChatService
         super.init(initialViewState: Self.defaultState(templateRoomChatService: templateRoomChatService))
-        templateRoomChatService.chatMessagesSubject
+        setupMessageObserving()
+    }
+    
+    private func setupMessageObserving() {
+        let messageActionPublisher = templateRoomChatService
+            .chatMessagesSubject
             .map(Self.makeBubbles(messages:))
             .map(TemplateRoomChatStateAction.updateBubbles)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] action in
-                self?.dispatch(action:action)
-            })
-            .store(in: &cancellables)
+            .eraseToAnyPublisher()
+        dispatch(actionPublisher: messageActionPublisher)
     }
     
     private static func defaultState(templateRoomChatService: TemplateRoomChatServiceProtocol) -> TemplateRoomChatViewState {
@@ -65,6 +67,7 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
         var bubbleMap = [String:TemplateRoomChatBubble]()
         
         messages.enumerated().forEach { i, message in
+            // New message content
             let messageItem = TemplateRoomChatBubbleItem(
                 id: message.id,
                 timestamp: message.timestamp,
@@ -77,6 +80,8 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
                let interveningTime =  lastBubble.items.last?.timestamp.timeIntervalSince(message.timestamp),
                abs(interveningTime) < Constants.maxTimeBeforeNewBubble
             {
+                // if the last bubble's last message was within
+                // the last 5 minutes append
                 let item = TemplateRoomChatBubbleItem(
                     id: message.id,
                     timestamp: message.timestamp,
@@ -85,6 +90,7 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
                 lastBubble.items.append(item)
                 bubbleMap[lastBubble.id] = lastBubble
             } else {
+                // else create a new bubble and add the message as the first item
                 let bubble = TemplateRoomChatBubble(
                     id: message.id,
                     sender: message.sender,

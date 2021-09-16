@@ -1,4 +1,4 @@
-//
+// 
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +14,14 @@
 // limitations under the License.
 //
 
+import Foundation
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct TemplateRoomChatBubbleMessage: View {
-
-    // MARK: - Properties
+extension ThemeSwiftUI {
     
-    // MARK: Private
-    
-    @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    // MARK: Public
-    
-    let messageContent: TemplateRoomChatBubbleMessageContent
-    
-    var body: some View {
-        Text(messageContent.body)
-            .foregroundColor(theme.colors.primaryContent)
-            .font(theme.fonts.body)
-    }
-}
-
-// MARK: - Previews
-
-@available(iOS 14.0, *)
-struct TemplateRoomChatBubbleMessage_Previews: PreviewProvider {
-    static var previews: some View {
-        EmptyView()
+    func displayNameColor(for userId: String) -> Color {
+        let senderNameColorIndex = Int(userId.vc_hashCode % Int32(colors.namesAndAvatars.count))
+        return colors.namesAndAvatars[senderNameColorIndex]
     }
 }

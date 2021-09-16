@@ -35,7 +35,6 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     private let eventFormatter: EventFormatter
     private var roomState: MXRoomState?
     private var roomListenerReference: Any?
-    private var usernameColorGenerator: UserNameColorGenerator()
     
     // MARK: Public
     private(set) var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>
@@ -47,7 +46,6 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     // MARK: - Setup
     
     init(room: MXRoom) {
-        )
         self.room = room
         self.eventFormatter = EventFormatter(matrixSession: room.mxSession)
         self.chatMessagesSubject = CurrentValueSubject([])
