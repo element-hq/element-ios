@@ -83,11 +83,11 @@ PODS:
   - MatrixSDK/JingleCallStack (0.20.1):
     - JitsiMeetSDK (= 3.5.0)
     - MatrixSDK/Core
-  - OLMKit (3.2.4):
-    - OLMKit/olmc (= 3.2.4)
-    - OLMKit/olmcpp (= 3.2.4)
-  - OLMKit/olmc (3.2.4)
-  - OLMKit/olmcpp (3.2.4)
+  - OLMKit (3.2.5):
+    - OLMKit/olmc (= 3.2.5)
+    - OLMKit/olmcpp (= 3.2.5)
+  - OLMKit/olmc (3.2.5)
+  - OLMKit/olmcpp (3.2.5)
   - ReadMoreTextView (3.0.1)
   - Realm (10.7.6):
     - Realm/Headers (= 10.7.6)
@@ -206,7 +206,7 @@ SPEC CHECKSUMS:
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
   MatrixKit: 7033539085bc94b6b8755fdab68ba6f7e6e79d56
   MatrixSDK: 37fbb6a650095387e908937b7411c4370599c90b
-  OLMKit: 2d73cd67d149b5c3e3a8eb8ecae93d0b429d8a02
+  OLMKit: 9fb4799c4a044dd2c06bda31ec31a12191ad30b5
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
   Reusable: 53a9acf5c536f229b31b5865782414b508252ddb
@@ -221,4 +221,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9478742d5244cae5112451119f9e004eae089967
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.10.1
