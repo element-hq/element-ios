@@ -38,7 +38,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var acceptButton: UIButton!
     @IBOutlet private weak var declineButton: UIButton!
-
+    @IBOutlet private weak var tableViewHeightConstraint: NSLayoutConstraint!
+    
     // MARK: Private
 
     private var viewModel: ServiceTermsModalScreenViewModelType!
@@ -78,16 +79,9 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.viewModel.process(viewAction: .load)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if view.frame.size.height < 568 {
-            navigationController?.setNavigationBarHidden(true, animated: animated)
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        if navigationController?.isNavigationBarHidden == true {
-            navigationController?.setNavigationBarHidden(false, animated: animated)
-        }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        tableViewHeightConstraint.constant = max(120, tableView.contentSize.height)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
