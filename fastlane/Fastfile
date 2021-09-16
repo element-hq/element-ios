@@ -108,9 +108,9 @@ platform :ios do
     end
   end
 
-  desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, develop otherwise"
+  desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, master otherwise"
   lane :point_dependencies_to_pending_releases do
-    edit_podfile(branch_pattern: "release/*/release")
+    edit_podfile(branch_pattern: "release/*/release", default_branch: "master")
   end
 
   desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
@@ -391,8 +391,9 @@ platform :ios do
     kit_slug = "matrix-org/matrix-ios-kit"
     sdk_slug = "matrix-org/matrix-ios-sdk"
 
-    kit_branch = find_branch(kit_slug, branch_pattern) || 'develop'
-    sdk_branch = find_branch(sdk_slug, branch_pattern) || 'develop'
+    default_branch = options[:default_branch] || 'develop'
+    kit_branch = find_branch(kit_slug, branch_pattern) || default_branch
+    sdk_branch = find_branch(sdk_slug, branch_pattern) || default_branch
 
     kit_spec = { git: 'https://github.com/matrix-org/matrix-ios-kit.git', branch: kit_branch }
     kit_podspec = { podspec: 'MatrixKit.edited.podspec' }
