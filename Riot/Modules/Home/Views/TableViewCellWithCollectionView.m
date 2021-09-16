@@ -19,6 +19,13 @@
 #import "Riot-Swift.h"
 
 static CGFloat const kEditionViewCornerRadius = 10.0;
+static CGFloat const kCollectionViewContentLeadingInset = 20.0;
+
+@interface TableViewCellWithCollectionView ()
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *collectionViewLeadingConstraint;
+
+@end
 
 @implementation TableViewCellWithCollectionView
 
@@ -30,6 +37,11 @@ static CGFloat const kEditionViewCornerRadius = 10.0;
     self.editionViewBottomConstraint.constant = 0;
     
     self.editionView.layer.masksToBounds = YES;
+    
+    // Prevent the horizontal scrolling from clashing with the UISplitViewController pan gesture
+    self.collectionView.clipsToBounds = NO;
+    self.collectionViewLeadingConstraint.constant = kCollectionViewContentLeadingInset;
+    self.collectionView.contentInset = UIEdgeInsetsMake(0.0, -kCollectionViewContentLeadingInset, 0.0, 0.0);
 }
 
 - (void)customizeTableViewCellRendering
