@@ -40,13 +40,14 @@ final class TemplateRoomListCoordinator: Coordinator {
     init(parameters: TemplateRoomListCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = TemplateRoomListViewModel(templateRoomListService: TemplateRoomListService(session: parameters.session))
-        let view = TemplateRoomList(viewModel: viewModel)
+        let view = TemplateRoomList(viewModel: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         templateRoomListViewModel = viewModel
         templateRoomListHostingController = VectorHostingController(rootView: view)
     }
     
     // MARK: - Public
+    
     func start() {
         templateRoomListViewModel.completion = { [weak self] result in
             guard let self = self else { return }

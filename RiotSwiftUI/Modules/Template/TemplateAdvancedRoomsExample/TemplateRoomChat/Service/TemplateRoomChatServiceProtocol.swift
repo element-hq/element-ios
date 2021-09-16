@@ -20,4 +20,6 @@ import Combine
 @available(iOS 14.0, *)
 protocol TemplateRoomChatServiceProtocol {
     var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never> { get }
+    var roomName: String? { get }
+    func send(message: String)
 }

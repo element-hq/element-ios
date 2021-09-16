@@ -37,27 +37,34 @@ struct TemplateRoomChat: View {
                 }
                 .frame(maxHeight: .infinity)
             } else {
-                LazyVStack {
-                    ForEach(viewModel.viewState.bubbles) { bubble in
-                        TemplateRoomChatBubbleView(bubble: bubble)
+                ScrollView{
+                    LazyVStack {
+                        ForEach(viewModel.viewState.bubbles) { bubble in
+                            TemplateRoomChatBubbleView(bubble: bubble)
+                        }
                     }
+                    .frame(maxHeight: .infinity, alignment: .top)
                 }
-                .frame(maxHeight: .infinity, alignment: .top)
+                .frame(maxHeight: .infinity)
             }
             
             HStack {
-                TextField(VectorL10n.roomMessageShortPlaceholder, text: $viewModel.bindings.messageInput)
+                TextField(VectorL10n.roomMessageShortPlaceholder, text: $viewModel.messageInput)
                     .textFieldStyle(BorderedInputFieldStyle())
-                Button(action: {
-
-                }, label: {
-                    Image(uiImage: Asset.Images.sendIcon.image)
-                })
+                if viewModel.viewState.sendButtonEnabled {
+                    Button(action: {
+                        viewModel.send(viewAction: .sendMessage)
+                    }, label: {
+                        Image(uiImage: Asset.Images.sendIcon.image)
+                    })
+                }
             }
+            .animation(.easeOut(duration: 0.25))
+            .transition(.move(edge: .trailing))
             .padding(.horizontal)
             
         }
-        .navigationTitle("Chat")
+        .navigationTitle(viewModel.viewState.roomName ?? "Chat")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button(VectorL10n.done) {

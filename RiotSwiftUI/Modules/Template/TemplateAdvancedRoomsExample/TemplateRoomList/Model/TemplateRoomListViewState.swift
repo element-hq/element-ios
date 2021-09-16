@@ -16,6 +16,6 @@
 
 import Foundation
 
-struct TemplateRoomListViewState {
+struct TemplateRoomListViewState: BindableState {
     var rooms: [TemplateRoomListRoom]
 }

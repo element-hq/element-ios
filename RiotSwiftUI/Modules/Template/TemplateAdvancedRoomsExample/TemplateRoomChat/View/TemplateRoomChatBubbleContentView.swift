@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct TemplateRoomChatBubbleItemView: View {
+struct TemplateRoomChatBubbleContentView: View {
 
     // MARK: - Properties
     
@@ -30,11 +30,11 @@ struct TemplateRoomChatBubbleItemView: View {
     let bubbleItem: TemplateRoomChatBubbleItem
     
     var body: some View {
-        switch bubbleItem {
-        case .message(let messageItem):
-            TemplateRoomChatBubbleMessage(messageItem: messageItem)
-        case .image(let imageItem):
-            TemplateRoomChatBubbleImage(imageItem: imageItem)
+        switch bubbleItem.content {
+        case .message(let messageContent):
+            TemplateRoomChatBubbleMessage(messageContent: messageContent)
+        case .image(let imageContent):
+            TemplateRoomChatBubbleImage(imageContent: imageContent)
         }
     }
 }

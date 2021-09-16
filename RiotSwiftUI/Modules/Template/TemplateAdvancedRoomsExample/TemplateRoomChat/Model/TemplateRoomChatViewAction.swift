@@ -17,6 +17,7 @@
 import Foundation
 
 enum TemplateRoomChatViewAction {
+    case sendMessage
     case cancel
     case done
 }

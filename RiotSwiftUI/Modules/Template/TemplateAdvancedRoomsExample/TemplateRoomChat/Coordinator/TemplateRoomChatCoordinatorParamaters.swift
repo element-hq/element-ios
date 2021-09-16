@@ -17,5 +17,5 @@
 import Foundation
 
 struct TemplateRoomChatCoordinatorParameters {
- let session: MXSession
+ let room: MXRoom
 }

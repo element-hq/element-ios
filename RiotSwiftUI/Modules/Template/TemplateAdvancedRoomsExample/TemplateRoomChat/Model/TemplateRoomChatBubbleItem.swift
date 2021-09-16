@@ -18,32 +18,30 @@ import UIKit
 
 
 struct TemplateRoomChatBubble {
-    var id: String
-    var senderAvatar: AvatarInputProtocol
-    var senderDisplayName: String?
+    let id: String
+    let sender: TemplateRoomChatMember
     var items: [TemplateRoomChatBubbleItem]
 }
 
 extension TemplateRoomChatBubble: Identifiable { }
 
-enum TemplateRoomChatBubbleItem {
-    var id: Self { self }
-    case message(TemplateRoomChatBubbleMessageItem)
-    case image(TemplateRoomChatBubbleImageItem)
+struct TemplateRoomChatBubbleItem {
+    let id: String
+    var timestamp: Date
+    var content: TemplateRoomChatBubbleItemContent
 }
 
-extension TemplateRoomChatBubbleItem: Hashable, Identifiable {}
+extension TemplateRoomChatBubbleItem: Identifiable { }
 
-struct TemplateRoomChatBubbleMessageItem {
-    var id: String
+enum TemplateRoomChatBubbleItemContent {
+    case message(TemplateRoomChatBubbleMessageContent)
+    case image(TemplateRoomChatBubbleImageContent)
+}
+
+struct TemplateRoomChatBubbleMessageContent {
     var body: String
 }
 
-extension TemplateRoomChatBubbleMessageItem: Hashable {}
-
-struct TemplateRoomChatBubbleImageItem {
-    var id: String
+struct TemplateRoomChatBubbleImageContent {
     var image: UIImage
 }
-
-extension TemplateRoomChatBubbleImageItem: Hashable {}

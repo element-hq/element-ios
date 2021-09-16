@@ -35,7 +35,7 @@ class ThemePublisher: ObservableObject {
     @Published private(set) var theme: ThemeSwiftUI
     
     static func configure(themeId: ThemeIdentifier) {
-        _shared = ThemePublisher(themeId: .light)
+        _shared = ThemePublisher(themeId: themeId)
     }
     
     init(themeId: ThemeIdentifier) {

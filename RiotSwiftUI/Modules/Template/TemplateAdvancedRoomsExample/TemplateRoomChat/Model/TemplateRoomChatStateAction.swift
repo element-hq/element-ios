@@ -17,5 +17,6 @@
 import Foundation
 
 enum TemplateRoomChatStateAction {
+    case clearMessageInput
     case updateBubbles([TemplateRoomChatBubble])
 }

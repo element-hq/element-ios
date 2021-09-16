@@ -27,7 +27,7 @@ struct TemplateRoomList: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: TemplateRoomListViewModel
+    @ObservedObject var viewModel: TemplateRoomListViewModelType.Context
     
     var body: some View {
         listContent
@@ -35,12 +35,12 @@ struct TemplateRoomList: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(VectorL10n.done) {
-                        viewModel.process(viewAction: .cancel)
+                        viewModel.send(viewAction: .cancel)
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button(VectorL10n.cancel) {
-                        viewModel.process(viewAction: .cancel)
+                        viewModel.send(viewAction: .cancel)
                     }
                 }
             }
@@ -66,6 +66,8 @@ struct TemplateRoomList: View {
 @available(iOS 14.0, *)
 struct TemplateRoomList_Previews: PreviewProvider {
     static var previews: some View {
-        MockTemplateRoomListScreenState.screenGroup(addNavigation: true)
+        MockTemplateRoomListScreenState
+            .screenGroup(themeId: .dark, addNavigation: true)
+        
     }
 }

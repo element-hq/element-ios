@@ -27,7 +27,7 @@ struct TemplateRoomChatBubbleImage: View {
     
     // MARK: Public
     
-    let imageItem: TemplateRoomChatBubbleImageItem
+    let imageContent: TemplateRoomChatBubbleImageContent
     
     var body: some View {
         EmptyView()

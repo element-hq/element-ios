@@ -17,24 +17,29 @@
 import SwiftUI
 import Combine
     
+@available(iOS 14, *)
+typealias TemplateRoomListViewModelType = StateStoreViewModel<TemplateRoomListViewState,
+                                                              TemplateRoomListStateAction,
+                                                              TemplateRoomListViewAction>
 @available(iOS 14.0, *)
-class TemplateRoomListViewModel: ObservableObject, TemplateRoomListViewModelProtocol {
+class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomListViewModelProtocol {
     
     // MARK: - Properties
     
     // MARK: Private
+    
     private let templateRoomListService: TemplateRoomListServiceProtocol
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
-    @Published private(set) var viewState: TemplateRoomListViewState
     
     var completion: ((TemplateRoomListViewModelResult) -> Void)?
     
     // MARK: - Setup
-    init(templateRoomListService: TemplateRoomListServiceProtocol, initialState: TemplateRoomListViewState? = nil) {
+    
+    init(templateRoomListService: TemplateRoomListServiceProtocol) {
         self.templateRoomListService = templateRoomListService
-        self.viewState = initialState ?? Self.defaultState(templateRoomListService: templateRoomListService)
+        
+        super.init(initialViewState: Self.defaultState(templateRoomListService: templateRoomListService))
         
         templateRoomListService.roomsSubject
             .map(TemplateRoomListStateAction.updateRooms)
@@ -50,7 +55,8 @@ class TemplateRoomListViewModel: ObservableObject, TemplateRoomListViewModelProt
     }
     
     // MARK: - Public
-    func process(viewAction: TemplateRoomListViewAction) {
+    
+    override func process(viewAction: TemplateRoomListViewAction) {
         switch viewAction {
         case .cancel:
             cancel()
@@ -59,24 +65,15 @@ class TemplateRoomListViewModel: ObservableObject, TemplateRoomListViewModelProt
         }
     }
     
-    // MARK: - Private
-    /**
-     Send state actions to mutate the state.
-     */
-    private func dispatch(action: TemplateRoomListStateAction) {
-        Self.reducer(state: &self.viewState, action: action)
-    }
-    
-    /**
-     A redux style reducer, all modifications to state happen here. Receives a state and a state action and produces a new state.
-     */
-    private static func reducer(state: inout TemplateRoomListViewState, action: TemplateRoomListStateAction) {
+    override class func reducer(state: inout TemplateRoomListViewState, action: TemplateRoomListStateAction) {
         switch action {
         case .updateRooms(let rooms):
             state.rooms = rooms
         }
         UILog.debug("[TemplateRoomListViewModel] reducer with action \(action) produced state: \(state)")
     }
+    
+    // MARK: - Private
     
     private func done() {
         completion?(.done)

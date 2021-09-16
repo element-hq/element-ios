@@ -20,6 +20,7 @@ struct TemplateRoomChatMessage {
     let id: String
     let body: String
     let sender: TemplateRoomChatMember
+    let timestamp: Date
 }
 
 extension TemplateRoomChatMessage: Identifiable {}

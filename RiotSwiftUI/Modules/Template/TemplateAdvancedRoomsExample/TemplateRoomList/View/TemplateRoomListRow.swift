@@ -34,6 +34,7 @@ struct TemplateRoomListRow: View {
         HStack{
             AvatarImage(avatarData: avatar, size: .medium)
             Text(displayName ?? "")
+                .foregroundColor(theme.colors.primaryContent)
             Spacer()
         }
         //add to a style

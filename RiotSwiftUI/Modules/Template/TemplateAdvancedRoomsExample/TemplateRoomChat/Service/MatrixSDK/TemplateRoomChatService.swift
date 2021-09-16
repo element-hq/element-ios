@@ -17,6 +17,13 @@
 import Foundation
 import Combine
 
+
+enum TemplateRoomChatRoomIntializationStatus{
+    case notInitialized
+    case initialized
+    case failedToInitialize
+}
+
 @available(iOS 14.0, *)
 class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     
@@ -26,53 +33,108 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     
     private let room: MXRoom
     private let eventFormatter: EventFormatter
-    private var listenerReference: Any?
+    private var roomState: MXRoomState?
+    private var roomListenerReference: Any?
+    private var usernameColorGenerator: UserNameColorGenerator()
     
     // MARK: Public
     private(set) var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>
+    private(set) var roomInitialized: CurrentValueSubject<TemplateRoomChatRoomIntializationStatus, Never>
     
+    var roomName: String? {
+        self.room.summary.displayname
+    }
     // MARK: - Setup
     
     init(room: MXRoom) {
+        )
         self.room = room
         self.eventFormatter = EventFormatter(matrixSession: room.mxSession)
-        let batch = room.enumeratorForStoredMessages.nextEventsBatch(50)
-        let messageBatch = chatMessages(from: batch ?? [])
-        chatMessagesSubject = CurrentValueSubject(messageBatch)
-    }
-    
-    
-    func senderForMessage(event: MXEvent) -> TemplateRoomChatMember? {
-        guard let sender = event.sender else {
-            return nil
-        }
-        let displayName = eventFormatter.senderDisplayName(for: event, with: room.dangerousSyncState)
-        let avatarUrl = eventFormatter.senderAvatarUrl(for: event, with: room.dangerousSyncState)
-        return TemplateRoomChatMember(id: sender, avatarUrl: avatarUrl, displayName: displayName)
-    }
-    
-    private func chatMessages(from events: [MXEvent]) -> [TemplateRoomChatMessage] {
+        self.chatMessagesSubject = CurrentValueSubject([])
+        self.roomInitialized = CurrentValueSubject(.notInitialized)
         
-        eve
+        initalizeRoom()
+    }
+    
+    deinit {
+        guard let reference = roomListenerReference else { return }
+        room.removeListener(reference)
+    }
+    
+    // MARK: Public
+    func send(message: String) {
+        var localEcho: MXEvent? = nil
+        room.sendTextMessage(message, localEcho: &localEcho, completion: { _ in }) 
+    }
+    
+    // MARK: Private
+    
+    private func initalizeRoom(){
+        room.state { [weak self] roomState in
+            guard let self = self else { return }
+            if let roomState = roomState {
+                self.roomState = roomState
+                self.roomInitialized.value = .initialized
+                self.loadInitialMessages()
+                self.startListeningToRoomEvents()
+            } else {
+                self.roomInitialized.value = .failedToInitialize
+            }
+        }
+    }
+    
+    private func loadInitialMessages() {
+        let batch = room.enumeratorForStoredMessages.nextEventsBatch(200)
+        let messageBatch = self.mapChatMessages(from: batch ?? [])
+        self.chatMessagesSubject.value = messageBatch
+    }
+    
+    private func startListeningToRoomEvents(){
+        roomListenerReference = room.listen { [weak self] event, directionId, roomState in
+            let direction = MXTimelineDirection(identifer: directionId)
+            guard let self = self,
+                  let event = event else { return }
+            if let roomState = roomState {
+                self.roomState = roomState
+            }
+            if direction == .forwards &&  event.type == kMXEventTypeStringRoomMessage {
+                self.appendNewMessage(event: event)
+            }
+        }
+    }
+    
+    private func mapChatMessages(from events: [MXEvent]) -> [TemplateRoomChatMessage] {
         return events
             .filter({ event in
-            event.type == kMXEventTypeStringRoomMessage
-                && event.content["msgtype"] as? String == kMXMessageTypeText
+                event.type == kMXEventTypeStringRoomMessage
+                    && event.content["msgtype"] as? String == kMXMessageTypeText
             })
             .compactMap({ event -> TemplateRoomChatMessage?  in
                 guard let eventId = event.eventId,
                       let eventBody = event.content["body"] as? String,
                       let sender = senderForMessage(event: event)
-                      else { return nil }
-                return TemplateRoomChatMessage(id: eventId,
-                                        body: eventBody,
-                                        sender: sender)
+                else { return nil }
+                
+                return TemplateRoomChatMessage(
+                    id: eventId,
+                    body: eventBody,
+                    sender: sender,
+                    timestamp: Date(timeIntervalSince1970: TimeInterval(event.originServerTs / 1000))
+                )
             })
     }
-
-
-    deinit {
-//        guard let reference = listenerReference else { return }
+    
+    private func senderForMessage(event: MXEvent) -> TemplateRoomChatMember? {
+        guard let sender = event.sender, let roomState = roomState else {
+            return nil
+        }
+        let displayName = eventFormatter.senderDisplayName(for: event, with: roomState)
+        let avatarUrl = eventFormatter.senderAvatarUrl(for: event, with: roomState)
+        return TemplateRoomChatMember(id: sender, avatarUrl: avatarUrl, displayName: displayName)
     }
-
+    
+    private func appendNewMessage(event: MXEvent) {
+        chatMessagesSubject.value += mapChatMessages(from: [event])
+    }
+    
 }

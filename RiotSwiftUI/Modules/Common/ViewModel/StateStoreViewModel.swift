@@ -34,6 +34,7 @@ import Combine
 /// It provides a nice layer of consistency and also safety. As we are not passing the `ViewModel` to the view directly, shortcuts/hacks
 /// can't be made into the `ViewModel`.
 @available(iOS 14, *)
+@dynamicMemberLookup
 class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
     // MARK: - Properties
 
@@ -44,23 +45,20 @@ class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
 
     // MARK: Public
 
-    /// Set-able/Bindable `Published` property for the bindable portion of the `ViewState`
-    @Published var bindings: ViewState.BindStateType
     /// Get-able/Observable `Published` property for the `ViewState`
     @Published fileprivate(set) var viewState: ViewState
 
+    /// Set-able/Bindable access to the bindable state.
+    subscript<T>(dynamicMember keyPath: WritableKeyPath<ViewState.BindStateType, T>) -> T {
+        get { viewState.bindings[keyPath: keyPath] }
+        set { viewState.bindings[keyPath: keyPath] = newValue }
+    }
+    
     // MARK: Setup
 
     init(initialViewState: ViewState) {
-        self.bindings = initialViewState.bindings
         self.viewActions = PassthroughSubject()
         self.viewState = initialViewState
-        if !(initialViewState.bindings is Void) {
-            // If we have bindable state defined, forward its updates on to the `ViewState`
-            self.$bindings
-                .weakAssign(to: \.viewState.bindings, on: self)
-                .store(in: &cancellables)
-        }
     }
 
     // MARK: Public
@@ -85,12 +83,8 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
 
     // MARK: - Properties
 
-    // MARK: Private
-
-    private let state: CurrentValueSubject<State, Never>
-
     // MARK: Public
-
+    
     /// For storing subscription references.
     ///
     /// Left as public for `ViewModel` implementations convenience.
@@ -98,17 +92,16 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
 
     /// Constrained interface for passing to Views.
     var context: Context
-
+    
+    /// State can be read  within the 'ViewModel' but not modified outside of the reducer.
+    var state: State {
+        context.viewState
+    }
+    
     // MARK: Setup
 
     init(initialViewState: State) {
         self.context = Context(initialViewState: initialViewState)
-        self.state = CurrentValueSubject(initialViewState)
-        // Connect the state to context viewState, that view uses for observing (but not modifying directly) the state.
-        self.state
-            .weakAssign(to: \.context.viewState, on: self)
-            .store(in: &cancellables)
-        // Receive events from the view and pass on to the `ViewModel` for processing.
         self.context.viewActions.sink { [weak self] action in
             guard let self = self else { return }
             self.process(viewAction: action)
@@ -119,7 +112,7 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
     /// Send state actions to modify the state within the reducer.
     /// - Parameter action: The state action to send to the reducer.
     func dispatch(action: StateAction) {
-        Self.reducer(state: &state.value, action: action)
+        Self.reducer(state: &context.viewState, action: action)
     }
 
     /// Send state actions from a publisher to modify the state within the reducer.
@@ -127,7 +120,7 @@ class StateStoreViewModel<State: BindableState, StateAction, ViewAction> {
     func dispatch(actionPublisher: AnyPublisher<StateAction, Never>) {
         actionPublisher.sink { [weak self] action in
             guard let self = self else { return }
-            Self.reducer(state: &self.state.value, action: action)
+            Self.reducer(state: &self.context.viewState, action: action)
         }
         .store(in: &cancellables)
     }

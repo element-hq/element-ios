@@ -17,6 +17,14 @@
 import Foundation
 
 struct TemplateRoomChatViewState: BindableState {
+    let roomName: String?
     var bubbles: [TemplateRoomChatBubble]
     var bindings: TemplateRoomChatViewModelBindings
 }
+
+extension TemplateRoomChatViewState {
+    var sendButtonEnabled: Bool {
+        !bindings.messageInput.isEmpty
+    }
+}
+

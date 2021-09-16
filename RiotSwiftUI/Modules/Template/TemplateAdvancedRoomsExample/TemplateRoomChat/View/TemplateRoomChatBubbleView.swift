@@ -30,12 +30,13 @@ struct TemplateRoomChatBubbleView: View {
     let bubble: TemplateRoomChatBubble
     
     var body: some View {
-        HStack{
-            AvatarImage(avatarData: bubble.senderAvatar, size: .xSmall)
+        HStack(alignment: .top){
+            AvatarImage(avatarData: bubble.sender.avatarData, size: .xSmall)
             VStack(alignment: .leading){
-                Text(bubble.senderDisplayName ?? "")
+                Text(bubble.sender.displayName ?? "")
+                    .foregroundColor(theme.colors.primaryContent)
                 ForEach(bubble.items) { item in
-                    TemplateRoomChatBubbleItemView(bubbleItem: item)
+                    TemplateRoomChatBubbleContentView(bubbleItem: item)
                 }
             }
             
@@ -54,9 +55,8 @@ struct TemplateRoomChatBubbleView: View {
 struct TemplateRoomChatBubbleView_Previews: PreviewProvider {
     static let bubble = TemplateRoomChatBubble(
         id: "111",
-        senderAvatar: MockAvatarInput.example,
-        senderDisplayName: "Alice",
-        items: [.message(TemplateRoomChatBubbleMessageItem(id: "222", body: "Hello world! 🌎"))]
+        sender: MockTemplateRoomChatService.mockMessages[0].sender,
+        items: []
     )
     static var previews: some View {
         TemplateRoomChatBubbleView(bubble: bubble)

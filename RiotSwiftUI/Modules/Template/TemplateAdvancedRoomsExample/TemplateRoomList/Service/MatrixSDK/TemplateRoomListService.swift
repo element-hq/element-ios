@@ -47,6 +47,6 @@ class TemplateRoomListService: TemplateRoomListServiceProtocol {
 fileprivate extension TemplateRoomListRoom {
     
     init(mxRoom: MXRoom) {
-        TemplateRoomListRoom(id: mxRoom.roomId, avatar: mxRoom.summary.avatar, displayName: mxRoom.summary.displayname)
+        self.init(id: mxRoom.roomId, avatar: mxRoom.avatarData, displayName: mxRoom.summary.displayname)
     }
 }

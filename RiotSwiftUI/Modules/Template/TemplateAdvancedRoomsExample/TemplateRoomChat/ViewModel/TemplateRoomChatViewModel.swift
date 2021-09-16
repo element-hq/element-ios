@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,24 +16,30 @@
 
 import SwiftUI
 import Combine
-    
+
 @available(iOS 14, *)
 typealias TemplateRoomChatViewModelType = StateStoreViewModel<TemplateRoomChatViewState,
-                                                                 TemplateRoomChatStateAction,
-                                                                 TemplateRoomChatViewAction>
+                                                              TemplateRoomChatStateAction,
+                                                              TemplateRoomChatViewAction>
 
 @available(iOS 14, *)
 class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChatViewModelProtocol {
     
+    enum Constants {
+        static let maxTimeBeforeNewBubble: TimeInterval = 5*60
+    }
     // MARK: - Properties
     
     // MARK: Private
+    
     private let templateRoomChatService: TemplateRoomChatServiceProtocol
     
     // MARK: Public
+    
     var completion: ((TemplateRoomChatViewModelResult) -> Void)?
     
     // MARK: - Setup
+    
     init(templateRoomChatService: TemplateRoomChatServiceProtocol) {
         self.templateRoomChatService = templateRoomChatService
         super.init(initialViewState: Self.defaultState(templateRoomChatService: templateRoomChatService))
@@ -50,33 +56,39 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     private static func defaultState(templateRoomChatService: TemplateRoomChatServiceProtocol) -> TemplateRoomChatViewState {
         let bubbles = makeBubbles(messages: templateRoomChatService.chatMessagesSubject.value)
         let bindings = TemplateRoomChatViewModelBindings(messageInput: "")
-        return TemplateRoomChatViewState(bubbles: bubbles, bindings: bindings)
+        return TemplateRoomChatViewState(roomName: templateRoomChatService.roomName, bubbles: bubbles, bindings: bindings)
     }
     
     private static func makeBubbles(messages: [TemplateRoomChatMessage]) -> [TemplateRoomChatBubble] {
         
         var bubbleOrder = [String]()
         var bubbleMap = [String:TemplateRoomChatBubble]()
+        
         messages.enumerated().forEach { i, message in
+            let messageItem = TemplateRoomChatBubbleItem(
+                id: message.id,
+                timestamp: message.timestamp,
+                content: .message(TemplateRoomChatBubbleMessageContent(body: message.body))
+            )
             if i > 0,
-                messages[i-1].sender.id == message.sender.id,
-                var existingBubble = bubbleMap[messages[i-1].id] {
-                let messageItem = TemplateRoomChatBubbleMessageItem(
+               let lastBubbleId = bubbleOrder.last,
+               var lastBubble = bubbleMap[lastBubbleId],
+               lastBubble.sender.id == message.sender.id,
+               let interveningTime =  lastBubble.items.last?.timestamp.timeIntervalSince(message.timestamp),
+               abs(interveningTime) < Constants.maxTimeBeforeNewBubble
+            {
+                let item = TemplateRoomChatBubbleItem(
                     id: message.id,
-                    body: message.body
+                    timestamp: message.timestamp,
+                    content: .message(TemplateRoomChatBubbleMessageContent(body: message.body))
                 )
-                existingBubble.items.append(.message(messageItem))
-                bubbleMap[existingBubble.id] = existingBubble
+                lastBubble.items.append(item)
+                bubbleMap[lastBubble.id] = lastBubble
             } else {
-                let messageItem = TemplateRoomChatBubbleMessageItem(
-                    id: message.id,
-                    body: message.body
-                )
                 let bubble = TemplateRoomChatBubble(
                     id: message.id,
-                    senderAvatar: message.sender.avatarData,
-                    senderDisplayName:  message.sender.displayName,
-                    items: [.message(messageItem)]
+                    sender: message.sender,
+                    items: [messageItem]
                 )
                 bubbleOrder.append(bubble.id)
                 bubbleMap[bubble.id] = bubble
@@ -86,25 +98,30 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     }
     
     // MARK: - Public
+    
     override func process(viewAction: TemplateRoomChatViewAction) {
         switch viewAction {
         case .cancel:
             cancel()
         case .done:
             done()
+        case .sendMessage:
+            templateRoomChatService.send(message: state.bindings.messageInput)
+            dispatch(action: .clearMessageInput)
         }
     }
     
-    /**
-     A redux style reducer, all modifications to state happen here. Receives a state and a state action and produces a new state.
-     */
     override class func reducer(state: inout TemplateRoomChatViewState, action: TemplateRoomChatStateAction) {
         switch action {
+        case .clearMessageInput:
+            state.bindings.messageInput = ""
         case .updateBubbles(let bubbles):
             state.bubbles = bubbles
         }
         UILog.debug("[TemplateRoomChatViewModel] reducer with action \(action) produced state: \(state)")
     }
+    
+    // MARK: - Private
     
     private func done() {
         completion?(.done)
