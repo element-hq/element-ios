@@ -35,6 +35,11 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         static let width: CGFloat = 267.0
         /// A reduced width available for use on 4" devices.
         static let reducedWidth: CGFloat = 230
+        
+        /// The availableWidth value that the XIB file is designed against.
+        static let defaultAvailableWidth: CGFloat = 375
+        /// The threshold value for available width that triggers the view to use a reducedWidth
+        static let reducedWidthThreshold: CGFloat = 320
     }
     
     // MARK: - Properties
@@ -52,10 +57,10 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     
     /// The total width available for the view to layout.
     /// Note: The view's width will be the largest `Constant` that fits this size.
-    var availableWidth: CGFloat = 375 {
+    var availableWidth: CGFloat = Constants.defaultAvailableWidth {
         didSet {
             // TODO: adjust values when using RoomBubbleCellData's maxTextViewWidth property
-            widthConstraint.constant = availableWidth <= 320 ? Constants.reducedWidth : Constants.width
+            widthConstraint.constant = availableWidth <= Constants.reducedWidthThreshold ? Constants.reducedWidth : Constants.width
         }
     }
     
