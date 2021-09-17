@@ -152,7 +152,7 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
 - (void)roomViewController:(nonnull RoomViewController *)roomViewController showCompleteSecurityForSession:(MXSession*)session;
 
 /**
- Tells the delegate that the user leaved the room.
+ Tells the delegate that the user left the room.
  
  @param roomViewController the `RoomViewController` instance.
  */
