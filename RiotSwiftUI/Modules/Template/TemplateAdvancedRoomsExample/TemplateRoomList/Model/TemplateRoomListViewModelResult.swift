@@ -17,6 +17,6 @@
 import Foundation
 
 enum TemplateRoomListViewModelResult {
-    case cancel
+    case didSelectRoom(String)
     case done
 }

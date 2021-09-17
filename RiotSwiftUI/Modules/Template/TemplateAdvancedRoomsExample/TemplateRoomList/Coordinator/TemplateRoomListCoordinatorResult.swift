@@ -16,7 +16,7 @@
 
 import Foundation
 
-enum TemplateRoomChatViewAction {
-    case sendMessage
+enum TemplateRoomListCoordinatorResult {
+    case didSelectRoom(String)
     case done
 }

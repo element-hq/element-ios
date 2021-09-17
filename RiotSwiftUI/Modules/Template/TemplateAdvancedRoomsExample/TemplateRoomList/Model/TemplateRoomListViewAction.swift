@@ -17,6 +17,6 @@
 import Foundation
 
 enum TemplateRoomListViewAction {
-    case cancel
     case done
+    case didSelectRoom(String)
 }

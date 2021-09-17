@@ -35,11 +35,6 @@ class TemplateRoomListService: TemplateRoomListServiceProtocol {
     init(session: MXSession) {
         self.session = session
         self.roomsSubject = CurrentValueSubject(session.rooms.map(TemplateRoomListRoom.init(mxRoom:)))
-//        self.listenerReference = setupPresenceListener()
-    }
-
-    deinit {
-//        guard let reference = listenerReference else { return }
     }
 
 }

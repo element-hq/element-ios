@@ -58,8 +58,8 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
     
     override func process(viewAction: TemplateRoomListViewAction) {
         switch viewAction {
-        case .cancel:
-            cancel()
+        case .didSelectRoom(let roomId):
+            didSelect(by: roomId)
         case .done:
             done()
         }
@@ -79,7 +79,7 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
         completion?(.done)
     }
     
-    private func cancel() {
-        completion?(.cancel)
+    private func didSelect(by roomId: String) {
+        completion?(.didSelectRoom(roomId))
     }
 }

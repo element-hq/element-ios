@@ -28,6 +28,7 @@ struct TemplateRoomChat: View {
     // MARK: Public
     
     @ObservedObject var viewModel: TemplateRoomChatViewModel.Context
+    var presentedModally = false
     
     var body: some View {
         VStack {
@@ -76,23 +77,26 @@ struct TemplateRoomChat: View {
             // When displaying/hiding the send button slide it on/off from the right side
             .animation(.easeOut(duration: 0.25))
             .transition(.move(edge: .trailing))
-            .padding(.horizontal)
+            .padding()
             
         }
         .navigationTitle(viewModel.viewState.roomName ?? "Chat")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button(VectorL10n.done) {
-                    viewModel.send(viewAction: .cancel)
-                }
-            }
-            ToolbarItem(placement: .cancellationAction) {
-                Button(VectorL10n.cancel) {
-                    viewModel.send(viewAction: .cancel)
-                }
+                trailingToolBarButton
             }
         }
     }
+    
+    @ViewBuilder
+    private var trailingToolBarButton: some View {
+        if presentedModally {
+            Button(VectorL10n.done) {
+                viewModel.send(viewAction: .done)
+            }
+        }
+    }
+    
     
     private var itemCount: Int {
         return viewModel.viewState

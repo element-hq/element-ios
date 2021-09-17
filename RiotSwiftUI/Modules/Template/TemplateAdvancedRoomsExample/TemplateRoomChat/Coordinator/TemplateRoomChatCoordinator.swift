@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
-final class TemplateRoomChatCoordinator: Coordinator {
+final class TemplateRoomChatCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
@@ -51,7 +51,7 @@ final class TemplateRoomChatCoordinator: Coordinator {
         templateRoomChatViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .cancel, .done:
+            case .done:
                 self.completion?()
             break
             }

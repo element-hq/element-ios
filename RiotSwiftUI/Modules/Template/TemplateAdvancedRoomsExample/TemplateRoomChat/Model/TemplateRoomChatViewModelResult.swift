@@ -17,6 +17,5 @@
 import Foundation
 
 enum TemplateRoomChatViewModelResult {
-    case cancel
     case done
 }

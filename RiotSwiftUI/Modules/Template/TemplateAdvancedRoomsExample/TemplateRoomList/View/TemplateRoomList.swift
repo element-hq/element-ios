@@ -35,12 +35,7 @@ struct TemplateRoomList: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(VectorL10n.done) {
-                        viewModel.send(viewAction: .cancel)
-                    }
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(VectorL10n.cancel) {
-                        viewModel.send(viewAction: .cancel)
+                        viewModel.send(viewAction: .done)
                     }
                 }
             }
@@ -51,12 +46,18 @@ struct TemplateRoomList: View {
         if viewModel.viewState.rooms.isEmpty {
             Text("No Rooms")
         } else {
-            LazyVStack(spacing: 0) {
-                ForEach(viewModel.viewState.rooms) { room in
-                    TemplateRoomListRow(avatar: room.avatar, displayName: room.displayName)
+            ScrollView{
+                LazyVStack(spacing: 0) {
+                    ForEach(viewModel.viewState.rooms) { room in
+                        Button {
+                            viewModel.send(viewAction: .didSelectRoom(room.id))
+                        } label: {
+                            TemplateRoomListRow(avatar: room.avatar, displayName: room.displayName)
+                        }
+                    }
                 }
+                .frame(maxHeight: .infinity, alignment: .top)
             }
-            .frame(maxHeight: .infinity, alignment: .top)
         }
     }
 }
@@ -67,7 +68,7 @@ struct TemplateRoomList: View {
 struct TemplateRoomList_Previews: PreviewProvider {
     static var previews: some View {
         MockTemplateRoomListScreenState
-            .screenGroup(themeId: .dark, addNavigation: true)
+            .screenGroup(addNavigation: true)
         
     }
 }

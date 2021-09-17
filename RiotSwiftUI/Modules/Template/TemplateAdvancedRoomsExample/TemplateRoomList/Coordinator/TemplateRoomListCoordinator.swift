@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
-final class TemplateRoomListCoordinator: Coordinator {
+final class TemplateRoomListCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
@@ -32,7 +32,7 @@ final class TemplateRoomListCoordinator: Coordinator {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: (() -> Void)?
+    var completion: ((TemplateRoomListCoordinatorResult) -> Void)?
     
     // MARK: - Setup
     
@@ -52,8 +52,10 @@ final class TemplateRoomListCoordinator: Coordinator {
         templateRoomListViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .cancel, .done:
-                self.completion?()
+            case .didSelectRoom(let roomId):
+                self.completion?(.didSelectRoom(roomId))
+            case .done:
+                self.completion?(.done)
             break
             }
         }

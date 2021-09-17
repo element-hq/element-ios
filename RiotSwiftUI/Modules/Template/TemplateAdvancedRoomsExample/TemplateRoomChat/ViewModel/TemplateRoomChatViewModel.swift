@@ -107,8 +107,6 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     
     override func process(viewAction: TemplateRoomChatViewAction) {
         switch viewAction {
-        case .cancel:
-            cancel()
         case .done:
             done()
         case .sendMessage:
@@ -131,9 +129,5 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     
     private func done() {
         completion?(.done)
-    }
-    
-    private func cancel() {
-        completion?(.cancel)
     }
 }
