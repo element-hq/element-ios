@@ -181,7 +181,7 @@ handleUniversalLinkFragment:(NSString*)fragment
  Process universal link.
 
  @param roomViewController the `RoomViewController` instance.
- @param universalLinkURL the unprocessed the universal link URL (optional).
+ @param universalLinkURL the universal link URL.
  @return YES in case of processing success.
  */
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
