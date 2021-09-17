@@ -388,6 +388,8 @@ const CGFloat kTypingCellHeight = 24;
                         [bubbleCell.tmpSubviews addObject:urlPreviewView];
                         
                         urlPreviewView.translatesAutoresizingMaskIntoConstraints = NO;
+                        // TODO: Use cellData.maxTextViewWidth when the view height is part of RoomBubbleCellData's additional height.
+                        urlPreviewView.availableWidth = tableView.contentSize.width;
                         [bubbleCell.contentView addSubview:urlPreviewView];
                         
                         CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;

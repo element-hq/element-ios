@@ -33,6 +33,13 @@ class URLPreviewView: UIView, NibLoadable, Themable {
     private enum Constants {
         /// The fixed width of the preview view.
         static let width: CGFloat = 267.0
+        /// A reduced width available for use on 4" devices.
+        static let reducedWidth: CGFloat = 230
+        
+        /// The availableWidth value that the XIB file is designed against.
+        static let defaultAvailableWidth: CGFloat = 375
+        /// The threshold value for available width that triggers the view to use a reducedWidth
+        static let reducedWidthThreshold: CGFloat = 320
     }
     
     // MARK: - Properties
@@ -48,22 +55,33 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         }
     }
     
+    /// The total width available for the view to layout.
+    /// Note: The view's width will be the largest `Constant` that fits this size.
+    var availableWidth: CGFloat = Constants.defaultAvailableWidth {
+        didSet {
+            // TODO: adjust values when using RoomBubbleCellData's maxTextViewWidth property
+            widthConstraint.constant = availableWidth <= Constants.reducedWidthThreshold ? Constants.reducedWidth : Constants.width
+        }
+    }
+    
     weak var delegate: URLPreviewViewDelegate?
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var closeButton: UIButton!
     
-    @IBOutlet weak var textContainerView: UIView!
-    @IBOutlet weak var siteNameLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var textContainerView: UIView!
+    @IBOutlet private weak var siteNameLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
     
-    @IBOutlet weak var loadingView: UIView!
-    @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var loadingView: UIView!
+    @IBOutlet private weak var loadingActivityIndicator: UIActivityIndicatorView!
     
+    // The constraint that determines the view's width
+    @IBOutlet private weak var widthConstraint: NSLayoutConstraint!
     // Matches the label's height with the close button.
     // Use a strong reference to keep it around when deactivating.
-    @IBOutlet var siteNameLabelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var siteNameLabelHeightConstraint: NSLayoutConstraint!
     
     /// Returns true when `titleLabel` has a non-empty string.
     private var hasTitle: Bool {
@@ -114,8 +132,9 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         closeButton.setImage(closeButtonAsset.image, for: .normal)
     }
     
-    static func contentViewHeight(for preview: URLPreviewData?) -> CGFloat {
-        sizingView.frame = CGRect(x: 0, y: 0, width: Constants.width, height: 1)
+    static func contentViewHeight(for preview: URLPreviewData?, fitting maxWidth: CGFloat) -> CGFloat {
+        sizingView.availableWidth = maxWidth
+        sizingView.frame = CGRect(x: 0, y: 0, width: sizingView.widthConstraint.constant, height: 1)
         
         // Call render directly to avoid storing the preview data in the sizing view
         if let preview = preview {
@@ -127,7 +146,7 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         sizingView.setNeedsLayout()
         sizingView.layoutIfNeeded()
         
-        let fittingSize = CGSize(width: Constants.width, height: UIView.layoutFittingCompressedSize.height)
+        let fittingSize = CGSize(width: sizingView.widthConstraint.constant, height: UIView.layoutFittingCompressedSize.height)
         let layoutSize = sizingView.systemLayoutSizeFitting(fittingSize)
         
         return layoutSize.height

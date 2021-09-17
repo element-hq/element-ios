@@ -160,8 +160,7 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenAllowFilesAction", defaultValue: BuildSettings.roomScreenAllowFilesAction, storage: defaults)
     var roomScreenAllowFilesAction
     
-    // labs prefix added to the key can be dropped when default value becomes true
-    @UserDefault(key: "labsRoomScreenShowsURLPreviews", defaultValue: false, storage: defaults)
+    @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
     var roomScreenShowsURLPreviews
     
     // MARK: - Room Contextual Menu
