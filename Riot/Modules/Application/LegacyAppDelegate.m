@@ -748,6 +748,26 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
     }
+    else if ([userActivity.activityType isEqualToString:INSendMessageIntentIdentifier])
+    {
+        INInteraction *interaction = userActivity.interaction;
+        if (interaction && [interaction.intent isKindOfClass:[INSendMessageIntent class]])
+        {
+            INSendMessageIntent *intent = (INSendMessageIntent *)(interaction.intent);
+            INPerson *person = intent.recipients.firstObject;
+            if (person && person.customIdentifier) {
+                NSString *identifier = person.customIdentifier;
+                
+                [self startDirectChatWithUserId:identifier completion:NULL];
+                // TODO: initialize text if from a siri shortcut
+                continueUserActivity = YES;
+            } else {
+                MXLogWarning(@"A recipient was missing in the INSendMessageIntent");
+            }
+        } else {
+            MXLogWarning(@"How can an INSendMessageIntent activity not have an INSendMessageIntent?");
+        }
+    }
     else if ([userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier] ||
              [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier])
     {
