@@ -35,12 +35,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Notification string used to indicate call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
  */
-extern NSNotificationName const _Nonnull RoomCallTileTappedNotification;
+extern NSNotificationName const RoomCallTileTappedNotification;
 
 /**
  Notification string used to indicate group call tile tapped in a room. Notification object will be the `RoomBubbleCellData` object.
  */
-extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
+extern NSNotificationName const RoomGroupCallTileTappedNotification;
 
 @interface RoomViewController : MXKRoomViewController
 
@@ -84,7 +84,7 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
 
  @param roomPreviewData the data for the room preview.
  */
-- (void)displayRoomPreview:(nonnull RoomPreviewData*)roomPreviewData;
+- (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
  Action used to handle some buttons.
@@ -98,7 +98,7 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
  
  @return An initialized `RoomViewController` object.
  */
-+ (nonnull instancetype)instantiate;
++ (instancetype)instantiate;
 
 @end
 
@@ -112,7 +112,7 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
  
  @param roomViewController the `RoomViewController` instance.
  */
-- (void)roomViewControllerShowRoomDetails:(nonnull RoomViewController *)roomViewController;
+- (void)roomViewControllerShowRoomDetails:(RoomViewController *)roomViewController;
 
 /**
  Tells the delegate that the user wants to display the details of a room member.
@@ -120,8 +120,8 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
  @param roomViewController the `RoomViewController` instance.
  @param roomMember the selected member
  */
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController
-         showMemberDetails:(nonnull MXRoomMember *)roomMember;
+- (void)roomViewController:(RoomViewController *)roomViewController
+         showMemberDetails:(MXRoomMember *)roomMember;
 
 /**
  Tells the delegate that the user wants to display another room.
@@ -129,8 +129,8 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
  @param roomViewController the `RoomViewController` instance.
  @param roomID the selected roomId
  */
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController
-            showRoomWithId:(nonnull NSString *)roomID;
+- (void)roomViewController:(RoomViewController *)roomViewController
+            showRoomWithId:(NSString *)roomID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.
@@ -139,7 +139,7 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
  @param userId the selected user id
  @param completion Blocks called when the chat is created.
  */
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController
+- (void)roomViewController:(RoomViewController *)roomViewController
        startChatWithUserId:(NSString*)userId
                 completion:(void (^)(void))completion;
 
@@ -149,21 +149,21 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
  @param roomViewController the `RoomViewController` instance.
  @param session The selected Matrix session.
  */
-- (void)roomViewController:(nonnull RoomViewController *)roomViewController showCompleteSecurityForSession:(MXSession*)session;
+- (void)roomViewController:(RoomViewController *)roomViewController showCompleteSecurityForSession:(MXSession*)session;
 
 /**
  Tells the delegate that the user left the room.
  
  @param roomViewController the `RoomViewController` instance.
  */
-- (void)roomViewControllerDidLeaveRoom:(nonnull RoomViewController *)roomViewController;
+- (void)roomViewControllerDidLeaveRoom:(RoomViewController *)roomViewController;
 
 /**
  Tells the delegate that the user wants to cancel the room preview.
  
  @param roomViewController the `RoomViewController` instance.
  */
-- (void)roomViewControllerPreviewDidTapCancel:(nonnull RoomViewController *)roomViewController;
+- (void)roomViewControllerPreviewDidTapCancel:(RoomViewController *)roomViewController;
 
 /**
  Handle the fragment of a universal link.
@@ -173,8 +173,8 @@ extern NSNotificationName const _Nonnull RoomGroupCallTileTappedNotification;
  @param universalLinkURL the unprocessed the universal link URL (optional).
  @return true to indicate that the fragment has been handled, or false when the fragment is not supported.
  */
-- (BOOL)roomViewController:(nonnull RoomViewController *)roomViewController
-handleUniversalLinkFragment:(nonnull NSString*)fragment
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
+handleUniversalLinkFragment:(NSString*)fragment
                    fromURL:(nullable NSURL*)universalLinkURL;
 
 /**
@@ -184,7 +184,7 @@ handleUniversalLinkFragment:(nonnull NSString*)fragment
  @param universalLinkURL the unprocessed the universal link URL (optional).
  @return YES in case of processing success.
  */
-- (BOOL)roomViewController:(nonnull RoomViewController *)roomViewController
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
     handleUniversalLinkURL:(NSURL*)universalLinkURL;
 
 @end
