@@ -58,6 +58,8 @@
 #import "Riot-Swift.h"
 #import "PushNotificationService.h"
 
+#import "UserActivities.h"
+
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
 #import <MatrixOpenWebRTCWrapper/MatrixOpenWebRTCWrapper.h>
@@ -745,13 +747,22 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
     }
+    else if ([userActivity.activityType isEqualToString:kUserActivityTypeMatrixRoom])
+    {
+        NSString *roomID = userActivity.userInfo[kUserActivityInfoRoomId];
+        if (!roomID)
+            return continueUserActivity;
+        
+        [self navigateToRoomById:roomID];
+        continueUserActivity = YES;
+    }
     else if ([userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier] ||
              [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier])
     {
         INInteraction *interaction = userActivity.interaction;
         
         // roomID provided by Siri intent
-        NSString *roomID = userActivity.userInfo[@"roomID"];
+        NSString *roomID = userActivity.userInfo[kUserActivityInfoRoomId];
         
         // We've launched from calls history list
         if (!roomID)
