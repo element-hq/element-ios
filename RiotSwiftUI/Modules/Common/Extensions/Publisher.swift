@@ -19,7 +19,7 @@ import Combine
 
 @available(iOS 14.0, *)
 extension Publisher where Failure == Never {
-    /// Sams as `assign(to:on:)` but maintains a weak reference to object
+    /// Same as `assign(to:on:)` but maintains a weak reference to object
     ///
     /// Useful in cases where you want to pass self and not cause a retain cycle.
     func weakAssign<T: AnyObject>(

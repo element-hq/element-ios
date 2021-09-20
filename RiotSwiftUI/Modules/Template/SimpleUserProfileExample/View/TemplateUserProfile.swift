@@ -38,10 +38,16 @@ struct TemplateUserProfile: View {
                 presence: viewModel.viewState.presence
             )
             Divider()
-            VStack{
-                Text("More great user content!")
+            HStack{
+                Text("Counter: \(viewModel.viewState.count)")
                     .font(theme.fonts.title2)
                     .foregroundColor(theme.colors.secondaryContent)
+                Button("-") {
+                    viewModel.send(viewAction: .decrementCount)
+                }
+                Button("+") {
+                    viewModel.send(viewAction: .incrementCount)
+                }
             }
             .frame(maxHeight: .infinity)
         }

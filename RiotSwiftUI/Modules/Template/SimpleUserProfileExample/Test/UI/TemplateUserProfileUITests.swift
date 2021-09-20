@@ -41,13 +41,13 @@ class TemplateUserProfileUITests: MockScreenTest {
     func verifyTemplateUserProfilePresence(presence: TemplateUserProfilePresence) {
         let presenceText = app.staticTexts["presenceText"]
         XCTAssert(presenceText.exists)
-        XCTAssert(presenceText.label == presence.title)
+        XCTAssertEqual(presenceText.label, presence.title)
     }
     
     func verifyTemplateUserProfileLongName(name: String) {
         let displayNameText = app.staticTexts["displayNameText"]
         XCTAssert(displayNameText.exists)
-        XCTAssert(displayNameText.label == name)
+        XCTAssertEqual(displayNameText.label, name)
     }
 
 }
