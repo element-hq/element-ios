@@ -52,7 +52,8 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
         return TemplateUserProfileViewState(
             avatar: templateUserProfileService.avatarData,
             displayName: templateUserProfileService.displayName,
-            presence: templateUserProfileService.presenceSubject.value
+            presence: templateUserProfileService.presenceSubject.value,
+            count: 0
         )
     }
 
@@ -71,6 +72,10 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             cancel()
         case .done:
             done()
+        case .incrementCount:
+            dispatch(action: .incrementCount)
+        case .decrementCount:
+            dispatch(action: .decrementCount)
         }
     }
 
@@ -78,6 +83,10 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
         switch action {
         case .updatePresence(let presence):
             state.presence = presence
+        case .incrementCount:
+            state.count += 1
+        case .decrementCount:
+            state.count -= 1
         }
         UILog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
     }

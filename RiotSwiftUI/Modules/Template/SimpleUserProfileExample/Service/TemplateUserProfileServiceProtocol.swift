@@ -25,6 +25,8 @@ protocol TemplateUserProfileServiceProtocol: Avatarable {
     var presenceSubject: CurrentValueSubject<TemplateUserProfilePresence, Never> { get }
 }
 
+// MARK: Avatarable
+
 @available(iOS 14.0, *)
 extension TemplateUserProfileServiceProtocol {
     var mxContentUri: String? {
