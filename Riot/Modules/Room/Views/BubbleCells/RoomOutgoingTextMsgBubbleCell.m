@@ -48,7 +48,8 @@
     if (RiotSettings.shared.roomScreenShowsURLPreviews && bubbleData && bubbleData.showURLPreview)
     {
         CGFloat height = [super heightForCellData:cellData withMaximumWidth:maxWidth];
-        return height + RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:bubbleData.urlPreviewData];
+        return height + RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:bubbleData.urlPreviewData
+                                                                                                    fitting:maxWidth];
     }
     
     return [super heightForCellData:cellData withMaximumWidth:maxWidth];

@@ -259,9 +259,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private func setupSideMenuGestures() {
-        if let rootViewController = self.masterNavigationController.viewControllers.first {
-            self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: rootViewController.view)
-        }
+        let gesture = self.parameters.appNavigator.sideMenu.addScreenEdgePanGesturesToPresent(to: masterTabBarController.view)
+        gesture.delegate = self
     }
     
     // MARK: Navigation
@@ -380,5 +379,29 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, wantsToDisplayDetailViewController detailViewController: UIViewController!) {
         
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: detailViewController)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+
+/**
+ Prevent the side menu gesture from clashing with other gestures like the home screen horizontal scroll views.
+ Also make sure that it doesn't cancel out UINavigationController backwards swiping
+ */
+extension TabBarCoordinator: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if otherGestureRecognizer.isKind(of: UIScreenEdgePanGestureRecognizer.self) {
+            return false
+        } else {
+            return true
+        }
     }
 }

@@ -52,6 +52,7 @@ enum
     SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS,
     SECTION_TAG_SENDING_MEDIA,
+    SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
     SECTION_TAG_NOTIFICATIONS,
     SECTION_TAG_CALLS,
@@ -91,6 +92,12 @@ enum
 {
     SENDING_MEDIA_CONFIRM_SIZE = 0,
     SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION,
+};
+
+enum
+{
+    LINKS_SHOW_URL_PREVIEWS_INDEX = 0,
+    LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX
 };
 
 enum
@@ -153,9 +160,7 @@ enum
 
 enum
 {
-    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
-    LABS_SHOW_URL_PREVIEWS_INDEX,
-    LABS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX
+    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0
 };
 
 enum
@@ -372,6 +377,12 @@ TableViewSectionsDelegate>
         [tmpSections addObject:sectionMedia];
     }
     
+    Section *sectionLinks = [Section sectionWithTag:SECTION_TAG_LINKS];
+    [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_INDEX];
+    [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX];
+    sectionLinks.headerTitle = NSLocalizedStringFromTable(@"settings_links", @"Vector", nil);
+    [tmpSections addObject:sectionLinks];
+    
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
     [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
     sectionSecurity.headerTitle = NSLocalizedStringFromTable(@"settings_security", @"Vector", nil);
@@ -532,8 +543,6 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        [sectionLabs addRowWithTag:LABS_SHOW_URL_PREVIEWS_INDEX];
-        [sectionLabs addRowWithTag:LABS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX];
         sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
         if (sectionLabs.hasAnyRows)
         {
@@ -1871,6 +1880,31 @@ TableViewSectionsDelegate>
             cell = infoCell;
         }
     }
+    else if (section == SECTION_TAG_LINKS)
+    {
+        if (row == LINKS_SHOW_URL_PREVIEWS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews", @"Vector", nil);
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenShowsURLPreviews;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableURLPreviews:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
+        }
+        else if (row == LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX)
+        {
+            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews_description", @"Vector", nil);
+            descriptionCell.textLabel.numberOfLines = 0;
+            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            cell = descriptionCell;
+        }
+    }
     else if (section == SECTION_TAG_NOTIFICATIONS)
     {
         if (row == NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX)
@@ -2395,28 +2429,6 @@ TableViewSectionsDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_SHOW_URL_PREVIEWS_INDEX)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews", @"Vector", nil);
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenShowsURLPreviews;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            labelAndSwitchCell.mxkSwitch.enabled = YES;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableURLPreviews:) forControlEvents:UIControlEventValueChanged];
-            
-            cell = labelAndSwitchCell;
-        }
-        else if (row == LABS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews_description", @"Vector", nil);
-            descriptionCell.textLabel.numberOfLines = 0;
-            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = descriptionCell;
         }
     }
     else if (section == SECTION_TAG_FLAIR)
