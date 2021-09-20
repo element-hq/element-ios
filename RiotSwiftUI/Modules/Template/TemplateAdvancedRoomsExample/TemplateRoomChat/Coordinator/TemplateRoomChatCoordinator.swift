@@ -32,7 +32,7 @@ final class TemplateRoomChatCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: (() -> Void)?
+    var callback: (() -> Void)?
     
     // MARK: - Setup
     
@@ -48,11 +48,13 @@ final class TemplateRoomChatCoordinator: Coordinator, Presentable {
     
     // MARK: - Public
     func start() {
-        templateRoomChatViewModel.completion = { [weak self] result in
+        MXLog.debug("[TemplateRoomChatCoordinator] did start.")
+        templateRoomChatViewModel.callback = { [weak self] result in
+            MXLog.debug("[TemplateRoomChatCoordinator] TemplateRoomChatViewModel did complete with result: \(result).")
             guard let self = self else { return }
             switch result {
             case .done:
-                self.completion?()
+                self.callback?()
             break
             }
         }

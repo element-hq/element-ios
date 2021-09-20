@@ -32,7 +32,7 @@ final class TemplateRoomListCoordinator: Coordinator, Presentable {
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((TemplateRoomListCoordinatorResult) -> Void)?
+    var callback: ((TemplateRoomListCoordinatorAction) -> Void)?
     
     // MARK: - Setup
     
@@ -49,13 +49,15 @@ final class TemplateRoomListCoordinator: Coordinator, Presentable {
     // MARK: - Public
     
     func start() {
-        templateRoomListViewModel.completion = { [weak self] result in
+        MXLog.debug("[TemplateRoomListCoordinator] did start.")
+        templateRoomListViewModel.callback = { [weak self] result in
+            MXLog.debug("[TemplateRoomListCoordinator] TemplateRoomListViewModel did complete with result \(result).")
             guard let self = self else { return }
             switch result {
             case .didSelectRoom(let roomId):
-                self.completion?(.didSelectRoom(roomId))
+                self.callback?(.didSelectRoom(roomId))
             case .done:
-                self.completion?(.done)
+                self.callback?(.done)
             break
             }
         }

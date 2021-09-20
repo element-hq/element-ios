@@ -20,9 +20,11 @@ import SwiftUI
 struct ScreenList: View {
     
     private var allStates: [MockScreenState]
+    private var allKeys: [String]
     
     init(screens: [MockScreenState.Type]) {
         self.allStates = screens.flatMap{ $0.screenStates }
+        self.allKeys = screens.flatMap{ $0.screenStateKeys }
     }
     
     var body: some View {
@@ -31,8 +33,8 @@ struct ScreenList: View {
                 ForEach(0..<allStates.count) { i in
                     let state = allStates[i]
                     NavigationLink(destination: state.screenView) {
-                        Text(state.screenTitle)
-                            .accessibilityIdentifier(String(i))
+                        Text(state.fullScreenTitle)
+                            .accessibilityIdentifier(allKeys[i])
                     }
                 }
             }

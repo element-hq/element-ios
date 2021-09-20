@@ -17,7 +17,7 @@
 import Foundation
 
 protocol TemplateRoomListViewModelProtocol {
-    var completion: ((TemplateRoomListViewModelResult) -> Void)? { get set }
+    var callback: ((TemplateRoomListViewModelAction) -> Void)? { get set }
     @available(iOS 14, *)
     var context: TemplateRoomListViewModelType.Context { get }
 }

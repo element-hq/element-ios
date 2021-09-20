@@ -16,13 +16,8 @@
 
 import Foundation
 
-/// The static list of mocked screens in RiotSwiftUI
-@available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
+/// The type of message a long with it's content.
+enum TemplateRoomChatMessageContent {
+    case text(TemplateRoomChatMessageTextContent)
+    case image(TemplateRoomChatMessageImageContent)
 }
-

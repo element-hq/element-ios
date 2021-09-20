@@ -36,7 +36,7 @@ final class TemplateRoomsCoordinator: Coordinator {
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     
-    var completion: (() -> Void)?
+    var callback: (() -> Void)?
     
     // MARK: - Setup
     
@@ -49,6 +49,7 @@ final class TemplateRoomsCoordinator: Coordinator {
     
     func start() {
         if #available(iOS 14.0, *) {
+            MXLog.debug("[TemplateRoomsCoordinator] did start.")
             let rootCoordinator = self.createTemplateRoomListCoordinator()
             rootCoordinator.start()
             
@@ -76,13 +77,14 @@ final class TemplateRoomsCoordinator: Coordinator {
     private func createTemplateRoomListCoordinator() -> TemplateRoomListCoordinator {
         let coordinator: TemplateRoomListCoordinator = TemplateRoomListCoordinator(parameters: TemplateRoomListCoordinatorParameters(session: parameters.session))
         
-        coordinator.completion = { [weak self] result in
+        coordinator.callback = { [weak self] result in
+            MXLog.debug("[TemplateRoomsCoordinator] TemplateRoomListCoordinator did complete with result \(result).")
             guard let self = self else { return }
             switch result {
             case .didSelectRoom(let roomId):
                 self.showTemplateRoomChat(roomId: roomId)
             case .done:
-                self.completion?()
+                self.callback?()
             }
         }
         return coordinator

@@ -17,13 +17,6 @@
 import Foundation
 import Combine
 
-
-enum TemplateRoomChatRoomIntializationStatus{
-    case notInitialized
-    case initialized
-    case failedToInitialize
-}
-
 @available(iOS 14.0, *)
 class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     
@@ -38,7 +31,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     
     // MARK: Public
     private(set) var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>
-    private(set) var roomInitialized: CurrentValueSubject<TemplateRoomChatRoomIntializationStatus, Never>
+    private(set) var roomInitializationStatus: CurrentValueSubject<TemplateRoomChatRoomInitializationStatus, Never>
     
     var roomName: String? {
         self.room.summary.displayname
@@ -49,9 +42,9 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
         self.room = room
         self.eventFormatter = EventFormatter(matrixSession: room.mxSession)
         self.chatMessagesSubject = CurrentValueSubject([])
-        self.roomInitialized = CurrentValueSubject(.notInitialized)
+        self.roomInitializationStatus = CurrentValueSubject(.notInitialized)
         
-        initalizeRoom()
+        initializeRoom()
     }
     
     deinit {
@@ -60,23 +53,23 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     }
     
     // MARK: Public
-    func send(message: String) {
+    func send(textMessage: String) {
         var localEcho: MXEvent? = nil
-        room.sendTextMessage(message, localEcho: &localEcho, completion: { _ in }) 
+        room.sendTextMessage(textMessage, localEcho: &localEcho, completion: { _ in })
     }
     
     // MARK: Private
     
-    private func initalizeRoom(){
+    private func initializeRoom(){
         room.state { [weak self] roomState in
             guard let self = self else { return }
             if let roomState = roomState {
                 self.roomState = roomState
-                self.roomInitialized.value = .initialized
+                self.roomInitializationStatus.value = .initialized
                 self.loadInitialMessages()
                 self.startListeningToRoomEvents()
             } else {
-                self.roomInitialized.value = .failedToInitialize
+                self.roomInitializationStatus.value = .failedToInitialize
             }
         }
     }
@@ -106,16 +99,19 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
             .filter({ event in
                 event.type == kMXEventTypeStringRoomMessage
                     && event.content["msgtype"] as? String == kMXMessageTypeText
+                
+                // TODO: New to our SwiftUI Template? Why not implement another message type like image?
+                
             })
             .compactMap({ event -> TemplateRoomChatMessage?  in
                 guard let eventId = event.eventId,
-                      let eventBody = event.content["body"] as? String,
+                      let body = event.content["body"] as? String,
                       let sender = senderForMessage(event: event)
                 else { return nil }
                 
                 return TemplateRoomChatMessage(
                     id: eventId,
-                    body: eventBody,
+                    content: .text(TemplateRoomChatMessageTextContent(body: body)),
                     sender: sender,
                     timestamp: Date(timeIntervalSince1970: TimeInterval(event.originServerTs / 1000))
                 )

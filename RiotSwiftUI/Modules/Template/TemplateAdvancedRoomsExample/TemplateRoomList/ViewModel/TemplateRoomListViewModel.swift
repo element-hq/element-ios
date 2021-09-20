@@ -32,7 +32,7 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
     
     // MARK: Public
     
-    var completion: ((TemplateRoomListViewModelResult) -> Void)?
+    var callback: ((TemplateRoomListViewModelAction) -> Void)?
     
     // MARK: - Setup
     
@@ -76,10 +76,10 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
     // MARK: - Private
     
     private func done() {
-        completion?(.done)
+        callback?(.done)
     }
     
     private func didSelect(by roomId: String) {
-        completion?(.didSelectRoom(roomId))
+        callback?(.didSelectRoom(roomId))
     }
 }

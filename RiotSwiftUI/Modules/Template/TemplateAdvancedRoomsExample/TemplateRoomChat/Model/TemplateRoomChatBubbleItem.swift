@@ -16,15 +16,7 @@
 
 import UIKit
 
-
-struct TemplateRoomChatBubble {
-    let id: String
-    let sender: TemplateRoomChatMember
-    var items: [TemplateRoomChatBubbleItem]
-}
-
-extension TemplateRoomChatBubble: Identifiable { }
-
+/// One of the items grouped within a bubble(could be message types like text, image or video, or could be other items like url previews).
 struct TemplateRoomChatBubbleItem {
     let id: String
     var timestamp: Date
@@ -33,15 +25,4 @@ struct TemplateRoomChatBubbleItem {
 
 extension TemplateRoomChatBubbleItem: Identifiable { }
 
-enum TemplateRoomChatBubbleItemContent {
-    case message(TemplateRoomChatBubbleMessageContent)
-    case image(TemplateRoomChatBubbleImageContent)
-}
 
-struct TemplateRoomChatBubbleMessageContent {
-    var body: String
-}
-
-struct TemplateRoomChatBubbleImageContent {
-    var image: UIImage
-}

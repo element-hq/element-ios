@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-enum TemplateRoomListViewModelResult {
-    case didSelectRoom(String)
-    case done
+/// An image sent as a message.
+struct TemplateRoomChatMessageImageContent {
+    var image: UIImage
 }

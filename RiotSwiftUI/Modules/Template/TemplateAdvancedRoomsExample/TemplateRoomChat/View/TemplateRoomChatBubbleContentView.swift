@@ -18,7 +18,7 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct TemplateRoomChatBubbleContentView: View {
-
+    
     // MARK: - Properties
     
     // MARK: Private
@@ -32,9 +32,12 @@ struct TemplateRoomChatBubbleContentView: View {
     var body: some View {
         switch bubbleItem.content {
         case .message(let messageContent):
-            TemplateRoomChatBubbleMessage(messageContent: messageContent)
-        case .image(let imageContent):
-            TemplateRoomChatBubbleImage(imageContent: imageContent)
+            switch messageContent {
+            case .text(let messageContent):
+                TemplateRoomChatBubbleMessage(messageContent: messageContent)
+            case .image(let imageContent):
+                TemplateRoomChatBubbleImage(imageContent: imageContent)
+            }
         }
     }
 }

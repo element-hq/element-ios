@@ -27,7 +27,7 @@ struct TemplateRoomChatBubbleImage: View {
     
     // MARK: Public
     
-    let imageContent: TemplateRoomChatBubbleImageContent
+    let imageContent: TemplateRoomChatMessageImageContent
     
     var body: some View {
         EmptyView()
@@ -40,5 +40,6 @@ struct TemplateRoomChatBubbleImage: View {
 struct TemplateRoomChatBubbleImage_Previews: PreviewProvider {
     static var previews: some View {
         EmptyView()
+        // TODO: New to our SwiftUI Template? Why not implement the image item in the bubble here?
     }
 }

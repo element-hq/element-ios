@@ -32,36 +32,9 @@ struct TemplateRoomChat: View {
     
     var body: some View {
         VStack {
-            if viewModel.viewState.bubbles.isEmpty {
-                VStack{
-                    Text("No messages")
-                }
-                .frame(maxHeight: .infinity)
-            } else {
-                ScrollViewReader { reader in
-                    ScrollView{
-                        LazyVStack {
-                            ForEach(viewModel.viewState.bubbles) { bubble in
-                                TemplateRoomChatBubbleView(bubble: bubble)
-                                    .id(bubble.id)
-                            }
-                        }
-                        .onAppear {
-                            // Start at the bottom
-                            reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
-                        }
-                        .onChange(of: itemCount) { _ in
-                            // When new items are added animate to the new items
-                            withAnimation {
-                                reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
-                            }
-                        }
-                        // When the scroll content takes less than the screen space align at the top
-                        .frame(maxHeight: .infinity, alignment: .top)
-                    }
-                }
-                .frame(maxHeight: .infinity)
-            }
+            VStack{
+                roomContent
+            }.frame(maxHeight: .infinity)
             
             HStack {
                 TextField(VectorL10n.roomMessageShortPlaceholder, text: $viewModel.messageInput)
@@ -84,6 +57,47 @@ struct TemplateRoomChat: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 trailingToolBarButton
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var roomContent: some View {
+        if case .notInitialized = viewModel.viewState.roomInitializationStatus {
+            ProgressView()
+                .accessibility(identifier: "loadingProgress")
+        } else if case .failedToInitialize = viewModel.viewState.roomInitializationStatus {
+            Text("Sorry, We failed to load the room.")
+                .accessibility(identifier: "errorMessage")
+        } else if viewModel.viewState.bubbles.isEmpty {
+            Text("There are no messages in this room yet.")
+                .accessibility(identifier: "errorMessage")
+        } else {
+            bubbleList
+        }
+    }
+    
+    private var bubbleList: some View {
+        ScrollViewReader { reader in
+            ScrollView{
+                LazyVStack {
+                    ForEach(viewModel.viewState.bubbles) { bubble in
+                        TemplateRoomChatBubbleView(bubble: bubble)
+                            .id(bubble.id)
+                    }
+                }
+                .onAppear {
+                    // Start at the bottom
+                    reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
+                }
+                .onChange(of: itemCount) { _ in
+                    // When new items are added animate to the new items
+                    withAnimation {
+                        reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
+                    }
+                }
+                // When the scroll content takes less than the screen space align at the top
+                .frame(maxHeight: .infinity, alignment: .top)
             }
         }
     }

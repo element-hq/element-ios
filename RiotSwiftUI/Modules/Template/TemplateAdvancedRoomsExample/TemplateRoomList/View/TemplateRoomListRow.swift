@@ -35,6 +35,7 @@ struct TemplateRoomListRow: View {
             AvatarImage(avatarData: avatar, size: .medium)
             Text(displayName ?? "")
                 .foregroundColor(theme.colors.primaryContent)
+                .accessibility(identifier: "roomNameText")
             Spacer()
         }
         //add to a style

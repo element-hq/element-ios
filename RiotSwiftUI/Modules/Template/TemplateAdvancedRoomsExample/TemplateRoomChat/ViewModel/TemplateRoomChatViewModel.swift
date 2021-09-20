@@ -36,16 +36,26 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     
     // MARK: Public
     
-    var completion: ((TemplateRoomChatViewModelResult) -> Void)?
+    var callback: ((TemplateRoomChatViewModelAction) -> Void)?
     
     // MARK: - Setup
     
     init(templateRoomChatService: TemplateRoomChatServiceProtocol) {
         self.templateRoomChatService = templateRoomChatService
         super.init(initialViewState: Self.defaultState(templateRoomChatService: templateRoomChatService))
+        setupRoomInitializationObserving()
         setupMessageObserving()
     }
     
+    private func setupRoomInitializationObserving() {
+        let initializationPublisher = templateRoomChatService
+            .roomInitializationStatus
+            .map(TemplateRoomChatStateAction.updateRoomInitializationStatus)
+            .eraseToAnyPublisher()
+        
+        dispatch(actionPublisher: initializationPublisher)
+    }
+        
     private func setupMessageObserving() {
         let messageActionPublisher = templateRoomChatService
             .chatMessagesSubject
@@ -58,7 +68,7 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     private static func defaultState(templateRoomChatService: TemplateRoomChatServiceProtocol) -> TemplateRoomChatViewState {
         let bubbles = makeBubbles(messages: templateRoomChatService.chatMessagesSubject.value)
         let bindings = TemplateRoomChatViewModelBindings(messageInput: "")
-        return TemplateRoomChatViewState(roomName: templateRoomChatService.roomName, bubbles: bubbles, bindings: bindings)
+        return TemplateRoomChatViewState(roomInitializationStatus: templateRoomChatService.roomInitializationStatus.value, roomName: templateRoomChatService.roomName, bubbles: bubbles, bindings: bindings)
     }
     
     private static func makeBubbles(messages: [TemplateRoomChatMessage]) -> [TemplateRoomChatBubble] {
@@ -71,7 +81,7 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
             let messageItem = TemplateRoomChatBubbleItem(
                 id: message.id,
                 timestamp: message.timestamp,
-                content: .message(TemplateRoomChatBubbleMessageContent(body: message.body))
+                content: .message(message.content)
             )
             if i > 0,
                let lastBubbleId = bubbleOrder.last,
@@ -85,7 +95,7 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
                 let item = TemplateRoomChatBubbleItem(
                     id: message.id,
                     timestamp: message.timestamp,
-                    content: .message(TemplateRoomChatBubbleMessageContent(body: message.body))
+                    content: .message(message.content)
                 )
                 lastBubble.items.append(item)
                 bubbleMap[lastBubble.id] = lastBubble
@@ -110,13 +120,15 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
         case .done:
             done()
         case .sendMessage:
-            templateRoomChatService.send(message: state.bindings.messageInput)
+            templateRoomChatService.send(textMessage: state.bindings.messageInput)
             dispatch(action: .clearMessageInput)
         }
     }
     
     override class func reducer(state: inout TemplateRoomChatViewState, action: TemplateRoomChatStateAction) {
         switch action {
+        case .updateRoomInitializationStatus(let status):
+            state.roomInitializationStatus = status
         case .clearMessageInput:
             state.bindings.messageInput = ""
         case .updateBubbles(let bubbles):
@@ -128,6 +140,6 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     // MARK: - Private
     
     private func done() {
-        completion?(.done)
+        callback?(.done)
     }
 }

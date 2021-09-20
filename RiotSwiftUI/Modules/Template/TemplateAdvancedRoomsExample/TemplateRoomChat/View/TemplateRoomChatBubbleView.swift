@@ -32,6 +32,7 @@ struct TemplateRoomChatBubbleView: View {
     var body: some View {
         HStack(alignment: .top){
             AvatarImage(avatarData: bubble.sender.avatarData, size: .xSmall)
+                .accessibility(identifier: "bubbleImage")
             VStack(alignment: .leading){
                 Text(bubble.sender.displayName ?? "")
                     .foregroundColor(theme.displayNameColor(for: bubble.sender.id))

@@ -35,15 +35,18 @@ extension MockScreenState {
     
     /// A unique key to identify each screen state.
     static var screenStateKeys: [String] {
-        return Array(0..<screenStates.count).map(String.init)
+        return screenStates.enumerated().map { (index, state) in
+            state.screenName + String(index)
+        }
     }
     
     /// Render each of the screen states in a group applying
     /// any optional environment variables.
     /// - Parameters:
-    ///   - themeId: id of theme to render the screens with
-    ///   - locale: Locale to render the screens with
-    ///   - sizeCategory: type sizeCategory to render the screens with
+    ///   - themeId: id of theme to render the screens with.
+    ///   - locale: Locale to render the screens with.
+    ///   - sizeCategory: type sizeCategory to render the screens with.
+    ///   - addNavigation: Wether to wrap the screens in a navigation view.
     /// - Returns: The group of screens
     static func screenGroup(
         themeId: ThemeIdentifier = .light,
@@ -52,14 +55,9 @@ extension MockScreenState {
         addNavigation: Bool = false
     ) -> some View {
         Group {
-            ForEach(0..<screensViews.count) { index in
-                if addNavigation {
-                    NavigationView{
-                        screensViews[index]
-                    }
-                } else {
-                    screensViews[index]
-                }
+            ForEach(0..<screensViews.count) { i in
+                wrapWithNavigation(addNavigation, view: screensViews[i])
+                    .previewDisplayName(screenStates[i].stateTitle)
             }
         }
         .theme(themeId)
@@ -67,15 +65,33 @@ extension MockScreenState {
         .environment(\.sizeCategory, sizeCategory)
     }
     
+    @ViewBuilder
+    static func wrapWithNavigation<V: View>(_ wrap: Bool, view: V) -> some View {
+        if wrap {
+            NavigationView{
+                view
+            }
+        } else {
+            view
+        }
+    }
+
     /// A title to represent the screen and it's screen state
-    var screenTitle: String {
-        "\(String(describing: screenType.self)): \(stateTitle)"
+    var screenName: String {
+        "\(String(describing: screenType.self))"
     }
     
     /// A title to represent this screen state
     var stateTitle: String {
         String(describing: self)
     }
+    
+    /// A title to represent the screen and it's screen state
+    var fullScreenTitle: String {
+        "\(screenName): \(stateTitle)"
+    }
+    
+
 }
 
 @available(iOS 14.0, *)

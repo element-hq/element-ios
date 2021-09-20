@@ -16,13 +16,12 @@
 
 import Foundation
 
-/// The static list of mocked screens in RiotSwiftUI
-@available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
+/// A chat message send to the timeline within a room.
+struct TemplateRoomChatMessage {
+    let id: String
+    let content: TemplateRoomChatMessageContent
+    let sender: TemplateRoomChatMember
+    let timestamp: Date
 }
 
+extension TemplateRoomChatMessage: Identifiable {}

@@ -31,23 +31,22 @@ class TemplateRoomListUITests: MockScreenTest {
     func verifyTemplateRoomListScreen() throws {
         guard let screenState = screenState as? MockTemplateRoomListScreenState else { fatalError("no screen") }
         switch screenState {
-        case .presence(let presence):
-            verifyTemplateRoomListPresence(presence: presence)
-        case .longDisplayName(let name):
-            verifyTemplateRoomListLongName(name: name)
+        case .noRooms:
+            verifyTemplateRoomListNoRooms()
+        case .rooms:
+            verifyTemplateRoomListRooms()
         }
     }
     
-    func verifyTemplateRoomListPresence(presence: TemplateRoomListPresence) {
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssert(presenceText.label == presence.title)
+    func verifyTemplateRoomListNoRooms() {
+        let errorMessage = app.staticTexts["errorMessage"]
+        XCTAssert(errorMessage.exists)
+        XCTAssert(errorMessage.label == "No Rooms")
     }
     
-    func verifyTemplateRoomListLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssert(displayNameText.label == name)
+    func verifyTemplateRoomListRooms() {
+        let displayNameCount = app.buttons.matching(identifier:"roomNameText").count
+        XCTAssertEqual(displayNameCount, 3)
     }
 
 }

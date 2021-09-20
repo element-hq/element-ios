@@ -16,29 +16,7 @@
 
 import Foundation
 
-struct TemplateRoomChatMessage {
-    let id: String
-    let body: String
-    let sender: TemplateRoomChatMember
-    let timestamp: Date
+/// The text content of a message sent by a user.
+struct TemplateRoomChatMessageTextContent {
+    var body: String
 }
-
-extension TemplateRoomChatMessage: Identifiable {}
-
-struct TemplateRoomChatMember {
-    let id: String
-    let avatarUrl: String?
-    let displayName: String?
-}
-
-extension TemplateRoomChatMember: Avatarable {
-    var mxContentUri: String? {
-        avatarUrl
-    }
-    
-    var matrixItemId: String {
-        id
-    }
-}
-
-extension TemplateRoomChatMember: Identifiable {}

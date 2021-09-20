@@ -45,6 +45,7 @@ struct TemplateRoomList: View {
     var listContent: some View {
         if viewModel.viewState.rooms.isEmpty {
             Text("No Rooms")
+                .accessibility(identifier: "errorMessage")
         } else {
             ScrollView{
                 LazyVStack(spacing: 0) {

@@ -25,8 +25,10 @@ enum MockTemplateRoomChatScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case noRooms
-    case rooms
+    case initializingRoom
+    case failedToInitializeRoom
+    case noMessages
+    case messages
     
     /// The associated screen
     var screenType: Any.Type {
@@ -37,15 +39,22 @@ enum MockTemplateRoomChatScreenState: MockScreenState, CaseIterable {
     var screenView: AnyView {
         let service: MockTemplateRoomChatService
         switch self {
-        case .noRooms:
+        case .noMessages:
             service = MockTemplateRoomChatService(messages: [])
-        case .rooms:
+            service.simulateUpdate(initializationStatus: .initialized)
+        case .messages:
+             service = MockTemplateRoomChatService()
+             service.simulateUpdate(initializationStatus: .initialized)
+        case .initializingRoom:
+             service = MockTemplateRoomChatService()
+        case .failedToInitializeRoom:
             service = MockTemplateRoomChatService()
+            service.simulateUpdate(initializationStatus: .failedToInitialize)
         }
         let viewModel = TemplateRoomChatViewModel(templateRoomChatService: service)
         
         // can simulate service and viewModel actions here if needs be.
-        
+    
         return AnyView(TemplateRoomChat(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
     }

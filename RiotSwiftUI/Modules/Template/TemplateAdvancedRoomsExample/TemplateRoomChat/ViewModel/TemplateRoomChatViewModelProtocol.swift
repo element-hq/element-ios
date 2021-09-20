@@ -17,5 +17,5 @@
 import Foundation
 
 protocol TemplateRoomChatViewModelProtocol {
-    var completion: ((TemplateRoomChatViewModelResult) -> Void)? { get set }
+    var callback: ((TemplateRoomChatViewModelAction) -> Void)? { get set }
 }

@@ -27,10 +27,11 @@ struct TemplateRoomChatBubbleMessage: View {
     
     // MARK: Public
     
-    let messageContent: TemplateRoomChatBubbleMessageContent
+    let messageContent: TemplateRoomChatMessageTextContent
     
     var body: some View {
         Text(messageContent.body)
+            .accessibility(identifier: "bubbleTextContent")
             .foregroundColor(theme.colors.primaryContent)
             .font(theme.fonts.body)
     }
