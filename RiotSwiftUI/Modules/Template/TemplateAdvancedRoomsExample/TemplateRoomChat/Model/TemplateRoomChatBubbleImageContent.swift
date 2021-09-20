@@ -20,3 +20,5 @@ import UIKit
 struct TemplateRoomChatMessageImageContent {
     var image: UIImage
 }
+
+extension TemplateRoomChatMessageImageContent: Equatable { }

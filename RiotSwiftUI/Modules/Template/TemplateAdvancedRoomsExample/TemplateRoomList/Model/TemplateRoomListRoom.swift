@@ -18,8 +18,8 @@ import Foundation
 
 struct TemplateRoomListRoom {
     let id: String
-    let avatar: AvatarInputProtocol
+    let avatar: AvatarInput
     let displayName: String?
 }
 
-extension TemplateRoomListRoom: Identifiable {}
+extension TemplateRoomListRoom: Identifiable, Equatable {}

@@ -20,3 +20,6 @@ import Foundation
 struct TemplateRoomChatMessageTextContent {
     var body: String
 }
+
+
+extension TemplateRoomChatMessageTextContent: Equatable { }

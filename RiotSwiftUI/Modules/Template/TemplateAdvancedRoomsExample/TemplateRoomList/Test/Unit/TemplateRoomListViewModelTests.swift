@@ -22,33 +22,32 @@ import Combine
 @available(iOS 14.0, *)
 class TemplateRoomListViewModelTests: XCTestCase {
     private enum Constants {
-        static let presenceInitialValue: TemplateRoomListPresence = .offline
-        static let displayName = "Alice"
     }
     var service: MockTemplateRoomListService!
     var viewModel: TemplateRoomListViewModel!
+    var context: TemplateRoomListViewModel.Context!
     var cancellables = Set<AnyCancellable>()
+    
     override func setUpWithError() throws {
-        service = MockTemplateRoomListService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
+        service = MockTemplateRoomListService()
         viewModel = TemplateRoomListViewModel(templateRoomListService: service)
+        context = viewModel.context
     }
     
     func testInitialState() {
-        XCTAssertEqual(viewModel.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(viewModel.viewState.presence, Constants.presenceInitialValue)
+        XCTAssertEqual(context.viewState.rooms, MockTemplateRoomListService.mockRooms)
     }
 
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
+    func testFirstValueReceived() throws {
+        let roomsPublisher = context.$viewState.map(\.rooms).removeDuplicates().collect(1).first()
+        XCTAssertEqual(try xcAwait(roomsPublisher), [MockTemplateRoomListService.mockRooms])
     }
     
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let newPresenceValue1: TemplateRoomListPresence = .online
-        let newPresenceValue2: TemplateRoomListPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+    func testUpdatesReceived() throws {
+        let updatedRooms = Array(MockTemplateRoomListService.mockRooms.dropLast())
+        let roomsPublisher = context.$viewState.map(\.rooms).removeDuplicates().collect(2).first()
+        let awaitDeferred = xcAwaitDeferred(roomsPublisher)
+        service.simulateUpdate(rooms:  updatedRooms)
+        XCTAssertEqual(try awaitDeferred(), [MockTemplateRoomListService.mockRooms, updatedRooms])
     }
 }

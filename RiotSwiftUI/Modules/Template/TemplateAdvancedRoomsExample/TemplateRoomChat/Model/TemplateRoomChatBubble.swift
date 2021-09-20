@@ -23,4 +23,4 @@ struct TemplateRoomChatBubble {
     var items: [TemplateRoomChatBubbleItem]
 }
 
-extension TemplateRoomChatBubble: Identifiable { }
+extension TemplateRoomChatBubble: Identifiable, Equatable { }

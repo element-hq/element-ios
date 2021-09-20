@@ -33,4 +33,4 @@ extension TemplateRoomChatMember: Avatarable {
     }
 }
 
-extension TemplateRoomChatMember: Identifiable {}
+extension TemplateRoomChatMember: Identifiable, Equatable {}

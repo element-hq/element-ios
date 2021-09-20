@@ -21,3 +21,5 @@ enum TemplateRoomChatMessageContent {
     case text(TemplateRoomChatMessageTextContent)
     case image(TemplateRoomChatMessageImageContent)
 }
+
+extension TemplateRoomChatMessageContent: Equatable { }

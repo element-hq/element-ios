@@ -21,34 +21,42 @@ import Combine
 
 @available(iOS 14.0, *)
 class TemplateRoomChatViewModelTests: XCTestCase {
-    private enum Constants {
-        static let presenceInitialValue: TemplateRoomChatPresence = .offline
-        static let displayName = "Alice"
-    }
+
     var service: MockTemplateRoomChatService!
     var viewModel: TemplateRoomChatViewModel!
+    var context: TemplateRoomChatViewModel.Context!
     var cancellables = Set<AnyCancellable>()
+    
     override func setUpWithError() throws {
-        service = MockTemplateRoomChatService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
+        service = MockTemplateRoomChatService()
+        service.simulateUpdate(initializationStatus: .initialized)
         viewModel = TemplateRoomChatViewModel(templateRoomChatService: service)
+        context = viewModel.context
     }
     
     func testInitialState() {
-        XCTAssertEqual(viewModel.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(viewModel.viewState.presence, Constants.presenceInitialValue)
+        XCTAssertEqual(context.viewState.bubbles.count, 3)
+        XCTAssertEqual(context.viewState.sendButtonEnabled, false)
+        XCTAssertEqual(context.viewState.roomInitializationStatus, .initialized)
     }
 
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-    
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = viewModel.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let newPresenceValue1: TemplateRoomChatPresence = .online
-        let newPresenceValue2: TemplateRoomChatPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+
+    func testSendMessageUpdatesReceived() throws {
+        let bubblesPublisher: AnyPublisher<[[TemplateRoomChatBubble]], Never> = context.$viewState.map(\.bubbles).removeDuplicates().collect(2).first().eraseToAnyPublisher()
+        let awaitDeferred = xcAwaitDeferred(bubblesPublisher)
+        let newMessage: String = "Let's Go"
+        service.send(textMessage: newMessage)
+        
+        let result: [[TemplateRoomChatBubble]]? = try awaitDeferred()
+        
+        // Test that the update to the messages in turn updates the view's
+        // the last bubble by appending another text item, asserting the body.
+        guard let item:TemplateRoomChatBubbleItem = result?.last?.last?.items.last,
+              case TemplateRoomChatBubbleItemContent.message(let message) = item.content,
+              case let TemplateRoomChatMessageContent.text(text) = message else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(text.body, newMessage)
     }
 }
