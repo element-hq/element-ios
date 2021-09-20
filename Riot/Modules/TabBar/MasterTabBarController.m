@@ -120,6 +120,12 @@
     titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
     
     childViewControllers = [NSMutableArray array];
+    
+    MXWeakify(self);
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"MXSpaceServiceDidBuildSpaceGraph" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        MXStrongifyAndReturnIfNil(self);
+        [self updateSideMenuNotifcationIcon];
+    }];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -291,6 +297,8 @@
             tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
         }
     }
+    
+    titleView.titleLabel.text = self.selectedViewController.accessibilityLabel;
 }
 
 #pragma mark -
@@ -777,6 +785,35 @@
     titleView.subtitleLabel.text = roomParentId ? [mxSession roomSummaryWithRoomId:roomParentId].displayname : nil;
 
     recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
+    [self updateSideMenuNotifcationIcon];
+}
+
+- (void)updateSideMenuNotifcationIcon
+{
+    BOOL displayNotification = NO;
+    
+    for (MXRoomSummary *summary in recentsDataSource.mxSession.spaceService.rootSpaceSummaries) {
+        if (summary.membership == MXMembershipInvite) {
+            displayNotification = YES;
+            break;
+        }
+    }
+    
+    if (!displayNotification) {
+        MXSpaceNotificationState *notificationState = [recentsDataSource.mxSession.spaceService.notificationCounter notificationStateForAllSpacesExcept: recentsDataSource.currentSpace.spaceId];
+        
+        if (recentsDataSource.currentSpace)
+        {
+            MXSpaceNotificationState *homeNotificationState = recentsDataSource.mxSession.spaceService.notificationCounter.homeNotificationState;
+            displayNotification = notificationState.groupMissedDiscussionsCount > 0 || notificationState.groupMissedDiscussionsHighlightedCount > 0 || homeNotificationState.allCount > 0 || homeNotificationState.allHighlightCount > 0;
+        }
+        else
+        {
+            displayNotification = notificationState.groupMissedDiscussionsCount > 0 || notificationState.groupMissedDiscussionsHighlightedCount > 0;
+        }
+    }
+    
+    [self.masterTabBarDelegate masterTabBarController:self needsSideMenuIconWithNotification:displayNotification];
 }
 
 #pragma mark -
@@ -1258,26 +1295,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    if ([viewController isKindOfClass:HomeViewController.class])
-    {
-        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
-    }
-    else if ([viewController isKindOfClass:FavouritesViewController.class])
-    {
-        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
-    }
-    else if ([viewController isKindOfClass:PeopleViewController.class])
-    {
-        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
-    }
-    else if ([viewController isKindOfClass:RoomsViewController.class])
-    {
-        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
-    }
-    else if ([viewController isKindOfClass:GroupsViewController.class])
-    {
-        titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
-    }
+    titleView.titleLabel.text = viewController.accessibilityLabel;
 }
 
 @end

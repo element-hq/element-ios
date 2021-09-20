@@ -61,10 +61,12 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
         if viewData.isInvite {
             self.badgeLabel.isHidden = false
             self.badgeLabel.badgeColor = ThemeService.shared().theme.colors.alert
-            self.badgeLabel.borderColor = ThemeService.shared().theme.colors.background
             self.badgeLabel.text = "!"
         } else {
-            self.badgeLabel.isHidden = true
+            let notificationCount = viewData.notificationCount + viewData.highlightedNotificationCount
+            self.badgeLabel.isHidden = notificationCount == 0
+            self.badgeLabel.badgeColor = viewData.highlightedNotificationCount == 0 ? ThemeService.shared().theme.colors.tertiaryContent : ThemeService.shared().theme.colors.alert
+            self.badgeLabel.text = "\(notificationCount)"
         }
     }
     
@@ -76,6 +78,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
         self.titleLabel.font = theme.fonts.calloutSB
         self.selectionView.backgroundColor = theme.colors.separator
         self.moreButton.tintColor = theme.colors.secondaryContent
+        self.badgeLabel.borderColor = ThemeService.shared().theme.colors.background
     }
     
     // MARK: - IBActions
