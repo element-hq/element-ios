@@ -292,9 +292,12 @@ TableViewSectionsDelegate>
     Section *pinCodeSection = [Section sectionWithTag:SECTION_PIN_CODE];
     
     // Header title
-    NSString *pinCodeSectionHeaderTitleFormat = NSLocalizedStringFromTable(@"pin_protection_settings_section_header_x", @"Vector", nil);
-    NSString *pinCodeSectionHeaderTitle = [NSString stringWithFormat:pinCodeSectionHeaderTitleFormat, [PinCodePreferences shared].localizedBiometricsName];
-    pinCodeSection.headerTitle = pinCodeSectionHeaderTitle;
+    if ([PinCodePreferences shared].isBiometricsAvailable)
+    {
+        NSString *pinCodeSectionHeaderTitleFormat = NSLocalizedStringFromTable(@"pin_protection_settings_section_header_x", @"Vector", nil);
+        NSString *pinCodeSectionHeaderTitle = [NSString stringWithFormat:pinCodeSectionHeaderTitleFormat, [PinCodePreferences shared].localizedBiometricsName];
+        pinCodeSection.headerTitle = pinCodeSectionHeaderTitle;
+    }
     
     // Rows
     [pinCodeSection addRowWithTag:PIN_CODE_SETTING];
