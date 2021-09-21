@@ -17,7 +17,6 @@
 import Foundation
 
 enum TemplateUserProfileStateAction {
-    case incrementCount
-    case decrementCount
+    case viewAction(TemplateUserProfileViewAction)
     case updatePresence(TemplateUserProfilePresence)
 }
