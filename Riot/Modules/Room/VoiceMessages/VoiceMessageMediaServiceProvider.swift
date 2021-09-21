@@ -31,7 +31,13 @@ import MediaPlayer
     
     private var displayLink: CADisplayLink!
     
-    // Retain currently playing audio player so it doesn't stop playing on timeline cell reuse
+    
+    
+    // Retain active audio players(playing or paused) so it doesn't stop playing on timeline cell reuse
+    // and we can pause/resume players on switching rooms.
+    private var activeAudioPlayers: Set<VoiceMessageAudioPlayer>
+    
+    // Keep reference to currently playing player for remote control.
     private var currentlyPlayingAudioPlayer: VoiceMessageAudioPlayer?
     
     @objc public static let sharedProvider = VoiceMessageMediaServiceProvider()
@@ -87,7 +93,7 @@ import MediaPlayer
     private override init() {
         audioPlayers = NSMapTable<NSString, VoiceMessageAudioPlayer>(valueOptions: .weakMemory)
         audioRecorders = NSHashTable<VoiceMessageAudioRecorder>(options: .weakMemory)
-        
+        activeAudioPlayers = Set<VoiceMessageAudioPlayer>()
         super.init()
         
         displayLink = CADisplayLink(target: WeakTarget(self, selector: #selector(handleDisplayLinkTick)), selector: WeakTarget.triggerSelector)
@@ -113,16 +119,17 @@ import MediaPlayer
         return audioRecorder
     }
     
-    @objc func stopAllServices() {
-        stopAllServicesExcept(nil)
+    @objc func pauseAllServices() {
+        pauseAllServicesExcept(nil)
     }
     
     // MARK: - VoiceMessageAudioPlayerDelegate
     
     func audioPlayerDidStartPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
         currentlyPlayingAudioPlayer = audioPlayer
+        activeAudioPlayers.insert(audioPlayer)
         setUpRemoteCommandCenter()
-        stopAllServicesExcept(audioPlayer)
+        pauseAllServicesExcept(audioPlayer)
     }
     
     func audioPlayerDidStopPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
@@ -130,6 +137,7 @@ import MediaPlayer
             currentlyPlayingAudioPlayer = nil
             tearDownRemoteCommandCenter()
         }
+        activeAudioPlayers.remove(audioPlayer)
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
@@ -137,17 +145,18 @@ import MediaPlayer
             currentlyPlayingAudioPlayer = nil
             tearDownRemoteCommandCenter()
         }
+        activeAudioPlayers.remove(audioPlayer)
     }
     
     // MARK: - VoiceMessageAudioRecorderDelegate
     
     func audioRecorderDidStartRecording(_ audioRecorder: VoiceMessageAudioRecorder) {
-        stopAllServicesExcept(audioRecorder)
+        pauseAllServicesExcept(audioRecorder)
     }
     
     // MARK: - Private
     
-    private func stopAllServicesExcept(_ service: AnyObject?) {
+    private func pauseAllServicesExcept(_ service: AnyObject?) {
         for audioRecorder in audioRecorders.allObjects {
             if audioRecorder === service {
                 continue
@@ -165,8 +174,7 @@ import MediaPlayer
                 continue
             }
             
-            audioPlayer.stop()
-            audioPlayer.unloadContent()
+            audioPlayer.pause()
         }
     }
     
