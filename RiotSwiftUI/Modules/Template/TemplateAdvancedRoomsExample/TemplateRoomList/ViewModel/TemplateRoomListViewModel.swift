@@ -38,20 +38,19 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
     
     init(templateRoomListService: TemplateRoomListServiceProtocol) {
         self.templateRoomListService = templateRoomListService
-        
         super.init(initialViewState: Self.defaultState(templateRoomListService: templateRoomListService))
-        
-        templateRoomListService.roomsSubject
-            .map(TemplateRoomListStateAction.updateRooms)
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] action in
-                self?.dispatch(action:action)
-            })
-            .store(in: &cancellables)
+        startObservingRooms()
     }
     
     private static func defaultState(templateRoomListService: TemplateRoomListServiceProtocol) -> TemplateRoomListViewState {
         return TemplateRoomListViewState(rooms: templateRoomListService.roomsSubject.value)
+    }
+    
+    private func startObservingRooms() {
+        let roomsUpdatePublisher = templateRoomListService.roomsSubject
+            .map(TemplateRoomListStateAction.updateRooms)
+            .eraseToAnyPublisher()
+            dispatch(actionPublisher: roomsUpdatePublisher)
     }
     
     // MARK: - Public

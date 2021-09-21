@@ -68,9 +68,11 @@ struct TemplateRoomChat: View {
                 .accessibility(identifier: "loadingProgress")
         } else if case .failedToInitialize = viewModel.viewState.roomInitializationStatus {
             Text("Sorry, We failed to load the room.")
+                .foregroundColor(theme.colors.primaryContent)
                 .accessibility(identifier: "errorMessage")
         } else if viewModel.viewState.bubbles.isEmpty {
             Text("There are no messages in this room yet.")
+                .foregroundColor(theme.colors.primaryContent)
                 .accessibility(identifier: "errorMessage")
         } else {
             bubbleList

@@ -31,7 +31,7 @@ struct TemplateRoomList: View {
     
     var body: some View {
         listContent
-            .navigationTitle("Rooms")
+            .navigationTitle("Unencrypted Rooms")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(VectorL10n.done) {
@@ -45,6 +45,7 @@ struct TemplateRoomList: View {
     var listContent: some View {
         if viewModel.viewState.rooms.isEmpty {
             Text("No Rooms")
+                .foregroundColor(theme.colors.primaryContent)
                 .accessibility(identifier: "errorMessage")
         } else {
             ScrollView{
