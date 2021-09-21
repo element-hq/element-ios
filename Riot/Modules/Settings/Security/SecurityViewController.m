@@ -302,7 +302,9 @@ TableViewSectionsDelegate>
     // Rows
     [pinCodeSection addRowWithTag:PIN_CODE_SETTING];
     [pinCodeSection addRowWithTag:PIN_CODE_DESCRIPTION];
-    if ([PinCodePreferences shared].isPinSet) {
+    
+    if ([PinCodePreferences shared].isPinSet)
+    {
         [pinCodeSection addRowWithTag:PIN_CODE_CHANGE];
     }
 
@@ -1186,17 +1188,17 @@ TableViewSectionsDelegate>
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSIndexPath *tagsIndexPath = [self.tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
-    NSInteger section = tagsIndexPath.section;
-    NSInteger row = tagsIndexPath.row;
+    NSInteger sectionTag = tagsIndexPath.section;
+    NSInteger rowTag = tagsIndexPath.row;
 
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     cell.backgroundColor = [UIColor redColor];
 
     MXSession* session = self.mainSession;
-    if (section == SECTION_PIN_CODE)
+    if (sectionTag == SECTION_PIN_CODE)
     {
-        if (indexPath.row == PIN_CODE_SETTING)
+        if (rowTag == PIN_CODE_SETTING)
         {
             if ([PinCodePreferences shared].forcePinProtection)
             {
@@ -1216,7 +1218,7 @@ TableViewSectionsDelegate>
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        else if (indexPath.row == PIN_CODE_DESCRIPTION)
+        else if (rowTag == PIN_CODE_DESCRIPTION)
         {
             if ([PinCodePreferences shared].isPinSet)
             {
@@ -1228,11 +1230,11 @@ TableViewSectionsDelegate>
                 cell = [self descriptionCellForTableView:tableView withText:nil];
             }
         }
-        else if (indexPath.row == PIN_CODE_CHANGE)
+        else if (rowTag == PIN_CODE_CHANGE)
         {
             cell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"pin_protection_settings_change_pin", @"Vector", nil) action:@selector(changePinCode:  ) forTableView:tableView atIndexPath:indexPath];
         }
-        else if (indexPath.row == PIN_CODE_BIOMETRICS)
+        else if (rowTag == PIN_CODE_BIOMETRICS)
         {
             MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
@@ -1245,11 +1247,11 @@ TableViewSectionsDelegate>
             cell = switchCell;
         }
     }
-    else if (section == SECTION_CRYPTO_SESSIONS)
+    else if (sectionTag == SECTION_CRYPTO_SESSIONS)
     {
         if (self.showLoadingDevicesInformation)
         {
-            if (indexPath.row == 0)
+            if (rowTag == 0)
             {
                 cell = [self descriptionCellForTableView:tableView
                                                 withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_loading", @"Vector", nil) ];
@@ -1262,11 +1264,11 @@ TableViewSectionsDelegate>
         }
         else
         {
-            if (row < devicesArray.count)
+            if (rowTag < devicesArray.count)
             {
-                cell = [self deviceCellWithDevice:devicesArray[row] forTableView:tableView];
+                cell = [self deviceCellWithDevice:devicesArray[rowTag] forTableView:tableView];
             }
-            else if (row == devicesArray.count)
+            else if (rowTag == devicesArray.count)
             {
                 cell = [self descriptionCellForTableView:tableView
                                                 withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
@@ -1274,9 +1276,9 @@ TableViewSectionsDelegate>
             }
         }
     }
-    else if (section == SECTION_SECURE_BACKUP)
+    else if (sectionTag == SECTION_SECURE_BACKUP)
     {
-        cell = [secureBackupSection cellForRowAtRow:row];
+        cell = [secureBackupSection cellForRowAtRow:rowTag];
     }
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
     else if (section == SECTION_KEYBACKUP)
@@ -1284,9 +1286,9 @@ TableViewSectionsDelegate>
         cell = [keyBackupSection cellForRowAtRow:row];
     }
 #endif
-    else if (section == SECTION_CROSSSIGNING)
+    else if (sectionTag == SECTION_CROSSSIGNING)
     {
-        switch (row)
+        switch (rowTag)
         {
             case CROSSSIGNING_INFO:
             {
@@ -1303,9 +1305,9 @@ TableViewSectionsDelegate>
                 break;
         }
     }
-    else if (section == SECTION_CRYPTOGRAPHY)
+    else if (sectionTag == SECTION_CRYPTOGRAPHY)
     {
-        switch (row)
+        switch (rowTag)
         {
             case CRYPTOGRAPHY_INFO:
             {
@@ -1325,9 +1327,9 @@ TableViewSectionsDelegate>
             }
         }
     }
-    else if (section == SECTION_ADVANCED)
+    else if (sectionTag == SECTION_ADVANCED)
     {
-        switch (row)
+        switch (rowTag)
         {
             case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES:
             {
