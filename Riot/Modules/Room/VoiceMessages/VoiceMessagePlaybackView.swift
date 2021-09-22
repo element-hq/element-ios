@@ -146,17 +146,16 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     @IBAction private func tap(gestureRecognizer: UITapGestureRecognizer) {
         let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
         let progress = x / waveformContainerView.bounds.width
-        let seekPoint = progress == 1 ? 0 : progress
-        delegate?.voiceMessagePlaybackViewDidRequestSeek(to: seekPoint)
+        delegate?.voiceMessagePlaybackViewDidRequestSeek(to: progress)
     }
 
     @IBAction private func pan(gestureRecognizer: UIPanGestureRecognizer) {
             switch gestureRecognizer.state {
             case .began, .changed:
                 let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
-                scrubProgress = x / waveformContainerView.bounds.width
-                let seekPoint = scrubProgress == 1 ? 0 : scrubProgress ?? 0
-                delegate?.voiceMessagePlaybackViewDidRequestSeek(to: seekPoint)
+                let progress = x / waveformContainerView.bounds.width
+                scrubProgress = progress
+                delegate?.voiceMessagePlaybackViewDidRequestSeek(to: progress)
             default:
                 scrubProgress = nil
             }

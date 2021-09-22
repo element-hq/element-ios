@@ -163,11 +163,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             return
         }
         
-        guard progress > 0 else {
-            audioPlayer.stop()
-            return
-        }
-        
         if audioPlayer.url == nil {
             audioPlayer.loadContentFromURL(temporaryFileURL)
         }
@@ -220,8 +215,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        audioPlayer.seekToTime(0.0)
-        updateUI()
+        audioPlayer.seekToTime(0.0) { [weak self] _ in
+            self?.updateUI()
+        }
     }
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError: Error) {
@@ -428,12 +424,14 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        // Show the current time if the player is paused or playing but not when stopped.
-        details.elapsedTime = VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (!audioPlayer.isStopped ? audioPlayer.currentTime : audioPlayer.duration)))
+        // Show the current time if the player is paused, show duration when at 0.
+        let currentTime = audioPlayer.currentTime
+        let duration = recordDuration ?? 0
+        let displayTime = currentTime > 0 ? currentTime : duration
+        details.elapsedTime =  VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
+        details.progress = duration > 0 ? currentTime / duration : 0
         details.audioSamples = audioSamples
         details.isPlaying = audioPlayer.isPlaying
-        // Set progress if the player is paused or playing but not when stopped.
-        details.progress = (!audioPlayer.isStopped ? (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0) : 0.0)
         _voiceMessageToolbarView.configureWithDetails(details)
     }
     

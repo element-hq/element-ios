@@ -122,7 +122,6 @@ class VoiceMessageAudioPlayer: NSObject {
     }
     
     func seekToTime(_ time: TimeInterval, completionHandler:@escaping (Bool) -> Void = { _ in }) {
-        isStopped = false
         audioPlayer?.seek(to: CMTime(seconds: time, preferredTimescale: 60000), completionHandler: completionHandler)
     }
     
