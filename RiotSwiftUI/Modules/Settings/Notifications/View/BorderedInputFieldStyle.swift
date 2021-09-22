@@ -17,11 +17,11 @@
 import Foundation
 import SwiftUI
 
-/**
- A bordered style of text input as defined in:
- https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=2039%3A26415
- */
 @available(iOS 14.0, *)
+/// A bordered style of text input
+///
+/// As defined in:
+/// https://www.figma.com/file/X4XTH9iS2KGJ2wFKDqkyed/Compound?node-id=2039%3A26415
 struct BorderedInputFieldStyle: TextFieldStyle {
     
     @Environment(\.theme) var theme: ThemeSwiftUI

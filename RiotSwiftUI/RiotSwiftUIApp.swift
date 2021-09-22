@@ -15,16 +15,16 @@
 //
 import SwiftUI
 
-/**
- Just needed so the application target has an entry point for the moment.
- Could use to render the different screens.
- */
 @available(iOS 14.0, *)
 @main
-struct testApp: App {
+/// RiotSwiftUI screens rendered for UI Tests.
+struct RiotSwiftUIApp: App {
+    init() {
+        UILog.configure(logger: PrintLogger.self)
+    }
     var body: some Scene {
         WindowGroup {
-            Text("app")
+            ScreenList(screens: MockAppScreens.appScreens)
         }
     }
 }

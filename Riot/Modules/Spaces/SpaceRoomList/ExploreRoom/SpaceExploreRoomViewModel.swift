@@ -110,6 +110,8 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                     
                     let avatarViewData = AvatarViewData(matrixItemId: childInfo.childRoomId, displayName: childInfo.displayName, avatarUrl: childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
                     return SpaceExploreRoomListItemViewData(childInfo: childInfo, avatarViewData: avatarViewData)
+                }).sorted(by: { item1, item2 in
+                    return !item2.childInfo.suggested || item1.childInfo.suggested
                 })
             case .failure(let error):
                 self.update(viewState: .error(error))

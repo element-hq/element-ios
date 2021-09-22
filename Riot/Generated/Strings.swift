@@ -1138,6 +1138,10 @@ internal enum VectorL10n {
   internal static var doNotAskAgain: String { 
     return VectorL10n.tr("Vector", "do_not_ask_again") 
   }
+  /// Done
+  internal static var done: String { 
+    return VectorL10n.tr("Vector", "done") 
+  }
   /// Element now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.
   internal static var e2eEnablingOnAppUpdate: String { 
     return VectorL10n.tr("Vector", "e2e_enabling_on_app_update") 
@@ -2322,9 +2326,13 @@ internal enum VectorL10n {
   internal static var pinProtectionSettingsSectionFooter: String { 
     return VectorL10n.tr("Vector", "pin_protection_settings_section_footer") 
   }
+  /// PIN
+  internal static var pinProtectionSettingsSectionHeader: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header") 
+  }
   /// PIN & %@
-  internal static func pinProtectionSettingsSectionHeaderX(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "pin_protection_settings_section_header_x", p1)
+  internal static func pinProtectionSettingsSectionHeaderWithBiometrics(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header_with_biometrics", p1)
   }
   /// Preview
   internal static var preview: String { 
@@ -4865,6 +4873,10 @@ internal enum VectorL10n {
   /// space
   internal static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
+  }
+  /// Adding rooms coming soon
+  internal static var spacesAddRoomsComingSoonTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
   }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
   internal static var spacesComingSoonDetail: String { 

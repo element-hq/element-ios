@@ -1187,7 +1187,8 @@
 "pin_protection_settings_section_footer" = "A PIN újbóli beállításához újra be kell lépjél és létre kell hozni egy újat.";
 "pin_protection_settings_enabled_forced" = "PIN engedélyezve";
 "pin_protection_settings_enable_pin" = "PIN engedélyezése";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "biometrics_mode_touch_id" = "Érintéses azonosítás";
 "biometrics_mode_face_id" = "Arc felismerés";
 "biometrics_settings_enable_x" = "%@ engedélyezése";

@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-/**
- Renders multiple chips in a flow layout.
- */
+/// Renders multiple chips in a flow layout.
 @available(iOS 14.0, *)
 struct Chips: View {
     

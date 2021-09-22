@@ -1336,7 +1336,8 @@
 // MARK: - Major update
 
 "major_update_title" = "Riot er nå Element";
-"pin_protection_settings_section_header_x" = "PIN-kode og %@";
+"pin_protection_settings_section_header" = "PIN-kode";
+"pin_protection_settings_section_header_with_biometrics" = "PIN-kode og %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Hvis du ikke kan huske PIN-koden din, trykker du på glemt PIN-knappen.";
 "pin_protection_mismatch_error_title" = "PIN-koder samsvarer ikke";
 "pin_protection_reset_alert_message" = "For å tilbakestille PIN-koden din, må du logge på igjen og opprette en ny";

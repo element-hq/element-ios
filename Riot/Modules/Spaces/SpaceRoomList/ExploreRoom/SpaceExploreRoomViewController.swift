@@ -222,7 +222,7 @@ final class SpaceExploreRoomViewController: UIViewController {
     }
     
     @objc private func addRoomAction(semder: UIView) {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesAddRoomsComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
     }
 
     // MARK: - UISearchBarDelegate
