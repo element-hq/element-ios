@@ -17,9 +17,7 @@
 import Foundation
 import SwiftUI
 
-/**
- An input field for forms.
- */
+/// An input field style for forms.
 @available(iOS 14.0, *)
 struct FormInputFieldStyle: TextFieldStyle {
     

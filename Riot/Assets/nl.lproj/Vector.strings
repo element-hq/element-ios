@@ -981,7 +981,8 @@
 "pin_protection_settings_enable_pin" = "PIN inschakelen";
 "pin_protection_settings_enabled_forced" = "PIN ingeschakeld";
 "pin_protection_settings_section_footer" = "Om uw PIN opnieuw in te stellen moet u straks opnieuw inloggen en een nieuwe PIN aanmaken.";
-"pin_protection_settings_section_header_x" = "PIN en %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN en %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Als u uw PIN bent vergeten, klik op de PIN vergeten-knop.";
 "pin_protection_mismatch_error_message" = "Probeer het opnieuw";
 "pin_protection_mismatch_error_title" = "PIN's zijn niet hetzelfde";

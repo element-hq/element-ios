@@ -812,7 +812,8 @@
 
 "biometrics_mode_touch_id" = "Asulay n tnalit";
 "pin_protection_settings_enabled_forced" = "Yermed PIN";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Ma yella ur tezmireḍ ara ad tecfuḍ ɣef PIN inek·inem, sit ɣef tqeffalt n PIN yettwattun.";
 "pin_protection_mismatch_error_title" = "PINs ur mṣadan ara";
 "pin_protection_reset_alert_message" = "I uwennez n PIN-inek·inem, tesriḍ ad talseḍ anekcum syen rnu yiwen";

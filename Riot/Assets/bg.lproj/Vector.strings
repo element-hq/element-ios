@@ -1183,7 +1183,8 @@
 "pin_protection_settings_enable_pin" = "Включи PIN код";
 "pin_protection_settings_enabled_forced" = "PIN кодът е включен";
 "pin_protection_settings_section_footer" = "За да нулирате PIN кода, ще трябва да влезете наново и да създадете нов.";
-"pin_protection_settings_section_header_x" = "PIN и %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN и %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Ако не помните PIN кода си, натиснете бутона за забравен PIN код.";
 "pin_protection_mismatch_error_message" = "Опитайте пак";
 "pin_protection_mismatch_error_title" = "PIN кодовете не съвпадат";

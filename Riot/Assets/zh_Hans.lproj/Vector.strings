@@ -1278,7 +1278,8 @@
 "pin_protection_settings_enable_pin" = "启用 PIN";
 "pin_protection_settings_enabled_forced" = "PIN 已启用";
 "pin_protection_settings_section_footer" = "要重置你的密码，你需要重新登录并创建一个新的。";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_mismatch_too_many_times_error_message" = "如果你没记不住你的 PIN，点击忘记密码按钮。";
 "pin_protection_mismatch_error_title" = "PIN 不匹配";
 "pin_protection_reset_alert_message" = "为重置你的 PIN，你将需要重新登录并创建新的";

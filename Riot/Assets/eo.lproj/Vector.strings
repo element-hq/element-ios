@@ -632,7 +632,8 @@
 "pin_protection_settings_enable_pin" = "Ŝalti personan identigan numeron";
 "pin_protection_settings_enabled_forced" = "Persona identiga numero ŝaltiĝis";
 "pin_protection_settings_section_footer" = "Por restarigi vian personan identigan numeron, vi devos resaluti kaj krei novan.";
-"pin_protection_settings_section_header_x" = "PIN kaj %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN kaj %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Se vi ne memoras, tuŝetu la butonon «forgesita persona identiga numero».";
 "pin_protection_mismatch_error_message" = "Bonvolu reprovi";
 "pin_protection_mismatch_error_title" = "Personaj identigaj numeroj ne akordas";
