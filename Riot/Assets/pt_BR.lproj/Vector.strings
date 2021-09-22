@@ -1146,7 +1146,8 @@
 "pin_protection_mismatch_error_title" = "PINs não correspondem";
 "pin_protection_mismatch_error_message" = "Por favor tente de novo";
 "pin_protection_mismatch_too_many_times_error_message" = "Se você não consegue se lembrar de seu PIN, toque no botão esqueci PIN.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_settings_section_footer" = "Para resettar seu PIN, você vai precisar re-fazer login e criar um novo.";
 "biometrics_mode_touch_id" = "Touch ID";
 "biometrics_mode_face_id" = "Face ID";
