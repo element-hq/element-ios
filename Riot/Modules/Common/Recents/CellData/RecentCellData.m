@@ -44,8 +44,9 @@
 
 - (NSUInteger)notificationCount
 {
+    MXRoom *room = [self.mxSession roomWithRoomId:self.roomSummary.roomId];
     // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
-    if (self.roomSummary.room.isMentionsOnly)
+    if (room.isMentionsOnly)
     {
         // Only the highlighted missed messages must be considered here.
         return self.roomSummary.highlightCount;

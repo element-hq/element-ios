@@ -70,7 +70,8 @@
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
     {
-        [roomCellData.roomSummary setRoomAvatarImageIn:self.avatarImageView];
+        MXRoomSummary *roomSummary = [roomCellData.mxSession roomSummaryWithRoomId:roomCellData.roomSummary.roomId];
+        [roomSummary setRoomAvatarImageIn:self.avatarImageView];
         
         self.roomTitleLabel.text = roomCellData.roomSummary.displayname;
         if (!self.roomTitleLabel.text.length)

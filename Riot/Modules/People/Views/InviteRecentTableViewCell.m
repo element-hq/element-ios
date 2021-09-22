@@ -87,7 +87,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 {
     if (self.delegate)
     {
-        MXRoom *room = roomCellData.roomSummary.room;
+        MXRoom *room = [roomCellData.mxSession roomWithRoomId:roomCellData.roomSummary.roomId];
         
         if (room)
         {
@@ -99,16 +99,11 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 - (void)render:(MXKCellData *)cellData
 {
     [super render:cellData];
-        
-    MXRoom *room = roomCellData.roomSummary.room;
     
-    if (room.roomId)
-    {
-        [self updateViewsWithRoom:room showPreviewButton:NO];
-    }
+    [self updateViewsWithRoom:roomCellData.roomSummary showPreviewButton:NO];
 }
 
-- (void)updateViewsWithRoom:(MXRoom*)room showPreviewButton:(BOOL)showPreviewButton
+- (void)updateViewsWithRoom:(id<MXRoomSummaryProtocol>)room showPreviewButton:(BOOL)showPreviewButton
 {
     NSString *rightButtonTitle;
     

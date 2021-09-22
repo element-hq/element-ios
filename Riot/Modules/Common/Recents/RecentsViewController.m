@@ -894,7 +894,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.summary.membership != MXMembershipInvite)
+    if (cellDataStoring.roomSummary.membership != MXMembershipInvite)
     {
         return RecentTableViewCell.class;
     }
@@ -1444,9 +1444,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
 
         // Retrieve the invited room
-        MXRoom* invitedRoom = cellData.roomSummary.room;
         
-        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+        if (cellData.roomSummary.roomType == MXRoomTypeSpace)
         {
             // Indicates that spaces are not supported
             [self showSpaceInviteNotAvailable];
@@ -1455,7 +1454,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         else if ([self canShowRoomPreviewFor:cellData.roomSummary])
         {
             // Display the room preview
-            [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+            [self dispayRoomWithRoomId:cellData.roomSummary.roomId inMatrixSession:cellData.mxSession];
         }
         else
         {
