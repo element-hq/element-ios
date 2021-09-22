@@ -131,7 +131,7 @@
 "contacts_address_book_matrix_users_toggle" = "Только пользователи Matrix";
 "contacts_address_book_no_contact" = "Нет локальных контактов";
 "contacts_address_book_permission_required" = "Разрешение на доступ к локальным контактам";
-"contacts_address_book_permission_denied" = "Вы не разрешили Element получить доступ к вашим локальным контактам";
+"contacts_address_book_permission_denied" = "Вы не разрешили %@ получить доступ к вашим локальным контактам";
 // Chat participants
 "room_participants_title" = "Участники";
 "room_participants_add_participant" = "Добавить участника";
@@ -371,7 +371,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Вы хотите помочь улучшить %@, автоматически отправляя анонимные отчеты о сбоях и данные об использовании?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы активировать его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
+"e2e_enabling_on_app_update" = "%@ теперь поддерживает сквозное шифрование, но вам нужно снова войти в систему, чтобы активировать его.\n\nВы можете сделать это сейчас или позже из настроек приложения.";
 "e2e_need_log_in_again" = "Вам нужно войти в систему, чтобы сгенерировать ключи шифрования для этого устройства и отправлять публичный ключ вашему серверу.\nЭто необходимо только один раз; просим прощения за неудобства.";
 // Bug report
 "bug_report_title" = "Сообщить об ошибке";
@@ -446,7 +446,7 @@
 "settings_calls_settings" = "ВЫЗОВЫ";
 "settings_show_decrypted_content" = "Показать расшифрованное содержимое";
 "settings_enable_callkit" = "Интегрированный вызов";
-"settings_callkit_info" = "Прием входящих звонков на экране блокировки. Журнал вызовов Element будет доступен в истории звонков вашего телефона. Если включен iCloud, то журнал вызовов будет доступен в том числе и Apple.";
+"settings_callkit_info" = "Прием входящих звонков на экране блокировки. Журнал вызовов %@ будет доступен в истории звонков вашего телефона. Если включен iCloud, то журнал вызовов будет доступен в том числе и Apple.";
 "settings_ui_theme" = "Тема";
 "settings_ui_theme_auto" = "Авто";
 "settings_ui_theme_light" = "Светлая";
@@ -532,7 +532,7 @@
 "event_formatter_rerequest_keys_part2" = " из других ваших сеансов.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Запрос отправлен";
-"rerequest_keys_alert_message" = "Запустите Element на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
+"rerequest_keys_alert_message" = "Запустите %@ на другом устройстве, которое может расшифровать сообщение, чтобы оно могло отправить ключи этому устройству.";
 "room_message_reply_to_placeholder" = "Отправить ответ (незашифрованный)…";
 "encrypted_room_message_reply_to_placeholder" = "Отправить зашифрованный ответ…";
 "room_message_reply_to_short_placeholder" = "Отправить ответ…";
@@ -895,11 +895,6 @@
 "room_participants_security_loading" = "Загрузка…";
 "skip" = "Пропустить";
 "store_promotional_text" = "Приложения для чата и совместной работы, сохраняющее конфиденциальность, в открытой сети. Децентрализованное, чтобы предоставить вам контроль. Никакой регистрации данных, никаких черных ходов и доступа третьих лиц.";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "Завершите настройку безопасности";
 "room_participants_action_security_status_loading" = "Загрузка…";
 "room_participants_security_information_room_not_encrypted" = "Сообщения в этой комнате не шифруются сквозным шифрованием.";
@@ -949,7 +944,7 @@
 "security_settings_blacklist_unverified_devices_description" = "Проверьте все сеансы пользователей, чтобы пометить их как доверенные и отправить им сообщения.";
 "security_settings_complete_security_alert_title" = "Завершите настройку безопасности";
 "security_settings_complete_security_alert_message" = "Сначала вы должны завершить настройку безопасности текущего сеанса.";
-"security_settings_coming_soon" = "Извините. Это действие пока недоступно в Element iOS. Пожалуйста, используйте другой клиент Matrix для его настройки. Element iOS будет его использовать.";
+"security_settings_coming_soon" = "Извините. Это действие пока недоступно в %@ iOS. Пожалуйста, используйте другой клиент Matrix для его настройки. %@ iOS будет его использовать.";
 "security_settings_user_password_description" = "Подтвердите свою личность, введя пароль учетной записи";
 // Manage session
 "manage_session_title" = "Управление сеансами";
@@ -1034,8 +1029,8 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Обзор";
 "device_verification_self_verify_wait_title" = "Завершите настройку безопасности";
 "device_verification_self_verify_wait_new_sign_in_title" = "Подтвердите вход";
-"device_verification_self_verify_wait_information" = "Подтвердите этот сеанс на одном из других ваших сеансов, предоставив ему доступ к зашифрованным сообщениям.\n\nИспользуйте последнюю версию Element на других ваших устройствах:";
-"device_verification_self_verify_wait_additional_information" = "Это работает с Element и другими клиентами Matrix с поддержкой кросс-подписи.";
+"device_verification_self_verify_wait_information" = "Подтвердите этот сеанс на одном из других ваших сеансов, предоставив ему доступ к зашифрованным сообщениям.\n\nИспользуйте последнюю версию %@ на других ваших устройствах:";
+"device_verification_self_verify_wait_additional_information" = "Это работает с %@ и другими клиентами Matrix с поддержкой кросс-подписи.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Используйте ключ безопасности";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Используйте секретную фразу или ключ безопасности";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Если вы не можете получить доступ к существующему сеансу";
@@ -1150,7 +1145,7 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Подтвердить секретную фразу";
 "cross_signing_setup_banner_title" = "Настройка шифрования";
 "cross_signing_setup_banner_subtitle" = "Упростите проверку других ваших устройств";
-"major_update_title" = "Riot теперь Element";
+"major_update_title" = "Riot теперь %@";
 "major_update_information" = "Мы рады сообщить, что сменили имя! Ваше приложение обновлено, и вы вошли в свою учетную запись.";
 "major_update_learn_more_action" = "Узнать больше";
 "major_update_done_action" = "Понял";

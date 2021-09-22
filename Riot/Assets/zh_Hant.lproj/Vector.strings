@@ -223,7 +223,7 @@
 "contacts_address_book_matrix_users_toggle" = "只顯示 Matrix 使用者";
 "contacts_address_book_no_contact" = "沒有裝置上的聯絡人";
 "contacts_address_book_permission_required" = "取得裝置上的聯絡資訊需要權限";
-"contacts_address_book_permission_denied" = "您沒有允許 Element 存取裝置上的聯絡資訊";
+"contacts_address_book_permission_denied" = "您沒有允許 %@ 存取裝置上的聯絡資訊";
 "contacts_user_directory_section" = "使用者目錄";
 "contacts_user_directory_offline_section" = "使用者目錄（離線）";
 // Chat participants
@@ -345,7 +345,7 @@
 "settings_pin_rooms_with_missed_notif" = "釘選含有錯過的通知的聊天室";
 "settings_pin_rooms_with_unread" = "釘選含有未讀訊息的聊天室";
 "settings_enable_callkit" = "整合式通話";
-"settings_callkit_info" = "在鎖定畫面接聽 Element 來電、在通話紀錄中顯示 Element 通話。 如果您已啟用 iCloud ，則這些通話紀錄會與蘋果公司共享。";
+"settings_callkit_info" = "在鎖定畫面接聽 %@ 來電、在通話紀錄中顯示 %@ 通話。 如果您已啟用 iCloud ，則這些通話紀錄會與蘋果公司共享。";
 "settings_ui_language" = "語言";
 "settings_ui_theme" = "主題";
 "settings_ui_theme_auto" = "自動";
@@ -488,7 +488,7 @@
 // Crash report
 "google_analytics_use_prompt" = "您願意透過自動送出匿名的崩潰報告和使用資料來幫住%@進步嗎?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element 目前支援點對點加密，但您需要重新登入來啟用它。\n\n您可以現在重新登入或稍後在應用程式設定中進行。";
+"e2e_enabling_on_app_update" = "%@ 目前支援點對點加密，但您需要重新登入來啟用它。\n\n您可以現在重新登入或稍後在應用程式設定中進行。";
 // Bug report
 "bug_report_title" = "錯誤回報";
 "bug_report_send_screenshot" = "傳送螢幕截圖";
@@ -500,7 +500,7 @@
 "widget_creation_failure" = "建立 Widget 失敗";
 "widget_sticker_picker_no_stickerpacks_alert" = "您目前沒有啟用任何貼圖。";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "現在新增一些嗎?";
-"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 Element 以將密鑰傳送到此工作階段。";
+"rerequest_keys_alert_message" = "請在其他可解密訊息的裝置開啟 %@ 以將密鑰傳送到此工作階段。";
 "bug_report_description" = "請描述此錯誤。您做了什麼? 本來應該發生什麼? 以及實際發生什麼?";
 "bug_crash_report_description" = "請描述您在崩潰前做了什麼:";
 "bug_report_logs_description" = "為了診斷問題，此用戶端的記錄檔將會隨此錯誤報告送出。 如果您只想傳送上面的文字，請取消:";
@@ -616,12 +616,6 @@
 "auth_add_email_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
 "auth_add_phone_message_2" = "設置一個電話號碼，以後可以由認識您的人發現你。";
 "auth_login_single_sign_on" = "以單一登入方式登入";
-"client_android_name" = "Element Android版";
-"client_ios_name" = "Element iOS版";
-"client_web_name" = "Element 網頁版";
-
-// MARK: Clients
-"client_desktop_name" = "Element 桌面版";
 
 // Accessibility
 "accessibility_checkbox_label" = "複選框";
