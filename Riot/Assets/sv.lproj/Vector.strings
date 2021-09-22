@@ -34,8 +34,6 @@
 "sending" = "Skickar";
 "close" = "Stäng";
 "skip" = "Hoppa över";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 // Authentication
 "auth_login" = "Logga in";
 "auth_register" = "Registrera";
@@ -401,9 +399,6 @@
 "collapse" = "fäll in";
 // Accessibility
 "accessibility_checkbox_label" = "kryssruta";
-// MARK: Clients
-"client_desktop_name" = "Element Skrivbord";
-"client_web_name" = "Element Webb";
 "auth_submit" = "Skicka";
 "auth_login_single_sign_on" = "Logga in";
 "auth_send_reset_email" = "Skicka återställningsmeddelande";
@@ -425,7 +420,7 @@
 "auth_softlogout_clear_data_sign_out_msg" = "Är du säker på att du vill rensa alla data som för närvarande lagras på den här enheten? Logga in igen för att tillgång till dina kontodata och meddelanden.";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till en deltagare via e-postadress.";
 "contacts_address_book_permission_required" = "Behörighet krävs för att få tillgång till dina lokala kontakter";
-"contacts_address_book_permission_denied" = "Du gav inte Element åtkomst till dina lokala kontakter";
+"contacts_address_book_permission_denied" = "Du gav inte %@ åtkomst till dina lokala kontakter";
 "room_participants_invite_malformed_id_title" = "Fel vid inbjudan";
 "room_participants_invited_section" = "INBJUDEN";
 "room_participants_unknown" = "Okänd";
@@ -604,7 +599,7 @@
 "room_preview_subtitle" = "Det här är en förhandsgranskning av det här rummet. Rumsinteraktioner har inaktiverats.";
 "room_preview_unlinked_email_warning" = "Den här inbjudan skickades till %@, vilket inte är associerat med det här kontot. Du kanske vill logga in på ett annat konto, eller lägga till den här e-postadressen till ditt konto.";
 "room_preview_try_join_an_unknown_room" = "Du försöker komma åt %@. Skulle du vilja gå med för att delta i diskussionen?";
-"settings_callkit_info" = "Ta emot inkommande samtal på din låsskärm. Se dina Element-samtal i systemets samtalshistorik. Om iCloud är aktiverat kommer denna samtalshistorik att delas med Apple.";
+"settings_callkit_info" = "Ta emot inkommande samtal på din låsskärm. Se dina %@-samtal i systemets samtalshistorik. Om iCloud är aktiverat kommer denna samtalshistorik att delas med Apple.";
 "settings_calls_stun_server_fallback_button" = "Tillåt reservassistansserver för samtal";
 "settings_calls_stun_server_fallback_description" = "Tillåt reservassistansserver %@ för samtal när din hemserver inte erbjuder en (din IP-adress kommer då delas under ett samtal).";
 "settings_ui_theme_picker_message" = "\"Auto\" använder dina enhetsinställningar för \"Invertera färger\"";
@@ -625,7 +620,7 @@
 "identity_server_settings_alert_error_terms_not_accepted" = "Du måste acceptera villkoren hos %@ för att kunna ställa in den som identitetsserver.";
 "identity_server_settings_alert_error_invalid_identity_server" = "%@ är inte en giltig identitetsserver.";
 "service_terms_modal_message_identity_server" = "Acceptera villkoren hos identitetsservern (%@) för att upptäcka kontakter.";
-"device_verification_self_verify_wait_additional_information" = "Detta funkar med Element och andra Matrix-klienter som stöder korssignering.";
+"device_verification_self_verify_wait_additional_information" = "Detta funkar med %@ och andra Matrix-klienter som stöder korssignering.";
 // Generic errors
 "error_invite_3pid_with_no_identity_server" = "Lägg till en identitetsserver i dina inställningar för att bjuda in via e-post.";
 "secrets_recovery_with_passphrase_information_default" = "Få tillgång till din säkra meddelandehistorik och din identitet för korssignering för att verifiera andra sessioner genom att ange din säkerhetsfras.";
@@ -664,7 +659,7 @@
 "security_settings_backup" = "MEDDELANDESÄKERHETSKOPIERING";
 "security_settings_crosssigning_bootstrap" = "Ställ in";
 "security_settings_complete_security_alert_title" = "Fullborda säkerhet";
-"security_settings_coming_soon" = "Den här åtgärden är tyvärr inte tillgänglig i Element iOS än. Använd en annan Matrix-klient för att ställa in den. Element iOS kommer att använda den.";
+"security_settings_coming_soon" = "Den här åtgärden är tyvärr inte tillgänglig i %@ iOS än. Använd en annan Matrix-klient för att ställa in den. %@ iOS kommer att använda den.";
 "identity_server_settings_description" = "Du använder för närvarande %@ för att upptäcka och kunna upptäckas av befintliga kontakter du känner till.";
 "identity_server_settings_no_is_description" = "Du använder för närvarande inte en identitetsserver. För att upptäcka och bli upptäckbar av befintliga kontakter, lägg till en ovan.";
 "identity_server_settings_disconnect_info" = "Om du kopplar bort från din identitetsserver kan du inte bli upptäckt av andra användare eller bjuda in andra via e-post eller telefon.";
@@ -717,7 +712,7 @@
 "call_already_displayed" = "Ett samtal pågår redan.";
 "call_no_stun_server_error_use_fallback_button" = "Försök att använda %@";
 // Crypto
-"e2e_enabling_on_app_update" = "Element har nu stöd för totalsträckskryptering men du behöver logga in igen för att aktivera det.\n\nDu kan göra det nu eller senare från appens inställningar.";
+"e2e_enabling_on_app_update" = "%@ har nu stöd för totalsträckskryptering men du behöver logga in igen för att aktivera det.\n\nDu kan göra det nu eller senare från appens inställningar.";
 "bug_report_send_screenshot" = "Skicka skärmdump";
 "widget_no_power_to_manage" = "Du behöver behörighet för att hantera widgets i det här rummet";
 "widget_creation_failure" = "Skapande av widget har misslyckats";
@@ -757,7 +752,7 @@
 "deactivate_account_validate_action" = "Inaktivera konto";
 "deactivate_account_password_alert_title" = "Inaktivera konto";
 "deactivate_account_password_alert_message" = "För att fortsätta, ange ditt lösenord";
-"rerequest_keys_alert_message" = "Starta Element på en annan enhet som dekryptera meddelandet så att den kan skicka nycklarna till den här sessionen.";
+"rerequest_keys_alert_message" = "Starta %@ på en annan enhet som dekryptera meddelandet så att den kan skicka nycklarna till den här sessionen.";
 "secure_key_backup_setup_intro_use_security_key_title" = "Använd en säkerhetsnyckel";
 "secure_key_backup_setup_intro_use_security_key_info" = "Generera en säkerhetsnyckel att lagra på en säker plats, exempelvis i en lösenordshanterare eller ett kassaskåp.";
 "secure_key_backup_setup_existing_backup_error_unlock_it" = "Lås upp den";
@@ -910,7 +905,7 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Granska";
 "device_verification_self_verify_wait_title" = "Fullgör säkerhet";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifiera den här inloggningen";
-"device_verification_self_verify_wait_information" = "Verifiera den här sessionen från en av dina andra sessioner och ge den åtkomst till krypterade meddelanden.\n\nAnvänd senaste Element på dina andra enheter:";
+"device_verification_self_verify_wait_information" = "Verifiera den här sessionen från en av dina andra sessioner och ge den åtkomst till krypterade meddelanden.\n\nAnvänd senaste %@ på dina andra enheter:";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Använd säkerhetsnyckel";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Använd säkerhetsfras eller -nyckel";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Om du inte kan komma åt en existerade session";
@@ -1105,7 +1100,7 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Bekräfta fras";
 "cross_signing_setup_banner_title" = "Ställ in kryptering";
 "cross_signing_setup_banner_subtitle" = "Verifiera dina andra enheter enklare";
-"major_update_title" = "Riot är nu Element";
+"major_update_title" = "Riot är nu %@";
 "major_update_information" = "Vi är glada att meddela att vi har bytt namn! Din app är uppdaterad och du är inloggad på ditt konto.";
 "major_update_learn_more_action" = "Lär dig mer";
 "major_update_done_action" = "Förstått";
@@ -1379,14 +1374,14 @@
 "settings_notifications_disabled_alert_title" = "Aviseringar inaktiverade";
 "settings_device_notifications" = "Enhetsaviseringar";
 "version_check_modal_action_title_deprecated" = "Ta reda på hur";
-"version_check_modal_subtitle_deprecated" = "Vi har jobbat på att förbättra Element för en snabbare och mer polerad upplevelse. Tyvärr så är din nuvarande version av iOS inte kompatibel med vissa av dessa fixar och kommer inte längre stödas.\nVi råder dig att uppgradera ditt operativsystem för att fortsätta använda Element med dess fulla potential.";
+"version_check_modal_subtitle_deprecated" = "Vi har jobbat på att förbättra %@ för en snabbare och mer polerad upplevelse. Tyvärr så är din nuvarande version av iOS inte kompatibel med vissa av dessa fixar och kommer inte längre stödas.\nVi råder dig att uppgradera ditt operativsystem för att fortsätta använda %@ med dess fulla potential.";
 "version_check_modal_title_deprecated" = "Vi stöder inte längre iOS %@";
 "version_check_modal_action_title_supported" = "Förstått";
-"version_check_modal_subtitle_supported" = "Vi har jobbat på att förbättra Element för en snabbare och mer polerad upplevelse. Tyvärr så är din nuvarande version av iOS inte kompatibel med vissa av dessa fixar och kommer inte längre stödas.\nVi råder dig att uppgradera ditt operativsystem för att fortsätta använda Element med dess fulla potential.";
+"version_check_modal_subtitle_supported" = "Vi har jobbat på att förbättra %@ för en snabbare och mer polerad upplevelse. Tyvärr så är din nuvarande version av iOS inte kompatibel med vissa av dessa fixar och kommer inte längre stödas.\nVi råder dig att uppgradera ditt operativsystem för att fortsätta använda %@ med dess fulla potential.";
 "version_check_modal_title_supported" = "Vi slutar stöda iOS %@";
-"version_check_banner_subtitle_deprecated" = "Vi stöder inte längre Element på iOS %@. För att fortsätta använda Element med dess fulla potential så råder vi dig att uppgradera din iOS-version.";
+"version_check_banner_subtitle_deprecated" = "Vi stöder inte längre %@ på iOS %@. För att fortsätta använda %@ med dess fulla potential så råder vi dig att uppgradera din iOS-version.";
 "version_check_banner_title_deprecated" = "Vi stöder inte längre iOS %@";
-"version_check_banner_subtitle_supported" = "Vi kommer snart att sluta stöda Element på iOS %@. För att fortsätta använda Element med dess fulla potential så råder vi dig att uppgradera din iOS-version.";
+"version_check_banner_subtitle_supported" = "Vi kommer snart att sluta stöda %@ på iOS %@. För att fortsätta använda %@ med dess fulla potential så råder vi dig att uppgradera din iOS-version.";
 
 // Mark: - Version check
 
