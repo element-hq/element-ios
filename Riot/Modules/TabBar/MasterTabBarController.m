@@ -283,6 +283,9 @@
     
     [self initializeDataSources];
     
+    // Need to be called in case of the controllers have been replaced
+    [self.selectedViewController viewWillAppear:NO];
+
     // Adjust the display of the icons in the tabbar.
     for (UITabBarItem *tabBarItem in self.tabBar.items)
     {
@@ -299,6 +302,9 @@
     }
     
     titleView.titleLabel.text = self.selectedViewController.accessibilityLabel;
+    
+    // Need to be called in case of the controllers have been replaced
+    [self.selectedViewController viewDidAppear:NO];
 }
 
 #pragma mark -

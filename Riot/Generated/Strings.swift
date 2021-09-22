@@ -4874,6 +4874,10 @@ internal enum VectorL10n {
   internal static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
+  /// Adding rooms coming soon
+  internal static var spacesAddRoomsComingSoonTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
+  }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
   internal static var spacesComingSoonDetail: String { 
     return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
