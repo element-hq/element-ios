@@ -97,6 +97,29 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
     }
     
+    func voiceMessagePlaybackViewRequestedFormattedTimestamp(for progress: CGFloat) -> String? {
+        return VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.duration * progress))
+    }
+    
+    func voiceMessagePlaybackViewDidRequestSeek(to progress: CGFloat) {
+        guard let audioPlayer = audioPlayer else {
+            return
+        }
+        
+        if state == .stopped {
+            state = .paused
+        }
+        
+        if audioPlayer.url == nil,
+           let url = urlToLoad {
+            audioPlayer.loadContentFromURL(url, displayName: attachment?.originalFileName)
+        }
+        
+        audioPlayer.seekToTime(self.duration * progress) { [weak self] _ in
+            self?.updateUI()
+        }
+    }
+    
     func voiceMessagePlaybackViewDidChangeWidth() {
         loadAttachmentData()
     }

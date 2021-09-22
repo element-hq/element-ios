@@ -23,6 +23,8 @@ protocol VoiceMessageToolbarViewDelegate: AnyObject {
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView)
     func voiceMessageToolbarViewDidRequestLockedModeRecording(_ toolbarView: VoiceMessageToolbarView)
     func voiceMessageToolbarViewDidRequestPlaybackToggle(_ toolbarView: VoiceMessageToolbarView)
+    func voiceMessageToolbarViewRequestedFormattedTimestamp(for progress: CGFloat) -> String?
+    func voiceMessageToolbarViewDidRequestSeek(to progress: CGFloat)
     func voiceMessageToolbarViewDidRequestSend(_ toolbarView: VoiceMessageToolbarView)
 }
 
@@ -93,6 +95,7 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     private var lockChevronToRecordButtonDistance: CGFloat = 0.0
     private var lockChevronToLockButtonDistance: CGFloat = 0.0
     private var panDirection: UISwipeGestureRecognizer.Direction?
+    private var tapGesture: UITapGestureRecognizer!
     
     private var details: VoiceMessageToolbarViewDetails?
     
@@ -126,6 +129,8 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleWaveformTap))
         playbackView.waveformView.addGestureRecognizer(tapGesture)
+        tapGesture.delegate = self
+        self.tapGesture = tapGesture
         
         updateUIWithDetails(VoiceMessageToolbarViewDetails(), animated: false)
     }
@@ -183,11 +188,27 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
         return true
     }
     
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == self.tapGesture, self.lastUIState != .lockedModeRecord {
+            return false
+        }
+        return true
+    }
+    
     // MARK: - VoiceMessagePlaybackViewDelegate
     
     func voiceMessagePlaybackViewDidRequestPlaybackToggle() {
         delegate?.voiceMessageToolbarViewDidRequestPlaybackToggle(self)
     }
+    
+    func voiceMessagePlaybackViewRequestedFormattedTimestamp(for progress: CGFloat) -> String? {
+        return delegate?.voiceMessageToolbarViewRequestedFormattedTimestamp(for: progress)
+    }
+    
+    func voiceMessagePlaybackViewDidRequestSeek(to progress: CGFloat) {
+        delegate?.voiceMessageToolbarViewDidRequestSeek(to: progress)
+    }
+    
     
     func voiceMessagePlaybackViewDidChangeWidth() {
         

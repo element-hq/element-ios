@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -50,6 +50,11 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fl-yZ-dZB">
                             <rect key="frame" x="94" y="7" width="317" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <gestureRecognizers/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="ZQp-nu-e9K" appends="YES" id="98b-lQ-pW3"/>
+                                <outletCollection property="gestureRecognizers" destination="WD8-Zc-Vke" appends="YES" id="6pf-Ca-Npj"/>
+                            </connections>
                         </view>
                     </subviews>
                     <constraints>
@@ -75,15 +80,26 @@
             <connections>
                 <outlet property="backgroundView" destination="LPc-i8-8UC" id="mfD-md-nTj"/>
                 <outlet property="elapsedTimeLabel" destination="eAi-HM-Wvj" id="z70-aJ-O90"/>
+                <outlet property="panGestureRecognizer" destination="ZQp-nu-e9K" id="h67-Te-8U3"/>
                 <outlet property="playButton" destination="GL1-b8-dZK" id="5u7-CG-d99"/>
                 <outlet property="recordingIcon" destination="REB-gl-h0h" id="uL1-nI-bhF"/>
                 <outlet property="waveformContainerView" destination="7Fl-yZ-dZB" id="f9u-wS-jvG"/>
             </connections>
             <point key="canvasLocation" x="-1742.753623188406" y="-299.33035714285711"/>
         </view>
+        <panGestureRecognizer minimumNumberOfTouches="1" id="ZQp-nu-e9K">
+            <connections>
+                <action selector="panWithGestureRecognizer:" destination="cGR-49-HWB" id="McO-Pq-HFs"/>
+            </connections>
+        </panGestureRecognizer>
+        <tapGestureRecognizer id="WD8-Zc-Vke">
+            <connections>
+                <action selector="tapWithGestureRecognizer:" destination="cGR-49-HWB" id="6qM-N2-zmN"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="voice_message_play_button" width="12.5" height="15"/>
+        <image name="voice_message_play_button" width="15.5" height="15"/>
         <image name="voice_message_record_icon" width="10" height="10"/>
     </resources>
 </document>
