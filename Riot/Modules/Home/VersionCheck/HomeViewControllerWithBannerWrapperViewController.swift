@@ -41,6 +41,8 @@ class HomeViewControllerWithBannerWrapperViewController: MXKViewController, Bann
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        homeViewController.willMove(toParent: self)
+        
         view.backgroundColor = .clear
         
         stackView = UIStackView()
@@ -48,8 +50,8 @@ class HomeViewControllerWithBannerWrapperViewController: MXKViewController, Bann
         stackView.distribution = .fill
         stackView.alignment = .fill
         
-        view.vc_addSubViewMatchingParent(stackView)
-        
+        view.vc_addSubViewMatchingParentSafeArea(stackView)
+
         addChild(homeViewController)
         stackView.addArrangedSubview(homeViewController.view)
         homeViewController.didMove(toParent: self)
