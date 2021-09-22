@@ -1165,7 +1165,8 @@
 "pin_protection_mismatch_error_title" = "PIN-коды не совпадают";
 "pin_protection_mismatch_error_message" = "Пожалуйста, попробуйте еще раз";
 "pin_protection_mismatch_too_many_times_error_message" = "Если вы не можете вспомнить свой PIN-код, нажмите кнопку забытого PIN-кода.";
-"pin_protection_settings_section_header_x" = "PIN-код и %@";
+"pin_protection_settings_section_header" = "PIN-код";
+"pin_protection_settings_section_header_with_biometrics" = "PIN-код и %@";
 "pin_protection_settings_section_footer" = "Чтобы сбросить свой PIN-код, вам нужно будет повторно войти в аккаунт и создать новый PIN-код.";
 "pin_protection_settings_enabled_forced" = "PIN-код включён";
 "pin_protection_settings_enable_pin" = "Включить PIN-код";

@@ -631,7 +631,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.updateRoomReadMarker = NO;
     isAppeared = NO;
     
-    [VoiceMessageMediaServiceProvider.sharedProvider stopAllServices];
+    [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -4424,27 +4424,48 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else if (tappedView == previewHeader.rightButton)
     {
         // 'Join' button has been pressed
-        if (roomPreviewData)
+        if (!roomPreviewData)
         {
-            // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
-            NSString *eventId = roomPreviewData.eventId;
+            [self joinRoom:^(MXKRoomViewControllerJoinRoomResult result) {
+                switch (result)
+                {
+                    case MXKRoomViewControllerJoinRoomResultSuccess:
+                        [self refreshRoomTitle];
+                        break;
+                    case MXKRoomViewControllerJoinRoomResultFailureRoomEmpty:
+                        [self declineRoomInvitation];
+                        break;
+                    default:
+                        break;
+                }
+            }];
             
-            // We promote here join by room alias instead of room id when an alias is available.
-            NSString *roomIdOrAlias = roomPreviewData.roomId;
+            return;
+        }
+        
+        // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
+        NSString *eventId = roomPreviewData.eventId;
+        
+        // We promote here join by room alias instead of room id when an alias is available.
+        NSString *roomIdOrAlias = roomPreviewData.roomId;
+        
+        if (roomPreviewData.roomCanonicalAlias.length)
+        {
+            roomIdOrAlias = roomPreviewData.roomCanonicalAlias;
+        }
+        else if (roomPreviewData.roomAliases.count)
+        {
+            roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
+        }
+        
+        // Note in case of simple link to a room the signUrl param is nil
+        [self joinRoomWithRoomIdOrAlias:roomIdOrAlias viaServers:roomPreviewData.viaServers
+                             andSignUrl:roomPreviewData.emailInvitation.signUrl
+                             completion:^(MXKRoomViewControllerJoinRoomResult result) {
             
-            if (roomPreviewData.roomCanonicalAlias.length)
+            switch (result)
             {
-                roomIdOrAlias = roomPreviewData.roomCanonicalAlias;
-            }
-            else if (roomPreviewData.roomAliases.count)
-            {
-                roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
-            }
-            
-            // Note in case of simple link to a room the signUrl param is nil
-            [self joinRoomWithRoomIdOrAlias:roomIdOrAlias viaServers:roomPreviewData.viaServers  andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
-                
-                if (succeed)
+                case MXKRoomViewControllerJoinRoomResultSuccess:
                 {
                     // If an event was specified, replace the datasource by a non live datasource showing the event
                     if (eventId)
@@ -4473,33 +4494,47 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         [self refreshRoomTitle];
                         [self refreshRoomInputToolbar];
                     }
+                    break;
                 }
-                
-            }];
-        }
-        else
-        {
-            [self joinRoom:^(BOOL succeed) {
-                
-                if (succeed)
-                {
-                    [self refreshRoomTitle];
-                }
-                
-            }];
-        }
+                case MXKRoomViewControllerJoinRoomResultFailureRoomEmpty:
+                    [self declineRoomInvitation];
+                    break;
+                default:
+                    break;
+            }
+        }];
     }
     else if (tappedView == previewHeader.leftButton)
     {
-        // 'Decline' button has been pressed
-        if (roomPreviewData)
-        {
-            [self roomPreviewDidTapCancelAction];
-        }
-        else
-        {
-            [self leaveRoom];
-        }
+        [self declineRoomInvitation];
+    }
+}
+
+- (void)declineRoomInvitation
+{
+    // 'Decline' button has been pressed
+    if (roomPreviewData)
+    {
+        [self roomPreviewDidTapCancelAction];
+    }
+    else
+    {
+        [self startActivityIndicator];
+        
+        [self.roomDataSource.room leave:^{
+            
+            [self stopActivityIndicator];
+            
+            // We remove the current view controller.
+            // Pop to homes view controller
+            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
+            
+        } failure:^(NSError *error) {
+            
+            [self stopActivityIndicator];
+            MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
+            
+        }];
     }
 }
 

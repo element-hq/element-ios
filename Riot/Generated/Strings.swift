@@ -2302,9 +2302,13 @@ internal enum VectorL10n {
   internal static var pinProtectionSettingsSectionFooter: String { 
     return VectorL10n.tr("Vector", "pin_protection_settings_section_footer") 
   }
+  /// PIN
+  internal static var pinProtectionSettingsSectionHeader: String { 
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header") 
+  }
   /// PIN & %@
-  internal static func pinProtectionSettingsSectionHeaderX(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "pin_protection_settings_section_header_x", p1)
+  internal static func pinProtectionSettingsSectionHeaderWithBiometrics(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "pin_protection_settings_section_header_with_biometrics", p1)
   }
   /// Preview
   internal static var preview: String { 
