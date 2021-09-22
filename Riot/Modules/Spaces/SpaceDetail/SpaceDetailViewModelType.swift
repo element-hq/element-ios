@@ -23,6 +23,8 @@ protocol SpaceDetailViewModelViewDelegate: AnyObject {
 protocol SpaceDetailModelViewModelCoordinatorDelegate: AnyObject {
     func spaceDetailViewModelDidCancel(_ viewModel: SpaceDetailViewModelType)
     func spaceDetailViewModelDidDismiss(_ viewModel: SpaceDetailViewModelType)
+    func spaceDetailViewModelDidOpen(_ viewModel: SpaceDetailViewModelType)
+    func spaceDetailViewModelDidJoin(_ viewModel: SpaceDetailViewModelType)
 }
 
 /// Protocol describing the view model used by `SpaceDetailViewController`

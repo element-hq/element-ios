@@ -87,7 +87,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate>
 {
     /**
      Reachability observer
@@ -204,6 +204,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
+@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
 /**
  Used to manage on boarding steps, like create DM with riot bot
@@ -1344,8 +1345,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    // Indicates that spaces are not supported
-                    [self.spaceFeatureUnavailablePresenter presentUnavailableFeatureFrom:self.presentedViewController animated:YES];
+                    [self restoreInitialDisplay:^{
+                        self.spaceDetailPresenter = [SpaceDetailPresenter new];
+                        self.spaceDetailPresenter.delegate = self;
+                        [self.spaceDetailPresenter presentForSpaceWithId:room.roomId from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
+                    }];
                 }
                 else
                 {
@@ -1458,24 +1462,21 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
-                            // Is it a link to an event of a room?
-                            // If yes, the event will be displayed once the room is joined
-                            roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
-                            
-                            // Try to get more information about the room before opening its preview
-                            [roomPreviewData peekInRoom:^(BOOL succeeded) {
-                                
-                                // Note: the activity indicator will not disappear if the session is not ready
-                                [homeViewController stopActivityIndicator];
-                                
-                                // If no data is available for this room, we name it with the known room alias (if any).
-                                if (!succeeded && universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+                            [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
+                                if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
                                 {
-                                    roomPreviewData.roomName = universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+                                    [homeViewController stopActivityIndicator];
+                                    
+                                    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+                                    self.spaceDetailPresenter.delegate = self;
+                                    [self.spaceDetailPresenter presentForSpaceWithSummary:room from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
                                 }
-                                universalLinkFragmentPendingRoomAlias = nil;
-                                
-                                [self showRoomPreview:roomPreviewData];
+                                else
+                                {
+                                    [self peekInRoomWithId:roomIdOrAlias forPreviewData:roomPreviewData params:pathParams];
+                                }
+                            } failure:^(NSError *error) {
+                                [self peekInRoomWithId:roomIdOrAlias forPreviewData:roomPreviewData params:pathParams];
                             }];
                         }
                         
@@ -1605,6 +1606,33 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[NSNotificationCenter defaultCenter] removeObserver:universalLinkWaitingObserver];
         universalLinkWaitingObserver = nil;
     }
+}
+
+- (void)peekInRoomWithId:(NSString*)roomIdOrAlias forPreviewData:(RoomPreviewData *)roomPreviewData params:(NSArray<NSString*> *)pathParams
+{
+    // Is it a link to an event of a room?
+    // If yes, the event will be displayed once the room is joined
+    roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
+    
+    MXWeakify(self);
+    // Try to get more information about the room before opening its preview
+    [roomPreviewData peekInRoom:^(BOOL succeeded) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        MXKViewController *homeViewController = (MXKViewController*)self.masterTabBarController.selectedViewController;
+
+        // Note: the activity indicator will not disappear if the session is not ready
+        [homeViewController stopActivityIndicator];
+        
+        // If no data is available for this room, we name it with the known room alias (if any).
+        if (!succeeded && self->universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
+        {
+            roomPreviewData.roomName = self->universalLinkFragmentPendingRoomAlias[roomIdOrAlias];
+        }
+        self->universalLinkFragmentPendingRoomAlias = nil;
+        
+        [self showRoomPreview:roomPreviewData];
+    }];
 }
 
 /**
@@ -4380,6 +4408,52 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [MXKAttachment clearCache];
     [VoiceMessageAttachmentCacheManagerBridge clearCache];
     [URLPreviewService.shared clearStore];
+}
+
+#pragma mark - Spaces
+
+-(void)openSpaceWithId:(NSString *)spaceId
+{
+    MXSession *session = mxSessionArray.firstObject;
+    if ([session.spaceService getSpaceWithId:spaceId]) {
+        [self restoreInitialDisplay:^{
+            [self.delegate legacyAppDelegate:self didNavigateToSpaceWithId:spaceId];
+        }];
+    }
+    else
+    {
+        MXWeakify(self);
+        __block __weak id observer = [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+            
+            if ([session.spaceService getSpaceWithId:spaceId]) {
+                [self restoreInitialDisplay:^{
+                    [self.delegate legacyAppDelegate:self didNavigateToSpaceWithId:spaceId];
+                }];
+            }
+        }];
+    }
+}
+
+#pragma mark - SpaceDetailPresenterDelegate
+
+- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
+{
+    self.spaceDetailPresenter = nil;
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didOpenSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [self openSpaceWithId:spaceId];
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didJoinSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [self openSpaceWithId:spaceId];
 }
 
 @end

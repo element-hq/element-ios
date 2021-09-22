@@ -70,7 +70,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let masterNavigationController = RiotNavigationController()
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
-    }    
+    }
     
     // MARK: - Public methods
     

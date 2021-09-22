@@ -109,6 +109,10 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         return self.sideMenuNavigationViewController.sideMenuManager.addPanGestureToPresent(toView: view)
     }
     
+    func select(spaceWithId spaceId: String) {
+        self.spaceListCoordinator?.select(spaceWithId: spaceId)
+    }
+    
     // MARK: - Private
     
     private func createSideMenuNavigationController(with rootViewController: UIViewController) -> SideMenuNavigationController {
@@ -344,6 +348,15 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
 }
 
 extension SideMenuCoordinator: SpaceDetailPresenterDelegate {
+    func spaceDetailPresenter(_ presenter: SpaceDetailPresenter, didJoinSpaceWithId spaceId: String) {
+        self.spaceListCoordinator?.select(spaceWithId: spaceId)
+    }
+    
+    func spaceDetailPresenter(_ presenter: SpaceDetailPresenter, didOpenSpaceWithId spaceId: String) {
+        // this use case cannot happen here as the space list open directly joined spaces on tap
+        self.spaceListCoordinator?.revertItemSelection()
+    }
+    
     func spaceDetailPresenterDidComplete(_ presenter: SpaceDetailPresenter) {
         self.spaceListCoordinator?.revertItemSelection()
     }

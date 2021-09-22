@@ -239,6 +239,10 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemove account: MXKAccount!) {
         self.userSessionsService.removeUserSession(relatedToAccount: account)
     }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didNavigateToSpaceWithId spaceId: String!) {
+        self.sideMenuCoordinator?.select(spaceWithId: spaceId)
+    }
 }
 
 // MARK: - SplitViewCoordinatorDelegate

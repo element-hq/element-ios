@@ -26,12 +26,20 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
 
     private let session: MXSession
     private let spaceId: String
+    private let publicRoom: MXPublicRoom?
     
     // MARK: - Setup
     
     init(session: MXSession, spaceId: String) {
         self.session = session
         self.spaceId = spaceId
+        self.publicRoom = nil
+    }
+    
+    init(session: MXSession, publicRoom: MXPublicRoom) {
+        self.session = session
+        self.publicRoom = publicRoom
+        self.spaceId = publicRoom.roomId
     }
     
     // MARK: - Public
@@ -44,6 +52,8 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             self.join()
         case .leave:
             self.leave()
+        case .open:
+            self.coordinatorDelegate?.spaceDetailViewModelDidOpen(self)
         case .dismiss:
             self.coordinatorDelegate?.spaceDetailViewModelDidCancel(self)
         case .dismissed:
@@ -58,31 +68,37 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
     }
     
     private func loadData() {
-        guard let space = self.session.spaceService.getSpace(withId: self.spaceId), let summary = space.summary else {
-            MXLog.error("[SpaceDetailViewModel] setupViews: no space found")
-            return
-        }
-        
-        self.update(viewState: .loaded(SpaceDetailLoadedParameters(space: space, joinRule: nil, inviterId: nil, inviter: nil, membersCount: 0)))
-        
-        self.update(viewState: .loading)
-        space.room.state { state in
-            let joinRule = state?.joinRule
-            let membersCount = summary.membersCount.members
+        if let publicRoom = self.publicRoom {
+            self.update(viewState: .loaded(SpaceDetailLoadedParameters(spaceId: publicRoom.roomId, displayName: publicRoom.displayname(), topic: publicRoom.topic, avatarUrl: publicRoom.avatarUrl, joinRule: publicRoom.worldReadable ? .public : .private, membership: .unknown, inviterId: nil, inviter: nil, membersCount: UInt(publicRoom.numJoinedMembers))))
+        } else {
+            guard let space = self.session.spaceService.getSpace(withId: self.spaceId), let summary = space.summary else {
+                MXLog.error("[SpaceDetailViewModel] setupViews: no space found")
+                return
+            }
             
-            var inviterId: String?
-            var inviter: MXUser?
-            state?.stateEvents.forEach({ event in
-                if event.wireEventType == .roomMember && event.stateKey == self.session.myUserId {
-                    guard let userId = event.sender else {
-                        return
+            let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId, displayName: summary.displayname, topic: summary.topic, avatarUrl: summary.avatar, joinRule: nil, membership: summary.membership, inviterId: nil, inviter: nil, membersCount: 0)
+            self.update(viewState: .loaded(parameters))
+            
+            self.update(viewState: .loading)
+            space.room.state { state in
+                let joinRule = state?.joinRule
+                let membersCount = summary.membersCount.members
+                
+                var inviterId: String?
+                var inviter: MXUser?
+                state?.stateEvents.forEach({ event in
+                    if event.wireEventType == .roomMember && event.stateKey == self.session.myUserId {
+                        guard let userId = event.sender else {
+                            return
+                        }
+                        inviterId = userId
+                        inviter = self.session.user(withUserId: userId)
                     }
-                    inviterId = userId
-                    inviter = self.session.user(withUserId: userId)
-                }
-            })
-            
-            self.update(viewState: .loaded(SpaceDetailLoadedParameters(space: space, joinRule: joinRule, inviterId: inviterId, inviter: inviter, membersCount: membersCount)))
+                })
+                
+                let parameters = SpaceDetailLoadedParameters(spaceId: space.spaceId, displayName: summary.displayname, topic: summary.topic, avatarUrl: summary.avatar, joinRule: joinRule, membership: summary.membership, inviterId: inviterId, inviter: inviter, membersCount: membersCount)
+                self.update(viewState: .loaded(parameters))
+            }
         }
     }
     
@@ -92,7 +108,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             guard let self = self else { return }
             switch response {
             case .success:
-                self.process(viewAction: .dismiss)
+                self.coordinatorDelegate?.spaceDetailViewModelDidJoin(self)
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
