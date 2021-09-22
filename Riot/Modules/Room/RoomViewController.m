@@ -4993,14 +4993,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 -(BOOL)checkUnsentMessages
 {
-    RoomSentStatus sentStatus = RoomSentStatusOk;
+    MXRoomSummarySentStatus sentStatus = MXRoomSummarySentStatusOk;
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
-        sentStatus = self.roomDataSource.room.sentStatus;
+        sentStatus = self.roomDataSource.room.summary.sentStatus;
         
-        if (sentStatus != RoomSentStatusOk)
+        if (sentStatus != MXRoomSummarySentStatusOk)
         {
-            NSString *notification = sentStatus == RoomSentStatusSentFailedDueToUnknownDevices ?
+            NSString *notification = sentStatus == MXRoomSummarySentStatusSentFailedDueToUnknownDevices ?
             NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
             NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
             
@@ -5071,7 +5071,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
     
-    return sentStatus != RoomSentStatusOk;
+    return sentStatus != MXRoomSummarySentStatusOk;
 }
 
 - (void)eventDidChangeSentState:(NSNotification *)notif

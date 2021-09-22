@@ -101,8 +101,8 @@
         }
         
         // Notify unreads and bing
-        if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite
-                 || roomCellData.roomSummary.room.sentStatus != RoomSentStatusOk)
+        if (roomCellData.roomSummary.membership == MXMembershipInvite
+                 || roomCellData.roomSummary.sentStatus != MXRoomSummarySentStatusOk)
         {
             self.badgeLabel.hidden = NO;
             self.badgeLabel.badgeColor = ThemeService.shared.theme.noticeColor;
@@ -130,7 +130,8 @@
             
         }
         
-        [roomCellData.roomSummary setRoomAvatarImageIn:self.roomAvatar];
+        MXRoom *room = [roomCellData.mxSession roomWithRoomId:roomCellData.roomSummary.roomId];
+        [room.summary setRoomAvatarImageIn:self.roomAvatar];
     }
 }
 
