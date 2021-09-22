@@ -16,10 +16,8 @@
 
 import SwiftUI
 
-/**
- A visual cue to user that something is in progress.
- */
 @available(iOS 14.0, *)
+/// A visual cue to user that something is in progress.
 struct ActivityIndicator: View {
     
     private enum Constants {

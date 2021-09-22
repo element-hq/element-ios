@@ -1268,7 +1268,8 @@
 "pin_protection_settings_enable_pin" = "Activer le code PIN";
 "pin_protection_settings_enabled_forced" = "Code PIN activé";
 "pin_protection_settings_section_footer" = "Pour réinitialiser votre code PIN, vous devez vous ré-authentifier et en créer un nouveau.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Si vous avez oublié votre code PIN, appuyez sur le bouton « PIN oublié ».";
 "pin_protection_mismatch_error_message" = "Essayez à nouveau";
 "pin_protection_mismatch_error_title" = "Les codes PIN ne correspondent pas";

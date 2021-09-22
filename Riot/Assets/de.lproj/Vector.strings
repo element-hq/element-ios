@@ -1161,7 +1161,8 @@
 "pin_protection_mismatch_error_title" = "Die PINs stimmen nicht überein";
 "pin_protection_mismatch_error_message" = "Bitte versuche es erneut";
 "pin_protection_mismatch_too_many_times_error_message" = "Wenn du dich nicht an deine PIN erinnern kannst, drücke \"PIN vergessen\".";
-"pin_protection_settings_section_header_x" = "PIN und %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN und %@";
 "pin_protection_settings_section_footer" = "Um deine PIN zurückzusetzen, musst du dich erneut anmelden und eine neue erstellen.";
 "pin_protection_settings_enabled_forced" = "PIN aktiviert";
 "pin_protection_settings_enable_pin" = "PIN aktivieren";

@@ -77,6 +77,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: - Public methods
     
     func start() {
+        self.setupLogger()
         self.setupTheme()
         
         if BuildSettings.enableSideMenu {
@@ -102,6 +103,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
         
     // MARK: - Private methods
+    private func setupLogger() {
+        UILog.configure(logger: MatrixSDKLogger.self)
+    }
     
     private func setupTheme() {
         ThemeService.shared().themeId = RiotSettings.shared.userInterfaceTheme

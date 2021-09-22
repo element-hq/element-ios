@@ -55,6 +55,7 @@ targets:
       # Riot will provide it's own LocaleProviderType so exclude.
       excludes:
       - "Common/Locale/LocaleProvider.swift"
+      - "**/Test/**"
     - path: ../Tools
       excludes:
         - "Logs"
