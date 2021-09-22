@@ -1452,7 +1452,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             [self showSpaceInviteNotAvailable];
         }
         // Check if can show preview for the invited room 
-        else if ([self canShowRoomPreviewFor:invitedRoom])
+        else if ([self canShowRoomPreviewFor:cellData.roomSummary])
         {
             // Display the room preview
             [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
