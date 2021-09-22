@@ -103,6 +103,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.updateMasterTabBarController(with: spaceId)
         
         self.registerUserSessionsServiceNotifications()
+        self.registerSessionChange()
         
         if let homeViewController = homeViewControllerWrapperViewController {
             let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
@@ -285,7 +286,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             viewControllers.append(roomsViewController)
         }
         
-        if RiotSettings.shared.homeScreenShowCommunitiesTab && showCommunities {
+        let matrixSession = parameters.userSessionsService.mainUserSession?.matrixSession
+        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(matrixSession?.groups().isEmpty ?? false) && showCommunities {
             let groupsViewController = self.createGroupsViewController()
             viewControllers.append(groupsViewController)
         }
@@ -347,6 +349,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+        
+        if let matrixSession = parameters.userSessionsService.mainUserSession?.matrixSession, matrixSession.groups().isEmpty {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -367,6 +373,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func removeMatrixSessionFromMasterTabBarController(_ matrixSession: MXSession) {
         MXLog.debug("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
         self.masterTabBarController.removeMatrixSession(matrixSession)
+    }
+    
+    private func registerSessionChange() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionDidSync(_:)), name: NSNotification.Name.mxSessionDidSync, object: nil)
+    }
+    
+    @objc private func sessionDidSync(_ notification: Notification) {
+        if parameters.userSessionsService.mainUserSession?.matrixSession.groups().isEmpty ?? true {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
 }
 

@@ -307,6 +307,16 @@
     [self.selectedViewController viewDidAppear:NO];
 }
 
+- (void)removeTabAt:(MasterTabBarIndex)tag
+{
+    NSInteger index = [self indexOfTabItemWithTag:tag];
+    if (index != NSNotFound) {
+        NSMutableArray<UIViewController*> *viewControllers = [NSMutableArray arrayWithArray:self.viewControllers];
+        [viewControllers removeObjectAtIndex:index];
+        self.viewControllers = viewControllers;
+    }
+}
+
 #pragma mark -
 
 - (NSArray<MXSession*>*)mxSessions

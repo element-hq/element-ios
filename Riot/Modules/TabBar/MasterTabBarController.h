@@ -37,6 +37,13 @@
 #define TABBAR_GROUPS_INDEX       4
 #define TABBAR_COUNT              5
 
+typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
+    MasterTabBarIndexHome = TABBAR_HOME_INDEX,
+    MasterTabBarIndexFavourites = TABBAR_FAVOURITES_INDEX,
+    MasterTabBarIndexPeople = TABBAR_PEOPLE_INDEX,
+    MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX,
+    MasterTabBarIndexGroups = TABBAR_GROUPS_INDEX
+};
 
 @protocol MasterTabBarControllerDelegate;
 
@@ -193,6 +200,8 @@
 
 // Set tab bar item controllers
 - (void)updateViewControllers:(NSArray<UIViewController*>*)viewControllers;
+
+- (void)removeTabAt:(MasterTabBarIndex)index;
 
 @end
 
