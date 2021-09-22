@@ -1120,7 +1120,8 @@
 "pin_protection_mismatch_error_title" = "PIN-koderna matchar inte";
 "pin_protection_mismatch_error_message" = "Vänligen försök igen";
 "pin_protection_mismatch_too_many_times_error_message" = "Om du inte kommer ihåg din PIN-kod, tryck på knappen \"Glömt PIN-kod\".";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_settings_section_footer" = "För att återställa din PIN-kod så behöver du logga in igen och skapa en ny.";
 "pin_protection_settings_enabled_forced" = "PIN-kod aktiverad";
 "pin_protection_settings_enable_pin" = "Aktivera PIN-kod";
