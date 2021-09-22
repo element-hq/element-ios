@@ -112,9 +112,11 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
             audioPlayer.loadContentFromURL(url, displayName: attachment?.originalFileName)
         }
         
-        audioPlayer.seekToTime(self.duration * progress) { [weak self] _ in
+        audioPlayer.seekToTime(self.duration * Double(progress)) { [weak self] _ in
             guard let self = self else { return }
-            self.state = .paused
+            if self.state == .stopped {
+                self.state = .paused
+            }
             self.updateUI()
         }
     }

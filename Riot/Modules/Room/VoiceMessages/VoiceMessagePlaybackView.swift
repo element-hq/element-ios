@@ -50,7 +50,6 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var elapsedTimeLabel: UILabel!
     @IBOutlet private var waveformContainerView: UIView!
-    @IBOutlet private var panGestureRecognizer: UIPanGestureRecognizer!
     
     weak var delegate: VoiceMessagePlaybackViewDelegate?
     

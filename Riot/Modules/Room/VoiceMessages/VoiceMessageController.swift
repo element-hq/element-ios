@@ -172,7 +172,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             audioPlayer.loadContentFromURL(temporaryFileURL)
         }
         
-        audioPlayer.seekToTime(duration * progress) { [weak self] _ in
+        audioPlayer.seekToTime(duration * Double(progress)) { [weak self] _ in
             self?.updateUI()
         }
     }

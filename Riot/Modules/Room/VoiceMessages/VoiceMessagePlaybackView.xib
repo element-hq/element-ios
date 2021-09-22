@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -52,8 +52,8 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <gestureRecognizers/>
                             <connections>
-                                <outletCollection property="gestureRecognizers" destination="ZQp-nu-e9K" appends="YES" id="98b-lQ-pW3"/>
-                                <outletCollection property="gestureRecognizers" destination="WD8-Zc-Vke" appends="YES" id="6pf-Ca-Npj"/>
+                                <outletCollection property="gestureRecognizers" destination="TvB-7x-51j" appends="YES" id="2ac-M3-OKn"/>
+                                <outletCollection property="gestureRecognizers" destination="Fwa-Eg-VFh" appends="YES" id="meS-g1-yIc"/>
                             </connections>
                         </view>
                     </subviews>
@@ -80,21 +80,20 @@
             <connections>
                 <outlet property="backgroundView" destination="LPc-i8-8UC" id="mfD-md-nTj"/>
                 <outlet property="elapsedTimeLabel" destination="eAi-HM-Wvj" id="z70-aJ-O90"/>
-                <outlet property="panGestureRecognizer" destination="ZQp-nu-e9K" id="h67-Te-8U3"/>
                 <outlet property="playButton" destination="GL1-b8-dZK" id="5u7-CG-d99"/>
                 <outlet property="recordingIcon" destination="REB-gl-h0h" id="uL1-nI-bhF"/>
                 <outlet property="waveformContainerView" destination="7Fl-yZ-dZB" id="f9u-wS-jvG"/>
             </connections>
             <point key="canvasLocation" x="-1742.753623188406" y="-299.33035714285711"/>
         </view>
-        <panGestureRecognizer minimumNumberOfTouches="1" id="ZQp-nu-e9K">
+        <panGestureRecognizer minimumNumberOfTouches="1" id="TvB-7x-51j">
             <connections>
-                <action selector="panWithGestureRecognizer:" destination="cGR-49-HWB" id="McO-Pq-HFs"/>
+                <action selector="panWithGestureRecognizer:" destination="cGR-49-HWB" id="mcT-Wy-ePL"/>
             </connections>
         </panGestureRecognizer>
-        <tapGestureRecognizer id="WD8-Zc-Vke">
+        <tapGestureRecognizer id="Fwa-Eg-VFh">
             <connections>
-                <action selector="tapWithGestureRecognizer:" destination="cGR-49-HWB" id="6qM-N2-zmN"/>
+                <action selector="tapWithGestureRecognizer:" destination="cGR-49-HWB" id="VMd-gQ-DPy"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
