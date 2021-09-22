@@ -1,0 +1,57 @@
+name: RiotSwiftUnitTests
+
+schemes:
+  RiotSwiftUnitTests:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+    build:
+      targets:
+        RiotSwiftUnitTests:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      config: Debug
+      disableMainThreadChecker: true
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+      targets:
+      - RiotSwiftUnitTests
+
+targets:
+  RiotSwiftUnitTests:
+    type: bundle.unit-test
+    platform: iOS
+
+    dependencies:
+    - target: RiotSwiftUI
+
+    configFiles:
+      Debug: Debug.xcconfig
+      Release: Release.xcconfig
+
+    settings:
+      base:
+        FRAMEWORK_SEARCH_PATHS: $(SDKROOT)/Developer/Library/Frameworks $(inherited)
+        INFOPLIST_FILE: RiotSwiftUI/Info.plist
+        LD_RUNPATH_SEARCH_PATHS: $(inherited) @executable_path/Frameworks @loader_path/Frameworks
+        PRODUCT_BUNDLE_IDENTIFIER: org.matrix.$(PRODUCT_NAME:rfc1034identifier)
+        PRODUCT_NAME: RiotSwiftUnitTests
+      configs:
+        Debug:
+        Release:
+          PROVISIONING_PROFILE: $(RIOT_PROVISIONING_PROFILE)
+          PROVISIONING_PROFILE_SPECIFIER: $(RIOT_PROVISIONING_PROFILE_SPECIFIER)
+    sources:
+    - path: ../RiotSwiftUI/Modules
+      includes:
+      - "**/Test"
+      excludes:
+      - "**/Test/UI/**"

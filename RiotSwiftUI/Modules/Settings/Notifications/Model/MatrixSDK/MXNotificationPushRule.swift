@@ -17,14 +17,12 @@
 import Foundation
 import DesignKit
 
-/**
- Conformance of MXPushRule to the abstraction `NotificationPushRule` for use in `NotificationSettingsViewModel`.
- */
+// Conformance of MXPushRule to the abstraction `NotificationPushRule` for use in `NotificationSettingsViewModel`.
 extension MXPushRule: NotificationPushRuleType {
     
-    /*
-     Given a rule, check it match the actions in the static definition.
-     */
+    /// Given a rule, check it match the actions in the static definition.
+    /// - Parameter standardActions: The standard actions to match against.
+    /// - Returns: Wether `this` rule matches the standard actions.
     func matches(standardActions: NotificationStandardActions?) -> Bool {
         guard let standardActions = standardActions else {
             return false

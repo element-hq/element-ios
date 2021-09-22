@@ -16,14 +16,11 @@
 
 import Foundation
 
-protocol AvatarInputType: AvatarType {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
-}
-
-struct AvatarInput: AvatarInputType {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
+protocol TemplateUserProfileViewModelProtocol {
+    
+    var completion: ((TemplateUserProfileViewModelResult) -> Void)? { get set }
+    @available(iOS 14, *)
+    static func makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewModelProtocol
+    @available(iOS 14, *)
+    var context: TemplateUserProfileViewModelType.Context { get }
 }

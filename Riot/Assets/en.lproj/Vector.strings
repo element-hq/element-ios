@@ -63,6 +63,7 @@
 "switch" = "Switch";
 "more" = "More";
 "less" = "Less";
+"done" = "Done";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";

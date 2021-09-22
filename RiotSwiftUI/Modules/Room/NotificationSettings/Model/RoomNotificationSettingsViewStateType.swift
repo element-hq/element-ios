@@ -23,7 +23,7 @@ protocol RoomNotificationSettingsViewStateType {
     var roomEncrypted: Bool { get }
     var notificationOptions: [RoomNotificationState] { get }
     var notificationState: RoomNotificationState { get }
-    var avatarData: AvatarType? { get }
+    var avatarData: AvatarProtocol? { get }
     var displayName: String? { get }
 }
 

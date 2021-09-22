@@ -17,7 +17,7 @@
 import Foundation
 
 /// AvatarViewDataProtocol describe a view data that should be given to an AvatarView sublcass
-protocol AvatarViewDataProtocol: AvatarType {
+protocol AvatarViewDataProtocol: AvatarProtocol {
     /// Matrix item identifier (user id or room id)
     var matrixItemId: String { get }
     

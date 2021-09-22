@@ -16,10 +16,9 @@
 
 import Foundation
 
-/**
- A static definition of the different actions that can be defined on push rules.
- It is defined similarly across Web and Android.
- */
+/// A static definition of the different actions that can be defined on push rules.
+///
+/// It is defined similarly across Web and Android.
 enum NotificationStandardActions {
     case notify
     case notifyDefaultSound

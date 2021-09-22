@@ -1139,6 +1139,10 @@ public class VectorL10n: NSObject {
   public static var doNotAskAgain: String { 
     return VectorL10n.tr("Vector", "do_not_ask_again") 
   }
+  /// Done
+  public static var done: String { 
+    return VectorL10n.tr("Vector", "done") 
+  }
   /// %@ now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.
   public static func e2eEnablingOnAppUpdate(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "e2e_enabling_on_app_update", p1)

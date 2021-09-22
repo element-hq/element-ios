@@ -31,25 +31,21 @@ extension EnvironmentValues {
   }
 }
 
-/**
- A theme modifier for setting the theme for this view and all its descendants in the hierarchy.
- - Parameters:
-  - theme: a Theme to be set as the environment value.
- */
 @available(iOS 14.0, *)
 extension View {
+    /// A theme modifier for setting the theme for this view and all its descendants in the hierarchy.
+    /// - Parameter theme: A theme to be set as the environment value.
+    /// - Returns: The target view with the theme applied.
   func theme(_ theme: ThemeSwiftUI) -> some View {
     environment(\.theme, theme)
   }
 }
 
-/**
- A theme modifier for setting the theme by id for this view and all its descendants in the hierarchy.
- - Parameters:
-  - themeId: ThemeIdentifier of a theme to be set as the environment value.
- */
 @available(iOS 14.0, *)
 extension View {
+    /// A theme modifier for setting the theme by id for this view and all its descendants in the hierarchy.
+    /// - Parameter themeId: ThemeIdentifier of a theme to be set as the environment value.
+    /// - Returns: The target view with the theme applied.
   func theme(_ themeId: ThemeIdentifier) -> some View {
     return environment(\.theme, themeId.themeSwiftUI)
   }
