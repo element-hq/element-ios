@@ -1169,7 +1169,8 @@
 "pin_protection_mismatch_error_title" = "PIN-et s’përputhen";
 "pin_protection_mismatch_error_message" = "Ju lutemi, riprovoni";
 "pin_protection_mismatch_too_many_times_error_message" = "Nëse s’mbani mend PIN-in tuaj, prekni butonin “Harrova PIN-in”.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_settings_section_footer" = "Që të ricaktoni PIN-in tuaj, do t’ju duhet të ribëni hyrjen dhe të krijoni një të ri.";
 "pin_protection_settings_enabled_forced" = "PIN i aktivizuar";
 "pin_protection_settings_enable_pin" = "Aktivizo PIN-in";

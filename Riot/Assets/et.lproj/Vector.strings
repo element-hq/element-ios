@@ -1072,7 +1072,8 @@
 "major_update_information" = "Meil on hea meel teatada, et oleme muutnud nime! Sinu rakendus on uuendatud ning sa oled oma kontole sisse logitud.";
 "major_update_learn_more_action" = "Lisateave";
 "major_update_done_action" = "Selge lugu";
-"pin_protection_settings_section_header_x" = "PIN-kood ja %@";
+"pin_protection_settings_section_header" = "PIN-kood";
+"pin_protection_settings_section_header_with_biometrics" = "PIN-kood ja %@";
 "pin_protection_settings_section_footer" = "PIN-koodi lähtestamiseks peaksid sa uuesti sisse looma ning seadistama uue PIN-koodi.";
 "pin_protection_settings_enabled_forced" = "PIN-kood on kasutusel";
 "pin_protection_settings_enable_pin" = "Võta PIN-kood kasutusele";
