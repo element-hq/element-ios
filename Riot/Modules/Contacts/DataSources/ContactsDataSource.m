@@ -651,7 +651,7 @@
                 default:
                 {
                     // Because the user didn't allow the app to access local contacts
-                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionDenied:InfoPlist.cfBundleDisplayName];
+                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionDenied:AppInfo.current.displayName];
                     break;
                 }
             }

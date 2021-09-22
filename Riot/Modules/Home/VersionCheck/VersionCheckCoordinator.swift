@@ -70,10 +70,10 @@ class VersionCheckCoordinator: Coordinator, VersionCheckBannerViewDelegate, Vers
         
         if Constants.hasOSVersionBeenDropped {
             versionCheckBannerView.configureWithDetails(VersionCheckBannerViewDetails(title: VectorL10n.versionCheckBannerTitleDeprecated(String(Constants.osVersionToBeDropped)),
-                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleDeprecated(InfoPlist.cfBundleDisplayName, String(Constants.osVersionToBeDropped), InfoPlist.cfBundleDisplayName)))
+                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleDeprecated(AppInfo.current.displayName, String(Constants.osVersionToBeDropped), AppInfo.current.displayName)))
         } else {
             versionCheckBannerView.configureWithDetails(VersionCheckBannerViewDetails(title: VectorL10n.versionCheckBannerTitleSupported(String(Constants.osVersionToBeDropped)),
-                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleSupported(InfoPlist.cfBundleDisplayName, String(Constants.osVersionToBeDropped), InfoPlist.cfBundleDisplayName)))
+                                                                                      subtitle: VectorL10n.versionCheckBannerSubtitleSupported(AppInfo.current.displayName, String(Constants.osVersionToBeDropped), AppInfo.current.displayName)))
         }
         
         bannerPresenter.presentBannerView(versionCheckBannerView, animated: true)
@@ -93,11 +93,11 @@ class VersionCheckCoordinator: Coordinator, VersionCheckBannerViewDelegate, Vers
         
         if Constants.hasOSVersionBeenDropped {
             versionCheckAlertViewController.configureWithDetails(VersionCheckAlertViewControllerDetails(title: VectorL10n.versionCheckModalTitleDeprecated(String(Constants.osVersionToBeDropped)),
-                                                                                                        subtitle: VectorL10n.versionCheckModalSubtitleDeprecated(InfoPlist.cfBundleDisplayName, InfoPlist.cfBundleDisplayName),
+                                                                                                        subtitle: VectorL10n.versionCheckModalSubtitleDeprecated(AppInfo.current.displayName, AppInfo.current.displayName),
                                                                                                         actionButtonTitle: VectorL10n.versionCheckModalActionTitleDeprecated))
         } else {
             versionCheckAlertViewController.configureWithDetails(VersionCheckAlertViewControllerDetails(title: VectorL10n.versionCheckModalTitleSupported(String(Constants.osVersionToBeDropped)),
-                                                                                                        subtitle: VectorL10n.versionCheckModalSubtitleSupported(InfoPlist.cfBundleDisplayName, InfoPlist.cfBundleDisplayName),
+                                                                                                        subtitle: VectorL10n.versionCheckModalSubtitleSupported(AppInfo.current.displayName, AppInfo.current.displayName),
                                                                                                         actionButtonTitle: VectorL10n.versionCheckModalActionTitleSupported))
         }
         

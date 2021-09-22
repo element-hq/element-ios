@@ -5653,7 +5653,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Show the explanation dialog
     alert = [UIAlertController alertControllerWithTitle:VectorL10n.rerequestKeysAlertTitle
-                                                message:[VectorL10n e2eRoomKeyRequestMessage:InfoPlist.cfBundleDisplayName]
+                                                message:[VectorL10n e2eRoomKeyRequestMessage:AppInfo.current.displayName]
                                          preferredStyle:UIAlertControllerStyleAlert];
     currentAlert = alert;
     

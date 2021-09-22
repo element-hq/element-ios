@@ -853,7 +853,7 @@ TableViewSectionsDelegate>
 
 - (void)displayComingSoon
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[VectorL10n securitySettingsComingSoon:InfoPlist.cfBundleDisplayName :InfoPlist.cfBundleDisplayName]];
+    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[VectorL10n securitySettingsComingSoon:AppInfo.current.displayName :AppInfo.current.displayName]];
 }
 
 

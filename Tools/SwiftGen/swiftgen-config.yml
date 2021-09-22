@@ -30,12 +30,3 @@ plist:
     output: RiotDefaults.swift
     params:
       enumName: RiotDefaults
-        
-plist:
-  inputs: SupportingFiles/Info.plist
-  outputs:
-    templatePath: Templates/Plist/runtime-swift5.stencil
-    output: InfoPlist.swift
-    params:
-      className: InfoPlist
-      publicAccess: true
