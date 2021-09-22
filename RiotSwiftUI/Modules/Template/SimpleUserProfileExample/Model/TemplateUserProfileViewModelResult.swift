@@ -15,14 +15,8 @@
 //
 
 import Foundation
-import DesignKit
-import Combine
-import UIKit
 
-/**
- Provides a simple api to retrieve and cache avatar images
- */
-protocol AvatarServiceType {
-    @available(iOS 14.0, *)
-    func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error>
+enum TemplateUserProfileViewModelResult {
+    case cancel
+    case done
 }

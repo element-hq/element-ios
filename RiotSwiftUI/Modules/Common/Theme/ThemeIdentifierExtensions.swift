@@ -17,13 +17,11 @@
 import Foundation
 import DesignKit
 
-/**
- Extension to `ThemeIdentifier` for getting the SwiftUI theme.
- */
 @available(iOS 14.0, *)
 extension ThemeIdentifier {
     fileprivate static let defaultTheme = DefaultThemeSwiftUI()
     fileprivate static let darkTheme = DarkThemeSwiftUI()
+    /// Extension to `ThemeIdentifier` for getting the SwiftUI theme.
     public var themeSwiftUI: ThemeSwiftUI {
         switch self {
         case .light:

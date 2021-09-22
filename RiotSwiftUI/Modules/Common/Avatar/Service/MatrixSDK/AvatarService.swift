@@ -24,7 +24,7 @@ enum AvatarServiceError: Error {
     case loadingImageFailed(Error?)
 }
 
-class AvatarService: AvatarServiceType {
+class AvatarService: AvatarServiceProtocol {
     
     private enum Constants {
         static let mimeType = "image/jpeg"
@@ -33,18 +33,21 @@ class AvatarService: AvatarServiceType {
     
     private let mediaManager: MXMediaManager
     
+    static func instantiate(mediaManager: MXMediaManager) -> AvatarServiceProtocol {
+        return AvatarService(mediaManager: mediaManager)
+    }
+    
     init(mediaManager: MXMediaManager) {
         self.mediaManager = mediaManager
     }
     
-    /**
-     Given an mxContentUri, this function returns a Future of UIImage.
-     If possible it will retrieve the image from network or cache, otherwise it will error.
-     
-    - Parameter mxContentUri: matrix uri of the avatar to fetch
-    - Parameter avatarSize: The size of avatar to retrieve as defined in the DesignKit spec.
-    - Returns: A Future of UIImage that returns an error if it fails to fetch the image
-     */
+    /// Given an mxContentUri, this function returns a Future of UIImage.
+    ///
+    /// If possible it will retrieve the image from network or cache, otherwise it will error.
+    /// - Parameters:
+    ///   - mxContentUri: matrix uri of the avatar to fetch
+    ///   - avatarSize: The size of avatar to retrieve as defined in the DesignKit spec.
+    /// - Returns: A Future of UIImage that returns an error if it fails to fetch the image.
     @available(iOS 14.0, *)
     func avatarImage(mxContentUri: String, avatarSize: AvatarSize) -> Future<UIImage, Error> {
         
