@@ -97,17 +97,14 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
     }
     
-    func voiceMessagePlaybackViewRequestedFormattedTimestamp(for progress: CGFloat) -> String? {
-        return VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.duration * progress))
-    }
-    
     func voiceMessagePlaybackViewDidRequestSeek(to progress: CGFloat) {
         guard let audioPlayer = audioPlayer else {
             return
         }
         
-        if state == .stopped {
-            state = .paused
+        guard progress > 0 else {
+            audioPlayer.stop()
+            return
         }
         
         if audioPlayer.url == nil,
@@ -116,7 +113,9 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
         
         audioPlayer.seekToTime(self.duration * progress) { [weak self] _ in
-            self?.updateUI()
+            guard let self = self else { return }
+            self.state = .paused
+            self.updateUI()
         }
     }
     

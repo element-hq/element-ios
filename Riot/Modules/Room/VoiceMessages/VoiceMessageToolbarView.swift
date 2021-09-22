@@ -23,7 +23,6 @@ protocol VoiceMessageToolbarViewDelegate: AnyObject {
     func voiceMessageToolbarViewDidRequestRecordingFinish(_ toolbarView: VoiceMessageToolbarView)
     func voiceMessageToolbarViewDidRequestLockedModeRecording(_ toolbarView: VoiceMessageToolbarView)
     func voiceMessageToolbarViewDidRequestPlaybackToggle(_ toolbarView: VoiceMessageToolbarView)
-    func voiceMessageToolbarViewRequestedFormattedTimestamp(for progress: CGFloat) -> String?
     func voiceMessageToolbarViewDidRequestSeek(to progress: CGFloat)
     func voiceMessageToolbarViewDidRequestSend(_ toolbarView: VoiceMessageToolbarView)
 }
@@ -200,15 +199,10 @@ class VoiceMessageToolbarView: PassthroughView, NibLoadable, Themable, UIGesture
     func voiceMessagePlaybackViewDidRequestPlaybackToggle() {
         delegate?.voiceMessageToolbarViewDidRequestPlaybackToggle(self)
     }
-    
-    func voiceMessagePlaybackViewRequestedFormattedTimestamp(for progress: CGFloat) -> String? {
-        return delegate?.voiceMessageToolbarViewRequestedFormattedTimestamp(for: progress)
-    }
-    
+
     func voiceMessagePlaybackViewDidRequestSeek(to progress: CGFloat) {
         delegate?.voiceMessageToolbarViewDidRequestSeek(to: progress)
     }
-    
     
     func voiceMessagePlaybackViewDidChangeWidth() {
         

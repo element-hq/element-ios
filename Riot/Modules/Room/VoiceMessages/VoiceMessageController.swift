@@ -157,16 +157,14 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
     }
     
-    func voiceMessageToolbarViewRequestedFormattedTimestamp(for progress: CGFloat) -> String? {
-        guard let duration = recordDuration else {
-            return nil
-        }
-        return VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: duration * progress))
-    }
-    
     func voiceMessageToolbarViewDidRequestSeek(to progress: CGFloat) {
         guard let audioPlayer = audioPlayer,
         let duration = recordDuration else {
+            return
+        }
+        
+        guard progress > 0 else {
+            audioPlayer.stop()
             return
         }
         

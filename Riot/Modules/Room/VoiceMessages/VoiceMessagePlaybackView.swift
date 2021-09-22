@@ -21,7 +21,6 @@ import MatrixSDK
 
 protocol VoiceMessagePlaybackViewDelegate: AnyObject {
     func voiceMessagePlaybackViewDidRequestPlaybackToggle()
-    func voiceMessagePlaybackViewRequestedFormattedTimestamp(for progress: CGFloat) -> String?
     func voiceMessagePlaybackViewDidRequestSeek(to progress: CGFloat)
     func voiceMessagePlaybackViewDidChangeWidth()
 }
@@ -44,12 +43,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     
     private var _waveformView: VoiceMessageWaveformView!
     private var currentTheme: Theme?
-    private var scrubProgress: CGFloat? {
-        didSet {
-            MXLog.debug("change progress \(scrubProgress)")
-        }
-    }
-    
+    private var scrubProgress: CGFloat?
     
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private var recordingIcon: UIView!
@@ -105,17 +99,19 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         }
         
         if details.loading {
+            elapsedTimeLabel.text = "--:--"
             _waveformView.progress = 0
             _waveformView.samples = []
             _waveformView.alpha = 0.3
         } else {
+            elapsedTimeLabel.text = details.currentTime
             _waveformView.progress = details.progress
             _waveformView.samples = details.samples
             _waveformView.alpha = 1.0
         }
         
         self.details = details
-        updateElapsedTime()
+        
         guard let theme = currentTheme else {
             return
         }
@@ -127,20 +123,6 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         _waveformView.primaryLineColor =  theme.colors.quarterlyContent
         _waveformView.secondaryLineColor = theme.colors.secondaryContent
         elapsedTimeLabel.textColor = theme.colors.tertiaryContent
-    }
-    
-    private func updateElapsedTime() {
-        guard let details = details,
-              !details.loading else {
-                  elapsedTimeLabel.text = "--:--"
-                  return
-              }
-        if let scrubProgress = scrubProgress,
-           let scrubTime = delegate?.voiceMessagePlaybackViewRequestedFormattedTimestamp(for: scrubProgress) {
-            elapsedTimeLabel.text = scrubTime
-        } else {
-            elapsedTimeLabel.text = details.currentTime
-        }
     }
     
     func getRequiredNumberOfSamples() -> Int {
@@ -168,24 +150,16 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         let seekPoint = progress == 1 ? 0 : progress
         delegate?.voiceMessagePlaybackViewDidRequestSeek(to: seekPoint)
     }
-    
-    @IBAction private func pan(gestureRecognizer: UIPanGestureRecognizer) {
-        switch gestureRecognizer.state {
-            
-        case .possible, .cancelled, .failed:
-            scrubProgress = nil
-        case .began, .changed:
-            let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
-            scrubProgress = x / waveformContainerView.bounds.width
-        case .ended:
-            let seekPoint = scrubProgress == 1 ? 0 : scrubProgress ?? 0
-            MXLog.debug("progress end seekPoint --->\(seekPoint)")
-            delegate?.voiceMessagePlaybackViewDidRequestSeek(to: seekPoint)
-            scrubProgress = nil
-        @unknown default:
-            break
-        }
-        updateElapsedTime()
-    }
 
+    @IBAction private func pan(gestureRecognizer: UIPanGestureRecognizer) {
+            switch gestureRecognizer.state {
+            case .began, .changed:
+                let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
+                scrubProgress = x / waveformContainerView.bounds.width
+                let seekPoint = scrubProgress == 1 ? 0 : scrubProgress ?? 0
+                delegate?.voiceMessagePlaybackViewDidRequestSeek(to: seekPoint)
+            default:
+                scrubProgress = nil
+            }
+        }
 }
