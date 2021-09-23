@@ -853,7 +853,7 @@ TableViewSectionsDelegate>
 
 - (void)displayComingSoon
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"security_settings_coming_soon"]];
+    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[VectorL10n securitySettingsComingSoon:AppInfo.current.displayName :AppInfo.current.displayName]];
 }
 
 

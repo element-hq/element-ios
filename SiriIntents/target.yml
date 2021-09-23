@@ -40,7 +40,6 @@ targets:
 
     sources:
     - path: .
-    - path: ../Riot/Generated/InfoPlist.swift
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Config/CommonConfiguration.swift
     - path: ../Config/BuildSettings.swift

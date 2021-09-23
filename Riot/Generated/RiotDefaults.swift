@@ -12,9 +12,9 @@ import Foundation
 internal enum RiotDefaults {
   private static let _document = PlistDocument(path: "Riot-Defaults.plist")
 
-  internal static let createConferenceCallsWithJitsi: Bool = _document["createConferenceCallsWithJitsi"]
   internal static let enableBotCreation: Bool = _document["enableBotCreation"]
   internal static let enableRageShake: Bool = _document["enableRageShake"]
+  internal static let enableRingingForGroupCalls: Bool = _document["enableRingingForGroupCalls"]
   internal static let matrixApps: Bool = _document["matrixApps"]
   internal static let maxAllowedMediaCacheSize: Int = _document["maxAllowedMediaCacheSize"]
   internal static let pinRoomsWithMissedNotif: Bool = _document["pinRoomsWithMissedNotif"]
@@ -34,8 +34,7 @@ internal enum RiotDefaults {
 // MARK: - Implementation Details
 
 private func arrayFromPlist<T>(at path: String) -> [T] {
-  let bundle = BundleToken.bundle
-  guard let url = bundle.url(forResource: path, withExtension: nil),
+  guard let url = BundleToken.bundle.url(forResource: path, withExtension: nil),
     let data = NSArray(contentsOf: url) as? [T] else {
     fatalError("Unable to load PLIST at path: \(path)")
   }
@@ -46,8 +45,7 @@ private struct PlistDocument {
   let data: [String: Any]
 
   init(path: String) {
-    let bundle = BundleToken.bundle
-    guard let url = bundle.url(forResource: path, withExtension: nil),
+    guard let url = BundleToken.bundle.url(forResource: path, withExtension: nil),
       let data = NSDictionary(contentsOf: url) as? [String: Any] else {
         fatalError("Unable to load PLIST at path: \(path)")
     }
@@ -65,7 +63,11 @@ private struct PlistDocument {
 // swiftlint:disable convenience_type
 private final class BundleToken {
   static let bundle: Bundle = {
-    Bundle(for: BundleToken.self)
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
   }()
 }
 // swiftlint:enable convenience_type
