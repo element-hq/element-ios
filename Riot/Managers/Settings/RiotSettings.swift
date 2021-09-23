@@ -22,10 +22,12 @@ final class RiotSettings: NSObject {
     
     // MARK: - Constants
     
-    private enum UserDefaultsKeys {
+    public enum UserDefaultsKeys {
         static let enableCrashReport = "enableCrashReport"
         static let notificationsShowDecryptedContent = "showDecryptedContent"
         static let allowStunServerFallback = "allowStunServerFallback"
+        static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
+        static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
     }
     
     static let shared = RiotSettings()
@@ -79,11 +81,11 @@ final class RiotSettings: NSObject {
     var showDecryptedContentInNotifications
     
     /// Indicate if rooms with missed notifications should be displayed first on home screen.
-    @UserDefault(key: "pinRoomsWithMissedNotif", defaultValue: false, storage: defaults)
+    @UserDefault(key: UserDefaultsKeys.pinRoomsWithMissedNotificationsOnHome, defaultValue: false, storage: defaults)
     var pinRoomsWithMissedNotificationsOnHome
     
     /// Indicate if rooms with unread messages should be displayed first on home screen.
-    @UserDefault(key: "pinRoomsWithUnread", defaultValue: false, storage: defaults)
+    @UserDefault(key: UserDefaultsKeys.pinRoomsWithUnreadMessagesOnHome, defaultValue: false, storage: defaults)
     var pinRoomsWithUnreadMessagesOnHome
     
     /// Indicate to show Not Safe For Work public rooms.

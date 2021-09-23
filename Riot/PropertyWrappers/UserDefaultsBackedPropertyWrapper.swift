@@ -42,6 +42,11 @@ struct UserDefault<Value> {
             } else {
                 storage.setValue(newValue, forKey: key)
             }
+            let key = key
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .userDefaultValueUpdated,
+                                                object: key)
+            }
         }
     }
 }
@@ -58,4 +63,8 @@ private protocol AnyOptional {
 
 extension Optional: AnyOptional {
     var isNil: Bool { self == nil }
+}
+
+extension Notification.Name {
+    static let userDefaultValueUpdated = Notification.Name("userDefaultValueUpdated")
 }
