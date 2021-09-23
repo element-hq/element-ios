@@ -1014,6 +1014,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self refreshRoomInputToolbar];
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
+    _voiceMessageController.roomId = dataSource.roomId;
 }
 
 - (void)onRoomDataSourceReady
@@ -5654,8 +5655,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
     
     // Show the explanation dialog
-    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
-                                                message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
+    alert = [UIAlertController alertControllerWithTitle:VectorL10n.rerequestKeysAlertTitle
+                                                message:[VectorL10n e2eRoomKeyRequestMessage:AppInfo.current.displayName]
                                          preferredStyle:UIAlertControllerStyleAlert];
     currentAlert = alert;
     

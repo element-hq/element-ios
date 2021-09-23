@@ -405,11 +405,6 @@
 "skip" = "Hopp over";
 // Accessibility
 "accessibility_checkbox_label" = "avkrysningsboks";
-// MARK: Clients
-"client_desktop_name" = "Riot Desktop";
-"client_web_name" = "Riot Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "auth_login_single_sign_on" = "Logg inn";
 "auth_invalid_login_param" = "Feil brukernavn og/eller passord";
 "auth_invalid_user_name" = "Brukernavn kan bare inneholde bokstaver, tall, punktum, bindestrek og understrek";
@@ -682,7 +677,7 @@
 "room_participants_leave_prompt_msg_for_dm" = "Er du sikker på at du vil dra?";
 "room_participants_leave_prompt_msg" = "Er du sikker på at du vil forlate rommet?";
 "room_participants_leave_prompt_title_for_dm" = "Forlat";
-"contacts_address_book_permission_denied" = "Du tillot ikke Element å få tilgang til de lokale kontaktene dine";
+"contacts_address_book_permission_denied" = "Du tillot ikke %@ å få tilgang til de lokale kontaktene dine";
 "contacts_address_book_permission_required" = "Tillatelse kreves for å få tilgang til lokale kontakter";
 "contacts_address_book_no_contact" = "Ingen lokale kontakter";
 "contacts_address_book_no_identity_server" = "Ingen identitetsserver konfigurert";
@@ -935,7 +930,7 @@
 // Manage session
 "manage_session_title" = "Administrer økt";
 "security_settings_user_password_description" = "Bekreft din identitet ved å oppgi ditt passord";
-"security_settings_coming_soon" = "Beklager. Denne handlingen er ikke tilgjengelig på Element iOS enda. Vennligst benytt en annen Matrix klient for å sette det opp. Element iOS vil bruke den.";
+"security_settings_coming_soon" = "Beklager. Denne handlingen er ikke tilgjengelig på %@ iOS enda. Vennligst benytt en annen Matrix klient for å sette det opp. %@ iOS vil bruke den.";
 "security_settings_complete_security_alert_message" = "Du bør fullføre sikkerheten på din nåværende økt først.";
 "security_settings_blacklist_unverified_devices_description" = "Verifiser alle øktene til en bruker for å markere dem som klarert og send meldinger til dem.";
 "identity_server_settings_disconnect_info" = "Kobler du fra din identitetsserver vil det bety at andre brukere ikke kan finne deg, og at du vil ikke kunne invitere andre med e-post og telefonnummer.";
@@ -1057,7 +1052,7 @@
 "e2e_need_log_in_again" = "Du må logge inn igjen for å generere ende-til-ende-krypteringsnøkler for denne økten og sende den offentlige nøkkelen til din hjemmeserver.\nDette gjøres bare en gang; beklager ulempen.";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Element støtter nå ende-til-ende kryptering, men du må logge inn igjen for å aktivere det.\n\nDu kan gjøre det nå eller senere fra applikasjonsinnstillingene.";
+"e2e_enabling_on_app_update" = "%@ støtter nå ende-til-ende kryptering, men du må logge inn igjen for å aktivere det.\n\nDu kan gjøre det nå eller senere fra applikasjonsinnstillingene.";
 
 // Crash report
 "google_analytics_use_prompt" = "Vil du hjelpe til med å forbedre %@ ved automatisk og anonymt sende inn krasj-rapporter og brukerdata?";
@@ -1228,7 +1223,7 @@
 "key_verification_self_verify_unverified_sessions_alert_title" = "Gjennomgå dine innlogginger";
 "device_verification_self_verify_wait_information" = "Bekreft denne økten fra en av de andre øktene dine, og gi den tilgang til krypterte meldinger.\n\nBruk siste versjon av appen på de andre enhetene dine:";
 "key_verification_self_verify_unverified_sessions_alert_message" = "Bekreft alle øktene dine for å sikre at kontoen og meldingene dine er trygge.";
-"device_verification_self_verify_wait_additional_information" = "Dette fungerer med Element og andre klienter som støtter kryssignering.";
+"device_verification_self_verify_wait_additional_information" = "Dette fungerer med %@ og andre klienter som støtter kryssignering.";
 "key_verification_verify_sas_additional_information" = "For ytterligere sikkerhet, bruk en annen pålitelig kommunikasjonskanal eller snakk direkte med personen.";
 "device_verification_self_verify_wait_recover_secrets_checking_availability" = "Ser etter andre bekreftelsesmuligheter ...";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Hvis du ikke får tilgang til en eksisterende økt";
@@ -1335,7 +1330,7 @@
 
 // MARK: - Major update
 
-"major_update_title" = "Riot er nå Element";
+"major_update_title" = "Riot er nå %@";
 "pin_protection_settings_section_header" = "PIN-kode";
 "pin_protection_settings_section_header_with_biometrics" = "PIN-kode og %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Hvis du ikke kan huske PIN-koden din, trykker du på glemt PIN-knappen.";

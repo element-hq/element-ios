@@ -59,4 +59,12 @@ extension UITableView {
         }
     }
 
+    /// Checks a given index path exists in the table view
+    /// - Parameter indexPath: index path to check
+    /// - Returns: True if table view has the index path, otherwise false
+    @objc func vc_hasIndexPath(_ indexPath: IndexPath) -> Bool {
+        return numberOfSections > indexPath.section
+            && numberOfRows(inSection: indexPath.section) > indexPath.row
+    }
+
 }
