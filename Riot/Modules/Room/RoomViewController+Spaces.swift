@@ -31,42 +31,42 @@ extension RoomViewController {
             return
         }
         
-        var roomIdOrAlias: String?
-        var eventId: String?
-        var userId: String?
-        var groupId: String?
+        var roomIdOrAliasParam: String?
+        var eventIdParam: String?
+        var userIdParam: String?
+        var groupIdParam: String?
         
         // Check permalink to room or event
         if pathParams[0] == "room" && pathParams.count >= 2 {
             
             // The link is the form of "/room/[roomIdOrAlias]" or "/room/[roomIdOrAlias]/[eventId]"
-            roomIdOrAlias = pathParams[1]
+            roomIdOrAliasParam = pathParams[1]
             
             // Is it a link to an event of a room?
-            eventId = pathParams.count >= 3 ? pathParams[2] : nil
+            eventIdParam = pathParams.count >= 3 ? pathParams[2] : nil
             
         } else if pathParams[0] == "group" && pathParams.count >= 2 {
             
             // The link is the form of "/group/[groupId]"
-            groupId = pathParams[1]
+            groupIdParam = pathParams[1]
             
         } else if (pathParams[0].hasPrefix("#") || pathParams[0].hasPrefix("!")) && pathParams.count >= 1 {
             
             // The link is the form of "/#/[roomIdOrAlias]" or "/#/[roomIdOrAlias]/[eventId]"
             // Such links come from matrix.to permalinks
-            roomIdOrAlias = pathParams[0]
-            eventId = pathParams.count >= 2 ? pathParams[1] : nil
+            roomIdOrAliasParam = pathParams[0]
+            eventIdParam = pathParams.count >= 2 ? pathParams[1] : nil
             
         } else if pathParams[0] == "user" && pathParams.count == 2 { // Check permalink to a user
             // The link is the form of "/user/userId"
-            userId = pathParams[1]
+            userIdParam = pathParams[1]
         } else if pathParams[0].hasPrefix("@") && pathParams.count == 1 {
             // The link is the form of "/#/[userId]"
             // Such links come from matrix.to permalinks
-            userId = pathParams[0]
+            userIdParam = pathParams[0]
         }
         
-        guard let roomIdOrAlias = roomIdOrAlias else {
+        guard let roomIdOrAlias = roomIdOrAliasParam else {
             AppDelegate.theDelegate().handleUniversalLinkURL(url)
             return
         }
