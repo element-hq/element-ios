@@ -148,8 +148,8 @@ class SpaceMenuViewController: UIViewController {
             self.renderLoading()
         case .loaded:
             self.renderLoaded()
-        case .alert(let alert):
-            self.render(alert: alert)
+        case .leaveOptions(let displayName, let isAdmin):
+            self.renderLeaveOptions(displayName: displayName, isAdmin: isAdmin)
         case .error(let error):
             self.render(error: error)
         case .deselect:
@@ -166,13 +166,31 @@ class SpaceMenuViewController: UIViewController {
         self.renderDeselect()
     }
     
+    private func renderLeaveOptions(displayName: String, isAdmin: Bool) {
+        var message = VectorL10n.leaveSpaceMessage(displayName)
+
+        if isAdmin {
+            message += "\n\n" + VectorL10n.leaveSpaceMessageAdminWarning
+        }
+
+        let alert = UIAlertController(title: VectorL10n.leaveSpaceTitle(displayName), message: message, preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: VectorL10n.leaveSpaceOnlyAction, style: .default, handler: { [weak self] action in
+            self?.viewModel.process(viewAction: .leaveSpaceAndKeepRooms)
+        }))
+        alert.addAction(UIAlertAction(title: VectorL10n.leaveSpaceAndAllRoomsAction, style: .destructive, handler: { [weak self] action in
+            self?.viewModel.process(viewAction: .leaveSpaceAndLeaveRooms)
+        }))
+        alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: { [weak self] action in
+            self?.renderDeselect()
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
-    }
-    
-    private func render(alert: UIAlertController) {
-        self.present(alert, animated: true, completion: nil)
     }
     
     private func renderDeselect() {
