@@ -94,14 +94,14 @@ extension RoomViewController {
                     return
                 }
                 
-                self.requestSummary(forRoomWithId: roomId, via: viaServers, from: url)
+                self.requestSummaryAndShowSpaceDetail(forRoomWithId: roomId, via: viaServers, from: url)
             }
         } else {
-            self.requestSummary(forRoomWithId: roomIdOrAlias, via: viaServers, from: url)
+            self.requestSummaryAndShowSpaceDetail(forRoomWithId: roomIdOrAlias, via: viaServers, from: url)
         }
     }
     
-    private func requestSummary(forRoomWithId roomId: String, via: [String], from url: URL?) {
+    private func requestSummaryAndShowSpaceDetail(forRoomWithId roomId: String, via: [String], from url: URL?) {
         if self.mainSession.spaceService.getSpace(withId: roomId) != nil {
             self.stopActivityIndicator()
             self.showSpaceDetail(withId: roomId)

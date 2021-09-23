@@ -53,6 +53,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private var currentSpaceId: String?
     private var homeViewControllerWrapperViewController: HomeViewControllerWithBannerWrapperViewController?
     
+    private var currentMatrixSession: MXSession? {
+        return parameters.userSessionsService.mainUserSession?.matrixSession
+    }
+    
     // MARK: Public
 
     // Must be used only internally
@@ -259,10 +263,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func updateMasterTabBarController(with spaceId: String?) {
                 
-        let currentMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession
-        
         self.updateTabControllers(for: self.masterTabBarController, showCommunities: spaceId == nil)
-        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: currentMatrixSession)
+        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: self.currentMatrixSession)
     }
     
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
@@ -286,8 +288,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             viewControllers.append(roomsViewController)
         }
         
-        let matrixSession = parameters.userSessionsService.mainUserSession?.matrixSession
-        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(matrixSession?.groups().isEmpty ?? false) && showCommunities {
+        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
             let groupsViewController = self.createGroupsViewController()
             viewControllers.append(groupsViewController)
         }
@@ -350,7 +351,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
         
-        if let matrixSession = parameters.userSessionsService.mainUserSession?.matrixSession, matrixSession.groups().isEmpty {
+        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
             self.masterTabBarController.removeTab(at: .groups)
         }
     }
@@ -380,7 +381,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     @objc private func sessionDidSync(_ notification: Notification) {
-        if parameters.userSessionsService.mainUserSession?.matrixSession.groups().isEmpty ?? true {
+        if self.currentMatrixSession?.groups().isEmpty ?? true {
             self.masterTabBarController.removeTab(at: .groups)
         }
     }

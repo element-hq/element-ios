@@ -59,15 +59,15 @@ class SpaceDetailPresenter: NSObject {
         self.show(with: session)
     }
     
-    @objc func present(forSpaceWithSummary spaceSummary: MXPublicRoom,
+    @objc func present(forSpaceWithPublicRoom publicRoom: MXPublicRoom,
                  from viewController: UIViewController,
                  sourceView: UIView?,
                  session: MXSession,
                  animated: Bool) {
         self.session = session
-        self.spaceId = spaceSummary.roomId
+        self.spaceId = publicRoom.roomId
 
-        self.viewModel = SpaceDetailViewModel(session: session, publicRoom: spaceSummary)
+        self.viewModel = SpaceDetailViewModel(session: session, publicRoom: publicRoom)
         self.viewModel.coordinatorDelegate = self
         self.presentingViewController = viewController
         self.sourceView = sourceView

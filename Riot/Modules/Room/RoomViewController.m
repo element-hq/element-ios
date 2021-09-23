@@ -2195,7 +2195,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [self handleSpaceUniversalLinkWith:universalLinkURL];
         return YES;
-//        return [[AppDelegate theDelegate] handleUniversalLinkURL:universalLinkURL];
     }
 }
     
@@ -6487,7 +6486,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     self.spaceDetailPresenter = [SpaceDetailPresenter new];
     self.spaceDetailPresenter.delegate = self;
-    [self.spaceDetailPresenter presentForSpaceWithSummary:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
+    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
 }
 
 - (void)showSpaceDetailWithId:(NSString *)spaceId

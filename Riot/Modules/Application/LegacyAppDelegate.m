@@ -1365,9 +1365,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // So, come back to the home VC and show its loading wheel while processing
                 [self restoreInitialDisplay:^{
                     
-                    if ([_masterTabBarController.selectedViewController isKindOfClass:MXKViewController.class])
+                    if ([_masterTabBarController.selectedViewController isKindOfClass:MXKActivityHandlingViewController.class])
                     {
-                        MXKViewController *homeViewController = (MXKViewController*)_masterTabBarController.selectedViewController;
+                        MXKActivityHandlingViewController *homeViewController = (MXKActivityHandlingViewController*)_masterTabBarController.selectedViewController;
                         
                         [homeViewController startActivityIndicator];
                         
@@ -1469,7 +1469,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     
                                     self.spaceDetailPresenter = [SpaceDetailPresenter new];
                                     self.spaceDetailPresenter.delegate = self;
-                                    [self.spaceDetailPresenter presentForSpaceWithSummary:room from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
+                                    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:room from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
                                 }
                                 else
                                 {

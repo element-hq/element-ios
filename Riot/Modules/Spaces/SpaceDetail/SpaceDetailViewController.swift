@@ -240,6 +240,8 @@ class SpaceDetailViewController: UIViewController {
                 self.inviterAvatarView.fill(with: avatarViewData)
             }
         }
+        
+        view.layoutIfNeeded()
     }
     
     private func render(error: Error) {

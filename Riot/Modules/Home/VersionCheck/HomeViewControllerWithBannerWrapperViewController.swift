@@ -16,7 +16,7 @@
 
 import Foundation
 
-class HomeViewControllerWithBannerWrapperViewController: MXKViewController, BannerPresentationProtocol {
+class HomeViewControllerWithBannerWrapperViewController: MXKActivityHandlingViewController, BannerPresentationProtocol {
     
     @objc let homeViewController: HomeViewController
     private var bannerContainerView: UIView!
