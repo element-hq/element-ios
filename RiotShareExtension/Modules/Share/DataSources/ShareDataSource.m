@@ -24,10 +24,12 @@
 
 @property NSArray <MXKRecentCellData *> *recentCellDatas;
 @property NSMutableArray <MXKRecentCellData *> *visibleRoomCellDatas;
+@property (nonatomic, strong) MXSession *mxSession;
 
 @end
 
 @implementation ShareDataSource
+@synthesize mxSession;
 
 - (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode
 {
@@ -53,20 +55,21 @@
      
 - (void)loadCellData
 {
-    [[ShareExtensionManager sharedManager].fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+    [[ShareExtensionManager sharedManager].fileStore asyncRoomsSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull roomsSummaries) {
         
         NSMutableArray *cellData = [NSMutableArray array];
         
         // Add a fake matrix session to each room summary to provide it a REST client (used to handle correctly the room avatar).
-        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+        self.mxSession = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
         
-        for (MXRoomSummary *roomSummary in roomsSummaries)
+        for (id<MXRoomSummaryProtocol> roomSummary in roomsSummaries)
         {
             if (!roomSummary.hiddenFromUser && ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect))
             {
-                [roomSummary setMatrixSession:session];
+                [roomSummary setMatrixSession:self.mxSession];
                 
-                MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary andRecentListDataSource:nil];
+                MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary
+                                                                                        dataSource:self];
                 
                 [cellData addObject:recentCellData];
             }
