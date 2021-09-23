@@ -56,6 +56,10 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
             self.coordinatorDelegate?.spaceMenuViewModelDidDismiss(self)
         case .selectRow(at: let indexPath):
             self.processAction(with: menuItems[indexPath.row].actionId)
+        case .leaveSpaceAndKeepRooms:
+            self.leaveSpaceAndKeepRooms()
+        case .leaveSpaceAndLeaveRooms:
+            self.leaveSpaceAndLeaveAllRooms()
         }
     }
     
@@ -76,63 +80,51 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
             return
         }
 
-        var message = VectorL10n.leaveSpaceMessage(displayName)
-
+        var isAdmin = false
         if let roomState = space.room.dangerousSyncState, let powerLevels = roomState.powerLevels {
             let powerLevel = powerLevels.powerLevelOfUser(withUserID: self.session.myUserId)
             let roomPowerLevel = RoomPowerLevelHelper.roomPowerLevel(from: powerLevel)
-            if roomPowerLevel == .admin {
-                message += "\n\n" + VectorL10n.leaveSpaceMessageAdminWarning
-            }
+            isAdmin = roomPowerLevel == .admin
         }
-        
-        let alert = UIAlertController(title: VectorL10n.leaveSpaceTitle(displayName), message: message, preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: VectorL10n.leaveSpaceOnlyAction, style: .default, handler: { [weak self] action in
-            guard let self = self else {
-                return
-            }
-
-            self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
-            
-            self.leaveSpace(space)
-        }))
-        alert.addAction(UIAlertAction(title: VectorL10n.leaveSpaceAndAllRoomsAction, style: .destructive, handler: { [weak self] action in
-            guard let self = self, let space = self.session.spaceService.getSpace(withId: self.spaceId) else {
-                return
-            }
-            
-            self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
-            
-            let allRoomsAndSpaces = space.childRoomIds + space.childSpaces.map({ space in
-                space.spaceId
-            })
-
-            self.leaveAllRooms(from: allRoomsAndSpaces, at: 0) { [weak self] error in
-                guard let self = self else {
-                    return
-                }
-                
-                if let error = error {
-                    self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loaded)
-                    self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .error(error))
-                    return
-                }
-
-                self.leaveSpace(space)
-            }
-        }))
-        alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: { [weak self] action in
-            guard let self = self else {
-                return
-            }
-
-            self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
-        }))
-
-        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .alert(alert))
+        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .leaveOptions(displayName, isAdmin))
     }
     
+    private func leaveSpaceAndKeepRooms() {
+        guard let space = self.session.spaceService.getSpace(withId: self.spaceId) else {
+            return
+        }
+
+        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
+        self.leaveSpace(space)
+    }
+    
+    private func leaveSpaceAndLeaveAllRooms() {
+        guard let space = self.session.spaceService.getSpace(withId: self.spaceId) else {
+            return
+        }
+
+        self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loading)
+        
+        let allRoomsAndSpaces = space.childRoomIds + space.childSpaces.map({ space in
+            space.spaceId
+        })
+
+        self.leaveAllRooms(from: allRoomsAndSpaces, at: 0) { [weak self] error in
+            guard let self = self else {
+                return
+            }
+            
+            if let error = error {
+                self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .loaded)
+                self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .error(error))
+                return
+            }
+
+            self.leaveSpace(space)
+        }
+    }
+
     private func leaveAllRooms(from roomIds: [String], at index: Int, completion: @escaping (_ error: Error?) -> Void) {
         guard index < roomIds.count, let room = self.session.room(withRoomId: roomIds[index]), !room.isDirect else {
             let nextIndex = index+1

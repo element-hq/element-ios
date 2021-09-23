@@ -122,7 +122,7 @@
     childViewControllers = [NSMutableArray array];
     
     MXWeakify(self);
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"MXSpaceServiceDidBuildSpaceGraph" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         MXStrongifyAndReturnIfNil(self);
         [self updateSideMenuNotifcationIcon];
     }];
