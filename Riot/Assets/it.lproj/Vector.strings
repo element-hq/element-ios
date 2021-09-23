@@ -154,8 +154,8 @@
 "contacts_address_book_section" = "CONTATTI LOCALI";
 "contacts_address_book_matrix_users_toggle" = "Solo utenti Matrix";
 "contacts_address_book_no_contact" = "Nessun contatto locale";
-"contacts_address_book_permission_required" = "Element deve essere autorizzato per poter accedere alla Rubrica locale";
-"contacts_address_book_permission_denied" = "Non hai autorizzato Element ad accedere alla rubrica locale";
+"contacts_address_book_permission_required" = "%@ deve essere autorizzato per poter accedere alla Rubrica locale";
+"contacts_address_book_permission_denied" = "Non hai autorizzato %@ ad accedere alla rubrica locale";
 "contacts_user_directory_section" = "ELENCO UTENTI";
 "contacts_user_directory_offline_section" = "ELENCO UTENTI (offline)";
 // Chat participants
@@ -328,7 +328,7 @@
 "settings_pin_rooms_with_missed_notif" = "Segna le stanze con notifiche perse";
 "settings_pin_rooms_with_unread" = "Segna le stanze con messaggi non letti";
 "settings_enable_callkit" = "Chiamate integrate";
-"settings_callkit_info" = "Ricevi le chiamate in arrivo sul blocca schermo. Mostra le chiamate Element nella cronologia di chiamate del dispositivo. Se iCloud è attivo, questa cronologia sarà condivisa con Apple.";
+"settings_callkit_info" = "Ricevi le chiamate in arrivo sul blocca schermo. Mostra le chiamate %@ nella cronologia di chiamate del dispositivo. Se iCloud è attivo, questa cronologia sarà condivisa con Apple.";
 "settings_ui_language" = "Lingua";
 "settings_ui_theme" = "Tema";
 "settings_ui_theme_auto" = "Automatico";
@@ -522,7 +522,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Vuoi aiutare a migliorare %@ inviando automaticamente in modo anonimo i dati di utilizzo e le segnalazioni di crash?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
+"e2e_enabling_on_app_update" = "%@ ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
 "e2e_need_log_in_again" = "È necessario eseguire nuovamente l'accesso per generare le chiavi di crittografia end-to-end per questa sessione ed inviare la chiave pubblica all'homeserver.\nVa fatto una sola volta; ci scusiamo per il disturbo.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nuovo Backup delle chiavi";
@@ -534,7 +534,7 @@
 "bug_report_description" = "Per favore descrivi l'errore. Cosa hai fatto? Cosa ti aspettavi dovesse accadere? Cosa è effettivamente successo?";
 "bug_crash_report_title" = "Segnalazione del crash";
 "bug_crash_report_description" = "Per favore descrivi cosa hai fatto prima del crash:";
-"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri Element di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
+"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri %@ di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
 "bug_report_send_logs" = "Invia registri";
 "bug_report_send_screenshot" = "Invia screenshot";
 "bug_report_progress_zipping" = "Ottenimento registri";
@@ -583,7 +583,7 @@
 "deactivate_account_password_alert_message" = "Per proseguire, inserisci la tua password";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Richiesta inviata";
-"rerequest_keys_alert_message" = "Avvia Element su un altro dispositivo che possa decifrare il messaggio, in modo da poter inviare le chiavi a questa sessione.";
+"rerequest_keys_alert_message" = "Avvia %@ su un altro dispositivo che possa decifrare il messaggio, in modo da poter inviare le chiavi a questa sessione.";
 "key_backup_setup_title" = "Backup chiave";
 "key_backup_setup_skip_alert_title" = "Sei sicuro?";
 "key_backup_setup_skip_alert_message" = "Se ti disconnetti oppure perdi il dispositivo potresti perdere i tuoi messaggi crittografati.";
@@ -998,7 +998,7 @@
 "device_verification_self_verify_start_waiting" = "In attesa…";
 "skip" = "Salta";
 "device_verification_self_verify_wait_title" = "Completa la sicurezza";
-"device_verification_self_verify_wait_information" = "Verifica questa sessione da una delle tue altre sessioni, dandole l'accesso ai messaggi cifrati.\n\nUsa la versione più recente di Element sui tuoi altri dispositivi:";
+"device_verification_self_verify_wait_information" = "Verifica questa sessione da una delle tue altre sessioni, dandole l'accesso ai messaggi cifrati.\n\nUsa la versione più recente di %@ sui tuoi altri dispositivi:";
 "device_verification_self_verify_wait_waiting" = "In attesa…";
 "room_member_power_level_admin_in" = "Amministratore in %@";
 "room_member_power_level_moderator_in" = "Moderatore in %@";
@@ -1026,14 +1026,9 @@
 "security_settings_crosssigning_complete_security" = "Completa la sicurezza";
 "security_settings_complete_security_alert_title" = "Completa la sicurezza";
 "security_settings_complete_security_alert_message" = "Dovresti completare la sicurezza prima sulla tua sessione attuale.";
-"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su Element iOS. Prova ad usare un altro client Matrix per farlo. Element iOS lo userà.";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
+"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su %@ iOS. Prova ad usare un altro client Matrix per farlo. %@ iOS lo userà.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifica questo accesso";
-"device_verification_self_verify_wait_additional_information" = "Funziona con Element ed altri client Matrix che supportino la firma incrociata.";
+"device_verification_self_verify_wait_additional_information" = "Funziona con %@ ed altri client Matrix che supportino la firma incrociata.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifica sessione";
 "key_verification_new_session_title" = "Verifica la tua nuova sessione";
@@ -1138,7 +1133,7 @@
 "cross_signing_setup_banner_title" = "Imposta la crittografia";
 "cross_signing_setup_banner_subtitle" = "Verifica più facilmente i tuoi altri dispositivi";
 "store_promotional_text" = "App di chat e collaborazione rispettosa della privacy, su una rete aperta. Decentralizzata per darti il controllo. Nessun datamining, backdoor e accessi di terze parti.";
-"major_update_title" = "Riot ora si chiama Element";
+"major_update_title" = "Riot ora si chiama %@";
 "major_update_information" = "Siamo entusiasti di annunciare che abbiamo cambiato nome! La tua app è aggiornata e hai fatto l'accesso al tuo account.";
 "major_update_learn_more_action" = "Maggiori informazioni";
 "major_update_done_action" = "Capito";
@@ -1155,7 +1150,8 @@
 "pin_protection_mismatch_error_title" = "I PIN non corrispondono";
 "pin_protection_mismatch_error_message" = "Riprova";
 "pin_protection_mismatch_too_many_times_error_message" = "Se non riesci a ricordare il PIN, premi il tasto \"PIN dimenticato\".";
-"pin_protection_settings_section_header_x" = "PIN e %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN e %@";
 "pin_protection_settings_section_footer" = "Per reimpostare il PIN, dovrai riaccedere e crearne uno nuovo.";
 "pin_protection_settings_enabled_forced" = "PIN attivato";
 "pin_protection_settings_enable_pin" = "Attiva PIN";
@@ -1413,14 +1409,14 @@
 "voice_message_lock_screen_placeholder" = "Messaggio vocale";
 "event_formatter_call_has_ended_with_time" = "Chiamata terminata • %@";
 "version_check_modal_action_title_deprecated" = "Scopri come";
-"version_check_modal_subtitle_deprecated" = "Abbiamo lavorato per migliorare Element per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare Element al suo pieno potenziale.";
+"version_check_modal_subtitle_deprecated" = "Abbiamo lavorato per migliorare %@ per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare %@ al suo pieno potenziale.";
 "version_check_modal_title_deprecated" = "Non supportiamo più iOS %@";
 "version_check_modal_action_title_supported" = "Capito";
-"version_check_modal_subtitle_supported" = "Abbiamo lavorato per migliorare Element per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare Element al suo pieno potenziale.";
+"version_check_modal_subtitle_supported" = "Abbiamo lavorato per migliorare %@ per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare %@ al suo pieno potenziale.";
 "version_check_modal_title_supported" = "Stiamo per terminare il supporto per iOS %@";
-"version_check_banner_subtitle_deprecated" = "Non supportiamo più Element su iOS %@. Per continuare ad usare Element al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
+"version_check_banner_subtitle_deprecated" = "Non supportiamo più %@ su iOS %@. Per continuare ad usare %@ al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
 "version_check_banner_title_deprecated" = "Non supportiamo più iOS %@";
-"version_check_banner_subtitle_supported" = "Presto non supporteremo più Element su iOS %@. Per continuare ad usare Element al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
+"version_check_banner_subtitle_supported" = "Presto non supporteremo più %@ su iOS %@. Per continuare ad usare %@ al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
 
 // Mark: - Version check
 

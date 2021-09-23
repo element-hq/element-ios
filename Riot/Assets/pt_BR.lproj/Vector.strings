@@ -141,7 +141,7 @@
 "contacts_address_book_matrix_users_toggle" = "Usuários Matrix somente";
 "contacts_address_book_no_contact" = "Nenhum contato local";
 "contacts_address_book_permission_required" = "Permissão requerida para acessar contatos locais";
-"contacts_address_book_permission_denied" = "Você não permitiu Element acessar seus contatos locais";
+"contacts_address_book_permission_denied" = "Você não permitiu %@ acessar seus contatos locais";
 "contacts_user_directory_section" = "DIRETÓRIO DE USUÁRIAS(OS)";
 "contacts_user_directory_offline_section" = "DIRETÓRIO DE USUÁRIAS(OS) (offline)";
 // Chat participants
@@ -318,7 +318,7 @@
 "settings_show_decrypted_content" = "Mostrar conteúdo decriptado";
 "settings_global_settings_info" = "Configurações de notificação globais estão disponíveis em seu cliente web %@";
 "settings_enable_callkit" = "Chamamento integrado";
-"settings_callkit_info" = "Receba chamadas entrantes em sua tela de bloqueio. Veja suas chamadas Element no histórico de chamadas do sistema. Se iCloud está habilitado, este histórico de chamadas vai ser compartilhado com Apple.";
+"settings_callkit_info" = "Receba chamadas entrantes em sua tela de bloqueio. Veja suas chamadas %@ no histórico de chamadas do sistema. Se iCloud está habilitado, este histórico de chamadas vai ser compartilhado com Apple.";
 "settings_ui_language" = "Língua";
 "settings_ui_theme" = "Tema";
 "settings_ui_theme_auto" = "Auto";
@@ -497,7 +497,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Você gostaria de ajudar a melhorar %@ ao reportar automaticamente reportes de crash e dados de uso anônimos?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element agora suporta encriptação ponta-a-ponta mas você precisa fazer login de novo para habilitá-la.\n\nVocê pode fazê-lo agora ou mais tarde desde as configurações do aplicativo.";
+"e2e_enabling_on_app_update" = "%@ agora suporta encriptação ponta-a-ponta mas você precisa fazer login de novo para habilitá-la.\n\nVocê pode fazê-lo agora ou mais tarde desde as configurações do aplicativo.";
 "e2e_need_log_in_again" = "Você precisa fazer login de volta para gerar chaves de encriptação ponta-a-ponta para esta sessão e submeter a chave pública a seu servidorcasa.\nIsto é só desta vez; desculpe pela inconveniência.";
 // Bug report
 "bug_report_title" = "Report de Bug";
@@ -553,7 +553,7 @@
 "deactivate_account_password_alert_message" = "Para continuar, por favor entre sua senha";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Requisição Enviada";
-"rerequest_keys_alert_message" = "Por favor lance Element num outro dispositivo que possa decriptar a mensagem para que ele possa enviar as chaves para esta sessão.";
+"rerequest_keys_alert_message" = "Por favor lance %@ num outro dispositivo que possa decriptar a mensagem para que ele possa enviar as chaves para esta sessão.";
 // String for App Store
 "store_short_description" = "Chat/VoIP descentralizado e seguro";
 "store_full_description" = "Element is um novo tipo de mensageiro e app de colaboração que:\n\n1. Põe você em controle para preservar sua privacidade\n2. Permite você se comunicar com qualquer pessoa na rede Matrix, e até além ao integrar-se com apps como Slack\n3. Protege você de publicidade, datamining, backdoors e jardins murados\n4. Assegura você através de encriptação ponta-a-pontam com assinatura cruzada para verificar ouras(os)\n\nElement é completamente diferente de outros apps de mensageria e colaboração porque ele é descentralizado e open source.\n\nElement permite você auto-hospedar - ou escolher um host - para que você tenha privacidade, propriedade e controle de seus dados e conversas. Ele dá a você acesso a uma rede aberta; então você não está simplesmente preso falando com outras(os) usuárias(os) Element somente. E ele é muito seguro.\n\nElement é capaz de fazer tudo isso porque ele opera em Matrix - o padrão para comunicação aberta e descentralizada.\n\nElement põe você em controle ao permitir você escolher quem hospeda suas conversas. De seu app Element, você pode escolher hospedar de diferentes maneiras:\n\n1. Pegar uma conta grátis no servidor público matrix.org\n2. Auto-hospedar sua conta ao rodar um servidor em seu próprio hardware\n3. Registrar-se para uma conta num servidor personalizado ao simplesmente assinar a plataforma de hospedagem Element Matrix Services\n\nPorquê escolher Element?\n\nTENHA POSSE DE SEUS DADOS: Você decide onde manter seus dados e mensagens. Você os possui e controla, não alguma MEGACORP que mina seus dados ou dá acesso a terceiros.\n\nMENSAGERIA E COLABORAÇÃO ABERTOS: Você pode fazer chat com qualquer outra pessoa na rede Matrix, caso ela esteja usando Element ou um outro app Matrix, e mesmo se ela estiver usando um sistema de mensageria diferente, do tipo de Slack, IRC ou XMPP.\n\nSUPER-SEGURO: Encriptação ponta-a-ponta real (somente aquelas/es na conversa podem decriptar mensagens), e assinatura cruzada para verificar os dispositivos de participantes de conversa.\n\nCOMUNICAÇÃO COMPLETA: Mensageria, chamadas de voz e vídeo, compartilhamento de arquivo, compartilhamento de tela e um monte de integrações, bots e widgets. Construa salas, comunidades, fique em contato e tenha as coisas feitas.\n\nEM TODO LUGAR ONDE VOCÊ ESTEJA: Fique em contato onde quer que você esteja com histórico de mensagem sincronizado por todos os dispositivos e na web em https://element.io/app.";
@@ -797,7 +797,7 @@
 "widget_integration_manager_disabled" = "Você precisa habilitar Gerenciador de Integrações em configurações";
 "service_terms_modal_description_for_identity_server_1" = "Encontrar outras(os) por telefone ou email";
 "service_terms_modal_description_for_identity_server_2" = "Ser encontrada(o) por telefone ou email";
-"device_verification_self_verify_wait_additional_information" = "Isto funciona com Element e outros clientes Matrix capazes de assinatura cruzada.";
+"device_verification_self_verify_wait_additional_information" = "Isto funciona com %@ e outros clientes Matrix capazes de assinatura cruzada.";
 "key_verification_verified_user_information" = "Mensagens com esta(e) usuária(o) são encriptadas ponta-a-ponta e não podem ser lidas por terceiros.";
 "device_verification_emoji_smiley" = "Smiley";
 // Generic errors
@@ -817,11 +817,6 @@
 "biometrics_cant_unlocked_alert_message_x" = "Para destrancar, use %@ ou faça login de volta e habilite %@ de novo";
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
-// MARK: Clients
-"client_desktop_name" = "Element para Computador";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element para iOS";
-"client_android_name" = "Element para Android";
 "auth_add_phone_message_2" = "Defina um número de telefone, e depois para ser opcionalmente descobertável por pessoas que conhecem você.";
 "auth_phone_is_required" = "Nenhum servidor de identidade está configurado então você não pode adicionar um número de telefone a fim de resettar sua senha no futuro.";
 "auth_forgot_password_error_no_configured_identity_server" = "Nenhum servidor de identidade está configurado: adicione um para resettar sua senha.";
@@ -884,7 +879,7 @@
 "security_settings_advanced" = "AVANÇADAS";
 "security_settings_complete_security_alert_title" = "Completar segurança";
 "security_settings_complete_security_alert_message" = "Você deveria completar segurança em sua sessão atual primeiro.";
-"security_settings_coming_soon" = "Desculpe. Esta ação não está disponível em Element iOS ainda. Por favor use um outro cliente Matrix para configurá-la. Element iOS vai usá-la.";
+"security_settings_coming_soon" = "Desculpe. Esta ação não está disponível em %@ iOS ainda. Por favor use um outro cliente Matrix para configurá-la. %@ iOS vai usá-la.";
 "manage_session_info" = "INFO DE SESSÃO";
 "manage_session_trusted" = "Confiada por você";
 "manage_session_not_trusted" = "Não confiada";
@@ -971,7 +966,7 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Revisar";
 "device_verification_self_verify_wait_title" = "Completar segurança";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verificar este login";
-"device_verification_self_verify_wait_information" = "Confirme sua identidade ao verificar este login desde uma de suas outras sessões, garantindo-lhe acesso a mensagens encriptadas.\n\nUse o Element mais recente em seus outros dispositivos:";
+"device_verification_self_verify_wait_information" = "Confirme sua identidade ao verificar este login desde uma de suas outras sessões, garantindo-lhe acesso a mensagens encriptadas.\n\nUse o %@ mais recente em seus outros dispositivos:";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Usar Chave de Segurança";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Usar Frase ou Chave de Segurança";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Se você não consegue acessar uma sessão existente";
@@ -1132,7 +1127,7 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Confirmar frase";
 "cross_signing_setup_banner_title" = "Configurar encriptação";
 "cross_signing_setup_banner_subtitle" = "Verifique seus outros dispositivos mais fácil";
-"major_update_title" = "Riot agora é Element";
+"major_update_title" = "Riot agora é %@";
 "major_update_learn_more_action" = "Saiba mais";
 "major_update_done_action" = "Entendido";
 "pin_protection_choose_pin" = "Crie um PIN por segurança";
@@ -1146,7 +1141,8 @@
 "pin_protection_mismatch_error_title" = "PINs não correspondem";
 "pin_protection_mismatch_error_message" = "Por favor tente de novo";
 "pin_protection_mismatch_too_many_times_error_message" = "Se você não consegue se lembrar de seu PIN, toque no botão esqueci PIN.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_settings_section_footer" = "Para resettar seu PIN, você vai precisar re-fazer login e criar um novo.";
 "biometrics_mode_touch_id" = "Touch ID";
 "biometrics_mode_face_id" = "Face ID";
@@ -1410,14 +1406,14 @@
 "voice_message_lock_screen_placeholder" = "Mensagem de voz";
 "event_formatter_call_has_ended_with_time" = "Chamada terminada • %@";
 "version_check_modal_action_title_deprecated" = "Descobrir como";
-"version_check_modal_subtitle_deprecated" = "Nós temos estado trabalhando em melhorar Element para uma experiência mais rápida e polida. Infelizmente sua versão de iOS atual não é compatível com alguns desses consertos e não é mais suportada.\nNós estamos te aconselhando a fazer upgrade de seu sistema operacional para usar Element em seu potencial completo.";
+"version_check_modal_subtitle_deprecated" = "Nós temos estado trabalhando em melhorar %@ para uma experiência mais rápida e polida. Infelizmente sua versão de iOS atual não é compatível com alguns desses consertos e não é mais suportada.\nNós estamos te aconselhando a fazer upgrade de seu sistema operacional para usar %@ em seu potencial completo.";
 "version_check_modal_title_deprecated" = "Nós não estamos mais suportando iOS %@";
 "version_check_modal_action_title_supported" = "Entendido";
-"version_check_modal_subtitle_supported" = "Nós temos estado trabalhando em melhorar Element para uma experiência mais rápida e polida. Infelizmente sua versão de iOS atual não é compatível com alguns desses consertos e não vai mais ser suportada.\nNós estamos te aconselhando a fazer upgrade de seu sistema operacional para usar Element em seu potencial completo.";
+"version_check_modal_subtitle_supported" = "Nós temos estado trabalhando em melhorar %@ para uma experiência mais rápida e polida. Infelizmente sua versão de iOS atual não é compatível com alguns desses consertos e não vai mais ser suportada.\nNós estamos te aconselhando a fazer upgrade de seu sistema operacional para usar %@ em seu potencial completo.";
 "version_check_modal_title_supported" = "Nós estamos terminando suporte para iOS %@";
-"version_check_banner_subtitle_deprecated" = "Nós não estamos mais suportando Element em iOS %@. Para continuar usando Element em seu potencial completo, nós te aconselhamos a fazer upgrade de sua versão de iOS.";
+"version_check_banner_subtitle_deprecated" = "Nós não estamos mais suportando %@ em iOS %@. Para continuar usando %@ em seu potencial completo, nós te aconselhamos a fazer upgrade de sua versão de iOS.";
 "version_check_banner_title_deprecated" = "Nós não estamos mais suportando iOS %@";
-"version_check_banner_subtitle_supported" = "Nós vamos em breve estar terminando suporte para Element em iOS %@. Para continuar usando Element em seu potencial completo, nós te aconselhamos a fazer upgrade de sua versão de iOS.";
+"version_check_banner_subtitle_supported" = "Nós vamos em breve estar terminando suporte para %@ em iOS %@. Para continuar usando %@ em seu potencial completo, nós te aconselhamos a fazer upgrade de sua versão de iOS.";
 
 // Mark: - Version check
 

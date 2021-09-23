@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
         return TemplateUserProfileViewModel(templateUserProfileService: templateUserProfileService)
     }
 
-    fileprivate init(templateUserProfileService: TemplateUserProfileServiceProtocol) {
+    private init(templateUserProfileService: TemplateUserProfileServiceProtocol) {
         self.templateUserProfileService = templateUserProfileService
         super.init(initialViewState: Self.defaultState(templateUserProfileService: templateUserProfileService))
         setupPresenceObserving()
@@ -72,10 +72,8 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             cancel()
         case .done:
             done()
-        case .incrementCount:
-            dispatch(action: .incrementCount)
-        case .decrementCount:
-            dispatch(action: .decrementCount)
+        case .incrementCount, .decrementCount:
+            dispatch(action: .viewAction(viewAction))
         }
     }
 
@@ -83,10 +81,15 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
         switch action {
         case .updatePresence(let presence):
             state.presence = presence
-        case .incrementCount:
-            state.count += 1
-        case .decrementCount:
-            state.count -= 1
+        case .viewAction(let viewAction):
+            switch viewAction {
+            case .incrementCount:
+                state.count += 1
+            case .decrementCount:
+                state.count -= 1
+            case .cancel, .done:
+                break
+            }
         }
         UILog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
     }

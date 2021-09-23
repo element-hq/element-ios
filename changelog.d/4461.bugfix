@@ -1,0 +1,1 @@
+Fixes "PIN & (NULL)" security section header when device biometrics are not available or not enrolled into.

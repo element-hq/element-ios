@@ -2536,7 +2536,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             MXLogDebug(@"WARNING: The user has no device. Prompt for login again");
             
-            NSString *msg = NSLocalizedStringFromTable(@"e2e_enabling_on_app_update", @"Vector", nil);
+            NSString *msg = [VectorL10n e2eEnablingOnAppUpdate:AppInfo.current.displayName];
             
             __weak typeof(self) weakSelf = self;
             [_errorNotification dismissViewControllerAnimated:NO completion:nil];

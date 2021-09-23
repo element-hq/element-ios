@@ -120,7 +120,7 @@
 // Contacts
 "contacts_address_book_section" = "LOKALNE KONTAKTY";
 "contacts_address_book_matrix_users_toggle" = "Tylko użytkownicy Matrixa";
-"contacts_address_book_permission_denied" = "Nie udzieliłeś(-aś) uprawnienia aplikacji Element na dostęp do listy kontaktów";
+"contacts_address_book_permission_denied" = "Nie udzieliłeś(-aś) uprawnienia aplikacji %@ na dostęp do listy kontaktów";
 "contacts_user_directory_section" = "KATALOG UŻYTKOWNIKÓW";
 "room_participants_leave_prompt_title" = "Opuść pokój";
 "room_participants_remove_prompt_title" = "Potwierdzenie";
@@ -352,7 +352,7 @@
 "deactivate_account_password_alert_message" = "Aby kontynuować, proszę wprowadzić swoje hasło";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Prośba wysłana";
-"rerequest_keys_alert_message" = "Uruchom Element na innym urządzeniu (innej aktywnej sesji) zdolnym do odszyfrowania wiadomości. Dzięki temu sesja zdolna do odszyfrowania wiadomości będzie mogła udostępnić klucze szyfrowania bieżącej sesji.";
+"rerequest_keys_alert_message" = "Uruchom %@ na innym urządzeniu (innej aktywnej sesji) zdolnym do odszyfrowania wiadomości. Dzięki temu sesja zdolna do odszyfrowania wiadomości będzie mogła udostępnić klucze szyfrowania bieżącej sesji.";
 "on" = "Włączony";
 "video" = "Połączenie Wideo";
 "auth_forgot_password" = "Zapomniałeś(-aś) hasło?";
@@ -459,7 +459,7 @@
 "bug_report_title" = "Zgłoś błąd";
 "e2e_need_log_in_again" = "Należy się ponownie zalogować w celu wygenerowania kluczy szyfrowania end-to-end dla tej sesji i wysłania klucza publicznego do Twojego serwera domowego.\nJest to jednorazowe działanie; przepraszamy za niedogodności.";
 // Crypto
-"e2e_enabling_on_app_update" = "Element obsługuje już szyfrowanie end-to-end (E2E), ale musisz zalogować się ponownie, aby je włączyć.\n\nMożesz to zrobić teraz lub później z poziomu ustawień aplikacji.";
+"e2e_enabling_on_app_update" = "%@ obsługuje już szyfrowanie end-to-end (E2E), ale musisz zalogować się ponownie, aby je włączyć.\n\nMożesz to zrobić teraz lub później z poziomu ustawień aplikacji.";
 // No VoIP support
 "no_voip_title" = "Połączenie przychodzące";
 "call_incoming_video" = "Przychodzące połączenie wideo…";
@@ -503,7 +503,7 @@
 "settings_key_backup" = "KOPIA ZAPASOWA KLUCZY";
 "settings_enable_push_notif" = "Powiadomienia na tym urządzeniu";
 "settings_global_settings_info" = "Globalne i szczegółowe ustawienia powiadomień są dostępne z poziomu klienta webowego: %@";
-"settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia Element w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
+"settings_callkit_info" = "Odbieraj połączenia przychodzące na ekranie blokady. Zobacz swoje połęczenia %@ w historii połączeń w systemie. Jeśli usługa iCloud jest włączona, historia połączeń zostanie udostępniona Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" używa ustawienia \"Odwróć kolory\" Twojego urządzenia";
 "close" = "Zamknij";
 "auth_softlogout_sign_in" = "Zaloguj się";
@@ -810,11 +810,6 @@
 "more" = "Więcej";
 // Accessibility
 "accessibility_checkbox_label" = "przełącznik";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "room_participants_action_section_security" = "Bezpieczeństwo";
 "room_participants_action_security_status_verified" = "Zweryfikowany";
 "room_participants_action_security_status_verify" = "Zweryfikuj";
@@ -976,7 +971,8 @@
 "pin_protection_settings_enable_pin" = "Włącz PIN";
 "pin_protection_settings_enabled_forced" = "Blokada PIN włączona";
 "pin_protection_settings_section_footer" = "Aby zresetować PIN wyloguj się i zaloguj ponownie.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Jeżeli nie pamiętasz PINu, naciśnij Zapomniałem(-am) PIN.";
 "pin_protection_mismatch_error_message" = "Proszę, spróbuj ponownie";
 "pin_protection_mismatch_error_title" = "PINy się nie zgadzają";
@@ -1000,7 +996,7 @@
 
 // MARK: - Major update
 
-"major_update_title" = "Riot zmienił nazwę na Element";
+"major_update_title" = "Riot zmienił nazwę na %@";
 "cross_signing_setup_banner_subtitle" = "Uprość weryfikacje swoich innych sesji";
 
 // MARK: - Cross-signing
@@ -1163,7 +1159,7 @@
 "key_verification_manually_verify_device_key_title" = "Klucz sesji";
 "key_verification_manually_verify_device_id_title" = "Identyfikator sesji";
 "key_verification_manually_verify_device_name_title" = "Nazwa sesji";
-"key_verification_manually_verify_device_instruction" = "Potwierdź zgodność poniższych informacji porównując następujące elementy z ustawieniami użytkownika w drugiej sesji:";
+"key_verification_manually_verify_device_instruction" = "Potwierdź zgodność poniższych informacji porównując następujące %@y z ustawieniami użytkownika w drugiej sesji:";
 
 // MARK: Manually Verify Device
 
@@ -1180,8 +1176,8 @@
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Jeśli nie możesz uzyskać dostępu do żadnej istniejącej sesji";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Użyj hasło lub klucz odzyskiwania";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Użyj klucz odzyskiwania";
-"device_verification_self_verify_wait_additional_information" = "Działa to z klientem Element i innymi klientami Matrix obsługującymi cross-signing.";
-"device_verification_self_verify_wait_information" = "Zweryfikuj tę sesję z jednej z innych sesji, przyznając jej dostęp do zaszyfrowanych wiadomości.\n\nUżyj najnowszego klienta Element na innych urządzeniach:";
+"device_verification_self_verify_wait_additional_information" = "Działa to z klientem %@ i innymi klientami Matrix obsługującymi cross-signing.";
+"device_verification_self_verify_wait_information" = "Zweryfikuj tę sesję z jednej z innych sesji, przyznając jej dostęp do zaszyfrowanych wiadomości.\n\nUżyj najnowszego klienta %@ na innych urządzeniach:";
 "device_verification_self_verify_wait_new_sign_in_title" = "Zweryfikuj to logowanie";
 
 // MARK: Self verification wait
@@ -1338,7 +1334,7 @@
 // Manage session
 "manage_session_title" = "Zarządzanie sesją";
 "security_settings_user_password_description" = "Potwierdź swoją tożsamość, wprowadzając hasło do konta";
-"security_settings_coming_soon" = "Przepraszamy. Ta akcja nie jest jeszcze dostępna w aplikacji Element iOS. Użyj innego klienta Matrix, aby to skonfigurować. Element iOS będzie tego używał.";
+"security_settings_coming_soon" = "Przepraszamy. Ta akcja nie jest jeszcze dostępna w aplikacji %@ iOS. Użyj innego klienta Matrix, aby to skonfigurować. %@ iOS będzie tego używał.";
 "security_settings_complete_security_alert_message" = "Najpierw należy zapewnić bezpieczeństwo bieżącej sesji.";
 "security_settings_complete_security_alert_title" = "Konfiguracja bezpieczeństwa";
 "security_settings_blacklist_unverified_devices_description" = "Sprawdź wszystkie sesje użytkowników, aby oznaczyć je jako zaufane i wysłać do nich wiadomości.";
@@ -1507,14 +1503,14 @@
 "room_recents_unknown_room_error_message" = "Nie mogę znaleźć tego pokoju. Upewnij się, że on istnieje";
 "room_creation_dm_error" = "Nie mogliśmy utworzyć pokoju. Sprawdź użytkowników, których chcesz zaprosić, i spróbuj ponownie.";
 "version_check_modal_action_title_deprecated" = "Dowiedz się jak";
-"version_check_modal_subtitle_deprecated" = "Pracowaliśmy nad ulepszeniem Elementu, aby polepszyć korzystanie z aplikacji. Niestety Twoja aktualna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie jest już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
+"version_check_modal_subtitle_deprecated" = "Pracowaliśmy nad ulepszeniem %@u, aby polepszyć korzystanie z aplikacji. Niestety Twoja aktualna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie jest już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
 "version_check_modal_title_deprecated" = "Nie obsługujemy już iOS %@";
 "version_check_modal_action_title_supported" = "Rozumiem";
-"version_check_modal_subtitle_supported" = "Pracowaliśmy nad ulepszeniem Elementu, aby polepszyć korzystanie z aplikacji. Niestety Twoja obecna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie będzie już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
+"version_check_modal_subtitle_supported" = "Pracowaliśmy nad ulepszeniem %@u, aby polepszyć korzystanie z aplikacji. Niestety Twoja obecna wersja systemu iOS nie jest zgodna z niektórymi z tych poprawek i nie będzie już obsługiwana.\nRadzimy uaktualnić system operacyjny, aby w pełni wykorzystać jego potencjał.";
 "version_check_modal_title_supported" = "Kończymy wsparcie dla iOS %@";
-"version_check_banner_subtitle_deprecated" = "Nie obsługujemy już Elementu na iOS %@. Aby nadal korzystać z pełnego potencjału Elementu, radzimy uaktualnić swoją wersję systemu iOS.";
+"version_check_banner_subtitle_deprecated" = "Nie obsługujemy już %@u na iOS %@. Aby nadal korzystać z pełnego potencjału %@u, radzimy uaktualnić swoją wersję systemu iOS.";
 "version_check_banner_title_deprecated" = "Nie obsługujemy już iOS %@";
-"version_check_banner_subtitle_supported" = "Wkrótce zakończymy wsparcie dla Elementu na iOS %@. Aby nadal korzystać z pełnego potencjału Elementu, radzimy uaktualnić swoją wersję systemu iOS.";
+"version_check_banner_subtitle_supported" = "Wkrótce zakończymy wsparcie dla %@u na iOS %@. Aby nadal korzystać z pełnego potencjału %@u, radzimy uaktualnić swoją wersję systemu iOS.";
 
 // Mark: - Version check
 

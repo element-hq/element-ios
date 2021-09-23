@@ -121,7 +121,7 @@ final class MajorUpdateViewController: UIViewController {
         self.disclosureImageView.image = Asset.Images.disclosureIcon.image
         self.newLogoImageView.image = Asset.Images.launchScreenLogo.image
         
-        self.titleLabel.text = VectorL10n.majorUpdateTitle
+        self.titleLabel.text = VectorL10n.majorUpdateTitle(AppInfo.current.displayName)
         self.informationLabel.text = VectorL10n.majorUpdateInformation
         
         self.learnMoreButton.setTitle(VectorL10n.majorUpdateLearnMoreAction, for: .normal)

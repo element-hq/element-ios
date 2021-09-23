@@ -148,7 +148,7 @@
 "contacts_address_book_matrix_users_toggle" = "Само потребители на Matrix";
 "contacts_address_book_no_contact" = "Няма локални контакти";
 "contacts_address_book_permission_required" = "Необходимо е разрешение за достъп до локални контакти";
-"contacts_address_book_permission_denied" = "Не сте позволили достъп на Element до локалните Ви контакти";
+"contacts_address_book_permission_denied" = "Не сте позволили достъп на %@ до локалните Ви контакти";
 "contacts_user_directory_section" = "ДИРЕКТОРИЯ С ПОТРЕБИТЕЛИ";
 "contacts_user_directory_offline_section" = "ДИРЕКТОРИЯ С ПОТРЕБИТЕЛИ (офлайн)";
 "room_details_access_section_directory_toggle" = "Включване в директорията със стаи";
@@ -299,7 +299,7 @@
 "settings_pin_rooms_with_missed_notif" = "Закачане на стаи с пропуснати известия";
 "settings_pin_rooms_with_unread" = "Закачане на стаи с непрочетени съобщения";
 "settings_enable_callkit" = "Интегрирани разговори";
-"settings_callkit_info" = "Получаване на входящи повиквания при заключен екран. Показване на Element разговори в историята на системата. Ако iCloud е включен, историята на разговорите се споделя с Apple.";
+"settings_callkit_info" = "Получаване на входящи повиквания при заключен екран. Показване на %@ разговори в историята на системата. Ако iCloud е включен, историята на разговорите се споделя с Apple.";
 "settings_ui_language" = "Език";
 "settings_ui_theme" = "Тема";
 "settings_ui_theme_auto" = "Автоматична";
@@ -445,7 +445,7 @@
 "network_offline_prompt" = "Интернет връзката изглежда не работи.";
 "public_room_section_title" = "Публични стаи (в %@):";
 "bug_report_prompt" = "Приложението спря да работи последния път. Искате ли да изпратите съобщение за грешка?";
-"rage_shake_prompt" = "Изглежда, че разклащате телефона, което ни кара да мислим, че не сте доволни от Element. Искате ли да изпратите съобщение за грешка?";
+"rage_shake_prompt" = "Изглежда, че разклащате телефона, което ни кара да мислим, че не сте доволни от %@. Искате ли да изпратите съобщение за грешка?";
 "do_not_ask_again" = "Не питай отново";
 "camera_access_not_granted" = "%@ няма разрешение да използва камерата. Моля, проверете настройките за сигурност";
 "large_badge_value_k_format" = "%.1fK";
@@ -471,7 +471,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Искате ли да помогнете за подобрението на %@ като анонимно изпращате съобщения за грешки и данни за използване?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element поддържа шифроване от край до край, но за да го включите трябва да влезете в профила си отново.\n\nМоже да го направите сега или по-късно от настройките на приложението.";
+"e2e_enabling_on_app_update" = "%@ поддържа шифроване от край до край, но за да го включите трябва да влезете в профила си отново.\n\nМоже да го направите сега или по-късно от настройките на приложението.";
 "e2e_need_log_in_again" = "Трябва да влезете обратно в профила си, за да се създадат ключове за шифроване от-край-до-край за тази сесия и да се изпрати публичния ключ към Home сървъра.\nТова е еднократно. Извинете за неудобството.";
 "bug_crash_report_description" = "Моля, опишете какво правихте преди да възникне грешката:";
 "bug_report_logs_description" = "За да се диагностицират проблемите, логовете от този клиент ще бъдат изпратени с този доклад за грешки. Ако предпочитате да изпратите само текста по-горе, моля, премахнете отметката:";
@@ -530,7 +530,7 @@
 "event_formatter_rerequest_keys_part2" = " от другите ми сесии.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Заявката е изпратена";
-"rerequest_keys_alert_message" = "Моля стартирайте Element на друго устройство можещо да разшифрова съобщението, за да може то да изпрати ключовете до тази сесия.";
+"rerequest_keys_alert_message" = "Моля стартирайте %@ на друго устройство можещо да разшифрова съобщението, за да може то да изпрати ключовете до тази сесия.";
 "room_message_reply_to_placeholder" = "Изпрати отговор (нешифрован)…";
 "encrypted_room_message_reply_to_placeholder" = "Изпрати шифрован отговор…";
 "room_message_reply_to_short_placeholder" = "Изпрати отговор…";
@@ -950,11 +950,6 @@
 "security_settings_title" = "Сигурност";
 "security_settings_crypto_sessions" = "МОИТЕ СЕСИИ";
 "security_settings_crypto_sessions_loading" = "Зареждан на сесии…";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "room_member_power_level_admin_in" = "Админ в %@";
 "room_member_power_level_moderator_in" = "Модератор в %@";
 "room_member_power_level_custom_in" = "Собствен (%@) в %@";
@@ -979,7 +974,7 @@
 "security_settings_blacklist_unverified_devices_description" = "Потвърждаване на всички потребителски сесии за да бъдат маркирани като доверени и да се изпращат съобщения до тях.";
 "security_settings_complete_security_alert_title" = "Завършване на сигурността";
 "security_settings_complete_security_alert_message" = "Първо трябва да завършите сигурността на текущата си сесия.";
-"security_settings_coming_soon" = "Извинете. Това действие все още не е налично в Element iOS. Моля използвайте друг Matrix клиент за да го настройте. Element iOS ще го използва след това.";
+"security_settings_coming_soon" = "Извинете. Това действие все още не е налично в %@ iOS. Моля използвайте друг Matrix клиент за да го настройте. %@ iOS ще го използва след това.";
 // Manage session
 "manage_session_title" = "Управление на сесията";
 "manage_session_info" = "СЕСИЙНА ИНФОРМАЦИЯ";
@@ -1011,8 +1006,8 @@
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Прегледай";
 "device_verification_self_verify_wait_title" = "Завършване на сигурността";
 "device_verification_self_verify_wait_new_sign_in_title" = "Потвърждение на вход";
-"device_verification_self_verify_wait_information" = "Потвърдете тази сесия от някоя от другите ви сесии, за че да й дадете достъп до шифрованите съобщения.\n\nИзползвайте най-новия Element на другите си устройства:";
-"device_verification_self_verify_wait_additional_information" = "Това работи в Element и в други Matrix клиенти поддържащи кръстосано-подписване.";
+"device_verification_self_verify_wait_information" = "Потвърдете тази сесия от някоя от другите ви сесии, за че да й дадете достъп до шифрованите съобщения.\n\nИзползвайте най-новия %@ на другите си устройства:";
+"device_verification_self_verify_wait_additional_information" = "Това работи в %@ и в други Matrix клиенти поддържащи кръстосано-подписване.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Използвай ключ за възстановяване";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Използвай парола или ключ за възстановяване";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Ако не можете да достъпите съществуваща сесия";
@@ -1183,7 +1178,8 @@
 "pin_protection_settings_enable_pin" = "Включи PIN код";
 "pin_protection_settings_enabled_forced" = "PIN кодът е включен";
 "pin_protection_settings_section_footer" = "За да нулирате PIN кода, ще трябва да влезете наново и да създадете нов.";
-"pin_protection_settings_section_header_x" = "PIN и %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN и %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Ако не помните PIN кода си, натиснете бутона за забравен PIN код.";
 "pin_protection_mismatch_error_message" = "Опитайте пак";
 "pin_protection_mismatch_error_title" = "PIN кодовете не съвпадат";
@@ -1206,7 +1202,7 @@
 
 // MARK: - Major update
 
-"major_update_title" = "Riot вече е Element";
+"major_update_title" = "Riot вече е %@";
 "cross_signing_setup_banner_subtitle" = "Потвърждавайте другите си устройства по-лесно";
 
 // MARK: - Cross-signing

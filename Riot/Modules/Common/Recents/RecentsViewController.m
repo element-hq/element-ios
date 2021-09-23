@@ -431,7 +431,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             // Scroll table view to make the selected row appear at second position
             NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            if ([self.recentsTableView vc_hasIndexPath:indexPath])
+            {
+                [self.recentsTableView scrollToRowAtIndexPath:indexPath
+                                             atScrollPosition:UITableViewScrollPositionTop
+                                                     animated:NO];
+            }
         }
     }
     else
