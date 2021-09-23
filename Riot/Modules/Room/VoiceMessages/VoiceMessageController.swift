@@ -48,6 +48,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     private var audioSamples: [Float] = []
     private var isInLockedMode: Bool = false
     private var notifiedRemainingTime = false
+    private var recordDuration: TimeInterval?
     
     private static let elapsedTimeFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -156,6 +157,21 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         }
     }
     
+    func voiceMessageToolbarViewDidRequestSeek(to progress: CGFloat) {
+        guard let audioPlayer = audioPlayer,
+        let duration = recordDuration else {
+            return
+        }
+        
+        if audioPlayer.url == nil {
+            audioPlayer.loadContentFromURL(temporaryFileURL)
+        }
+        
+        audioPlayer.seekToTime(duration * Double(progress)) { [weak self] _ in
+            self?.updateUI()
+        }
+    }
+    
     func voiceMessageToolbarViewDidRequestSend(_ toolbarView: VoiceMessageToolbarView) {
         audioPlayer?.stop()
         audioRecorder?.stopRecording()
@@ -199,8 +215,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        audioPlayer.seekToTime(0.0)
-        updateUI()
+        audioPlayer.seekToTime(0.0) { [weak self] _ in
+            self?.updateUI()
+        }
     }
     
     func audioPlayer(_ audioPlayer: VoiceMessageAudioPlayer, didFailWithError: Error) {
@@ -213,6 +230,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private func finishRecording() {
         let recordDuration = audioRecorder?.currentTime
+        self.recordDuration = recordDuration
         audioRecorder?.stopRecording()
 
         guard isInLockedMode else {
@@ -406,10 +424,14 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         var details = VoiceMessageToolbarViewDetails()
         details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
-        details.elapsedTime = VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: (audioPlayer.isPlaying ? audioPlayer.currentTime : audioPlayer.duration)))
+        // Show the current time if the player is paused, show duration when at 0.
+        let currentTime = audioPlayer.currentTime
+        let duration = recordDuration ?? 0
+        let displayTime = currentTime > 0 ? currentTime : duration
+        details.elapsedTime =  VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
+        details.progress = duration > 0 ? currentTime / duration : 0
         details.audioSamples = audioSamples
         details.isPlaying = audioPlayer.isPlaying
-        details.progress = (audioPlayer.isPlaying ? (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0) : 0.0)
         _voiceMessageToolbarView.configureWithDetails(details)
     }
     
