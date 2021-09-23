@@ -78,7 +78,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
         self.titleLabel.font = theme.fonts.calloutSB
         self.selectionView.backgroundColor = theme.colors.separator
         self.moreButton.tintColor = theme.colors.secondaryContent
-        self.badgeLabel.borderColor = ThemeService.shared().theme.colors.background
+        self.badgeLabel.borderColor = theme.colors.background
     }
     
     // MARK: - IBActions
