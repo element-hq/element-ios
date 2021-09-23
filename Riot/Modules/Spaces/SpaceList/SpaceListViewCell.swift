@@ -34,6 +34,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     public weak var delegate: SpaceListViewCellDelegate?
     
     private var theme: Theme?
+    private var isBadgeAlert: Bool = false
     
     // MARK: - Life cycle
     
@@ -59,12 +60,20 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
         self.titleLabel.text = viewData.title
         self.moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.homeSpaceId || viewData.isInvite
         if viewData.isInvite {
+            self.isBadgeAlert = true
             self.badgeLabel.isHidden = false
-            self.badgeLabel.badgeColor = ThemeService.shared().theme.colors.alert
-            self.badgeLabel.borderColor = ThemeService.shared().theme.colors.background
+            if let theme = self.theme {
+                self.badgeLabel.badgeColor = theme.colors.alert
+            }
             self.badgeLabel.text = "!"
         } else {
-            self.badgeLabel.isHidden = true
+            self.isBadgeAlert = viewData.highlightedNotificationCount > 0
+            let notificationCount = viewData.notificationCount + viewData.highlightedNotificationCount
+            self.badgeLabel.isHidden = notificationCount == 0
+            if let theme = self.theme {
+                self.badgeLabel.badgeColor = viewData.highlightedNotificationCount == 0 ? theme.colors.tertiaryContent : theme.colors.alert
+            }
+            self.badgeLabel.text = "\(notificationCount)"
         }
     }
     
@@ -76,6 +85,8 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
         self.titleLabel.font = theme.fonts.calloutSB
         self.selectionView.backgroundColor = theme.colors.separator
         self.moreButton.tintColor = theme.colors.secondaryContent
+        self.badgeLabel.borderColor = theme.colors.background
+        self.badgeLabel.badgeColor = self.isBadgeAlert ? theme.colors.alert : theme.colors.tertiaryContent
     }
     
     // MARK: - IBActions

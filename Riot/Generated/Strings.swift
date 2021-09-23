@@ -2082,9 +2082,25 @@ internal enum VectorL10n {
   internal static var leave: String { 
     return VectorL10n.tr("Vector", "leave") 
   }
-  /// Are you sure you want to leave %@?
+  /// Leave all rooms and spaces
+  internal static var leaveSpaceAndAllRoomsAction: String { 
+    return VectorL10n.tr("Vector", "leave_space_and_all_rooms_action") 
+  }
+  /// Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?
   internal static func leaveSpaceMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "leave_space_message", p1)
+  }
+  /// You are admin of this space, ensure that you have transferred admin right to another member before leaving.
+  internal static var leaveSpaceMessageAdminWarning: String { 
+    return VectorL10n.tr("Vector", "leave_space_message_admin_warning") 
+  }
+  /// Don't leave any rooms
+  internal static var leaveSpaceOnlyAction: String { 
+    return VectorL10n.tr("Vector", "leave_space_only_action") 
+  }
+  /// Leave %@
+  internal static func leaveSpaceTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "leave_space_title", p1)
   }
   /// Less
   internal static var less: String { 
@@ -4858,6 +4874,10 @@ internal enum VectorL10n {
   internal static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
+  /// Adding rooms coming soon
+  internal static var spacesAddRoomsComingSoonTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
+  }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
   internal static var spacesComingSoonDetail: String { 
     return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
@@ -4881,6 +4901,10 @@ internal enum VectorL10n {
   /// Home
   internal static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 
+  }
+  /// Invites coming soon
+  internal static var spacesInvitesComingSoonTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_invites_coming_soon_title") 
   }
   /// Spaces
   internal static var spacesLeftPanelTitle: String { 

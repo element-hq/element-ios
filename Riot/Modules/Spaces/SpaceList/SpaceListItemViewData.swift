@@ -22,4 +22,6 @@ struct SpaceListItemViewData {
     let title: String
     let avatarViewData: AvatarViewDataProtocol
     let isInvite: Bool
+    let notificationCount: UInt
+    let highlightedNotificationCount: UInt
 }

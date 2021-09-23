@@ -34,8 +34,13 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     private var currentOperation: MXHTTPOperation?
     private var sections: [SpaceListSection] = []
-    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+    private var selectedIndexPath: IndexPath = IndexPath(row: 0, section: 0) {
+        didSet {
+            self.selectedItemId = self.itemId(with: self.selectedIndexPath)
+        }
+    }
     private var homeIndexPath: IndexPath = IndexPath(row: 0, section: 0)
+    private var selectedItemId: String = Constants.homeSpaceId
 
     // MARK: Public
 
@@ -127,6 +132,30 @@ final class SpaceListViewModel: SpaceListViewModelType {
         let homeIndexPath = viewDataList.invites.isEmpty ? IndexPath(row: 0, section: 0) : IndexPath(row: 0, section: 1)
         if self.selectedIndexPath.section == self.homeIndexPath.section {
             self.selectedIndexPath = homeIndexPath
+        } else if self.selectedItemId != self.itemId(with: self.selectedIndexPath) {
+            var newSelection: IndexPath?
+            let section = sections.last
+            switch section {
+            case .home:
+                break
+            case .spaces(let viewDataList):
+                var index = 0
+                for itemViewData in viewDataList {
+                    if itemViewData.spaceId == self.selectedItemId {
+                        newSelection = IndexPath(row: index, section: sections.count - 1)
+                    }
+                    index += 1
+                }
+            case .none:
+                break
+            }
+            
+            if let selection = newSelection {
+                self.selectedIndexPath = selection
+            } else {
+                self.selectedIndexPath = homeIndexPath
+                self.coordinatorDelegate?.spaceListViewModelDidSelectHomeSpace(self)
+            }
         }
         self.homeIndexPath = homeIndexPath
         self.update(viewState: .loaded(sections))
@@ -148,8 +177,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
     private func createHomeViewData() -> SpaceListItemViewData {
         let avatarViewData = AvatarViewData(matrixItemId: Constants.homeSpaceId, displayName: nil, avatarUrl: nil, mediaManager: self.session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
         
+        let homeNotificationState = session.spaceService.notificationCounter.homeNotificationState
         let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
-                                                 title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData, isInvite: false)
+                                                 title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData, isInvite: false, notificationCount: homeNotificationState.allCount, highlightedNotificationCount: homeNotificationState.allHighlightCount)
         return homeViewData
     }
     
@@ -158,7 +188,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         var spaces: [SpaceListItemViewData] = []
         session.spaceService.rootSpaceSummaries.forEach { summary in
             let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
-            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData, isInvite: summary.membership == .invite)
+            let notificationState = self.session.spaceService.notificationCounter.notificationState(forSpaceWithId: summary.roomId)
+            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData, isInvite: summary.membership == .invite, notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0, highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0)
             if viewData.isInvite {
                 invites.append(viewData)
             } else {
@@ -175,5 +206,19 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     private func cancelOperations() {
         self.currentOperation?.cancel()
+    }
+    
+    private func itemId(with indexPath: IndexPath) -> String {
+        guard self.selectedIndexPath.section < self.sections.count else {
+            return Constants.homeSpaceId
+        }
+        let section = self.sections[self.selectedIndexPath.section]
+        switch section {
+        case .home:
+            return Constants.homeSpaceId
+        case .spaces(let viewDataList):
+            let spaceViewData = viewDataList[self.selectedIndexPath.row]
+            return spaceViewData.spaceId
+        }
     }
 }

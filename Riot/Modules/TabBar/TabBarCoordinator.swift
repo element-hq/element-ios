@@ -189,32 +189,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem
         
-        var viewControllers: [UIViewController] = []
-                
-        let homeViewController = self.createHomeViewController()
-        viewControllers.append(homeViewController)
-        
-        if RiotSettings.shared.homeScreenShowFavouritesTab {
-            let favouritesViewController = self.createFavouritesViewController()
-            viewControllers.append(favouritesViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowPeopleTab {
-            let peopleViewController = self.createPeopleViewController()
-            viewControllers.append(peopleViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowRoomsTab {
-            let roomsViewController = self.createRoomsViewController()
-            viewControllers.append(roomsViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowCommunitiesTab {
-            let groupsViewController = self.createGroupsViewController()
-            viewControllers.append(groupsViewController)
-        }
-        
-        tabBarController.updateViewControllers(viewControllers)
+        self.updateTabControllers(for: tabBarController, showCommunities: true)
         
         return tabBarController
     }
@@ -285,7 +260,37 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 
         let currentMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession
         
+        self.updateTabControllers(for: self.masterTabBarController, showCommunities: spaceId == nil)
         self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: currentMatrixSession)
+    }
+    
+    private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
+        var viewControllers: [UIViewController] = []
+                
+        let homeViewController = self.createHomeViewController()
+        viewControllers.append(homeViewController)
+        
+        if RiotSettings.shared.homeScreenShowFavouritesTab {
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowPeopleTab {
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowRoomsTab {
+            let roomsViewController = self.createRoomsViewController()
+            viewControllers.append(roomsViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowCommunitiesTab && showCommunities {
+            let groupsViewController = self.createGroupsViewController()
+            viewControllers.append(groupsViewController)
+        }
+        
+        tabBarController.updateViewControllers(viewControllers)
     }
     
     // MARK: Navigation
@@ -404,6 +409,16 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, wantsToDisplayDetailViewController detailViewController: UIViewController!) {
         
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: detailViewController)
+    }
+    
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
+        let image = displayNotification ? Asset.Images.sideMenuNotifIcon.image : Asset.Images.sideMenuIcon.image
+        let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: image, style: .plain) { [weak self] in
+            self?.showSideMenu()
+        }
+        sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+        
+        self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
     }
 }
 
