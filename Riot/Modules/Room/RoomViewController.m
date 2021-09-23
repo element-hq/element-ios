@@ -1013,6 +1013,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self refreshRoomInputToolbar];
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
+    _voiceMessageController.roomId = dataSource.roomId;
 }
 
 - (void)onRoomDataSourceReady
