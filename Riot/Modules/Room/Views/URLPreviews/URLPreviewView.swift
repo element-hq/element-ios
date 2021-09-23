@@ -37,9 +37,9 @@ class URLPreviewView: UIView, NibLoadable, Themable {
         static let reducedWidth: CGFloat = 230
         
         /// The availableWidth value that the XIB file is designed against.
-        static let defaultAvailableWidth: CGFloat = 375
+        static let defaultAvailableWidth: CGFloat = 340
         /// The threshold value for available width that triggers the view to use a reducedWidth
-        static let reducedWidthThreshold: CGFloat = 320
+        static let reducedWidthThreshold: CGFloat = 285
     }
     
     // MARK: - Properties

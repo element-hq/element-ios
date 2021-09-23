@@ -343,7 +343,7 @@ const CGFloat kTypingCellHeight = 24;
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink) && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.showURLPreview) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -388,8 +388,7 @@ const CGFloat kTypingCellHeight = 24;
                         [bubbleCell.tmpSubviews addObject:urlPreviewView];
                         
                         urlPreviewView.translatesAutoresizingMaskIntoConstraints = NO;
-                        // TODO: Use cellData.maxTextViewWidth when the view height is part of RoomBubbleCellData's additional height.
-                        urlPreviewView.availableWidth = tableView.contentSize.width;
+                        urlPreviewView.availableWidth = cellData.maxTextViewWidth;
                         [bubbleCell.contentView addSubview:urlPreviewView];
                         
                         CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;

@@ -535,6 +535,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     CGFloat additionalVerticalHeight = 0;
     
+    // Add vertical whitespace in case of a url preview.
+    additionalVerticalHeight+= [self urlPreviewHeightForEventId:eventId];
     // Add vertical whitespace in case of reactions.
     additionalVerticalHeight+= [self reactionHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
@@ -554,6 +556,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     {
         NSString *eventId = bubbleComponent.event.eventId;
         
+        height+= [self urlPreviewHeightForEventId:eventId];
         height+= [self reactionHeightForEventId:eventId];
         height+= [self readReceiptHeightForEventId:eventId];
     }
@@ -591,6 +594,29 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 - (void)setNeedsUpdateAdditionalContentHeight
 {
     self.shouldUpdateAdditionalContentHeight = YES;
+}
+
+- (CGFloat)urlPreviewHeightForEventId:(NSString*)eventId
+{
+    if (!RiotSettings.shared.roomScreenShowsURLPreviews || !self.showURLPreview)
+    {
+        return 0;
+    }
+    
+    NSInteger index = [self bubbleComponentIndexForEventId:eventId];
+    if (index >= bubbleComponents.count)
+    {
+        return 0;
+    }
+    
+    MXKRoomBubbleComponent *component = self.bubbleComponents[index];
+    if (!component.link)
+    {
+        return 0;
+    }
+    
+    return RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:self.urlPreviewData
+                                                                                       fitting:self.maxTextViewWidth];
 }
 
 - (CGFloat)reactionHeightForEventId:(NSString*)eventId
@@ -1117,8 +1143,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                                  success:^(URLPreviewData * _Nonnull urlPreviewData) {
         MXStrongifyAndReturnIfNil(self);
         
-        // Update the preview data and send a notification for refresh
+        // Update the preview data, indicate that the data layout needs refreshing and send a notification for refresh
         self.urlPreviewData = urlPreviewData;
+        [self setNeedsUpdateContent];
+        [self setNeedsUpdateAdditionalContentHeight];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];
