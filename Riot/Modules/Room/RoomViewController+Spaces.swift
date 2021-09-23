@@ -21,12 +21,12 @@ extension RoomViewController {
     @objc func handleSpaceUniversalLink(with url: URL) {
         let url = Tools.fixURL(withSeveralHashKeys: url)
         
-        var pathParams: NSArray?
-        var queryParams: NSMutableDictionary?
-        AppDelegate.theDelegate().parseUniversalLinkFragment(url?.fragment, outPathParams: &pathParams, outQueryParams: &queryParams)
+        var pathParamsObjc: NSArray?
+        var queryParamsObjc: NSMutableDictionary?
+        AppDelegate.theDelegate().parseUniversalLinkFragment(url?.fragment, outPathParams: &pathParamsObjc, outQueryParams: &queryParamsObjc)
 
         // Sanity check
-        guard let pathParams = pathParams as? [String], pathParams.count > 0 else {
+        guard let pathParams = pathParamsObjc as? [String], pathParams.count > 0 else {
             MXLog.error("[RoomViewController] Universal link: Error: No path parameters")
             return
         }
@@ -74,7 +74,7 @@ extension RoomViewController {
         self.startActivityIndicator()
         
         var viaServers: [String] = []
-        if let queryParams = queryParams as? [String: Any], let via = queryParams["via"] as? [String] {
+        if let queryParams = queryParamsObjc as? [String: Any], let via = queryParams["via"] as? [String] {
             viaServers = via
         }
         
