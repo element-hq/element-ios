@@ -53,6 +53,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private var currentSpaceId: String?
     private var homeViewControllerWrapperViewController: HomeViewControllerWithBannerWrapperViewController?
     
+    private var currentMatrixSession: MXSession? {
+        return parameters.userSessionsService.mainUserSession?.matrixSession
+    }
+    
     // MARK: Public
 
     // Must be used only internally
@@ -70,7 +74,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let masterNavigationController = RiotNavigationController()
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
-    }    
+    }
     
     // MARK: - Public methods
     
@@ -103,6 +107,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.updateMasterTabBarController(with: spaceId)
         
         self.registerUserSessionsServiceNotifications()
+        self.registerSessionChange()
         
         if let homeViewController = homeViewControllerWrapperViewController {
             let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
@@ -258,10 +263,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func updateMasterTabBarController(with spaceId: String?) {
                 
-        let currentMatrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession
-        
         self.updateTabControllers(for: self.masterTabBarController, showCommunities: spaceId == nil)
-        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: currentMatrixSession)
+        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: self.currentMatrixSession)
     }
     
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
@@ -285,7 +288,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             viewControllers.append(roomsViewController)
         }
         
-        if RiotSettings.shared.homeScreenShowCommunitiesTab && showCommunities {
+        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
             let groupsViewController = self.createGroupsViewController()
             viewControllers.append(groupsViewController)
         }
@@ -347,6 +350,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+        
+        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -367,6 +374,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func removeMatrixSessionFromMasterTabBarController(_ matrixSession: MXSession) {
         MXLog.debug("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
         self.masterTabBarController.removeMatrixSession(matrixSession)
+    }
+    
+    private func registerSessionChange() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionDidSync(_:)), name: NSNotification.Name.mxSessionDidSync, object: nil)
+    }
+    
+    @objc private func sessionDidSync(_ notification: Notification) {
+        if self.currentMatrixSession?.groups().isEmpty ?? true {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
 }
 

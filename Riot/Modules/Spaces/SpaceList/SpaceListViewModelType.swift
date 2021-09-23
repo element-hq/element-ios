@@ -37,4 +37,5 @@ protocol SpaceListViewModelType {
     
     func process(viewAction: SpaceListViewAction)
     func revertItemSelection()
+    func select(spaceWithId spaceId: String)
 }

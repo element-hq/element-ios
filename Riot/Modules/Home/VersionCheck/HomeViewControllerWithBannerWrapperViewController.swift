@@ -16,7 +16,7 @@
 
 import Foundation
 
-class HomeViewControllerWithBannerWrapperViewController: UIViewController, BannerPresentationProtocol {
+class HomeViewControllerWithBannerWrapperViewController: MXKActivityHandlingViewController, BannerPresentationProtocol {
     
     @objc let homeViewController: HomeViewController
     private var bannerContainerView: UIView!
@@ -41,6 +41,8 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, Banne
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        homeViewController.willMove(toParent: self)
+        
         view.backgroundColor = .clear
         
         stackView = UIStackView()
@@ -49,7 +51,7 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, Banne
         stackView.alignment = .fill
         
         view.vc_addSubViewMatchingParent(stackView)
-        
+
         addChild(homeViewController)
         stackView.addArrangedSubview(homeViewController.view)
         homeViewController.didMove(toParent: self)

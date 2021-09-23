@@ -61,6 +61,10 @@ final class SpaceListCoordinator: SpaceListCoordinatorType {
     func revertItemSelection() {
         self.spaceListViewModel.revertItemSelection()
     }
+    
+    func select(spaceWithId spaceId: String) {
+        self.spaceListViewModel.select(spaceWithId: spaceId)
+    }
 }
 
 // MARK: - SpaceListViewModelCoordinatorDelegate

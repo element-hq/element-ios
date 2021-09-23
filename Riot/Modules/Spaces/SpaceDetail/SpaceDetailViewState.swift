@@ -17,8 +17,12 @@
 import Foundation
 
 struct SpaceDetailLoadedParameters {
-    let space: MXSpace
+    let spaceId: String
+    let displayName: String?
+    let topic: String?
+    let avatarUrl: String?
     let joinRule: MXRoomJoinRule?
+    let membership: MXMembership
     let inviterId: String?
     let inviter: MXUser?
     let membersCount: UInt

@@ -2084,23 +2084,23 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "leave") 
   }
   /// Leave all rooms and spaces
-  internal static var leaveSpaceAndAllRoomsAction: String { 
+  public static var leaveSpaceAndAllRoomsAction: String { 
     return VectorL10n.tr("Vector", "leave_space_and_all_rooms_action") 
   }
   /// Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?
-  internal static func leaveSpaceMessage(_ p1: String) -> String {
+  public static func leaveSpaceMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "leave_space_message", p1)
   }
   /// You are admin of this space, ensure that you have transferred admin right to another member before leaving.
-  internal static var leaveSpaceMessageAdminWarning: String { 
+  public static var leaveSpaceMessageAdminWarning: String { 
     return VectorL10n.tr("Vector", "leave_space_message_admin_warning") 
   }
   /// Don't leave any rooms
-  internal static var leaveSpaceOnlyAction: String { 
+  public static var leaveSpaceOnlyAction: String { 
     return VectorL10n.tr("Vector", "leave_space_only_action") 
   }
   /// Leave %@
-  internal static func leaveSpaceTitle(_ p1: String) -> String {
+  public static func leaveSpaceTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "leave_space_title", p1)
   }
   /// Less
@@ -2212,7 +2212,7 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "on") 
   }
   /// Open
-  internal static var `open`: String { 
+  public static var `open`: String { 
     return VectorL10n.tr("Vector", "open") 
   }
   /// or
@@ -3444,7 +3444,7 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "room_recents_start_chat_with") 
   }
   /// SUGGESTED ROOMS
-  internal static var roomRecentsSuggestedRoomsSection: String { 
+  public static var roomRecentsSuggestedRoomsSection: String { 
     return VectorL10n.tr("Vector", "room_recents_suggested_rooms_section") 
   }
   /// Can't find this room. Make sure it exists
@@ -4820,11 +4820,11 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "social_login_list_title_sign_up") 
   }
   /// Change space avatar
-  internal static var spaceAvatarViewAccessibilityHint: String { 
+  public static var spaceAvatarViewAccessibilityHint: String { 
     return VectorL10n.tr("Vector", "space_avatar_view_accessibility_hint") 
   }
   /// avatar
-  internal static var spaceAvatarViewAccessibilityLabel: String { 
+  public static var spaceAvatarViewAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "space_avatar_view_accessibility_label") 
   }
   /// BETA
@@ -4856,75 +4856,75 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
   /// Ban from this space
-  internal static var spaceParticipantsActionBan: String { 
+  public static var spaceParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "space_participants_action_ban") 
   }
   /// Remove from this space
-  internal static var spaceParticipantsActionRemove: String { 
+  public static var spaceParticipantsActionRemove: String { 
     return VectorL10n.tr("Vector", "space_participants_action_remove") 
   }
   /// Private space
-  internal static var spacePrivateJoinRule: String { 
+  public static var spacePrivateJoinRule: String { 
     return VectorL10n.tr("Vector", "space_private_join_rule") 
   }
   /// Public space
-  internal static var spacePublicJoinRule: String { 
+  public static var spacePublicJoinRule: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule") 
   }
   /// space
-  internal static var spaceTag: String { 
+  public static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
   /// Adding rooms coming soon
-  internal static var spacesAddRoomsComingSoonTitle: String { 
+  public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
   }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
-  internal static var spacesComingSoonDetail: String { 
+  public static var spacesComingSoonDetail: String { 
     return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
   }
   /// Coming soon
-  internal static var spacesComingSoonTitle: String { 
+  public static var spacesComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_coming_soon_title") 
   }
   /// Some rooms may be hidden because they’re private and you need an invite.
-  internal static var spacesEmptySpaceDetail: String { 
+  public static var spacesEmptySpaceDetail: String { 
     return VectorL10n.tr("Vector", "spaces_empty_space_detail") 
   }
   /// This space has no rooms (yet)
-  internal static var spacesEmptySpaceTitle: String { 
+  public static var spacesEmptySpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_empty_space_title") 
   }
   /// Explore rooms
-  internal static var spacesExploreRooms: String { 
+  public static var spacesExploreRooms: String { 
     return VectorL10n.tr("Vector", "spaces_explore_rooms") 
   }
   /// Home
-  internal static var spacesHomeSpaceTitle: String { 
+  public static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 
   }
   /// Invites coming soon
-  internal static var spacesInvitesComingSoonTitle: String { 
+  public static var spacesInvitesComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_invites_coming_soon_title") 
   }
   /// Spaces
-  internal static var spacesLeftPanelTitle: String { 
+  public static var spacesLeftPanelTitle: String { 
     return VectorL10n.tr("Vector", "spaces_left_panel_title") 
   }
   /// Looking for someone not in %@? For now, you can invite them on web or desktop.
-  internal static func spacesNoMemberFoundDetail(_ p1: String) -> String {
+  public static func spacesNoMemberFoundDetail(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_no_member_found_detail", p1)
   }
   /// No results found
-  internal static var spacesNoResultFoundTitle: String { 
+  public static var spacesNoResultFoundTitle: String { 
     return VectorL10n.tr("Vector", "spaces_no_result_found_title") 
   }
   /// Some results may be hidden because they’re private and you need an invite to join them.
-  internal static var spacesNoRoomFoundDetail: String { 
+  public static var spacesNoRoomFoundDetail: String { 
     return VectorL10n.tr("Vector", "spaces_no_room_found_detail") 
   }
   /// Suggested
-  internal static var spacesSuggestedRoom: String { 
+  public static var spacesSuggestedRoom: String { 
     return VectorL10n.tr("Vector", "spaces_suggested_room") 
   }
   /// Start

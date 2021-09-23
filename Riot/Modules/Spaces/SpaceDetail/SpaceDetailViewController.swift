@@ -33,6 +33,7 @@ class SpaceDetailViewController: UIViewController {
     private var viewModel: SpaceDetailViewModelType!
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private var isJoined: Bool = false
 
     // MARK: Outlets
 
@@ -111,7 +112,11 @@ class SpaceDetailViewController: UIViewController {
     }
     
     @IBAction private func joinAction(sender: UIButton) {
-        self.viewModel.process(viewAction: .join)
+        if isJoined {
+            self.viewModel.process(viewAction: .open)
+        } else {
+            self.viewModel.process(viewAction: .join)
+        }
     }
     
     @IBAction private func leaveAction(sender: UIButton) {
@@ -202,27 +207,27 @@ class SpaceDetailViewController: UIViewController {
     private func renderLoaded(parameters: SpaceDetailLoadedParameters) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         
-        guard let summary = parameters.space.summary else {
-            MXLog.error("[SpaceDetailViewController] setupViews: no summary found")
-            return
-        }
-        
-        if summary.membership != .invite {
-            self.inviterPanelHeight.constant = 0
-        } else {
+        switch parameters.membership {
+        case .invite:
             self.joinButton.isHidden = true
             self.inviteActionPanel.isHidden = false
+        case .join:
+            self.inviterPanelHeight.constant = 0
+            self.joinButton.setTitle(VectorL10n.open, for: .normal)
+            self.isJoined = true
+        default:
+            self.inviterPanelHeight.constant = 0
         }
         
-        let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: self.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+        let avatarViewData = AvatarViewData(matrixItemId: parameters.spaceId, displayName: parameters.displayName, avatarUrl: parameters.avatarUrl, mediaManager: self.mediaManager, fallbackImage: .matrixItem(parameters.spaceId, parameters.displayName))
 
-        self.titleLabel.text = summary.displayname
+        self.titleLabel.text = parameters.displayName
         self.avatarView.fill(with: avatarViewData)
-        self.topicLabel.text = summary.topic
+        self.topicLabel.text = parameters.topic
         
         let joinRuleString = parameters.joinRule == .public ? VectorL10n.spacePublicJoinRule : VectorL10n.spacePrivateJoinRule
         
-        let membersCount = summary.membersCount.members
+        let membersCount = parameters.membersCount
         let membersString = membersCount == 1 ? VectorL10n.roomTitleOneMember : VectorL10n.roomTitleMembers("\(membersCount)")
         self.spaceTypeLabel.text = "\(joinRuleString) · \(membersString)"
         
@@ -235,6 +240,8 @@ class SpaceDetailViewController: UIViewController {
                 self.inviterAvatarView.fill(with: avatarViewData)
             }
         }
+        
+        view.layoutIfNeeded()
     }
     
     private func render(error: Error) {

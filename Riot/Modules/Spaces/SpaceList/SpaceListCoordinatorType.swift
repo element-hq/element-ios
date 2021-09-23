@@ -29,4 +29,5 @@ protocol SpaceListCoordinatorDelegate: AnyObject {
 protocol SpaceListCoordinatorType: Coordinator, Presentable {
     var delegate: SpaceListCoordinatorDelegate? { get }
     func revertItemSelection()
+    func select(spaceWithId spaceId: String)
 }

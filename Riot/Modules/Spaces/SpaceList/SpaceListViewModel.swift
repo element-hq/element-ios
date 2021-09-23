@@ -101,6 +101,21 @@ final class SpaceListViewModel: SpaceListViewModelType {
         self.update(viewState: .selectionChanged(self.selectedIndexPath))
     }
     
+    func select(spaceWithId spaceId: String) {
+        for (sectionIndex, section) in self.sections.enumerated() {
+            switch section {
+            case .home: break
+            case .spaces(let viewDataList):
+                for (row, itemViewData) in viewDataList.enumerated() where itemViewData.spaceId == spaceId {
+                    let indexPath = IndexPath(row: row, section: sectionIndex)
+                    self.selectSpace(with: spaceId)
+                    self.selectedIndexPath = indexPath
+                    self.update(viewState: .selectionChanged(indexPath))
+                }
+            }
+        }
+    }
+    
     // MARK: - Private
     
     @objc private func sessionDidSync(notification: Notification) {

@@ -137,7 +137,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate>
 {
     
     // The preview header
@@ -247,6 +247,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
 
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
+@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
 @end
 
@@ -2192,7 +2193,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else
     {
-        return [[AppDelegate theDelegate] handleUniversalLinkURL:universalLinkURL];
+        [self handleSpaceUniversalLinkWith:universalLinkURL];
+        return YES;
     }
 }
     
@@ -6478,6 +6480,39 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXLogError(@"Failed sending voice message");
         completion(NO);
     }];
+}
+
+- (void)showSpaceDetailWithPublicRoom:(MXPublicRoom *)publicRoom
+{
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
+}
+
+- (void)showSpaceDetailWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    [self.spaceDetailPresenter presentForSpaceWithId:spaceId from:self sourceView:nil session:self.mainSession animated:YES];
+}
+
+#pragma mark - SpaceDetailPresenterDelegate
+
+- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
+{
+    self.spaceDetailPresenter = nil;
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didOpenSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didJoinSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
 }
 
 @end

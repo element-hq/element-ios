@@ -20,6 +20,7 @@ import Foundation
 enum SpaceDetailViewAction {
     case loadData
     case join
+    case open
     case leave
     case dismiss
     case dismissed

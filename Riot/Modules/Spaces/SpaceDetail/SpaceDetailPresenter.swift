@@ -28,7 +28,7 @@ class SpaceDetailPresenter: NSObject {
     
     // MARK: - Properties
     
-    public weak var delegate: SpaceDetailPresenterDelegate?
+    @objc public weak var delegate: SpaceDetailPresenterDelegate?
 
     // MARK: Private
     
@@ -38,13 +38,12 @@ class SpaceDetailPresenter: NSObject {
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
     }()
-    private weak var selectedSpace: MXSpace?
     private var session: MXSession!
     private var spaceId: String!
 
     // MARK: - Public
     
-    func present(forSpaceWithId spaceId: String,
+    @objc func present(forSpaceWithId spaceId: String,
                  from viewController: UIViewController,
                  sourceView: UIView?,
                  session: MXSession,
@@ -56,7 +55,22 @@ class SpaceDetailPresenter: NSObject {
         self.viewModel.coordinatorDelegate = self
         self.presentingViewController = viewController
         self.sourceView = sourceView
-        self.selectedSpace = session.spaceService.getSpace(withId: spaceId)
+        
+        self.show(with: session)
+    }
+    
+    @objc func present(forSpaceWithPublicRoom publicRoom: MXPublicRoom,
+                 from viewController: UIViewController,
+                 sourceView: UIView?,
+                 session: MXSession,
+                 animated: Bool) {
+        self.session = session
+        self.spaceId = publicRoom.roomId
+
+        self.viewModel = SpaceDetailViewModel(session: session, publicRoom: publicRoom)
+        self.viewModel.coordinatorDelegate = self
+        self.presentingViewController = viewController
+        self.sourceView = sourceView
         
         self.show(with: session)
     }
@@ -97,6 +111,18 @@ class SpaceDetailPresenter: NSObject {
 // MARK: - SpaceDetailModelViewModelCoordinatorDelegate
 
 extension SpaceDetailPresenter: SpaceDetailModelViewModelCoordinatorDelegate {
+    func spaceDetailViewModelDidJoin(_ viewModel: SpaceDetailViewModelType) {
+        self.dismiss(animated: true) {
+            self.delegate?.spaceDetailPresenter(self, didJoinSpaceWithId: self.spaceId)
+        }
+    }
+    
+    func spaceDetailViewModelDidOpen(_ viewModel: SpaceDetailViewModelType) {
+        self.dismiss(animated: false) {
+            self.delegate?.spaceDetailPresenter(self, didOpenSpaceWithId: self.spaceId)
+        }
+    }
+    
     func spaceDetailViewModelDidCancel(_ viewModel: SpaceDetailViewModelType) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -106,6 +132,8 @@ extension SpaceDetailPresenter: SpaceDetailModelViewModelCoordinatorDelegate {
     }
 }
 
-protocol SpaceDetailPresenterDelegate: AnyObject {
+@objc protocol SpaceDetailPresenterDelegate: AnyObject {
     func spaceDetailPresenterDidComplete(_ presenter: SpaceDetailPresenter)
+    func spaceDetailPresenter(_ presenter: SpaceDetailPresenter, didJoinSpaceWithId spaceId: String)
+    func spaceDetailPresenter(_ presenter: SpaceDetailPresenter, didOpenSpaceWithId spaceId: String)
 }
