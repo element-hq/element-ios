@@ -50,7 +50,7 @@ class HomeViewControllerWithBannerWrapperViewController: MXKViewController, Bann
         stackView.distribution = .fill
         stackView.alignment = .fill
         
-        view.vc_addSubViewMatchingParentSafeArea(stackView)
+        view.vc_addSubViewMatchingParent(stackView)
 
         addChild(homeViewController)
         stackView.addArrangedSubview(homeViewController.view)
