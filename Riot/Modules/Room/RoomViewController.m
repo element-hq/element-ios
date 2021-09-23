@@ -327,7 +327,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Show / hide actions button in document preview according BuildSettings
     self.allowActionsInDocumentPreview = BuildSettings.messageDetailsAllowShare;
     
-    _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
+    _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService: ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
     self.voiceMessageController.delegate = self;
 }
 
@@ -1013,6 +1013,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self refreshRoomInputToolbar];
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
+    _voiceMessageController.roomId = dataSource.roomId;
 }
 
 - (void)onRoomDataSourceReady

@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,14 +29,12 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         static let maximumAudioRecordingDuration: TimeInterval = 120.0
         static let maximumAudioRecordingLengthReachedThreshold: TimeInterval = 10.0
         static let elapsedTimeFormat = "m:ss"
-        static let fileNameFormat = "'Voice message - 'MM.dd.yyyy HH.mm.ss"
+        static let fileNameDateFormat = "MM.dd.yyyy HH.mm.ss"
         static let minimumRecordingDuration = 1.0
     }
     
     private let themeService: ThemeService
     private let mediaServiceProvider: VoiceMessageMediaServiceProvider
-    private var temporaryFileURL: URL!
-    
     private let _voiceMessageToolbarView: VoiceMessageToolbarView
     private var displayLink: CADisplayLink!
     
@@ -58,9 +56,18 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     private static let fileNameDateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = Constants.fileNameFormat
+        dateFormatter.dateFormat = Constants.fileNameDateFormat
         return dateFormatter
     }()
+    
+    private var temporaryFileURL: URL? {
+        guard let roomId = roomId else {
+            return nil
+        }
+        let temporaryFileName = "Voice message-\(roomId)"
+        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        return temporaryDirectoryURL.appendingPathComponent(temporaryFileName).appendingPathExtension("m4a")
+    }
     
     @objc public weak var delegate: VoiceMessageControllerDelegate?
     
@@ -72,10 +79,15 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         return _voiceMessageToolbarView
     }
     
+    @objc public var roomId: String? {
+        didSet {
+            checkForRecording()
+        }
+    }
+    
     @objc public init(themeService: ThemeService, mediaServiceProvider: VoiceMessageMediaServiceProvider) {
         self.themeService = themeService
         self.mediaServiceProvider = mediaServiceProvider
-        
         _voiceMessageToolbarView = VoiceMessageToolbarView.loadFromNib()
         
         super.init()
@@ -94,14 +106,28 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         updateUI()
     }
     
+    func checkForRecording() {
+        guard let temporaryFileURL = temporaryFileURL else {
+             return
+        }
+        if FileManager.default.fileExists(atPath: temporaryFileURL.path) {
+            isInLockedMode = true
+            loadDraftRecording()
+        }
+        
+        updateUI()
+    }
+    
     // MARK: - VoiceMessageToolbarViewDelegate
     
     func voiceMessageToolbarViewDidRequestRecordingStart(_ toolbarView: VoiceMessageToolbarView) {
+        guard let temporaryFileURL = temporaryFileURL else {
+             return
+        }
         guard AVAudioSession.sharedInstance().recordPermission == .granted else {
             delegate?.voiceMessageControllerDidRequestMicrophonePermission(self)
             return
         }
-        
         // Haptic are not played during record on iOS by default. This fix works
         // only since iOS 13. A workaround for iOS 12 and earlier would be to
         // dispatch after at least 100ms recordWithOutputURL call
@@ -114,11 +140,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         
         audioRecorder = mediaServiceProvider.audioRecorder()
         audioRecorder?.registerDelegate(self)
-        
-        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        let fileName = VoiceMessageController.fileNameDateFormatter.string(from: Date())
-        temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(fileName).appendingPathExtension("m4a")
-        
         audioRecorder?.recordWithOutputURL(temporaryFileURL)
     }
     
@@ -141,7 +162,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func voiceMessageToolbarViewDidRequestPlaybackToggle(_ toolbarView: VoiceMessageToolbarView) {
-        guard let audioPlayer = audioPlayer else {
+        guard let audioPlayer = audioPlayer,
+              let temporaryFileURL = temporaryFileURL else {
             return
         }
         
@@ -159,7 +181,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     func voiceMessageToolbarViewDidRequestSeek(to progress: CGFloat) {
         guard let audioPlayer = audioPlayer,
-        let duration = recordDuration else {
+              let temporaryFileURL = temporaryFileURL,
+              let duration = recordDuration else {
             return
         }
         
@@ -173,6 +196,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func voiceMessageToolbarViewDidRequestSend(_ toolbarView: VoiceMessageToolbarView) {
+        guard let temporaryFileURL = temporaryFileURL else {
+             return
+        }
         audioPlayer?.stop()
         audioRecorder?.stopRecording()
         
@@ -229,6 +255,9 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     // MARK: - Private
     
     private func finishRecording() {
+        guard let temporaryFileURL = temporaryFileURL else {
+             return
+        }
         let recordDuration = audioRecorder?.currentTime
         self.recordDuration = recordDuration
         audioRecorder?.stopRecording()
@@ -240,13 +269,20 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             return
         }
         
+        loadDraftRecording()
+        
+        updateUI()
+    }
+    
+    func loadDraftRecording() {
+        guard let temporaryFileURL = temporaryFileURL else {
+             return
+        }
         audioPlayer = mediaServiceProvider.audioPlayerForIdentifier(UUID().uuidString)
         audioPlayer?.registerDelegate(self)
         audioPlayer?.loadContentFromURL(temporaryFileURL)
 
         audioSamples = []
-        
-        updateUI()
     }
     
     private func sendRecordingAtURL(_ sourceURL: URL) {
@@ -398,7 +434,8 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     private func updateUIFromAudioPlayer() {
-        guard let audioPlayer = audioPlayer else {
+        guard let audioPlayer = audioPlayer,
+              let temporaryFileURL = temporaryFileURL else {
             return
         }
         
@@ -422,11 +459,20 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
             })
         }
         
+        let duration: TimeInterval
+        if let recordDuration = recordDuration {
+            duration = recordDuration
+        } else {
+            let asset = AVURLAsset(url: temporaryFileURL)
+            duration = asset.duration.seconds
+            recordDuration = duration
+        }
+        
+        
         var details = VoiceMessageToolbarViewDetails()
         details.state = (audioRecorder?.isRecording ?? false ? (isInLockedMode ? .lockedModeRecord : .record) : (isInLockedMode ? .lockedModePlayback : .idle))
         // Show the current time if the player is paused, show duration when at 0.
         let currentTime = audioPlayer.currentTime
-        let duration = recordDuration ?? 0
         let displayTime = currentTime > 0 ? currentTime : duration
         details.elapsedTime =  VoiceMessageController.elapsedTimeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
         details.progress = duration > 0 ? currentTime / duration : 0
@@ -444,3 +490,4 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         audioSamples = audioSamples + [Float](repeating: 0.0, count: delta)
     }
 }
+
