@@ -54,12 +54,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         return dateFormatter
     }()
     
-    private static let fileNameDateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = Constants.fileNameDateFormat
-        return dateFormatter
-    }()
-    
     private var temporaryFileURL: URL? {
         guard let roomId = roomId else {
             return nil
@@ -102,18 +96,6 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         updateTheme()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
-        
-        updateUI()
-    }
-    
-    func checkForRecording() {
-        guard let temporaryFileURL = temporaryFileURL else {
-             return
-        }
-        if FileManager.default.fileExists(atPath: temporaryFileURL.path) {
-            isInLockedMode = true
-            loadDraftRecording()
-        }
         
         updateUI()
     }
@@ -254,6 +236,18 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     
     // MARK: - Private
     
+    private func checkForRecording() {
+        guard let temporaryFileURL = temporaryFileURL else {
+             return
+        }
+        if FileManager.default.fileExists(atPath: temporaryFileURL.path) {
+            isInLockedMode = true
+            loadDraftRecording()
+        }
+        
+        updateUI()
+    }
+    
     private func finishRecording() {
         guard let temporaryFileURL = temporaryFileURL else {
              return
@@ -274,11 +268,12 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         updateUI()
     }
     
-    func loadDraftRecording() {
-        guard let temporaryFileURL = temporaryFileURL else {
+    private func loadDraftRecording() {
+        guard let temporaryFileURL = temporaryFileURL,
+              let roomId = roomId else {
              return
         }
-        audioPlayer = mediaServiceProvider.audioPlayerForIdentifier(UUID().uuidString)
+        audioPlayer = mediaServiceProvider.audioPlayerForIdentifier(roomId)
         audioPlayer?.registerDelegate(self)
         audioPlayer?.loadContentFromURL(temporaryFileURL)
 
@@ -490,4 +485,3 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         audioSamples = audioSamples + [Float](repeating: 0.0, count: delta)
     }
 }
-
