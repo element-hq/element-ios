@@ -36,7 +36,7 @@ class TemplateRoomListService: TemplateRoomListServiceProtocol {
         self.session = session
         
         let unencryptedRooms = session.rooms
-            .filter(\.summary.isEncrypted)
+            .filter({ !$0.summary.isEncrypted })
             .map(TemplateRoomListRoom.init(mxRoom:))
         self.roomsSubject = CurrentValueSubject(unencryptedRooms)
     }

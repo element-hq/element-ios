@@ -36,17 +36,17 @@ enum MockTemplateRoomChatScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: AnyView {
+    var screenView: ([Any], AnyView) {
         let service: MockTemplateRoomChatService
         switch self {
         case .noMessages:
             service = MockTemplateRoomChatService(messages: [])
             service.simulateUpdate(initializationStatus: .initialized)
         case .messages:
-             service = MockTemplateRoomChatService()
-             service.simulateUpdate(initializationStatus: .initialized)
+            service = MockTemplateRoomChatService()
+            service.simulateUpdate(initializationStatus: .initialized)
         case .initializingRoom:
-             service = MockTemplateRoomChatService()
+            service = MockTemplateRoomChatService()
         case .failedToInitializeRoom:
             service = MockTemplateRoomChatService()
             service.simulateUpdate(initializationStatus: .failedToInitialize)
@@ -54,8 +54,11 @@ enum MockTemplateRoomChatScreenState: MockScreenState, CaseIterable {
         let viewModel = TemplateRoomChatViewModel(templateRoomChatService: service)
         
         // can simulate service and viewModel actions here if needs be.
-    
-        return AnyView(TemplateRoomChat(viewModel: viewModel.context)
-                .addDependency(MockAvatarService.example))
+        
+        return (
+            [service, viewModel],
+            AnyView(TemplateRoomChat(viewModel: viewModel.context)
+                        .addDependency(MockAvatarService.example))
+        )
     }
 }

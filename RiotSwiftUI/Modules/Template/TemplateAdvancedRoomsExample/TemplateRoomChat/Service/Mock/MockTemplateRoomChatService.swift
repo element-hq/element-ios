@@ -46,7 +46,8 @@ class MockTemplateRoomChatService: TemplateRoomChatServiceProtocol {
     func simulateUpdate(initializationStatus: TemplateRoomChatRoomInitializationStatus) {
         self.roomInitializationStatus.value = initializationStatus
     }
+    
     func simulateUpdate(messages: [TemplateRoomChatMessage]) {
-        self.chatMessagesSubject.send(messages)
+        self.chatMessagesSubject.value = messages
     }
 }

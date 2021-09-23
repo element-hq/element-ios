@@ -34,7 +34,7 @@ enum MockTemplateRoomListScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: AnyView {
+    var screenView: ([Any], AnyView) {
         let service: MockTemplateRoomListService
         switch self {
         case .noRooms:
@@ -46,7 +46,10 @@ enum MockTemplateRoomListScreenState: MockScreenState, CaseIterable {
         
         // can simulate service and viewModel actions here if needs be.
         
-        return AnyView(TemplateRoomList(viewModel: viewModel.context)
+        return (
+            [service, viewModel],
+            AnyView(TemplateRoomList(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
+        )
     }
 }

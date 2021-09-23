@@ -15,6 +15,7 @@
 //
 
 import SwiftUI
+import Combine
 
 @available(iOS 14.0, *)
 struct TemplateRoomChat: View {
@@ -88,15 +89,15 @@ struct TemplateRoomChat: View {
                             .id(bubble.id)
                     }
                 }
-                .onAppear {
-                    // Start at the bottom
-                    reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
+                .onAppear{
+                    guard let lastBubbleId = viewModel.viewState.bubbles.last?.id
+                    else { return }
+                    reader.scrollTo(lastBubbleId, anchor: .bottom)
                 }
                 .onChange(of: itemCount) { _ in
-                    // When new items are added animate to the new items
-                    withAnimation {
-                        reader.scrollTo(viewModel.viewState.bubbles.last?.id, anchor: .bottom)
-                    }
+                    guard let lastBubbleId = viewModel.viewState.bubbles.last?.id
+                    else { return }
+                    reader.scrollTo(lastBubbleId, anchor: .bottom)
                 }
                 // When the scroll content takes less than the screen space align at the top
                 .frame(maxHeight: .infinity, alignment: .top)
@@ -113,7 +114,6 @@ struct TemplateRoomChat: View {
         }
     }
     
-    
     private var itemCount: Int {
         return viewModel.viewState
             .bubbles
@@ -127,7 +127,8 @@ struct TemplateRoomChat: View {
 
 @available(iOS 14.0, *)
 struct TemplateRoomChat_Previews: PreviewProvider {
+    static let stateRenderer = MockTemplateRoomChatScreenState.stateRenderer
     static var previews: some View {
-        MockTemplateRoomChatScreenState.screenGroup(addNavigation: true)
+        stateRenderer.screenGroup(addNavigation: true)
     }
 }

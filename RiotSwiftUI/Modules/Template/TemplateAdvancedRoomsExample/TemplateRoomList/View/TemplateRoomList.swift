@@ -68,9 +68,9 @@ struct TemplateRoomList: View {
 
 @available(iOS 14.0, *)
 struct TemplateRoomList_Previews: PreviewProvider {
+    
+    static let stateRenderer = MockTemplateRoomListScreenState.stateRenderer
     static var previews: some View {
-        MockTemplateRoomListScreenState
-            .screenGroup(addNavigation: true)
-        
+        stateRenderer.screenGroup(addNavigation: true)
     }
 }

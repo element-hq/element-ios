@@ -43,8 +43,8 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     init(templateRoomChatService: TemplateRoomChatServiceProtocol) {
         self.templateRoomChatService = templateRoomChatService
         super.init(initialViewState: Self.defaultState(templateRoomChatService: templateRoomChatService))
-        setupRoomInitializationObserving()
         setupMessageObserving()
+        setupRoomInitializationObserving()
     }
     
     private func setupRoomInitializationObserving() {
@@ -52,7 +52,7 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
             .roomInitializationStatus
             .map(TemplateRoomChatStateAction.updateRoomInitializationStatus)
             .eraseToAnyPublisher()
-        
+
         dispatch(actionPublisher: initializationPublisher)
     }
         
@@ -66,9 +66,8 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
     }
     
     private static func defaultState(templateRoomChatService: TemplateRoomChatServiceProtocol) -> TemplateRoomChatViewState {
-        let bubbles = makeBubbles(messages: templateRoomChatService.chatMessagesSubject.value)
         let bindings = TemplateRoomChatViewModelBindings(messageInput: "")
-        return TemplateRoomChatViewState(roomInitializationStatus: templateRoomChatService.roomInitializationStatus.value, roomName: templateRoomChatService.roomName, bubbles: bubbles, bindings: bindings)
+        return TemplateRoomChatViewState(roomInitializationStatus: .notInitialized, roomName: templateRoomChatService.roomName, bubbles: [], bindings: bindings)
     }
     
     private static func makeBubbles(messages: [TemplateRoomChatMessage]) -> [TemplateRoomChatBubble] {
@@ -134,7 +133,6 @@ class TemplateRoomChatViewModel: TemplateRoomChatViewModelType, TemplateRoomChat
         case .updateBubbles(let bubbles):
             state.bubbles = bubbles
         }
-        UILog.debug("[TemplateRoomChatViewModel] reducer with action \(action) produced state: \(state)")
     }
     
     // MARK: - Private

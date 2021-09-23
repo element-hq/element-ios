@@ -26,8 +26,10 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     
     private let room: MXRoom
     private let eventFormatter: EventFormatter
-    private var roomState: MXRoomState?
+    private var timeline: MXEventTimeline?
+    private var eventBatch: [MXEvent]
     private var roomListenerReference: Any?
+    
     
     // MARK: Public
     private(set) var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never>
@@ -43,7 +45,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
         self.eventFormatter = EventFormatter(matrixSession: room.mxSession)
         self.chatMessagesSubject = CurrentValueSubject([])
         self.roomInitializationStatus = CurrentValueSubject(.notInitialized)
-        
+        self.eventBatch = [MXEvent]()
         initializeRoom()
     }
     
@@ -61,35 +63,31 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     // MARK: Private
     
     private func initializeRoom(){
-        room.state { [weak self] roomState in
-            guard let self = self else { return }
-            if let roomState = roomState {
-                self.roomState = roomState
-                self.roomInitializationStatus.value = .initialized
-                self.loadInitialMessages()
-                self.startListeningToRoomEvents()
-            } else {
-                self.roomInitializationStatus.value = .failedToInitialize
-            }
-        }
-    }
-    
-    private func loadInitialMessages() {
-        let batch = room.enumeratorForStoredMessages.nextEventsBatch(200)
-        let messageBatch = self.mapChatMessages(from: batch ?? [])
-        self.chatMessagesSubject.value = messageBatch
-    }
-    
-    private func startListeningToRoomEvents(){
-        roomListenerReference = room.listen { [weak self] event, directionId, roomState in
-            let direction = MXTimelineDirection(identifer: directionId)
+        room.liveTimeline { [weak self] timeline in
             guard let self = self,
-                  let event = event else { return }
-            if let roomState = roomState {
-                self.roomState = roomState
+                  let timeline = timeline
+            else {
+                return
             }
-            if direction == .forwards &&  event.type == kMXEventTypeStringRoomMessage {
-                self.appendNewMessage(event: event)
+            self.timeline = timeline
+            timeline.resetPagination()
+            self.roomListenerReference = timeline.listenToEvents([.roomMessage], { [weak self] event, direction, roomState in
+                guard let self = self else { return }
+                if direction == .backwards {
+                    self.eventBatch.append(event)
+                } else {
+                    self.chatMessagesSubject.value += self.mapChatMessages(from: [event])
+                }
+                
+            })
+            timeline.paginate(200, direction: .backwards, onlyFromStore: false) { result in
+                guard result.isSuccess else {
+                    self.roomInitializationStatus.value = .failedToInitialize
+                    return
+                }
+                let sortedBatch = self.eventBatch.sorted(by: { $0.originServerTs < $1.originServerTs})
+                self.chatMessagesSubject.value = self.mapChatMessages(from: sortedBatch)
+                self.roomInitializationStatus.value = .initialized
             }
         }
     }
@@ -119,16 +117,11 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
     }
     
     private func senderForMessage(event: MXEvent) -> TemplateRoomChatMember? {
-        guard let sender = event.sender, let roomState = roomState else {
+        guard let sender = event.sender, let roomState = timeline?.state else {
             return nil
         }
         let displayName = eventFormatter.senderDisplayName(for: event, with: roomState)
         let avatarUrl = eventFormatter.senderAvatarUrl(for: event, with: roomState)
         return TemplateRoomChatMember(id: sender, avatarUrl: avatarUrl, displayName: displayName)
     }
-    
-    private func appendNewMessage(event: MXEvent) {
-        chatMessagesSubject.value += mapChatMessages(from: [event])
-    }
-    
 }

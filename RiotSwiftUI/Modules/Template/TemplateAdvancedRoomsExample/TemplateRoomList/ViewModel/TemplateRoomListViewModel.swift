@@ -50,7 +50,7 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
         let roomsUpdatePublisher = templateRoomListService.roomsSubject
             .map(TemplateRoomListStateAction.updateRooms)
             .eraseToAnyPublisher()
-            dispatch(actionPublisher: roomsUpdatePublisher)
+        dispatch(actionPublisher: roomsUpdatePublisher)
     }
     
     // MARK: - Public
@@ -69,7 +69,6 @@ class TemplateRoomListViewModel: TemplateRoomListViewModelType, TemplateRoomList
         case .updateRooms(let rooms):
             state.rooms = rooms
         }
-        UILog.debug("[TemplateRoomListViewModel] reducer with action \(action) produced state: \(state)")
     }
     
     // MARK: - Private
