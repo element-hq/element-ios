@@ -130,8 +130,8 @@
             
         }
         
-        MXRoom *room = [roomCellData.mxSession roomWithRoomId:roomCellData.roomSummary.roomId];
-        [room.summary setRoomAvatarImageIn:self.roomAvatar];
+        MXRoomSummary *summary = [roomCellData.mxSession roomSummaryWithRoomId:roomCellData.roomSummary.roomId];
+        [summary setRoomAvatarImageIn:self.roomAvatar];
     }
 }
 

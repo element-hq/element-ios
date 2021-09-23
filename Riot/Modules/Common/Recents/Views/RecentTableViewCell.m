@@ -88,7 +88,6 @@
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
-        MXRoom *room = [roomCellData.mxSession roomWithRoomId:roomCellData.roomSummary.roomId];
         self.unsentImageView.hidden = roomCellData.roomSummary.sentStatus == MXRoomSummarySentStatusOk;
         self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
 
@@ -125,7 +124,8 @@
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
 
-        [room.summary setRoomAvatarImageIn:self.roomAvatar];
+        MXRoomSummary *summary = [roomCellData.mxSession roomSummaryWithRoomId:roomCellData.roomSummary.roomId];
+        [summary setRoomAvatarImageIn:self.roomAvatar];
     }
     else
     {
