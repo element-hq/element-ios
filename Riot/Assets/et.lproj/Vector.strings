@@ -1406,3 +1406,8 @@
 "settings_mentions_and_keywords" = "Mainimised ja märksõnad";
 "settings_default" = "Vaikimisi teavitused";
 "settings_notifications" = "TEAVITUSED";
+"settings_confirm_media_size_description" = "Kui see valik on kasutusel, siis palume sul kinnitada saadetavate piltide ja videote suurused.";
+"settings_show_url_previews_description" = "Eelvaateid saame kuvada vaid krüptimata jututubades.";
+"settings_show_url_previews" = "Näita sisus urlide eelvaateid";
+"settings_confirm_media_size" = "Enne saatmist kinnita meedia mõõdud";
+"settings_sending_media" = "SAADAN PILTE JA VIDEOSID";

@@ -1437,3 +1437,8 @@
 "settings_mentions_and_keywords" = "Menções e Palavrachaves";
 "settings_default" = "Notificações Default";
 "settings_notifications" = "NOTIFICAÇÕES";
+"settings_show_url_previews_description" = "Previsualizações vão somente ser mostradas em salas não-encriptadas.";
+"settings_show_url_previews" = "Mostrar previsualizações de URL emlinha";
+"settings_confirm_media_size_description" = "Quanto isto está ligado, você vai ser pedido para confirmar que tamanho imagens e vídeos vão ser enviados como.";
+"settings_confirm_media_size" = "Confirmar tamanho quando enviando";
+"settings_sending_media" = "ENVIANDO IMAGENS E VÍDEOS";
