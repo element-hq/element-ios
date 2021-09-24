@@ -1484,3 +1484,8 @@
 "settings_mentions_and_keywords" = "提及和关键词";
 "settings_default" = "默认通知";
 "settings_notifications" = "通知";
+"settings_show_url_previews_description" = "预览只会在未加密的房间里显示。";
+"settings_show_url_previews" = "显示内联 URL 预览";
+"settings_confirm_media_size_description" = "当打开此选项时，你会被要求确认将被发送的图片和视频的大小。";
+"settings_confirm_media_size" = "发送时确认大小";
+"settings_sending_media" = "发送图片和视频";
