@@ -28,4 +28,5 @@ protocol SideMenuCoordinatorType: Coordinator, Presentable {
     
     @discardableResult func addScreenEdgePanGesturesToPresent(to view: UIView) -> UIScreenEdgePanGestureRecognizer
     @discardableResult func addPanGestureToPresent(to view: UIView) -> UIPanGestureRecognizer
+    func select(spaceWithId spaceId: String)
 }
