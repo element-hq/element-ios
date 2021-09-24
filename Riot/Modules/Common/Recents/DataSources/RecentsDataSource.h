@@ -19,18 +19,19 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+@protocol MXKRecentCellDataStoring;
+@class DiscussionsCount;
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.
  */
-typedef enum : NSUInteger
+typedef NS_ENUM(NSInteger, RecentsDataSourceMode)
 {
     RecentsDataSourceModeHome,
     RecentsDataSourceModeFavourites,
     RecentsDataSourceModePeople,
     RecentsDataSourceModeRooms
-    
-} RecentsDataSourceMode;
+};
 
 /**
  List the different secure backup banners that could be displayed.
@@ -73,12 +74,12 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger lowPrioritySection;
 @property (nonatomic) NSInteger serverNoticeSection;
 
-@property (nonatomic, readonly) NSArray* invitesCellDataArray;
-@property (nonatomic, readonly) NSArray* favoriteCellDataArray;
-@property (nonatomic, readonly) NSArray* peopleCellDataArray;
-@property (nonatomic, readonly) NSArray* conversationCellDataArray;
-@property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
-@property (nonatomic, readonly) NSArray* serverNoticeCellDataArray;
+@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *invitesCellDataArray;
+@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *favoriteCellDataArray;
+@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *peopleCellDataArray;
+@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *conversationCellDataArray;
+@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *lowPriorityCellDataArray;
+@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *serverNoticeCellDataArray;
 
 @property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
 @property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;
@@ -160,43 +161,18 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)(void))moveSuccess failure:(void (^)(NSError *error))moveFailure;
 
 /**
- The current number of the favourite rooms with missed notifications.
+ Counts for favorited rooms.
  */
-@property (nonatomic, readonly) NSUInteger missedFavouriteDiscussionsCount;
+@property (nonatomic, readonly) DiscussionsCount *favoriteMissedDiscussionsCount;
 
 /**
- The current number of the favourite rooms with unread highlighted messages.
+ Counts for direct rooms.
  */
-@property (nonatomic, readonly) NSUInteger missedHighlightFavouriteDiscussionsCount;
+@property (nonatomic, readonly) DiscussionsCount *directMissedDiscussionsCount;
 
 /**
- The current number of the direct chats with missed notifications, including the invites.
+ Counts for group rooms.
  */
-@property (nonatomic, readonly) NSUInteger missedDirectDiscussionsCount;
-
-/**
- The current number of the direct chats with unread highlighted messages.
- */
-@property (nonatomic, readonly) NSUInteger missedHighlightDirectDiscussionsCount;
-
-/**
- The current number of the direct chats with unsent messages.
- */
-@property (nonatomic, readonly) NSUInteger unsentMessagesDirectDiscussionsCount;
-
-/**
- The current number of the group chats with missed notifications, including the invites.
- */
-@property (nonatomic, readonly) NSUInteger missedGroupDiscussionsCount;
-
-/**
- The current number of the group chats with unread highlighted messages.
- */
-@property (nonatomic, readonly) NSUInteger missedHighlightGroupDiscussionsCount;
-
-/**
- The current number of the group chats with unsent messages.
- */
-@property (nonatomic, readonly) NSUInteger unsentMessagesGroupDiscussionsCount;
+@property (nonatomic, readonly) DiscussionsCount *groupMissedDiscussionsCount;
 
 @end

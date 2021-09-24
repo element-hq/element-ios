@@ -30,15 +30,10 @@ class RecentsDataSourceState: NSObject {
     let lowPriorityCellDataArray: [MXKRecentCellDataStoring]
     let serverNoticeCellDataArray: [MXKRecentCellDataStoring]
     
-    // MARK: Notifications counts
-    let favouriteMissedDiscussionsCount: MissedDiscussionsCount
-    let directMissedDiscussionsCount: MissedDiscussionsCount
-    let groupMissedDiscussionsCount: MissedDiscussionsCount
-    
-    // MARK: Unsent counts
-    let unsentMessagesDirectDiscussionsCount: UInt
-    let unsentMessagesGroupDiscussionsCount: UInt
-    
+    // MARK: Discussion counts
+    let favouriteMissedDiscussionsCount: DiscussionsCount
+    let directMissedDiscussionsCount: DiscussionsCount
+    let groupMissedDiscussionsCount: DiscussionsCount
     
     // MARK: - Setup
     init(invitesCellDataArray: [MXKRecentCellDataStoring],
@@ -47,11 +42,9 @@ class RecentsDataSourceState: NSObject {
          conversationCellDataArray: [MXKRecentCellDataStoring],
          lowPriorityCellDataArray: [MXKRecentCellDataStoring],
          serverNoticeCellDataArray: [MXKRecentCellDataStoring],
-         favouriteMissedDiscussionsCount: MissedDiscussionsCount,
-         directMissedDiscussionsCount: MissedDiscussionsCount,
-         groupMissedDiscussionsCount: MissedDiscussionsCount,
-         unsentMessagesDirectDiscussionsCount: UInt,
-         unsentMessagesGroupDiscussionsCount: UInt) {
+         favouriteMissedDiscussionsCount: DiscussionsCount,
+         directMissedDiscussionsCount: DiscussionsCount,
+         groupMissedDiscussionsCount: DiscussionsCount) {
         self.invitesCellDataArray = invitesCellDataArray
         self.favoriteCellDataArray = favoriteCellDataArray
         self.peopleCellDataArray = peopleCellDataArray
@@ -61,19 +54,6 @@ class RecentsDataSourceState: NSObject {
         self.favouriteMissedDiscussionsCount = favouriteMissedDiscussionsCount
         self.directMissedDiscussionsCount = directMissedDiscussionsCount
         self.groupMissedDiscussionsCount = groupMissedDiscussionsCount
-        self.unsentMessagesDirectDiscussionsCount = unsentMessagesDirectDiscussionsCount
-        self.unsentMessagesGroupDiscussionsCount = unsentMessagesGroupDiscussionsCount
         super.init()
     }
-}
-
-
-/// Noticiations counts per section
-@objcMembers
-class MissedDiscussionsCount: NSObject {
-    /// Regular notifications
-    var count: UInt = 0
-    
-    /// Mentions like notications
-    var highlightCount: UInt = 0
 }
