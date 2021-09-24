@@ -178,7 +178,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         self.maxComponentCount = 20;
 
         // Indicate that the text message layout should be recomputed.
-        [self setNeedsUpdateContent];
+        [self invalidateTextLayout];
         
         // Load a url preview if a link was detected
         if (self.hasLink)
@@ -331,7 +331,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // Refresh only cells series header
         if (self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
         {
-            [self setNeedsUpdateContent];
+            [self invalidateTextLayout];
         }
     }
 }
@@ -667,7 +667,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         _containsLastMessage = containsLastMessage;
         
         // Indicate that the text message layout should be recomputed.
-        [self setNeedsUpdateContent];
+        [self invalidateTextLayout];
     }
 }
 
@@ -680,7 +680,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         _selectedEventId = selectedEventId;
         
         // Indicate that the text message layout should be recomputed.
-        [self setNeedsUpdateContent];
+        [self invalidateTextLayout];
     }
 }
 
@@ -1145,7 +1145,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         
         // Update the preview data, indicate that the text message layout needs refreshing and send a notification for refresh
         self.urlPreviewData = urlPreviewData;
-        [self setNeedsUpdateContent];
+        [self invalidateTextLayout];
         [self setNeedsUpdateAdditionalContentHeight];
         
         dispatch_async(dispatch_get_main_queue(), ^{
