@@ -38,3 +38,5 @@
 #import "SettingsViewController.h"
 #import "BugReportViewController.h"
 #import "BuildInfo.h"
+#import "RoomMemberDetailsViewController.h"
+#import "Tools.h"

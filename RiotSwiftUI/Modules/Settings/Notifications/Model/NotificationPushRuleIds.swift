@@ -16,9 +16,7 @@
 
 import Foundation
 
-/**
- The push rule ids used in notification settings and the static rule definitions.
- */
+/// The push rule ids used in notification settings and the static rule definitions.
 enum NotificationPushRuleId: String {
     case suppressBots = ".m.rule.suppress_notices"
     case inviteMe = ".m.rule.invite_for_me"

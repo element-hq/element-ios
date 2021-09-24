@@ -97,6 +97,22 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         }
     }
     
+    func voiceMessagePlaybackViewDidRequestSeek(to progress: CGFloat) {
+        guard let audioPlayer = audioPlayer else {
+            return
+        }
+        
+        if audioPlayer.url == nil,
+           let url = urlToLoad {
+            audioPlayer.loadContentFromURL(url, displayName: attachment?.originalFileName)
+        }
+        
+        audioPlayer.seekToTime(self.duration * Double(progress)) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateUI()
+        }
+    }
+    
     func voiceMessagePlaybackViewDidChangeWidth() {
         loadAttachmentData()
     }
@@ -125,8 +141,10 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
     }
     
     func audioPlayerDidFinishPlaying(_ audioPlayer: VoiceMessageAudioPlayer) {
-        audioPlayer.seekToTime(0.0)
-        state = .stopped
+        audioPlayer.seekToTime(0.0) { [weak self] _ in
+            guard let self = self else { return }
+            self.state = .stopped
+        }
     }
     
     // MARK: - Private
@@ -141,20 +159,13 @@ class VoiceMessagePlaybackController: VoiceMessageAudioPlayerDelegate, VoiceMess
         details.playbackEnabled = (state != .error)
         details.playing = (state == .playing)
         details.samples = samples
-        
-        switch state {
-        case .stopped:
-            details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: self.duration))
-            details.progress = 0.0
-        default:
-            if let audioPlayer = audioPlayer {
-                details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: audioPlayer.currentTime))
-                details.progress = (audioPlayer.duration > 0.0 ? audioPlayer.currentTime / audioPlayer.duration : 0.0)
-            }
-        }
-        
+        // Show the current time if the player is paused, show duration when at 0.
+        let duration = self.duration
+        let currentTime = audioPlayer?.currentTime ?? 0
+        let displayTime = currentTime > 0 ? currentTime : duration
+        details.currentTime = VoiceMessagePlaybackController.timeFormatter.string(from: Date(timeIntervalSinceReferenceDate: displayTime))
+        details.progress = duration > 0 ? currentTime / duration : 0
         details.loading = self.loading
-        
         playbackView.configureWithDetails(details)
     }
         

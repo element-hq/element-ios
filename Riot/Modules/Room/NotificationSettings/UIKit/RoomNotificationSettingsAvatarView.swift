@@ -19,26 +19,18 @@ import Reusable
 
 class RoomNotificationSettingsAvatarView: UIView {
     
-    @IBOutlet weak var avatarView: MXKImageView!
+    @IBOutlet weak var avatarView: RoomAvatarView!
     @IBOutlet weak var nameLabel: UILabel!
     
     func configure(viewData: AvatarViewDataProtocol) {
-        let avatarImage = AvatarGenerator.generateAvatar(forMatrixItem: viewData.matrixItemId, withDisplayName: viewData.displayName)
+        avatarView.fill(with: viewData)
         
-        if let avatarUrl = viewData.avatarUrl {
-            avatarView.enableInMemoryCache = true
-
-            avatarView.setImageURI(avatarUrl,
-                                        withType: nil,
-                                        andImageOrientation: .up,
-                                        toFitViewSize: avatarView.frame.size,
-                                        with: MXThumbnailingMethodCrop,
-                                        previewImage: avatarImage,
-                                        mediaManager: viewData.mediaManager)
-        } else {
-            avatarView.image = avatarImage
+        switch viewData.fallbackImage {
+        case .matrixItem(_, let matrixItemDisplayName):
+            nameLabel.text = matrixItemDisplayName
+        default:
+            nameLabel.text = nil
         }
-        nameLabel.text = viewData.displayName
     }
 }
 

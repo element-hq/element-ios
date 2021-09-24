@@ -16,9 +16,8 @@
 
 import SwiftUI
 
-/**
- A single rounded rect chip to be rendered within `Chips` collection
- */
+
+/// A single rounded rect chip to be rendered within `Chips` collection
 @available(iOS 14.0, *)
 struct Chip: View {
     

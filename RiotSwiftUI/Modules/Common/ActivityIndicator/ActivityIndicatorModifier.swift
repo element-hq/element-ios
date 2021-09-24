@@ -17,10 +17,8 @@
 import Foundation
 import SwiftUI
 
-/**
- A modifier for showing the activity indcator centered over a view.
- */
 @available(iOS 14.0, *)
+/// A modifier for showing the activity indicator centered over a view.
 struct ActivityIndicatorModifier: ViewModifier {
     var show: Bool
 

@@ -72,6 +72,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 @property (nonatomic, strong) RoomsDirectoryCoordinatorBridgePresenter *roomsDirectoryCoordinatorBridgePresenter;
 
+@property (nonatomic, strong) ExploreRoomCoordinatorBridgePresenter *exploreRoomsCoordinatorBridgePresenter;
+
 @property (nonatomic, strong) SpaceFeatureUnavailablePresenter *spaceFeatureUnavailablePresenter;
 
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
@@ -431,7 +433,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             // Scroll table view to make the selected row appear at second position
             NSInteger topCellIndexPathRow = currentSelectedCellIndexPath.row ? currentSelectedCellIndexPath.row - 1: currentSelectedCellIndexPath.row;
             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:topCellIndexPathRow inSection:currentSelectedCellIndexPath.section];
-            [self.recentsTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+            if ([self.recentsTableView vc_hasIndexPath:indexPath])
+            {
+                [self.recentsTableView scrollToRowAtIndexPath:indexPath
+                                             atScrollPosition:UITableViewScrollPositionTop
+                                                     animated:NO];
+            }
         }
     }
     else
@@ -751,7 +758,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             }
             
             // Look for the lowest section index visible in the bottom sticky headers.
-            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.mxk_adjustedContentInset.bottom;
+            CGFloat maxVisiblePosY = self.recentsTableView.contentOffset.y + self.recentsTableView.frame.size.height - self.recentsTableView.adjustedContentInset.bottom;
             UIView *lastDisplayedSectionHeader = displayedSectionHeaders.lastObject;
             
             for (UIView *header in _stickyHeadersBottomContainer.subviews)
@@ -1550,7 +1557,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         if (!self.recentsSearchBar.isHidden)
         {
-            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.mxk_adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
+            if (!self.recentsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.adjustedContentInset.top > self.recentsSearchBar.frame.size.height))
             {
                 // Hide the search bar
                 [self hideSearchBar:YES];
@@ -1945,7 +1952,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         return;
     }
     
-    if (RiotSettings.shared.roomsAllowToJoinPublicRooms)
+    if (self.dataSource.currentSpace)
+    {
+        self.exploreRoomsCoordinatorBridgePresenter = [[ExploreRoomCoordinatorBridgePresenter alloc] initWithSession:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.exploreRoomsCoordinatorBridgePresenter.delegate = self;
+        [self.exploreRoomsCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else if (RiotSettings.shared.roomsAllowToJoinPublicRooms)
     {
         self.roomsDirectoryCoordinatorBridgePresenter = [[RoomsDirectoryCoordinatorBridgePresenter alloc] initWithSession:self.mainSession dataSource:[self.recentsDataSource.publicRoomsDirectoryDataSource copy]];
         self.roomsDirectoryCoordinatorBridgePresenter.delegate = self;
@@ -1999,7 +2012,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)scrollToTop:(BOOL)animated
 {
-    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.mxk_adjustedContentInset.left, -self.recentsTableView.mxk_adjustedContentInset.top) animated:animated];
+    [self.recentsTableView setContentOffset:CGPointMake(-self.recentsTableView.adjustedContentInset.left, -self.recentsTableView.adjustedContentInset.top) animated:animated];
 }
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
@@ -2057,6 +2070,18 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
     [self dispayRoomWithRoomId:roomId inMatrixSession:matrixSession];
+}
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
+{
+    RoomPreviewData *previewData = [[RoomPreviewData alloc] initWithSpaceChildInfo:childInfo andSession:self.mainSession];
+    [self startActivityIndicator];
+    MXWeakify(self);
+    [previewData peekInRoom:^(BOOL succeeded) {
+        MXStrongifyAndReturnIfNil(self);
+        [self stopActivityIndicator];
+        [[AppDelegate theDelegate].masterTabBarController showRoomPreview:previewData];
+    }];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -2263,6 +2288,16 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             }
         }];
     }
+}
+
+#pragma mark - ExploreRoomCoordinatorBridgePresenterDelegate
+
+- (void)exploreRoomCoordinatorBridgePresenterDelegateDidComplete:(ExploreRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter {
+    MXWeakify(self);
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        self.exploreRoomsCoordinatorBridgePresenter = nil;
+    }];
 }
 
 #pragma mark - RoomNotificationSettingsCoordinatorBridgePresenterDelegate

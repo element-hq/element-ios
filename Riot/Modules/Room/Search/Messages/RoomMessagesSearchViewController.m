@@ -117,7 +117,7 @@
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self.searchTableView setContentOffset:CGPointMake(-self.searchTableView.mxk_adjustedContentInset.left, -self.searchTableView.mxk_adjustedContentInset.top) animated:YES];
+        [self.searchTableView setContentOffset:CGPointMake(-self.searchTableView.adjustedContentInset.left, -self.searchTableView.adjustedContentInset.top) animated:YES];
         
     }];
 }

@@ -1,7 +1,7 @@
 source 'https://cdn.cocoapods.org/'
 
 # Uncomment this line to define a global platform for your project
-platform :ios, '11.0'
+platform :ios, '12.1'
 
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
@@ -13,7 +13,7 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.16.1'
+$matrixKitVersion = '= 0.16.2'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
 
@@ -72,7 +72,7 @@ abstract_target 'RiotPods' do
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '~> 4.4.LTS'
+    pod 'ffmpeg-kit-ios-audio', '~> 4.4'
 
     pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
 

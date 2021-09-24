@@ -150,7 +150,7 @@
 "contacts_address_book_matrix_users_toggle" = "Csak Matrix felhasználók";
 "contacts_address_book_no_contact" = "Nincsenek helyi ismerősök";
 "contacts_address_book_permission_required" = "Jogosultság szükséges a helyi névjegyzék eléréséhez";
-"contacts_address_book_permission_denied" = "Nem engedted meg, hogy az Element hozzáférjen a helyi névjegyzékhez";
+"contacts_address_book_permission_denied" = "Nem engedted meg, hogy az %@ hozzáférjen a helyi névjegyzékhez";
 "contacts_user_directory_section" = "FELHASZNÁLÓI KÖNYVTÁR";
 "contacts_user_directory_offline_section" = "FELHASZNÁLÓI KÖNYVTÁR (kapcsolat nélküli)";
 // Chat participants
@@ -312,7 +312,7 @@
 "settings_pin_rooms_with_missed_notif" = "Szobák kitűzése elszalasztott értesítésekkel";
 "settings_pin_rooms_with_unread" = "Szobák kitűzése olvasatlan üzenetekkel";
 "settings_enable_callkit" = "Beépített hívás";
-"settings_callkit_info" = "Hívások fogadása a zárolt képernyőn. Element hívások megjelenítése a rendszer hívás naplójában. Ha az iCloud engedélyezett akkor a hívásnapló az Apple-el megosztásra kerül.";
+"settings_callkit_info" = "Hívások fogadása a zárolt képernyőn. %@ hívások megjelenítése a rendszer hívás naplójában. Ha az iCloud engedélyezett akkor a hívásnapló az Apple-el megosztásra kerül.";
 "settings_ui_language" = "Nyelv";
 "settings_ui_theme" = "Téma";
 "settings_ui_theme_auto" = "Autó";
@@ -490,7 +490,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Szeretnél segíteni személytelen összeomlás és felhasználási adatok küldésével a(z) %@ fejlesztésében?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element most már támogatja a végponttól végpontig titkosítást de újra be kell jelentkezned.\n\nMegteheted most vagy később az alkalmazás beállításainál.";
+"e2e_enabling_on_app_update" = "%@ most már támogatja a végponttól végpontig titkosítást de újra be kell jelentkezned.\n\nMegteheted most vagy később az alkalmazás beállításainál.";
 "e2e_need_log_in_again" = "Vissza kell jelentkezned, hogy a munkamenetedhez a végponttól végpontig titkosítási kulcsokat létrehozzuk és a nyilvános kulcsokat elküldjük a Matrix szerverednek.\nEz egy egyszeri alkalom; elnézést a kellemetlenségért.";
 // Bug report
 "bug_report_title" = "Hiba bejelentés";
@@ -546,7 +546,7 @@
 "deactivate_account_password_alert_message" = "A folytatáshoz add meg a jelszavadat";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Kérés elküldve";
-"rerequest_keys_alert_message" = "Kérlek indítsd el a Elementet egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek a munkamenetnek.";
+"rerequest_keys_alert_message" = "Kérlek indítsd el a %@et egy másik eszközödön amelyik vissza tudja fejteni az üzenetet, hogy el tudja küldeni a kulcsokat ennek a munkamenetnek.";
 "room_recents_server_notice_section" = "RENDSZER FIGYELMEZTETÉSEK";
 "room_resource_limit_exceeded_message_contact_1" = " Kérlek ";
 "room_resource_limit_exceeded_message_contact_2_link" = "vedd fel a kapcsolatot a szolgáltatás adminisztrátorával";
@@ -1036,7 +1036,7 @@
 "device_verification_self_verify_start_information" = "Az új munkamenet ellenőrzéséhez használd ezt, amivel hozzáférést adsz a titkosított üzenetekhez.";
 "device_verification_self_verify_start_waiting" = "Várakozik…";
 "device_verification_self_verify_wait_title" = "Biztonság beállítása";
-"device_verification_self_verify_wait_information" = "Ennek a munkamenet ellenőrzéséhez használd valamelyik másik munkamenetedet, amivel hozzáférést adsz a titkosított üzenetekhez.\n\nHasználd a legfrissebb Elementet valamelyik eszközödön:";
+"device_verification_self_verify_wait_information" = "Ennek a munkamenet ellenőrzéséhez használd valamelyik másik munkamenetedet, amivel hozzáférést adsz a titkosított üzenetekhez.\n\nHasználd a legfrissebb %@et valamelyik eszközödön:";
 "device_verification_self_verify_wait_waiting" = "Várakozik…";
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "Majdnem kész! Várakozás a megerősítésre…";
@@ -1047,11 +1047,6 @@
 "key_verification_scan_confirmation_scanned_user_information" = "%@ is ugyanazt a pajzsot mutatja?";
 "key_verification_scan_confirmation_scanned_device_information" = "A másik eszköz is ugyanazt a pajzsot mutatja?";
 "room_participants_action_security_status_complete_security" = "Biztonsági beállítás befejezése";
-// MARK: Clients
-"client_desktop_name" = "Asztali Element";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "security_settings_crosssigning_info_not_bootstrapped" = "Az eszközök közötti hitelesítés nincs még beállítva.";
 "security_settings_crosssigning_info_exists" = "A fiókodban az eszközök közötti aláírás be van állítva, de ebben a munkamenetben még nem ellenőrizted. Végezd el a munkamenet biztonsági beállításait.";
 "security_settings_crosssigning_info_trusted" = "Eszközök közötti hitelesítés engedélyezve van. Megbízhatsz más felhasználókban és a munkameneteidben az aláírást felhasználva de ebből a munkamenetből nem tudsz aláírni mert az eszközök közötti aláíráshoz hiányzik a privát kulcs. Fejezd be a munkamenet biztonsági beállításait.";
@@ -1061,9 +1056,9 @@
 "security_settings_crosssigning_complete_security" = "Biztonsági beállítás befejezése";
 "security_settings_complete_security_alert_title" = "Biztonsági beállítás befejezése";
 "security_settings_complete_security_alert_message" = "Először be kell fejezned ennek a munkamenetnek a biztonsági beállítását.";
-"security_settings_coming_soon" = "Bocsánat. Element iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. Element iOS használni fogja.";
+"security_settings_coming_soon" = "Bocsánat. %@ iOS-n ez a művelet egyenlőre nem érhető el. Kérlek használj másik Matrix klienst a beállításához. %@ iOS használni fogja.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Belépés ellenőrzése";
-"device_verification_self_verify_wait_additional_information" = "Ez Elementtel vagy más eszközök közötti hitelesítést támogató Matrix klienssel működik.";
+"device_verification_self_verify_wait_additional_information" = "Ez %@tel vagy más eszközök közötti hitelesítést támogató Matrix klienssel működik.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Munkamenet hitelesítése";
 "key_verification_new_session_title" = "Új munkamenet ellenőrzése";
@@ -1165,7 +1160,7 @@
 "secrets_setup_recovery_key_information" = "A Biztonsági Kulcsot tárold valahol biztonságos helyen. Felhasználható a titkosított üzenetek és adatok hozzáféréshez.";
 "secrets_setup_recovery_key_storage_alert_message" = "✓Nyomtasd ki és tárold biztonságos helyen\n✓Mentsd egy USB kulcsra vagy biztonsági mentésbe\n✓Másold a saját felhő tárhelyedre";
 "secrets_setup_recovery_passphrase_information" = "Add meg a biztonsági jelmondatot amit csak te tudsz és a titkok biztosításához használod a szervereden.";
-"major_update_title" = "Riot mostantól Element";
+"major_update_title" = "Riot mostantól %@";
 "major_update_learn_more_action" = "Tudj meg többet";
 "major_update_done_action" = "Értem";
 "store_promotional_text" = "Magánéletet tiszteletben tartó csevegő és együttműködést segítő alkalmazás egy nyílt hálózaton. Elosztott rendszer ami visszaadja neked az irányítást. Nincs adathalászat, nincsenek hátsó bejáratok és hozzáférések harmadik fél részére.";
@@ -1187,7 +1182,8 @@
 "pin_protection_settings_section_footer" = "A PIN újbóli beállításához újra be kell lépjél és létre kell hozni egy újat.";
 "pin_protection_settings_enabled_forced" = "PIN engedélyezve";
 "pin_protection_settings_enable_pin" = "PIN engedélyezése";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "biometrics_mode_touch_id" = "Érintéses azonosítás";
 "biometrics_mode_face_id" = "Arc felismerés";
 "biometrics_settings_enable_x" = "%@ engedélyezése";
@@ -1442,14 +1438,14 @@
 "voice_message_lock_screen_placeholder" = "Hang üzenet";
 "event_formatter_call_has_ended_with_time" = "Hívás vége • %@";
 "version_check_modal_action_title_deprecated" = "Tudd meg hogyan";
-"version_check_modal_subtitle_deprecated" = "Azon dolgozunk, hogy az Element gyorsabb és letisztultabb legyen. Sajnos a jelenlegi iOS verzió nem kompatibilis ezekkel a javításokkal és a továbbiakban nem támogatott.\nAhhoz, hogy az Element nyújtotta előnyöket továbbra is élvezhesse, javasoljuk, hogy frissítse az operációs rendszerét.";
+"version_check_modal_subtitle_deprecated" = "Azon dolgozunk, hogy az %@ gyorsabb és letisztultabb legyen. Sajnos a jelenlegi iOS verzió nem kompatibilis ezekkel a javításokkal és a továbbiakban nem támogatott.\nAhhoz, hogy az %@ nyújtotta előnyöket továbbra is élvezhesse, javasoljuk, hogy frissítse az operációs rendszerét.";
 "version_check_modal_title_deprecated" = "Már nem támogatjuk az iOS %@ verziót";
 "version_check_modal_action_title_supported" = "Értem";
-"version_check_modal_subtitle_supported" = "Azon dolgozunk, hogy az Element gyorsabb és letisztultabb legyen. Sajnos a jelenlegi iOS verzió nem kompatibilis ezekkel a javításokkal és a továbbiakban nem támogatott.\nAhhoz, hogy az Element nyújtotta előnyöket továbbra is élvezhesse, javasoljuk, hogy frissítse az operációs rendszerét.";
+"version_check_modal_subtitle_supported" = "Azon dolgozunk, hogy az %@ gyorsabb és letisztultabb legyen. Sajnos a jelenlegi iOS verzió nem kompatibilis ezekkel a javításokkal és a továbbiakban nem támogatott.\nAhhoz, hogy az %@ nyújtotta előnyöket továbbra is élvezhesse, javasoljuk, hogy frissítse az operációs rendszerét.";
 "version_check_modal_title_supported" = "Az iOS %@ támogatását befejezzük";
-"version_check_banner_subtitle_deprecated" = "Befejezzük az iOS %@ támogatását az Elementben. Ahhoz, hogy továbbra is élvezhesse az Element előnyeit, javasoljuk, hogy frissítse az iOS verzióját.";
+"version_check_banner_subtitle_deprecated" = "Befejezzük az iOS %@ támogatását az %@ben. Ahhoz, hogy továbbra is élvezhesse az %@ előnyeit, javasoljuk, hogy frissítse az iOS verzióját.";
 "version_check_banner_title_deprecated" = "Már nem támogatjuk az iOS %@ verziót";
-"version_check_banner_subtitle_supported" = "Hamarosan befejezzük az iOS %@ támogatását az Elementben. Ahhoz, hogy továbbra is élvezhesse az Element előnyeit, javasoljuk, hogy frissítse az iOS verzióját.";
+"version_check_banner_subtitle_supported" = "Hamarosan befejezzük az iOS %@ támogatását az %@ben. Ahhoz, hogy továbbra is élvezhesse az %@ előnyeit, javasoljuk, hogy frissítse az iOS verzióját.";
 
 // Mark: - Version check
 
@@ -1473,3 +1469,8 @@
 "settings_mentions_and_keywords" = "Megemlítések és kulcsszavak";
 "settings_default" = "Alapértelmezett értesítések";
 "settings_notifications" = "ÉRTESÍTÉSEK";
+"settings_show_url_previews_description" = "Csak titkosítatlan szobákban jelenik meg az előnézet.";
+"settings_show_url_previews" = "URL előnézetek megjelenítése";
+"settings_confirm_media_size_description" = "Ha ez be van kapcsolva, akkor küldésnél ki tudod választani a kép és videó méretét.";
+"settings_confirm_media_size" = "Méret megerősítése küldésnél";
+"settings_sending_media" = "KÉP ÉS VIDEÓ KÜLDÉSE";

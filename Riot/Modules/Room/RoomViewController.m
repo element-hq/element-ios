@@ -137,7 +137,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate>
 {
     
     // The preview header
@@ -244,8 +244,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
+@property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
 
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
+@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
 @end
 
@@ -264,6 +266,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
+}
+
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    return [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
 }
 
 #pragma mark -
@@ -570,7 +578,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
-        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.mxk_adjustedContentInset.left, -self.bubblesTableView.mxk_adjustedContentInset.top) animated:YES];
+        [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.adjustedContentInset.left, -self.bubblesTableView.adjustedContentInset.top) animated:YES];
     }];
     
     if ([self.roomDataSource.roomId isEqualToString:[LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush])
@@ -625,7 +633,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.updateRoomReadMarker = NO;
     isAppeared = NO;
     
-    [VoiceMessageMediaServiceProvider.sharedProvider stopAllServices];
+    [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -664,7 +672,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.keyboardHeight = MAX(self.keyboardHeight, 0);
     
     if (hasJitsiCall &&
-        ![[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+        !self.isRoomHavingAJitsiCall)
     {
         //  the room had a Jitsi call before, but not now
         hasJitsiCall = NO;
@@ -699,9 +707,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [[NSNotificationCenter defaultCenter] removeObserver:mxEventDidDecryptNotificationObserver];
         mxEventDidDecryptNotificationObserver = nil;
     }
-    
-    JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
-    if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+        
+    if (self.isRoomHavingAJitsiCall)
     {
         hasJitsiCall = YES;
         [self reloadBubblesTable:YES];
@@ -764,7 +771,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         CGRect frame = previewHeader.bottomBorderView.frame;
         self.previewHeaderContainerHeightConstraint.constant = frame.origin.y + frame.size.height;
         
-        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
+        self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
     }
     else
     {
@@ -1008,6 +1015,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self refreshRoomInputToolbar];
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
+    _voiceMessageController.roomId = dataSource.roomId;
 }
 
 - (void)onRoomDataSourceReady
@@ -1089,7 +1097,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [super leaveRoomOnEvent:event];
     
-    [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
+    if (self.delegate)
+    {
+        [self.delegate roomViewControllerDidLeaveRoom:self];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] restoreInitialDisplay:nil];
+    }
 }
 
 // Set the input toolbar according to the current display
@@ -1204,15 +1219,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             // TODO: /join command does not support via parameters yet
             [self.mainSession joinRoom:roomAlias viaServers:nil success:^(MXRoom *room) {
-                
-                // Show the room
-                [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession];
+                                
+                [self showRoomWithId:room.roomId];
                 
             } failure:^(NSError *error) {
                 
                 MXLogDebug(@"[RoomVC] Join roomAlias (%@) failed", roomAlias);
                 //Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                [self showError:error];
                 
             }];
         }
@@ -1411,12 +1425,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
-- (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
-{
-    missedDiscussionsBadgeLabel.hidden = !showMissedDiscussionsBadge;
-    missedDiscussionsDotView.hidden = !showMissedDiscussionsBadge;
-}
-
 - (void)setScrollToBottomHidden:(BOOL)scrollToBottomHidden
 {
     if (_scrollToBottomHidden != scrollToBottomHidden)
@@ -1438,6 +1446,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
         self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
     }];
+}
+
+- (void)setMissedDiscussionsBadgeHidden:(BOOL)missedDiscussionsBadgeHidden{
+    _missedDiscussionsBadgeHidden = missedDiscussionsBadgeHidden;
+    
+    missedDiscussionsBadgeLabel.hidden = missedDiscussionsBadgeHidden;
+    missedDiscussionsDotView.hidden = missedDiscussionsBadgeHidden;
 }
 
 #pragma mark - Internals
@@ -1602,8 +1617,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     //  video call button for Jitsi call
                     if (self.isCallActive)
                     {
-                        JitsiViewController *jitsiVC = [AppDelegate theDelegate].callPresenter.jitsiVC;
-                        if ([jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+                        if (self.isRoomHavingAJitsiCall)
                         {
                             //  show a disabled call button
                             UIBarButtonItem *item = [self videoCallBarButtonItem];
@@ -1999,7 +2013,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         } failure:^(NSError * _Nonnull error) {
             
             MXLogDebug(@"[RoomVC] Cannot display widget %@", widget);
-            [[AppDelegate theDelegate] showErrorAsAlert:error];
+            [self showError:error];
         }];
     }
     else
@@ -2096,6 +2110,126 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPreset1920x1080;
         [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
     }
+}
+
+- (void)showRoomWithId:(NSString*)roomId
+{
+    if (self.delegate)
+    {
+        [self.delegate roomViewController:self showRoomWithId:roomId];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.roomDataSource.mxSession];
+    }
+}
+
+- (void)leaveRoom
+{
+    [self startActivityIndicator];
+    
+    [self.roomDataSource.room leave:^{
+        
+        [self stopActivityIndicator];
+        
+        // We remove the current view controller.
+        if (self.delegate)
+        {
+            [self.delegate roomViewControllerDidLeaveRoom:self];
+        }
+        else
+        {
+            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
+        }
+        
+    } failure:^(NSError *error) {
+        
+        [self stopActivityIndicator];
+        MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
+        
+    }];
+}
+
+- (void)roomPreviewDidTapCancelAction
+{
+    // Decline this invitation = leave this page
+    if (self.delegate)
+    {
+        [self.delegate roomViewControllerPreviewDidTapCancel:self];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
+    }
+}
+
+- (void)startChatWithUserId:(NSString *)userId completion:(void (^)(void))completion
+{
+    if (self.delegate)
+    {
+        [self.delegate roomViewController:self startChatWithUserId:userId completion:completion];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] createDirectChatWithUserId:userId completion:completion];
+    }
+}
+
+- (void)showError:(NSError*)error
+{
+    [[AppDelegate theDelegate] showErrorAsAlert:error];
+}
+
+- (UIAlertController*)showAlertWithTitle:(NSString*)title message:(NSString*)message
+{
+    return [[AppDelegate theDelegate] showAlertWithTitle:title message:message];
+}
+
+- (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
+{
+    if (self.delegate)
+    {
+        return [self.delegate roomViewController:self handleUniversalLinkURL:universalLinkURL];
+    }
+    else
+    {
+        [self handleSpaceUniversalLinkWith:universalLinkURL];
+        return YES;
+    }
+}
+    
+- (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+{
+    if (self.delegate)
+    {
+        return [self.delegate roomViewController:self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+    }
+    else
+    {
+        return [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+    }
+}
+
+#pragma mark - Jitsi
+
+- (void)showJitsiCallWithWidget:(Widget*)widget
+{
+    [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:widget];
+}
+
+- (void)endActiveJitsiCall
+{
+    [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+}
+
+- (BOOL)isRoomHavingAJitsiCall
+{
+    return [self isRoomHavingAJitsiCallForWidgetId:self.roomDataSource.roomId];
+}
+
+- (BOOL)isRoomHavingAJitsiCallForWidgetId:(NSString*)widgetId
+{
+    return [[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:widgetId];
 }
 
 #pragma mark - Dialpad
@@ -2356,7 +2490,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                          animations:^{
             
-            self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.mxk_adjustedContentInset.top;
+            self.bubblesTableViewTopConstraint.constant = self.previewHeaderContainerHeightConstraint.constant - self.bubblesTableView.adjustedContentInset.top;
             
             previewHeader.roomAvatar.alpha = 1;
             
@@ -2645,7 +2779,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     if (predecessorRoomId)
                     {
                         // Show predecessor room
-                        [[AppDelegate theDelegate] showRoom:predecessorRoomId andEventId:nil withMatrixSession:self.mainSession];
+                        [self showRoomWithId:predecessorRoomId];
                     }
                     else
                     {
@@ -2721,7 +2855,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [roomDataSource acceptVerificationRequestForEventId:eventId success:^{
                 
             } failure:^(NSError *error) {
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                [self showError:error];
             }];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellKeyVerificationIncomingRequestDeclinePressed])
@@ -2733,7 +2867,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [roomDataSource declineVerificationRequestForEventId:eventId success:^{
                 
             } failure:^(NSError *error) {
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                [self showError:error];
             }];
         }
         else if ([actionIdentifier isEqualToString:kMXKRoomBubbleCellTapOnAttachmentView])
@@ -2863,7 +2997,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     Widget *jitsiWidget = [self->customizedRoomDataSource jitsiWidget];
                     if (jitsiWidget)
                     {
-                        [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
+                        [self showJitsiCallWithWidget:jitsiWidget];
                     }
                 }
                 else
@@ -2879,7 +3013,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.leaveAction])
         {
-            [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+            [self endActiveJitsiCall];
             [self reloadBubblesTable:YES];
         }
         else if ([actionIdentifier isEqualToString:RoomGroupCallStatusBubbleCell.declineAction])
@@ -3103,7 +3237,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                             [self stopActivityIndicator];
                             
                             //Alert user
-                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            [self showError:error];
                             
                         }];
                         
@@ -3190,7 +3324,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         } failure:^(NSError *error) {
                             
                             //Alert user
-                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            [self showError:error];
                             
                         }];
                         
@@ -3264,7 +3398,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         
                         MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
                         //Alert user
-                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        [self showError:error];
                         
                     }];
                 }
@@ -3415,7 +3549,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                             
                                             MXLogDebug(@"[RoomVC] Ignore user (%@) failed", selectedEvent.sender);
                                             //Alert user
-                                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                            [self showError:error];
                                             
                                         }];
                                     }
@@ -3441,7 +3575,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                 
                                 MXLogDebug(@"[RoomVC] Report event (%@) failed", selectedEvent.eventId);
                                 //Alert user
-                                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                                [self showError:error];
                                 
                             }];
                         }
@@ -3540,7 +3674,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             shouldDoAction = NO;
             
-            [[AppDelegate theDelegate] handleUniversalLinkURL:url];
+            [self handleUniversalLinkURL:url];
         }
         // Open a detail screen about the clicked user
         else if ([MXTools isMatrixUserIdentifier:absoluteURLString])
@@ -3579,7 +3713,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             // Open the room or preview it
             NSString *fragment = [NSString stringWithFormat:@"/room/%@", [MXTools encodeURIComponent:roomIdOrAlias]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
+            
+            [self handleUniversalLinkFragment:fragment fromURL:url];
         }
         // Preview the clicked group
         else if ([MXTools isMatrixGroupIdentifier:absoluteURLString])
@@ -3588,7 +3723,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             // Open the group or preview it
             NSString *fragment = [NSString stringWithFormat:@"/group/%@", [MXTools encodeURIComponent:absoluteURLString]];
-            [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:url];
+            
+            [self handleUniversalLinkFragment:fragment fromURL:url];
         }
         else if ([absoluteURLString hasPrefix:EventFormatterOnReRequestKeysLinkAction])
         {
@@ -3744,8 +3880,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showUnableToOpenLinkErrorAlert
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
-                                          message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+    [self showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
+                     message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
 }
 
 - (void)editEventContentWithId:(NSString*)eventId
@@ -3937,7 +4073,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (jitsiWidget)
     {
         //  If there is already a Jitsi call, join it
-        [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
+        [self showJitsiCallWithWidget:jitsiWidget];
     }
     else
     {
@@ -3964,7 +4100,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     MXStrongifyAndReturnIfNil(self);
                     [self stopActivityIndicator];
                     
-                    [[AppDelegate theDelegate].callPresenter displayJitsiCallWithWidget:jitsiWidget];
+                    [self showJitsiCallWithWidget:jitsiWidget];
                 }
                                                                failure:^(NSError *error)
                  {
@@ -4006,9 +4142,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [callInRoom hangup];
     }
-    else if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.roomId isEqualToString:self.roomDataSource.roomId])
+    else if (self.isRoomHavingAJitsiCall)
     {
-        [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+        [self endActiveJitsiCall];
         [self reloadBubblesTable:YES];
     }
     
@@ -4068,7 +4204,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController startChatWithMemberId:(NSString *)matrixId completion:(void (^)(void))completion
 {
-    [[AppDelegate theDelegate] createDirectChatWithUserId:matrixId completion:completion];
+    [self startChatWithUserId:matrixId completion:completion];
 }
 
 - (void)roomMemberDetailsViewController:(MXKRoomMemberDetailsViewController *)roomMemberDetailsViewController mention:(MXRoomMember*)member
@@ -4202,7 +4338,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
     if (!self.roomDataSource.isLive && ![self isRoomPreview])
     {
-        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
+        CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
         {
             [self goBackToLive];
@@ -4293,27 +4429,48 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else if (tappedView == previewHeader.rightButton)
     {
         // 'Join' button has been pressed
-        if (roomPreviewData)
+        if (!roomPreviewData)
         {
-            // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
-            NSString *eventId = roomPreviewData.eventId;
+            [self joinRoom:^(MXKRoomViewControllerJoinRoomResult result) {
+                switch (result)
+                {
+                    case MXKRoomViewControllerJoinRoomResultSuccess:
+                        [self refreshRoomTitle];
+                        break;
+                    case MXKRoomViewControllerJoinRoomResultFailureRoomEmpty:
+                        [self declineRoomInvitation];
+                        break;
+                    default:
+                        break;
+                }
+            }];
             
-            // We promote here join by room alias instead of room id when an alias is available.
-            NSString *roomIdOrAlias = roomPreviewData.roomId;
+            return;
+        }
+        
+        // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
+        NSString *eventId = roomPreviewData.eventId;
+        
+        // We promote here join by room alias instead of room id when an alias is available.
+        NSString *roomIdOrAlias = roomPreviewData.roomId;
+        
+        if (roomPreviewData.roomCanonicalAlias.length)
+        {
+            roomIdOrAlias = roomPreviewData.roomCanonicalAlias;
+        }
+        else if (roomPreviewData.roomAliases.count)
+        {
+            roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
+        }
+        
+        // Note in case of simple link to a room the signUrl param is nil
+        [self joinRoomWithRoomIdOrAlias:roomIdOrAlias viaServers:roomPreviewData.viaServers
+                             andSignUrl:roomPreviewData.emailInvitation.signUrl
+                             completion:^(MXKRoomViewControllerJoinRoomResult result) {
             
-            if (roomPreviewData.roomCanonicalAlias.length)
+            switch (result)
             {
-                roomIdOrAlias = roomPreviewData.roomCanonicalAlias;
-            }
-            else if (roomPreviewData.roomAliases.count)
-            {
-                roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
-            }
-            
-            // Note in case of simple link to a room the signUrl param is nil
-            [self joinRoomWithRoomIdOrAlias:roomIdOrAlias viaServers:roomPreviewData.viaServers  andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
-                
-                if (succeed)
+                case MXKRoomViewControllerJoinRoomResultSuccess:
                 {
                     // If an event was specified, replace the datasource by a non live datasource showing the event
                     if (eventId)
@@ -4342,49 +4499,47 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         [self refreshRoomTitle];
                         [self refreshRoomInputToolbar];
                     }
+                    break;
                 }
-                
-            }];
-        }
-        else
-        {
-            [self joinRoom:^(BOOL succeed) {
-                
-                if (succeed)
-                {
-                    [self refreshRoomTitle];
-                }
-                
-            }];
-        }
+                case MXKRoomViewControllerJoinRoomResultFailureRoomEmpty:
+                    [self declineRoomInvitation];
+                    break;
+                default:
+                    break;
+            }
+        }];
     }
     else if (tappedView == previewHeader.leftButton)
     {
-        // 'Decline' button has been pressed
-        if (roomPreviewData)
-        {
-            // Decline this invitation = leave this page
-            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
-        }
-        else
-        {
-            [self startActivityIndicator];
+        [self declineRoomInvitation];
+    }
+}
+
+- (void)declineRoomInvitation
+{
+    // 'Decline' button has been pressed
+    if (roomPreviewData)
+    {
+        [self roomPreviewDidTapCancelAction];
+    }
+    else
+    {
+        [self startActivityIndicator];
+        
+        [self.roomDataSource.room leave:^{
             
-            [self.roomDataSource.room leave:^{
-                
-                [self stopActivityIndicator];
-                
-                // We remove the current view controller.
-                // Pop to homes view controller
-                [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
-                
-            } failure:^(NSError *error) {
-                
-                [self stopActivityIndicator];
-                MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
-                
-            }];
-        }
+            [self stopActivityIndicator];
+            
+            // We remove the current view controller.
+            // Pop to homes view controller
+            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
+            
+        } failure:^(NSError *error) {
+            
+            [self stopActivityIndicator];
+            MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
+            
+        }];
     }
 }
 
@@ -4626,7 +4781,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     // Alert user
-    [[AppDelegate theDelegate] showErrorAsAlert:error];
+    [self showError:error];
 }
 
 - (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
@@ -4686,7 +4841,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 if ([self.roomDataSource.mxSession roomWithRoomId:replacementRoomId])
                 {
                     // Open the room if it is already joined
-                    [[AppDelegate theDelegate] showRoom:replacementRoomId andEventId:nil withMatrixSession:self.roomDataSource.mxSession];
+                    [self showRoomWithId:replacementRoomId];
                 }
                 else
                 {
@@ -4701,15 +4856,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         [self startActivityIndicator];
                         [self.roomDataSource.mxSession joinRoom:replacementRoomId viaServers:@[viaSenderServer] success:^(MXRoom *room) {
                             [self stopActivityIndicator];
-                            
-                            [[AppDelegate theDelegate] showRoom:replacementRoomId andEventId:nil withMatrixSession:self.roomDataSource.mxSession];
+
+                            [self showRoomWithId:replacementRoomId];
                             
                         } failure:^(NSError *error) {
                             [self stopActivityIndicator];
                             
                             MXLogDebug(@"[RoomVC] Failed to join an upgraded room. Error: %@",
                                   error);
-                            [[AppDelegate theDelegate] showErrorAsAlert:error];
+                            [self showError:error];
                         }];
                     }
                 }
@@ -4810,16 +4965,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
-    if (!self.roomDataSource || !missedDiscussionsBadgeLabel
+    if (!self.showMissedDiscussionsBadge || !self.roomDataSource || !missedDiscussionsBadgeLabel
         || [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone
         || ([[UIScreen mainScreen] nativeBounds].size.height > 2532 && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)))
     {
-        self.showMissedDiscussionsBadge = NO;
+        self.missedDiscussionsBadgeHidden = YES;
         return;
     }
     
-    self.showMissedDiscussionsBadge = YES;
-    
+    self.missedDiscussionsBadgeHidden = NO;
+
     NSUInteger highlightCount = 0;
     NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
     
@@ -5186,12 +5341,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (readMarkerTableViewCell && isAppeared && !self.isBubbleTableViewDisplayInTransition)
     {
         // Check whether the read marker is visible
-        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
+        CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.adjustedContentInset.top;
         CGFloat readMarkerViewPosY = readMarkerTableViewCell.frame.origin.y + readMarkerTableViewCell.readMarkerView.frame.origin.y;
         if (contentTopPosY <= readMarkerViewPosY)
         {
             // Compute the max vertical position visible according to contentOffset
-            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.mxk_adjustedContentInset.bottom;
+            CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
             if (readMarkerViewPosY <= contentBottomPosY)
             {
                 // Launch animation
@@ -5299,7 +5454,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 // The read marker display is still enabled (see roomDataSource.showReadMarker flag),
                 // this means the read marker was not been visible yet.
                 // We show the banner if the marker is located in the top hidden part of the cell.
-                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.mxk_adjustedContentInset.top;
+                CGFloat contentTopPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.adjustedContentInset.top;
                 CGFloat readMarkerViewPosY = roomBubbleTableViewCell.frame.origin.y + roomBubbleTableViewCell.readMarkerView.frame.origin.y;
                 self.jumpToLastUnreadBannerContainer.hidden = (contentTopPosY < readMarkerViewPosY);
             }
@@ -5398,7 +5553,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 MXLogDebug(@"[RoomVC] Invite %@ failed", participantId);
                 // Alert user
-                [[AppDelegate theDelegate] showErrorAsAlert:error];
+                [self showError:error];
                 
             }];
         }
@@ -5433,11 +5588,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         && error.code == MXRestClientErrorMissingIdentityServer)
                     {
                         NSString *message = [NSBundle mxk_localizedStringForKey:@"error_invite_3pid_with_no_identity_server"];
-                        [[AppDelegate theDelegate] showAlertWithTitle:message message:nil];
+                        [self showAlertWithTitle:message message:nil];
                     }
                     else
                     {
-                        [[AppDelegate theDelegate] showErrorAsAlert:error];
+                        [self showError:error];
                     }
                 }];
             }
@@ -5452,7 +5607,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     
                     MXLogDebug(@"[RoomVC] Invite %@ failed", participantId);
                     // Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    [self showError:error];
                     
                 }];
             }
@@ -5502,8 +5657,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
     
     // Show the explanation dialog
-    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
-                                                message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
+    alert = [UIAlertController alertControllerWithTitle:VectorL10n.rerequestKeysAlertTitle
+                                                message:[VectorL10n e2eRoomKeyRequestMessage:AppInfo.current.displayName]
                                          preferredStyle:UIAlertControllerStyleAlert];
     currentAlert = alert;
     
@@ -5550,9 +5705,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showSettingsSecurityScreen
 {
-    [[AppDelegate theDelegate] presentCompleteSecurityForSession: self.mainSession];
+    if (self.delegate)
+    {
+        [self.delegate roomViewController:self showCompleteSecurityForSession:self.mainSession];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] presentCompleteSecurityForSession: self.mainSession];
+    }
 }
-
 
 #pragma mark Tombstone event
 
@@ -5914,7 +6075,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     [self stopActivityIndicator];
                     
                     //Alert user
-                    [[AppDelegate theDelegate] showErrorAsAlert:error];
+                    [self showError:error];
                 }];
                 
                 // Start animation in case of download during attachment preparing
@@ -6094,8 +6255,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         MXLogDebug(@"[MXKRoomViewController] File upload using MIME type %@ is not supported.", mimeType);
         
-        [[AppDelegate theDelegate] showAlertWithTitle:NSLocalizedStringFromTable(@"file_upload_error_title", @"Vector", nil)
-                                              message:NSLocalizedStringFromTable(@"file_upload_error_unsupported_file_type_message", @"Vector", nil)];
+        [self showAlertWithTitle:NSLocalizedStringFromTable(@"file_upload_error_title", @"Vector", nil)
+                         message:NSLocalizedStringFromTable(@"file_upload_error_unsupported_file_type_message", @"Vector", nil)];
     }
 }
 
@@ -6250,7 +6411,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)roomInfoCoordinatorBridgePresenterDelegateDidLeaveRoom:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    [[LegacyAppDelegate theDelegate] restoreInitialDisplay:nil];
+    if (self.delegate)
+    {
+        [self.delegate roomViewControllerDidLeaveRoom:self];
+    }
+    else
+    {
+        [[AppDelegate theDelegate] restoreInitialDisplay:nil];
+    }
 }
 
 #pragma mark - RemoveJitsiWidgetViewDelegate
@@ -6275,9 +6443,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.removeJitsiWidgetView.delegate = nil;
         
         //  end active call if exists
-        if ([[AppDelegate theDelegate].callPresenter.jitsiVC.widget.widgetId isEqualToString:jitsiWidget.widgetId])
+        if ([self isRoomHavingAJitsiCallForWidgetId:jitsiWidget.widgetId])
         {
-            [[AppDelegate theDelegate].callPresenter endActiveJitsiCall];
+            [self endActiveJitsiCall];
         }
     } failure:^(NSError *error) {
         MXStrongifyAndReturnIfNil(self);
@@ -6312,6 +6480,39 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXLogError(@"Failed sending voice message");
         completion(NO);
     }];
+}
+
+- (void)showSpaceDetailWithPublicRoom:(MXPublicRoom *)publicRoom
+{
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
+}
+
+- (void)showSpaceDetailWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    [self.spaceDetailPresenter presentForSpaceWithId:spaceId from:self sourceView:nil session:self.mainSession animated:YES];
+}
+
+#pragma mark - SpaceDetailPresenterDelegate
+
+- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
+{
+    self.spaceDetailPresenter = nil;
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didOpenSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didJoinSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
 }
 
 @end

@@ -168,12 +168,13 @@ final class NotificationSettingsViewModel: NotificationSettingsViewModelType, Ob
             self.viewState.selectionState[.keywords] = anyEnabled
         }
     }
-    
-    /**
-     Given a push rule check which index/checked state  it matches.
-     Matcing is done by comparing the rule against the static definitions for that rule.
-     The same logic is used on android.
-     */
+      
+    /// Given a push rule check which index/checked state it matches.
+    ///
+    /// Matching is done by comparing the rule against the static definitions for that rule.
+    /// The same logic is used on android.
+    /// - Parameter rule: The push rule type to check.
+    /// - Returns: Wether it should be displayed as checked or not checked.
     private func isChecked(rule: NotificationPushRuleType) -> Bool {
         guard let ruleId = NotificationPushRuleId(rawValue: rule.ruleId) else { return false }
         
