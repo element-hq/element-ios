@@ -1438,7 +1438,39 @@
 "settings_default" = "Notificações Default";
 "settings_notifications" = "NOTIFICAÇÕES";
 "settings_show_url_previews_description" = "Previsualizações vão somente ser mostradas em salas não-encriptadas.";
-"settings_show_url_previews" = "Mostrar previsualizações de URL emlinha";
+"settings_show_url_previews" = "Mostrar previsualização de website";
 "settings_confirm_media_size_description" = "Quanto isto está ligado, você vai ser pedido para confirmar que tamanho imagens e vídeos vão ser enviados como.";
 "settings_confirm_media_size" = "Confirmar tamanho quando enviando";
 "settings_sending_media" = "ENVIANDO IMAGENS E VÍDEOS";
+"space_avatar_view_accessibility_hint" = "Mudar avatar de espaço";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_public_join_rule" = "Espaço público";
+"space_private_join_rule" = "Espaço privado";
+"space_participants_action_ban" = "Banir deste espaço";
+"space_participants_action_remove" = "Remover deste espaço";
+"spaces_coming_soon_detail" = "Esta funcionalidade não tem sido implementada ainda, mas está a caminho. Por enquanto, você pode fazer isso com Element em seu computador.";
+"spaces_invites_coming_soon_title" = "Convites chegando em breve";
+"spaces_add_rooms_coming_soon_title" = "Adicionar salas chegando em breve";
+"spaces_coming_soon_title" = "Chegando em breve";
+"spaces_no_member_found_detail" = "Procurando por alguém que não está em %@? Por enquanto, você pode convidá-la(o) na web ou desktop.";
+"spaces_no_room_found_detail" = "Alguns resultados podem estar escondidos porque eles são privados e você precisa de um convite para se juntar a eles.";
+"spaces_no_result_found_title" = "Nenhum resultado encontrado";
+"spaces_empty_space_detail" = "Algumas salas podem estar escondidas porque elas são privadas e você precisa de um convite.";
+"spaces_empty_space_title" = "Este espalo não tem nenhuma sala (ainda)";
+"space_tag" = "espaço";
+"spaces_suggested_room" = "Sugeridas";
+"spaces_explore_rooms" = "Explorar salas";
+"leave_space_and_all_rooms_action" = "Sair de todas as salas e espaços";
+"leave_space_only_action" = "Não sair de nenhuma sala";
+"leave_space_message_admin_warning" = "Você é admin deste espaço, assegure que você tem transferido direito de admin a um outro membro antes de sair.";
+"leave_space_message" = "Você tem certeza que você quer sair de %@? Você também quer sair de todas as salas e espaços deste espaço?";
+"leave_space_title" = "Sair de %@";
+"spaces_left_panel_title" = "Espaços";
+"spaces_home_space_title" = "Home";
+"settings_links" = "LINKS";
+"room_recents_suggested_rooms_section" = "SALAS SUGERIDAS";
+"done" = "Feito";
+"open" = "Abrir";
