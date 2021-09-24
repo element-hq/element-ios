@@ -41,7 +41,8 @@ struct TemplateRoomChatBubbleMessage: View {
 
 @available(iOS 14.0, *)
 struct TemplateRoomChatBubbleMessage_Previews: PreviewProvider {
+    static let message = TemplateRoomChatMessageTextContent(body: "Hello")
     static var previews: some View {
-        EmptyView()
+        TemplateRoomChatBubbleMessage(messageContent: message)
     }
 }

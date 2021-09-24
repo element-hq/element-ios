@@ -33,9 +33,6 @@ class StateRenderer {
     ///   - addNavigation: Wether to wrap the screens in a navigation view.
     /// - Returns: The group of screens
     func screenGroup(
-        themeId: ThemeIdentifier = .light,
-        locale: Locale = Locale.current,
-        sizeCategory: ContentSizeCategory = ContentSizeCategory.medium,
         addNavigation: Bool = false
     ) -> some View {
         Group {
@@ -45,9 +42,6 @@ class StateRenderer {
                     .previewDisplayName(state.stateTitle)
             }
         }
-        .theme(themeId)
-        .environment(\.locale, locale)
-        .environment(\.sizeCategory, sizeCategory)
     }
     
     @ViewBuilder
@@ -55,6 +49,7 @@ class StateRenderer {
         if wrap {
             NavigationView{
                 view
+                    .navigationBarTitleDisplayMode(.inline)
             }
         } else {
             view

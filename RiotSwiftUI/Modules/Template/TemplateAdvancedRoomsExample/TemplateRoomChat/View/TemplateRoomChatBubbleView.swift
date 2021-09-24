@@ -57,7 +57,13 @@ struct TemplateRoomChatBubbleView_Previews: PreviewProvider {
     static let bubble = TemplateRoomChatBubble(
         id: "111",
         sender: MockTemplateRoomChatService.mockMessages[0].sender,
-        items: []
+        items: [
+            TemplateRoomChatBubbleItem(
+                id: "222",
+                timestamp: Date(),
+                content: .message(.text(TemplateRoomChatMessageTextContent(body: "Hello")))
+            )
+        ]
     )
     static var previews: some View {
         TemplateRoomChatBubbleView(bubble: bubble)

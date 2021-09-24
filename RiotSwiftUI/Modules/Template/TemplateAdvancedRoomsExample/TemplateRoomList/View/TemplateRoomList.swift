@@ -59,7 +59,7 @@ struct TemplateRoomList: View {
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
-            }
+            }.background(theme.colors.background)
         }
     }
 }
@@ -72,5 +72,6 @@ struct TemplateRoomList_Previews: PreviewProvider {
     static let stateRenderer = MockTemplateRoomListScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup(addNavigation: true)
+            .theme(.dark)
     }
 }

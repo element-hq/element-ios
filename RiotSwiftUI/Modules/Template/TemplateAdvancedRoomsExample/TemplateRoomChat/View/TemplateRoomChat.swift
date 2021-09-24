@@ -54,6 +54,7 @@ struct TemplateRoomChat: View {
             .padding()
             
         }
+        .background(theme.colors.background)
         .navigationTitle(viewModel.viewState.roomName ?? "Chat")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -66,6 +67,7 @@ struct TemplateRoomChat: View {
     private var roomContent: some View {
         if case .notInitialized = viewModel.viewState.roomInitializationStatus {
             ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: theme.colors.primaryContent))
                 .accessibility(identifier: "loadingProgress")
         } else if case .failedToInitialize = viewModel.viewState.roomInitializationStatus {
             Text("Sorry, We failed to load the room.")
