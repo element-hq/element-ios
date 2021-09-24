@@ -1,1 +1,0 @@
-SDK: Support Spaces summary

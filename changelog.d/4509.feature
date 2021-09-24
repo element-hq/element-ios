@@ -1,1 +1,0 @@
-Added Show spaces in left panel
