@@ -177,8 +177,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // Increase maximum number of components
         self.maxComponentCount = 20;
 
-        // Reset attributedTextMessage to force reset MXKRoomCellData parameters
-        self.attributedTextMessage = nil;
+        // Indicate that the text message layout should be recomputed.
+        [self setNeedsUpdateContent];
         
         // Load a url preview if a link was detected
         if (self.hasLink)
@@ -331,7 +331,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // Refresh only cells series header
         if (self.collapsedAttributedTextMessage && self.nextCollapsableCellData)
         {
-            attributedTextMessage = nil;
+            [self setNeedsUpdateContent];
         }
     }
 }
@@ -666,8 +666,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // Update flag
         _containsLastMessage = containsLastMessage;
         
-        // Recompute the text message layout
-        self.attributedTextMessage = nil;
+        // Indicate that the text message layout should be recomputed.
+        [self setNeedsUpdateContent];
     }
 }
 
@@ -679,8 +679,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // Update flag
         _selectedEventId = selectedEventId;
         
-        // Recompute the text message layout
-        self.attributedTextMessage = nil;
+        // Indicate that the text message layout should be recomputed.
+        [self setNeedsUpdateContent];
     }
 }
 
@@ -1143,7 +1143,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                                  success:^(URLPreviewData * _Nonnull urlPreviewData) {
         MXStrongifyAndReturnIfNil(self);
         
-        // Update the preview data, indicate that the data layout needs refreshing and send a notification for refresh
+        // Update the preview data, indicate that the text message layout needs refreshing and send a notification for refresh
         self.urlPreviewData = urlPreviewData;
         [self setNeedsUpdateContent];
         [self setNeedsUpdateAdditionalContentHeight];
