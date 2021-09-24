@@ -129,10 +129,9 @@
 #import "SecurityViewController.h"
 
 #import "TypingUserInfo.h"
+#import "UserActivityService.h"
 
 #import "MXSDKOptions.h"
-
-#import "UserActivities.h"
 
 #import "Riot-Swift.h"
 
@@ -614,7 +613,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                                           category:AnalyticsNoficationsCategory];
     }
     
-    [self becomeCurrentActivity];
+    [self updateUserActivity];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -2035,51 +2034,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     roomInputView.actionsBar.actionItems = actionItems;
 }
 
-- (void)becomeCurrentActivity
+- (void)updateUserActivity
 {
     if (!self.userActivity) {
-        self.userActivity = [[NSUserActivity alloc] initWithActivityType:kUserActivityTypeMatrixRoom];
+        self.userActivity = [[NSUserActivity alloc] initWithActivityType:MXUserActivityTypeRoom];
     }
     
-    // TODO: Move everything else into the method called below
     [UserActivityService.shared update:self.userActivity from:self.roomDataSource.room];
-    
-    self.userActivity.title = self.roomDataSource.room.summary.displayname;
-    self.userActivity.requiredUserInfoKeys = [[NSSet alloc] initWithObjects:kUserActivityInfoRoomId, nil];
-    
-    // user info
-    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-    [userInfo setObject:self.roomDataSource.roomId forKey:kUserActivityInfoRoomId];
-    if ([self.roomDataSource.room isDirect]) {
-        [userInfo setObject:self.roomDataSource.room.directUserId forKey:kUserActivityInfoUserId];
-    }
-    self.userActivity.userInfo = userInfo;
     
     // TODO: add a NSUserActivityDelegate to save the current text in the userinfo of the activity
     // self.userActivity.delegate = self;
     // self.userActivity.needsSave = true;
-    self.userActivity.persistentIdentifier = self.roomDataSource.roomId;
-    
-    self.userActivity.eligibleForHandoff = true;
-    self.userActivity.eligibleForSearch = true;
-    self.userActivity.eligibleForPrediction = true;
-    
-    CSSearchableItemAttributeSet *contentAttribute;
-    if (@available(iOS 14.0, *)) {
-        contentAttribute = [[CSSearchableItemAttributeSet alloc] initWithContentType:UTTypeItem];
-    } else {
-        contentAttribute = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:@"public.item"];
-    }
-    
-    contentAttribute.title = self.roomDataSource.room.summary.displayname;
-    contentAttribute.displayName = self.roomDataSource.room.summary.displayname;
-    contentAttribute.contentDescription = self.roomDataSource.room.summary.lastMessage.text;
-    
-    // TODO: contentAttribute.thumbnailURL =
-    // TODO: accountHandles of everyone in the room
-    contentAttribute.instantMessageAddresses = [[NSArray alloc] initWithObjects:self.roomDataSource.roomId, nil];
-    
-    self.userActivity.contentAttributeSet = contentAttribute;
 }
 
 - (void)roomInputToolbarViewPresentStickerPicker

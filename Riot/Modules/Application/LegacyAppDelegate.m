@@ -55,10 +55,10 @@
 #import "MXSession+Riot.h"
 #import "MXRoom+Riot.h"
 
+#import "UserActivityService.h"
+
 #import "Riot-Swift.h"
 #import "PushNotificationService.h"
-
-#import "UserActivities.h"
 
 //#define MX_CALL_STACK_OPENWEBRTC
 #ifdef MX_CALL_STACK_OPENWEBRTC
@@ -747,9 +747,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
     }
-    else if ([userActivity.activityType isEqualToString:kUserActivityTypeMatrixRoom])
+    else if ([userActivity.activityType isEqualToString:MXUserActivityTypeRoom])
     {
-        NSString *roomID = userActivity.userInfo[kUserActivityInfoRoomId];
+        NSString *roomID = userActivity.userInfo[UserActivityFieldRoom];
         if (!roomID)
             return continueUserActivity;
         
@@ -762,7 +762,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         INInteraction *interaction = userActivity.interaction;
         
         // roomID provided by Siri intent
-        NSString *roomID = userActivity.userInfo[kUserActivityInfoRoomId];
+        NSString *roomID = userActivity.userInfo[UserActivityFieldRoom];
         
         // We've launched from calls history list
         if (!roomID)

@@ -14,8 +14,18 @@
 // limitations under the License.
 //
 
-#import "UserActivities.h"
+#ifndef UserActivityService_h
+#define UserActivityService_h
 
-NSString *const kUserActivityTypeMatrixRoom = @"org.matrix.room";
-NSString *const kUserActivityInfoRoomId = @"roomID";
-NSString *const kUserActivityInfoUserId = @"userID";
+/// MXUserActivityTypes identifes user activities
+typedef NSString *const UserActivityType NS_TYPED_EXTENSIBLE_ENUM;
+
+static UserActivityType const MXUserActivityTypeRoom = @"org.matrix.room";
+
+/// MXUserActivityFields identifies fields in the userInfo of a UserActivity
+typedef NSString *const UserActivityField NS_TYPED_EXTENSIBLE_ENUM;
+
+static UserActivityField const UserActivityFieldRoom = @"roomID";
+static UserActivityField const UserActivityFieldUser = @"userID";
+
+#endif /* UserActivityService_h */
