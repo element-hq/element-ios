@@ -241,12 +241,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             {
                 MXLogDebug(@"[RoomBubbleCellData] attributedTextMessage called on wrong thread");
                 dispatch_sync(dispatch_get_main_queue(), ^{
-                    self.attributedTextMessage = [self refreshAttributedTextMessage];
+                    self.attributedTextMessage = [self makeAttributedString];
                 });
             }
             else
             {
-                self.attributedTextMessage = [self refreshAttributedTextMessage];
+                self.attributedTextMessage = [self makeAttributedString];
             }
         }
     }
@@ -338,7 +338,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 #pragma mark - 
 
-- (NSAttributedString*)refreshAttributedTextMessage
+- (NSAttributedString*)makeAttributedString
 {
     // CAUTION: This method must be called on the main thread.
 
