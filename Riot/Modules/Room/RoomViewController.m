@@ -2041,6 +2041,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.userActivity = [[NSUserActivity alloc] initWithActivityType:kUserActivityTypeMatrixRoom];
     }
     
+    // TODO: Move everything else into the method called below
+    [UserActivityService.shared update:self.userActivity from:self.roomDataSource.room];
+    
     self.userActivity.title = self.roomDataSource.room.summary.displayname;
     self.userActivity.requiredUserInfoKeys = [[NSSet alloc] initWithObjects:kUserActivityInfoRoomId, nil];
     
