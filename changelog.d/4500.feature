@@ -1,0 +1,1 @@
+Support suggested rooms

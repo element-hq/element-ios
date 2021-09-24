@@ -1,0 +1,1 @@
+Space home view inherits title from previously viewed tab
