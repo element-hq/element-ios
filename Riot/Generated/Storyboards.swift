@@ -244,10 +244,35 @@ internal enum StoryboardScene {
 
     internal static let initialScene = InitialSceneType<Riot.SimpleScreenTemplateViewController>(storyboard: SimpleScreenTemplateViewController.self)
   }
+  internal enum SpaceChildRoomDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceChildRoomDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceChildRoomDetailViewController>(storyboard: SpaceChildRoomDetailViewController.self)
+  }
+  internal enum SpaceDetailViewController: StoryboardType {
+    internal static let storyboardName = "SpaceDetailViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceDetailViewController>(storyboard: SpaceDetailViewController.self)
+  }
+  internal enum SpaceExploreRoomViewController: StoryboardType {
+    internal static let storyboardName = "SpaceExploreRoomViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceExploreRoomViewController>(storyboard: SpaceExploreRoomViewController.self)
+  }
   internal enum SpaceFeatureUnaivableViewController: StoryboardType {
     internal static let storyboardName = "SpaceFeatureUnaivableViewController"
 
     internal static let initialScene = InitialSceneType<Riot.SpaceFeatureUnaivableViewController>(storyboard: SpaceFeatureUnaivableViewController.self)
+  }
+  internal enum SpaceListViewController: StoryboardType {
+    internal static let storyboardName = "SpaceListViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceListViewController>(storyboard: SpaceListViewController.self)
+  }
+  internal enum SpaceMenuViewController: StoryboardType {
+    internal static let storyboardName = "SpaceMenuViewController"
+
+    internal static let initialScene = InitialSceneType<Riot.SpaceMenuViewController>(storyboard: SpaceMenuViewController.self)
   }
   internal enum TemplateScreenViewController: StoryboardType {
     internal static let storyboardName = "TemplateScreenViewController"

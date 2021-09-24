@@ -16,11 +16,7 @@
 
 import SwiftUI
 
-
-/**
- Renders an input field and a collection of chips
- with callbacks for addition and deletion.
- */
+/// Renders an input field and a collection of chips.
 @available(iOS 14.0, *)
 struct ChipsInput: View {
     
@@ -28,7 +24,6 @@ struct ChipsInput: View {
     @Environment(\.isEnabled) var isEnabled
     
     @State private var chipText: String = ""
-    
     
     let titles: [String]
     let didAddChip: (String) -> Void

@@ -17,11 +17,10 @@
 import Foundation
 import Combine
 
-/**
- Provides the theme and theme updates to SwiftUI.
- Replaces the old ThemeObserver. Riot app can push updates to this class
- removing the dependency of this class on the `ThemeService`.
- */
+/// Provides the theme and theme updates to SwiftUI.
+///
+/// Replaces the old ThemeObserver. Riot app can push updates to this class
+/// removing the dependency of this class on the `ThemeService`.
 @available(iOS 14.0, *)
 class ThemePublisher: ObservableObject {
     
@@ -36,7 +35,7 @@ class ThemePublisher: ObservableObject {
     @Published private(set) var theme: ThemeSwiftUI
     
     static func configure(themeId: ThemeIdentifier) {
-        _shared = ThemePublisher(themeId: .light)
+        _shared = ThemePublisher(themeId: themeId)
     }
     
     init(themeId: ThemeIdentifier) {

@@ -77,4 +77,9 @@
     return roomEncryptionTrustLevel;
 }
 
+- (BOOL)isJoined
+{
+    return self.membership == MXMembershipJoin || self.membershipTransitionState == MXMembershipTransitionStateJoined;
+}
+
 @end

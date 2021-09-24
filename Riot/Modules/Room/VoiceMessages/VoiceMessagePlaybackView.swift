@@ -16,9 +16,12 @@
 
 import Foundation
 import Reusable
+import UIKit
+import MatrixSDK
 
 protocol VoiceMessagePlaybackViewDelegate: AnyObject {
     func voiceMessagePlaybackViewDidRequestPlaybackToggle()
+    func voiceMessagePlaybackViewDidRequestSeek(to progress: CGFloat)
     func voiceMessagePlaybackViewDidChangeWidth()
 }
 
@@ -40,6 +43,7 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     
     private var _waveformView: VoiceMessageWaveformView!
     private var currentTheme: Theme?
+    private var scrubProgress: CGFloat?
     
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private var recordingIcon: UIView!
@@ -138,4 +142,22 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     @IBAction private func onPlayButtonTap() {
         delegate?.voiceMessagePlaybackViewDidRequestPlaybackToggle()
     }
+    
+    @IBAction private func tap(gestureRecognizer: UITapGestureRecognizer) {
+        let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
+        let progress = x / waveformContainerView.bounds.width
+        delegate?.voiceMessagePlaybackViewDidRequestSeek(to: progress)
+    }
+
+    @IBAction private func pan(gestureRecognizer: UIPanGestureRecognizer) {
+            switch gestureRecognizer.state {
+            case .began, .changed:
+                let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
+                let progress = x / waveformContainerView.bounds.width
+                scrubProgress = progress
+                delegate?.voiceMessagePlaybackViewDidRequestSeek(to: progress)
+            default:
+                scrubProgress = nil
+            }
+        }
 }

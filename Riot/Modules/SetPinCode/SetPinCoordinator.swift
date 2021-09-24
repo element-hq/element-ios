@@ -145,7 +145,7 @@ extension SetPinCoordinator: EnterPinCodeCoordinatorDelegate {
     
     func enterPinCodeCoordinator(_ coordinator: EnterPinCodeCoordinatorType, didCompleteWithPin pin: String) {
         storePin(pin)
-        if pinCodePreferences.forcePinProtection && pinCodePreferences.isBiometricsAvailable {
+        if pinCodePreferences.forcePinProtection && pinCodePreferences.isBiometricsAvailable && !pinCodePreferences.isBiometricsSet {
             viewMode = .setupBiometricsAfterLogin
             setRootCoordinator(createSetupBiometricsCoordinator())
         } else {

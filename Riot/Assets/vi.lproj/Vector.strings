@@ -458,3 +458,4 @@
 // Share extension
 "share_extension_auth_prompt" = "Đăng nhập vào ứng dụng chính để chia sẻ nội dung";
 "share_extension_failed_to_encrypt" = "Gửi thất bại. Kiểm tra cài đặt bảo mật phòng trong ứng dụng chính";
+"title_groups" = "Cộng đồng";

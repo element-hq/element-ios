@@ -110,19 +110,11 @@ final class SSOAuthenticationPresenter: NSObject {
             return
         }
         
-        let authenticationSession: SSOAuthentificationSessionProtocol
+        let authenticationSession = SSOAuthentificationSession()
         
-        if #available(iOS 12.0, *) {
-            authenticationSession = SSOAuthentificationSession()
-        } else {
-            authenticationSession = LegacySSOAuthentificationSession()
-        }
-        
-        if #available(iOS 12.0, *) {
-            if let presentingWindow = presentingViewController.view.window {
-                let contextProvider = SSOAuthenticationSessionContextProvider(window: presentingWindow)
-                authenticationSession.setContextProvider(contextProvider)
-            }
+        if let presentingWindow = presentingViewController.view.window {
+            let contextProvider = SSOAuthenticationSessionContextProvider(window: presentingWindow)
+            authenticationSession.setContextProvider(contextProvider)
         }
         
         authenticationSession.authenticate(with: authenticationURL, callbackURLScheme: self.ssoAuthenticationService.callBackURLScheme) { [weak self] (callBackURL, error) in

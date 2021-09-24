@@ -70,6 +70,8 @@ final class RoomCreationIntroCellContentView: UIView, NibLoadable, Themable {
         self.addParticipantsButton.addTarget(self, action: #selector(socialButtonAction(_:)), for: .touchUpInside)
         
         self.addParticipantsLabel.text = VectorL10n.roomIntroCellAddParticipantsAction
+        
+        self.roomAvatarView.showCameraBadgeOnFallbackImage = true
     }
     
     override func layoutSubviews() {

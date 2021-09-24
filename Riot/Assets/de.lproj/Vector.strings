@@ -78,7 +78,7 @@
 "room_creation_make_private" = "Mache privat";
 "room_creation_wait_for_creation" = "Es wird gerade schon ein Raum erstellt. Bitte warten.";
 // Room recents
-"room_recents_directory_section" = "RAUM VERZEICHNIS";
+"room_recents_directory_section" = "RAUMVERZEICHNIS";
 "room_recents_favourites_section" = "FAVORITEN";
 "room_recents_people_section" = "PERSONEN";
 "room_recents_conversations_section" = "RÄUME";
@@ -291,7 +291,7 @@
 "directory_cell_description" = "%tu Räume";
 "directory_search_results" = "%tu Treffer gefunden für %@";
 "directory_search_results_more_than" = ">%tu Treffer gefunden für %@";
-"contacts_address_book_permission_denied" = "Element wurde nicht erlaubt, auf lokale Kontakte zuzugreifen";
+"contacts_address_book_permission_denied" = "%@ wurde nicht erlaubt, auf lokale Kontakte zuzugreifen";
 "room_participants_remove_third_party_invite_msg" = "Entfernen der Einladung von Dritten ist noch nicht unterstützt";
 "room_participants_invite_another_user" = "Suchen/Einladen mittels Benutzer-ID, Name oder E-Mail-Adresse";
 "room_participants_invite_malformed_id" = "Ungültige ID. Sollte eine E-Mail-Adresse oder Matrix-ID wie \"@thomas:matrix.org' sein";
@@ -385,7 +385,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Möchtest du helfen %@ zu verbessern, indem du anonyme Absturzberichte und Daten über die Verwendung sendest?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element unterstützt nun Ende-zu-Ende Verschlüsselung. Um sie zu aktivieren musst du dich erneut anmelden.\n\nDu kannst sie nun aktivieren oder später in den Einstellungen.";
+"e2e_enabling_on_app_update" = "%@ unterstützt nun Ende-zu-Ende Verschlüsselung. Um sie zu aktivieren musst du dich erneut anmelden.\n\nDu kannst sie nun aktivieren oder später in den Einstellungen.";
 "e2e_need_log_in_again" = "Du musst dich erneut anmelden um Ende-zu-Ende Schlüssel für diese Sitzung zu erstellen und zum Server zu senden.\nDies ist nur einmal notwendig.";
 // Bug report
 "bug_report_title" = "Fehlermeldung";
@@ -456,7 +456,7 @@
 "settings_calls_settings" = "ANRUFE";
 "settings_show_decrypted_content" = "Entschlüsselten Inhalt anzeigen";
 "settings_enable_callkit" = "Eingebettetes Anrufen";
-"settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine Element-Anrufe in der Anruf-Historie deines Systems. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
+"settings_callkit_info" = "Empfange eingehende Anrufe auf deinem Sperrbildschirm und sehe deine %@-Anrufe in der Anruf-Historie deines Systems. Wenn iCloud aktiviert ist, wird diese Anruf-Historie mit Apple geteilt.";
 "settings_enable_rageshake" = "Schüttle stark um einen Fehler zu melden";
 "do_not_ask_again" = "Nicht erneut nachfragen";
 "settings_ui_theme_black" = "Schwarz";
@@ -509,7 +509,7 @@
 "room_action_send_photo_or_video" = "Foto oder Video senden";
 "room_action_send_sticker" = "Aufkleber senden";
 "settings_deactivate_account" = "DEAKTIVIERTES KONTO";
-"settings_deactivate_my_account" = "Deaktivere meinen Konto";
+"settings_deactivate_my_account" = "Benutzerkonto deaktiveren";
 "widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Aufkleberpakete aktiviert.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Welche hinzufügen?";
 // GDPR
@@ -518,7 +518,7 @@
 "deactivate_account_title" = "Deaktiviere Konto";
 "deactivate_account_informations_part1" = "Dies wird deinen Konto permanent unbenutzbar machen. Du wirst dich nicht erneut anmelden können und keiner wird in der Lage sein, dieselbe Nutzer-ID erneut zu registrieren. Alle Räume, in denen dein Konto ist, werden verlassen und deine Kontodaten werden vom Identitätsserver gelöscht. ";
 "deactivate_account_informations_part2_emphasize" = "Diese Aktion ist irreversibel.";
-"deactivate_account_informations_part3" = "\n\nDeinen Konto deaktivieren ";
+"deactivate_account_informations_part3" = "\n\nDein Konto deaktivieren ";
 "deactivate_account_informations_part4_emphasize" = "wird standardmäßig nicht dafür sorgen, dass wir alle Nachrichten löschen, die du gesendet hast. ";
 "deactivate_account_informations_part5" = "Wenn du möchtest, dass wir deine Nachrichten löschen, wähle das Auswahlfeld unten aus.\n\nDie Sichtbarkeit der Nachrichten in Matrix ist wie bei E-Mails: Wenn wir deine Nachrichten löschen, werden sie nicht mehr mit neuen oder nicht registrierten Benutzer geteilt. Bereits registrierte Nutzer behalten den Zugriff auf ihre Kopie deiner Nachrichten.";
 "deactivate_account_forget_messages_information_part1" = "Bitte alle Nachrichten vergessen, die ich gesendet habe, wenn mein Konto deaktiviert wird (";
@@ -531,7 +531,7 @@
 "event_formatter_rerequest_keys_part2" = " von deinen anderen Sitzungen anfragen.";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Anfrage gesendet";
-"rerequest_keys_alert_message" = "Bitte Element auf einem anderen Gerät öffenen, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
+"rerequest_keys_alert_message" = "Bitte %@ auf einem anderen Gerät öffenen, das die Nachricht entschlüsseln kann, damit es die Schlüssel an diese Sitzung senden kann.";
 "room_message_reply_to_placeholder" = "Antwort senden (unverschlüsselt)…";
 "encrypted_room_message_reply_to_placeholder" = "Sende eine verschlüsselte Antwort…";
 "room_message_reply_to_short_placeholder" = "Sende eine Antwort…";
@@ -996,15 +996,10 @@
 "device_verification_self_verify_start_information" = "Benutze diese Sitzung um deine Neue zu verifizieren. Erlaube Zugriff auf die verschlüsselten Nachrichten.";
 "device_verification_self_verify_start_waiting" = "Warte…";
 "device_verification_self_verify_wait_title" = "vervollständige Sicherheit";
-"device_verification_self_verify_wait_information" = "Überprüfe diese Sitzung von einer anderen aus, um Zugriff auf die verschlüsselten Nachrichten zu erhalten.\n\nBenutze die neuest Element-Sitzung auf deinem anderen Gerät:";
+"device_verification_self_verify_wait_information" = "Überprüfe diese Sitzung von einer anderen aus, um Zugriff auf die verschlüsselten Nachrichten zu erhalten.\n\nBenutze die neuest %@-Sitzung auf deinem anderen Gerät:";
 "device_verification_self_verify_wait_waiting" = "warte…";
 "skip" = "Überspringen";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
 "security_settings_crosssigning_info_not_bootstrapped" = "Quersignierung ist bisher nicht konfiguriert.";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "room_member_power_level_admin_in" = "Admin in %@";
 "room_member_power_level_moderator_in" = "Moderator in %@";
 "room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
@@ -1016,7 +1011,7 @@
 "security_settings_secure_backup_delete" = "Backup löschen";
 "security_settings_crosssigning_info_ok" = "Quersignierung ist bereit zur Anwendung.";
 "security_settings_crosssigning_reset" = "Zurücksetzen";
-"security_settings_coming_soon" = "Entschuldigung, diese Funktion ist noch nicht für Element iOS verfügbar. Bitte nutze einen anderen Matrix-Client, um es einzurichten. Element iOS wird es benutzen.";
+"security_settings_coming_soon" = "Entschuldigung, diese Funktion ist noch nicht für %@ iOS verfügbar. Bitte nutze einen anderen Matrix-Client, um es einzurichten. %@ iOS wird es benutzen.";
 "security_settings_user_password_description" = "Bestätige deine Identität durch Eingabe des Kontopassworts";
 // AuthenticatedSessionViewControllerFactory
 "authenticated_session_flow_not_supported" = "Diese App unterstützt nicht diese Authentifizierungsmethode für deinen Heimserver.";
@@ -1064,7 +1059,7 @@
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifiziere alle deine Sitzungen, um sicher zu stellen, dass dein Konto und deine Nachrichten sicher sind.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Überprüfung";
 "device_verification_self_verify_wait_new_sign_in_title" = "Diese Anmeldung verifizieren";
-"device_verification_self_verify_wait_additional_information" = "Dies funktioniert mit Element oder einem anderen Matrix-Client, der Quersignierung unterstützt.";
+"device_verification_self_verify_wait_additional_information" = "Dies funktioniert mit %@ oder einem anderen Matrix-Client, der Quersignierung unterstützt.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Sicherungsschlüssel verwenden";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Sicherungsphrase oder -schlüssel verwenden";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Falls du keinen Zugang zu einer existierenden Sitzung hast";
@@ -1146,7 +1141,7 @@
 "secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Phrase bestätigen";
 "cross_signing_setup_banner_title" = "Verschlüsselung einrichten";
 "cross_signing_setup_banner_subtitle" = "Verifiziere deine weiteren Geräte bequemer";
-"major_update_title" = "Riot ist jetzt Element";
+"major_update_title" = "Riot ist jetzt %@";
 "major_update_information" = "Wir sind begeistert unsere Namensänderung mitteilen zu können! Deine App ist auf dem neusten Stand und du bist mit deinem Konto angemeldet.";
 "major_update_learn_more_action" = "Mehr erfahren";
 "major_update_done_action" = "Verstanden";
@@ -1161,7 +1156,8 @@
 "pin_protection_mismatch_error_title" = "Die PINs stimmen nicht überein";
 "pin_protection_mismatch_error_message" = "Bitte versuche es erneut";
 "pin_protection_mismatch_too_many_times_error_message" = "Wenn du dich nicht an deine PIN erinnern kannst, drücke \"PIN vergessen\".";
-"pin_protection_settings_section_header_x" = "PIN und %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN und %@";
 "pin_protection_settings_section_footer" = "Um deine PIN zurückzusetzen, musst du dich erneut anmelden und eine neue erstellen.";
 "pin_protection_settings_enabled_forced" = "PIN aktiviert";
 "pin_protection_settings_enable_pin" = "PIN aktivieren";
@@ -1331,12 +1327,12 @@
 "room_accessibility_video_call" = "Videoanruf";
 "room_message_replying_to" = "%@ anworten";
 "room_message_editing" = "Bearbeitung";
-"space_beta_announce_information" = "Spaces are a new way to group rooms and people. Bald werden sie auch auf iOS verfügbar sein, bis dahin kannst du sie schon auf Element Web/Desktop testen.";
-"space_feature_unavailable_information" = "Wir haben Spaces entwickelt, damit ihr eure vielen Räume besser organisieren könnt.\n\nBald werden sie auch auf iOS verfügbar sein, bis dahin kannst du sie schon auf Element Web/Desktop testen. Alle Räume die du dort betrittst, sind natürlich auch hier verfügbar.";
+"space_beta_announce_information" = "Spaces are a new way to group rooms and people. Bald werden sie auch auf iOS verfügbar sein, bis dahin kannst du sie schon auf %@ Web/Desktop testen.";
+"space_feature_unavailable_information" = "Wir haben Spaces entwickelt, damit ihr eure vielen Räume besser organisieren könnt.\n\nBald werden sie auch auf iOS verfügbar sein, bis dahin kannst du sie schon auf %@ Web/Desktop testen. Alle Räume die du dort betrittst, sind natürlich auch hier verfügbar.";
 "space_beta_announce_subtitle" = "Die verbesserte Version von Communities";
 "space_beta_announce_title" = "Spaces sind bald verfügbar";
 "space_beta_announce_badge" = "Beta (in Entwicklung)";
-"space_feature_unavailable_subtitle" = "Spaces sind auf iOS noch nicht verfügbar. Du kannst sie aber schon auf Element Web oder Desktop ausprobieren";
+"space_feature_unavailable_subtitle" = "Spaces sind auf iOS noch nicht verfügbar. Du kannst sie aber schon auf %@ Web oder Desktop ausprobieren";
 
 // Mark: - Spaces
 
@@ -1418,3 +1414,40 @@
 "event_formatter_call_missed_video" = "Verpasster Videoanruf";
 "event_formatter_call_active_voice" = "Aktiver Sprachanruf";
 "event_formatter_call_active_video" = "Aktiver Videoanruf";
+"version_check_modal_action_title_deprecated" = "Zeige mir, wie es geht";
+"version_check_modal_action_title_supported" = "Verstanden";
+"version_check_banner_title_deprecated" = "iOS %@ wird nicht mehr unterstützt";
+"version_check_banner_subtitle_supported" = "Wir hören bald auf, iOS %@ zu unterstützen. Um Element weiterhin vollumfänglich zu nutzen, empfehlen wir dir die Aktualisierung deiner iOS-Version.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "iOS %@ wird nicht mehr unterstützt";
+"settings_new_keyword" = "Schlüsselwort hinzufügen";
+"settings_your_keywords" = "Deine Schlüsselwörter";
+"settings_room_upgrades" = "Raumupgrades";
+"settings_messages_by_a_bot" = "Nachrichten von Bots";
+"settings_call_invitations" = "Anrufeinladungen";
+"settings_room_invitations" = "Einladungen";
+"settings_messages_containing_keywords" = "Schlüsselwörter";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "Meinem Benutzernamen";
+"settings_messages_containing_display_name" = "Meinem Anzeigenamen";
+"settings_encrypted_group_messages" = "Verschlüsselten Gruppenchats";
+"settings_group_messages" = "Gruppenchats";
+"settings_encrypted_direct_messages" = "Verschlüsselten Direktnachrichten";
+"settings_direct_messages" = "Direktnachrichten";
+"settings_notify_me_for" = "Benachrichtige mich bei";
+"settings_mentions_and_keywords" = "Erwähnungen und Schlüsselwörter";
+"settings_confirm_media_size_description" = "Wenn dies aktiviert ist, wirst du beim Senden von Bildern und Videos gefragt, wie groß sie gesendet werden sollen.";
+"settings_confirm_media_size" = "Größe beim Senden bestätigen";
+"settings_notifications" = "BENACHRICHTIGUNGEN";
+"settings_mentions_and_keywords_encryption_notice" = "Auf deinem Mobilgerät wirst du keine Benachrichtigungen für Erwähnungen und Schlüsselwörter in verschlüsselten Räumen erhalten.";
+"version_check_modal_subtitle_supported" = "Wir haben daran gearbeitet Element zu verbessern um ein schnelleres und bereinigteres Erlebnis zu schaffen. Leider ist deine aktuelle iOS-Version mit einigen dieser Verbesserungen nicht kompatibel und wird daher nicht mehr unterstützt werden.\nWir empfehlen dir die Aktualisierung deines Betriebssystems um Element weiterhin vollumfänglich zu nutzen.";
+"version_check_modal_subtitle_deprecated" = "Wir haben daran gearbeitet Element zu verbessern um ein schnelleres und bereinigteres Erlebnis zu schaffen. Leider ist deine aktuelle iOS-Version mit einigen dieser Verbesserungen nicht kompatibel und wird daher nicht mehr unterstützt.\nWir empfehlen dir die Aktualisierung deines Betriebssystems um Element weiterhin vollumfänglich zu nutzen.";
+"version_check_modal_title_deprecated" = "Wir unterstützen iOS %@ nicht mehr";
+"settings_show_url_previews_description" = "Link-Vorschauen werden nur in unverschlüsselten Räumen angezeigt.";
+"settings_show_url_previews" = "Link-Vorschau anzeigen";
+"settings_sending_media" = "FOTOS UND VIDEOS VERSENDEN";
+"version_check_modal_title_supported" = "Wir stellen die Unterstützung für iOS %@ ein";
+"version_check_banner_subtitle_deprecated" = "Element wird für iOS %@ nicht weiter unterstützt. Um Element weiterhin vollumfänglich zu nutzen, empfehlen wir dir die Aktualisierung deiner iOS-Version.";
+"settings_default" = "Standardbenachrichtigungen";

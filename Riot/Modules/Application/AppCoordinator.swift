@@ -55,6 +55,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     private var mainMatrixSession: MXSession? {
         return self.userSessionsService.mainUserSession?.matrixSession
     }
+        
+    private var currentSpaceId: String?
   
     // MARK: Public
     
@@ -65,7 +67,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     init(router: RootRouterType, window: UIWindow) {
         self.rootRouter = router
         self.customSchemeURLParser = CustomSchemeURLParser()
-        self.userSessionsService = UserSessionsService()
+        self.userSessionsService = UserSessionsService.shared
         
         super.init()
         
@@ -75,6 +77,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     // MARK: - Public methods
     
     func start() {
+        self.setupLogger()
         self.setupTheme()
         
         if BuildSettings.enableSideMenu {
@@ -100,17 +103,23 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     }
         
     // MARK: - Private methods
+    private func setupLogger() {
+        UILog.configure(logger: MatrixSDKLogger.self)
+    }
     
     private func setupTheme() {
         ThemeService.shared().themeId = RiotSettings.shared.userInterfaceTheme
         if #available(iOS 14.0, *) {
-            guard let themeId = ThemeService.shared().themeIdentifier else {
+            // Set theme id from current theme.identifier, themeId can be nil.
+            if let themeId = ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) {
+                ThemePublisher.configure(themeId: themeId)
+            } else {
                 MXLog.error("[AppCoordinator] No theme id found to update ThemePublisher")
-                return
             }
-            ThemePublisher.configure(themeId: themeId)
+            
+            // Always republish theme change events, and again always getting the identifier from the theme.
             let themeIdPublisher = NotificationCenter.default.publisher(for: Notification.Name.themeServiceDidChangeTheme)
-                .compactMap({ _ in ThemeService.shared().themeIdentifier })
+                .compactMap({ _ in ThemeIdentifier(rawValue: ThemeService.shared().theme.identifier) })
                 .eraseToAnyPublisher()
 
             ThemePublisher.shared.republish(themeIdPublisher: themeIdPublisher)
@@ -141,7 +150,7 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     
     private func addSideMenu() {
         let appInfo = AppInfo.current
-        let coordinatorParameters = SideMenuCoordinatorParameters(userSessionsService: self.userSessionsService, appInfo: appInfo)
+        let coordinatorParameters = SideMenuCoordinatorParameters(appNavigator: self.appNavigator, userSessionsService: self.userSessionsService, appInfo: appInfo)
         
         let coordinator = SideMenuCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
@@ -180,6 +189,29 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         FLEXManager.shared.showExplorer()
         #endif
     }
+    
+    fileprivate func navigate(to destination: AppNavigatorDestination) {
+        switch destination {
+        case .homeSpace:
+            MXLog.verbose("Switch to home space")
+            self.navigateToSpace(with: nil)
+        case .space(let spaceId):
+            MXLog.verbose("Switch to space with id: \(spaceId)")
+            self.navigateToSpace(with: spaceId)
+        }
+    }
+    
+    private func navigateToSpace(with spaceId: String?) {
+        guard spaceId != self.currentSpaceId else {
+            MXLog.verbose("Space with id: \(String(describing: spaceId)) is already selected")
+            return
+        }
+        
+        self.currentSpaceId = spaceId
+        
+        // Reload split view with selected space id
+        self.splitViewCoordinator?.start(with: spaceId)
+    }
 }
 
 // MARK: - LegacyAppDelegateDelegate
@@ -211,6 +243,10 @@ extension AppCoordinator: LegacyAppDelegateDelegate {
     func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didRemove account: MXKAccount!) {
         self.userSessionsService.removeUserSession(relatedToAccount: account)
     }
+    
+    func legacyAppDelegate(_ legacyAppDelegate: LegacyAppDelegate!, didNavigateToSpaceWithId spaceId: String!) {
+        self.sideMenuCoordinator?.select(spaceWithId: spaceId)
+    }
 }
 
 // MARK: - SplitViewCoordinatorDelegate
@@ -232,6 +268,8 @@ extension AppCoordinator: SideMenuCoordinatorDelegate {
 fileprivate class AppNavigator: AppNavigatorProtocol {
 // swiftlint:enable private_over_fileprivate
     
+    // MARK: - Properties
+    
     private unowned let appCoordinator: AppCoordinator
     
     let alert: AlertPresentable
@@ -244,8 +282,16 @@ fileprivate class AppNavigator: AppNavigatorProtocol {
         return SideMenuPresenter(sideMenuCoordinator: sideMenuCoordinator)
     }()
     
+    // MARK: - Setup
+    
     init(appCoordinator: AppCoordinator) {
         self.appCoordinator = appCoordinator
         self.alert = AppAlertPresenter(legacyAppDelegate: appCoordinator.legacyAppDelegate)
+    }
+    
+    // MARK: - Public
+    
+    func navigate(to destination: AppNavigatorDestination) {
+        self.appCoordinator.navigate(to: destination)
     }
 }

@@ -1024,3 +1024,17 @@
 "room_event_action_reaction_show_all" = "すべてを見る";
 "room_event_action_edit" = "編集";
 "room_event_action_reply" = "返信";
+"device_verification_security_advice_emoji" = "絵文字の順番はもう一方のログインと一致しますか？";
+"key_verification_verify_sas_validate_action" = "一致します";
+"key_verification_verify_sas_cancel_action" = "一致しません";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "絵文字の比較";
+"device_verification_self_verify_alert_validate_action" = "検証";
+"device_verification_self_verify_alert_message" = "ログインを検証してください: %@";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "ログインしましたか？";

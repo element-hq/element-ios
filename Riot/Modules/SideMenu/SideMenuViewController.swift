@@ -29,8 +29,8 @@ final class SideMenuViewController: UIViewController {
     // MARK: - Properties
     
     // MARK: Outlets
-
-    @IBOutlet private weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var spaceListContainerView: UIView!
     
     // User info
     @IBOutlet private weak var userAvatarView: UserAvatarView!
@@ -103,7 +103,7 @@ final class SideMenuViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        self.view.backgroundColor = theme.colors.background
         
         self.userAvatarView.update(theme: theme)
         self.userDisplayNameLabel.textColor = theme.textPrimaryColor

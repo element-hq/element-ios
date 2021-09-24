@@ -26,7 +26,7 @@
 
 #import "MXRoom+Riot.h"
 
-@interface HomeViewController () <SecureBackupSetupCoordinatorBridgePresenterDelegate>
+@interface HomeViewController () <SecureBackupSetupCoordinatorBridgePresenterDelegate, SpaceMembersCoordinatorBridgePresenterDelegate>
 {
     RecentsDataSource *recentsDataSource;
     
@@ -47,6 +47,8 @@
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic, assign, readwrite) BOOL roomListDataReady;
+
+@property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
 
 @end
 
@@ -254,7 +256,72 @@
         [self cancelEditionMode:YES];
     }
     
-    [super onPlusButtonPressed];
+    if (recentsDataSource.currentSpace != nil)
+    {
+        [self showPlusMenuForSpace];
+    }
+    else
+    {
+        [super onPlusButtonPressed];
+    }
+}
+
+- (void)showPlusMenuForSpace
+{
+    __weak typeof(self) weakSelf = self;
+    
+    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+    
+    currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"spaces_explore_rooms", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+
+                                                           [self showRoomDirectory];
+                                                       }
+                                                       
+                                                   }]];
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                           
+                                                           self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+                                                           self.spaceMembersCoordinatorBridgePresenter.delegate = self;
+                                                           [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
+                                                       }
+                                                       
+                                                   }]];
+    
+    
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                       }
+                                                       
+                                                   }]];
+    
+    [currentAlert popoverPresentationController].sourceView = plusButtonImageView;
+    [currentAlert popoverPresentationController].sourceRect = plusButtonImageView.bounds;
+    
+    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
+    [self presentViewController:currentAlert animated:YES completion:nil];
 }
 
 - (void)cancelEditionMode:(BOOL)forceRefresh
@@ -562,7 +629,14 @@
         
         id<MXKRecentCellDataStoring> renderedCellData = (id<MXKRecentCellDataStoring>)roomCollectionViewCell.renderedCellData;
         
-        [self.delegate recentListViewController:self didSelectRoom:renderedCellData.roomSummary.roomId inMatrixSession:renderedCellData.roomSummary.room.mxSession];
+        if (renderedCellData.isSuggestedRoom)
+        {
+            [self.delegate recentListViewController:self didSelectSuggestedRoom:renderedCellData.spaceChildInfo];
+        }
+        else
+        {
+            [self.delegate recentListViewController:self didSelectRoom:renderedCellData.roomSummary.roomId inMatrixSession:renderedCellData.roomSummary.room.mxSession];
+        }
     }
     
     // Hide the keyboard when user select a room
@@ -861,7 +935,17 @@
     + recentsDataSource.peopleCellDataArray.count
     + recentsDataSource.conversationCellDataArray.count
     + recentsDataSource.lowPriorityCellDataArray.count
-    + recentsDataSource.serverNoticeCellDataArray.count;
+    + recentsDataSource.serverNoticeCellDataArray.count
+    + recentsDataSource.suggestedRoomCellDataArray.count;
+}
+
+#pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate
+
+- (void)spaceMembersCoordinatorBridgePresenterDelegateDidComplete:(SpaceMembersCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.spaceMembersCoordinatorBridgePresenter = nil;
+    }];
 }
 
 @end

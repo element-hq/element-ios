@@ -16,6 +16,7 @@
  */
 
 #import "RoomPreviewData.h"
+#import <MatrixSDK-Swift.h>
 
 @implementation RoomPreviewData
 
@@ -75,6 +76,21 @@
             // Consider the room aliases to define a default room name.
             _roomName = _roomAliases.firstObject;
         }
+    }
+    return self;
+}
+
+- (instancetype)initWithSpaceChildInfo:(MXSpaceChildInfo*)childInfo andSession:(MXSession*)mxSession
+{
+    self = [self init];
+    if (self)
+    {
+        _roomId = childInfo.childRoomId;
+        _roomName = childInfo.name;
+        _roomAvatarUrl = childInfo.avatarUrl;
+        _roomTopic = childInfo.topic;
+        _numJoinedMembers = childInfo.activeMemberCount;
+        _mxSession = mxSession;
     }
     return self;
 }

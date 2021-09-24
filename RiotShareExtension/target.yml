@@ -41,7 +41,6 @@ targets:
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Utils/AvatarGenerator.m
-    - path: ../Riot/Generated/InfoPlist.swift
     - path: ../Config/BuildSettings.swift
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXRoom+Riot.m

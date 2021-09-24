@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="58" id="KGk-i7-Jjw" customClass="SpaceListViewCell" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZK-rU-aCS">
+                        <rect key="frame" x="11" y="14" width="293" height="30"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lBS-QH-Kbp" customClass="SpaceAvatarView" customModule="Riot" customModuleProvider="target">
+                        <rect key="frame" x="18" y="11" width="32" height="32"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="oEn-qb-dCA"/>
+                            <constraint firstAttribute="width" secondItem="lBS-QH-Kbp" secondAttribute="height" multiplier="1:1" id="vue-Qr-wt6"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LHe-AQ-CSw" customClass="BadgeLabel" customModule="Riot" customModuleProvider="target">
+                        <rect key="frame" x="46" y="6" width="4.5" height="14.5"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VMB-P3-ogn">
+                        <rect key="frame" x="66" y="18.5" width="194" height="17"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JKR-aN-bur">
+                        <rect key="frame" x="268" y="13" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="WFW-cN-EM2"/>
+                            <constraint firstAttribute="height" constant="32" id="ri7-cn-S4Z"/>
+                        </constraints>
+                        <state key="normal" image="spaces_more"/>
+                        <connections>
+                            <action selector="moreActionWithSender:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Kk0-Lb-cGY"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="LHe-AQ-CSw" firstAttribute="centerY" secondItem="lBS-QH-Kbp" secondAttribute="top" constant="2" id="08y-Yf-CAf"/>
+                    <constraint firstAttribute="trailing" secondItem="JKR-aN-bur" secondAttribute="trailing" constant="20" id="DnB-DW-hgc"/>
+                    <constraint firstAttribute="bottom" secondItem="lBS-QH-Kbp" secondAttribute="bottom" constant="11" id="GCa-yL-d8S"/>
+                    <constraint firstItem="TZK-rU-aCS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="1" id="GDx-I8-LPX"/>
+                    <constraint firstItem="VMB-P3-ogn" firstAttribute="leading" secondItem="lBS-QH-Kbp" secondAttribute="trailing" constant="16" id="Jfh-Ex-s45"/>
+                    <constraint firstAttribute="bottom" secondItem="TZK-rU-aCS" secondAttribute="bottom" constant="1" id="O09-dX-GuR"/>
+                    <constraint firstAttribute="trailing" secondItem="TZK-rU-aCS" secondAttribute="trailing" constant="16" id="ST4-p9-7RB"/>
+                    <constraint firstItem="LHe-AQ-CSw" firstAttribute="centerX" secondItem="lBS-QH-Kbp" secondAttribute="trailing" constant="-2" id="Uj7-bX-Azm"/>
+                    <constraint firstItem="VMB-P3-ogn" firstAttribute="centerY" secondItem="lBS-QH-Kbp" secondAttribute="centerY" id="Vfj-Bt-ghR"/>
+                    <constraint firstItem="TZK-rU-aCS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="Xm8-aq-LMK"/>
+                    <constraint firstItem="lBS-QH-Kbp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="m8q-jc-lxH"/>
+                    <constraint firstItem="JKR-aN-bur" firstAttribute="leading" secondItem="VMB-P3-ogn" secondAttribute="trailing" constant="8" id="mqZ-uv-P44"/>
+                    <constraint firstItem="lBS-QH-Kbp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="zSD-gu-4Kd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <constraints>
+                <constraint firstItem="JKR-aN-bur" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="4XR-cr-agB"/>
+            </constraints>
+            <connections>
+                <outlet property="avatarView" destination="lBS-QH-Kbp" id="UYd-1N-Mn6"/>
+                <outlet property="badgeLabel" destination="LHe-AQ-CSw" id="4d6-ng-jPe"/>
+                <outlet property="moreButton" destination="JKR-aN-bur" id="ytc-WW-ew5"/>
+                <outlet property="selectionView" destination="TZK-rU-aCS" id="VCe-2o-h8G"/>
+                <outlet property="titleLabel" destination="VMB-P3-ogn" id="lDY-8e-Y8H"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="102.45535714285714"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="LHe-AQ-CSw">
+            <size key="intrinsicContentSize" width="4.5" height="14.5"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="spaces_more" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -22,10 +22,8 @@ extension UITableView {
     /// Returns safe area insetted separator inset. Should only be used when custom constraints on custom table view cells are being set according to separator insets.
     @objc var vc_separatorInset: UIEdgeInsets {
         var result = separatorInset
-        if #available(iOS 11.0, *) {
-            result.left -= self.safeAreaInsets.left
-            result.right -= self.safeAreaInsets.right
-        }
+        result.left -= self.safeAreaInsets.left
+        result.right -= self.safeAreaInsets.right
         return result
     }
     
@@ -59,6 +57,14 @@ extension UITableView {
             footerView.frame = headerFrame
             tableFooterView = footerView
         }
+    }
+
+    /// Checks a given index path exists in the table view
+    /// - Parameter indexPath: index path to check
+    /// - Returns: True if table view has the index path, otherwise false
+    @objc func vc_hasIndexPath(_ indexPath: IndexPath) -> Bool {
+        return numberOfSections > indexPath.section
+            && numberOfRows(inSection: indexPath.section) > indexPath.row
     }
 
 }

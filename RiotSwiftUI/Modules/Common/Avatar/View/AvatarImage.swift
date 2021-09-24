@@ -66,7 +66,7 @@ struct AvatarImage: View {
 
 @available(iOS 14.0, *)
 extension AvatarImage {
-    init(avatarData: AvatarInputType, size: AvatarSize) {
+    init(avatarData: AvatarInputProtocol, size: AvatarSize) {
         self.init(
             mxContentUri: avatarData.mxContentUri,
             matrixItemId: avatarData.matrixItemId,

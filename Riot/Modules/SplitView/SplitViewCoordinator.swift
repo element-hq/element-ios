@@ -45,6 +45,9 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
     private weak var tabBarCoordinator: TabBarCoordinatorType?
     
+    // Indicate if coordinator has been started once
+    private var hasStartedOnce: Bool = false
+    
     // MARK: Public
     
     var childCoordinators: [Coordinator] = []
@@ -64,24 +67,39 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     // MARK: - Public methods
     
     func start() {
-        self.splitViewController.delegate = self
+        self.start(with: nil)
+    }
+    
+    func start(with spaceId: String?) {
         
-        let tabBarCoordinator = self.createTabBarCoordinator()
-        tabBarCoordinator.delegate = self
-        tabBarCoordinator.splitViewMasterPresentableDelegate = self
-        tabBarCoordinator.start()
-        
-        let detailNavigationController = self.createDetailNavigationController()
-        
-        self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
-                
-        self.add(childCoordinator: tabBarCoordinator)
-        
-        self.tabBarCoordinator = tabBarCoordinator
-        self.masterPresentable = tabBarCoordinator
-        self.detailNavigationController = detailNavigationController
-        
-        self.parameters.router.setRootModule(self.splitViewController)
+        if hasStartedOnce == false {
+            self.hasStartedOnce = true
+            
+            self.splitViewController.delegate = self
+            
+            let tabBarCoordinator = self.createTabBarCoordinator()
+            tabBarCoordinator.delegate = self
+            tabBarCoordinator.splitViewMasterPresentableDelegate = self
+            tabBarCoordinator.start(with: spaceId)
+            
+            let detailNavigationController = self.createDetailNavigationController()
+            
+            self.splitViewController.viewControllers = [tabBarCoordinator.toPresentable(), detailNavigationController]
+                    
+            self.add(childCoordinator: tabBarCoordinator)
+            
+            self.tabBarCoordinator = tabBarCoordinator
+            self.masterPresentable = tabBarCoordinator
+            self.detailNavigationController = detailNavigationController
+            
+            self.parameters.router.setRootModule(self.splitViewController)
+        } else {
+            // Pop to home screen when selecting a new space
+            self.popToHome(animated: true) {
+                // Update tabBarCoordinator selected space
+                self.tabBarCoordinator?.start(with: spaceId)
+            }
+        }
     }
     
     func toPresentable() -> UIViewController {        
