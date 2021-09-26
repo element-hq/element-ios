@@ -15,7 +15,7 @@
 "warning" = "Warnung";
 "remove" = "Entferne";
 "start" = "Starte";
-"create" = "Erstelle";
+"create" = "Erstellen";
 "on" = "An";
 "off" = "Aus";
 "join" = "Beitreten";
@@ -1479,3 +1479,4 @@
 "leave_space_only_action" = "Keine Räume verlassen";
 "spaces_left_panel_title" = "Spaces";
 "room_recents_suggested_rooms_section" = "VORGESCHLAGENE RÄUME";
+"spaces_home_space_title" = "Start";
