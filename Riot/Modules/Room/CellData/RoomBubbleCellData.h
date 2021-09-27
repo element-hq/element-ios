@@ -110,6 +110,14 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
  */
 - (NSInteger)firstVisibleComponentIndex;
 
+/**
+ Returns the bubble component for the specified event ID, but only if that component
+ has detected a link in the event's body. Otherwise returns `nil`.
+ 
+ This will also return `nil` If URL previews have been disabled by the user.
+ */
+- (MXKRoomBubbleComponent *)bubbleComponentWithLinkForEventId:(NSString *)eventId;
+
 #pragma mark - Show all reactions
 
 - (BOOL)showAllReactionsForEvent:(NSString*)eventId;
