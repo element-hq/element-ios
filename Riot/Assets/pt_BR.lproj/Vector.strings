@@ -186,7 +186,7 @@
 "room_participants_action_unban" = "Desbanir";
 "room_participants_action_ignore" = "Esconder todas as mensagens desta(e) usuária(o)";
 "room_participants_action_unignore" = "Mostrar todas as mensagens desta(e) usuária(o)";
-"room_participants_invite_malformed_id" = "ID malformado. Deveria ser um endereço de email ou uma ID Matrix como '@partlocal:dominio'";
+"room_participants_invite_malformed_id" = "ID malformada. Deveria ser um endereço de email ou uma ID Matrix como '@partlocal:dominio'";
 "room_participants_action_set_default_power_level" = "Resettar para usuária(o) normal";
 "room_participants_action_set_moderator" = "Fazer moderador(a)";
 "room_participants_action_set_admin" = "Fazer admin";
