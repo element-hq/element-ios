@@ -241,6 +241,29 @@ UINavigationControllerDelegate
  */
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL;
 
+/**
+ Extract params from the URL fragment part (after '#') of a vector.im Universal link:
+ 
+ The fragment can contain a '?'. So there are two kinds of parameters: path params and query params.
+ It is in the form of /[pathParam1]/[pathParam2]?[queryParam1Key]=[queryParam1Value]&[queryParam2Key]=[queryParam2Value]
+ @note this method should be private but is used by RoomViewController. This should be moved to a univresal link parser class
+
+ @param fragment the fragment to parse.
+ @param outPathParams the decoded path params.
+ @param outQueryParams the decoded query params. If there is no query params, it will be nil.
+ */
+- (void)parseUniversalLinkFragment:(NSString*)fragment outPathParams:(NSArray<NSString*> **)outPathParams outQueryParams:(NSMutableDictionary **)outQueryParams;
+
+/**
+ Open the dedicated space with the given ID.
+ 
+ This method will open only joined or invited spaces.
+ @note this method is temporary and should be moved to a dedicated coordinator
+ 
+ @param spaceId ID of the space.
+ */
+- (void)openSpaceWithId:(NSString*)spaceId;
+
 #pragma mark - App version management
 
 /**
@@ -270,5 +293,7 @@ UINavigationControllerDelegate
 - (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didAddAccount:(MXKAccount*)account;
 
 - (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didRemoveAccount:(MXKAccount*)account;
+
+- (void)legacyAppDelegate:(LegacyAppDelegate*)legacyAppDelegate didNavigateToSpaceWithId:(NSString*)spaceId;
 
 @end

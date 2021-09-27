@@ -71,11 +71,12 @@ final class SideMenuViewModel: SideMenuViewModelType {
     }
     
     private func userAvatarViewData(from mxSession: MXSession) -> UserAvatarViewData? {
-        guard let userId = mxSession.myUserId, let mediaManager = mxSession.mediaManager else {
+        guard let userId = mxSession.myUserId, let mediaManager = mxSession.mediaManager, let myUser = mxSession.myUser else {
             return nil
         }
-        let userDisplayName = mxSession.myUser.displayname
-        let avatarUrl = mxSession.myUser.avatarUrl
+        
+        let userDisplayName = myUser.displayname
+        let avatarUrl = myUser.avatarUrl
         
         return UserAvatarViewData(userId: userId,
                                   displayName: userDisplayName,
@@ -103,7 +104,8 @@ final class SideMenuViewModel: SideMenuViewModelType {
             .feedback
         ]
         
-        let appVersion = self.appInfo.appVersion?.bundleShortVersion
+        // Hide app version
+        let appVersion: String? = nil
         
         let viewData = SideMenuViewData(userAvatarViewData: userAvatarViewData, sideMenuItems: sideMenuItems, appVersion: appVersion)
         

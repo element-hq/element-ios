@@ -1,1 +1,0 @@
-Using the bundle display name as the app name in localizable .strings files. Exposing generated .strings and info.plist members to Objective-C.

@@ -1405,3 +1405,8 @@
 "settings_mentions_and_keywords" = "Omnämnanden och nyckelord";
 "settings_default" = "Förvalda aviseringar";
 "settings_notifications" = "AVISERINGAR";
+"settings_show_url_previews_description" = "Förhandsgranskningar kommer bara att visas i okrypterade rum.";
+"settings_show_url_previews" = "Visa inbäddade URL-förhandsgranskningar";
+"settings_confirm_media_size_description" = "När detta är på så kommer du få bekräfta vilken storlek bilder och videor kommer att skickas som.";
+"settings_confirm_media_size" = "Bekräfta storlek vid sparning";
+"settings_sending_media" = "SÄNDNING AV BILDER OCH VIDEO";

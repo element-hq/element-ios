@@ -1419,3 +1419,39 @@
 "voice_message_lock_screen_placeholder" = "Голосовое сообщение";
 "event_formatter_call_has_ended_with_time" = "Вызов закончен • %@";
 "settings_notifications" = "УВЕДОМЛЕНИЯ";
+"version_check_modal_action_title_deprecated" = "Узнайте, как";
+"version_check_modal_subtitle_deprecated" = "Мы работали над улучшением Element для более быстрой и совершенной работы. К сожалению, ваша текущая версия iOS не совместима с некоторыми из этих исправлений и больше не будет поддерживаться.\nМы советуем вам обновить свою операционную систему, чтобы использовать Element в полной мере.";
+"version_check_modal_title_deprecated" = "Мы больше не поддерживаем iOS %@";
+"version_check_modal_action_title_supported" = "Понятно";
+"version_check_modal_subtitle_supported" = "Мы работали над улучшением Element для более быстрой и совершенной работы. К сожалению, ваша текущая версия iOS не совместима с некоторыми из этих исправлений и больше не будет поддерживаться.\nМы советуем вам обновить свою операционную систему, чтобы использовать Element в полной мере.";
+"version_check_modal_title_supported" = "Мы прекращаем поддержку iOS %@";
+"version_check_banner_subtitle_deprecated" = "Мы больше не поддерживаем Element на iOS %@. Чтобы продолжать использовать Element в полной мере, мы советуем вам обновить версию iOS.";
+"version_check_banner_title_deprecated" = "Мы больше не поддерживаем iOS %@";
+"version_check_banner_subtitle_supported" = "В ближайшее время мы прекращаем поддержку Element на iOS %@. Чтобы продолжать использовать Element в полной мере, мы советуем вам обновить вашу версию iOS.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Мы прекращаем поддержку iOS %@";
+"settings_show_url_previews_description" = "Предварительный просмотр будет осуществляться только в незашифрованных комнатах.";
+"settings_show_url_previews" = "Показывать встроенные предварительные просмотры URL-адресов";
+"settings_mentions_and_keywords_encryption_notice" = "Вы не будете получать уведомления об упоминаниях и ключевых словах в зашифрованных комнатах на мобильных устройствах.";
+"settings_new_keyword" = "Добавить новое ключевое слово";
+"settings_your_keywords" = "Ваши ключевые слова";
+"settings_room_upgrades" = "Обновлениях комнаты";
+"settings_messages_by_a_bot" = "Сообщениях от бота";
+"settings_call_invitations" = "Вызовы";
+"settings_room_invitations" = "Приглашения в комнату";
+"settings_messages_containing_keywords" = "Ключевые слова";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "Мое имя пользователя";
+"settings_messages_containing_display_name" = "Мое отображаемое имя";
+"settings_encrypted_group_messages" = "Зашифрованных групповых сообщениях";
+"settings_group_messages" = "Групповых сообщениях";
+"settings_encrypted_direct_messages" = "Зашифрованных диалогах";
+"settings_direct_messages" = "Диалогах";
+"settings_notify_me_for" = "Уведомлять меня о";
+"settings_mentions_and_keywords" = "Упоминания и ключевые слова";
+"settings_default" = "Уведомления по умолчанию";
+"settings_confirm_media_size" = "Подтверждать размер при отправке";
+"settings_confirm_media_size_description" = "Когда эта функция включена, вам будет предложено подтвердить, в каком размере будут отправляться изображения и видео.";
+"settings_sending_media" = "ОТПРАВКА ИЗОБРАЖЕНИЙ И ВИДЕО";

@@ -25,4 +25,8 @@ struct UserAvatarViewData: AvatarViewDataProtocol {
     var matrixItemId: String {
         return userId
     }
+    
+    var fallbackImage: AvatarFallbackImage? {
+        return .matrixItem(matrixItemId, displayName)
+    }
 }

@@ -50,7 +50,12 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let masterNavigationController: UINavigationController
     
+    private var currentSpaceId: String?
     private var homeViewControllerWrapperViewController: HomeViewControllerWithBannerWrapperViewController?
+    
+    private var currentMatrixSession: MXSession? {
+        return parameters.userSessionsService.mainUserSession?.matrixSession
+    }
     
     // MARK: Public
 
@@ -69,26 +74,40 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let masterNavigationController = RiotNavigationController()
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
-    }    
+    }
     
     // MARK: - Public methods
     
     func start() {
-        let masterTabBarController = self.createMasterTabBarController()
-        masterTabBarController.masterTabBarDelegate = self
-        self.masterTabBarController = masterTabBarController
-        self.navigationRouter.setRootModule(masterTabBarController)
+        self.start(with: nil)
+    }
         
-        // Add existing Matrix sessions if any
-        for userSession in self.parameters.userSessionsService.userSessions {
-            self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
-        }
+    func start(with spaceId: String?) {
+        self.currentSpaceId = spaceId
         
-        if BuildSettings.enableSideMenu {
-            self.setupSideMenuGestures()
+        // If start has been done once do setup view controllers again
+        if self.masterTabBarController == nil {
+            let masterTabBarController = self.createMasterTabBarController()
+            masterTabBarController.masterTabBarDelegate = self
+            self.masterTabBarController = masterTabBarController
+            self.navigationRouter.setRootModule(masterTabBarController)
+            
+            // Add existing Matrix sessions if any
+            for userSession in self.parameters.userSessionsService.userSessions {
+                self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+            }
+            
+            if BuildSettings.enableSideMenu {
+                self.setupSideMenuGestures()
+            }
+            
+            self.registerUserSessionsServiceNotifications()
         }
+                
+        self.updateMasterTabBarController(with: spaceId)
         
         self.registerUserSessionsServiceNotifications()
+        self.registerSessionChange()
         
         if let homeViewController = homeViewControllerWrapperViewController {
             let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
@@ -115,7 +134,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             popToHomeViewControllerCompletion = completion
             masterNavigationController.delegate = self
 
-            masterNavigationController.popToViewController(masterTabBarController, animated: animated)
+            if masterNavigationController.viewControllers.last == masterTabBarController {
+                self.navigationController(masterNavigationController, didShow: masterTabBarController, animated: false)
+            } else {
+                masterNavigationController.popToViewController(masterTabBarController, animated: animated)
+            }
         } else {
             // Select the Home tab
             masterTabBarController.selectedIndex = Int(TABBAR_HOME_INDEX)
@@ -171,32 +194,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem
         
-        var viewControllers: [UIViewController] = []
-                
-        let homeViewController = self.createHomeViewController()
-        viewControllers.append(homeViewController)
-        
-        if RiotSettings.shared.homeScreenShowFavouritesTab {
-            let favouritesViewController = self.createFavouritesViewController()
-            viewControllers.append(favouritesViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowPeopleTab {
-            let peopleViewController = self.createPeopleViewController()
-            viewControllers.append(peopleViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowRoomsTab {
-            let roomsViewController = self.createRoomsViewController()
-            viewControllers.append(roomsViewController)
-        }
-        
-        if RiotSettings.shared.homeScreenShowCommunitiesTab {
-            let groupsViewController = self.createGroupsViewController()
-            viewControllers.append(groupsViewController)
-        }
-        
-        tabBarController.updateViewControllers(viewControllers)
+        self.updateTabControllers(for: tabBarController, showCommunities: true)
         
         return tabBarController
     }
@@ -263,6 +261,41 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         gesture.delegate = self
     }
     
+    private func updateMasterTabBarController(with spaceId: String?) {
+                
+        self.updateTabControllers(for: self.masterTabBarController, showCommunities: spaceId == nil)
+        self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: self.currentMatrixSession)
+    }
+    
+    private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
+        var viewControllers: [UIViewController] = []
+                
+        let homeViewController = self.createHomeViewController()
+        viewControllers.append(homeViewController)
+        
+        if RiotSettings.shared.homeScreenShowFavouritesTab {
+            let favouritesViewController = self.createFavouritesViewController()
+            viewControllers.append(favouritesViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowPeopleTab {
+            let peopleViewController = self.createPeopleViewController()
+            viewControllers.append(peopleViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowRoomsTab {
+            let roomsViewController = self.createRoomsViewController()
+            viewControllers.append(roomsViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
+            let groupsViewController = self.createGroupsViewController()
+            viewControllers.append(groupsViewController)
+        }
+        
+        tabBarController.updateViewControllers(viewControllers)
+    }
+    
     // MARK: Navigation
     
     private func showSideMenu() {
@@ -317,6 +350,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         
         self.addMatrixSessionToMasterTabBarController(userSession.matrixSession)
+        
+        if let matrixSession = self.currentMatrixSession, matrixSession.groups().isEmpty {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
     
     @objc private func userSessionsServiceWillRemoveUserSession(_ notification: Notification) {
@@ -337,6 +374,16 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func removeMatrixSessionFromMasterTabBarController(_ matrixSession: MXSession) {
         MXLog.debug("[TabBarCoordinator] masterTabBarController.removeMatrixSession")
         self.masterTabBarController.removeMatrixSession(matrixSession)
+    }
+    
+    private func registerSessionChange() {
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionDidSync(_:)), name: NSNotification.Name.mxSessionDidSync, object: nil)
+    }
+    
+    @objc private func sessionDidSync(_ notification: Notification) {
+        if self.currentMatrixSession?.groups().isEmpty ?? true {
+            self.masterTabBarController.removeTab(at: .groups)
+        }
     }
 }
 
@@ -379,6 +426,16 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, wantsToDisplayDetailViewController detailViewController: UIViewController!) {
         
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: detailViewController)
+    }
+    
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
+        let image = displayNotification ? Asset.Images.sideMenuNotifIcon.image : Asset.Images.sideMenuIcon.image
+        let sideMenuBarButtonItem: MXKBarButtonItem = MXKBarButtonItem(image: image, style: .plain) { [weak self] in
+            self?.showSideMenu()
+        }
+        sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
+        
+        self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
     }
 }
 
