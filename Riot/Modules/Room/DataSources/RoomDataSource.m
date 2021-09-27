@@ -343,7 +343,7 @@ const CGFloat kTypingCellHeight = 24;
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.showURLPreview) && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -369,14 +369,13 @@ const CGFloat kTypingCellHeight = 24;
                         continue;
                     }
                     
-                    NSURL *link = component.link;
                     URLPreviewView *urlPreviewView;
                     
                     // Show a URL preview if the component has a link that should be previewed.
-                    if (link && RiotSettings.shared.roomScreenShowsURLPreviews && cellData.showURLPreview)
+                    if (RiotSettings.shared.roomScreenShowsURLPreviews && component.showURLPreview)
                     {
                         urlPreviewView = [URLPreviewView instantiate];
-                        urlPreviewView.preview = cellData.urlPreviewData;
+                        urlPreviewView.preview = component.urlPreviewData;
                         urlPreviewView.delegate = self;
                         
                         [temporaryViews addObject:urlPreviewView];
@@ -1220,37 +1219,48 @@ const CGFloat kTypingCellHeight = 24;
     // Use the link stored in the bubble component when opening the URL as we only
     // store the sanitized URL in the preview data which may differ to the message content.
     RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
-    
     if (!cellData)
     {
         return;
     }
     
-    MXKRoomBubbleComponent *lastComponent = cellData.bubbleComponents.lastObject;
-    
-    if (!lastComponent)
+    NSInteger index = [cellData bubbleComponentIndexForEventId:eventID];
+    if (index == NSNotFound)
     {
         return;
     }
     
-    [UIApplication.sharedApplication vc_open:lastComponent.link completionHandler:nil];
+    MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
+    
+    [UIApplication.sharedApplication vc_open:component.link completionHandler:nil];
 }
 
 - (void)didCloseURLPreviewView:(URLPreviewView *)previewView for:(NSString *)eventID in:(NSString *)roomID
 {
     RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
-    
     if (!cellData)
     {
         return;
     }
     
+    NSInteger index = [cellData bubbleComponentIndexForEventId:eventID];
+    if (index == NSNotFound)
+    {
+        return;
+    }
+    
+    MXKRoomBubbleComponent *component = cellData.bubbleComponents[index];
+    
     // Remember that the user closed the preview so it isn't shown again.
     [URLPreviewService.shared closePreviewFor:eventID in:roomID];
     
     // Hide the preview, remove its data and refresh the cells.
-    cellData.showURLPreview = NO;
-    cellData.urlPreviewData = nil;
+    component.showURLPreview = NO;
+    component.urlPreviewData = nil;
+    
+    [cellData invalidateTextLayout];
+    [cellData setNeedsUpdateAdditionalContentHeight];
+    
     [self refreshCells];
 }
 

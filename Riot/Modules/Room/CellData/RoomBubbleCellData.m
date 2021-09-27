@@ -180,11 +180,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         // Indicate that the text message layout should be recomputed.
         [self invalidateTextLayout];
         
-        // Load a url preview if a link was detected
-        if (self.hasLink)
-        {
-            [self loadURLPreview];
-        }
+        // Load a url preview if necessary.
+        [self refreshURLPreviewForEventId:event.eventId];
     }
     
     return self;
@@ -194,11 +191,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     NSUInteger retVal = [super updateEvent:eventId withEvent:event];
 
-    // Update any URL preview data too.
-    if (self.hasLink)
-    {
-        [self loadURLPreview];
-    }
+    // Update any URL preview data as necessary.
+    [self refreshURLPreviewForEventId:event.eventId];
 
     return retVal;
 }
@@ -252,14 +246,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }
     
     return attributedTextMessage;
-}
-
-- (BOOL)hasLink
-{
-    // Only check the last bubble component as -addEvent:andRoomState: will break up
-    // the data that way, to always show a URL preview at the bottom of the cell.
-    MXKRoomBubbleComponent *lastComponent = bubbleComponents.lastObject;
-    return (lastComponent && lastComponent.link);
 }
 
 - (BOOL)hasNoDisplay
@@ -598,24 +584,13 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (CGFloat)urlPreviewHeightForEventId:(NSString*)eventId
 {
-    if (!RiotSettings.shared.roomScreenShowsURLPreviews || !self.showURLPreview)
+    MXKRoomBubbleComponent *component = [self bubbleComponentWithLinkForEventId:eventId];
+    if (!component.showURLPreview)
     {
         return 0;
     }
     
-    NSInteger index = [self bubbleComponentIndexForEventId:eventId];
-    if (index >= bubbleComponents.count)
-    {
-        return 0;
-    }
-    
-    MXKRoomBubbleComponent *component = self.bubbleComponents[index];
-    if (!component.link)
-    {
-        return 0;
-    }
-    
-    return RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:self.urlPreviewData
+    return RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:component.urlPreviewData
                                                                                        fitting:self.maxTextViewWidth];
 }
 
@@ -748,6 +723,28 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     return selectedComponentIndex;
 }
 
+- (MXKRoomBubbleComponent *)bubbleComponentWithLinkForEventId:(NSString *)eventId
+{
+    if (!RiotSettings.shared.roomScreenShowsURLPreviews)
+    {
+        return nil;
+    }
+    
+    NSInteger index = [self bubbleComponentIndexForEventId:eventId];
+    if (index == NSNotFound)
+    {
+        return nil;
+    }
+    
+    MXKRoomBubbleComponent *component = self.bubbleComponents[index];
+    if (!component.link)
+    {
+        return nil;
+    }
+    
+    return component;
+}
+
 #pragma mark -
 
 + (NSAttributedString *)timestampVerticalWhitespace
@@ -801,19 +798,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     BOOL shouldAddEvent = YES;
     
-    // For unencrypted rooms, don't allow any events to be added
-    // after a bubble component that contains a link so than any URL
-    // preview is for the last bubble component in the cell.
-    if (!self.isEncryptedRoom && self.hasLink && self.bubbleComponents.lastObject)
-    {
-        MXKRoomBubbleComponent *lastComponent = self.bubbleComponents.lastObject;
-        
-        if (event.originServerTs > lastComponent.event.originServerTs)
-        {
-            shouldAddEvent = NO;
-        }
-    }
-    
     switch (self.tag)
     {
         case RoomBubbleCellDataTagKeyVerificationNoDisplay:
@@ -857,27 +841,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
                     shouldAddEvent = NO;
-                    break;
                 }
-                
-                // If the message contains a link and comes before this cell data, don't add it to
-                // ensure that a URL preview is only shown for the last component on some new cell data.
-                if (!self.isEncryptedRoom && self.bubbleComponents.firstObject)
-                {
-                    MXKRoomBubbleComponent *firstComponent = self.bubbleComponents.firstObject;
-                    
-                    if (event.originServerTs < firstComponent.event.originServerTs)
-                    {
-                        NSString *messageBody = event.content[@"body"];
-                        if (messageBody && [messageBody mxk_firstURLDetected])
-                        {
-                            shouldAddEvent = NO;
-                        }
-                        break;
-                    }
-                }
-            }
                 break;
+            }
             case MXEventTypeKeyVerificationStart:
             case MXEventTypeKeyVerificationAccept:
             case MXEventTypeKeyVerificationKey:
@@ -928,14 +894,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     
     if (shouldAddEvent)
     {
-        BOOL hadLink = self.hasLink;
-        
         shouldAddEvent = [super addEvent:event andRoomState:roomState];
         
-        // If the cell data now contains a link, set the preview data.
-        if (shouldAddEvent && self.hasLink && !hadLink)
+        // If the event was added, load any url preview data if necessary.
+        if (shouldAddEvent)
         {
-            [self loadURLPreview];
+            [self refreshURLPreviewForEventId:event.eventId];
         }
     }
     
@@ -1106,45 +1070,45 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 #pragma mark - URL Previews
 
-- (void)loadURLPreview
+- (void)refreshURLPreviewForEventId:(NSString *)eventId
 {
-    // Get the last bubble component as that contains the link.
-    MXKRoomBubbleComponent *lastComponent = bubbleComponents.lastObject;
-    if (!lastComponent || !lastComponent.link)
+    // Get the event's component, but only if it has a link.
+    MXKRoomBubbleComponent *component = [self bubbleComponentWithLinkForEventId:eventId];
+    if (!component)
     {
         return;
     }
     
     // Don't show the preview if it has been dismissed already.
-    self.showURLPreview = ![URLPreviewService.shared hasClosedPreviewFrom:lastComponent.event];
-    if (!self.showURLPreview)
+    component.showURLPreview = ![URLPreviewService.shared hasClosedPreviewFrom:component.event];
+    if (!component.showURLPreview)
     {
         return;
     }
     
-    // If there is existing preview data, the message has been edited
-    // Clear the data to show the loading state when the preview isn't cached
-    if (self.urlPreviewData)
+    // If there is existing preview data, the message has been edited.
+    // Clear the data to show the loading state when the preview isn't cached.
+    if (component.urlPreviewData)
     {
-        self.urlPreviewData = nil;
+        component.urlPreviewData = nil;
     }
     
     // Set the preview data.
     MXWeakify(self);
     
     NSDictionary<NSString *, NSString*> *userInfo = @{
-        @"eventId": lastComponent.event.eventId,
+        @"eventId": eventId,
         @"roomId": self.roomId
     };
     
-    [URLPreviewService.shared previewFor:lastComponent.link
-                                     and:lastComponent.event
+    [URLPreviewService.shared previewFor:component.link
+                                     and:component.event
                                     with:self.mxSession
                                  success:^(URLPreviewData * _Nonnull urlPreviewData) {
         MXStrongifyAndReturnIfNil(self);
         
         // Update the preview data, indicate that the text message layout needs refreshing and send a notification for refresh
-        self.urlPreviewData = urlPreviewData;
+        component.urlPreviewData = urlPreviewData;
         [self invalidateTextLayout];
         [self setNeedsUpdateAdditionalContentHeight];
         
@@ -1156,7 +1120,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         MXLogDebug(@"[RoomBubbleCellData] Failed to get url preview")
         
         // Don't show a preview and send a notification for refresh
-        self.showURLPreview = NO;
+        component.showURLPreview = NO;
+        [self invalidateTextLayout];
+        [self setNeedsUpdateAdditionalContentHeight];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];
