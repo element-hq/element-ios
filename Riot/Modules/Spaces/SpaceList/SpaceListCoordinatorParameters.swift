@@ -17,9 +17,9 @@
 import Foundation
 
 class SpaceListCoordinatorParameters {
-    let session: MXSession
+    let userSessionsService: UserSessionsService
     
-    init(session: MXSession) {
-        self.session = session
+    init(userSessionsService: UserSessionsService) {
+        self.userSessionsService = userSessionsService
     }
 }
