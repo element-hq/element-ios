@@ -1041,25 +1041,25 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     switch (attachmentType)
     {
         case MXKAttachmentTypeImage:
-            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_image", @"Vector", nil);
+            accessibilityLabel = [VectorL10n mediaTypeAccessibilityImage];
             break;
         case MXKAttachmentTypeAudio:
-            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_audio", @"Vector", nil);
+            accessibilityLabel = [VectorL10n mediaTypeAccessibilityAudio];
             break;
         case MXKAttachmentTypeVoiceMessage:
-            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_audio", @"Vector", nil);
+            accessibilityLabel = [VectorL10n mediaTypeAccessibilityAudio];
             break;
         case MXKAttachmentTypeVideo:
-            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_video", @"Vector", nil);
+            accessibilityLabel = [VectorL10n mediaTypeAccessibilityVideo];
             break;
         case MXKAttachmentTypeLocation:
-            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_location", @"Vector", nil);
+            accessibilityLabel = [VectorL10n mediaTypeAccessibilityLocation];
             break;
         case MXKAttachmentTypeFile:
-            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_file", @"Vector", nil);
+            accessibilityLabel = [VectorL10n mediaTypeAccessibilityFile];
             break;
         case MXKAttachmentTypeSticker:
-            accessibilityLabel = NSLocalizedStringFromTable(@"media_type_accessibility_sticker", @"Vector", nil);
+            accessibilityLabel = [VectorL10n mediaTypeAccessibilitySticker];
             break;
         default:
             accessibilityLabel = @"";

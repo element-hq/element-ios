@@ -44,7 +44,7 @@
         mxSession = theMXSession;
         roomId = theRoomId;
 
-        _alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"widget_picker_title", @"Vector", nil)
+        _alertController = [UIAlertController alertControllerWithTitle:[VectorL10n widgetPickerTitle]
                                                                message:nil
                                                         preferredStyle:UIAlertControllerStyleAlert];
     }
@@ -80,7 +80,7 @@
         // Link to the integration manager
         if (RiotSettings.shared.roomInfoScreenShowIntegrations)
         {
-            alertAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_picker_manage_integrations", @"Vector", nil)
+            alertAction = [UIAlertAction actionWithTitle:[VectorL10n widgetPickerManageIntegrations]
                                                    style:UIAlertActionStyleDefault
                                                  handler:^(UIAlertAction * _Nonnull action)
                            {
@@ -95,7 +95,7 @@
         }
 
         // Cancel
-        alertAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        alertAction = [UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                style:UIAlertActionStyleCancel
                                              handler:nil];
         [self.alertController addAction:alertAction];

@@ -126,11 +126,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.title = NSLocalizedStringFromTable(@"media_picker_title", @"Vector", nil);
+    self.title = [VectorL10n mediaPickerTitle];
     
     MXWeakify(self);
     
-    UIBarButtonItem *closeBarButtonItem = [[MXKBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIBarButtonItemStylePlain action:^{
+    UIBarButtonItem *closeBarButtonItem = [[MXKBarButtonItem alloc] initWithTitle:[VectorL10n cancel] style:UIBarButtonItemStylePlain action:^{
         MXStrongifyAndReturnIfNil(self);
         [self.delegate mediaPickerControllerDidCancel:self];
     }];
@@ -267,13 +267,13 @@
 {
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     
-    NSString *message = [NSString stringWithFormat:NSLocalizedStringFromTable(@"photo_library_access_not_granted", @"Vector", nil), appDisplayName];
+    NSString *message = [VectorL10n photoLibraryAccessNotGranted:appDisplayName];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"media_picker_title", @"Vector", nil)
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n mediaPickerTitle]
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleCancel
                                             handler:^(UIAlertAction * action) {
                                                 [self.delegate mediaPickerControllerDidCancel:self];
@@ -281,7 +281,7 @@
     
     NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n settings]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [UIApplication.sharedApplication openURL:settingsURL options:@{} completionHandler:^(BOOL success) {
@@ -656,7 +656,7 @@
     validationView.stretchable = YES;
     
     // the user validates the image
-    [validationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // Dismiss the image view
@@ -666,7 +666,7 @@
     }];
     
     // the user wants to use an other image
-    [validationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setLeftButtonTitle:[MatrixKitL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // dismiss the image view
@@ -695,7 +695,7 @@
     validationView.stretchable = NO;
     
     // the user validates the image
-    [validationView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // Dismiss the image view
@@ -705,7 +705,7 @@
     }];
     
     // the user wants to use an other image
-    [validationView setLeftButtonTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+    [validationView setLeftButtonTitle:[MatrixKitL10n cancel] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         
         // dismiss the image view

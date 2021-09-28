@@ -336,7 +336,7 @@
     }
     else if (contact.isThirdPartyInvite)
     {
-        presenceText =  NSLocalizedStringFromTable(@"room_participants_offline", @"Vector", nil);
+        presenceText =  [VectorL10n roomParticipantsOffline];
     }
     
     if (presenceText.length)

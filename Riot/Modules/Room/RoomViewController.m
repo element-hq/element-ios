@@ -441,7 +441,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.errorPresenter = [MXKErrorAlertPresentation new];
     self.roomMessageURLParser = [RoomMessageURLParser new];
     
-    self.jumpToLastUnreadLabel.text = NSLocalizedStringFromTable(@"room_jump_to_first_unread", @"Vector", nil);
+    self.jumpToLastUnreadLabel.text = [VectorL10n roomJumpToFirstUnread];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -1463,7 +1463,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(onVideoCallPressed:)];
-    item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
+    item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
     
     return item;
 }
@@ -1603,7 +1603,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(onVoiceCallPressed:)];
-                    itemVoice.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_call", @"Vector", nil);
+                    itemVoice.accessibilityLabel = [VectorL10n roomAccessibilityCall];
                     itemVoice.enabled = !self.isCallActive;
                     [rightBarButtonItems addObject:itemVoice];
                     
@@ -1630,14 +1630,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                             CallTileActionButton *button = [CallTileActionButton new];
                             [button setImage:[UIImage imageNamed:@"call_video_icon"]
                                     forState:UIControlStateNormal];
-                            [button setTitle:NSLocalizedStringFromTable(@"room_join_group_call", @"Vector", nil)
+                            [button setTitle:[VectorL10n roomJoinGroupCall]
                                     forState:UIControlStateNormal];
                             [button addTarget:self
                                        action:@selector(onVideoCallPressed:)
                              forControlEvents:UIControlEventTouchUpInside];
                             button.contentEdgeInsets = UIEdgeInsetsMake(4, 12, 4, 12);
                             UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:button];
-                            item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_video_call", @"Vector", nil);
+                            item.accessibilityLabel = [VectorL10n roomAccessibilityVideoCall];
                             [rightBarButtonItems addObject:item];
                             
                             hasCustomJoinButton = YES;
@@ -1663,7 +1663,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(onIntegrationsPressed:)];
-                item.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_integrations", @"Vector", nil);
+                item.accessibilityLabel = [VectorL10n roomAccessibilityIntegrations];
                 if (hasCustomJoinButton)
                 {
                     item.imageInsets = UIEdgeInsetsMake(0, -5, 0, -5);
@@ -1711,7 +1711,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         userPictureView = roomInputToolbarView.pictureView;
         
         // For the moment, there is only one reason to use `DisabledRoomInputToolbarView`
-        [roomInputToolbarView setDisabledReason:NSLocalizedStringFromTable(@"room_do_not_have_permission_to_post", @"Vector", nil)];
+        [roomInputToolbarView setDisabledReason:[VectorL10n roomDoNotHavePermissionToPost]];
     }
     
     // Set user picture in input toolbar
@@ -2020,17 +2020,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         // The Sticker picker widget is not installed yet. Propose the user to install it
         MXWeakify(self);
-
+        
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
         NSString *alertMessage = [NSString stringWithFormat:@"%@\n%@",
-                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert", @"Vector", nil),
-                                  NSLocalizedStringFromTable(@"widget_sticker_picker_no_stickerpacks_alert_add_now", @"Vector", nil)
-                                  ];
-        
+                                  [VectorL10n widgetStickerPickerNoStickerpacksAlert],
+                                  [VectorL10n widgetStickerPickerNoStickerpacksAlertAddNow]];
+                                   
         currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action)
                                  {
@@ -2039,7 +2038,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
         }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action)
                                  {
@@ -2986,8 +2985,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
             // Check app permissions first
             [MXKTools checkAccessForCall:YES
-             manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], AppInfo.current.displayName]
-             manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], AppInfo.current.displayName]
+             manualChangeMessageForAudio:[MatrixKitL10n microphoneAccessNotGrantedForCall:AppInfo.current.displayName]
+             manualChangeMessageForVideo:[MatrixKitL10n cameraAccessNotGrantedForCall:AppInfo.current.displayName]
                showPopUpInViewController:self completionHandler:^(BOOL granted) {
                 
                 MXStrongifyAndReturnIfNil(self);
@@ -3084,7 +3083,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Add actions for a failed event
     if (selectedEvent.sentState == MXEventSentStateFailed)
     {
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil)
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
             
@@ -3100,7 +3099,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
         }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_delete", @"Vector", nil)
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionDelete]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
             
@@ -3137,7 +3136,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             selectedEvent.sentState == MXEventSentStateEncrypting ||
             selectedEvent.sentState == MXEventSentStateSending)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_send", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action)
                                      {
@@ -3159,7 +3158,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (!isJitsiCallEvent)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_quote", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3181,7 +3180,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3214,7 +3213,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_save", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionSave]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                     
@@ -3259,7 +3258,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.contentURL;
             if ([MXMediaManager existingUploaderWithId:uploadId])
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_send", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                     
@@ -3297,7 +3296,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (BuildSettings.messageDetailsAllowShare)
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_share", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                     
@@ -3346,7 +3345,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             NSString *downloadId = roomBubbleTableViewCell.bubbleData.attachment.downloadId;
             if ([MXMediaManager existingDownloaderWithIdentifier:downloadId])
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_cancel_download", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelDownload]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                     
@@ -3374,7 +3373,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // because it breaks everything
         if (selectedEvent.eventType != MXEventTypeRoomEncryption)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_redact", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionRedact]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3408,7 +3407,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (BuildSettings.messageDetailsAllowPermalink)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_permalink", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3437,7 +3436,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // Add reaction history if event contains reactions
         if (roomBubbleTableViewCell.bubbleData.reactions[selectedEvent.eventId].aggregatedReactionsWithNonZeroCount)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_reaction_history", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReactionHistory]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3450,7 +3449,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (BuildSettings.messageDetailsAllowViewSource)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_source", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewSource]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3470,7 +3469,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             // Add "View Decrypted Source" for e2ee event we can decrypt
             if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_decrypted_source", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewDecryptedSource]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                     
@@ -3490,7 +3489,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_report", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReport]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3501,7 +3500,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     [self cancelEventSelection];
                     
                     // Prompt user to enter a description of the problem content.
-                    self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_report_prompt_reason", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+                    self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptReason]  message:nil preferredStyle:UIAlertControllerStyleAlert];
                     
                     [self->currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
                         textField.secureTextEntry = NO;
@@ -3509,7 +3508,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         textField.keyboardType = UIKeyboardTypeDefault;
                     }];
                     
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                         
                         if (weakSelf)
                         {
@@ -3525,9 +3524,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                 [self stopActivityIndicator];
                                 
                                 // Prompt user to ignore content from this user
-                                self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_report_prompt_ignore_user", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+                                self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptIgnoreUser]  message:nil preferredStyle:UIAlertControllerStyleAlert];
                                 
-                                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                     
                                     if (weakSelf)
                                     {
@@ -3556,7 +3555,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                     
                                 }]];
                                 
-                                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                     
                                     if (weakSelf)
                                     {
@@ -3582,7 +3581,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         
                     }]];
                     
-                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
                         
                         if (weakSelf)
                         {
@@ -3600,7 +3599,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (!isJitsiCallEvent && self.roomDataSource.room.summary.isEncrypted)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_event_action_view_encryption", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewEncryption]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                 
@@ -3617,7 +3616,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
         
@@ -3778,10 +3777,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                 if (visibleURL && ![url isEqual:visibleURL])
                                 {
                                     //  urls are different, show confirmation alert
-                                    NSString *formatStr = NSLocalizedStringFromTable(@"external_link_confirmation_message", @"Vector", nil);
-                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"external_link_confirmation_title", @"Vector", nil) message:[NSString stringWithFormat:formatStr, visibleURL.absoluteString, url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
+                                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n externalLinkConfirmationTitle] message:[VectorL10n externalLinkConfirmationMessage:visibleURL.absoluteString :url.absoluteString] preferredStyle:UIAlertControllerStyleAlert];
                                     
-                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"continue", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:[VectorL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                                         // Try to open the link
                                         [[UIApplication sharedApplication] vc_open:url completionHandler:^(BOOL success) {
                                             if (!success)
@@ -3791,7 +3789,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                         }];
                                     }];
                                     
-                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIAlertActionStyleCancel handler:nil];
+                                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[VectorL10n cancel] style:UIAlertActionStyleCancel handler:nil];
                                     
                                     [alert addAction:continueAction];
                                     [alert addAction:cancelAction];
@@ -3880,8 +3878,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showUnableToOpenLinkErrorAlert
 {
-    [self showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
-                     message:NSLocalizedStringFromTable(@"room_message_unable_open_link_error_message", @"Vector", nil)];
+    [self showAlertWithTitle:[MatrixKitL10n error]
+                     message:[VectorL10n roomMessageUnableOpenLinkErrorMessage]];
 }
 
 - (void)editEventContentWithId:(NSString*)eventId
@@ -3983,8 +3981,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Check app permissions first
     [MXKTools checkAccessForCall:video
-     manualChangeMessageForAudio:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_call"], AppInfo.current.displayName]
-     manualChangeMessageForVideo:[NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"camera_access_not_granted_for_call"], AppInfo.current.displayName]
+     manualChangeMessageForAudio:[MatrixKitL10n microphoneAccessNotGrantedForCall:AppInfo.current.displayName]
+     manualChangeMessageForVideo:[MatrixKitL10n cameraAccessNotGrantedForCall:AppInfo.current.displayName]
        showPopUpInViewController:self completionHandler:^(BOOL granted) {
         
         if (weakSelf)
@@ -4022,7 +4020,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                 preferredStyle:UIAlertControllerStyleActionSheet];
     
     __weak typeof(self) weakSelf = self;
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_place_voice_call", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomPlaceVoiceCall]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
         
@@ -4036,7 +4034,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_open_dialpad", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomOpenDialpad]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
         
@@ -4050,7 +4048,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
         
@@ -4116,11 +4114,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 MXWeakify(self);
                 [currentAlert dismissViewControllerAnimated:NO completion:nil];
                 
-                currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_no_privileges_to_create_group_call"]
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomNoPrivilegesToCreateGroupCall]
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action)
                                          {
@@ -4776,7 +4774,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         error = [NSError errorWithDomain:error.domain
                                     code:error.code
                                 userInfo:@{
-                                    NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"room_conference_call_no_power", @"Vector", nil)
+                                    NSLocalizedDescriptionKey: [VectorL10n roomConferenceCallNoPower]
                                 }];
     }
     
@@ -4826,7 +4824,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         else if ([AppDelegate theDelegate].isOffline)
         {
             self.activitiesViewExpanded = YES;
-            [roomActivitiesView displayNetworkErrorNotification:NSLocalizedStringFromTable(@"room_offline_notification", @"Vector", nil)];
+            [roomActivitiesView displayNetworkErrorNotification:[VectorL10n roomOfflineNotification]];
         }
         else if (customizedRoomDataSource.roomState.isObsolete)
         {
@@ -5041,8 +5039,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (sentStatus != RoomSentStatusOk)
         {
             NSString *notification = sentStatus == RoomSentStatusSentFailedDueToUnknownDevices ?
-            NSLocalizedStringFromTable(@"room_unsent_messages_unknown_devices_notification", @"Vector", nil) :
-            NSLocalizedStringFromTable(@"room_unsent_messages_notification", @"Vector", nil);
+            [VectorL10n roomUnsentMessagesUnknownDevicesNotification] :
+            [VectorL10n roomUnsentMessagesNotification];
             
             RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
             self.activitiesViewExpanded = YES;
@@ -5064,7 +5062,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 __weak __typeof(self) weakSelf = self;
                 currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_resend_unsent_messages", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomResendUnsentMessages]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                     
@@ -5077,7 +5075,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     
                 }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_delete_unsent_messages", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDeleteUnsentMessages]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                     
@@ -5090,7 +5088,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     
                 }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
                                                                  style:UIAlertActionStyleCancel
                                                                handler:^(UIAlertAction * action) {
                     
@@ -5145,11 +5143,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
-                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+        currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n unknownDevicesAlertTitle]
+                                                           message:[VectorL10n unknownDevicesAlertTitle]
                                                     preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesVerify]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
             
@@ -5163,7 +5161,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
         }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_send_anyway"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesSendAnyway]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
             
@@ -5249,15 +5247,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)cancelAllUnsentMessages
 {
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_unsent_messages_cancel_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"room_unsent_messages_cancel_message", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomUnsentMessagesCancelTitle] message:[VectorL10n roomUnsentMessagesCancelMessage] preferredStyle:UIAlertControllerStyleAlert];
     
     MXWeakify(self);
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         // Remove unsent event ids
         for (NSUInteger index = 0; index < self.roomDataSource.room.outgoingMessages.count;)
@@ -5502,12 +5500,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     // Invite ?
-    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_invite_prompt_msg", @"Vector", nil), contact.displayName];
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_invite_prompt_title", @"Vector", nil)
+    NSString *promptMsg = [VectorL10n roomParticipantsInvitePromptMsg:contact.displayName];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsInvitePromptTitle]
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
         
@@ -5519,7 +5517,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"invite", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n invite]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
         
@@ -5587,8 +5585,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     if ([error.domain isEqualToString:kMXRestClientErrorDomain]
                         && error.code == MXRestClientErrorMissingIdentityServer)
                     {
-                        NSString *message = [NSBundle mxk_localizedStringForKey:@"error_invite_3pid_with_no_identity_server"];
-                        [self showAlertWithTitle:message message:nil];
+                        [self showAlertWithTitle:[VectorL10n errorInvite3pidWithNoIdentityServer] message:nil];
                     }
                     else
                     {
@@ -5663,7 +5660,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     currentAlert = alert;
     
     
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action)
                       {
@@ -5684,17 +5681,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_title", @"Vector", nil)
-                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_message", @"Vector", nil)
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertTitle]
+                                                                   message:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertMessage]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_validate_action", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
         [self showSettingsSecurityScreen];
     }]];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
                                               style:UIAlertActionStyleCancel
                                             handler:nil]];
     
@@ -5945,12 +5942,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:^{
             MXStrongifyAndReturnIfNil(self);
             
-            self->currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_delete_confirmation_title", @"Vector", nil)  message:NSLocalizedStringFromTable(@"room_event_action_delete_confirmation_message", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionDeleteConfirmationTitle]
+                                                                     message:[VectorL10n roomEventActionDeleteConfirmationMessage]
+                                                              preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             }]];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                 [self.roomDataSource removeEventWithEventId:event.eventId];
             }]];
             
@@ -6255,8 +6254,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         MXLogDebug(@"[MXKRoomViewController] File upload using MIME type %@ is not supported.", mimeType);
         
-        [self showAlertWithTitle:NSLocalizedStringFromTable(@"file_upload_error_title", @"Vector", nil)
-                         message:NSLocalizedStringFromTable(@"file_upload_error_unsupported_file_type_message", @"Vector", nil)];
+        [self showAlertWithTitle:[VectorL10n fileUploadErrorTitle]
+                         message:[VectorL10n fileUploadErrorUnsupportedFileTypeMessage]];
     }
 }
 
@@ -6458,7 +6457,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)voiceMessageControllerDidRequestMicrophonePermission:(VoiceMessageController *)voiceMessageController
 {
-    NSString *message = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"microphone_access_not_granted_for_voice_message"], AppInfo.current.displayName];
+    NSString *message = [MatrixKitL10n microphoneAccessNotGrantedForVoiceMessage:AppInfo.current.displayName];
     
     [MXKTools checkAccessForMediaType:AVMediaTypeAudio
                   manualChangeMessage: message

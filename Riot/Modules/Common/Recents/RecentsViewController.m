@@ -124,7 +124,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
     tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableSearchBar.showsCancelButton = NO;
-    tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    tableSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     tableSearchBar.delegate = self;
     
     displayedSectionHeaders = [NSMutableArray array];
@@ -165,7 +165,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }];
     
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);        
+    self.recentsSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -522,14 +522,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // minging kludge until https://matrix.org/jira/browse/SYN-678 is fixed
         // 'Error when trying to join an empty room should be more explicit'
-        msg = [NSBundle mxk_localizedStringForKey:@"room_error_join_failed_empty_room"];
+        msg = [MatrixKitL10n roomErrorJoinFailedEmptyRoom];
     }
     
     [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_error_join_failed_title"] message:msg preferredStyle:UIAlertControllerStyleAlert];
+    self->currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle] message:msg preferredStyle:UIAlertControllerStyleAlert];
     
-    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                          handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
@@ -1162,13 +1162,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         NSString *title, *message;
         if ([self.mainSession roomWithRoomId:currentRoomId].isDirect)
         {
-            title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
-            message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
+            title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
+            message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
         }
         else
         {
-            title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil);
-            message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+            title = [VectorL10n roomParticipantsLeavePromptTitle];
+            message = [VectorL10n roomParticipantsLeavePromptMsg];
         }
         
         // confirm leave
@@ -1176,7 +1176,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                            message:message
                                                     preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -1188,7 +1188,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                          style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                              
                                                              if (weakSelf)
@@ -1809,7 +1809,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_start_chat_with", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsStartChatWith]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1823,7 +1823,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_create_empty_room", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsCreateEmptyRoom]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1837,7 +1837,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_recents_join_room", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsJoinRoom]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1854,7 +1854,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     if (self.mainSession.callManager.supportsPSTN)
     {
         [currentAlert addAction:[UIAlertAction
-            actionWithTitle:NSLocalizedStringFromTable(@"room_open_dialpad", @"Vector", nil)
+            actionWithTitle:[VectorL10n roomOpenDialpad]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
         
@@ -1869,7 +1869,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                    }]];
     }
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -2259,7 +2259,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     else if ([MXTools isMatrixRoomAlias:roomIdOrAlias])
     {
         // Room preview doesn't support room alias
-        [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+        [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
     }
     else
     {
@@ -2284,7 +2284,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                 }];
                 self.roomsDirectoryCoordinatorBridgePresenter = nil;
             } else {
-                [[AppDelegate theDelegate] showAlertWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:NSLocalizedStringFromTable(@"room_recents_unknown_room_error_message", @"Vector", nil)];
+                [[AppDelegate theDelegate] showAlertWithTitle:[MatrixKitL10n error] message:[VectorL10n roomRecentsUnknownRoomErrorMessage]];
             }
         }];
     }

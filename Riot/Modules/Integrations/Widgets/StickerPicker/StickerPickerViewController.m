@@ -18,6 +18,8 @@
 
 #import "IntegrationManagerViewController.h"
 
+#import "Riot-Swift.h"
+
 @interface StickerPickerViewController ()
 
 @end
@@ -28,7 +30,7 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = NSLocalizedStringFromTable(@"room_action_send_sticker", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n roomActionSendSticker];
 
     // Hide back button title
     self.parentViewController.navigationItem.backBarButtonItem =[[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];

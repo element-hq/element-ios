@@ -99,7 +99,7 @@ static const CGFloat kButtonSize = 80.0;
         self.answerTitleLabel.backgroundColor = ThemeService.shared.theme.backgroundColor;        
         self.answerTitleLabel.textColor = answerButtonBorderColor;
         self.answerTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
-        self.answerTitleLabel.text = NSLocalizedStringFromTable(@"accept", @"Vector", nil);
+        self.answerTitleLabel.text = [VectorL10n accept];
         
         UIColor *rejectButtonBorderColor = ThemeService.shared.theme.warningColor;
         
@@ -113,7 +113,7 @@ static const CGFloat kButtonSize = 80.0;
         self.rejectTitleLabel.backgroundColor = ThemeService.shared.theme.backgroundColor;
         self.rejectTitleLabel.textColor = rejectButtonBorderColor;
         self.rejectTitleLabel.font = [UIFont systemFontOfSize:18.0 weight:UIFontWeightRegular];
-        self.rejectTitleLabel.text = NSLocalizedStringFromTable(@"decline", @"Vector", nil);
+        self.rejectTitleLabel.text = [VectorL10n decline];
 
         [self setupLayout];
     }

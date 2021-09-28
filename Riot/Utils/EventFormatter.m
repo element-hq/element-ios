@@ -88,25 +88,22 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                     // This is an alive jitsi widget
                     if (isEventSenderMyUser)
                     {
-                        displayText = NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added_by_you", @"Vector", nil);
+                        displayText = [VectorL10n eventFormatterJitsiWidgetAddedByYou];
                     }
                     else
                     {
-                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_jitsi_widget_added", @"Vector", nil), senderDisplayName];
+                        displayText = [VectorL10n eventFormatterJitsiWidgetAdded:senderDisplayName];
                     }
                 }
                 else
                 {
                     if (isEventSenderMyUser)
                     {
-                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added_by_you", @"Vector", nil),
-                        widget.name ? widget.name : widget.type];
+                        displayText = [VectorL10n eventFormatterWidgetAddedByYou:(widget.name ? widget.name : widget.type)];
                     }
                     else
                     {
-                        displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_added", @"Vector", nil),
-                        widget.name ? widget.name : widget.type,
-                        senderDisplayName];
+                        displayText = [VectorL10n eventFormatterWidgetAdded:(widget.name ? widget.name : widget.type) :senderDisplayName];
                     }
                 }
             }
@@ -136,14 +133,11 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                             {
                                 if (isEventSenderMyUser)
                                 {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed_by_you", @"Vector", nil),
-                                                   activeWidget.name ? activeWidget.name : activeWidget.type];
+                                    displayText = [VectorL10n eventFormatterWidgetRemovedByYou:(activeWidget.name ? activeWidget.name : activeWidget.type)];
                                 }
                                 else
                                 {
-                                    displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_widget_removed", @"Vector", nil),
-                                                   activeWidget.name ? activeWidget.name : activeWidget.type,
-                                                   senderDisplayName];
+                                    displayText = [VectorL10n eventFormatterWidgetRemoved:(activeWidget.name ? activeWidget.name : activeWidget.type) :senderDisplayName];
                                 }
                             }
                             break;
@@ -236,7 +230,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                           event.eventId];
 
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part1_link", @"Vector", nil)
+             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart1Link]
                                              attributes:@{
                                                           NSLinkAttributeName: linkActionString,
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
@@ -244,7 +238,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                                           }]];
 
             [attributedStringWithRerequestMessage appendAttributedString:
-             [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"event_formatter_rerequest_keys_part2", @"Vector", nil)
+             [[NSAttributedString alloc] initWithString:[VectorL10n eventFormatterRerequestKeysPart2]
                                              attributes:@{
                                                           NSForegroundColorAttributeName: self.sendingTextColor,
                                                           NSFontAttributeName: self.encryptedMessagesTextFont
@@ -262,7 +256,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                                       event.eventId];
         
         [attributedStringWithEditMention appendAttributedString:
-         [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", NSLocalizedStringFromTable(@"event_formatter_message_edited_mention", @"Vector", nil)]
+         [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@", [VectorL10n eventFormatterMessageEditedMention]]
                                          attributes:@{
                                                       NSLinkAttributeName: linkActionString,
                                                       // NOTE: Color is curretly overidden by UIText.tintColor as we use `NSLinkAttributeName`.
@@ -302,7 +296,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             //  add one-char space
             [result appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
             //  add more link
-            NSAttributedString *linkMore = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"more", @"Vector", nil) attributes:@{
+            NSAttributedString *linkMore = [[NSAttributedString alloc] initWithString:[VectorL10n more] attributes:@{
                 NSFontAttributeName: [UIFont systemFontOfSize:13],
                 NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor
             }];
@@ -318,7 +312,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         {
             // This is a series for cells tagged with RoomBubbleCellDataTagMembership
             // TODO: Build a complete summary like Riot-web
-            displayText = [NSString stringWithFormat:NSLocalizedStringFromTable(@"event_formatter_member_updates", @"Vector", nil), events.count];
+            displayText = [VectorL10n eventFormatterMemberUpdates:events.count];
         }
     }
 
@@ -525,9 +519,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
         if (time)
         {
             [dateFormatter setDateFormat:nil];
-            return [NSString stringWithFormat:@"%@ %@", NSLocalizedStringFromTable(@"yesterday", @"Vector", nil), [super dateStringFromDate:date withTime:YES]];
+            return [NSString stringWithFormat:@"%@ %@", [VectorL10n yesterday], [super dateStringFromDate:date withTime:YES]];
         }
-        return NSLocalizedStringFromTable(@"yesterday", @"Vector", nil);
+        return [VectorL10n yesterday];
     }
     else if (interval > - 60*60*24)
     {
@@ -536,7 +530,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             [dateFormatter setDateFormat:nil];
             return [NSString stringWithFormat:@"%@", [super dateStringFromDate:date withTime:YES]];
         }
-        return NSLocalizedStringFromTable(@"today", @"Vector", nil);
+        return [VectorL10n today];
     }
     else
     {
@@ -561,10 +555,10 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
     
     NSMutableAttributedString *roomPredecessorAttributedString = [NSMutableAttributedString new];
     
-    NSString *roomPredecessorReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_predecessor_information", @"Vector", nil)];
+    NSString *roomPredecessorReasonString = [NSString stringWithFormat:@"%@\n", [VectorL10n roomPredecessorInformation]];
     NSAttributedString *roomPredecessorReasonAttributedString = [[NSAttributedString alloc] initWithString:roomPredecessorReasonString attributes:roomPredecessorReasonAttributes];
     
-    NSString *predecessorRoomLinkString = NSLocalizedStringFromTable(@"room_predecessor_link", @"Vector", nil);
+    NSString *predecessorRoomLinkString = [VectorL10n roomPredecessorLink];
     NSAttributedString *predecessorRoomLinkAttributedString = [[NSAttributedString alloc] initWithString:predecessorRoomLinkString attributes:roomLinkAttributes];
     
     [roomPredecessorAttributedString appendAttributedString:roomPredecessorReasonAttributedString];

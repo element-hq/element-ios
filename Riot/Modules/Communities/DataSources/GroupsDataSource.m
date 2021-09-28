@@ -97,11 +97,11 @@
     {
         if (section == self.groupInvitesSection)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"group_invite_section", @"Vector", nil);
+            sectionTitle = [VectorL10n groupInviteSection];
         }
         else if (section == self.joinedGroupsSection)
         {
-            sectionTitle = NSLocalizedStringFromTable(@"group_section", @"Vector", nil);
+            sectionTitle = [VectorL10n groupSection];
         }
     }
     
