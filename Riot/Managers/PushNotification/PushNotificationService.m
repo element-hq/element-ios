@@ -579,7 +579,7 @@ Matrix session observer used to detect new opened sessions.
             dispatch_group_enter(dispatchGroup);
             //  Not continuing in completion block here, because PushKit mandates reporting a new call in the same run loop.
             //  'handleBackgroundSyncCacheIfRequiredWithCompletion' is processing to-device events synchronously.
-            [session handleBackgroundSyncCacheIfRequiredWithCompletion:^{
+            [session handleBackgroundSyncCacheIfRequiredAndShouldUpdateSpaces:NO completion:^{
                 dispatch_group_leave(dispatchGroup);
             }];
             
