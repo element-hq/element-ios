@@ -577,9 +577,11 @@ Matrix session observer used to detect new opened sessions.
             dispatch_group_t dispatchGroup = dispatch_group_create();
             
             dispatch_group_enter(dispatchGroup);
+            session.updateSpaces = NO;
             //  Not continuing in completion block here, because PushKit mandates reporting a new call in the same run loop.
             //  'handleBackgroundSyncCacheIfRequiredWithCompletion' is processing to-device events synchronously.
-            [session handleBackgroundSyncCacheIfRequiredAndShouldUpdateSpaces:NO completion:^{
+            [session handleBackgroundSyncCacheIfRequiredWithCompletion:^{
+                session.updateSpaces = YES;
                 dispatch_group_leave(dispatchGroup);
             }];
             
