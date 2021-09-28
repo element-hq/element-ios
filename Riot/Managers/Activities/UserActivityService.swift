@@ -32,6 +32,7 @@ class UserActivityService: NSObject {
         super.init()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didLeaveRoom(_:)), name: .mxSessionDidLeaveRoom, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didLogOut(_:)), name: .mxkAccountManagerDidRemoveAccount, object: nil)
     }
     
     // MARK: - Public
@@ -77,5 +78,10 @@ class UserActivityService: NSObject {
         guard let roomId = notification.userInfo?[kMXSessionNotificationRoomIdKey] as? String else { return }
         NSUserActivity.deleteSavedUserActivities(withPersistentIdentifiers: [roomId], completionHandler: { })
         CSSearchableIndex.default().deleteSearchableItems(withDomainIdentifiers: [roomId], completionHandler: nil)
+    }
+
+    func didLogOut(_ notification: Notification) {
+        NSUserActivity.deleteAllSavedUserActivities(completionHandler: { })
+        CSSearchableIndex.default().deleteAllSearchableItems(completionHandler: nil)
     }
 }
