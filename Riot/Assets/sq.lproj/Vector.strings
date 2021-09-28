@@ -1458,7 +1458,37 @@
 "settings_default" = "Njoftime Parazgjedhje";
 "settings_notifications" = "NJOFTIME";
 "settings_show_url_previews_description" = "Paraparjet do të shfaqen vetëm në dhoma të pafshehtëzuara.";
-"settings_show_url_previews" = "Shfaq paraparje URL-sh brendazi";
+"settings_show_url_previews" = "Shfaq paraparje sajti";
 "settings_confirm_media_size_description" = "Kur kjo është aktive, do t’ju kërkohet të ripohoni se në ç’madhësi të dërgohen figurat dhe videot.";
 "settings_confirm_media_size" = "Ripoho madhësi, kur dërgohet";
 "settings_sending_media" = "DËRGIM FIGURASH DHE VIDEOSH";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_avatar_view_accessibility_hint" = "Ndryshoni avatar hapësire";
+"space_public_join_rule" = "Hapësirë publike";
+"space_private_join_rule" = "Hapësirë private";
+"space_participants_action_ban" = "Dëboje prej kësaj hapësire";
+"space_participants_action_remove" = "Hiqe prej kësaj hapësire";
+"spaces_coming_soon_detail" = "Kjo veçori s’është sendërtuar këtu, por po bëhet. Tani për tani, mund ta bëni këtë me Element-in në kompjuterin tuaj.";
+"spaces_invites_coming_soon_title" = "Ftesat vijnë së shpejti";
+"spaces_add_rooms_coming_soon_title" = "Shtimi i dhomave vjen së shpejti";
+"spaces_coming_soon_title" = "S’afërmi";
+"spaces_no_member_found_detail" = "Po kërkoni dikë jo te %@? Për tani, mund t’i ftoni në versionin për web, ose për desktop.";
+"spaces_no_room_found_detail" = "Disa përfundime mund të jenë të fshehura, ngaqë janë private dhe ju duhet një ftesë për to.";
+"spaces_no_result_found_title" = "S’u gjetën përfundime";
+"spaces_empty_space_detail" = "Disa dhoma mund të jenë të fshehura, ngaqë janë private dhe juve ju duhet një ftesë.";
+"spaces_empty_space_title" = "Kjo hapësirë s’ka (ende) dhoma";
+"space_tag" = "hapësirë";
+"spaces_suggested_room" = "Të sugjeruara";
+"spaces_explore_rooms" = "Eksploroni dhoma";
+"leave_space_and_all_rooms_action" = "Braktisi krejt dhomat dhe hapësirat";
+"leave_space_only_action" = "Mos braktis ndonjë dhomë";
+"leave_space_message_admin_warning" = "Jeni përgjegjësi i kësaj hapësire, sigurohuni se e keni shpërngulur të drejtën e përgjegjësit te një tjetër anëtar, përpara se të largoheni.";
+"leave_space_message" = "Jeni i sigurt se doni të braktiset %@? Doni të braktisen gjithashtu krejt dhomat dhe nënhapësirat e kësaj hapësire?";
+"leave_space_title" = "Braktise %@";
+"spaces_left_panel_title" = "Hapësira";
+"settings_links" = "LIDHJE";
+"room_recents_suggested_rooms_section" = "DHOMA TË SUGJERUARA";
+"done" = "U bë";

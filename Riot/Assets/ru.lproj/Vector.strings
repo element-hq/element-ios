@@ -1455,3 +1455,35 @@
 "settings_confirm_media_size" = "Подтверждать размер при отправке";
 "settings_confirm_media_size_description" = "Когда эта функция включена, вам будет предложено подтвердить, в каком размере будут отправляться изображения и видео.";
 "settings_sending_media" = "ОТПРАВКА ИЗОБРАЖЕНИЙ И ВИДЕО";
+"space_participants_action_ban" = "Заблокировать это пространство";
+"space_tag" = "пространство";
+"space_avatar_view_accessibility_hint" = "Изменить аватар пространства";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "аватар";
+"space_public_join_rule" = "Публичное пространство";
+"space_private_join_rule" = "Приватное пространство";
+"space_participants_action_remove" = "Удалить из этого пространства";
+"spaces_coming_soon_detail" = "Эта функция еще не реализована здесь, но она уже на подходе. Пока вы можете сделать это с помощью Element на вашем компьютере.";
+"spaces_invites_coming_soon_title" = "Приглашения скоро будут";
+"spaces_add_rooms_coming_soon_title" = "Добавление комнат скоро будет";
+"spaces_coming_soon_title" = "Скоро будет";
+"spaces_no_member_found_detail" = "Ищете человека, которого нет в %@? Пока что вы можете пригласить их в web версии или в настольной версии.";
+"spaces_no_room_found_detail" = "Некоторые результаты могут быть скрыты, потому что они приватные, и вам нужно приглашение.";
+"spaces_no_result_found_title" = "Результаты не найдены";
+"spaces_empty_space_detail" = "Некоторые комнаты могут быть скрыты, потому что они приватные, и вам нужно приглашение.";
+"spaces_empty_space_title" = "В этом пространстве нет комнат (пока)";
+"room_recents_suggested_rooms_section" = "РЕКОМЕНДУЕМЫЕ КОМНАТЫ";
+"spaces_suggested_room" = "Рекомендуется";
+"spaces_explore_rooms" = "Список комнат";
+"leave_space_and_all_rooms_action" = "Покинуть все комнаты и пространства";
+"leave_space_only_action" = "Не покидать ни одну комнату";
+"leave_space_message_admin_warning" = "Вы являетесь администратором этого пространства, перед уходом убедитесь, что передали права администратора другому пользователю.";
+"leave_space_message" = "Вы уверены, что хотите покинуть %@? Вы также хотите покинуть все комнаты и пространства этого пространства?";
+"leave_space_title" = "Покинуть %@";
+"spaces_left_panel_title" = "Пространства";
+"spaces_home_space_title" = "Главная";
+"settings_links" = "ССЫЛКИ";
+"done" = "Готово";
+"open" = "Открыть";
