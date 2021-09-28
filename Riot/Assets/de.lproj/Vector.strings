@@ -15,7 +15,7 @@
 "warning" = "Warnung";
 "remove" = "Entferne";
 "start" = "Starte";
-"create" = "Erstelle";
+"create" = "Erstellen";
 "on" = "An";
 "off" = "Aus";
 "join" = "Beitreten";
@@ -250,10 +250,10 @@
 "room_details_low_priority_tag" = "Niedrige Priorität";
 "room_details_access_section" = "Wer kann auf diesen Raum zugreifen?";
 "room_details_access_section_invited_only" = "Nur Personen, die eingeladen wurden";
-"room_details_access_section_anyone_apart_from_guest" = "Jeder, der den Raumlink kennt - außer Gäste";
-"room_details_access_section_anyone" = "Jeder, der den Raumlink kennt - auch Gäste";
+"room_details_access_section_anyone_apart_from_guest" = "Alle, die den Raumlink kennen - außer Gäste";
+"room_details_access_section_anyone" = "Alle, die den Raumlink kennen - auch Gäste";
 "room_details_history_section" = "Wer kann die Historie lesen?";
-"room_details_history_section_anyone" = "Jeder";
+"room_details_history_section_anyone" = "Alle";
 "room_details_history_section_members_only" = "Nur Mitglieder (seit diese Option ausgewählt ist)";
 "room_details_history_section_members_only_since_invited" = "Nur Mitglieder (ab ihrer Einladung)";
 "room_details_history_section_members_only_since_joined" = "Nur Mitglieder (Ab ihrem Beitritt)";
@@ -327,7 +327,7 @@
 "room_details_files" = "Hochgeladenes";
 "room_details_mute_notifs" = "Benachrichtigungen stummschalten";
 "room_details_access_section_no_address_warning" = "Um einen Raum zu betreten, muss er eine Adresse haben";
-"room_details_access_section_directory_toggle" = "Zeige alle Räume in diesem Verzeichnis";
+"room_details_access_section_directory_toggle" = "Diesen Raum im Raumverzeichnis anzeigen";
 "room_details_history_section_prompt_msg" = "Änderungen an der Leseberechtigung des Verlaufs wird nur auf zukünftige Nachrichten dieses Raums angewandt. Die Sichtbarkeit des existierenden Verlaufs wird nicht verändert.";
 "room_details_addresses_invalid_address_prompt_title" = "Ungültiges Aliasformat";
 "room_details_addresses_invalid_address_prompt_msg" = "%@ ist kein gültiges Format für einen Alias";
@@ -956,7 +956,7 @@
 "key_verification_tile_request_status_waiting" = "Warten…";
 "key_verification_tile_request_status_expired" = "Abgelaufen";
 "key_verification_tile_request_status_cancelled_by_me" = "Du hast abgebrochen";
-"key_verification_tile_request_status_cancelled" = "%@ abgebrochen";
+"key_verification_tile_request_status_cancelled" = "%@ hat abgebrochen";
 "key_verification_tile_request_status_accepted" = "Du hast akzeptiert";
 "key_verification_tile_request_incoming_approval_accept" = "Annehmen";
 "key_verification_tile_request_incoming_approval_decline" = "Ablehnen";
@@ -1417,7 +1417,7 @@
 "version_check_modal_action_title_deprecated" = "Zeige mir, wie es geht";
 "version_check_modal_action_title_supported" = "Verstanden";
 "version_check_banner_title_deprecated" = "iOS %@ wird nicht mehr unterstützt";
-"version_check_banner_subtitle_supported" = "Wir hören bald auf, iOS %@ zu unterstützen. Um Element weiterhin vollumfänglich zu nutzen, empfehlen wir dir die Aktualisierung deiner iOS-Version.";
+"version_check_banner_subtitle_supported" = "Wir hören bald auf, %@ für iOS %@ zu unterstützen. Um %@ weiterhin vollumfänglich zu nutzen, empfehlen wir dir die Aktualisierung deiner iOS-Version.";
 
 // Mark: - Version check
 
@@ -1442,12 +1442,41 @@
 "settings_confirm_media_size" = "Größe beim Senden bestätigen";
 "settings_notifications" = "BENACHRICHTIGUNGEN";
 "settings_mentions_and_keywords_encryption_notice" = "Auf deinem Mobilgerät wirst du keine Benachrichtigungen für Erwähnungen und Schlüsselwörter in verschlüsselten Räumen erhalten.";
-"version_check_modal_subtitle_supported" = "Wir haben daran gearbeitet Element zu verbessern um ein schnelleres und bereinigteres Erlebnis zu schaffen. Leider ist deine aktuelle iOS-Version mit einigen dieser Verbesserungen nicht kompatibel und wird daher nicht mehr unterstützt werden.\nWir empfehlen dir die Aktualisierung deines Betriebssystems um Element weiterhin vollumfänglich zu nutzen.";
-"version_check_modal_subtitle_deprecated" = "Wir haben daran gearbeitet Element zu verbessern um ein schnelleres und bereinigteres Erlebnis zu schaffen. Leider ist deine aktuelle iOS-Version mit einigen dieser Verbesserungen nicht kompatibel und wird daher nicht mehr unterstützt.\nWir empfehlen dir die Aktualisierung deines Betriebssystems um Element weiterhin vollumfänglich zu nutzen.";
+"version_check_modal_subtitle_supported" = "Wir haben daran gearbeitet %@ zu verbessern um ein schnelleres und bereinigteres Erlebnis zu schaffen. Leider ist deine aktuelle iOS-Version mit einigen dieser Verbesserungen nicht kompatibel und wird daher nicht mehr unterstützt werden.\nWir empfehlen dir die Aktualisierung deines Betriebssystems um %@ weiterhin vollumfänglich zu nutzen.";
+"version_check_modal_subtitle_deprecated" = "Wir haben daran gearbeitet %@ zu verbessern um ein schnelleres und bereinigteres Erlebnis zu schaffen. Leider ist deine aktuelle iOS-Version mit einigen dieser Verbesserungen nicht kompatibel und wird daher nicht mehr unterstützt.\nWir empfehlen dir die Aktualisierung deines Betriebssystems um %@ weiterhin vollumfänglich zu nutzen.";
 "version_check_modal_title_deprecated" = "Wir unterstützen iOS %@ nicht mehr";
 "settings_show_url_previews_description" = "Link-Vorschauen werden nur in unverschlüsselten Räumen angezeigt.";
-"settings_show_url_previews" = "Link-Vorschau anzeigen";
+"settings_show_url_previews" = "Website-Vorschau anzeigen";
 "settings_sending_media" = "FOTOS UND VIDEOS VERSENDEN";
 "version_check_modal_title_supported" = "Wir stellen die Unterstützung für iOS %@ ein";
-"version_check_banner_subtitle_deprecated" = "Element wird für iOS %@ nicht weiter unterstützt. Um Element weiterhin vollumfänglich zu nutzen, empfehlen wir dir die Aktualisierung deiner iOS-Version.";
+"version_check_banner_subtitle_deprecated" = "%@ wird für iOS %@ nicht weiter unterstützt. Um %@ weiterhin vollumfänglich zu nutzen, empfehlen wir dir die Aktualisierung deiner iOS-Version.";
 "settings_default" = "Standardbenachrichtigungen";
+"spaces_no_member_found_detail" = "Suchst du eine Person, die nicht Teil von %@ ist? Vorerst kannst du sie mit Web oder Desktop einladen.";
+"spaces_no_room_found_detail" = "Einige Ergebnisse könnten versteckt sein, weil sie privat sind und eine Einladung benötigen.";
+"spaces_empty_space_detail" = "Einige Räume könnten versteckt sein, weil sie privat sind und eine Einladung benötigen.";
+"done" = "Fertig";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "Avatar";
+"spaces_coming_soon_detail" = "Diese Funktion wurde hier noch nicht eingebaut, kommt aber bald. So lange kannst du dafür Element am Computer nutzen.";
+"spaces_invites_coming_soon_title" = "Einladungen sind bald verfügbar";
+"spaces_add_rooms_coming_soon_title" = "Räume hinzufügen ist bald verfügbar";
+"spaces_no_result_found_title" = "Keine Ergebnisse gefunden";
+"spaces_suggested_room" = "Vorgeschlagen";
+"leave_space_message_admin_warning" = "Du bist Administrator in diesem Space, stelle vor dem Verlassen sicher, dass du die Administrator-Rechte auf ein anderes Mitglied übertragen hast.";
+"leave_space_message" = "Bist du dir sicher, dass du %@ verlassen möchtest? Möchtest du außerdem alle Räume und Spaces in diesem Space verlassen?";
+"leave_space_title" = "%@ verlassen";
+"space_avatar_view_accessibility_hint" = "Space-Avatar ändern";
+"space_public_join_rule" = "Öffentlicher Space";
+"space_private_join_rule" = "Privater Space";
+"space_participants_action_ban" = "Aus diesem Space verbannen";
+"space_participants_action_remove" = "Aus diesem Space entfernen";
+"spaces_coming_soon_title" = "Bald verfügbar";
+"spaces_empty_space_title" = "Dieser Space hat (noch) keine Räume";
+"spaces_explore_rooms" = "Räume erkunden";
+"leave_space_and_all_rooms_action" = "Alle Räume und Spaces verlassen";
+"leave_space_only_action" = "Keine Räume verlassen";
+"spaces_left_panel_title" = "Spaces";
+"room_recents_suggested_rooms_section" = "VORGESCHLAGENE RÄUME";
+"spaces_home_space_title" = "Start";

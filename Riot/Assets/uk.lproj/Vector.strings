@@ -203,7 +203,7 @@
 
 // Chat participants
 "room_participants_title" = "Учасники";
-"contacts_address_book_permission_denied" = "Ви не дозволили Element отримати доступ до локальних контактів";
+"contacts_address_book_permission_denied" = "Ви не дозволили %@ отримати доступ до локальних контактів";
 "contacts_address_book_permission_required" = "Необхідний дозвіл на доступ до локальних контактів";
 "contacts_address_book_no_contact" = "Немає локальних контактів";
 "contacts_address_book_matrix_users_toggle" = "Тільки користувачі Matrix";
