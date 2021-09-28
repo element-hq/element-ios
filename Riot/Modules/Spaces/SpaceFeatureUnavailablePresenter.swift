@@ -37,7 +37,7 @@ final class SpaceFeatureUnavailablePresenter: NSObject {
         
         let navigationVC = RiotNavigationController(rootViewController: spaceFeatureUnavailableVC)
         
-        spaceFeatureUnavailableVC.navigationItem.rightBarButtonItem = MXKBarButtonItem(title: Bundle.mxk_localizedString(forKey: "ok"), style: .plain, action: { [weak navigationVC] in
+        spaceFeatureUnavailableVC.navigationItem.rightBarButtonItem = MXKBarButtonItem(title: MatrixKitL10n.ok, style: .plain, action: { [weak navigationVC] in
             navigationVC?.dismiss(animated: true)
         })
                         
