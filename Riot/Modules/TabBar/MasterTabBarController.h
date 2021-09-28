@@ -37,6 +37,13 @@
 #define TABBAR_GROUPS_INDEX       4
 #define TABBAR_COUNT              5
 
+typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
+    MasterTabBarIndexHome = TABBAR_HOME_INDEX,
+    MasterTabBarIndexFavourites = TABBAR_FAVOURITES_INDEX,
+    MasterTabBarIndexPeople = TABBAR_PEOPLE_INDEX,
+    MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX,
+    MasterTabBarIndexGroups = TABBAR_GROUPS_INDEX
+};
 
 @protocol MasterTabBarControllerDelegate;
 
@@ -152,6 +159,13 @@
 - (void)presentReviewUnverifiedSessionsAlertIfNeededWithSession:(MXSession*)session;
 
 
+/// Filter rooms for each tab data source with the given room parent id.
+/// It should keep rooms having an ancestor with `roomParentId` as parent id.
+/// @param roomParentId The room parent id used to filter rooms.
+/// @param mxSession The matrix session in which the room filtering should be done.
+- (void)filterRoomsWithParentId:(NSString*)roomParentId
+                inMatrixSession:(MXSession*)mxSession;
+
 // Reference to the current auth VC. It is not nil only when the auth screen is displayed.
 @property (nonatomic, readonly) AuthenticationViewController *authViewController;
 
@@ -187,6 +201,8 @@
 // Set tab bar item controllers
 - (void)updateViewControllers:(NSArray<UIViewController*>*)viewControllers;
 
+- (void)removeTabAt:(MasterTabBarIndex)index;
+
 @end
 
 
@@ -194,5 +210,6 @@
 
 - (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
 - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToDisplayDetailViewController:(UIViewController*)detailViewController;
+- (void)masterTabBarController:(MasterTabBarController*)masterTabBarController needsSideMenuIconWithNotification:(BOOL)displayNotification;
 
 @end

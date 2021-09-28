@@ -130,8 +130,9 @@
             
         }
         
-        MXRoomSummary *summary = [roomCellData.mxSession roomSummaryWithRoomId:roomCellData.roomSummary.roomId];
-        [summary setRoomAvatarImageIn:self.roomAvatar];
+        [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                       displayName:roomCellData.roomDisplayname
+                                      mediaManager:roomCellData.mxSession.mediaManager];
     }
 }
 
@@ -170,11 +171,7 @@
 
 - (NSString*)roomId
 {
-    if (roomCellData)
-    {
-        return roomCellData.roomSummary.roomId;
-    }
-    return nil;
+    return roomCellData.roomIdentifier;
 }
 
 @end

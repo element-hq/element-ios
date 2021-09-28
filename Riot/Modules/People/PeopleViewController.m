@@ -26,11 +26,13 @@
 
 #import "Riot-Swift.h"
 
-@interface PeopleViewController ()
+@interface PeopleViewController () <SpaceMembersCoordinatorBridgePresenterDelegate>
 {
     NSInteger          directRoomsSectionNumber;
     RecentsDataSource *recentsDataSource;
 }
+
+@property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
 
 @end
 
@@ -119,7 +121,16 @@
 
 - (void)onPlusButtonPressed
 {
-    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+    if (self.dataSource.currentSpace != nil)
+    {
+        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.spaceMembersCoordinatorBridgePresenter.delegate = self;
+        [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+    }
 }
 
 #pragma mark -
@@ -170,6 +181,15 @@
 {
     return recentsDataSource.invitesCellDataArray.count
     + recentsDataSource.peopleCellDataArray.count;
+}
+
+#pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate
+
+- (void)spaceMembersCoordinatorBridgePresenterDelegateDidComplete:(SpaceMembersCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.spaceMembersCoordinatorBridgePresenter = nil;
+    }];
 }
 
 @end

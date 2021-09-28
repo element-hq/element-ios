@@ -32,6 +32,16 @@ extension UIView {
         }
     }
     
+    /// Add a subview matching the safe area of the parent view using autolayout
+    @objc func vc_addSubViewMatchingParentSafeArea(_ subView: UIView) {
+        self.addSubview(subView)
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        subView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        subView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        subView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        subView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    }
+    
     @objc func vc_removeAllSubviews() {
         for subView in self.subviews {
             subView.removeFromSuperview()

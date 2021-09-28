@@ -16,9 +16,7 @@
 
 import SwiftUI
 
-/**
- Renders the keywords input, driven by 'NotificationSettingsViewModel'.
- */
+/// Renders the keywords input, driven by 'NotificationSettingsViewModel'.
 @available(iOS 14.0, *)
 struct NotificationSettingsKeywords: View {
     @ObservedObject var viewModel: NotificationSettingsViewModel

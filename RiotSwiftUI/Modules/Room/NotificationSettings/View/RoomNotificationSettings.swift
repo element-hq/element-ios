@@ -41,7 +41,7 @@ struct RoomNotificationSettings: View {
     
     var body: some View {
         VectorForm {
-            if  let avatarData = viewModel.viewState.avatarData as? AvatarInputType {
+            if  let avatarData = viewModel.viewState.avatarData as? AvatarInputProtocol {
                 RoomNotificationSettingsHeader(
                     avatarData: avatarData,
                     displayName: viewModel.viewState.displayName

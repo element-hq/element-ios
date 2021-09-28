@@ -41,7 +41,6 @@ targets:
     - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Managers/Theme/
     - path: ../Riot/Utils/AvatarGenerator.m
-    - path: ../Riot/Generated/InfoPlist.swift
     - path: ../Config/BuildSettings.swift
     - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Categories/MXRoom+Riot.m
@@ -55,6 +54,7 @@ targets:
     - path: ../Riot/Categories/UIColor.swift
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Categories/MXKImageView.swift
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib

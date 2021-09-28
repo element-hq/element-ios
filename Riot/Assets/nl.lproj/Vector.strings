@@ -150,7 +150,7 @@
 "contacts_address_book_matrix_users_toggle" = "Alleen Matrix-gebruikers";
 "contacts_address_book_no_contact" = "Geen lokale contacten";
 "contacts_address_book_permission_required" = "Toestemming vereist voor toegang tot de lokale contacten";
-"contacts_address_book_permission_denied" = "U heeft Element geen toegang tot uw lokale contacten verleend";
+"contacts_address_book_permission_denied" = "U heeft %@ geen toegang tot uw lokale contacten verleend";
 // Chat participants
 "room_participants_title" = "Deelnemers";
 "room_participants_add_participant" = "Deelnemer toevoegen";
@@ -408,7 +408,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Wilt u helpen met het verbeteren van %@ door anonieme crashrapporten en gebruiksstatistieken te versturen?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element ondersteunt nu eind-tot-eind-versleuteling, maar u moet zich opnieuw aanmelden om het in te schakelen.\n\nU kunt dit nu of later doen vanuit de app-instellingen.";
+"e2e_enabling_on_app_update" = "%@ ondersteunt nu eind-tot-eind-versleuteling, maar u moet zich opnieuw aanmelden om het in te schakelen.\n\nU kunt dit nu of later doen vanuit de app-instellingen.";
 "e2e_need_log_in_again" = "U moet zich opnieuw aanmelden om sleutels voor eind-tot-eind-versleuteling te genereren voor dit apparaat, en om de publieke sleutel naar uw server te sturen.\nDit is eenmalig; excuses voor het ongemak.";
 // Bug report
 "bug_report_title" = "Foutmelding";
@@ -454,7 +454,7 @@
 "settings_calls_settings" = "OPROEPEN";
 "settings_show_decrypted_content" = "Ontsleutelde inhoud tonen";
 "settings_enable_callkit" = "Geïntegreerde oproepen";
-"settings_callkit_info" = "Ontvang inkomende oproepen op uw toegangsscherm. Geef uw Element-oproepen weer in de gespreksgeschiedenis van het systeem. Als iCloud ingeschakeld is zal deze geschiedenis met Apple gedeeld worden.";
+"settings_callkit_info" = "Ontvang inkomende oproepen op uw toegangsscherm. Geef uw %@-oproepen weer in de gespreksgeschiedenis van het systeem. Als iCloud ingeschakeld is zal deze geschiedenis met Apple gedeeld worden.";
 "settings_ui_theme" = "Thema";
 "settings_ui_theme_auto" = "Automatisch";
 "settings_ui_theme_light" = "Licht";
@@ -541,7 +541,7 @@
 "deactivate_account_forget_messages_information_part2_emphasize" = "Waarschuwing";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Aanvraag verstuurd";
-"rerequest_keys_alert_message" = "Start Element op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
+"rerequest_keys_alert_message" = "Start %@ op een ander apparaat dat het bericht kan ontsleutelen, zodat het de sleutels kan sturen naar dit apparaat.";
 "settings_deactivate_my_account" = "Mijn account deactiveren";
 "event_formatter_rerequest_keys_part1_link" = "Versleutelingssleutels opnieuw aanvragen";
 "event_formatter_rerequest_keys_part2" = " van uw andere apparaten.";
@@ -564,7 +564,7 @@
 "room_message_reply_to_short_placeholder" = "Stuur een antwoord…";
 // String for App Store
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
-"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, spaces, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
+"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, ruimtes, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
 "auth_accept_policies" = "Gelieve het beleid van deze server te lezen en aanvaarden:";
 "auth_autodiscover_invalid_response" = "Ongeldig server-ontdekkings-antwoord";
@@ -853,11 +853,6 @@
 "skip" = "Overslaan";
 // Accessibility
 "accessibility_checkbox_label" = "aanvinkvak";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "auth_add_email_message_2" = "Stel een e-mailadres in voor accountherstel en om later optioneel vindbaar te zijn voor mensen die u kennen.";
 "auth_add_phone_message_2" = "Stel een telefoon in om later optioneel vindbaar te zijn voor mensen die u kennen.";
 "auth_add_email_phone_message_2" = "Stel een e-mailadres in voor accountherstel. Gebruik later e-mail of telefoon om optioneel vindbaar te zijn voor mensen die u kennen.";
@@ -981,7 +976,8 @@
 "pin_protection_settings_enable_pin" = "PIN inschakelen";
 "pin_protection_settings_enabled_forced" = "PIN ingeschakeld";
 "pin_protection_settings_section_footer" = "Om uw PIN opnieuw in te stellen moet u straks opnieuw inloggen en een nieuwe PIN aanmaken.";
-"pin_protection_settings_section_header_x" = "PIN en %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN en %@";
 "pin_protection_mismatch_too_many_times_error_message" = "Als u uw PIN bent vergeten, klik op de PIN vergeten-knop.";
 "pin_protection_mismatch_error_message" = "Probeer het opnieuw";
 "pin_protection_mismatch_error_title" = "PIN's zijn niet hetzelfde";
@@ -1005,7 +1001,7 @@
 
 // MARK: - Major update
 
-"major_update_title" = "Riot is nu Element";
+"major_update_title" = "Riot is nu %@";
 "cross_signing_setup_banner_subtitle" = "Verifieer uw andere apparaat gemakkelijker";
 
 // MARK: - Cross-signing
@@ -1180,8 +1176,8 @@
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "Wanneer u geen toegang meer heeft tot een bestaande sessie";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Uw veiligheidswachtwoord of -sleutel gebruiken";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Veiligheidssleutel gebruiken";
-"device_verification_self_verify_wait_additional_information" = "Dit werkt met Element en andere Matrix-apps die kruislings ondertekenen ondersteunen.";
-"device_verification_self_verify_wait_information" = "Verifieer deze sessie vanaf een van uw andere sessies, om toegang te krijgen tot de versleutelde berichten.\n\nGebruik de laatste versie van Element op uw andere apparaten:";
+"device_verification_self_verify_wait_additional_information" = "Dit werkt met %@ en andere Matrix-apps die kruislings ondertekenen ondersteunen.";
+"device_verification_self_verify_wait_information" = "Verifieer deze sessie vanaf een van uw andere sessies, om toegang te krijgen tot de versleutelde berichten.\n\nGebruik de laatste versie van %@ op uw andere apparaten:";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifieer deze login";
 
 // MARK: Self verification wait
@@ -1331,7 +1327,7 @@
 // Manage session
 "manage_session_title" = "Beheer sessie";
 "security_settings_user_password_description" = "Bevestig uw identiteit door uw accountwachtwoord in te voeren";
-"security_settings_coming_soon" = "Sorry. Deze actie is nog niet beschikbaar in Element iOS. Gebruik een andere Matrix-app om het in te stellen. Element iOS zal het dan wel gebruiken.";
+"security_settings_coming_soon" = "Sorry. Deze actie is nog niet beschikbaar in %@ iOS. Gebruik een andere Matrix-app om het in te stellen. %@ iOS zal het dan wel gebruiken.";
 "security_settings_complete_security_alert_message" = "U moet de beveiliging van uw huidige sessie nog afronden.";
 "security_settings_complete_security_alert_title" = "Beveiliging afronden";
 "security_settings_blacklist_unverified_devices_description" = "Verifieer alle sessies van een gebruiker om deze als vertrouwd te markeren en berichten naar te zenden.";
@@ -1473,16 +1469,16 @@
 
 // Chat
 "room_slide_to_end_group_call" = "Schuif om voor iedereen de oproep te beëindigen";
-"space_beta_announce_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu al gebruiken op Web en Desktop.";
-"space_feature_unavailable_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. \n\nHet is binnenkort beschikbaar. U kan aan spaces deelnemen via andere platformen en die kamer worden dan hier beschikbaar.";
+"space_beta_announce_information" = "Ruimtes zijn de nieuwe manier om kamers en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu al gebruiken op Web en Desktop.";
+"space_feature_unavailable_information" = "Ruimtes zijn de nieuwe manier om kamers en personen te groeperen. \n\nHet is binnenkort beschikbaar. U kan aan ruimtes deelnemen via andere platformen en die kamers worden dan hier beschikbaar.";
 "space_beta_announce_subtitle" = "De nieuwe versie van gemeenschappen";
-"space_beta_announce_title" = "Spaces komen binnenkort";
+"space_beta_announce_title" = "Ruimtes komen binnenkort";
 "space_beta_announce_badge" = "BETA";
-"space_feature_unavailable_subtitle" = "Spaces is nog niet beschikbaar op iOS, maar u kunt het nu al testen op Web en Desktop";
+"space_feature_unavailable_subtitle" = "Ruimtes zijn nog niet beschikbaar op iOS, maar u kunt het nu al testen op Web en Desktop";
 
 // Mark: - Spaces
 
-"space_feature_unavailable_title" = "Spaces is nog niet klaar";
+"space_feature_unavailable_title" = "Ruimtes zijn nog niet klaar";
 "side_menu_app_version" = "Versie %@";
 "side_menu_action_feedback" = "Feedback";
 "side_menu_action_help" = "Help";
@@ -1560,16 +1556,21 @@
 "settings_default" = "Standaard Notificaties";
 "settings_notifications" = "NOTIFICATIES";
 "version_check_modal_action_title_deprecated" = "Ontdek hoe";
-"version_check_modal_subtitle_deprecated" = "We hebben gewerkt aan het verbeteren van Element voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor sommige van deze verbeteringen en worden deze niet langer ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om Element volledig te kunnen gebruiken.";
+"version_check_modal_subtitle_deprecated" = "We hebben gewerkt aan het verbeteren van %@ voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor sommige van deze verbeteringen en worden deze niet langer ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om %@ volledig te kunnen gebruiken.";
 "version_check_modal_title_deprecated" = "We ondersteunen iOS %@ niet langer";
 "version_check_modal_action_title_supported" = "Ik heb hem";
-"version_check_modal_subtitle_supported" = "We hebben gewerkt aan het verbeteren van Element voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor een aantal van deze verbeteringen en zal deze niet langer worden ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om het volledige potentieel van Element te kunnen benutten.";
+"version_check_modal_subtitle_supported" = "We hebben gewerkt aan het verbeteren van %@ voor een snellere en meer gepolijste ervaring. Helaas is uw huidige iOS-versie niet geschikt voor een aantal van deze verbeteringen en zal deze niet langer worden ondersteund.\nWe adviseren u om uw besturingssysteem te upgraden om het volledige potentieel van %@ te kunnen benutten.";
 "version_check_modal_title_supported" = "We stoppen de ondersteuning voor iOS %@";
-"version_check_banner_subtitle_deprecated" = "We ondersteunen Element niet langer op iOS %@. Om het volledige potentieel van Element te blijven gebruiken, adviseren wij u om uw iOS-versie te upgraden.";
+"version_check_banner_subtitle_deprecated" = "We ondersteunen %@ niet langer op iOS %@. Om het volledige potentieel van %@ te blijven gebruiken, adviseren wij u om uw iOS-versie te upgraden.";
 "version_check_banner_title_deprecated" = "We ondersteunen iOS %@ niet langer";
-"version_check_banner_subtitle_supported" = "We zullen binnenkort de ondersteuning voor Element op iOS %@ stoppen. Om het volledige potentieel van Element te blijven gebruiken, adviseren wij u om uw iOS-versie te upgraden.";
+"version_check_banner_subtitle_supported" = "We zullen binnenkort de ondersteuning voor %@ op iOS %@ stoppen. Om het volledige potentieel van %@ te blijven gebruiken, adviseren wij u om uw iOS-versie te upgraden.";
 
 // Mark: - Version check
 
 "version_check_banner_title_supported" = "We stoppen de ondersteuning voor iOS %@";
 "settings_mentions_and_keywords_encryption_notice" = "U krijgt geen meldingen voor vermeldingen en trefwoorden in versleutelde kamers op mobiele telefoons.";
+"settings_show_url_previews_description" = "Voorvertoningen worden alleen getoond in niet versleutelde kamers.";
+"settings_show_url_previews" = "URL-voorvertoningen tonen";
+"settings_confirm_media_size_description" = "Wanneer dit aan staat wordt u elke keer gevraagd welk formaat afbeeldingen en video's u wilt versturen.";
+"settings_confirm_media_size" = "Bevestig afmeting bij versturen";
+"settings_sending_media" = "AFBEELDINGEN EN VIDEO'S VERSTUREN";

@@ -29,6 +29,7 @@ class RecentsDataSourceState: NSObject {
     let conversationCellDataArray: [MXKRecentCellDataStoring]
     let lowPriorityCellDataArray: [MXKRecentCellDataStoring]
     let serverNoticeCellDataArray: [MXKRecentCellDataStoring]
+    let suggestedRoomCellDataArray: [MXKRecentCellDataStoring]
     
     // MARK: Discussion counts
     let favouriteMissedDiscussionsCount: DiscussionsCount
@@ -42,6 +43,7 @@ class RecentsDataSourceState: NSObject {
          conversationCellDataArray: [MXKRecentCellDataStoring],
          lowPriorityCellDataArray: [MXKRecentCellDataStoring],
          serverNoticeCellDataArray: [MXKRecentCellDataStoring],
+         suggestedRoomCellDataArray: [MXKRecentCellDataStoring],
          favouriteMissedDiscussionsCount: DiscussionsCount,
          directMissedDiscussionsCount: DiscussionsCount,
          groupMissedDiscussionsCount: DiscussionsCount) {
@@ -51,6 +53,7 @@ class RecentsDataSourceState: NSObject {
         self.conversationCellDataArray = conversationCellDataArray
         self.lowPriorityCellDataArray = lowPriorityCellDataArray
         self.serverNoticeCellDataArray = serverNoticeCellDataArray
+        self.suggestedRoomCellDataArray = suggestedRoomCellDataArray
         self.favouriteMissedDiscussionsCount = favouriteMissedDiscussionsCount
         self.directMissedDiscussionsCount = directMissedDiscussionsCount
         self.groupMissedDiscussionsCount = groupMissedDiscussionsCount

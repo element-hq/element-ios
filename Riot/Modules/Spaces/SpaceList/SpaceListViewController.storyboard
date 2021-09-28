@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="V8j-Lb-PgC">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Space List View Controller-->
+        <scene sceneID="mt5-wz-YKA">
+            <objects>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="V8j-Lb-PgC" customClass="SpaceListViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EL9-GA-lwo">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spaces" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQD-at-CDq">
+                                <rect key="frame" x="16" y="44" width="382" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fr1-tf-eDV">
+                                <rect key="frame" x="0.0" y="81" width="414" height="781"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="V8j-Lb-PgC" id="Ovn-5b-G8O"/>
+                                    <outlet property="delegate" destination="V8j-Lb-PgC" id="Dlq-3U-wxg"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="bFg-jh-JZB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fr1-tf-eDV" firstAttribute="top" secondItem="VQD-at-CDq" secondAttribute="bottom" constant="16" id="Cgt-Qc-Jro"/>
+                            <constraint firstAttribute="trailing" secondItem="fr1-tf-eDV" secondAttribute="trailing" id="F07-Ge-xr5"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="fr1-tf-eDV" secondAttribute="bottom" id="FfH-sZ-enc"/>
+                            <constraint firstItem="bFg-jh-JZB" firstAttribute="trailing" secondItem="VQD-at-CDq" secondAttribute="trailing" constant="16" id="Pg7-ae-av6"/>
+                            <constraint firstItem="fr1-tf-eDV" firstAttribute="leading" secondItem="EL9-GA-lwo" secondAttribute="leading" id="dPV-AP-ody"/>
+                            <constraint firstItem="VQD-at-CDq" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" id="g1M-rQ-73b"/>
+                            <constraint firstItem="VQD-at-CDq" firstAttribute="leading" secondItem="bFg-jh-JZB" secondAttribute="leading" constant="16" id="zLQ-Xc-Vqj"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="fr1-tf-eDV" id="QLT-hP-wCg"/>
+                        <outlet property="titleLabel" destination="VQD-at-CDq" id="Sgc-OZ-Ntb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3198.5507246376815" y="-647.54464285714278"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

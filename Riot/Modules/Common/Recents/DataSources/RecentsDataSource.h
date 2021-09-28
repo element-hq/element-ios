@@ -21,6 +21,8 @@
 
 @protocol MXKRecentCellDataStoring;
 @class DiscussionsCount;
+@class MXSpace;
+
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.
@@ -73,6 +75,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger conversationSection;
 @property (nonatomic) NSInteger lowPrioritySection;
 @property (nonatomic) NSInteger serverNoticeSection;
+@property (nonatomic) NSInteger suggestedRoomsSection;
 
 @property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *invitesCellDataArray;
 @property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *favoriteCellDataArray;
@@ -80,6 +83,7 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *conversationCellDataArray;
 @property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *lowPriorityCellDataArray;
 @property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *serverNoticeCellDataArray;
+@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *suggestedRoomCellDataArray;
 
 @property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
 @property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;

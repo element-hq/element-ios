@@ -17,41 +17,29 @@
 import Foundation
 import Combine
 
-/**
- A service for changing notification settings and keywords
- */
+/// A service for changing notification settings and keywords
 @available(iOS 14.0, *)
 protocol NotificationSettingsServiceType {
-    /**
-     Publisher of all push rules.
-     */
+    /// Publisher of all push rules.
     var rulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> { get }
-    /**
-     Publisher of content rules.
-     */
+    
+    /// Publisher of content rules.
     var contentRulesPublisher: AnyPublisher<[NotificationPushRuleType], Never> { get }
-    /**
-     Adds a keyword.
-     
-     - Parameters:
-      - keyword: The keyword to add.
-      - enabled: Whether the keyword should be added in the enabled or disabled state.
-     */
+    
+    /// Adds a keyword.
+    /// - Parameters:
+    ///   - keyword: The keyword to add.
+    ///   - enabled: Whether the keyword should be added in the enabled or disabled state.
     func add(keyword: String, enabled: Bool)
-    /**
-     Removes a keyword.
-     
-     - Parameters:
-      - keyword: The keyword to remove.
-     */
+    
+    /// Removes a keyword.
+    /// - Parameter keyword: The keyword to remove.
     func remove(keyword: String)
-    /**
-     Updates the push rule actions.
-     
-     - Parameters:
-      - ruleId: The id of the rule.
-      - enabled: Whether the rule should be enabled or disabled.
-      - actions: The actions to update with.
-     */
+    
+    /// Updates the push rule actions.
+    /// - Parameters:
+    ///   - ruleId: The id of the rule.
+    ///   - enabled: Whether the rule should be enabled or disabled.
+    ///   - actions: The actions to update with.
     func updatePushRuleActions(for ruleId: String, enabled: Bool, actions: NotificationActions?)
 }

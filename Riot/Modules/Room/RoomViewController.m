@@ -137,7 +137,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate>
 {
     
     // The preview header
@@ -244,8 +244,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
+@property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
 
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
+@property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
 @end
 
@@ -631,7 +633,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     self.updateRoomReadMarker = NO;
     isAppeared = NO;
     
-    [VoiceMessageMediaServiceProvider.sharedProvider stopAllServices];
+    [VoiceMessageMediaServiceProvider.sharedProvider pauseAllServices];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1013,6 +1015,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self refreshRoomInputToolbar];
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
+    _voiceMessageController.roomId = dataSource.roomId;
 }
 
 - (void)onRoomDataSourceReady
@@ -1422,12 +1425,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
-- (void)setShowMissedDiscussionsBadge:(BOOL)showMissedDiscussionsBadge
-{
-    missedDiscussionsBadgeLabel.hidden = !showMissedDiscussionsBadge;
-    missedDiscussionsDotView.hidden = !showMissedDiscussionsBadge;
-}
-
 - (void)setScrollToBottomHidden:(BOOL)scrollToBottomHidden
 {
     if (_scrollToBottomHidden != scrollToBottomHidden)
@@ -1449,6 +1446,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.scrollToBottomBadgeLabel.alpha = (scrollToBottomHidden || !self.scrollToBottomBadgeLabel.text) ? 0 : 1;
         self.scrollToBottomButton.alpha = scrollToBottomHidden ? 0 : 1;
     }];
+}
+
+- (void)setMissedDiscussionsBadgeHidden:(BOOL)missedDiscussionsBadgeHidden{
+    _missedDiscussionsBadgeHidden = missedDiscussionsBadgeHidden;
+    
+    missedDiscussionsBadgeLabel.hidden = missedDiscussionsBadgeHidden;
+    missedDiscussionsDotView.hidden = missedDiscussionsBadgeHidden;
 }
 
 #pragma mark - Internals
@@ -2189,7 +2193,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else
     {
-        return [[AppDelegate theDelegate] handleUniversalLinkURL:universalLinkURL];
+        [self handleSpaceUniversalLinkWith:universalLinkURL];
+        return YES;
     }
 }
     
@@ -4424,27 +4429,48 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else if (tappedView == previewHeader.rightButton)
     {
         // 'Join' button has been pressed
-        if (roomPreviewData)
+        if (!roomPreviewData)
         {
-            // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
-            NSString *eventId = roomPreviewData.eventId;
+            [self joinRoom:^(MXKRoomViewControllerJoinRoomResult result) {
+                switch (result)
+                {
+                    case MXKRoomViewControllerJoinRoomResultSuccess:
+                        [self refreshRoomTitle];
+                        break;
+                    case MXKRoomViewControllerJoinRoomResultFailureRoomEmpty:
+                        [self declineRoomInvitation];
+                        break;
+                    default:
+                        break;
+                }
+            }];
             
-            // We promote here join by room alias instead of room id when an alias is available.
-            NSString *roomIdOrAlias = roomPreviewData.roomId;
+            return;
+        }
+        
+        // Attempt to join the room (keep reference on the potential eventId, the preview data will be removed automatically in case of success).
+        NSString *eventId = roomPreviewData.eventId;
+        
+        // We promote here join by room alias instead of room id when an alias is available.
+        NSString *roomIdOrAlias = roomPreviewData.roomId;
+        
+        if (roomPreviewData.roomCanonicalAlias.length)
+        {
+            roomIdOrAlias = roomPreviewData.roomCanonicalAlias;
+        }
+        else if (roomPreviewData.roomAliases.count)
+        {
+            roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
+        }
+        
+        // Note in case of simple link to a room the signUrl param is nil
+        [self joinRoomWithRoomIdOrAlias:roomIdOrAlias viaServers:roomPreviewData.viaServers
+                             andSignUrl:roomPreviewData.emailInvitation.signUrl
+                             completion:^(MXKRoomViewControllerJoinRoomResult result) {
             
-            if (roomPreviewData.roomCanonicalAlias.length)
+            switch (result)
             {
-                roomIdOrAlias = roomPreviewData.roomCanonicalAlias;
-            }
-            else if (roomPreviewData.roomAliases.count)
-            {
-                roomIdOrAlias = roomPreviewData.roomAliases.firstObject;
-            }
-            
-            // Note in case of simple link to a room the signUrl param is nil
-            [self joinRoomWithRoomIdOrAlias:roomIdOrAlias viaServers:roomPreviewData.viaServers  andSignUrl:roomPreviewData.emailInvitation.signUrl completion:^(BOOL succeed) {
-                
-                if (succeed)
+                case MXKRoomViewControllerJoinRoomResultSuccess:
                 {
                     // If an event was specified, replace the datasource by a non live datasource showing the event
                     if (eventId)
@@ -4473,33 +4499,47 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         [self refreshRoomTitle];
                         [self refreshRoomInputToolbar];
                     }
+                    break;
                 }
-                
-            }];
-        }
-        else
-        {
-            [self joinRoom:^(BOOL succeed) {
-                
-                if (succeed)
-                {
-                    [self refreshRoomTitle];
-                }
-                
-            }];
-        }
+                case MXKRoomViewControllerJoinRoomResultFailureRoomEmpty:
+                    [self declineRoomInvitation];
+                    break;
+                default:
+                    break;
+            }
+        }];
     }
     else if (tappedView == previewHeader.leftButton)
     {
-        // 'Decline' button has been pressed
-        if (roomPreviewData)
-        {
-            [self roomPreviewDidTapCancelAction];
-        }
-        else
-        {
-            [self leaveRoom];
-        }
+        [self declineRoomInvitation];
+    }
+}
+
+- (void)declineRoomInvitation
+{
+    // 'Decline' button has been pressed
+    if (roomPreviewData)
+    {
+        [self roomPreviewDidTapCancelAction];
+    }
+    else
+    {
+        [self startActivityIndicator];
+        
+        [self.roomDataSource.room leave:^{
+            
+            [self stopActivityIndicator];
+            
+            // We remove the current view controller.
+            // Pop to homes view controller
+            [[AppDelegate theDelegate] restoreInitialDisplay:^{}];
+            
+        } failure:^(NSError *error) {
+            
+            [self stopActivityIndicator];
+            MXLogDebug(@"[RoomVC] Failed to reject an invited room (%@) failed", self.roomDataSource.room.roomId);
+            
+        }];
     }
 }
 
@@ -4925,16 +4965,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)refreshMissedDiscussionsCount:(BOOL)force
 {
     // Ignore this action when no room is displayed
-    if (!self.roomDataSource || !missedDiscussionsBadgeLabel
+    if (!self.showMissedDiscussionsBadge || !self.roomDataSource || !missedDiscussionsBadgeLabel
         || [UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone
         || ([[UIScreen mainScreen] nativeBounds].size.height > 2532 && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)))
     {
-        self.showMissedDiscussionsBadge = NO;
+        self.missedDiscussionsBadgeHidden = YES;
         return;
     }
     
-    self.showMissedDiscussionsBadge = YES;
-    
+    self.missedDiscussionsBadgeHidden = NO;
+
     NSUInteger highlightCount = 0;
     NSUInteger missedCount = [[AppDelegate theDelegate].masterTabBarController missedDiscussionsCount];
     
@@ -5617,8 +5657,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
     
     // Show the explanation dialog
-    alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rerequest_keys_alert_title", @"Vector", nil)
-                                                message:NSLocalizedStringFromTable(@"rerequest_keys_alert_message", @"Vector", nil)
+    alert = [UIAlertController alertControllerWithTitle:VectorL10n.rerequestKeysAlertTitle
+                                                message:[VectorL10n e2eRoomKeyRequestMessage:AppInfo.current.displayName]
                                          preferredStyle:UIAlertControllerStyleAlert];
     currentAlert = alert;
     
@@ -6440,6 +6480,39 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXLogError(@"Failed sending voice message");
         completion(NO);
     }];
+}
+
+- (void)showSpaceDetailWithPublicRoom:(MXPublicRoom *)publicRoom
+{
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
+}
+
+- (void)showSpaceDetailWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    [self.spaceDetailPresenter presentForSpaceWithId:spaceId from:self sourceView:nil session:self.mainSession animated:YES];
+}
+
+#pragma mark - SpaceDetailPresenterDelegate
+
+- (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
+{
+    self.spaceDetailPresenter = nil;
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didOpenSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
+}
+
+- (void)spaceDetailPresenter:(SpaceDetailPresenter *)presenter didJoinSpaceWithId:(NSString *)spaceId
+{
+    self.spaceDetailPresenter = nil;
+    [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
 }
 
 @end

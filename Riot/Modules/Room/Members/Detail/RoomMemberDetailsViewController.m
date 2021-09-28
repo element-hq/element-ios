@@ -465,6 +465,11 @@
     [[AppDelegate theDelegate] presentCompleteSecurityForSession:self.mainSession];
 }
 
+- (void)showRoomWithId:(NSString*)roomId
+{
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.mainSession];
+}
+
 #pragma mark - Hide/Show navigation bar border
 
 - (void)hideNavigationBarBorder:(BOOL)isHidden
@@ -518,7 +523,10 @@
     {
         isOneself = YES;
         
-        [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
+        if (self.enableLeave)
+        {
+            [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
+        }
         
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
@@ -754,10 +762,24 @@
             title = NSLocalizedStringFromTable(@"room_participants_action_leave", @"Vector", nil);
             break;
         case MXKRoomMemberDetailsActionKick:
-            title = NSLocalizedStringFromTable(@"room_participants_action_remove", @"Vector", nil);
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                title = NSLocalizedStringFromTable(@"space_participants_action_remove", @"Vector", nil);
+            }
+            else
+            {
+                title = NSLocalizedStringFromTable(@"room_participants_action_remove", @"Vector", nil);
+            }
             break;
         case MXKRoomMemberDetailsActionBan:
-            title = NSLocalizedStringFromTable(@"room_participants_action_ban", @"Vector", nil);
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                title = NSLocalizedStringFromTable(@"space_participants_action_ban", @"Vector", nil);
+            }
+            else
+            {
+                title = NSLocalizedStringFromTable(@"room_participants_action_ban", @"Vector", nil);
+            }
             break;
         case MXKRoomMemberDetailsActionUnban:
             title = NSLocalizedStringFromTable(@"room_participants_action_unban", @"Vector", nil);
@@ -1047,7 +1069,7 @@
         if (indexPath.row < directChatsArray.count)
         {
             // Open this room
-            [[AppDelegate theDelegate] showRoom:directChatsArray[indexPath.row] andEventId:nil withMatrixSession:self.mainSession];
+            [self showRoomWithId:directChatsArray[indexPath.row]];
         }
         else
         {

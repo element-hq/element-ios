@@ -87,7 +87,7 @@ NSString *const kInviteRecentTableViewCellRoomKey = @"kInviteRecentTableViewCell
 {
     if (self.delegate)
     {
-        MXRoom *room = [roomCellData.mxSession roomWithRoomId:roomCellData.roomSummary.roomId];
+        MXRoom *room = [roomCellData.mxSession roomWithRoomId:roomCellData.roomIdentifier];
         
         if (room)
         {

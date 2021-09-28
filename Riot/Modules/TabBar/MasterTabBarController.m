@@ -31,7 +31,7 @@
 
 #import "Riot-Swift.h"
 
-@interface MasterTabBarController () <AuthenticationViewControllerDelegate>
+@interface MasterTabBarController () <AuthenticationViewControllerDelegate, UITabBarControllerDelegate>
 {
     // Array of `MXSession` instances.
     NSMutableArray<MXSession*> *mxSessionArray;    
@@ -61,6 +61,9 @@
     
     // The groups data source
     GroupsDataSource *groupsDataSource;
+    
+    // Custom title view of the navigation bar
+    MainTitleView *titleView;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -106,22 +109,35 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    self.delegate = self;
+    
     _authenticationInProgress = NO;
     
     // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
     [self vc_removeBackTitle];
     
+    [self setupTitleView];
+    titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    
     childViewControllers = [NSMutableArray array];
+    
+    MXWeakify(self);
+    [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        MXStrongifyAndReturnIfNil(self);
+        [self updateSideMenuNotifcationIcon];
+    }];
 }
 
 - (void)userInterfaceThemeDidChange
 {
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    id<Theme> theme = ThemeService.shared.theme;
+    [theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
 
-    [ThemeService.shared.theme applyStyleOnTabBar:self.tabBar];
+    [theme applyStyleOnTabBar:self.tabBar];
     
-    self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
-    
+    self.view.backgroundColor = theme.backgroundColor;
+    [titleView updateWithTheme:theme];
+
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -267,6 +283,9 @@
     
     [self initializeDataSources];
     
+    // Need to be called in case of the controllers have been replaced
+    [self.selectedViewController viewWillAppear:NO];
+
     // Adjust the display of the icons in the tabbar.
     for (UITabBarItem *tabBarItem in self.tabBar.items)
     {
@@ -280,6 +299,21 @@
         {
             tabBarItem.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
         }
+    }
+    
+    titleView.titleLabel.text = self.selectedViewController.accessibilityLabel;
+    
+    // Need to be called in case of the controllers have been replaced
+    [self.selectedViewController viewDidAppear:NO];
+}
+
+- (void)removeTabAt:(MasterTabBarIndex)tag
+{
+    NSInteger index = [self indexOfTabItemWithTag:tag];
+    if (index != NSNotFound) {
+        NSMutableArray<UIViewController*> *viewControllers = [NSMutableArray arrayWithArray:self.viewControllers];
+        [viewControllers removeObjectAtIndex:index];
+        self.viewControllers = viewControllers;
     }
 }
 
@@ -763,6 +797,43 @@
     return foundViewController;
 }
 
+- (void)filterRoomsWithParentId:(NSString*)roomParentId
+                inMatrixSession:(MXSession*)mxSession
+{
+    titleView.subtitleLabel.text = roomParentId ? [mxSession roomSummaryWithRoomId:roomParentId].displayname : nil;
+
+    recentsDataSource.currentSpace = [mxSession.spaceService getSpaceWithId:roomParentId];
+    [self updateSideMenuNotifcationIcon];
+}
+
+- (void)updateSideMenuNotifcationIcon
+{
+    BOOL displayNotification = NO;
+    
+    for (MXRoomSummary *summary in recentsDataSource.mxSession.spaceService.rootSpaceSummaries) {
+        if (summary.membership == MXMembershipInvite) {
+            displayNotification = YES;
+            break;
+        }
+    }
+    
+    if (!displayNotification) {
+        MXSpaceNotificationState *notificationState = [recentsDataSource.mxSession.spaceService.notificationCounter notificationStateForAllSpacesExcept: recentsDataSource.currentSpace.spaceId];
+        
+        if (recentsDataSource.currentSpace)
+        {
+            MXSpaceNotificationState *homeNotificationState = recentsDataSource.mxSession.spaceService.notificationCounter.homeNotificationState;
+            displayNotification = notificationState.groupMissedDiscussionsCount > 0 || notificationState.groupMissedDiscussionsHighlightedCount > 0 || homeNotificationState.allCount > 0 || homeNotificationState.allHighlightCount > 0;
+        }
+        else
+        {
+            displayNotification = notificationState.groupMissedDiscussionsCount > 0 || notificationState.groupMissedDiscussionsHighlightedCount > 0;
+        }
+    }
+    
+    [self.masterTabBarDelegate masterTabBarController:self needsSideMenuIconWithNotification:displayNotification];
+}
+
 #pragma mark -
 
 /**
@@ -841,6 +912,12 @@
             _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
         }
     }
+}
+
+-(void)setupTitleView
+{
+    titleView = [MainTitleView new];
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
@@ -1230,6 +1307,13 @@
 {
     _authenticationInProgress = NO;
     [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
+}
+
+#pragma mark - UITabBarControllerDelegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    titleView.titleLabel.text = viewController.accessibilityLabel;
 }
 
 @end

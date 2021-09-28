@@ -49,6 +49,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
     }
     public private(set) var lowPriorityRoomListDataFetcher: MXRoomListDataFetcher?
     public private(set) var serverNoticeRoomListDataFetcher: MXRoomListDataFetcher?
+    public private(set) var suggestedRoomListDataFetcher: MXRoomListDataFetcher?
     
     private var conversationRoomListDataFetcherForHome: MXRoomListDataFetcher?
     private var conversationRoomListDataFetcherForRooms: MXRoomListDataFetcher?
@@ -90,6 +91,9 @@ public class RecentsRoomListFetchersContainer: NSObject {
         if let fetcher = serverNoticeRoomListDataFetcher {
             result.append(fetcher)
         }
+        if let fetcher = suggestedRoomListDataFetcher {
+            result.append(fetcher)
+        }
         return result
     }
     
@@ -124,6 +128,10 @@ public class RecentsRoomListFetchersContainer: NSObject {
             result.append(fetcher)
         }
         if let fetcher = serverNoticeRoomListDataFetcher, fetcherTypes.contains(.serverNotice) {
+            result.append(fetcher)
+        }
+        if let fetcher = suggestedRoomListDataFetcher,
+           fetcherTypes.contains(.suggested) {
             result.append(fetcher)
         }
         return result
@@ -423,8 +431,9 @@ private struct FetcherTypes: OptionSet {
     static let conversationRooms = FetcherTypes(rawValue: 1 << 5)
     static let lowPriority = FetcherTypes(rawValue: 1 << 6)
     static let serverNotice = FetcherTypes(rawValue: 1 << 7)
+    static let suggested = FetcherTypes(rawValue: 1 << 8)
     
     static let none: FetcherTypes = []
     static let all: FetcherTypes = [
-        .invited, .favorited, .directHome, .directPeople, .conversationHome, .conversationRooms, .lowPriority, .serverNotice]
+        .invited, .favorited, .directHome, .directPeople, .conversationHome, .conversationRooms, .lowPriority, .serverNotice, .suggested]
 }

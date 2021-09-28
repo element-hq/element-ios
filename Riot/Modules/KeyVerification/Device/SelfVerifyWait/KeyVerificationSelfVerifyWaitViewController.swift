@@ -123,12 +123,12 @@ final class KeyVerificationSelfVerifyWaitViewController: UIViewController {
         
         self.title = VectorL10n.deviceVerificationSelfVerifyWaitTitle
         
-        self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation
+        self.informationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitInformation(AppInfo.current.displayName)
         
         self.desktopClientImageView.image = Asset.Images.monitor.image.withRenderingMode(.alwaysTemplate)
         self.mobileClientImageView.image = Asset.Images.smartphone.image.withRenderingMode(.alwaysTemplate)
         
-        self.additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation
+        self.additionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitAdditionalInformation(AppInfo.current.displayName)
         
         self.recoverSecretsAdditionalInformationLabel.text = VectorL10n.deviceVerificationSelfVerifyWaitRecoverSecretsAdditionalInformation
     }

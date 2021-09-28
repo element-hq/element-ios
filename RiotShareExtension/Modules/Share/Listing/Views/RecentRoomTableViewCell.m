@@ -70,10 +70,11 @@
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
     {
-        MXRoomSummary *roomSummary = [roomCellData.mxSession roomSummaryWithRoomId:roomCellData.roomSummary.roomId];
-        [roomSummary setRoomAvatarImageIn:self.avatarImageView];
+        [self.avatarImageView vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                            displayName:roomCellData.roomDisplayname
+                                           mediaManager:roomCellData.mxSession.mediaManager];
         
-        self.roomTitleLabel.text = roomCellData.roomSummary.displayname;
+        self.roomTitleLabel.text = roomCellData.roomDisplayname;
         if (!self.roomTitleLabel.text.length)
         {
             self.roomTitleLabel.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];

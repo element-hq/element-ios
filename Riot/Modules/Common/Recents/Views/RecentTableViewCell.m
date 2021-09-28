@@ -76,7 +76,7 @@
         self.lastEventDate.text = roomCellData.lastEventDate;
         
         // Manage lastEventAttributedTextMessage optional property
-        if ([roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
+        if (!roomCellData.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
             // Force the default text color for the last message (cancel highlighted message color)
             NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
@@ -124,8 +124,9 @@
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
 
-        MXRoomSummary *summary = [roomCellData.mxSession roomSummaryWithRoomId:roomCellData.roomSummary.roomId];
-        [summary setRoomAvatarImageIn:self.roomAvatar];
+        [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                       displayName:roomCellData.roomDisplayname
+                                      mediaManager:roomCellData.mxSession.mediaManager];
     }
     else
     {
