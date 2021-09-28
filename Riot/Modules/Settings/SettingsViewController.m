@@ -365,7 +365,7 @@ TableViewSectionsDelegate>
         [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
     }
     
-    sectionUserSettings.headerTitle = NSLocalizedStringFromTable(@"settings_user_settings", @"Vector", nil);
+    sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
     
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
@@ -373,19 +373,19 @@ TableViewSectionsDelegate>
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
         [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE];
         [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION];
-        sectionMedia.headerTitle = NSLocalizedStringFromTable(@"settings_sending_media", @"Vector", nil);
+        sectionMedia.headerTitle = [VectorL10n settingsSendingMedia];
         [tmpSections addObject:sectionMedia];
     }
     
     Section *sectionLinks = [Section sectionWithTag:SECTION_TAG_LINKS];
     [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_INDEX];
     [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX];
-    sectionLinks.headerTitle = NSLocalizedStringFromTable(@"settings_links", @"Vector", nil);
+    sectionLinks.headerTitle = [VectorL10n settingsLinks];
     [tmpSections addObject:sectionLinks];
     
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
     [sectionSecurity addRowWithTag:SECURITY_BUTTON_INDEX];
-    sectionSecurity.headerTitle = NSLocalizedStringFromTable(@"settings_security", @"Vector", nil);
+    sectionSecurity.headerTitle = [VectorL10n settingsSecurity];
     [tmpSections addObject:sectionSecurity];
     
     Section *sectionNotificationSettings = [Section sectionWithTag:SECTION_TAG_NOTIFICATIONS];
@@ -413,13 +413,13 @@ TableViewSectionsDelegate>
         // Don't add new sections on pre iOS 14
     }
 
-    sectionNotificationSettings.headerTitle = NSLocalizedStringFromTable(@"settings_notifications", @"Vector", nil);
+    sectionNotificationSettings.headerTitle = [VectorL10n settingsNotifications];
     [tmpSections addObject:sectionNotificationSettings];
     
     if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
-        sectionCalls.headerTitle = NSLocalizedStringFromTable(@"settings_calls_settings", @"Vector", nil);
+        sectionCalls.headerTitle = [VectorL10n settingsCallsSettings];
 
         if (RiotSettings.shared.settingsScreenShowEnableStunServerFallback)
         {
@@ -441,7 +441,7 @@ TableViewSectionsDelegate>
         {
             [sectionDiscovery addRowWithTag:index];
         }
-        sectionDiscovery.headerTitle = NSLocalizedStringFromTable(@"settings_discovery_settings", @"Vector", nil);
+        sectionDiscovery.headerTitle = [VectorL10n settingsDiscoverySettings];
         [tmpSections addObject:sectionDiscovery];
     }
     
@@ -450,7 +450,7 @@ TableViewSectionsDelegate>
         Section *sectionIdentityServer = [Section sectionWithTag:SECTION_TAG_IDENTITY_SERVER];
         [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_INDEX];
         [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_DESCRIPTION_INDEX];
-        sectionIdentityServer.headerTitle = NSLocalizedStringFromTable(@"settings_identity_server_settings", @"Vector", nil);
+        sectionIdentityServer.headerTitle = [VectorL10n settingsIdentityServerSettings];
         [tmpSections addObject:sectionIdentityServer];
     }
     
@@ -462,7 +462,7 @@ TableViewSectionsDelegate>
         {
             [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX];
         }
-        sectionLocalContacts.headerTitle = NSLocalizedStringFromTable(@"settings_contacts", @"Vector", nil);
+        sectionLocalContacts.headerTitle = [VectorL10n settingsContacts];
         [tmpSections addObject:sectionLocalContacts];
     }
     
@@ -474,7 +474,7 @@ TableViewSectionsDelegate>
         {
             [sectionIgnoredUsers addRowWithTag:index];
         }
-        sectionIgnoredUsers.headerTitle = NSLocalizedStringFromTable(@"settings_ignored_users", @"Vector", nil);
+        sectionIgnoredUsers.headerTitle = [VectorL10n settingsIgnoredUsers];
         [tmpSections addObject:sectionIgnoredUsers];
     }
     
@@ -483,21 +483,21 @@ TableViewSectionsDelegate>
         Section *sectionIntegrations = [Section sectionWithTag:SECTION_TAG_INTEGRATIONS];
         [sectionIntegrations addRowWithTag:INTEGRATIONS_INDEX];
         [sectionIntegrations addRowWithTag:INTEGRATIONS_DESCRIPTION_INDEX];
-        sectionIntegrations.headerTitle = NSLocalizedStringFromTable(@"settings_integrations", @"Vector", nil);
+        sectionIntegrations.headerTitle = [VectorL10n settingsIntegrations];
         [tmpSections addObject:sectionIntegrations];
     }
     
     Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
-    sectionUserInterface.headerTitle = NSLocalizedStringFromTable(@"settings_user_interface", @"Vector", nil);
+    sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
     [tmpSections addObject: sectionUserInterface];
     
     if (BuildSettings.settingsScreenShowAdvancedSettings)
     {
         Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
         [sectionAdvanced addRowWithTag:0];
-        sectionAdvanced.headerTitle = NSLocalizedStringFromTable(@"settings_advanced", @"Vector", nil);
+        sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
         [tmpSections addObject:sectionAdvanced];
     }
     
@@ -536,14 +536,14 @@ TableViewSectionsDelegate>
     {
         [sectionOther addRowWithTag:OTHER_REPORT_BUG_INDEX];
     }
-    sectionOther.headerTitle = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
+    sectionOther.headerTitle = [VectorL10n settingsOther];
     [tmpSections addObject:sectionOther];
     
     if (BuildSettings.settingsScreenShowLabSettings)
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        sectionLabs.headerTitle = NSLocalizedStringFromTable(@"settings_labs", @"Vector", nil);
+        sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
             [tmpSections addObject:sectionLabs];
@@ -559,7 +559,7 @@ TableViewSectionsDelegate>
         {
             [sectionFlair addRowWithTag:index];
         }
-        sectionFlair.headerTitle = NSLocalizedStringFromTable(@"settings_flair", @"Vector", nil);
+        sectionFlair.headerTitle = [VectorL10n settingsFlair];
         [tmpSections addObject:sectionFlair];
     }
     
@@ -567,7 +567,7 @@ TableViewSectionsDelegate>
     {
         Section *sectionDeactivate = [Section sectionWithTag:SECTION_TAG_DEACTIVATE_ACCOUNT];
         [sectionDeactivate addRowWithTag:0];
-        sectionDeactivate.headerTitle = NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
+        sectionDeactivate.headerTitle = [VectorL10n settingsDeactivateMyAccount];
         [tmpSections addObject:sectionDeactivate];
     }
     
@@ -580,7 +580,7 @@ TableViewSectionsDelegate>
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"settings_title", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n settingsTitle];
     
     // Remove back bar button title when pushing a view controller
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -961,9 +961,9 @@ TableViewSectionsDelegate>
 {
     MXWeakify(self);
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_email_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountEmailValidationTitle] message:message preferredStyle:UIAlertControllerStyleAlert];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
         [self stopActivityIndicator];
@@ -972,7 +972,7 @@ TableViewSectionsDelegate>
         self.newEmailEditingEnabled = NO;
     }]];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         [self tryFinaliseAddEmailSession:threePidAddSession withAuthenticationParameters:authenticationParameters
                       threePidAddManager:threePidAddManager];
@@ -1020,10 +1020,10 @@ TableViewSectionsDelegate>
 
             // Ask password again
             self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                     message:NSLocalizedStringFromTable(@"settings_add_3pid_invalid_password_message", @"Vector", nil)
+                                                                     message:[VectorL10n settingsAdd3pidInvalidPasswordMessage]
                                                               preferredStyle:UIAlertControllerStyleAlert];
 
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                 self->currentAlert = nil;
                 
                 [self showAuthenticationIfNeededForAdding:kMX3PIDMediumEmail withSession:self.mainSession completion:^(NSDictionary *authParams) {
@@ -1053,7 +1053,7 @@ TableViewSectionsDelegate>
             MXError *mxError = [[MXError alloc] initWithNSError:error];
             if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDAuthFailed])
             {
-                [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_error"] for3PidAddSession:threePidAddSession threePidAddManager:threePidAddManager authenticationParameters:authParams];
+                [self showValidationEmailDialogWithMessage:[MatrixKitL10n accountEmailValidationError] for3PidAddSession:threePidAddSession threePidAddManager:threePidAddManager authenticationParameters:authParams];
             }
             else
             {
@@ -1072,9 +1072,9 @@ TableViewSectionsDelegate>
     MXWeakify(self);
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_title"] message:message preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountMsisdnValidationTitle] message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
 
         self->currentAlert = nil;
@@ -1091,7 +1091,7 @@ TableViewSectionsDelegate>
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"submit"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
 
         MXStrongifyAndReturnIfNil(self);
 
@@ -1151,10 +1151,10 @@ TableViewSectionsDelegate>
 
             // Ask password again
             self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                     message:NSLocalizedStringFromTable(@"settings_add_3pid_invalid_password_message", @"Vector", nil)
+                                                                     message:[VectorL10n settingsAdd3pidPasswordMessage]
                                                               preferredStyle:UIAlertControllerStyleAlert];
 
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                 self->currentAlert = nil;
                 
                 [self showAuthenticationIfNeededForAdding:kMX3PIDMediumMSISDN withSession:self.mainSession completion:^(NSDictionary *authParams) {
@@ -1197,14 +1197,14 @@ TableViewSectionsDelegate>
                 }
                 else
                 {
-                    title = [NSBundle mxk_localizedStringForKey:@"error"];
+                    title = [MatrixKitL10n error];
                 }
             }
 
 
             self->currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
 
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                 self->currentAlert = nil;
 
                 // Ask again the sms token
@@ -1368,14 +1368,14 @@ TableViewSectionsDelegate>
     
     if ([medium isEqualToString:kMX3PIDMediumMSISDN])
     {
-        title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_msidsn", @"Vector", nil);
+        title = [VectorL10n settingsAdd3pidPasswordTitleMsidsn];
     }
     else
     {
-        title = NSLocalizedStringFromTable(@"settings_add_3pid_password_title_email", @"Vector", nil);
+        title = [VectorL10n settingsAdd3pidPasswordTitleEmail];
     }
     
-    NSString *message = NSLocalizedStringFromTable(@"settings_add_3pid_password_message", @"Vector", nil);
+    NSString *message = [VectorL10n settingsAdd3pidInvalidPasswordMessage];
     
     
     [session.matrixRestClient add3PIDOnlyWithSessionId:@"" clientSecret:[MXTools generateSecret] authParams:nil success:^{
@@ -1563,7 +1563,7 @@ TableViewSectionsDelegate>
             signOutCell.mxkButton.titleLabel.text = nil;
         }
         
-        NSString* title = NSLocalizedStringFromTable(@"settings_sign_out", @"Vector", nil);
+        NSString* title = [VectorL10n settingsSignOut];
         
         [signOutCell.mxkButton setTitle:title forState:UIControlStateNormal];
         [signOutCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
@@ -1597,7 +1597,7 @@ TableViewSectionsDelegate>
                 [profileCell.mxkImageView addGestureRecognizer:tap];
             }
             
-            profileCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_profile_picture", @"Vector", nil);
+            profileCell.mxkLabel.text = [VectorL10n settingsProfilePicture];
             profileCell.accessibilityIdentifier=@"SettingsVCProfilPictureStaticText";
             profileCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
@@ -1634,7 +1634,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
-            displaynameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_display_name", @"Vector", nil);
+            displaynameCell.mxkLabel.text = [VectorL10n settingsDisplayName];
             displaynameCell.mxkTextField.text = myUser.displayname;
             
             displaynameCell.mxkTextField.tag = row;
@@ -1649,7 +1649,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndTextField *firstCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
         
-            firstCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_first_name", @"Vector", nil);
+            firstCell.mxkLabel.text = [VectorL10n settingsFirstName];
             firstCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = firstCell;
@@ -1658,7 +1658,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndTextField *surnameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
-            surnameCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_surname", @"Vector", nil);
+            surnameCell.mxkLabel.text = [VectorL10n settingsSurname];
             surnameCell.mxkTextField.userInteractionEnabled = NO;
             
             cell = surnameCell;
@@ -1668,7 +1668,7 @@ TableViewSectionsDelegate>
             NSInteger emailIndex = row - USER_SETTINGS_EMAILS_OFFSET;
             MXKTableViewCellWithLabelAndTextField *emailCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
-            emailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_email_address", @"Vector", nil);
+            emailCell.mxkLabel.text = [VectorL10n settingsEmailAddress];
             emailCell.mxkTextField.text = account.linkedEmails[emailIndex];
             emailCell.mxkTextField.userInteractionEnabled = NO;
             
@@ -1679,7 +1679,7 @@ TableViewSectionsDelegate>
             NSInteger phoneNumberIndex = row - USER_SETTINGS_PHONENUMBERS_OFFSET;
             MXKTableViewCellWithLabelAndTextField *phoneCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
-            phoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_phone_number", @"Vector", nil);
+            phoneCell.mxkLabel.text = [VectorL10n settingsPhoneNumber];
             
             phoneCell.mxkTextField.text = [MXKTools readableMSISDN:account.linkedPhoneNumbers[phoneNumberIndex]];
             phoneCell.mxkTextField.userInteractionEnabled = NO;
@@ -1693,7 +1693,7 @@ TableViewSectionsDelegate>
             // Render the cell according to the `newEmailEditingEnabled` property
             if (!_newEmailEditingEnabled)
             {
-                newEmailCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_email_address", @"Vector", nil);
+                newEmailCell.mxkLabel.text = [VectorL10n settingsAddEmailAddress];
                 newEmailCell.mxkTextField.text = nil;
                 newEmailCell.mxkTextField.userInteractionEnabled = NO;
                 newEmailCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
@@ -1701,7 +1701,7 @@ TableViewSectionsDelegate>
             else
             {
                 newEmailCell.mxkLabel.text = nil;
-                newEmailCell.mxkTextField.placeholder = NSLocalizedStringFromTable(@"settings_email_address_placeholder", @"Vector", nil);
+                newEmailCell.mxkTextField.placeholder = [VectorL10n settingsEmailAddressPlaceholder];
                 newEmailCell.mxkTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                                    initWithString:newEmailCell.mxkTextField.placeholder
                                                                    attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
@@ -1746,7 +1746,7 @@ TableViewSectionsDelegate>
             {
                 MXKTableViewCellWithLabelAndTextField *newPhoneCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
                 
-                newPhoneCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_add_phone_number", @"Vector", nil);
+                newPhoneCell.mxkLabel.text = [VectorL10n settingsAddPhoneNumber];
                 newPhoneCell.mxkTextField.text = nil;
                 newPhoneCell.mxkTextField.userInteractionEnabled = NO;
                 newPhoneCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
@@ -1821,9 +1821,9 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *threePidsInformationCell = [self getDefaultTableViewCell:self.tableView];
             
-            NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part1", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
-            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part2", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
-            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"settings_three_pids_management_information_part3", @"Vector", nil) attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
+            NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
+            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
+            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
             
             threePidsInformationCell.textLabel.attributedText = attributedString;
             threePidsInformationCell.textLabel.numberOfLines = 0;
@@ -1836,7 +1836,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *inviteFriendsCell = [self getDefaultTableViewCell:tableView];
 
-            inviteFriendsCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"invite_friends_action", @"Vector", nil), BuildSettings.bundleDisplayName];
+            inviteFriendsCell.textLabel.text = [VectorL10n inviteFriendsAction:BuildSettings.bundleDisplayName];
             
             UIImage *shareActionImage = [[UIImage imageNamed:@"share_action_button"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
             UIImageView *accessoryView = [[UIImageView alloc] initWithImage:shareActionImage];
@@ -1848,7 +1848,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
             
-            passwordCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil);
+            passwordCell.mxkLabel.text = [VectorL10n settingsChangePassword];
             passwordCell.mxkTextField.text = @"*********";
             passwordCell.mxkTextField.userInteractionEnabled = NO;
             passwordCell.mxkLabel.accessibilityIdentifier=@"SettingsVCChangePwdStaticText";
@@ -1862,7 +1862,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_confirm_media_size", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsConfirmMediaSize];
             labelAndSwitchCell.mxkSwitch.on =  RiotSettings.shared.showMediaCompressionPrompt;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -1873,7 +1873,7 @@ TableViewSectionsDelegate>
         else if (row == SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION)
         {
             MXKTableViewCell *infoCell = [self getDefaultTableViewCell:tableView];
-            infoCell.textLabel.text = NSLocalizedStringFromTable(@"settings_confirm_media_size_description", @"Vector", nil);
+            infoCell.textLabel.text = [VectorL10n settingsConfirmMediaSizeDescription];
             infoCell.textLabel.numberOfLines = 0;
             infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -1886,7 +1886,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsShowUrlPreviews];
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenShowsURLPreviews;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -1898,7 +1898,7 @@ TableViewSectionsDelegate>
         else if (row == LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX)
         {
             MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_show_url_previews_description", @"Vector", nil);
+            descriptionCell.textLabel.text = [VectorL10n settingsShowUrlPreviewsDescription];
             descriptionCell.textLabel.numberOfLines = 0;
             descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -1911,7 +1911,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
     
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_push_notif", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnablePushNotif];
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventTouchUpInside];
@@ -1938,7 +1938,7 @@ TableViewSectionsDelegate>
 
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
-            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_device_notifications", @"Vector", nil);
+            cell.textLabel.text = [VectorL10n settingsDeviceNotifications];
             cell.detailTextLabel.text = @"";
 
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
@@ -1948,7 +1948,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_decrypted_content", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsShowDecryptedContent];
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showDecryptedContentInNotifications;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = account.pushNotificationServiceIsActive;
@@ -1963,7 +1963,7 @@ TableViewSectionsDelegate>
 
             NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
 
-            globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_global_settings_info", @"Vector", nil), appDisplayName];
+            globalInfoCell.textLabel.text = [VectorL10n settingsGlobalSettingsInfo:appDisplayName];
             globalInfoCell.textLabel.numberOfLines = 0;
             
             globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1974,7 +1974,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_missed_notif", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsPinRoomsWithMissedNotif];
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -1986,7 +1986,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_pin_rooms_with_unread", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsPinRoomsWithUnread];
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -1999,15 +1999,15 @@ TableViewSectionsDelegate>
             cell = [self getDefaultTableViewCell:tableView];
             if (row == NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_default", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n settingsDefault];
             }
             else if (row == NOTIFICATION_SETTINGS_MENTION_AND_KEYWORDS_SETTINGS_INDEX)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_mentions_and_keywords", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n settingsMentionsAndKeywords];
             }
             else if (row == NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"settings_other", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n settingsOther];
             }
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
         }
@@ -2017,7 +2017,7 @@ TableViewSectionsDelegate>
         if (row == CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_button", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsCallsStunServerFallbackButton];
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.allowStunServerFallback;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -2032,7 +2032,7 @@ TableViewSectionsDelegate>
             stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
 
             MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-            globalInfoCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_calls_stun_server_fallback_description", @"Vector", nil), stunFallbackHost];
+            globalInfoCell.textLabel.text = [VectorL10n settingsCallsStunServerFallbackDescription:stunFallbackHost];
             globalInfoCell.textLabel.numberOfLines = 0;
             globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -2057,7 +2057,7 @@ TableViewSectionsDelegate>
                 }
                 else
                 {
-                    isCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is", @"Vector", nil);
+                    isCell.textLabel.text = [VectorL10n settingsIdentityServerNoIs];
                 }
                 [isCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 cell = isCell;
@@ -2070,11 +2070,11 @@ TableViewSectionsDelegate>
 
                 if (account.mxSession.identityService.identityServer)
                 {
-                    descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_description", @"Vector", nil);
+                    descriptionCell.textLabel.text = [VectorL10n settingsIdentityServerDescription];
                 }
                 else
                 {
-                    descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_identity_server_no_is_description", @"Vector", nil);
+                    descriptionCell.textLabel.text = [VectorL10n settingsIdentityServerNoIsDescription];
                 }
                 descriptionCell.textLabel.numberOfLines = 0;
                 descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -2095,7 +2095,7 @@ TableViewSectionsDelegate>
                 RiotSharedSettings *sharedSettings = [[RiotSharedSettings alloc] initWithSession:session];
 
                 MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-                labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_integrations_allow_button", @"Vector", nil);
+                labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsIntegrationsAllowButton];
                 labelAndSwitchCell.mxkSwitch.on = sharedSettings.hasIntegrationProvisioningEnabled;
                 labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
                 labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -2112,7 +2112,7 @@ TableViewSectionsDelegate>
                 NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
                 NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;
 
-                NSString *description = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_integrations_allow_description", @"Vector", nil), integrationManagerDomain];
+                NSString *description = [VectorL10n settingsIntegrationsAllowDescription:integrationManagerDomain];
                 descriptionCell.textLabel.text = description;
                 descriptionCell.textLabel.numberOfLines = 0;
                 descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -2148,7 +2148,7 @@ TableViewSectionsDelegate>
 
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
-            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_language", @"Vector", nil);
+            cell.textLabel.text = [VectorL10n settingsUiLanguage];
             cell.detailTextLabel.text = languageDescription;
 
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
@@ -2170,13 +2170,11 @@ TableViewSectionsDelegate>
             }
 
             theme = [NSString stringWithFormat:@"settings_ui_theme_%@", theme];
-            NSString *i18nTheme = NSLocalizedStringFromTable(theme,
-                                                              @"Vector",
-                                                             nil);
+            NSString *i18nTheme = NSLocalizedStringFromTable(theme, @"Vector", nil);
 
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
-            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_ui_theme", @"Vector", nil);
+            cell.textLabel.text = [VectorL10n settingsUiTheme];
             cell.detailTextLabel.text = i18nTheme;
 
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
@@ -2198,7 +2196,7 @@ TableViewSectionsDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.numberOfLines = 0;
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_discover_matrix_users", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsContactsDiscoverMatrixUsers];
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -2220,7 +2218,7 @@ TableViewSectionsDelegate>
             
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
-            cell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_phonebook_country", @"Vector", nil);
+            cell.textLabel.text = [VectorL10n settingsContactsPhonebookCountry];
             cell.detailTextLabel.text = countryName;
             
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
@@ -2231,9 +2229,7 @@ TableViewSectionsDelegate>
     {
         MXKTableViewCellWithTextView *configCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
         
-        NSString *configFormat = [NSString stringWithFormat:@"%@\n%@\n%@", [NSBundle mxk_localizedStringForKey:@"settings_config_user_id"], [NSBundle mxk_localizedStringForKey:@"settings_config_home_server"], [NSBundle mxk_localizedStringForKey:@"settings_config_identity_server"]];
-        
-        configCell.mxkTextView.text =[NSString stringWithFormat:configFormat, account.mxCredentials.userId, account.mxCredentials.homeServer, account.identityServerURL];
+        configCell.mxkTextView.text = [NSString stringWithFormat:@"%@\n%@\n%@", [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId], [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer], [MatrixKitL10n settingsConfigIdentityServer:account.identityServerURL]];
         configCell.mxkTextView.accessibilityIdentifier=@"SettingsVCConfigStaticText";
         
         cell = configCell;
@@ -2247,7 +2243,7 @@ TableViewSectionsDelegate>
             NSString* appVersion = [AppDelegate theDelegate].appVersion;
             NSString* build = [AppDelegate theDelegate].build;
             
-            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_version", @"Vector", nil), [NSString stringWithFormat:@"%@ %@", appVersion, build]];
+            versionCell.textLabel.text = [VectorL10n settingsVersion:[NSString stringWithFormat:@"%@ %@", appVersion, build]];
             
             versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
@@ -2257,7 +2253,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
             
-            versionCell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_olm_version", @"Vector", nil), [OLMKit versionString]];
+            versionCell.textLabel.text = [VectorL10n settingsOlmVersion:[OLMKit versionString]];
             
             versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
@@ -2267,7 +2263,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
 
-            termAndConditionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+            termAndConditionCell.textLabel.text = [VectorL10n settingsTermConditions];
             
             [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
@@ -2277,7 +2273,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
 
-            copyrightCell.textLabel.text = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
+            copyrightCell.textLabel.text = [VectorL10n settingsCopyright];
             
             [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
@@ -2287,7 +2283,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *privacyPolicyCell = [self getDefaultTableViewCell:tableView];
             
-            privacyPolicyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
+            privacyPolicyCell.textLabel.text = [VectorL10n settingsPrivacyPolicy];
             
             [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
@@ -2297,7 +2293,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCell *thirdPartyCell = [self getDefaultTableViewCell:tableView];
             
-            thirdPartyCell.textLabel.text = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
+            thirdPartyCell.textLabel.text = [VectorL10n settingsThirdPartyNotices];
             
             [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             
@@ -2307,7 +2303,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_show_NSFW_public_rooms", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsShowNSFWPublicRooms];
             
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.showNSFWPublicRooms;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
@@ -2320,7 +2316,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            sendCrashReportCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_send_crash_report", @"Vector", nil);
+            sendCrashReportCell.mxkLabel.text = [VectorL10n settingsSendCrashReport];
             sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableCrashReport;
             sendCrashReportCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             sendCrashReportCell.mxkSwitch.enabled = YES;
@@ -2332,7 +2328,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* enableRageShakeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
-            enableRageShakeCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_enable_rageshake", @"Vector", nil);
+            enableRageShakeCell.mxkLabel.text = [VectorL10n settingsEnableRageshake];
             enableRageShakeCell.mxkSwitch.on = RiotSettings.shared.enableRageShake;
             enableRageShakeCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             enableRageShakeCell.mxkSwitch.enabled = YES;
@@ -2353,7 +2349,7 @@ TableViewSectionsDelegate>
                 markAllBtnCell.mxkButton.titleLabel.text = nil;
             }
             
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_mark_all_as_read", @"Vector", nil);
+            NSString *btnTitle = [VectorL10n settingsMarkAllAsRead];
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [markAllBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             [markAllBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
@@ -2378,7 +2374,7 @@ TableViewSectionsDelegate>
                 clearCacheBtnCell.mxkButton.titleLabel.text = nil;
             }
             
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_clear_cache", @"Vector", nil);
+            NSString *btnTitle = [VectorL10n settingsClearCache];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [clearCacheBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             [clearCacheBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
@@ -2403,7 +2399,7 @@ TableViewSectionsDelegate>
                 reportBugBtnCell.mxkButton.titleLabel.text = nil;
             }
 
-            NSString *btnTitle = NSLocalizedStringFromTable(@"settings_report_bug", @"Vector", nil);
+            NSString *btnTitle = [VectorL10n settingsReportBug];
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
             [reportBugBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
             [reportBugBtnCell.mxkButton setTintColor:ThemeService.shared.theme.tintColor];
@@ -2422,7 +2418,7 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_labs_enable_ringing_for_group_calls", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableRingingForGroupCalls];
             labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableRingingForGroupCalls;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             
@@ -2463,7 +2459,7 @@ TableViewSectionsDelegate>
         {
             case SECURITY_BUTTON_INDEX:
                 cell = [self getDefaultTableViewCell:tableView];
-                cell.textLabel.text = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n securitySettingsTitle];
                 [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
                 break;
         }
@@ -2482,7 +2478,7 @@ TableViewSectionsDelegate>
             deactivateAccountBtnCell.mxkButton.titleLabel.text = nil;
         }
         
-        NSString *btnTitle = NSLocalizedStringFromTable(@"settings_deactivate_my_account", @"Vector", nil);
+        NSString *btnTitle = [VectorL10n settingsDeactivateMyAccount];
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
         [deactivateAccountBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
         [deactivateAccountBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
@@ -2682,9 +2678,9 @@ TableViewSectionsDelegate>
 
                 __weak typeof(self) weakSelf = self;
                 
-                currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_unignore_user", @"Vector", nil), ignoredUserId] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n settingsUnignoreUser:ignoredUserId] message:nil preferredStyle:UIAlertControllerStyleAlert];
 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -2715,7 +2711,7 @@ TableViewSectionsDelegate>
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -2737,7 +2733,7 @@ TableViewSectionsDelegate>
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
-                webViewViewController.title = NSLocalizedStringFromTable(@"settings_copyright", @"Vector", nil);
+                webViewViewController.title = [VectorL10n settingsCopyright];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2745,7 +2741,7 @@ TableViewSectionsDelegate>
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
-                webViewViewController.title = NSLocalizedStringFromTable(@"settings_term_conditions", @"Vector", nil);
+                webViewViewController.title = [VectorL10n settingsTermConditions];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2753,7 +2749,7 @@ TableViewSectionsDelegate>
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
-                webViewViewController.title = NSLocalizedStringFromTable(@"settings_privacy_policy", @"Vector", nil);
+                webViewViewController.title = [VectorL10n settingsPrivacyPolicy];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2763,7 +2759,7 @@ TableViewSectionsDelegate>
 
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithLocalHTMLFile:htmlFile];
                 
-                webViewViewController.title = NSLocalizedStringFromTable(@"settings_third_party_notices", @"Vector", nil);
+                webViewViewController.title = [VectorL10n settingsThirdPartyNotices];
                 
                 [self pushViewController:webViewViewController];
             }
@@ -2884,7 +2880,7 @@ TableViewSectionsDelegate>
             if (row < linkedEmails.count)
             {
                 address = linkedEmails[row];
-                promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_remove_email_prompt_msg", @"Vector", nil), address];
+                promptMsg = [VectorL10n settingsRemoveEmailPromptMsg:address];
             }
         }
         else if (row >= USER_SETTINGS_PHONENUMBERS_OFFSET)
@@ -2897,9 +2893,9 @@ TableViewSectionsDelegate>
                 address = linkedPhones[row];
                 NSString *e164 = [NSString stringWithFormat:@"+%@", address];
                 NBPhoneNumber *phoneNb = [[NBPhoneNumberUtil sharedInstance] parse:e164 defaultRegion:nil error:nil];
-                NSString *phoneMunber = [[NBPhoneNumberUtil sharedInstance] format:phoneNb numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
+                NSString *phoneNumber = [[NBPhoneNumberUtil sharedInstance] format:phoneNb numberFormat:NBEPhoneNumberFormatINTERNATIONAL error:nil];
                 
-                promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"settings_remove_phone_prompt_msg", @"Vector", nil), phoneMunber];
+                promptMsg = [VectorL10n settingsRemovePhonePromptMsg:phoneNumber];
             }
         }
         
@@ -2914,9 +2910,9 @@ TableViewSectionsDelegate>
             }
             
             // Remove ?
-            currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_remove_prompt_title", @"Vector", nil) message:promptMsg preferredStyle:UIAlertControllerStyleAlert];
+            currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n settingsRemovePromptTitle] message:promptMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -2928,7 +2924,7 @@ TableViewSectionsDelegate>
                                                                
                                                            }]];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -2988,12 +2984,12 @@ TableViewSectionsDelegate>
         
         __weak typeof(self) weakSelf = self;
         
-        NSString *title = NSLocalizedStringFromTable(@"settings_notifications_disabled_alert_title", @"Vector", nil);
-        NSString *message = NSLocalizedStringFromTable(@"settings_notifications_disabled_alert_message", @"Vector", nil);
+        NSString *title = [VectorL10n settingsNotificationsDisabledAlertTitle];
+        NSString *message = [VectorL10n settingsNotificationsDisabledAlertMessage];
         
         currentAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -3005,7 +3001,7 @@ TableViewSectionsDelegate>
                                                            
                                                        }]];
         
-        UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"settings"]
+        UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:[MatrixKitL10n settings]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                             if (weakSelf)
@@ -3399,7 +3395,7 @@ TableViewSectionsDelegate>
         NSString *title = [error.userInfo valueForKey:NSLocalizedFailureReasonErrorKey];
         if (!title)
         {
-            title = [NSBundle mxk_localizedStringForKey:@"settings_fail_to_update_profile"];
+            title = [VectorL10n settingsFailToUpdateProfile];
         }
         NSString *msg = [error.userInfo valueForKey:NSLocalizedDescriptionKey];
         
@@ -3407,7 +3403,7 @@ TableViewSectionsDelegate>
         
         currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -3430,7 +3426,7 @@ TableViewSectionsDelegate>
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"retry"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n retry]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -3468,9 +3464,11 @@ TableViewSectionsDelegate>
         
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_email_wrong_description"] preferredStyle:UIAlertControllerStyleAlert];
+        currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountErrorEmailWrongTitle]
+                                                           message:[MatrixKitL10n accountErrorEmailWrongDescription]
+                                                    preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -3500,7 +3498,7 @@ TableViewSectionsDelegate>
         __block MX3PidAddSession *thirdPidAddSession;
         thirdPidAddSession = [session.threePidAddManager startAddEmailSessionWithEmail:self->newEmailTextField.text nextLink:nil success:^{
 
-            [self showValidationEmailDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_email_validation_message"]
+            [self showValidationEmailDialogWithMessage:[MatrixKitL10n accountEmailValidationMessage]
                                      for3PidAddSession:thirdPidAddSession
                                     threePidAddManager:session.threePidAddManager
                                               authenticationParameters:authParams];
@@ -3531,13 +3529,13 @@ TableViewSectionsDelegate>
 
                 if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
                 {
-                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
-                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_email_in_use", @"Vector", nil);
+                    userInfo[NSLocalizedDescriptionKey] = [VectorL10n authEmailInUse];
+                    userInfo[@"error"] = [VectorL10n authEmailInUse];
                 }
                 else
                 {
-                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                    userInfo[NSLocalizedDescriptionKey] = [VectorL10n authUntrustedIdServer];
+                    userInfo[@"error"] = [VectorL10n authUntrustedIdServer];
                 }
 
                 error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
@@ -3548,7 +3546,7 @@ TableViewSectionsDelegate>
                 error = [NSError errorWithDomain:error.domain
                                             code:error.code
                                         userInfo:@{
-                                                   NSLocalizedDescriptionKey: [NSBundle mxk_localizedStringForKey:@"auth_email_is_required"]
+                                                   NSLocalizedDescriptionKey: [VectorL10n authEmailIsRequired]
                                                    }];
             }
 
@@ -3576,9 +3574,11 @@ TableViewSectionsDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         __weak typeof(self) weakSelf = self;
 
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"account_error_msisdn_wrong_title"] message:[NSBundle mxk_localizedStringForKey:@"account_error_msisdn_wrong_description"] preferredStyle:UIAlertControllerStyleAlert];
+        currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountErrorMsisdnWrongTitle]
+                                                           message:[MatrixKitL10n accountErrorMsisdnWrongDescription]
+                                                    preferredStyle:UIAlertControllerStyleAlert];
 
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
 
@@ -3618,7 +3618,7 @@ TableViewSectionsDelegate>
         __block MX3PidAddSession *new3Pid;
         new3Pid = [session.threePidAddManager startAddPhoneNumberSessionWithPhoneNumber:msisdn countryCode:nil success:^{
 
-            [self showValidationMsisdnDialogWithMessage:[NSBundle mxk_localizedStringForKey:@"account_msisdn_validation_message"] for3PidAddSession:new3Pid threePidAddManager:session.threePidAddManager authenticationParameters:authParams];
+            [self showValidationMsisdnDialogWithMessage:[MatrixKitL10n accountMsisdnValidationMessage] for3PidAddSession:new3Pid threePidAddManager:session.threePidAddManager authenticationParameters:authParams];
 
         } failure:^(NSError *error) {
 
@@ -3646,13 +3646,13 @@ TableViewSectionsDelegate>
 
                 if ([mxError.errcode isEqualToString:kMXErrCodeStringThreePIDInUse])
                 {
-                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
-                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_phone_in_use", @"Vector", nil);
+                    userInfo[NSLocalizedDescriptionKey] = [VectorL10n authPhoneInUse];
+                    userInfo[@"error"] = [VectorL10n authPhoneInUse];
                 }
                 else
                 {
-                    userInfo[NSLocalizedDescriptionKey] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
-                    userInfo[@"error"] = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                    userInfo[NSLocalizedDescriptionKey] = [VectorL10n authUntrustedIdServer];
+                    userInfo[@"error"] = [VectorL10n authUntrustedIdServer];
                 }
 
                 error = [NSError errorWithDomain:error.domain code:error.code userInfo:userInfo];
@@ -3663,7 +3663,7 @@ TableViewSectionsDelegate>
                 error = [NSError errorWithDomain:error.domain
                                             code:error.code
                                         userInfo:@{
-                                                   NSLocalizedDescriptionKey: [NSBundle mxk_localizedStringForKey:@"auth_phone_is_required"]
+                                                   NSLocalizedDescriptionKey: [VectorL10n authPhoneIsRequired]
                                                    }];
             }
 
@@ -3761,7 +3761,7 @@ TableViewSectionsDelegate>
     };
     
     // Show "auto" only from iOS 11
-    autoAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_auto", @"Vector", nil)
+    autoAction = [UIAlertAction actionWithTitle:[VectorL10n settingsUiThemeAuto]
                                           style:UIAlertActionStyleDefault
                                         handler:actionBlock];
 
@@ -3769,27 +3769,27 @@ TableViewSectionsDelegate>
     if (@available(iOS 13, *))
     {
         // Observe application did become active for iOS appearance setting changes
-        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message_match_system_theme", @"Vector", nil);
+        themePickerMessage = [VectorL10n settingsUiThemePickerMessageMatchSystemTheme];
     }
     else
     {
         // Observe "Invert Colours" settings changes (available since iOS 11)
-        themePickerMessage = NSLocalizedStringFromTable(@"settings_ui_theme_picker_message_invert_colours", @"Vector", nil);
+        themePickerMessage = [VectorL10n settingsUiThemePickerMessageInvertColours];
     }
-
-    lightAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_light", @"Vector", nil)
-                                          style:UIAlertActionStyleDefault
-                                        handler:actionBlock];
-
-    darkAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_dark", @"Vector", nil)
+    
+    lightAction = [UIAlertAction actionWithTitle:[VectorL10n settingsUiThemeLight]
                                            style:UIAlertActionStyleDefault
                                          handler:actionBlock];
-    blackAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_black", @"Vector", nil)
+    
+    darkAction = [UIAlertAction actionWithTitle:[VectorL10n settingsUiThemeDark]
                                           style:UIAlertActionStyleDefault
                                         handler:actionBlock];
+    blackAction = [UIAlertAction actionWithTitle:[VectorL10n settingsUiThemeBlack]
+                                           style:UIAlertActionStyleDefault
+                                         handler:actionBlock];
 
 
-    UIAlertController *themePicker = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_ui_theme_picker_title", @"Vector", nil)
+    UIAlertController *themePicker = [UIAlertController alertControllerWithTitle:[VectorL10n settingsUiThemePickerTitle]
                                                                          message:themePickerMessage
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
 
@@ -3802,7 +3802,7 @@ TableViewSectionsDelegate>
     [themePicker addAction:blackAction];
 
     // Cancel button
-    [themePicker addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [themePicker addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                         style:UIAlertActionStyleCancel
                                                       handler:nil]];
 
@@ -3931,9 +3931,9 @@ TableViewSectionsDelegate>
     __weak typeof(self) weakSelf = self;
     [resetPwdAlertController dismissViewControllerAnimated:NO completion:nil];
     
-    resetPwdAlertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_change_password", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
+    resetPwdAlertController = [UIAlertController alertControllerWithTitle:[VectorL10n settingsChangePassword] message:nil preferredStyle:UIAlertControllerStyleAlert];
     resetPwdAlertController.accessibilityLabel=@"ChangePasswordAlertController";
-    savePasswordAction = [UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"save", @"Vector", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    savePasswordAction = [UIAlertAction actionWithTitle:[VectorL10n save] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         
         if (weakSelf)
         {
@@ -3962,9 +3962,9 @@ TableViewSectionsDelegate>
                         {
                             [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                             
-                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_password_updated", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsPasswordUpdated] preferredStyle:UIAlertControllerStyleAlert];
                             
-                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                              style:UIAlertActionStyleDefault
                                                                            handler:^(UIAlertAction * action) {
                                                                                
@@ -4010,9 +4010,9 @@ TableViewSectionsDelegate>
                         {
                             [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                             
-                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"settings_fail_to_update_password", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsFailToUpdatePassword] preferredStyle:UIAlertControllerStyleAlert];
                             
-                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                                    style:UIAlertActionStyleDefault
                                                                                  handler:^(UIAlertAction * action) {
                                                                                      
@@ -4066,7 +4066,7 @@ TableViewSectionsDelegate>
             typeof(self) self = weakSelf;
             
             self->currentPasswordTextField = textField;
-            self->currentPasswordTextField.placeholder = NSLocalizedStringFromTable(@"settings_old_password", @"Vector", nil);
+            self->currentPasswordTextField.placeholder = [VectorL10n settingsOldPassword];
             self->currentPasswordTextField.secureTextEntry = YES;
             [self->currentPasswordTextField addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
@@ -4080,7 +4080,7 @@ TableViewSectionsDelegate>
             typeof(self) self = weakSelf;
             
             self->newPasswordTextField1 = textField;
-            self->newPasswordTextField1.placeholder = NSLocalizedStringFromTable(@"settings_new_password", @"Vector", nil);
+            self->newPasswordTextField1.placeholder = [VectorL10n settingsNewPassword];
             self->newPasswordTextField1.secureTextEntry = YES;
             [self->newPasswordTextField1 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
@@ -4094,7 +4094,7 @@ TableViewSectionsDelegate>
             typeof(self) self = weakSelf;
             
             self->newPasswordTextField2 = textField;
-            self->newPasswordTextField2.placeholder = NSLocalizedStringFromTable(@"settings_confirm_password", @"Vector", nil);
+            self->newPasswordTextField2.placeholder = [VectorL10n settingsConfirmPassword];
             self->newPasswordTextField2.secureTextEntry = YES;
             [self->newPasswordTextField2 addTarget:self action:@selector(passwordTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         }
@@ -4223,8 +4223,8 @@ TableViewSectionsDelegate>
     else
     {
         // Set up cross-signing first
-        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
-                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+        [self setupCrossSigningWithTitle:[VectorL10n secureKeyBackupSetupIntroTitle]
+                                 message:[VectorL10n securitySettingsUserPasswordDescription]
                                  success:^{
                                      [self setupSecureBackup2];
                                  } failure:^(NSError *error) {

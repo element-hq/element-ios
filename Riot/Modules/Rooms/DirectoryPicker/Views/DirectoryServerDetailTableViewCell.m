@@ -35,11 +35,11 @@
     if (cellData.includeAllNetworks)
     {
 
-        self.detailDescLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_server_all_rooms", @"Vector", nil), cellData.homeserver];
+        self.detailDescLabel.text = [VectorL10n directoryServerAllRooms:cellData.homeserver];
     }
     else
     {
-        self.detailDescLabel.text = NSLocalizedStringFromTable(@"directory_server_all_native_rooms", @"Vector", nil);
+        self.detailDescLabel.text = [VectorL10n directoryServerAllNativeRooms];
     }
 }
 

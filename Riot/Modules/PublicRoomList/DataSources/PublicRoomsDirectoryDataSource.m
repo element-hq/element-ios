@@ -83,7 +83,7 @@ static NSString *const kNSFWKeyword = @"nsfw";
         else
         {
             // We display only Matrix rooms of the user's HS
-            directoryServerDisplayname = [NSBundle mxk_localizedStringForKey:@"matrix"];
+            directoryServerDisplayname = [MatrixKitL10n matrix];
         }
     }
 
@@ -391,18 +391,18 @@ static NSString *const kNSFWKeyword = @"nsfw";
         {
             if (_searchPattern.length)
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n searchNoResult];
             }
             else
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_directory_no_public_room", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n roomDirectoryNoPublicRoom];
             }
         }
         else
         {
             if (_searchPattern.length)
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_in_progress", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n searchInProgress];
             }
             else
             {

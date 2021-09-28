@@ -50,12 +50,12 @@
     NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
     NSMutableArray* titles = [[NSMutableArray alloc] init];
     
-    [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchMessages]];
     messagesSearchViewController = [RoomMessagesSearchViewController searchViewController];
     [viewControllers addObject:messagesSearchViewController];
     
     // add Files tab
-    [titles addObject: NSLocalizedStringFromTable(@"search_files", @"Vector", nil)];
+     [titles addObject:[VectorL10n searchFiles]];
     filesSearchViewController = [RoomFilesSearchViewController searchViewController];
     [viewControllers addObject:filesSearchViewController];
     

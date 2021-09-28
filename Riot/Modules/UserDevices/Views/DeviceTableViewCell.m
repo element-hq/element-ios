@@ -57,20 +57,20 @@
         {
             self.deviceStatus.image = [UIImage imageNamed:@"e2e_warning"];
             
-            [_verifyButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_verify"] forState:UIControlStateNormal];
-            [_verifyButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_verify"] forState:UIControlStateHighlighted];
-            [_blockButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_block"] forState:UIControlStateNormal];
-            [_blockButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_block"] forState:UIControlStateHighlighted];
+            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
+            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
+            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
+            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
             break;
         }
         case MXDeviceVerified:
         {
             self.deviceStatus.image = [UIImage imageNamed:@"e2e_verified"];
             
-            [_verifyButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_unverify"] forState:UIControlStateNormal];
-            [_verifyButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_unverify"] forState:UIControlStateHighlighted];
-            [_blockButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_block"] forState:UIControlStateNormal];
-            [_blockButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_block"] forState:UIControlStateHighlighted];
+            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateNormal];
+            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnverify] forState:UIControlStateHighlighted];
+            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateNormal];
+            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoBlock] forState:UIControlStateHighlighted];
             
             break;
         }
@@ -78,10 +78,10 @@
         {
             self.deviceStatus.image = [UIImage imageNamed:@"e2e_blocked"];
             
-            [_verifyButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_verify"] forState:UIControlStateNormal];
-            [_verifyButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_verify"] forState:UIControlStateHighlighted];
-            [_blockButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_unblock"] forState:UIControlStateNormal];
-            [_blockButton setTitle:[NSBundle mxk_localizedStringForKey:@"room_event_encryption_info_unblock"] forState:UIControlStateHighlighted];
+            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateNormal];
+            [_verifyButton setTitle:[MatrixKitL10n roomEventEncryptionInfoVerify] forState:UIControlStateHighlighted];
+            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnblock] forState:UIControlStateNormal];
+            [_blockButton setTitle:[MatrixKitL10n roomEventEncryptionInfoUnblock] forState:UIControlStateHighlighted];
             
             break;
         }

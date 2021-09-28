@@ -60,7 +60,7 @@ Matrix session observer used to detect new opened sessions.
     {
         UNTextInputNotificationAction *quickReply = [UNTextInputNotificationAction
                                                      actionWithIdentifier:@"inline-reply"
-                                                     title:NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil)
+                                                     title:[VectorL10n roomMessageShortPlaceholder]
                                                      options:UNNotificationActionOptionAuthenticationRequired
                                                      ];
 
@@ -370,7 +370,7 @@ Matrix session observer used to detect new opened sessions.
 
                 UNMutableNotificationContent *failureNotificationContent = [[UNMutableNotificationContent alloc] init];
                 failureNotificationContent.userInfo = content.userInfo;
-                failureNotificationContent.body = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                failureNotificationContent.body = [VectorL10n roomEventFailedToSend];
                 failureNotificationContent.threadIdentifier = roomId;
 
                 NSString *uuid = [[NSUUID UUID] UUIDString];

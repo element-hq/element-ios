@@ -203,7 +203,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (![roomIdInEvent isEqualToString:roomId])
     {
-        [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toRequest:requestId];
+        [self sendError:[VectorL10n widgetIntegrationRoomNotVisible:roomIdInEvent] toRequest:requestId];
         return;
     }
 
@@ -721,12 +721,12 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 - (void)showDisabledIntegrationManagerError
 {
-    NSString *message = NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil);
+    NSString *message = [VectorL10n widgetIntegrationManagerDisabled];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
 
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [self withdrawViewControllerAnimated:YES completion:nil];

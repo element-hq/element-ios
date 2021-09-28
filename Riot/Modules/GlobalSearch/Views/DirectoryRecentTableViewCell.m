@@ -43,7 +43,7 @@
     switch (publicRoomsDirectoryDataSource.state)
     {
         case MXKDataSourceStatePreparing:
-            self.titleLabel.text = NSLocalizedStringFromTable(@"directory_searching_title", @"Vector", nil);
+            self.titleLabel.text = [VectorL10n directorySearchingTitle];
             self.descriptionLabel.text = @"";
             break;
 
@@ -51,20 +51,22 @@
         {
             if (publicRoomsDirectoryDataSource.searchPattern)
             {
-                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_search_results_title", @"Vector", nil);
+                self.titleLabel.text = [VectorL10n directorySearchResultsTitle];
 
                 // Do we need to display like ">20 results found" or "18 results found"?
-                NSString *descriptionLabel = (publicRoomsDirectoryDataSource.searchResultsCountIsLimited && publicRoomsDirectoryDataSource.searchResultsCount > 0) ? NSLocalizedStringFromTable(@"directory_search_results_more_than", @"Vector", nil) : NSLocalizedStringFromTable(@"directory_search_results", @"Vector", nil);
-
-                self.descriptionLabel.text = [NSString stringWithFormat:descriptionLabel,
-                                              publicRoomsDirectoryDataSource.searchResultsCount,
-                                              publicRoomsDirectoryDataSource.searchPattern];
+                if (publicRoomsDirectoryDataSource.searchResultsCountIsLimited && publicRoomsDirectoryDataSource.searchResultsCount > 0)
+                {
+                    self.descriptionLabel.text = [VectorL10n directorySearchResultsMoreThan:publicRoomsDirectoryDataSource.searchResultsCount :publicRoomsDirectoryDataSource.searchPattern];
+                }
+                else
+                {
+                    self.descriptionLabel.text = [VectorL10n directorySearchResults:publicRoomsDirectoryDataSource.searchResultsCount :publicRoomsDirectoryDataSource.searchPattern];
+                }
             }
             else
             {
-                self.titleLabel.text = NSLocalizedStringFromTable(@"directory_cell_title", @"Vector", nil);
-                self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"directory_cell_description", @"Vector", nil),
-                                              publicRoomsDirectoryDataSource.searchResultsCount];
+                self.titleLabel.text = [VectorL10n directoryCellTitle];
+                self.descriptionLabel.text = [VectorL10n directoryCellDescription:publicRoomsDirectoryDataSource.searchResultsCount];
             }
 
             if (publicRoomsDirectoryDataSource.searchResultsCount)
@@ -76,8 +78,8 @@
         }
 
         case MXKDataSourceStateFailed:
-            self.titleLabel.text = NSLocalizedStringFromTable(@"directory_searching_title", @"Vector", nil);
-            self.descriptionLabel.text = NSLocalizedStringFromTable(@"directory_search_fail", @"Vector", nil);
+            self.titleLabel.text = [VectorL10n directorySearchingTitle];
+            self.descriptionLabel.text = [VectorL10n directorySearchFail];
             break;
 
         default:

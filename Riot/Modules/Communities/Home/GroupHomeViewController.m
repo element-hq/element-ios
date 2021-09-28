@@ -81,10 +81,10 @@
 {
     [super viewDidLoad];
     
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateNormal];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateHighlighted];
+    [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateNormal];
+    [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateHighlighted];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -382,12 +382,12 @@
         
         if (_group.users.totalUserCountEstimate == 1)
         {
-            _membersCountLabel.text = NSLocalizedStringFromTable(@"group_home_one_member_format", @"Vector", nil);
+            _membersCountLabel.text = [VectorL10n groupHomeOneMemberFormat];
             _membersCountContainer.hidden = NO;
         }
         else if (_group.users.totalUserCountEstimate > 1)
         {
-            _membersCountLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_home_multi_members_format", @"Vector", nil), _group.users.totalUserCountEstimate];
+            _membersCountLabel.text = [VectorL10n groupHomeMultiMembersFormat:_group.users.totalUserCountEstimate];
             _membersCountContainer.hidden = NO;
         }
         else
@@ -398,12 +398,12 @@
         
         if (_group.rooms.totalRoomCountEstimate == 1)
         {
-            _roomsCountLabel.text = NSLocalizedStringFromTable(@"group_home_one_room_format", @"Vector", nil);
+            _roomsCountLabel.text = [VectorL10n groupHomeOneRoomFormat];
             _roomsCountContainer.hidden = NO;
         }
         else if (_group.rooms.totalRoomCountEstimate > 1)
         {
-            _roomsCountLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_home_multi_rooms_format", @"Vector", nil), _group.rooms.totalRoomCountEstimate];
+            _roomsCountLabel.text = [VectorL10n groupHomeMultiRoomsFormat:_group.rooms.totalRoomCountEstimate];
             _roomsCountContainer.hidden = NO;
         }
         else
@@ -432,7 +432,7 @@
                     }
                 }
                 
-                self.inviteLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"group_invitation_format", @"Vector", nil), inviter];
+                self.inviteLabel.text = [VectorL10n groupInvitationFormat:inviter];
             }
             else
             {
@@ -744,7 +744,7 @@
         avatarFullScreenView.stretchable = YES;
         
         MXWeakify(self);
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
             
             MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];

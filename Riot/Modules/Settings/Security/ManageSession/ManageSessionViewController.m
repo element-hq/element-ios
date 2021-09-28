@@ -96,7 +96,7 @@ enum {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"manage_session_title", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n manageSessionTitle];
     
     // Remove back bar button title when pushing a view controller
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -387,12 +387,12 @@ enum {
 
     if (deviceInfo.trustLevel.isVerified)
     {
-        cell.textLabel.text = NSLocalizedStringFromTable(@"manage_session_trusted", @"Vector", nil);
+        cell.textLabel.text = [VectorL10n manageSessionTrusted];
         cell.imageView.image = [UIImage imageNamed:@"encryption_trusted"];
     }
     else
     {
-        cell.textLabel.text = NSLocalizedStringFromTable(@"manage_session_not_trusted", @"Vector", nil);
+        cell.textLabel.text = [VectorL10n manageSessionNotTrusted];
         cell.imageView.image = [UIImage imageNamed:@"encryption_warning"];
     }
 
@@ -444,7 +444,7 @@ enum {
             {
                 MXKTableViewCellWithLabelAndTextField *displaynameCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
                 
-                displaynameCell.mxkLabel.text = NSLocalizedStringFromTable(@"manage_session_name", @"Vector", nil);
+                displaynameCell.mxkLabel.text = [VectorL10n manageSessionName];
                 displaynameCell.mxkTextField.text = device.displayName;
                 displaynameCell.mxkTextField.userInteractionEnabled = NO;
                 displaynameCell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -477,7 +477,7 @@ enum {
                     removeSessionBtnCell.mxkButton.titleLabel.text = nil;
                 }
                 
-                NSString *btnTitle = NSLocalizedStringFromTable(@"manage_session_sign_out", @"Vector", nil);
+                NSString *btnTitle = [VectorL10n manageSessionSignOut];
                 [removeSessionBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
                 [removeSessionBtnCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
                 [removeSessionBtnCell.mxkButton setTintColor:ThemeService.shared.theme.warningColor];
@@ -501,7 +501,7 @@ enum {
     switch (section)
     {
         case SECTION_SESSION_INFO:
-            return NSLocalizedStringFromTable(@"manage_session_info", @"Vector", nil);
+            return [VectorL10n manageSessionInfo];
         case SECTION_ACTION:
             return @"";
 
@@ -612,8 +612,9 @@ enum {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     MXWeakify(self);
-    currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"device_details_rename_prompt_title"]
-                                                       message:[NSBundle mxk_localizedStringForKey:@"device_details_rename_prompt_message"] preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n deviceDetailsRenamePromptTitle]
+                                                       message:[MatrixKitL10n deviceDetailsRenamePromptMessage]
+                                                preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         MXStrongifyAndReturnIfNil(self);
@@ -623,7 +624,7 @@ enum {
         textField.text = self->device.displayName;
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action)
                              {
@@ -631,7 +632,7 @@ enum {
                                  self->currentAlert = nil;
                              }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action)
                              {
@@ -691,8 +692,8 @@ enum {
         self.reauthenticationCoordinatorBridgePresenter = nil;
     };
     
-    NSString *title = [NSBundle mxk_localizedStringForKey:@"device_details_delete_prompt_title"];
-    NSString *message = [NSBundle mxk_localizedStringForKey:@"device_details_delete_prompt_message"];
+    NSString *title = [MatrixKitL10n deviceDetailsDeletePromptTitle];
+    NSString *message = [MatrixKitL10n deviceDetailsDeletePromptMessage];
     
     AuthenticatedEndpointRequest *deleteDeviceRequest = [[AuthenticatedEndpointRequest alloc] initWithPath:[NSString stringWithFormat:@"%@/devices/%@", kMXAPIPrefixPathR0, [MXTools encodeURIComponent:device.deviceId]] httpMethod:@"DELETE"];
     

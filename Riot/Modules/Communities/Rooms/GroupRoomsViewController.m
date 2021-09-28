@@ -97,7 +97,7 @@
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint, _tableViewBottomConstraint]];
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"group_rooms_filter_rooms", @"Vector", nil);
+    _searchBarView.placeholder = [VectorL10n groupRoomsFilterRooms];
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     

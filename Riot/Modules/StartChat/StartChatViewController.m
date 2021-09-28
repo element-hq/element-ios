@@ -89,7 +89,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
 
-    self.navigationItem.title = NSLocalizedStringFromTable(@"room_creation_title", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n roomCreationTitle];
     
     // Add each matrix session by default.
     NSArray *sessions = [AppDelegate theDelegate].mxSessions;
@@ -112,10 +112,10 @@
     cancelBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onButtonPressed:)];
     self.navigationItem.leftBarButtonItem = cancelBarButtonItem;
     
-    createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"start", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
+    createBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n start] style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
     self.navigationItem.rightBarButtonItem = createBarButtonItem;
     
-    _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_creation_invite_another_user", @"Vector", nil);
+    _searchBarView.placeholder = [VectorL10n roomCreationInviteAnotherUser];
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;    
     [self refreshSearchBarItemsColor:_searchBarView];
@@ -210,7 +210,7 @@
     [super addMatrixSession:mxSession];
     
     // FIXME: Handle multi accounts
-    NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
+    NSString *displayName = [VectorL10n you];
     userContact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:self.mainSession.myUser.userId];
     
     [self refreshParticipants];
@@ -624,7 +624,7 @@
                 MXLogDebug(@"[StartChatViewController] Create room failed");
 
                 // Alert user
-                [[AppDelegate theDelegate] showAlertWithTitle:nil message:NSLocalizedStringFromTable(@"room_creation_dm_error", @"Vector", nil)];
+                [[AppDelegate theDelegate] showAlertWithTitle:nil message:[VectorL10n roomCreationDmError]];
             };
 
             [self.mainSession vc_canEnableE2EByDefaultInNewRoomWithUsers:inviteArray success:^(BOOL canEnableE2E) {
@@ -757,10 +757,10 @@
             
             [contactsTableViewController refreshCurrentSelectedCell:YES];
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
-                                                                           message:NSLocalizedStringFromTable(@"room_creation_error_invite_user_by_email_without_identity_server", @"Vector", nil)
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+                                                                           message:[VectorL10n roomCreationErrorInviteUserByEmailWithoutIdentityServer]
                                                                     preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
             [self presentViewController:alert animated:YES completion:nil];
             
             return;

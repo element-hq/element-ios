@@ -64,7 +64,7 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
@@ -128,8 +128,8 @@
 - (void)updateEmptyView
 {
     [self.emptyView fillWith:[self emptyViewArtwork]
-                       title:NSLocalizedStringFromTable(@"rooms_empty_view_title", @"Vector", nil)
-             informationText:NSLocalizedStringFromTable(@"rooms_empty_view_information", @"Vector", nil)];
+                       title:[VectorL10n roomsEmptyViewTitle]
+             informationText:[VectorL10n roomsEmptyViewInformation]];
 }
 
 - (UIImage*)emptyViewArtwork

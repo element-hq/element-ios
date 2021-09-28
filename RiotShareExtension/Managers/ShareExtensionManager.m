@@ -511,15 +511,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         __weak typeof(self) weakSelf = self;
         
-        compressionPrompt = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt_title"]
-                                                                message:[NSBundle mxk_localizedStringForKey:@"attachment_size_prompt_message"]
+        compressionPrompt = [UIAlertController alertControllerWithTitle:[MatrixKitL10n attachmentSizePromptTitle]
+                                                                message:[MatrixKitL10n attachmentSizePromptMessage]
                                                          preferredStyle:UIAlertControllerStyleActionSheet];
         
         if (compressionSizes.small.fileSize)
         {
             NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.small.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_small"], fileSizeString];
+            NSString *title = [MatrixKitL10n attachmentSmall:fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -547,7 +547,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.medium.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_medium"], fileSizeString];
+            NSString *title = [MatrixKitL10n attachmentMedium:fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -577,7 +577,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.large.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_large"], fileSizeString];
+            NSString *title = [MatrixKitL10n attachmentLarge:fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -607,7 +607,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
             
-            NSString *title = [NSString stringWithFormat:[NSBundle mxk_localizedStringForKey:@"attachment_original"], fileSizeString];
+            NSString *title = [MatrixKitL10n attachmentOriginal:fileSizeString];
             
             [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
                                                                   style:UIAlertActionStyleDefault
@@ -629,7 +629,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                                                 }]];
         }
         
-        [compressionPrompt addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                               style:UIAlertActionStyleCancel
                                                             handler:nil]];
         
