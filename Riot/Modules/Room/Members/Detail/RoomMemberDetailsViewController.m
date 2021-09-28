@@ -888,7 +888,7 @@
                     }
                     break;
                 case UserEncryptionTrustLevelUnknown:
-                    [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_loading", @"Vector", nil)];
+                    [encryptionInformation appendString:[VectorL10n roomParticipantsSecurityLoading]];
                     break;
                 default:
                     break;
@@ -1144,7 +1144,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"ban", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ban]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                      
                                                                      if (weakSelf)

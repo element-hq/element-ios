@@ -582,12 +582,6 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                        toRequest:requestId];
 }
 
-- (void)sendLocalisedError:(NSString*)errorKey toRequest:(NSString*)requestId
-{
-    [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toRequest:requestId];
-}
-
-
 #pragma mark - Private methods
 
 - (NSString *)stringByReplacingScalarTokenInString:(NSString*)string byScalarToken:(NSString*)scalarToken
