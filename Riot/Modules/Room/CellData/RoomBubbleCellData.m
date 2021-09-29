@@ -731,11 +731,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (MXKRoomBubbleComponent *)bubbleComponentWithLinkForEventId:(NSString *)eventId
 {
-    if (!RiotSettings.shared.roomScreenShowsURLPreviews)
-    {
-        return nil;
-    }
-    
     NSInteger index = [self bubbleComponentIndexForEventId:eventId];
     if (index == NSNotFound)
     {
@@ -1085,8 +1080,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return;
     }
     
-    // Don't show the preview if it has been dismissed already.
-    component.showURLPreview = ![URLPreviewService.shared hasClosedPreviewFrom:component.event];
+    // Don't show the preview if they're disabled globally or this one has been dismissed previously.
+    component.showURLPreview = RiotSettings.shared.roomScreenShowsURLPreviews && [URLPreviewService.shared shouldShowPreviewFor:component.event];
     if (!component.showURLPreview)
     {
         return;

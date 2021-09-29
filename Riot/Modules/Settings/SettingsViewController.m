@@ -3124,6 +3124,9 @@ TableViewSectionsDelegate>
 - (void)toggleEnableURLPreviews:(UISwitch *)sender
 {
     RiotSettings.shared.roomScreenShowsURLPreviews = sender.on;
+    
+    // Any loaded cell data is now invalid and should be refreshed for the new value.
+    [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
 }
 
 - (void)toggleSendCrashReport:(id)sender
