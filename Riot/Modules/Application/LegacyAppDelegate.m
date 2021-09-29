@@ -2791,6 +2791,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)navigateToRoomById:(NSString *)roomId
 {
+    [self navigateToRoomById:roomId andEventId:nil];
+}
+
+- (void)navigateToRoomById:(NSString *)roomId andEventId:(NSString *)eventId
+{
     if (roomId.length)
     {
         // TODO retrieve the right matrix session
@@ -2823,7 +2828,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             MXLogDebug(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
 
-            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
+            [self showRoom:roomId andEventId:eventId withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {

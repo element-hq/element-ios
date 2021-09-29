@@ -79,6 +79,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
     func start() {
         self.setupLogger()
         self.setupTheme()
+
+        // Make sure the UserActivityService is loaded
+        let _ = UserActivityService.shared
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
