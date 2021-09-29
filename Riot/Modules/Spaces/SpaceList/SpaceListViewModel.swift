@@ -30,7 +30,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     // MARK: Private
 
-    private let session: MXSession
+    private let userSessionsService: UserSessionsService
     
     private var currentOperation: MXHTTPOperation?
     private var sections: [SpaceListSection] = []
@@ -49,8 +49,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
-        self.session = session
+    init(userSessionsService: UserSessionsService) {
+        self.userSessionsService = userSessionsService
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.sessionDidSync(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
 
@@ -123,14 +123,14 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func loadData() {
-        guard session.mediaManager != nil else {
+        guard let session = self.userSessionsService.mainUserSession?.matrixSession, session.mediaManager != nil else {
             return
         }
 
         self.update(viewState: .loading)
                 
-        let homeViewData = self.createHomeViewData()
-        let viewDataList = getSpacesViewData()
+        let homeViewData = self.createHomeViewData(session: session)
+        let viewDataList = getSpacesViewData(session: session)
 
         let sections: [SpaceListSection] = viewDataList.invites.isEmpty ? [
                 .home(homeViewData),
@@ -189,8 +189,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         self.coordinatorDelegate?.spaceListViewModel(self, didSelectInviteWithId: spaceId, from: sourceView)
     }
     
-    private func createHomeViewData() -> SpaceListItemViewData {
-        let avatarViewData = AvatarViewData(matrixItemId: Constants.homeSpaceId, displayName: nil, avatarUrl: nil, mediaManager: self.session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
+    private func createHomeViewData(session: MXSession) -> SpaceListItemViewData {
+        let avatarViewData = AvatarViewData(matrixItemId: Constants.homeSpaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
         
         let homeNotificationState = session.spaceService.notificationCounter.homeNotificationState
         let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
@@ -198,12 +198,12 @@ final class SpaceListViewModel: SpaceListViewModelType {
         return homeViewData
     }
     
-    private func getSpacesViewData() -> (invites: [SpaceListItemViewData], spaces: [SpaceListItemViewData]) {
+    private func getSpacesViewData(session: MXSession) -> (invites: [SpaceListItemViewData], spaces: [SpaceListItemViewData]) {
         var invites: [SpaceListItemViewData] = []
         var spaces: [SpaceListItemViewData] = []
         session.spaceService.rootSpaceSummaries.forEach { summary in
-            let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
-            let notificationState = self.session.spaceService.notificationCounter.notificationState(forSpaceWithId: summary.roomId)
+            let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
+            let notificationState = session.spaceService.notificationCounter.notificationState(forSpaceWithId: summary.roomId)
             let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData, isInvite: summary.membership == .invite, notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0, highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0)
             if viewData.isInvite {
                 invites.append(viewData)

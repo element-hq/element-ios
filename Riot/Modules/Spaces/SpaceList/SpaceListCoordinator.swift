@@ -42,7 +42,7 @@ final class SpaceListCoordinator: SpaceListCoordinatorType {
     init(parameters: SpaceListCoordinatorParameters) {
         self.parameters = parameters
         
-        let spaceListViewModel = SpaceListViewModel(session: self.parameters.session)
+        let spaceListViewModel = SpaceListViewModel(userSessionsService: self.parameters.userSessionsService)
         let spaceListViewController = SpaceListViewController.instantiate(with: spaceListViewModel)
         self.spaceListViewModel = spaceListViewModel
         self.spaceListViewController = spaceListViewController
