@@ -100,7 +100,8 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     fetchersContainer = [[RecentsRoomListFetchersContainer alloc] initWithSession:self.mxSession
                                                                              mode:_recentsDataSourceMode
-                                                                            query:nil];
+                                                                            query:nil
+                                                                            space:nil];
     [fetchersContainer addDelegate:self];
 }
 
@@ -227,6 +228,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [self updateSecureBackupBanner];
     [self refreshCrossSigningBannerDisplay];
     [fetchersContainer updateMode:_recentsDataSourceMode];
+}
+
+- (void)setCurrentSpace:(MXSpace *)currentSpace
+{
+    [fetchersContainer updateSpace:currentSpace];
 }
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame

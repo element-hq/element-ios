@@ -22,6 +22,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
     public let session: MXSession
     public private(set) var mode: RecentsDataSourceMode
     public private(set) var query: String?
+    public private(set) var space: MXSpace?
     
     //  MARK: - Fetchers
     
@@ -158,10 +159,12 @@ public class RecentsRoomListFetchersContainer: NSObject {
     
     public init(withSession session: MXSession,
                 mode: RecentsDataSourceMode = .home,
-                query: String? = nil) {
+                query: String? = nil,
+                space: MXSpace? = nil) {
         self.session = session
         self.mode = mode
         self.query = query
+        self.space = space
         super.init()
         createFetchers()
         addRiotSettingsObserver()
@@ -237,6 +240,11 @@ public class RecentsRoomListFetchersContainer: NSObject {
     public func updateQuery(_ query: String?) {
         self.query = query
         visibleFetchers.forEach({ $0.fetchOptions.filterOptions.query = query })
+    }
+    
+    public func updateSpace(_ space: MXSpace?) {
+        self.space = space
+        allFetchers.forEach({ $0.fetchOptions.filterOptions.space = space })
     }
     
     public func refresh() {
@@ -378,7 +386,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
     }
     
     private func updateConversationFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
-        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .direct, .lowPriority, .serverNotice]
+        var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .direct, .lowPriority, .serverNotice, .space]
         switch mode {
         case .home:
             notDataTypes.insert([.invited, .favorited])
