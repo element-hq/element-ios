@@ -97,6 +97,7 @@ internal enum Asset {
     internal static let plusFloatingAction = ImageAsset(name: "plus_floating_action")
     internal static let versionCheckCloseIcon = ImageAsset(name: "version_check_close_icon")
     internal static let versionCheckInfoIcon = ImageAsset(name: "version_check_info_icon")
+    internal static let integrationManagerIconpile = ImageAsset(name: "integration_manager_iconpile")
     internal static let closeBanner = ImageAsset(name: "close_banner")
     internal static let importFilesButton = ImageAsset(name: "import_files_button")
     internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")

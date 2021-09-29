@@ -32,6 +32,7 @@ final class ServiceTermsModalScreenViewController: UIViewController {
 
     @IBOutlet private weak var scrollView: UIScrollView!
     
+    @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var footerLabel: UILabel!
@@ -148,10 +149,11 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         if self.viewModel.serviceType == MXServiceTypeIdentityService {
             self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIdentityServer
             self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIdentityServer
+            self.imageView.image = Asset.Images.findYourContactsFacepile.image
         } else {
             self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIntegrationManager
             self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIntegrationManager
-            // TODO: Set a different image for the integration manager.
+            self.imageView.image = Asset.Images.integrationManagerIconpile.image
         }
     }
 

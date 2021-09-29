@@ -152,6 +152,7 @@
                         <outlet property="declineButton" destination="QHr-gh-dAD" id="QOS-rE-4SP"/>
                         <outlet property="descriptionLabel" destination="5fA-rc-XMP" id="OkU-OE-DgA"/>
                         <outlet property="footerLabel" destination="Qmt-nE-Lg7" id="BOZ-Qy-Pxj"/>
+                        <outlet property="imageView" destination="XWa-N5-VF2" id="YbG-3e-03Q"/>
                         <outlet property="scrollView" destination="9U2-KL-ZVA" id="ojG-2y-X7b"/>
                         <outlet property="tableView" destination="swq-xw-ItG" id="Fwb-Sc-bec"/>
                         <outlet property="tableViewHeightConstraint" destination="phu-oG-oGN" id="rTd-2V-qVf"/>
