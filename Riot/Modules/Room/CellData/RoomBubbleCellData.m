@@ -322,7 +322,13 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }
 }
 
-#pragma mark - 
+#pragma mark -
+
+- (void)invalidateLayout
+{
+    [self invalidateTextLayout];
+    [self setNeedsUpdateAdditionalContentHeight];
+}
 
 - (NSAttributedString*)makeAttributedString
 {
@@ -1107,10 +1113,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                                  success:^(URLPreviewData * _Nonnull urlPreviewData) {
         MXStrongifyAndReturnIfNil(self);
         
-        // Update the preview data, indicate that the text message layout needs refreshing and send a notification for refresh
+        // Update the preview data, indicate that the message layout needs refreshing and send a notification for refresh
         component.urlPreviewData = urlPreviewData;
-        [self invalidateTextLayout];
-        [self setNeedsUpdateAdditionalContentHeight];
+        [self invalidateLayout];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];
@@ -1119,10 +1124,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     } failure:^(NSError * _Nullable error) {
         MXLogDebug(@"[RoomBubbleCellData] Failed to get url preview")
         
-        // Don't show a preview and send a notification for refresh
+        // Remove the loading URLPreviewView, indicate that the layout needs refreshing and send a notification for refresh
         component.showURLPreview = NO;
-        [self invalidateTextLayout];
-        [self setNeedsUpdateAdditionalContentHeight];
+        [self invalidateLayout];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [NSNotificationCenter.defaultCenter postNotificationName:URLPreviewDidUpdateNotification object:nil userInfo:userInfo];

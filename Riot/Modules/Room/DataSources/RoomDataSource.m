@@ -1247,8 +1247,7 @@ const CGFloat kTypingCellHeight = 24;
     component.showURLPreview = NO;
     component.urlPreviewData = nil;
     
-    [cellData invalidateTextLayout];
-    [cellData setNeedsUpdateAdditionalContentHeight];
+    [cellData invalidateLayout];
     
     [self refreshCells];
 }

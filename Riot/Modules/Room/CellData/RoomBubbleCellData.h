@@ -96,6 +96,16 @@ typedef NS_ENUM(NSInteger, RoomBubbleCellDataTag)
 @property(nonatomic) NSInteger componentIndexOfSentMessageTick;
 
 /**
+ Indicate that both the text message layout and any additional content height are no longer
+ valid and should be recomputed before presentation in a bubble cell. This could be due
+ to a content change, or the available space for the cell has been updated.
+ 
+ This is a convenience method that calls `invalidateTextLayout` and
+ `setNeedsUpdateAdditionalContentHeight` together.
+ */
+- (void)invalidateLayout;
+
+/**
  Indicate to update additional content height.
  */
 - (void)setNeedsUpdateAdditionalContentHeight;
