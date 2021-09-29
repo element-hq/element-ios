@@ -17,5 +17,5 @@
 import Foundation
 
 struct TemplateUserProfileCoordinatorParameters {
- let session: MXSession
+    let session: MXSession
 }

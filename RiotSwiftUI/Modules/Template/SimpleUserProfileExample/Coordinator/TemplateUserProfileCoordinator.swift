@@ -55,7 +55,7 @@ final class TemplateUserProfileCoordinator: Coordinator {
             switch result {
             case .cancel, .done:
                 self.completion?()
-            break
+                break
             }
         }
     }
