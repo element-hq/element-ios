@@ -123,7 +123,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func loadData() {
-        guard let session = self.userSessionsService.mainUserSession?.matrixSession, session.mediaManager != nil else {
+        guard let session = self.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
 
