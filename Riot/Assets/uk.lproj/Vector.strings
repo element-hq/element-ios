@@ -139,7 +139,7 @@
 "client_web_name" = "Element Web";
 "client_ios_name" = "Element iOS";
 "auth_login_single_sign_on" = "Увійти";
-"room_creation_invite_another_user" = "Пошук / запрошення по ідентифікатору користувача, імені або адреси електронної пошти";
+"room_creation_invite_another_user" = "Пошук / запрошення за ID користувача, іменем або е-поштою";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Сервер ідентифікації не налаштовано, тому ви не можете додати учасника з е-поштою.";
 // Room recents
 "room_recents_directory_section" = "КАТАЛОГ КІМНАТ";
@@ -686,3 +686,106 @@
 "space_beta_announce_title" = "Простори скоро з'являться";
 "space_beta_announce_subtitle" = "Нова версія спільнот";
 "space_beta_announce_information" = "Простори — це новий спосіб об'єднати кімнати та людей. Їх ще не додано на iOS, але ви вже можете користуватися ними у вебпереглядачі та на комп'ютері.";
+
+// No VoIP support
+"no_voip_title" = "Вхідний виклик";
+"call_actions_unhold" = "Продовжити";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Переведення";
+"space_avatar_view_accessibility_hint" = "Змінити аватар простору";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "аватар";
+"invite_friends_share_text" = "Агов, побалакай зі мною в %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Запросити друзів до %@";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Номеронабирач";
+"call_transfer_contacts_all" = "Усі";
+"call_transfer_contacts_recent" = "Недавні";
+"call_transfer_dialpad" = "Номеронабирач";
+"room_open_dialpad" = "Номеронабирач";
+"room_accessibility_search" = "Пошук";
+"room_action_send_file" = "Надіслати файл";
+"room_action_send_sticker" = "Надіслати наліпку";
+"room_action_send_photo_or_video" = "Надіслати світлину або відео";
+"room_event_failed_to_send" = "Не вдалося надіслати";
+"room_event_action_edit" = "Редагувати";
+"room_event_action_view_encryption" = "Відомості про шифрування";
+"room_event_action_cancel_download" = "Скасувати завантаження";
+"room_event_action_cancel_send" = "Скасувати надсилання";
+"room_message_reply_to_short_placeholder" = "Надіслати відповідь…";
+"room_message_short_placeholder" = "Надіслати повідомлення…";
+"room_message_replying_to" = "У відповідь %@";
+"room_message_editing" = "Редагування";
+"room_message_unable_open_link_error_message" = "Неможливо відкрити посилання.";
+"room_message_reply_to_placeholder" = "Надіслати відповідь (не зашифровану)…";
+"room_message_placeholder" = "Надіслати повідомлення (не зашифроване)…";
+"room_many_users_are_typing" = "%@, %@ та інші друкують…";
+"room_two_users_are_typing" = "%@ і %@ друкують…";
+"room_one_user_is_typing" = "%@ друкує…";
+"room_new_messages_notification" = "%d нових повідомлень";
+"room_new_message_notification" = "%d нове повідомлення";
+"room_member_power_level_short_moderator" = "Модератор";
+"room_member_power_level_short_admin" = "Адміністратор";
+"room_member_power_level_moderator_in" = "Модератор у %@";
+"room_member_power_level_admin_in" = "Адміністратор у %@";
+"room_participants_security_loading" = "Завантаження…";
+"room_participants_action_security_status_loading" = "Завантаження…";
+"room_participants_action_security_status_warning" = "Попередження";
+"public_room_section_title" = "Загальнодоступні кімнати (на %@):";
+"do_not_ask_again" = "Не запитувати знову";
+"event_formatter_group_call_join" = "Приєднатися";
+"event_formatter_call_retry" = "Повторити";
+"event_formatter_message_edited_mention" = "(змінено)";
+"image_picker_action_library" = "Вибрати з бібліотеки";
+
+// Image picker
+"image_picker_action_camera" = "Сфотографувати";
+"media_picker_select" = "Вибрати";
+"room_participants_action_start_video_call" = "Почати відеовиклик";
+"room_participants_action_start_voice_call" = "Почати голосовий виклик";
+"security_settings_crypto_sessions_loading" = "Завантаження сеансів…";
+"room_participants_action_start_new_chat" = "Почати нову бесіду";
+"room_participants_action_set_admin" = "Зробити адміністратором";
+"room_participants_action_set_moderator" = "Зробити модератором";
+"security_settings_crypto_sessions" = "МОЇ СЕАНСИ";
+"room_participants_action_section_security" = "Безпека";
+
+// Security settings
+"security_settings_title" = "Безпека";
+"media_picker_library" = "Бібліотека";
+
+// Media picker
+"media_picker_title" = "Медіабібліотека";
+"room_participants_action_section_other" = "Опції";
+"room_participants_action_section_devices" = "Сеанси";
+"room_participants_action_section_admin_tools" = "Засоби адміністратора";
+"room_participants_ago" = "тому";
+"room_participants_now" = "зараз";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Фільтр кімнат спільноти";
+"group_participants_invited_section" = "ЗАПРОШЕНІ";
+"room_participants_invited_section" = "ЗАПРОШЕНІ";
+"room_participants_invite_malformed_id" = "Хибний ID. Повинні бути адреса е-пошти або Matrix ID, наприклад, «@localpart:domain»";
+"room_participants_invite_another_user" = "Пошук / запрошення за ID користувача, іменем або е-поштою";
+"room_participants_filter_room_members_for_dm" = "Фільтр учасників";
+"room_participants_filter_room_members" = "Фільтр учасників кімнати";
+"room_participants_invite_prompt_msg" = "Ви впевнені, що хочете запросити %@ до цієї бесіди?";
+"room_participants_remove_third_party_invite_prompt_msg" = "Ви впевнені, що хочете відкликати запрошення?";
+"directory_search_results_title" = "Переглянути результати пошуку";
+
+// Directory
+"directory_cell_title" = "Огляд каталогу";
+"rooms_empty_view_information" = "Кімнати чудові для будь-яких групових бесід, приватних чи загальнодоступних. Натисніть +, щоб знайти наявні кімнати або створити нові.";
+"room_recents_unknown_room_error_message" = "Не вдалося знайти цю кімнату. Переконайтеся, що вона існує";
+"room_recents_suggested_rooms_section" = "ПРОПОНОВАНІ КІМНАТИ";
+"room_creation_dm_error" = "Ми не можемо створити ваше особисте повідомлення. Перевірте користувачів, яких ви хочете запросити й повторіть спробу.";
+"done" = "Готово";
+"open" = "Відкрити";
