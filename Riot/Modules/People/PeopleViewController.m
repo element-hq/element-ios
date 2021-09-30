@@ -82,7 +82,7 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titlePeople];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
@@ -149,8 +149,8 @@
 - (void)updateEmptyView
 {
     [self.emptyView fillWith:[self emptyViewArtwork]
-                       title:NSLocalizedStringFromTable(@"people_empty_view_title", @"Vector", nil)
-             informationText:NSLocalizedStringFromTable(@"people_empty_view_information", @"Vector", nil)];
+                       title:[VectorL10n peopleEmptyViewTitle]
+             informationText:[VectorL10n peopleEmptyViewInformation]];
 }
 
 - (UIImage*)emptyViewArtwork

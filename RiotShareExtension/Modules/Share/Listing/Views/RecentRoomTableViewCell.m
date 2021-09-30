@@ -77,7 +77,7 @@
         self.roomTitleLabel.text = roomCellData.roomDisplayname;
         if (!self.roomTitleLabel.text.length)
         {
-            self.roomTitleLabel.text = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
+            self.roomTitleLabel.text = [MatrixKitL10n roomDisplaynameEmptyRoom];
         }  
         
         self.encryptedRoomIcon.hidden = YES;

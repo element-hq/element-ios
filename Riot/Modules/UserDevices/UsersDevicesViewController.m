@@ -56,7 +56,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedStringFromTable(@"unknown_devices_title", @"Vector", nil);
+    self.title = [VectorL10n unknownDevicesTitle];
     self.accessibilityLabel=@"UsersDevicesVCTitleStaticText";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone:)];
     self.navigationItem.rightBarButtonItem.accessibilityIdentifier=@"UsersDevicesVCDoneButton";

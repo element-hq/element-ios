@@ -165,9 +165,10 @@ class CallPresenter: NSObject {
         } else {
             createJitsiBlock()
         }
+        
         #else
         AppDelegate.theDelegate().showAlert(withTitle: nil,
-                                            message: Bundle.mxk_localizedString(forKey: "not_supported_yet"))
+                                            message: MatrixKitL10n.notSupportedYet)
         #endif
     }
     

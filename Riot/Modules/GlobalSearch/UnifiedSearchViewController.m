@@ -77,24 +77,24 @@
     NSMutableArray* viewControllers = [[NSMutableArray alloc] init];
     NSMutableArray* titles = [[NSMutableArray alloc] init];
 
-    [titles addObject: NSLocalizedStringFromTable(@"search_rooms", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchRooms]];
     recentsViewController = [RecentsViewController recentListViewController];
     recentsViewController.enableSearchBar = NO;
     recentsViewController.screenName = @"UnifiedSearchRooms";
     [viewControllers addObject:recentsViewController];
 
-    [titles addObject: NSLocalizedStringFromTable(@"search_messages", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchMessages]];
     messagesSearchViewController = [HomeMessagesSearchViewController searchViewController];
     [viewControllers addObject:messagesSearchViewController];
 
     // Add search People tab
-    [titles addObject: NSLocalizedStringFromTable(@"search_people", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchPeople]];
     peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
     peopleSearchViewController.contactsTableViewControllerDelegate = self;
     [viewControllers addObject:peopleSearchViewController];
     
     // add Files tab
-    [titles addObject: NSLocalizedStringFromTable(@"search_files", @"Vector", nil)];
+    [titles addObject:[VectorL10n searchFiles]];
     filesSearchViewController = [HomeFilesSearchViewController searchViewController];
     [viewControllers addObject:filesSearchViewController];
 
@@ -109,7 +109,7 @@
     [self initializeDataSources];
     
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    self.searchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     
     [super showSearch:NO];
 }
@@ -408,11 +408,11 @@
 
     if (self.selectedViewController == peopleSearchViewController)
     {
-        self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_people_placeholder", @"Vector", nil);
+        self.searchBar.placeholder = [VectorL10n searchPeoplePlaceholder];
     }
     else
     {
-        self.searchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+        self.searchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     }
     
     [self updateSearch];

@@ -180,7 +180,7 @@
 "room_participants_action_section_other" = "Overige";
 "room_participants_action_invite" = "Uitnodigen";
 "room_participants_action_leave" = "Deze kamer verlaten";
-"room_participants_action_remove" = "Verwijderen uit deze kamer";
+"room_participants_action_remove" = "Uit deze kamer verwijderen";
 "room_participants_action_ban" = "Verbannen uit deze kamer";
 "room_participants_action_unban" = "Ontbannen";
 "room_participants_action_ignore" = "Alle berichten van deze gebruiker verbergen";
@@ -1570,7 +1570,39 @@
 "version_check_banner_title_supported" = "We stoppen de ondersteuning voor iOS %@";
 "settings_mentions_and_keywords_encryption_notice" = "U krijgt geen meldingen voor vermeldingen en trefwoorden in versleutelde kamers op mobiele telefoons.";
 "settings_show_url_previews_description" = "Voorvertoningen worden alleen getoond in niet versleutelde kamers.";
-"settings_show_url_previews" = "URL-voorvertoningen tonen";
+"settings_show_url_previews" = "Website-voorvertoning tonen";
 "settings_confirm_media_size_description" = "Wanneer dit aan staat wordt u elke keer gevraagd welk formaat afbeeldingen en video's u wilt versturen.";
 "settings_confirm_media_size" = "Bevestig afmeting bij versturen";
 "settings_sending_media" = "AFBEELDINGEN EN VIDEO'S VERSTUREN";
+"space_avatar_view_accessibility_hint" = "Ruimte-afbeelding wijzigen";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "afbeelding";
+"space_public_join_rule" = "Publieke ruimte";
+"space_private_join_rule" = "Privéruimte";
+"space_participants_action_ban" = "Uit deze ruimte verbannen";
+"space_participants_action_remove" = "Uit deze kamer verwijderen";
+"spaces_coming_soon_detail" = "Deze functies is nog niet klaar, maar er wordt aan gewerkt. Voor nu kan u dit wel doen met Element via uw computer.";
+"spaces_invites_coming_soon_title" = "Uitnodigen komt binnenkort";
+"spaces_add_rooms_coming_soon_title" = "Kamers toevoegen komt binnenkort";
+"spaces_coming_soon_title" = "Komt binnenkort";
+"spaces_no_member_found_detail" = "Zoekt u iemand niet in %@? Voorlopig kan u alleen een uitnodiging sturen via web of desktop.";
+"spaces_no_room_found_detail" = "Sommige resultaten kunnen verborgen zijn doordat ze privé zijn. U heeft dan een uitnodiging nodig om deel te nemen.";
+"spaces_empty_space_detail" = "Sommige kamers kunnen verborgen zijn doordat ze privé zijn. U heeft dan een uitnodiging nodig om deel te nemen.";
+"spaces_no_result_found_title" = "Geen resultaten gevonden";
+"spaces_empty_space_title" = "Deze ruimte heeft (nog) geen kamers";
+"space_tag" = "ruimte";
+"spaces_explore_rooms" = "Kamers ontdekken";
+"leave_space_and_all_rooms_action" = "Alle kamers en ruimtes verlaten";
+"leave_space_only_action" = "Geen kamers verlaten";
+"leave_space_message_admin_warning" = "U bent beheerder van deze ruimte, controleer of u de beheerrechten heeft overgedragen aan een andere deelnemer voordat u vertrekt.";
+"leave_space_message" = "Weet u zeker dat u %@ wilt verlaten? Wilt u ook alle kamers en ruimtes in deze ruimte verlaten?";
+"leave_space_title" = "%@ verlaten";
+"spaces_left_panel_title" = "Ruimtes";
+"spaces_home_space_title" = "Thuis";
+"settings_links" = "LINKS";
+"room_recents_suggested_rooms_section" = "AANBEVOLEN KAMERS";
+"spaces_suggested_room" = "Aanbevolen";
+"done" = "Klaar";
+"open" = "Openen";

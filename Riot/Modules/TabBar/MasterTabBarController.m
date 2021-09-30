@@ -117,7 +117,7 @@
     [self vc_removeBackTitle];
     
     [self setupTitleView];
-    titleView.titleLabel.text = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    titleView.titleLabel.text = [VectorL10n titleHome];
     
     childViewControllers = [NSMutableArray array];
     
@@ -1083,7 +1083,7 @@
     if (count > 1000)
     {
         CGFloat value = count / 1000.0;
-        badgeValue = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
+        badgeValue = [VectorL10n largeBadgeValueKFormat:value];
     }
     else
     {
@@ -1118,9 +1118,9 @@
     
     NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
     
-    currentAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"google_analytics_use_prompt", @"Vector", nil), appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n googleAnalyticsUsePrompt:appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1134,7 +1134,7 @@
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                                                                               
@@ -1175,21 +1175,21 @@
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_title", @"Vector", nil)
-                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_message", @"Vector", nil)
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n keyVerificationSelfVerifyCurrentSessionAlertTitle]
+                                                                   message:[VectorL10n keyVerificationSelfVerifyCurrentSessionAlertMessage]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_current_session_alert_validate_action", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyCurrentSessionAlertValidateAction]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [[AppDelegate theDelegate] presentCompleteSecurityForSession:session];
                                             }]];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
                                               style:UIAlertActionStyleCancel
                                             handler:nil]];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"do_not_ask_again", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n doNotAskAgain]
                                               style:UIAlertActionStyleDestructive
                                             handler:^(UIAlertAction * action) {
                                                 RiotSettings.shared.hideVerifyThisSessionAlert = YES;
@@ -1234,21 +1234,21 @@
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_title", @"Vector", nil)
-                                                                   message:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_message", @"Vector", nil)
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertTitle]
+                                                                   message:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertMessage]
                                                             preferredStyle:UIAlertControllerStyleAlert];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"key_verification_self_verify_unverified_sessions_alert_validate_action", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n keyVerificationSelfVerifyUnverifiedSessionsAlertValidateAction]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [self showSettingsSecurityScreenForSession:session];
                                             }]];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
                                               style:UIAlertActionStyleCancel
                                             handler:nil]];
     
-    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"do_not_ask_again", @"Vector", nil)
+    [alert addAction:[UIAlertAction actionWithTitle:[VectorL10n doNotAskAgain]
                                               style:UIAlertActionStyleDestructive
                                             handler:^(UIAlertAction * action) {
                                                 RiotSettings.shared.hideReviewSessionsAlert = YES;

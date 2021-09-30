@@ -1408,6 +1408,38 @@
 "settings_notifications" = "TEAVITUSED";
 "settings_confirm_media_size_description" = "Kui see valik on kasutusel, siis palume sul kinnitada saadetavate piltide ja videote suurused.";
 "settings_show_url_previews_description" = "Eelvaateid saame kuvada vaid krüptimata jututubades.";
-"settings_show_url_previews" = "Näita sisus urlide eelvaateid";
+"settings_show_url_previews" = "Näita sisus veebilehtede eelvaateid";
 "settings_confirm_media_size" = "Enne saatmist kinnita meedia mõõdud";
 "settings_sending_media" = "SAADAN PILTE JA VIDEOSID";
+"space_avatar_view_accessibility_hint" = "Muuda kogukonnakeskuse tunnuspilti";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "tunnuspilt";
+"space_public_join_rule" = "Avalik kogukond";
+"space_private_join_rule" = "Privaatne kogukond";
+"space_participants_action_ban" = "Sea selles kogukonnakeskus suhtluskeeld";
+"space_participants_action_remove" = "Eemalda sellest kogukonnakeskusest";
+"spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha Element'i töölauarakenduses.";
+"spaces_invites_coming_soon_title" = "Varsti lisandub kutsete saatmine";
+"spaces_add_rooms_coming_soon_title" = "Varsti on jututubade lisamine võimalik";
+"spaces_coming_soon_title" = "Mõne aja pärast on meil uuendusi";
+"spaces_no_member_found_detail" = "Kas otsid kedagi, kes ei ole %@ kogukonna liige? Seni kuni me iOS rakendust arendame, saade neile kutse meie veebirakendusest või töölauarakendusest.";
+"spaces_no_room_found_detail" = "Kuna mõned otsingutulemused on privaatsed ja nad seega võivad olla varjatud ning sa vajad liitumiseks kutset.";
+"spaces_no_result_found_title" = "Mitte midagi ei leidu";
+"spaces_empty_space_detail" = "Kuna mõned jututoad on privaatsed ja nad seega võivad olla varjatud ning sa vajad liitumiseks kutset.";
+"spaces_empty_space_title" = "Selles kogukonnakeskuses pole veel jututube";
+"space_tag" = "kogukonnakeskus";
+"spaces_suggested_room" = "Soovitatud";
+"spaces_explore_rooms" = "Uuri jututubasid";
+"leave_space_and_all_rooms_action" = "Lahku kõikidest jututubadest ja kogukondadest";
+"leave_space_only_action" = "Ära lahku ühestki jututoast";
+"leave_space_message_admin_warning" = "Sa oled selle kogukonnakeskuse haldaja. Enne oma lahkumist palun lisa siia veel vähemalt üks uus haldaja.";
+"leave_space_message" = "Kas sa oled kindel, et soovid lahkuda %@ kogukonnakeskusest? Kas sa samaga soovid lahkuda ka kõikidest jututubadest ja teistest kogukonnakeskustest, mis sinna kuuluvad?";
+"leave_space_title" = "Lahku %@ kogukonnast";
+"spaces_left_panel_title" = "Kogukonnakeskused";
+"spaces_home_space_title" = "Avaleht";
+"settings_links" = "LINGID";
+"room_recents_suggested_rooms_section" = "SOOVITATUD JUTUTOAD";
+"done" = "Valmis";
+"open" = "Ava";

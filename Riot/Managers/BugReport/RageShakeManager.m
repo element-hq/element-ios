@@ -67,10 +67,10 @@ static RageShakeManager* sharedInstance = nil;
 {
     if ([MXLogger crashLog])
     {
-        confirmationAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"bug_report_prompt", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+        confirmationAlert = [UIAlertController alertControllerWithTitle:[VectorL10n bugReportPrompt]  message:nil preferredStyle:UIAlertControllerStyleAlert];
         
         __weak typeof(self) weakSelf = self;
-        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
                                                                 
@@ -85,7 +85,7 @@ static RageShakeManager* sharedInstance = nil;
                                                                 
                                                             }]];
         
-        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+        [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action) {
                                                                 
@@ -131,10 +131,10 @@ static RageShakeManager* sharedInstance = nil;
     {
         if ([responder isKindOfClass:[UIViewController class]])
         {
-            confirmationAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"rage_shake_prompt", @"Vector", nil)  message:nil preferredStyle:UIAlertControllerStyleAlert];
+            confirmationAlert = [UIAlertController alertControllerWithTitle:[VectorL10n rageShakePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
             
             __weak typeof(self) weakSelf = self;
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
                                                                     
@@ -154,7 +154,7 @@ static RageShakeManager* sharedInstance = nil;
                                                                     
                                                                 }]];
 
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"do_not_ask_again"]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n doNotAskAgain]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
 
@@ -169,7 +169,7 @@ static RageShakeManager* sharedInstance = nil;
 
                                                                 }]];
 
-            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [confirmationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action) {
 

@@ -57,6 +57,9 @@ targets:
     - path: ../Riot/Categories/MXKImageView.swift
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../Riot/Generated/Strings.swift
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Managers/Locale/LocaleProvider.swift
     - path: ../Riot/Modules/Common/SegmentedViewController/SegmentedViewController.xib
       buildPhase: resources
     - path: ../Riot/Assets/en.lproj/Vector.strings

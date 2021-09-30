@@ -369,14 +369,13 @@ const CGFloat kTypingCellHeight = 24;
                         continue;
                     }
                     
-                    NSURL *link = component.link;
                     URLPreviewView *urlPreviewView;
                     
                     // Show a URL preview if the component has a link that should be previewed.
-                    if (link && RiotSettings.shared.roomScreenShowsURLPreviews && cellData.showURLPreview)
+                    if (component.showURLPreview)
                     {
                         urlPreviewView = [URLPreviewView instantiate];
-                        urlPreviewView.preview = cellData.urlPreviewData;
+                        urlPreviewView.preview = component.urlPreviewData;
                         urlPreviewView.delegate = self;
                         
                         [temporaryViews addObject:urlPreviewView];
@@ -388,8 +387,7 @@ const CGFloat kTypingCellHeight = 24;
                         [bubbleCell.tmpSubviews addObject:urlPreviewView];
                         
                         urlPreviewView.translatesAutoresizingMaskIntoConstraints = NO;
-                        // TODO: Use cellData.maxTextViewWidth when the view height is part of RoomBubbleCellData's additional height.
-                        urlPreviewView.availableWidth = tableView.contentSize.width;
+                        urlPreviewView.availableWidth = cellData.maxTextViewWidth;
                         [bubbleCell.contentView addSubview:urlPreviewView];
                         
                         CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
@@ -1221,37 +1219,36 @@ const CGFloat kTypingCellHeight = 24;
     // Use the link stored in the bubble component when opening the URL as we only
     // store the sanitized URL in the preview data which may differ to the message content.
     RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
-    
-    if (!cellData)
+    MXKRoomBubbleComponent *component = [cellData bubbleComponentWithLinkForEventId:eventID];
+    if (!component)
     {
+        MXLogError(@"[RoomDataSource] Failed to open link: Unable to find bubble component.")
         return;
     }
     
-    MXKRoomBubbleComponent *lastComponent = cellData.bubbleComponents.lastObject;
-    
-    if (!lastComponent)
-    {
-        return;
-    }
-    
-    [UIApplication.sharedApplication vc_open:lastComponent.link completionHandler:nil];
+    [UIApplication.sharedApplication vc_open:component.link completionHandler:nil];
 }
 
 - (void)didCloseURLPreviewView:(URLPreviewView *)previewView for:(NSString *)eventID in:(NSString *)roomID
 {
-    RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
-    
-    if (!cellData)
-    {
-        return;
-    }
-    
     // Remember that the user closed the preview so it isn't shown again.
     [URLPreviewService.shared closePreviewFor:eventID in:roomID];
     
+    // Get the component to remove the URL preview from.
+    RoomBubbleCellData *cellData = [self cellDataOfEventWithEventId:eventID];
+    MXKRoomBubbleComponent *component = [cellData bubbleComponentWithLinkForEventId:eventID];
+    if (!component)
+    {
+        MXLogError(@"[RoomDataSource] Failed to close URL preview: Unable to find bubble component.")
+        return;
+    }
+    
     // Hide the preview, remove its data and refresh the cells.
-    cellData.showURLPreview = NO;
-    cellData.urlPreviewData = nil;
+    component.showURLPreview = NO;
+    component.urlPreviewData = nil;
+    
+    [cellData invalidateLayout];
+    
     [self refreshCells];
 }
 

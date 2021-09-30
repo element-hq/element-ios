@@ -60,7 +60,7 @@ Matrix session observer used to detect new opened sessions.
     {
         UNTextInputNotificationAction *quickReply = [UNTextInputNotificationAction
                                                      actionWithIdentifier:@"inline-reply"
-                                                     title:NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil)
+                                                     title:[VectorL10n roomMessageShortPlaceholder]
                                                      options:UNNotificationActionOptionAuthenticationRequired
                                                      ];
 
@@ -370,7 +370,7 @@ Matrix session observer used to detect new opened sessions.
 
                 UNMutableNotificationContent *failureNotificationContent = [[UNMutableNotificationContent alloc] init];
                 failureNotificationContent.userInfo = content.userInfo;
-                failureNotificationContent.body = NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil);
+                failureNotificationContent.body = [VectorL10n roomEventFailedToSend];
                 failureNotificationContent.threadIdentifier = roomId;
 
                 NSString *uuid = [[NSUUID UUID] UUIDString];
@@ -577,9 +577,11 @@ Matrix session observer used to detect new opened sessions.
             dispatch_group_t dispatchGroup = dispatch_group_create();
             
             dispatch_group_enter(dispatchGroup);
+            session.spaceService.graphUpdateEnabled = NO;
             //  Not continuing in completion block here, because PushKit mandates reporting a new call in the same run loop.
             //  'handleBackgroundSyncCacheIfRequiredWithCompletion' is processing to-device events synchronously.
             [session handleBackgroundSyncCacheIfRequiredWithCompletion:^{
+                session.spaceService.graphUpdateEnabled = YES;
                 dispatch_group_leave(dispatchGroup);
             }];
             

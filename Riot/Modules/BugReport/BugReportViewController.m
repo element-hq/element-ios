@@ -71,9 +71,9 @@
 {
     [super viewDidLoad];
 
-    _logsDescriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_logs_description", @"Vector", nil);
-    _sendLogsLabel.text = NSLocalizedStringFromTable(@"bug_report_send_logs", @"Vector", nil);
-    _sendScreenshotLabel.text = NSLocalizedStringFromTable(@"bug_report_send_screenshot", @"Vector", nil);
+    _logsDescriptionLabel.text = [VectorL10n bugReportLogsDescription];
+    _sendLogsLabel.text = [VectorL10n bugReportSendLogs];
+    _sendScreenshotLabel.text = [VectorL10n bugReportSendScreenshot];
 
     _containerView.layer.cornerRadius = 20;
 
@@ -83,21 +83,21 @@
 
     if (_reportCrash)
     {
-        _titleLabel.text = NSLocalizedStringFromTable(@"bug_crash_report_title", @"Vector", nil);
-        _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_crash_report_description", @"Vector", nil);
+        _titleLabel.text = [VectorL10n bugCrashReportTitle];
+        _descriptionLabel.text = [VectorL10n bugCrashReportDescription];
     }
     else
     {
-        _titleLabel.text = NSLocalizedStringFromTable(@"bug_report_title", @"Vector", nil);
-        _descriptionLabel.text = NSLocalizedStringFromTable(@"bug_report_description", @"Vector", nil);
+        _titleLabel.text = [VectorL10n bugReportTitle];
+        _descriptionLabel.text = [VectorL10n bugReportDescription];
     }
     
-    [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateNormal];
-    [_cancelButton setTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] forState:UIControlStateHighlighted];
-    [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateNormal];
-    [_sendButton setTitle:NSLocalizedStringFromTable(@"bug_report_send", @"Vector", nil) forState:UIControlStateHighlighted];
-    [_backgroundButton setTitle:NSLocalizedStringFromTable(@"bug_report_background_mode", @"Vector", nil) forState:UIControlStateNormal];
-    [_backgroundButton setTitle:NSLocalizedStringFromTable(@"bug_report_background_mode", @"Vector", nil) forState:UIControlStateHighlighted];
+    [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateNormal];
+    [_cancelButton setTitle:[MatrixKitL10n cancel] forState:UIControlStateHighlighted];
+    [_sendButton setTitle:[VectorL10n bugReportSend] forState:UIControlStateNormal];
+    [_sendButton setTitle:[VectorL10n bugReportSend] forState:UIControlStateHighlighted];
+    [_backgroundButton setTitle:[VectorL10n bugReportBackgroundMode] forState:UIControlStateNormal];
+    [_backgroundButton setTitle:[VectorL10n bugReportBackgroundMode] forState:UIControlStateHighlighted];
 
     // Do not send empty report
     _sendButton.enabled = NO;;
@@ -363,7 +363,7 @@
         NSString *versionLabel = bugReportRestClient.version;
 
         // If this is not the app store version, be more accurate on the build origin
-        if ([build isEqualToString:NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil)])
+        if ([build isEqualToString:[VectorL10n settingsConfigNoBuildInfo]])
         {
             // This is a debug session from Xcode
             versionLabel = [versionLabel stringByAppendingString:@"-debug"];
@@ -400,11 +400,11 @@
         switch (state)
         {
             case MXBugReportStateProgressZipping:
-                self.sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_zipping", @"Vector", nil);
+                self.sendingLabel.text = [VectorL10n bugReportProgressZipping];
                 break;
 
             case MXBugReportStateProgressUploading:
-                self.sendingLabel.text = NSLocalizedStringFromTable(@"bug_report_progress_uploading", @"Vector", nil);
+                self.sendingLabel.text = [VectorL10n bugReportProgressUploading];
                 break;
 
             default:
