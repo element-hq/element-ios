@@ -27,10 +27,8 @@
 #endif
 
 @implementation RecentCellData
-// trick to hide the mother class property as it is readonly one.
-// self.roomDisplayname returns this value instead of the mother class.
-@synthesize roomDisplayname;
 
+//  Adds K handling to super implementation
 - (NSString*)notificationCountStringValue
 {
     NSString *stringValue;
@@ -49,6 +47,7 @@
     return stringValue;
 }
 
+//  Adds mentions-only handling to super implementation
 - (NSUInteger)notificationCount
 {
     MXRoom *room = [self.mxSession roomWithRoomId:self.roomSummary.roomId];
@@ -56,20 +55,21 @@
     if (room.isMentionsOnly)
     {
         // Only the highlighted missed messages must be considered here.
-        return self.roomSummary.highlightCount;
+        return super.highlightCount;
     }
     
-    return self.roomSummary.notificationCount;
+    return super.notificationCount;
 }
 
-- (void)update
+//  Adds "Empty Room" case to super implementation
+- (NSString *)roomDisplayname
 {
-    [super update];
-    roomDisplayname = self.spaceChildInfo ? self.spaceChildInfo.name: self.roomSummary.displayname;
-    if (!roomDisplayname.length)
+    NSString *result = [super roomDisplayname];
+    if (!result.length)
     {
-        roomDisplayname = [MatrixKitL10n roomDisplaynameEmptyRoom];
+        result = [MatrixKitL10n roomDisplaynameEmptyRoom];
     }
+    return result;
 }
 
 @end
