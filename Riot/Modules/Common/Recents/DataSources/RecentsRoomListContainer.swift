@@ -359,6 +359,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         conversationRoomListDataFetcherForRooms = createConversationRoomListDataFetcherForRooms()
         lowPriorityRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.lowPriority])
         serverNoticeRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.serverNotice])
+        suggestedRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.suggested])
     }
     
     private func updateDirectFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
