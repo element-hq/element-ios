@@ -14,18 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// An image sent as a message.
+struct TemplateRoomChatMessageImageContent {
+    var image: UIImage
 }
 
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }
+extension TemplateRoomChatMessageImageContent: Equatable { }

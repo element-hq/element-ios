@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,32 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-/// The static list of mocked screens in RiotSwiftUI
 @available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
+struct TemplateRoomChatBubbleImage: View {
+
+    // MARK: - Properties
+    
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    // MARK: Public
+    
+    let imageContent: TemplateRoomChatMessageImageContent
+    
+    var body: some View {
+        EmptyView()
+    }
 }
 
+// MARK: - Previews
+
+@available(iOS 14.0, *)
+struct TemplateRoomChatBubbleImage_Previews: PreviewProvider {
+    static var previews: some View {
+        EmptyView()
+        // TODO: New to our SwiftUI Template? Why not implement the image item in the bubble here?
+    }
+}

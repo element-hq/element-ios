@@ -15,17 +15,17 @@
 //
 
 import Foundation
-
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+extension MXRoom: Avatarable {
+    var mxContentUri: String? {
+        summary.avatar
+    }
+    
+    var matrixItemId: String {
+        roomId
+    }
+    
+    var displayName: String? {
+        summary.displayname
+    }
+    
 }
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }

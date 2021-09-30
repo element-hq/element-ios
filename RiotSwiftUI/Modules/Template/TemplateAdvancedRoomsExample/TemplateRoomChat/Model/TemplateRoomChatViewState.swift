@@ -16,16 +16,17 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// State managed by the `ViewModel` delivered to the `View`.
+struct TemplateRoomChatViewState: BindableState {
+    var roomInitializationStatus: TemplateRoomChatRoomInitializationStatus
+    let roomName: String?
+    var bubbles: [TemplateRoomChatBubble]
+    var bindings: TemplateRoomChatViewModelBindings
 }
 
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
+extension TemplateRoomChatViewState {
+    var sendButtonEnabled: Bool {
+        !bindings.messageInput.isEmpty
+    }
 }
 
-extension AvatarInput: Equatable { }

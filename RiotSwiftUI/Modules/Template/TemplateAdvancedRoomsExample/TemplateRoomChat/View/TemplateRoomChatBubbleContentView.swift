@@ -12,40 +12,41 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+//
 
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct ScreenList: View {
+struct TemplateRoomChatBubbleContentView: View {
     
-    private var allStates: [ScreenStateInfo]
+    // MARK: - Properties
     
-    init(screens: [MockScreenState.Type]) {
-        allStates = screens
-            .map({ $0.stateRenderer })
-            .flatMap{( $0.states )}
-    }
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    // MARK: Public
+    
+    let bubbleItem: TemplateRoomChatBubbleItem
     
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(0..<allStates.count) { i in
-                    let state = allStates[i]
-                    NavigationLink(destination: state.view) {
-                        Text(state.fullScreenTitle)
-                            .accessibilityIdentifier(state.stateKey)
-                    }
-                }
+        switch bubbleItem.content {
+        case .message(let messageContent):
+            switch messageContent {
+            case .text(let messageContent):
+                TemplateRoomChatBubbleMessage(messageContent: messageContent)
+            case .image(let imageContent):
+                TemplateRoomChatBubbleImage(imageContent: imageContent)
             }
         }
-        .navigationTitle("Screen States")
     }
 }
 
+// MARK: - Previews
+
 @available(iOS 14.0, *)
-struct ScreenList_Previews: PreviewProvider {
+struct TemplateRoomChatBubbleItemView_Previews: PreviewProvider {
     static var previews: some View {
-        ScreenList(screens: [MockTemplateUserProfileScreenState.self])
+        EmptyView()
     }
 }

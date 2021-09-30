@@ -21,42 +21,34 @@ import SwiftUI
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
 @available(iOS 14.0, *)
-enum MockTemplateUserProfileScreenState: MockScreenState, CaseIterable {
+enum MockTemplateRoomListScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case presence(TemplateUserProfilePresence)
-    case longDisplayName(String)
+    case noRooms
+    case rooms
     
     /// The associated screen
     var screenType: Any.Type {
-        TemplateUserProfile.self
-    }
-    
-    /// A list of screen state definitions
-    static var allCases: [MockTemplateUserProfileScreenState] {
-        // Each of the presence statuses
-        TemplateUserProfilePresence.allCases.map(MockTemplateUserProfileScreenState.presence)
-        // A long display name
-        + [.longDisplayName("Somebody with a super long name we would like to test")]
+        TemplateRoomList.self
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: ([Any], AnyView)  {
-        let service: MockTemplateUserProfileService
+    var screenView: ([Any], AnyView) {
+        let service: MockTemplateRoomListService
         switch self {
-        case .presence(let presence):
-            service = MockTemplateUserProfileService(presence: presence)
-        case .longDisplayName(let displayName):
-            service = MockTemplateUserProfileService(displayName: displayName)
+        case .noRooms:
+            service = MockTemplateRoomListService(rooms: [])
+        case .rooms:
+            service = MockTemplateRoomListService()
         }
-        let viewModel = TemplateUserProfileViewModel.makeTemplateUserProfileViewModel(templateUserProfileService: service)
+        let viewModel = TemplateRoomListViewModel(templateRoomListService: service)
         
         // can simulate service and viewModel actions here if needs be.
         
         return (
             [service, viewModel],
-            AnyView(TemplateUserProfile(viewModel: viewModel.context)
+            AnyView(TemplateRoomList(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
         )
     }

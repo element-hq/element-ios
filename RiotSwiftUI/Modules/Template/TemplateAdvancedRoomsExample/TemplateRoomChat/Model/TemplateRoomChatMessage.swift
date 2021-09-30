@@ -16,16 +16,12 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// A chat message send to the timeline within a room.
+struct TemplateRoomChatMessage {
+    let id: String
+    let content: TemplateRoomChatMessageContent
+    let sender: TemplateRoomChatMember
+    let timestamp: Date
 }
 
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }
+extension TemplateRoomChatMessage: Identifiable {}

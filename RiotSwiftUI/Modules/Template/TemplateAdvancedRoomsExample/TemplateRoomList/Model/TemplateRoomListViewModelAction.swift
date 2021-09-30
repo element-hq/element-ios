@@ -16,16 +16,8 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// Actions sent by the`ViewModel` to the `Coordinator`.
+enum TemplateRoomListViewModelAction {
+    case didSelectRoom(String)
+    case done
 }
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }

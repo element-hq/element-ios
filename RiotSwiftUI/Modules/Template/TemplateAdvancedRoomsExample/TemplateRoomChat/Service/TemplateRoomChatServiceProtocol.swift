@@ -15,17 +15,12 @@
 //
 
 import Foundation
+import Combine
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+@available(iOS 14.0, *)
+protocol TemplateRoomChatServiceProtocol {
+    var roomInitializationStatus: CurrentValueSubject<TemplateRoomChatRoomInitializationStatus, Never> { get }
+    var chatMessagesSubject: CurrentValueSubject<[TemplateRoomChatMessage], Never> { get }
+    var roomName: String? { get }
+    func send(textMessage: String)
 }
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }

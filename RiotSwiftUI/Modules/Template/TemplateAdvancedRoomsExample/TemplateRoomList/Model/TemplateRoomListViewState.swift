@@ -16,16 +16,7 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// State managed by the `ViewModel` delivered to the `View`.
+struct TemplateRoomListViewState: BindableState {
+    var rooms: [TemplateRoomListRoom]
 }
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }

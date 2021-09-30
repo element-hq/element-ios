@@ -16,16 +16,10 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// The text content of a message sent by a user.
+struct TemplateRoomChatMessageTextContent {
+    var body: String
 }
 
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
 
-extension AvatarInput: Equatable { }
+extension TemplateRoomChatMessageTextContent: Equatable { }

@@ -15,17 +15,13 @@
 //
 
 import Foundation
+import SwiftUI
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+@available(iOS 14.0, *)
+struct ScreenStateInfo {
+    var dependencies: [Any]
+    var view: AnyView
+    var stateTitle: String
+    var fullScreenTitle: String
+    var stateKey: String
 }
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }

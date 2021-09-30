@@ -15,17 +15,16 @@
 //
 
 import Foundation
+import SwiftUI
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+@available(iOS 14.0, *)
+extension ThemeSwiftUI {
+    
+    /// Get the stable display name color based on userId.
+    /// - Parameter userId: The user id used to hash.
+    /// - Returns: The SwiftUI color for the associated userId.
+    func displayNameColor(for userId: String) -> Color {
+        let senderNameColorIndex = Int(userId.vc_hashCode % Int32(colors.namesAndAvatars.count))
+        return colors.namesAndAvatars[senderNameColorIndex]
+    }
 }
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }

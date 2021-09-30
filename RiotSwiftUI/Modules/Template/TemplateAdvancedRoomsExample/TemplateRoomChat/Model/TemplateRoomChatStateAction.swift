@@ -16,16 +16,9 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// Actions to be performed on the `ViewModel` State
+enum TemplateRoomChatStateAction {
+    case updateRoomInitializationStatus(TemplateRoomChatRoomInitializationStatus)
+    case updateBubbles([TemplateRoomChatBubble])
+    case clearMessageInput
 }
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }

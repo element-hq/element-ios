@@ -16,16 +16,10 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// The type of message a long with it's content.
+enum TemplateRoomChatMessageContent {
+    case text(TemplateRoomChatMessageTextContent)
+    case image(TemplateRoomChatMessageImageContent)
 }
 
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
-
-extension AvatarInput: Equatable { }
+extension TemplateRoomChatMessageContent: Equatable { }

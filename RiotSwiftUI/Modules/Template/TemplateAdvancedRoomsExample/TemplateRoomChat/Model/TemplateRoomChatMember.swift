@@ -16,16 +16,21 @@
 
 import Foundation
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
-}
-
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
+/// A user who is a member of the room.
+struct TemplateRoomChatMember {
+    let id: String
+    let avatarUrl: String?
     let displayName: String?
 }
 
-extension AvatarInput: Equatable { }
+extension TemplateRoomChatMember: Avatarable {
+    var mxContentUri: String? {
+        avatarUrl
+    }
+    
+    var matrixItemId: String {
+        id
+    }
+}
+
+extension TemplateRoomChatMember: Identifiable, Equatable {}

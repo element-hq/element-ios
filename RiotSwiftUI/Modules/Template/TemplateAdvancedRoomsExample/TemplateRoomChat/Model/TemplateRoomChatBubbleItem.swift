@@ -14,18 +14,15 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-protocol AvatarInputProtocol: AvatarProtocol {
-    var mxContentUri: String? { get }
-    var matrixItemId: String { get }
-    var displayName: String? { get }
+/// One of the items grouped within a bubble(could be message types like text, image or video, or could be other items like url previews).
+struct TemplateRoomChatBubbleItem {
+    let id: String
+    var timestamp: Date
+    var content: TemplateRoomChatBubbleItemContent
 }
 
-struct AvatarInput: AvatarInputProtocol {
-    let mxContentUri: String?
-    var matrixItemId: String
-    let displayName: String?
-}
+extension TemplateRoomChatBubbleItem: Identifiable, Equatable { }
 
-extension AvatarInput: Equatable { }
+
