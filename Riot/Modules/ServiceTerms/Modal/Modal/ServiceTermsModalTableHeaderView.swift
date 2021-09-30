@@ -17,9 +17,15 @@
 import UIKit
 import Reusable
 
+protocol ServiceTermsModalTableHeaderViewDelegate: AnyObject {
+    func tableHeaderViewDidTapInformationButton()
+}
+
 class ServiceTermsModalTableHeaderView: UIView, NibLoadable, Themable {
     
     // MARK: - Properties
+    
+    weak var delegate: ServiceTermsModalTableHeaderViewDelegate?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var serviceURLLabel: UILabel!
@@ -44,6 +50,7 @@ class ServiceTermsModalTableHeaderView: UIView, NibLoadable, Themable {
     // MARK: - Action
     
     @IBAction private func buttonAction(_ sender: Any) {
+        delegate?.tableHeaderViewDidTapInformationButton()
     }
     
 }

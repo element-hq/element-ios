@@ -74,9 +74,8 @@
 @property (nonatomic) BOOL disableFindYourContactsFooter;
 
 /**
- Indicates when there's an active search. This is used to indicate that the contacts
- access footer should be hidden as even without local contacts, there will still be
- results to be shown from the server.
+ Indicates when there's an active search. This is used to determine when the contacts
+ access footer should be hidden in order to list the results from the server.
  */
 @property (nonatomic) BOOL contactsAreFilteredWithSearch;
 

@@ -200,6 +200,10 @@
 
 #pragma mark -
 
+/**
+ Creates a new `FindYourContactsFooterView` and caches it in
+ the `findYourContactsFooterView` property before returning it for use.
+ */
 - (FindYourContactsFooterView*)makeFooterView
 {
     FindYourContactsFooterView *footerView = [FindYourContactsFooterView instantiate];
@@ -210,6 +214,11 @@
     return footerView;
 }
 
+/**
+ Checks whether local contacts sync is ready to use or if there are any search results
+ in the table, hiding the find your contacts footer if so. Otherwise the footer is shown
+ so long as it hasn't been disabled.
+ */
 - (void)updateFooterViewVisibility
 {
     if (!BuildSettings.allowLocalContactsAccess || self.disableFindYourContactsFooter)
@@ -238,6 +247,9 @@
     [self updateFooterViewHeight];
 }
 
+/**
+ Updates the height of the find your contacts footer to fill all available space.
+ */
 - (void)updateFooterViewHeight
 {
     if (self.findYourContactsFooterView && self.findYourContactsFooterView == self.contactsTableView.tableFooterView)
@@ -504,7 +516,7 @@
 
 #pragma mark - FindYourContactsFooterViewDelegate
 
-- (void)didTapEnableContactsSync
+- (void)contactsFooterViewDidRequestFindContacts:(FindYourContactsFooterView *)footerView
 {
     // First check the identity if service terms have already been accepted
     if (self->contactsDataSource.mxSession.identityService.areAllTermsAgreed)
@@ -518,12 +530,14 @@
         
         // The preparation can take some time so indicate this to the user
         [self startActivityIndicator];
+        footerView.isActionEnabled = NO;
         
         [self->contactsDataSource.mxSession prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
                                                                               success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
             MXStrongifyAndReturnIfNil(self);
             
             [self stopActivityIndicator];
+            footerView.isActionEnabled = YES;
             
             // Present the terms of the identity server.
             [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
@@ -532,12 +546,14 @@
             MXStrongifyAndReturnIfNil(self);
             
             [self stopActivityIndicator];
+            footerView.isActionEnabled = YES;
             
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"find_your_contacts_identity_service_error", @"Vector", nil)
+            // Alert the user that something went wrong.
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
                                                                                      message:nil
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+            [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
                                                                 style:UIAlertActionStyleDefault
                                                               handler:nil]];
             
@@ -551,8 +567,8 @@
     MXWeakify(self);
     
     // Check for contacts access, showing a pop-up if necessary.
-    [MXKTools checkAccessForContacts:NSLocalizedStringFromTable(@"contacts_address_book_permission_denied_alert_title", @"Vector", nil)
-             withManualChangeMessage:NSLocalizedStringFromTable(@"contacts_address_book_permission_denied_alert_message", @"Vector", nil)
+    [MXKTools checkAccessForContacts:VectorL10n.contactsAddressBookPermissionDeniedAlertTitle
+             withManualChangeMessage:VectorL10n.contactsAddressBookPermissionDeniedAlertMessage
            showPopUpInViewController:self
                    completionHandler:^(BOOL granted) {
         
@@ -611,9 +627,7 @@
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter session:(MXSession *)session
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-
-    }];
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 

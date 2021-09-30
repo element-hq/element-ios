@@ -470,8 +470,8 @@ TableViewSectionsDelegate>
         {
             [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX];
         }
-        NSString *localizedStringKey = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? @"settings_phone_contacts" : @"settings_contacts";
-        sectionLocalContacts.headerTitle = NSLocalizedStringFromTable(localizedStringKey, @"Vector", nil);
+        NSString *headerTitle = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? VectorL10n.settingsPhoneContacts : VectorL10n.settingsContacts;
+        sectionLocalContacts.headerTitle = headerTitle;
         [tmpSections addObject:sectionLocalContacts];
     }
     
@@ -2205,7 +2205,7 @@ TableViewSectionsDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.numberOfLines = 0;
-            labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"settings_contacts_enable_sync", @"Vector", nil);
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsContactsEnableSync;
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -2236,7 +2236,7 @@ TableViewSectionsDelegate>
         else if (row == LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX)
         {
             MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = NSLocalizedStringFromTable(@"settings_contacts_enable_sync_description", @"Vector", nil);
+            descriptionCell.textLabel.text = VectorL10n.settingsContactsEnableSyncDescription;
             descriptionCell.textLabel.numberOfLines = 0;
             descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
             
@@ -3147,11 +3147,11 @@ TableViewSectionsDelegate>
                 
                 [self stopActivityIndicator];
                 
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"find_your_contacts_identity_service_error", @"Vector", nil)
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
                                                                                          message:nil
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
                 
-                [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
                                                                     style:UIAlertActionStyleDefault
                                                                   handler:nil]];
                 
@@ -4516,8 +4516,8 @@ TableViewSectionsDelegate>
     MXWeakify(self);
     
     // Check for contacts access, showing a pop-up if necessary.
-    [MXKTools checkAccessForContacts:NSLocalizedStringFromTable(@"contacts_address_book_permission_denied_alert_title", @"Vector", nil)
-             withManualChangeMessage:NSLocalizedStringFromTable(@"contacts_address_book_permission_denied_alert_message", @"Vector", nil)
+    [MXKTools checkAccessForContacts:VectorL10n.contactsAddressBookPermissionDeniedAlertTitle
+             withManualChangeMessage:VectorL10n.contactsAddressBookPermissionDeniedAlertMessage
            showPopUpInViewController:self
                    completionHandler:^(BOOL granted) {
         
@@ -4580,10 +4580,10 @@ TableViewSectionsDelegate>
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession *)session
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-
-    }];
-    [self updateSections];  // Disables the contacts toggle as the terms weren't accepted.
+    // Disable the contacts toggle as the terms weren't accepted.
+    [self updateSections];
+    
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 

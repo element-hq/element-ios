@@ -1039,6 +1039,12 @@ Tap the + to start adding people.";
 "service_terms_modal_description_identity_server" = "This will allow someone to find you if they have your phone number or email saved in their phone contacts.";
 "service_terms_modal_description_integration_manager" = "This will allow you to use bots, bridges, widgets and sticker packs.";
 
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Identity Server";
+"service_terms_modal_information_title_integration_manager" = "Integration Manager";
+"service_terms_modal_information_description_identity_server" = "An identity server allows %@ to find users on Matrix by looking up their phone number or email address.";
+"service_terms_modal_information_description_integration_manager" = "An integration manager allows %@ to ...";
+
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Check to accept %@";
 
 // Deactivate account

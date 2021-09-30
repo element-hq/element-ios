@@ -23,7 +23,9 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     // MARK: - Constants
     
     private enum Constants {
+        /// Reuse identifier for the prototype cell in the storyboard.
         static let cellReuseIdentifier = "Service Terms Cell"
+        static let minimumTableViewHeight: CGFloat = 120
     }
     
     // MARK: - Properties
@@ -82,7 +84,7 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        tableViewHeightConstraint.constant = max(120, tableView.contentSize.height)
+        tableViewHeightConstraint.constant = max(Constants.minimumTableViewHeight, tableView.contentSize.height)
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -166,6 +168,7 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
         
         tableHeaderView = ServiceTermsModalTableHeaderView.instantiate()
+        tableHeaderView.delegate = self
         self.tableView.tableHeaderView = tableHeaderView
     }
 
@@ -274,10 +277,34 @@ extension ServiceTermsModalScreenViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension ServiceTermsModalScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let policy = policies[indexPath.section]
         viewModel.process(viewAction: .display(policy))
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+
+// MARK: - ServiceTermsModalTableHeaderViewDelegate
+extension ServiceTermsModalScreenViewController: ServiceTermsModalTableHeaderViewDelegate {
+    func tableHeaderViewDidTapInformationButton() {
+        let title: String
+        let message: String
+        
+        if viewModel.serviceType == MXServiceTypeIdentityService {
+            title = VectorL10n.serviceTermsModalInformationTitleIdentityServer
+            message = VectorL10n.serviceTermsModalInformationDescriptionIdentityServer(AppInfo.current.displayName)
+        } else {
+            title = VectorL10n.serviceTermsModalInformationTitleIntegrationManager
+            message = VectorL10n.serviceTermsModalInformationDescriptionIntegrationManager(AppInfo.current.displayName)
+        }
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .default))
+        
+        present(alertController, animated: true)
     }
 }

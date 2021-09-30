@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 
 @objc protocol FindYourContactsFooterViewDelegate {
-    func didTapEnableContactsSync()
+    func contactsFooterViewDidRequestFindContacts(_ footerView: FindYourContactsFooterView)
 }
 
 @objcMembers
@@ -28,11 +28,17 @@ class FindYourContactsFooterView: UIView, NibLoadable, Themable {
     
     weak var delegate: FindYourContactsFooterViewDelegate?
     
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var button: CustomRoundedButton!
-    @IBOutlet weak var footerLabel: UILabel!
+    /// Whether or not the view's button responds to taps.
+    var isActionEnabled: Bool {
+        get { button.isEnabled }
+        set { button.isEnabled = newValue }
+    }
+    
+    @IBOutlet weak private var containerView: UIView!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var messageLabel: UILabel!
+    @IBOutlet weak private var button: CustomRoundedButton!
+    @IBOutlet weak private var footerLabel: UILabel!
     
     // MARK: - Setup
     
@@ -75,7 +81,7 @@ class FindYourContactsFooterView: UIView, NibLoadable, Themable {
     
     // MARK: - Action
     
-    @IBAction private func enableContactsSync(_ sender: Any) {
-        delegate?.didTapEnableContactsSync()
+    @IBAction private func buttonAction(_ sender: Any) {
+        delegate?.contactsFooterViewDidRequestFindContacts(self)
     }
 }
