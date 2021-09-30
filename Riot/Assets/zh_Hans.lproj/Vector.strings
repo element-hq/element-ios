@@ -1485,7 +1485,39 @@
 "settings_default" = "默认通知";
 "settings_notifications" = "通知";
 "settings_show_url_previews_description" = "预览只会在未加密的房间里显示。";
-"settings_show_url_previews" = "显示内联 URL 预览";
+"settings_show_url_previews" = "显示网站预览";
 "settings_confirm_media_size_description" = "当打开此选项时，你会被要求确认将被发送的图片和视频的大小。";
 "settings_confirm_media_size" = "发送时确认大小";
 "settings_sending_media" = "发送图片和视频";
+"spaces_add_rooms_coming_soon_title" = "添加聊天室功能即将到来";
+"space_avatar_view_accessibility_hint" = "更改空间头像";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "头像";
+"space_public_join_rule" = "公共空间";
+"space_private_join_rule" = "私密空间";
+"space_participants_action_ban" = "禁止进入这个空间";
+"space_participants_action_remove" = "从这个空间删除";
+"spaces_coming_soon_detail" = "此特性尚未实现，还在开发。现在，您可以在计算机上使用 Element 来体验。";
+"spaces_invites_coming_soon_title" = "邀请即将到来";
+"spaces_coming_soon_title" = "即将到来";
+"spaces_no_member_found_detail" = "寻找不在 %@ 中的某人？现在，你可以通过网页或桌面端邀请他们。";
+"spaces_no_room_found_detail" = "有些结果可能是隐藏的，因为它们是私密的，你需要邀请才能加入它们。";
+"spaces_no_result_found_title" = "未找到结果";
+"spaces_empty_space_detail" = "有些聊天室可能是隐藏的，因为它们是私人的，你需要邀请。";
+"spaces_empty_space_title" = "此空间尚无聊天室";
+"space_tag" = "空间";
+"spaces_suggested_room" = "建议的";
+"spaces_explore_rooms" = "探索聊天室";
+"leave_space_and_all_rooms_action" = "离开所有聊天室和空间";
+"leave_space_only_action" = "不离开任何聊天室";
+"leave_space_message_admin_warning" = "您是此空间的管理员，请确保您在离开前已将管理员权限转移给其他成员。";
+"leave_space_message" = "你确定要离开 %@ 吗？您还想离开这个空间的所有聊天室和空间吗？";
+"leave_space_title" = "离开 %@";
+"spaces_left_panel_title" = "空间";
+"spaces_home_space_title" = "主页";
+"settings_links" = "链接";
+"room_recents_suggested_rooms_section" = "建议的聊天室";
+"done" = "完成";
+"open" = "打开";

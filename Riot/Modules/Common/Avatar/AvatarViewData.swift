@@ -26,8 +26,8 @@ struct AvatarViewData: AvatarViewDataProtocol {
     /// Matrix item avatar URL (user or room avatar url)
     var avatarUrl: String?
         
-    /// Matrix media handler
-    var mediaManager: MXMediaManager
+    /// Matrix media handler if exists
+    var mediaManager: MXMediaManager?
     
     /// Fallback image used when avatarUrl is nil
     var fallbackImage: AvatarFallbackImage?
