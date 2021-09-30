@@ -158,7 +158,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     }
 
     private func addSpaceList(with matrixSession: MXSession) {
-        let parameters = SpaceListCoordinatorParameters(session: matrixSession)
+        let parameters = SpaceListCoordinatorParameters(userSessionsService: self.parameters.userSessionsService)
         
         let spaceListCoordinator = SpaceListCoordinator(parameters: parameters)
         spaceListCoordinator.delegate = self

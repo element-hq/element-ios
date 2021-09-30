@@ -1474,3 +1474,35 @@
 "settings_confirm_media_size_description" = "Ha ez be van kapcsolva, akkor küldésnél ki tudod választani a kép és videó méretét.";
 "settings_confirm_media_size" = "Méret megerősítése küldésnél";
 "settings_sending_media" = "KÉP ÉS VIDEÓ KÜLDÉSE";
+"space_avatar_view_accessibility_hint" = "Tér profilkép megváltoztatása";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "profilkép";
+"space_public_join_rule" = "Nyilvános Tér";
+"space_private_join_rule" = "Privát tér";
+"space_participants_action_ban" = "Kitiltás a térről";
+"space_participants_action_remove" = "Eltávolítás a térről";
+"spaces_coming_soon_detail" = "Ez a lehetőség még nincs meg, de fejlesztés alatt van. Egyenlőre a számítógépeden Elementtel tudod ezt megtenni.";
+"spaces_invites_coming_soon_title" = "Meghívók küldése hamarosan érkezik";
+"spaces_add_rooms_coming_soon_title" = "Szobák hozzáadása hamarosan érkezik";
+"spaces_coming_soon_title" = "Hamarosan";
+"spaces_no_member_found_detail" = "Keresel valakit aki nincs itt: %@? Egyenlőre webes és asztali klienssel tudod meghívni őket.";
+"spaces_no_room_found_detail" = "Néhány találat lehet rejtett, mert privát és meghívóra van szükséged a belépéshez.";
+"spaces_no_result_found_title" = "Nincs találat";
+"spaces_empty_space_detail" = "Néhány szoba lehet rejtett, mert privát és meghívóra van szükséged.";
+"spaces_empty_space_title" = "Ezen a Téren nincsenek szobák (még)";
+"space_tag" = "tér";
+"spaces_suggested_room" = "Javaslat";
+"spaces_explore_rooms" = "Szobák felderítése";
+"leave_space_and_all_rooms_action" = "Minden szoba és tér elhagyása";
+"leave_space_only_action" = "Ne lépjen ki egy szobából sem";
+"leave_space_message_admin_warning" = "Most te vagy a tér adminisztrátora, bizonyosodj meg arról, hogy kineveztél mást adminisztrátornak mielőtt elhagyod.";
+"leave_space_message" = "Biztos, hogy elhagyod ezt: %@? Ezen a téren lévő minden szobából és térből kilépsz?";
+"leave_space_title" = "Elhagy: %@";
+"spaces_left_panel_title" = "Terek";
+"spaces_home_space_title" = "Kezdőképernyő";
+"settings_links" = "HIVATKOZÁSOK";
+"room_recents_suggested_rooms_section" = "JAVASOLT SZOBÁK";
+"done" = "Kész";
+"open" = "Megnyitás";
