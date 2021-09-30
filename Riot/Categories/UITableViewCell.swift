@@ -26,10 +26,8 @@ extension UITableViewCell {
     /// Returns safe area insetted separator inset. Should only be used when custom constraints on custom table view cells are being set according to separator insets.
     @objc var vc_separatorInset: UIEdgeInsets {
         var result = separatorInset
-        if #available(iOS 11.0, *) {
-            result.left -= self.safeAreaInsets.left
-            result.right -= self.safeAreaInsets.right
-        }
+        result.left -= self.safeAreaInsets.left
+        result.right -= self.safeAreaInsets.right
         return result
     }
     

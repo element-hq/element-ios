@@ -205,9 +205,9 @@ CallAudioRouteMenuViewDelegate>
     
     NSString *callInfo;
     if (self.mxCall.isVideoCall)
-        callInfo = NSLocalizedStringFromTable(@"call_incoming_video", @"Vector", nil);
+        callInfo = [VectorL10n callIncomingVideo];
     else
-        callInfo = NSLocalizedStringFromTable(@"call_incoming_voice", @"Vector", nil);
+        callInfo = [VectorL10n callIncomingVoice];
     
     IncomingCallView *incomingCallView = [[IncomingCallView alloc] initWithCallerAvatar:self.peer.avatarUrl
                                                                            mediaManager:self.mainSession.mediaManager
@@ -308,11 +308,11 @@ CallAudioRouteMenuViewDelegate>
         
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert_title"]
-                                                           message:[NSBundle mxk_localizedStringForKey:@"unknown_devices_alert"]
+        currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n unknownDevicesAlertTitle]
+                                                           message:[VectorL10n unknownDevicesAlert]
                                                     preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"unknown_devices_verify"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesVerify]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -362,7 +362,7 @@ CallAudioRouteMenuViewDelegate>
                                                        }]];
         
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:(call.isIncoming ? @"unknown_devices_answer_anyway":@"unknown_devices_call_anyway")]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:(call.isIncoming ? [VectorL10n unknownDevicesAnswerAnyway] : [VectorL10n unknownDevicesCallAnyway])
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -682,11 +682,11 @@ CallAudioRouteMenuViewDelegate>
         
         MXWeakify(self);
         
-        self->currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_title"]
-                                                                 message:[NSBundle mxk_localizedStringForKey:@"call_transfer_error_message"]
+        self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n callTransferErrorTitle]
+                                                                 message:[VectorL10n callTransferErrorMessage]
                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                style:UIAlertActionStyleDefault
                                                              handler:^(UIAlertAction * action) {
             

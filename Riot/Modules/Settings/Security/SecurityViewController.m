@@ -153,7 +153,7 @@ TableViewSectionsDelegate>
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"security_settings_title", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n securitySettingsTitle];
     
     // Remove back bar button title when pushing a view controller
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -292,14 +292,19 @@ TableViewSectionsDelegate>
     Section *pinCodeSection = [Section sectionWithTag:SECTION_PIN_CODE];
     
     // Header title
-    NSString *pinCodeSectionHeaderTitleFormat = NSLocalizedStringFromTable(@"pin_protection_settings_section_header_x", @"Vector", nil);
-    NSString *pinCodeSectionHeaderTitle = [NSString stringWithFormat:pinCodeSectionHeaderTitleFormat, [PinCodePreferences shared].localizedBiometricsName];
-    pinCodeSection.headerTitle = pinCodeSectionHeaderTitle;
+    if ([PinCodePreferences shared].isBiometricsAvailable)
+    {
+        pinCodeSection.headerTitle = [VectorL10n pinProtectionSettingsSectionHeaderWithBiometrics:[PinCodePreferences shared].localizedBiometricsName];
+    } else {
+        pinCodeSection.headerTitle = [VectorL10n pinProtectionSettingsSectionHeader];
+    }
     
     // Rows
     [pinCodeSection addRowWithTag:PIN_CODE_SETTING];
     [pinCodeSection addRowWithTag:PIN_CODE_DESCRIPTION];
-    if ([PinCodePreferences shared].isPinSet) {
+    
+    if ([PinCodePreferences shared].isPinSet)
+    {
         [pinCodeSection addRowWithTag:PIN_CODE_CHANGE];
     }
 
@@ -316,7 +321,7 @@ TableViewSectionsDelegate>
     {
         Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
         
-        sessionsSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_crypto_sessions", @"Vector", nil);
+        sessionsSection.headerTitle = [VectorL10n securitySettingsCryptoSessions];
             
         NSUInteger sessionsSectionRowsCount;
         
@@ -337,7 +342,7 @@ TableViewSectionsDelegate>
     // Secure backup
     
     Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
-    secureBackupSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_secure_backup", @"Vector", nil);
+    secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
     
     [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
     
@@ -346,7 +351,7 @@ TableViewSectionsDelegate>
     // Cross-Signing
     
     Section *crossSigningSection = [Section sectionWithTag:SECTION_CROSSSIGNING];
-    crossSigningSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_crosssigning", @"Vector", nil);
+    crossSigningSection.headerTitle = [VectorL10n securitySettingsCrosssigning];
     
     [crossSigningSection addRowsWithCount:[self numberOfRowsInCrossSigningSection]];
     
@@ -355,7 +360,7 @@ TableViewSectionsDelegate>
     // Cryptograhpy
     
     Section *cryptograhpySection = [Section sectionWithTag:SECTION_CRYPTOGRAPHY];
-    cryptograhpySection.headerTitle = NSLocalizedStringFromTable(@"security_settings_cryptography", @"Vector", nil);
+    cryptograhpySection.headerTitle = [VectorL10n securitySettingsCryptography];
     
     if (RiotSettings.shared.settingsSecurityScreenShowCryptographyInfo)
     {
@@ -377,7 +382,7 @@ TableViewSectionsDelegate>
     // Keybackup
     
     Section *keybackupSection = [Section sectionWithTag:SECTION_KEYBACKUP];
-    keybackupSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_backup", @"Vector", nil);
+    keybackupSection.headerTitle = [VectorL10n securitySettingsBackup];
     
     [keybackupSection addRowsWithCount:self->keyBackupSection.numberOfRows];
     
@@ -388,7 +393,7 @@ TableViewSectionsDelegate>
     // Advanced
     
     Section *advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
-    advancedSection.headerTitle = NSLocalizedStringFromTable(@"security_settings_advanced", @"Vector", nil);
+    advancedSection.headerTitle = [VectorL10n securitySettingsAdvanced];
     
     if (RiotSettings.shared.settingsSecurityScreenShowAdvancedUnverifiedDevices)
     {
@@ -472,7 +477,7 @@ TableViewSectionsDelegate>
 
     // Crypto information
     NSMutableAttributedString *cryptoInformationString = [[NSMutableAttributedString alloc]
-                                                          initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_name", @"Vector", nil)
+                                                          initWithString:[VectorL10n settingsCryptoDeviceName]
                                                           attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                        NSFontAttributeName: [UIFont systemFontOfSize:17]}];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -481,7 +486,7 @@ TableViewSectionsDelegate>
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
 
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_id", @"Vector", nil)
+                                                     initWithString:[VectorL10n settingsCryptoDeviceId]
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
@@ -490,7 +495,7 @@ TableViewSectionsDelegate>
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
 
     [cryptoInformationString appendAttributedString:[[NSMutableAttributedString alloc]
-                                                     initWithString:NSLocalizedStringFromTable(@"settings_crypto_device_key", @"Vector", nil)
+                                                     initWithString:[VectorL10n settingsCryptoDeviceKey]
                                                      attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textPrimaryColor,
                                                                   NSFontAttributeName: [UIFont systemFontOfSize:17]}]];
     NSString *fingerprint = account.mxSession.crypto.deviceEd25519Key;
@@ -662,16 +667,16 @@ TableViewSectionsDelegate>
     switch (crossSigning.state)
     {
         case MXCrossSigningStateNotBootstrapped:
-            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_not_bootstrapped"];
+            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoNotBootstrapped];
             break;
         case MXCrossSigningStateCrossSigningExists:
-            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_exists"];
+            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoExists];
             break;
         case MXCrossSigningStateTrustCrossSigning:
-            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_trusted"];
+            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoTrusted];
             break;
         case MXCrossSigningStateCanCrossSign:
-            crossSigningInformation = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_info_ok"];
+            crossSigningInformation = [VectorL10n securitySettingsCrosssigningInfoOk];
             
             if (![self.mainSession.crypto.recoveryService hasSecretLocally:MXSecretId.crossSigningMaster])
             {
@@ -742,7 +747,7 @@ TableViewSectionsDelegate>
 
 - (void)setUpcrossSigningButtonCellForBootstrap:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_bootstrap"];
+    NSString *btnTitle = [VectorL10n securitySettingsCrosssigningBootstrap];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
  
@@ -752,7 +757,7 @@ TableViewSectionsDelegate>
 - (void)setupCrossSigning:(id)sender
 {
     [self setupCrossSigningWithTitle:@"Set up cross-signing"    // TODO
-                             message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+                             message:[VectorL10n securitySettingsUserPasswordDescription]
                              success:^{
                              } failure:^(NSError *error) {
                              }];
@@ -816,7 +821,7 @@ TableViewSectionsDelegate>
                                     [self setupCrossSigning:nil];
                                 }]];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                 style:UIAlertActionStyleCancel
                                                               handler:nil]];
     
@@ -826,7 +831,7 @@ TableViewSectionsDelegate>
 
 - (void)setUpcrossSigningButtonCellForReset:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_reset"];
+    NSString *btnTitle = [VectorL10n securitySettingsCrosssigningReset];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
@@ -837,7 +842,7 @@ TableViewSectionsDelegate>
 
 - (void)setUpcrossSigningButtonCellForCompletingSecurity:(MXKTableViewCellWithButton*)buttonCell
 {
-    NSString *btnTitle = [NSBundle mxk_localizedStringForKey:@"security_settings_crosssigning_complete_security"];
+    NSString *btnTitle = [VectorL10n securitySettingsCrosssigningCompleteSecurity];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateNormal];
     [buttonCell.mxkButton setTitle:btnTitle forState:UIControlStateHighlighted];
     
@@ -846,7 +851,7 @@ TableViewSectionsDelegate>
 
 - (void)displayComingSoon
 {
-    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[NSBundle mxk_localizedStringForKey:@"security_settings_coming_soon"]];
+    [[AppDelegate theDelegate] showAlertWithTitle:nil message:[VectorL10n securitySettingsComingSoon:AppInfo.current.displayName :AppInfo.current.displayName]];
 }
 
 
@@ -977,8 +982,8 @@ TableViewSectionsDelegate>
     else
     {
         // Set up cross-signing first
-        [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"secure_key_backup_setup_intro_title", @"Vector", nil)
-                                 message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil)
+        [self setupCrossSigningWithTitle:[VectorL10n secureKeyBackupSetupIntroTitle]
+                                 message:[VectorL10n securitySettingsUserPasswordDescription]
                                  success:^{
                                      [self setupSecureBackup2];
                                  } failure:^(NSError *error) {
@@ -1183,28 +1188,28 @@ TableViewSectionsDelegate>
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSIndexPath *tagsIndexPath = [self.tableViewSections tagsIndexPathFromTableViewIndexPath:indexPath];
-    NSInteger section = tagsIndexPath.section;
-    NSInteger row = tagsIndexPath.row;
+    NSInteger sectionTag = tagsIndexPath.section;
+    NSInteger rowTag = tagsIndexPath.row;
 
     // set the cell to a default value to avoid application crashes
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     cell.backgroundColor = [UIColor redColor];
 
     MXSession* session = self.mainSession;
-    if (section == SECTION_PIN_CODE)
+    if (sectionTag == SECTION_PIN_CODE)
     {
-        if (indexPath.row == PIN_CODE_SETTING)
+        if (rowTag == PIN_CODE_SETTING)
         {
             if ([PinCodePreferences shared].forcePinProtection)
             {
                 cell = [self getDefaultTableViewCell:tableView];
-                cell.textLabel.text = NSLocalizedStringFromTable(@"pin_protection_settings_enabled_forced", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n pinProtectionSettingsEnabledForced];
             }
             else
             {
                 MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
-                switchCell.mxkLabel.text = NSLocalizedStringFromTable(@"pin_protection_settings_enable_pin", @"Vector", nil);
+                switchCell.mxkLabel.text = [VectorL10n pinProtectionSettingsEnablePin];
                 switchCell.mxkSwitch.on = [PinCodePreferences shared].isPinSet;
                 [switchCell.mxkSwitch addTarget:self action:@selector(enablePinCodeSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
                 
@@ -1213,28 +1218,27 @@ TableViewSectionsDelegate>
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        else if (indexPath.row == PIN_CODE_DESCRIPTION)
+        else if (rowTag == PIN_CODE_DESCRIPTION)
         {
             if ([PinCodePreferences shared].isPinSet)
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"pin_protection_settings_section_footer", @"Vector", nil) ];
+                                                withText:[VectorL10n pinProtectionSettingsSectionFooter]];
             }
             else
             {
                 cell = [self descriptionCellForTableView:tableView withText:nil];
             }
         }
-        else if (indexPath.row == PIN_CODE_CHANGE)
+        else if (rowTag == PIN_CODE_CHANGE)
         {
-            cell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"pin_protection_settings_change_pin", @"Vector", nil) action:@selector(changePinCode:  ) forTableView:tableView atIndexPath:indexPath];
+            cell = [self buttonCellWithTitle:[VectorL10n pinProtectionSettingsChangePin] action:@selector(changePinCode:) forTableView:tableView atIndexPath:indexPath];
         }
-        else if (indexPath.row == PIN_CODE_BIOMETRICS)
+        else if (rowTag == PIN_CODE_BIOMETRICS)
         {
             MXKTableViewCellWithLabelAndSwitch *switchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            NSString *format = NSLocalizedStringFromTable(@"biometrics_settings_enable_x", @"Vector", nil);
-            switchCell.mxkLabel.text = [NSString stringWithFormat:format, [PinCodePreferences shared].localizedBiometricsName];
+            switchCell.mxkLabel.text = [VectorL10n biometricsSettingsEnableX:[PinCodePreferences shared].localizedBiometricsName];
             switchCell.mxkSwitch.on = [PinCodePreferences shared].isBiometricsSet;
             switchCell.mxkSwitch.enabled = [PinCodePreferences shared].isBiometricsAvailable;
             [switchCell.mxkSwitch addTarget:self action:@selector(enableBiometricsSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
@@ -1242,38 +1246,38 @@ TableViewSectionsDelegate>
             cell = switchCell;
         }
     }
-    else if (section == SECTION_CRYPTO_SESSIONS)
+    else if (sectionTag == SECTION_CRYPTO_SESSIONS)
     {
         if (self.showLoadingDevicesInformation)
         {
-            if (indexPath.row == 0)
+            if (rowTag == 0)
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_loading", @"Vector", nil) ];
+                                                withText:[VectorL10n securitySettingsCryptoSessionsLoading]];
             }
             else
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
+                                                withText:[VectorL10n securitySettingsCryptoSessionsDescription2]];
             }
         }
         else
         {
-            if (row < devicesArray.count)
+            if (rowTag < devicesArray.count)
             {
-                cell = [self deviceCellWithDevice:devicesArray[row] forTableView:tableView];
+                cell = [self deviceCellWithDevice:devicesArray[rowTag] forTableView:tableView];
             }
-            else if (row == devicesArray.count)
+            else if (rowTag == devicesArray.count)
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_crypto_sessions_description_2", @"Vector", nil) ];
+                                                withText:[VectorL10n securitySettingsCryptoSessionsDescription2]];
                 
             }
         }
     }
-    else if (section == SECTION_SECURE_BACKUP)
+    else if (sectionTag == SECTION_SECURE_BACKUP)
     {
-        cell = [secureBackupSection cellForRowAtRow:row];
+        cell = [secureBackupSection cellForRowAtRow:rowTag];
     }
 #ifdef CROSS_SIGNING_AND_BACKUP_DEV
     else if (section == SECTION_KEYBACKUP)
@@ -1281,9 +1285,9 @@ TableViewSectionsDelegate>
         cell = [keyBackupSection cellForRowAtRow:row];
     }
 #endif
-    else if (section == SECTION_CROSSSIGNING)
+    else if (sectionTag == SECTION_CROSSSIGNING)
     {
-        switch (row)
+        switch (rowTag)
         {
             case CROSSSIGNING_INFO:
             {
@@ -1300,9 +1304,9 @@ TableViewSectionsDelegate>
                 break;
         }
     }
-    else if (section == SECTION_CRYPTOGRAPHY)
+    else if (sectionTag == SECTION_CRYPTOGRAPHY)
     {
-        switch (row)
+        switch (rowTag)
         {
             case CRYPTOGRAPHY_INFO:
             {
@@ -1313,7 +1317,7 @@ TableViewSectionsDelegate>
             }
             case CRYPTOGRAPHY_EXPORT:
             {
-                MXKTableViewCellWithButton *exportKeysBtnCell = [self buttonCellWithTitle:NSLocalizedStringFromTable(@"security_settings_export_keys_manually", @"Vector", nil)
+                MXKTableViewCellWithButton *exportKeysBtnCell = [self buttonCellWithTitle:[VectorL10n securitySettingsExportKeysManually]
                                                                                    action:@selector(exportEncryptionKeys:)
                                                                              forTableView:tableView
                                                                               atIndexPath:indexPath];
@@ -1322,15 +1326,15 @@ TableViewSectionsDelegate>
             }
         }
     }
-    else if (section == SECTION_ADVANCED)
+    else if (sectionTag == SECTION_ADVANCED)
     {
-        switch (row)
+        switch (rowTag)
         {
             case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES:
             {
                 MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
                 
-                labelAndSwitchCell.mxkLabel.text = NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices", @"Vector", nil);
+                labelAndSwitchCell.mxkLabel.text = [VectorL10n securitySettingsBlacklistUnverifiedDevices];
                 labelAndSwitchCell.mxkSwitch.on = session.crypto.globalBlacklistUnverifiedDevices;
                 labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
                 labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -1342,7 +1346,7 @@ TableViewSectionsDelegate>
             case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION:
             {
                 cell = [self descriptionCellForTableView:tableView
-                                                withText:NSLocalizedStringFromTable(@"security_settings_blacklist_unverified_devices_description", @"Vector", nil) ];
+                                                withText:[VectorL10n securitySettingsBlacklistUnverifiedDevicesDescription]];
                 
                 break;
             }
@@ -1467,17 +1471,17 @@ TableViewSectionsDelegate>
 {
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"security_settings_complete_security_alert_title", @"Vector", nil)
-                                                                             message:NSLocalizedStringFromTable(@"security_settings_complete_security_alert_message", @"Vector", nil)
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[VectorL10n securitySettingsCompleteSecurityAlertTitle]
+                                                                             message:[VectorL10n securitySettingsCompleteSecurityAlertMessage]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [alertController addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                     [self presentCompleteSecurity];
                                             }]];
     
-    [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"later", @"Vector", nil)
+    [alertController addAction:[UIAlertAction actionWithTitle:[VectorL10n later]
                                               style:UIAlertActionStyleCancel
                                             handler:nil]];
     
@@ -1677,18 +1681,18 @@ TableViewSectionsDelegate>
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
     currentAlert =
-    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
-                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
+    [UIAlertController alertControllerWithTitle:[VectorL10n settingsKeyBackupDeleteConfirmationPromptTitle]
+                                        message:[VectorL10n settingsKeyBackupDeleteConfirmationPromptMsg]
                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n settingsKeyBackupButtonDelete]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
@@ -1806,18 +1810,18 @@ TableViewSectionsDelegate>
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
     currentAlert =
-    [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_title", @"Vector", nil)
-                                        message:NSLocalizedStringFromTable(@"settings_key_backup_delete_confirmation_prompt_msg", @"Vector", nil)
+    [UIAlertController alertControllerWithTitle:[VectorL10n  settingsKeyBackupDeleteConfirmationPromptTitle]
+                                        message:[VectorL10n  settingsKeyBackupDeleteConfirmationPromptMsg]
                                  preferredStyle:UIAlertControllerStyleAlert];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        MXStrongifyAndReturnIfNil(self);
                                                        self->currentAlert = nil;
                                                    }]];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"settings_key_backup_button_delete", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n  settingsKeyBackupButtonDelete]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        MXStrongifyAndReturnIfNil(self);

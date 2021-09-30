@@ -21,7 +21,7 @@ struct RoomNotificationSettingsViewState: RoomNotificationSettingsViewStateType 
     let roomEncrypted: Bool
     var saving: Bool
     var notificationState: RoomNotificationState
-    var avatarData: AvatarType?
+    var avatarData: AvatarProtocol?
     var displayName: String?
 }
 

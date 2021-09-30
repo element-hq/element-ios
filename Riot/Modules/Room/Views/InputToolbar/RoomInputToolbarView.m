@@ -119,7 +119,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
         [growingTextView becomeFirstResponder];
     }
 
-    self.attachMediaButton.accessibilityLabel = NSLocalizedStringFromTable(@"room_accessibility_upload", @"Vector", nil);
+    self.attachMediaButton.accessibilityLabel = [VectorL10n roomAccessibilityUpload];
     
     UIImage *image = [UIImage imageNamed:@"input_text_background"];
     image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(9, 15, 10, 16)];
@@ -134,7 +134,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     {
         [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
     }
-    else if (@available(iOS 12.0, *) && ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
+    else if (ThemeService.shared.theme.userInterfaceStyle == UIUserInterfaceStyleDark) {
         [self.attachMediaButton setImage:[UIImage imageNamed:@"upload_icon_dark"] forState:UIControlStateNormal];
     }
     
@@ -180,7 +180,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
         case RoomInputToolbarViewSendModeReply:
             buttonImage = [UIImage imageNamed:@"send_icon"];
             self.inputContextImageView.image = [UIImage imageNamed:@"input_reply_icon"];
-            self.inputContextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_message_replying_to", @"Vector", nil), self.eventSenderDisplayName];
+            self.inputContextLabel.text = [VectorL10n roomMessageReplyingTo:self.eventSenderDisplayName];
 
             self.inputContextViewHeightConstraint.constant = kContextBarHeight;
             updatedHeight += kContextBarHeight;
@@ -189,7 +189,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
         case RoomInputToolbarViewSendModeEdit:
             buttonImage = [UIImage imageNamed:@"save_icon"];
             self.inputContextImageView.image = [UIImage imageNamed:@"input_edit_icon"];
-            self.inputContextLabel.text = NSLocalizedStringFromTable(@"room_message_editing", @"Vector", nil);
+            self.inputContextLabel.text = [VectorL10n roomMessageEditing];
 
             self.inputContextViewHeightConstraint.constant = kContextBarHeight;
             updatedHeight += kContextBarHeight;
@@ -249,11 +249,11 @@ const CGFloat kComposerContainerTrailingPadding = 12;
         switch (_sendMode)
         {
             case RoomInputToolbarViewSendModeReply:
-                placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_short_placeholder", @"Vector", nil);
+                placeholder = [VectorL10n roomMessageReplyToShortPlaceholder];
                 break;
 
             default:
-                placeholder = NSLocalizedStringFromTable(@"room_message_short_placeholder", @"Vector", nil);
+                placeholder = [VectorL10n roomMessageShortPlaceholder];
                 break;
         }
     }
@@ -264,11 +264,11 @@ const CGFloat kComposerContainerTrailingPadding = 12;
             switch (_sendMode)
             {
                 case RoomInputToolbarViewSendModeReply:
-                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_reply_to_placeholder", @"Vector", nil);
+                    placeholder = [VectorL10n encryptedRoomMessageReplyToPlaceholder];
                     break;
 
                 default:
-                    placeholder = NSLocalizedStringFromTable(@"encrypted_room_message_placeholder", @"Vector", nil);
+                    placeholder = [VectorL10n encryptedRoomMessagePlaceholder];
                     break;
             }
         }
@@ -277,11 +277,11 @@ const CGFloat kComposerContainerTrailingPadding = 12;
             switch (_sendMode)
             {
                 case RoomInputToolbarViewSendModeReply:
-                    placeholder = NSLocalizedStringFromTable(@"room_message_reply_to_placeholder", @"Vector", nil);
+                    placeholder = [VectorL10n roomMessageReplyToPlaceholder];
                     break;
 
                 default:
-                    placeholder = NSLocalizedStringFromTable(@"room_message_placeholder", @"Vector", nil);
+                    placeholder = [VectorL10n roomMessagePlaceholder];
                     break;
             }
         }

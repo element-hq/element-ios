@@ -78,7 +78,7 @@
 "sending" = "Inviando";
 "auth_submit" = "Invia";
 "auth_login_single_sign_on" = "Accedi";
-"auth_untrusted_id_server" = "L'affidabilità dell'Identity Server non è stata accertata";
+"auth_untrusted_id_server" = "L'affidabilità del server d'identità non è stata accertata";
 "auth_password_dont_match" = "Le password non corrispondono";
 "auth_username_in_use" = "Nome utente in uso";
 "auth_email_not_found" = "Invio dell'email fallito: Questo indirizzo email non è stato trovato";
@@ -154,8 +154,8 @@
 "contacts_address_book_section" = "CONTATTI LOCALI";
 "contacts_address_book_matrix_users_toggle" = "Solo utenti Matrix";
 "contacts_address_book_no_contact" = "Nessun contatto locale";
-"contacts_address_book_permission_required" = "Element deve essere autorizzato per poter accedere alla Rubrica locale";
-"contacts_address_book_permission_denied" = "Non hai autorizzato Element ad accedere alla rubrica locale";
+"contacts_address_book_permission_required" = "%@ deve essere autorizzato per poter accedere alla Rubrica locale";
+"contacts_address_book_permission_denied" = "Non hai autorizzato %@ ad accedere alla rubrica locale";
 "contacts_user_directory_section" = "ELENCO UTENTI";
 "contacts_user_directory_offline_section" = "ELENCO UTENTI (offline)";
 // Chat participants
@@ -198,7 +198,7 @@
 "room_participants_action_start_new_chat" = "Inizia nuova chat";
 "room_participants_action_start_voice_call" = "Nuova telefonata";
 "room_participants_action_start_video_call" = "Nuova videochiamata";
-"room_participants_action_mention" = "Citazione";
+"room_participants_action_mention" = "Menziona";
 // Chat
 "room_jump_to_first_unread" = "Vai ai non letti";
 "room_new_message_notification" = "%d nuovo messaggio";
@@ -288,7 +288,7 @@
 "settings_report_bug" = "Segnala errore";
 "settings_clear_cache" = "Elimina cache";
 "settings_config_home_server" = "L'Home Server è %@";
-"settings_config_identity_server" = "L'Identity Server è %@";
+"settings_config_identity_server" = "Il server d'identità è %@";
 "settings_config_user_id" = "Connesso come %@";
 "settings_user_settings" = "IMPOSTAZIONI UTENTE";
 "settings_notifications_settings" = "IMPOSTAZIONI NOTIFICHE";
@@ -328,7 +328,7 @@
 "settings_pin_rooms_with_missed_notif" = "Segna le stanze con notifiche perse";
 "settings_pin_rooms_with_unread" = "Segna le stanze con messaggi non letti";
 "settings_enable_callkit" = "Chiamate integrate";
-"settings_callkit_info" = "Ricevi le chiamate in arrivo sul blocca schermo. Mostra le chiamate Element nella cronologia di chiamate del dispositivo. Se iCloud è attivo, questa cronologia sarà condivisa con Apple.";
+"settings_callkit_info" = "Ricevi le chiamate in arrivo sul blocca schermo. Mostra le chiamate %@ nella cronologia di chiamate del dispositivo. Se iCloud è attivo, questa cronologia sarà condivisa con Apple.";
 "settings_ui_language" = "Lingua";
 "settings_ui_theme" = "Tema";
 "settings_ui_theme_auto" = "Automatico";
@@ -522,7 +522,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Vuoi aiutare a migliorare %@ inviando automaticamente in modo anonimo i dati di utilizzo e le segnalazioni di crash?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
+"e2e_enabling_on_app_update" = "%@ ora supporta la crittografia da-utente-a-utente ma devi eseguire nuovamente l'accesso per abilitarla.\n\nPuoi farlo ora o più tardi dalle impostazioni dell'applicazione.";
 "e2e_need_log_in_again" = "È necessario eseguire nuovamente l'accesso per generare le chiavi di crittografia end-to-end per questa sessione ed inviare la chiave pubblica all'homeserver.\nVa fatto una sola volta; ci scusiamo per il disturbo.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Nuovo Backup delle chiavi";
@@ -534,7 +534,7 @@
 "bug_report_description" = "Per favore descrivi l'errore. Cosa hai fatto? Cosa ti aspettavi dovesse accadere? Cosa è effettivamente successo?";
 "bug_crash_report_title" = "Segnalazione del crash";
 "bug_crash_report_description" = "Per favore descrivi cosa hai fatto prima del crash:";
-"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri Element di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
+"bug_report_logs_description" = "Al fine di diagnosticare i problemi, i registri %@ di questo dispositivo saranno inviati con il rapporto dell'errore. Se preferisci inviare solo il testo soprastante, deseleziona:";
 "bug_report_send_logs" = "Invia registri";
 "bug_report_send_screenshot" = "Invia screenshot";
 "bug_report_progress_zipping" = "Ottenimento registri";
@@ -570,7 +570,7 @@
 "gdpr_consent_not_given_alert_message" = "Per continuare ad usare l'Homeserver %@ devi leggere e accettare i termini e le condizioni di utilizzo.";
 "gdpr_consent_not_given_alert_review_now_action" = "Leggi adesso";
 "deactivate_account_title" = "Disattiva account";
-"deactivate_account_informations_part1" = "Questo renderà il tuo account inutilizzabile per sempre. Non ci potrai più accedere e nessuno potrà riutilizzare questo ID utente. Il tuo account abbandonerà tutte le stanze a cui partecipa e i dettagli del tuo account saranno rimossi dall'Identity Server. ";
+"deactivate_account_informations_part1" = "Questo renderà il tuo account inutilizzabile per sempre. Non ci potrai più accedere e nessuno potrà riutilizzare questo ID utente. Il tuo account abbandonerà tutte le stanze a cui partecipa e i dettagli del tuo account saranno rimossi dal server d'identità. ";
 "deactivate_account_informations_part2_emphasize" = "Questa azione è irreversibile.";
 "deactivate_account_informations_part3" = "\n\nDisattivare il tuo account ";
 "deactivate_account_informations_part4_emphasize" = "non eliminerà in modo automatico i messaggi che hai inviato. ";
@@ -583,7 +583,7 @@
 "deactivate_account_password_alert_message" = "Per proseguire, inserisci la tua password";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Richiesta inviata";
-"rerequest_keys_alert_message" = "Avvia Element su un altro dispositivo che possa decifrare il messaggio, in modo da poter inviare le chiavi a questa sessione.";
+"rerequest_keys_alert_message" = "Avvia %@ su un altro dispositivo che possa decifrare il messaggio, in modo da poter inviare le chiavi a questa sessione.";
 "key_backup_setup_title" = "Backup chiave";
 "key_backup_setup_skip_alert_title" = "Sei sicuro?";
 "key_backup_setup_skip_alert_message" = "Se ti disconnetti oppure perdi il dispositivo potresti perdere i tuoi messaggi crittografati.";
@@ -651,7 +651,7 @@
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Non voglio i miei messaggi cifrati";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Attendo";
 "close" = "Chiudi";
-"auth_forgot_password_error_no_configured_identity_server" = "Non è stato configurato alcun Identity: aggiungine uno per poter reimpostare la password.";
+"auth_forgot_password_error_no_configured_identity_server" = "Non è stato configurato alcun server d'identità: aggiungine uno per ripristinare la password.";
 "auth_softlogout_signed_out" = "Sei uscito";
 "auth_softlogout_sign_in" = "Accedi";
 "auth_softlogout_reason" = "L'amministratore dell'Home Server (%1$@) ti ha disconnesso dal tuo account %2$@ (%3$@).";
@@ -663,8 +663,8 @@
 "auth_softlogout_clear_data_sign_out_title" = "Sei sicuro?";
 "auth_softlogout_clear_data_sign_out_msg" = "Sei sicuro di voler cancellare tutti i dati memorizzati su questo dispositivo? Accedi di nuovo per gestire dati e messaggi del tuo account.";
 "auth_softlogout_clear_data_sign_out" = "Disconnessione";
-"room_creation_error_invite_user_by_email_without_identity_server" = "Non è stato configuato nessun Identity Server e quindi non è possibile aggiungere partecipanti con un'e-mail.";
-"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Non è stato configurato alcun Identity Server, quindi non è possibile avviare una chat con qualcuno tramite e-mail.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Non è stato configuato alcun server d'identità e quindi non puoi aggiungere partecipanti con un'email.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Non è stato configurato alcun server d'identità, quindi non è possibile iniziare una chat con qualcuno tramite email.";
 "room_event_action_reply" = "Rispondi";
 "room_event_action_edit" = "Modifica";
 "room_event_action_reaction_show_all" = "Mostra tutto";
@@ -820,20 +820,20 @@
 "auth_add_email_message_2" = "Imposta un'email per il ripristino dell'account in caso di problemi e, se vuoi, anche per farti trovare da chi conosce quell'indirizzo email.";
 "auth_add_phone_message_2" = "Aggiungi un numero di telefono se vuoi farti trovare da chi lo conosce.";
 "auth_add_email_phone_message_2" = "Imposta un'email per il ripristino dell'account in caso di problemi. Email e telefono potranno essere usati anche per farti trovare dagli altri utenti.";
-"auth_email_is_required" = "Non è stato configurato alcun Identity Server perciò non puoi aggiungere un indirizzo email utile a ripristinare la password in caso di problemi.";
-"auth_phone_is_required" = "Non è stato configurato alcun Identity Server perciò non puoi aggiungere un numero di telefono utile a ripristinare la password in caso di problemi.";
-"auth_reset_password_error_is_required" = "Non è stato configurato alcun Identity Server: aggiungine uno nelle opzioni server per poter ripristinare la password.";
-"contacts_address_book_no_identity_server" = "Nessun Identity Server configurato";
+"auth_email_is_required" = "Non è stato configurato alcun server d'identità, perciò non puoi aggiungere un indirizzo email per ripristinare la tua password in futuro.";
+"auth_phone_is_required" = "Non è stato configurato alcun server d'identità, perciò non puoi aggiungere un numero di telefono per ripristinare la tua password in futuro.";
+"auth_reset_password_error_is_required" = "Non è stato configurato alcun server d'identità: aggiungine uno nelle opzioni server per ripristinare la password.";
+"contacts_address_book_no_identity_server" = "Nessun server d'identità configurato";
 "settings_discovery_settings" = "SCOPRI";
-"settings_identity_server_settings" = "IDENTITY SERVER";
+"settings_identity_server_settings" = "SERVER D'IDENTITÀ";
 "settings_three_pids_management_information_part1" = "Configura gli indirizzi email o numeri di telefono che puoi usare per accedere o per ripristinare l'account in caso di problemi. Controlla chi può trovarti in ";
 "settings_three_pids_management_information_part2" = "Scopri";
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "Permetti chiamate dal Server di appoggio";
 "settings_calls_stun_server_fallback_description" = "Se il tuo Home Server non ne ha un proprio Server d'appoggio verrà usato %@ (il Server d'appoggio verrà a conoscenza del tuo indirizzo IP durante le chiamate).";
 "settings_devices_description" = "Il nome pubblico di una sessione è visibile alle persone con cui comunichi";
-"settings_discovery_no_identity_server" = "In questo momento non stai usando alcun Identity Server. Per trovare e farti trovare dagli altri utenti, configurane uno qua sotto.";
-"settings_discovery_terms_not_signed" = "Accetta i termini di servizio dell'Identity Server (%@) per permettere ad altri utenti di trovarti tramite la tua email o numero di telefono.";
+"settings_discovery_no_identity_server" = "In questo momento non stai usando alcun server d'identità. Per trovare e farti trovare dagli altri utenti, configurane uno qua sotto.";
+"settings_discovery_terms_not_signed" = "Accetta i termini di servizio del server d'identità (%@) per permettere ad altri utenti di trovarti tramite la tua email o numero di telefono.";
 "settings_discovery_three_pids_management_information_part1" = "Configura gli indirizzi email o numeri di telefono con cui gli altri utenti potranno trovarti e invitarti nelle stanze. Aggiungi o rimuovi indirizzi email o numeri di telefono da questa lista in ";
 "settings_discovery_three_pids_management_information_part2" = "Impostazioni utente";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -846,29 +846,29 @@
 "settings_discovery_three_pid_details_revoke_action" = "Cancella";
 "settings_discovery_three_pid_details_cancel_email_validation_action" = "Annulla la validazione dell'email";
 "settings_discovery_three_pid_details_enter_sms_code_action" = "Inserisci il codice d'attivazione SMS";
-"settings_identity_server_description" = "Utilizzando l'Identity Server impostato potrai trovare e farti trovare dai contatti esistenti.";
-"settings_identity_server_no_is" = "Non è stato configurato alcun Identity Server";
-"settings_identity_server_no_is_description" = "Non stai usando alcun Identity Server. Selezionane uno per trovare e farti trovare dai contatti esistenti.";
+"settings_identity_server_description" = "Utilizzando il server d'identità impostato potrai trovare e farti trovare dai contatti esistenti.";
+"settings_identity_server_no_is" = "Nessun server d'identità configurato";
+"settings_identity_server_no_is_description" = "Non stai usando alcun server d'identità. Selezionane uno per trovare e farti trovare dai contatti esistenti.";
 // Identity server settings
-"identity_server_settings_title" = "Identity Server";
+"identity_server_settings_title" = "Server d'identità";
 "identity_server_settings_description" = "Per trovare e farti trovare dai tuoi contatti stai usando %@.";
-"identity_server_settings_no_is_description" = "Non stai usando alcun Identity Server. Selezionane uno per trovare e farti trovare dai contatti esistenti.";
-"identity_server_settings_place_holder" = "Inserisci un Identity Server";
+"identity_server_settings_no_is_description" = "Non stai usando alcun server d'identità. Selezionane uno per trovare e farti trovare dai contatti esistenti.";
+"identity_server_settings_place_holder" = "Inserisci un server d'identità";
 "identity_server_settings_add" = "Aggiungi";
 "identity_server_settings_change" = "Cambia";
-"identity_server_settings_disconnect_info" = "Se ti disconnetti dall'Identity Server gli altri utenti non potranno trovarti e tu non potrai invitarne di nuovi per email o telefono.";
+"identity_server_settings_disconnect_info" = "Se ti disconnetti dal server d'identità gli altri utenti non potranno trovarti e tu non potrai invitarne di nuovi per email o telefono.";
 "identity_server_settings_disconnect" = "Disconnetti";
-"identity_server_settings_alert_no_terms_title" = "L'Identity Server non ha fornito dei termini di servizio";
-"identity_server_settings_alert_no_terms" = "L'Identity Server che hai scelto non ha freso noti i propri termini di servizio. Continua solo se ti fidi.";
-"identity_server_settings_alert_change_title" = "Cambia Identity Server";
-"identity_server_settings_alert_change" = "Vuoi scollegarti dall'Identity Server %1$@ e connetterti invece a %2$@?";
-"identity_server_settings_alert_disconnect_title" = "Scollega l'Identity Server";
-"identity_server_settings_alert_disconnect" = "Vuoi scollegarti dall'Identity Server %@?";
+"identity_server_settings_alert_no_terms_title" = "Il server d'identità non ha fornito dei termini di servizio";
+"identity_server_settings_alert_no_terms" = "Il server d'identità che hai scelto non ha reso noti i propri termini di servizio. Continua solo se ti fidi del proprietario del server.";
+"identity_server_settings_alert_change_title" = "Cambia server d'identità";
+"identity_server_settings_alert_change" = "Vuoi scollegarti dal server d'identità %1$@ e connetterti invece a %2$@?";
+"identity_server_settings_alert_disconnect_title" = "Scollega il server d'identità";
+"identity_server_settings_alert_disconnect" = "Vuoi scollegarti dal server d'identità %@?";
 "identity_server_settings_alert_disconnect_button" = "Scollega";
-"identity_server_settings_alert_disconnect_still_sharing_3pid" = "L'Identity Server %@ può ancora condividere le tue informazioni personali.\n\nTi raccomandiamo di rimuovere tutti i tuoi indirizzi email e numeri di telefono dall'Identity Server prima di scollegarlo.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Il server d'identità %@ può ancora condividere le tue informazioni personali.\n\nTi raccomandiamo di rimuovere tutti i tuoi indirizzi email e numeri di telefono dal server d'identità prima di scollegarlo.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Scollegati comunque";
-"identity_server_settings_alert_error_terms_not_accepted" = "Devi accettare i termini di servizio di %@ per poterlo impostare come tuo Identity Server.";
-"identity_server_settings_alert_error_invalid_identity_server" = "%@ non é un Identity Server valido.";
+"identity_server_settings_alert_error_terms_not_accepted" = "Devi accettare i termini di servizio di %@ per poterlo impostare come tuo server d'identità.";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ non è un server d'identità valido.";
 "call_no_stun_server_error_title" = "Chiamata fallita a causa di una configurazione errata del server";
 "call_no_stun_server_error_message_1" = "Chiedi all'amministratore del tuo Homeserver %@ di configurare un server TURN in modo che le chiamate funzionino come si deve.";
 "call_no_stun_server_error_message_2" = "In alternativa puoi provare ad usare il server pubblico a %@, ma non é molto affidabile e il tuo indirizzo IP verrà condiviso con tale server. Puoi gestire questa cosa nelle Impostazioni";
@@ -878,9 +878,9 @@
 "service_terms_modal_description_for_identity_server_2" = "Fatti trovare attraverso il tuo numero di telefono e la tua email";
 // Service terms - Variant for identity server when displayed out of a context
 "service_terms_modal_title_identity_server" = "Trova contatti";
-"service_terms_modal_message_identity_server" = "Accetta i Termini di servizio dell'Identity Server (%@) per trovare altri contatti.";
+"service_terms_modal_message_identity_server" = "Accetta i termini di servizio del server d'identità (%@) per trovare altri contatti.";
 // Generic errors
-"error_invite_3pid_with_no_identity_server" = "Aggiungi un Identity Server nelle Impostazioni per poter invitare utenti tramite email.";
+"error_invite_3pid_with_no_identity_server" = "Aggiungi un server d'identità nelle impostazioni per poter invitare utenti tramite email.";
 "settings_add_3pid_password_title_email" = "Aggiungi indirizzo email";
 "settings_add_3pid_password_title_msidsn" = "Aggiungi numero di telefono";
 "settings_add_3pid_password_message" = "Per continuare, inserisci la tua password";
@@ -998,7 +998,7 @@
 "device_verification_self_verify_start_waiting" = "In attesa…";
 "skip" = "Salta";
 "device_verification_self_verify_wait_title" = "Completa la sicurezza";
-"device_verification_self_verify_wait_information" = "Verifica questa sessione da una delle tue altre sessioni, dandole l'accesso ai messaggi cifrati.\n\nUsa la versione più recente di Element sui tuoi altri dispositivi:";
+"device_verification_self_verify_wait_information" = "Verifica questa sessione da una delle tue altre sessioni, dandole l'accesso ai messaggi cifrati.\n\nUsa la versione più recente di %@ sui tuoi altri dispositivi:";
 "device_verification_self_verify_wait_waiting" = "In attesa…";
 "room_member_power_level_admin_in" = "Amministratore in %@";
 "room_member_power_level_moderator_in" = "Moderatore in %@";
@@ -1026,14 +1026,9 @@
 "security_settings_crosssigning_complete_security" = "Completa la sicurezza";
 "security_settings_complete_security_alert_title" = "Completa la sicurezza";
 "security_settings_complete_security_alert_message" = "Dovresti completare la sicurezza prima sulla tua sessione attuale.";
-"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su Element iOS. Prova ad usare un altro client Matrix per farlo. Element iOS lo userà.";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
+"security_settings_coming_soon" = "Spiacenti. Questa azione non è ancora disponibile su %@ iOS. Prova ad usare un altro client Matrix per farlo. %@ iOS lo userà.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifica questo accesso";
-"device_verification_self_verify_wait_additional_information" = "Funziona con Element ed altri client Matrix che supportino la firma incrociata.";
+"device_verification_self_verify_wait_additional_information" = "Funziona con %@ ed altri client Matrix che supportino la firma incrociata.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifica sessione";
 "key_verification_new_session_title" = "Verifica la tua nuova sessione";
@@ -1138,7 +1133,7 @@
 "cross_signing_setup_banner_title" = "Imposta la crittografia";
 "cross_signing_setup_banner_subtitle" = "Verifica più facilmente i tuoi altri dispositivi";
 "store_promotional_text" = "App di chat e collaborazione rispettosa della privacy, su una rete aperta. Decentralizzata per darti il controllo. Nessun datamining, backdoor e accessi di terze parti.";
-"major_update_title" = "Riot ora si chiama Element";
+"major_update_title" = "Riot ora si chiama %@";
 "major_update_information" = "Siamo entusiasti di annunciare che abbiamo cambiato nome! La tua app è aggiornata e hai fatto l'accesso al tuo account.";
 "major_update_learn_more_action" = "Maggiori informazioni";
 "major_update_done_action" = "Capito";
@@ -1155,7 +1150,8 @@
 "pin_protection_mismatch_error_title" = "I PIN non corrispondono";
 "pin_protection_mismatch_error_message" = "Riprova";
 "pin_protection_mismatch_too_many_times_error_message" = "Se non riesci a ricordare il PIN, premi il tasto \"PIN dimenticato\".";
-"pin_protection_settings_section_header_x" = "PIN e %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN e %@";
 "pin_protection_settings_section_footer" = "Per reimpostare il PIN, dovrai riaccedere e crearne uno nuovo.";
 "pin_protection_settings_enabled_forced" = "PIN attivato";
 "pin_protection_settings_enable_pin" = "Attiva PIN";
@@ -1413,14 +1409,14 @@
 "voice_message_lock_screen_placeholder" = "Messaggio vocale";
 "event_formatter_call_has_ended_with_time" = "Chiamata terminata • %@";
 "version_check_modal_action_title_deprecated" = "Scopri come";
-"version_check_modal_subtitle_deprecated" = "Abbiamo lavorato per migliorare Element per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare Element al suo pieno potenziale.";
+"version_check_modal_subtitle_deprecated" = "Abbiamo lavorato per migliorare %@ per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare %@ al suo pieno potenziale.";
 "version_check_modal_title_deprecated" = "Non supportiamo più iOS %@";
 "version_check_modal_action_title_supported" = "Capito";
-"version_check_modal_subtitle_supported" = "Abbiamo lavorato per migliorare Element per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare Element al suo pieno potenziale.";
+"version_check_modal_subtitle_supported" = "Abbiamo lavorato per migliorare %@ per un'esperienza più veloce e raffinata. Sfortunatamente la tua attuale versione di iOS non è compatibile con alcune di quelle correzioni e non sarà più supportata.\nTi consigliamo di aggiornare il tuo sistema operativo per usare %@ al suo pieno potenziale.";
 "version_check_modal_title_supported" = "Stiamo per terminare il supporto per iOS %@";
-"version_check_banner_subtitle_deprecated" = "Non supportiamo più Element su iOS %@. Per continuare ad usare Element al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
+"version_check_banner_subtitle_deprecated" = "Non supportiamo più %@ su iOS %@. Per continuare ad usare %@ al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
 "version_check_banner_title_deprecated" = "Non supportiamo più iOS %@";
-"version_check_banner_subtitle_supported" = "Presto non supporteremo più Element su iOS %@. Per continuare ad usare Element al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
+"version_check_banner_subtitle_supported" = "Presto non supporteremo più %@ su iOS %@. Per continuare ad usare %@ al pieno del suo potenziale, ti consigliamo di aggiornare la tua versione di iOS.";
 
 // Mark: - Version check
 
@@ -1444,3 +1440,40 @@
 "settings_mentions_and_keywords" = "Menzioni e parole chiave";
 "settings_default" = "Notifiche predefinite";
 "settings_notifications" = "NOTIFICHE";
+"settings_show_url_previews_description" = "Le anteprime verranno mostrate solo in stanze non cifrate.";
+"settings_show_url_previews" = "Mostra anteprima del sito";
+"settings_confirm_media_size_description" = "Quando attivo, ti verrà chiesto di confermare con che dimensione verranno inviati immagini e video.";
+"settings_confirm_media_size" = "Conferma dimensione durante l'invio";
+"settings_sending_media" = "INVIO DI IMMAGINI E VIDEO";
+"space_avatar_view_accessibility_hint" = "Cambia avatar dello spazio";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_public_join_rule" = "Spazio pubblico";
+"space_private_join_rule" = "Spazio privato";
+"space_participants_action_ban" = "Bandisci da questo spazio";
+"space_participants_action_remove" = "Rimuovi da questo spazio";
+"spaces_coming_soon_detail" = "Questa funzionalità non è stata implementata qui, ma è in arrivo. Per adesso, puoi farlo con Element sul tuo computer.";
+"spaces_invites_coming_soon_title" = "Inviti in arrivo";
+"spaces_add_rooms_coming_soon_title" = "Aggiunta di stanze in arrivo";
+"spaces_coming_soon_title" = "Prossimamente";
+"spaces_no_member_found_detail" = "Stai cercando qualcuno non in %@? Per adesso, puoi invitarlo su web o desktop.";
+"spaces_no_room_found_detail" = "Alcuni risultati potrebbero essere nascosti perché sono privati e ti serve un invito per entrarci.";
+"spaces_no_result_found_title" = "Nessun risultato trovato";
+"spaces_empty_space_detail" = "Alcune stanze potrebbero essere nascoste perché sono private e ti serve un invito.";
+"spaces_empty_space_title" = "In questo spazio non ci sono (ancora) stanze";
+"space_tag" = "spazio";
+"spaces_suggested_room" = "Consigliata";
+"spaces_explore_rooms" = "Esplora le stanze";
+"leave_space_and_all_rooms_action" = "Esci da tutte le stanze e gli spazi";
+"leave_space_only_action" = "Non uscire da alcuna stanza";
+"leave_space_message_admin_warning" = "Sei l'amministratore di questo spazio, assicurati di aver nominato un altro amministratore prima di uscire.";
+"leave_space_message" = "Vuoi davvero abbandonare %@? Vuoi anche uscire da tutte le stanze e gli spazi di questo spazio?";
+"leave_space_title" = "Esci da %@";
+"spaces_left_panel_title" = "Spazi";
+"spaces_home_space_title" = "Schermata iniziale";
+"settings_links" = "COLLEGAMENTI";
+"room_recents_suggested_rooms_section" = "STANZE CONSIGLIATE";
+"done" = "Fatto";
+"open" = "Apri";

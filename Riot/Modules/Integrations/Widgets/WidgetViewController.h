@@ -99,12 +99,4 @@
  */
 - (void)sendError:(NSString*)message toRequest:(NSString*)requestId;
 
-/**
- Send a localised message error to a request from the widget.
-
- @param errorKey the string id of the message error.
- @param requestId the id of the widget request.
- */
-- (void)sendLocalisedError:(NSString*)errorKey toRequest:(NSString*)requestId;
-
 @end

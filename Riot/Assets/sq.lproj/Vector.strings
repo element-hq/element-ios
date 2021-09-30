@@ -471,7 +471,7 @@
 "room_creation_make_public_prompt_msg" = "Jeni i sigurt se doni ta bëni publike këtë fjalosje? Në një të tillë, mesazhet tuaj mund t’i lexojë cilido dhe mund të hyjë në bisedë.";
 "room_creation_wait_for_creation" = "Po krijohet tashmë një dhomë. Ju lutemi, prisni.";
 "contacts_address_book_permission_required" = "Lypset leje për hyrje në kontaktet vendore";
-"contacts_address_book_permission_denied" = "S’e lejuat Element-i të hyjë në kontaktet tuaja vendore";
+"contacts_address_book_permission_denied" = "S’e lejuat %@-i të hyjë në kontaktet tuaja vendore";
 "room_participants_remove_third_party_invite_msg" = "Heqja e ftesave nga palë të treta nuk mbulohet ende, derisa të kihet API";
 "room_participants_invite_malformed_id" = "ID e keqformuar. Duhet të jetë një adresë email ose ID Matrix, si '@localpart:domain'";
 "room_participants_action_ban" = "Dëboje nga kjo dhomë";
@@ -494,7 +494,7 @@
 "settings_surname" = "Mbiemër";
 "settings_global_settings_info" = "Rregullimet globale për njoftime i gjeni te klienti juaj %@ web";
 "settings_enable_callkit" = "Thirrje të integruara";
-"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën Element te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
+"settings_callkit_info" = "Merrini thirrjet ardhëse edhe me ekran të kyçur. Shihni thirrjet tuaja nën %@ te historiku i thirrjeve të sistemit. Nëse iCloud është i aktivizuar, ky historik thirrjesh do t’i jepet kompanisë Apple.";
 "settings_ui_theme_picker_message" = "\"Auto\" përdor rregullimet \"Përmbysi Ngjyrat\" të pajisjes tuaj";
 "settings_contacts_discover_matrix_users" = "Përdorni email-e dhe numra telefoni për të gjetur përdorues";
 "settings_labs_e2e_encryption_prompt_message" = "Që të përfundohet rregullimi i fshehtëzimit duhet të ribëni hyrjen në llogari.";
@@ -520,7 +520,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Do të donit të ndihmoni në përmirësimin e %@-it duke parashtruar automatikisht dhe në mënyrë anonime raporte vithisjesh dhe të dhëna përdorimi?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
+"e2e_enabling_on_app_update" = "%@ tani mbulon fshehtëzim skaj-më-skaj, por lypset të ribëni hyrjen që ta aktivizoni.\n\nMund ta bëni tani ose më vonë, që prej rregullimeve të aplikacionit.";
 "bug_report_description" = "Ju lutemi, përshkruajeni të metën. Ç’po bënit? Ç’prisnit të ndodhte? Ç’ndodhi në fakt?";
 "bug_crash_report_description" = "Ju lutemi, përshkruani ç’po bënit para vithisjes:";
 "bug_report_logs_description" = "Që të mund të diagnostikohen probleme, regjistra prej këtij klienti do të dërgohen tok me këtë njoftim të metash. Nëse do të parapëlqenit të dërgohej vetëm teksti më sipër, ju lutemi, hiqjani shenjën kutizës:";
@@ -541,7 +541,7 @@
 "deactivate_account_informations_part5" = "Nëse do të donit që të harrohen mesazhet tuaj, ju lutemi, i vini shenjë kutizës më poshtë\n\nDukshmëria e mesazheve në Matrix është e ngjashme me atë në email. Harrimi i mesazheve nga ana jonë do të thotë që mesazhet që keni dërguar nuk do të ndahen me çfarëdo përdoruesi të ri apo të paregjistruar, por përdoruesit e regjistruar, që kanë tashmë hyrje në këto mesazhe, do të kenë prapëseprapë hyrje te kopja e tyre.";
 "deactivate_account_forget_messages_information_part1" = "Të lutem, harro krejt mesazhet që kamë dërguar, kur të çaktivizohet llogaria ime (";
 "deactivate_account_forget_messages_information_part3" = ": kjo do të bëjë që përdorues të ardhshëm të shohin një pamje jo të plotë të bisedave)";
-"rerequest_keys_alert_message" = "Ju lutemi, niseni Element-in në një tjetër pajisje që mund të shfshehtëzojë mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
+"rerequest_keys_alert_message" = "Ju lutemi, niseni %@-in në një tjetër pajisje që mund të shfshehtëzojë mesazhin, që kështu të mund të dërgojë kyçet te ky sesion.";
 "room_event_action_redact" = "Hiqe";
 "e2e_need_log_in_again" = "Që të prodhohen kyçe fshehtëzimi skaj-më-skaj për këtë sesion, lypset të ribëni hyrjen dhe të parashtroni kyçin publik te shërbyesi juaj Home.\nKjo duhet vetëm një herë; na ndjeni për belanë.";
 "room_action_send_sticker" = "Dërgoni ngjitës";
@@ -1018,7 +1018,7 @@
 "device_verification_self_verify_start_information" = "Përdoreni këtë sesion që të verifikoni atë të riun tuaj, duke i akorduar hyrje te mesazhe të fshehtëzuar.";
 "device_verification_self_verify_start_waiting" = "Po pritet…";
 "device_verification_self_verify_wait_title" = "Siguri e plotë";
-"device_verification_self_verify_wait_information" = "Verifikojeni këtë sesion që prej njërit nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nNë pajisjet tuaja të tjera, përdorni Element-in më të ri:";
+"device_verification_self_verify_wait_information" = "Verifikojeni këtë sesion që prej njërit nga sesionet tuaj të tjera, duke i akorduar hyrje te mesazhe të fshehtëzuar.\n\nNë pajisjet tuaja të tjera, përdorni %@-in më të ri:";
 "device_verification_self_verify_wait_waiting" = "Po pritet…";
 "room_member_power_level_admin_in" = "Përgjegjës te %@";
 "room_member_power_level_moderator_in" = "Moderator te %@";
@@ -1028,11 +1028,6 @@
 "room_member_power_level_short_custom" = "Vetjak";
 // Recover from private key
 "key_backup_recover_from_private_key_info" = "Po rikthehet kopjeruajtje…";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "room_participants_action_security_status_complete_security" = "Siguri e plotë";
 "security_settings_crosssigning_info_not_bootstrapped" = "<em>Cross-signing</em> s’është ujdisur ende.";
 "security_settings_crosssigning_info_exists" = "Llogaria juaj ka një identitet <em>cross-signing</em>, por s’është ende i besuar nga ky sesion. Plotësoni sigurinë e këtij sesioni.";
@@ -1041,7 +1036,7 @@
 "security_settings_crosssigning_complete_security" = "Siguri e plotë";
 "security_settings_complete_security_alert_title" = "Siguri e plotë";
 "security_settings_complete_security_alert_message" = "Së pari duhet të plotësoni sigurinë në sesionin tuaj të tanishëm.";
-"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e Element iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. Element iOS-i do ta përdorë.";
+"security_settings_coming_soon" = "Na ndjeni. Ky veprim s’është ende pjesë e %@ iOS-it. Ju lutemi, për ta pasur, përdorni një klient tjetër Matrix. %@ iOS-i do ta përdorë.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Verifiko sesion";
 "key_verification_new_session_title" = "Verifikoni sesionin tuaj të ri";
@@ -1056,7 +1051,7 @@
 "key_verification_self_verify_unverified_sessions_alert_message" = "Verifikoni krejt sesionet tuaj që të siguroheni se llogaria & mesazhet tuaja janë të sigurt.";
 "key_verification_self_verify_unverified_sessions_alert_validate_action" = "Shqyrtojeni";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verifikoni këto kredenciale hyrjeje";
-"device_verification_self_verify_wait_additional_information" = "Kjo funksionon më Element-in ose një tjetër klient Matrix i aftë për <em>cross-signing</em.";
+"device_verification_self_verify_wait_additional_information" = "Kjo funksionon më %@-in ose një tjetër klient Matrix i aftë për <em>cross-signing</em.";
 "key_verification_verify_sas_title_emoji" = "Krahasoni emoji";
 "key_verification_verify_sas_title_number" = "Krahasoni numra";
 "key_verification_verify_sas_cancel_action" = "S’përputhen";
@@ -1154,7 +1149,7 @@
 "store_promotional_text" = "Aplikacion fjalosjesh dhe bashkëpunimi, që ruan privatësinë, në një rrjet të hapur. I decentralizuar, për ta pasur ju kontrollin. Pa shfrytëzim të dhënash, pa deriçka të pasme dhe pa lejuar hyrje palësh të treta.";
 "external_link_confirmation_title" = "Rikontrollojeni këtë lidhje";
 "external_link_confirmation_message" = "Lidhja %@ po ju shpie te një tjetër sajt: %@\n\nJeni i sigurt se doni të vazhdohet?";
-"major_update_title" = "Riot-i tanimë është Element-i";
+"major_update_title" = "Riot-i tanimë është %@-i";
 "major_update_information" = "Jemi të ngazëllyer t’ju njoftojmë se ndryshuam emër! Aplikacioni juaj është i përditësuar dhe jeni i futur te llogaria juaj.";
 "major_update_learn_more_action" = "Mësoni më tepër";
 "major_update_done_action" = "E mora vesh";
@@ -1169,7 +1164,8 @@
 "pin_protection_mismatch_error_title" = "PIN-et s’përputhen";
 "pin_protection_mismatch_error_message" = "Ju lutemi, riprovoni";
 "pin_protection_mismatch_too_many_times_error_message" = "Nëse s’mbani mend PIN-in tuaj, prekni butonin “Harrova PIN-in”.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_settings_section_footer" = "Që të ricaktoni PIN-in tuaj, do t’ju duhet të ribëni hyrjen dhe të krijoni një të ri.";
 "pin_protection_settings_enabled_forced" = "PIN i aktivizuar";
 "pin_protection_settings_enable_pin" = "Aktivizo PIN-in";
@@ -1431,14 +1427,14 @@
 "voice_message_lock_screen_placeholder" = "Mesazh zanor";
 "event_formatter_call_has_ended_with_time" = "Thirrja përfundoi • %@";
 "version_check_modal_action_title_deprecated" = "Shihni se si";
-"version_check_modal_subtitle_deprecated" = "Jemi marrë me thellimin e Element-it për një funksionim më të shpejtë dhe më të rafinuar. Mjerisht, versioni juaj i tanishëm i iOS-it nuk është i përputhshëm me disa nga këto ndreqje dhe nuk mbulohet më.\nJu këshillojmë të përmirësoni sistemin tuaj operativ, që Element-in ta përdorni në potencialin e tij të plotë.";
+"version_check_modal_subtitle_deprecated" = "Jemi marrë me thellimin e %@-it për një funksionim më të shpejtë dhe më të rafinuar. Mjerisht, versioni juaj i tanishëm i iOS-it nuk është i përputhshëm me disa nga këto ndreqje dhe nuk mbulohet më.\nJu këshillojmë të përmirësoni sistemin tuaj operativ, që %@-in ta përdorni në potencialin e tij të plotë.";
 "version_check_modal_title_deprecated" = "Nuk e mbulojmë më iOS %@";
 "version_check_modal_action_title_supported" = "E mora vesh";
-"version_check_modal_subtitle_supported" = "Jemi marrë me thellimin e Element-it për një funksionim më të shpejtë dhe më të rafinuar. Mjerisht, versioni juaj i tanishëm i iOS-it nuk është i përputhshëm me këto ndreqje dhe nuk do të mbulohet më.\nJu këshillojmë të përmirësoni sistemin tuaj operativ, që Element-in ta përdorni në potencialin e tij të plotë.";
+"version_check_modal_subtitle_supported" = "Jemi marrë me thellimin e %@-it për një funksionim më të shpejtë dhe më të rafinuar. Mjerisht, versioni juaj i tanishëm i iOS-it nuk është i përputhshëm me këto ndreqje dhe nuk do të mbulohet më.\nJu këshillojmë të përmirësoni sistemin tuaj operativ, që %@-in ta përdorni në potencialin e tij të plotë.";
 "version_check_modal_title_supported" = "Po i japim fund mbulimit të iOS %@";
-"version_check_banner_subtitle_deprecated" = "Nuk e mbulojmë më Element-in në iOS %@. Që të vazhdoni përdorimin e Element-it në potencialin e tij të plotë, ju këshillojmë të përmirësoni versionin tuaj të iOS-it.";
+"version_check_banner_subtitle_deprecated" = "Nuk e mbulojmë më %@-in në iOS %@. Që të vazhdoni përdorimin e %@-it në potencialin e tij të plotë, ju këshillojmë të përmirësoni versionin tuaj të iOS-it.";
 "version_check_banner_title_deprecated" = "Nuk e mbulojmë më iOS %@";
-"version_check_banner_subtitle_supported" = "Së shpejti do t’i japim fund mbulimit për Element në iOS %@. Që të vazhdoni përdorimin e Element-it me potencialin e tij të plotë, ju këshillojmë të përmirësoni versionin tuaj të iOS-it.";
+"version_check_banner_subtitle_supported" = "Së shpejti do t’i japim fund mbulimit për %@ në iOS %@. Që të vazhdoni përdorimin e %@-it me potencialin e tij të plotë, ju këshillojmë të përmirësoni versionin tuaj të iOS-it.";
 
 // Mark: - Version check
 
@@ -1461,3 +1457,38 @@
 "settings_mentions_and_keywords" = "Përmendje dhe Fjalëkyçe";
 "settings_default" = "Njoftime Parazgjedhje";
 "settings_notifications" = "NJOFTIME";
+"settings_show_url_previews_description" = "Paraparjet do të shfaqen vetëm në dhoma të pafshehtëzuara.";
+"settings_show_url_previews" = "Shfaq paraparje sajti";
+"settings_confirm_media_size_description" = "Kur kjo është aktive, do t’ju kërkohet të ripohoni se në ç’madhësi të dërgohen figurat dhe videot.";
+"settings_confirm_media_size" = "Ripoho madhësi, kur dërgohet";
+"settings_sending_media" = "DËRGIM FIGURASH DHE VIDEOSH";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_avatar_view_accessibility_hint" = "Ndryshoni avatar hapësire";
+"space_public_join_rule" = "Hapësirë publike";
+"space_private_join_rule" = "Hapësirë private";
+"space_participants_action_ban" = "Dëboje prej kësaj hapësire";
+"space_participants_action_remove" = "Hiqe prej kësaj hapësire";
+"spaces_coming_soon_detail" = "Kjo veçori s’është sendërtuar këtu, por po bëhet. Tani për tani, mund ta bëni këtë me Element-in në kompjuterin tuaj.";
+"spaces_invites_coming_soon_title" = "Ftesat vijnë së shpejti";
+"spaces_add_rooms_coming_soon_title" = "Shtimi i dhomave vjen së shpejti";
+"spaces_coming_soon_title" = "S’afërmi";
+"spaces_no_member_found_detail" = "Po kërkoni dikë jo te %@? Për tani, mund t’i ftoni në versionin për web, ose për desktop.";
+"spaces_no_room_found_detail" = "Disa përfundime mund të jenë të fshehura, ngaqë janë private dhe ju duhet një ftesë për to.";
+"spaces_no_result_found_title" = "S’u gjetën përfundime";
+"spaces_empty_space_detail" = "Disa dhoma mund të jenë të fshehura, ngaqë janë private dhe juve ju duhet një ftesë.";
+"spaces_empty_space_title" = "Kjo hapësirë s’ka (ende) dhoma";
+"space_tag" = "hapësirë";
+"spaces_suggested_room" = "Të sugjeruara";
+"spaces_explore_rooms" = "Eksploroni dhoma";
+"leave_space_and_all_rooms_action" = "Braktisi krejt dhomat dhe hapësirat";
+"leave_space_only_action" = "Mos braktis ndonjë dhomë";
+"leave_space_message_admin_warning" = "Jeni përgjegjësi i kësaj hapësire, sigurohuni se e keni shpërngulur të drejtën e përgjegjësit te një tjetër anëtar, përpara se të largoheni.";
+"leave_space_message" = "Jeni i sigurt se doni të braktiset %@? Doni të braktisen gjithashtu krejt dhomat dhe nënhapësirat e kësaj hapësire?";
+"leave_space_title" = "Braktise %@";
+"spaces_left_panel_title" = "Hapësira";
+"settings_links" = "LIDHJE";
+"room_recents_suggested_rooms_section" = "DHOMA TË SUGJERUARA";
+"done" = "U bë";

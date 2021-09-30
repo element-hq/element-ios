@@ -64,7 +64,7 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
@@ -103,8 +103,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    // Hide the header to merge Invites and Rooms into a single list.
-    return 0.0;
+    if ([tableView numberOfSections] <= 1)
+    {
+        // Hide the header to merge Invites and Rooms into a single list.
+        return 0.0;
+    }
+    
+    return [super tableView:tableView heightForHeaderInSection:section];
 }
 
 #pragma mark - 
@@ -123,8 +128,8 @@
 - (void)updateEmptyView
 {
     [self.emptyView fillWith:[self emptyViewArtwork]
-                       title:NSLocalizedStringFromTable(@"rooms_empty_view_title", @"Vector", nil)
-             informationText:NSLocalizedStringFromTable(@"rooms_empty_view_information", @"Vector", nil)];
+                       title:[VectorL10n roomsEmptyViewTitle]
+             informationText:[VectorL10n roomsEmptyViewInformation]];
 }
 
 - (UIImage*)emptyViewArtwork
@@ -155,7 +160,8 @@
 - (NSUInteger)totalItemCounts
 {
     return recentsDataSource.conversationCellDataArray.count
-    + recentsDataSource.invitesCellDataArray.count;
+    + recentsDataSource.invitesCellDataArray.count
+    + recentsDataSource.suggestedRoomCellDataArray.count;
 }
 
 @end

@@ -17,13 +17,11 @@
 import Foundation
 import Combine
 
-/**
- Sams as `assign(to:on:)` but maintains a weak reference to object(Useful in cases where you want to pass self and not cause a retain cycle.)
- - SeeAlso:
- [assign(to:on:)](https://developer.apple.com/documentation/combine/just/assign(to:on:))
- */
 @available(iOS 14.0, *)
 extension Publisher where Failure == Never {
+    /// Same as `assign(to:on:)` but maintains a weak reference to object
+    ///
+    /// Useful in cases where you want to pass self and not cause a retain cycle.
     func weakAssign<T: AnyObject>(
         to keyPath: ReferenceWritableKeyPath<T, Output>,
         on object: T

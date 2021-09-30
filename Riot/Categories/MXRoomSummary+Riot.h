@@ -32,6 +32,8 @@ typedef NS_ENUM(NSUInteger, RoomEncryptionTrustLevel) {
  */
 @interface MXRoomSummary (Riot)
 
+@property(nonatomic, readonly) BOOL isJoined;
+
 /**
  Set the room avatar in the dedicated MXKImageView.
  The riot style implies to use in order :

@@ -69,7 +69,7 @@
     tableSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 600, 44)];
     tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableSearchBar.showsCancelButton = NO;
-    tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    tableSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     tableSearchBar.delegate = self;
     
     // Set itself as delegate by default.
@@ -107,7 +107,7 @@
     }];
     
     self.groupsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.groupsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    self.groupsSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     
     // @TODO: Add programmatically the (+) button.
 //    plusButtonImageView = [self vc_addFABWithImage:[UIImage imageNamed:@"plus_floating_action"]
@@ -214,7 +214,7 @@
         
     }];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_groups", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleGroups];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;        
 }
 
@@ -545,7 +545,7 @@
     {
         if (!self.groupsSearchBar.isHidden)
         {
-            if (!self.groupsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.mxk_adjustedContentInset.top > self.groupsSearchBar.frame.size.height))
+            if (!self.groupsSearchBar.text.length && (scrollView.contentOffset.y + scrollView.adjustedContentInset.top > self.groupsSearchBar.frame.size.height))
             {
                 // Hide the search bar
                 [self hideSearchBar:YES];
@@ -567,7 +567,7 @@
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -590,7 +590,7 @@
 
 - (void)scrollToTop:(BOOL)animated
 {
-    [self.groupsTableView setContentOffset:CGPointMake(-self.groupsTableView.mxk_adjustedContentInset.left, -self.groupsTableView.mxk_adjustedContentInset.top) animated:animated];
+    [self.groupsTableView setContentOffset:CGPointMake(-self.groupsTableView.adjustedContentInset.left, -self.groupsTableView.adjustedContentInset.top) animated:animated];
 }
 
 #pragma mark - MXKGroupListViewControllerDelegate

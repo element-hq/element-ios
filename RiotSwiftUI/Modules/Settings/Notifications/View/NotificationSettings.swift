@@ -16,11 +16,10 @@
 
 import SwiftUI
 
-/**
- Renders the push rule settings that can be enabled/disable.
- Also renders an optional bottom section
- (used in the case of keywords, for the keyword chips and input).
- */
+/// Renders the push rule settings that can be enabled/disable.
+///
+/// Also renders an optional bottom section.
+/// Used in the case of keywords, for the keyword chips and input.
 @available(iOS 14.0, *)
 struct NotificationSettings<BottomSection: View>: View {
     

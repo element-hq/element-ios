@@ -89,7 +89,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedStringFromTable(@"directory_server_picker_title", @"Vector", nil);
+    self.title = [VectorL10n directoryServerPickerTitle];
 
     self.tableView.delegate = self;
 
@@ -151,7 +151,7 @@
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
-        [self.tableView setContentOffset:CGPointMake(-self.tableView.mxk_adjustedContentInset.left, -self.tableView.mxk_adjustedContentInset.top) animated:YES];
+        [self.tableView setContentOffset:CGPointMake(-self.tableView.adjustedContentInset.left, -self.tableView.adjustedContentInset.top) animated:YES];
 
     }];
 
@@ -285,16 +285,16 @@
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
 
     // Prompt the user to enter a homeserver
-    currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"directory_server_type_homeserver", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n directoryServerTypeHomeserver] preferredStyle:UIAlertControllerStyleAlert];
 
     [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
 
         textField.secureTextEntry = NO;
-        textField.placeholder = NSLocalizedStringFromTable(@"directory_server_placeholder", @"Vector", nil);
+        textField.placeholder = [VectorL10n directoryServerPlaceholder];
         textField.keyboardType = UIKeyboardTypeDefault;
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -306,7 +306,7 @@
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        

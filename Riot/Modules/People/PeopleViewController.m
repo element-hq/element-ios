@@ -26,11 +26,13 @@
 
 #import "Riot-Swift.h"
 
-@interface PeopleViewController ()
+@interface PeopleViewController () <SpaceMembersCoordinatorBridgePresenterDelegate>
 {
     NSInteger          directRoomsSectionNumber;
     RecentsDataSource *recentsDataSource;
 }
+
+@property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
 
 @end
 
@@ -80,7 +82,7 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_people", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titlePeople];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if ([self.dataSource isKindOfClass:RecentsDataSource.class])
@@ -119,7 +121,16 @@
 
 - (void)onPlusButtonPressed
 {
-    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+    if (self.dataSource.currentSpace != nil)
+    {
+        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.spaceMembersCoordinatorBridgePresenter.delegate = self;
+        [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+    }
 }
 
 #pragma mark -
@@ -138,8 +149,8 @@
 - (void)updateEmptyView
 {
     [self.emptyView fillWith:[self emptyViewArtwork]
-                       title:NSLocalizedStringFromTable(@"people_empty_view_title", @"Vector", nil)
-             informationText:NSLocalizedStringFromTable(@"people_empty_view_information", @"Vector", nil)];
+                       title:[VectorL10n peopleEmptyViewTitle]
+             informationText:[VectorL10n peopleEmptyViewInformation]];
 }
 
 - (UIImage*)emptyViewArtwork
@@ -170,6 +181,15 @@
 {
     return recentsDataSource.invitesCellDataArray.count
     + recentsDataSource.conversationCellDataArray.count;
+}
+
+#pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate
+
+- (void)spaceMembersCoordinatorBridgePresenterDelegateDidComplete:(SpaceMembersCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        self.spaceMembersCoordinatorBridgePresenter = nil;
+    }];
 }
 
 @end

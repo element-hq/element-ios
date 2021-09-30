@@ -226,15 +226,15 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     
     private func presentPendingEmailVerificationAlert() {
         
-        let alert = UIAlertController(title: Bundle.mxk_localizedString(forKey: "account_email_validation_title"),
-                                      message: Bundle.mxk_localizedString(forKey: "account_email_validation_message"),
+        let alert = UIAlertController(title: MatrixKitL10n.accountEmailValidationTitle,
+                                      message: MatrixKitL10n.accountEmailValidationMessage,
                                       preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .default, handler: { _ in
             self.viewModel.process(viewAction: .confirmEmailValidation)
         }))
         
-        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "cancel"), style: .cancel, handler: { _ in
+        alert.addAction(UIAlertAction(title: MatrixKitL10n.cancel, style: .cancel, handler: { _ in
             self.viewModel.process(viewAction: .cancelThreePidValidation)
         }))
         
@@ -244,8 +244,8 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
     
     private func presentPendingMSISDNVerificationAlert() {
         
-        let alert = UIAlertController(title: Bundle.mxk_localizedString(forKey: "account_msisdn_validation_title"),
-                                      message: Bundle.mxk_localizedString(forKey: "account_msisdn_validation_message"),
+        let alert = UIAlertController(title: MatrixKitL10n.accountMsisdnValidationTitle,
+                                      message: MatrixKitL10n.accountMsisdnValidationMessage,
                                       preferredStyle: .alert)
         
         alert.addTextField { (textField) in
@@ -260,7 +260,7 @@ final class SettingsDiscoveryThreePidDetailsViewController: UIViewController {
             self.viewModel.process(viewAction: .confirmMSISDNValidation(code: smsCode))
         }))
         
-        alert.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "cancel"), style: .cancel, handler: { _ in
+        alert.addAction(UIAlertAction(title: MatrixKitL10n.cancel, style: .cancel, handler: { _ in
             self.viewModel.process(viewAction: .cancelThreePidValidation)
         }))
         

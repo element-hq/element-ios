@@ -86,16 +86,7 @@
 {
     _showCustomAccessoryView = show;
     
-    if (show)
-    {
-        self.customAccessViewWidthConstraint.constant = 25;
-        self.customAccessoryViewLeadingConstraint.constant = 13;
-    }
-    else
-    {
-        self.customAccessViewWidthConstraint.constant = 0;
-        self.customAccessoryViewLeadingConstraint.constant = 0;
-    }
+    self.customAccessViewWidthConstraint.constant = show ? 25 : 0;
 }
 
 - (void)setShowMatrixIdInDisplayName:(BOOL)showMatrixIdInDisplayName
@@ -345,7 +336,7 @@
     }
     else if (contact.isThirdPartyInvite)
     {
-        presenceText =  NSLocalizedStringFromTable(@"room_participants_offline", @"Vector", nil);
+        presenceText =  [VectorL10n roomParticipantsOffline];
     }
     
     if (presenceText.length)

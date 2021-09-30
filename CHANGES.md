@@ -1,3 +1,68 @@
+## Changes in 1.6.0 (2021-09-24)
+
+✨ Features
+
+- Spaces chooser ([#4052](https://github.com/vector-im/element-ios/issues/4052))
+- SDK: Support Spaces summary ([#4068](https://github.com/vector-im/element-ios/issues/4068))
+- Space home view inherits title from previously viewed tab ([#4493](https://github.com/vector-im/element-ios/issues/4493))
+- Added Space menu ([#4494](https://github.com/vector-im/element-ios/issues/4494))
+- Filter rooms for a given space ([#4495](https://github.com/vector-im/element-ios/issues/4495))
+- Space invite ([#4496](https://github.com/vector-im/element-ios/issues/4496))
+- Space preview bottom sheet ([#4497](https://github.com/vector-im/element-ios/issues/4497))
+- Handle space link ([#4498](https://github.com/vector-im/element-ios/issues/4498))
+- Support suggested rooms ([#4500](https://github.com/vector-im/element-ios/issues/4500))
+- Show suggested in room lists ([#4501](https://github.com/vector-im/element-ios/issues/4501))
+- Show space name in navigation bar title view for each root tab bar navigation controllers ([#4502](https://github.com/vector-im/element-ios/issues/4502))
+- Space switching ([#4503](https://github.com/vector-im/element-ios/issues/4503))
+- Added Show spaces in left panel ([#4509](https://github.com/vector-im/element-ios/issues/4509))
+- Explore rooms ([#4571](https://github.com/vector-im/element-ios/issues/4571))
+- Browsing users in a space ([#4682](https://github.com/vector-im/element-ios/issues/4682), [#4982](https://github.com/vector-im/element-ios/issues/4982))
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.2](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.2)).
+- URL Previews: Enable by default and remove from labs. ([#4828](https://github.com/vector-im/element-ios/issues/4828))
+- Automatically dismissing invites for empty rooms after failing to join. ([#4830](https://github.com/vector-im/element-ios/issues/4830))
+- Using the bundle display name as the app name in localizable .strings files. Exposing generated .strings and info.plist members to Objective-C. ([#4881](https://github.com/vector-im/element-ios/issues/4881))
+- Voice Messages: Pause playback when changing rooms while retaining the playback position when re-entering. ([#47773](https://github.com/vector-im/element-ios/issues/47773))
+
+🐛 Bugfixes
+
+- Cannot disable Face ID after disabling pin. ([#4415](https://github.com/vector-im/element-ios/issues/4415))
+- Fixes "PIN & (NULL)" security section header when device biometrics are not available or not enrolled into. ([#4461](https://github.com/vector-im/element-ios/issues/4461))
+- SSO: Fix redirection issue when logging in with single sign on. Contributed by Chelsea Finnie. ([#4785](https://github.com/vector-im/element-ios/issues/4785))
+- Fix incorrect theme being shown in the notification settings screens. ([#4816](https://github.com/vector-im/element-ios/issues/4816))
+- Fix incorrect theme being shown in the notification settings screens after launch. ([#4835](https://github.com/vector-im/element-ios/issues/4835))
+- No notification for space invitation ([#4840](https://github.com/vector-im/element-ios/issues/4840))
+- Prevent home screen horizontal scroll views from capturing side menu swipe gestures. ([#4843](https://github.com/vector-im/element-ios/issues/4843))
+- Odd error message in Space member list ([#4845](https://github.com/vector-im/element-ios/issues/4845))
+- Space view has communities tab at the bottom of the screen ([#4846](https://github.com/vector-im/element-ios/issues/4846))
+- Take user to space overview after joining space ([#4848](https://github.com/vector-im/element-ios/issues/4848))
+- Refresh suggested room list in the home view when room is (un)marked as suggested ([#4849](https://github.com/vector-im/element-ios/issues/4849))
+- Bring leaving space experience in line with Web ([#4850](https://github.com/vector-im/element-ios/issues/4850))
+- Space home view inherits title from previously viewed tab ([#4851](https://github.com/vector-im/element-ios/issues/4851))
+- Remove search filter when switching space ([#4852](https://github.com/vector-im/element-ios/issues/4852))
+- URL Previews: Fix layout on 4" devices. ([#4855](https://github.com/vector-im/element-ios/issues/4855))
+- RecentsViewController: Fix a crash when scrolling to a room in the room list. ([#4874](https://github.com/vector-im/element-ios/issues/4874))
+- Explore rooms list in space has odd ordering ([#4890](https://github.com/vector-im/element-ios/issues/4890))
+- Fixed suggested spaces appear as suggested rooms ([#4903](https://github.com/vector-im/element-ios/issues/4903))
+
+🧱 Build
+
+- Bumped the minimum deployment target to iOS 12.1 ([#4693](https://github.com/vector-im/element-ios/issues/4693))
+
+
+## Changes in 1.5.4 (2021-09-16)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.1](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.1)).
+
+🐛 Bugfixes
+
+- RoomBubbleCellData: Fix crash when creating a URL preview when the link didn't end up in the last bubble component. ([#4823](https://github.com/vector-im/element-ios/issues/4823))
+
+
 ## Changes in 1.5.3 (2021-09-09)
 
 ✨ Features

@@ -38,8 +38,8 @@
     self.previewLabel.text = nil;
     self.subNoticeLabel.text = nil;
     
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateNormal];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateHighlighted];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -48,8 +48,8 @@
     [self.leftButton addGestureRecognizer:tap];
     self.leftButton.userInteractionEnabled = YES;
     
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"join", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateNormal];
+    [self.rightButton setTitle:[VectorL10n join] forState:UIControlStateHighlighted];
     
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(reportTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
@@ -121,11 +121,11 @@
         // Joined members count
         if (self.roomPreviewData.numJoinedMembers > 1)
         {
-            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_members", @"Vector", nil), @(self.roomPreviewData.numJoinedMembers)];
+            self.roomMembers.text = [VectorL10n roomTitleMembers:@(self.roomPreviewData.numJoinedMembers)];
         }
         else if (self.roomPreviewData.numJoinedMembers == 1)
         {
-            self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_one_member", @"Vector", nil);
+            self.roomMembers.text = [VectorL10n roomTitleOneMember];
         }
         else
         {
@@ -136,7 +136,7 @@
         if (self.roomPreviewData.roomDataSource)
         {
             // Display the default preview subtitle in case of peeking
-            self.subNoticeLabel.text = NSLocalizedStringFromTable(@"room_preview_subtitle", @"Vector", nil);
+            self.subNoticeLabel.text = [VectorL10n roomPreviewSubtitle];
         }
         else
         {
@@ -146,10 +146,10 @@
         if (self.roomPreviewData.emailInvitation.email)
         {
             // The user has been invited to join this room by email
-            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), self.roomPreviewData.emailInvitation.inviterName];
+            self.previewLabel.text = [VectorL10n roomPreviewInvitationFormat:self.roomPreviewData.emailInvitation.inviterName];
             
             // Warn the user that the email is not bound to his matrix account
-            self.subNoticeLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_unlinked_email_warning", @"Vector", nil), self.roomPreviewData.emailInvitation.email];
+            self.subNoticeLabel.text = [VectorL10n roomPreviewUnlinkedEmailWarning:self.roomPreviewData.emailInvitation.email];
         }
         else
         {
@@ -157,7 +157,7 @@
             NSString *roomName = self.roomPreviewData.roomName;
             if (!roomName)
             {
-                roomName = NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room_default", @"Vector", nil);
+                roomName = [VectorL10n roomPreviewTryJoinAnUnknownRoomDefault];
             }
             else if (roomName.length > 20)
             {
@@ -167,7 +167,7 @@
                 roomName = [NSString stringWithFormat:@"%@…",[roomName substringToIndex:20]];
             }
 
-            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_try_join_an_unknown_room", @"Vector", nil), roomName];
+            self.previewLabel.text = [VectorL10n roomPreviewTryJoinAnUnknownRoom:roomName];
         }
     }
     else if (self.mxRoom)
@@ -204,11 +204,11 @@
             //                    {
             //                        if (activeCount > 1)
             //                        {
-            //                            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), @(activeCount), @(memberCount)];
+            //                            self.roomMembers.text = [VectorL10n roomTitleMultipleActiveMembers:@(activeCount).stringValue :@(memberCount).stringValue];
             //                        }
             //                        else
             //                        {
-            //                            self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), @(activeCount), @(memberCount)];
+            //                            self.roomMembers.text = [VectorL10n roomTitleOneActiveMember:@(activeCount).stringValue :@(memberCount).stringValue];
             //                        }
             //                    }
             //                    else
@@ -218,7 +218,7 @@
             //                    }
 
             NSString *displayName = [inviter isEqualToString:inviterUserId] ? inviter : [NSString stringWithFormat:@"%@ (%@)", inviter, inviterUserId];
-            self.previewLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_preview_invitation_format", @"Vector", nil), displayName];
+            self.previewLabel.text = [VectorL10n roomPreviewInvitationFormat:displayName];
         };
 
         [self.mxRoom members:^(MXRoomMembers *roomMembers) {

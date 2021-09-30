@@ -625,11 +625,11 @@
             if (indexPath.section == filteredMatrixContactsSection &&
                 (_userDirectoryState == ContactsDataSourceUserDirectoryStateLoading || _userDirectoryState == ContactsDataSourceUserDirectoryStateOfflineLoading))
             {
-                tableViewCell.textLabel.text = [NSBundle mxk_localizedStringForKey:@"search_searching"];
+                tableViewCell.textLabel.text = [MatrixKitL10n searchSearching];
             }
             else
             {
-                tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+                tableViewCell.textLabel.text = [VectorL10n searchNoResult];
             }
         }
         else if (indexPath.section == filteredLocalContactsSection)
@@ -643,25 +643,25 @@
                     if (hideNonMatrixEnabledContacts && !self.mxSession.identityService)
                     {
                         // Because we cannot make lookups with no IS
-                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_identity_server", @"Vector", nil);
+                        tableViewCell.textLabel.text = [VectorL10n contactsAddressBookNoIdentityServer];
                     }
                     else
                     {
                         // Because there is no contacts on the device
-                        tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_no_contact", @"Vector", nil);
+                        tableViewCell.textLabel.text = [VectorL10n contactsAddressBookNoContact];
                     }
                     break;
 
                 case CNAuthorizationStatusNotDetermined:
                     // Because the user have not granted the permission yet
                     // (The permission request popup is displayed at the same time)
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_required", @"Vector", nil);
+                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionRequired];
                     break;
 
                 default:
                 {
                     // Because the user didn't allow the app to access local contacts
-                    tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_permission_denied", @"Vector", nil);
+                    tableViewCell.textLabel.text = [VectorL10n contactsAddressBookPermissionDenied:AppInfo.current.displayName];
                     break;
                 }
             }
@@ -745,7 +745,7 @@
     if (section == filteredLocalContactsSection)
     {
         count = filteredLocalContacts.count;
-        title = NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+        title = [VectorL10n contactsAddressBookSection];
     }
     else //if (section == filteredMatrixContactsSection)
     {
@@ -753,11 +753,11 @@
         {
             case ContactsDataSourceUserDirectoryStateOfflineLoading:
             case ContactsDataSourceUserDirectoryStateOfflineLoaded:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_offline_section", @"Vector", nil);
+                title = [VectorL10n contactsUserDirectoryOfflineSection];
                 break;
 
             default:
-                title = NSLocalizedStringFromTable(@"contacts_user_directory_section", @"Vector", nil);
+                title = [VectorL10n contactsUserDirectorySection];
                 break;
         }
         
@@ -867,7 +867,7 @@
             
             checkboxLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 30)];
             checkboxLabel.font = [UIFont systemFontOfSize:16.0];
-            checkboxLabel.text = NSLocalizedStringFromTable(@"contacts_address_book_matrix_users_toggle", @"Vector", nil);
+            checkboxLabel.text = [VectorL10n contactsAddressBookMatrixUsersToggle];
             [localContactsCheckboxContainer addSubview:checkboxLabel];
             localContactsCheckboxContainer.checkboxLabel = checkboxLabel;
             

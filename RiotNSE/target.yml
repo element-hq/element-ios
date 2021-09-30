@@ -43,7 +43,6 @@ targets:
     - path: ../Config/CommonConfiguration.swift
     - path: ../Riot/Managers/PushNotification/PushNotificationStore.swift
     - path: ../Riot/Modules/SetPinCode/PinCodePreferences.swift
-    - path: ../Riot/Generated/InfoPlist.swift
     - path: ../Riot/Managers/KeyValueStorage/Extensions/Keychain.swift
     - path: ../Riot/Modules/SetPinCode/SetupBiometrics/BiometricsAuthenticationPresenter.swift
     - path: ../Riot/Categories/UNUserNotificationCenter.swift

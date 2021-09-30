@@ -146,10 +146,10 @@
 - (void)configureViews
 {
     self.containerView.layer.cornerRadius = 20;
-    self.titleLabel.text = NSLocalizedStringFromTable(@"read_receipts_list", @"Vector", nil);
+    self.titleLabel.text = [VectorL10n readReceiptsList];
     
-    [_closeButton setTitle:[NSBundle mxk_localizedStringForKey:@"close"] forState:UIControlStateNormal];
-    [_closeButton setTitle:[NSBundle mxk_localizedStringForKey:@"close"] forState:UIControlStateHighlighted];
+    [_closeButton setTitle:[MatrixKitL10n close] forState:UIControlStateNormal];
+    [_closeButton setTitle:[MatrixKitL10n close] forState:UIControlStateHighlighted];
 }
 
 - (void)configureReceiptsTableView
@@ -223,7 +223,7 @@
     }
     if (indexPath.row < self.receipts.count)
     {
-        NSString *receiptReadText = NSLocalizedStringFromTable(@"receipt_status_read", @"Vector", nil);
+        NSString *receiptReadText = [VectorL10n receiptStatusRead];
         NSString *receiptTimeText = [(MXKEventFormatter*)self.session.roomSummaryUpdateDelegate dateStringFromTimestamp:self.receipts[indexPath.row].ts withTime:YES];
         
         NSMutableAttributedString *receiptDescription = [[NSMutableAttributedString alloc] initWithString:receiptReadText attributes:@{NSForegroundColorAttributeName : ThemeService.shared.theme.textSecondaryColor, NSFontAttributeName : [UIFont  boldSystemFontOfSize:15]}];

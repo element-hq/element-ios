@@ -77,7 +77,6 @@ class DarkTheme: NSObject, Theme {
     var scrollBarStyle: UIScrollView.IndicatorStyle = .white
     var keyboardAppearance: UIKeyboardAppearance = .dark
     
-    @available(iOS 12.0, *)
     var userInterfaceStyle: UIUserInterfaceStyle {
         return .dark
     }

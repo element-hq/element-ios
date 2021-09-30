@@ -16,6 +16,8 @@
 
 #import "MatrixContactsDataSource.h"
 
+#import "Riot-Swift.h"
+
 @implementation MatrixContactsDataSource
 
 - (instancetype)init
@@ -31,11 +33,11 @@
 {
     if (section == filteredLocalContactsSection)
     {
-        return NSLocalizedStringFromTable(@"contacts_address_book_section", @"Vector", nil);
+        return [VectorL10n contactsAddressBookSection];
     }
     else
     {
-        return NSLocalizedStringFromTable(@"call_transfer_contacts_all", @"Vector", nil);
+        return [VectorL10n callTransferContactsAll];
     }
 }
 

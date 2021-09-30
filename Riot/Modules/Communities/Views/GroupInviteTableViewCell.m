@@ -36,14 +36,14 @@ NSString *const kGroupInviteTableViewCellRoomKey = @"kGroupInviteTableViewCellRo
     
     [self.leftButton.layer setCornerRadius:5];
     self.leftButton.clipsToBounds = YES;
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateNormal];
-    [self.leftButton setTitle:NSLocalizedStringFromTable(@"decline", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateNormal];
+    [self.leftButton setTitle:[VectorL10n decline] forState:UIControlStateHighlighted];
     [self.leftButton addTarget:self action:@selector(onDeclinePressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.rightButton.layer setCornerRadius:5];
     self.rightButton.clipsToBounds = YES;
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateNormal];
-    [self.rightButton setTitle:NSLocalizedStringFromTable(@"preview", @"Vector", nil) forState:UIControlStateHighlighted];
+    [self.rightButton setTitle:[VectorL10n preview] forState:UIControlStateNormal];
+    [self.rightButton setTitle:[VectorL10n preview] forState:UIControlStateHighlighted];
     [self.rightButton addTarget:self action:@selector(onPreviewPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.noticeBadgeView.layer setCornerRadius:10];

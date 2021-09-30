@@ -25,7 +25,11 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
     
     @IBOutlet private weak var cameraBadgeContainerView: UIView!
     
-    // MARK: Setup
+    // MARK: Public
+    
+    var showCameraBadgeOnFallbackImage: Bool = false
+    
+    // MARK: - Setup
     
     private func commonInit() {
     }
@@ -74,6 +78,14 @@ final class RoomAvatarView: AvatarView, NibOwnerLoadable {
     override func updateAvatarImageView(with viewData: AvatarViewDataProtocol) {
         super.updateAvatarImageView(with: viewData)
         
-        self.cameraBadgeContainerView.isHidden = viewData.avatarUrl != nil
+        let hideCameraBadge: Bool
+        
+        if self.showCameraBadgeOnFallbackImage {
+            hideCameraBadge = viewData.avatarUrl != nil
+        } else {
+            hideCameraBadge = true
+        }
+        
+        self.cameraBadgeContainerView.isHidden = hideCameraBadge
     }
 }

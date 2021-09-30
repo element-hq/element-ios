@@ -203,7 +203,7 @@
 
 // Chat participants
 "room_participants_title" = "Учасники";
-"contacts_address_book_permission_denied" = "Ви не дозволили Element отримати доступ до локальних контактів";
+"contacts_address_book_permission_denied" = "Ви не дозволили %@ отримати доступ до локальних контактів";
 "contacts_address_book_permission_required" = "Необхідний дозвіл на доступ до локальних контактів";
 "contacts_address_book_no_contact" = "Немає локальних контактів";
 "contacts_address_book_matrix_users_toggle" = "Тільки користувачі Matrix";
@@ -575,3 +575,114 @@
 "secure_backup_setup_banner_title" = "Безпечне резервне копіювання";
 "room_details_direct_chat" = "Особиста бесіда";
 "room_participants_action_section_direct_chats" = "Особисті бесіди";
+"version_check_modal_action_title_deprecated" = "Дізнайтеся як";
+"version_check_modal_title_deprecated" = "Ми більше не підтримуємо iOS %@";
+"version_check_modal_action_title_supported" = "Зрозуміло";
+"voice_message_lock_screen_placeholder" = "Голосове повідомлення";
+"voice_message_remaining_recording_time" = "Залишилося %@s";
+"side_menu_action_invite_friends" = "Запросити друзів";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Ліва панель";
+"user_avatar_view_accessibility_hint" = "Змінити аватар користувача";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "аватар";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Додати тему";
+"room_intro_cell_information_room_with_topic_sentence2" = "Тема: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Це початок ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Додати людей";
+"room_avatar_view_accessibility_hint" = "Змінити аватар кімнати";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "аватар";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Вітаємо у %@,\n%@";
+"call_transfer_users" = "Користувачі";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_section_header_address" = "Адреса кімнати";
+"create_room_type_public" = "Загальнодоступна кімната";
+"create_room_type_private" = "Приватна кімната";
+"create_room_section_header_type" = "Тип кімнати";
+"create_room_section_footer_encryption" = "Шифрування не може бути вимкнено.";
+"create_room_enable_encryption" = "Увімкнути шифрування";
+"create_room_section_header_encryption" = "Шифрування кімнати";
+"biometrics_desetup_disable_button_title_x" = "Вимкнути %@";
+"biometrics_desetup_title_x" = "Вимкнути %@";
+"biometrics_setup_subtitle" = "Заощадьте час";
+"biometrics_setup_enable_button_title_x" = "Увімкнути %@";
+"biometrics_setup_title_x" = "Увімкнути %@";
+"biometrics_settings_enable_x" = "Увімкнути %@";
+"biometrics_mode_face_id" = "Face ID";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"pin_protection_settings_change_pin" = "Змінити PIN-код";
+"pin_protection_settings_enable_pin" = "Увімкнути PIN-код";
+"pin_protection_settings_enabled_forced" = "PIN-код увімкнено";
+"pin_protection_settings_section_header_x" = "PIN-код і %@";
+"pin_protection_mismatch_error_message" = "Повторіть спробу";
+"pin_protection_mismatch_error_title" = "PIN-коди відрізняються";
+"pin_protection_reset_alert_action_reset" = "Скинути";
+"pin_protection_reset_alert_title" = "Скинути PIN-код";
+"pin_protection_forgot_pin" = "Забули PIN-код";
+"pin_protection_enter_pin" = "Введіть свій PIN-код";
+"pin_protection_confirm_pin_to_change" = "Підтвердьте PIN-код, щоб змінити його";
+"pin_protection_confirm_pin_to_disable" = "Підтвердьте PIN-код, щоб вимкнути його";
+"pin_protection_confirm_pin" = "Підтвердьте PIN-код";
+"pin_protection_choose_pin" = "Створіть PIN-код для безпеки";
+"pin_protection_choose_pin_welcome_after_register" = "Вітаємо.";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "З поверненням.";
+"major_update_done_action" = "Зрозуміло";
+"secrets_setup_recovery_passphrase_validate_action" = "Готово";
+"secrets_setup_recovery_key_done_action" = "Готово";
+"secrets_setup_recovery_key_loading" = "Завантаження…";
+"user_verification_session_details_untrusted_title" = "Не довірені";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Довірені";
+"user_verification_sessions_list_session_untrusted" = "Не довірені";
+"user_verification_sessions_list_session_trusted" = "Довірені";
+"user_verification_sessions_list_table_title" = "Сеанси";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Невідомо";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Попередження";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Підтвердити скануванням";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ просить підтвердження";
+"key_verification_tile_conclusion_warning_title" = "Не довірений вхід";
+"key_verification_tile_conclusion_done_title" = "Підтверджений";
+"key_verification_tile_request_incoming_approval_accept" = "Прийняти";
+"key_verification_tile_request_status_accepted" = "Ви прийняли";
+"key_verification_tile_request_status_cancelled" = "%@ скасовує";
+"key_verification_tile_request_status_cancelled_by_me" = "Ви скасували";
+"key_verification_tile_request_status_waiting" = "Очікування…";
+"key_verification_tile_request_status_data_loading" = "Завантаження даних…";
+"key_verification_tile_request_outgoing_title" = "Підтвердження надіслано";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Запит підтвердження";
+"space_beta_announce_badge" = "БЕТА";
+"space_beta_announce_title" = "Простори скоро з'являться";
+"space_beta_announce_subtitle" = "Нова версія спільнот";
+"space_beta_announce_information" = "Простори — це новий спосіб об'єднати кімнати та людей. Їх ще не додано на iOS, але ви вже можете користуватися ними у вебпереглядачі та на комп'ютері.";

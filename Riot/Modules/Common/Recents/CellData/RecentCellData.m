@@ -18,6 +18,13 @@
 #import "RecentCellData.h"
 
 #import "MXRoom+Riot.h"
+#import "MatrixSDK-Swift.h"
+
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
 
 @implementation RecentCellData
 // trick to hide the mother class property as it is readonly one.
@@ -32,7 +39,7 @@
     if (notificationCount > 1000)
     {
         CGFloat value = notificationCount / 1000.0;
-        stringValue = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
+        stringValue = [VectorL10n largeBadgeValueKFormat:value];
     }
     else
     {
@@ -57,10 +64,10 @@
 - (void)update
 {
     [super update];
-    roomDisplayname = self.roomSummary.displayname;
+    roomDisplayname = self.spaceChildInfo ? self.spaceChildInfo.name: self.roomSummary.displayname;
     if (!roomDisplayname.length)
     {
-        roomDisplayname = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
+        roomDisplayname = [MatrixKitL10n roomDisplaynameEmptyRoom];
     }
 }
 

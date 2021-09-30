@@ -40,18 +40,4 @@
     [self updateUserNameColor];
 }
 
-+ (CGFloat)heightForCellData:(MXKCellData *)cellData withMaximumWidth:(CGFloat)maxWidth
-{
-    RoomBubbleCellData *bubbleData = (RoomBubbleCellData*)cellData;
-    
-    // Include the URL preview in the height if necessary.
-    if (RiotSettings.shared.roomScreenShowsURLPreviews && bubbleData && bubbleData.showURLPreview)
-    {
-        CGFloat height = [super heightForCellData:cellData withMaximumWidth:maxWidth];
-        return height + RoomBubbleCellLayout.urlPreviewViewTopMargin + [URLPreviewView contentViewHeightFor:bubbleData.urlPreviewData];
-    }
-    
-    return [super heightForCellData:cellData withMaximumWidth:maxWidth];
-}
-
 @end

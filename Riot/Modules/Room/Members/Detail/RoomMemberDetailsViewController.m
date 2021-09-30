@@ -356,8 +356,6 @@
         [self.mxRoom state:^(MXRoomState *roomState) {
             MXStrongifyAndReturnIfNil(self);
 
-            NSString *powerLevelTextFormat;
-            
             MXRoomPowerLevels *powerLevels = [roomState powerLevels];
             NSInteger powerLevel = [powerLevels powerLevelOfUserWithUserID:self.mxRoomMember.userId];
             
@@ -365,26 +363,18 @@
             
             switch (roomPowerLevel) {
                 case RoomPowerLevelAdmin:
-                    powerLevelTextFormat = NSLocalizedStringFromTable(@"room_member_power_level_admin_in", @"Vector", nil);
+                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelAdminIn:self.mxRoom.summary.displayname];
+                    self.roomMemberPowerLevelContainerView.hidden = NO;
                     break;
                 case RoomPowerLevelModerator:
-                    powerLevelTextFormat = NSLocalizedStringFromTable(@"room_member_power_level_moderator_in", @"Vector", nil);
+                    self.roomMemberPowerLevelLabel.text = [VectorL10n roomMemberPowerLevelModeratorIn:self.mxRoom.summary.displayname];
+                    self.roomMemberPowerLevelContainerView.hidden = NO;
                     break;
                 default:
-                    powerLevelTextFormat = nil;
+                    self.roomMemberPowerLevelLabel.text = nil;
+                    self.roomMemberPowerLevelContainerView.hidden = YES;
                     break;
             }
-            
-            NSString *powerLevelText;
-            
-            if (powerLevelTextFormat)
-            {
-                NSString *roomName = self.mxRoom.summary.displayname;
-                powerLevelText = [NSString stringWithFormat:powerLevelTextFormat, roomName];
-            }
-            
-            self.roomMemberPowerLevelLabel.text = powerLevelText;
-            self.roomMemberPowerLevelContainerView.hidden = !powerLevelTextFormat;
         }];
         
         NSString* presenceText;
@@ -465,6 +455,11 @@
     [[AppDelegate theDelegate] presentCompleteSecurityForSession:self.mainSession];
 }
 
+- (void)showRoomWithId:(NSString*)roomId
+{
+    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:self.mainSession];
+}
+
 #pragma mark - Hide/Show navigation bar border
 
 - (void)hideNavigationBarBorder:(BOOL)isHidden
@@ -518,7 +513,10 @@
     {
         isOneself = YES;
         
-        [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
+        if (self.enableLeave)
+        {
+            [otherActionsArray addObject:@(MXKRoomMemberDetailsActionLeave)];
+        }
         
         if (oneSelfPowerLevel >= [powerLevels minimumPowerLevelForSendingEventAsStateEvent:kMXEventTypeStringRoomPowerLevels])
         {
@@ -719,23 +717,23 @@
 {
     if (section == securityIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_security", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionSecurity];
     }
     else if (section == adminToolsIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_admin_tools", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionAdminTools];
     }
     else if (section == otherActionsIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_other", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionOther];
     }
     else if (section == directChatsIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_direct_chats", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionDirectChats];
     }
     else if (section == devicesIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_devices", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionDevices];
     }
     
     return nil;
@@ -748,46 +746,60 @@
     switch (action)
     {
         case MXKRoomMemberDetailsActionInvite:
-            title = NSLocalizedStringFromTable(@"room_participants_action_invite", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionInvite];
             break;
         case MXKRoomMemberDetailsActionLeave:
-            title = NSLocalizedStringFromTable(@"room_participants_action_leave", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionLeave];
             break;
         case MXKRoomMemberDetailsActionKick:
-            title = NSLocalizedStringFromTable(@"room_participants_action_remove", @"Vector", nil);
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                title = [VectorL10n spaceParticipantsActionRemove];
+            }
+            else
+            {
+                title = [VectorL10n roomParticipantsActionRemove];
+            }
             break;
         case MXKRoomMemberDetailsActionBan:
-            title = NSLocalizedStringFromTable(@"room_participants_action_ban", @"Vector", nil);
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
+            {
+                title = [VectorL10n spaceParticipantsActionBan];
+            }
+            else
+            {
+                title = [VectorL10n roomParticipantsActionBan];
+            }
             break;
         case MXKRoomMemberDetailsActionUnban:
-            title = NSLocalizedStringFromTable(@"room_participants_action_unban", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionUnban];
             break;
         case MXKRoomMemberDetailsActionIgnore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_ignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionIgnore];
             break;
         case MXKRoomMemberDetailsActionUnignore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_unignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionUnignore];
             break;
         case MXKRoomMemberDetailsActionSetDefaultPowerLevel:
-            title = NSLocalizedStringFromTable(@"room_participants_action_set_default_power_level", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionSetDefaultPowerLevel];
             break;
         case MXKRoomMemberDetailsActionSetModerator:
-            title = NSLocalizedStringFromTable(@"room_participants_action_set_moderator", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionSetModerator];
             break;
         case MXKRoomMemberDetailsActionSetAdmin:
-            title = NSLocalizedStringFromTable(@"room_participants_action_set_admin", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionSetAdmin];
             break;
         case MXKRoomMemberDetailsActionStartChat:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_chat", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartNewChat];
             break;
         case MXKRoomMemberDetailsActionStartVoiceCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_voice_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVoiceCall];
             break;
         case MXKRoomMemberDetailsActionStartVideoCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_video_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVideoCall];
             break;
         case MXKRoomMemberDetailsActionMention:
-            title = NSLocalizedStringFromTable(@"room_participants_action_mention", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionMention];
             break;
         default:
             break;
@@ -812,26 +824,26 @@
             
             switch (self.encryptionTrustLevel) {
                 case UserEncryptionTrustLevelTrusted:
-                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verified", @"Vector", nil);
+                    statusText = [VectorL10n roomParticipantsActionSecurityStatusVerified];
                     break;
                 case UserEncryptionTrustLevelNotVerified:
                 case UserEncryptionTrustLevelNoCrossSigning:
                 {
                     if (self.isRoomMemberCurrentUser)
                     {
-                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_complete_security", @"Vector", nil);
+                        statusText = [VectorL10n roomParticipantsActionSecurityStatusCompleteSecurity];
                     }
                     else
                     {
-                        statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_verify", @"Vector", nil);
+                        statusText = [VectorL10n roomParticipantsActionSecurityStatusVerify];
                     }
                 }
                     break;
                 case UserEncryptionTrustLevelWarning:
-                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_warning", @"Vector", nil);
+                    statusText = [VectorL10n roomParticipantsActionSecurityStatusWarning];
                     break;
                 default:
-                    statusText = NSLocalizedStringFromTable(@"room_participants_action_security_status_loading", @"Vector", nil);
+                    statusText = [VectorL10n roomParticipantsActionSecurityStatusLoading];
                     break;
             }
             
@@ -862,21 +874,21 @@
                 case UserEncryptionTrustLevelTrusted:
                 {
                     NSString *info = (self.mxRoom.isDirect) ?
-                    NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted_for_dm", @"Vector", nil) :
-                    NSLocalizedStringFromTable(@"room_participants_security_information_room_encrypted", @"Vector", nil);
+                    [VectorL10n roomParticipantsSecurityInformationRoomEncryptedForDm] :
+                    [VectorL10n roomParticipantsSecurityInformationRoomEncrypted];
                     [encryptionInformation appendString:info];
                 }
                     break;
                 case UserEncryptionTrustLevelNone:
                     {
                         NSString *info = (self.mxRoom.isDirect) ?
-                        NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted_for_dm", @"Vector", nil) :
-                        NSLocalizedStringFromTable(@"room_participants_security_information_room_not_encrypted", @"Vector", nil);
+                        [VectorL10n roomParticipantsSecurityInformationRoomNotEncryptedForDm] :
+                        [VectorL10n roomParticipantsSecurityInformationRoomNotEncrypted];
                         [encryptionInformation appendString:info];
                     }
                     break;
                 case UserEncryptionTrustLevelUnknown:
-                    [encryptionInformation appendString:NSLocalizedStringFromTable(@"room_participants_security_information_loading", @"Vector", nil)];
+                    [encryptionInformation appendString:[VectorL10n roomParticipantsSecurityLoading]];
                     break;
                 default:
                     break;
@@ -962,7 +974,7 @@
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
             roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
             roomCell.avatarImageView.userInteractionEnabled = NO;
-            roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
+            roomCell.titleLabel.text = [VectorL10n roomParticipantsActionStartNewChat];
         }
         
         cell = roomCell;
@@ -1047,7 +1059,7 @@
         if (indexPath.row < directChatsArray.count)
         {
             // Open this room
-            [[AppDelegate theDelegate] showRoom:directChatsArray[indexPath.row] andEventId:nil withMatrixSession:self.mainSession];
+            [self showRoomWithId:directChatsArray[indexPath.row]];
         }
         else
         {
@@ -1110,7 +1122,7 @@
                 __weak typeof(self) weakSelf = self;
                 
                 // Ban
-                currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_ban_prompt_reason", @"Vector", nil)
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionBanPromptReason]
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
                 
@@ -1120,7 +1132,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1132,7 +1144,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"ban", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ban]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                      
                                                                      if (weakSelf)
@@ -1174,7 +1186,7 @@
                 __weak typeof(self) weakSelf = self;
                 
                 // Kick
-                currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_event_action_kick_prompt_reason", @"Vector", nil)
+                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionKickPromptReason]
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleAlert];
                 
@@ -1184,7 +1196,7 @@
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -1196,7 +1208,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                    
                                                                    if (weakSelf)
@@ -1266,7 +1278,7 @@
         __block MXKImageView * avatarFullScreenView = [[MXKImageView alloc] initWithFrame:CGRectZero];
         avatarFullScreenView.stretchable = YES;
 
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok]
                                           handler:^(MXKImageView* imageView, NSString* buttonTitle) {
                                               
                                               MXStrongifyAndReturnIfNil(self);

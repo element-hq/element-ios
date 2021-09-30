@@ -84,6 +84,7 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    self.showParticipantCustomAccessoryView = YES;
 }
 
 - (void)viewDidLoad
@@ -111,15 +112,19 @@
     
     [NSLayoutConstraint activateConstraints:@[_searchBarTopConstraint]];
     
-    self.navigationItem.title = NSLocalizedStringFromTable(@"room_participants_title", @"Vector", nil);
+    self.navigationItem.title = [VectorL10n roomParticipantsTitle];
     
-    if (self.mxRoom.isDirect)
+    if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
     {
-        _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
+        _searchBarView.placeholder = [VectorL10n searchDefaultPlaceholder];
+    }
+    else if (self.mxRoom.isDirect)
+    {
+        _searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembersForDm];
     }
     else
     {
-        _searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+        _searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembers];
     }
     _searchBarView.returnKeyType = UIReturnKeyDone;
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -340,13 +345,17 @@
         {
             self.searchBarHeader.hidden = NO;
             
-            if (self.mxRoom.isDirect)
+            if (self.mxRoom.summary.roomType == MXRoomTypeSpace)
             {
-                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members_for_dm", @"Vector", nil);
+                self.searchBarView.placeholder = [VectorL10n searchDefaultPlaceholder];
+            }
+            else if (self.mxRoom.isDirect)
+            {
+                self.searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembersForDm];
             }
             else
             {
-                self.searchBarView.placeholder = NSLocalizedStringFromTable(@"room_participants_filter_room_members", @"Vector", nil);
+                self.searchBarView.placeholder = [VectorL10n roomParticipantsFilterRoomMembers];
             }
 
             // Update the current matrix session.
@@ -565,7 +574,7 @@
     }
     
     [contactsPickerViewController showSearch:YES];
-    contactsPickerViewController.searchBar.placeholder = NSLocalizedStringFromTable(@"room_participants_invite_another_user", @"Vector", nil);
+    contactsPickerViewController.searchBar.placeholder = [VectorL10n roomParticipantsInviteAnotherUser];
     
     // Apply the search pattern if any
     if (currentSearchText)
@@ -604,7 +613,7 @@
                     if (mxMember.membership == MXMembershipJoin || mxMember.membership == MXMembershipInvite)
                     {
                         // The user is in this room
-                        NSString *displayName = NSLocalizedStringFromTable(@"you", @"Vector", nil);
+                        NSString *displayName = [VectorL10n you];
 
                         self->userParticipant = [[Contact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
                         self->userParticipant.mxMember = [roomState.members memberWithUserId:userId];
@@ -870,6 +879,19 @@
     }
 }
 
+- (void)showDetailFor:(MXRoomMember* _Nonnull)member from:(UIView* _Nullable)sourceView {
+    memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
+    
+    // Set delegate to handle action on member (start chat, mention)
+    memberDetailsViewController.delegate = self;
+    memberDetailsViewController.enableMention = _enableMention;
+    memberDetailsViewController.enableVoipCall = NO;
+    
+    [memberDetailsViewController displayRoomMember:member withMatrixRoom:self.mxRoom];
+    
+    [self pushViewController:memberDetailsViewController];
+}
+
 #pragma mark - UITableView data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -948,6 +970,7 @@
     {
         ContactTableViewCell* participantCell = [tableView dequeueReusableCellWithIdentifier:@"ParticipantTableViewCellId" forIndexPath:indexPath];
         participantCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        participantCell.showCustomAccessoryView = self.showParticipantCustomAccessoryView;
         
         participantCell.mxRoom = self.mxRoom;
         
@@ -1015,10 +1038,10 @@
                 
                 switch (roomPowerLevel) {
                     case RoomPowerLevelAdmin:
-                        powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_admin", @"Vector", nil);
+                        powerLevelText = [VectorL10n roomMemberPowerLevelShortAdmin];
                         break;
                     case RoomPowerLevelModerator:
-                        powerLevelText = NSLocalizedStringFromTable(@"room_member_power_level_short_moderator", @"Vector", nil);
+                        powerLevelText = [VectorL10n roomMemberPowerLevelShortModerator];
                         break;
                     default:
                         powerLevelText = nil;
@@ -1116,7 +1139,7 @@
         headerLabel.font = [UIFont boldSystemFontOfSize:15.0];
         headerLabel.backgroundColor = [UIColor clearColor];
         
-        headerLabel.text = NSLocalizedStringFromTable(@"room_participants_invited_section", @"Vector", nil);
+        headerLabel.text = [VectorL10n roomParticipantsInvitedSection];
         
         [sectionHeader addSubview:headerLabel];
     }
@@ -1185,16 +1208,8 @@
     
     if (contact.mxMember)
     {
-        memberDetailsViewController = [RoomMemberDetailsViewController roomMemberDetailsViewController];
-        
-        // Set delegate to handle action on member (start chat, mention)
-        memberDetailsViewController.delegate = self;
-        memberDetailsViewController.enableMention = _enableMention;
-        memberDetailsViewController.enableVoipCall = NO;
-        
-        [memberDetailsViewController displayRoomMember:contact.mxMember withMatrixRoom:self.mxRoom];
-        
-        [self pushViewController:memberDetailsViewController];
+        UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+        [self showDetailFor:contact.mxMember from:selectedCell];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1275,20 +1290,20 @@
             NSString *title, *message;
             if (self.mxRoom.isDirect)
             {
-                title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
-                message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
+                title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
+                message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
             }
             else
             {
-                title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil);
-                message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+                title = [VectorL10n roomParticipantsLeavePromptTitle];
+                message = [VectorL10n roomParticipantsLeavePromptMsg];
             }
             
             currentAlert = [UIAlertController alertControllerWithTitle:title
                                                                message:message
                                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1297,7 +1312,7 @@
                                                                
                                                            }]];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -1368,12 +1383,12 @@
                     NSString *memberUserId = contact.mxMember.userId;
                     
                     // Kick ?
-                    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_remove_prompt_msg", @"Vector", nil), (contact ? contact.displayName : memberUserId)];
-                    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_remove_prompt_title", @"Vector", nil)
+                    NSString *promptMsg = [VectorL10n roomParticipantsRemovePromptMsg:(contact ? contact.displayName : memberUserId)];
+                    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsRemovePromptTitle]
                                                                        message:promptMsg
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1382,7 +1397,7 @@
                                                                        
                                                                    }]];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
                                                                      style:UIAlertActionStyleDefault
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1419,10 +1434,10 @@
                 {
                     // This is a third-party invite
                     currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                       message:NSLocalizedStringFromTable(@"room_participants_remove_third_party_invite_prompt_msg", @"Vector", nil)
+                                                                       message:[VectorL10n roomParticipantsRemoveThirdPartyInvitePromptMsg]
                                                                 preferredStyle:UIAlertControllerStyleAlert];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                                      style:UIAlertActionStyleCancel
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1431,7 +1446,7 @@
                                                                        
                                                                    }]];
                     
-                    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"remove", @"Vector", nil)
+                    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
                                                                      style:UIAlertActionStyleDefault
                                                                    handler:^(UIAlertAction * action) {
                                                                        
@@ -1489,12 +1504,12 @@
     }
     
     // Invite ?
-    NSString *promptMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_participants_invite_prompt_msg", @"Vector", nil), contact.displayName];
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_participants_invite_prompt_title", @"Vector", nil)
+    NSString *promptMsg = [VectorL10n roomParticipantsInvitePromptMsg:contact.displayName];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsInvitePromptTitle]
                                                        message:promptMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1506,7 +1521,7 @@
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"invite", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n invite]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1580,7 +1595,7 @@
                                                                        if ([error.domain isEqualToString:kMXRestClientErrorDomain]
                                                                            && error.code == MXRestClientErrorMissingIdentityServer)
                                                                        {
-                                                                           NSString *message = [NSBundle mxk_localizedStringForKey:@"error_invite_3pid_with_no_identity_server"];
+                                                                           NSString *message = [VectorL10n errorInvite3pidWithNoIdentityServer];
                                                                            [[AppDelegate theDelegate] showAlertWithTitle:message message:nil];
                                                                        }
                                                                        else

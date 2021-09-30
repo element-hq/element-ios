@@ -60,7 +60,7 @@ class RoomNotificationSettingsViewModelTests: XCTestCase {
     }
     
     func setupViewModel(roomEncrypted: Bool, showAvatar: Bool) {
-        let avatarData: AvatarType? = showAvatar ? Constants.avatarData : nil
+        let avatarData: AvatarProtocol? = showAvatar ? Constants.avatarData : nil
         let viewModel = RoomNotificationSettingsViewModel(roomNotificationService: service, avatarData: avatarData, displayName: Constants.roomDisplayName, roomEncrypted: roomEncrypted)
         viewModel.viewDelegate = view
         viewModel.coordinatorDelegate = coordinator

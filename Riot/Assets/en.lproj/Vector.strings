@@ -63,6 +63,8 @@
 "switch" = "Switch";
 "more" = "More";
 "less" = "Less";
+"open" = "Open";
+"done" = "Done";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -189,6 +191,7 @@
 "room_recents_low_priority_section" = "LOW PRIORITY";
 "room_recents_server_notice_section" = "SYSTEM ALERTS";
 "room_recents_invites_section" = "INVITES";
+"room_recents_suggested_rooms_section" = "SUGGESTED ROOMS";
 "room_recents_start_chat_with" = "Start chat";
 "room_recents_create_empty_room" = "Create room";
 "room_recents_join_room" = "Join room";
@@ -240,7 +243,7 @@ Tap the + to start adding people.";
 "contacts_address_book_no_identity_server" = "No identity server configured";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
-"contacts_address_book_permission_denied" = "You didn't allow Element to access your local contacts";
+"contacts_address_book_permission_denied" = "You didn't allow %@ to access your local contacts";
 "contacts_address_book_permission_denied_alert_title" = "Contacts disabled";
 "contacts_address_book_permission_denied_alert_message" = "To enable contacts, go to your device settings.";
 "contacts_user_directory_section" = "USER DIRECTORY";
@@ -458,6 +461,7 @@ Tap the + to start adding people.";
 
 "settings_user_settings" = "USER SETTINGS";
 "settings_sending_media" = "SENDING IMAGES AND VIDEOS";
+"settings_links" = "LINKS";
 "settings_notifications" = "NOTIFICATIONS";
 "settings_calls_settings" = "CALLS";
 "settings_discovery_settings" = "DISCOVERY";
@@ -532,7 +536,7 @@ Tap the + to start adding people.";
 "settings_mentions_and_keywords_encryption_notice" = "You won’t get notifications for mentions & keywords in encrypted rooms on mobile.";
 
 "settings_enable_callkit" = "Integrated calling";
-"settings_callkit_info" = "Receive incoming calls on your lock screen. See your Element calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
+"settings_callkit_info" = "Receive incoming calls on your lock screen. See your %@ calls in the system's call history. If iCloud is enabled, this call history will be shared with Apple.";
 "settings_calls_stun_server_fallback_button" = "Allow fallback call assist server";
 "settings_calls_stun_server_fallback_description" = "Allow fallback call assist server %@ when your homeserver does not offer one (your IP address would be shared during a call).";
 
@@ -549,7 +553,7 @@ Tap the + to start adding people.";
 "settings_ui_theme_picker_message_invert_colours" = "\"Auto\" uses your device's \"Invert Colours\" settings";
 "settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" matches your device's system theme";
 
-"settings_show_url_previews" = "Show inline URL previews";
+"settings_show_url_previews" = "Show website preview";
 "settings_show_url_previews_description" = "Previews will only be shown in unencrypted rooms.";
 
 "settings_unignore_user" = "Show all messages from %@?";
@@ -681,7 +685,7 @@ Tap the + to start adding people.";
 "security_settings_complete_security_alert_title" = "Complete security";
 "security_settings_complete_security_alert_message" = "You should complete security on your current session first.";
 
-"security_settings_coming_soon" = "Sorry. This action is not available on Element iOS yet. Please use another Matrix client to set it up. Element iOS will use it.";
+"security_settings_coming_soon" = "Sorry. This action is not available on %@ iOS yet. Please use another Matrix client to set it up. %@ iOS will use it.";
 "security_settings_user_password_description" = "Confirm your identity by entering your account password";
 
 // Manage session
@@ -942,7 +946,7 @@ Tap the + to start adding people.";
 "google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
 
 // Crypto
-"e2e_enabling_on_app_update" = "Element now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
+"e2e_enabling_on_app_update" = "%@ now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
 "e2e_need_log_in_again" = "You need to log back in to generate end-to-end encryption keys for this session and submit the public key to your homeserver.\nThis is a once off; sorry for the inconvenience.";
 
 // Key backup wrong version
@@ -1058,7 +1062,7 @@ Tap the + to start adding people.";
 
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "Request Sent";
-"rerequest_keys_alert_message" = "Please launch Element on another device that can decrypt the message so it can send the keys to this session.";
+"rerequest_keys_alert_message" = "Please launch %@ on another device that can decrypt the message so it can send the keys to this session.";
 
 // MARK: Secure backup setup
 
@@ -1246,8 +1250,8 @@ Tap the + to start adding people.";
 
 "device_verification_self_verify_wait_title" = "Complete security";
 "device_verification_self_verify_wait_new_sign_in_title" = "Verify this login";
-"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest Element on your other devices:";
-"device_verification_self_verify_wait_additional_information" = "This works with Element and other cross-signing capable Matrix clients.";
+"device_verification_self_verify_wait_information" = "Verify this session from one of your other sessions, granting it access to encrypted messages.\n\nUse the latest %@ on your other devices:";
+"device_verification_self_verify_wait_additional_information" = "This works with %@ and other cross-signing capable Matrix clients.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Use Security Key";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Use Security Phrase or Key";
 "device_verification_self_verify_wait_recover_secrets_additional_information" = "If you can't access an existing session";
@@ -1560,7 +1564,7 @@ Tap the + to start adding people.";
 
 // MARK: - Major update
 
-"major_update_title" = "Riot is now Element";
+"major_update_title" = "Riot is now %@";
 "major_update_information" = "We're excited to announce we've changed name! Your app is up to date and you're signed in to your account.";
 "major_update_learn_more_action" = "Learn more";
 "major_update_done_action" = "Got it";
@@ -1581,7 +1585,8 @@ Tap the + to start adding people.";
 "pin_protection_mismatch_error_title" = "PINs don't match";
 "pin_protection_mismatch_error_message" = "Please try again";
 "pin_protection_mismatch_too_many_times_error_message" = "If you can't remember your PIN, tap the forgot PIN button.";
-"pin_protection_settings_section_header_x" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
 "pin_protection_settings_section_footer" = "To reset your PIN, you'll need to re-login and create a new one.";
 "pin_protection_settings_enabled_forced" = "PIN enabled";
 "pin_protection_settings_enable_pin" = "Enable PIN";
@@ -1698,6 +1703,36 @@ Tap the + to start adding people.";
 "space_beta_announce_subtitle" = "The new version of communities";
 "space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";
 
+"spaces_home_space_title" = "Home";
+"spaces_left_panel_title" = "Spaces";
+"leave_space_title" = "Leave %@";
+"leave_space_message" = "Are you sure you want to leave %@? Do you also want to leave all rooms and spaces of this space?";
+"leave_space_message_admin_warning" = "You are admin of this space, ensure that you have transferred admin right to another member before leaving.";
+"leave_space_only_action" = "Don't leave any rooms";
+"leave_space_and_all_rooms_action" = "Leave all rooms and spaces";
+"spaces_explore_rooms" = "Explore rooms";
+"spaces_suggested_room" = "Suggested";
+"space_tag" = "space";
+"spaces_empty_space_title" = "This space has no rooms (yet)";
+"spaces_empty_space_detail" = "Some rooms may be hidden because they’re private and you need an invite.";
+"spaces_no_result_found_title" = "No results found";
+"spaces_no_room_found_detail" = "Some results may be hidden because they’re private and you need an invite to join them.";
+"spaces_no_member_found_detail" = "Looking for someone not in %@? For now, you can invite them on web or desktop.";
+"spaces_coming_soon_title" = "Coming soon";
+"spaces_add_rooms_coming_soon_title" = "Adding rooms coming soon";
+"spaces_invites_coming_soon_title" = "Invites coming soon";
+"spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.";
+"space_participants_action_remove" = "Remove from this space";
+"space_participants_action_ban" = "Ban from this space";
+
+"space_private_join_rule" = "Private space";
+"space_public_join_rule" = "Public space";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_avatar_view_accessibility_hint" = "Change space avatar";
+
 // Mark: - User avatar view
 
 "user_avatar_view_accessibility_label" = "avatar";
@@ -1722,15 +1757,15 @@ Tap the + to start adding people.";
 // Mark: - Version check
 
 "version_check_banner_title_supported" = "We’re ending support for iOS %@";
-"version_check_banner_subtitle_supported" = "We will soon be ending support for Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.";
+"version_check_banner_subtitle_supported" = "We will soon be ending support for %@ on iOS %@. To continue using %@ to its full potential, we advise you to upgrade your version of iOS.";
 
 "version_check_banner_title_deprecated" = "We’re no longer supporting iOS %@";
-"version_check_banner_subtitle_deprecated" = "We are no longer supporting Element on iOS %@. To continue using Element to its full potential, we advise you to upgrade your version of iOS.";
+"version_check_banner_subtitle_deprecated" = "We are no longer supporting %@ on iOS %@. To continue using %@ to its full potential, we advise you to upgrade your version of iOS.";
 
 "version_check_modal_title_supported" = "We’re ending support for iOS %@";
-"version_check_modal_subtitle_supported" = "We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not compatible with some of those fixes and will no longer be supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.";
+"version_check_modal_subtitle_supported" = "We've been working on enhancing %@ for a faster and more polished experience. Unfortunately your current version of iOS is not compatible with some of those fixes and will no longer be supported.\nWe're advising you to upgrade your operating system to use %@ to its full potential.";
 "version_check_modal_action_title_supported" = "Got it";
 
 "version_check_modal_title_deprecated" = "We’re no longer supporting iOS %@";
-"version_check_modal_subtitle_deprecated" = "We've been working on enhancing Element for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use Element to its full potential.";
+"version_check_modal_subtitle_deprecated" = "We've been working on enhancing %@ for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use %@ to its full potential.";
 "version_check_modal_action_title_deprecated" = "Find out how";

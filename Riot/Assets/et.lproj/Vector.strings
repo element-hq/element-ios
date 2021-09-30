@@ -210,11 +210,6 @@
 "deactivate_account_validate_action" = "Kas eemaldame selle konto kasutusest";
 "deactivate_account_password_alert_title" = "Eemalda konto";
 "deactivate_account_password_alert_message" = "Jätkamiseks palun sisesta oma salasõna";
-// MARK: Clients
-"client_desktop_name" = "Element Desktop";
-"client_web_name" = "Element Web";
-"client_ios_name" = "Element iOS";
-"client_android_name" = "Element Android";
 "auth_login_single_sign_on" = "Logi sisse";
 // Room recents
 "room_recents_directory_section" = "JUTUTUBADE LOEND";
@@ -222,9 +217,9 @@
 "room_recents_people_section" = "INIMESED";
 "room_recents_conversations_section" = "JUTUTOAD";
 "room_recents_no_conversation" = "Jututube ei leidu";
-"contacts_address_book_permission_denied" = "Sa pole Element'ile andnud ligipääsu kohalikele kontaktidele";
-"security_settings_coming_soon" = "Vabandust. See tegevus pole veel kasutatav Element iOS rakenduses. Palun kasuta seadistamiseks mõnda muud Matrix'i klienti ning Element iOS oskab seda kasutada.";
-"major_update_title" = "Riot'i uus nimi on Element";
+"contacts_address_book_permission_denied" = "Sa pole %@'ile andnud ligipääsu kohalikele kontaktidele";
+"security_settings_coming_soon" = "Vabandust. See tegevus pole veel kasutatav %@ iOS rakenduses. Palun kasuta seadistamiseks mõnda muud Matrix'i klienti ning %@ iOS oskab seda kasutada.";
+"major_update_title" = "Riot'i uus nimi on %@";
 "security_settings_secure_backup_synchronise" = "Sünkroniseeri";
 "security_settings_secure_backup_delete" = "Kustuta varukoopia";
 "security_settings_backup" = "SÕNUMITE VARUNDUS";
@@ -498,7 +493,7 @@
 "settings_pin_rooms_with_missed_notif" = "Klammerda jututoad, kus leidub lugemata teavitusi";
 "settings_pin_rooms_with_unread" = "Klammerda jututoad, kus leidub lugemata sõnumeid";
 "settings_enable_callkit" = "Lõimitud helistamine";
-"settings_callkit_info" = "Vasta kõnedele lukustuskuvalt. Vaata Element'i kõnesid süsteemi kõnelogist. Kui iCloud on kasutusel, siis kõnede ajalugu jagatakse Applega.";
+"settings_callkit_info" = "Vasta kõnedele lukustuskuvalt. Vaata %@'i kõnesid süsteemi kõnelogist. Kui iCloud on kasutusel, siis kõnede ajalugu jagatakse Applega.";
 "settings_calls_stun_server_fallback_button" = "Kasuta kõnehõlbustusserverit";
 "settings_calls_stun_server_fallback_description" = "Kui sinu koduserveris on seadistamata kõnehõlbustusserver, siis luba alternatiivina kasutada avalikku serverit %@ (kõne ajal jagatakse temaga nii sinu avalikku, kui privaatvõrgu IP-aadressi).";
 "settings_integrations_allow_button" = "Halda lõiminguid";
@@ -904,8 +899,8 @@
 "key_backup_recover_from_passphrase_info" = "Selleks, et krüptitud sõnumite ajalugu lukust lahti võtta, kasuta oma taastamiseks mõeldud turvafraasi";
 "key_backup_recover_from_passphrase_passphrase_title" = "Sisesta";
 "device_verification_self_verify_wait_title" = "Vormista turvaseadistused lõpuni";
-"device_verification_self_verify_wait_information" = "Verifitseeri see sessioon oma mõnest muust sessioonist ning anna sellega ka ligipääs oma krüptitud sõnumitele.\n\nKasuta viimast Element'i versiooni oma muudes seadmetes:";
-"device_verification_self_verify_wait_additional_information" = "See toimib Element'is või mõnes teises Matrix'i kliendis, mis oskab risttunnustamist.";
+"device_verification_self_verify_wait_information" = "Verifitseeri see sessioon oma mõnest muust sessioonist ning anna sellega ka ligipääs oma krüptitud sõnumitele.\n\nKasuta viimast %@'i versiooni oma muudes seadmetes:";
+"device_verification_self_verify_wait_additional_information" = "See toimib %@'is või mõnes teises Matrix'i kliendis, mis oskab risttunnustamist.";
 "device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Kasuta turvavõtit";
 "device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Kasuta turvafraasi või turvavõtit";
 "key_verification_verify_sas_title_emoji" = "Võrdle emoji'sid";
@@ -995,7 +990,7 @@
 // Crash report
 "google_analytics_use_prompt" = "Kas sa soovid aitata parandada %@ rakendust saates arendajatele automaatseid ja anonüümsed veateateid ning kasutusteavet?";
 // Crypto
-"e2e_enabling_on_app_update" = "Element nüüd toetab läbivat krüptimist ning selle kasutusele võtmiseks peaksid sa uuesti sisse logima.\n\nSa võid teha seda kohe või määrata rakenduse seadistustes.";
+"e2e_enabling_on_app_update" = "%@ nüüd toetab läbivat krüptimist ning selle kasutusele võtmiseks peaksid sa uuesti sisse logima.\n\nSa võid teha seda kohe või määrata rakenduse seadistustes.";
 "e2e_need_log_in_again" = "Selle sessiooni läbiva krüptimise võtmete loomiseks ja avaliku võtme salvestamiseks koduserverisse peaksid sa uuesti sisse logima.\nVabandame ebamugavuse pärast, aga see õnneks on ühekordne toiming.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Uus võtmete varukoopia";
@@ -1072,7 +1067,8 @@
 "major_update_information" = "Meil on hea meel teatada, et oleme muutnud nime! Sinu rakendus on uuendatud ning sa oled oma kontole sisse logitud.";
 "major_update_learn_more_action" = "Lisateave";
 "major_update_done_action" = "Selge lugu";
-"pin_protection_settings_section_header_x" = "PIN-kood ja %@";
+"pin_protection_settings_section_header" = "PIN-kood";
+"pin_protection_settings_section_header_with_biometrics" = "PIN-kood ja %@";
 "pin_protection_settings_section_footer" = "PIN-koodi lähtestamiseks peaksid sa uuesti sisse looma ning seadistama uue PIN-koodi.";
 "pin_protection_settings_enabled_forced" = "PIN-kood on kasutusel";
 "pin_protection_settings_enable_pin" = "Võta PIN-kood kasutusele";
@@ -1095,7 +1091,7 @@
 "deactivate_account_informations_part3" = "\n\nSinu konto kustutamine ";
 "deactivate_account_informations_part4_emphasize" = "vaikimisi ei tähenda, et unustatakse ka sinu saadetud sõnumid. ";
 "deactivate_account_informations_part5" = "Kui sa siiski soovid seda, siis palun tee märge alljärgnevasse kasti.\n\nMatrix'i sõnumite nähtavus on sarnane e-posti kirjadega. Sõnumite unustamine tegelikult tähendab seda, et sinu varemsaadetud sõnumeid ei jagata uute või veel registreerumata kasutajatega, kuid registeerunud kasutajad, kes juba on need sõnumid saanud, võivad neid ka jätkuvalt lugeda.";
-"rerequest_keys_alert_message" = "Palun käivita Element mõnes muus seadmes, mis suudab neid sõnumeid dekrüptida ja seega saata krüptovõtmeid siia sessiooni.";
+"rerequest_keys_alert_message" = "Palun käivita %@ mõnes muus seadmes, mis suudab neid sõnumeid dekrüptida ja seega saata krüptovõtmeid siia sessiooni.";
 "settings_discovery_three_pids_management_information_part1" = "Halda missuguse e-posti aadressi ja telefoninumbri alusel teised kasutajad saavad sind kutsuda jututubadesse. Lisa või eemalda e-posti aadresse ja telefoninumbreid sellest loendist ";
 "settings_discovery_three_pid_details_information_email" = "Halda selle e-posti aadressi eelistusi, mille alusel teised kasutajad saavad sind leida ja kutsuda jututubade liikmeks. E-posti aadresse lisada ja muuta saad kasutajakonto seadistustest.";
 "settings_discovery_three_pid_details_title_phone_number" = "Halda telefoninumbrit";
@@ -1310,12 +1306,12 @@
 // Chat
 "room_slide_to_end_group_call" = "Viipa kõne lõpetamiseks kõigi jaoks";
 "callbar_only_single_active_group" = "Rühmakõnega liitumiseks puuduta (%@)";
-"space_beta_announce_information" = "Kogukonnakeskused on uus viis inimeste ja jututubade sidumiseks. Neid veel ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses.";
+"space_beta_announce_information" = "Kogukonnakeskused on uus viis inimeste ja jututubade sidumiseks. Neid veel ei saa iOS'is kasutada, kuid nad on olemas %@'i veebirakenduses ja töölauarakenduses.";
 "space_beta_announce_subtitle" = "Uus versioon senistest kogukondadest";
 "space_beta_announce_title" = "Kogukonnakeskused saavad varsti olema ka siin";
 "space_beta_announce_badge" = "BEETA";
 "space_feature_unavailable_information" = "Kogukonnakeskused on uus viis inimeste ja jututubade sidumiseks.\n\nNad saavad varsti olema kasutusel ka siin keskkonnas. Kui praegu liitud mõne kogukonnakeskusega mõnes muus keskkonnas, siis pääsed ligi kõikidele seotud jututubadele ka siin.";
-"space_feature_unavailable_subtitle" = "Kogukonnakeskuseid ei saa iOS'is kasutada, kuid nad on olemas Element'i veebirakenduses ja töölauarakenduses";
+"space_feature_unavailable_subtitle" = "Kogukonnakeskuseid ei saa iOS'is kasutada, kuid nad on olemas %@'i veebirakenduses ja töölauarakenduses";
 
 // Mark: - Spaces
 
@@ -1379,14 +1375,14 @@
 "voice_message_lock_screen_placeholder" = "Häälsõnum";
 "event_formatter_call_has_ended_with_time" = "Kõne lõppes • %@";
 "version_check_modal_action_title_deprecated" = "Vaata, kuidas";
-"version_check_modal_subtitle_deprecated" = "Me oleme arendanud Element'i kiiremaks ja mugavamaks. Sinu praegune iOS'i versioon ei oska kõiki neid uuendusi kasutada ja tema tugi on lõppenud.\nKui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_modal_subtitle_deprecated" = "Me oleme arendanud %@'i kiiremaks ja mugavamaks. Sinu praegune iOS'i versioon ei oska kõiki neid uuendusi kasutada ja tema tugi on lõppenud.\nKui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
 "version_check_modal_title_deprecated" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppenud";
 "version_check_modal_action_title_supported" = "Selge lugu";
-"version_check_modal_subtitle_supported" = "Me oleme arendanud Element'i kiiremaks ja mugavamaks. Sinu praegune iOS'i versioon ei oska kõiki neid uuendusi kasutada ja tema tugi on lõppemas.\nKui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_modal_subtitle_supported" = "Me oleme arendanud %@'i kiiremaks ja mugavamaks. Sinu praegune iOS'i versioon ei oska kõiki neid uuendusi kasutada ja tema tugi on lõppemas.\nKui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
 "version_check_modal_title_supported" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppemas";
-"version_check_banner_subtitle_deprecated" = "Me oleme lõpetanud selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_banner_subtitle_deprecated" = "Me oleme lõpetanud selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
 "version_check_banner_title_deprecated" = "Rakenduse kasutamise võimalus iOS'i versioonis %@ on lõppenud";
-"version_check_banner_subtitle_supported" = "Me üsna varsti lõpetame selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada Element'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
+"version_check_banner_subtitle_supported" = "Me üsna varsti lõpetame selle rakenduse toe IOS'i versioonis %@. Kui soovid kasutada %@'i kõiki võimalusi, siis palun uuenda oma iOS'i versiooni.";
 
 // Mark: - Version check
 
@@ -1410,3 +1406,40 @@
 "settings_mentions_and_keywords" = "Mainimised ja märksõnad";
 "settings_default" = "Vaikimisi teavitused";
 "settings_notifications" = "TEAVITUSED";
+"settings_confirm_media_size_description" = "Kui see valik on kasutusel, siis palume sul kinnitada saadetavate piltide ja videote suurused.";
+"settings_show_url_previews_description" = "Eelvaateid saame kuvada vaid krüptimata jututubades.";
+"settings_show_url_previews" = "Näita sisus veebilehtede eelvaateid";
+"settings_confirm_media_size" = "Enne saatmist kinnita meedia mõõdud";
+"settings_sending_media" = "SAADAN PILTE JA VIDEOSID";
+"space_avatar_view_accessibility_hint" = "Muuda kogukonnakeskuse tunnuspilti";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "tunnuspilt";
+"space_public_join_rule" = "Avalik kogukond";
+"space_private_join_rule" = "Privaatne kogukond";
+"space_participants_action_ban" = "Sea selles kogukonnakeskus suhtluskeeld";
+"space_participants_action_remove" = "Eemalda sellest kogukonnakeskusest";
+"spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha Element'i töölauarakenduses.";
+"spaces_invites_coming_soon_title" = "Varsti lisandub kutsete saatmine";
+"spaces_add_rooms_coming_soon_title" = "Varsti on jututubade lisamine võimalik";
+"spaces_coming_soon_title" = "Mõne aja pärast on meil uuendusi";
+"spaces_no_member_found_detail" = "Kas otsid kedagi, kes ei ole %@ kogukonna liige? Seni kuni me iOS rakendust arendame, saade neile kutse meie veebirakendusest või töölauarakendusest.";
+"spaces_no_room_found_detail" = "Kuna mõned otsingutulemused on privaatsed ja nad seega võivad olla varjatud ning sa vajad liitumiseks kutset.";
+"spaces_no_result_found_title" = "Mitte midagi ei leidu";
+"spaces_empty_space_detail" = "Kuna mõned jututoad on privaatsed ja nad seega võivad olla varjatud ning sa vajad liitumiseks kutset.";
+"spaces_empty_space_title" = "Selles kogukonnakeskuses pole veel jututube";
+"space_tag" = "kogukonnakeskus";
+"spaces_suggested_room" = "Soovitatud";
+"spaces_explore_rooms" = "Uuri jututubasid";
+"leave_space_and_all_rooms_action" = "Lahku kõikidest jututubadest ja kogukondadest";
+"leave_space_only_action" = "Ära lahku ühestki jututoast";
+"leave_space_message_admin_warning" = "Sa oled selle kogukonnakeskuse haldaja. Enne oma lahkumist palun lisa siia veel vähemalt üks uus haldaja.";
+"leave_space_message" = "Kas sa oled kindel, et soovid lahkuda %@ kogukonnakeskusest? Kas sa samaga soovid lahkuda ka kõikidest jututubadest ja teistest kogukonnakeskustest, mis sinna kuuluvad?";
+"leave_space_title" = "Lahku %@ kogukonnast";
+"spaces_left_panel_title" = "Kogukonnakeskused";
+"spaces_home_space_title" = "Avaleht";
+"settings_links" = "LINGID";
+"room_recents_suggested_rooms_section" = "SOOVITATUD JUTUTOAD";
+"done" = "Valmis";
+"open" = "Ava";
