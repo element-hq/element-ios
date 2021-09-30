@@ -324,7 +324,11 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 {
     NSString *newText = [textView.text stringByReplacingCharactersInRange:range withString:text];
     [self updateUIWithTextMessage:newText animated:YES];
-
+    
+    if ([text isEqualToString:@"@"]) {
+        [self.delegate roomInputToolbarViewDidRequestUserSuggestions:self];
+    }
+    
     return YES;
 }
 

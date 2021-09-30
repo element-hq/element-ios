@@ -4200,6 +4200,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [self cancelEventSelection];
 }
+ 
+- (void)roomInputToolbarViewDidRequestUserSuggestions:(MXKRoomInputToolbarView *)toolbarView
+{
+    
+}
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 

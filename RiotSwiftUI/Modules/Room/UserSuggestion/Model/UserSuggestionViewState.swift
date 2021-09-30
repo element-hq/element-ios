@@ -1,3 +1,5 @@
+// File created from SimpleUserProfileExample
+// $ createScreen.sh Room/UserSuggestion UserSuggestion
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -15,15 +17,16 @@
 //
 
 import Foundation
+import Combine
 
-/// The static list of mocked screens in RiotSwiftUI
 @available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self,
-        MockUserSuggestionScreenState.self
-    ]
+struct UserSuggestionViewStateItem: BindableState, Identifiable {
+    let id: String
+    let avatar: AvatarInputProtocol?
+    let displayName: String?
 }
 
+@available(iOS 14.0, *)
+struct UserSuggestionViewState: BindableState {
+    var items: [UserSuggestionViewStateItem]
+}
