@@ -632,7 +632,7 @@
         if (renderedCellData.isSuggestedRoom)
         {
             [self.delegate recentListViewController:self
-                             didSelectSuggestedRoom:renderedCellData.spaceChildInfo];
+                             didSelectSuggestedRoom:renderedCellData.roomSummary.spaceChildInfo];
         }
         else
         {
