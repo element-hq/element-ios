@@ -59,22 +59,22 @@ abstract_target 'RiotPods' do
 
   # Tools
   pod 'SwiftGen', '~> 6.3'
-  pod 'SwiftLint', '~> 0.43.0'
+  pod 'SwiftLint', '~> 0.44.0'
 
   target "Riot" do
     import_MatrixKit
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
-    pod 'FlowCommoniOS', '~> 1.10.0'
+    pod 'FlowCommoniOS', '~> 1.12.0'
     pod 'ReadMoreTextView', '~> 3.0.1'
     pod 'SwiftBase32', '~> 0.9.0'
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '~> 4.4'
+    pod 'ffmpeg-kit-ios-audio', '~> 4.5'
 
-    pod 'FLEX', '~> 4.4.1', :configurations => ['Debug']
+    pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 
     target 'RiotTests' do
       inherit! :search_paths
