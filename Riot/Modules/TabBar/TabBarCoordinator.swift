@@ -57,6 +57,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return parameters.userSessionsService.mainUserSession?.matrixSession
     }
     
+    private var isTabBarControllerTopMostController: Bool {
+        return self.navigationRouter.modules.last is MasterTabBarController
+    }
+    
     // MARK: Public
 
     // Must be used only internally
@@ -127,21 +131,62 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
+        
         // Force back to the main screen if this is not the one that is displayed
         if masterTabBarController != masterNavigationController.visibleViewController {
+            
             // Listen to the masterNavigationController changes
             // We need to be sure that masterTabBarController is back to the screen
-            popToHomeViewControllerCompletion = completion
-            masterNavigationController.delegate = self
+            
+            let didPopToHome: (() -> Void) = {
+                
+                // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
+                // when a ViewController has hidden it (see MXKAttachmentsViewController).
+                // Patch: restore navigation bar by default here.
+                self.masterNavigationController.isNavigationBarHidden = false
 
-            if masterNavigationController.viewControllers.last == masterTabBarController {
-                self.navigationController(masterNavigationController, didShow: masterTabBarController, animated: false)
+                // Release the current selected item (room/contact/...).
+                self.masterTabBarController.releaseSelectedItem()
+                
+                // Select home tab
+                self.masterTabBarController.selectTab(at: .home)
+                
+                completion?()
+            }
+
+            // If MasterTabBarController is not visible because there is a modal above it
+            // but still the top view controller of navigation controller
+            if self.isTabBarControllerTopMostController {
+                didPopToHome()
             } else {
-                masterNavigationController.popToViewController(masterTabBarController, animated: animated)
+                // Otherwise MasterTabBarController is not the top controller of the navigation controller
+                
+                // Waiting for `self.navigationRouter` popping to MasterTabBarController
+                var token: NSObjectProtocol?
+                token = NotificationCenter.default.addObserver(forName: NavigationRouter.didPopViewController, object: self.navigationRouter, queue: OperationQueue.main) { [weak self] (notification) in
+                    
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    // If MasterTabBarController is now the top most controller in navigation controller stack call the completion
+                    if self.isTabBarControllerTopMostController {
+                        
+                        didPopToHome()
+                        
+                        if let token = token {
+                            NotificationCenter.default.removeObserver(token)
+                        }
+                    }
+                }
+                
+                // Pop to root view controller
+                self.navigationRouter.popToRootModule(animated: animated)
             }
         } else {
+            // Tab bar controller is already visible
             // Select the Home tab
-            masterTabBarController.selectedIndex = Int(TABBAR_HOME_INDEX)
+            masterTabBarController.selectTab(at: .home)
             completion?()
         }
     }
@@ -302,6 +347,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.parameters.appNavigator.sideMenu.show(from: self.masterTabBarController, animated: true)
     }
     
+    private func dismissSideMenu(animated: Bool) {
+        self.parameters.appNavigator.sideMenu.dismiss(animated: animated)
+    }
+    
     // FIXME: Should be displayed per tab.
     private func showSettings() {
         let viewController = self.createSettingsViewController()
@@ -384,35 +433,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if self.currentMatrixSession?.groups().isEmpty ?? true {
             self.masterTabBarController.removeTab(at: .groups)
         }
-    }
-}
-
-// MARK: - UINavigationControllerDelegate
-extension TabBarCoordinator: UINavigationControllerDelegate {
-    
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        
-        if viewController == masterTabBarController {
-            masterNavigationController.delegate = nil
-            
-            // For unknown reason, the navigation bar is not restored correctly by [popToViewController:animated:]
-            // when a ViewController has hidden it (see MXKAttachmentsViewController).
-            // Patch: restore navigation bar by default here.
-            masterNavigationController.isNavigationBarHidden = false
-
-            // Release the current selected item (room/contact/...).
-            masterTabBarController.releaseSelectedItem()
-
-            if let popToHomeViewControllerCompletion = self.popToHomeViewControllerCompletion {
-                let popToHomeViewControllerCompletion2: (() -> Void)? = popToHomeViewControllerCompletion
-                self.popToHomeViewControllerCompletion = nil
-
-                DispatchQueue.main.async {
-                    popToHomeViewControllerCompletion2?()
-                }
-            }
-        }
-        
     }
 }
 
