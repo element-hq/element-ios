@@ -60,10 +60,10 @@ public class RecentsRoomListFetchersContainer: NSObject {
     //  MARK: - Private
     
     private var fetcherTypesForMode: [RecentsDataSourceMode: FetcherTypes] = [
-        .home: [.invited, .favorited, .directHome, .conversationHome, .lowPriority, .serverNotice],
+        .home: [.invited, .favorited, .directHome, .conversationHome, .lowPriority, .serverNotice, .suggested],
         .favourites: [.favorited],
         .people: [.directPeople],
-        .rooms: [.conversationRooms]
+        .rooms: [.conversationRooms, .suggested]
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
@@ -229,6 +229,10 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return fetcherTypesForMode[mode]?.contains(.serverNotice) ?? false
     }
     
+    public var shouldShowSuggested: Bool {
+        return fetcherTypesForMode[mode]?.contains(.suggested) ?? false
+    }
+    
     public func updateMode(_ mode: RecentsDataSourceMode) {
         self.mode = mode
         if let fetcher = favoritedRoomListDataFetcher {
@@ -300,10 +304,13 @@ public class RecentsRoomListFetchersContainer: NSObject {
         }
     }
     
-    private func createCommonRoomListDataFetcher(withDataTypes dataTypes: MXRoomSummaryDataTypes,
+    private func createCommonRoomListDataFetcher(withDataTypes dataTypes: MXRoomSummaryDataTypes = [],
+                                                 onlySuggested: Bool = false,
                                                  paginate: Bool = true) -> MXRoomListDataFetcher {
         let filterOptions = MXRoomListDataFilterOptions(dataTypes: dataTypes,
-                                                        query: query)
+                                                        onlySuggested: onlySuggested,
+                                                        query: query,
+                                                        space: space)
         
         let fetchOptions = MXRoomListDataFetchOptions(filterOptions: filterOptions,
                                                       sortOptions: sortOptions,
@@ -316,7 +323,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return fetcher
     }
     
-    private func createDirectRoomListDataFetcherForHome() -> MXRoomListDataFetcher? {
+    private func createDirectRoomListDataFetcherForHome() -> MXRoomListDataFetcher {
         let fetcher = createCommonRoomListDataFetcher(withDataTypes: [.direct], paginate: false)
         updateDirectFetcher(fetcher, for: .home)
         fetcher.addDelegate(self)
@@ -324,7 +331,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return fetcher
     }
     
-    private func createDirectRoomListDataFetcherForPeople() -> MXRoomListDataFetcher? {
+    private func createDirectRoomListDataFetcherForPeople() -> MXRoomListDataFetcher {
         let fetcher = createCommonRoomListDataFetcher(withDataTypes: [.direct], paginate: false)
         updateDirectFetcher(fetcher, for: .people)
         fetcher.addDelegate(self)
@@ -332,7 +339,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return fetcher
     }
     
-    private func createConversationRoomListDataFetcherForHome() -> MXRoomListDataFetcher? {
+    private func createConversationRoomListDataFetcherForHome() -> MXRoomListDataFetcher {
         let fetcher = createCommonRoomListDataFetcher(withDataTypes: [], paginate: false)
         updateConversationFetcher(fetcher, for: .home)
         fetcher.addDelegate(self)
@@ -340,7 +347,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return fetcher
     }
     
-    private func createConversationRoomListDataFetcherForRooms() -> MXRoomListDataFetcher? {
+    private func createConversationRoomListDataFetcherForRooms() -> MXRoomListDataFetcher {
         let fetcher = createCommonRoomListDataFetcher(withDataTypes: [], paginate: false)
         updateConversationFetcher(fetcher, for: .rooms)
         fetcher.addDelegate(self)
@@ -359,7 +366,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         conversationRoomListDataFetcherForRooms = createConversationRoomListDataFetcherForRooms()
         lowPriorityRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.lowPriority])
         serverNoticeRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.serverNotice])
-        suggestedRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.suggested])
+        suggestedRoomListDataFetcher = createCommonRoomListDataFetcher(onlySuggested: true)
     }
     
     private func updateDirectFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {

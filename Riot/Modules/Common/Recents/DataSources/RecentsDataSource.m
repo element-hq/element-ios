@@ -43,7 +43,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 @interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, MXRoomListDataFetcherDelegate>
 {
-    RecentsDataSourceState *state;
     dispatch_queue_t processingQueue;
     
     NSInteger shrinkedSectionsBitMask;
@@ -174,9 +173,13 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     return [self mapRoomSummaries:fetchersContainer.serverNoticeRoomListDataFetcher.data.rooms];
 }
-- (NSArray *)suggestedRoomCellDataArray
+- (NSArray<id<MXKRecentCellDataStoring>> *)suggestedRoomCellDataArray
 {
-    return state.suggestedRoomCellDataArray;
+    if (!fetchersContainer.shouldShowSuggested)
+    {
+        return nil;
+    }
+    return [self mapRoomSummaries:fetchersContainer.suggestedRoomListDataFetcher.data.rooms];
 }
 
 - (DiscussionsCount *)favoriteMissedDiscussionsCount
