@@ -37,6 +37,8 @@
  */
 + (instancetype)groupDetailsViewController;
 
++ (instancetype)instantiate;
+
 /**
  Set the group for which the details are displayed.
  Provide the related matrix session.

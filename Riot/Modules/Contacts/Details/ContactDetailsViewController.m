@@ -104,6 +104,11 @@
                                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
++ (instancetype)instantiate
+{
+    return [self contactDetailsViewController];
+}
+
 #pragma mark -
 
 - (void)finalizeInit
@@ -141,6 +146,9 @@
         
     // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
     self.navigationItem.titleView = contactTitleView;    
+    
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+    self.navigationItem.leftItemsSupplementBackButton = YES;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];

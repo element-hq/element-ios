@@ -410,6 +410,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [self vc_removeBackTitle];
     
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+    self.navigationItem.leftItemsSupplementBackButton = YES;
+    
     [self setupRemoveJitsiWidgetRemoveView];
     
     // Replace the default input toolbar view.

@@ -71,5 +71,7 @@ typedef enum : NSUInteger
  */
 + (instancetype)contactDetailsViewController;
 
++ (instancetype)instantiate;
+
 @end
 

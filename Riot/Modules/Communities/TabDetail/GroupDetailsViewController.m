@@ -61,6 +61,11 @@
                                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
++ (instancetype)instantiate
+{
+    return [self groupDetailsViewController];
+}
+
 #pragma mark -
 
 - (void)finalizeInit
@@ -117,6 +122,9 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [super viewDidLoad];
+    
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+    self.navigationItem.leftItemsSupplementBackButton = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
