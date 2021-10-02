@@ -1056,7 +1056,7 @@
 "security_settings_complete_security_alert_message" = "Vous devriez d’abord améliorer la sécurité de votre session actuelle.";
 "security_settings_coming_soon" = "Désolé, cette action n’est pas encore disponible dans %@ iOS. Utilisez un autre client Matrix pour le configurer. %@ iOS l’utilisera.";
 "device_verification_self_verify_wait_new_sign_in_title" = "Vérifier cette connexion";
-"device_verification_self_verify_wait_additional_information" = "ou un autre client Matrix qui prend en charge la signature croisée.";
+"device_verification_self_verify_wait_additional_information" = "Ceci fonctionne avec %@ ou un autre client Matrix prenant en charge la signature croisée.";
 // MARK: - Device Verification
 "key_verification_other_session_title" = "Vérifier la session";
 "key_verification_new_session_title" = "Vérifiez votre nouvelle session";
@@ -1482,3 +1482,41 @@
 "settings_mentions_and_keywords" = "Mentions et mots-clés";
 "settings_default" = "Notifications par défaut";
 "settings_notifications" = "NOTIFICATIONS";
+"version_check_modal_subtitle_deprecated" = "Nous avons travailler à améliorer %@ pour plus de rapidité et de confort. Malheureusement, la version d’iOS que vous utilisez n’est pas compatible avec certaines de ces améliorations et n’est plus prise en charge.\nNous vous recommandons de mettre à jour votre système pour utiliser %@ à son plein potentiel.";
+"space_avatar_view_accessibility_hint" = "Changer l’avatar de l’espace";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_public_join_rule" = "Espace public";
+"space_private_join_rule" = "Espace privé";
+"space_participants_action_ban" = "Supprimer de cet espace";
+"space_participants_action_remove" = "Enlever de cet espace";
+"spaces_coming_soon_detail" = "Cette fonctionnalité n’a pas été implémentée ici, mais elle arrive. Pour effectuer cette action, vous pouvez utiliser Element sur votre ordinateur.";
+"spaces_invites_coming_soon_title" = "Les invitations arrivent prochainement";
+"spaces_add_rooms_coming_soon_title" = "L’ajout de salons arrive bientôt";
+"spaces_coming_soon_title" = "Prochainement";
+"spaces_no_member_found_detail" = "Vous cherchez quelqu’un qui n’est pas dans %@ ? Pour l’instant, vous pouvez l’inviter sur l’application web ou de bureau.";
+"spaces_no_room_found_detail" = "Certains résultat peuvent être cachés car ils sont privés et requièrent une invitation.";
+"spaces_no_result_found_title" = "Aucun résultat";
+"spaces_empty_space_detail" = "Certains salons peuvent être cachés car ils sont privés et requièrent une invitation.";
+"spaces_empty_space_title" = "Cet espace n’a pas (encore) de salon";
+"space_tag" = "espace";
+"spaces_suggested_room" = "Recommandé";
+"spaces_explore_rooms" = "Parcourir les salons";
+"leave_space_and_all_rooms_action" = "Quitter tous les salons et espaces";
+"leave_space_only_action" = "Ne quitter aucun salon";
+"leave_space_message_admin_warning" = "Vous êtes administrateur de cet espace. Assurez-vous d’avoir transmis les droits d’administration à un autre membre avant de partir.";
+"leave_space_message" = "Êtes vous sûr de vouloir quitter %@ ? Voulez-vous également quitter tous les salons et espaces faisant partie de cet espace ?";
+"leave_space_title" = "Quitter %@";
+"spaces_left_panel_title" = "Espaces";
+"spaces_home_space_title" = "Accueil";
+"settings_show_url_previews_description" = "Les aperçus ne seront affichés que dans les salons non-chiffrés.";
+"settings_show_url_previews" = "Afficher les aperçus des sites web";
+"settings_confirm_media_size_description" = "Si activé, il vous sera demandé de préciser en quelle taille les images et vidéos doivent être envoyées.";
+"settings_confirm_media_size" = "Préciser la taille lors de l’envoi";
+"settings_links" = "LIENS";
+"settings_sending_media" = "ENVOI D’IMAGES ET DE VIDÉOS";
+"room_recents_suggested_rooms_section" = "SALONS RECOMMANDÉS";
+"done" = "Terminé";
+"open" = "Ouvrir";
