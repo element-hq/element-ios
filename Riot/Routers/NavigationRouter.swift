@@ -39,6 +39,18 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         self.completions = [:]
         super.init()
         self.navigationController.delegate = self
+        
+        // Post local notification on NavigationRouter creation
+        let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
+                        NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
+        NotificationCenter.default.post(name: NavigationRouter.didCreate, object: self, userInfo: userInfo)
+    }
+    
+    deinit {
+        // Post local notification on NavigationRouter deinit
+        let userInfo: [String: Any] = [NavigationRouter.NotificationUserInfoKey.navigationRouter: self,
+                        NavigationRouter.NotificationUserInfoKey.navigationController: navigationController]
+        NotificationCenter.default.post(name: NavigationRouter.willDestroy, object: self, userInfo: userInfo)
     }
     
     // MARK: - Public
@@ -292,10 +304,14 @@ extension NavigationRouter {
     public static let willPopViewController = Notification.Name("NavigationRouterWillPopViewController")
     public static let didPopViewController = Notification.Name("NavigationRouterDidPopViewController")
     
+    public static let didCreate = Notification.Name("NavigationRouterDidCreate")
+    public static let willDestroy = Notification.Name("NavigationRouterWillDestroy")
+    
     // MARK: Notification keys
     
     public struct NotificationUserInfoKey {
         static let viewController = "viewController"
         static let navigationRouter = "navigationRouter"
+        static let navigationController = "navigationController"
     }
 }
