@@ -333,7 +333,9 @@
         MXLogDebug(@"[MasterTabBarController] initializeDataSources");
         
         // Init the recents data source
-        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
+        RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
+        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession
+                                                          recentsListService:recentsListService];
         
         [self.homeViewController displayList:recentsDataSource];
         [self.favouritesViewController displayList:recentsDataSource];
@@ -386,8 +388,6 @@
                 }
             }
         }
-        
-        [recentsDataSource finalizeInitialization];
     }
 }
 

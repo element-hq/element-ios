@@ -19,7 +19,7 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-@protocol MXKRecentCellDataStoring;
+@protocol RecentsListServiceProtocol;
 @class DiscussionsCount;
 @class MXSpace;
 
@@ -77,16 +77,39 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger serverNoticeSection;
 @property (nonatomic) NSInteger suggestedRoomsSection;
 
-@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *invitesCellDataArray;
-@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *favoriteCellDataArray;
-@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *peopleCellDataArray;
-@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *conversationCellDataArray;
-@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *lowPriorityCellDataArray;
-@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *serverNoticeCellDataArray;
-@property (nonatomic, readonly) NSArray<id<MXKRecentCellDataStoring>> *suggestedRoomCellDataArray;
+@property (nonatomic, readonly) NSInteger totalVisibleItemCount;
+
+/**
+ Counts for favorited rooms.
+ */
+@property (nonatomic, readonly) DiscussionsCount *favoriteMissedDiscussionsCount;
+
+/**
+ Counts for direct rooms.
+ */
+@property (nonatomic, readonly) DiscussionsCount *directMissedDiscussionsCount;
+
+/**
+ Counts for group rooms.
+ */
+@property (nonatomic, readonly) DiscussionsCount *groupMissedDiscussionsCount;
 
 @property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
 @property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;
+
+@property (nonatomic, readonly) id<RecentsListServiceProtocol> recentsListService;
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithMatrixSession:(MXSession*)mxSession NS_UNAVAILABLE;
+
+/**
+ Initializer
+ @param mxSession session instance
+ @param recentsListService service instance
+ */
+- (instancetype)initWithMatrixSession:(MXSession*)mxSession
+                   recentsListService:(id<RecentsListServiceProtocol>)recentsListService;
 
 /**
  Set the delegate by specifying the selected display mode.
@@ -163,20 +186,5 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  It is based on room Tag.
  */
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)(void))moveSuccess failure:(void (^)(NSError *error))moveFailure;
-
-/**
- Counts for favorited rooms.
- */
-@property (nonatomic, readonly) DiscussionsCount *favoriteMissedDiscussionsCount;
-
-/**
- Counts for direct rooms.
- */
-@property (nonatomic, readonly) DiscussionsCount *directMissedDiscussionsCount;
-
-/**
- Counts for group rooms.
- */
-@property (nonatomic, readonly) DiscussionsCount *groupMissedDiscussionsCount;
 
 @end

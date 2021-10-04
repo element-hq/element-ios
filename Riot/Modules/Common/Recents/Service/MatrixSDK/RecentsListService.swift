@@ -17,18 +17,18 @@
 import Foundation
 
 @objcMembers
-public class RecentsRoomListFetchersContainer: NSObject {
+public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
-    public let session: MXSession
+    public private(set) weak var session: MXSession?
     public private(set) var mode: RecentsDataSourceMode
     public private(set) var query: String?
     public private(set) var space: MXSpace?
     
     //  MARK: - Fetchers
     
-    public private(set) var invitedRoomListDataFetcher: MXRoomListDataFetcher?
-    public private(set) var favoritedRoomListDataFetcher: MXRoomListDataFetcher?
-    public var directRoomListDataFetcher: MXRoomListDataFetcher? {
+    private var invitedRoomListDataFetcher: MXRoomListDataFetcher?
+    private var favoritedRoomListDataFetcher: MXRoomListDataFetcher?
+    private var directRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
         case .home:
             return directRoomListDataFetcherForHome
@@ -38,7 +38,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
             return nil
         }
     }
-    public var conversationRoomListDataFetcher: MXRoomListDataFetcher? {
+    private var conversationRoomListDataFetcher: MXRoomListDataFetcher? {
         switch mode {
         case .home:
             return conversationRoomListDataFetcherForHome
@@ -48,9 +48,9 @@ public class RecentsRoomListFetchersContainer: NSObject {
             return nil
         }
     }
-    public private(set) var lowPriorityRoomListDataFetcher: MXRoomListDataFetcher?
-    public private(set) var serverNoticeRoomListDataFetcher: MXRoomListDataFetcher?
-    public private(set) var suggestedRoomListDataFetcher: MXRoomListDataFetcher?
+    private var lowPriorityRoomListDataFetcher: MXRoomListDataFetcher?
+    private var serverNoticeRoomListDataFetcher: MXRoomListDataFetcher?
+    private var suggestedRoomListDataFetcher: MXRoomListDataFetcher?
     
     private var conversationRoomListDataFetcherForHome: MXRoomListDataFetcher?
     private var conversationRoomListDataFetcherForRooms: MXRoomListDataFetcher?
@@ -98,10 +98,6 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return result
     }
     
-    private var hideInvitedSection: Bool {
-        return MXSDKOptions.sharedInstance().autoAcceptRoomInvites
-    }
-    
     private var visibleFetchers: [MXRoomListDataFetcher] {
         guard let fetcherTypes = fetcherTypesForMode[mode] else {
             return []
@@ -138,8 +134,12 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return result
     }
     
+    private var hideInvitedSection: Bool {
+        return MXSDKOptions.sharedInstance().autoAcceptRoomInvites
+    }
+    
     // swiftlint:disable weak_delegate
-    private let multicastDelegate: MXMulticastDelegate<MXRoomListDataFetcherDelegate> = MXMulticastDelegate()
+    private let multicastDelegate: MXMulticastDelegate<RecentsListServiceDelegate> = MXMulticastDelegate()
     // swiftlint:enable weak_delegate
     
     private var sortOptions: MXRoomListDataSortOptions {
@@ -157,10 +157,17 @@ public class RecentsRoomListFetchersContainer: NSObject {
     
     //  MARK: - Public API
     
-    public init(withSession session: MXSession,
-                mode: RecentsDataSourceMode = .home,
-                query: String? = nil,
-                space: MXSpace? = nil) {
+    public convenience init(withSession session: MXSession) {
+        self.init(withSession: session,
+                  mode: .home,
+                  query: nil,
+                  space: nil)
+    }
+    
+    private init(withSession session: MXSession,
+                mode: RecentsDataSourceMode,
+                query: String?,
+                space: MXSpace?) {
         self.session = session
         self.mode = mode
         self.query = query
@@ -170,6 +177,37 @@ public class RecentsRoomListFetchersContainer: NSObject {
         addRiotSettingsObserver()
     }
     
+    //  MARK: - View Data
+    
+    public var invitedRoomListData: MXRoomListData? {
+        guard shouldShowInvited else { return nil }
+        return invitedRoomListDataFetcher?.data
+    }
+    public var favoritedRoomListData: MXRoomListData? {
+        guard shouldShowFavorited else { return nil }
+        return favoritedRoomListDataFetcher?.data
+    }
+    public var peopleRoomListData: MXRoomListData? {
+        guard shouldShowDirect else { return nil }
+        return directRoomListDataFetcher?.data
+    }
+    public var conversationRoomListData: MXRoomListData? {
+        guard shouldShowConversation else { return nil }
+        return conversationRoomListDataFetcher?.data
+    }
+    public var lowPriorityRoomListData: MXRoomListData? {
+        guard shouldShowLowPriority else { return nil }
+        return lowPriorityRoomListDataFetcher?.data
+    }
+    public var serverNoticeRoomListData: MXRoomListData? {
+        guard shouldShowServerNotice else { return nil }
+        return serverNoticeRoomListDataFetcher?.data
+    }
+    public var suggestedRoomListData: MXRoomListData? {
+        guard shouldShowSuggested else { return nil }
+        return suggestedRoomListDataFetcher?.data
+    }
+    
     public var favoritedMissedDiscussionsCount: DiscussionsCount {
         guard let data = favoritedRoomListDataFetcher?.data else {
             return .zero
@@ -177,7 +215,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return DiscussionsCount(withRoomListDataCounts: data.counts)
     }
     
-    public var directMissedDiscussionsCount: DiscussionsCount {
+    public var peopleMissedDiscussionsCount: DiscussionsCount {
         guard let data = directRoomListDataFetcherForPeople?.data else {
             return .zero
         }
@@ -191,46 +229,8 @@ public class RecentsRoomListFetchersContainer: NSObject {
         return DiscussionsCount(withRoomListDataCounts: data.counts)
     }
     
-    public var shouldShowInvited: Bool {
-        return fetcherTypesForMode[mode]?.contains(.invited) ?? false
-    }
-    
-    public var shouldShowFavorited: Bool {
-        return fetcherTypesForMode[mode]?.contains(.favorited) ?? false
-    }
-    
-    public var shouldShowDirect: Bool {
-        switch mode {
-        case .home:
-            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
-        case .people:
-            return fetcherTypesForMode[mode]?.contains(.directPeople) ?? false
-        default:
-            return false
-        }
-    }
-    
-    public var shouldShowConversation: Bool {
-        switch mode {
-        case .home:
-            return fetcherTypesForMode[mode]?.contains(.conversationHome) ?? false
-        case .rooms:
-            return fetcherTypesForMode[mode]?.contains(.conversationRooms) ?? false
-        default:
-            return false
-        }
-    }
-    
-    public var shouldShowLowPriority: Bool {
-        return fetcherTypesForMode[mode]?.contains(.lowPriority) ?? false
-    }
-    
-    public var shouldShowServerNotice: Bool {
-        return fetcherTypesForMode[mode]?.contains(.serverNotice) ?? false
-    }
-    
-    public var shouldShowSuggested: Bool {
-        return fetcherTypesForMode[mode]?.contains(.suggested) ?? false
+    public var totalVisibleItemCount: Int {
+        return visibleFetchers.reduce(0, { $0 + ($1.data?.counts.numberOfRooms ?? 0) })
     }
     
     public func updateMode(_ mode: RecentsDataSourceMode) {
@@ -263,11 +263,11 @@ public class RecentsRoomListFetchersContainer: NSObject {
     
     //  MARK: - Delegate
     
-    public func addDelegate(_ delegate: MXRoomListDataFetcherDelegate) {
+    public func addDelegate(_ delegate: RecentsListServiceDelegate) {
         multicastDelegate.addDelegate(delegate)
     }
     
-    public func removeDelegate(_ delegate: MXRoomListDataFetcherDelegate) {
+    public func removeDelegate(_ delegate: RecentsListServiceDelegate) {
         multicastDelegate.removeDelegate(delegate)
     }
     
@@ -275,7 +275,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
         multicastDelegate.removeAllDelegates()
     }
     
-    //  MARK: - Private
+    //  MARK: - Riot Settings Observer
     
     private func addRiotSettingsObserver() {
         NotificationCenter.default.addObserver(self,
@@ -304,9 +304,56 @@ public class RecentsRoomListFetchersContainer: NSObject {
         }
     }
     
+    //  MARK: - Private
+    
+    private var shouldShowInvited: Bool {
+        return fetcherTypesForMode[mode]?.contains(.invited) ?? false
+    }
+    
+    private var shouldShowFavorited: Bool {
+        return fetcherTypesForMode[mode]?.contains(.favorited) ?? false
+    }
+    
+    private var shouldShowDirect: Bool {
+        switch mode {
+        case .home:
+            return fetcherTypesForMode[mode]?.contains(.directHome) ?? false
+        case .people:
+            return fetcherTypesForMode[mode]?.contains(.directPeople) ?? false
+        default:
+            return false
+        }
+    }
+    
+    private var shouldShowConversation: Bool {
+        switch mode {
+        case .home:
+            return fetcherTypesForMode[mode]?.contains(.conversationHome) ?? false
+        case .rooms:
+            return fetcherTypesForMode[mode]?.contains(.conversationRooms) ?? false
+        default:
+            return false
+        }
+    }
+    
+    private var shouldShowLowPriority: Bool {
+        return fetcherTypesForMode[mode]?.contains(.lowPriority) ?? false
+    }
+    
+    private var shouldShowServerNotice: Bool {
+        return fetcherTypesForMode[mode]?.contains(.serverNotice) ?? false
+    }
+    
+    private var shouldShowSuggested: Bool {
+        return fetcherTypesForMode[mode]?.contains(.suggested) ?? false
+    }
+    
     private func createCommonRoomListDataFetcher(withDataTypes dataTypes: MXRoomSummaryDataTypes = [],
                                                  onlySuggested: Bool = false,
                                                  paginate: Bool = true) -> MXRoomListDataFetcher {
+        guard let session = session else {
+            fatalError("Session deallocated")
+        }
         let filterOptions = MXRoomListDataFilterOptions(dataTypes: dataTypes,
                                                         onlySuggested: onlySuggested,
                                                         query: query,
@@ -410,7 +457,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
     }
     
     private func notifyDataChange(on fetcher: MXRoomListDataFetcher) {
-        multicastDelegate.invoke(invocation: { $0.fetcherDidChangeData(fetcher) })
+        multicastDelegate.invoke(invocation: { $0.serviceDidChangeData(self) })
     }
     
     deinit {
@@ -421,7 +468,7 @@ public class RecentsRoomListFetchersContainer: NSObject {
 
 //  MARK: - MXRoomListDataFetcherDelegate
 
-extension RecentsRoomListFetchersContainer: MXRoomListDataFetcherDelegate {
+extension RecentsListService: MXRoomListDataFetcherDelegate {
     
     public func fetcherDidChangeData(_ fetcher: MXRoomListDataFetcher) {
         notifyDataChange(on: fetcher)
@@ -434,7 +481,7 @@ extension RecentsRoomListFetchersContainer: MXRoomListDataFetcherDelegate {
 private struct FetcherTypes: OptionSet {
     typealias RawValue = Int
     let rawValue: RawValue
-    
+
     init(rawValue: RawValue) {
         self.rawValue = rawValue
     }

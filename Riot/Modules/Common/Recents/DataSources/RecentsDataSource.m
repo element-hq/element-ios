@@ -41,7 +41,7 @@
 
 NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSourceTapOnDirectoryServerChange";
 
-@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, MXRoomListDataFetcherDelegate>
+@interface RecentsDataSource() <SecureBackupBannerCellDelegate, CrossSigningSetupBannerCellDelegate, RecentsListServiceDelegate>
 {
     dispatch_queue_t processingQueue;
     
@@ -51,12 +51,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     // Timer to not refresh publicRoomsDirectoryDataSource on every keystroke.
     NSTimer *publicRoomsTriggerTimer;
-    
-    RecentsRoomListFetchersContainer *fetchersContainer;
 }
 
 @property (nonatomic, assign, readwrite) SecureBackupBannerDisplay secureBackupBannerDisplay;
 @property (nonatomic, assign, readwrite) CrossSigningBannerDisplay crossSigningBannerDisplay;
+
+@property (nonatomic, readwrite) id<RecentsListServiceProtocol> recentsListService;
 
 @property (nonatomic, strong) CrossSigningService *crossSigningService;
 
@@ -66,10 +66,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 @synthesize directorySection, invitesSection, favoritesSection, peopleSection, conversationSection, lowPrioritySection, serverNoticeSection, suggestedRoomsSection, secureBackupBannerSection, crossSigningBannerSection;
 @synthesize hiddenCellIndexPath, droppingCellIndexPath, droppingCellBackGroundView;
 
-- (instancetype)init
+- (instancetype)initWithMatrixSession:(MXSession *)mxSession
+                   recentsListService:(id<RecentsListServiceProtocol>)theRecentsListService
 {
-    self = [super init];
-    if (self)
+    if (self = [super initWithMatrixSession:mxSession])
     {
         processingQueue = dispatch_queue_create("RecentsDataSource", DISPATCH_QUEUE_SERIAL);
         
@@ -89,19 +89,10 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         [self registerCellDataClass:RecentCellData.class forCellIdentifier:kMXKRecentCellIdentifier];
         
         [self registerSpaceServiceDidBuildGraphNotification];
+        self.recentsListService = theRecentsListService;
+        [self.recentsListService addDelegate:self];
     }
     return self;
-}
-
-- (void)finalizeInitialization
-{
-    [super finalizeInitialization];
-    
-    fetchersContainer = [[RecentsRoomListFetchersContainer alloc] initWithSession:self.mxSession
-                                                                             mode:_recentsDataSourceMode
-                                                                            query:nil
-                                                                            space:nil];
-    [fetchersContainer addDelegate:self];
 }
 
 - (void)dealloc
@@ -127,82 +118,59 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (NSArray<id<MXKRecentCellDataStoring>> *)invitesCellDataArray
 {
-    if (!fetchersContainer.shouldShowInvited)
-    {
-        return nil;
-    }
-    return [self mapRoomSummaries:fetchersContainer.invitedRoomListDataFetcher.data.rooms];
+    return [self mapRoomSummaries:self.recentsListService.invitedRoomListData.rooms];
 }
 - (NSArray<id<MXKRecentCellDataStoring>> *)favoriteCellDataArray
 {
-    if (!fetchersContainer.shouldShowFavorited)
-    {
-        return nil;
-    }
-    return [self mapRoomSummaries:fetchersContainer.favoritedRoomListDataFetcher.data.rooms];
+    return [self mapRoomSummaries:self.recentsListService.favoritedRoomListData.rooms];
 }
 - (NSArray<id<MXKRecentCellDataStoring>> *)peopleCellDataArray
 {
-    if (!fetchersContainer.shouldShowDirect)
-    {
-        return nil;
-    }
-    return [self mapRoomSummaries:fetchersContainer.directRoomListDataFetcher.data.rooms];
+    return [self mapRoomSummaries:self.recentsListService.peopleRoomListData.rooms];
 }
 - (NSArray<id<MXKRecentCellDataStoring>> *)conversationCellDataArray
 {
-    if (!fetchersContainer.shouldShowConversation)
-    {
-        return nil;
-    }
-    return [self mapRoomSummaries:fetchersContainer.conversationRoomListDataFetcher.data.rooms];
+    return [self mapRoomSummaries:self.recentsListService.conversationRoomListData.rooms];
 }
 - (NSArray<id<MXKRecentCellDataStoring>> *)lowPriorityCellDataArray
 {
-    if (!fetchersContainer.shouldShowLowPriority)
-    {
-        return nil;
-    }
-    return [self mapRoomSummaries:fetchersContainer.lowPriorityRoomListDataFetcher.data.rooms];
+    return [self mapRoomSummaries:self.recentsListService.lowPriorityRoomListData.rooms];
 }
 - (NSArray<id<MXKRecentCellDataStoring>> *)serverNoticeCellDataArray
 {
-    if (!fetchersContainer.shouldShowServerNotice)
-    {
-        return nil;
-    }
-    return [self mapRoomSummaries:fetchersContainer.serverNoticeRoomListDataFetcher.data.rooms];
+    return [self mapRoomSummaries:self.recentsListService.serverNoticeRoomListData.rooms];
 }
 - (NSArray<id<MXKRecentCellDataStoring>> *)suggestedRoomCellDataArray
 {
-    if (!fetchersContainer.shouldShowSuggested)
-    {
-        return nil;
-    }
-    return [self mapRoomSummaries:fetchersContainer.suggestedRoomListDataFetcher.data.rooms];
+    return [self mapRoomSummaries:self.recentsListService.suggestedRoomListData.rooms];
+}
+
+- (NSArray<id<MXKRecentCellDataStoring>> *)mapRoomSummaries:(NSArray<id<MXRoomSummaryProtocol>> *)summaries
+ {
+     return [summaries vc_map:^id _Nonnull(id<MXRoomSummaryProtocol> _Nonnull summary) {
+         return [[MXKRecentCellData alloc] initWithRoomSummary:summary
+                                                    dataSource:self];
+     }];
+ }
+
+- (NSInteger)totalVisibleItemCount
+{
+    return self.recentsListService.totalVisibleItemCount;
 }
 
 - (DiscussionsCount *)favoriteMissedDiscussionsCount
 {
-    return fetchersContainer.favoritedMissedDiscussionsCount;
+    return self.recentsListService.favoritedMissedDiscussionsCount;
 }
 
 - (DiscussionsCount *)directMissedDiscussionsCount
 {
-    return fetchersContainer.directMissedDiscussionsCount;
+    return self.recentsListService.peopleMissedDiscussionsCount;
 }
 
 - (DiscussionsCount *)groupMissedDiscussionsCount
 {
-    return fetchersContainer.conversationMissedDiscussionsCount;
-}
-
-- (NSArray<id<MXKRecentCellDataStoring>> *)mapRoomSummaries:(NSArray<id<MXRoomSummaryProtocol>> *)summaries
-{
-    return [summaries vc_map:^id _Nonnull(id<MXRoomSummaryProtocol> _Nonnull summary) {
-        return [[MXKRecentCellData alloc] initWithRoomSummary:summary
-                                                   dataSource:self];
-    }];
+    return self.recentsListService.conversationMissedDiscussionsCount;
 }
 
 #pragma mark -
@@ -230,12 +198,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
     [self updateSecureBackupBanner];
     [self refreshCrossSigningBannerDisplay];
-    [fetchersContainer updateMode:_recentsDataSourceMode];
+    [self.recentsListService updateMode:_recentsDataSourceMode];
 }
 
 - (void)setCurrentSpace:(MXSpace *)currentSpace
 {
-    [fetchersContainer updateSpace:currentSpace];
+    [self.recentsListService updateSpace:currentSpace];
 }
 
 - (UIView *)viewForStickyHeaderInSection:(NSInteger)section withFrame:(CGRect)frame
@@ -479,7 +447,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     // Refresh is disabled during drag&drop animation"
     if (!self.droppingCellIndexPath)
     {
-        [fetchersContainer refresh];
+        [self.recentsListService refresh];
     }
 }
 
@@ -723,61 +691,54 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 - (UIView *)badgeViewForHeaderTitleInHomeSection:(NSInteger)section
 {
     // Prepare a badge to display the total of missed notifications in this section.
-    NSUInteger totalNotificationCount = 0;
-    NSUInteger totalHighlightCount = 0;
+    id<MXRoomListDataCounts> counts = nil;
     UIView *missedNotifAndUnreadBadgeBgView = nil;
     
     if (section == favoritesSection)
     {
-        totalNotificationCount = fetchersContainer.favoritedRoomListDataFetcher.data.counts.totalNotificationCount;
-        totalHighlightCount = fetchersContainer.favoritedRoomListDataFetcher.data.counts.totalHighlightCount;
+        counts = self.recentsListService.favoritedRoomListData.counts;
     }
     else if (section == peopleSection)
     {
-        totalNotificationCount = fetchersContainer.directRoomListDataFetcher.data.counts.totalNotificationCount;
-        totalHighlightCount = fetchersContainer.directRoomListDataFetcher.data.counts.totalHighlightCount;
+        counts = self.recentsListService.peopleRoomListData.counts;
     }
     else if (section == conversationSection)
     {
-        totalNotificationCount = fetchersContainer.conversationRoomListDataFetcher.data.counts.totalNotificationCount;
-        totalHighlightCount = fetchersContainer.conversationRoomListDataFetcher.data.counts.totalHighlightCount;
+        counts = self.recentsListService.conversationRoomListData.counts;
     }
     else if (section == lowPrioritySection)
     {
-        totalNotificationCount = fetchersContainer.lowPriorityRoomListDataFetcher.data.counts.totalNotificationCount;
-        totalHighlightCount = fetchersContainer.lowPriorityRoomListDataFetcher.data.counts.totalHighlightCount;
+        counts = self.recentsListService.lowPriorityRoomListData.counts;
     }
     else if (section == serverNoticeSection)
     {
-        totalNotificationCount = fetchersContainer.serverNoticeRoomListDataFetcher.data.counts.totalNotificationCount;
-        totalHighlightCount = fetchersContainer.serverNoticeRoomListDataFetcher.data.counts.totalHighlightCount;
+        counts = self.recentsListService.serverNoticeRoomListData.counts;
     }
     else if (section == suggestedRoomsSection)
     {
-        totalNotificationCount = fetchersContainer.suggestedRoomListDataFetcher.data.counts.totalNotificationCount;
-        totalHighlightCount = fetchersContainer.suggestedRoomListDataFetcher.data.counts.totalHighlightCount;
+        counts = self.recentsListService.suggestedRoomListData.counts;
     }
 
-    if (totalNotificationCount)
+    if (counts.totalNotificationCount)
     {
         UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
         missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
         missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
-        if (totalNotificationCount > 1000)
+        if (counts.totalNotificationCount > 1000)
         {
-            CGFloat value = totalNotificationCount / 1000.0;
+            CGFloat value = counts.totalNotificationCount / 1000.0;
             missedNotifAndUnreadBadgeLabel.text = [VectorL10n largeBadgeValueKFormat:value];
         }
         else
         {
-            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", totalNotificationCount];
+            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", counts.totalNotificationCount];
         }
         
         [missedNotifAndUnreadBadgeLabel sizeToFit];
         
         CGFloat bgViewWidth = missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
         
-        BOOL highlight = totalHighlightCount > 0;
+        BOOL highlight = counts.totalHighlightCount > 0;
         missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
         [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
         missedNotifAndUnreadBadgeBgView.backgroundColor = highlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
@@ -1365,7 +1326,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [publicRoomsTriggerTimer invalidate];
     publicRoomsTriggerTimer = nil;
     
-    [fetchersContainer stop];
+    [self.recentsListService stop];
 }
 
 #pragma mark - Override MXKRecentsDataSource
@@ -1376,7 +1337,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     NSString *searchPattern = [patternsList componentsJoinedByString:@" "];
     
-    [fetchersContainer updateQuery:searchPattern];
+    [self.recentsListService updateQuery:searchPattern];
 
     if (_publicRoomsDirectoryDataSource)
     {
@@ -1526,9 +1487,9 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     [self hideCrossSigningBannerWithDisplay:self.crossSigningBannerDisplay];
 }
 
-#pragma mark - MXRoomListDataFetcherDelegate
+#pragma mark - RecentsListServiceDelegate
 
-- (void)fetcherDidChangeData:(id<MXRoomListDataFetcher>)fetcher
+- (void)serviceDidChangeData:(id<RecentsListServiceProtocol>)service
 {
     // TODO: Update only updated sections
     [self.delegate dataSource:self didCellChange:nil];
