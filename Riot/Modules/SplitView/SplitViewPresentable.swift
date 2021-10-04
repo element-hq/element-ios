@@ -17,17 +17,22 @@
 import UIKit
 
 protocol SplitViewMasterPresentableDelegate: AnyObject {
-    func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable)
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable, popCompletion: (() -> Void)?)
+}
+
+/// `SplitViewMasterPresentableDelegate` default implementation
+extension SplitViewMasterPresentableDelegate {
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable) {
+        splitViewMasterPresentable(presentable, wantsToDisplay: detailPresentable, popCompletion: nil)
+    }
 }
 
 /// Protocol used by the master view presentable of a UISplitViewController
 protocol SplitViewMasterPresentable: AnyObject, Presentable {
         
-    var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate? { get set }
+    var splitViewMasterPresentableDelegate: SplitViewMasterPresentableDelegate? { get set }    
     
-    /// Indicate true if the detail can be collapsed
-    var collapseDetailViewController: Bool { get }
-    
-    /// Return the detail view controller to display when the detail is separated from the master view controller
-    func secondViewControllerWhenSeparatedFromPrimary() -> UIViewController?
+    /// Return the currently selected and visible NavigationRouter
+    /// It will be used to manage detail controllers
+    var selectedNavigationRouter: NavigationRouterType? { get }
 }
