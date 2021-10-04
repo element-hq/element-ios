@@ -378,8 +378,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
+    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
         || (indexPath.section == recentsDataSource.secureBackupBannerSection)
         || (indexPath.section == recentsDataSource.crossSigningBannerSection)
         )
@@ -470,8 +470,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count))
+    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
@@ -927,19 +927,7 @@
     }
     
     // Otherwise check the number of items to display
-    return [self totalItemCounts] == 0;
-}
-
-// Total items to display on the screen
-- (NSUInteger)totalItemCounts
-{
-    return recentsDataSource.invitesCellDataArray.count
-    + recentsDataSource.favoriteCellDataArray.count
-    + recentsDataSource.peopleCellDataArray.count
-    + recentsDataSource.conversationCellDataArray.count
-    + recentsDataSource.lowPriorityCellDataArray.count
-    + recentsDataSource.serverNoticeCellDataArray.count
-    + recentsDataSource.suggestedRoomCellDataArray.count;
+    return recentsDataSource.totalVisibleItemCount == 0;
 }
 
 #pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate

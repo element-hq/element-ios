@@ -2217,7 +2217,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (BOOL)shouldShowEmptyView
 {
-    return NO;
+    // Do not present empty screen while searching
+    if (self.recentsDataSource.searchPatternsList.count)
+    {
+        return NO;
+    }
+    
+    return self.recentsDataSource.totalVisibleItemCount == 0;
 }
 
 #pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate
