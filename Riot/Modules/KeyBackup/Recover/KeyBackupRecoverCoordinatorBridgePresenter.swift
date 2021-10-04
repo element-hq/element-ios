@@ -61,7 +61,7 @@ final class KeyBackupRecoverCoordinatorBridgePresenter: NSObject {
         
         MXLog.debug("[KeyBackupRecoverCoordinatorBridgePresenter] Push complete security from \(navigationController)")
         
-        let navigationRouter = NavigationRouter(navigationController: navigationController)
+        let navigationRouter = NavigationRouterStore.shared.getOrCreateNavigationRouter(for: navigationController)
         
         let keyBackupSetupCoordinator = KeyBackupRecoverCoordinator(session: self.session, keyBackupVersion: keyBackupVersion, navigationRouter: navigationRouter)
         keyBackupSetupCoordinator.delegate = self
