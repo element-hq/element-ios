@@ -80,6 +80,9 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         self.setupLogger()
         self.setupTheme()
         
+        // Setup navigation router store
+        _ = NavigationRouterStore.shared
+        
         if BuildSettings.enableSideMenu {
             self.addSideMenu()
         }
