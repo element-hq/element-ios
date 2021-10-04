@@ -28,15 +28,38 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     
     private let room: MXRoom
     
+    private var suggestionItems: [UserSuggestionItemProtocol] = []
+    
     // MARK: Public
+    
+    var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never>
     
     // MARK: - Setup
     
     init(room: MXRoom) {
         self.room = room
+        self.items = CurrentValueSubject([])
+        
+        generateUsersWithCount(10)
+        items.send(suggestionItems)
     }
     
     func processPartialUserName(_ userName: String) {
+        guard userName.count > 0 else {
+            items.send(suggestionItems)
+            return
+        }
         
+        items.send(suggestionItems.filter({ userSuggestion in
+            return (userSuggestion.displayName?.lowercased().range(of: userName.lowercased()) != .none)
+        }))
+    }
+    
+    private func generateUsersWithCount(_ count: UInt) {
+        suggestionItems.removeAll()
+        for _ in 0..<count {
+            let identifier = "@" + UUID().uuidString
+            suggestionItems.append(MockUserSuggestionServiceItem(userId: identifier, displayName: identifier, avatarUrl: "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ"))
+        }
     }
 }

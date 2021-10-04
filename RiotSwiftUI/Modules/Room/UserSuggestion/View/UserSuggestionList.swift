@@ -30,6 +30,7 @@ struct UserSuggestionList: View {
     // MARK: Public
     
     @ObservedObject var viewModel: UserSuggestionViewModel.Context
+    // FIXME: This should be dynamic
     let rowHeight: CGFloat = 60.0
     let maxHeight: CGFloat = 300.0
     
@@ -67,6 +68,7 @@ private struct BackgroundView<Content: View>: View {
     var content: () -> Content
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
+    private let shadowRadius: CGFloat = 20.0
     
     init(@ViewBuilder content: @escaping () -> Content) {
         self.content = content
@@ -75,8 +77,9 @@ private struct BackgroundView<Content: View>: View {
     var body: some View {
         VStack(content: content)
             .background(theme.colors.background)
-            .clipShape(RoundedCornerShape(radius: 20.0, corners: [.topLeft, .topRight]))
+            .clipShape(RoundedCornerShape(radius: shadowRadius, corners: [.topLeft, .topRight]))
             .shadow(color: .black.opacity(0.20), radius: 20.0, x: 0.0, y: 3.0)
+            .mask(Rectangle().padding(.init(top: -(shadowRadius * 2), leading: 0.0, bottom: 0.0, trailing: 0.0)))
             .edgesIgnoringSafeArea(.all)
     }
 }

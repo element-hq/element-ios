@@ -249,6 +249,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
 @property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
+@property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
+@property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
+
 @end
 
 @implementation RoomViewController
@@ -452,12 +455,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self userInterfaceThemeDidChange];
         
     }];
+    
     [self userInterfaceThemeDidChange];
     
     // Observe URL preview updates.
     [self registerURLPreviewNotifications];
     
     [self setupActions];
+    
+    [self setupUserSuggestionView];
+}
+
+- (void)setupUserSuggestionView
+{
+    UIViewController *suggestionsViewController = self.userSuggestionCoordinator.toPresentable;
+    [suggestionsViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self addChildViewController:suggestionsViewController];
+    [self.userSuggestionContainerView addSubview:suggestionsViewController.view];
+    
+    [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.userSuggestionContainerView.topAnchor],
+                                              [suggestionsViewController.view.leadingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.leadingAnchor],
+                                              [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.trailingAnchor],
+                                              [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
+    
+    [suggestionsViewController didMoveToParentViewController:self];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -1019,6 +1041,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
     _voiceMessageController.roomId = dataSource.roomId;
+    
+    _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
+                                                                                          room:dataSource.room];
 }
 
 - (void)onRoomDataSourceReady

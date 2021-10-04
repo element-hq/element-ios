@@ -22,8 +22,6 @@ import SwiftUI
 @available(iOS 14.0, *)
 enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     case multipleResults
-    case oneResult
-    case empty
     
     var screenType: Any.Type {
         MockUserSuggestionScreenState.self
@@ -32,10 +30,6 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     var screenView: ([Any], AnyView)  {
         let service: MockUserSuggestionService
         switch self {
-        case .empty:
-            service = MockUserSuggestionService(userCount: 0)
-        case .oneResult:
-            service = MockUserSuggestionService(userCount: 1)
         case .multipleResults:
             service = MockUserSuggestionService(userCount: 10)
         }

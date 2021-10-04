@@ -20,6 +20,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
+@available(iOS 14.0, *)
 final class UserSuggestionCoordinator: Coordinator {
     
     // MARK: - Properties
@@ -44,27 +45,22 @@ final class UserSuggestionCoordinator: Coordinator {
     init(parameters: UserSuggestionCoordinatorParameters) {
         self.parameters = parameters
         
-        userSuggestionService = UserSuggestionService(session: parameters.room)
+        userSuggestionService = UserSuggestionService(room: parameters.room)
         userSuggestionViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: userSuggestionService)
         
-        let view = UserSuggestionList(viewModel: viewModel.context)
-            .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
+        let view = UserSuggestionList(viewModel: userSuggestionViewModel.context)
+            .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         
-        userSuggestionHostingController = VectorHostingController(rootView: view)
+        userSuggestionHostingController = UIHostingController(rootView: view)
+    }
+    
+    func processPartialUserName(_ userName: String) {
+        userSuggestionService.processPartialUserName(userName)
     }
     
     // MARK: - Public
     func start() {
-        MXLog.debug("[UserSuggestionCoordinator] did start.")
-        userSuggestionViewModel.completion = { [weak self] result in
-            MXLog.debug("[UserSuggestionCoordinator] UserSuggestionViewModel did complete with result: \(result).")
-            guard let self = self else { return }
-            switch result {
-            case .cancel, .done:
-                self.completion?()
-                break
-            }
-        }
+        
     }
     
     func toPresentable() -> UIViewController {
