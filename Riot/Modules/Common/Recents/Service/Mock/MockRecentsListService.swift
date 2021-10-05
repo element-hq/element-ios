@@ -41,7 +41,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
                 room.dataTypes = .lowPriority
             } else if i % 7 == 0 {
                 room.dataTypes = .invited
-            } else if i % 9 == 0 {
+            } else if i % 11 == 0 {
                 room.dataTypes = .serverNotice
             }
             room.displayname = "Room \(i+1)"
