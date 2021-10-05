@@ -42,10 +42,10 @@ struct UserDefault<Value> {
             } else {
                 storage.setValue(newValue, forKey: key)
             }
-            let key = key
+            let tmpKey = key
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: .userDefaultValueUpdated,
-                                                object: key)
+                                                object: tmpKey)
             }
         }
     }
