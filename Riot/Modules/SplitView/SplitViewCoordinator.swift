@@ -103,6 +103,8 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             self.detailNavigationRouter = NavigationRouter(navigationController: detailNavigationController)
             
             self.parameters.router.setRootModule(self.splitViewController)
+            
+            self.registerNavigationRouterNotifications()
         } else {
             // Pop to home screen when selecting a new space
             self.popToHome(animated: true) {
@@ -172,6 +174,31 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             return topViewController is PlaceholderDetailViewController
         } else {
             return secondaryViewController is PlaceholderDetailViewController
+        }
+    }
+    
+    private func registerNavigationRouterNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(navigationRouterDidPopViewController(_:)), name: NavigationRouter.didPopViewController, object: nil)
+    }
+    
+    @objc private func navigationRouterDidPopViewController(_ notification: Notification) {
+        
+        guard let userInfo = notification.userInfo,
+              let navigationRouter = userInfo[NavigationRouter.NotificationUserInfoKey.navigationRouter] as? NavigationRouterType,
+              let poppedController = userInfo[NavigationRouter.NotificationUserInfoKey.viewController] as? UIViewController else {
+            return
+        }
+        
+        // In our split view configuration is possible to have nested navigation controller (see https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/)).
+        // If the split view controller has one column visible,
+        // and if the primary navigation controller pop the detail navigation controller.
+        // In this case the detail navigation controller will be popped but not his content. It means completions will not be called.
+        if navigationRouter === self.selectedNavigationRouter,
+           let poppedNavigationController = poppedController as? UINavigationController,
+           poppedNavigationController == self.detailNavigationController {
+            
+            // Clear the detailNavigationRouter to trigger completions associated to each controllers
+            self.detailNavigationRouter?.popAllModules(animated: false)
         }
     }
 }
