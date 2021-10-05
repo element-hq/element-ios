@@ -193,22 +193,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     // MARK: - SplitViewMasterPresentable
     
-    var collapseDetailViewController: Bool {
-        if (masterTabBarController.currentRoomViewController == nil) && (masterTabBarController.currentContactDetailViewController == nil) && (masterTabBarController.currentGroupDetailViewController == nil) {
-            // Return YES to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func secondViewControllerWhenSeparatedFromPrimary() -> UIViewController? {
-        // Return the top view controller of the master navigation controller, if it is a navigation controller itself.
-        if let topViewController = masterNavigationController.topViewController as? UINavigationController {
-            // Keep the detail scene
-            return topViewController
-        }
-        return nil
+    var selectedNavigationRouter: NavigationRouterType? {
+        return self.navigationRouter
     }
     
     // MARK: - Private methods
@@ -367,18 +353,91 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     // FIXME: Should be displayed from a tab.
-    private func showContactDetails() {
-        // TODO: Implement
+    private func showContactDetails(with contact: MXKContact) {
+        
+        let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
+        let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        
+        self.replaceSplitViewDetails(with: coordinator) {
+            [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
     
     // FIXME: Should be displayed from a tab.
-    private func showRoomDetails() {
-        // TODO: Implement
+    private func showGroupDetails(with group: MXGroup, for matrixSession: MXSession) {
+        let coordinatorParameters = GroupDetailsCoordinatorParameters(session: matrixSession, group: group)
+        let coordinator = GroupDetailsCoordinator(parameters: coordinatorParameters)
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        
+        self.replaceSplitViewDetails(with: coordinator) {
+            [weak self] in
+            self?.remove(childCoordinator: coordinator)
+        }
     }
     
-    // FIXME: Should be displayed from a tab.
-    private func showGroupDetails() {
-        // TODO: Implement
+    private func showRoom(with roomId: String) {
+        
+        guard let matrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+        
+        self.showRoom(with: roomId, eventId: nil, matrixSession: matrixSession)
+    }
+    
+    private func showRoom(with roomId: String, eventId: String?, matrixSession: MXSession) {
+        
+        // RoomCoordinator will be presented by the split view
+        // We don't which navigation controller instance will be used
+        // Give the NavigationRouterStore instance and let it find the associated navigation controller if needed
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, roomId: roomId, eventId: eventId)
+        
+        self.showRoom(with: roomCoordinatorParameters)
+    }
+    
+    private func showRoomPreview(with previewData: RoomPreviewData) {
+                
+        // RoomCoordinator will be presented by the split view
+        // We don't which navigation controller instance will be used
+        // Give the NavigationRouterStore instance and let it find the associated navigation controller if needed
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, previewData: previewData)
+        
+        self.showRoom(with: roomCoordinatorParameters)
+    }
+    
+    private func showRoom(with parameters: RoomCoordinatorParameters) {
+                        
+        let coordinator = RoomCoordinator(parameters: parameters)
+        coordinator.delegate = self
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+                
+        self.replaceSplitViewDetails(with: coordinator) {
+            [weak self] in
+            self?.releaseRoomDataSourceIfNeeded(for: coordinator)
+            self?.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    // TODO: Multiple RoomCoordinator with the same roomId can be open
+    // Do not close datasource if another one with the same RoomDataSource is opened
+    private func releaseRoomDataSourceIfNeeded(for roomCoordinator: RoomCoordinatorProtocol) {
+                         
+        guard roomCoordinator.canReleaseRoomDataSource,
+              let session = roomCoordinator.mxSession,
+              let roomId = roomCoordinator.roomId else {
+            return
+        }
+                
+        let dataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)
+        dataSourceManager?.closeRoomDataSource(withRoomId: roomId, forceClose: false)
+    }
+    
+    private func replaceSplitViewDetails(with presentable: Presentable, popCompletion: (() -> Void)? = nil) {
+        self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: presentable, popCompletion: popCompletion)
     }
     
     // MARK: UserSessions management
@@ -439,13 +498,24 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 // MARK: - MasterTabBarControllerDelegate
 extension TabBarCoordinator: MasterTabBarControllerDelegate {
     
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomPreviewWith roomPreviewData: RoomPreviewData!) {
+        self.showRoomPreview(with: roomPreviewData)
+    }
+    
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect contact: MXKContact!) {
+        self.showContactDetails(with: contact)
+    }
+        
     func masterTabBarControllerDidCompleteAuthentication(_ masterTabBarController: MasterTabBarController!) {
         self.delegate?.tabBarCoordinatorDidCompleteAuthentication(self)
     }
     
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, wantsToDisplayDetailViewController detailViewController: UIViewController!) {
-        
-        self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: detailViewController)
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomWithId roomId: String!, andEventId eventId: String!, inMatrixSession matrixSession: MXSession!) {
+        self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession)
+    }
+    
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect group: MXGroup!, inMatrixSession matrixSession: MXSession!) {
+        self.showGroupDetails(with: group, for: matrixSession)
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, needsSideMenuIconWithNotification displayNotification: Bool) {
@@ -456,6 +526,26 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
         
         self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
+    }
+}
+
+// MARK: - RoomCoordinatorDelegate
+extension TabBarCoordinator: RoomCoordinatorDelegate {
+    
+    func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol) {
+        self.remove(childCoordinator: coordinator)
+    }
+        
+    func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {
+        self.navigationRouter.popModule(animated: true)
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
+        self.showRoom(with: roomId)
     }
 }
 

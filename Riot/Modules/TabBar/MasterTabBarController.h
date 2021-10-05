@@ -211,7 +211,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @protocol MasterTabBarControllerDelegate <NSObject>
 
 - (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
-- (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToDisplayDetailViewController:(UIViewController*)detailViewController;
 - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController needsSideMenuIconWithNotification:(BOOL)displayNotification;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithData:(RoomPreviewData*)roomPreviewData;
