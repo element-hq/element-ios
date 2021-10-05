@@ -203,6 +203,8 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 
 - (void)removeTabAt:(MasterTabBarIndex)index;
 
+- (void)selectTabAtIndex:(MasterTabBarIndex)tabBarIndex;
+
 @end
 
 
@@ -211,5 +213,9 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
 - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToDisplayDetailViewController:(UIViewController*)detailViewController;
 - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController needsSideMenuIconWithNotification:(BOOL)displayNotification;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithData:(RoomPreviewData*)roomPreviewData;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession;
 
 @end
