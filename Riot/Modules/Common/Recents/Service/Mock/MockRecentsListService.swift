@@ -62,7 +62,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         return MockRecentsListService(withRooms: rooms)
     }
     
-    public var session: MXSession?
+    public weak var session: MXSession?
     
     public var mode: RecentsDataSourceMode = .home
     

@@ -18,36 +18,88 @@ import Foundation
 
 @objc
 public protocol RecentsListServiceProtocol {
+    
+    //  MARK: - Properties
+    
+    /// Session instance, Implementations encouraged to hold a weak reference
     var session: MXSession? { get }
+    
+    /// Current mode
     var mode: RecentsDataSourceMode { get }
+    
+    /// Query to filter rooms
     var query: String? { get }
+    
+    /// Current space
     var space: MXSpace? { get }
     
-    // MARK: Cells
+    // MARK: - Data
+    
+    /// Invited rooms for current mode
     var invitedRoomListData: MXRoomListData? { get }
+    
+    /// Favorited rooms for current mode
     var favoritedRoomListData: MXRoomListData? { get }
+    
+    /// Direct rooms for current mode
     var peopleRoomListData: MXRoomListData? { get }
+    
+    /// Rooms for current mode
     var conversationRoomListData: MXRoomListData? { get }
+    
+    /// Low priority rooms for current mode
     var lowPriorityRoomListData: MXRoomListData? { get }
+    
+    /// Server notice rooms for current mode
     var serverNoticeRoomListData: MXRoomListData? { get }
+    
+    /// Suggested rooms for current mode
     var suggestedRoomListData: MXRoomListData? { get }
     
     // MARK: Discussion counts
+    
+    /// Counts for favorite screen
     var favoritedMissedDiscussionsCount: DiscussionsCount { get }
+    
+    /// Counts for people screen
     var peopleMissedDiscussionsCount: DiscussionsCount { get }
+    
+    /// Counts for rooms screen
     var conversationMissedDiscussionsCount: DiscussionsCount { get }
+    
+    /// Total number of rooms visible in one screen. Can be used to display an empty view
     var totalVisibleItemCount: Int { get }
     
     //  MARK: - Methods
+    
+    /// Upte mode function
+    /// - Parameter mode: new mode
     func updateMode(_ mode: RecentsDataSourceMode)
+    
+    /// Update query to filter rooms
+    /// - Parameter query: new query
     func updateQuery(_ query: String?)
+    
+    /// Update current space
+    /// - Parameter space: new space
     func updateSpace(_ space: MXSpace?)
+    
+    /// Refresh recents
     func refresh()
+    
+    /// Stop service. Do not use after stopping.
     func stop()
     
     //  MARK: - Delegate
     
+    /// Add delegate instance for the service
+    /// - Parameter delegate: new delegate
     func addDelegate(_ delegate: RecentsListServiceDelegate)
+    
+    /// Remove given delegate instance
+    /// - Parameter delegate: delegate to be removed
     func removeDelegate(_ delegate: RecentsListServiceDelegate)
+    
+    /// Remove all delegates
     func removeAllDelegates()
 }
