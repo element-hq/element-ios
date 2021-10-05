@@ -55,7 +55,7 @@ targets:
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/String.swift
     - path: ../Riot/Categories/MXKImageView.swift
-    - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
+    - path: ../Riot/Modules/Common/Recents/Model/RecentCellData.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Generated/Strings.swift
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
