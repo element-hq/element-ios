@@ -38,14 +38,29 @@ class MockUserSuggestionService: UserSuggestionServiceProtocol {
         items.send(suggestionItems)
     }
     
-    func processPartialUserName(_ userName: String) {
-        guard userName.count > 0 else {
-            items.send(suggestionItems)
+    func processTextMessage(_ textMessage: String) {
+        
+        items.send([])
+        
+        guard textMessage.count > 0 else {
             return
         }
         
+        let components = textMessage.components(separatedBy: .whitespaces)
+        
+        guard let lastComponent = components.last else {
+            return
+        }
+        
+        guard lastComponent.hasPrefix("@") else {
+            return
+        }
+        
+        var partialName = lastComponent
+        partialName.removeFirst()
+        
         items.send(suggestionItems.filter({ userSuggestion in
-            return (userSuggestion.displayName?.lowercased().range(of: userName.lowercased()) != .none)
+            return (userSuggestion.displayName?.lowercased().range(of: partialName.lowercased()) != .none)
         }))
     }
     

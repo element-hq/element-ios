@@ -325,10 +325,6 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     NSString *newText = [textView.text stringByReplacingCharactersInRange:range withString:text];
     [self updateUIWithTextMessage:newText animated:YES];
     
-    if ([text isEqualToString:@"@"]) {
-        [self.delegate roomInputToolbarViewDidRequestUserSuggestions:self];
-    }
-    
     return YES;
 }
 
@@ -344,6 +340,8 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     {
         [self.delegate roomInputToolbarView:self isTyping:(self.textMessage.length > 0 ? YES : NO)];
     }
+
+    [self.delegate roomInputToolbarViewDidChangeTextMessage:self];
 }
 
 - (void)textViewDidChangeHeight:(GrowingTextView *)textView height:(CGFloat)height

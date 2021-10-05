@@ -36,28 +36,20 @@ struct UserSuggestionList: View {
     
     var body: some View {
         BackgroundView {
-            ScrollViewReader { scrollViewReader in
-                List(viewModel.viewState.items) { item in
+            List(viewModel.viewState.items) { item in
+                Button {
+                    viewModel.send(viewAction: .selectedItem(item))
+                } label: {
                     UserSuggestionListItem(
                         avatar: item.avatar,
                         displayName: item.displayName,
                         userId: item.id
                     )
                     .padding([.top, .bottom], 4.0)
-                    .onTapGesture {
-                        viewModel.send(viewAction: .selectedItem(item))
-                    }
                 }
-                .environment(\.defaultMinListRowHeight, rowHeight)
-                .frame(height: min(maxHeight, rowHeight * CGFloat(viewModel.viewState.items.count)))
-                .onAppear(perform: {
-                    guard let lastItemId = viewModel.viewState.items.last?.id else {
-                        return
-                    }
-                    
-                    scrollViewReader.scrollTo(lastItemId)
-                })
             }
+            .environment(\.defaultMinListRowHeight, rowHeight)
+            .frame(height: min(maxHeight, rowHeight * CGFloat(viewModel.viewState.items.count)))
         }
     }
 }

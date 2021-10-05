@@ -31,7 +31,7 @@ protocol UserSuggestionServiceProtocol {
     
     var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never> { get }
     
-    func processPartialUserName(_ userName: String)
+    func processTextMessage(_ textMessage: String)
 }
 
 // MARK: Avatarable

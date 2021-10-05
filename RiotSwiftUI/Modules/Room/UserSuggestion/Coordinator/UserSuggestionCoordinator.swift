@@ -21,6 +21,13 @@ import UIKit
 import SwiftUI
 
 @available(iOS 14.0, *)
+protocol UserSuggestionCoordinatorDelegate: AnyObject {
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator,
+                                   didRequestMentionForMember member: MXRoomMember,
+                                   textTrigger: String?)
+}
+
+@available(iOS 14.0, *)
 final class UserSuggestionCoordinator: Coordinator {
     
     // MARK: - Properties
@@ -30,7 +37,7 @@ final class UserSuggestionCoordinator: Coordinator {
     private let parameters: UserSuggestionCoordinatorParameters
     private let userSuggestionHostingController: UIViewController
     
-    private var userSuggestionService: UserSuggestionServiceProtocol
+    private var userSuggestionService: UserSuggestionService
     private var userSuggestionViewModel: UserSuggestionViewModelProtocol
     
     // MARK: Public
@@ -38,6 +45,8 @@ final class UserSuggestionCoordinator: Coordinator {
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
     var completion: (() -> Void)?
+    
+    weak var delegate: UserSuggestionCoordinatorDelegate?
     
     // MARK: - Setup
     
@@ -47,15 +56,33 @@ final class UserSuggestionCoordinator: Coordinator {
         
         userSuggestionService = UserSuggestionService(room: parameters.room)
         userSuggestionViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: userSuggestionService)
-        
+
         let view = UserSuggestionList(viewModel: userSuggestionViewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         
         userSuggestionHostingController = UIHostingController(rootView: view)
+        
+        userSuggestionViewModel.completion = { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            switch result {
+            case .selectedItemWithIdentifier(let identifier):
+                guard let member = self.userSuggestionService.roomMemberForIdentifier(identifier) else {
+                    return
+                }
+                
+                self.delegate?.userSuggestionCoordinator(self,
+                                                         didRequestMentionForMember: member,
+                                                         textTrigger: self.userSuggestionService.currentTextTrigger)
+                break
+            }
+        }
     }
     
-    func processPartialUserName(_ userName: String) {
-        userSuggestionService.processPartialUserName(userName)
+    func processTextMessage(_ textMessage: String) {
+        userSuggestionService.processTextMessage(textMessage)
     }
     
     // MARK: - Public

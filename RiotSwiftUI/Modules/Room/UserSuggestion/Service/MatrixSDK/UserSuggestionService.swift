@@ -20,6 +20,13 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
+struct UserSuggestionServiceItem: UserSuggestionItemProtocol {
+    let userId: String
+    let displayName: String?
+    let avatarUrl: String?
+}
+
+@available(iOS 14.0, *)
 class UserSuggestionService: UserSuggestionServiceProtocol {
     
     // MARK: - Properties
@@ -29,10 +36,12 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     private let room: MXRoom
     
     private var suggestionItems: [UserSuggestionItemProtocol] = []
+    private var roomJoinedMembers: [MXRoomMember] = []
     
     // MARK: Public
     
     var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never>
+    var currentTextTrigger: String?
     
     // MARK: - Setup
     
@@ -40,26 +49,64 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
         self.room = room
         self.items = CurrentValueSubject([])
         
-        generateUsersWithCount(10)
-        items.send(suggestionItems)
+        self.room.members { [weak self] members in
+            guard let self = self, let joinedMembers = members?.joinedMembers else {
+                return
+            }
+            
+            self.roomJoinedMembers = joinedMembers
+            
+            self.suggestionItems = joinedMembers.map { member in
+                UserSuggestionServiceItem(userId: member.userId, displayName: member.displayname, avatarUrl: member.avatarUrl)
+            }
+        } lazyLoadedMembers: { [weak self] lazyMembers in
+            guard let self = self, let joinedMembers = lazyMembers?.joinedMembers else {
+                return
+            }
+            
+            self.roomJoinedMembers = joinedMembers
+            
+            self.suggestionItems = joinedMembers.map { member in
+                UserSuggestionServiceItem(userId: member.userId, displayName: member.displayname, avatarUrl: member.avatarUrl)
+            }
+        } failure: { error in
+            MXLog.error("[UserSuggestionService] Failed loading room with error: \(String(describing: error))")
+        }
     }
     
-    func processPartialUserName(_ userName: String) {
-        guard userName.count > 0 else {
-            items.send(suggestionItems)
+    func roomMemberForIdentifier(_ identifier: String) -> MXRoomMember? {
+        return roomJoinedMembers.filter { $0.userId == identifier }.first
+    }
+    
+    // MARK: - UserSuggestionServiceProtocol
+    
+    func processTextMessage(_ textMessage: String) {
+        items.send([])
+        currentTextTrigger = nil
+        
+        guard textMessage.count > 0 else {
             return
         }
         
-        items.send(suggestionItems.filter({ userSuggestion in
-            return (userSuggestion.displayName?.lowercased().range(of: userName.lowercased()) != .none)
-        }))
-    }
-    
-    private func generateUsersWithCount(_ count: UInt) {
-        suggestionItems.removeAll()
-        for _ in 0..<count {
-            let identifier = "@" + UUID().uuidString
-            suggestionItems.append(MockUserSuggestionServiceItem(userId: identifier, displayName: identifier, avatarUrl: "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ"))
+        let components = textMessage.components(separatedBy: .whitespaces)
+        
+        guard let lastComponent = components.last else {
+            return
         }
+        
+        guard lastComponent.hasPrefix("@") else {
+            return
+        }
+        
+        currentTextTrigger = lastComponent
+        
+        var partialName = lastComponent
+        partialName.removeFirst()
+        
+        items.send(suggestionItems.filter({ userSuggestion in
+            let containedInUsername = userSuggestion.userId.lowercased().range(of: partialName.lowercased()) != .none
+            let containedInDisplayName = (userSuggestion.displayName ?? "").lowercased().range(of: partialName.lowercased()) != .none
+            return (containedInUsername || containedInDisplayName)
+        }))
     }
 }

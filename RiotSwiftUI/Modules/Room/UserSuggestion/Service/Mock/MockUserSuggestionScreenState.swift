@@ -36,8 +36,8 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
         
         let listViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: service)
         
-        let viewModel = UserSuggestionListWithInputViewModel(listViewModel: listViewModel) { partialUserName in
-            service.processPartialUserName(partialUserName)
+        let viewModel = UserSuggestionListWithInputViewModel(listViewModel: listViewModel) { textMessage in
+            service.processTextMessage(textMessage)
         }
         
         return (

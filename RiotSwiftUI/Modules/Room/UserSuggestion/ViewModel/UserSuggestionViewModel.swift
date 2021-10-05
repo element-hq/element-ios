@@ -42,10 +42,6 @@ class UserSuggestionViewModel: UserSuggestionViewModelType, UserSuggestionViewMo
         return UserSuggestionViewModel(userSuggestionService: userSuggestionService)
     }
     
-    deinit {
-        print("well shit")
-    }
-    
     private init(userSuggestionService: UserSuggestionServiceProtocol) {
         self.userSuggestionService = userSuggestionService
         super.init(initialViewState: Self.defaultState(userSuggestionService: userSuggestionService))
@@ -71,8 +67,8 @@ class UserSuggestionViewModel: UserSuggestionViewModelType, UserSuggestionViewMo
     
     override func process(viewAction: UserSuggestionViewAction) {
         switch viewAction {
-        case .selectedItem(_):
-            break
+        case .selectedItem(let item):
+            completion?(.selectedItemWithIdentifier(item.id))
         }
     }
     

@@ -20,5 +20,5 @@ import Foundation
 
 @available(iOS 14, *)
 enum UserSuggestionViewModelResult {
-    case selectedItem(UserSuggestionItemProtocol)
+    case selectedItemWithIdentifier(String)
 }

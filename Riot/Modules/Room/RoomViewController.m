@@ -137,7 +137,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate>
 {
     
     // The preview header
@@ -1044,6 +1044,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
                                                                                           room:dataSource.room];
+    _userSuggestionCoordinator.delegate = self;
 }
 
 - (void)onRoomDataSourceReady
@@ -4226,9 +4227,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self cancelEventSelection];
 }
  
-- (void)roomInputToolbarViewDidRequestUserSuggestions:(MXKRoomInputToolbarView *)toolbarView
+- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView *)toolbarView
 {
-    
+    [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
 }
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
@@ -6545,6 +6546,24 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     self.spaceDetailPresenter = nil;
     [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
+}
+
+#pragma mark - UserSuggestionCoordinatorBridgeDelegate
+
+- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator
+             didRequestMentionForMember:(MXRoomMember *)member
+                            textTrigger:(NSString *)textTrigger
+{
+    if (textTrigger.length) {
+        NSString *textMessage = [self.inputToolbarView textMessage];
+        textMessage = [textMessage stringByReplacingOccurrencesOfString:textTrigger
+                                                             withString:@""
+                                                                options:NSBackwardsSearch | NSAnchoredSearch
+                                                                  range:NSMakeRange(0, textMessage.length)];
+        [self.inputToolbarView setTextMessage:textMessage];
+    }
+    
+    [self mention:member];
 }
 
 @end

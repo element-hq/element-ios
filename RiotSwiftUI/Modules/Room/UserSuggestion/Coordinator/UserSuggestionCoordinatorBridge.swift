@@ -16,6 +16,13 @@
 
 import Foundation
 
+@objc
+protocol UserSuggestionCoordinatorBridgeDelegate: AnyObject {
+    func userSuggestionCoordinatorBridge(_ coordinator: UserSuggestionCoordinatorBridge,
+                                         didRequestMentionForMember member: MXRoomMember,
+                                         textTrigger: String?)
+}
+
 @objcMembers
 final class UserSuggestionCoordinatorBridge: NSObject {
     
@@ -25,16 +32,25 @@ final class UserSuggestionCoordinatorBridge: NSObject {
         return _userSuggestionCoordinator as! UserSuggestionCoordinator
     }
     
+    weak var delegate: UserSuggestionCoordinatorBridgeDelegate?
+    
     init(mediaManager: MXMediaManager, room: MXRoom) {
         let parameters = UserSuggestionCoordinatorParameters(mediaManager: mediaManager, room: room)
         if #available(iOS 14.0, *) {
-            self._userSuggestionCoordinator = UserSuggestionCoordinator(parameters: parameters)
+            let userSuggestionCoordinator = UserSuggestionCoordinator(parameters: parameters)
+            self._userSuggestionCoordinator = userSuggestionCoordinator
+        }
+        
+        super.init()
+        
+        if #available(iOS 14.0, *) {
+            userSuggestionCoordinator.delegate = self
         }
     }
     
-    func processPartialUserName(_ userName: String) {
+    func processTextMessage(_ textMessage: String) {
         if #available(iOS 14.0, *) {
-            return self.userSuggestionCoordinator.processPartialUserName(userName)
+            return self.userSuggestionCoordinator.processTextMessage(textMessage)
         }
     }
     
@@ -44,5 +60,16 @@ final class UserSuggestionCoordinatorBridge: NSObject {
         }
         
         return nil
+    }
+}
+
+@available(iOS 14.0, *)
+extension UserSuggestionCoordinatorBridge: UserSuggestionCoordinatorDelegate {
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator,
+                                   didRequestMentionForMember member: MXRoomMember,
+                                   textTrigger: String?) {
+        delegate?.userSuggestionCoordinatorBridge(self,
+                                                  didRequestMentionForMember: member,
+                                                  textTrigger: textTrigger)
     }
 }
