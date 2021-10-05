@@ -19,16 +19,12 @@
 
 #import "AuthenticationViewController.h"
 
+#import "RoomPreviewData.h"
 #import "HomeViewController.h"
 #import "FavouritesViewController.h"
 #import "PeopleViewController.h"
 #import "RoomsViewController.h"
 #import "GroupsViewController.h"
-
-#import "RoomViewController.h"
-#import "ContactDetailsViewController.h"
-#import "GroupDetailsViewController.h"
-#import "UnifiedSearchViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
@@ -175,8 +171,6 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
 @property (nonatomic, readonly) GroupsViewController *groupsViewController;
 
-// The current unified search screen if any
-@property (nonatomic, weak) UnifiedSearchViewController *unifiedSearchViewController;
 
 // References on the currently selected room
 @property (nonatomic, readonly) NSString  *selectedRoomId;

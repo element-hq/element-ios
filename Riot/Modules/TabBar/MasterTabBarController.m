@@ -17,8 +17,6 @@
 
 #import "MasterTabBarController.h"
 
-#import "UnifiedSearchViewController.h"
-
 #import "RecentsDataSource.h"
 #import "GroupsDataSource.h"
 
@@ -231,12 +229,6 @@
         }
         
         [[AppDelegate theDelegate] checkAppVersion];
-    }
-    
-    if (self.unifiedSearchViewController)
-    {
-        [self.unifiedSearchViewController destroy];
-        self.unifiedSearchViewController = nil;
     }
 }
 

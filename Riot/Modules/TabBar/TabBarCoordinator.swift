@@ -349,7 +349,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func showUnifiedSearch() {
         let viewController = self.createUnifiedSearchController()
         
-        self.masterTabBarController.unifiedSearchViewController = viewController
         self.navigationRouter.push(viewController, animated: true, popCompletion: nil)
     }
     
