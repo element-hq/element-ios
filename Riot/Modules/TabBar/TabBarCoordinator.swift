@@ -39,8 +39,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private let parameters: TabBarCoordinatorParameters
     
-    /// Completion called when `popToHomeAnimated:` has been completed.
-    private var popToHomeViewControllerCompletion: (() -> Void)?
+    // Indicate if the Coordinator has started once
+    private var hasStartedOnce: Bool {
+        return self.masterTabBarController != nil
+    }
     
     // TODO: Move MasterTabBarController navigation code here
     // and if possible use a simple: `private let tabBarController: UITabBarController`
@@ -89,8 +91,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     func start(with spaceId: String?) {
         self.currentSpaceId = spaceId
         
-        // If start has been done once do setup view controllers again
-        if self.masterTabBarController == nil {
+        // If start has been done once do not setup view controllers again
+        if self.hasStartedOnce == false {
             let masterTabBarController = self.createMasterTabBarController()
             masterTabBarController.masterTabBarDelegate = self
             self.masterTabBarController = masterTabBarController
@@ -106,20 +108,19 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             }
             
             self.registerUserSessionsServiceNotifications()
+            self.registerUserSessionsServiceNotifications()
+            self.registerSessionChange()
+            
+            if let homeViewController = homeViewControllerWrapperViewController {
+                let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
+                                                                  bannerPresenter: homeViewController,
+                                                                  themeService: ThemeService.shared())
+                versionCheckCoordinator.start()
+                add(childCoordinator: versionCheckCoordinator)
+            }
         }
                 
         self.updateMasterTabBarController(with: spaceId)
-        
-        self.registerUserSessionsServiceNotifications()
-        self.registerSessionChange()
-        
-        if let homeViewController = homeViewControllerWrapperViewController {
-            let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
-                                                              bannerPresenter: homeViewController,
-                                                              themeService: ThemeService.shared())
-            versionCheckCoordinator.start()
-            add(childCoordinator: versionCheckCoordinator)
-        }
     }
     
     func toPresentable() -> UIViewController {
