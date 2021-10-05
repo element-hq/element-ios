@@ -34,7 +34,7 @@ class TemplateUserProfileViewModelTests: XCTestCase {
         viewModel = TemplateUserProfileViewModel.makeTemplateUserProfileViewModel(templateUserProfileService: service)
         context = viewModel.context
     }
-    
+
     func testInitialState() {
         XCTAssertEqual(context.viewState.displayName, Constants.displayName)
         XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
@@ -44,7 +44,7 @@ class TemplateUserProfileViewModelTests: XCTestCase {
         let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
         XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
     }
-    
+
     func testPresenceUpdatesReceived() throws {
         let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
         let awaitDeferred = xcAwaitDeferred(presencePublisher)

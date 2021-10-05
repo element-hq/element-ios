@@ -1173,7 +1173,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return YES;
     }
     
-    // Manage email validation link from Identity Server v1 or v2
+    // Manage email validation link from identity server v1 or v2
     else if ([webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV1]
              || [webURL.path isEqualToString:validateEmailSubmitTokenAPIPathV2])
     {
@@ -2261,6 +2261,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         else
         {
+            MXLogDebug(@"[AppDelegate] handleAppState: mainSession.state: %@", [MXTools readableSessionState:mainSession.state]);
             switch (mainSession.state)
             {
                 case MXSessionStateClosed:
@@ -2313,32 +2314,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 return;
             }
             
-            if (mainSession.crypto.crossSigning)
-            {
-                // Get the up-to-date cross-signing state
-                MXWeakify(self);
-                [mainSession.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
-                    MXStrongifyAndReturnIfNil(self);
-                    
-                    MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mainSession.crypto.crossSigning.state));
-                    
-                    switch (mainSession.crypto.crossSigning.state)
-                    {
-                        case MXCrossSigningStateCrossSigningExists:
-                            MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
-                            [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mainSession];
-                            break;
-                        case MXCrossSigningStateCanCrossSign:
-                            MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
-                            [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mainSession];
-                            break;
-                        default:
-                            break;
-                    }
-                } failure:^(NSError * _Nonnull error) {
-                    MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mainSession.crypto.crossSigning.state), error);
-                }];
-            }
+            MXLogDebug(@"[AppDelegate] handleAppState: Check cross-signing");
+            [self checkCrossSigningForSession:mainSession];
             
             // TODO: We should wait that cross-signing screens are done before going further but it seems fine. Those screens
             // protect each other.
@@ -3307,6 +3284,46 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [mxSession removeListener:callEventsListeners[@(mxSession.hash)]];
     [callEventsListeners removeObjectForKey:@(mxSession.hash)];
 }
+
+
+#pragma mark - Cross-signing
+
+- (void)checkCrossSigningForSession:(MXSession*)mxSession
+{
+    if ([UIApplication sharedApplication].applicationState != UIApplicationStateActive)
+    {
+        MXLogDebug(@"[AppDelegate] checkCrossSigningForSession called while the app is not active. Ignore it.");
+        return;
+    }
+    
+    if (mxSession.crypto.crossSigning)
+    {
+        // Get the up-to-date cross-signing state
+        MXWeakify(self);
+        [mxSession.crypto.crossSigning refreshStateWithSuccess:^(BOOL stateUpdated) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@", @(mxSession.crypto.crossSigning.state));
+            
+            switch (mxSession.crypto.crossSigning.state)
+            {
+                case MXCrossSigningStateCrossSigningExists:
+                    MXLogDebug(@"[AppDelegate] handleAppState: presentVerifyCurrentSessionAlertIfNeededWithSession");
+                    [self.masterTabBarController presentVerifyCurrentSessionAlertIfNeededWithSession:mxSession];
+                    break;
+                case MXCrossSigningStateCanCrossSign:
+                    MXLogDebug(@"[AppDelegate] handleAppState: presentReviewUnverifiedSessionsAlertIfNeededWithSession");
+                    [self.masterTabBarController presentReviewUnverifiedSessionsAlertIfNeededWithSession:mxSession];
+                    break;
+                default:
+                    break;
+            }
+        } failure:^(NSError * _Nonnull error) {
+            MXLogDebug(@"[AppDelegate] handleAppState: crossSigning.state: %@. Error: %@", @(mxSession.crypto.crossSigning.state), error);
+        }];
+    }
+}
+
 
 #pragma mark - Incoming room key requests handling
 

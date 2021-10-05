@@ -4364,7 +4364,7 @@ TableViewSectionsDelegate>
 }
 
 
-#pragma mark - Identity Server updates
+#pragma mark - Identity server updates
 
 - (void)registerAccountDataDidChangeIdentityServerNotification
 {
@@ -4458,7 +4458,7 @@ TableViewSectionsDelegate>
 }
 
 
-#pragma mark - Identity Server
+#pragma mark - Identity server
 
 - (void)showIdentityServerSettingsScreen
 {

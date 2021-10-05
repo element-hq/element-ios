@@ -39,7 +39,7 @@ protocol AvatarViewDataProtocol: AvatarProtocol {
     var avatarUrl: String? { get }            
         
     /// Matrix media handler
-    var mediaManager: MXMediaManager { get }
+    var mediaManager: MXMediaManager? { get }
     
     /// Fallback image used when avatarUrl is nil
     var fallbackImage: AvatarFallbackImage? { get }

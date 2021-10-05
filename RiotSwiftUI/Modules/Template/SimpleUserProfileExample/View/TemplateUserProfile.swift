@@ -73,7 +73,8 @@ struct TemplateUserProfile: View {
 
 @available(iOS 14.0, *)
 struct TemplateUserProfile_Previews: PreviewProvider {
+    static let stateRenderer = MockTemplateUserProfileScreenState.stateRenderer
     static var previews: some View {
-        MockTemplateUserProfileScreenState.screenGroup()
+        stateRenderer.screenGroup()
     }
 }
