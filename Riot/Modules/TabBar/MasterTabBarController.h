@@ -178,20 +178,16 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 // The current unified search screen if any
 @property (nonatomic, weak) UnifiedSearchViewController *unifiedSearchViewController;
 
-// References on the currently selected room and its view controller
-@property (nonatomic, readonly) RoomViewController *currentRoomViewController;
+// References on the currently selected room
 @property (nonatomic, readonly) NSString  *selectedRoomId;
 @property (nonatomic, readonly) NSString  *selectedEventId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
-@property (nonatomic, readonly) MXKRoomDataSource *selectedRoomDataSource;
 @property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
-// References on the currently selected contact and its view controller
-@property (nonatomic, readonly) ContactDetailsViewController *currentContactDetailViewController;
+// References on the currently selected contact
 @property (nonatomic, readonly) MXKContact *selectedContact;
 
-// References on the currently selected group and its view controller
-@property (nonatomic, readonly) GroupDetailsViewController *currentGroupDetailViewController;
+// References on the currently selected group
 @property (nonatomic, readonly) MXGroup *selectedGroup;
 @property (nonatomic, readonly) MXSession *selectedGroupSession;
 

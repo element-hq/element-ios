@@ -591,6 +591,12 @@
 
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion
 {
+    [self releaseSelectedItem];
+    
+    _selectedRoomId = roomId;
+    _selectedEventId = eventId;
+    _selectedRoomSession = matrixSession;
+    
     [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession];
     
     // TODO: Add completion to delegate
@@ -604,6 +610,8 @@
 
 - (void)showRoomPreview:(RoomPreviewData *)roomPreviewData
 {
+    [self releaseSelectedItem];
+    
     _selectedRoomPreviewData = roomPreviewData;
     _selectedRoomId = roomPreviewData.roomId;
     _selectedRoomSession = roomPreviewData.mxSession;
@@ -615,6 +623,8 @@
 
 - (void)selectContact:(MXKContact*)contact
 {
+    [self releaseSelectedItem];
+    
     _selectedContact = contact;
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact];
@@ -624,6 +634,8 @@
 
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
 {
+    [self releaseSelectedItem];
+    
     _selectedGroup = group;
     _selectedGroupSession = matrixSession;
     
@@ -637,7 +649,6 @@
     _selectedRoomId = nil;
     _selectedEventId = nil;
     _selectedRoomSession = nil;
-    _selectedRoomDataSource = nil;
     _selectedRoomPreviewData = nil;
     
     _selectedContact = nil;
