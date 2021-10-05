@@ -457,7 +457,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func notifyDataChange(on fetcher: MXRoomListDataFetcher) {
-        multicastDelegate.invoke(invocation: { $0.serviceDidChangeData(self) })
+        multicastDelegate.invoke({ $0.serviceDidChangeData(self) })
     }
     
     deinit {
