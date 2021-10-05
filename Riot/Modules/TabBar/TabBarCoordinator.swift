@@ -388,14 +388,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.showRoom(with: roomId, eventId: nil, matrixSession: matrixSession)
     }
     
-    private func showRoom(with roomId: String, eventId: String?, matrixSession: MXSession) {
+    private func showRoom(with roomId: String, eventId: String?, matrixSession: MXSession, completion: (() -> Void)? = nil) {
         
         // RoomCoordinator will be presented by the split view
         // We don't which navigation controller instance will be used
         // Give the NavigationRouterStore instance and let it find the associated navigation controller if needed
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, roomId: roomId, eventId: eventId)
         
-        self.showRoom(with: roomCoordinatorParameters)
+        self.showRoom(with: roomCoordinatorParameters, completion: completion)
     }
     
     private func showRoomPreview(with previewData: RoomPreviewData) {
@@ -408,11 +408,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.showRoom(with: roomCoordinatorParameters)
     }
     
-    private func showRoom(with parameters: RoomCoordinatorParameters) {
+    private func showRoom(with parameters: RoomCoordinatorParameters, completion: (() -> Void)? = nil) {
                         
         let coordinator = RoomCoordinator(parameters: parameters)
         coordinator.delegate = self
-        coordinator.start()
+        coordinator.start(withCompletion: completion)
         self.add(childCoordinator: coordinator)
                 
         self.replaceSplitViewDetails(with: coordinator) {
@@ -497,7 +497,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 
 // MARK: - MasterTabBarControllerDelegate
 extension TabBarCoordinator: MasterTabBarControllerDelegate {
-    
+        
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomPreviewWith roomPreviewData: RoomPreviewData!) {
         self.showRoomPreview(with: roomPreviewData)
     }
@@ -510,8 +510,8 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         self.delegate?.tabBarCoordinatorDidCompleteAuthentication(self)
     }
     
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomWithId roomId: String!, andEventId eventId: String!, inMatrixSession matrixSession: MXSession!) {
-        self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession)
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomWithId roomId: String!, andEventId eventId: String!, inMatrixSession matrixSession: MXSession!, completion: (() -> Void)!) {
+        self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession, completion: completion)
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect group: MXGroup!, inMatrixSession matrixSession: MXSession!) {

@@ -587,15 +587,9 @@
     
     _selectedRoomId = roomId;
     _selectedEventId = eventId;
-    _selectedRoomSession = matrixSession;
+    _selectedRoomSession = matrixSession;    
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession];
-    
-    // TODO: Add completion to delegate
-    if (completion)
-    {
-        completion();
-    }
+    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:completion];
     
     [self refreshSelectedControllerIfNeeded];
 }

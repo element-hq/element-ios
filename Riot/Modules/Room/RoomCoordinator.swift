@@ -79,18 +79,23 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
 
     // MARK: - Public
-
+    
     func start() {
-
+        self.start(withCompletion: nil)
+    }
+    
+    // NOTE: Completion closure has been added for legacy architecture purpose.
+    // Remove this completion after LegacyAppDelegate refactor.
+    func start(withCompletion completion: (() -> Void)?) {
         self.roomViewController.delegate = self
         
         // Detect when view controller has been dismissed by gesture when presented modally (not in full screen).
         self.roomViewController.presentationController?.delegate = self
         
         if let eventId = self.selectedEventId {
-            self.start(with: self.parameters.roomId, and: eventId)
+            self.start(with: self.parameters.roomId, and: eventId, completion: completion)
         } else {
-            self.start(with: self.parameters.roomId)
+            self.start(with: self.parameters.roomId, completion: completion)
         }
 
         // Add `roomViewController` to the NavigationRouter, only if it has been explicity set as parameter
@@ -102,17 +107,15 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             }
         }
     }
-    
-    /// Use this method when the room screen is already shown and you want to go to a specific event.
-    /// i.e User tap on push notification message for the current displayed room
-    func start(withEventId eventId: String) {
+        
+    func start(withEventId eventId: String, completion: (() -> Void)?) {
         
         self.selectedEventId = eventId
         
         if self.hasStartedOnce {
-            self.start(with: self.parameters.roomId, and: eventId)
+            self.start(with: self.parameters.roomId, and: eventId, completion: completion)
         } else {
-            self.start()
+            self.start(withCompletion: completion)
         }
     }
 
@@ -122,7 +125,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
     // MARK: - Private
 
-    private func start(with roomId: String) {
+    private func start(with roomId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
@@ -141,10 +144,12 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             if let roomDataSource = roomDataSource {
                 self.roomViewController.displayRoom(roomDataSource)
             }
+            
+            completion?()
         })
     }
 
-    private func start(with roomId: String, and eventId: String) {
+    private func start(with roomId: String, and eventId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
@@ -169,6 +174,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
             // Give the data source ownership to the room view controller.
             self.roomViewController.hasRoomDataSourceOwnership = true
+            
+            completion?()
         }
     }
 }
