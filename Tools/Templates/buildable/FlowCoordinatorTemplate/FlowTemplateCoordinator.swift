@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-final class FlowTemplateCoordinator: FlowTemplateCoordinatorProtocol {
+final class FlowTemplateCoordinator: NSObject,  FlowTemplateCoordinatorProtocol {
     
     // MARK: - Properties
     
@@ -52,6 +52,9 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorProtocol {
 
         self.add(childCoordinator: rootCoordinator)
         
+        // Detect when view controller has been dismissed by gesture when presented modally (not in full screen).
+        self.navigationRouter.toPresentable().presentationController?.delegate = self
+        
         if self.navigationRouter.modules.isEmpty == false {
             self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
                 self?.remove(childCoordinator: rootCoordinator)
@@ -74,6 +77,14 @@ final class FlowTemplateCoordinator: FlowTemplateCoordinatorProtocol {
         let coordinator = TemplateScreenCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
         return coordinator
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension FlowTemplateCoordinator: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.delegate?.flowTemplateCoordinatorDidDismissInteractively(self)
     }
 }
 
