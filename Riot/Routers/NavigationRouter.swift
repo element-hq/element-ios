@@ -280,15 +280,15 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     }
     
     private func willPushViewController(_ viewController: UIViewController) {
-        self.postNotification(withName: NavigationRouter.willPushViewController, for: viewController)
+        self.postNotification(withName: NavigationRouter.willPushModule, for: viewController)
     }
     
     private func didPushViewController(_ viewController: UIViewController) {
-        self.postNotification(withName: NavigationRouter.didPushViewController, for: viewController)
+        self.postNotification(withName: NavigationRouter.didPushModule, for: viewController)
     }
     
     private func willPopViewController(_ viewController: UIViewController) {
-        self.postNotification(withName: NavigationRouter.willPopViewController, for: viewController)
+        self.postNotification(withName: NavigationRouter.willPopModule, for: viewController)
     }
     
     private func didPopViewController(_ viewController: UIViewController) {
@@ -297,7 +297,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         // So associated coordinator can be deallocated
         runCompletion(for: viewController)
                         
-        self.postNotification(withName: NavigationRouter.didPopViewController, for: viewController)
+        self.postNotification(withName: NavigationRouter.didPopModule, for: viewController)
         
         self.removeModule(for: viewController)
     }
@@ -342,10 +342,10 @@ extension NavigationRouter {
     
     // MARK: Notification names
     
-    public static let willPushViewController = Notification.Name("NavigationRouterWillPushViewController")
-    public static let didPushViewController = Notification.Name("NavigationRouterDidPushViewController")
-    public static let willPopViewController = Notification.Name("NavigationRouterWillPopViewController")
-    public static let didPopViewController = Notification.Name("NavigationRouterDidPopViewController")
+    public static let willPushModule = Notification.Name("NavigationRouterWillPushModule")
+    public static let didPushModule = Notification.Name("NavigationRouterDidPushModule")
+    public static let willPopModule = Notification.Name("NavigationRouterWillPopModule")
+    public static let didPopModule = Notification.Name("NavigationRouterDidPopModule")
     
     public static let didCreate = Notification.Name("NavigationRouterDidCreate")
     public static let willDestroy = Notification.Name("NavigationRouterWillDestroy")
