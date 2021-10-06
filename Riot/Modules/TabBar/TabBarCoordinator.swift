@@ -397,6 +397,21 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     private func showRoom(with parameters: RoomCoordinatorParameters, completion: (() -> Void)? = nil) {
+        
+        if let topRoomCoordinator =  self.splitViewMasterPresentableDelegate?.detailModules.last as? RoomCoordinatorProtocol,
+           parameters.roomId == topRoomCoordinator.roomId && parameters.session == topRoomCoordinator.mxSession {
+            
+                // RoomCoordinator with the same room id and Matrix session is shown
+            
+                if let eventId = parameters.eventId {
+                    // If there is an event id ask the RoomCoordinator to start with this one                    
+                    topRoomCoordinator.start(withEventId: eventId, completion: completion)
+                } else {
+                    // If there is no event id defined do nothing
+                    completion?()
+                }
+            return
+        }
                         
         let coordinator = RoomCoordinator(parameters: parameters)
         coordinator.delegate = self
