@@ -160,16 +160,26 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     }
 
     private func setupTableView() {
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.separatorStyle = .none
-        self.tableView.alwaysBounceVertical = false
-        self.tableView.backgroundColor = .clear
-        self.tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
+        guard let tableView = tableView else { return }
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.alwaysBounceVertical = false
+        tableView.backgroundColor = .clear
+        tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
         
         tableHeaderView = ServiceTermsModalTableHeaderView.instantiate()
         tableHeaderView.delegate = self
-        self.tableView.tableHeaderView = tableHeaderView
+        tableView.tableHeaderView = tableHeaderView
+        
+        tableView.addConstraint(NSLayoutConstraint(item: tableView,
+                                                   attribute: .width,
+                                                   relatedBy: .equal,
+                                                   toItem: tableHeaderView,
+                                                   attribute: .width,
+                                                   multiplier: 1,
+                                                   constant: 10))
     }
 
     private func render(viewState: ServiceTermsModalScreenViewState) {
@@ -296,10 +306,10 @@ extension ServiceTermsModalScreenViewController: ServiceTermsModalTableHeaderVie
         
         if viewModel.serviceType == MXServiceTypeIdentityService {
             title = VectorL10n.serviceTermsModalInformationTitleIdentityServer
-            message = VectorL10n.serviceTermsModalInformationDescriptionIdentityServer(AppInfo.current.displayName)
+            message = VectorL10n.serviceTermsModalInformationDescriptionIdentityServer
         } else {
             title = VectorL10n.serviceTermsModalInformationTitleIntegrationManager
-            message = VectorL10n.serviceTermsModalInformationDescriptionIntegrationManager(AppInfo.current.displayName)
+            message = VectorL10n.serviceTermsModalInformationDescriptionIntegrationManager
         }
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)

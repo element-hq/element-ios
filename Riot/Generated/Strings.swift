@@ -4051,13 +4051,13 @@ public class VectorL10n: NSObject {
   public static var serviceTermsModalFooter: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_footer") 
   }
-  /// An identity server allows %@ to find users on Matrix by looking up their phone number or email address.
-  public static func serviceTermsModalInformationDescriptionIdentityServer(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "service_terms_modal_information_description_identity_server", p1)
+  /// An identity server helps you find your contacts, by looking up their phone number or email address, to see if they already have an account.
+  public static var serviceTermsModalInformationDescriptionIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_information_description_identity_server") 
   }
-  /// An integration manager allows %@ to ...
-  public static func serviceTermsModalInformationDescriptionIntegrationManager(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "service_terms_modal_information_description_integration_manager", p1)
+  /// An integration manager lets you add features from third parties.
+  public static var serviceTermsModalInformationDescriptionIntegrationManager: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_information_description_integration_manager") 
   }
   /// Identity Server
   public static var serviceTermsModalInformationTitleIdentityServer: String { 

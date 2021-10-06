@@ -1042,8 +1042,8 @@ Tap the + to start adding people.";
 // Alert explaining what an identity server / integration manager is.
 "service_terms_modal_information_title_identity_server" = "Identity Server";
 "service_terms_modal_information_title_integration_manager" = "Integration Manager";
-"service_terms_modal_information_description_identity_server" = "An identity server allows %@ to find users on Matrix by looking up their phone number or email address.";
-"service_terms_modal_information_description_integration_manager" = "An integration manager allows %@ to ...";
+"service_terms_modal_information_description_identity_server" = "An identity server helps you find your contacts, by looking up their phone number or email address, to see if they already have an account.";
+"service_terms_modal_information_description_integration_manager" = "An integration manager lets you add features from third parties.";
 
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Check to accept %@";
 
