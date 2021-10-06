@@ -28,12 +28,7 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView)  {
-        let service: MockUserSuggestionService
-        switch self {
-        case .multipleResults:
-            service = MockUserSuggestionService(userCount: 10)
-        }
-        
+        let service = UserSuggestionService(roomMembersProvider: self)
         let listViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: service)
         
         let viewModel = UserSuggestionListWithInputViewModel(listViewModel: listViewModel) { textMessage in
@@ -45,5 +40,19 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
             AnyView(UserSuggestionListWithInput(viewModel: viewModel)
                         .addDependency(MockAvatarService.example))
         )
+    }
+}
+
+@available(iOS 14.0, *)
+extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
+    func fetchMembers(_ members: ([RoomMembersProviderMember]) -> Void) {
+        members(generateUsersWithCount(10))
+    }
+    
+    private func generateUsersWithCount(_ count: UInt) -> [RoomMembersProviderMember] {
+        return (0..<count).map { _ in
+            let identifier = "@" + UUID().uuidString
+            return RoomMembersProviderMember(identifier: identifier, displayName: identifier, avatarURL: "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ")
+        }
     }
 }

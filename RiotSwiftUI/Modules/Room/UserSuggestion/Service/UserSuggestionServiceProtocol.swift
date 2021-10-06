@@ -31,6 +31,8 @@ protocol UserSuggestionServiceProtocol {
     
     var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never> { get }
     
+    var currentTextTrigger: String? { get }
+    
     func processTextMessage(_ textMessage: String)
 }
 

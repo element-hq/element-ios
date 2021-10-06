@@ -22,9 +22,7 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 protocol UserSuggestionCoordinatorDelegate: AnyObject {
-    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator,
-                                   didRequestMentionForMember member: MXRoomMember,
-                                   textTrigger: String?)
+    func userSuggestionCoordinator(_ coordinator: UserSuggestionCoordinator, didRequestMentionForMember member: MXRoomMember, textTrigger: String?)
 }
 
 @available(iOS 14.0, *)
@@ -35,10 +33,12 @@ final class UserSuggestionCoordinator: Coordinator {
     // MARK: Private
     
     private let parameters: UserSuggestionCoordinatorParameters
-    private let userSuggestionHostingController: UIViewController
     
-    private var userSuggestionService: UserSuggestionService
-    private var userSuggestionViewModel: UserSuggestionViewModelProtocol
+    private var userSuggestionHostingController: UIViewController!
+    private var userSuggestionService: UserSuggestionServiceProtocol!
+    private var userSuggestionViewModel: UserSuggestionViewModelProtocol!
+    
+    private var roomMembers: [MXRoomMember] = []
     
     // MARK: Public
 
@@ -54,13 +54,13 @@ final class UserSuggestionCoordinator: Coordinator {
     init(parameters: UserSuggestionCoordinatorParameters) {
         self.parameters = parameters
         
-        userSuggestionService = UserSuggestionService(room: parameters.room)
+        userSuggestionService = UserSuggestionService(roomMembersProvider: self)
         userSuggestionViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: userSuggestionService)
 
         let view = UserSuggestionList(viewModel: userSuggestionViewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         
-        userSuggestionHostingController = UIHostingController(rootView: view)
+        userSuggestionHostingController = VectorHostingController(rootView: view)
         
         userSuggestionViewModel.completion = { [weak self] result in
             guard let self = self else {
@@ -69,14 +69,11 @@ final class UserSuggestionCoordinator: Coordinator {
             
             switch result {
             case .selectedItemWithIdentifier(let identifier):
-                guard let member = self.userSuggestionService.roomMemberForIdentifier(identifier) else {
+                guard let member = self.roomMembers.filter({ $0.userId == identifier }).first else {
                     return
                 }
                 
-                self.delegate?.userSuggestionCoordinator(self,
-                                                         didRequestMentionForMember: member,
-                                                         textTrigger: self.userSuggestionService.currentTextTrigger)
-                break
+                self.delegate?.userSuggestionCoordinator(self, didRequestMentionForMember: member, textTrigger: self.userSuggestionService.currentTextTrigger)
             }
         }
     }
@@ -92,5 +89,35 @@ final class UserSuggestionCoordinator: Coordinator {
     
     func toPresentable() -> UIViewController {
         return self.userSuggestionHostingController
+    }
+}
+
+@available(iOS 14.0, *)
+extension UserSuggestionCoordinator: RoomMembersProviderProtocol {
+    func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
+        guard roomMembers.count == 0 else {
+            members(roomMembersToProviderMembers(roomMembers))
+            return
+        }
+        
+        parameters.room.members({ [weak self] roomMembers in
+            guard let self = self, let joinedMembers = roomMembers?.joinedMembers else {
+                return
+            }
+            self.roomMembers = joinedMembers
+            members(self.roomMembersToProviderMembers(joinedMembers))
+        }, lazyLoadedMembers: { [weak self] lazyRoomMembers in
+            guard let self = self, let joinedMembers = lazyRoomMembers?.joinedMembers else {
+                return
+            }
+            self.roomMembers = joinedMembers
+            members(self.roomMembersToProviderMembers(joinedMembers))
+        }, failure: { error in
+            MXLog.error("[UserSuggestionCoordinator] Failed loading room with error: \(String(describing: error))")
+        })
+    }
+    
+    private func roomMembersToProviderMembers(_ roomMembers: [MXRoomMember]) -> [RoomMembersProviderMember] {
+        roomMembers.map { RoomMembersProviderMember(identifier: $0.userId, displayName: $0.displayname ?? "", avatarURL: $0.avatarUrl ?? "") }
     }
 }

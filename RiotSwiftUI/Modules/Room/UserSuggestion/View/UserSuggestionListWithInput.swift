@@ -44,6 +44,9 @@ struct UserSuggestionListWithInput: View {
                 })
                 .border(Color.black)
                 .padding([.leading, .trailing])
+                .onAppear(perform: {
+                    inputText = "@-" // Make the list show all available mock results
+                })
         }
     }
 }

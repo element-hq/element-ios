@@ -31,17 +31,10 @@ class UserSuggestionUITests: MockScreenTest {
     }
     
     func verifyUserSuggestionScreen() throws {
-        guard let screenState = screenState as? MockUserSuggestionScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .longDisplayName(let name):
-            verifyUserSuggestionLongName(name: name)
-        }
+        XCTAssert(app.tables.firstMatch.exists)
+        
+        let firstButton = app.tables.firstMatch.buttons.firstMatch
+        _ = firstButton.waitForExistence(timeout: 10)
+        XCTAssert(firstButton.identifier == "displayNameText-userIdText")
     }
-    
-    func verifyUserSuggestionLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
-    }
-
 }
