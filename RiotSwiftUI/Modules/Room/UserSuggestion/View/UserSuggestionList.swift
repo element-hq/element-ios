@@ -48,6 +48,7 @@ struct UserSuggestionList: View {
                     .padding([.top, .bottom], 4.0)
                 }
             }
+            .listStyle(PlainListStyle())
             .environment(\.defaultMinListRowHeight, rowHeight)
             .frame(height: min(maxHeight, rowHeight * CGFloat(viewModel.viewState.items.count)))
         }

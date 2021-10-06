@@ -45,6 +45,15 @@ class VectorHostingController: UIHostingController<AnyView> {
         self.update(theme: self.theme)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    
+        // Fixes weird iOS 15 bug where the view no longer grows its enclosing host
+        if #available(iOS 15.0, *) {
+            self.view.invalidateIntrinsicContentSize()
+        }
+    }
+    
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange), name: .themeServiceDidChangeTheme, object: nil)
     }
