@@ -15,6 +15,7 @@
  */
 
 import UIKit
+import WeakDictionary
 
 /// `NavigationRouter` is a concrete implementation of NavigationRouterType.
 final class NavigationRouter: NSObject, NavigationRouterType {
@@ -26,9 +27,21 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     private var completions: [UIViewController : () -> Void]
     private let navigationController: UINavigationController
     
+    /// Stores the association between the added Presentable and his view controller.
+    /// They can be the same if the controller is not added via his Coordinator or it is a simple UIViewController.
+    private var storedModules = WeakDictionary<UIViewController, AnyObject>()
+    
     // MARK: Public
     
+    /// Returns the presentables associated to each view controller
     var modules: [Presentable] {
+        return self.viewControllers.map { (viewController) -> Presentable in
+            return self.module(for: viewController)
+        }
+    }
+    
+    /// Return the view controllers stack
+    var viewControllers: [UIViewController] {
         return navigationController.viewControllers
     }
     
@@ -72,8 +85,11 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         
         // Avoid setting a UINavigationController onto stack
         guard controller is UINavigationController == false else {
+            MXLog.error("Cannot add a UINavigationController to NavigationRouter")
             return
         }
+        
+        self.addModule(module, for: controller)
         
         let controllersToPop = self.navigationController.viewControllers
         
@@ -103,7 +119,9 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         MXLog.debug("[NavigationRouter] Set modules \(modules)")
         
         let controllers = modules.map { (presentable) -> UIViewController in
-            return presentable.toPresentable()
+            let controller = presentable.toPresentable()
+            self.addModule(presentable, for: controller)
+            return controller
         }
                 
         let controllersToPop = self.navigationController.viewControllers
@@ -178,8 +196,11 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         
         // Avoid pushing UINavigationController onto stack
         guard controller is UINavigationController == false else {
+            MXLog.error("Cannot push a UINavigationController to NavigationRouter")
             return
         }
+        
+        self.addModule(module, for: controller)
         
         if let completion = popCompletion {
             completions[controller] = completion
@@ -234,6 +255,22 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     
     // MARK: - Private
     
+    private func module(for viewController: UIViewController) -> Presentable {
+        
+        guard let module = self.storedModules[viewController] as? Presentable else {
+            return viewController
+        }
+        return module
+    }
+    
+    private func addModule(_ module: Presentable, for viewController: UIViewController) {
+        self.storedModules[viewController] = module as AnyObject
+    }
+    
+    private func removeModule(for viewController: UIViewController) {
+        self.storedModules[viewController] = nil
+    }
+    
     private func runCompletion(for controller: UIViewController) {
         guard let completion = completions[controller] else {
             return
@@ -242,30 +279,36 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         completions.removeValue(forKey: controller)
     }
     
-    fileprivate func willPushViewController(_ viewController: UIViewController) {
+    private func willPushViewController(_ viewController: UIViewController) {
         self.postNotification(withName: NavigationRouter.willPushViewController, for: viewController)
     }
     
-    fileprivate func didPushViewController(_ viewController: UIViewController) {
+    private func didPushViewController(_ viewController: UIViewController) {
         self.postNotification(withName: NavigationRouter.didPushViewController, for: viewController)
     }
     
-    fileprivate func willPopViewController(_ viewController: UIViewController) {
+    private func willPopViewController(_ viewController: UIViewController) {
         self.postNotification(withName: NavigationRouter.willPopViewController, for: viewController)
     }
     
-    fileprivate func didPopViewController(_ viewController: UIViewController) {
+    private func didPopViewController(_ viewController: UIViewController) {
         
         // Call completion closure associated to the view controller
         // So associated coordinator can be deallocated
         runCompletion(for: viewController)
-        
+                        
         self.postNotification(withName: NavigationRouter.didPopViewController, for: viewController)
+        
+        self.removeModule(for: viewController)
     }
     
     private func postNotification(withName name: Notification.Name, for viewController: UIViewController) {
+        
+        let module = self.module(for: viewController)
+        
         let userInfo: [String: Any] = [
             NotificationUserInfoKey.navigationRouter: self,
+            NotificationUserInfoKey.module: module,
             NotificationUserInfoKey.viewController: viewController
         ]
         NotificationCenter.default.post(name: name, object: self, userInfo: userInfo)
@@ -310,8 +353,17 @@ extension NavigationRouter {
     // MARK: Notification keys
     
     public struct NotificationUserInfoKey {
+        
+        /// The associated view controller (UIViewController).
         static let viewController = "viewController"
+        
+        /// The associated module (Presentable), can the view controller itself or is Coordinator
+        static let module = "module"
+        
+        /// The navigation router that send the notification (NavigationRouterType)
         static let navigationRouter = "navigationRouter"
+        
+        /// The navigation controller (UINavigationController) associated to the navigation router
         static let navigationController = "navigationController"
     }
 }
