@@ -18,6 +18,8 @@ import UIKit
 
 protocol SplitViewMasterPresentableDelegate: AnyObject {
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable, popCompletion: (() -> Void)?)
+    
+    var detailModules: [Presentable] { get }
 }
 
 /// `SplitViewMasterPresentableDelegate` default implementation

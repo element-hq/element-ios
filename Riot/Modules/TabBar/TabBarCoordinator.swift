@@ -164,7 +164,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 
                 // Waiting for `self.navigationRouter` popping to MasterTabBarController
                 var token: NSObjectProtocol?
-                token = NotificationCenter.default.addObserver(forName: NavigationRouter.didPopViewController, object: self.navigationRouter, queue: OperationQueue.main) { [weak self] (notification) in
+                token = NotificationCenter.default.addObserver(forName: NavigationRouter.didPopModule, object: self.navigationRouter, queue: OperationQueue.main) { [weak self] (notification) in
                     
                     guard let self = self else {
                         return
@@ -417,25 +417,12 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 
         self.replaceSplitViewDetails(with: coordinator) {
             [weak self] in
-            self?.releaseRoomDataSourceIfNeeded(for: coordinator)
+            // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
             self?.remove(childCoordinator: coordinator)
         }
     }
     
-    // TODO: Multiple RoomCoordinator with the same roomId can be open
-    // Do not close datasource if another one with the same RoomDataSource is opened
-    private func releaseRoomDataSourceIfNeeded(for roomCoordinator: RoomCoordinatorProtocol) {
-                         
-        guard roomCoordinator.canReleaseRoomDataSource,
-              let session = roomCoordinator.mxSession,
-              let roomId = roomCoordinator.roomId else {
-            return
-        }
-                
-        let dataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)
-        dataSourceManager?.closeRoomDataSource(withRoomId: roomId, forceClose: false)
-    }
-    
+    /// If the split view is collapsed (one column visible) it will push the Presentable on the primary navigation controller, otherwise it will show the Presentable as the secondary view of the split view.
     private func replaceSplitViewDetails(with presentable: Presentable, popCompletion: (() -> Void)? = nil) {
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: presentable, popCompletion: popCompletion)
     }

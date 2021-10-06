@@ -32,6 +32,12 @@ class SplitViewCoordinatorParameters {
 
 final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     
+    // MARK: - Constants
+    
+    private enum Constants {
+        static let detailModulesCheckDelay: Double = 0.3
+    }
+    
     // MARK: - Properties
     
     // MARK: Private    
@@ -177,8 +183,32 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         }
     }
     
+    private func releaseRoomDataSourceIfNeeded(for roomCoordinator: RoomCoordinatorProtocol) {
+
+        guard roomCoordinator.canReleaseRoomDataSource,
+              let session = roomCoordinator.mxSession,
+              let roomId = roomCoordinator.roomId else {
+            return
+        }
+
+        let existingRoomCoordinatorWithSameRoomId = self.detailModules.first { presentable -> Bool in
+            if let currentRoomCoordinator = presentable as? RoomCoordinatorProtocol {
+                return currentRoomCoordinator.roomId == roomCoordinator.roomId
+            }
+            return false
+        }
+
+        guard existingRoomCoordinatorWithSameRoomId == nil else {
+            MXLog.debug("Do not release RoomDataSource for room id \(roomId), another RoomCoordinator with same room id using it")
+            return
+        }
+
+        let dataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)
+        dataSourceManager?.closeRoomDataSource(withRoomId: roomId, forceClose: false)
+    }
+    
     private func registerNavigationRouterNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(navigationRouterDidPopViewController(_:)), name: NavigationRouter.didPopViewController, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(navigationRouterDidPopViewController(_:)), name: NavigationRouter.didPopModule, object: nil)
     }
     
     @objc private func navigationRouterDidPopViewController(_ notification: Notification) {
@@ -199,6 +229,19 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
             
             // Clear the detailNavigationRouter to trigger completions associated to each controllers
             self.detailNavigationRouter?.popAllModules(animated: false)
+        }
+        
+        if let poppedModule = userInfo[NavigationRouter.NotificationUserInfoKey.module] as? Presentable {
+            
+            if let roomCoordinator = poppedModule as? RoomCoordinatorProtocol {
+                
+                // If the RoomCoordinator view controller is popped from the detail navigation controller, check if the associated room data source should be released.
+                // If there is no other RoomCoordinator using the same data source, release it.
+                // A small delay is set to be sure navigation stack manipulation ended before checking the whole stack.
+                DispatchQueue.main.asyncAfter(deadline: .now() + Constants.detailModulesCheckDelay) {
+                    self.releaseRoomDataSourceIfNeeded(for: roomCoordinator)
+                }
+            }
         }
     }
 }
@@ -267,7 +310,11 @@ extension SplitViewCoordinator: TabBarCoordinatorDelegate {
 
 // MARK: - SplitViewMasterPresentableDelegate
 extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
-
+    
+    var detailModules: [Presentable] {
+        return self.detailNavigationRouter?.modules ?? []
+    }
+    
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable, popCompletion: (() -> Void)?) {
         MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToDisplay detailPresentable: \(detailPresentable)")
         
@@ -279,7 +326,7 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         let detailController = detailPresentable.toPresentable()
         
         // Reset the detail navigation controller with the given detail controller
-        self.detailNavigationRouter?.setRootModule(detailController, popCompletion: popCompletion)
+        self.detailNavigationRouter?.setRootModule(detailPresentable, popCompletion: popCompletion)
         
         // This will call first UISplitViewControllerDelegate method:  `splitViewController(_:showDetail:sender:)`, if implemented, to give the opportunity to customise `UISplitViewController.showDetailViewController(:sender:)` behavior.
         // - If the split view controller is collpased (one column visible):
