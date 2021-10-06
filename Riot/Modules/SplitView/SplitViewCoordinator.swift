@@ -315,8 +315,8 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         return self.detailNavigationRouter?.modules ?? []
     }
     
-    func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable, popCompletion: (() -> Void)?) {
-        MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToDisplay detailPresentable: \(detailPresentable)")
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToReplaceDetailWith detailPresentable: Presentable, popCompletion: (() -> Void)?) {
+        MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToReplaceDetailWith detailPresentable: \(detailPresentable)")
         
         guard let detailNavigationController = self.detailNavigationController else {
             MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: Failed to display because detailNavigationController is nil")
@@ -339,5 +339,15 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         
         // Set leftBarButtonItem with split view display mode button if there is no leftBarButtonItem defined
         detailController.vc_setupDisplayModeLeftBarButtonItemIfNeeded()
+    }
+    
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack detailPresentable: Presentable, popCompletion: (() -> Void)?) {
+        
+        guard let detailNavigationRouter = self.detailNavigationRouter else {
+            MXLog.debug("Failed to stack \(detailPresentable) because detailNavigationRouter is nil")
+            return
+        }
+        
+        detailNavigationRouter.push(detailPresentable, animated: true, popCompletion: popCompletion)
     }
 }

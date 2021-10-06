@@ -404,7 +404,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 // RoomCoordinator with the same room id and Matrix session is shown
             
                 if let eventId = parameters.eventId {
-                    // If there is an event id ask the RoomCoordinator to start with this one                    
+                    // If there is an event id ask the RoomCoordinator to start with this one
                     topRoomCoordinator.start(withEventId: eventId, completion: completion)
                 } else {
                     // If there is no event id defined do nothing
@@ -427,7 +427,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     /// If the split view is collapsed (one column visible) it will push the Presentable on the primary navigation controller, otherwise it will show the Presentable as the secondary view of the split view.
     private func replaceSplitViewDetails(with presentable: Presentable, popCompletion: (() -> Void)? = nil) {
-        self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToDisplay: presentable, popCompletion: popCompletion)
+        self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToReplaceDetailWith: presentable, popCompletion: popCompletion)
     }
     
     // MARK: UserSessions management

@@ -17,15 +17,21 @@
 import UIKit
 
 protocol SplitViewMasterPresentableDelegate: AnyObject {
-    func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable, popCompletion: (() -> Void)?)
     
+    /// Detail items from the split view
     var detailModules: [Presentable] { get }
+    
+    /// Replace split view detail with the given detailPresentable
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToReplaceDetailWith detailPresentable: Presentable, popCompletion: (() -> Void)?)
+    
+    /// Stack the detailPresentable on the existing split view detail stack
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack detailPresentable: Presentable, popCompletion: (() -> Void)?)
 }
 
 /// `SplitViewMasterPresentableDelegate` default implementation
 extension SplitViewMasterPresentableDelegate {
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToDisplay detailPresentable: Presentable) {
-        splitViewMasterPresentable(presentable, wantsToDisplay: detailPresentable, popCompletion: nil)
+        splitViewMasterPresentable(presentable, wantsToReplaceDetailWith: detailPresentable, popCompletion: nil)
     }
 }
 
