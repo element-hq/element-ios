@@ -41,6 +41,9 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = .clear
+        
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
     }
@@ -63,8 +66,6 @@ class VectorHostingController: UIHostingController<AnyView> {
     }
     
     private func update(theme: Theme) {
-        self.view.backgroundColor = theme.headerBackgroundColor
-        
         if let navigationBar = self.navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
