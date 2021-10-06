@@ -18,18 +18,6 @@
 
 import UIKit
 
-/// TabBarCoordinator input parameters
-class TabBarCoordinatorParameters {
-    
-    let userSessionsService: UserSessionsService
-    let appNavigator: AppNavigatorProtocol
-    
-    init(userSessionsService: UserSessionsService, appNavigator: AppNavigatorProtocol) {
-        self.userSessionsService = userSessionsService
-        self.appNavigator = appNavigator
-    }
-}
-
 @objcMembers
 final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
