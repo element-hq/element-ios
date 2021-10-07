@@ -80,7 +80,7 @@ class SpaceDetailViewModel: SpaceDetailViewModelType {
             self.update(viewState: .loaded(parameters))
             
             self.update(viewState: .loading)
-            space.room.state { state in
+            space.room?.state { state in
                 let joinRule = state?.joinRule
                 let membersCount = summary.membersCount.members
                 
