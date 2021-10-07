@@ -51,6 +51,7 @@ struct UserSuggestionList: View {
             .listStyle(PlainListStyle())
             .environment(\.defaultMinListRowHeight, rowHeight)
             .frame(height: min(maxHeight, rowHeight * CGFloat(viewModel.viewState.items.count)))
+            .id(UUID()) // Rebuild the whole list on item changes. Fixes performance issues.
         }
     }
 }
