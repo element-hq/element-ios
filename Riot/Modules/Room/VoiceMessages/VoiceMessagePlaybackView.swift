@@ -43,13 +43,15 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
     
     private var _waveformView: VoiceMessageWaveformView!
     private var currentTheme: Theme?
-    private var scrubProgress: CGFloat?
     
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private var recordingIcon: UIView!
     @IBOutlet private var playButton: UIButton!
     @IBOutlet private var elapsedTimeLabel: UILabel!
     @IBOutlet private var waveformContainerView: UIView!
+    
+    private var longPressGestureRecognizer: UILongPressGestureRecognizer!
+    private var panGestureRecognizer: UIPanGestureRecognizer!
     
     weak var delegate: VoiceMessagePlaybackViewDelegate?
     
@@ -75,6 +77,14 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         
         _waveformView = VoiceMessageWaveformView(frame: waveformContainerView.bounds)
         waveformContainerView.vc_addSubViewMatchingParent(_waveformView)
+        
+        longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
+        longPressGestureRecognizer.minimumPressDuration = 0.2
+        waveformView.addGestureRecognizer(longPressGestureRecognizer)
+        
+        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        panGestureRecognizer.isEnabled = false
+        waveformView.addGestureRecognizer(panGestureRecognizer)
     }
     
     func configureWithDetails(_ details: VoiceMessagePlaybackViewDetails?) {
@@ -136,28 +146,36 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         currentTheme = theme
         configureWithDetails(details)
     }
-    
+        
     // MARK: - Private
         
     @IBAction private func onPlayButtonTap() {
         delegate?.voiceMessagePlaybackViewDidRequestPlaybackToggle()
     }
     
-    @IBAction private func tap(gestureRecognizer: UITapGestureRecognizer) {
+    @objc private func handleLongPressGesture(_ gestureRecognizer: UITapGestureRecognizer) {
         let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
         let progress = x / waveformContainerView.bounds.width
         delegate?.voiceMessagePlaybackViewDidRequestSeek(to: progress)
-    }
-
-    @IBAction private func pan(gestureRecognizer: UIPanGestureRecognizer) {
-            switch gestureRecognizer.state {
-            case .began, .changed:
-                let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
-                let progress = x / waveformContainerView.bounds.width
-                scrubProgress = progress
-                delegate?.voiceMessagePlaybackViewDidRequestSeek(to: progress)
-            default:
-                scrubProgress = nil
-            }
+        
+        switch gestureRecognizer.state {
+        case .began:
+            panGestureRecognizer.isEnabled = true
+        case .ended, .failed, .cancelled:
+            panGestureRecognizer.isEnabled = false
+        default:
+            break
         }
+    }
+    
+    @objc private func handlePanGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
+        switch gestureRecognizer.state {
+        case .began, .changed:
+            let x = gestureRecognizer.location(in: waveformContainerView).x.clamped(to: 0...waveformContainerView.bounds.width)
+            let progress = x / waveformContainerView.bounds.width
+            delegate?.voiceMessagePlaybackViewDidRequestSeek(to: progress)
+        default:
+            break
+        }
+    }
 }

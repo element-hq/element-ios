@@ -51,10 +51,6 @@
                             <rect key="frame" x="94" y="7" width="317" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <gestureRecognizers/>
-                            <connections>
-                                <outletCollection property="gestureRecognizers" destination="TvB-7x-51j" appends="YES" id="2ac-M3-OKn"/>
-                                <outletCollection property="gestureRecognizers" destination="Fwa-Eg-VFh" appends="YES" id="meS-g1-yIc"/>
-                            </connections>
                         </view>
                     </subviews>
                     <constraints>
@@ -86,16 +82,6 @@
             </connections>
             <point key="canvasLocation" x="-1742.753623188406" y="-299.33035714285711"/>
         </view>
-        <panGestureRecognizer minimumNumberOfTouches="1" id="TvB-7x-51j">
-            <connections>
-                <action selector="panWithGestureRecognizer:" destination="cGR-49-HWB" id="mcT-Wy-ePL"/>
-            </connections>
-        </panGestureRecognizer>
-        <tapGestureRecognizer id="Fwa-Eg-VFh">
-            <connections>
-                <action selector="tapWithGestureRecognizer:" destination="cGR-49-HWB" id="VMd-gQ-DPy"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="voice_message_play_button" width="15.5" height="15"/>
