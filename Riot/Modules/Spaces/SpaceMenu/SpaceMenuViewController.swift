@@ -114,6 +114,17 @@ class SpaceMenuViewController: UIViewController {
     }
     
     private func setupViews() {
+        setupTableView()
+        
+        if self.spaceId == SpaceListViewModel.Constants.homeSpaceId {
+            let avatarViewData = AvatarViewData(matrixItemId: self.spaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
+            self.avatarView.fill(with: avatarViewData)
+            self.titleLabel.text = VectorL10n.titleHome
+            self.subtitleLabel.text = VectorL10n.settingsTitle
+            
+            return
+        }
+
         guard let space = self.session.spaceService.getSpace(withId: self.spaceId), let summary = space.summary else {
             MXLog.error("[SpaceMenuViewController] setupViews: no space found")
             return
@@ -130,7 +141,6 @@ class SpaceMenuViewController: UIViewController {
         
         self.closeButton.layer.masksToBounds = true
         self.closeButton.layer.cornerRadius = self.closeButton.bounds.height / 2
-        setupTableView()
     }
     
     private func setupTableView() {
@@ -139,6 +149,7 @@ class SpaceMenuViewController: UIViewController {
         self.tableView.estimatedRowHeight = Constants.estimatedRowHeight
         self.tableView.allowsSelection = true
         self.tableView.register(cellType: SpaceMenuListViewCell.self)
+        self.tableView.register(cellType: SpaceMenuSwitchViewCell.self)
         self.tableView.tableFooterView = UIView()
     }
     
@@ -150,6 +161,8 @@ class SpaceMenuViewController: UIViewController {
             self.renderLoaded()
         case .leaveOptions(let displayName, let isAdmin):
             self.renderLeaveOptions(displayName: displayName, isAdmin: isAdmin)
+        case .updateItem(let indexPath):
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
         case .error(let error):
             self.render(error: error)
         case .deselect:
@@ -235,12 +248,15 @@ extension SpaceMenuViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SpaceMenuListViewCell.self)
-        
         let viewData = viewModel.menuItems[indexPath.row]
         
-        cell.update(theme: self.theme)
-        cell.fill(with: viewData)
+        let cell = viewData.style == .boolean ? tableView.dequeueReusableCell(for: indexPath, cellType: SpaceMenuSwitchViewCell.self) :
+                        tableView.dequeueReusableCell(for: indexPath, cellType: SpaceMenuListViewCell.self)
+        
+        if let cell = cell as? SpaceMenuCell {
+            cell.update(theme: self.theme)
+            cell.fill(with: viewData)
+        }
         
         return cell
     }

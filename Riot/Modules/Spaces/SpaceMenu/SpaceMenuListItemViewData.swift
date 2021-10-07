@@ -19,6 +19,7 @@ import Foundation
 /// Style of the `SpaceMenuListViewCell`
 enum SpaceMenuListItemStyle {
     case normal
+    case boolean
     case destructive
 }
 
@@ -28,4 +29,5 @@ struct SpaceMenuListItemViewData {
     let style: SpaceMenuListItemStyle
     let title: String?
     let icon: UIImage?
+    var value: Any?
 }

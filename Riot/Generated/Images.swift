@@ -192,6 +192,7 @@ internal enum Asset {
     internal static let spaceMenuLeave = ImageAsset(name: "space_menu_leave")
     internal static let spaceMenuMembers = ImageAsset(name: "space_menu_members")
     internal static let spaceMenuRooms = ImageAsset(name: "space_menu_rooms")
+    internal static let spacePrivateIcon = ImageAsset(name: "space_private_icon")
     internal static let spaceRoomIcon = ImageAsset(name: "space_room_icon")
     internal static let spaceTypeIcon = ImageAsset(name: "space_type_icon")
     internal static let spaceUserIcon = ImageAsset(name: "space_user_icon")
@@ -222,6 +223,7 @@ internal struct ImageAsset {
   internal typealias Image = UIImage
   #endif
 
+  @available(iOS 8.0, tvOS 9.0, watchOS 2.0, macOS 10.7, *)
   internal var image: Image {
     let bundle = BundleToken.bundle
     #if os(iOS) || os(tvOS)
@@ -233,13 +235,25 @@ internal struct ImageAsset {
     let image = Image(named: name)
     #endif
     guard let result = image else {
-      fatalError("Unable to load image named \(name).")
+      fatalError("Unable to load image asset named \(name).")
     }
     return result
   }
+
+  #if os(iOS) || os(tvOS)
+  @available(iOS 8.0, tvOS 9.0, *)
+  internal func image(compatibleWith traitCollection: UITraitCollection) -> Image {
+    let bundle = BundleToken.bundle
+    guard let result = Image(named: name, in: bundle, compatibleWith: traitCollection) else {
+      fatalError("Unable to load image asset named \(name).")
+    }
+    return result
+  }
+  #endif
 }
 
 internal extension ImageAsset.Image {
+  @available(iOS 8.0, tvOS 9.0, watchOS 2.0, *)
   @available(macOS, deprecated,
     message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
   convenience init!(asset: ImageAsset) {
