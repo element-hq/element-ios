@@ -41,7 +41,7 @@ typedef enum : NSUInteger
 - (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView;
 
 /**
- Tells the delegate that a user mention has been triggered
+ Inform the delegate that the text message has changed.
  
  @param toolbarView the room input toolbar view
  */

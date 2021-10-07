@@ -87,7 +87,7 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
             }
             
             // Partial username should start with one and only one "@" character
-            guard lastComponent.prefix(while: { character in character == "@" }).count == 1 else {
+            guard lastComponent.prefix(while: { $0 == "@" }).count == 1 else {
                 return
             }
             
@@ -97,8 +97,8 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
             partialName.removeFirst()
             
             self.items.send(self.suggestionItems.filter({ userSuggestion in
-                let containedInUsername = userSuggestion.userId.lowercased().range(of: partialName.lowercased()) != .none
-                let containedInDisplayName = (userSuggestion.displayName ?? "").lowercased().range(of: partialName.lowercased()) != .none
+                let containedInUsername = userSuggestion.userId.lowercased().contains(partialName.lowercased())
+                let containedInDisplayName = (userSuggestion.displayName ?? "").lowercased().contains(partialName.lowercased())
                 
                 return (containedInUsername || containedInDisplayName)
             }))

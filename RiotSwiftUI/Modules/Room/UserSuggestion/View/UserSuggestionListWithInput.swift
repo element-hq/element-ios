@@ -33,20 +33,18 @@ struct UserSuggestionListWithInput: View {
     
     var viewModel: UserSuggestionListWithInputViewModel
     @State private var inputText: String = ""
-
+    
     var body: some View {
         VStack(spacing: 0.0) {
             UserSuggestionList(viewModel: viewModel.listViewModel.context)
             TextField("Search for user", text: $inputText)
                 .background(Color.white)
-                .onChange(of: inputText, perform: { value in
-                    viewModel.callback(value)
-                })
-                .border(Color.black)
+                .onChange(of: inputText, perform:viewModel.callback)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding([.leading, .trailing])
-                .onAppear(perform: {
+                .onAppear {
                     inputText = "@-" // Make the list show all available mock results
-                })
+                }
         }
     }
 }

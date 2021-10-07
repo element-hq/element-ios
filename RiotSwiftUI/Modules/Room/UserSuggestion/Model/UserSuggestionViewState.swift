@@ -20,7 +20,7 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-struct UserSuggestionViewStateItem: BindableState, Identifiable {
+struct UserSuggestionViewStateItem: Identifiable {
     let id: String
     let avatar: AvatarInputProtocol?
     let displayName: String?

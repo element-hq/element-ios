@@ -51,6 +51,7 @@ struct UserSuggestionList: View {
             .listStyle(PlainListStyle())
             .environment(\.defaultMinListRowHeight, rowHeight)
             .frame(height: min(maxHeight, rowHeight * CGFloat(viewModel.viewState.items.count)))
+//            .frame(maxHeight: maxHeight)
             .id(UUID()) // Rebuild the whole list on item changes. Fixes performance issues.
         }
     }
@@ -69,7 +70,7 @@ private struct BackgroundView<Content: View>: View {
     }
     
     var body: some View {
-        VStack(content: content)
+        content()
             .background(theme.colors.background)
             .clipShape(RoundedCornerShape(radius: shadowRadius, corners: [.topLeft, .topRight]))
             .shadow(color: .black.opacity(0.20), radius: 20.0, x: 0.0, y: 3.0)

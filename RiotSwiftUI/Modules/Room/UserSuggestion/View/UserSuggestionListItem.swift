@@ -36,7 +36,7 @@ struct UserSuggestionListItem: View {
             if let avatar = avatar {
                 AvatarImage(avatarData: avatar, size: .medium)
             }
-            VStack(alignment:.leading) {
+            VStack(alignment: .leading) {
                 Text(displayName ?? "")
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)

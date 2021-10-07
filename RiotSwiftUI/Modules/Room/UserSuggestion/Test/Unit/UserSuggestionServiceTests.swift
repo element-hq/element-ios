@@ -77,6 +77,9 @@ class UserSuggestionServiceTests: XCTestCase {
         
         service?.processTextMessage("@@")
         assert(service?.items.value.count == 0)
+        
+        service?.processTextMessage("alice@matrix.org")
+        assert(service?.items.value.count == 0)
     }
     
     func testStuff() {
