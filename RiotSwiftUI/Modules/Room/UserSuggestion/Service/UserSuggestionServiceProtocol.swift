@@ -33,7 +33,7 @@ protocol UserSuggestionServiceProtocol {
     
     var currentTextTrigger: String? { get }
     
-    func processTextMessage(_ textMessage: String)
+    func processTextMessage(_ textMessage: String?)
 }
 
 // MARK: Avatarable

@@ -95,11 +95,6 @@ final class UserSuggestionCoordinator: Coordinator {
 @available(iOS 14.0, *)
 extension UserSuggestionCoordinator: RoomMembersProviderProtocol {
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
-        guard roomMembers.count == 0 else {
-            members(roomMembersToProviderMembers(roomMembers))
-            return
-        }
-        
         parameters.room.members({ [weak self] roomMembers in
             guard let self = self, let joinedMembers = roomMembers?.joinedMembers else {
                 return
@@ -118,6 +113,6 @@ extension UserSuggestionCoordinator: RoomMembersProviderProtocol {
     }
     
     private func roomMembersToProviderMembers(_ roomMembers: [MXRoomMember]) -> [RoomMembersProviderMember] {
-        roomMembers.map { RoomMembersProviderMember(identifier: $0.userId, displayName: $0.displayname ?? "", avatarURL: $0.avatarUrl ?? "") }
+        roomMembers.map { RoomMembersProviderMember(userId: $0.userId, displayName: $0.displayname ?? "", avatarUrl: $0.avatarUrl ?? "") }
     }
 }

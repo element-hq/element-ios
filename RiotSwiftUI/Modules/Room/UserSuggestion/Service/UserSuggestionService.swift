@@ -21,9 +21,9 @@ import Combine
 
 @available(iOS 14.0, *)
 struct RoomMembersProviderMember {
-    var identifier: String
+    var userId: String
     var displayName: String
-    var avatarURL: String
+    var avatarUrl: String
 }
 
 @available(iOS 14.0, *)
@@ -48,53 +48,70 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     private let roomMembersProvider: RoomMembersProviderProtocol
     
     private var suggestionItems: [UserSuggestionItemProtocol] = []
+    private let currentTextTriggerSubject = CurrentValueSubject<String?, Never>(nil)
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Public
     
-    var items: CurrentValueSubject<[UserSuggestionItemProtocol], Never>
-    var currentTextTrigger: String?
+    var items = CurrentValueSubject<[UserSuggestionItemProtocol], Never>([])
+    
+    var currentTextTrigger: String? {
+        currentTextTriggerSubject.value
+    }
     
     // MARK: - Setup
     
     init(roomMembersProvider: RoomMembersProviderProtocol) {
         self.roomMembersProvider = roomMembersProvider
-        self.items = CurrentValueSubject([])
+        
+        currentTextTriggerSubject
+            .removeDuplicates()
+            .debounce(for: 0.5, scheduler: RunLoop.main)
+            .sink { self.fetchAndFilterMembersForTextTrigger($0) }
+            .store(in: &cancellables)
     }
     
     // MARK: - UserSuggestionServiceProtocol
     
-    func processTextMessage(_ textMessage: String) {
+    func processTextMessage(_ textMessage: String?) {
+        self.items.send([])
+        self.currentTextTriggerSubject.send(nil)
+        
+        guard let textMessage = textMessage, textMessage.count > 0 else {
+            return
+        }
+        
+        let components = textMessage.components(separatedBy: .whitespaces)
+        
+        guard let lastComponent = components.last else {
+            return
+        }
+        
+        // Partial username should start with one and only one "@" character
+        guard lastComponent.prefix(while: { $0 == "@" }).count == 1 else {
+            return
+        }
+        
+        self.currentTextTriggerSubject.send(lastComponent)
+    }
+    
+    // MARK: - Private
+    
+    private func fetchAndFilterMembersForTextTrigger(_ textTrigger: String?) {
+        guard var partialName = textTrigger else {
+            return
+        }
+        
+        partialName.removeFirst() // remove the '@' prefix
+        
         roomMembersProvider.fetchMembers { [weak self] members in
             guard let self = self else {
                 return
             }
             
             self.suggestionItems = members.map { member in
-                UserSuggestionServiceItem(userId: member.identifier, displayName: member.displayName, avatarUrl: member.avatarURL)
+                UserSuggestionServiceItem(userId: member.userId, displayName: member.displayName, avatarUrl: member.avatarUrl)
             }
-            
-            self.items.send([])
-            self.currentTextTrigger = nil
-            
-            guard textMessage.count > 0 else {
-                return
-            }
-            
-            let components = textMessage.components(separatedBy: .whitespaces)
-            
-            guard let lastComponent = components.last else {
-                return
-            }
-            
-            // Partial username should start with one and only one "@" character
-            guard lastComponent.prefix(while: { $0 == "@" }).count == 1 else {
-                return
-            }
-            
-            self.currentTextTrigger = lastComponent
-            
-            var partialName = lastComponent
-            partialName.removeFirst()
             
             self.items.send(self.suggestionItems.filter({ userSuggestion in
                 let containedInUsername = userSuggestion.userId.lowercased().contains(partialName.lowercased())

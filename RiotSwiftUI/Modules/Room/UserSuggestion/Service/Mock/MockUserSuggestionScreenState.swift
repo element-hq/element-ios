@@ -52,7 +52,7 @@ extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
     private func generateUsersWithCount(_ count: UInt) -> [RoomMembersProviderMember] {
         return (0..<count).map { _ in
             let identifier = "@" + UUID().uuidString
-            return RoomMembersProviderMember(identifier: identifier, displayName: identifier, avatarURL: "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ")
+            return RoomMembersProviderMember(userId: identifier, displayName: identifier, avatarUrl: "mxc://matrix.org/VyNYAgahaiAzUoOeZETtQ")
         }
     }
 }
