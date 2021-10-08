@@ -104,9 +104,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         coordinator.toPresentable().dismiss(animated: animated) {
             self.coordinator = nil
 
-            if let completion = completion {
-                completion()
-            }
+            completion?()
         }
     }
     
