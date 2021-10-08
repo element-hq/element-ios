@@ -55,15 +55,10 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)groupDetailsViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
-}
-
-+ (instancetype)instantiate
-{
-    return [self groupDetailsViewController];
 }
 
 #pragma mark -
