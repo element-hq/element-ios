@@ -18,6 +18,7 @@ import Foundation
 
 /// `NavigationRouterStoreProtocol` describes a structure that enables to get a NavigationRouter from a UINavigationController instance.
 protocol NavigationRouterStoreProtocol {
-    func getOrCreateNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType
-    func getNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType?
+    
+    /// Gets the existing navigation router for the supplied controller, creating a new one if it doesn't yet exist.
+    func navigationRouter(for navigationController: UINavigationController) -> NavigationRouterType
 }

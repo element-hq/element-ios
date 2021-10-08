@@ -76,7 +76,7 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
     
     func push(from navigationController: UINavigationController, animated: Bool) {
                 
-        let navigationRouter = NavigationRouterStore.shared.getOrCreateNavigationRouter(for: navigationController)
+        let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: self.session, navigationRouter: navigationRouter)
         

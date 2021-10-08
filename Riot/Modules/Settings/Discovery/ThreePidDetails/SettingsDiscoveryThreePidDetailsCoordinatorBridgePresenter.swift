@@ -45,7 +45,7 @@ final class SettingsDiscoveryThreePidDetailsCoordinatorBridgePresenter: NSObject
     
     func push(from navigationController: UINavigationController, animated: Bool, popCompletion: (() -> Void)?) {
         
-        let router = NavigationRouterStore.shared.getOrCreateNavigationRouter(for: navigationController)
+        let router = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let settingsDiscoveryThreePidDetailsCoordinator = SettingsDiscoveryThreePidDetailsCoordinator(session: self.session, threePid: self.threePid)
         

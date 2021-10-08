@@ -51,7 +51,7 @@ final class NotificationSettingsCoordinatorBridgePresenter: NSObject {
     
     func push(from navigationController: UINavigationController, animated: Bool, screen: NotificationSettingsScreen, popCompletion: (() -> Void)?) {
         
-        let router = NavigationRouterStore.shared.getOrCreateNavigationRouter(for: navigationController)
+        let router = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let notificationSettingsCoordinator = NotificationSettingsCoordinator(session: session, screen: screen)
         

@@ -39,10 +39,9 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
     
     // MARK: - Public
     
-    /// Gets the existing navigation router for the supplied controller, creating a new one if it doesn't yet exist.
     func navigationRouter(for navigationController: UINavigationController) -> NavigationRouterType {
         
-        if let existingNavigationRouter = self.getNavigationRouter(for: navigationController) {
+        if let existingNavigationRouter = self.findNavigationRouter(for: navigationController) {
             return existingNavigationRouter
         }
         
@@ -50,11 +49,11 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
         return navigationRouter
     }
     
-    func getNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType? {
+    // MARK: - Private
+    
+    private func findNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType? {
         return self.navigationRouters[navigationController]
     }
-    
-    // MARK: - Private
     
     private func removeNavigationRouter(for navigationController: UINavigationController) {
         self.navigationRouters[navigationController] = nil
@@ -73,7 +72,7 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
             return
         }
         
-        if let existingNavigationRouter = self.getNavigationRouter(for: navigationController) {
+        if let existingNavigationRouter = self.findNavigationRouter(for: navigationController) {
             fatalError("\(existingNavigationRouter) is already tied to the same navigation controller as \(navigationRouter). We should have only one NavigationRouter per navigation controller")
         } else {
             // FIXME: WeakDictionary does not work with protocol
@@ -89,7 +88,7 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
             return
         }
         
-        if let existingNavigationRouter = self.getNavigationRouter(for: navigationController), existingNavigationRouter !== navigationRouter {
+        if let existingNavigationRouter = self.findNavigationRouter(for: navigationController), existingNavigationRouter !== navigationRouter {
             fatalError("\(existingNavigationRouter) is already tied to the same navigation controller as \(navigationRouter). We should have only one NavigationRouter per navigation controller")
         }
         

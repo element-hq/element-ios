@@ -47,7 +47,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             finalNavigationRouter = navigationRouter
         } else if let navigationRouterStore = self.parameters.navigationRouterStore, let currentNavigationController = self.roomViewController.navigationController {
             // If no navigationRouter has been provided, try to get the navigation router from the current RoomViewController navigation controller if exists
-            finalNavigationRouter = navigationRouterStore.getOrCreateNavigationRouter(for: currentNavigationController)
+            finalNavigationRouter = navigationRouterStore.navigationRouter(for: currentNavigationController)
         }
         
         return finalNavigationRouter

@@ -88,7 +88,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
     
     func push(from navigationController: UINavigationController, animated: Bool) {
         
-        let navigationRouter = NavigationRouterStore.shared.getOrCreateNavigationRouter(for: navigationController)
+        let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let coordinator = self.createRoomCoordinator(with: navigationRouter)
         coordinator.delegate = self
