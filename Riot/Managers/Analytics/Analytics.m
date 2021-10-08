@@ -21,6 +21,7 @@
 
 NSString *const AnalyticsNoficationsCategory = @"notifications";
 NSString *const AnalyticsNoficationsTimeToDisplayContent = @"timelineDisplay";
+NSString *const AnalyticsContactsIdentityServerAccepted = @"identityServerAccepted";
 
 
 // Duration data will be visible under the Piwik category called "Performance".

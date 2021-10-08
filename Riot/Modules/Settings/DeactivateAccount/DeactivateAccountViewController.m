@@ -239,7 +239,7 @@ static CGFloat const kTextFontSize = 15.0;
     
     __weak typeof(self) weakSelf = self;
     
-    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 UITextField *textField = alert.textFields.firstObject;

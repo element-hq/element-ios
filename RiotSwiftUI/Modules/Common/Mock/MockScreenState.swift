@@ -21,7 +21,7 @@ import SwiftUI
 protocol MockScreenState {
     static var screenStates: [MockScreenState] { get }
     var screenType: Any.Type { get }
-    var screenView: AnyView { get }
+    var screenView: ([Any], AnyView) { get }
     var stateTitle: String { get }
 }
 
@@ -29,46 +29,48 @@ protocol MockScreenState {
 extension MockScreenState {
     
     /// Get a list of the screens for every screen state.
-    static var screensViews: [AnyView] {
-        screenStates.map(\.screenView)
+    static var stateRenderer: StateRenderer {
+        let depsAndViews  = screenStates.map(\.screenView)
+        let deps = depsAndViews.map({ $0.0 })
+        let views = depsAndViews.map({ $0.1 })
+        let stateTitles = screenStates.map(\.stateTitle)
+        let fullScreenTitles = screenStates.map(\.fullScreenTitle)
+        
+        var states = [ScreenStateInfo]()
+        for i in 0..<deps.count {
+            let dep = deps[i]
+            let view = views[i]
+            let stateTitle = stateTitles[i]
+            let stateKey = screenStateKeys[i]
+            let fullScreenTitle = fullScreenTitles[i]
+            states.append(ScreenStateInfo(dependencies: dep, view: view, stateTitle: stateTitle, fullScreenTitle:fullScreenTitle, stateKey: stateKey))
+        }
+        
+        return StateRenderer(states: states)
     }
     
     /// A unique key to identify each screen state.
     static var screenStateKeys: [String] {
-        return Array(0..<screenStates.count).map(String.init)
-    }
-    
-    /// Render each of the screen states in a group applying
-    /// any optional environment variables.
-    /// - Parameters:
-    ///   - themeId: id of theme to render the screens with
-    ///   - locale: Locale to render the screens with
-    ///   - sizeCategory: type sizeCategory to render the screens with
-    /// - Returns: The group of screens
-    static func screenGroup(
-        themeId: ThemeIdentifier = .light,
-        locale: Locale = Locale.current,
-        sizeCategory: ContentSizeCategory = ContentSizeCategory.medium
-    ) -> some View {
-        Group {
-            ForEach(0..<screensViews.count) { index in
-                screensViews[index]
-            }
+        return screenStates.enumerated().map { (index, state) in
+            state.screenName + String(index)
         }
-        .theme(themeId)
-        .environment(\.locale, locale)
-        .environment(\.sizeCategory, sizeCategory)
     }
     
     /// A title to represent the screen and it's screen state
-    var screenTitle: String {
-        "\(String(describing: screenType.self)): \(stateTitle)"
+    var screenName: String {
+        "\(String(describing: screenType.self))"
     }
     
     /// A title to represent this screen state
     var stateTitle: String {
         String(describing: self)
     }
+    
+    /// A title to represent the screen and it's screen state
+    var fullScreenTitle: String {
+        "\(screenName): \(stateTitle)"
+    }
+
 }
 
 @available(iOS 14.0, *)

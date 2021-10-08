@@ -98,10 +98,18 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
 
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
+        
+        if serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(1, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
+        }
     }
 
     func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
+
+        if serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
+        }
     }
 }
 
@@ -109,5 +117,9 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
 extension ServiceTermsModalCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(self)
+        
+        if serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
+        }
     }
 }

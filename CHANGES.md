@@ -1,3 +1,18 @@
+## Changes in 1.6.1 (2021-09-30)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.4](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.4)).
+- Upgrade MatrixKit version ([v0.16.3](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.3)).
+- AvatarViewData: Make `mediaManager` property optional (#4930). ([#4930](https://github.com/vector-im/element-ios/issues/4930))
+
+🐛 Bugfixes
+
+- fixed Spaces still visible after logging in with another account ([#4916](https://github.com/vector-im/element-ios/issues/4916))
+- fixed App may not start in 1.6.0 ([#4919](https://github.com/vector-im/element-ios/issues/4919))
+- AppDelegate: Fix a crash when backgrounding the app. ([#4932](https://github.com/vector-im/element-ios/issues/4932))
+
+
 ## Changes in 1.6.0 (2021-09-24)
 
 ✨ Features
