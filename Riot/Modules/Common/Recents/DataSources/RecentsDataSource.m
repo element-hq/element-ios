@@ -722,26 +722,26 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         counts = self.recentsListService.suggestedRoomListData.counts;
     }
 
-    if (counts.totalNotificationCount)
+    if (counts.numberOfNotifications)
     {
         UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
         missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
         missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
-        if (counts.totalNotificationCount > 1000)
+        if (counts.numberOfNotifications > 1000)
         {
-            CGFloat value = counts.totalNotificationCount / 1000.0;
+            CGFloat value = counts.numberOfNotifications / 1000.0;
             missedNotifAndUnreadBadgeLabel.text = [VectorL10n largeBadgeValueKFormat:value];
         }
         else
         {
-            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", counts.totalNotificationCount];
+            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", counts.numberOfNotifications];
         }
         
         [missedNotifAndUnreadBadgeLabel sizeToFit];
         
         CGFloat bgViewWidth = missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
         
-        BOOL highlight = counts.totalHighlightCount > 0;
+        BOOL highlight = counts.numberOfHighlights > 0;
         missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
         [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
         missedNotifAndUnreadBadgeBgView.backgroundColor = highlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;
