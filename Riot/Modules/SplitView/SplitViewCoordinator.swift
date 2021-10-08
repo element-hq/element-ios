@@ -284,6 +284,7 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
         // If the secondary view is the placeholder screen do not merge the secondary into the primary.
+        // Note: In this case, the secondaryViewController will be automatically discarded.
         if self.isPlaceholderShown(from: secondaryViewController) {
             return true
         }
