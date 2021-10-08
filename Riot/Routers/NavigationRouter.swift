@@ -182,7 +182,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
             }
         }
         
-        if let controllers = navigationController.popToViewController(module.toPresentable(), animated: animated) {
+        if let controllers = navigationController.popToViewController(controller, animated: animated) {
             controllers.forEach {
                 self.didPopViewController($0)
             }
