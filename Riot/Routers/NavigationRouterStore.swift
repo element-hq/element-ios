@@ -39,7 +39,8 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
     
     // MARK: - Public
     
-    func getOrCreateNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType {
+    /// Gets the existing navigation router for the supplied controller, creating a new one if it doesn't yet exist.
+    func navigationRouter(for navigationController: UINavigationController) -> NavigationRouterType {
         
         if let existingNavigationRouter = self.getNavigationRouter(for: navigationController) {
             return existingNavigationRouter
