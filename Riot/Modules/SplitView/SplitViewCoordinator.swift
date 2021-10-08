@@ -345,7 +345,7 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
     func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack detailPresentable: Presentable, popCompletion: (() -> Void)?) {
         
         guard let detailNavigationRouter = self.detailNavigationRouter else {
-            MXLog.debug("Failed to stack \(detailPresentable) because detailNavigationRouter is nil")
+            MXLog.debug("[SplitViewCoordinator] Failed to stack \(detailPresentable) because detailNavigationRouter is nil")
             return
         }
         
