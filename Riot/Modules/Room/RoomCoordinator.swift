@@ -93,9 +93,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.roomViewController.presentationController?.delegate = self
         
         if let eventId = self.selectedEventId {
-            self.start(with: self.parameters.roomId, and: eventId, completion: completion)
+            self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
         } else {
-            self.start(with: self.parameters.roomId, completion: completion)
+            self.loadRoom(withId: self.parameters.roomId, completion: completion)
         }
 
         // Add `roomViewController` to the NavigationRouter, only if it has been explicitly set as parameter
@@ -113,7 +113,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.selectedEventId = eventId
         
         if self.hasStartedOnce {
-            self.start(with: self.parameters.roomId, and: eventId, completion: completion)
+            self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
         } else {
             self.start(withCompletion: completion)
         }
@@ -125,7 +125,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
     // MARK: - Private
 
-    private func start(with roomId: String, completion: (() -> Void)?) {
+    private func loadRoom(withId roomId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
@@ -149,7 +149,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         })
     }
 
-    private func start(with roomId: String, and eventId: String, completion: (() -> Void)?) {
+    private func loadRoom(withId roomId: String, and eventId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
