@@ -25,7 +25,7 @@ protocol RoomCoordinatorDelegate: AnyObject {
     func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol)
 }
 
-/// `RoomCoordinatorProtocol` is a protocol describing a Coordinator that handle key backup setup passphrase navigation flow.
+/// `RoomCoordinatorProtocol` is a protocol describing a Coordinator that handle room navigation flow.
 protocol RoomCoordinatorProtocol: Coordinator, Presentable, RoomIdentifiable {
     var delegate: RoomCoordinatorDelegate? { get }
     
