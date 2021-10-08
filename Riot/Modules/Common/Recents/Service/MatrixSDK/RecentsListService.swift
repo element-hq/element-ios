@@ -19,7 +19,7 @@ import Foundation
 @objcMembers
 public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
-    public private(set) weak var session: MXSession?
+    private weak var session: MXSession?
     public private(set) var mode: RecentsDataSourceMode
     public private(set) var query: String?
     public private(set) var space: MXSpace?

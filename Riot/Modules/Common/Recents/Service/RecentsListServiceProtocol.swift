@@ -21,9 +21,6 @@ public protocol RecentsListServiceProtocol {
     
     //  MARK: - Properties
     
-    /// Session instance, Implementations encouraged to hold a weak reference
-    var session: MXSession? { get }
-    
     /// Current mode
     var mode: RecentsDataSourceMode { get }
     
