@@ -1188,56 +1188,6 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 }
 
 #pragma mark - MXKDataSourceDelegate
-
-//if (recentsDataSourceMode == RecentsDataSourceModeHome)
-//{
-//
-//    else if (recentCellDataStoring.isSuggestedRoom && recentCellDataStoring.spaceChildInfo.roomType != MXRoomTypeSpace)
-//    {
-//        MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:recentCellDataStoring.spaceChildInfo.childRoomId];
-//        if (!roomSummary.isJoined)
-//        {
-//            [suggestedRoomCellDataArray addObject:recentCellDataStoring];
-//        }
-//    }
-//    else
-//    {
-//        // Hide spaces from home (keep space invites)
-//        if (room.summary.roomType != MXRoomTypeSpace)
-//        {
-//            [conversationCellDataArray addObject:recentCellDataStoring];
-//        }
-//    }
-//}
-//
-//else if (recentsDataSourceMode == RecentsDataSourceModeRooms)
-//{
-//    if (recentCellDataStoring.isSuggestedRoom && recentCellDataStoring.spaceChildInfo.roomType != MXRoomTypeSpace)
-//    {
-//        MXRoomSummary *roomSummary = [mxSession roomSummaryWithRoomId:recentCellDataStoring.spaceChildInfo.childRoomId];
-//        BOOL isJoined = roomSummary.membership == MXMembershipJoin || roomSummary.membershipTransitionState == MXMembershipTransitionStateJoined;
-//        if (!isJoined)
-//        {
-//            [suggestedRoomCellDataArray addObject:recentCellDataStoring];
-//        }
-//    }
-//    // Consider only non direct rooms.
-//    else if (!room.isDirect)
-//    {
-//        // Keep only the invites, the favourites and the rooms without tag and room type different from space
-//        if (room.summary.membership == MXMembershipInvite)
-//        {
-//            if (room.summary.roomType != MXRoomTypeSpace && !MXSDKOptions.sharedInstance.autoAcceptRoomInvites)
-//            {
-//                [invitesCellDataArray addObject:recentCellDataStoring];
-//            }
-//        }
-//        else if ((!room.accountData.tags.count || room.accountData.tags[kMXRoomTagFavourite]) && room.summary.roomType != MXRoomTypeSpace)
-//        {
-//            [conversationCellDataArray addObject:recentCellDataStoring];
-//        }
-//    }
-//}
         
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
