@@ -98,15 +98,10 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)contactDetailsViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
-}
-
-+ (instancetype)instantiate
-{
-    return [self contactDetailsViewController];
 }
 
 #pragma mark -
