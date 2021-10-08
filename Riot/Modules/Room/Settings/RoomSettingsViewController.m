@@ -559,11 +559,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         if (mxRoom.isDirect)
         {
-            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section_for_dm", @"Vector", nil);
+            sectionAccess.headerTitle = [VectorL10n roomDetailsAccessSectionAnyoneForDm];
         }
         else
         {
-            sectionAccess.headerTitle = NSLocalizedStringFromTable(@"room_details_access_section", @"Vector", nil);
+            sectionAccess.headerTitle = [VectorL10n roomDetailsAccessSection];
         }
         [tmpSections addObject:sectionAccess];
     }
@@ -575,7 +575,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY];
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED];
         [sectionHistory addRowWithTag:ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_JOINED];
-        sectionHistory.headerTitle = NSLocalizedStringFromTable(@"room_details_history_section", @"Vector", nil);
+        sectionHistory.headerTitle = [VectorL10n roomDetailsHistorySection];
         [tmpSections addObject:sectionHistory];
     }
     
@@ -594,7 +594,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             [sectionAddresses addRowWithTag:ROOM_SETTINGS_ROOM_ADDRESS_NO_LOCAL_ADDRESS];
         }
         [sectionAddresses addRowWithTag:ROOM_SETTINGS_ROOM_ADDRESS_NEW_ALIAS];
-        sectionAddresses.headerTitle = NSLocalizedStringFromTable(@"room_details_addresses_section", @"Vector", nil);
+        sectionAddresses.headerTitle = [VectorL10n roomDetailsAddressesSection];
         [tmpSections addObject:sectionAddresses];
     }
     
@@ -619,7 +619,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
         }
         
-        sectionFlair.headerTitle = NSLocalizedStringFromTable(@"room_details_flair_section", @"Vector", nil);
+        sectionFlair.headerTitle = [VectorL10n roomDetailsFlairSection];
         if ([sectionFlair hasAnyRows])
         {
             [tmpSections addObject:sectionFlair];
@@ -635,7 +635,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             [sectionBannedUsers addRowWithTag:counter];
         }
         
-        sectionBannedUsers.headerTitle = NSLocalizedStringFromTable(@"room_details_banned_users_section", @"Vector", nil);
+        sectionBannedUsers.headerTitle = [VectorL10n roomDetailsBannedUsersSection];
         [tmpSections addObject:sectionBannedUsers];
     }
     
@@ -671,7 +671,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
         }
         
-        sectionAdvanced.headerTitle = NSLocalizedStringFromTable(@"room_details_advanced_section", @"Vector", nil);
+        sectionAdvanced.headerTitle = [VectorL10n roomDetailsAdvancedSection];
         [tmpSections addObject:sectionAdvanced];
     }
     
@@ -845,9 +845,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     __weak typeof(self) weakSelf = self;
     
-    currentAlert = [UIAlertController alertControllerWithTitle:nil message:NSLocalizedStringFromTable(@"room_details_save_changes_prompt", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:nil
+                                                       message:[VectorL10n roomDetailsSaveChangesPrompt]
+                                                preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -863,7 +865,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -891,7 +893,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_details_copy_room_id", @"Vector", nil)
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsCopyRoomId]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -914,7 +916,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -961,7 +963,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (canonicalAlias && [roomAliasLabel.text isEqualToString:canonicalAlias])
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_details_unset_main_address", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsUnsetMainAddress]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -983,7 +985,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             else
             {
                 // Invite user to define this alias as the main room address
-                [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_details_set_main_address", @"Vector", nil)
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsSetMainAddress]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -999,7 +1001,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             }
         }
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_details_copy_room_address", @"Vector", nil)
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsCopyRoomAddress]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -1022,7 +1024,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_details_copy_room_url", @"Vector", nil)
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsCopyRoomUrl]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -1049,7 +1051,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         
         // The user can only delete alias they has created, even if the Admin has set it as canonical.
         // So, let the server answer if it's possible to delete an alias.
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"delete"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
 
@@ -1063,7 +1065,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -1393,7 +1395,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1414,7 +1416,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -1480,7 +1482,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_avatar", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateAvatar];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsAvatarKey]];
                             
@@ -1521,7 +1523,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_avatar", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateAvatar];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsAvatarURLKey]];
                             
@@ -1563,7 +1565,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_name", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateRoomName];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsNameKey]];
                             
@@ -1605,7 +1607,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_topic", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateTopic];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsTopicKey]];
                             
@@ -1647,7 +1649,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_guest_access", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateRoomGuestAccess];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsGuestAccessKey]];
                             
@@ -1689,7 +1691,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_join_rule", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateRoomJoinRule];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsJoinRuleKey]];
                             
@@ -1731,7 +1733,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_history_visibility", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateHistoryVisibility];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsHistoryVisibilityKey]];
                             
@@ -1785,7 +1787,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_add_room_aliases", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToAddRoomAliases];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsNewAliasesKey]];
                             
@@ -1838,7 +1840,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_remove_room_aliases", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToRemoveRoomAliases];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsRemovedAliasesKey]];
                             
@@ -1879,7 +1881,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_canonical_alias", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateRoomCanonicalAlias];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsCanonicalAliasKey]];
                             
@@ -1925,7 +1927,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                             NSString* message = error.localizedDescription;
                             if (!message.length)
                             {
-                                message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_communities", @"Vector", nil);
+                                message = [VectorL10n roomDetailsFailToUpdateRoomCommunities];
                             }
                             [self onSaveFailed:message withKeys:@[kRoomSettingsNewRelatedGroupKey,kRoomSettingsRemovedRelatedGroupKey]];
                             
@@ -2023,7 +2025,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         NSString* message = error.localizedDescription;
                         if (!message.length)
                         {
-                            message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_direct", @"Vector", nil);
+                            message = [VectorL10n roomDetailsFailToUpdateRoomDirect];
                         }
                         [self onSaveFailed:message withKeys:@[kRoomSettingsDirectChatKey]];
                         
@@ -2063,7 +2065,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         NSString* message = error.localizedDescription;
                         if (!message.length)
                         {
-                            message = NSLocalizedStringFromTable(@"room_details_fail_to_update_room_directory_visibility", @"Vector", nil);
+                            message = [VectorL10n roomDetailsFailToUpdateRoomDirectoryVisibility];
                         }
                         [self onSaveFailed:message withKeys:@[kRoomSettingsDirectoryKey]];
                         
@@ -2105,7 +2107,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                         NSString* message = error.localizedDescription;
                         if (!message.length)
                         {
-                            message = NSLocalizedStringFromTable(@"room_details_fail_to_enable_encryption", @"Vector", nil);
+                            message = [VectorL10n roomDetailsFailToEnableEncryption];
                         }
                         [self onSaveFailed:message withKeys:@[kRoomSettingsEncryptionKey]];
                         
@@ -2201,7 +2203,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
             [roomNotifCell.mxkSwitch addTarget:self action:@selector(toggleRoomNotification:) forControlEvents:UIControlEventValueChanged];
             
-            roomNotifCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_mute_notifs", @"Vector", nil);
+            roomNotifCell.mxkLabel.text = [VectorL10n roomDetailsMuteNotifs];
             
             if (updatedItemsDict[kRoomSettingsMuteNotifKey])
             {
@@ -2220,7 +2222,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [roomDirectChat.mxkSwitch addTarget:self action:@selector(toggleDirectChat:) forControlEvents:UIControlEventValueChanged];
             
-            roomDirectChat.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_direct_chat", @"Vector", nil);
+            roomDirectChat.mxkLabel.text = [VectorL10n roomDetailsDirectChat];
             
             if (updatedItemsDict[kRoomSettingsDirectChatKey])
             {
@@ -2255,11 +2257,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (mxRoom.isDirect)
             {
-                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo_for_dm", @"Vector", nil);
+                roomPhotoCell.mxkLabel.text = [VectorL10n roomDetailsPhotoForDm];
             }
             else
             {
-                roomPhotoCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_photo", @"Vector", nil);
+                roomPhotoCell.mxkLabel.text = [VectorL10n roomDetailsPhoto];
             }
             roomPhotoCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
@@ -2283,7 +2285,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             roomTopicCell.labelLeadingConstraint.constant = roomTopicCell.vc_separatorInset.left;
             
-            roomTopicCell.label.text = NSLocalizedStringFromTable(@"room_details_topic", @"Vector", nil);
+            roomTopicCell.label.text = [VectorL10n roomDetailsTopic];
             
             topicTextView = roomTopicCell.textView;
             
@@ -2319,11 +2321,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (mxRoom.isDirect)
             {
-                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name_for_dm", @"Vector", nil);
+                roomNameCell.mxkLabel.text = [VectorL10n roomDetailsRoomNameForDm];
             }
             else
             {
-                roomNameCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_room_name", @"Vector", nil);
+                roomNameCell.mxkLabel.text = [VectorL10n roomDetailsRoomName];
             }
             roomNameCell.mxkLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
@@ -2371,10 +2373,10 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 UILabel *label;
                 label = labels[0];
                 label.textColor = ThemeService.shared.theme.textPrimaryColor;
-                label.text = NSLocalizedStringFromTable(@"room_details_favourite_tag", @"Vector", nil);
+                label.text = [VectorL10n roomDetailsFavouriteTag];
                 label = labels[1];
                 label.textColor = ThemeService.shared.theme.textPrimaryColor;
-                label.text = NSLocalizedStringFromTable(@"room_details_low_priority_tag", @"Vector", nil);
+                label.text = [VectorL10n roomDetailsLowPriorityTag];
                 
                 if (updatedItemsDict[kRoomSettingsTagKey])
                 {
@@ -2409,7 +2411,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                 
                 [favoriteCell.mxkSwitch addTarget:self action:@selector(toggleFavorite:) forControlEvents:UIControlEventValueChanged];
                 
-                favoriteCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_favourite_tag", @"Vector", nil);
+                favoriteCell.mxkLabel.text = [VectorL10n roomDetailsFavouriteTag];
                 
                 if ([updatedItemsDict[kRoomSettingsTagKey] isEqualToString:kMXRoomTagFavourite])
                 {
@@ -2427,7 +2429,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         {
             MXKTableViewCellWithButton *leaveCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier] forIndexPath:indexPath];
             
-            NSString* title = NSLocalizedStringFromTable(@"leave", @"Vector", nil);
+            NSString* title = [VectorL10n leave];
             
             [leaveCell.mxkButton setTitle:title forState:UIControlStateNormal];
             [leaveCell.mxkButton setTitle:title forState:UIControlStateHighlighted];
@@ -2448,11 +2450,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (mxRoom.isDirect)
             {
-                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle_for_dm", @"Vector", nil);
+                directoryToggleCell.mxkLabel.text = [VectorL10n roomDetailsAccessSectionDirectoryToggleForDm];
             }
             else
             {
-                directoryToggleCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_directory_toggle", @"Vector", nil);
+                directoryToggleCell.mxkLabel.text = [VectorL10n roomDetailsAccessSectionDirectoryToggle];
             }
             
             [directoryToggleCell.mxkSwitch addTarget:self action:@selector(toggleDirectoryVisibility:) forControlEvents:UIControlEventValueChanged];
@@ -2485,7 +2487,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell.accessoryView = nil;
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_access_section_no_address_warning", @"Vector", nil);
+            cell.textLabel.text = [VectorL10n roomDetailsAccessSectionNoAddressWarning];
         }
         else
         {
@@ -2509,7 +2511,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             if (row == ROOM_SETTINGS_ROOM_ACCESS_SECTION_ROW_INVITED_ONLY)
             {
-                roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_invited_only", @"Vector", nil);
+                roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionInvitedOnly];
                 
                 roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRuleInvite]);
                 
@@ -2519,11 +2521,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             {
                 if (mxRoom.isDirect)
                 {
-                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest_for_dm", @"Vector", nil);
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyoneApartFromGuestForDm];
                 }
                 else
                 {
-                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_apart_from_guest", @"Vector", nil);
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyoneApartFromGuest];
                 }
                 
                 roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRulePublic] && [guestAccess isEqualToString:kMXRoomGuestAccessForbidden]);
@@ -2534,11 +2536,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             {
                 if (mxRoom.isDirect)
                 {
-                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone_for_dm", @"Vector", nil);
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyoneForDm];
                 }
                 else
                 {
-                    roomAccessCell.label.text = NSLocalizedStringFromTable(@"room_details_access_section_anyone", @"Vector", nil);
+                    roomAccessCell.label.text = [VectorL10n roomDetailsAccessSectionAnyone];
                 }
                 
                 roomAccessCell.enabled = ([joinRule isEqualToString:kMXRoomJoinRulePublic] && [guestAccess isEqualToString:kMXRoomGuestAccessCanJoin]);
@@ -2571,7 +2573,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         if (row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_ANYONE)
         {
             historyVisibilityCell.label.lineBreakMode = NSLineBreakByTruncatingMiddle;
-            historyVisibilityCell.label.text = NSLocalizedStringFromTable(@"room_details_history_section_anyone", @"Vector", nil);
+            historyVisibilityCell.label.text = [VectorL10n roomDetailsHistorySectionAnyone];
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityWorldReadable]);
             
@@ -2580,7 +2582,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         else if (row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY)
         {
             historyVisibilityCell.label.lineBreakMode = NSLineBreakByTruncatingMiddle;
-            historyVisibilityCell.label.text = NSLocalizedStringFromTable(@"room_details_history_section_members_only", @"Vector", nil);
+            historyVisibilityCell.label.text = [VectorL10n roomDetailsHistorySectionMembersOnly];
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityShared]);
             
@@ -2589,7 +2591,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         else if (row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_INVITED)
         {
             historyVisibilityCell.label.lineBreakMode = NSLineBreakByTruncatingMiddle;
-            historyVisibilityCell.label.text = NSLocalizedStringFromTable(@"room_details_history_section_members_only_since_invited", @"Vector", nil);
+            historyVisibilityCell.label.text = [VectorL10n roomDetailsHistorySectionMembersOnlySinceInvited];
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityInvited]);
             
@@ -2598,7 +2600,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         else if (row == ROOM_SETTINGS_HISTORY_VISIBILITY_SECTION_ROW_MEMBERS_ONLY_SINCE_JOINED)
         {
             historyVisibilityCell.label.lineBreakMode = NSLineBreakByTruncatingMiddle;
-            historyVisibilityCell.label.text = NSLocalizedStringFromTable(@"room_details_history_section_members_only_since_joined", @"Vector", nil);
+            historyVisibilityCell.label.text = [VectorL10n roomDetailsHistorySectionMembersOnlySinceJoined];
             
             historyVisibilityCell.enabled = ([visibility isEqualToString:kMXRoomHistoryVisibilityJoined]);
             
@@ -2630,7 +2632,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addAddressCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
             
             addAddressTextField = addAddressCell.mxkTextField;
-            addAddressTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_address_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
+            addAddressTextField.placeholder = [VectorL10n roomDetailsNewAddressPlaceholder:self.mainSession.matrixRestClient.homeserverSuffix];
             addAddressTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                          initWithString:addAddressTextField.placeholder
                                                          attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
@@ -2661,11 +2663,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addressCell.selectionStyle = UITableViewCellSelectionStyleNone;
             if (mxRoom.isDirect)
             {
-                addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses_for_dm", @"Vector", nil);
+                addressCell.textLabel.text = [VectorL10n roomDetailsNoLocalAddressesForDm];
             }
             else
             {
-                addressCell.textLabel.text = NSLocalizedStringFromTable(@"room_details_no_local_addresses", @"Vector", nil);
+                addressCell.textLabel.text = [VectorL10n roomDetailsNoLocalAddresses];
             }
             
             cell = addressCell;
@@ -2731,7 +2733,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             addCommunityCell.accessoryView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor]];
 
             addGroupTextField = addCommunityCell.mxkTextField;
-            addGroupTextField.placeholder = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_new_flair_placeholder", @"Vector", nil), self.mainSession.matrixRestClient.homeserverSuffix];
+            addGroupTextField.placeholder = [VectorL10n roomDetailsNewFlairPlaceholder:self.mainSession.matrixRestClient.homeserverSuffix];
             addGroupTextField.attributedPlaceholder = [[NSAttributedString alloc]
                                                        initWithString:addGroupTextField.placeholder
                                                        attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.placeholderTextColor}];
@@ -2798,11 +2800,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             if (mxRoom.isDirect)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id_for_dm", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n roomDetailsAdvancedRoomIdForDm];
             }
             else
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_room_id", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n roomDetailsAdvancedRoomId];
             }
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
@@ -2820,7 +2822,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             [roomBlacklistUnverifiedDevicesCell.mxkSwitch addTarget:self action:@selector(toggleBlacklistUnverifiedDevice:) forControlEvents:UIControlEventValueChanged];
             roomBlacklistUnverifiedDevicesCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             
-            roomBlacklistUnverifiedDevicesCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_blacklist_unverified_devices", @"Vector", nil);
+            roomBlacklistUnverifiedDevicesCell.mxkLabel.text = [VectorL10n roomDetailsAdvancedE2eEncryptionBlacklistUnverifiedDevices];
             
             // For the switch value, use by order:
             // - the MXCrypto.globalBlacklistUnverifiedDevices if its value is YES
@@ -2866,11 +2868,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell.textLabel.numberOfLines = 0;
             if (mxRoom.isDirect)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled_for_dm", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n roomDetailsAdvancedE2eEncryptionEnabledForDm];
             }
             else
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_enabled", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n roomDetailsAdvancedE2eEncryptionEnabled];
             }
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
@@ -2882,7 +2884,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             
             [roomEncryptionCell.mxkSwitch addTarget:self action:@selector(toggleEncryption:) forControlEvents:UIControlEventValueChanged];
             
-            roomEncryptionCell.mxkLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_enable_e2e_encryption", @"Vector", nil);
+            roomEncryptionCell.mxkLabel.text = [VectorL10n roomDetailsAdvancedEnableE2eEncryption];
             
             roomEncryptionCell.mxkSwitch.on = (updatedItemsDict[kRoomSettingsEncryptionKey] != nil);
             
@@ -2900,11 +2902,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
             cell.textLabel.numberOfLines = 0;
             if (mxRoom.isDirect)
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled_for_dm", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n roomDetailsAdvancedE2eEncryptionDisabledForDm];
             }
             else
             {
-                cell.textLabel.text = NSLocalizedStringFromTable(@"room_details_advanced_e2e_encryption_disabled", @"Vector", nil);
+                cell.textLabel.text = [VectorL10n roomDetailsAdvancedE2eEncryptionDisabled];
             }
             cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
             
@@ -3303,9 +3305,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     __weak typeof(self) weakSelf = self;
     
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_details_history_section_prompt_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"room_details_history_section_prompt_msg", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomDetailsHistorySectionPromptTitle]
+                                                       message:[VectorL10n roomDetailsHistorySectionPromptMsg]
+                                                preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3317,7 +3321,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n continue]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3389,9 +3393,11 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     __weak typeof(self) weakSelf = self;
     
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_details_addresses_disable_main_address_prompt_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"room_details_addresses_disable_main_address_prompt_msg", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomDetailsAddressesDisableMainAddressPromptTitle]
+                                                       message:[VectorL10n roomDetailsAddressesDisableMainAddressPromptMsg]
+                                                preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3403,7 +3409,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"continue"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n continue]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3457,20 +3463,20 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     NSString *title, *message;
     if ([self.mainSession roomWithRoomId:self.roomId].isDirect)
     {
-        title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title_for_dm", @"Vector", nil);
-        message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg_for_dm", @"Vector", nil);
+        title = [VectorL10n roomParticipantsLeavePromptTitleForDm];
+        message = [VectorL10n roomParticipantsLeavePromptMsgForDm];
     }
     else
     {
-        title = NSLocalizedStringFromTable(@"room_participants_leave_prompt_title", @"Vector", nil);
-        message = NSLocalizedStringFromTable(@"room_participants_leave_prompt_msg", @"Vector", nil);
+        title = [VectorL10n roomParticipantsLeavePromptTitle];
+        message = [VectorL10n roomParticipantsLeavePromptMsg];
     }
     
     currentAlert = [UIAlertController alertControllerWithTitle:title
                                                        message:message
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3482,7 +3488,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"leave", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3848,13 +3854,13 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    NSString *alertMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_addresses_invalid_address_prompt_msg", @"Vector", nil), roomAlias];
+    NSString *alertMsg = [VectorL10n roomDetailsAddressesInvalidAddressPromptMsg:roomAlias];
     
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_details_addresses_invalid_address_prompt_title", @"Vector", nil)
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomDetailsAddressesInvalidAddressPromptTitle]
                                                        message:alertMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -3913,13 +3919,13 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    NSString *alertMsg = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_details_flair_invalid_id_prompt_msg", @"Vector", nil), groupId];
+    NSString *alertMsg = [VectorL10n roomDetailsFlairInvalidIdPromptMsg:groupId];
     
-    currentAlert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"room_details_flair_invalid_id_prompt_title", @"Vector", nil)
+    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomDetailsFlairInvalidIdPromptTitle]
                                                        message:alertMsg
                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        

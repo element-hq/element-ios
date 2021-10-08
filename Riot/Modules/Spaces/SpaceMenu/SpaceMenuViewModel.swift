@@ -76,12 +76,12 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     }
 
     private func leaveSpace() {
-        guard let space = self.session.spaceService.getSpace(withId: self.spaceId), let displayName = space.summary?.displayname else {
+        guard let room = self.session.room(withRoomId: self.spaceId), let displayName = room.summary?.displayname else {
             return
         }
 
         var isAdmin = false
-        if let roomState = space.room.dangerousSyncState, let powerLevels = roomState.powerLevels {
+        if let roomState = room.dangerousSyncState, let powerLevels = roomState.powerLevels {
             let powerLevel = powerLevels.powerLevelOfUser(withUserID: self.session.myUserId)
             let roomPowerLevel = RoomPowerLevelHelper.roomPowerLevel(from: powerLevel)
             isAdmin = roomPowerLevel == .admin
@@ -156,7 +156,7 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     }
     
     private func leaveSpace(_ space: MXSpace) {
-        space.room.leave(completion: { [weak self] response in
+        space.room?.leave(completion: { [weak self] response in
             guard let self = self else {
                 return
             }

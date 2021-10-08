@@ -421,8 +421,11 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if ((aState == MXKDataSourceStateReady) && dataSource.mxSession.myUser.userId)
         {
             // Register the room tags updates to refresh the favorites order
+            MXWeakify(self);
             id roomTagsListener = [dataSource.mxSession listenToEventsOfTypes:@[kMXEventTypeStringRoomTag]
                                                                 onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {
+
+                                                                    MXStrongifyAndReturnIfNil(self);
 
                                                                     // Consider only live event
                                                                     if (direction == MXTimelineDirectionForwards)
@@ -614,12 +617,12 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     if (section == favoritesSection)
     {
         count = self.favoriteCellDataArray.count;
-        title = NSLocalizedStringFromTable(@"room_recents_favourites_section", @"Vector", nil);
+        title = [VectorL10n roomRecentsFavouritesSection];
     }
     else if (section == peopleSection)
     {
         count = self.peopleCellDataArray.count;
-        title = NSLocalizedStringFromTable(@"room_recents_people_section", @"Vector", nil);
+        title = [VectorL10n roomRecentsPeopleSection];
     }
     else if (section == conversationSection)
     {
@@ -627,26 +630,26 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
-            title = NSLocalizedStringFromTable(@"people_conversation_section", @"Vector", nil);
+            title = [VectorL10n peopleConversationSection];
         }
         else
         {
-            title = NSLocalizedStringFromTable(@"room_recents_conversations_section", @"Vector", nil);
+            title = [VectorL10n roomRecentsConversationsSection];
         }
     }
     else if (section == directorySection)
     {
-        title = NSLocalizedStringFromTable(@"room_recents_directory_section", @"Vector", nil);
+        title = [VectorL10n roomRecentsDirectorySection];
     }
     else if (section == lowPrioritySection)
     {
         count = self.lowPriorityCellDataArray.count;
-        title = NSLocalizedStringFromTable(@"room_recents_low_priority_section", @"Vector", nil);
+        title = [VectorL10n roomRecentsLowPrioritySection];
     }
     else if (section == serverNoticeSection)
     {
         count = self.serverNoticeCellDataArray.count;
-        title = NSLocalizedStringFromTable(@"room_recents_server_notice_section", @"Vector", nil);
+        title = [VectorL10n roomRecentsServerNoticeSection];
     }
     else if (section == invitesSection)
     {
@@ -654,17 +657,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
-            title = NSLocalizedStringFromTable(@"people_invites_section", @"Vector", nil);
+            title = [VectorL10n peopleInvitesSection];
         }
         else
         {
-            title = NSLocalizedStringFromTable(@"room_recents_invites_section", @"Vector", nil);
+            title = [VectorL10n roomRecentsInvitesSection];
         }
     }
     else if (section == suggestedRoomsSection)
     {
         count = self.suggestedRoomCellDataArray.count;
-        title = NSLocalizedStringFromTable(@"room_recents_suggested_rooms_section", @"Vector", nil);
+        title = [VectorL10n roomRecentsSuggestedRoomsSection];
     }
     
     if (count)
@@ -737,7 +740,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         if (count > 1000)
         {
             CGFloat value = count / 1000.0;
-            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"large_badge_value_k_format", @"Vector", nil), value];
+            missedNotifAndUnreadBadgeLabel.text = [VectorL10n largeBadgeValueKFormat:value];
         }
         else
         {
@@ -932,15 +935,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         // Check whether a search session is in progress
         if (self.searchPatternsList)
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"search_no_result", @"Vector", nil);
+            tableViewCell.textLabel.text = [VectorL10n searchNoResult];
         }
         else if (_recentsDataSourceMode == RecentsDataSourceModePeople || indexPath.section == peopleSection)
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"people_no_conversation", @"Vector", nil);
+            tableViewCell.textLabel.text = [VectorL10n peopleNoConversation];
         }
         else
         {
-            tableViewCell.textLabel.text = NSLocalizedStringFromTable(@"room_recents_no_conversation", @"Vector", nil);
+            tableViewCell.textLabel.text = [VectorL10n roomRecentsNoConversation];
         }
         
         return tableViewCell;

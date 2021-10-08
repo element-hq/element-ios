@@ -121,7 +121,7 @@
     
     [self.resendButton.layer setCornerRadius:5];
     self.resendButton.clipsToBounds = YES;
-    [self.resendButton setTitle:NSLocalizedStringFromTable(@"retry", @"Vector", nil) forState:UIControlStateNormal];
+    [self.resendButton setTitle:[VectorL10n retry] forState:UIControlStateNormal];
     self.resendButton.backgroundColor = ThemeService.shared.theme.tintColor;
     
     UIImage *image = [[UIImage imageNamed:@"room_context_menu_delete"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -214,37 +214,32 @@
 
     if (!onOngoingConferenceCallClosePressed)
     {
-        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+        onGoingConferenceCall = [VectorL10n roomOngoingConferenceCall:[VectorL10n voice] :[VectorL10n video]];
     }
     else
     {
         // Display the banner with a "Close it" string
         objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed", [onOngoingConferenceCallClosePressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-        onGoingConferenceCall = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_ongoing_conference_call_with_close", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"voice", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"video", @"Vector", nil),
-                                 NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+        
+        onGoingConferenceCall = [VectorL10n roomOngoingConferenceCallWithClose:[VectorL10n voice] :[VectorL10n video] :[VectorL10n roomOngoingConferenceCallClose]];
     }
 
     NSMutableAttributedString *onGoingConferenceCallAttibutedString = [[NSMutableAttributedString alloc] initWithString:onGoingConferenceCall];
 
     // Add a link on the "voice" string
-    NSRange voiceRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"voice", @"Vector", nil)];
+    NSRange voiceRange = [onGoingConferenceCall rangeOfString:[VectorL10n voice]];
     [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:voiceRange];
     [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVoicePressed" range:voiceRange];
 
     // Add a link on the "video" string
-    NSRange videoRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"video", @"Vector", nil)];
+    NSRange videoRange = [onGoingConferenceCall rangeOfString:[VectorL10n video]];
     [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:videoRange];
     [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVideoPressed" range:videoRange];
 
     // Add a link on the "Close" string
     if (onOngoingConferenceCallClosePressed)
     {
-        NSRange closeRange = [onGoingConferenceCall rangeOfString:NSLocalizedStringFromTable(@"room_ongoing_conference_call_close", @"Vector", nil)];
+        NSRange closeRange = [onGoingConferenceCall rangeOfString:[VectorL10n roomOngoingConferenceCallClose]];
         [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:closeRange];
         [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallClosePressed" range:closeRange];
     }
@@ -290,11 +285,11 @@
         
         NSMutableAttributedString *roomReplacementAttributedString = [NSMutableAttributedString new];
         
-        NSString *roomReplacementReasonString = [NSString stringWithFormat:@"%@\n", NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil)];
+        NSString *roomReplacementReasonString = [NSString stringWithFormat:@"%@\n", [VectorL10n roomReplacementInformation]];
         
         NSAttributedString *roomReplacementReasonAttributedString = [[NSAttributedString alloc] initWithString:roomReplacementReasonString attributes:roomReplacementReasonAttributes];
         
-        NSString *roomLinkString = NSLocalizedStringFromTable(@"room_replacement_link", @"Vector", nil);
+                                                 NSString *roomLinkString = [VectorL10n roomReplacementLink];
         NSAttributedString *roomLinkAttributedString = [[NSAttributedString alloc] initWithString:roomLinkString attributes:roomLinkAttributes];
         
         [roomReplacementAttributedString appendAttributedString:roomReplacementReasonAttributedString];
@@ -307,7 +302,7 @@
     }
     else
     {
-        self.messageTextView.text = NSLocalizedStringFromTable(@"room_replacement_information", @"Vector", nil);
+        self.messageTextView.text = [VectorL10n roomReplacementInformation];
     }
     
     self.messageTextView.tintColor = ThemeService.shared.theme.textPrimaryColor;
@@ -357,29 +352,29 @@
         // Reuse MatrixKit as is for the beginning of hardLimit
         if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
         {
-            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_monthly_active_user"]];
+            [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageMonthlyActiveUser]];
         }
         else
         {
-            [message appendString:[NSBundle mxk_localizedStringForKey:@"login_error_resource_limit_exceeded_message_default"]];
+            [message appendString:[MatrixKitL10n loginErrorResourceLimitExceededMessageDefault]];
         }
     }
     else
     {
         if ([limitType isEqualToString:kMXErrorResourceLimitExceededLimitTypeMonthlyActiveUserValue])
         {
-            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_monthly_active_user", @"Vector", nil)];
+            [message appendString:[VectorL10n roomResourceUsageLimitReachedMessage1MonthlyActiveUser]];
         }
         else
         {
-            [message appendString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_1_default", @"Vector", nil)];
+            [message appendString:[VectorL10n roomResourceUsageLimitReachedMessage1Default]];
         }
-
-        message2 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_2", @"Vector", nil)
+        
+        message2 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceUsageLimitReachedMessage2]
                                                    attributes:@{
-                                                                NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
-                                                                NSForegroundColorAttributeName: ThemeService.shared.theme.backgroundColor
-                                                                }];
+                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:fontSize],
+                                                       NSForegroundColorAttributeName: ThemeService.shared.theme.backgroundColor
+                                                   }];
     }
 
     NSDictionary *attributes = @{
@@ -406,16 +401,16 @@
         messageContact2LinkAttributes = attributes;
     }
 
-    NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_1", @"Vector", nil) attributes:attributes];
-    NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_2_link", @"Vector", nil) attributes:messageContact2LinkAttributes];
+    NSAttributedString *messageContact1 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceLimitExceededMessageContact1] attributes:attributes];
+    NSAttributedString *messageContact2Link =  [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceLimitExceededMessageContact2Link] attributes:messageContact2LinkAttributes];
     NSAttributedString *messageContact3;
     if (hardLimit)
     {
-        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_limit_exceeded_message_contact_3", @"Vector", nil) attributes:attributes];
+        messageContact3 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceLimitExceededMessageContact3] attributes:attributes];
     }
     else
     {
-        messageContact3 = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"room_resource_usage_limit_reached_message_contact_3", @"Vector", nil) attributes:attributes];
+        messageContact3 = [[NSAttributedString alloc] initWithString:[VectorL10n roomResourceUsageLimitReachedMessageContact3] attributes:attributes];
     }
 
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:message attributes:attributes];

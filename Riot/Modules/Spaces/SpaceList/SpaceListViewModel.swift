@@ -53,6 +53,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         self.userSessionsService = userSessionsService
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.sessionDidSync(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.counterDidUpdateNotificationCount(notification:)), name: MXSpaceNotificationCounter.didUpdateNotificationCount, object: nil)
 
     }
     
@@ -119,6 +121,10 @@ final class SpaceListViewModel: SpaceListViewModelType {
     // MARK: - Private
     
     @objc private func sessionDidSync(notification: Notification) {
+        loadData()
+    }
+    
+    @objc private func counterDidUpdateNotificationCount(notification: Notification) {
         loadData()
     }
     

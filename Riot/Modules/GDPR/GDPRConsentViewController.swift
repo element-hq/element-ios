@@ -36,7 +36,7 @@ final public class GDPRConsentViewController: WebViewViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = NSLocalizedString("settings_term_conditions", tableName: "Vector", comment: "")
+        self.title = VectorL10n.settingsTermConditions
     }
     
     // MARK: - Superclass Overrides

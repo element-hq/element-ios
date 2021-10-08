@@ -16,6 +16,8 @@
 
 #import "BuildInfo.h"
 
+#import "Riot-Swift.h"
+
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)
 
@@ -80,7 +82,7 @@
         }
         else
         {
-            _readableBuildVersion = NSLocalizedStringFromTable(@"settings_config_no_build_info", @"Vector", nil);
+            _readableBuildVersion = [VectorL10n settingsConfigNoBuildInfo];
         }
     }
     return _readableBuildVersion;

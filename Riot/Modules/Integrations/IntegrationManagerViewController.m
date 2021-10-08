@@ -196,14 +196,14 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         }
         else
         {
-            [self sendLocalisedError:@"widget_integration_missing_room_id" toRequest:requestId];
+            [self sendError:[VectorL10n widgetIntegrationMissingRoomId] toRequest:requestId];
             return;
         }
     }
 
     if (![roomIdInEvent isEqualToString:roomId])
     {
-        [self sendError:[NSString stringWithFormat:NSLocalizedStringFromTable(@"widget_integration_room_not_visible", @"Vector", nil), roomIdInEvent] toRequest:requestId];
+        [self sendError:[VectorL10n widgetIntegrationRoomNotVisible:roomIdInEvent] toRequest:requestId];
         return;
     }
 
@@ -249,7 +249,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (!userId)
     {
-        [self sendLocalisedError:@"widget_integration_missing_user_id" toRequest:requestId];
+        [self sendError:[VectorL10n widgetIntegrationMissingUserId] toRequest:requestId];
         return;
     }
 
@@ -292,7 +292,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     }
     else
     {
-        [self sendLocalisedError:@"widget_integration_room_not_recognised" toRequest:requestId];
+        [self sendError:[VectorL10n widgetIntegrationRoomNotRecognised] toRequest:requestId];
     }
 }
 
@@ -324,7 +324,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
             } failure:^(NSError *error) {
                 MXStrongifyAndReturnIfNil(self);
 
-                [self sendLocalisedError:@"widget_integration_need_to_be_able_to_invite" toRequest:requestId];
+                [self sendError:[VectorL10n widgetIntegrationNeedToBeAbleToInvite] toRequest:requestId];
             }];
         }
     }];
@@ -348,13 +348,13 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     if (!widget_id)
     {
-        [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
+        [self sendError:[VectorL10n widgetIntegrationUnableToCreate] toRequest:requestId];
         return;
     }
 
     if (!widgetType)
     {
-        [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
+        [self sendError:[VectorL10n widgetIntegrationUnableToCreate] toRequest:requestId];
         return;
     }
 
@@ -412,7 +412,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
             typeof(self) self = weakSelf;
             if (self)
             {
-                [self sendLocalisedError:@"widget_integration_unable_to_create" toRequest:requestId];
+                [self sendError:[VectorL10n widgetIntegrationUnableToCreate] toRequest:requestId];
             }
         }];
     }
@@ -441,7 +441,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                    typeof(self) self = weakSelf;
                                    if (self)
                                    {
-                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
+                                       [self sendError:[VectorL10n widgetIntegrationFailedToSendRequest] toRequest:requestId];
                                    }
                                }];
         }];
@@ -490,7 +490,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
         if (room.summary.membership != MXMembershipJoin)
         {
-            [self sendLocalisedError:@"widget_integration_must_be_in_room" toRequest:requestId];
+            [self sendError:[VectorL10n widgetIntegrationMustBeInRoom] toRequest:requestId];
             return;
         }
 
@@ -517,7 +517,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
         }
         else
         {
-            [self sendLocalisedError:@"widget_integration_no_permission_in_room" toRequest:requestId];
+            [self sendError:[VectorL10n widgetIntegrationNoPermissionInRoom] toRequest:requestId];
         }
 
     }];
@@ -576,7 +576,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                    typeof(self) self = weakSelf;
                                    if (self)
                                    {
-                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
+                                       [self sendError:[VectorL10n widgetIntegrationFailedToSendRequest] toRequest:requestId];
                                    }
                                }];
         }
@@ -648,7 +648,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                                    typeof(self) self = weakSelf;
                                    if (self)
                                    {
-                                       [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
+                                       [self sendError:[VectorL10n widgetIntegrationFailedToSendRequest] toRequest:requestId];
                                    }
                                }];
         }
@@ -687,14 +687,14 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
                 typeof(self) self = weakSelf;
                 if (self)
                 {
-                    [self sendLocalisedError:@"widget_integration_failed_to_send_request" toRequest:requestId];
+                    [self sendError:[VectorL10n widgetIntegrationFailedToSendRequest] toRequest:requestId];
                 }
             }];
         }
         else
         {
             MXLogDebug(@"[IntegrationManagerVC] setBotPower. Power level must be positive integer.");
-            [self sendLocalisedError:@"widget_integration_positive_power_level" toRequest:requestId];
+            [self sendError:[VectorL10n widgetIntegrationPositivePowerLevel] toRequest:requestId];
         }
     }];
 }
@@ -721,12 +721,12 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
 - (void)showDisabledIntegrationManagerError
 {
-    NSString *message = NSLocalizedStringFromTable(@"widget_integration_manager_disabled", @"Vector", nil);
+    NSString *message = [VectorL10n widgetIntegrationManagerDisabled];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
                                                                    message:message
                                                             preferredStyle:UIAlertControllerStyleAlert];
 
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 [self withdrawViewControllerAnimated:YES completion:nil];

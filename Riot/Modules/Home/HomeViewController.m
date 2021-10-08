@@ -102,7 +102,7 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_home", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleHome];
 
     [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];
 
@@ -274,7 +274,7 @@
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"spaces_explore_rooms", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n spacesExploreRooms]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -288,7 +288,7 @@
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"room_details_people", @"Vector", nil)
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsPeople]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -305,7 +305,7 @@
                                                    }]];
     
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -827,7 +827,7 @@
 
 - (void)showCrossSigningSetup
 {
-    [self setupCrossSigningWithTitle:NSLocalizedStringFromTable(@"cross_signing_setup_banner_title", @"Vector", nil) message:NSLocalizedStringFromTable(@"security_settings_user_password_description", @"Vector", nil) success:^{
+    [self setupCrossSigningWithTitle:[VectorL10n crossSigningSetupBannerTitle] message:[VectorL10n securitySettingsUserPasswordDescription] success:^{
         
     } failure:^(NSError *error) {
         
@@ -890,11 +890,11 @@
     displayName = displayName ?: @"";
     
     NSString *appName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    NSString *title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"home_empty_view_title", @"Vector", nil), appName, displayName];
+    NSString *title = [VectorL10n homeEmptyViewTitle:appName :displayName];
     
     [self.emptyView fillWith:[self emptyViewArtwork]
                        title:title
-             informationText:NSLocalizedStringFromTable(@"home_empty_view_information", @"Vector", nil)];
+             informationText:[VectorL10n homeEmptyViewInformation]];
 }
 
 - (UIImage*)emptyViewArtwork

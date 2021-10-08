@@ -27,3 +27,5 @@ struct AvatarInput: AvatarInputProtocol {
     var matrixItemId: String
     let displayName: String?
 }
+
+extension AvatarInput: Equatable { }

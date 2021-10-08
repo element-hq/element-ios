@@ -119,8 +119,8 @@ final class KeyVerificationScanConfirmationViewController: UIViewController {
         self.confirmButton.layer.masksToBounds = true
         self.rejectButton.layer.masksToBounds = true
         
-        self.confirmButton.setTitle(Bundle.mxk_localizedString(forKey: "yes"), for: .normal)
-        self.rejectButton.setTitle(Bundle.mxk_localizedString(forKey: "no"), for: .normal)
+        self.confirmButton.setTitle(MatrixKitL10n.yes, for: .normal)
+        self.rejectButton.setTitle(MatrixKitL10n.no, for: .normal)
         self.rejectButton.actionStyle = .cancel
     }
 

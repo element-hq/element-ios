@@ -36,6 +36,8 @@ targets:
     - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Theme/ThemeIdentifier.swift
     - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Categories/Character.swift
     - path: ../Riot/Assets/en.lproj/Vector.strings
       buildPhase: resources
     - path: ../Riot/Assets/Images.xcassets

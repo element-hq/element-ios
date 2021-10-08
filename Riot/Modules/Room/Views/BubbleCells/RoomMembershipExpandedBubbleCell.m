@@ -29,7 +29,7 @@ NSString *const kRoomMembershipExpandedBubbleCellTapOnCollapseButton = @"kRoomMe
 {
     [super awakeFromNib];
 
-    NSString* title = NSLocalizedStringFromTable(@"collapse", @"Vector", nil);
+    NSString* title = [VectorL10n collapse];
     [self.collapseButton setTitle:title forState:UIControlStateNormal];
     [self.collapseButton setTitle:title forState:UIControlStateHighlighted];
 }

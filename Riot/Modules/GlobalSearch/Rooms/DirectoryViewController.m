@@ -52,7 +52,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedStringFromTable(@"directory_title", @"Vector", nil);
+    self.title = [VectorL10n directoryTitle];
 
     self.tableView.delegate = self;
 
