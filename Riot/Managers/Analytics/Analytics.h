@@ -22,6 +22,10 @@
 // Metrics related to notifications
 FOUNDATION_EXPORT NSString *const AnalyticsNoficationsCategory;
 FOUNDATION_EXPORT NSString *const AnalyticsNoficationsTimeToDisplayContent;
+/**
+ The analytics value for accept/decline of the identity server's terms.
+ */
+FOUNDATION_EXPORT NSString *const AnalyticsContactsIdentityServerAccepted;
 
 
 /**
