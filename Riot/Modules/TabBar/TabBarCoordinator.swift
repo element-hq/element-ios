@@ -348,8 +348,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         coordinator.start()
         self.add(childCoordinator: coordinator)
         
-        self.replaceSplitViewDetails(with: coordinator) {
-            [weak self] in
+        self.replaceSplitViewDetails(with: coordinator) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
