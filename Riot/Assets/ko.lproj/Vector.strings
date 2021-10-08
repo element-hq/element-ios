@@ -43,7 +43,7 @@
 "auth_register" = "등록";
 "auth_submit" = "제출";
 "auth_skip" = "넘기기";
-"auth_login_single_sign_on" = "통합 인증(SSO)으로 로그인";
+"auth_login_single_sign_on" = "로그인";
 "auth_send_reset_email" = "초기화 이메일 보내기";
 "auth_return_to_login" = "로그인 화면으로 돌아가기";
 "auth_user_id_placeholder" = "이메일 혹은 사용자 이름";
@@ -170,7 +170,7 @@
 "contacts_address_book_matrix_users_toggle" = "Matrix 사용자만";
 "contacts_address_book_no_contact" = "로컬 연락처 없음";
 "contacts_address_book_permission_required" = "로컬 연락처에 접근하는데 필요한 권한";
-"contacts_address_book_permission_denied" = "Riot이 로컬 연락처에 접근하도록 허용하지 않음";
+"contacts_address_book_permission_denied" = "%@이(가) 연락처에 접근하도록 허용하지 않음";
 "contacts_user_directory_section" = "사용자 목록";
 "contacts_user_directory_offline_section" = "사용자 목록 (오프라인)";
 // Chat participants
@@ -199,8 +199,8 @@
 "room_participants_ago" = "전";
 "room_participants_action_section_admin_tools" = "관리자 도구";
 "room_participants_action_section_direct_chats" = "다이렉트 대화";
-"room_participants_action_section_devices" = "기기";
-"room_participants_action_section_other" = "기타";
+"room_participants_action_section_devices" = "세션";
+"room_participants_action_section_other" = "옵션";
 "room_participants_action_invite" = "초대";
 "room_participants_action_leave" = "이 방 떠나기";
 "room_participants_action_remove" = "이 방에서 제거";
@@ -216,7 +216,7 @@
 "room_participants_action_start_video_call" = "영상 통화 시작";
 "room_participants_action_mention" = "언급";
 // Chat
-"room_jump_to_first_unread" = "처음으로 읽지 않은 메시지로 가기";
+"room_jump_to_first_unread" = "읽지 않은 메시지로 가기";
 "room_new_message_notification" = "%d개의 새 메시지";
 "room_new_messages_notification" = "%d개의 새 메시지";
 "room_one_user_is_typing" = "%@님이 입력하는 중…";
@@ -231,8 +231,8 @@
 "room_message_short_placeholder" = "메시지를 보내세요…";
 "room_message_reply_to_short_placeholder" = "답장을 보내세요…";
 "room_offline_notification" = "서버와의 연결이 끊겼습니다.";
-"room_unsent_messages_notification" = "메시지가 보내지지 않았습니다. %1$s, %2$s, 둘 중 어느 것을 하겠습니까?";
-"room_unsent_messages_unknown_devices_notification" = "알 수 없는 기기가 있어 메시지가 보내지지 않았습니다. %1$s, %2$s, 둘 중 어느 것을 하겠습니까?";
+"room_unsent_messages_notification" = "메시지가 보내지지 않았습니다.";
+"room_unsent_messages_unknown_devices_notification" = "알 수 없는 기기가 있어 메시지 전송이 실패했습니다.";
 "room_ongoing_conference_call" = "회의 전화가 진행 중입니다. %1$s 또는 %2$s로 참가하세요.";
 "room_ongoing_conference_call_with_close" = "회의 전화가 진행 중입니다. %1$s 또는 %2$s로 참가하세요. %@.";
 "room_ongoing_conference_call_close" = "닫기";
@@ -286,7 +286,7 @@
 "room_message_edits_history_title" = "메시지 편집";
 // Unknown devices
 "unknown_devices_alert_title" = "방에 알 수 없는 기기가 있음";
-"unknown_devices_alert" = "이 방에 확인되지 않은 알 수 없는 기기가 있습니다.이 기기가 확인한 사용자의 것이라는 보장이 없습니다.\n계속하기 전에 각 기기마다 확인 절차를 거치기를 권합니다, 하지만 원한다면 확인하지 않고 메시지를 다시 보낼 수 있습니다.";
+"unknown_devices_alert" = "이 방에 검증되지 않은 알 수 없는 기기가 있습니다.\n이 기기가 사용자의 것이라는 보장이 없습니다.\n계속하기 전에 각 기기마다 검증 절차를 거치기를 권합니다, 하지만 원한다면 검증하지 않고 메시지를 다시 보낼 수 있습니다.";
 "unknown_devices_send_anyway" = "무시하고 보내기";
 "unknown_devices_call_anyway" = "무시하고 전화";
 "unknown_devices_answer_anyway" = "무시하고 답하기";
@@ -325,7 +325,7 @@
 "settings_other" = "기타";
 "settings_labs" = "연구실";
 "settings_flair" = "허용되는 곳에 재능 보이기";
-"settings_devices" = "기기";
+"settings_devices" = "세션";
 "settings_cryptography" = "암호화";
 "settings_key_backup" = "키 백업";
 "settings_deactivate_account" = "계정 비활성화";
@@ -354,7 +354,7 @@
 "settings_pin_rooms_with_unread" = "읽지 않은 메시지가 있는 방을 고정";
 "settings_on_denied_notification" = "%@에 의해 알림이 거부됬습니다, 기기 설정에서 %@을(를) 허용해주세요";
 "settings_enable_callkit" = "통합 전화";
-"settings_callkit_info" = "잠금 화면에서 수신 전화를 받습니다. 시스템의 통화 내역에서 Riot 통화를 확인하세요. iCloud가 켜져있다면, 이 통화 기록은 Apple과 공유됩니다.";
+"settings_callkit_info" = "잠금 화면에서 수신 전화를 받습니다. 시스템의 통화 내역에서 %@ 통화를 확인하세요. iCloud가 켜져있다면, 이 통화 기록은 Apple과 공유됩니다.";
 "settings_ui_language" = "언어";
 "settings_ui_theme" = "테마";
 "settings_ui_theme_auto" = "자동";
@@ -388,24 +388,24 @@
 "settings_confirm_password" = "비밀번호 확인";
 "settings_fail_to_update_password" = "비밀번호 업데이트에 실패함";
 "settings_password_updated" = "비밀번호가 업데이트되었습니다";
-"settings_crypto_device_name" = "기기 공개 이름: ";
-"settings_crypto_device_id" = "\n기기 ID: ";
-"settings_crypto_device_key" = "\n기기 키:\n";
+"settings_crypto_device_name" = "세션 이름: ";
+"settings_crypto_device_id" = "\n세션 ID: ";
+"settings_crypto_device_key" = "\n세션 키:\n";
 "settings_crypto_export" = "키 내보내기";
-"settings_crypto_blacklist_unverified_devices" = "확인된 기기만 암호화";
+"settings_crypto_blacklist_unverified_devices" = "검증된 세션만 암호화";
 "settings_deactivate_my_account" = "내 계정 비활성화";
 "settings_key_backup_info" = "암호화된 메시지는 종단간 암호화로 보호됩니다. 오직 당신과 참가자만 키를 갖고 있어서 이 메시지를 읽을 수 있습니다.";
-"settings_key_backup_info_checking" = "확인 중...";
-"settings_key_backup_info_none" = "키가 이 기기에서 백업되지 않았습니다.";
+"settings_key_backup_info_checking" = "확인 중…";
+"settings_key_backup_info_none" = "키가 이 세션에서 백업되지 않았습니다.";
 "settings_key_backup_info_signout_warning" = "이 기기에만 있을 수 있는 키를 잃지 않도록, 로그아웃하기 전에 이 기기를 키 백업에 연결하세요.";
 "settings_key_backup_info_version" = "키 백업 버전: %@";
 "settings_key_backup_info_algorithm" = "알고리즘: %@";
-"settings_key_backup_info_valid" = "이 기기는 키를 백업하고 있습니다.";
-"settings_key_backup_info_not_valid" = "이 기기는 키를 백업하고 있지 않습니다, 하지만 존재하는 백업이 있고 이것을 복구한 뒤 키를 추가할 수 있습니다.";
-"settings_key_backup_info_progress" = "%@ 키를 백업하는 중...";
+"settings_key_backup_info_valid" = "이 세션은 키를 백업하고 있습니다.";
+"settings_key_backup_info_not_valid" = "이 세션은 키를 백업하고 있지 않습니다, 하지만 존재하는 백업이 있고 이것을 복구한 뒤 키를 추가할 수 있습니다.";
+"settings_key_backup_info_progress" = "%@ 키를 백업하는 중…";
 "settings_key_backup_info_progress_done" = "모든 키가 백업됨";
-"settings_key_backup_info_trust_signature_unknown" = "백업은 기기로부터 ID로 된 서명을 갖습니다: %@";
-"settings_key_backup_info_trust_signature_valid" = "백업이 이 기기로부터 올바른 서명을 갖고 있음";
+"settings_key_backup_info_trust_signature_unknown" = "백업은 다음의 ID를 가진 세션으로부터 서명을 갖습니다: %@";
+"settings_key_backup_info_trust_signature_valid" = "백업이 이 세션부터 올바른 서명을 갖고 있음";
 "settings_key_backup_info_trust_signature_valid_device_verified" = "백업이 %@(으)로부터 올바른 서명을 갖고 있음";
 "settings_key_backup_info_trust_signature_valid_device_unverified" = "백업이 %@(으)로부터 서명을 갖고 있음";
 "settings_key_backup_info_trust_signature_invalid_device_verified" = "백업이 %@(으)로부터 올바르지 않은 서명을 갖고 있음";
@@ -413,13 +413,13 @@
 "settings_key_backup_button_create" = "키 백업 시작";
 "settings_key_backup_button_restore" = "백업에서 복구";
 "settings_key_backup_button_delete" = "백업 삭제";
-"settings_key_backup_button_connect" = "이 기기를 키 백업에 연결";
+"settings_key_backup_button_connect" = "이 세션을 키 백업에 연결";
 "settings_key_backup_delete_confirmation_prompt_title" = "백업 삭제";
 "settings_key_backup_delete_confirmation_prompt_msg" = "확신합니까? 키가 정상적으로 백업되지 않으면 암호화된 메시지를 잃게 됩니다.";
 // Room Details
 "room_details_title" = "방 세부 사항";
 "room_details_people" = "구성원";
-"room_details_files" = "파일";
+"room_details_files" = "업로드";
 "room_details_settings" = "설정";
 "room_details_photo" = "방 사진";
 "room_details_room_name" = "방 이름";
@@ -459,7 +459,7 @@
 "room_details_advanced_enable_e2e_encryption" = "암호화 켜짐 (경고: 다시 끌 수 없습니다!)";
 "room_details_advanced_e2e_encryption_enabled" = "이 방의 암호화가 켜졌습니다";
 "room_details_advanced_e2e_encryption_disabled" = "이 방의 암호화가 꺼졌습니다.";
-"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "확인된 기기만 암호화";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "검증된 세션만 암호화";
 "room_details_fail_to_update_avatar" = "방 사진 업데이트에 실패함";
 "room_details_fail_to_update_room_name" = "방 이름 업데이트에 실패함";
 "room_details_fail_to_update_topic" = "주제 업데이트에 실패함";
@@ -529,7 +529,7 @@
 "event_formatter_jitsi_widget_added" = "%@님이 VoIP 회의를 추가했습니다";
 "event_formatter_jitsi_widget_removed" = "%@님이 VoIP 회의를 제거했습니다";
 "event_formatter_rerequest_keys_part1_link" = "암호화 키 다시 요청";
-"event_formatter_rerequest_keys_part2" = " 다른 기기에서.";
+"event_formatter_rerequest_keys_part2" = " 다른 세션에서.";
 "event_formatter_message_edited_mention" = "(편집됨)";
 // Others
 "or" = "또는";
@@ -539,7 +539,7 @@
 "network_offline_prompt" = "인터넷이 오프라인입니다.";
 "homeserver_connection_lost" = "홈 서버에 연결할 수 없습니다.";
 "public_room_section_title" = "공개 방 (%@에 있음):";
-"bug_report_prompt" = "애플리케이션이 방금 충돌했군요.\n충돌 보고서를 제출하겠습니까?";
+"bug_report_prompt" = "애플리케이션이 방금 충돌했군요. 충돌 보고서를 제출하겠습니까?";
 "rage_shake_prompt" = "좌절감에 휴대 전화를 흔들고 있군요. 버그 보고서를 제출하겠습니까?";
 "do_not_ask_again" = "다시 묻지 않기";
 "camera_access_not_granted" = "%@님은 카메라를 사용할 권한이 없습니다, 개인 정보 설정을 바꿔주세요";
@@ -550,8 +550,8 @@
 // Call
 "call_incoming_voice_prompt" = "%@님으로부터 온 음성 통화";
 "call_incoming_video_prompt" = "%@님으로부터 온 영상 통화";
-"call_incoming_voice" = "전화 수신 중...";
-"call_incoming_video" = "영상 통화 수신 중...";
+"call_incoming_voice" = "전화 수신 중...…";
+"call_incoming_video" = "영상 통화 수신 중...…";
 "call_already_displayed" = "이미 전화가 진행 중입니다.";
 "call_jitsi_error" = "회의 전화 참가에 실패했습니다.";
 // No VoIP support
@@ -560,8 +560,8 @@
 // Crash report
 "google_analytics_use_prompt" = "%@이(가) 개선하도록 자동으로 익명의 충돌 보고서와 사용 데이터를 제공하겠습니까?";
 // Crypto
-"e2e_enabling_on_app_update" = "Riot는 이제 종단간 암호화를 지원하지만 암호화를 켜려면 다시 로그인해야 합니다.\n\n지금 다시 로그인하거나 나중에 애플리케이션 설정에서 할 수 있습니다.";
-"e2e_need_log_in_again" = "이 기기에 종단간 암호화 키를 생성하고 공개 키를 홈서버에 제출하려면 다시 로그인해야 함니다.\n한 번만 하면 됩니다, 불편을 드려 죄송합니다.";
+"e2e_enabling_on_app_update" = "%@는 이제 종단간 암호화를 지원하지만 암호화를 켜려면 다시 로그인해야 합니다.\n\n지금 다시 로그인하거나 나중에 애플리케이션 설정에서 할 수 있습니다.";
+"e2e_need_log_in_again" = "이 세션에 종단간 암호화 키를 생성하고 공개 키를 홈서버에 제출하려면 다시 로그인해야 함니다.\n한 번만 하면 됩니다. 불편을 드려 죄송합니다.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "새 키 백업";
 "e2e_key_backup_wrong_version" = "새 보안 메시지 키 백업이 감지되었습니다.\n\n당신이 한 것이 아니라면 설정에서 새 암호를 설정하세요.";
@@ -601,9 +601,9 @@
 "share_extension_failed_to_encrypt" = "보내기에 실패함. 기본 앱에서 이 방의 암호화 설정을 확인하세요";
 // Room key request dialog
 "e2e_room_key_request_title" = "암호화 키 요청";
-"e2e_room_key_request_message_new_device" = "암호화 키를 요청한 새 기기 '%@'을(를) 추가했습니다.";
-"e2e_room_key_request_message" = "확인하지 않은 기기 '%@'이(가) 암호화 키를 요청하고 있습니다.";
-"e2e_room_key_request_start_verification" = "확인 시작...";
+"e2e_room_key_request_message_new_device" = "암호화 키를 요청한 새 세션 '%@'을(를) 추가했습니다.";
+"e2e_room_key_request_message" = "확인하지 않은 세션 '%@'이(가) 암호화 키를 요청하고 있습니다.";
+"e2e_room_key_request_start_verification" = "확인 시작…";
 "e2e_room_key_request_share_without_verifying" = "확인없이 공유";
 "e2e_room_key_request_ignore_request" = "요청 무시";
 // GDPR
@@ -629,7 +629,7 @@
 "deactivate_account_password_alert_message" = "계속하려면, 비밀번호를 입력해주세요";
 // Re-request confirmation dialog
 "rerequest_keys_alert_title" = "요청을 보냈습니다";
-"rerequest_keys_alert_message" = "메시지를 복호화해서 이 기기로 키를 보낼 수 있도록 Riot을 다른 기기에 설치해주세요.";
+"rerequest_keys_alert_message" = "메시지를 복호화해서 이 세션으로 키를 보낼 수 있도록 %@를 다른 기기에 설치해주세요.";
 "key_backup_setup_title" = "키 백업";
 "key_backup_setup_skip_alert_title" = "확신합니까?";
 "key_backup_setup_skip_alert_message" = "로그아웃하거나 기기를 잃어버리면 보안 메시지를 잃게 됩니다.";
@@ -703,21 +703,21 @@
 "device_verification_security_advice" = "보안을 최대화하려면, 직접 또는 다른 신뢰할만한 통신 수단으로 확인하기를 추천합니다";
 "device_verification_cancelled" = "상대방이 확인을 취소했습니다.";
 "device_verification_cancelled_by_me" = "확인이 취소됬습니다. 이유: %@";
-"device_verification_error_cannot_load_device" = "기기 정보를 불러올 수 없습니다.";
+"device_verification_error_cannot_load_device" = "세션 정보를 불러올 수 없습니다.";
 // Mark: Incoming
 "device_verification_incoming_title" = "수신 확인 요청";
-"device_verification_incoming_description_1" = "이 기기를 신뢰하도록 확인합니다. 상대방의 신뢰하는 기기는 종단간 암호화된 메시지를 사용할 때 더 마음에 안심을 줍니다.";
-"device_verification_incoming_description_2" = "이 기기를 신뢰하도록 확인합니다, 그리고 상대방도 당신의 기기를 신뢰하도록 합니다.";
+"device_verification_incoming_description_1" = "이 세션을 신뢰하도록 확인합니다. 상대방의 신뢰하는 세션은 종단간 암호화된 메시지를 사용할 때 더 마음에 안심을 줍니다.";
+"device_verification_incoming_description_2" = "이 세션을 신뢰하도록 확인합니다, 그리고 상대방도 당신의 세션을 신뢰하도록 합니다.";
 // MARK: Start
 "device_verification_start_title" = "짧은 문장을 비교하여 확인";
-"device_verification_start_wait_partner" = "상대방이 수락하기를 기다리는 중...";
+"device_verification_start_wait_partner" = "상대방이 수락하기를 기다리는 중…";
 "device_verification_start_use_legacy" = "아무것도 안 나타나나요? 일부 클라이언트는 아직 상호작용 확인을 지원하지 않습니다. 예전 확인 방식을 사용하세요.";
 "device_verification_start_verify_button" = "확인 시작";
 "device_verification_start_use_legacy_action" = "예전 확인 방식 사용";
 // MARK: Verify
 "device_verification_verify_title_emoji" = "상대방의 화면에 나타나는 다음 이모지를 확인하는 것으로 이 기기를 확인합니다";
 "device_verification_verify_title_number" = "상대방의 화면에 나타나는 다음 숫자를 확인하는 것으로 이 기기를 확인합니다";
-"device_verification_verify_wait_partner" = "상대방이 확인하기를 기다리는 중...";
+"device_verification_verify_wait_partner" = "상대방이 확인하기를 기다리는 중…";
 // MARK: Verified
 "device_verification_verified_title" = "확인되었습니다!";
 "device_verification_verified_description_1" = "성공적으로 이 기기를 확인했습니다.";
@@ -834,7 +834,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_calls_stun_server_fallback_button" = "대체 전화 지원 서버 허용";
 "settings_calls_stun_server_fallback_description" = "홈서버가 전화 서버를 지원하지 않는다면 대체 전화 지원 서버 %@를 허용합니다 (전화하는 동안 IP 주소가 공유됩니다).";
-"settings_devices_description" = "기기 공개 이름은 소통하는 사람들에게 보여집니다";
+"settings_devices_description" = "세션의 공개 명칭은 대화하는 사람들에게 보여집니다";
 "settings_discovery_no_identity_server" = "현재 ID 서버를 사용하고 있지 않습니다. 연락처에 알고 있는 사람들이 당신을 찾을 수 있도록 하려면 서버를 하나 추가하세요.";
 "settings_discovery_terms_not_signed" = "이메일이나 전화번호로 당신을 찾을 수 있도록 하려면 ID 서버 (%@)의 서비스 약관에 동의하세요.";
 "settings_discovery_three_pids_management_information_part1" = "무슨 이메일 주소나 전화번호로 다른 사용자가 당신을 찾고 방에 초대할 수 있는지 관리하세요. 이 목록에서 이메일 주소나 전화번호를 추가하거나 제거할 수 있습니다. ";
@@ -886,8 +886,8 @@
 "service_terms_modal_message_identity_server" = "연락처를 탐색하려면 ID 서버 (%@)의 약관에 동의해야 합니다.";
 "settings_add_3pid_password_title_email" = "이메일 주소 추가";
 "settings_add_3pid_password_title_msidsn" = "전화번호 추가";
-"settings_add_3pid_password_message" = "계속하려면 비밀번호를 입력해주세요";
-"settings_add_3pid_invalid_password_message" = "잘못된 비밀번호";
+"settings_add_3pid_password_message" = "계속하려면, 비밀번호를 입력해주세요";
+"settings_add_3pid_invalid_password_message" = "유효하지 않은 인증정보";
 "error_not_supported_on_mobile" = "%@ 모바일에서 할 수 없습니다.";
 "settings_integrations" = "통합";
 "settings_integrations_allow_button" = "통합 관리";
@@ -897,3 +897,37 @@
 "widget_menu_revoke_permission" = "액세스 취소";
 "widget_menu_remove" = "모두를 위해 제거";
 "widget_integration_manager_disabled" = "설정에서 통합 관리자를 켜야 합니다";
+"people_empty_view_information" = "누구든지 안전하게 대화하세요. 사람을 추가하려면 + 버튼을 누르세요.";
+"people_empty_view_title" = "사람들";
+"room_recents_unknown_room_error_message" = "이 방을 찾을 수 없습니다. 방이 존재하는지 확인하세요";
+"room_recents_suggested_rooms_section" = "추천 방";
+"room_creation_dm_error" = "DM을 보내지 못했습니다. 초대하고 싶은 사람을 다시 확인하고 다시 시도해주세요.";
+"social_login_button_title_sign_up" = "%@ (으)로 가입";
+"social_login_button_title_sign_in" = "%@ 으로 로그인하기";
+"social_login_button_title_continue" = "%@ 으로 계속하기";
+"social_login_list_title_sign_up" = "또는";
+"social_login_list_title_sign_in" = "또는";
+
+// Social login
+
+"social_login_list_title_continue" = "다음으로 계속하기";
+
+// Accessibility
+"accessibility_checkbox_label" = "체크박스";
+"callbar_only_single_active_group" = "그룹 통화에 참여하기 (%@)";
+"callbar_return" = "돌아가기";
+"callbar_only_multiple_paused" = "%@ 일시정지된 통화";
+"callbar_only_single_paused" = "일시정지된 통화";
+"callbar_active_and_multiple_paused" = "1 활성화된 통화 (%@) · %@ 일시정지된 통화";
+"callbar_active_and_single_paused" = "1 활성화된 통화 (%@) · 1 일시정지된 통화";
+
+// Call Bar
+"callbar_only_single_active" = "전화로 돌아가기 (%@)";
+"done" = "완료";
+"open" = "열기";
+"less" = "줄이기";
+"more" = "더 보기";
+"switch" = "변경";
+"joined" = "참여했습니다";
+"skip" = "넘기기";
+"store_promotional_text" = "개방된 네트워크에서 프라이버시를 보장받을 수 있는 대화와 협업 앱. 분산화된 네트워크를 통해 정보를 제어할 수 있습니다. 데이터마이닝도 백도어도 다른 곳에서의 접근도 존재하지 않습니다.";
