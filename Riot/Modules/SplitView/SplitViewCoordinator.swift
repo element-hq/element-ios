@@ -220,9 +220,9 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         }
         
         // In our split view configuration is possible to have nested navigation controller (see https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/)).
-        // If the split view controller has one column visible,
-        // and if the primary navigation controller pop the detail navigation controller.
-        // In this case the detail navigation controller will be popped but not his content. It means completions will not be called.
+        // When the split view controller has one column visible with the detail navigation controller nested inside the primary,
+        // check to see whether the primary navigation controller is popping the detail navigation controller.
+        // In this case the detail navigation controller will be popped but not its content. It means completions will not be called.
         if navigationRouter === self.selectedNavigationRouter,
            let poppedNavigationController = poppedController as? UINavigationController,
            poppedNavigationController == self.detailNavigationController {
