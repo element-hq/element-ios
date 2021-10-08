@@ -330,7 +330,7 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         self.detailNavigationRouter?.setRootModule(detailPresentable, popCompletion: popCompletion)
         
         // This will call first UISplitViewControllerDelegate method: `splitViewController(_:showDetail:sender:)`, if implemented, to give the opportunity to customise `UISplitViewController.showDetailViewController(:sender:)` behaviour.
-        // - If the split view controller is collpased (one column visible):
+        // - If the split view controller is collapsed (one column visible):
         // The `detailNavigationController` will be pushed on top of the primary navigation controller.
         // In fact if the primary root controller of a UISplitViewController is a UINavigationController,
         // it's possible to have nested navigation controllers due to private property `_allowNestedNavigationControllers` set to true (https://blog.malcolmhall.com/2017/01/27/default-behaviour-of-uisplitviewcontroller-collapsesecondaryviewcontroller/).
