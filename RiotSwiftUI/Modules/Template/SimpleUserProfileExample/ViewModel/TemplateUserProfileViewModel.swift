@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,29 +25,29 @@ typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserPro
                                                                  TemplateUserProfileViewAction>
 @available(iOS 14, *)
 class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUserProfileViewModelProtocol {
-    
+
     // MARK: - Properties
-    
+
     // MARK: Private
-    
+
     private let templateUserProfileService: TemplateUserProfileServiceProtocol
-    
+
     // MARK: Public
-    
+
     var completion: ((TemplateUserProfileViewModelResult) -> Void)?
-    
+
     // MARK: - Setup
 
     static func makeTemplateUserProfileViewModel(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewModelProtocol {
         return TemplateUserProfileViewModel(templateUserProfileService: templateUserProfileService)
     }
-    
+
     private init(templateUserProfileService: TemplateUserProfileServiceProtocol) {
         self.templateUserProfileService = templateUserProfileService
         super.init(initialViewState: Self.defaultState(templateUserProfileService: templateUserProfileService))
         setupPresenceObserving()
     }
-    
+
     private static func defaultState(templateUserProfileService: TemplateUserProfileServiceProtocol) -> TemplateUserProfileViewState {
         return TemplateUserProfileViewState(
             avatar: templateUserProfileService.avatarData,
@@ -56,16 +56,16 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             count: 0
         )
     }
-    
+
     private func setupPresenceObserving() {
         let presenceUpdatePublisher = templateUserProfileService.presenceSubject
             .map(TemplateUserProfileStateAction.updatePresence)
             .eraseToAnyPublisher()
         dispatch(actionPublisher: presenceUpdatePublisher)
     }
-    
+
     // MARK: - Public
-    
+
     override func process(viewAction: TemplateUserProfileViewAction) {
         switch viewAction {
         case .cancel:
@@ -76,7 +76,7 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
             dispatch(action: .viewAction(viewAction))
         }
     }
-    
+
     override class func reducer(state: inout TemplateUserProfileViewState, action: TemplateUserProfileStateAction) {
         switch action {
         case .updatePresence(let presence):
@@ -93,11 +93,11 @@ class TemplateUserProfileViewModel: TemplateUserProfileViewModelType, TemplateUs
         }
         UILog.debug("[TemplateUserProfileViewModel] reducer with action \(action) produced state: \(state)")
     }
-    
+
     private func done() {
         completion?(.done)
     }
-    
+
     private func cancel() {
         completion?(.cancel)
     }

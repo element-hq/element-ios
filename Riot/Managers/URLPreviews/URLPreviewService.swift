@@ -92,9 +92,9 @@ class URLPreviewService: NSObject {
         store.closePreview(for: eventId, in: roomId)
     }
     
-    /// Whether a preview for the given event has been closed or not.
-    func hasClosedPreview(from event: MXEvent) -> Bool {
-        store.hasClosedPreview(for: event.eventId, in: event.roomId)
+    /// Whether a preview for the given event should be shown or not.
+    func shouldShowPreview(for event: MXEvent) -> Bool {
+        !store.hasClosedPreview(for: event.eventId, in: event.roomId)
     }
     
     // MARK: - Private

@@ -82,7 +82,7 @@ static CGFloat const kTextFontSize = 15.0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.title = NSLocalizedStringFromTable(@"deactivate_account_title", @"Vector", nil);
+    self.title = [VectorL10n deactivateAccountTitle];
 
     [self setupViews];
     
@@ -156,7 +156,7 @@ static CGFloat const kTextFontSize = 15.0;
 - (void)setupViews
 {
     // Cancel bar button
-    UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"cancel", @"Vector", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
+    UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[VectorL10n cancel] style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
     self.navigationItem.rightBarButtonItem = cancelBarButtonItem;
 
     // Deactivate button
@@ -165,7 +165,7 @@ static CGFloat const kTextFontSize = 15.0;
     self.deactivateAcccountButton.titleLabel.minimumScaleFactor = 0.5;
     self.deactivateAcccountButton.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
     self.deactivateAcccountButton.layer.masksToBounds = YES;
-    [self.deactivateAcccountButton setTitle:NSLocalizedStringFromTable(@"deactivate_account_validate_action", @"Vector", nil) forState:UIControlStateNormal];
+    [self.deactivateAcccountButton setTitle:[VectorL10n deactivateAccountValidateAction] forState:UIControlStateNormal];
 }
 
 - (void)updateNavigationBar
@@ -183,15 +183,15 @@ static CGFloat const kTextFontSize = 15.0;
 {
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] init];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_informations_part1", @"Vector", nil) attributes:self.normalStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountInformationsPart1] attributes:self.normalStringAttributes]];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_informations_part2_emphasize", @"Vector", nil) attributes:self.emphasizeStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountInformationsPart2Emphasize] attributes:self.emphasizeStringAttributes]];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_informations_part3", @"Vector", nil) attributes:self.normalStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountInformationsPart3] attributes:self.normalStringAttributes]];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_informations_part4_emphasize", @"Vector", nil) attributes:self.emphasizeStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountInformationsPart4Emphasize] attributes:self.emphasizeStringAttributes]];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_informations_part5", @"Vector", nil) attributes:self.normalStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountInformationsPart5] attributes:self.normalStringAttributes]];
     
     [self.deactivateAccountInfosLabel setAttributedText:attributedString];
 }
@@ -200,11 +200,11 @@ static CGFloat const kTextFontSize = 15.0;
 {
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] init];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_forget_messages_information_part1", @"Vector", nil) attributes:self.normalStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountForgetMessagesInformationPart1] attributes:self.normalStringAttributes]];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_forget_messages_information_part2_emphasize", @"Vector", nil) attributes:self.emphasizeStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountForgetMessagesInformationPart2Emphasize] attributes:self.emphasizeStringAttributes]];
     
-    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"deactivate_account_forget_messages_information_part3", @"Vector", nil) attributes:self.normalStringAttributes]];
+    [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n deactivateAccountForgetMessagesInformationPart3] attributes:self.normalStringAttributes]];
     
     [self.forgetMessagesInfoLabel setAttributedText:attributedString];
 }
@@ -219,8 +219,8 @@ static CGFloat const kTextFontSize = 15.0;
 - (void)presentPasswordRequiredAlertWithSubmitHandler:(void (^)(NSString *password))submitHandler
                                         cancelHandler:(dispatch_block_t)cancelHandler
 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedStringFromTable(@"deactivate_account_password_alert_title", @"Vector", nil)
-                                                                   message:NSLocalizedStringFromTable(@"deactivate_account_password_alert_message", @"Vector", nil) preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[VectorL10n deactivateAccountPasswordAlertTitle]
+                                                                   message:[VectorL10n deactivateAccountPasswordAlertMessage] preferredStyle:UIAlertControllerStyleAlert];
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.secureTextEntry = YES;
@@ -228,7 +228,7 @@ static CGFloat const kTextFontSize = 15.0;
         textField.keyboardType = UIKeyboardTypeDefault;
     }];
     
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                               style:UIAlertActionStyleCancel
                                             handler:^(UIAlertAction * action) {
                                                 if (cancelHandler)
@@ -239,7 +239,7 @@ static CGFloat const kTextFontSize = 15.0;
     
     __weak typeof(self) weakSelf = self;
     
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"submit"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
                                                 UITextField *textField = alert.textFields.firstObject;

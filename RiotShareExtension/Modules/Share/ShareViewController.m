@@ -103,7 +103,7 @@
     
     if ([ShareExtensionManager sharedManager].userAccount)
     {
-        self.titleLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), @""];
+        self.titleLabel.text = [VectorL10n sendTo:@""];
         [self configureSegmentedViewController];
     }
     else
@@ -119,7 +119,7 @@
 {
     self.segmentedViewController = [SegmentedViewController segmentedViewController];
     
-    NSArray *titles = @[NSLocalizedStringFromTable(@"title_rooms", @"Vector", nil) , NSLocalizedStringFromTable(@"title_people", @"Vector", nil)];
+    NSArray *titles = @[[VectorL10n titleRooms], [VectorL10n titlePeople]];
     
     void (^failureBlock)(void) = ^void() {
         [self dismissViewControllerAnimated:YES completion:^{

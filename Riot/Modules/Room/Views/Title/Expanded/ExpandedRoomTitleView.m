@@ -69,23 +69,23 @@
                     activeCount ++;
                 }
             }
-
+            
             if (memberCount)
             {
                 // Check whether the logged in user is alone in this room
                 if (memberCount == 1 && self.mxRoom.summary.membership == MXMembershipJoin)
                 {
-                    self.roomMembers.text = NSLocalizedStringFromTable(@"room_title_invite_members", @"Vector", nil);
+                    self.roomMembers.text = [VectorL10n roomTitleInviteMembers];
                 }
                 else
                 {
                     if (activeCount > 1)
                     {
-                        self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_multiple_active_members", @"Vector", nil), @(activeCount), @(memberCount)];
+                        self.roomMembers.text = [VectorL10n roomTitleMultipleActiveMembers:@(activeCount).stringValue :@(memberCount).stringValue];
                     }
                     else
                     {
-                        self.roomMembers.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"room_title_one_active_member", @"Vector", nil), @(activeCount), @(memberCount)];
+                        self.roomMembers.text = [VectorL10n roomTitleOneActiveMember:@(activeCount).stringValue :@(memberCount).stringValue];
                     }
                 }
             }

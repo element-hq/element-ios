@@ -60,7 +60,7 @@
 {
     [super viewWillAppear:animated];
     
-    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = NSLocalizedStringFromTable(@"title_favourites", @"Vector", nil);
+    [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleFavourites];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     
     if (recentsDataSource)
@@ -126,8 +126,8 @@
 - (void)updateEmptyView
 {
     [self.emptyView fillWith:[self emptyViewArtwork]
-                       title:NSLocalizedStringFromTable(@"favourites_empty_view_title", @"Vector", nil)
-             informationText:NSLocalizedStringFromTable(@"favourites_empty_view_information", @"Vector", nil)];
+                       title:[VectorL10n favouritesEmptyViewTitle]
+             informationText:[VectorL10n favouritesEmptyViewInformation]];
 }
 
 - (UIImage*)emptyViewArtwork

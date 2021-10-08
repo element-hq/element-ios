@@ -42,7 +42,7 @@ enum MockTemplateUserProfileScreenState: MockScreenState, CaseIterable {
     }
     
     /// Generate the view struct for the screen state.
-    var screenView: AnyView {
+    var screenView: ([Any], AnyView)  {
         let service: MockTemplateUserProfileService
         switch self {
         case .presence(let presence):
@@ -54,7 +54,10 @@ enum MockTemplateUserProfileScreenState: MockScreenState, CaseIterable {
         
         // can simulate service and viewModel actions here if needs be.
         
-        return AnyView(TemplateUserProfile(viewModel: viewModel.context)
+        return (
+            [service, viewModel],
+            AnyView(TemplateUserProfile(viewModel: viewModel.context)
                 .addDependency(MockAvatarService.example))
+        )
     }
 }

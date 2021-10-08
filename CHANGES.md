@@ -1,3 +1,31 @@
+## Changes in 1.6.2 (2021-10-08)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.5](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.5)).
+- URL Previews: Use attributed string whitespace for cell heights and stop breaking up the bubble data. ([#4896](https://github.com/vector-im/element-ios/issues/4896))
+- Replaced localizable strings with generated ones throughout the code. Fixed various translation issues. ([#4899](https://github.com/vector-im/element-ios/issues/4899))
+- Voice Message scrubbing should require a slightly longer press, to avoid accidental scrubbing when scrolling the timeline ([#4935](https://github.com/vector-im/element-ios/issues/4935))
+- Pods: Update ffmpeg-kit-ios-audio, FLEX, FlowCommoniOS, Reusable and SwiftLint. ([#4939](https://github.com/vector-im/element-ios/issues/4939))
+- Service Terms: Track an analytics value on accept/decline of an identity server. ([#4955](https://github.com/vector-im/element-ios/issues/4955))
+
+🐛 Bugfixes
+
+- RecentsDataSource: Memory leak in [RecentsDataSource dataSource:didStateChange:]. ([#4193](https://github.com/vector-im/element-ios/pull/4193))
+- i18n: Standardise casing of identity server and integration manager. ([#4559](https://github.com/vector-im/element-ios/issues/4559))
+- MasterTabBarController: Listen to `MXSpaceNotificationCounter` to update the notification badge ([#4898](https://github.com/vector-im/element-ios/issues/4898))
+- Fixed unintentional voice message drafts on automatically cancelled recordings (under 1 second) ([#4970](https://github.com/vector-im/element-ios/issues/4970))
+
+🧱 Build
+
+- Element Alpha: Build on macOS 11 to fix iOS 15 installation error. ([#4937](https://github.com/vector-im/element-ios/issues/4937))
+- Bundler: Update CocoaPods and fastlane and xcode-install. ([#4951](https://github.com/vector-im/element-ios/issues/4951))
+
+📄 Documentation
+
+- Update PR template with a checkbox for accessibility and self review. ([#4920](https://github.com/vector-im/element-ios/issues/4920))
+
+
 ## Changes in 1.6.1 (2021-09-30)
 
 🙌 Improvements

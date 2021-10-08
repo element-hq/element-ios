@@ -143,14 +143,14 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         }
         else
         {
-            title = [NSBundle mxk_localizedStringForKey:@"error"];
+            title = [MatrixKitL10n error];
         }
     }
 
     __weak __typeof__(self) weakSelf = self;
 
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+    [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction * action) {
 
@@ -213,7 +213,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
 - (void)askPermissionWithCompletion:(void (^)(BOOL granted))completion
 {
-    NSString *widgetCreatorUserId = self.widget.widgetEvent.sender ?: NSLocalizedStringFromTable(@"room_participants_unknown", @"Vector", nil);
+    NSString *widgetCreatorUserId = self.widget.widgetEvent.sender ?: [VectorL10n roomParticipantsUnknown];
     
     MXSession *session = widget.mxSession;
     MXRoom *room = [session roomWithRoomId:self.widget.widgetEvent.roomId];
@@ -236,12 +236,12 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     NSString *widgetCreatorAvatarURL = widgetCreatorRoomMember.avatarUrl;
     
     NSArray<NSString*> *permissionStrings = @[
-                                              NSLocalizedStringFromTable(@"room_widget_permission_display_name_permission", @"Vector", nil),
-                                              NSLocalizedStringFromTable(@"room_widget_permission_avatar_url_permission", @"Vector", nil),
-                                              NSLocalizedStringFromTable(@"room_widget_permission_user_id_permission", @"Vector", nil),
-                                              NSLocalizedStringFromTable(@"room_widget_permission_theme_permission", @"Vector", nil),
-                                              NSLocalizedStringFromTable(@"room_widget_permission_widget_id_permission", @"Vector", nil),
-                                              NSLocalizedStringFromTable(@"room_widget_permission_room_id_permission", @"Vector", nil)
+                                              [VectorL10n roomWidgetPermissionDisplayNamePermission],
+                                              [VectorL10n roomWidgetPermissionAvatarUrlPermission],
+                                              [VectorL10n roomWidgetPermissionUserIdPermission],
+                                              [VectorL10n roomWidgetPermissionThemePermission],
+                                              [VectorL10n roomWidgetPermissionWidgetIdPermission],
+                                              [VectorL10n roomWidgetPermissionRoomIdPermission]
                                             ];
     
     
@@ -293,7 +293,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     UIAlertController *menu = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 
-    [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_refresh", @"Vector", nil)
+    [menu addAction:[UIAlertAction actionWithTitle:[VectorL10n widgetMenuRefresh]
                                              style:UIAlertActionStyleDefault
                                            handler:^(UIAlertAction * action)
                      {
@@ -303,7 +303,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     NSURL *url = [NSURL URLWithString:self.widgetUrl];
     if (url && [[UIApplication sharedApplication] canOpenURL:url])
     {
-        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_open_outside", @"Vector", nil)
+        [menu addAction:[UIAlertAction actionWithTitle:[VectorL10n widgetMenuOpenOutside]
                                                  style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action)
                          {
@@ -314,7 +314,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     if (![widget.widgetEvent.sender isEqualToString:session.myUser.userId])
     {
-        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_revoke_permission", @"Vector", nil)
+        [menu addAction:[UIAlertAction actionWithTitle:[VectorL10n widgetMenuRevokePermission]
                                                  style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action)
                          {
@@ -325,7 +325,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
 
     if ([self hasUserEnoughPowerToManageCurrentWidget])
     {
-        [menu addAction:[UIAlertAction actionWithTitle:NSLocalizedStringFromTable(@"widget_menu_remove", @"Vector", nil)
+        [menu addAction:[UIAlertAction actionWithTitle:[VectorL10n widgetMenuRemove]
                                                  style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction * action)
                          {
@@ -334,7 +334,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                          }]];
     }
 
-    [menu addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"]
+    [menu addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                     style:UIAlertActionStyleCancel
                                                   handler:^(UIAlertAction * action) {
                                                   }]];
@@ -365,7 +365,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain
                                              code:NSURLErrorNotConnectedToInternet
                                          userInfo:@{
-                                                    NSLocalizedDescriptionKey : NSLocalizedStringFromTable(@"network_offline_prompt", @"Vector", nil)
+                                                    NSLocalizedDescriptionKey : [VectorL10n networkOfflinePrompt]
                                                     }];
         [self showErrorAsAlert:error];
     }
@@ -581,12 +581,6 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
                                  }
                        toRequest:requestId];
 }
-
-- (void)sendLocalisedError:(NSString*)errorKey toRequest:(NSString*)requestId
-{
-    [self sendError:NSLocalizedStringFromTable(errorKey, @"Vector", nil) toRequest:requestId];
-}
-
 
 #pragma mark - Private methods
 

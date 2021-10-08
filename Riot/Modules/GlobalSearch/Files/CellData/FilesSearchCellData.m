@@ -101,7 +101,7 @@
             roomDisplayName = room.summary.displayname;
             if (!roomDisplayName.length)
             {
-                roomDisplayName = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
+                roomDisplayName = [MatrixKitL10n roomDisplaynameEmptyRoom];
             }
         }
         else

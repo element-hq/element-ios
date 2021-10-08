@@ -1406,7 +1406,14 @@
 "settings_default" = "Förvalda aviseringar";
 "settings_notifications" = "AVISERINGAR";
 "settings_show_url_previews_description" = "Förhandsgranskningar kommer bara att visas i okrypterade rum.";
-"settings_show_url_previews" = "Visa inbäddade URL-förhandsgranskningar";
+"settings_show_url_previews" = "Visa förhandsgranskningar av webbsidor";
 "settings_confirm_media_size_description" = "När detta är på så kommer du få bekräfta vilken storlek bilder och videor kommer att skickas som.";
 "settings_confirm_media_size" = "Bekräfta storlek vid sparning";
 "settings_sending_media" = "SÄNDNING AV BILDER OCH VIDEO";
+"leave_space_title" = "Lämna %@";
+"spaces_left_panel_title" = "Utrymmen";
+"spaces_home_space_title" = "Hem";
+"settings_links" = "LÄNKAR";
+"room_recents_suggested_rooms_section" = "FÖRESLAGNA RUM";
+"done" = "Klar";
+"open" = "Öppna";

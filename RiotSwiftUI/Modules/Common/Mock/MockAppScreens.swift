@@ -19,6 +19,10 @@ import Foundation
 /// The static list of mocked screens in RiotSwiftUI
 @available(iOS 14.0, *)
 enum MockAppScreens {
-    static let appScreens = [MockTemplateUserProfileScreenState.self]
+    static let appScreens: [MockScreenState.Type] = [
+        MockTemplateUserProfileScreenState.self,
+        MockTemplateRoomListScreenState.self,
+        MockTemplateRoomChatScreenState.self
+    ]
 }
 

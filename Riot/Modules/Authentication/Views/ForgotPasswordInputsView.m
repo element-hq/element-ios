@@ -52,13 +52,13 @@
 {
     [super awakeFromNib];
     
-    [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateNormal];
-    [self.nextStepButton setTitle:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_next_step_button"] forState:UIControlStateHighlighted];
+    [self.nextStepButton setTitle:[VectorL10n authResetPasswordNextStepButton] forState:UIControlStateNormal];
+    [self.nextStepButton setTitle:[VectorL10n authResetPasswordNextStepButton] forState:UIControlStateHighlighted];
     self.nextStepButton.enabled = YES;
     
-    self.emailTextField.placeholder = NSLocalizedStringFromTable(@"auth_email_placeholder", @"Vector", nil);
-    self.passWordTextField.placeholder = NSLocalizedStringFromTable(@"auth_new_password_placeholder", @"Vector", nil);
-    self.repeatPasswordTextField.placeholder = NSLocalizedStringFromTable(@"auth_repeat_new_password_placeholder", @"Vector", nil);
+    self.emailTextField.placeholder = [VectorL10n authEmailPlaceholder];
+    self.passWordTextField.placeholder = [VectorL10n authNewPasswordPlaceholder];
+    self.repeatPasswordTextField.placeholder = [VectorL10n authRepeatNewPasswordPlaceholder];
     
     // Apply placeholder color
     [self customizeViewRendering];
@@ -166,22 +166,22 @@
     if (!self.emailTextField.text.length)
     {
         MXLogDebug(@"[ForgotPasswordInputsView] Missing email");
-        errorMsg = NSLocalizedStringFromTable(@"auth_reset_password_missing_email", @"Vector", nil);
+        errorMsg = [VectorL10n authResetPasswordMissingEmail];
     }
     else if (!self.passWordTextField.text.length)
     {
         MXLogDebug(@"[ForgotPasswordInputsView] Missing Passwords");
-        errorMsg = NSLocalizedStringFromTable(@"auth_reset_password_missing_password", @"Vector", nil);
+        errorMsg = [VectorL10n authResetPasswordMissingPassword];
     }
     else if (self.passWordTextField.text.length < 6)
     {
         MXLogDebug(@"[ForgotPasswordInputsView] Invalid Passwords");
-        errorMsg = NSLocalizedStringFromTable(@"auth_invalid_password", @"Vector", nil);
+        errorMsg = [VectorL10n authInvalidPassword];
     }
     else if ([self.repeatPasswordTextField.text isEqualToString:self.passWordTextField.text] == NO)
     {
         MXLogDebug(@"[ForgotPasswordInputsView] Passwords don't match");
-        errorMsg = NSLocalizedStringFromTable(@"auth_password_dont_match", @"Vector", nil);
+        errorMsg = [VectorL10n authPasswordDontMatch];
     }
     else
     {
@@ -189,7 +189,7 @@
         if ([MXTools isEmailAddress:self.emailTextField.text] == NO)
         {
             MXLogDebug(@"[ForgotPasswordInputsView] Invalid email");
-            errorMsg = NSLocalizedStringFromTable(@"auth_invalid_email", @"Vector", nil);
+            errorMsg = [VectorL10n authInvalidEmail];
         }
     }
     
@@ -213,9 +213,9 @@
                 [inputsAlert dismissViewControllerAnimated:NO completion:nil];
             }
             
-            inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
+            inputsAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:errorMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+            [inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               
@@ -272,7 +272,7 @@
 
                              [strongSelf hideInputsContainer];
 
-                             strongSelf.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_email_validation_message", @"Vector", nil), strongSelf.emailTextField.text];
+                             strongSelf.messageLabel.text = [VectorL10n authResetPasswordEmailValidationMessage:strongSelf.emailTextField.text];
 
                              strongSelf.messageLabel.hidden = NO;
 
@@ -298,9 +298,9 @@
                          // Translate the potential MX error.
                          MXError *mxError = [[MXError alloc] initWithNSError:error];
                          if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringThreePIDNotFound])
-                             errorMessage = NSLocalizedStringFromTable(@"auth_email_not_found", @"Vector", nil);
+                             errorMessage = [VectorL10n authEmailNotFound];
                          else if (mxError && [mxError.errcode isEqualToString:kMXErrCodeStringServerNotTrusted])
-                             errorMessage = NSLocalizedStringFromTable(@"auth_untrusted_id_server", @"Vector", nil);
+                             errorMessage = [VectorL10n authUntrustedIdServer];
                          else if (error.userInfo[@"error"])
                              errorMessage = error.userInfo[@"error"];
                          else
@@ -315,9 +315,9 @@
                                  [self->inputsAlert dismissViewControllerAnimated:NO completion:nil];
                              }
 
-                             self->inputsAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
+                             self->inputsAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error] message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
 
-                             [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"]
+                             [self->inputsAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                                    style:UIAlertActionStyleDefault
                                                                                  handler:^(UIAlertAction * action) {
 
@@ -349,7 +349,7 @@
             }
         }
         
-        callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"not_supported_yet"]}]);
+        callback(nil, [NSError errorWithDomain:MXKAuthErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey:[MatrixKitL10n notSupportedYet]}]);
     }
 }
 
@@ -381,7 +381,7 @@
     
     [self hideInputsContainer];
     
-    self.messageLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"auth_reset_password_success_message", @"Vector", nil), self.emailTextField.text];
+    self.messageLabel.text = [VectorL10n authResetPasswordSuccessMessage];
     
     self.messageLabel.hidden = NO;
 }
@@ -400,7 +400,7 @@
     // Reset UI by hidding all items
     [self hideInputsContainer];
     
-    self.messageLabel.text = NSLocalizedStringFromTable(@"auth_reset_password_message", @"Vector", nil);
+    self.messageLabel.text = [VectorL10n authResetPasswordMessage];
     self.messageLabel.hidden = NO;
     
     self.emailContainer.hidden = NO;
@@ -422,7 +422,7 @@
             failure([NSError errorWithDomain:MXKAuthErrorDomain
                                         code:0
                                     userInfo:@{
-                                               NSLocalizedDescriptionKey:[NSBundle mxk_localizedStringForKey:@"auth_reset_password_error_is_required"]
+                                               NSLocalizedDescriptionKey:[VectorL10n authResetPasswordErrorIsRequired]
                                                }]);
         }
         else

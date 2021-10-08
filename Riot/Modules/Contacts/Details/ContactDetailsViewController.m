@@ -650,7 +650,7 @@
 {
     if (section == directChatsIndex)
     {
-        return NSLocalizedStringFromTable(@"room_participants_action_section_direct_chats", @"Vector", nil);
+        return [VectorL10n roomParticipantsActionSectionDirectChats];
     }
     
     return nil;
@@ -663,19 +663,19 @@
     switch (action)
     {
         case ContactDetailsActionIgnore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_ignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionIgnore];
             break;
         case ContactDetailsActionUnignore:
-            title = NSLocalizedStringFromTable(@"room_participants_action_unignore", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionUnignore];
             break;
         case ContactDetailsActionStartChat:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_chat", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartNewChat];
             break;
         case ContactDetailsActionStartVoiceCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_voice_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVoiceCall];
             break;
         case ContactDetailsActionStartVideoCall:
-            title = NSLocalizedStringFromTable(@"room_participants_action_start_video_call", @"Vector", nil);
+            title = [VectorL10n roomParticipantsActionStartVideoCall];
             break;
         default:
             break;
@@ -727,7 +727,7 @@
         {
             roomCell.avatarImageView.image = [UIImage imageNamed:@"start_chat"];
             roomCell.avatarImageView.defaultBackgroundColor = [UIColor clearColor];
-            roomCell.titleLabel.text = NSLocalizedStringFromTable(@"room_participants_action_start_new_chat", @"Vector", nil);
+            roomCell.titleLabel.text = [VectorL10n roomParticipantsActionStartNewChat];
         }
         
         cell = roomCell;
@@ -869,9 +869,9 @@
                 // Prompt user to ignore content from this user
                 __weak __typeof(self) weakSelf = self;
                 [currentAlert dismissViewControllerAnimated:NO completion:nil];
-                currentAlert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"room_member_ignore_prompt"] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomMemberIgnorePrompt] message:nil preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"yes"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -900,7 +900,7 @@
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"no"]
+                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action) {
                                                                    
@@ -978,10 +978,10 @@
                         {
                             [self removePendingActionMask];
                             
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSBundle mxk_localizedStringForKey:@"error"]
-                                                                                           message:NSLocalizedStringFromTable(@"room_participants_start_new_chat_error_using_user_email_without_identity_server", @"Vector", nil)
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n error]
+                                                                                           message:[VectorL10n roomParticipantsStartNewChatErrorUsingUserEmailWithoutIdentityServer]
                                                                                     preferredStyle:UIAlertControllerStyleAlert];
-                            [alert addAction:[UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:nil]];
+                            [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:nil]];
                             [self presentViewController:alert animated:YES completion:nil];
                             
                             return;
@@ -1132,7 +1132,7 @@
         avatarFullScreenView.stretchable = YES;
 
         MXWeakify(self);
-        [avatarFullScreenView setRightButtonTitle:[NSBundle mxk_localizedStringForKey:@"ok"] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
+        [avatarFullScreenView setRightButtonTitle:[MatrixKitL10n ok] handler:^(MXKImageView* imageView, NSString* buttonTitle) {
             
             MXStrongifyAndReturnIfNil(self);
             [avatarFullScreenView dismissSelection];

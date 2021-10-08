@@ -65,7 +65,7 @@
     _tableSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _tableSearchBar.showsCancelButton = NO;
     _tableSearchBar.searchBarStyle = UISearchBarStyleMinimal;
-    _tableSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    _tableSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     _tableSearchBar.delegate = self;
 }
 
@@ -96,7 +96,7 @@
     self.recentsSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
     self.recentsSearchBar.searchBarStyle = UISearchBarStyleMinimal;
-    self.recentsSearchBar.placeholder = NSLocalizedStringFromTable(@"search_default_placeholder", @"Vector", nil);
+    self.recentsSearchBar.placeholder = [VectorL10n searchDefaultPlaceholder];
     self.recentsSearchBar.tintColor = ThemeService.shared.theme.tintColor;
     self.recentsSearchBar.backgroundColor = ThemeService.shared.theme.baseColor;
     
@@ -144,15 +144,15 @@
     NSString *roomName = recentCellData.roomSummary.displayname;
     if (!roomName.length)
     {
-        roomName = [NSBundle mxk_localizedStringForKey:@"room_displayname_empty_room"];
+        roomName = [MatrixKitL10n roomDisplaynameEmptyRoom];
     }
     
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:NSLocalizedStringFromTable(@"send_to", @"Vector", nil), roomName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[VectorL10n sendTo:roomName] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"cancel"] style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:cancelAction];
     
-    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"send"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[MatrixKitL10n send] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         // The selected room is instanciated here
         MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
@@ -175,7 +175,7 @@
                 NSString *title;
                 if ([error.domain isEqualToString:MXEncryptingErrorDomain])
                 {
-                    title = NSLocalizedStringFromTable(@"share_extension_failed_to_encrypt", @"Vector", nil);
+                    title = [VectorL10n shareExtensionFailedToEncrypt];
                 }
 
                 [self showFailureAlert:title];
@@ -195,8 +195,8 @@
 
 - (void)showFailureAlert:(NSString *)title
 {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title.length ? title : NSLocalizedStringFromTable(@"room_event_failed_to_send", @"Vector", nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[NSBundle mxk_localizedStringForKey:@"ok"] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title.length ? title : [VectorL10n roomEventFailedToSend] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (self.failureBlock)
         {
             self.failureBlock();
@@ -321,7 +321,7 @@
         if (!self.hudView)
         {
             self.parentViewController.view.userInteractionEnabled = NO;
-            self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:NSLocalizedStringFromTable(@"sending", @"Vector", nil)];
+            self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:[VectorL10n sending]];
             [self.hudView setProgress:0.0];
         }
     });
