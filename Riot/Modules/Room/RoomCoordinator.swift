@@ -98,7 +98,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             self.start(with: self.parameters.roomId, completion: completion)
         }
 
-        // Add `roomViewController` to the NavigationRouter, only if it has been explicity set as parameter
+        // Add `roomViewController` to the NavigationRouter, only if it has been explicitly set as parameter
         if let navigationRouter = self.parameters.navigationRouter {
             if navigationRouter.modules.isEmpty == false {
                 navigationRouter.push(self.roomViewController, animated: true, popCompletion: nil)
