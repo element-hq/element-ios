@@ -61,7 +61,7 @@
 "auth_missing_phone" = "缺少电话号码";
 "auth_missing_email_or_phone" = "缺少电子邮箱地址或电话号码";
 "auth_password_dont_match" = "密码不匹配";
-"auth_username_in_use" = "用户名已被占用";
+"auth_username_in_use" = "用户名被占用";
 "auth_forgot_password" = "忘记密码？";
 "auth_use_server_options" = "使用自定义服务器选项（高级）";
 "auth_email_validation_message" = "请检查我们发给您的电子邮件以继续注册";
