@@ -1151,7 +1151,7 @@ TableViewSectionsDelegate>
 
             // Ask password again
             self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                     message:[VectorL10n settingsAdd3pidPasswordMessage]
+                                                                     message:[VectorL10n settingsAdd3pidInvalidPasswordMessage]
                                                               preferredStyle:UIAlertControllerStyleAlert];
 
             [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -1375,7 +1375,7 @@ TableViewSectionsDelegate>
         title = [VectorL10n settingsAdd3pidPasswordTitleEmail];
     }
     
-    NSString *message = [VectorL10n settingsAdd3pidInvalidPasswordMessage];
+    NSString *message = [VectorL10n settingsAdd3pidPasswordMessage];
     
     
     [session.matrixRestClient add3PIDOnlyWithSessionId:@"" clientSecret:[MXTools generateSecret] authParams:nil success:^{

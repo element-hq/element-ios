@@ -5144,7 +5144,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         
         currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n unknownDevicesAlertTitle]
-                                                           message:[VectorL10n unknownDevicesAlertTitle]
+                                                           message:[VectorL10n unknownDevicesAlert]
                                                     preferredStyle:UIAlertControllerStyleAlert];
         
         [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesVerify]

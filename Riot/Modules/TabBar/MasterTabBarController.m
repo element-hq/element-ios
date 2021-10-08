@@ -64,6 +64,8 @@
     
     // Custom title view of the navigation bar
     MainTitleView *titleView;
+    
+    id spaceNotificationCounterDidUpdateNotificationCountObserver;
 }
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
@@ -122,7 +124,7 @@
     childViewControllers = [NSMutableArray array];
     
     MXWeakify(self);
-    [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+    spaceNotificationCounterDidUpdateNotificationCountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceNotificationCounter.didUpdateNotificationCount object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         MXStrongifyAndReturnIfNil(self);
         [self updateSideMenuNotifcationIcon];
     }];
@@ -270,6 +272,12 @@
     {
         [[NSNotificationCenter defaultCenter] removeObserver:kThemeServiceDidChangeThemeNotificationObserver];
         kThemeServiceDidChangeThemeNotificationObserver = nil;
+    }
+    
+    if (spaceNotificationCounterDidUpdateNotificationCountObserver)
+    {
+        [[NSNotificationCenter defaultCenter] removeObserver:spaceNotificationCounterDidUpdateNotificationCountObserver];
+        spaceNotificationCounterDidUpdateNotificationCountObserver = nil;
     }
     
     childViewControllers = nil;
