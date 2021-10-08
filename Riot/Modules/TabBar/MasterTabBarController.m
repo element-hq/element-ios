@@ -591,7 +591,7 @@
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:completion];
     
-    [self refreshSelectedControllerIfNeeded];
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)showRoomPreview:(RoomPreviewData *)roomPreviewData
@@ -604,7 +604,7 @@
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithData:roomPreviewData];
     
-    [self refreshSelectedControllerIfNeeded];
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)selectContact:(MXKContact*)contact
@@ -615,7 +615,7 @@
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact];
     
-    [self refreshSelectedControllerIfNeeded];
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
@@ -627,7 +627,7 @@
     
     [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession];
     
-    [self refreshSelectedControllerIfNeeded];
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)releaseSelectedItem
@@ -742,7 +742,7 @@
     [super presentViewController:viewControllerToPresent animated:flag completion:completion];
 }
 
-- (void)refreshSelectedControllerIfNeeded
+- (void)refreshSelectedControllerSelectedCellIfNeeded
 {
     if (self.splitViewController)
     {
