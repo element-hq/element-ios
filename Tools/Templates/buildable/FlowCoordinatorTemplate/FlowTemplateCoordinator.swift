@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-final class FlowTemplateCoordinator: NSObject,  FlowTemplateCoordinatorProtocol {
+final class FlowTemplateCoordinator: NSObject, FlowTemplateCoordinatorProtocol {
     
     // MARK: - Properties
     
