@@ -25,7 +25,7 @@ public class DiscussionsCount: NSObject {
     /// Number of highlighted rooms with mentions like notications
     public let numberOfHighlighted: Int
     
-    /// Number of rooms that has unsent messages in it
+    /// Number of rooms that have unsent messages in it
     public let numberOfUnsent: Int
     
     /// Flag indicating is there any unsent
