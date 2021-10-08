@@ -199,7 +199,7 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         }
 
         guard existingRoomCoordinatorWithSameRoomId == nil else {
-            MXLog.debug("Do not release RoomDataSource for room id \(roomId), another RoomCoordinator with same room id using it")
+            MXLog.debug("[SplitViewCoordinator] Do not release RoomDataSource for room id \(roomId), another RoomCoordinator with same room id using it")
             return
         }
 
