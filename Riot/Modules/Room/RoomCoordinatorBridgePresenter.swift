@@ -131,7 +131,6 @@ extension RoomCoordinatorBridgePresenter: RoomCoordinatorDelegate {
         self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId)
     }
     
-    
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
         self.delegate?.roomCoordinatorBridgePresenterDidLeaveRoom(self)
     }
