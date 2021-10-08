@@ -280,7 +280,7 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
     /// Adjust the primary view controller and incorporate the secondary view controller into the collapsed interface if needed.
     /// Return false to let the split view controller try to incorporate the secondary view controller's content into the collapsed interface,
     /// or true to indicate that you do not want the split view controller to do anything with the secondary view controller.
-    /// Sample case: large iPhone goes from lanscape to portrait.
+    /// Sample case: large iPhone goes from landscape to portrait.
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         
         // If the secondary view is the placeholder screen do not merge the secondary into the primary.
