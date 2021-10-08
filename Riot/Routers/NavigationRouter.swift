@@ -106,12 +106,15 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         navigationController.setViewControllers([controller], animated: animated)
         navigationController.isNavigationBarHidden = hideNavigationBar
         
-        self.didPushViewController(controller)
-        
         // Pop old view controllers
         controllersToPop.forEach {
             self.didPopViewController($0)
         }
+        
+        // Add again controller to module association, in case same module instance is added back
+        self.addModule(module, for: controller)
+        
+        self.didPushViewController(controller)
     }
         
     func setModules(_ modules: [Presentable], hideNavigationBar: Bool, animated: Bool) {
@@ -138,13 +141,18 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         navigationController.setViewControllers(controllers, animated: animated)
         navigationController.isNavigationBarHidden = hideNavigationBar
         
-        controllers.forEach {
-            self.didPushViewController($0)
-        }
-         
         // Pop old view controllers
         controllersToPop.forEach {
             self.didPopViewController($0)
+        }
+        
+        // Add again controller to module association, in case same modules instance are added back
+        modules.forEach { (presentable) in
+            self.addModule(presentable, for: presentable.toPresentable())
+        }
+        
+        controllers.forEach {
+            self.didPushViewController($0)
         }
     }
     
