@@ -19,7 +19,7 @@
 import UIKit
 
 @objcMembers
-final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
+final class ServiceTermsModalCoordinator: NSObject, ServiceTermsModalCoordinatorType {
     
     // MARK: - Properties
     
@@ -51,6 +51,8 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
+        
+        self.toPresentable().presentationController?.delegate = self
 
         self.navigationRouter.setRootModule(rootCoordinator)
     }
@@ -104,6 +106,10 @@ final class ServiceTermsModalCoordinator: ServiceTermsModalCoordinatorType {
 extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelegate {
 
     func serviceTermsModalScreenCoordinatorDidAccept(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
+        if serviceTerms.serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(1, category: MXKAnalyticsCategory.contacts.rawValue, name: AnalyticsContactsIdentityServerAccepted)
+        }
+        
         self.delegate?.serviceTermsModalCoordinatorDidAccept(self)
     }
 
@@ -113,9 +119,21 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
 
     func serviceTermsModalScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
         if serviceTerms.serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(1, category: MXKAnalyticsCategory.contacts.rawValue, name: AnalyticsContactsIdentityServerAccepted)
             disableIdentityServer()
         }
         
         self.delegate?.serviceTermsModalCoordinatorDidDecline(self)
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension ServiceTermsModalCoordinator: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        if serviceTerms.serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(0, category: MXKAnalyticsCategory.contacts.rawValue, name: AnalyticsContactsIdentityServerAccepted)
+        }
+        
+        self.delegate?.serviceTermsModalCoordinatorDidDismissInteractively(self)
     }
 }

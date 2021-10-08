@@ -68,7 +68,6 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
         let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, accessToken: accessToken)
         serviceTermsModalCoordinator.delegate = self
         let presentable = serviceTermsModalCoordinator.toPresentable()
-        presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
         serviceTermsModalCoordinator.start()
         
@@ -98,28 +97,13 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
 
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
-        
-        if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(1, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
-        }
     }
 
     func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
-
-        if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
-        }
     }
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-extension ServiceTermsModalCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    
+    func serviceTermsModalCoordinatorDidDismissInteractively(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(self)
-        
-        if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
-        }
     }
 }
