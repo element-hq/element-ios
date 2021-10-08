@@ -175,7 +175,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         let controllersBeforePop = self.navigationController.viewControllers
         
         if let controllerIndex = controllersBeforePop.firstIndex(of: controller) {
-            let controllersToPop = controllersBeforePop[controllerIndex...controllersBeforePop.count-1]
+            let controllersToPop = controllersBeforePop[controllerIndex..<controllersBeforePop.count]
             
             controllersToPop.forEach {
                 self.willPopViewController($0)
