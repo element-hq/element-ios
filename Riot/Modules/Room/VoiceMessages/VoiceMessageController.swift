@@ -130,12 +130,7 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
     }
     
     func voiceMessageToolbarViewDidRequestRecordingCancel(_ toolbarView: VoiceMessageToolbarView) {
-        isInLockedMode = false
-        audioPlayer?.stop()
-        audioRecorder?.stopRecording()
-        deleteRecordingAtURL(temporaryFileURL)
-        UINotificationFeedbackGenerator().notificationOccurred(.error)
-        updateUI()
+        cancelRecording()
     }
     
     func voiceMessageToolbarViewDidRequestLockedModeRecording(_ toolbarView: VoiceMessageToolbarView) {
@@ -259,11 +254,26 @@ public class VoiceMessageController: NSObject, VoiceMessageToolbarViewDelegate, 
         guard isInLockedMode else {
             if recordDuration ?? 0 >= Constants.minimumRecordingDuration {
                 sendRecordingAtURL(temporaryFileURL)
+            } else {
+                cancelRecording()
             }
             return
         }
         
         loadDraftRecording()
+        
+        updateUI()
+    }
+    
+    private func cancelRecording() {
+        isInLockedMode = false
+        
+        audioPlayer?.stop()
+        audioRecorder?.stopRecording()
+        
+        deleteRecordingAtURL(temporaryFileURL)
+        
+        UINotificationFeedbackGenerator().notificationOccurred(.error)
         
         updateUI()
     }
