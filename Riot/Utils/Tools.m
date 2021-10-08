@@ -47,7 +47,7 @@
         
         if (user.currentlyActive)
         {
-            presenceText = [presenceText stringByAppendingString:[VectorL10n roomParticipantsNow]];
+            presenceText = [presenceText stringByAppendingString:[NSString stringWithFormat:@" %@",[VectorL10n roomParticipantsNow]]];
         }
         else if (-1 != user.lastActiveAgo && 0 < user.lastActiveAgo)
         {
