@@ -91,6 +91,7 @@
     [titles addObject:[VectorL10n searchPeople]];
     peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
     peopleSearchViewController.contactsTableViewControllerDelegate = self;
+    peopleSearchViewController.disableFindYourContactsFooter = YES;
     [viewControllers addObject:peopleSearchViewController];
     
     // add Files tab
@@ -245,6 +246,7 @@
         
         // Init the search for people
         peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
+        peopleSearchDataSource.showLocalContacts = NO;
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
         peopleSearchDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;

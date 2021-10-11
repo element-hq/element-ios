@@ -120,9 +120,6 @@
     _searchBarView.autocapitalizationType = UITextAutocapitalizationTypeNone;    
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    // Hide line separators of empty cells
-    self.contactsTableView.tableFooterView = [[UIView alloc] init];
-    
     [self.contactsTableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
     
     // Redirect table data source
@@ -167,12 +164,12 @@
     
     [self refreshSearchBarItemsColor:_searchBarView];
     
-    _searchBarHeaderBorder.backgroundColor = ThemeService.shared.theme.headerBorderColor;
-    
     // Check the table view style to select its bg color.
-    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.backgroundColor : ThemeService.shared.theme.headerBackgroundColor);
+    self.contactsTableView.backgroundColor = ((self.contactsTableView.style == UITableViewStylePlain) ? ThemeService.shared.theme.baseColor : ThemeService.shared.theme.headerBackgroundColor);
     self.view.backgroundColor = self.contactsTableView.backgroundColor;
     self.contactsTableView.separatorColor = ThemeService.shared.theme.lineBreakColor;
+    
+    _searchBarHeaderBorder.backgroundColor = self.contactsTableView.backgroundColor;
     
     if (self.contactsTableView.dataSource)
     {
@@ -680,7 +677,6 @@
 {
     // bar tint color
     searchBar.barTintColor = searchBar.tintColor = ThemeService.shared.theme.tintColor;
-    searchBar.tintColor = ThemeService.shared.theme.tintColor;
     
     // FIXME: this all seems incredibly fragile and tied to gutwrenching the current UISearchBar internals.
 
@@ -691,28 +687,27 @@
     // Magnifying glass icon.
     UIImageView *leftImageView = (UIImageView *)searchBarTextField.leftView;
     leftImageView.image = [leftImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    leftImageView.tintColor = ThemeService.shared.theme.tintColor;
+    leftImageView.tintColor = ThemeService.shared.theme.textSecondaryColor;
     
-    // remove the gray background color
-    UIView *effectBackgroundTop =  [searchBarTextField valueForKey:@"_effectBackgroundTop"];
-    UIView *effectBackgroundBottom =  [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
+    // Use the theme's grey color.
+    // The effect views are needed due to minimal style.
+    // With default style there is a border above the search bar.
+    searchBarTextField.backgroundColor = ThemeService.shared.theme.textQuinaryColor;
+    UIView *effectBackgroundTop = [searchBarTextField valueForKey:@"_effectBackgroundTop"];
+    UIView *effectBackgroundBottom = [searchBarTextField valueForKey:@"_effectBackgroundBottom"];
     effectBackgroundTop.hidden = YES;
     effectBackgroundBottom.hidden = YES;
-        
-    // place holder
-    if (searchBarTextField.placeholder)
-    {
-        searchBarTextField.textColor = ThemeService.shared.theme.placeholderTextColor;
-    }
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [contactsDataSource searchWithPattern:searchText forceReset:NO];
+    
+    self.contactsAreFilteredWithSearch = searchText.length ? YES : NO;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
-{    
+{
     self.isAddParticipantSearchBarEditing = YES;
     searchBar.showsCancelButton = NO;
     

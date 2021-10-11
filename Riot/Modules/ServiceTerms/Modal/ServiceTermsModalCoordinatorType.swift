@@ -21,7 +21,7 @@ import Foundation
 protocol ServiceTermsModalCoordinatorDelegate: AnyObject {
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType)
     func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType)
-    func serviceTermsModalCoordinatorDidCancel(_ coordinator: ServiceTermsModalCoordinatorType)
+    func serviceTermsModalCoordinatorDidDismissInteractively(_ coordinator: ServiceTermsModalCoordinatorType)
 }
 
 /// `ServiceTermsModalCoordinatorType` is a protocol describing a Coordinator that handle keybackup setup navigation flow.

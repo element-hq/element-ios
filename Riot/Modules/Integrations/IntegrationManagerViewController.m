@@ -745,7 +745,6 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
 
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession baseUrl:config.baseUrl
                                                                                                                                                         serviceType:MXServiceTypeIntegrationManager
-                                                                                                                                                       outOfContext:NO
                                                                                                                                                         accessToken:config.scalarToken];
 
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
@@ -762,7 +761,7 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];
@@ -770,11 +769,8 @@ NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self withdrawViewControllerAnimated:YES completion:nil];
-    }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
