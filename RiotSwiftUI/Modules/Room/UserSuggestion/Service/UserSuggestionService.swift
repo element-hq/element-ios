@@ -65,8 +65,8 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
         self.roomMembersProvider = roomMembersProvider
         
         currentTextTriggerSubject
-            .removeDuplicates()
             .debounce(for: 0.5, scheduler: RunLoop.main)
+            .removeDuplicates()
             .sink { self.fetchAndFilterMembersForTextTrigger($0) }
             .store(in: &cancellables)
     }
