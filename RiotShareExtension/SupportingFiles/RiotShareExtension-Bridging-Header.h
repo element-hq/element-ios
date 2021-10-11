@@ -3,3 +3,4 @@
 //
 
 #import "ThemeService.h"
+#import "AvatarGenerator.h"

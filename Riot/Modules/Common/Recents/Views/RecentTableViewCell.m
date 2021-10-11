@@ -126,11 +126,17 @@
 
         if (roomCellData.spaceChildInfo)
         {
-            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl displayName:roomCellData.spaceChildInfo.displayName mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl
+                                                roomId:roomCellData.spaceChildInfo.childRoomId
+                                           displayName:roomCellData.spaceChildInfo.displayName
+                                          mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
         }
         else
         {
-            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.roomSummary.avatar displayName:roomCellData.roomSummary.displayname mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
+            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.roomSummary.avatar
+                                                roomId:roomCellData.roomSummary.roomId
+                                           displayName:roomCellData.roomSummary.displayname
+                                          mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
         }
     }
     else
