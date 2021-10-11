@@ -62,6 +62,8 @@ class SpaceMenuSwitchViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
         } else {
             self.titleLabel.textColor = theme.colors.primaryContent
         }
+        
+        viewData.delegate = self
     }
     
     func update(theme: Theme) {
@@ -70,5 +72,12 @@ class SpaceMenuSwitchViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
         self.titleLabel.textColor = theme.colors.primaryContent
         self.titleLabel.font = theme.fonts.body
         self.selectionView.backgroundColor = theme.colors.separator
+    }
+}
+
+// MARK: - SpaceMenuListItemViewDataDelegate
+extension SpaceMenuSwitchViewCell: SpaceMenuListItemViewDataDelegate {
+    func spaceMenuItemValueDidChange(_ item: SpaceMenuListItemViewData) {
+        self.switchView.setOn((item.value as? Bool) ?? false, animated: true)
     }
 }

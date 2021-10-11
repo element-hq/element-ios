@@ -83,7 +83,6 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
             MXKAppSettings.standard().isShowAllRoomsInHomeEnabled = !MXKAppSettings.standard().isShowAllRoomsInHomeEnabled
             self.menuItems[indexPath.row].value = MXKAppSettings.standard().isShowAllRoomsInHomeEnabled
             self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
-            self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .updateItem(indexPath))
         case .leave:
             self.leaveSpace()
         default:

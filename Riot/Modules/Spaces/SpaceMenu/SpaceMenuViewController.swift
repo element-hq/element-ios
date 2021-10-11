@@ -161,8 +161,6 @@ class SpaceMenuViewController: UIViewController {
             self.renderLoaded()
         case .leaveOptions(let displayName, let isAdmin):
             self.renderLeaveOptions(displayName: displayName, isAdmin: isAdmin)
-        case .updateItem(let indexPath):
-            self.tableView.reloadRows(at: [indexPath], with: .fade)
         case .error(let error):
             self.render(error: error)
         case .deselect:

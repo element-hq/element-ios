@@ -23,11 +23,30 @@ enum SpaceMenuListItemStyle {
     case destructive
 }
 
+/// `SpaceMenuListItemViewDataDelegate` allows the table view cell to update its view accordingly with it's related data change
+protocol SpaceMenuListItemViewDataDelegate: AnyObject {
+    func spaceMenuItemValueDidChange(_ item: SpaceMenuListItemViewData)
+}
+
 /// `SpaceMenuListViewCell` view data
-struct SpaceMenuListItemViewData {
+class SpaceMenuListItemViewData {
     let actionId: String
     let style: SpaceMenuListItemStyle
     let title: String?
     let icon: UIImage?
-    var value: Any?
+    
+    var value: Any? {
+        didSet {
+            delegate?.spaceMenuItemValueDidChange(self)
+        }
+    }
+    weak var delegate: SpaceMenuListItemViewDataDelegate?
+    
+    init(actionId: String, style: SpaceMenuListItemStyle, title: String?, icon: UIImage?, value: Any?) {
+        self.actionId = actionId
+        self.style = style
+        self.title = title
+        self.icon = icon
+        self.value = value
+    }
 }
