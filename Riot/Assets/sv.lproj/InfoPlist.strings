@@ -3,5 +3,5 @@
 // Permissions usage explanations
 "NSCameraUsageDescription" = "Kameran används för att ta bilder och videor, och ringa videosamtal.";
 "NSMicrophoneUsageDescription" = "Element behöver åtkomst till din mikrofon för att kunna ringa och ta emot samtal samt spela in video och röstmeddelanden.";
-"NSContactsUsageDescription" = "För att upptäcka kontakter som redan använder Matrix kan Element skicka e-postadresser och telefonnummer i din adressbok till din valda Matrix-identitetsserver. Där det stöds hashas personuppgifter innan de skickas - kontrollera din identitetsservers integritetspolicy för mer information.";
+"NSContactsUsageDescription" = "Element kommer att visa dina kontakter så du kan bjuda in dem att chatta.";
 "NSFaceIDUsageDescription" = "Face ID används för att komma åt appen.";
