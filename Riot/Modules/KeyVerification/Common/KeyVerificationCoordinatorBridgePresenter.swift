@@ -101,7 +101,7 @@ final class KeyVerificationCoordinatorBridgePresenter: NSObject {
         
         MXLog.debug("[KeyVerificationCoordinatorBridgePresenter] Push complete security from \(navigationController)")
         
-        let navigationRouter = NavigationRouter(navigationController: navigationController)
+        let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let keyVerificationCoordinator = KeyVerificationCoordinator(session: self.session, flow: .completeSecurity(isNewSignIn), navigationRouter: navigationRouter)
         keyVerificationCoordinator.delegate = self

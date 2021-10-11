@@ -32,7 +32,7 @@ final class SettingsIdentityServerCoordinatorBridgePresenter: NSObject {
     // MARK: Private
     
     private let session: MXSession
-    private var router: NavigationRouter?
+    private var router: NavigationRouterType?
     private var coordinator: SettingsIdentityServerCoordinator?
     
     // MARK: Public
@@ -50,7 +50,7 @@ final class SettingsIdentityServerCoordinatorBridgePresenter: NSObject {
     
     func push(from navigationController: UINavigationController, animated: Bool, popCompletion: (() -> Void)?) {
         
-        let router = NavigationRouter(navigationController: navigationController)
+        let router = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let settingsIdentityServerCoordinator = SettingsIdentityServerCoordinator(session: self.session)
         

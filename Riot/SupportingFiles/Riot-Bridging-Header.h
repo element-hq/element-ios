@@ -40,3 +40,6 @@
 #import "BuildInfo.h"
 #import "RoomMemberDetailsViewController.h"
 #import "Tools.h"
+#import "RoomViewController.h"
+#import "ContactDetailsViewController.h"
+#import "GroupDetailsViewController.h"
