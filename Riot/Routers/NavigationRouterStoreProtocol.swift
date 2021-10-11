@@ -20,5 +20,6 @@ import Foundation
 protocol NavigationRouterStoreProtocol {
     
     /// Gets the existing navigation router for the supplied controller, creating a new one if it doesn't yet exist.
+    /// Note: The store only holds a weak reference to the returned router. It is the caller's responsibility to retain it.
     func navigationRouter(for navigationController: UINavigationController) -> NavigationRouterType
 }
