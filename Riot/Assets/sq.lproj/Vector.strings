@@ -220,7 +220,7 @@
 "settings_calls_settings" = "THIRRJE";
 "settings_user_interface" = "NDËRFAQE PËRDORUESI";
 "settings_ignored_users" = "PËRDORUES TË SHPËRFILLUR";
-"settings_contacts" = "KONTAKTE VENDORE";
+"settings_contacts" = "KONTAKTE PAJISJEJE";
 "settings_advanced" = "TË MËTEJSHME";
 "settings_other" = "TË TJERA";
 "settings_devices" = "SESIONE";
@@ -397,7 +397,7 @@
 "auth_use_server_options" = "Përdor mundësi vetjake shërbyesi (e përparuar)";
 "auth_add_email_and_phone_warning" = "Regjistrimi me email dhe me numër telefoni njëherazi nuk mbulohet ende, deri sa të ketë API. Do të merret parasysh vetëm numri i telefonit. Email-in tuaj mund ta shtoni te profili juaj, te rregullimet.";
 "room_creation_appearance_picture" = "Foto fjalosjeje (në daçi)";
-"room_creation_invite_another_user" = "Kërkoni / ftoni sipas ID-je Përdoruesi, Emri ose email-i";
+"room_creation_invite_another_user" = "ID Përdoruesi, emër ose email";
 "room_recents_favourites_section" = "TË PARAPALQYERA";
 "room_recents_server_notice_section" = "SINJALIZIME SISTEMI";
 "room_recents_join_room_title" = "Hyni në një dhomë";
@@ -854,7 +854,7 @@
 "settings_add_3pid_invalid_password_message" = "Kredenciale të pavlefshme";
 "settings_devices_description" = "Emri publik i një sesioni është i dukshëm për persona me të cilët komunikoni";
 "settings_discovery_no_identity_server" = "S’po përdorni ndonjë shërbyes identitetesh. Që të jeni i zbulueshëm nga kontakte ekzistuese që njihni, shtoni një të tillë.";
-"settings_discovery_terms_not_signed" = "Pajtohuni me Kushtet e Shërbimit të Shërbyesit të Identiteteve që t’i lejoni vetes të jeni i zbulueshëm përmes adrese email ose numri telefoni.";
+"settings_discovery_terms_not_signed" = "Pajtohuni me Kushtet e Shërbimit të shërbyesit të identiteteve (%@), që t’i lejoni vetes të jeni i zbulueshëm përmes adrese email ose numri telefoni.";
 "settings_discovery_three_pids_management_information_part1" = "Administroni cilat adresa email ose numra telefonash mund të përdorin përdoruesit e tjerë për t’ju zbuluar dhe ftuar në dhoma. Shtoni ose hiqni prej kësaj liste adresa email ose numra telefonash ";
 "settings_discovery_three_pids_management_information_part2" = "Rregullime Përdoruesi";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -871,7 +871,7 @@
 "settings_identity_server_no_is" = "S’ka të formësuar shërbyes identitetesh";
 "settings_identity_server_no_is_description" = "S’po përdorni ndonjë shërbyes identitetesh. Që të zbuloni dhe të jeni i zbulueshëm nga kontakte ekzistuese që njihni, shtoni një më sipër.";
 // Identity server settings
-"identity_server_settings_title" = "Shërbyes Identitetesh";
+"identity_server_settings_title" = "Shërbyes identitetesh";
 "identity_server_settings_description" = "Po përdorni %@ që të zbuloni dhe të jeni i zbulueshëm nga kontakte ekzistuese që dini.";
 "identity_server_settings_no_is_description" = "S’po përdorni ndonjë shërbyes identitetesh. Që të zbuloni dhe të jeni i zbulueshëm nga kontakte ekzistuese, shtoni një më sipër.";
 "identity_server_settings_place_holder" = "Jepni një shërbyes identitetesh";
@@ -909,12 +909,12 @@
 "accessibility_checkbox_label" = "kutizë";
 "settings_integrations" = "INTEGRIME";
 "settings_integrations_allow_button" = "Administroni integrime";
-"settings_integrations_allow_description" = "Përdorni një Përgjegjës Integrimesh (%@) që të administroni robotë, ura, widget-e dhe paketa ngjitësish.\n\nPërgjegjësit e Integrimeve marrin të dhëna formësimi dhe mund të ndryshojnë widget-e, të dërgojnë ftesa për në dhoma dhe të caktojnë shkallë pushteti në emrin tuaj.";
+"settings_integrations_allow_description" = "Përdorni një përgjegjës integrimesh (%@) që të administroni robotë, ura, widget-e dhe paketa ngjitësish.\n\nPërgjegjësit e integrimeve marrin të dhëna formësimi dhe mund të ndryshojnë widget-e, të dërgojnë ftesa për në dhoma dhe të caktojnë shkallë pushteti në emrin tuaj.";
 "widget_menu_refresh" = "Rifreskoje";
 "widget_menu_open_outside" = "Hape në shfletues";
 "widget_menu_revoke_permission" = "Shfuqizo hyrje për mua";
 "widget_menu_remove" = "Hiqe për këdo";
-"widget_integration_manager_disabled" = "Lypset të aktivizoni Përgjegjës Integrimesh te rregullimet";
+"widget_integration_manager_disabled" = "Lypset të aktivizoni përgjegjës integrimesh te rregullimet";
 "widget_picker_manage_integrations" = "Administroni integrime…";
 // Room widget permissions
 "room_widget_permission_title" = "Ngarko Widget";
@@ -1492,3 +1492,29 @@
 "settings_links" = "LIDHJE";
 "room_recents_suggested_rooms_section" = "DHOMA TË SUGJERUARA";
 "done" = "U bë";
+"spaces_home_space_title" = "Kreu";
+"service_terms_modal_information_description_integration_manager" = "Një përgjegjës integrimesh ju lejon të shtoni veçori prej palësh të treta.";
+"service_terms_modal_information_description_identity_server" = "Një shërbyes identitetesh ju ndihmon të gjeni kontaktet tuaja, duke kërkuar numrat e telefonave ose adresat email të tyre, për të parë nëse kanë tashmë një llogari.";
+"service_terms_modal_information_title_integration_manager" = "Përgjegjës Integrimesh";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Shërbyes Identitetesh";
+"service_terms_modal_description_integration_manager" = "Kjo do t’ju lejojë të përdorni robotë, ura, widget-e dhe paketa ngjitësish.";
+"service_terms_modal_description_identity_server" = "Kjo do t’i lejojë dikujt t’ju gjejë, nëse ka ruajtur në kontaktet e telefonit të vet numrin tuaj të telefonit ose email-in tuaj.";
+"service_terms_modal_table_header_integration_manager" = "KUSHTE PËRGJEGJËSI INTEGRIMESH";
+"service_terms_modal_table_header_identity_server" = "KUSHTE SHËRBYESI IDENTITETESH";
+"service_terms_modal_footer" = "Kjo mund të çaktivizohet kurdo që nga rregullimet.";
+
+// Service terms
+"service_terms_modal_title_message" = "Që të vazhdohet, pranoni termat dhe kushtet më poshtë";
+"security_settings_secure_backup_reset" = "Riktheji te parazgjedhjet";
+"settings_contacts_enable_sync_description" = "Kjo do të përdorë shërbyesin tuaj të identiteteve për t’ju lidhur me kontaktet tuaja dhe për t’i ndihmuar ata t’ju gjejnë.";
+"settings_contacts_enable_sync" = "Gjeni kontaktet tuaja";
+"settings_phone_contacts" = "KONTAKTE TELEFONI";
+"find_your_contacts_identity_service_error" = "S’arrihet të lidhet me shërbyesin e identiteteve.";
+"find_your_contacts_footer" = "Kjo mund të çaktivizohet kurdo që nga rregullimet.";
+"find_your_contacts_button_title" = "Gjeni kontakte tuajt";
+"find_your_contacts_message" = "Lejojeni %@ të shfaqë kontaktet tuaja, që kështu të mund të filloni shpejt e shpejt të bisedoni me ata që ju njohin më mirë.";
+"find_your_contacts_title" = "Fillojani duke shfaqur kontaktet tuaja";
+"contacts_address_book_permission_denied_alert_message" = "Që të aktivizoni kontakte, kaloni te rregullimet e pajisjes tua.";
+"contacts_address_book_permission_denied_alert_title" = "Kontaktet u çaktivizuan";
