@@ -2,6 +2,6 @@
 "NSCameraUsageDescription" = "A kamera fényképek, videók készítéséhez és videóhívásokhoz lesz használva.";
 "NSPhotoLibraryUsageDescription" = "A fénykép galéria fényképek és videók küldéséhez lesz használva.";
 "NSMicrophoneUsageDescription" = "A hívás indításához és fogadásához, videó és hangüzenet felvételéhez az Elementnek hozzáférési engedélyre van szüksége a mikrofonhoz.";
-"NSContactsUsageDescription" = "Az olyan ismerősök felderítéséhez akik már használják a Matrixot, Elementet el tudja küldeni a címjegyzékben található e-mail címeket és telefonszámokat az általad választott Matrix azonosítási szervernek. Ahol lehetséges a személyes adatok hash-elve lesznek - kérlek ellenőrizd az azonosítási szervered adatvédelmi szabályait.";
+"NSContactsUsageDescription" = "Element megmutatja a névjegyzéket, hogy beszélgetésbe meghívhasd őket.";
 "NSCalendarsUsageDescription" = "Nézd meg a találkozóidat az alkalmazásban.";
 "NSFaceIDUsageDescription" = "Arc felismerés használata az alkalmazás eléréséhez.";
