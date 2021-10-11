@@ -91,7 +91,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         
         self.addModule(module, for: controller)
         
-        let controllersToPop = self.navigationController.viewControllers
+        let controllersToPop = self.navigationController.viewControllers.reversed()
         
         controllersToPop.forEach {
             self.willPopViewController($0)
@@ -127,7 +127,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
             return controller
         }
                 
-        let controllersToPop = self.navigationController.viewControllers
+        let controllersToPop = self.navigationController.viewControllers.reversed()
         
         controllersToPop.forEach {
             self.willPopViewController($0)
@@ -164,13 +164,13 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         if controllers.count > 1 {
             let controllersToPop = controllers[1..<controllers.count]
             
-            controllersToPop.forEach {
+            controllersToPop.reversed().forEach {
                 self.willPopViewController($0)
             }
         }
         
         if let controllers = navigationController.popToRootViewController(animated: animated) {
-            controllers.forEach {
+            controllers.reversed().forEach {
                 self.didPopViewController($0)
             }
         }
@@ -185,13 +185,13 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         if let controllerIndex = controllersBeforePop.firstIndex(of: controller) {
             let controllersToPop = controllersBeforePop[controllerIndex..<controllersBeforePop.count]
             
-            controllersToPop.forEach {
+            controllersToPop.reversed().forEach {
                 self.willPopViewController($0)
             }
         }
         
         if let controllers = navigationController.popToViewController(controller, animated: animated) {
-            controllers.forEach {
+            controllers.reversed().forEach {
                 self.didPopViewController($0)
             }
         }
@@ -236,7 +236,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
     func popAllModules(animated: Bool) {
         MXLog.debug("[NavigationRouter] Pop all modules")
         
-        let controllersToPop = self.navigationController.viewControllers
+        let controllersToPop = self.navigationController.viewControllers.reversed()
         
         controllersToPop.forEach {
             self.willPopViewController($0)
