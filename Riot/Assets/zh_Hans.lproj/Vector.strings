@@ -93,7 +93,7 @@
 "room_creation_keep_private" = "保持私密";
 "room_creation_make_private" = "使其变成私密";
 "room_creation_wait_for_creation" = "聊天室已创建。请稍候。";
-"room_creation_invite_another_user" = "通过用户 ID、名称或电子邮件进行搜索/邀请";
+"room_creation_invite_another_user" = "用户 ID、名称或电子邮件";
 // Room recents
 "room_recents_directory_section" = "聊天室目录";
 "room_recents_favourites_section" = "收藏夹";
@@ -245,7 +245,7 @@
 "settings_user_settings" = "用户设置";
 "settings_notifications_settings" = "通知设置";
 "settings_ignored_users" = "已忽略用户";
-"settings_contacts" = "本地联系人";
+"settings_contacts" = "设备联系人";
 "settings_advanced" = "高级";
 "settings_other" = "其他";
 "settings_labs" = "实验室";
@@ -1521,3 +1521,27 @@
 "room_recents_suggested_rooms_section" = "建议的聊天室";
 "done" = "完成";
 "open" = "打开";
+"service_terms_modal_information_description_integration_manager" = "集成管理器允许您添加来自第三方的功能。";
+"service_terms_modal_information_description_identity_server" = "身份服务器通过查找电话号码或电子邮件地址帮助您找到联系人，看看他们是否已经有一个帐户。";
+"service_terms_modal_information_title_integration_manager" = "集成管理器";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "身份服务器";
+"service_terms_modal_description_integration_manager" = "这将允许您使用机器人、桥、小部件和贴纸包。";
+"service_terms_modal_description_identity_server" = "如果有人在电话联系人中保存了你的电话号码或电子邮件，就可以找到你。";
+"service_terms_modal_table_header_integration_manager" = "集成管理器条款";
+"service_terms_modal_table_header_identity_server" = "身份服务器条款";
+"service_terms_modal_footer" = "你可以随时在设置中禁用它。";
+
+// Service terms
+"service_terms_modal_title_message" = "如需继续，请接受以下条款和条件";
+"settings_contacts_enable_sync_description" = "这将使用您的身份服务器连接您和您的联系人，并帮助他们找到您。";
+"settings_contacts_enable_sync" = "寻找联系人";
+"settings_phone_contacts" = "电话联系人";
+"find_your_contacts_identity_service_error" = "无法连接到身份服务器。";
+"find_your_contacts_footer" = "你可以随时从设置中禁用它。";
+"find_your_contacts_button_title" = "寻找联系人";
+"find_your_contacts_message" = "让 %@ 显示你的联系人，以便你可以快速开始和你最了解的人聊天。";
+"find_your_contacts_title" = "从列出你的联系人开始";
+"contacts_address_book_permission_denied_alert_message" = "要启用联系人，请转到设备设置。";
+"contacts_address_book_permission_denied_alert_title" = "联系人被禁用";
