@@ -100,7 +100,7 @@
 "room_creation_keep_private" = "Manter privado";
 "room_creation_make_private" = "Fazer privado";
 "room_creation_wait_for_creation" = "Uma sala já está sendo criada. Por favor espere.";
-"room_creation_invite_another_user" = "Buscar / convidar por ID de usuária(o), Nome ou email";
+"room_creation_invite_another_user" = "ID de usuária(o), nome ou email";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PESSOAS";
 "room_recents_conversations_section" = "SALAS";
@@ -288,7 +288,7 @@
 "settings_calls_settings" = "CHAMADAS";
 "settings_user_interface" = "INTERFACE DE USUÁRIA(O)";
 "settings_ignored_users" = "USUÁRIAS(OS) IGNORADAS(OS)";
-"settings_contacts" = "CONTATOS LOCAIS";
+"settings_contacts" = "CONTATOS DE DISPOSITIVO";
 "settings_advanced" = "AVANÇADAS";
 "settings_other" = "OUTRAS";
 "settings_labs" = "LABS";
@@ -1474,3 +1474,27 @@
 "room_recents_suggested_rooms_section" = "SALAS SUGERIDAS";
 "done" = "Feito";
 "open" = "Abrir";
+"service_terms_modal_information_description_integration_manager" = "Um gerenciador de integrações deixa você adicionar funcionalidades de terceiros.";
+"service_terms_modal_information_description_identity_server" = "Um servidor de identidade ajuda você a encontrar seus contatos, ao buscar o número de telefone ou endereço de email deles, para ver se eles já têm uma conta.";
+"service_terms_modal_information_title_integration_manager" = "Gerenciador de Integrações";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Servidor de Identidade";
+"service_terms_modal_description_integration_manager" = "Isto vai permitir você usar bots, bridges, widgets e pacotes de stickers.";
+"service_terms_modal_description_identity_server" = "Isto vai permitir alguém encontrar você se ela/ele tem seu número de telefone ou email salvo nos contatos de telefone dela/dele.";
+"service_terms_modal_table_header_integration_manager" = "TERMOS DE GERENCIADOR DE INTEGRAÇÕES";
+"service_terms_modal_table_header_identity_server" = "TERMOS DE SERVIDOR DE IDENTIDADE";
+"service_terms_modal_footer" = "Isto pode ser desabilitado a qualquer hora em configurações.";
+
+// Service terms
+"service_terms_modal_title_message" = "Para continuar, aceite os termos e condições abaixo";
+"settings_contacts_enable_sync_description" = "Isto vai usar seu servidor de identidade para conectar você com seus contatos, e ajudá-los a encontrar você.";
+"settings_contacts_enable_sync" = "Encontre seus contatos";
+"settings_phone_contacts" = "CONTATOS DE TELEFONE";
+"find_your_contacts_identity_service_error" = "Incapaz de se conectar ao servidor de identidade.";
+"find_your_contacts_footer" = "Isto pode ser desabilitado a qualquer hora a partir de configurações.";
+"find_your_contacts_button_title" = "Encontre seus contatos";
+"find_your_contacts_message" = "Deixe %@ mostrar seus contatos para que você possa rapidamente começar a fazer chat com aquelas(es) que você conhece melhor.";
+"find_your_contacts_title" = "Comece por listar seus contatos";
+"contacts_address_book_permission_denied_alert_message" = "Para habilitar contatos, vá para as configurações de seu dispositivo.";
+"contacts_address_book_permission_denied_alert_title" = "Contatos desabilitados";
