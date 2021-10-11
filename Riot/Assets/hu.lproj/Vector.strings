@@ -72,7 +72,7 @@
 "auth_phone_in_use" = "Ez a telefonszám már használatban van";
 "auth_untrusted_id_server" = "Az azonosító szerver megbízhatatlan";
 "auth_password_dont_match" = "A jelszavak nem egyeznek meg";
-"auth_username_in_use" = "A felhasználói név használatban";
+"auth_username_in_use" = "A felhasználónév foglalt";
 "auth_forgot_password" = "Elfelejtetted a jelszót?";
 "auth_email_not_found" = "E-mail küldési hiba: Az e-mail cím nem található";
 "auth_use_server_options" = "Egyedi szerver beállítások használata (haladó)";
@@ -863,7 +863,7 @@
 "settings_calls_stun_server_fallback_description" = "Másodlagos hívást segítő szerver (%@) engedélyezése ha a matrix szervered nem ajánl fel másikat (az IP címed a hívás ideje alatt meg lesz osztva).";
 "settings_devices_description" = "Az munkamenet nyilvános neve látható azoknál az embereknél akikkel beszélgetsz";
 "settings_discovery_no_identity_server" = "Jelenleg nem használsz azonosítási szervert. Ahhoz, hogy az ismerősök megtalálhassanak adj hozzá egyet.";
-"settings_discovery_terms_not_signed" = "Egyetértés az Azonosítási Szerver (%@) Felhasználási Feltételeivel, hogy e-mail címmel vagy telefonszámmal megtalálható lehess.";
+"settings_discovery_terms_not_signed" = "Egyetértés az azonosítási szerver (%@) Felhasználási Feltételeivel, hogy e-mail címmel vagy telefonszámmal megtalálható lehess.";
 "settings_discovery_three_pids_management_information_part1" = "E-mail címek és telefonszámok beállítása amivel más felhasználók megtalálhatnak és meghívhatna szobákba. E-mail cím és telefonszám hozzáadása és törlése a listából itt: ";
 "settings_discovery_three_pids_management_information_part2" = "Felhasználói Beállítások";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -880,7 +880,7 @@
 "settings_identity_server_no_is" = "Azonosítási szerver nincs beállítva";
 "settings_identity_server_no_is_description" = "Jelenleg nem használsz azonosítási szervert. Ahhoz, hogy megtalálhass másokat és az ismerősök megtalálhassanak adj hozzá egyet alább.";
 // Identity server settings
-"identity_server_settings_title" = "Azonosítási Szerver";
+"identity_server_settings_title" = "Azonosítási szerver";
 "identity_server_settings_description" = "Jelenleg ezt használod: %@, hogy megtalálj másokat és megtalálhassanak ismerősök.";
 "identity_server_settings_no_is_description" = "Jelenleg nem használsz azonosítási szervert. Ahhoz, hogy megtalálj másokat és megtalálhassanak ismerősök adj meg egyet alább.";
 "identity_server_settings_place_holder" = "Adj meg egy azonosítási szervet";

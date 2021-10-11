@@ -720,7 +720,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_security" = "SEGURANÇA";
 "settings_integrations_allow_button" = "Gerenciar integrações";
-"settings_integrations_allow_description" = "Use um Gerenciador de Integrações (%@) para gerenciar bots, bridges, widgets e pacotes de stickers.\n\nGerenciadores de Integrações recebem dados de configuração, e podem modificar widgets, enviar convites de sala e definir níveis de poder em seu nome.";
+"settings_integrations_allow_description" = "Use um gerenciador de integrações (%@) para gerenciar bots, bridges, widgets e pacotes de stickers.\n\nGerenciadores de integrações recebem dados de configuração, e podem modificar widgets, enviar convites de sala e definir níveis de poder em seu nome.";
 "settings_add_3pid_password_title_email" = "Adicionar endereço de email";
 "settings_discovery_three_pids_management_information_part2" = "Configurações de Usuária(o)";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -779,7 +779,7 @@
 "room_participants_action_security_status_warning" = "Aviso";
 "settings_three_pids_management_information_part1" = "Gerencie quais endereços de email ou números de telefone você pode usar para fazer login ou recuperar sua conta aqui. Controle quem pode encontrar você em ";
 "settings_calls_stun_server_fallback_button" = "Permitir servidor fallback de assistência de chamadas";
-"settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do Servidor de Identidade (%@) para permitir que você mesma(o) seja descobertável por endereço de email ou número de telefone.";
+"settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do servidor de identidade (%@) para permitir que você mesma(o) seja descobertável por endereço de email ou número de telefone.";
 "settings_discovery_three_pids_management_information_part1" = "Gerencie quais endereços de email ou números de telefone outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você para salas. Adicione ou remova endereços de email ou números de telefone desta lista em ";
 "settings_discovery_three_pid_details_title_email" = "Gerenciar email";
 "settings_discovery_three_pid_details_information_email" = "Gerencie preferências para este endereço de email, que outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você para salas. Adicione ou remova endereços de email em Contas.";
@@ -794,7 +794,7 @@
 "identity_server_settings_disconnect_info" = "Desconectar-se de seu servidor de identidade vai significar que você não vai ser descobertável por outras(os) usuárias(os) e ser capaz de convidar outras(os) por email ou telefone.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "Você ainda está compartilhando seus dados pessoais no servidor de identidade %@.\n\nNós recomendamos que você remova seus endereços de email e números de telefone do servidor de identidade antes de se desconectar.";
 "call_no_stun_server_error_title" = "Chamada falhou devido a servidor malconfigurado";
-"widget_integration_manager_disabled" = "Você precisa habilitar Gerenciador de Integrações em configurações";
+"widget_integration_manager_disabled" = "Você precisa habilitar gerenciador de integrações em configurações";
 "service_terms_modal_description_for_identity_server_1" = "Encontrar outras(os) por telefone ou email";
 "service_terms_modal_description_for_identity_server_2" = "Ser encontrada(o) por telefone ou email";
 "device_verification_self_verify_wait_additional_information" = "Isto funciona com %@ e outros clientes Matrix capazes de assinatura cruzada.";
@@ -885,7 +885,7 @@
 "manage_session_not_trusted" = "Não confiada";
 "manage_session_sign_out" = "Fazer signout desta sessão";
 // Identity server settings
-"identity_server_settings_title" = "Servidor de Identidade";
+"identity_server_settings_title" = "Servidor de identidade";
 "identity_server_settings_description" = "Vvocê está atualmente usando %@ para descobrir e ser descobertável por contatos existentes que você conhece.";
 "identity_server_settings_no_is_description" = "Você não está atualmente usando um servidor de identidade. Para descobrir e ser descobertável por contatos existentes, adicione um acima.";
 "identity_server_settings_place_holder" = "Entrar um servidor de identidade";

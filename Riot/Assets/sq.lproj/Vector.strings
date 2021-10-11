@@ -61,7 +61,7 @@
 "auth_phone_in_use" = "Ky numër telefoni është tashmë në përdorim";
 "auth_untrusted_id_server" = "Shërbyesi i identiteteve s’është i besuar";
 "auth_password_dont_match" = "Fjalëkalimet s’përputhen";
-"auth_username_in_use" = "Emër përdoruesi në përdorim";
+"auth_username_in_use" = "Emër përdoruesi i përdorur";
 "auth_forgot_password" = "Harruat fjalëkalimin?";
 "auth_email_not_found" = "S’u arrit të dërgohej email: Kjo adresë email s’u gjet";
 "auth_email_validation_message" = "Ju lutemi, që të vazhdojë regjistrimi, kontrolloni email-in tuaj";
