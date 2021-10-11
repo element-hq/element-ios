@@ -739,7 +739,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
 
     alert = [UIAlertController alertControllerWithTitle:[VectorL10n authSoftlogoutClearDataSignOutTitle]
-                                                message:[VectorL10n  authSoftlogoutClearDataSignOutMsg]
+                                                message:[VectorL10n authSoftlogoutClearDataSignOutMsg]
                                          preferredStyle:UIAlertControllerStyleAlert];
 
 

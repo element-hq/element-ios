@@ -69,7 +69,9 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     func present(from viewController: UIViewController, animated: Bool) {
         let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, outOfContext: self.outOfContext, accessToken: accessToken)
         serviceTermsModalCoordinator.delegate = self
-        viewController.present(serviceTermsModalCoordinator.toPresentable(), animated: animated, completion: nil)
+        let presentable = serviceTermsModalCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        viewController.present(presentable, animated: animated, completion: nil)
         serviceTermsModalCoordinator.start()
         
         if let coordinator = self.coordinator {
@@ -98,13 +100,36 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
 
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
+        
+        if serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(1, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
+        }
     }
 
     func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
+
+        if serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
+        }
     }
 
     func serviceTermsModalCoordinatorDidCancel(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(self)
+        
+        if serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
+        }
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension ServiceTermsModalCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(self)
+        
+        if serviceType == MXServiceTypeIdentityService {
+            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
+        }
     }
 }

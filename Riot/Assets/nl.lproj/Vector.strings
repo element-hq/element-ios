@@ -21,7 +21,7 @@
 "title_rooms" = "Kamers";
 "warning" = "Waarschuwing";
 // Actions
-"view" = "Weergeven";
+"view" = "Bekijken";
 "next" = "Volgende";
 "back" = "Terug";
 "continue" = "Verdergaan";
@@ -1510,7 +1510,7 @@
 "room_notifs_settings_encrypted_room_notice" = "Let op dat vermeldingen & trefwoorden-meldingen niet beschikbaar zijn in versleutelde kamers op mobiel.";
 "room_notifs_settings_account_settings" = "Accountinstellingen";
 "room_notifs_settings_manage_notifications" = "U kunt uw meldingen beheren in %@";
-"room_notifs_settings_cancel_action" = "Annuleer";
+"room_notifs_settings_cancel_action" = "Annuleren";
 "room_notifs_settings_done_action" = "Klaar";
 "room_notifs_settings_none" = "Geen";
 "room_notifs_settings_mentions_and_keywords" = "Alleen vermeldingen en trefwoorden";
