@@ -23,6 +23,8 @@ import SwiftUI
 enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     case multipleResults
     
+    static private var members: [RoomMembersProviderMember]!
+    
     var screenType: Any.Type {
         MockUserSuggestionScreenState.self
     }
@@ -46,7 +48,11 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
 @available(iOS 14.0, *)
 extension MockUserSuggestionScreenState: RoomMembersProviderProtocol {
     func fetchMembers(_ members: ([RoomMembersProviderMember]) -> Void) {
-        members(generateUsersWithCount(10))
+        if Self.members == nil {
+            Self.members = generateUsersWithCount(10)
+        }
+        
+        members(Self.members)
     }
     
     private func generateUsersWithCount(_ count: UInt) -> [RoomMembersProviderMember] {

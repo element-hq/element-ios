@@ -20,6 +20,11 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct UserSuggestionList: View {
+    private struct Constants {
+        static let rowHeight: CGFloat = 60.0
+        static let maxHeight: CGFloat = 300.0
+        static let listItemPadding: CGFloat = 4.0
+    }
 
     // MARK: - Properties
     
@@ -30,9 +35,6 @@ struct UserSuggestionList: View {
     // MARK: Public
     
     @ObservedObject var viewModel: UserSuggestionViewModel.Context
-    // FIXME: This should be dynamic
-    let rowHeight: CGFloat = 60.0
-    let maxHeight: CGFloat = 300.0
     
     var body: some View {
         BackgroundView {
@@ -45,13 +47,12 @@ struct UserSuggestionList: View {
                         displayName: item.displayName,
                         userId: item.id
                     )
-                    .padding([.top, .bottom], 4.0)
+                    .padding([.top, .bottom], Constants.listItemPadding)
                 }
             }
             .listStyle(PlainListStyle())
-            .environment(\.defaultMinListRowHeight, rowHeight)
-            .frame(height: min(maxHeight, rowHeight * CGFloat(viewModel.viewState.items.count)))
-//            .frame(maxHeight: maxHeight)
+            .environment(\.defaultMinListRowHeight, Constants.rowHeight)
+            .frame(height: min(Constants.maxHeight, Constants.rowHeight * CGFloat(viewModel.viewState.items.count)))
             .id(UUID()) // Rebuild the whole list on item changes. Fixes performance issues.
         }
     }

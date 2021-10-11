@@ -74,21 +74,13 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     // MARK: - UserSuggestionServiceProtocol
     
     func processTextMessage(_ textMessage: String?) {
-        self.items.send([])
-        self.currentTextTriggerSubject.send(nil)
-        
-        guard let textMessage = textMessage, textMessage.count > 0 else {
-            return
-        }
-        
-        let components = textMessage.components(separatedBy: .whitespaces)
-        
-        guard let lastComponent = components.last else {
-            return
-        }
-        
-        // Partial username should start with one and only one "@" character
-        guard lastComponent.prefix(while: { $0 == "@" }).count == 1 else {
+        guard let textMessage = textMessage,
+              textMessage.count > 0,
+              let lastComponent = textMessage.components(separatedBy: .whitespaces).last,
+              lastComponent.prefix(while: { $0 == "@" }).count == 1 // Partial username should start with one and only one "@" character
+        else {
+            self.items.send([])
+            self.currentTextTriggerSubject.send(nil)
             return
         }
         
