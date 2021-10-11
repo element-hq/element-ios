@@ -377,7 +377,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func showRoom(with roomId: String, eventId: String?, matrixSession: MXSession, completion: (() -> Void)? = nil) {
         
         // RoomCoordinator will be presented by the split view.
-        // Ass we don't know which navigation controller instance will be used,
+        // As we don't know which navigation controller instance will be used,
         // give the NavigationRouterStore instance and let it find the associated navigation controller
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, roomId: roomId, eventId: eventId)
         
