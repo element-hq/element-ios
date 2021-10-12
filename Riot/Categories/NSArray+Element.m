@@ -18,22 +18,22 @@
 
 @implementation NSArray (Element)
 
-- (NSArray *)vc_map:(id (^)(id obj))block
+- (NSArray *)vc_map:(id (^)(id obj))transform
 {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:self.count];
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
     {
-        [result addObject:block(obj)];
+        [result addObject:transform(obj)];
     }];
     return result;
 }
 
-- (NSArray *)vc_compactMap:(id _Nullable (^)(id obj))block
+- (NSArray *)vc_compactMap:(id _Nullable (^)(id obj))transform
 {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:self.count];
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
     {
-        id mappedObject = block(obj);
+        id mappedObject = transform(obj);
         if (mappedObject)
         {
             [result addObject:mappedObject];
@@ -42,12 +42,12 @@
     return result;
 }
 
-- (NSArray *)vc_flatMap:(NSArray* (^)(id obj))block
+- (NSArray *)vc_flatMap:(NSArray* (^)(id obj))transform
 {
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:self.count];
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
     {
-        [result addObjectsFromArray:block(obj)];
+        [result addObjectsFromArray:transform(obj)];
     }];
     return result;
 }
