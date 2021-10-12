@@ -231,12 +231,8 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
         AppDelegate.theDelegate().presentCompleteSecurity(for: session)
     }
-
-    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkFragment fragment: String, from universalLinkURL: URL?) -> Bool {
-        return AppDelegate.theDelegate().handleUniversalLinkFragment(fragment, from: universalLinkURL)
-    }
     
-    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkURL universalLinkURL: URL) -> Bool {
-        return AppDelegate.theDelegate().handleUniversalLinkURL(universalLinkURL)
+    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
+        return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
     }
 }
