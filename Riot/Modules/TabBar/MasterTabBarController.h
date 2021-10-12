@@ -42,7 +42,8 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 };
 
 @protocol MasterTabBarControllerDelegate;
-
+@class RoomPresentationParameters;
+@class RoomPreviewPresentationParameters;
 
 @interface MasterTabBarController : UITabBarController
 
@@ -79,33 +80,16 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
  */
 - (void)showAuthenticationScreenAfterSoftLogout:(MXCredentials*)softLogoutCredentials;
 
-/**
- Open the room with the provided identifier in a specific matrix session.
- 
- @param roomId the room identifier.
- @param eventId if not nil, the room will be opened on this event.
- @param mxSession the matrix session in which the room should be available.
- */
-- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)mxSession;
+/// Open the room with the provided identifier in a specific matrix session.
+/// @param parameters the presentation parameters that contains room information plus display information.
+/// @param completion the block to execute at the end of the operation.
+- (void)selectRoomWithParameters:(RoomPresentationParameters*)parameters completion:(void (^)(void))completion;
 
-/**
- Open the room with the provided identifier in a specific matrix session.
- 
- @param roomId the room identifier.
- @param eventId if not nil, the room will be opened on this event.
- @param matrixSession the matrix session in which the room should be available.
- @param completion the block to execute at the end of the operation.
- */
-- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion;
-
-/**
- Open the RoomViewController to display the preview of a room that is unknown for the user.
- 
- This room can come from an email invitation link or a simple link to a room.
- 
- @param roomPreviewData the data for the room preview.
- */
-- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
+/// Open the RoomViewController to display the preview of a room that is unknown for the user.
+/// This room can come from an email invitation link or a simple link to a room.
+/// @param parameters the presentation parameters that contains room preview information plus display information.
+/// @param completion the block to execute at the end of the operation.
+- (void)selectRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters completion:(void (^)(void))completion;
 
 /**
  Open a ContactDetailsViewController to display the information of the provided contact.
@@ -202,8 +186,9 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 
 - (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
 - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController needsSideMenuIconWithNotification:(BOOL)displayNotification;
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion;
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithData:(RoomPreviewData*)roomPreviewData;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithParameters:(RoomPresentationParameters*)roomPresentationParameters completion:(void (^)(void))completion;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)roomPreviewPresentationParameters completion:(void (^)(void))completion;
+
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession;
 

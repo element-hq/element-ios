@@ -584,33 +584,30 @@
     }
 }
 
-- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
-{
-    [self selectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:nil];
-}
-
-- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion
+- (void)selectRoomWithParameters:(RoomPresentationParameters*)paramaters completion:(void (^)(void))completion
 {
     [self releaseSelectedItem];
     
-    _selectedRoomId = roomId;
-    _selectedEventId = eventId;
-    _selectedRoomSession = matrixSession;    
+    _selectedRoomId = paramaters.roomId;
+    _selectedEventId = paramaters.eventId;
+    _selectedRoomSession = paramaters.mxSession;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:completion];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithParameters:paramaters completion:completion];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
-- (void)showRoomPreview:(RoomPreviewData *)roomPreviewData
+- (void)selectRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters completion:(void (^)(void))completion
 {
     [self releaseSelectedItem];
+    
+    RoomPreviewData *roomPreviewData = parameters.previewData;
     
     _selectedRoomPreviewData = roomPreviewData;
     _selectedRoomId = roomPreviewData.roomId;
     _selectedRoomSession = roomPreviewData.mxSession;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithData:roomPreviewData];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithParameters:parameters completion:completion];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
