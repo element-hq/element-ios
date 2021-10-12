@@ -41,10 +41,11 @@ final class SpaceExploreRoomViewController: UIViewController {
     private var titleView: MainTitleView!
     private var emptyView: RootTabEmptyView!
     private var plusButtonImageView: UIImageView!
+    private var hasMore: Bool = false
     
     private var itemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
-            tableView.reloadData()
+            self.tableView.reloadData()
         }
     }
     
@@ -168,6 +169,7 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.tableView.allowsSelection = true
         self.tableView.register(cellType: SpaceChildViewCell.self)
         self.tableView.register(cellType: SpaceChildSpaceViewCell.self)
+        self.tableView.register(cellType: SpaceChildLoadingViewCell.self)
         self.tableView.tableFooterView = UIView()
     }
 
@@ -177,7 +179,8 @@ final class SpaceExploreRoomViewController: UIViewController {
             self.renderLoading()
         case .spaceNameFound(let spaceName):
             self.titleView.subtitleLabel.text = spaceName
-        case .loaded(let children):
+        case .loaded(let children, let hasMore):
+            self.hasMore = hasMore
             self.renderLoaded(children: children)
         case .emptySpace:
             self.renderEmptySpace()
@@ -240,10 +243,16 @@ extension SpaceExploreRoomViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.itemDataList.count
+        return self.itemDataList.count + (self.hasMore ? 1 : 0)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard indexPath.row < self.itemDataList.count else {
+            let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SpaceChildLoadingViewCell.self)
+            cell.update(theme: self.theme)
+            return cell
+        }
+        
         let viewData = self.itemDataList[indexPath.row]
         
         let cell = viewData.childInfo.roomType == .space ? tableView.dequeueReusableCell(for: indexPath, cellType: SpaceChildSpaceViewCell.self) : tableView.dequeueReusableCell(for: indexPath, cellType: SpaceChildViewCell.self)
@@ -261,6 +270,12 @@ extension SpaceExploreRoomViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         self.viewModel.process(viewAction: .complete(self.itemDataList[indexPath.row], tableView.cellForRow(at: indexPath)))
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if self.hasMore && indexPath.row >= self.itemDataList.count {
+            self.viewModel.process(viewAction: .loadData)
+        }
     }
 }
 
