@@ -116,42 +116,34 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 #pragma mark - Properties
 
-- (NSArray<id<MXKRecentCellDataStoring>> *)invitesCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)invitesCellDataArray
 {
-    return [self mapRoomSummaries:self.recentsListService.invitedRoomListData.rooms];
+    return self.recentsListService.invitedRoomListData.rooms;
 }
-- (NSArray<id<MXKRecentCellDataStoring>> *)favoriteCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)favoriteCellDataArray
 {
-    return [self mapRoomSummaries:self.recentsListService.favoritedRoomListData.rooms];
+    return self.recentsListService.favoritedRoomListData.rooms;
 }
-- (NSArray<id<MXKRecentCellDataStoring>> *)peopleCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)peopleCellDataArray
 {
-    return [self mapRoomSummaries:self.recentsListService.peopleRoomListData.rooms];
+    return self.recentsListService.peopleRoomListData.rooms;
 }
-- (NSArray<id<MXKRecentCellDataStoring>> *)conversationCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)conversationCellDataArray
 {
-    return [self mapRoomSummaries:self.recentsListService.conversationRoomListData.rooms];
+    return self.recentsListService.conversationRoomListData.rooms;
 }
-- (NSArray<id<MXKRecentCellDataStoring>> *)lowPriorityCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)lowPriorityCellDataArray
 {
-    return [self mapRoomSummaries:self.recentsListService.lowPriorityRoomListData.rooms];
+    return self.recentsListService.lowPriorityRoomListData.rooms;
 }
-- (NSArray<id<MXKRecentCellDataStoring>> *)serverNoticeCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)serverNoticeCellDataArray
 {
-    return [self mapRoomSummaries:self.recentsListService.serverNoticeRoomListData.rooms];
+    return self.recentsListService.serverNoticeRoomListData.rooms;
 }
-- (NSArray<id<MXKRecentCellDataStoring>> *)suggestedRoomCellDataArray
+- (NSArray<id<MXRoomSummaryProtocol>> *)suggestedRoomCellDataArray
 {
-    return [self mapRoomSummaries:self.recentsListService.suggestedRoomListData.rooms];
+    return self.recentsListService.suggestedRoomListData.rooms;
 }
-
-- (NSArray<id<MXKRecentCellDataStoring>> *)mapRoomSummaries:(NSArray<id<MXRoomSummaryProtocol>> *)summaries
- {
-     return [summaries vc_map:^id _Nonnull(id<MXRoomSummaryProtocol> _Nonnull summary) {
-         return [[MXKRecentCellData alloc] initWithRoomSummary:summary
-                                                    dataSource:self];
-     }];
- }
 
 - (NSInteger)totalVisibleItemCount
 {
@@ -945,7 +937,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 - (id<MXKRecentCellDataStoring>)cellDataAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<MXKRecentCellDataStoring> cellData = nil;
+    id<MXRoomSummaryProtocol> summary = nil;
     NSUInteger cellDataIndex = indexPath.row;
     NSInteger tableSection = indexPath.section;
     
@@ -963,53 +955,57 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     {
         if (cellDataIndex < self.favoriteCellDataArray.count)
         {
-            cellData = self.favoriteCellDataArray[cellDataIndex];
+            summary = self.favoriteCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == peopleSection)
     {
         if (cellDataIndex < self.peopleCellDataArray.count)
         {
-            cellData = self.peopleCellDataArray[cellDataIndex];
+            summary = self.peopleCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection== conversationSection)
     {
         if (cellDataIndex < self.conversationCellDataArray.count)
         {
-            cellData = self.conversationCellDataArray[cellDataIndex];
+            summary = self.conversationCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == lowPrioritySection)
     {
         if (cellDataIndex < self.lowPriorityCellDataArray.count)
         {
-            cellData = self.lowPriorityCellDataArray[cellDataIndex];
+            summary = self.lowPriorityCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == serverNoticeSection)
     {
         if (cellDataIndex < self.serverNoticeCellDataArray.count)
         {
-            cellData = self.serverNoticeCellDataArray[cellDataIndex];
+            summary = self.serverNoticeCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == invitesSection)
     {
         if (cellDataIndex < self.invitesCellDataArray.count)
         {
-            cellData = self.invitesCellDataArray[cellDataIndex];
+            summary = self.invitesCellDataArray[cellDataIndex];
         }
     }
     else if (tableSection == suggestedRoomsSection)
     {
         if (cellDataIndex < self.suggestedRoomCellDataArray.count)
         {
-            cellData = self.suggestedRoomCellDataArray[cellDataIndex];
+            summary = self.suggestedRoomCellDataArray[cellDataIndex];
         }
     }
     
-    return cellData;
+    if (summary)
+    {
+        return [[MXKRecentCellData alloc] initWithRoomSummary:summary dataSource:self];
+    }
+    return nil;
 }
 
 - (CGFloat)cellHeightAtIndexPath:(NSIndexPath *)indexPath
@@ -1056,22 +1052,15 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 #pragma mark -
 
-- (NSInteger)cellIndexPosWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession within:(NSArray*)cellDataArray
+- (NSInteger)cellIndexPosWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession within:(NSArray<id<MXRoomSummaryProtocol>> *)summaries
 {
-    if (roomId && matrixSession && cellDataArray.count)
+    if (!roomId || !matrixSession || !summaries.count || self.mxSession != matrixSession)
     {
-        for (int index = 0; index < cellDataArray.count; index++)
-        {
-            id<MXKRecentCellDataStoring> cellData = cellDataArray[index];
-
-            if ([roomId isEqualToString:cellData.roomIdentifier] && cellData.mxSession == matrixSession)
-            {
-                return index;
-            }
-        }
+        return NSNotFound;
     }
-
-    return NSNotFound;
+    return [summaries indexOfObjectPassingTest:^BOOL(id<MXRoomSummaryProtocol>  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        return [obj.roomId isEqualToString:roomId];
+    }];
 }
 
 - (NSIndexPath*)cellIndexPathWithRoomId:(NSString*)roomId andMatrixSession:(MXSession*)matrixSession
