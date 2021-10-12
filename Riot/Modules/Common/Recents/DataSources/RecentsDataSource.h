@@ -26,10 +26,11 @@
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.
+ Used as the tag of UITableView, starting from 1 in order to avoid collision with default tag of UIView.
  */
 typedef NS_ENUM(NSInteger, RecentsDataSourceMode)
 {
-    RecentsDataSourceModeHome,
+    RecentsDataSourceModeHome = 1,
     RecentsDataSourceModeFavourites,
     RecentsDataSourceModePeople,
     RecentsDataSourceModeRooms
