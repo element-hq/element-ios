@@ -1236,8 +1236,21 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return [self handleUniversalLinkFragment:fragment fromURL:nil];
 }
 
+
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+
 {
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL stackAboveVisibleViewsOnRedirect:NO];
+    
+    return [self handleUniversalLinkWithParameters:parameters];
+}
+
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
+{
+    NSString *fragment = parameters.fragment;
+    NSURL *universalLinkURL = parameters.universalLinkURL;
+    BOOL stackAboveVisibleViewsOnRedirect = parameters.stackAboveVisibleViewsOnRedirect;
+    
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
@@ -1347,7 +1360,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 else
                 {
                     // Open the room page
-                    [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+                    RoomPresentationParameters *roomPresentationParameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession restoreInitialDisplay:!stackAboveVisibleViewsOnRedirect stackAboveVisibleViews:stackAboveVisibleViewsOnRedirect];
+                    
+                    [self showRoomWithParameters:roomPresentationParameters];
                 }
                 
                 continueUserActivity = YES;
@@ -1398,7 +1413,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     {
                                         universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
-                                        [self handleUniversalLinkFragment:newUniversalLinkFragment fromURL:universalLinkURL];
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL stackAboveVisibleViewsOnRedirect:stackAboveVisibleViewsOnRedirect];
+                                        
+                                        [self handleUniversalLinkWithParameters:newParameters];
                                     }
                                     else
                                     {
@@ -1436,7 +1453,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
                                     {
                                         MXLogDebug(@"[AppDelegate] Universal link: The session is running. Retry the link");
-                                        [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+                                        [self handleUniversalLinkWithParameters:parameters];
                                     }
                                 }
                             }];
@@ -1494,7 +1511,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+                    [self handleUniversalLinkWithParameters:parameters];
                 }
             }];
         }
@@ -1559,7 +1576,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+                    [self handleUniversalLinkWithParameters:parameters];
                 }
             }];
         }
@@ -2782,8 +2799,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay completion:(void (^)(void))completion
+- (void)showRoomWithParameters:(RoomPresentationParameters*)parameters
 {
+    [self showRoomWithParameters:parameters completion:nil];
+}
+
+- (void)showRoomWithParameters:(RoomPresentationParameters*)parameters completion:(void (^)(void))completion
+{
+    NSString *roomId = parameters.roomId;
+    MXSession *mxSession = parameters.mxSession;
+    BOOL restoreInitialDisplay = parameters.restoreInitialDisplay;
+    
     if (roomId && mxSession)
     {
         MXRoom *room = [mxSession roomWithRoomId:roomId];
@@ -2805,8 +2831,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     void (^selectRoom)(void) = ^() {
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [self.masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{
-            
+                
+        [self.masterTabBarController selectRoomWithParameters:parameters completion:^{
             // Remove delivered notifications for this room
             [self.pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:nil];
             
@@ -2829,23 +2855,42 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay
-{
-    [self showRoom:roomId andEventId:eventId withMatrixSession:mxSession restoreInitialDisplay:restoreInitialDisplay completion:nil];
-}
-
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
-    [self showRoom:roomId andEventId:eventId withMatrixSession:mxSession restoreInitialDisplay:YES completion:nil];
+    RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId
+                                                                                        eventId:eventId mxSession:mxSession restoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    [self showRoomWithParameters:parameters];
+}
+
+- (void)showRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters completion:(void (^)(void))completion
+{
+    void (^showRoomPreview)(void) = ^() {
+        [self.masterTabBarController selectRoomPreviewWithParameters:parameters completion:completion];
+    };
+    
+    if (parameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showRoomPreview();
+        }];
+    }
+    else
+    {
+        showRoomPreview();
+    }
+}
+
+- (void)showRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters
+{
+    [self showRoomPreviewWithParameters:parameters completion:nil];
 }
 
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
 {
-    [self restoreInitialDisplay:^{
-        
-        [_masterTabBarController showRoomPreview:roomPreviewData];
-        
-    }];
+    RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData restoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    [self showRoomPreviewWithParameters:parameters];
 }
 
 - (void)setVisibleRoomId:(NSString *)roomId
