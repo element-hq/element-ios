@@ -43,3 +43,4 @@
 #import "RoomViewController.h"
 #import "ContactDetailsViewController.h"
 #import "GroupDetailsViewController.h"
+#import "NSArray+Element.h"
