@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -77,10 +77,13 @@
                                         <constraint firstItem="48y-kn-7b5" firstAttribute="centerY" secondItem="dVr-ZM-kkX" secondAttribute="centerY" id="z5v-Vy-6tc"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="KeyboardGrowingTextView">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgb-ON-N29" customClass="RoomInputToolbarTextView" customModule="Riot" customModuleProvider="target">
                                     <rect key="frame" x="5" y="33" width="474" height="4"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="GrowingTextView"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="iN0-l3-epB" id="CV3-Fk-GFg"/>
+                                    </connections>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -138,7 +141,6 @@
             <connections>
                 <outlet property="actionsBar" destination="ESv-9w-KJF" id="h7H-vz-yzO"/>
                 <outlet property="attachMediaButton" destination="Hga-l8-Wua" id="Osr-ek-c91"/>
-                <outlet property="growingTextView" destination="wgb-ON-N29" id="nwF-uV-Ng9"/>
                 <outlet property="inputContextButton" destination="48y-kn-7b5" id="yRn-1S-96w"/>
                 <outlet property="inputContextImageView" destination="PZ4-0Y-TmL" id="PMS-K7-aMr"/>
                 <outlet property="inputContextLabel" destination="dVr-ZM-kkX" id="ve6-gY-cV9"/>
@@ -152,6 +154,7 @@
                 <outlet property="messageComposerContainerTopConstraint" destination="WyZ-3i-OHi" id="OcO-1f-bNA"/>
                 <outlet property="messageComposerContainerTrailingConstraint" destination="hXO-cY-Jgz" id="0m7-AB-90i"/>
                 <outlet property="rightInputToolbarButton" destination="G8Z-CM-tGs" id="NCk-5m-aNF"/>
+                <outlet property="textView" destination="wgb-ON-N29" id="ySl-IB-xvn"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="151.12443778110946"/>
         </view>
