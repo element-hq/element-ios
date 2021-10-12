@@ -71,6 +71,7 @@
     if (roomCellData)
     {
         [self.avatarImageView vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                                 roomId:roomCellData.roomIdentifier
                                             displayName:roomCellData.roomDisplayname
                                            mediaManager:roomCellData.mxSession.mediaManager];
         

@@ -31,11 +31,13 @@ struct ViewFrameReader: View {
     @Binding var frame: CGRect
     
     var body: some View {
-        GeometryReader { geo -> Color in
-            DispatchQueue.main.async {
-                frame = geo.frame(in: .local)
-            }
-            return .clear
+        GeometryReader { geometry in
+            Color.clear
+                .preference(key: FramePreferenceKey.self,
+                            value: geometry.frame(in: .local))
+        }
+        .onPreferenceChange(FramePreferenceKey.self) {
+            frame = $0
         }
     }
 }

@@ -69,7 +69,7 @@ typedef enum : NSUInteger
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `ContactDetailsViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)contactDetailsViewController;
++ (instancetype)instantiate;
 
 @end
 

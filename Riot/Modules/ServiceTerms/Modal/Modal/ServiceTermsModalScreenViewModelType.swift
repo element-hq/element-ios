@@ -26,7 +26,6 @@ protocol ServiceTermsModalScreenViewModelCoordinatorDelegate: AnyObject {
     func serviceTermsModalScreenViewModel(_ coordinator: ServiceTermsModalScreenViewModelType, displayPolicy policy: MXLoginPolicyData)
     func serviceTermsModalScreenViewModelDidAccept(_ viewModel: ServiceTermsModalScreenViewModelType)
     func serviceTermsModalScreenViewModelDidDecline(_ viewModel: ServiceTermsModalScreenViewModelType)
-    func serviceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType)
 }
 
 /// Protocol describing the view model used by `ServiceTermsModalScreenViewController`
@@ -34,9 +33,6 @@ protocol ServiceTermsModalScreenViewModelType {
 
     var serviceUrl: String { get }
     var serviceType: MXServiceType { get }
-    /// If true, terms are displayed out of a context of a flow (like a background 3pids lookup)
-    /// In this case, the wording needs to provide more information about the intent
-    var outOfContext: Bool { get }
     var policies: [MXLoginPolicyData]? { get set }
     var alreadyAcceptedPoliciesUrls: [String] { get set }
         

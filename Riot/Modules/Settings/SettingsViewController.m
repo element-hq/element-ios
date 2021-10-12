@@ -127,7 +127,8 @@ enum
 
 enum {
     LOCAL_CONTACTS_SYNC_INDEX,
-    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX
+    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX,
+    LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX
 };
 
 enum
@@ -179,6 +180,7 @@ SignOutAlertPresenterDelegate,
 SingleImagePickerPresenterDelegate,
 SettingsDiscoveryTableViewSectionDelegate, SettingsDiscoveryViewModelCoordinatorDelegate,
 SettingsIdentityServerCoordinatorBridgePresenterDelegate,
+ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate>
 {
     // Current alert (if any).
@@ -279,6 +281,8 @@ TableViewSectionsDelegate>
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
+
+@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @end
 
@@ -462,7 +466,12 @@ TableViewSectionsDelegate>
         {
             [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX];
         }
-        sectionLocalContacts.headerTitle = [VectorL10n settingsContacts];
+        else
+        {
+            [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX];
+        }
+        NSString *headerTitle = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? VectorL10n.settingsPhoneContacts : VectorL10n.settingsContacts;
+        sectionLocalContacts.headerTitle = headerTitle;
         [tmpSections addObject:sectionLocalContacts];
     }
     
@@ -2196,7 +2205,7 @@ TableViewSectionsDelegate>
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
             labelAndSwitchCell.mxkLabel.numberOfLines = 0;
-            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsContactsDiscoverMatrixUsers];
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.settingsContactsEnableSync;
             labelAndSwitchCell.mxkSwitch.on = [MXKAppSettings standardAppSettings].syncLocalContacts;
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             labelAndSwitchCell.mxkSwitch.enabled = YES;
@@ -2223,6 +2232,15 @@ TableViewSectionsDelegate>
             
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        else if (row == LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX)
+        {
+            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
+            descriptionCell.textLabel.text = VectorL10n.settingsContactsEnableSyncDescription;
+            descriptionCell.textLabel.numberOfLines = 0;
+            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell = descriptionCell;
         }
     }
     else if (section == SECTION_TAG_ADVANCED)
@@ -3102,17 +3120,51 @@ TableViewSectionsDelegate>
 {
     if (sender.on)
     {
-        [MXKContactManager requestUserConfirmationForLocalContactsSyncInViewController:self completionHandler:^(BOOL granted) {
-
-            [MXKAppSettings standardAppSettings].syncLocalContacts = granted;
+        // First check if the service terms have already been accepted
+        MXSession *session = self.mxSessions.firstObject;
+        if (session.identityService.areAllTermsAgreed)
+        {
+            // If they have we only require local contacts access.
+            [self checkAccessForContacts];
+        }
+        else
+        {
+            MXWeakify(self);
             
-            [self updateSections];
-        }];
+            // The preparation can take some time so indicate this to the user
+            [self startActivityIndicator];
+            
+            [session prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
+                                                       success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self stopActivityIndicator];
+                
+                // Present the terms of the identity server.
+                [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
+            } failure:^(NSError *error) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self stopActivityIndicator];
+                
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
+                                                                                         message:nil
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                
+                [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:nil]];
+                
+                [self presentViewController:alertController animated:YES completion:nil];
+                
+                [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
+                [self updateSections];
+            }];
+        }
     }
     else
     {
         [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
-        
         [self updateSections];
     }
 }
@@ -4457,6 +4509,28 @@ TableViewSectionsDelegate>
     }
 }
 
+#pragma mark - Local Contacts Sync
+    
+ - (void)checkAccessForContacts
+{
+    MXWeakify(self);
+    
+    // Check for contacts access, showing a pop-up if necessary.
+    [MXKTools checkAccessForContacts:VectorL10n.contactsAddressBookPermissionDeniedAlertTitle
+             withManualChangeMessage:VectorL10n.contactsAddressBookPermissionDeniedAlertMessage
+           showPopUpInViewController:self
+                   completionHandler:^(BOOL granted) {
+        
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (granted)
+        {
+            // When granted, local contacts can be shown.
+            [MXKAppSettings standardAppSettings].syncLocalContacts = YES;
+            [self updateSections];
+        }
+    }];
+}
 
 #pragma mark - Identity server
 
@@ -4468,12 +4542,55 @@ TableViewSectionsDelegate>
     identityServerSettingsCoordinatorBridgePresenter.delegate = self;
 }
 
-#pragma mark - SettingsIdentityServerCoordinatorBridgePresenterDelegate
+- (void)presentIdentityServerTermsWithSession:(MXSession*)mxSession baseURL:(NSString*)baseURL andAccessToken:(NSString*)accessToken
+{
+    if (!mxSession || !baseURL || !accessToken || self.serviceTermsModalCoordinatorBridgePresenter.isPresenting)
+    {
+        return;
+    }
+    
+    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
+                                                                                                                                                            baseUrl:baseURL
+                                                                                                                                                        serviceType:MXServiceTypeIdentityService
+                                                                                                                                                        accessToken:accessToken];
+    
+    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+    
+    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
+    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+}
+
+#pragma mark SettingsIdentityServerCoordinatorBridgePresenterDelegate
 
 - (void)settingsIdentityServerCoordinatorBridgePresenterDelegateDidComplete:(SettingsIdentityServerCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     identityServerSettingsCoordinatorBridgePresenter = nil;
     [self refreshSettings];
+}
+
+#pragma mark ServiceTermsModalCoordinatorBridgePresenterDelegate
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        [self checkAccessForContacts];
+    }];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession *)session
+{
+    // Disable the contacts toggle as the terms weren't accepted.
+    [self updateSections];
+    
+    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
+}
+
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+{
+    [self updateSections];  // Disables the contacts toggle as the terms weren't accepted.
+    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - TableViewSectionsDelegate

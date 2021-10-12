@@ -21,7 +21,7 @@ import Foundation
 @objc protocol ServiceTermsModalCoordinatorBridgePresenterDelegate {
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter)
     func serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter, session: MXSession)
-    func serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter)
+    func serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter)
 }
 
 /// ServiceTermsModalCoordinatorBridgePresenter enables to start ServiceTermsModalCoordinator from a view controller.
@@ -36,7 +36,6 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     private let session: MXSession
     private let baseUrl: String
     private let serviceType: MXServiceType
-    private let outOfContext: Bool
     private let accessToken: String
     private var coordinator: ServiceTermsModalCoordinator?
     
@@ -50,11 +49,10 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Setup
     
-    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, outOfContext: Bool = false, accessToken: String) {
+    init(session: MXSession, baseUrl: String, serviceType: MXServiceType, accessToken: String) {
         self.session = session
         self.baseUrl = baseUrl
         self.serviceType = serviceType
-        self.outOfContext = outOfContext
         self.accessToken = accessToken
         super.init()
     }
@@ -67,10 +65,9 @@ final class ServiceTermsModalCoordinatorBridgePresenter: NSObject {
     // }
     
     func present(from viewController: UIViewController, animated: Bool) {
-        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, outOfContext: self.outOfContext, accessToken: accessToken)
+        let serviceTermsModalCoordinator = ServiceTermsModalCoordinator(session: self.session, baseUrl: self.baseUrl, serviceType: self.serviceType, accessToken: accessToken)
         serviceTermsModalCoordinator.delegate = self
         let presentable = serviceTermsModalCoordinator.toPresentable()
-        presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
         serviceTermsModalCoordinator.start()
         
@@ -100,36 +97,13 @@ extension ServiceTermsModalCoordinatorBridgePresenter: ServiceTermsModalCoordina
 
     func serviceTermsModalCoordinatorDidAccept(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept(self)
-        
-        if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(1, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
-        }
     }
 
     func serviceTermsModalCoordinatorDidDecline(_ coordinator: ServiceTermsModalCoordinatorType) {
         self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline(self, session: self.session)
-
-        if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
-        }
     }
-
-    func serviceTermsModalCoordinatorDidCancel(_ coordinator: ServiceTermsModalCoordinatorType) {
-        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(self)
-        
-        if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
-        }
-    }
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-extension ServiceTermsModalCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(self)
-        
-        if serviceType == MXServiceTypeIdentityService {
-            Analytics.sharedInstance().trackValue(0, category: kMXKAnalyticsContactsCategory, name: AnalyticsContactsIdentityServerAccepted)
-        }
+    
+    func serviceTermsModalCoordinatorDidDismissInteractively(_ coordinator: ServiceTermsModalCoordinatorType) {
+        self.delegate?.serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(self)
     }
 }

@@ -417,7 +417,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
     MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentRoomViewController)
+    if (masterTabBarController.selectedRoomId)
     {
         // Look for the rank of this selected room in displayed recents
         currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];
