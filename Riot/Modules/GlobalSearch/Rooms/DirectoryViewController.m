@@ -209,13 +209,13 @@
                 
                 [self stopActivityIndicator];
                 
-                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                [self showRoomPreviewWithData:roomPreviewData];
             }];
         }
         else
         {
             RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
-            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+            [self showRoomPreviewWithData:roomPreviewData];
         }
         
     }
@@ -233,8 +233,17 @@
 #pragma mark - Private methods
 
 - (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
-{    
-    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:mxSession restoreInitialDisplay:NO];
+{
+    RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:nil mxSession:mxSession
+                                                                          restoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    [[AppDelegate theDelegate] showRoomWithParameters:parameters];
+}
+
+- (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
+{
+    RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData restoreInitialDisplay:NO
+                                                                                            stackAboveVisibleViews:NO];
+    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible

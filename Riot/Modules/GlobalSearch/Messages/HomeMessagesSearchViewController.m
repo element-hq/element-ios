@@ -146,6 +146,17 @@
     }
 }
 
+- (void)showRoomWithId:(NSString*)roomId
+            andEventId:(NSString*)eventId
+       inMatrixSession:(MXSession*)session
+{
+    RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId
+                                                                                                        eventId:eventId                                                                                                      mxSession:session
+                                                                                          restoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    [[AppDelegate theDelegate] showRoomWithParameters:parameters];
+}
+
 #pragma mark - MXKDataSourceDelegate
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
@@ -239,9 +250,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     // Make the master tabBar view controller open the RoomViewController
-    [[AppDelegate theDelegate].masterTabBarController selectRoomWithId:cellData.roomId
-                                                            andEventId:_selectedEvent.eventId
-                                                       inMatrixSession:cellData.mxSession];
+    [self showRoomWithId:cellData.roomId
+              andEventId:_selectedEvent.eventId
+         inMatrixSession:cellData.mxSession];
     
     // Reset the selected event. HomeViewController got it when here
     _selectedEvent = nil;
