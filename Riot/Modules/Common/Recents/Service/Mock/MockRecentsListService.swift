@@ -18,7 +18,15 @@ import Foundation
 
 @objcMembers
 public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
-    private var rooms: [MockRoomSummary] = []
+    
+    private var rooms: [MockRoomSummary]
+    
+    private var _invitedRoomListData: MXRoomListData?
+    private var _favoritedRoomListData: MXRoomListData?
+    private var _peopleRoomListData: MXRoomListData?
+    private var _conversationRoomListData: MXRoomListData?
+    private var _lowPriorityRoomListData: MXRoomListData?
+    private var _serverNoticeRoomListData: MXRoomListData?
     
     // swiftlint:disable weak_delegate
     private let multicastDelegate: MXMulticastDelegate<RecentsListServiceDelegate> = MXMulticastDelegate()
@@ -26,6 +34,45 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     
     public init(withRooms rooms: [MockRoomSummary]) {
         self.rooms = rooms
+        
+        var invited: [MockRoomSummary] = []
+        var favorited: [MockRoomSummary] = []
+        var people: [MockRoomSummary] = []
+        var conversation: [MockRoomSummary] = []
+        var lowPriority: [MockRoomSummary] = []
+        var serverNotice: [MockRoomSummary] = []
+        
+        rooms.forEach { summary in
+            if summary.isTyped(.invited) {
+                invited.append(summary)
+            }
+            if summary.isTyped(.favorited) {
+                favorited.append(summary)
+            }
+            if summary.isTyped(.direct) {
+                people.append( summary)
+            }
+            if !summary.isTyped([.direct,
+                                .invited,
+                                .favorited,
+                                .lowPriority,
+                                .serverNotice]) {
+                conversation.append(summary)
+            }
+            if summary.isTyped(.lowPriority) {
+                lowPriority.append(summary)
+            }
+            if summary.isTyped(.serverNotice) {
+                serverNotice.append(summary)
+            }
+        }
+        _invitedRoomListData = MockRoomListData(withRooms: invited)
+        _favoritedRoomListData = MockRoomListData(withRooms: favorited)
+        _peopleRoomListData = MockRoomListData(withRooms: people)
+        _conversationRoomListData = MockRoomListData(withRooms: conversation)
+        _lowPriorityRoomListData = MockRoomListData(withRooms: lowPriority)
+        _serverNoticeRoomListData = MockRoomListData(withRooms: serverNotice)
+        
         super.init()
     }
     
@@ -72,38 +119,32 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     
     public var invitedRoomListData: MXRoomListData? {
         guard mode == .home else { return nil }
-        return MockRoomListData(withRooms: rooms.filter({ $0.isTyped(.invited) }))
+        return _invitedRoomListData
     }
     
     public var favoritedRoomListData: MXRoomListData? {
         guard mode == .home || mode == .favourites else { return nil }
-        return MockRoomListData(withRooms: rooms.filter({ $0.isTyped(.favorited) }))
+        return _favoritedRoomListData
     }
     
     public var peopleRoomListData: MXRoomListData? {
         guard mode == .home || mode == .people else { return nil }
-        return MockRoomListData(withRooms: rooms.filter({ $0.isTyped(.direct) }))
+        return _peopleRoomListData
     }
     
     public var conversationRoomListData: MXRoomListData? {
         guard mode == .home || mode == .rooms else { return nil }
-        let mockRooms = rooms.filter({ !$0.isTyped([.direct,
-                                                    .invited,
-                                                    .favorited,
-                                                    .lowPriority,
-                                                    .serverNotice])
-        })
-        return MockRoomListData(withRooms: mockRooms)
+        return _conversationRoomListData
     }
     
     public var lowPriorityRoomListData: MXRoomListData? {
         guard mode == .home else { return nil }
-        return MockRoomListData(withRooms: rooms.filter({ $0.isTyped(.lowPriority) }))
+        return _lowPriorityRoomListData
     }
     
     public var serverNoticeRoomListData: MXRoomListData? {
         guard mode == .home else { return nil }
-        return MockRoomListData(withRooms: rooms.filter({ $0.isTyped(.serverNotice) }))
+        return _serverNoticeRoomListData
     }
     
     public var suggestedRoomListData: MXRoomListData?
@@ -147,7 +188,12 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     public func stop() {
-        rooms.removeAll()
+        _invitedRoomListData = nil
+        _favoritedRoomListData = nil
+        _peopleRoomListData = nil
+        _conversationRoomListData = nil
+        _lowPriorityRoomListData = nil
+        _serverNoticeRoomListData = nil
         removeAllDelegates()
     }
     
