@@ -1,3 +1,14 @@
+## Changes in 1.6.4 (2021-10-12)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.6](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.6)).
+
+🐛 Bugfixes
+
+- RoomVC: Fix a crash when previewing a room. ([#4982](https://github.com/vector-im/element-ios/issues/4982))
+
+
 ## Changes in 1.6.2 (2021-10-08)
 
 🙌 Improvements
