@@ -28,6 +28,7 @@
 #import "UIViewController+RiotSearch.h"
 
 @class BadgeLabel;
+@class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -170,26 +171,14 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (void)roomViewControllerPreviewDidTapCancel:(RoomViewController *)roomViewController;
 
 /**
- Handle the fragment of a universal link.
+ Process universal link.
  
  @param roomViewController the `RoomViewController` instance.
- @param fragment the fragment part of the universal link.
- @param universalLinkURL the unprocessed the universal link URL (optional).
- @return true to indicate that the fragment has been handled, or false when the fragment is not supported.
- */
-- (BOOL)roomViewController:(RoomViewController *)roomViewController
-handleUniversalLinkFragment:(NSString*)fragment
-                   fromURL:(nullable NSURL*)universalLinkURL;
-
-/**
- Process universal link.
-
- @param roomViewController the `RoomViewController` instance.
- @param universalLinkURL the universal link URL.
+ @param parameters the universal link parameters.
  @return YES in case of processing success.
  */
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
-    handleUniversalLinkURL:(NSURL*)universalLinkURL;
+handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 
 @end
 

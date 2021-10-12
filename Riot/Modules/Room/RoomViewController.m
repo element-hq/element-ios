@@ -2189,26 +2189,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
 {
-    if (self.delegate)
-    {
-        return [self.delegate roomViewController:self handleUniversalLinkURL:universalLinkURL];
-    }
-    else
-    {
-        [self handleSpaceUniversalLinkWith:universalLinkURL];
-        return YES;
-    }
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL stackAboveVisibleViewsOnRedirect:BuildSettings.allowSplitViewDetailsScreenStacking];
+    return [self handleUniversalLinkWithParameters:parameters];
 }
-    
+
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+{
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
+                                                                           universalLinkURL:universalLinkURL stackAboveVisibleViewsOnRedirect:BuildSettings.allowSplitViewDetailsScreenStacking];
+    return [self handleUniversalLinkWithParameters:parameters];
+}
+
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
 {
     if (self.delegate)
     {
-        return [self.delegate roomViewController:self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+        return [self.delegate roomViewController:self handleUniversalLinkWithParameters:parameters];
     }
     else
     {
-        return [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+        return [self handleSpaceUniversalLinkWith:parameters];
     }
 }
 

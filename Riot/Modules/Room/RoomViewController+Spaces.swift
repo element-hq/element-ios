@@ -18,8 +18,10 @@ import Foundation
 
 /// this extension is temprorary and implements navigation to the Space bootom sheet. This should be moved to an universal link flow coordinator
 extension RoomViewController {
-    @objc func handleSpaceUniversalLink(with url: URL) {
-        let url = Tools.fixURL(withSeveralHashKeys: url)
+    
+    @objc func handleSpaceUniversalLink(with universalLinkParameters: UniversalLinkParameters) -> Bool {
+        
+        let url = universalLinkParameters.universalLinkURL
         
         var pathParamsObjc: NSArray?
         var queryParamsObjc: NSMutableDictionary?
@@ -28,7 +30,7 @@ extension RoomViewController {
         // Sanity check
         guard let pathParams = pathParamsObjc as? [String], pathParams.count > 0 else {
             MXLog.error("[RoomViewController] Universal link: Error: No path parameters")
-            return
+            return false
         }
         
         var roomIdOrAliasParam: String?
@@ -67,8 +69,7 @@ extension RoomViewController {
         }
         
         guard let roomIdOrAlias = roomIdOrAliasParam else {
-            AppDelegate.theDelegate().handleUniversalLinkURL(url)
-            return
+            return AppDelegate.theDelegate().handleUniversalLink(with: universalLinkParameters)
         }
         
         self.startActivityIndicator()
@@ -94,14 +95,16 @@ extension RoomViewController {
                     return
                 }
                 
-                self.requestSummaryAndShowSpaceDetail(forRoomWithId: roomId, via: viaServers, from: url)
+                self.requestSummaryAndShowSpaceDetail(forRoomWithId: roomId, via: viaServers, from: universalLinkParameters)
             }
         } else {
-            self.requestSummaryAndShowSpaceDetail(forRoomWithId: roomIdOrAlias, via: viaServers, from: url)
+            self.requestSummaryAndShowSpaceDetail(forRoomWithId: roomIdOrAlias, via: viaServers, from: universalLinkParameters)
         }
+        
+        return true
     }
     
-    private func requestSummaryAndShowSpaceDetail(forRoomWithId roomId: String, via: [String], from url: URL?) {
+    private func requestSummaryAndShowSpaceDetail(forRoomWithId roomId: String, via: [String], from universalLinkParameters: UniversalLinkParameters) {
         if self.mainSession.spaceService.getSpace(withId: roomId) != nil {
             self.stopActivityIndicator()
             self.showSpaceDetail(withId: roomId)
@@ -116,12 +119,11 @@ extension RoomViewController {
             self.stopActivityIndicator()
 
             guard let publicRoom = response.value, publicRoom.roomTypeString == MXRoomTypeString.space.rawValue else {
-                AppDelegate.theDelegate().handleUniversalLinkURL(url)
+                AppDelegate.theDelegate().handleUniversalLink(with: universalLinkParameters)
                 return
             }
             
             self.showSpaceDetail(with: publicRoom)
         }
     }
-    
 }
