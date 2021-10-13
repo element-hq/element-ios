@@ -105,7 +105,7 @@
 "room_creation_keep_private" = "Maradjon zárt";
 "room_creation_make_private" = "Legyen nyilvános";
 "room_creation_wait_for_creation" = "A szoba elkészítése folyamatban van. Kérlek várj.";
-"room_creation_invite_another_user" = "Keresés / meghívás felhasználói azonosítás, név vagy e-mail cím alapján";
+"room_creation_invite_another_user" = "Felhasználói azonosító, név vagy e-mail";
 // Room recents
 "room_recents_directory_section" = "SZOBA KÖNYVTÁR";
 "room_recents_favourites_section" = "KEDVENCEK";
@@ -281,7 +281,7 @@
 "settings_calls_settings" = "HÍVÁSOK";
 "settings_user_interface" = "FELHASZNÁLÓI FELÜLET";
 "settings_ignored_users" = "FIGYELMEN KÍVÜL HAGYOTT FELHASZNÁLÓK";
-"settings_contacts" = "HELYI KAPCSOLATOK";
+"settings_contacts" = "ESZKÖZ NÉVJEGYZÉK";
 "settings_advanced" = "HALADÓ";
 "settings_other" = "MÁS";
 "settings_labs" = "LABOR";
@@ -1506,3 +1506,27 @@
 "room_recents_suggested_rooms_section" = "JAVASOLT SZOBÁK";
 "done" = "Kész";
 "open" = "Megnyitás";
+"find_your_contacts_title" = "Kezdjük a kapcsolataid felsorolásával";
+"service_terms_modal_information_description_integration_manager" = "Az integrációs menedzser lehetővé teszi harmadik féltől származó lehetőségek használatát.";
+"service_terms_modal_information_description_identity_server" = "Az azonosítási szerver lehetővé teszi, hogy megtaláld a kapcsolataidat azzal, hogy megnézi regisztráltak-e már az ő telefonszámaival vagy e-mail címeivel.";
+"service_terms_modal_information_title_integration_manager" = "Integrációs Menedzser";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Azonosító szerver";
+"service_terms_modal_description_integration_manager" = "Ez lehetővé teszi, hogy botokat, hidakat, kisalkalmazásokat vagy matricákat használj.";
+"service_terms_modal_description_identity_server" = "Ez lehetővé teszi másnak, akinek a telefonjába el van mentve a telefonszámod vagy e-mail címed, hogy megtaláljon.";
+"service_terms_modal_table_header_integration_manager" = "INTEGRÁCIÓS MENEDZSER FELTÉTELEK";
+"service_terms_modal_table_header_identity_server" = "AZONOSÍTÁSI SZERVER FELTÉTELEK";
+"settings_contacts_enable_sync" = "Kapcsolatok megkeresése";
+"find_your_contacts_button_title" = "Kapcsolatok megkeresése";
+"find_your_contacts_message" = "Engedd meg, hogy %@ megjelenítse a névjegyzéket, hogy gyorsan elkezdhess beszélgetni azokkal akiket a legjobban ismersz.";
+"service_terms_modal_footer" = "Bármikor letiltható a beállításokban.";
+
+// Service terms
+"service_terms_modal_title_message" = "A folytatáshoz fogadd el a felhasználási feltételeket alább";
+"settings_contacts_enable_sync_description" = "Az azonosítási szerveredet fogja használni, hogy összekössön az ismerőseiddel és megtalálhassanak.";
+"settings_phone_contacts" = "TELEFON NÉVJEGYZÉK";
+"find_your_contacts_identity_service_error" = "Az azonosítási szerverhez nem sikerült csatlakozni.";
+"find_your_contacts_footer" = "Bármikor letiltható a beállításokban.";
+"contacts_address_book_permission_denied_alert_message" = "A névjegyzék engedélyezéséhez lépj be az eszköz beállításokba.";
+"contacts_address_book_permission_denied_alert_title" = "Névjegyzék letiltva";
