@@ -82,6 +82,8 @@ final class AppCoordinator: NSObject, AppCoordinatorType {
         
         // Setup navigation router store
         _ = NavigationRouterStore.shared
+        // Setup URL preview service observers
+        _ = URLPreviewService.shared
         
         if BuildSettings.enableSideMenu {
             self.addSideMenu()
