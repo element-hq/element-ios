@@ -10,6 +10,7 @@ schemes:
       targets:
         RiotSwiftUI:
         - running
+        - testing
         - profiling
         - analyzing
         - archiving
@@ -18,6 +19,11 @@ schemes:
     run:
       config: Debug
       disableMainThreadChecker: true
+    test:
+      config: Debug
+      disableMainThreadChecker: true
+      targets:
+      - RiotSwiftUnitTests
 
 targets:
   RiotSwiftUI:

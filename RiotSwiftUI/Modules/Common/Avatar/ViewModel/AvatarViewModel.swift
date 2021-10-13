@@ -47,7 +47,10 @@ class AvatarViewModel: InjectableObject, ObservableObject {
             stableColorIndex(matrixItemId: matrixItemId, colorCount: colorCount)
         )
         
-        guard let mxContentUri = mxContentUri else { return }
+        guard let mxContentUri = mxContentUri, mxContentUri.count > 0 else {
+            return
+        }
+        
         avatarService.avatarImage(mxContentUri: mxContentUri, avatarSize: avatarSize)
             .sink { completion in
                 guard case let .failure(error) = completion else { return }
