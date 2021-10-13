@@ -165,11 +165,10 @@ class URLPreviewService: NSObject {
     /// has been disabled on the homeserver. If this is true, link detection will be disabled
     /// to prevent further requests being made and stop any previews loaders being presented.
     private func checkForDisabledAPI(in error: Error?) {
-        // The error will contain a 404 and no matrix error code.
+        // The error we're looking for is a generic 404 and not a matrix error.
         guard
-            let error = error as NSError?,
-            error.userInfo[kMXErrorCodeKey] == nil,
-            let response = error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] as? HTTPURLResponse
+            !MXError.isMXError(error),
+            let response = MXHTTPOperation.urlResponse(fromError: error)
         else { return }
         
         if response.statusCode == 404 {
