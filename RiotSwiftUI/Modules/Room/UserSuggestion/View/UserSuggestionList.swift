@@ -21,6 +21,7 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct UserSuggestionList: View {
     private struct Constants {
+        static let topPadding: CGFloat = 8.0
         static let listItemPadding: CGFloat = 4.0
         static let lineSpacing: CGFloat = 10.0
         static let maxHeight: CGFloat = 300.0
@@ -58,7 +59,8 @@ struct UserSuggestionList: View {
                                 displayName: item.displayName,
                                 userId: item.id
                             )
-                            .padding([.top, .bottom], Constants.listItemPadding)
+                            .padding(.bottom, Constants.listItemPadding)
+                            .padding(.top, (viewModel.viewState.items.first?.id == item.id ? Constants.listItemPadding + Constants.topPadding : Constants.listItemPadding))
                         }
                     }
                     .listStyle(PlainListStyle())
@@ -72,7 +74,7 @@ struct UserSuggestionList: View {
     }
     
     private func contentHeightForRowCount(_ count: Int) -> CGFloat {
-        (prototypeListItemFrame.height + (Constants.listItemPadding * 2) + Constants.lineSpacing) * CGFloat(count)
+        (prototypeListItemFrame.height + (Constants.listItemPadding * 2) + Constants.lineSpacing) * CGFloat(count) + Constants.topPadding
     }
 }
 

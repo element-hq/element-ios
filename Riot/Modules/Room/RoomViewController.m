@@ -462,24 +462,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self registerURLPreviewNotifications];
     
     [self setupActions];
-    
-    [self setupUserSuggestionView];
-}
-
-- (void)setupUserSuggestionView
-{
-    UIViewController *suggestionsViewController = self.userSuggestionCoordinator.toPresentable;
-    [suggestionsViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    [self addChildViewController:suggestionsViewController];
-    [self.userSuggestionContainerView addSubview:suggestionsViewController.view];
-    
-    [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.userSuggestionContainerView.topAnchor],
-                                              [suggestionsViewController.view.leadingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.leadingAnchor],
-                                              [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.trailingAnchor],
-                                              [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
-    
-    [suggestionsViewController didMoveToParentViewController:self];
 }
 
 - (void)userInterfaceThemeDidChange
@@ -1045,6 +1027,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
                                                                                           room:dataSource.room];
     _userSuggestionCoordinator.delegate = self;
+    
+    [self setupUserSuggestionView];
 }
 
 - (void)onRoomDataSourceReady
@@ -2236,6 +2220,27 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         return [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
     }
+}
+
+- (void)setupUserSuggestionView
+{
+    if(!self.isViewLoaded) {
+        MXLogError(@"Failed setting up user suggestions. View not loaded.");
+        return;
+    }
+    
+    UIViewController *suggestionsViewController = self.userSuggestionCoordinator.toPresentable;
+    [suggestionsViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self addChildViewController:suggestionsViewController];
+    [self.userSuggestionContainerView addSubview:suggestionsViewController.view];
+    
+    [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.userSuggestionContainerView.topAnchor],
+                                              [suggestionsViewController.view.leadingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.leadingAnchor],
+                                              [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.trailingAnchor],
+                                              [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
+    
+    [suggestionsViewController didMoveToParentViewController:self];
 }
 
 #pragma mark - Jitsi

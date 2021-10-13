@@ -157,6 +157,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     
     self.textView.text = textMessage;
     [self updateUIWithTextMessage:textMessage animated:YES];
+    [self textViewDidChange:self.textView];
 }
 
 - (NSString *)textMessage
