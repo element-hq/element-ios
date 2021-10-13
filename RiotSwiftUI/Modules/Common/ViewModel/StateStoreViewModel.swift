@@ -40,7 +40,6 @@ class ViewModelContext<ViewState:BindableState, ViewAction>: ObservableObject {
 
     // MARK: Private
 
-    private var cancellables = Set<AnyCancellable>()
     fileprivate let viewActions: PassthroughSubject<ViewAction, Never>
 
     // MARK: Public
