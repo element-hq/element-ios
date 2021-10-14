@@ -35,7 +35,7 @@
 "close" = "Tutup";
 "sending" = "Mengirim";
 "send_to" = "Kirim ke %@";
-"rename" = "Ubah nama";
+"rename" = "Ubah Nama";
 "later" = "Nanti";
 "active_call_details" = "Panggilan Aktif (%@)";
 "active_call" = "Panggilan Aktif";
@@ -47,21 +47,21 @@
 "decline" = "Tolak";
 "join" = "Bergabung";
 "save" = "Simpan";
-"cancel" = "Batal";
+"cancel" = "Batalkan";
 "off" = "Nonaktif";
 "on" = "Aktif";
-"retry" = "Coba lagi";
+"retry" = "Coba Lagi";
 "invite" = "Undang";
 "remove" = "Hapus";
 "leave" = "Tinggalkan";
 "start" = "Mulai";
 "create" = "Buat";
-"continue" = "Lanjut";
+"continue" = "Lanjutkan";
 "back" = "Kembali";
 "next" = "Selanjutnya";
 
 // Actions
-"view" = "Lihat";
+"view" = "Tampilkan";
 "warning" = "Peringatan";
 "title_groups" = "Komunitas-komunitas";
 "title_rooms" = "Ruangan-ruangan";
@@ -75,7 +75,7 @@
 "auth_email_not_found" = "Gagal mengirim surel: Alamat email ini tidak ditemukan";
 "auth_forgot_password_error_no_configured_identity_server" = "Tidak ada server identitas yang dikonfigurasikan: tambahkan satu untuk mengatur ulang kata sandi Anda.";
 "auth_forgot_password" = "Lupa kata sandi?";
-"auth_username_in_use" = "Nama pengguna sudah dipakai";
+"auth_username_in_use" = "Nama pengguna telah dipakai";
 "auth_password_dont_match" = "Kata sandi tidak cocok";
 "auth_untrusted_id_server" = "Server identitas tidak dipercaya";
 "auth_phone_is_required" = "Tidak ada server identitas yang dikonfigurasi sehingga Anda tidak dapat menambahkan nomor telepon untuk mengatur ulang kata sandi Anda di masa depan.";
