@@ -14,16 +14,19 @@
 // limitations under the License.
 //
 
-import Foundation
+import GrowingTextView
 
-/// The static list of mocked screens in RiotSwiftUI
-@available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self,
-        MockUserSuggestionScreenState.self
-    ]
+class RoomInputToolbarTextView: GrowingTextView {
+    
+    override var keyCommands: [UIKeyCommand]? {
+        return [UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(keyCommandSelector(_:)))]
+    }
+    
+    @objc private func keyCommandSelector(_ keyCommand: UIKeyCommand) {
+        guard keyCommand.input == "\r", let delegate = (self.delegate as? RoomInputToolbarView) else {
+            return
+        }
+        
+        delegate.onTouchUp(inside: delegate.rightInputToolbarButton)
+    }    
 }
-

@@ -1,3 +1,5 @@
+// File created from SimpleUserProfileExample
+// $ createScreen.sh Room/UserSuggestion UserSuggestion
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -16,6 +18,7 @@
 
 import Foundation
 
-struct TemplateUserProfileCoordinatorParameters {
- let session: MXSession
+@available(iOS 14, *)
+enum UserSuggestionViewModelResult {
+    case selectedItemWithIdentifier(String)
 }
