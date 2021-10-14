@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import AFNetworking
 
 enum URLPreviewServiceError: Error {
     case missingResponse
@@ -74,7 +75,10 @@ class URLPreviewService: NSObject {
                 success(previewData)
             }
             
-        }, failure: failure)
+        }, failure: { error in
+            self.checkForDisabledAPI(in: error)
+            failure(error)
+        })
     }
     
     /// Removes any cached preview data that has expired.
@@ -82,9 +86,11 @@ class URLPreviewService: NSObject {
         store.removeExpiredItems()
     }
     
-    /// Deletes all cached preview data and closed previews from the store.
+    /// Deletes all cached preview data and closed previews from the store,
+    /// re-enabling URL previews if they have been disabled by `checkForDisabledAPI`.
     func clearStore() {
         store.deleteAll()
+        MXKAppSettings.standard().enableBubbleComponentLinkDetection = true
     }
     
     /// Store the `eventId` and `roomId` of a closed preview.
@@ -155,5 +161,21 @@ class URLPreviewService: NSObject {
         components?.fragment = nil
         
         return components?.url ?? url
+    }
+    
+    /// Checks an error returned from `MXRestClient` to see whether the previews API
+    /// has been disabled on the homeserver. If this is true, link detection will be disabled
+    /// to prevent further requests being made and stop any previews loaders being presented.
+    private func checkForDisabledAPI(in error: Error?) {
+        // The error we're looking for is a generic 404 and not a matrix error.
+        guard
+            !MXError.isMXError(error),
+            let response = MXHTTPOperation.urlResponse(fromError: error)
+        else { return }
+        
+        if response.statusCode == 404 {
+            MXLog.debug("[URLPreviewService] Disabling link detection as homeserver does not support URL previews.")
+            MXKAppSettings.standard().enableBubbleComponentLinkDetection = false
+        }
     }
 }
