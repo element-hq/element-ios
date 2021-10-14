@@ -90,8 +90,7 @@ enum
 
 enum
 {
-    SENDING_MEDIA_CONFIRM_SIZE = 0,
-    SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION,
+    SENDING_MEDIA_CONFIRM_SIZE = 0
 };
 
 enum
@@ -105,7 +104,6 @@ enum
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
     NOTIFICATION_SETTINGS_SYSTEM_SETTINGS,
     NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
-    NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
     NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX,
@@ -115,20 +113,17 @@ enum
 
 enum
 {
-    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX=0,
-    CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
+    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX = 0
 };
 
 enum
 {
-    INTEGRATIONS_INDEX,
-    INTEGRATIONS_DESCRIPTION_INDEX,
+    INTEGRATIONS_INDEX
 };
 
 enum {
     LOCAL_CONTACTS_SYNC_INDEX,
-    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX,
-    LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX
+    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX
 };
 
 enum
@@ -139,8 +134,7 @@ enum
 
 enum
 {
-    IDENTITY_SERVER_INDEX,
-    IDENTITY_SERVER_DESCRIPTION_INDEX,
+    IDENTITY_SERVER_INDEX
 };
 
 enum
@@ -362,7 +356,11 @@ TableViewSectionsDelegate>
     }
     if (BuildSettings.settingsScreenShowThreepidExplanatory)
     {
-        [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
+#warning implement attributed string footers
+        NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
+        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
+        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
+        sectionUserSettings.footerTitle = attributedString.string;
     }
     if (RiotSettings.shared.settingsScreenShowInviteFriends)
     {
@@ -376,15 +374,15 @@ TableViewSectionsDelegate>
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
         [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE];
-        [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION];
         sectionMedia.headerTitle = [VectorL10n settingsSendingMedia];
+        sectionMedia.footerTitle = VectorL10n.settingsConfirmMediaSizeDescription;
         [tmpSections addObject:sectionMedia];
     }
     
     Section *sectionLinks = [Section sectionWithTag:SECTION_TAG_LINKS];
     [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_INDEX];
-    [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX];
     sectionLinks.headerTitle = [VectorL10n settingsLinks];
+    sectionLinks.footerTitle = VectorL10n.settingsShowUrlPreviewsDescription;
     [tmpSections addObject:sectionLinks];
     
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
@@ -401,9 +399,9 @@ TableViewSectionsDelegate>
     }
     
     if (@available(iOS 14.0, *)) {
-        // Don't add Global settings message for iOS 14+
+        // Don't display Global settings footer for iOS 14+
     } else {
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
+        sectionNotificationSettings.footerTitle = [VectorL10n settingsGlobalSettingsInfo:AppInfo.current.displayName];
     }
 
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
@@ -420,21 +418,17 @@ TableViewSectionsDelegate>
     sectionNotificationSettings.headerTitle = [VectorL10n settingsNotifications];
     [tmpSections addObject:sectionNotificationSettings];
     
-    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
+    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString && RiotSettings.shared.settingsScreenShowEnableStunServerFallback)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
         sectionCalls.headerTitle = [VectorL10n settingsCallsSettings];
-
-        if (RiotSettings.shared.settingsScreenShowEnableStunServerFallback)
-        {
-            [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
-            [sectionCalls addRowWithTag:CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX];
-        }
         
-        if (sectionCalls.rows.count)
-        {
-            [tmpSections addObject:sectionCalls];
-        }
+        // Remove "stun:"
+        NSString* stunFallbackHost = [BuildSettings.stunServerFallbackUrlString componentsSeparatedByString:@":"].lastObject;
+        sectionCalls.footerTitle = [VectorL10n settingsCallsStunServerFallbackDescription:stunFallbackHost];
+
+        [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
+        [tmpSections addObject:sectionCalls];
     }
     
     if (BuildSettings.settingsScreenShowDiscoverySettings)
@@ -453,8 +447,9 @@ TableViewSectionsDelegate>
     {
         Section *sectionIdentityServer = [Section sectionWithTag:SECTION_TAG_IDENTITY_SERVER];
         [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_INDEX];
-        [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_DESCRIPTION_INDEX];
+        
         sectionIdentityServer.headerTitle = [VectorL10n settingsIdentityServerSettings];
+        sectionIdentityServer.footerTitle = account.mxSession.identityService.identityServer ? VectorL10n.settingsIdentityServerDescription : VectorL10n.settingsIdentityServerNoIsDescription;
         [tmpSections addObject:sectionIdentityServer];
     }
     
@@ -466,12 +461,10 @@ TableViewSectionsDelegate>
         {
             [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX];
         }
-        else
-        {
-            [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX];
-        }
+        
         NSString *headerTitle = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? VectorL10n.settingsPhoneContacts : VectorL10n.settingsContacts;
         sectionLocalContacts.headerTitle = headerTitle;
+        sectionLocalContacts.footerTitle = VectorL10n.settingsContactsEnableSyncDescription;
         [tmpSections addObject:sectionLocalContacts];
     }
     
@@ -491,8 +484,12 @@ TableViewSectionsDelegate>
     {
         Section *sectionIntegrations = [Section sectionWithTag:SECTION_TAG_INTEGRATIONS];
         [sectionIntegrations addRowWithTag:INTEGRATIONS_INDEX];
-        [sectionIntegrations addRowWithTag:INTEGRATIONS_DESCRIPTION_INDEX];
         sectionIntegrations.headerTitle = [VectorL10n settingsIntegrations];
+        
+        NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
+        NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;
+        sectionIntegrations.footerTitle = [VectorL10n settingsIntegrationsAllowDescription:integrationManagerDomain];
+        
         [tmpSections addObject:sectionIntegrations];
     }
     
@@ -1524,18 +1521,6 @@ TableViewSectionsDelegate>
     return cell;
 }
 
-- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView
-{
-    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
-    cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    cell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
-    cell.textLabel.numberOfLines = 0;
-    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    return cell;
-}
-
 - (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
@@ -1838,21 +1823,6 @@ TableViewSectionsDelegate>
                 cell = newPhoneCell;
             }
         }
-        else if (row == USER_SETTINGS_THREEPIDS_INFORMATION_INDEX)
-        {
-            MXKTableViewCell *threePidsInformationCell = [self descriptionCellForTableView:self.tableView];
-            
-            NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
-            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
-            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
-            
-            threePidsInformationCell.textLabel.attributedText = attributedString;
-            threePidsInformationCell.textLabel.numberOfLines = 0;
-            
-            threePidsInformationCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = threePidsInformationCell;
-        }
         else if (row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
         {
             MXKTableViewCell *inviteFriendsCell = [self getDefaultTableViewCell:tableView];
@@ -1890,15 +1860,6 @@ TableViewSectionsDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleConfirmMediaSize:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
-        }
-        else if (row == SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION)
-        {
-            MXKTableViewCell *infoCell = [self getDefaultTableViewCell:tableView];
-            infoCell.textLabel.text = [VectorL10n settingsConfirmMediaSizeDescription];
-            infoCell.textLabel.numberOfLines = 0;
-            infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = infoCell;
         }
     }
     else if (section == SECTION_TAG_LINKS)
@@ -1978,19 +1939,6 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
-        else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
-        {
-            MXKTableViewCell *globalInfoCell = [self descriptionCellForTableView:tableView];
-
-            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-
-            globalInfoCell.textLabel.text = [VectorL10n settingsGlobalSettingsInfo:appDisplayName];
-            globalInfoCell.textLabel.numberOfLines = 0;
-            
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = globalInfoCell;
-        }
         else if (row == NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -2046,19 +1994,6 @@ TableViewSectionsDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX)
-        {
-            NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
-            // Remove "stun:"
-            stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
-
-            MXKTableViewCell *globalInfoCell = [self descriptionCellForTableView:tableView];
-            globalInfoCell.textLabel.text = [VectorL10n settingsCallsStunServerFallbackDescription:stunFallbackHost];
-            globalInfoCell.textLabel.numberOfLines = 0;
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = globalInfoCell;
-        }
     }
     else if (section == SECTION_TAG_DISCOVERY)
     {
@@ -2085,25 +2020,6 @@ TableViewSectionsDelegate>
                 break;
             }
 
-            case IDENTITY_SERVER_DESCRIPTION_INDEX:
-            {
-                MXKTableViewCell *descriptionCell = [self descriptionCellForTableView:tableView];
-
-                if (account.mxSession.identityService.identityServer)
-                {
-                    descriptionCell.textLabel.text = [VectorL10n settingsIdentityServerDescription];
-                }
-                else
-                {
-                    descriptionCell.textLabel.text = [VectorL10n settingsIdentityServerNoIsDescription];
-                }
-                descriptionCell.textLabel.numberOfLines = 0;
-                descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-                cell = descriptionCell;
-                break;
-            }
-
             default:
                 break;
         }
@@ -2123,22 +2039,6 @@ TableViewSectionsDelegate>
                 [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleAllowIntegrations:) forControlEvents:UIControlEventTouchUpInside];
 
                 cell = labelAndSwitchCell;
-                break;
-            }
-
-            case INTEGRATIONS_DESCRIPTION_INDEX:
-            {
-                MXKTableViewCell *descriptionCell = [self descriptionCellForTableView:tableView];
-
-                NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
-                NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;
-
-                NSString *description = [VectorL10n settingsIntegrationsAllowDescription:integrationManagerDomain];
-                descriptionCell.textLabel.text = description;
-                descriptionCell.textLabel.numberOfLines = 0;
-                descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-                cell = descriptionCell;
                 break;
             }
 
@@ -2244,15 +2144,6 @@ TableViewSectionsDelegate>
             
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-        }
-        else if (row == LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = VectorL10n.settingsContactsEnableSyncDescription;
-            descriptionCell.textLabel.numberOfLines = 0;
-            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = descriptionCell;
         }
     }
     else if (section == SECTION_TAG_ADVANCED)
@@ -2536,7 +2427,23 @@ TableViewSectionsDelegate>
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    Section *sectionObj = [_tableViewSections sectionAtIndex:section];
+    return sectionObj.footerTitle;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    {
+        // Customize label style
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
     }
 }
 
@@ -2586,15 +2493,15 @@ TableViewSectionsDelegate>
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 24;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 24;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 24;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return [_tableViewSections sectionAtIndex:section].footerTitle ? UITableViewAutomaticDimension : 24;
+//}
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {

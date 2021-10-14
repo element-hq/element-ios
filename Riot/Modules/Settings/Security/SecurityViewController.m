@@ -53,7 +53,6 @@ enum {
 
 enum {
     PIN_CODE_SETTING,
-    PIN_CODE_DESCRIPTION,
     PIN_CODE_CHANGE,
     PIN_CODE_BIOMETRICS,
     PIN_CODE_COUNT
@@ -67,7 +66,6 @@ enum {
 
 enum {
     ADVANCED_BLACKLIST_UNVERIFIED_DEVICES,
-    ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION,
     ADVANCED_COUNT
 };
 
@@ -291,17 +289,20 @@ TableViewSectionsDelegate>
     
     Section *pinCodeSection = [Section sectionWithTag:SECTION_PIN_CODE];
     
-    // Header title
+    // Header and footer
     if ([PinCodePreferences shared].isBiometricsAvailable)
     {
         pinCodeSection.headerTitle = [VectorL10n pinProtectionSettingsSectionHeaderWithBiometrics:[PinCodePreferences shared].localizedBiometricsName];
     } else {
         pinCodeSection.headerTitle = [VectorL10n pinProtectionSettingsSectionHeader];
     }
+    if (PinCodePreferences.shared.isPinSet)
+    {
+        pinCodeSection.footerTitle = VectorL10n.pinProtectionSettingsSectionFooter;
+    }
     
     // Rows
     [pinCodeSection addRowWithTag:PIN_CODE_SETTING];
-    [pinCodeSection addRowWithTag:PIN_CODE_DESCRIPTION];
     
     if ([PinCodePreferences shared].isPinSet)
     {
@@ -322,19 +323,16 @@ TableViewSectionsDelegate>
         Section *sessionsSection = [Section sectionWithTag:SECTION_CRYPTO_SESSIONS];
         
         sessionsSection.headerTitle = [VectorL10n securitySettingsCryptoSessions];
-            
-        NSUInteger sessionsSectionRowsCount;
         
         if (self.showLoadingDevicesInformation)
         {
-            sessionsSectionRowsCount = 2;
+            sessionsSection.footerTitle = VectorL10n.securitySettingsCryptoSessionsLoading;
         }
         else
         {
-            sessionsSectionRowsCount = devicesArray.count + 1;
+            sessionsSection.footerTitle = VectorL10n.securitySettingsCryptoSessionsDescription2;
+            [sessionsSection addRowsWithCount:devicesArray.count];
         }
-
-        [sessionsSection addRowsWithCount:sessionsSectionRowsCount];
         
         [sections addObject:sessionsSection];
     }
@@ -343,6 +341,7 @@ TableViewSectionsDelegate>
     
     Section *secureBackupSection = [Section sectionWithTag:SECTION_SECURE_BACKUP];
     secureBackupSection.headerTitle = [VectorL10n securitySettingsSecureBackup];
+    secureBackupSection.footerTitle = VectorL10n.securitySettingsSecureBackupDescription;
     
     [secureBackupSection addRowsWithCount:self->secureBackupSection.numberOfRows];
     
@@ -392,17 +391,13 @@ TableViewSectionsDelegate>
     
     // Advanced
     
-    Section *advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
-    advancedSection.headerTitle = [VectorL10n securitySettingsAdvanced];
-    
     if (RiotSettings.shared.settingsSecurityScreenShowAdvancedUnverifiedDevices)
     {
+        Section *advancedSection = [Section sectionWithTag:SECTION_ADVANCED];
+        advancedSection.headerTitle = VectorL10n.securitySettingsAdvanced;
+        advancedSection.footerTitle = VectorL10n.securitySettingsBlacklistUnverifiedDevicesDescription;
+        
         [advancedSection addRowWithTag:ADVANCED_BLACKLIST_UNVERIFIED_DEVICES];
-        [advancedSection addRowWithTag:ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION];
-    }
-    
-    if (advancedSection.rows.count)
-    {
         [sections addObject:advancedSection];
     }
 
@@ -1107,21 +1102,6 @@ TableViewSectionsDelegate>
     return shieldImageForDevice;
 }
 
-
-- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView withText:(NSString*)text
-{
-    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
-    cell.textLabel.text = text;
-    cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    cell.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
-    cell.textLabel.numberOfLines = 0;
-    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-    return cell;
-}
-
-
 - (MXKTableViewCellWithTextView*)textViewCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     MXKTableViewCellWithTextView *textViewCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier] forIndexPath:indexPath];
@@ -1134,17 +1114,6 @@ TableViewSectionsDelegate>
     textViewCell.mxkTextView.accessibilityIdentifier = nil;
 
     return textViewCell;
-}
-
-- (MXKTableViewCell*)descriptionCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
-{
-    MXKTableViewCell *cell = [self getDefaultTableViewCell:tableView];
-    cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    cell.textLabel.numberOfLines = 0;
-    cell.contentView.backgroundColor = ThemeService.shared.theme.headerBackgroundColor;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    return cell;
 }
 
 - (MXKTableViewCellWithButton *)buttonCellForTableView:(UITableView*)tableView atIndexPath:(NSIndexPath *)indexPath
@@ -1219,18 +1188,6 @@ TableViewSectionsDelegate>
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        else if (rowTag == PIN_CODE_DESCRIPTION)
-        {
-            if ([PinCodePreferences shared].isPinSet)
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:[VectorL10n pinProtectionSettingsSectionFooter]];
-            }
-            else
-            {
-                cell = [self descriptionCellForTableView:tableView withText:nil];
-            }
-        }
         else if (rowTag == PIN_CODE_CHANGE)
         {
             cell = [self buttonCellWithTitle:[VectorL10n pinProtectionSettingsChangePin] action:@selector(changePinCode:) forTableView:tableView atIndexPath:indexPath];
@@ -1249,32 +1206,7 @@ TableViewSectionsDelegate>
     }
     else if (sectionTag == SECTION_CRYPTO_SESSIONS)
     {
-        if (self.showLoadingDevicesInformation)
-        {
-            if (rowTag == 0)
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:[VectorL10n securitySettingsCryptoSessionsLoading]];
-            }
-            else
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:[VectorL10n securitySettingsCryptoSessionsDescription2]];
-            }
-        }
-        else
-        {
-            if (rowTag < devicesArray.count)
-            {
-                cell = [self deviceCellWithDevice:devicesArray[rowTag] forTableView:tableView];
-            }
-            else if (rowTag == devicesArray.count)
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:[VectorL10n securitySettingsCryptoSessionsDescription2]];
-                
-            }
-        }
+        cell = [self deviceCellWithDevice:devicesArray[rowTag] forTableView:tableView];
     }
     else if (sectionTag == SECTION_SECURE_BACKUP)
     {
@@ -1344,13 +1276,6 @@ TableViewSectionsDelegate>
                 cell = labelAndSwitchCell;
                 break;
             }
-            case ADVANCED_BLACKLIST_UNVERIFIED_DEVICES_DESCRIPTION:
-            {
-                cell = [self descriptionCellForTableView:tableView
-                                                withText:[VectorL10n securitySettingsBlacklistUnverifiedDevicesDescription]];
-                
-                break;
-            }
         }
     }
     
@@ -1369,7 +1294,23 @@ TableViewSectionsDelegate>
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.headerTextPrimaryColor;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    Section *tableSection = [self.tableViewSections sectionAtIndex:section];
+    return tableSection.footerTitle;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    {
+        // Customize label style
+        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
     }
 }
 
@@ -1402,19 +1343,19 @@ TableViewSectionsDelegate>
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == SECTION_CRYPTO_SESSIONS)
-    {
-        return 44;
-    }
-    return 24;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 24;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    if (section == SECTION_CRYPTO_SESSIONS)
+//    {
+//        return 44;
+//    }
+//    return 24;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 24;
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1615,20 +1556,6 @@ TableViewSectionsDelegate>
     if (indexPath)
     {
         cell = [self textViewCellForTableView:self.tableView atIndexPath:indexPath];
-    }
-    
-    return cell;
-}
-
-- (MXKTableViewCell *)settingsSecureBackupTableViewSection:(SettingsSecureBackupTableViewSection *)settingsSecureBackupTableViewSection descriptionCellForRow:(NSInteger)textCellForRow
-{
-    MXKTableViewCell *cell;
-    
-    NSIndexPath *indexPath = [self.tableViewSections exactIndexPathForRowTag:textCellForRow sectionTag:SECTION_SECURE_BACKUP];
-    
-    if (indexPath)
-    {
-        cell = [self descriptionCellForTableView:self.tableView atIndexPath:indexPath];
     }
     
     return cell;

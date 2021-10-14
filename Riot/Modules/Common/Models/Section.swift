@@ -22,6 +22,7 @@ final class Section: NSObject {
     let tag: Int
     var rows: [Row]
     var headerTitle: String?
+    var footerTitle: String?
     
     init(withTag tag: Int) {
         self.tag = tag
