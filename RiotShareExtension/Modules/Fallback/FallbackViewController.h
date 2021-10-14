@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+@import UIKit;
 
-@interface FallbackViewController : MXKViewController
+@interface FallbackViewController : UIViewController
 
 @end

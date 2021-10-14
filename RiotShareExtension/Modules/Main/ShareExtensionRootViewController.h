@@ -16,8 +16,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SharePresentingViewController : UIViewController
-
-- (void)destroy;
+@interface ShareExtensionRootViewController : UIViewController
 
 @end

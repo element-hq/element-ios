@@ -22,161 +22,188 @@
 #import "ShareExtensionManager.h"
 
 #import "ThemeService.h"
+
+#ifdef IS_SHARE_EXTENSION
 #import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
 
+@interface ShareViewController () <MXKRecentListViewControllerDelegate>
 
-@interface ShareViewController ()
+@property (nonatomic, assign, readonly) ShareViewControllerType type;
 
-@property (weak, nonatomic) IBOutlet UIView *masterContainerView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (nonatomic, assign) ShareViewControllerAccountState state;
+@property (nonatomic, strong) ShareDataSource *roomDataSource;
+@property (nonatomic, strong) ShareDataSource *peopleDataSource;
 
-@property (nonatomic) SegmentedViewController *segmentedViewController;
+@property (nonatomic, weak) IBOutlet UIView *masterContainerView;
+@property (nonatomic, weak) IBOutlet UIButton *cancelButton;
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) IBOutlet UIButton *shareButton;
+@property (nonatomic, weak) IBOutlet UIView *contentView;
 
-@property (nonatomic) id shareExtensionManagerDidUpdateAccountDataObserver;
+@property (nonatomic, strong) SegmentedViewController *segmentedViewController;
 
+@property (nonatomic, strong) MXKPieChartHUD *hudView;
 
 @end
 
 
 @implementation ShareViewController
 
-#pragma mark - Lifecycle
+- (instancetype)initWithType:(ShareViewControllerType)type
+                currentState:(ShareViewControllerAccountState)state
+{
+    if (self = [super init])
+    {
+        _type = type;
+        _state = state;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.view.tintColor = ThemeService.shared.theme.tintColor;
-    self.titleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.masterContainerView.backgroundColor = ThemeService.shared.theme.baseColor;
+    [self.masterContainerView setBackgroundColor:ThemeService.shared.theme.baseColor];
+    [self.masterContainerView.layer setCornerRadius:7.0];
     
-    self.shareExtensionManagerDidUpdateAccountDataObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kShareExtensionManagerDidUpdateAccountDataNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        [self configureViews];
+    [self.titleLabel setTextColor:ThemeService.shared.theme.textPrimaryColor];
     
-    }];
+    [self.cancelButton setTintColor:ThemeService.shared.theme.tintColor];
+    [self.cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateNormal];
+    
+    [self.shareButton setTintColor:ThemeService.shared.theme.tintColor];
+    
+    [self configureWithState:self.state roomDataSource:self.roomDataSource peopleDataSource:self.peopleDataSource];
+}
+
+- (void)configureWithState:(ShareViewControllerAccountState)state
+            roomDataSource:(ShareDataSource *)roomDataSource
+          peopleDataSource:(ShareDataSource *)peopleDataSource
+{
+    self.state = state;
+    self.roomDataSource = roomDataSource;
+    self.peopleDataSource = peopleDataSource;
+    
+    if (!self.isViewLoaded) {
+        return;
+    }
     
     [self configureViews];
 }
 
-- (void)destroy
+#pragma mark - MXKRecentListViewControllerDelegate
+
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController
+                   didSelectRoom:(NSString *)roomId
+                 inMatrixSession:(MXSession *)mxSession
 {
-    [super destroy];
-    
-    if (self.shareExtensionManagerDidUpdateAccountDataObserver)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.shareExtensionManagerDidUpdateAccountDataObserver];
-        self.shareExtensionManagerDidUpdateAccountDataObserver = nil;
-    }
-    
-    [self resetContentView];
+    [self.delegate shareViewControllerDidRequestShare:self forRoomIdentifier:roomId];
 }
 
-- (void)resetContentView
+- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController
+          didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
 {
-    // Empty the content view
-    NSArray *subviews = self.contentView.subviews;
-    for (UIView *subview in subviews)
-    {
-        [subview removeFromSuperview];
-    }
-    
-    // Release the current segmented view controller if any
-    if (self.segmentedViewController)
-    {
-        [self.segmentedViewController removeFromParentViewController];
-        
-        // Release correctly all the existing data source and view controllers.
-        [self.segmentedViewController destroy];
-        self.segmentedViewController = nil;
-    }
+    [self.delegate shareViewControllerDidRequestShare:self forRoomIdentifier:childInfo.childRoomId];
+}
+
+#pragma mark - ShareExtensionManagerDelegate
+
+- (void)showProgressIndicator
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (!self.hudView)
+        {
+            self.parentViewController.view.userInteractionEnabled = NO;
+            self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:[VectorL10n sending]];
+            [self.hudView setProgress:0.0];
+        }
+    });
+}
+
+- (void)setProgress:(CGFloat)progress
+{
+    [self.hudView setProgress:progress];
 }
 
 #pragma mark - Private
 
 - (void)configureViews
 {
-    self.masterContainerView.layer.cornerRadius = 7;
-    
     [self resetContentView];
     
-    if ([ShareExtensionManager sharedManager].userAccount)
+    if (self.state == ShareViewControllerAccountStateConfigured)
     {
         self.titleLabel.text = [VectorL10n sendTo:@""];
+        [self.shareButton setTitle:[VectorL10n roomEventActionForward] forState:UIControlStateNormal];
+        
         [self configureSegmentedViewController];
     }
     else
     {
-        NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
-        NSString *bundleDisplayName = infoDictionary[@"CFBundleDisplayName"];
-        self.titleLabel.text = bundleDisplayName;
+        self.titleLabel.text = [AppInfo.current displayName];
         [self configureFallbackViewController];
     }
 }
 
 - (void)configureSegmentedViewController
 {
-    self.segmentedViewController = [SegmentedViewController segmentedViewController];
-    
-    NSArray *titles = @[[VectorL10n titleRooms], [VectorL10n titlePeople]];
-    
-    void (^failureBlock)(void) = ^void() {
-        [self dismissViewControllerAnimated:YES completion:^{
-            [[ShareExtensionManager sharedManager] terminateExtensionCanceled:NO];
-        }];
-    };
-    
-    ShareDataSource *roomsDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModeRooms];
     RoomsListViewController *roomsViewController = [RoomsListViewController recentListViewController];
-    roomsViewController.failureBlock = failureBlock;
-    [roomsViewController displayList:roomsDataSource];
+    [roomsViewController displayList:self.roomDataSource];
+    [roomsViewController setDelegate:self];
     
-    ShareDataSource *peopleDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModePeople];
     RoomsListViewController *peopleViewController = [RoomsListViewController recentListViewController];
-    peopleViewController.failureBlock = failureBlock;
-    [peopleViewController displayList:peopleDataSource];
+    [peopleViewController setDelegate:self];
+    [peopleViewController displayList:self.peopleDataSource];
     
-    [self.segmentedViewController initWithTitles:titles viewControllers:@[roomsViewController, peopleViewController] defaultSelected:0];
+    self.segmentedViewController = [SegmentedViewController segmentedViewController];
+    [self.segmentedViewController initWithTitles:@[[VectorL10n titleRooms], [VectorL10n titlePeople]]
+                                 viewControllers:@[roomsViewController, peopleViewController] defaultSelected:0];
     
     [self addChildViewController:self.segmentedViewController];
-    [self.contentView addSubview:self.segmentedViewController.view];
+    [self.contentView vc_addSubViewMatchingParent:self.segmentedViewController.view];
     [self.segmentedViewController didMoveToParentViewController:self];
-    
-    [self autoPinSubviewEdges:self.segmentedViewController.view toSuperviewEdges:self.contentView];
 }
 
 - (void)configureFallbackViewController
 {
     FallbackViewController *fallbackVC = [FallbackViewController new];
     [self addChildViewController:fallbackVC];
-    [self.contentView addSubview:fallbackVC.view];
+    [self.contentView vc_addSubViewMatchingParent:fallbackVC.view];
     [fallbackVC didMoveToParentViewController:self];
-    
-    [self autoPinSubviewEdges:fallbackVC.view toSuperviewEdges:self.contentView];
 }
 
-- (void)autoPinSubviewEdges:(UIView *)subview toSuperviewEdges:(UIView *)superview
+- (void)resetContentView
 {
-    subview.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeWidth multiplier:1 constant:0];
-    widthConstraint.active = YES;
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
-    heightConstraint.active = YES;
-    NSLayoutConstraint *centerXConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
-    centerXConstraint.active = YES;
-    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:subview attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
-    centerYConstraint.active = YES;
+    NSArray *subviews = self.contentView.subviews;
+    for (UIView *subview in subviews)
+    {
+        [subview removeFromSuperview];
+    }
+    
+    if (self.segmentedViewController)
+    {
+        [self.segmentedViewController removeFromParentViewController];
+        
+        [self.segmentedViewController destroy];
+        self.segmentedViewController = nil;
+    }
 }
 
 #pragma mark - Actions
 
-- (IBAction)close:(UIButton *)sender
+- (IBAction)onCancelButtonTap:(UIButton *)sender
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        [[ShareExtensionManager sharedManager] terminateExtensionCanceled:YES];
-    }];
+    [self.delegate shareViewControllerDidRequestDismissal:self];
 }
 
+- (IBAction)onShareButtonTap:(UIButton *)sender
+{
+    
+}
 
 @end

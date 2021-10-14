@@ -14,9 +14,47 @@
  limitations under the License.
  */
 
-#import <Social/Social.h>
-#import <MatrixKit/MatrixKit.h>
+@import UIKit;
 
-@interface ShareViewController : MXKViewController
+@class ShareViewController;
+@class ShareDataSource;
+
+NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_ENUM(NSUInteger, ShareViewControllerType) {
+    ShareViewControllerTypeSend,
+    ShareViewControllerTypeForward
+};
+
+typedef NS_ENUM(NSUInteger, ShareViewControllerAccountState) {
+    ShareViewControllerAccountStateConfigured,
+    ShareViewControllerAccountStateNotConfigured
+};
+
+@protocol ShareViewControllerDelegate <NSObject>
+
+- (void)shareViewControllerDidRequestShare:(ShareViewController *)shareViewController
+                         forRoomIdentifier:(NSString *)roomIdentifier;
+
+- (void)shareViewControllerDidRequestDismissal:(ShareViewController *)shareViewController;
 
 @end
+
+@interface ShareViewController : UIViewController
+
+@property (nonatomic, weak, nullable) id<ShareViewControllerDelegate> delegate;
+
+- (instancetype)initWithType:(ShareViewControllerType)type
+                currentState:(ShareViewControllerAccountState)state;
+
+- (void)configureWithState:(ShareViewControllerAccountState)state
+            roomDataSource:(nullable ShareDataSource *)roomDataSource
+          peopleDataSource:(nullable ShareDataSource *)peopleDataSource;
+
+- (void)showProgressIndicator;
+
+- (void)setProgress:(CGFloat)progress;
+
+@end
+
+NS_ASSUME_NONNULL_END

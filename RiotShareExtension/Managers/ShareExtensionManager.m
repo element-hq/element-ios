@@ -15,15 +15,21 @@
  */
 
 #import "ShareExtensionManager.h"
-#import "SharePresentingViewController.h"
+#import "ShareViewController.h"
+#import "ShareDataSource.h"
+
 #import <MatrixKit/MatrixKit.h>
+
 @import MobileCoreServices;
 #import "objc/runtime.h"
 #include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
 #import <mach/mach.h>
-#import "RiotShareExtension-Swift.h"
 
-NSString *const kShareExtensionManagerDidUpdateAccountDataNotification = @"kShareExtensionManagerDidUpdateAccountDataNotification";
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
 
 static const CGFloat kLargeImageSizeMaxDimension = 2048.0;
 
@@ -35,48 +41,45 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     ImageCompressionModeLarge
 };
 
+@interface ShareExtensionManager () <ShareViewControllerDelegate>
 
-@interface ShareExtensionManager ()
+@property (nonatomic, strong, readonly) NSExtensionContext *shareExtensionContext;
+@property (nonatomic, strong, readonly) NSArray<NSExtensionItem *> *extensionItems;
 
-@property (nonatomic, readwrite) MXKAccount *userAccount;
+@property (nonatomic, strong, readonly) NSMutableArray <NSData *> *pendingImages;
+@property (nonatomic, strong, readonly) NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
+@property (nonatomic, strong, readonly) id<Configurable> configuration;
+@property (nonatomic, strong, readonly) ShareViewController *shareViewController;
 
-@property (nonatomic) NSMutableArray <NSData *> *pendingImages;
-@property (nonatomic) NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
-@property (nonatomic) ImageCompressionMode imageCompressionMode;
-@property (nonatomic) CGFloat actualLargeSize;
+@property (nonatomic, strong) MXKAccount *userAccount;
+@property (nonatomic, strong) MXFileStore *fileStore;
+
+@property (nonatomic, assign) ImageCompressionMode imageCompressionMode;
+@property (nonatomic, assign) CGFloat actualLargeSize;
 
 @end
 
 
 @implementation ShareExtensionManager
 
-#pragma mark - Lifecycle
-
-+ (instancetype)sharedManager
+- (instancetype)initWithShareExtensionContext:(NSExtensionContext *)shareExtensionContext
+                               extensionItems:(NSArray<NSExtensionItem *> *)extensionItems
 {
-    static ShareExtensionManager *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (self = [super init]) {
         
-        sharedInstance = [[self alloc] init];
+        _shareExtensionContext = shareExtensionContext;
+        _extensionItems = extensionItems;
         
-        sharedInstance.pendingImages = [NSMutableArray array];
-        sharedInstance.imageUploadProgresses = [NSMutableDictionary dictionary];
+        _pendingImages = [NSMutableArray array];
+        _imageUploadProgresses = [NSMutableDictionary dictionary];
         
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(onMediaLoaderStateDidChange:) name:kMXMediaLoaderStateDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMediaLoaderStateDidChange:) name:kMXMediaLoaderStateDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
-        // Add observer to handle logout
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:kMXKAccountManagerDidRemoveAccountNotification object:nil];
-        
-        // Add observer on the Extension host
-        [[NSNotificationCenter defaultCenter] addObserver:sharedInstance selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
-        
-        // Add observer to handle memory warning
-        [NSNotificationCenter.defaultCenter addObserver:sharedInstance selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-        
-        // Set static application settings
-        sharedInstance->_configuration = [CommonConfiguration new];
-        [sharedInstance.configuration setupSettings];
+        _configuration = [CommonConfiguration new];
+        [_configuration setupSettings];
         
         // NSLog -> console.log file when not debugging the app
         MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
@@ -91,68 +94,74 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         
         [MXLog configure:configuration];
-    });
-    return sharedInstance;
-}
-
-- (void)checkUserAccount
-{
-    // Force account manager to reload account from the local storage.
-    [[MXKAccountManager sharedManager] forceReloadAccounts];
-    
-    if (self.userAccount)
-    {
-        // Check whether the used account is still the first active one
-        MXKAccount *firstAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         
-        // Compare the access token
-        if (!firstAccount || ![self.userAccount.mxCredentials.accessToken isEqualToString:firstAccount.mxCredentials.accessToken])
-        {
-            // Remove this account
-            self.userAccount = nil;
-        }
+        _shareViewController = [[ShareViewController alloc] initWithType:ShareViewControllerTypeSend
+                                                            currentState:ShareViewControllerAccountStateNotConfigured];
+        [_shareViewController setDelegate:self];
+        
+        // Set up runtime language on each context update.
+        NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
+        NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
+        [NSBundle mxk_setLanguage:language];
+        [NSBundle mxk_setFallbackLanguage:@"en"];
+        
+        // Check the current matrix user.
+        [self checkUserAccount];
     }
     
-    if (!self.userAccount)
-    {
-        // We consider the first enabled account.
-        // TODO: Handle multiple accounts
-        self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
-    }
-    
-    // Reset the file store to reload the room data.
-    if (_fileStore)
-    {
-        [_fileStore close];
-        _fileStore = nil;
-    }
-    
-    if (self.userAccount)
-    {
-        _fileStore = [[MXFileStore alloc] initWithCredentials:self.userAccount.mxCredentials];
-    }
-    
-    // Post notification
-    [[NSNotificationCenter defaultCenter] postNotificationName:kShareExtensionManagerDidUpdateAccountDataNotification object:self.userAccount userInfo:nil];
+    return self;
 }
 
 #pragma mark - Public
 
-- (void)setShareExtensionContext:(NSExtensionContext *)shareExtensionContext
+- (UIViewController *)mainViewController
 {
-    _shareExtensionContext = shareExtensionContext;
-    
-    // Set up runtime language on each context update.
-    NSUserDefaults *sharedUserDefaults = [MXKAppSettings standardAppSettings].sharedUserDefaults;
-    NSString *language = [sharedUserDefaults objectForKey:@"appLanguage"];
-    [NSBundle mxk_setLanguage:language];
-    [NSBundle mxk_setFallbackLanguage:@"en"];
-    
-    // Check the current matrix user.
-    [self checkUserAccount];
+    return self.shareViewController;
 }
 
-- (void)sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock
+#pragma mark - ShareViewControllerDelegate
+
+- (void)shareViewControllerDidRequestShare:(ShareViewController *)shareViewController
+                         forRoomIdentifier:(NSString *)roomIdentifier
+{
+    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+    [MXFileStore setPreloadOptions:0];
+    
+    MXWeakify(session);
+    [session setStore:self.fileStore success:^{
+        MXStrongifyAndReturnIfNil(session);
+        
+        MXRoom *selectedRoom = [MXRoom loadRoomFromStore:self.fileStore withRoomId:roomIdentifier matrixSession:session];
+        
+        // Do not warn for unknown devices. We have cross-signing now
+        session.crypto.warnOnUnknowDevices = NO;
+        
+        [self _sendContentToRoom:selectedRoom failureBlock:^(NSError* error) {
+            NSString *title = [VectorL10n roomEventFailedToSend];
+            if ([error.domain isEqualToString:MXEncryptingErrorDomain])
+            {
+                title = [VectorL10n shareExtensionFailedToEncrypt];
+            }
+            
+            [self _showFailureAlert:title];
+        }];
+        
+    } failure:^(NSError *error) {
+        MXLogError(@"[ShareExtensionManager] Failed preparign matrix session");
+    }];
+}
+
+- (void)shareViewControllerDidRequestDismissal:(ShareViewController *)shareViewController
+{
+    if (self.completionCallback)
+    {
+        self.completionCallback(ShareExtensionManagerResultCancelled);
+    }
+}
+
+#pragma mark - Private
+
+- (void)_sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock
 {
     [self resetPendingData];
     
@@ -190,7 +199,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     __weak typeof(self) weakSelf = self;
     
-    for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
+    for (NSExtensionItem *item in self.extensionItems)
     {
         for (NSItemProvider *itemProvider in item.attachments)
         {
@@ -198,7 +207,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             {
                 dispatch_group_enter(requestsGroup);
                 
-                [itemProvider loadItemForTypeIdentifier:UTTypeFileUrl options:nil completionHandler:^(NSURL *fileUrl, NSError * _Null_unspecified error) {
+                [itemProvider loadItemForTypeIdentifier:UTTypeFileUrl options:nil completionHandler:^(NSURL *fileUrl, NSError *error) {
                     
                     // Switch back on the main thread to handle correctly the UI change
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -269,7 +278,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 
                 itemProvider.isLoaded = NO;
                 
-                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(id<NSSecureCoding> _Nullable itemProviderItem, NSError * _Null_unspecified error)
+                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(id<NSSecureCoding> itemProviderItem, NSError *error)
                  {
                      if (weakSelf)
                      {
@@ -340,7 +349,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                                  
                                  if (compressionPrompt)
                                  {
-                                     [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
+                                     [self presentCompressionPrompt:compressionPrompt];
                                  }
                              }
                              else
@@ -356,44 +365,44 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 dispatch_group_enter(requestsGroup);
                 
                 [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error) {
-                     
-                     // Switch back on the main thread to handle correctly the UI change
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                         
-                         if (weakSelf)
-                         {
-                             typeof(self) self = weakSelf;
-                             [self sendVideo:videoLocalUrl
-                                      toRoom:room
-                                successBlock:^{
-                                 requestSuccess(item);
-                             } failureBlock:requestFailure];
-                         }
-                         
-                     });
                     
-                 }];
+                    // Switch back on the main thread to handle correctly the UI change
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            [self sendVideo:videoLocalUrl
+                                     toRoom:room
+                               successBlock:^{
+                                requestSuccess(item);
+                            } failureBlock:requestFailure];
+                        }
+                        
+                    });
+                    
+                }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeMovie])
             {
                 dispatch_group_enter(requestsGroup);
                 
                 [itemProvider loadItemForTypeIdentifier:UTTypeMovie options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error) {
-                     
-                     // Switch back on the main thread to handle correctly the UI change
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                         
-                         if (weakSelf)
-                         {
-                             typeof(self) self = weakSelf;
-                             [self sendVideo:videoLocalUrl
-                                      toRoom:room
-                                successBlock:^{
-                                    requestSuccess(item);
-                                } failureBlock:requestFailure];
-                         }
-                         
-                     });
+                    
+                    // Switch back on the main thread to handle correctly the UI change
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        if (weakSelf)
+                        {
+                            typeof(self) self = weakSelf;
+                            [self sendVideo:videoLocalUrl
+                                     toRoom:room
+                               successBlock:^{
+                                requestSuccess(item);
+                            } failureBlock:requestFailure];
+                        }
+                        
+                    });
                      
                  }];
             }
@@ -412,63 +421,91 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         else
         {
-            [self completeRequestReturningItems:returningExtensionItems completionHandler:nil];
+            if (self.completionCallback)
+            {
+                self.completionCallback(ShareExtensionManagerResultFinished);
+            }
         }
     });
 }
 
-- (BOOL)hasImageTypeContent
+- (void)_showFailureAlert:(NSString *)title
 {
-    for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
-    {
-        for (NSItemProvider *itemProvider in item.attachments)
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    MXWeakify(self);
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (self.completionCallback)
         {
-            if ([itemProvider hasItemConformingToTypeIdentifier:(__bridge NSString *)kUTTypeImage])
-            {
-                return YES;
-            }
+            self.completionCallback(ShareExtensionManagerResultFailed);
+        }
+    }];
+    
+    [alertController addAction:okAction];
+    
+    [self.mainViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)checkUserAccount
+{
+    // Force account manager to reload account from the local storage.
+    [[MXKAccountManager sharedManager] forceReloadAccounts];
+    
+    if (self.userAccount)
+    {
+        // Check whether the used account is still the first active one
+        MXKAccount *firstAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
+        
+        // Compare the access token
+        if (!firstAccount || ![self.userAccount.mxCredentials.accessToken isEqualToString:firstAccount.mxCredentials.accessToken])
+        {
+            // Remove this account
+            self.userAccount = nil;
         }
     }
-    return NO;
-}
-
-- (void)terminateExtensionCanceled:(BOOL)canceled
-{
-    if (canceled)
+    
+    if (!self.userAccount)
     {
-        [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
-    }
-    else
-    {
-        [self.shareExtensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
+        // We consider the first enabled account.
+        // TODO: Handle multiple accounts
+        self.userAccount = [MXKAccountManager sharedManager].activeAccounts.firstObject;
     }
     
-    [self.primaryViewController destroy];
-    self.primaryViewController = nil;
+    // Reset the file store to reload the room data.
+    if (_fileStore)
+    {
+        [_fileStore close];
+        _fileStore = nil;
+    }
     
-    // FIXME: Share extension memory usage increase when launched several times and then crash due to some memory leaks.
-    // For now, we force the share extension to exit and free memory.
-    [NSException raise:@"Kill the app extension" format:@"Free memory used by share extension"];
+    if (self.userAccount)
+    {
+        _fileStore = [[MXFileStore alloc] initWithCredentials:self.userAccount.mxCredentials];
+        
+        ShareDataSource *roomDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModeRooms
+                                                                      fileStore:_fileStore
+                                                                    credentials:self.userAccount.mxCredentials];
+        
+        ShareDataSource *peopleDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModePeople
+                                                                        fileStore:_fileStore
+                                                                      credentials:self.userAccount.mxCredentials];
+        
+        [self.shareViewController configureWithState:ShareViewControllerAccountStateConfigured
+                                      roomDataSource:roomDataSource
+                                    peopleDataSource:peopleDataSource];
+    } else {
+        [self.shareViewController configureWithState:ShareViewControllerAccountStateNotConfigured
+                                      roomDataSource:nil
+                                    peopleDataSource:nil];
+    }
 }
-
-#pragma mark - Private
 
 - (void)resetPendingData
 {
     [self.pendingImages removeAllObjects];
     [self.imageUploadProgresses removeAllObjects];
-}
-
-- (void)completeRequestReturningItems:(nullable NSArray *)items completionHandler:(void(^ __nullable)(BOOL expired))completionHandler;
-{
-    [self.shareExtensionContext completeRequestReturningItems:items completionHandler:completionHandler];
-    
-    [self.primaryViewController destroy];
-    self.primaryViewController = nil;
-    
-    // FIXME: Share extension memory usage increase when launched several times and then crash due to some memory leaks.
-    // For now, we force the share extension to exit and free memory.
-    [NSException raise:@"Kill the app extension" format:@"Free memory used by share extension"];
 }
 
 - (BOOL)isAPendingImageNotOrientedUp
@@ -659,15 +696,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)didStartSendingToRoom:(MXRoom *)room
 {
-    if ([self.delegate respondsToSelector:@selector(shareExtensionManager:didStartSendingContentToRoom:)])
-    {
-        [self.delegate shareExtensionManager:self didStartSendingContentToRoom:room];
-    }
+    [self.shareViewController showProgressIndicator];
 }
 
 - (BOOL)areAttachmentsFullyLoaded
 {
-    for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
+    for (NSExtensionItem *item in self.extensionItems)
     {
         for (NSItemProvider *itemProvider in item.attachments)
         {
@@ -682,7 +716,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (BOOL)areAllAttachmentsImages
 {
-    for (NSExtensionItem *item in self.shareExtensionContext.inputItems)
+    for (NSExtensionItem *item in self.extensionItems)
     {
         for (NSItemProvider *itemProvider in item.attachments)
         {
@@ -868,6 +902,14 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
 }
 
+- (void)presentCompressionPrompt:(UIAlertController *)compressionPrompt
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [compressionPrompt popoverPresentationController].sourceView = self.mainViewController.view;
+        [compressionPrompt popoverPresentationController].sourceRect = self.mainViewController.view.frame;
+        [self.mainViewController presentViewController:compressionPrompt animated:YES completion:nil];
+    });
+}
 
 #pragma mark - Notifications
 
@@ -879,18 +921,16 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         case MXMediaLoaderStateUploadInProgress:
         {
             self.imageUploadProgresses[loader.uploadId] = (NSNumber *)loader.statisticsDict[kMXMediaLoaderProgressValueKey];
-            if ([self.delegate respondsToSelector:@selector(shareExtensionManager:mediaUploadProgress:)])
+            
+            const NSInteger totalImagesCount = self.pendingImages.count;
+            CGFloat totalProgress = 0.0;
+            
+            for (NSNumber *progress in self.imageUploadProgresses.allValues)
             {
-                const NSInteger totalImagesCount = self.pendingImages.count;
-                CGFloat totalProgress = 0.0;
-                
-                for (NSNumber *progress in self.imageUploadProgresses.allValues)
-                {
-                    totalProgress += progress.floatValue/totalImagesCount;
-                }
-                
-                [self.delegate shareExtensionManager:self mediaUploadProgress:totalProgress];
+                totalProgress += progress.floatValue/totalImagesCount;
             }
+            
+            [self.shareViewController setProgress:totalProgress];
             break;
         }
         default:
@@ -1161,7 +1201,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     MXWeakify(self);
     
     // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
-    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString * _Nullable presetName) {
+    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString *presetName) {
         MXStrongifyAndReturnIfNil(self);
         
         // If the preset name is nil, the user cancelled.
@@ -1207,9 +1247,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }];
     }];
     
-    [self.delegate shareExtensionManager:self showImageCompressionPrompt:compressionPrompt];
+    [self presentCompressionPrompt:compressionPrompt];
 }
-
 
 @end
 

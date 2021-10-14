@@ -25,7 +25,9 @@ typedef NS_ENUM(NSInteger, ShareDataSourceMode)
 
 @interface ShareDataSource : MXKRecentsDataSource
 
-- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode;
+- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode
+                   fileStore:(MXFileStore *)fileStore
+                 credentials:(MXCredentials *)credentials;
 
 /**
  Returns the cell data at the index path

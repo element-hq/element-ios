@@ -20,7 +20,9 @@
 
 @interface ShareDataSource ()
 
-@property (nonatomic, readwrite) ShareDataSourceMode dataSourceMode;
+@property (nonatomic, assign, readonly) ShareDataSourceMode dataSourceMode;
+@property (nonatomic, strong, readonly) MXFileStore *fileStore;
+@property (nonatomic, strong, readonly) MXCredentials *credentials;
 
 @property NSArray <MXKRecentCellData *> *recentCellDatas;
 @property NSMutableArray <MXKRecentCellData *> *visibleRoomCellDatas;
@@ -30,11 +32,14 @@
 @implementation ShareDataSource
 
 - (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode
+                   fileStore:(MXFileStore *)fileStore
+                 credentials:(MXCredentials *)credentials
 {
-    self = [super init];
-    if (self)
+    if (self = [super init])
     {
-        self.dataSourceMode = dataSourceMode;
+        _dataSourceMode = dataSourceMode;
+        _fileStore = fileStore;
+        _credentials = credentials;
         
         [self loadCellData];
     }
@@ -53,12 +58,12 @@
      
 - (void)loadCellData
 {
-    [[ShareExtensionManager sharedManager].fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+    [self.fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> *roomsSummaries) {
         
         NSMutableArray *cellData = [NSMutableArray array];
         
         // Add a fake matrix session to each room summary to provide it a REST client (used to handle correctly the room avatar).
-        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.credentials andOnUnrecognizedCertificateBlock:nil]];
         
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {

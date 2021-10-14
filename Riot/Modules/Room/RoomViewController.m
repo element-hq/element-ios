@@ -16,6 +16,8 @@
  limitations under the License.
  */
 
+@import MobileCoreServices;
+
 #import "RoomViewController.h"
 
 #import "RoomDataSource.h"
@@ -106,6 +108,7 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 #import "WidgetManager.h"
+#import "ShareExtensionManager.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -248,6 +251,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
 @property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
+
+@property (nonatomic, strong) ShareExtensionManager *shareExtensionManager;
 
 @property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
 @property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
@@ -3190,6 +3195,25 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+            NSExtensionItem *item = [[NSExtensionItem alloc] init];
+            item.attachments = @[[[NSItemProvider alloc] initWithItem:selectedComponent.textMessage typeIdentifier:(__bridge NSString *)kUTTypeText]];
+            
+            self.shareExtensionManager = [[ShareExtensionManager alloc] initWithShareExtensionContext:nil
+                                                                                       extensionItems:@[item]];
+            
+            MXWeakify(self);
+            [self.shareExtensionManager setCompletionCallback:^(ShareExtensionManagerResult result) {
+                MXStrongifyAndReturnIfNil(self);
+                [attachment onShareEnded];
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }];
+            
+            [self presentViewController:self.shareExtensionManager.mainViewController animated:YES completion:nil];
+        }]];
+        
         if (!isJitsiCallEvent)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
@@ -3340,7 +3364,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         
                         [self cancelEventSelection];
                         
+                        [self startActivityIndicator];
+                        
                         [attachment prepareShare:^(NSURL *fileURL) {
+                            [self stopActivityIndicator];
                             
                             __strong __typeof(weakSelf)self = weakSelf;
                             self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
@@ -3355,10 +3382,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                             }
                             
                         } failure:^(NSError *error) {
-                            
-                            //Alert user
                             [self showError:error];
-                            
+                            [self stopActivityIndicator];
                         }];
                         
                         // Start animation in case of download during attachment preparing
@@ -3367,6 +3392,44 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     
                 }]];
             }
+        }
+        
+        if (attachment.type == MXKAttachmentTypeFile ||
+            attachment.type == MXKAttachmentTypeImage ||
+            attachment.type == MXKAttachmentTypeVideo) {
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                
+                NSDictionary *attachmentTypeToIdentifier = @{@(MXKAttachmentTypeFile): (__bridge NSString *)kUTTypeFileURL,
+                                                             @(MXKAttachmentTypeImage): (__bridge NSString *)kUTTypeImage,
+                                                             @(MXKAttachmentTypeVideo): (__bridge NSString *)kUTTypeVideo};
+                
+                [self startActivityIndicator];
+                
+                [attachment prepareShare:^(NSURL *fileURL) {
+                    [self stopActivityIndicator];
+                    
+                    NSExtensionItem *item = [[NSExtensionItem alloc] init];
+                    item.attachments = @[[[NSItemProvider alloc] initWithItem:fileURL typeIdentifier:attachmentTypeToIdentifier[@(attachment.type)]]];
+                    
+                    self.shareExtensionManager = [[ShareExtensionManager alloc] initWithShareExtensionContext:nil
+                                                                                               extensionItems:@[item]];
+                    
+                    MXWeakify(self);
+                    [self.shareExtensionManager setCompletionCallback:^(ShareExtensionManagerResult result) {
+                        MXStrongifyAndReturnIfNil(self);
+                        [attachment onShareEnded];
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    }];
+                    
+                    [self presentViewController:self.shareExtensionManager.mainViewController animated:YES completion:nil];
+                } failure:^(NSError *error) {
+                    [self showError:error];
+                    [self stopActivityIndicator];
+                }];
+            }]];
         }
     }
     

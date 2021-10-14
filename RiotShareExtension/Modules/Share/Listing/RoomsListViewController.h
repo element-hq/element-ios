@@ -18,8 +18,8 @@
 #import "MXRoom+Riot.h"
 #import "ShareDataSource.h"
 
-@interface RoomsListViewController : MXKRecentListViewController
+@class RoomsListViewController;
 
-@property (copy) void (^failureBlock)(void);
+@interface RoomsListViewController : MXKRecentListViewController
 
 @end
