@@ -58,29 +58,29 @@ PODS:
   - MatomoTracker (7.4.1):
     - MatomoTracker/Core (= 7.4.1)
   - MatomoTracker/Core (7.4.1)
-  - MatrixKit (0.16.6):
+  - MatrixKit (0.16.7):
     - Down (~> 0.11.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixKit/Core (= 0.16.6)
-    - MatrixSDK (= 0.20.6)
-  - MatrixKit/Core (0.16.6):
+    - MatrixKit/Core (= 0.16.7)
+    - MatrixSDK (= 0.20.7)
+  - MatrixKit/Core (0.16.7):
     - Down (~> 0.11.0)
     - DTCoreText (~> 1.6.25)
     - HPGrowingTextView (~> 1.1)
     - libPhoneNumber-iOS (~> 0.9.13)
-    - MatrixSDK (= 0.20.6)
-  - MatrixSDK (0.20.6):
-    - MatrixSDK/Core (= 0.20.6)
-  - MatrixSDK/Core (0.20.6):
+    - MatrixSDK (= 0.20.7)
+  - MatrixSDK (0.20.7):
+    - MatrixSDK/Core (= 0.20.7)
+  - MatrixSDK/Core (0.20.7):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.5)
     - Realm (= 10.16.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.20.6):
+  - MatrixSDK/JingleCallStack (0.20.7):
     - JitsiMeetSDK (= 3.10.2)
     - MatrixSDK/Core
   - OLMKit (3.2.5):
@@ -124,7 +124,7 @@ DEPENDENCIES:
   - KeychainAccess (~> 4.2.2)
   - KTCenterFlowLayout (~> 1.3.1)
   - MatomoTracker (~> 7.4.1)
-  - MatrixKit (= 0.16.6)
+  - MatrixKit (= 0.16.7)
   - MatrixSDK
   - MatrixSDK/JingleCallStack
   - OLMKit
@@ -204,8 +204,8 @@ SPEC CHECKSUMS:
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
   MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
-  MatrixKit: 38f18f930af238abe44189909b16953e657d0ffc
-  MatrixSDK: 37d6bc484fa90c39db46ed25fd3a4c707bb70452
+  MatrixKit: d0346f60c7d0723066f6a3e94ebee789edc1f580
+  MatrixSDK: 1d7a64d1e25f746e35157a68374b4282b5581188
   OLMKit: 9fb4799c4a044dd2c06bda31ec31a12191ad30b5
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: b6027801398f3743fc222f096faa85281b506e6c
@@ -219,6 +219,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: c05591899cb3d6d02e404d4b48a02a1e6187d6bd
+PODFILE CHECKSUM: 3c829592a4e938c0248c7eb66e1aa9c4493b2334
 
 COCOAPODS: 1.11.2
