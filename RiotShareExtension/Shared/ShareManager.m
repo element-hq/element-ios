@@ -43,13 +43,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 @interface ShareManager () <ShareViewControllerDelegate>
 
-@property (nonatomic, strong, readonly) NSExtensionContext *shareExtensionContext;
 @property (nonatomic, strong, readonly) NSArray<NSExtensionItem *> *extensionItems;
+@property (nonatomic, strong, readonly) ShareViewController *shareViewController;
 
 @property (nonatomic, strong, readonly) NSMutableArray <NSData *> *pendingImages;
 @property (nonatomic, strong, readonly) NSMutableDictionary <NSString *, NSNumber *> *imageUploadProgresses;
 @property (nonatomic, strong, readonly) id<Configurable> configuration;
-@property (nonatomic, strong, readonly) ShareViewController *shareViewController;
 
 @property (nonatomic, strong) MXKAccount *userAccount;
 @property (nonatomic, strong) MXFileStore *fileStore;
@@ -62,13 +61,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 @implementation ShareManager
 
-- (instancetype)initWithShareExtensionContext:(NSExtensionContext *)shareExtensionContext
-                               extensionItems:(NSArray<NSExtensionItem *> *)extensionItems
+- (instancetype)initWithItems:(NSArray<NSExtensionItem *> *)items
 {
     if (self = [super init]) {
         
-        _shareExtensionContext = shareExtensionContext;
-        _extensionItems = extensionItems;
+        _extensionItems = items;
         
         _pendingImages = [NSMutableArray array];
         _imageUploadProgresses = [NSMutableDictionary dictionary];
@@ -78,7 +75,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkUserAccount) name:NSExtensionHostWillEnterForegroundNotification object:nil];
         [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
         
-        _configuration = [CommonConfiguration new];
+        _configuration = [[CommonConfiguration alloc] init];
         [_configuration setupSettings];
         
         // NSLog -> console.log file when not debugging the app
@@ -131,21 +128,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [session setStore:self.fileStore success:^{
         MXStrongifyAndReturnIfNil(session);
         
+        session.crypto.warnOnUnknowDevices = NO; // Do not warn for unknown devices. We have cross-signing now
+        
         MXRoom *selectedRoom = [MXRoom loadRoomFromStore:self.fileStore withRoomId:roomIdentifier matrixSession:session];
-        
-        // Do not warn for unknown devices. We have cross-signing now
-        session.crypto.warnOnUnknowDevices = NO;
-        
-        [self _sendContentToRoom:selectedRoom failureBlock:^(NSError* error) {
-            NSString *title = [VectorL10n roomEventFailedToSend];
-            if ([error.domain isEqualToString:MXEncryptingErrorDomain])
-            {
-                title = [VectorL10n shareExtensionFailedToEncrypt];
-            }
-            
-            [self _showFailureAlert:title];
+        [self sendContentToRoom:selectedRoom success:nil failure:^(NSError *error){
+            [self showFailureAlert:[VectorL10n roomEventFailedToSend]];
         }];
-        
     } failure:^(NSError *error) {
         MXLogError(@"[ShareManager] Failed preparign matrix session");
     }];
@@ -153,15 +141,12 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)shareViewControllerDidRequestDismissal:(ShareViewController *)shareViewController
 {
-    if (self.completionCallback)
-    {
-        self.completionCallback(ShareManagerResultCancelled);
-    }
+    self.completionCallback(ShareManagerResultCancelled);
 }
 
 #pragma mark - Private
 
-- (void)_sendContentToRoom:(MXRoom *)room failureBlock:(void(^)(NSError *error))failureBlock
+- (void)sendContentToRoom:(MXRoom *)room success:(void(^)(void))success failure:(void(^)(NSError *))failure
 {
     [self resetPendingData];
     
@@ -176,17 +161,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     NSMutableArray <NSItemProvider *> *pendingImagesItemProviders = [NSMutableArray new]; // Used to keep NSItemProvider associated to pending images (used only when all items are images).
 
     __block NSError *firstRequestError = nil;
-    __block NSMutableArray *returningExtensionItems = [NSMutableArray new];
-    dispatch_group_t requestsGroup = dispatch_group_create();
-    
-    void (^requestSuccess)(NSExtensionItem*) = ^(NSExtensionItem *extensionItem) {
-        if (extensionItem && ![returningExtensionItems containsObject:extensionItem])
-        {
-            [returningExtensionItems addObject:extensionItem];
-        }
-        
-        dispatch_group_leave(requestsGroup);
-    };
+    dispatch_group_t dispatchGroup = dispatch_group_create();
     
     void (^requestFailure)(NSError*) = ^(NSError *requestError) {
         if (requestError && !firstRequestError)
@@ -194,242 +169,171 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             firstRequestError = requestError;
         }
         
-        dispatch_group_leave(requestsGroup);
+        dispatch_group_leave(dispatchGroup);
     };
     
-    __weak typeof(self) weakSelf = self;
-    
+    MXWeakify(self);
     for (NSExtensionItem *item in self.extensionItems)
     {
         for (NSItemProvider *itemProvider in item.attachments)
         {
             if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeFileUrl])
             {
-                dispatch_group_enter(requestsGroup);
-                
+                dispatch_group_enter(dispatchGroup);
                 [itemProvider loadItemForTypeIdentifier:UTTypeFileUrl options:nil completionHandler:^(NSURL *fileUrl, NSError *error) {
-                    
-                    // Switch back on the main thread to handle correctly the UI change
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            [self sendFileWithUrl:fileUrl
-                                           toRoom:room
-                                     successBlock:^{
-                                         requestSuccess(item);
-                                     } failureBlock:requestFailure];
-                        }
-                        
+                        MXStrongifyAndReturnIfNil(self);
+                        [self sendFileWithUrl:fileUrl toRoom:room successBlock:^{
+                            dispatch_group_leave(dispatchGroup);
+                        } failureBlock:requestFailure];
                     });
                     
                 }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeText])
             {
-                dispatch_group_enter(requestsGroup);
-                
-                [itemProvider loadItemForTypeIdentifier:UTTypeText options:nil completionHandler:^(NSString *text, NSError * _Null_unspecified error) {
-                    
-                    // Switch back on the main thread to handle correctly the UI change
+                dispatch_group_enter(dispatchGroup);
+                [itemProvider loadItemForTypeIdentifier:UTTypeText options:nil completionHandler:^(NSString *text, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            [self sendText:text
-                                    toRoom:room
-                              successBlock:^{
-                                  requestSuccess(item);
-                              } failureBlock:requestFailure];
-                        }
-                        
+                        MXStrongifyAndReturnIfNil(self);
+                        [self sendText:text toRoom:room successBlock:^{
+                            dispatch_group_leave(dispatchGroup);
+                        } failureBlock:requestFailure];
                     });
                     
                 }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeURL])
             {
-                dispatch_group_enter(requestsGroup);
-                
-                [itemProvider loadItemForTypeIdentifier:UTTypeURL options:nil completionHandler:^(NSURL *url, NSError * _Null_unspecified error) {
-                    
-                    // Switch back on the main thread to handle correctly the UI change
+                dispatch_group_enter(dispatchGroup);
+                [itemProvider loadItemForTypeIdentifier:UTTypeURL options:nil completionHandler:^(NSURL *url, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            [self sendText:url.absoluteString
-                                    toRoom:room
-                              successBlock:^{
-                                        requestSuccess(item);
-                            } failureBlock:requestFailure];
-                        }
-                        
+                        MXStrongifyAndReturnIfNil(self);
+                        [self sendText:url.absoluteString toRoom:room successBlock:^{
+                            dispatch_group_leave(dispatchGroup);
+                        } failureBlock:requestFailure];
                     });
-                    
                 }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeImage])
             {
-                dispatch_group_enter(requestsGroup);
-                
                 itemProvider.isLoaded = NO;
                 
-                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(id<NSSecureCoding> itemProviderItem, NSError *error)
-                 {
-                     if (weakSelf)
-                     {
-                         typeof(self) self = weakSelf;
-                         itemProvider.isLoaded = YES;
-                         
-                         NSData *imageData;
-                         
-                         if ([(NSObject *)itemProviderItem isKindOfClass:[NSData class]])
-                         {
-                             imageData = (NSData*)itemProviderItem;
-                         }
-                         else if ([(NSObject *)itemProviderItem isKindOfClass:[NSURL class]])
-                         {
-                             NSURL *imageURL = (NSURL*)itemProviderItem;
-                             imageData = [NSData dataWithContentsOfURL:imageURL];
-                         }
-                         else if ([(NSObject *)itemProviderItem isKindOfClass:[UIImage class]])
-                         {
-                             // An application can share directly an UIImage.
-                             // The most common case is screenshot sharing without saving to file.
-                             // As screenshot using PNG format when they are saved to file we also use PNG format when saving UIImage to NSData.
-                             UIImage *image = (UIImage*)itemProviderItem;
-                             imageData = UIImagePNGRepresentation(image);
-                         }
-                         
-                         if (imageData)
-                         {
-                             if (areAllAttachmentsImages)
-                             {
-                                 [self.pendingImages addObject:imageData];
-                                 [pendingImagesItemProviders addObject:itemProvider];
-                             }
-                             else
-                             {
-                                 CGSize imageSize = [self imageSizeFromImageData:imageData];
-                                 self.imageCompressionMode = ImageCompressionModeNone;
-                                 self.actualLargeSize = MAX(imageSize.width, imageSize.height);
-                                 
-                                 [self sendImageData:imageData
-                                        withProvider:itemProvider
-                                              toRoom:room
-                                        successBlock:^{
-                                            requestSuccess(item);
-                                        } failureBlock:requestFailure];
-                             }
-                         }
-                         else
-                         {
-                             MXLogError(@"[ShareManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
-                             dispatch_group_leave(requestsGroup);
-                         }
-                         
-                         // Only prompt for image resize if all items are images
-                         // Ignore showMediaCompressionPrompt setting due to memory constraints with full size images.
-                         if (areAllAttachmentsImages)
-                         {
-                             if ([self areAttachmentsFullyLoaded])
-                             {
-                                 UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
-                                     [self sendImageDatas:self.pendingImages
-                                            withProviders:pendingImagesItemProviders
-                                                   toRoom:room
-                                             successBlock:^{
-                                                 requestSuccess(item);
-                                             } failureBlock:requestFailure];
-                                 }];
-                                 
-                                 if (compressionPrompt)
-                                 {
-                                     [self presentCompressionPrompt:compressionPrompt];
-                                 }
-                             }
-                             else
-                             {
-                                 dispatch_group_leave(requestsGroup);
-                             }
-                         }
-                     }
-                 }];
+                dispatch_group_enter(dispatchGroup);
+                [itemProvider loadItemForTypeIdentifier:UTTypeImage options:nil completionHandler:^(id<NSSecureCoding> itemProviderItem, NSError *error) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    itemProvider.isLoaded = YES;
+                    
+                    NSData *imageData;
+                    if ([(NSObject *)itemProviderItem isKindOfClass:[NSData class]])
+                    {
+                        imageData = (NSData*)itemProviderItem;
+                    }
+                    else if ([(NSObject *)itemProviderItem isKindOfClass:[NSURL class]])
+                    {
+                        NSURL *imageURL = (NSURL*)itemProviderItem;
+                        imageData = [NSData dataWithContentsOfURL:imageURL];
+                    }
+                    else if ([(NSObject *)itemProviderItem isKindOfClass:[UIImage class]])
+                    {
+                        // An application can share directly an UIImage.
+                        // The most common case is screenshot sharing without saving to file.
+                        // As screenshot using PNG format when they are saved to file we also use PNG format when saving UIImage to NSData.
+                        UIImage *image = (UIImage*)itemProviderItem;
+                        imageData = UIImagePNGRepresentation(image);
+                    }
+                    
+                    if (imageData)
+                    {
+                        if (areAllAttachmentsImages)
+                        {
+                            [self.pendingImages addObject:imageData];
+                            [pendingImagesItemProviders addObject:itemProvider];
+                        }
+                        else
+                        {
+                            CGSize imageSize = [self imageSizeFromImageData:imageData];
+                            self.imageCompressionMode = ImageCompressionModeNone;
+                            self.actualLargeSize = MAX(imageSize.width, imageSize.height);
+                            
+                            [self sendImageData:imageData withProvider:itemProvider toRoom:room successBlock:^{
+                                dispatch_group_leave(dispatchGroup);
+                            } failureBlock:requestFailure];
+                        }
+                    }
+                    else
+                    {
+                        MXLogError(@"[ShareManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
+                        dispatch_group_leave(dispatchGroup);
+                    }
+                    
+                    // Only prompt for image resize if all items are images
+                    // Ignore showMediaCompressionPrompt setting due to memory constraints with full size images.
+                    if (areAllAttachmentsImages)
+                    {
+                        if ([self areAttachmentsFullyLoaded])
+                        {
+                            UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
+                                [self sendImageDatas:self.pendingImages withProviders:pendingImagesItemProviders toRoom:room successBlock:^{
+                                    dispatch_group_leave(dispatchGroup);
+                                } failureBlock:requestFailure];
+                            }];
+                            
+                            if (compressionPrompt)
+                            {
+                                [self presentCompressionPrompt:compressionPrompt];
+                            }
+                        }
+                        else
+                        {
+                            dispatch_group_leave(dispatchGroup);
+                        }
+                    }
+                }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeVideo])
             {
-                dispatch_group_enter(requestsGroup);
-                
-                [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error) {
-                    
-                    // Switch back on the main thread to handle correctly the UI change
+                dispatch_group_enter(dispatchGroup);
+                [itemProvider loadItemForTypeIdentifier:UTTypeVideo options:nil completionHandler:^(NSURL *videoLocalUrl, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            [self sendVideo:videoLocalUrl
-                                     toRoom:room
-                               successBlock:^{
-                                requestSuccess(item);
-                            } failureBlock:requestFailure];
-                        }
-                        
+                        MXStrongifyAndReturnIfNil(self);
+                        [self sendVideo:videoLocalUrl toRoom:room successBlock:^{
+                            dispatch_group_leave(dispatchGroup);
+                        } failureBlock:requestFailure];
                     });
-                    
                 }];
             }
             else if ([itemProvider hasItemConformingToTypeIdentifier:UTTypeMovie])
             {
-                dispatch_group_enter(requestsGroup);
-                
-                [itemProvider loadItemForTypeIdentifier:UTTypeMovie options:nil completionHandler:^(NSURL *videoLocalUrl, NSError * _Null_unspecified error) {
-                    
-                    // Switch back on the main thread to handle correctly the UI change
+                dispatch_group_enter(dispatchGroup);
+                [itemProvider loadItemForTypeIdentifier:UTTypeMovie options:nil completionHandler:^(NSURL *videoLocalUrl, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        if (weakSelf)
-                        {
-                            typeof(self) self = weakSelf;
-                            [self sendVideo:videoLocalUrl
-                                     toRoom:room
-                               successBlock:^{
-                                requestSuccess(item);
-                            } failureBlock:requestFailure];
-                        }
-                        
+                        MXStrongifyAndReturnIfNil(self);
+                        [self sendVideo:videoLocalUrl toRoom:room successBlock:^{
+                            dispatch_group_leave(dispatchGroup);
+                        } failureBlock:requestFailure];
                     });
-                     
-                 }];
+                }];
             }
         }
     }
     
-    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
         [self resetPendingData];
         
         if (firstRequestError)
         {
-            if (failureBlock)
-            {
-                failureBlock(firstRequestError);
-            }
+            failure(firstRequestError);
         }
         else
         {
-            if (self.completionCallback)
-            {
-                self.completionCallback(ShareManagerResultFinished);
-            }
+            self.completionCallback(ShareManagerResultFinished);
         }
     });
 }
 
-- (void)_showFailureAlert:(NSString *)title
+- (void)showFailureAlert:(NSString *)title
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     
@@ -534,145 +438,14 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         return nil;
     }
     
-    UIAlertController *compressionPrompt;
     BOOL isAPendingImageNotOrientedUp = [self isAPendingImageNotOrientedUp];
     
     NSData *firstImageData = self.pendingImages.firstObject;
     UIImage *firstImage = [UIImage imageWithData:firstImageData];
     
-    // Get available sizes for this image
     MXKImageCompressionSizes compressionSizes = [MXKTools availableCompressionSizesForImage:firstImage originalFileSize:firstImageData.length];
     
-    // Apply the compression mode
-    if (compressionSizes.small.fileSize || compressionSizes.medium.fileSize || compressionSizes.large.fileSize)
-    {
-        __weak typeof(self) weakSelf = self;
-        
-        compressionPrompt = [UIAlertController alertControllerWithTitle:[MatrixKitL10n attachmentSizePromptTitle]
-                                                                message:[MatrixKitL10n attachmentSizePromptMessage]
-                                                         preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        if (compressionSizes.small.fileSize)
-        {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.small.fileSize];
-            
-            NSString *title = [MatrixKitL10n attachmentSmall:fileSizeString];
-            
-            [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction * action) {
-                                                                    
-                                                                    if (weakSelf)
-                                                                    {
-                                                                        typeof(self) self = weakSelf;
-                                                                        
-                                                                        // Send the small image
-                                                                        self.imageCompressionMode = ImageCompressionModeSmall;
-                                                                        
-                                                                        [self logCompressionSizeChoice:compressionSizes.large];
-                                                                        
-                                                                        if (shareBlock)
-                                                                        {
-                                                                            shareBlock();
-                                                                        }
-                                                                    }
-                                                                    
-                                                                }]];
-        }
-        
-        if (compressionSizes.medium.fileSize)
-        {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.medium.fileSize];
-            
-            NSString *title = [MatrixKitL10n attachmentMedium:fileSizeString];
-            
-            [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction * action) {
-                                                                    
-                                                                    if (weakSelf)
-                                                                    {
-                                                                        typeof(self) self = weakSelf;
-                                                                        
-                                                                        // Send the medium image
-                                                                        self.imageCompressionMode = ImageCompressionModeMedium;
-                                                                        
-                                                                        [self logCompressionSizeChoice:compressionSizes.large];
-                                                                        
-                                                                        if (shareBlock)
-                                                                        {
-                                                                            shareBlock();
-                                                                        }
-                                                                    }
-                                                                    
-                                                                }]];
-        }
-        
-        // Do not offer the possibility to resize an image with a dimension above kLargeImageSizeMaxDimension, to prevent the risk of memory limit exception.
-        // TODO: Remove this condition when issue https://github.com/vector-im/riot-ios/issues/2341 will be fixed.
-        if (compressionSizes.large.fileSize && (MAX(compressionSizes.large.imageSize.width, compressionSizes.large.imageSize.height) <= kLargeImageSizeMaxDimension))
-        {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.large.fileSize];
-            
-            NSString *title = [MatrixKitL10n attachmentLarge:fileSizeString];
-            
-            [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction * action) {
-                                                                    
-                                                                    if (weakSelf)
-                                                                    {
-                                                                        typeof(self) self = weakSelf;
-                                                                        
-                                                                        // Send the large image
-                                                                        self.imageCompressionMode = ImageCompressionModeLarge;
-                                                                        self.actualLargeSize = compressionSizes.actualLargeSize;
-                                                                        
-                                                                        [self logCompressionSizeChoice:compressionSizes.large];
-                                                                        
-                                                                        if (shareBlock)
-                                                                        {
-                                                                            shareBlock();
-                                                                        }
-                                                                    }
-                                                                    
-                                                                }]];
-        }
-        
-        // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
-        if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
-        {
-            NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
-            
-            NSString *title = [MatrixKitL10n attachmentOriginal:fileSizeString];
-            
-            [compressionPrompt addAction:[UIAlertAction actionWithTitle:title
-                                                                  style:UIAlertActionStyleDefault
-                                                                handler:^(UIAlertAction * action) {
-                                                                    
-                                                                    if (weakSelf)
-                                                                    {
-                                                                        typeof(self) self = weakSelf;
-                                                                        
-                                                                        self.imageCompressionMode = ImageCompressionModeNone;
-                                                                        
-                                                                        [self logCompressionSizeChoice:compressionSizes.large];
-                                                                        if (shareBlock)
-                                                                        {
-                                                                            shareBlock();
-                                                                        }
-                                                                    }
-                                                                    
-                                                                }]];
-        }
-        
-        [compressionPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
-                                                              style:UIAlertActionStyleCancel
-                                                            handler:nil]];
-        
-        
-    }
-    else
+    if (compressionSizes.small.fileSize == 0 && compressionSizes.medium.fileSize == 0 && compressionSizes.large.fileSize == 0)
     {
         if (isAPendingImageNotOrientedUp && self.pendingImages.count > 1)
         {
@@ -685,11 +458,85 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         MXLogDebug(@"[ShareManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
         
-        if (shareBlock)
-        {
-            shareBlock();
-        }
+        shareBlock();
+        
+        return nil;
     }
+    
+    UIAlertController *compressionPrompt = [UIAlertController alertControllerWithTitle:[MatrixKitL10n attachmentSizePromptTitle]
+                                                                               message:[MatrixKitL10n attachmentSizePromptMessage]
+                                                                        preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    if (compressionSizes.small.fileSize)
+    {
+        NSString *title = [MatrixKitL10n attachmentSmall:[MXTools fileSizeToString:compressionSizes.small.fileSize]];
+        
+        MXWeakify(self);
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            self.imageCompressionMode = ImageCompressionModeSmall;
+            [self logCompressionSizeChoice:compressionSizes.large];
+            
+            shareBlock();
+        }]];
+    }
+    
+    if (compressionSizes.medium.fileSize)
+    {
+        NSString *title = [MatrixKitL10n attachmentMedium:[MXTools fileSizeToString:compressionSizes.medium.fileSize]];
+        
+        MXWeakify(self);
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            self.imageCompressionMode = ImageCompressionModeMedium;
+            [self logCompressionSizeChoice:compressionSizes.large];
+            
+            shareBlock();
+        }]];
+    }
+    
+    // Do not offer the possibility to resize an image with a dimension above kLargeImageSizeMaxDimension, to prevent the risk of memory limit exception.
+    // TODO: Remove this condition when issue https://github.com/vector-im/riot-ios/issues/2341 will be fixed.
+    if (compressionSizes.large.fileSize && (MAX(compressionSizes.large.imageSize.width, compressionSizes.large.imageSize.height) <= kLargeImageSizeMaxDimension))
+    {
+        NSString *title = [MatrixKitL10n attachmentLarge:[MXTools fileSizeToString:compressionSizes.large.fileSize]];
+        
+        MXWeakify(self);
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            self.imageCompressionMode = ImageCompressionModeLarge;
+            self.actualLargeSize = compressionSizes.actualLargeSize;
+            
+            [self logCompressionSizeChoice:compressionSizes.large];
+            
+            shareBlock();
+        }]];
+    }
+    
+    // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
+    if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
+    {
+        NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
+        
+        NSString *title = [MatrixKitL10n attachmentOriginal:fileSizeString];
+        
+        MXWeakify(self);
+        [compressionPrompt addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            self.imageCompressionMode = ImageCompressionModeNone;
+            [self logCompressionSizeChoice:compressionSizes.large];
+            
+            shareBlock();
+        }]];
+    }
+    
+    [compressionPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:nil]];
     
     return compressionPrompt;
 }
@@ -952,24 +799,15 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     if (!text)
     {
         MXLogError(@"[ShareManager] loadItemForTypeIdentifier: failed.");
-        if (failureBlock)
-        {
-            failureBlock(nil);
-        }
+        failureBlock(nil);
         return;
     }
     
     [room sendTextMessage:text success:^(NSString *eventId) {
-        if (successBlock)
-        {
-            successBlock();
-        }
+        successBlock();
     } failure:^(NSError *error) {
         MXLogError(@"[ShareManager] sendTextMessage failed with error %@", error);
-        if (failureBlock)
-        {
-            failureBlock(error);
-        }
+        failureBlock(error);
     }];
 }
 
@@ -979,10 +817,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     if (!fileUrl)
     {
         MXLogError(@"[ShareManager] loadItemForTypeIdentifier: failed.");
-        if (failureBlock)
-        {
-            failureBlock(nil);
-        }
+        failureBlock(nil);
         return;
     }
     
@@ -992,16 +827,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     CFRelease(uti);
     
     [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
-        if (successBlock)
-        {
-            successBlock();
-        }
+        successBlock();
     } failure:^(NSError *error) {
         MXLogError(@"[ShareManager] sendFile failed with error %@", error);
-        if (failureBlock)
-        {
-            failureBlock(error);
-        }
+        failureBlock(error);
     } keepActualFilename:YES];
 }
 
@@ -1116,17 +945,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
     
     [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
-        if (successBlock)
-        {
-            successBlock();
-        }
+        successBlock();
     } failure:^(NSError *error) {
         MXLogError(@"[ShareManager] sendImage failed with error %@", error);
-        if (failureBlock)
-        {
-            failureBlock(error);
-        }
-        
+        failureBlock(error);
     }];
 }
 
@@ -1135,11 +957,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     if (imageDatas.count == 0 || imageDatas.count != itemProviders.count)
     {
         MXLogError(@"[ShareManager] sendImages: no images to send.");
-        
-        if (failureBlock)
-        {
-            failureBlock(nil);
-        }
+        failureBlock(nil);
         return;
     }
     
@@ -1178,17 +996,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         if (firstRequestError)
         {
-            if (failureBlock)
-            {
-                failureBlock(firstRequestError);
-            }
+            failureBlock(firstRequestError);
         }
         else
         {
-            if (successBlock)
-            {
-                successBlock();
-            }
+            successBlock();
         }
     });
 }
@@ -1216,10 +1028,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         if (!videoLocalUrl)
         {
             MXLogError(@"[ShareManager] loadItemForTypeIdentifier: failed.");
-            if (failureBlock)
-            {
-                failureBlock(nil);
-            }
+            failureBlock(nil);
             return;
         }
         
@@ -1233,16 +1042,10 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         CFRelease(imageRef);
         
         [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
-            if (successBlock)
-            {
-                successBlock();
-            }
+            successBlock();
         } failure:^(NSError *error) {
             MXLogError(@"[ShareManager] Failed sending video with error %@", error);
-            if (failureBlock)
-            {
-                failureBlock(error);
-            }
+            failureBlock(error);
         }];
     }];
     

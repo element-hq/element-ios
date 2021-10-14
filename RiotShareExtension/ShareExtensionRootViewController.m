@@ -32,45 +32,36 @@
 
 @implementation ShareExtensionRootViewController
 
-- (instancetype)init
+- (void)viewDidLoad
 {
-    if(self = [super init]) {
-        
-        [ThemeService.shared setThemeId:RiotSettings.shared.userInterfaceTheme];
-        
-        _shareManager = [[ShareManager alloc] initWithShareExtensionContext:self.extensionContext
-                                                                               extensionItems:self.extensionContext.inputItems];
-        
-        MXWeakify(self);
-        [_shareManager setCompletionCallback:^(ShareManagerResult result) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            switch (result)
-            {
-                case ShareManagerResultFinished:
-                    [self.extensionContext completeRequestReturningItems:nil completionHandler:nil];
-                    [self _dismiss];
-                    break;
-                case ShareManagerResultCancelled:
-                    [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
-                    [self _dismiss];
-                    break;
-                case ShareManagerResultFailed:
-                    [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
-                    [self _dismiss];
-                    break;
-                default:
-                    break;
-            }
-        }];
-    }
+    [super viewDidLoad];
     
-    return self;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+    [ThemeService.shared setThemeId:RiotSettings.shared.userInterfaceTheme];
+    
+    _shareManager = [[ShareManager alloc] initWithItems:self.extensionContext.inputItems];
+    
+    MXWeakify(self);
+    [_shareManager setCompletionCallback:^(ShareManagerResult result) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        switch (result)
+        {
+            case ShareManagerResultFinished:
+                [self.extensionContext completeRequestReturningItems:nil completionHandler:nil];
+                [self _dismiss];
+                break;
+            case ShareManagerResultCancelled:
+                [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
+                [self _dismiss];
+                break;
+            case ShareManagerResultFailed:
+                [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
+                [self _dismiss];
+                break;
+            default:
+                break;
+        }
+    }];
     
     [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
 }

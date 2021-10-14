@@ -16,6 +16,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, ShareManagerResult) {
     ShareManagerResultFinished,
     ShareManagerResultCancelled,
@@ -26,8 +28,7 @@ typedef NS_ENUM(NSUInteger, ShareManagerResult) {
 
 @property (nonatomic, copy) void (^completionCallback)(ShareManagerResult);
 
-- (instancetype)initWithShareExtensionContext:(NSExtensionContext *)shareExtensionContext
-                               extensionItems:(NSArray<NSExtensionItem *> *)extensionItems;
+- (instancetype)initWithItems:(NSArray<NSExtensionItem *> *)items;
 
 - (UIViewController *)mainViewController;
 
@@ -39,3 +40,5 @@ typedef NS_ENUM(NSUInteger, ShareManagerResult) {
 @property BOOL isLoaded;
 
 @end
+
+NS_ASSUME_NONNULL_END
