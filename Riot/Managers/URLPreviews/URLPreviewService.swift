@@ -33,22 +33,6 @@ class URLPreviewService: NSObject {
     
     /// A persistent store backed by Core Data to reduce network requests
     private let store = URLPreviewStore()
-    /// The observer that re-enables link detection on sign out,
-    private let resetLinkDetectionObserver: Any
-    
-    // MARK: - Setup
-    
-    override init() {
-        resetLinkDetectionObserver = NotificationCenter.default.addObserver(forName: .mxkAccountManagerDidRemoveAccount, object: nil, queue: .main) { _ in
-            MXKAppSettings.standard().enableBubbleComponentLinkDetection = true
-        }
-        
-        super.init()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(resetLinkDetectionObserver)
-    }
     
     // MARK: - Public
     
@@ -102,9 +86,11 @@ class URLPreviewService: NSObject {
         store.removeExpiredItems()
     }
     
-    /// Deletes all cached preview data and closed previews from the store.
+    /// Deletes all cached preview data and closed previews from the store,
+    /// re-enabling URL previews if they have been disabled by `checkForDisabledAPI`.
     func clearStore() {
         store.deleteAll()
+        MXKAppSettings.standard().enableBubbleComponentLinkDetection = true
     }
     
     /// Store the `eventId` and `roomId` of a closed preview.
