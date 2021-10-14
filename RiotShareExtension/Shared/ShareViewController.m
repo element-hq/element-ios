@@ -19,7 +19,6 @@
 #import "RoomsListViewController.h"
 #import "FallbackViewController.h"
 #import "ShareDataSource.h"
-#import "ShareExtensionManager.h"
 
 #import "ThemeService.h"
 
@@ -96,6 +95,21 @@
     [self configureViews];
 }
 
+- (void)showProgressIndicator
+{
+    if (!self.hudView)
+    {
+        self.parentViewController.view.userInteractionEnabled = NO;
+        self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:[VectorL10n sending]];
+        [self.hudView setProgress:0.0];
+    }
+}
+
+- (void)setProgress:(CGFloat)progress
+{
+    [self.hudView setProgress:progress];
+}
+
 #pragma mark - MXKRecentListViewControllerDelegate
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController
@@ -109,25 +123,6 @@
           didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
 {
     [self.delegate shareViewControllerDidRequestShare:self forRoomIdentifier:childInfo.childRoomId];
-}
-
-#pragma mark - ShareExtensionManagerDelegate
-
-- (void)showProgressIndicator
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (!self.hudView)
-        {
-            self.parentViewController.view.userInteractionEnabled = NO;
-            self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:[VectorL10n sending]];
-            [self.hudView setProgress:0.0];
-        }
-    });
-}
-
-- (void)setProgress:(CGFloat)progress
-{
-    [self.hudView setProgress:progress];
 }
 
 #pragma mark - Private

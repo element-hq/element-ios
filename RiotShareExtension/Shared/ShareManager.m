@@ -14,16 +14,16 @@
  limitations under the License.
  */
 
-#import "ShareExtensionManager.h"
-#import "ShareViewController.h"
-#import "ShareDataSource.h"
+@import MobileCoreServices;
+
+#import "objc/runtime.h"
+#import <mach/mach.h>
 
 #import <MatrixKit/MatrixKit.h>
 
-@import MobileCoreServices;
-#import "objc/runtime.h"
-#include <MatrixSDK/MXUIKitBackgroundModeHandler.h>
-#import <mach/mach.h>
+#import "ShareManager.h"
+#import "ShareViewController.h"
+#import "ShareDataSource.h"
 
 #ifdef IS_SHARE_EXTENSION
 #import "RiotShareExtension-Swift.h"
@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     ImageCompressionModeLarge
 };
 
-@interface ShareExtensionManager () <ShareViewControllerDelegate>
+@interface ShareManager () <ShareViewControllerDelegate>
 
 @property (nonatomic, strong, readonly) NSExtensionContext *shareExtensionContext;
 @property (nonatomic, strong, readonly) NSArray<NSExtensionItem *> *extensionItems;
@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 @end
 
 
-@implementation ShareExtensionManager
+@implementation ShareManager
 
 - (instancetype)initWithShareExtensionContext:(NSExtensionContext *)shareExtensionContext
                                extensionItems:(NSArray<NSExtensionItem *> *)extensionItems
@@ -147,7 +147,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }];
         
     } failure:^(NSError *error) {
-        MXLogError(@"[ShareExtensionManager] Failed preparign matrix session");
+        MXLogError(@"[ShareManager] Failed preparign matrix session");
     }];
 }
 
@@ -155,7 +155,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
     if (self.completionCallback)
     {
-        self.completionCallback(ShareExtensionManagerResultCancelled);
+        self.completionCallback(ShareManagerResultCancelled);
     }
 }
 
@@ -328,7 +328,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                          }
                          else
                          {
-                             MXLogDebug(@"[ShareExtensionManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
+                             MXLogError(@"[ShareManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
                              dispatch_group_leave(requestsGroup);
                          }
                          
@@ -423,7 +423,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         {
             if (self.completionCallback)
             {
-                self.completionCallback(ShareExtensionManagerResultFinished);
+                self.completionCallback(ShareManagerResultFinished);
             }
         }
     });
@@ -439,7 +439,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         if (self.completionCallback)
         {
-            self.completionCallback(ShareExtensionManagerResultFailed);
+            self.completionCallback(ShareManagerResultFailed);
         }
     }];
     
@@ -683,7 +683,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             self.imageCompressionMode = ImageCompressionModeNone;
         }
         
-        MXLogDebug(@"[ShareExtensionManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
+        MXLogDebug(@"[ShareManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
         
         if (shareBlock)
         {
@@ -874,8 +874,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     NSUInteger imageWidth = compressionSize.imageSize.width;
     NSUInteger imageHeight = compressionSize.imageSize.height;
     
-    MXLogDebug(@"[ShareExtensionManager] User choose image compression with output size %lu x %lu (output file size: %@)", (unsigned long)imageWidth, (unsigned long)imageHeight, fileSize);
-    MXLogDebug(@"[ShareExtensionManager] Number of images to send: %lu", (unsigned long)self.pendingImages.count);
+    MXLogDebug(@"[ShareManager] User choose image compression with output size %lu x %lu (output file size: %@)", (unsigned long)imageWidth, (unsigned long)imageHeight, fileSize);
+    MXLogDebug(@"[ShareManager] Number of images to send: %lu", (unsigned long)self.pendingImages.count);
 }
 
 // Log memory usage.
@@ -894,11 +894,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (kerr == KERN_SUCCESS)
     {
-        MXLogDebug(@"[ShareExtensionManager] Memory in use (in MB): %f", memoryUsedInMegabytes);
+        MXLogDebug(@"[ShareManager] Memory in use (in MB): %f", memoryUsedInMegabytes);
     }
     else
     {
-        MXLogDebug(@"[ShareExtensionManager] Error with task_info(): %s", mach_error_string(kerr));
+        MXLogDebug(@"[ShareManager] Error with task_info(): %s", mach_error_string(kerr));
     }
 }
 
@@ -940,7 +940,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)didReceiveMemoryWarning:(NSNotification*)notification
 {
-    MXLogDebug(@"[ShareExtensionManager] Did receive memory warning");
+    MXLogDebug(@"[ShareManager] Did receive memory warning");
     [self logMemoryUsage];
 }
 
@@ -951,7 +951,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!text)
     {
-        MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        MXLogError(@"[ShareManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock(nil);
@@ -965,7 +965,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             successBlock();
         }
     } failure:^(NSError *error) {
-        MXLogDebug(@"[ShareExtensionManager] sendTextMessage failed.");
+        MXLogError(@"[ShareManager] sendTextMessage failed with error %@", error);
         if (failureBlock)
         {
             failureBlock(error);
@@ -978,7 +978,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self didStartSendingToRoom:room];
     if (!fileUrl)
     {
-        MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+        MXLogError(@"[ShareManager] loadItemForTypeIdentifier: failed.");
         if (failureBlock)
         {
             failureBlock(nil);
@@ -997,7 +997,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             successBlock();
         }
     } failure:^(NSError *error) {
-        MXLogDebug(@"[ShareExtensionManager] sendFile failed.");
+        MXLogError(@"[ShareManager] sendFile failed with error %@", error);
         if (failureBlock)
         {
             failureBlock(error);
@@ -1035,7 +1035,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     // Sanity check
     if (!mimeType)
     {
-        MXLogDebug(@"[ShareExtensionManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
+        MXLogError(@"[ShareManager] sendImage failed. Cannot determine MIME type of %@", itemProvider);
         if (failureBlock)
         {
             failureBlock(nil);
@@ -1121,8 +1121,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             successBlock();
         }
     } failure:^(NSError *error) {
-        
-        MXLogDebug(@"[ShareExtensionManager] sendImage failed.");
+        MXLogError(@"[ShareManager] sendImage failed with error %@", error);
         if (failureBlock)
         {
             failureBlock(error);
@@ -1135,7 +1134,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
     if (imageDatas.count == 0 || imageDatas.count != itemProviders.count)
     {
-        MXLogDebug(@"[ShareExtensionManager] sendImages: no images to send.");
+        MXLogError(@"[ShareManager] sendImages: no images to send.");
         
         if (failureBlock)
         {
@@ -1216,7 +1215,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [self didStartSendingToRoom:room];
         if (!videoLocalUrl)
         {
-            MXLogDebug(@"[ShareExtensionManager] loadItemForTypeIdentifier: failed.");
+            MXLogError(@"[ShareManager] loadItemForTypeIdentifier: failed.");
             if (failureBlock)
             {
                 failureBlock(nil);
@@ -1239,7 +1238,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 successBlock();
             }
         } failure:^(NSError *error) {
-            MXLogDebug(@"[ShareExtensionManager] sendVideo failed.");
+            MXLogError(@"[ShareManager] Failed sending video with error %@", error);
             if (failureBlock)
             {
                 failureBlock(error);
@@ -1253,7 +1252,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 @end
 
 
-@implementation NSItemProvider (ShareExtensionManager)
+@implementation NSItemProvider (ShareManager)
 
 - (void)setIsLoaded:(BOOL)isLoaded
 {

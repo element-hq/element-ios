@@ -15,7 +15,6 @@
  */
 
 #import "ShareDataSource.h"
-#import "ShareExtensionManager.h"
 #import "RecentRoomTableViewCell.h"
 
 @interface ShareDataSource ()

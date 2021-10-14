@@ -16,17 +16,15 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-@class ShareExtensionManager;
-
-typedef NS_ENUM(NSUInteger, ShareExtensionManagerResult) {
-    ShareExtensionManagerResultFinished,
-    ShareExtensionManagerResultCancelled,
-    ShareExtensionManagerResultFailed
+typedef NS_ENUM(NSUInteger, ShareManagerResult) {
+    ShareManagerResultFinished,
+    ShareManagerResultCancelled,
+    ShareManagerResultFailed
 };
 
-@interface ShareExtensionManager : NSObject
+@interface ShareManager : NSObject
 
-@property (nonatomic, copy) void (^completionCallback)(ShareExtensionManagerResult);
+@property (nonatomic, copy) void (^completionCallback)(ShareManagerResult);
 
 - (instancetype)initWithShareExtensionContext:(NSExtensionContext *)shareExtensionContext
                                extensionItems:(NSArray<NSExtensionItem *> *)extensionItems;
@@ -36,7 +34,7 @@ typedef NS_ENUM(NSUInteger, ShareExtensionManagerResult) {
 @end
 
 
-@interface NSItemProvider (ShareExtensionManager)
+@interface NSItemProvider (ShareManager)
 
 @property BOOL isLoaded;
 

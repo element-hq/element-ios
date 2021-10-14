@@ -108,7 +108,7 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 #import "WidgetManager.h"
-#import "ShareExtensionManager.h"
+#import "ShareManager.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -252,7 +252,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
 @property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
 
-@property (nonatomic, strong) ShareExtensionManager *shareExtensionManager;
+@property (nonatomic, strong) ShareManager *shareManager;
 
 @property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
 @property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
@@ -3201,17 +3201,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             NSExtensionItem *item = [[NSExtensionItem alloc] init];
             item.attachments = @[[[NSItemProvider alloc] initWithItem:selectedComponent.textMessage typeIdentifier:(__bridge NSString *)kUTTypeText]];
             
-            self.shareExtensionManager = [[ShareExtensionManager alloc] initWithShareExtensionContext:nil
-                                                                                       extensionItems:@[item]];
+            self.shareManager = [[ShareManager alloc] initWithShareExtensionContext:nil
+                                                                     extensionItems:@[item]];
             
             MXWeakify(self);
-            [self.shareExtensionManager setCompletionCallback:^(ShareExtensionManagerResult result) {
+            [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
                 MXStrongifyAndReturnIfNil(self);
                 [attachment onShareEnded];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }];
             
-            [self presentViewController:self.shareExtensionManager.mainViewController animated:YES completion:nil];
+            [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
         }]];
         
         if (!isJitsiCallEvent)
@@ -3414,17 +3414,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     NSExtensionItem *item = [[NSExtensionItem alloc] init];
                     item.attachments = @[[[NSItemProvider alloc] initWithItem:fileURL typeIdentifier:attachmentTypeToIdentifier[@(attachment.type)]]];
                     
-                    self.shareExtensionManager = [[ShareExtensionManager alloc] initWithShareExtensionContext:nil
-                                                                                               extensionItems:@[item]];
+                    self.shareManager = [[ShareManager alloc] initWithShareExtensionContext:nil
+                                                                             extensionItems:@[item]];
                     
                     MXWeakify(self);
-                    [self.shareExtensionManager setCompletionCallback:^(ShareExtensionManagerResult result) {
+                    [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
                         MXStrongifyAndReturnIfNil(self);
                         [attachment onShareEnded];
                         [self dismissViewControllerAnimated:YES completion:nil];
                     }];
                     
-                    [self presentViewController:self.shareExtensionManager.mainViewController animated:YES completion:nil];
+                    [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
                 } failure:^(NSError *error) {
                     [self showError:error];
                     [self stopActivityIndicator];

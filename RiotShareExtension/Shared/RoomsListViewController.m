@@ -14,13 +14,12 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MatrixKit.h>
+
 #import "RoomsListViewController.h"
 #import "RecentRoomTableViewCell.h"
-#import "NSBundle+MatrixKit.h"
-#import "ShareExtensionManager.h"
 #import "RecentCellData.h"
 #import "ThemeService.h"
-#import <MatrixKit/MatrixKit.h>
 
 #ifdef IS_SHARE_EXTENSION
 #import "RiotShareExtension-Swift.h"

@@ -15,8 +15,7 @@
  */
 
 #import "ShareExtensionRootViewController.h"
-#import "ShareViewController.h"
-#import "ShareExtensionManager.h"
+#import "ShareManager.h"
 #import "ThemeService.h"
 
 #ifdef IS_SHARE_EXTENSION
@@ -27,7 +26,7 @@
 
 @interface ShareExtensionRootViewController ()
 
-@property (nonatomic, strong, readonly) ShareExtensionManager *shareExtensionManager;
+@property (nonatomic, strong, readonly) ShareManager *shareManager;
 
 @end
 
@@ -39,24 +38,24 @@
         
         [ThemeService.shared setThemeId:RiotSettings.shared.userInterfaceTheme];
         
-        _shareExtensionManager = [[ShareExtensionManager alloc] initWithShareExtensionContext:self.extensionContext
+        _shareManager = [[ShareManager alloc] initWithShareExtensionContext:self.extensionContext
                                                                                extensionItems:self.extensionContext.inputItems];
         
         MXWeakify(self);
-        [_shareExtensionManager setCompletionCallback:^(ShareExtensionManagerResult result) {
+        [_shareManager setCompletionCallback:^(ShareManagerResult result) {
             MXStrongifyAndReturnIfNil(self);
             
             switch (result)
             {
-                case ShareExtensionManagerResultFinished:
+                case ShareManagerResultFinished:
                     [self.extensionContext completeRequestReturningItems:nil completionHandler:nil];
                     [self _dismiss];
                     break;
-                case ShareExtensionManagerResultCancelled:
+                case ShareManagerResultCancelled:
                     [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
                     [self _dismiss];
                     break;
-                case ShareExtensionManagerResultFailed:
+                case ShareManagerResultFailed:
                     [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
                     [self _dismiss];
                     break;
@@ -73,7 +72,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self presentViewController:self.shareExtensionManager.mainViewController animated:YES completion:nil];
+    [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
 }
 
 #pragma mark - Private
@@ -83,9 +82,9 @@
     [self dismissViewControllerAnimated:true completion:^{
         [self.presentingViewController dismissViewControllerAnimated:false completion:nil];
         
-//        // FIXME: Share extension memory usage increase when launched several times and then crash due to some memory leaks.
-//        // For now, we force the share extension to exit and free memory.
-//        [NSException raise:@"Kill the app extension" format:@"Free memory used by share extension"];
+        // FIXME: Share extension memory usage increase when launched several times and then crash due to some memory leaks.
+        // For now, we force the share extension to exit and free memory.
+        [NSException raise:@"Kill the app extension" format:@"Free memory used by share extension"];
     }];
 }
 
