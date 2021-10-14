@@ -1,3 +1,10 @@
+## Changes in 1.6.5 (2021-10-14)
+
+🙌 Improvements
+
+- Upgrade MatrixKit version ([v0.16.7](https://github.com/matrix-org/matrix-ios-kit/releases/tag/v0.16.7)).
+
+
 ## Changes in 1.6.4 (2021-10-12)
 
 🙌 Improvements
