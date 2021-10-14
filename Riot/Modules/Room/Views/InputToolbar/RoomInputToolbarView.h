@@ -40,6 +40,13 @@ typedef enum : NSUInteger
  */
 - (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView;
 
+/**
+ Inform the delegate that the text message has changed.
+ 
+ @param toolbarView the room input toolbar view
+ */
+- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView*)toolbarView;
+
 @end
 
 /**
