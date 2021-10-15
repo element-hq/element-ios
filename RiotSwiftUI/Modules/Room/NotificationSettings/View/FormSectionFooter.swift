@@ -28,7 +28,7 @@ struct FormSectionFooter: View {
             .padding(.top)
             .padding(.leading)
             .padding(.trailing)
-            .font(theme.fonts.callout)
+            .font(theme.fonts.subheadline)
     }
 }
 

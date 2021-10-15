@@ -24,7 +24,6 @@ import Foundation
 
 private enum DiscoverySectionRows {
     case info(text: String)
-    case attributedInfo(attributedText: NSAttributedString)
     case button(title: String, action: () -> Void)
     case threePid(threePid: MX3PID)
 }
@@ -40,6 +39,12 @@ private enum DiscoverySectionRows {
     // MARK: - Properties
     
     @objc weak var delegate: SettingsDiscoveryTableViewSectionDelegate?
+    
+    @objc var attributedFooterTitle: NSAttributedString?
+    
+    @objc var footerShouldScrollToUserSettings: Bool {
+        attributedFooterTitle != nil
+    }
     
     // MARK: Private
     
@@ -96,13 +101,6 @@ private enum DiscoverySectionRows {
                 infoCell.selectionStyle = .none
                 cell = infoCell
             }
-        case .attributedInfo(attributedText: let infoText):
-            if let infoCell: MXKTableViewCell = self.cellType(at: row) {
-                infoCell.textLabel?.numberOfLines = 0
-                infoCell.textLabel?.attributedText = infoText
-                infoCell.selectionStyle = .none
-                cell = infoCell
-            }
         case .button(title: let title, action: let action):
             if let buttonCell: MXKTableViewCellWithButton = self.cellType(at: row) {
                 buttonCell.mxkButton.setTitle(title, for: .normal)
@@ -145,15 +143,6 @@ private enum DiscoverySectionRows {
         switch discoveryRow {
         case .threePid(threePid: let threePid):
             self.viewModel.process(viewAction: .select(threePid: threePid))
-        case .attributedInfo(attributedText: _):
-            if case let .loaded(displayMode) = self.viewState {
-                switch displayMode {
-                case .noThreePidsAdded, .threePidsAdded:
-                    self.viewModel.process(viewAction: .tapUserSettingsLink)
-                default:
-                    break
-                }
-            }            
         default:
             break
         }
@@ -183,6 +172,7 @@ private enum DiscoverySectionRows {
     
     private func updateRows() {
         
+        attributedFooterTitle = nil;
         let discoveryRows: [DiscoverySectionRows]
         
         switch self.viewState {
@@ -202,9 +192,8 @@ private enum DiscoverySectionRows {
                     })
                 ]
             case .noThreePidsAdded:
-                discoveryRows = [
-                    .attributedInfo(attributedText: self.threePidsManagementInfoAttributedString())
-                ]
+                discoveryRows = []
+                attributedFooterTitle = self.threePidsManagementInfoAttributedString()
             case .threePidsAdded(let emails, let phoneNumbers):
                 
                 let emailThreePids = emails.map { (email) -> DiscoverySectionRows in
@@ -218,7 +207,7 @@ private enum DiscoverySectionRows {
                 var threePidsRows: [DiscoverySectionRows] = []
                 threePidsRows.append(contentsOf: emailThreePids)
                 threePidsRows.append(contentsOf: phoneNumbersThreePids)
-                threePidsRows.append(.attributedInfo(attributedText: self.threePidsManagementInfoAttributedString()))
+                attributedFooterTitle = self.threePidsManagementInfoAttributedString()
                 
                 discoveryRows = threePidsRows
             }
@@ -236,11 +225,11 @@ private enum DiscoverySectionRows {
     
     private func threePidsManagementInfoAttributedString() -> NSAttributedString {
         let attributedInfoString = NSMutableAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart1,
-                                                             attributes: [.foregroundColor: self.theme.textPrimaryColor, .font: Constants.defaultFont])
+                                                             attributes: [:])
         attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart2,
-                                                       attributes: [.foregroundColor: self.theme.tintColor, .font: Constants.defaultFont]))
+                                                       attributes: [.foregroundColor: self.theme.tintColor]))
         attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart3,
-                                                       attributes: [.foregroundColor: self.theme.tintColor, .font: Constants.defaultFont]))
+                                                       attributes: [:]))
         return attributedInfoString
     }
 }

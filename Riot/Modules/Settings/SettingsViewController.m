@@ -78,7 +78,6 @@ enum
     USER_SETTINGS_SURNAME_INDEX,
     USER_SETTINGS_ADD_EMAIL_INDEX,
     USER_SETTINGS_ADD_PHONENUMBER_INDEX,
-    USER_SETTINGS_THREEPIDS_INFORMATION_INDEX,
     USER_SETTINGS_INVITE_FRIENDS_INDEX
 };
 
@@ -356,11 +355,10 @@ TableViewSectionsDelegate>
     }
     if (BuildSettings.settingsScreenShowThreepidExplanatory)
     {
-#warning implement attributed string footers
-        NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{}];
         [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
-        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
-        sectionUserSettings.footerTitle = attributedString.string;
+        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{}]];
+        sectionUserSettings.attributedFooterTitle = attributedString;
     }
     if (RiotSettings.shared.settingsScreenShowInviteFriends)
     {
@@ -440,6 +438,7 @@ TableViewSectionsDelegate>
             [sectionDiscovery addRowWithTag:index];
         }
         sectionDiscovery.headerTitle = [VectorL10n settingsDiscoverySettings];
+        sectionDiscovery.attributedFooterTitle = self.settingsDiscoveryTableViewSection.attributedFooterTitle;
         [tmpSections addObject:sectionDiscovery];
     }
     
@@ -597,10 +596,13 @@ TableViewSectionsDelegate>
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
     [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
+    [self.tableView registerClass:SectionFooterView.class forHeaderFooterViewReuseIdentifier:[SectionFooterView defaultReuseIdentifier]];
     
-    // Enable self sizing cells
+    // Enable self sizing cells and footers
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
+    self.tableView.sectionFooterHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedSectionFooterHeight = 50;
     
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -1352,6 +1354,38 @@ TableViewSectionsDelegate>
     }
     
     return userInteractiveAuthenticationService;
+}
+
+- (void)scrollToDiscoverySection
+{
+    // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
+    if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
+    {
+        NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+        if (discoveryIndexPath)
+        {
+            [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+    }
+    else
+    {
+        //  this won't be precise in scroll location, but seems the best option for now
+        NSIndexPath *discoveryIndexPath = [_tableViewSections nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+        if (discoveryIndexPath)
+        {
+            [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
+    }
+}
+
+- (void)scrollToUserSettingsSection
+{
+    NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+                                                         sectionTag:SECTION_TAG_USER_SETTINGS];
+    if (discoveryIndexPath)
+    {
+        [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 #pragma mark - 3Pid Add
@@ -2428,23 +2462,35 @@ TableViewSectionsDelegate>
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
         tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    Section *sectionObj = [_tableViewSections sectionAtIndex:section];
-    return sectionObj.footerTitle;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
-{
-    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    NSAttributedString *attributedFooterTitle = [_tableViewSections sectionAtIndex:section].attributedFooterTitle;
+    
+    if (!attributedFooterTitle)
     {
-        // Customize label style
-        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+        return nil;
     }
+    
+    SectionFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionFooterView.defaultReuseIdentifier];
+    [view updateWithTheme:ThemeService.shared.theme];
+    view.textLabel.attributedText = attributedFooterTitle;
+    
+    if (section == SECTION_TAG_USER_SETTINGS)
+    {
+        UIGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollToDiscoverySection)];
+        [view addGestureRecognizer:recognizer];
+    }
+    else if (section == SECTION_TAG_DISCOVERY && self.settingsDiscoveryTableViewSection.footerShouldScrollToUserSettings)
+    {
+        UIGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollToUserSettingsSection)];
+        [view addGestureRecognizer:recognizer];
+    }
+    
+    return view;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2492,16 +2538,6 @@ TableViewSectionsDelegate>
         }
     }
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 24;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    return [_tableViewSections sectionAtIndex:section].footerTitle ? UITableViewAutomaticDimension : 24;
-//}
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -2557,27 +2593,6 @@ TableViewSectionsDelegate>
             else if (row == USER_INTERFACE_THEME_INDEX)
             {
                 [self showThemePicker];
-            }
-        }
-        else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_THREEPIDS_INFORMATION_INDEX)
-        {
-            // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
-            if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
-            {
-                NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
-                if (discoveryIndexPath)
-                {
-                    [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                }
-            }
-            else
-            {
-                //  this won't be precise in scroll location, but seems the best option for now
-                NSIndexPath *discoveryIndexPath = [_tableViewSections nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
-                if (discoveryIndexPath)
-                {
-                    [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                }
             }
         }
         else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
@@ -4415,16 +4430,6 @@ TableViewSectionsDelegate>
     }];
     
     self.discoveryThreePidDetailsPresenter = discoveryThreePidDetailsPresenter;
-}
-
-- (void)settingsDiscoveryViewModelDidTapUserSettingsLink:(SettingsDiscoveryViewModel *)viewModel
-{
-    NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
-                                                         sectionTag:SECTION_TAG_USER_SETTINGS];
-    if (discoveryIndexPath)
-    {
-        [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
 }
 
 #pragma mark - Local Contacts Sync

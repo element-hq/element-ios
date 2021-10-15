@@ -159,10 +159,13 @@ TableViewSectionsDelegate>
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithButton.nib forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
+    [self.tableView registerClass:SectionFooterView.class forHeaderFooterViewReuseIdentifier:[SectionFooterView defaultReuseIdentifier]];
 
-    // Enable self sizing cells
+    // Enable self sizing cells and footers
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
+    self.tableView.sectionFooterHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedSectionFooterHeight = 50;
 
     if (self.mainSession.crypto.backup)
     {
@@ -1295,25 +1298,25 @@ TableViewSectionsDelegate>
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
         tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    Section *tableSection = [self.tableViewSections sectionAtIndex:section];
-    return tableSection.footerTitle;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
-{
-    if ([view isKindOfClass:UITableViewHeaderFooterView.class])
+    NSString *footerTitle = [_tableViewSections sectionAtIndex:section].footerTitle;
+    
+    if (!footerTitle)
     {
-        // Customize label style
-        UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+        return nil;
     }
+    
+    SectionFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionFooterView.defaultReuseIdentifier];
+    [view updateWithTheme:ThemeService.shared.theme];
+    view.textLabel.text = footerTitle;
+    
+    return view;
 }
-
 
 #pragma mark - UITableView delegate
 

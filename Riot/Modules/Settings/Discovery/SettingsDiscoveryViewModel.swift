@@ -59,8 +59,6 @@ import Foundation
             self.acceptTerms()
         case .select(threePid: let threePid):
             self.coordinatorDelegate?.settingsDiscoveryViewModel(self, didSelectThreePidWith: threePid.medium.identifier, and: threePid.address)
-        case .tapUserSettingsLink:
-            self.coordinatorDelegate?.settingsDiscoveryViewModelDidTapUserSettingsLink(self)
         }
     }
     

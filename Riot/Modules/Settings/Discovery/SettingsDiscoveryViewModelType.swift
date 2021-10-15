@@ -22,7 +22,6 @@ protocol SettingsDiscoveryViewModelViewDelegate: AnyObject {
 
 @objc protocol SettingsDiscoveryViewModelCoordinatorDelegate: AnyObject {
     func settingsDiscoveryViewModel(_ viewModel: SettingsDiscoveryViewModel, didSelectThreePidWith medium: String, and address: String)
-    func settingsDiscoveryViewModelDidTapUserSettingsLink(_ viewModel: SettingsDiscoveryViewModel)
 }
 
 protocol SettingsDiscoveryViewModelType {
