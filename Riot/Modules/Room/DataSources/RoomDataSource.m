@@ -377,6 +377,7 @@ const CGFloat kTypingCellHeight = 24;
                         urlPreviewView = [URLPreviewView instantiate];
                         urlPreviewView.preview = component.urlPreviewData;
                         urlPreviewView.delegate = self;
+                        urlPreviewView.tag = index;
                         
                         [temporaryViews addObject:urlPreviewView];
                         
@@ -416,6 +417,7 @@ const CGFloat kTypingCellHeight = 24;
                         
                         reactionsView = [BubbleReactionsView new];
                         reactionsView.viewModel = bubbleReactionsViewModel;
+                        reactionsView.tag = index;
                         [reactionsView updateWithTheme:ThemeService.shared.theme];
                         
                         bubbleReactionsViewModel.viewModelDelegate = self;
