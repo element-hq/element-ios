@@ -41,20 +41,16 @@ final class HomeserverConfigurationBuilder: NSObject {
         }
         
         // Encryption configuration
-        if let vectorWellKnownEncryptionConfig = vectorWellKnownEncryptionConfiguration {
-            isE2EEByDefaultEnabled = vectorWellKnownEncryptionConfig.isE2EEByDefaultEnabled
-        } else {
-            // Enable E2EE by default when there is no value
-            isE2EEByDefaultEnabled = true
-        }
+        // Enable E2EE by default when there is no value
+        isE2EEByDefaultEnabled = vectorWellKnownEncryptionConfiguration?.isE2EEByDefaultEnabled ?? true
         
         // Jitsi configuration
         let jitsiServerURL: URL
         let hardcodedJitsiServerURL: URL = BuildSettings.jitsiServerUrl
         
-        if let vectorWellKnownJitsiConfig = vectorWellKnownJitsiConfiguration {
-            jitsiPreferredDomain = vectorWellKnownJitsiConfig.preferredDomain
-            jitsiServerURL = self.jitsiServerURL(from: jitsiPreferredDomain) ?? hardcodedJitsiServerURL
+        if let preferredDomain = vectorWellKnownJitsiConfiguration?.preferredDomain {
+            jitsiPreferredDomain = preferredDomain
+            jitsiServerURL = self.jitsiServerURL(from: preferredDomain) ?? hardcodedJitsiServerURL
         } else {
             guard let hardcodedJitsiDomain = hardcodedJitsiServerURL.host else {
                 fatalError("[HomeserverConfigurationBuilder] Fail to get Jitsi domain from hardcoded Jitsi URL")
