@@ -243,7 +243,7 @@
 
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
-    if (masterTabBarController.currentRoomViewController)
+    if (masterTabBarController.selectedRoomId)
     {
         // Look for the rank of this selected room in displayed recents
         currentSelectedCellIndexPath = [dataSource cellIndexPathWithRoomId:masterTabBarController.selectedRoomId andMatrixSession:masterTabBarController.selectedRoomSession];

@@ -45,7 +45,7 @@ extension VectorWellKnown: Decodable {
 struct VectorWellKnownEncryptionConfiguration: Decodable {
     
     /// Indicate if E2EE is enabled by default
-    let isE2EEByDefaultEnabled: Bool
+    let isE2EEByDefaultEnabled: Bool?
     
     enum CodingKeys: String, CodingKey {
         case isE2EEByDefaultEnabled = "default"
@@ -56,5 +56,5 @@ struct VectorWellKnownEncryptionConfiguration: Decodable {
 struct VectorWellKnownJitsiConfiguration: Decodable {
     
     /// Default Jitsi server
-    let preferredDomain: String
+    let preferredDomain: String?
 }

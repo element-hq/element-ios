@@ -395,7 +395,7 @@ extension SettingsIdentityServerViewController: ServiceTermsModalCoordinatorBrid
         self.hideTerms(accepted: false)
     }
 
-    func serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
+    func serviceTermsModalCoordinatorBridgePresenterDelegateDidClose(_ coordinatorBridgePresenter: ServiceTermsModalCoordinatorBridgePresenter) {
          self.hideTerms(accepted: false)
     }
 }

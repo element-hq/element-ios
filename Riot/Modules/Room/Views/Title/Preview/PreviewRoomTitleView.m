@@ -121,7 +121,8 @@
         // Joined members count
         if (self.roomPreviewData.numJoinedMembers > 1)
         {
-            self.roomMembers.text = [VectorL10n roomTitleMembers:@(self.roomPreviewData.numJoinedMembers)];
+            NSString *numJoinedMembers = [@(self.roomPreviewData.numJoinedMembers) description];
+            self.roomMembers.text = [VectorL10n roomTitleMembers:numJoinedMembers];
         }
         else if (self.roomPreviewData.numJoinedMembers == 1)
         {

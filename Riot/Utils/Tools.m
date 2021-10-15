@@ -126,7 +126,7 @@
          if (attrs[NSForegroundColorAttributeName])
          {
              UIColor *color = attrs[NSForegroundColorAttributeName];
-             color = [color colorWithAlphaComponent:0.2];
+             color = [color colorWithAlphaComponent:alpha];
 
              NSMutableDictionary *newAttrs = [NSMutableDictionary dictionaryWithDictionary:attrs];
              newAttrs[NSForegroundColorAttributeName] = color;

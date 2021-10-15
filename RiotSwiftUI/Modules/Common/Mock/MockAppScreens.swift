@@ -22,7 +22,8 @@ enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
         MockTemplateUserProfileScreenState.self,
         MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
+        MockTemplateRoomChatScreenState.self,
+        MockUserSuggestionScreenState.self
     ]
 }
 

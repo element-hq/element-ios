@@ -42,6 +42,7 @@ class DefaultTheme: NSObject, Theme {
     var textPrimaryColor: UIColor = UIColor(rgb: 0x17191C)
     var textSecondaryColor: UIColor = UIColor(rgb: 0x737D8C)
     var textTertiaryColor: UIColor = UIColor(rgb: 0x8D99A5)
+    var textQuinaryColor: UIColor = UIColor(rgb: 0xE3E8F0)
 
     var tintColor: UIColor = UIColor(displayP3Red: 0.05098039216, green: 0.7450980392, blue: 0.5450980392, alpha: 1.0)
     var tintBackgroundColor: UIColor = UIColor(rgb: 0xe9fff9)

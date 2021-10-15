@@ -17,8 +17,6 @@
 
 #import "MasterTabBarController.h"
 
-#import "UnifiedSearchViewController.h"
-
 #import "RecentsDataSource.h"
 #import "GroupsDataSource.h"
 
@@ -234,12 +232,6 @@
         
         [[AppDelegate theDelegate] checkAppVersion];
     }
-    
-    if (self.unifiedSearchViewController)
-    {
-        [self.unifiedSearchViewController destroy];
-        self.unifiedSearchViewController = nil;
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -323,6 +315,12 @@
         [viewControllers removeObjectAtIndex:index];
         self.viewControllers = viewControllers;
     }
+}
+
+- (void)selectTabAtIndex:(MasterTabBarIndex)tabBarIndex
+{
+    NSInteger index = [self indexOfTabItemWithTag:tabBarIndex];
+    self.selectedIndex = index;
 }
 
 #pragma mark -
@@ -586,60 +584,6 @@
     }
 }
 
-- (void)showRoomDetails
-{
-    [self releaseCurrentDetailsViewController];
-    
-    if (_selectedRoomPreviewData)
-    {
-        // Replace the rootviewcontroller with a room view controller
-        // Get the RoomViewController from the storyboard
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        _currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
-        
-        [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:_currentRoomViewController];
-        
-        [_currentRoomViewController displayRoomPreview:_selectedRoomPreviewData];
-        _selectedRoomPreviewData = nil;
-        
-        [self setupLeftBarButtonItem];
-    }
-    else
-    {
-        MXWeakify(self);
-        void (^openRoomDataSource)(MXKRoomDataSource *roomDataSource) = ^(MXKRoomDataSource *roomDataSource) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            // Replace the rootviewcontroller with a room view controller
-            // Get the RoomViewController from the storyboard
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-            self->_currentRoomViewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
-            
-            [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:self.currentRoomViewController];
-            
-            [self.currentRoomViewController displayRoom:roomDataSource];
-            
-            [self setupLeftBarButtonItem];
-            
-        };
-        
-        if (_selectedRoomDataSource)
-        {
-            // If the room data source is already loaded, display it
-            openRoomDataSource(_selectedRoomDataSource);
-            _selectedRoomDataSource = nil;
-        }
-        else
-        {
-            // Else, load it. The user may see the EmptyDetailsViewControllerStoryboardId
-            // screen in this case
-            [self dataSourceOfRoomToDisplay:^(MXKRoomDataSource *roomDataSource) {
-                openRoomDataSource(roomDataSource);
-            }];
-        }
-    }
-}
-
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
 {
     [self selectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:nil];
@@ -647,98 +591,51 @@
 
 - (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion
 {
-    if (_selectedRoomId && [_selectedRoomId isEqualToString:roomId]
-        && _selectedEventId && [_selectedEventId isEqualToString:eventId]
-        && _selectedRoomSession && _selectedRoomSession == matrixSession)
-    {
-        // Nothing to do
-        if (completion)
-        {
-            completion();
-        }
-        return;
-    }
+    [self releaseSelectedItem];
     
     _selectedRoomId = roomId;
     _selectedEventId = eventId;
-    _selectedRoomSession = matrixSession;
+    _selectedRoomSession = matrixSession;    
     
-    if (roomId && matrixSession)
-    {
-        // Preload the data source before performing the segue
-        MXWeakify(self);
-        [self dataSourceOfRoomToDisplay:^(MXKRoomDataSource *roomDataSource) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            self->_selectedRoomDataSource = roomDataSource;
-            
-            [self showRoomDetails];
-            
-            if (completion)
-            {
-                completion();
-            }
-        }];
-    }
-    else
-    {
-        [self releaseSelectedItem];
-        if (completion)
-        {
-            completion();
-        }
-    }
+    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:completion];
+    
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)showRoomPreview:(RoomPreviewData *)roomPreviewData
 {
+    [self releaseSelectedItem];
+    
     _selectedRoomPreviewData = roomPreviewData;
     _selectedRoomId = roomPreviewData.roomId;
     _selectedRoomSession = roomPreviewData.mxSession;
     
-    [self showRoomDetails];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithData:roomPreviewData];
+    
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)selectContact:(MXKContact*)contact
 {
+    [self releaseSelectedItem];
+    
     _selectedContact = contact;
     
-    [self showContactDetails];
-}
-
-- (void)showContactDetails
-{
-    [self releaseCurrentDetailsViewController];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact];
     
-    // Replace the rootviewcontroller with a contact details view controller
-    _currentContactDetailViewController = [ContactDetailsViewController contactDetailsViewController];
-    _currentContactDetailViewController.enableVoipCall = NO;
-    _currentContactDetailViewController.contact = _selectedContact;
-    
-    [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:_currentContactDetailViewController];
-    
-    [self setupLeftBarButtonItem];
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
 {
+    [self releaseSelectedItem];
+    
     _selectedGroup = group;
     _selectedGroupSession = matrixSession;
     
-    [self showGroupDetails];
-}
-
-- (void)showGroupDetails
-{
-    [self releaseCurrentDetailsViewController];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession];
     
-    // Replace the rootviewcontroller with a group details view controller
-    _currentGroupDetailViewController = [GroupDetailsViewController groupDetailsViewController];
-    [_currentGroupDetailViewController setGroup:_selectedGroup withMatrixSession:_selectedGroupSession];
-    
-    [self.masterTabBarDelegate masterTabBarController:self wantsToDisplayDetailViewController:_currentGroupDetailViewController];
-    
-    [self setupLeftBarButtonItem];
+    [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)releaseSelectedItem
@@ -746,15 +643,12 @@
     _selectedRoomId = nil;
     _selectedEventId = nil;
     _selectedRoomSession = nil;
-    _selectedRoomDataSource = nil;
     _selectedRoomPreviewData = nil;
     
     _selectedContact = nil;
     
     _selectedGroup = nil;
-    _selectedGroupSession = nil;
-    
-    [self releaseCurrentDetailsViewController];
+    _selectedGroupSession = nil;        
 }
 
 - (NSUInteger)missedDiscussionsCount
@@ -842,84 +736,6 @@
 
 #pragma mark -
 
-/**
- Load the data source of the room to open.
-
- @param onComplete a block providing the loaded room data source.
- */
-- (void)dataSourceOfRoomToDisplay:(void (^)(MXKRoomDataSource *roomDataSource))onComplete
-{
-    // Check whether an event has been selected from messages or files search tab.
-    MXEvent *selectedSearchEvent = self.unifiedSearchViewController.selectedSearchEvent;
-    MXSession *selectedSearchEventSession = self.unifiedSearchViewController.selectedSearchEventSession;
-
-    if (!selectedSearchEvent)
-    {
-        if (!_selectedEventId)
-        {
-            // LIVE: Show the room live timeline managed by MXKRoomDataSourceManager
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:_selectedRoomSession];
-
-            [roomDataSourceManager roomDataSourceForRoom:_selectedRoomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
-                onComplete(roomDataSource);
-            }];
-        }
-        else
-        {
-            // Open the room on the requested event
-            [RoomDataSource loadRoomDataSourceWithRoomId:_selectedRoomId initialEventId:_selectedEventId andMatrixSession:_selectedRoomSession onComplete:^(id roomDataSource) {
-
-                ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
-
-                // Give the data source ownership to the room view controller.
-                self.currentRoomViewController.hasRoomDataSourceOwnership = YES;
-
-                onComplete(roomDataSource);
-            }];
-        }
-    }
-    else
-    {
-        // Search result: Create a temp timeline from the selected event
-        [RoomDataSource loadRoomDataSourceWithRoomId:selectedSearchEvent.roomId initialEventId:selectedSearchEvent.eventId andMatrixSession:selectedSearchEventSession onComplete:^(id roomDataSource) {
-
-            [roomDataSource finalizeInitialization];
-
-            ((RoomDataSource*)roomDataSource).markTimelineInitialEvent = YES;
-
-            // Give the data source ownership to the room view controller.
-            self.currentRoomViewController.hasRoomDataSourceOwnership = YES;
-
-            onComplete(roomDataSource);
-        }];
-    }
-}
-
-- (void)setupLeftBarButtonItem
-{
-    if (self.splitViewController)
-    {
-        // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
-        [self refreshCurrentSelectedCell:NO];
-
-        if (_currentRoomViewController)
-        {
-            _currentRoomViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-            _currentRoomViewController.navigationItem.leftItemsSupplementBackButton = YES;
-        }
-        else if (_currentContactDetailViewController)
-        {
-            _currentContactDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-            _currentContactDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
-        }
-        else if (_currentGroupDetailViewController)
-        {
-            _currentGroupDetailViewController.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
-            _currentGroupDetailViewController.navigationItem.leftItemsSupplementBackButton = YES;
-        }
-    }
-}
-
 -(void)setupTitleView
 {
     titleView = [MainTitleView new];
@@ -934,6 +750,15 @@
     [super presentViewController:viewControllerToPresent animated:flag completion:completion];
 }
 
+- (void)refreshSelectedControllerSelectedCellIfNeeded
+{
+    if (self.splitViewController)
+    {
+        // Refresh selected cell without scrolling the selected cell (We suppose it's visible here)
+        [self refreshCurrentSelectedCell:NO];
+    }
+}
+
 // Made the actual selected view controller update its selected cell.
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible
 {
@@ -942,37 +767,6 @@
     if ([selectedViewController respondsToSelector:@selector(refreshCurrentSelectedCell:)])
     {
         [(id)selectedViewController refreshCurrentSelectedCell:forceVisible];
-    }
-}
-
-- (void)releaseCurrentDetailsViewController
-{
-    // Release the existing details view controller (if any).
-    if (_currentRoomViewController)
-    {
-        // If the displayed data is not a preview, let the manager release the room data source
-        // (except if the view controller has the room data source ownership).
-        if (!_currentRoomViewController.roomPreviewData && _currentRoomViewController.roomDataSource && !_currentRoomViewController.hasRoomDataSourceOwnership)
-        {
-            MXSession *mxSession = _currentRoomViewController.roomDataSource.mxSession;
-            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:mxSession];
-            
-            // Let the manager release live room data sources where the user is in
-            [roomDataSourceManager closeRoomDataSourceWithRoomId:_currentRoomViewController.roomDataSource.roomId forceClose:NO];
-        }
-        
-        [_currentRoomViewController destroy];
-        _currentRoomViewController = nil;
-    }
-    else if (_currentContactDetailViewController)
-    {
-        [_currentContactDetailViewController destroy];
-        _currentContactDetailViewController = nil;
-    }
-    else if (_currentGroupDetailViewController)
-    {
-        [_currentGroupDetailViewController destroy];
-        _currentGroupDetailViewController = nil;
     }
 }
 

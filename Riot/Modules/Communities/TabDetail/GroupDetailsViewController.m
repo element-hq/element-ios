@@ -55,7 +55,7 @@
                           bundle:[NSBundle bundleForClass:self.class]];
 }
 
-+ (instancetype)groupDetailsViewController
++ (instancetype)instantiate
 {
     return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
                                           bundle:[NSBundle bundleForClass:self.class]];
@@ -117,6 +117,9 @@
     [self initWithTitles:titles viewControllers:viewControllers defaultSelected:0];
     
     [super viewDidLoad];
+    
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+    self.navigationItem.leftItemsSupplementBackButton = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -656,8 +656,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     MXLogDebug(@"[WidgetVC] presentTerms for %@", config.baseUrl);
 
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
-                                                                                                                                                       serviceType:MXServiceTypeIntegrationManager
-                                                                                                                                                       outOfContext:NO
+                                                                                                                                                        serviceType:MXServiceTypeIntegrationManager
                                                                                                                                                         accessToken:config.scalarToken];
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
 
@@ -677,7 +676,7 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
         [self withdrawViewControllerAnimated:YES completion:nil];
@@ -685,11 +684,8 @@ NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self withdrawViewControllerAnimated:YES completion:nil];
-    }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 

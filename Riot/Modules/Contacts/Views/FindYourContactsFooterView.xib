@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="FindYourContactsFooterView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="424"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="67f-7H-bSH">
+                    <rect key="frame" x="16" y="45.5" width="288" height="362.5"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="find_your_contacts_facepile" translatesAutoresizingMaskIntoConstraints="NO" id="q3p-2U-JA5">
+                            <rect key="frame" x="89" y="46" width="110" height="46"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start by listing your contacts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9oC-ce-hpT">
+                            <rect key="frame" x="20" y="138" width="248" height="21"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Let Element show your contacts so you can quickly start chatting with those you know best." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B3j-1i-EAf">
+                            <rect key="frame" x="20" y="171" width="248" height="61"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v93-cs-jXa" customClass="CustomRoundedButton" customModule="Riot" customModuleProvider="target">
+                            <rect key="frame" x="16" y="257" width="256" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="Spc-d4-SvP"/>
+                            </constraints>
+                            <state key="normal" title="Allow contacts access"/>
+                            <connections>
+                                <action selector="buttonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="XLO-8r-P8S"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This can be disabled anytime from settings" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0A6-6s-nu6">
+                            <rect key="frame" x="20" y="314" width="248" height="31.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="29" id="MZF-wd-sd6"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                    <constraints>
+                        <constraint firstItem="0A6-6s-nu6" firstAttribute="top" secondItem="v93-cs-jXa" secondAttribute="bottom" constant="12" id="9zY-sf-Hrg"/>
+                        <constraint firstItem="q3p-2U-JA5" firstAttribute="top" secondItem="67f-7H-bSH" secondAttribute="top" constant="46" id="Bpl-IE-fhm"/>
+                        <constraint firstAttribute="trailing" secondItem="9oC-ce-hpT" secondAttribute="trailing" constant="20" symbolic="YES" id="D9c-Dn-jPU"/>
+                        <constraint firstAttribute="bottom" secondItem="0A6-6s-nu6" secondAttribute="bottom" constant="17" id="EYu-Qu-iQn"/>
+                        <constraint firstAttribute="trailing" secondItem="B3j-1i-EAf" secondAttribute="trailing" constant="20" symbolic="YES" id="Hg6-yF-XYk"/>
+                        <constraint firstAttribute="trailing" secondItem="0A6-6s-nu6" secondAttribute="trailing" constant="20" symbolic="YES" id="HpJ-VI-vji"/>
+                        <constraint firstItem="v93-cs-jXa" firstAttribute="top" secondItem="B3j-1i-EAf" secondAttribute="bottom" constant="25" id="NCh-1k-Wmw"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="343" id="Ty6-Fa-X0Y"/>
+                        <constraint firstItem="v93-cs-jXa" firstAttribute="leading" secondItem="67f-7H-bSH" secondAttribute="leading" constant="16" id="aF8-bI-HgQ"/>
+                        <constraint firstItem="9oC-ce-hpT" firstAttribute="leading" secondItem="67f-7H-bSH" secondAttribute="leading" constant="20" symbolic="YES" id="bli-Ms-T40"/>
+                        <constraint firstItem="B3j-1i-EAf" firstAttribute="top" secondItem="9oC-ce-hpT" secondAttribute="bottom" constant="12" id="dAh-bo-3yO"/>
+                        <constraint firstItem="q3p-2U-JA5" firstAttribute="centerX" secondItem="67f-7H-bSH" secondAttribute="centerX" id="giT-QS-qOz"/>
+                        <constraint firstAttribute="trailing" secondItem="v93-cs-jXa" secondAttribute="trailing" constant="16" id="mWk-gL-jIf"/>
+                        <constraint firstItem="B3j-1i-EAf" firstAttribute="leading" secondItem="67f-7H-bSH" secondAttribute="leading" constant="20" symbolic="YES" id="pgw-mQ-EiG"/>
+                        <constraint firstItem="0A6-6s-nu6" firstAttribute="leading" secondItem="67f-7H-bSH" secondAttribute="leading" constant="20" symbolic="YES" id="r3U-zK-ma2"/>
+                        <constraint firstItem="9oC-ce-hpT" firstAttribute="top" secondItem="q3p-2U-JA5" secondAttribute="bottom" constant="46" id="s1P-kS-bhX"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="67f-7H-bSH" secondAttribute="bottom" constant="16" id="6sY-dx-OLw"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="67f-7H-bSH" secondAttribute="trailing" constant="16" id="NHG-OU-6GO"/>
+                <constraint firstItem="67f-7H-bSH" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="QLf-8P-5HB"/>
+                <constraint firstItem="67f-7H-bSH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="fqj-2T-EL6"/>
+                <constraint firstItem="67f-7H-bSH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="yU6-gF-alq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="button" destination="v93-cs-jXa" id="ANT-X6-MXQ"/>
+                <outlet property="containerView" destination="67f-7H-bSH" id="jcP-BN-jNZ"/>
+                <outlet property="footerLabel" destination="0A6-6s-nu6" id="GOr-Nv-eVE"/>
+                <outlet property="messageLabel" destination="B3j-1i-EAf" id="Edi-X9-bma"/>
+                <outlet property="titleLabel" destination="9oC-ce-hpT" id="rOi-fH-kO0"/>
+            </connections>
+            <point key="canvasLocation" x="63.768115942028992" y="308.70535714285711"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="find_your_contacts_facepile" width="110" height="46"/>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

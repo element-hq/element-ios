@@ -19,16 +19,12 @@
 
 #import "AuthenticationViewController.h"
 
+#import "RoomPreviewData.h"
 #import "HomeViewController.h"
 #import "FavouritesViewController.h"
 #import "PeopleViewController.h"
 #import "RoomsViewController.h"
 #import "GroupsViewController.h"
-
-#import "RoomViewController.h"
-#import "ContactDetailsViewController.h"
-#import "GroupDetailsViewController.h"
-#import "UnifiedSearchViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
@@ -175,23 +171,17 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
 @property (nonatomic, readonly) GroupsViewController *groupsViewController;
 
-// The current unified search screen if any
-@property (nonatomic, weak) UnifiedSearchViewController *unifiedSearchViewController;
 
-// References on the currently selected room and its view controller
-@property (nonatomic, readonly) RoomViewController *currentRoomViewController;
+// References on the currently selected room
 @property (nonatomic, readonly) NSString  *selectedRoomId;
 @property (nonatomic, readonly) NSString  *selectedEventId;
 @property (nonatomic, readonly) MXSession *selectedRoomSession;
-@property (nonatomic, readonly) MXKRoomDataSource *selectedRoomDataSource;
 @property (nonatomic, readonly) RoomPreviewData *selectedRoomPreviewData;
 
-// References on the currently selected contact and its view controller
-@property (nonatomic, readonly) ContactDetailsViewController *currentContactDetailViewController;
+// References on the currently selected contact
 @property (nonatomic, readonly) MXKContact *selectedContact;
 
-// References on the currently selected group and its view controller
-@property (nonatomic, readonly) GroupDetailsViewController *currentGroupDetailViewController;
+// References on the currently selected group
 @property (nonatomic, readonly) MXGroup *selectedGroup;
 @property (nonatomic, readonly) MXSession *selectedGroupSession;
 
@@ -203,13 +193,18 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 
 - (void)removeTabAt:(MasterTabBarIndex)index;
 
+- (void)selectTabAtIndex:(MasterTabBarIndex)tabBarIndex;
+
 @end
 
 
 @protocol MasterTabBarControllerDelegate <NSObject>
 
 - (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
-- (void)masterTabBarController:(MasterTabBarController*)masterTabBarController wantsToDisplayDetailViewController:(UIViewController*)detailViewController;
 - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController needsSideMenuIconWithNotification:(BOOL)displayNotification;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithData:(RoomPreviewData*)roomPreviewData;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession;
 
 @end

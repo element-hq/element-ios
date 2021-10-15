@@ -11,7 +11,8 @@ disabled_rules:
   - large_tuple
   - shorthand_operator
   - vertical_parameter_alignment
-  - identifier_name  
+  - identifier_name
+  - inclusive_language # Disabled until MasterTabBarController refactoring complete
 
 # some rules are only opt-in
 opt_in_rules:  

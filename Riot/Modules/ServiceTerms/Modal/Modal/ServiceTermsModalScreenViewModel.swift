@@ -21,7 +21,6 @@ import Foundation
 final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelType {
 
     // MARK: - Properties
-    let outOfContext: Bool
 
     // MARK: Private
 
@@ -43,9 +42,8 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
     
     // MARK: - Setup
     
-    init(serviceTerms: MXServiceTerms, outOfContext: Bool) {
+    init(serviceTerms: MXServiceTerms) {
         self.serviceTerms = serviceTerms
-        self.outOfContext = outOfContext
     }
     
     // MARK: - Public
@@ -60,8 +58,6 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
             self.acceptTerms()
         case .decline:
             self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidDecline(self)
-        case .cancel:
-            self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidCancel(self)
         }
     }
     
@@ -99,6 +95,14 @@ final class ServiceTermsModalScreenViewModel: ServiceTermsModalScreenViewModelTy
                 return
             }
             self.update(viewState: .accepted)
+            
+            // Send a notification to update the identity service immediately.
+            if self.serviceTerms.serviceType == MXServiceTypeIdentityService {
+                let userInfo = [MXIdentityServiceNotificationIdentityServerKey: self.serviceTerms.baseUrl]
+                NotificationCenter.default.post(name: .MXIdentityServiceTermsAccepted, object: nil, userInfo: userInfo)
+            }
+            
+            // Notify the delegate.
             self.coordinatorDelegate?.serviceTermsModalScreenViewModelDidAccept(self)
 
             }, failure: { [weak self] (error) in

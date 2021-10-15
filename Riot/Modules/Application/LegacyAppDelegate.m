@@ -87,7 +87,7 @@ NSString *const AppDelegateDidValidateEmailNotificationClientSecretKey = @"AppDe
 
 NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUniversalLinkDidChangeNotification";
 
-@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, ServiceTermsModalCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate>
+@interface LegacyAppDelegate () <GDPRConsentViewControllerDelegate, KeyVerificationCoordinatorBridgePresenterDelegate, PushNotificationServiceDelegate, SetPinCoordinatorBridgePresenterDelegate, CallPresenterDelegate, SpaceDetailPresenterDelegate>
 {
     /**
      Reachability observer
@@ -201,7 +201,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 @property (weak, nonatomic) UIAlertController *incomingKeyVerificationRequestAlertController;
 
-@property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) SlidingModalPresenter *slidingModalPresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
@@ -673,9 +672,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Register to GDPR consent not given notification
     [self registerUserConsentNotGivenNotification];
-    
-    // Register to identity server terms not signed notification
-    [self registerIdentityServiceTermsNotSignedNotification];
     
     // Start monitoring reachability
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -4129,82 +4125,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             createRiotBotDMcompletion();
         }];
     }
-}
-
-#pragma mark - Identity server service terms
-
-// Observe identity server terms not signed notification
-- (void)registerIdentityServiceTermsNotSignedNotification
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIdentityServiceTermsNotSignedNotification:) name:MXIdentityServiceTermsNotSignedNotification object:nil];
-}
-
-- (void)handleIdentityServiceTermsNotSignedNotification:(NSNotification*)notification
-{
-    MXLogDebug(@"[AppDelegate] IS Terms: handleIdentityServiceTermsNotSignedNotification.");
-
-    NSString *baseURL;
-    NSString *accessToken;
-    
-    MXJSONModelSetString(baseURL, notification.userInfo[MXIdentityServiceNotificationIdentityServerKey]);
-    MXJSONModelSetString(accessToken, notification.userInfo[MXIdentityServiceNotificationAccessTokenKey]);
-    
-    [self presentIdentityServerTermsWithBaseURL:baseURL andAccessToken:accessToken];
-}
-
-- (void)presentIdentityServerTermsWithBaseURL:(NSString*)baseURL andAccessToken:(NSString*)accessToken
-{
-    MXSession *mxSession = self.mxSessions.firstObject;
-    
-    if (!mxSession || !baseURL || !accessToken || self.serviceTermsModalCoordinatorBridgePresenter.isPresenting)
-    {
-        return;
-    }
-    
-    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
-                                                                                                                                                            baseUrl:baseURL
-                                                                                                                                                        serviceType:MXServiceTypeIdentityService
-                                                                                                                                                       outOfContext:YES
-                                                                                                                                                        accessToken:accessToken];
-    
-    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
-    
-    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self.presentedViewController animated:YES];
-    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
-}
-
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        
-    }];
-    self.serviceTermsModalCoordinatorBridgePresenter = nil;
-}
-
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter *)coordinatorBridgePresenter session:(MXSession *)session
-{
-    MXLogDebug(@"[AppDelegate] IS Terms: User has declined the use of the default IS.");
-
-    // The user does not want to use the proposed IS.
-    // Disable IS feature on user's account
-    [session setIdentityServer:nil andAccessToken:nil];
-    [session setAccountDataIdentityServer:nil success:^{
-    } failure:^(NSError *error) {
-        MXLogDebug(@"[AppDelegate] IS Terms: Error: %@", error);
-    }];
-
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-
-    }];
-    self.serviceTermsModalCoordinatorBridgePresenter = nil;
-}
-
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
-{
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        
-    }];
-    self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 #pragma mark - Settings

@@ -43,6 +43,7 @@ targets:
     - path: ../Riot/Utils/AvatarGenerator.m
     - path: ../Config/BuildSettings.swift
     - path: ../Riot/Categories/Character.swift
+    - path: ../Riot/Categories/MXKImageView.swift
     - path: ../Riot/Categories/MXRoom+Riot.m
     - path: ../Config/Configurable.swift
     - path: ../Config/CommonConfiguration.swift
