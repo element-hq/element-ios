@@ -38,7 +38,8 @@
     
     [ThemeService.shared setThemeId:RiotSettings.shared.userInterfaceTheme];
     
-    _shareManager = [[ShareManager alloc] initWithItems:self.extensionContext.inputItems];
+    ShareExtensionShareItemProvider *provider = [[ShareExtensionShareItemProvider alloc] initWithExtensionContext:self.extensionContext];
+    _shareManager = [[ShareManager alloc] initWithShareItemProvider:provider];
     
     MXWeakify(self);
     [_shareManager setCompletionCallback:^(ShareManagerResult result) {

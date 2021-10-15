@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -55,6 +55,7 @@
                             <constraints>
                                 <constraint firstItem="BQ5-AW-rsV" firstAttribute="centerY" secondItem="7Ye-Ni-Nsr" secondAttribute="centerY" id="1d9-JD-CVF"/>
                                 <constraint firstItem="xhU-Rh-IgE" firstAttribute="leading" secondItem="7Ye-Ni-Nsr" secondAttribute="leading" constant="16" id="EjM-0b-dot"/>
+                                <constraint firstAttribute="height" constant="57" id="JLA-0h-k0P"/>
                                 <constraint firstAttribute="trailing" secondItem="otu-Ag-Bwo" secondAttribute="trailing" constant="16" id="Mth-c3-3Th"/>
                                 <constraint firstItem="xhU-Rh-IgE" firstAttribute="top" secondItem="7Ye-Ni-Nsr" secondAttribute="top" constant="12" id="T8c-d6-B7A"/>
                                 <constraint firstItem="otu-Ag-Bwo" firstAttribute="centerY" secondItem="BQ5-AW-rsV" secondAttribute="centerY" id="YwS-RW-o1i"/>

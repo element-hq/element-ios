@@ -16,6 +16,8 @@
 
 #import <MatrixKit/MatrixKit.h>
 
+@protocol ShareItemProviderProtocol;
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSUInteger, ShareManagerResult) {
@@ -28,7 +30,7 @@ typedef NS_ENUM(NSUInteger, ShareManagerResult) {
 
 @property (nonatomic, copy) void (^completionCallback)(ShareManagerResult);
 
-- (instancetype)initWithItems:(NSArray<NSExtensionItem *> *)items;
+- (instancetype)initWithShareItemProvider:(id<ShareItemProviderProtocol>)shareItemProvider;
 
 - (UIViewController *)mainViewController;
 

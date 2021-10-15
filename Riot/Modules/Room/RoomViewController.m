@@ -3198,16 +3198,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
-            NSExtensionItem *item = [[NSExtensionItem alloc] init];
-            item.attachments = @[[[NSItemProvider alloc] initWithItem:selectedComponent.textMessage typeIdentifier:(__bridge NSString *)kUTTypeText]];
-            
-            self.shareManager = [[ShareManager alloc] initWithItems:@[item]];
+            self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithTextMessage:selectedComponent.textMessage]];
             
             MXWeakify(self);
             [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
                 MXStrongifyAndReturnIfNil(self);
                 [attachment onShareEnded];
                 [self dismissViewControllerAnimated:YES completion:nil];
+                self.shareManager = nil;
             }];
             
             [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
@@ -3395,31 +3393,25 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (attachment.type == MXKAttachmentTypeFile ||
             attachment.type == MXKAttachmentTypeImage ||
-            attachment.type == MXKAttachmentTypeVideo) {
+            attachment.type == MXKAttachmentTypeVideo ||
+            attachment.type == MXKAttachmentTypeVoiceMessage) {
             
             [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
-                
-                NSDictionary *attachmentTypeToIdentifier = @{@(MXKAttachmentTypeFile): (__bridge NSString *)kUTTypeFileURL,
-                                                             @(MXKAttachmentTypeImage): (__bridge NSString *)kUTTypeImage,
-                                                             @(MXKAttachmentTypeVideo): (__bridge NSString *)kUTTypeVideo};
-                
                 [self startActivityIndicator];
                 
                 [attachment prepareShare:^(NSURL *fileURL) {
                     [self stopActivityIndicator];
                     
-                    NSExtensionItem *item = [[NSExtensionItem alloc] init];
-                    item.attachments = @[[[NSItemProvider alloc] initWithItem:fileURL typeIdentifier:attachmentTypeToIdentifier[@(attachment.type)]]];
-                    
-                    self.shareManager = [[ShareManager alloc] initWithItems:@[item]];
+                    self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithAttachment:attachment]];
                     
                     MXWeakify(self);
                     [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
                         MXStrongifyAndReturnIfNil(self);
                         [attachment onShareEnded];
                         [self dismissViewControllerAnimated:YES completion:nil];
+                        self.shareManager = nil;
                     }];
                     
                     [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
