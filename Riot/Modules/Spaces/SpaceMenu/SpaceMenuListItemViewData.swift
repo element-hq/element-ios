@@ -16,6 +16,14 @@
 
 import Foundation
 
+/// Possible action ID related to a `SpaceMenuListViewCell` view data
+enum SpaceMenuListItemActionId {
+    case showAllRoomsInHomeSpace
+    case exploreSpaceMembers
+    case exploreSpaceRooms
+    case leaveSpace
+}
+
 /// Style of the `SpaceMenuListViewCell`
 enum SpaceMenuListItemStyle {
     case normal
@@ -30,11 +38,11 @@ protocol SpaceMenuListItemViewDataDelegate: AnyObject {
 
 /// `SpaceMenuListViewCell` view data
 class SpaceMenuListItemViewData {
-    let actionId: String
+    let actionId: SpaceMenuListItemActionId
     let style: SpaceMenuListItemStyle
     let title: String?
     let icon: UIImage?
-    
+    /// Any value related to the type of data (e.g. `Bool` for `boolean` style, `nil` for `normal` and `destructive` style)
     var value: Any? {
         didSet {
             delegate?.spaceMenuItemValueDidChange(self)
@@ -42,7 +50,7 @@ class SpaceMenuListItemViewData {
     }
     weak var delegate: SpaceMenuListItemViewDataDelegate?
     
-    init(actionId: String, style: SpaceMenuListItemStyle, title: String?, icon: UIImage?, value: Any?) {
+    init(actionId: SpaceMenuListItemActionId, style: SpaceMenuListItemStyle, title: String?, icon: UIImage?, value: Any?) {
         self.actionId = actionId
         self.style = style
         self.title = title

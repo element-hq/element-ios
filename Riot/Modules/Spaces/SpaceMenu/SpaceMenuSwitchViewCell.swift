@@ -49,19 +49,9 @@ class SpaceMenuSwitchViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
 
     // MARK: - Public
     
-    func fill(with viewData: SpaceMenuListItemViewData) {
+    func update(with viewData: SpaceMenuListItemViewData) {
         self.titleLabel.text = viewData.title
         self.switchView.isOn = (viewData.value as? Bool) ?? false
-        
-        guard let theme = self.theme else {
-            return
-        }
-        
-        if viewData.style == .destructive {
-            self.titleLabel.textColor = theme.colors.alert
-        } else {
-            self.titleLabel.textColor = theme.colors.primaryContent
-        }
         
         viewData.delegate = self
     }

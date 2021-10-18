@@ -253,7 +253,7 @@ extension SpaceMenuViewController: UITableViewDataSource {
         
         if let cell = cell as? SpaceMenuCell {
             cell.update(theme: self.theme)
-            cell.fill(with: viewData)
+            cell.update(with: viewData)
         }
         
         return cell

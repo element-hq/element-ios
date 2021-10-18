@@ -22,7 +22,7 @@ protocol SpaceMenuViewModelViewDelegate: AnyObject {
 
 protocol SpaceMenuModelViewModelCoordinatorDelegate: AnyObject {
     func spaceMenuViewModelDidDismiss(_ viewModel: SpaceMenuViewModelType)
-    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWithId itemId: String)
+    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWithId itemId: SpaceMenuListItemActionId)
 }
 
 /// Protocol describing the view model used by `SpaceMenuViewController`

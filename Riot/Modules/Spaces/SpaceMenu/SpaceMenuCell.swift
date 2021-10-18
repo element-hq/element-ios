@@ -17,5 +17,5 @@
 import Foundation
 
 protocol SpaceMenuCell: Themable {
-    func fill(with viewData: SpaceMenuListItemViewData)
+    func update(with viewData: SpaceMenuListItemViewData)
 }

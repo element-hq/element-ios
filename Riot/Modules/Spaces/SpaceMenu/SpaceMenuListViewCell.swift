@@ -49,7 +49,7 @@ class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
 
     // MARK: - Public
     
-    func fill(with viewData: SpaceMenuListItemViewData) {
+    func update(with viewData: SpaceMenuListItemViewData) {
         self.iconView.image = viewData.icon
         self.titleLabel.text = viewData.title
         

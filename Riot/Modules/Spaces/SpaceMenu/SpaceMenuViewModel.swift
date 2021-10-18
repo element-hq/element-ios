@@ -19,24 +19,15 @@ import Foundation
 /// View model used by `SpaceMenuViewController`
 class SpaceMenuViewModel: SpaceMenuViewModelType {
     
-    // MARK: - Enum
-    
-    enum ActionId: String {
-        case showAllRoomsInHome = "showAllRoomsInHome"
-        case members = "members"
-        case rooms = "rooms"
-        case leave = "leave"
-    }
-    
     // MARK: - Properties
     
     weak var coordinatorDelegate: SpaceMenuModelViewModelCoordinatorDelegate?
     weak var viewDelegate: SpaceMenuViewModelViewDelegate?
 
     private let spaceMenuItems: [SpaceMenuListItemViewData] = [
-        SpaceMenuListItemViewData(actionId: ActionId.members.rawValue, style: .normal, title: VectorL10n.roomDetailsPeople, icon: Asset.Images.spaceMenuMembers.image, value: nil),
-        SpaceMenuListItemViewData(actionId: ActionId.rooms.rawValue, style: .normal, title: VectorL10n.spacesExploreRooms, icon: Asset.Images.spaceMenuRooms.image, value: nil),
-        SpaceMenuListItemViewData(actionId: ActionId.leave.rawValue, style: .destructive, title: VectorL10n.leave, icon: Asset.Images.spaceMenuLeave.image, value: nil)
+        SpaceMenuListItemViewData(actionId: .exploreSpaceMembers, style: .normal, title: VectorL10n.roomDetailsPeople, icon: Asset.Images.spaceMenuMembers.image, value: nil),
+        SpaceMenuListItemViewData(actionId: .exploreSpaceRooms, style: .normal, title: VectorL10n.spacesExploreRooms, icon: Asset.Images.spaceMenuRooms.image, value: nil),
+        SpaceMenuListItemViewData(actionId: .leaveSpace, style: .destructive, title: VectorL10n.leave, icon: Asset.Images.spaceMenuLeave.image, value: nil)
     ]
     
     var menuItems: [SpaceMenuListItemViewData] = []
@@ -54,7 +45,7 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
             self.menuItems = spaceMenuItems
         } else {
             self.menuItems = [
-                SpaceMenuListItemViewData(actionId: ActionId.showAllRoomsInHome.rawValue, style: .boolean, title: VectorL10n.spaceHomeShowAllRooms, icon: nil, value: MXKAppSettings.standard().isShowAllRoomsInHomeEnabled)
+                SpaceMenuListItemViewData(actionId: .showAllRoomsInHomeSpace, style: .boolean, title: VectorL10n.spaceHomeShowAllRooms, icon: nil, value: MXKAppSettings.standard().showAllRoomsInHomeSpace)
             ]
         }
     }
@@ -76,17 +67,16 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     
     // MARK: - Private
     
-    private func processAction(with actionStringId: String, at indexPath: IndexPath) {
-        let actionId = ActionId(rawValue: actionStringId)
+    private func processAction(with actionId: SpaceMenuListItemActionId, at indexPath: IndexPath) {
         switch actionId {
-        case .showAllRoomsInHome:
-            MXKAppSettings.standard().isShowAllRoomsInHomeEnabled = !MXKAppSettings.standard().isShowAllRoomsInHomeEnabled
-            self.menuItems[indexPath.row].value = MXKAppSettings.standard().isShowAllRoomsInHomeEnabled
+        case .showAllRoomsInHomeSpace:
+            MXKAppSettings.standard().showAllRoomsInHomeSpace = !MXKAppSettings.standard().showAllRoomsInHomeSpace
+            self.menuItems[indexPath.row].value = MXKAppSettings.standard().showAllRoomsInHomeSpace
             self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
-        case .leave:
+        case .leaveSpace:
             self.leaveSpace()
         default:
-            self.coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWithId: actionStringId)
+            self.coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWithId: actionId)
         }
     }
 
