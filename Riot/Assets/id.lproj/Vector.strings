@@ -109,3 +109,503 @@
 
 // Room Details
 "room_details_title" = "Detail Ruangan";
+"security_settings_secure_backup_setup" = "Siapkan";
+"security_settings_secure_backup" = "CADANGAN AMAN";
+"security_settings_crypto_sessions" = "SESI SAYA";
+"settings_discovery_three_pid_details_title_email" = "Kelola email";
+"settings_discovery_three_pids_management_information_part2" = "Pengaturan Pengguna";
+"settings_key_backup_delete_confirmation_prompt_title" = "Hapus Cadangan";
+"settings_key_backup_button_delete" = "Hapus Cadangan";
+"settings_key_backup_info_algorithm" = "Algoritma: %@";
+"settings_crypto_export" = "Ekspor kunci";
+"settings_crypto_device_key" = "\nKunci sesi:\n";
+"settings_crypto_device_id" = "\nID Sesi: ";
+"settings_crypto_device_name" = "Nama sesi: ";
+"settings_add_3pid_invalid_password_message" = "Kredential tidak valid";
+"settings_confirm_password" = "konfirmasi kata sandi";
+"settings_new_password" = "kata sandi baru";
+"settings_old_password" = "kata sandi lama";
+"settings_third_party_notices" = "Pemberitahuan Pihak Ketiga";
+"settings_privacy_policy" = "Kebijakan Privasi";
+"settings_version" = "Versi %@";
+"settings_labs_e2e_encryption" = "Enkripsi Ujung-ke-Ujung";
+"settings_contacts_phonebook_country" = "Negara buku telepon";
+"settings_integrations_allow_button" = "Kelola integrasi";
+"settings_enable_callkit" = "Panggilan yang diintegrasi";
+"settings_night_mode" = "Mode Malam";
+"settings_change_password" = "Ubah kata sandi";
+"settings_first_name" = "Nama Depan";
+"settings_display_name" = "Nama Tampilan";
+"settings_profile_picture" = "Gambar Profil";
+"settings_sign_out" = "Keluar";
+"settings_deactivate_account" = "NONAKTIFKAN AKUN";
+"settings_key_backup" = "CADANGAN KUNCI";
+"settings_contacts" = "KONTAK PERANGKAT";
+"settings_ignored_users" = "PENGGUNA YANG DIABAIKAN";
+"settings_user_interface" = "ANTARMUKA PENGGUNA";
+"settings_identity_server_settings" = "SERVER IDENTITAS";
+"settings_user_settings" = "PENGATURAN PENGGUNA";
+"settings_clear_cache" = "Bersihkan cache";
+"room_event_action_report" = "Laporkan konten";
+"settings_report_bug" = "Laporkan bug";
+"room_preview_try_join_an_unknown_room_default" = "sebuah ruangan";
+"room_title_one_member" = "1 anggota";
+"room_title_members" = "%@ anggota";
+"room_title_invite_members" = "Undang anggota";
+
+// Room Title
+"room_title_new_room" = "Ruangan baru";
+"unknown_devices_title" = "Sesi tidak diketahui";
+"unknown_devices_answer_anyway" = "Jawab Saja";
+"unknown_devices_call_anyway" = "Panggil Saja";
+"unknown_devices_send_anyway" = "Kirim Saja";
+"room_open_dialpad" = "Papan nomor";
+"room_place_voice_call" = "Panggilan suara";
+"room_accessibility_hangup" = "Jeda";
+"room_accessibility_video_call" = "Panggilan Video";
+"room_message_edits_history_title" = "Editan pesan";
+"room_action_send_file" = "Kirim file";
+"room_action_send_sticker" = "Kirim stiker";
+"room_event_action_reaction_history" = "Sejarah reaksi";
+"room_event_action_reaction_show_less" = "Tampilkan lebih sedikit";
+"room_event_action_reaction_show_all" = "Tampilkan semua";
+"room_event_action_view_encryption" = "Informasi enkripsi";
+"room_event_action_cancel_download" = "Batalkan Pengunduhan";
+"room_event_action_cancel_send" = "Batalkan Pengiriman";
+"room_event_action_view_source" = "Tampilkan Sumber";
+"room_prompt_cancel" = "batalkan semuanya";
+"room_prompt_resend" = "Kirim ulang semuanya";
+"room_participants_action_security_status_complete_security" = "Selesaikan keamanan";
+"room_participants_action_set_admin" = "Buat sebagai admin";
+"room_participants_action_set_moderator" = "Buat sebagai moderator";
+"room_participants_action_section_direct_chats" = "Pesan langsung";
+"room_participants_action_section_admin_tools" = "Alat admin";
+"room_participants_invite_malformed_id_title" = "Kesalahan dalam Mengundang";
+"room_participants_filter_room_members_for_dm" = "Filter anggota";
+"room_participants_leave_prompt_title" = "Tinggalkan ruangan";
+"room_participants_multi_participants" = "%d anggota";
+"room_participants_one_participant" = "1 anggota";
+"room_participants_add_participant" = "Tambahkan anggota";
+"contacts_user_directory_section" = "DIREKTORI PENGGUNA";
+
+// Contacts
+"contacts_address_book_section" = "KONTAK LOKAL";
+"directory_cell_description" = "%tu ruangan";
+
+// Directory
+"directory_cell_title" = "Jelajahi direktori";
+"search_no_result" = "Tidak ada hasil";
+"people_no_conversation" = "Tidak ada obrolan";
+"room_recents_join_room" = "Bergabung ke ruangan";
+"room_recents_create_empty_room" = "Buat ruangan";
+"room_recents_start_chat_with" = "Mulai obrolan";
+"room_recents_server_notice_section" = "PEMBERITAHUAN SISTEM";
+"room_recents_low_priority_section" = "PRIORITAS RENDAH";
+"room_recents_no_conversation" = "Tidak ada ruangan";
+
+// Room recents
+"room_recents_directory_section" = "DIREKTORI RUANGAN";
+"room_creation_make_private" = "Buat privat";
+"room_creation_keep_private" = "Tetap buat privat";
+"room_creation_make_public" = "Buat publik";
+
+// Chat creation
+"room_creation_title" = "Obrolan Baru";
+
+// Social login
+
+"social_login_list_title_continue" = "Lanjut dengan";
+"auth_softlogout_clear_data_sign_out" = "Keluar";
+"side_menu_action_feedback" = "Masukan";
+"side_menu_action_help" = "Bantuan";
+"side_menu_action_settings" = "Pengaturan";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_tag" = "space";
+"spaces_suggested_room" = "Disarankan";
+"spaces_left_panel_title" = "Space";
+"spaces_home_space_title" = "Beranda";
+"pin_protection_settings_section_header" = "PIN";
+"room_notifs_settings_cancel_action" = "Batalkan";
+"room_notifs_settings_done_action" = "Selesai";
+"room_notifs_settings_none" = "Tidak Ada";
+"room_details_notifs" = "Notifikasi";
+"security_settings_secure_backup_reset" = "Atur Ulang";
+"settings_messages_containing_keywords" = "Keyword";
+"settings_messages_containing_at_room" = "@room";
+"settings_notifications" = "NOTIFIKASI";
+"settings_links" = "TAUTAN";
+"auth_softlogout_sign_in" = "Masuk";
+"space_beta_announce_badge" = "BETA";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
+"call_transfer_error_title" = "Kesalahan";
+"call_transfer_contacts_all" = "Semua";
+"call_transfer_contacts_recent" = "Baru Ini";
+"call_transfer_users" = "Pengguna";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Pindahkan";
+"room_info_list_section_other" = "Lainnya";
+"create_room_placeholder_address" = "#ruangantest:matrix.org";
+"create_room_placeholder_topic" = "Topik";
+"create_room_placeholder_name" = "Nama";
+"biometrics_cant_unlocked_alert_message_retry" = "Coba lagi";
+"pin_protection_reset_alert_action_reset" = "Atur Ulang";
+"pin_protection_choose_pin_welcome_after_register" = "Selamat datang.";
+"secrets_reset_reset_action" = "Atur Ulang";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Konfirmasi";
+"secrets_setup_recovery_passphrase_validate_action" = "Selesai";
+"security_settings_secure_backup_info_checking" = "Memeriksa…";
+"secrets_setup_recovery_key_done_action" = "Selesai";
+"secrets_setup_recovery_key_export_action" = "Simpan";
+"secrets_recovery_with_key_recovery_key_title" = "Masukkan";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_passphrase_title" = "Masukkan";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Dipercayai";
+"user_verification_sessions_list_session_trusted" = "Dipercayai";
+"user_verification_sessions_list_table_title" = "Sesi";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Tidak Diketahui";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Peringatan";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Dipercayai";
+"key_verification_tile_conclusion_done_title" = "Terverifikasi";
+"key_verification_tile_request_incoming_approval_decline" = "Tolak";
+"key_verification_tile_request_incoming_approval_accept" = "Terima";
+"key_verification_tile_request_status_expired" = "Kedaluwarsa";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Kesalahan";
+
+// MARK: Reaction history
+"reaction_history_title" = "Reaksi";
+"emoji_picker_flags_category" = "Bendera";
+"emoji_picker_symbols_category" = "Simbol";
+"emoji_picker_objects_category" = "Benda";
+"emoji_picker_activity_category" = "Aktifitas";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Reaksi";
+"device_verification_emoji_pin" = "Pin";
+"device_verification_emoji_folder" = "Map";
+"device_verification_emoji_headphones" = "Headphone";
+"device_verification_emoji_anchor" = "Jangkar";
+"device_verification_emoji_bell" = "Lonceng";
+"device_verification_emoji_trumpet" = "Terompet";
+"device_verification_emoji_guitar" = "Gitar";
+"device_verification_emoji_ball" = "Bola";
+"device_verification_emoji_trophy" = "Piala";
+"device_verification_emoji_rocket" = "Roket";
+"device_verification_emoji_aeroplane" = "Pesawat";
+"device_verification_emoji_bicycle" = "Sepeda";
+"device_verification_emoji_train" = "Kereta Api";
+"device_verification_emoji_flag" = "Bendera";
+"device_verification_emoji_telephone" = "Telepon";
+"device_verification_emoji_hammer" = "Palu";
+"device_verification_emoji_lock" = "Gembok";
+"device_verification_emoji_key" = "Kunci";
+"device_verification_emoji_scissors" = "Gunting";
+"device_verification_emoji_paperclip" = "Klip Kertas";
+"device_verification_emoji_pencil" = "Pensil";
+"device_verification_emoji_book" = "Buku";
+"device_verification_emoji_gift" = "Hadiah";
+"device_verification_emoji_clock" = "Jam";
+"device_verification_emoji_hourglass" = "Jam Pasir";
+"device_verification_emoji_umbrella" = "Payung";
+"device_verification_emoji_santa" = "Santa";
+"device_verification_emoji_spanner" = "Kunci (Bengkel)";
+"device_verification_emoji_glasses" = "Kacamata";
+"device_verification_emoji_hat" = "Topi";
+"device_verification_emoji_robot" = "Robot";
+"device_verification_emoji_smiley" = "Senyuman";
+"device_verification_emoji_heart" = "Hati";
+"device_verification_emoji_cake" = "Kue";
+"device_verification_emoji_pizza" = "Pizza";
+"device_verification_emoji_corn" = "Jagung";
+"device_verification_emoji_strawberry" = "Stroberi";
+"device_verification_emoji_apple" = "Apel";
+"device_verification_emoji_banana" = "Pisang";
+"device_verification_emoji_fire" = "Api";
+"device_verification_emoji_cloud" = "Awan";
+"device_verification_emoji_moon" = "Bulan";
+"device_verification_emoji_globe" = "Bola Dunia";
+"device_verification_emoji_mushroom" = "Jamur";
+"device_verification_emoji_cactus" = "Kaktus";
+"device_verification_emoji_tree" = "Pohon";
+"device_verification_emoji_flower" = "Bunga";
+"device_verification_emoji_butterfly" = "Kupu-Kupu";
+"device_verification_emoji_octopus" = "Gurita";
+"device_verification_emoji_fish" = "Ikan";
+"device_verification_emoji_turtle" = "Kura-Kura";
+"device_verification_emoji_penguin" = "Penguin";
+"device_verification_emoji_rooster" = "Ayam";
+"device_verification_emoji_panda" = "Panda";
+"device_verification_emoji_rabbit" = "Kelinci";
+"device_verification_emoji_elephant" = "Gajah";
+"device_verification_emoji_pig" = "Babi";
+"device_verification_emoji_unicorn" = "Unicorn";
+"device_verification_emoji_horse" = "Kuda";
+"device_verification_emoji_lion" = "Singa";
+"device_verification_emoji_cat" = "Kucing";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Anjing";
+
+// MARK: Verified
+
+// Device
+
+"device_verification_verified_title" = "Terverifikasi!";
+"key_verification_manually_verify_device_validate_action" = "Verifikasi";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Tampilkan";
+"key_verification_self_verify_current_session_alert_validate_action" = "Verifikasi";
+"device_verification_self_verify_alert_validate_action" = "Verifikasi";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Cadangan";
+"key_backup_recover_done_action" = "Selesai";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Masukkan";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_passphrase_title" = "Masukkan";
+"key_backup_setup_success_from_passphrase_done_action" = "Selesai";
+
+// Success
+
+"key_backup_setup_success_title" = "Berhasil!";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Hebat!";
+"key_backup_setup_passphrase_passphrase_valid" = "Hebat!";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "Konfirmasi";
+"key_backup_setup_passphrase_passphrase_title" = "Masukkan";
+"key_backup_setup_intro_manual_export_info" = "(Lanjutan)";
+"key_backup_setup_skip_alert_skip_action" = "Lewat";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Peringatan";
+"service_terms_modal_decline_button" = "Tolak";
+"service_terms_modal_accept_button" = "Terima";
+
+// Widget Picker
+"widget_picker_title" = "Integrasi";
+"widget_menu_refresh" = "Muat Ulang";
+"bug_report_send" = "Kirim";
+"e2e_key_backup_wrong_version_button_settings" = "Pengaturan";
+"call_actions_unhold" = "Lanjutkan";
+"large_badge_value_k_format" = "%.1fK";
+"yesterday" = "Kemarin";
+"today" = "Sekarang";
+"you" = "Anda";
+
+// Others
+"or" = "atau";
+"event_formatter_group_call_leave" = "Tinggalkan";
+"event_formatter_group_call_join" = "Bergabung";
+"event_formatter_call_retry" = "Coba Lagi";
+"event_formatter_call_answer" = "Jawab";
+"event_formatter_call_decline" = "Tolak";
+"event_formatter_message_edited_mention" = "(diedit)";
+"directory_server_placeholder" = "matrix.org";
+
+// Directory
+"directory_title" = "Direktori";
+"media_picker_select" = "PIlih";
+"media_picker_library" = "Perpustakaan";
+"receipt_status_read" = "Baca: ";
+"group_participants_invited_section" = "DIUNDANG";
+"group_participants_invite_prompt_title" = "Konfirmasi";
+"group_participants_remove_prompt_title" = "Konfirmasi";
+"group_details_rooms" = "Ruangan";
+"group_details_people" = "Orang";
+"group_details_home" = "Beranda";
+"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_advanced_section" = "Lanjutan";
+"room_details_addresses_section" = "Alamat";
+"room_details_history_section_anyone" = "Siapa Saja";
+"room_details_favourite_tag" = "Favorit";
+"room_details_topic" = "Topik";
+"room_details_room_name_for_dm" = "Nama";
+"room_details_photo_for_dm" = "Foto";
+"room_details_settings" = "Pengaturan";
+"room_details_integrations" = "Integrasi";
+"room_details_files" = "Unggahan";
+"room_details_people" = "Anggota";
+"room_details_title_for_dm" = "Detail";
+"identity_server_settings_alert_disconnect_button" = "Putuskan";
+"identity_server_settings_disconnect" = "Putuskan";
+"identity_server_settings_change" = "Ubah";
+"identity_server_settings_add" = "Tambahkan";
+"security_settings_advanced" = "LANJUTAN";
+"security_settings_cryptography" = "KRIPTOGRAFI";
+"security_settings_crosssigning_reset" = "Atur Ulang";
+"security_settings_crosssigning" = "TANDA TANGAN SILANG";
+
+// Security settings
+"security_settings_title" = "Keamanan";
+"settings_discovery_three_pid_details_revoke_action" = "Hapus";
+"settings_discovery_three_pid_details_share_action" = "Bagikan";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_copyright" = "Hak Cipta";
+"settings_ui_theme_black" = "Hitam";
+"settings_ui_theme_dark" = "Gelap";
+"settings_ui_theme_light" = "Terang";
+"settings_ui_theme_auto" = "Otomatis";
+"settings_ui_theme" = "Tema";
+"settings_ui_language" = "Bahasa";
+"settings_security" = "KEAMANAN";
+"settings_three_pids_management_information_part3" = ".";
+"settings_three_pids_management_information_part2" = "Penemuan";
+"settings_phone_number" = "Nomor telepon";
+"settings_email_address" = "Email";
+"settings_remove_prompt_title" = "Konfirmasi";
+"settings_surname" = "Nama belakang";
+"settings_cryptography" = "KRIPTOGRAFI";
+"settings_devices" = "SESI";
+"settings_labs" = "UJI COBA";
+"settings_other" = "LAINNYA";
+"settings_advanced" = "LANJUTAN";
+"settings_integrations" = "INTEGRASI";
+"settings_discovery_settings" = "PENEMUAN";
+"settings_calls_settings" = "PANGGILAN";
+
+// Settings
+"settings_title" = "Pengaturan";
+"media_type_accessibility_sticker" = "Stiker";
+"media_type_accessibility_file" = "File";
+"media_type_accessibility_location" = "Lokasi";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_image" = "Gambar";
+"room_join_group_call" = "Gabung";
+"room_accessibility_call" = "Panggilan";
+"room_accessibility_upload" = "Unggah";
+"room_accessibility_integrations" = "Integrasi";
+"room_accessibility_search" = "Cari";
+"room_resource_limit_exceeded_message_contact_1" = " Mohon ";
+"room_action_reply" = "Balas";
+"room_event_action_edit" = "Edit";
+"room_event_action_reply" = "Balas";
+"room_event_action_delete" = "Hapus";
+"room_event_action_resend" = "Kirim Ulang";
+"room_event_action_save" = "Simpan";
+"room_event_action_permalink" = "Tautan";
+"room_event_action_share" = "Bagikan";
+"room_event_action_more" = "Lainnya";
+"room_event_action_redact" = "Hapus";
+"room_event_action_quote" = "Kutip";
+"room_event_action_copy" = "Salin";
+"room_ongoing_conference_call_close" = "Tutup";
+"room_message_editing" = "Mengedit";
+"room_member_power_level_short_custom" = "Kustom";
+"room_member_power_level_short_moderator" = "Moderator";
+"room_member_power_level_short_admin" = "Admin";
+"room_participants_action_security_status_warning" = "Peringatan";
+"room_participants_action_security_status_verify" = "Verifikasi";
+"room_participants_action_security_status_verified" = "Terverifikasi";
+"room_participants_action_mention" = "Sebutan";
+"room_participants_action_unban" = "Hilangkan cekalan";
+"room_participants_action_invite" = "Undangan";
+"room_participants_action_section_security" = "Keamanan";
+"room_participants_action_section_other" = "Opsi";
+"room_participants_action_section_devices" = "Sesi";
+"room_participants_ago" = "lalu";
+"room_participants_now" = "sekarang";
+"room_participants_idle" = "Idle";
+"room_participants_unknown" = "Tidak diketahui";
+"room_participants_offline" = "Offline";
+"room_participants_online" = "Online";
+"room_participants_invited_section" = "DIUNDANG";
+"room_participants_invite_prompt_title" = "Konfirmasi";
+"room_participants_remove_prompt_title" = "Konfirmasi";
+"room_participants_leave_prompt_title_for_dm" = "Tinggalkan";
+
+// Chat participants
+"room_participants_title" = "Anggota";
+"search_in_progress" = "Mencari…";
+"search_default_placeholder" = "Cari";
+"search_files" = "File";
+"search_people" = "Orang";
+"search_messages" = "Pesan";
+
+// Search
+"search_rooms" = "Ruangan";
+"group_section" = "KOMUNITAS";
+
+// Groups tab
+"group_invite_section" = "UNDANGAN";
+"rooms_empty_view_title" = "Ruangan";
+"people_empty_view_title" = "Orang";
+"secrets_setup_recovery_key_loading" = "Memuat…";
+"key_verification_tile_request_status_waiting" = "Menunggu…";
+"device_verification_self_verify_start_waiting" = "Menunggu…";
+"event_formatter_call_ringing" = "Berdering…";
+"event_formatter_call_connecting" = "Menghubungkan…";
+"security_settings_crypto_sessions_loading" = "Memuat sesi…";
+"settings_key_backup_info_checking" = "Memeriksa…";
+"unknown_devices_verify" = "Verifikasi…";
+"room_participants_security_loading" = "Memuat…";
+"room_participants_action_security_status_loading" = "Memuat…";
+"directory_searching_title" = "Mencari direktori…";
+"room_details_advanced_room_id" = "ID Ruangan:";
+"room_details_banned_users_section" = "Pengguna yang dicekal";
+"room_details_flair_invalid_id_prompt_title" = "Format tidak valid";
+"room_details_history_section_prompt_title" = "Peringatan privasi";
+"room_details_direct_chat" = "Pesan Langsung";
+"room_details_mute_notifs" = "Bisukan notifikasi";
+"room_details_low_priority_tag" = "Prioritas rendah";
+"room_details_room_name" = "Nama Ruangan";
+"room_details_photo" = "Foto Ruangan";
+"room_details_search" = "Cari ruangan";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Putuskan saja";
+
+// Identity server settings
+"identity_server_settings_title" = "Server identitas";
+"manage_session_not_trusted" = "Tidak dipercayai";
+"manage_session_name" = "Nama sesi";
+"manage_session_info" = "INFORMASI SESI";
+
+// Manage session
+"manage_session_title" = "Kelola sesi";
+"security_settings_complete_security_alert_title" = "Keamanan lengkap";
+"security_settings_crosssigning_complete_security" = "Keamanan lengkap";
+"security_settings_crosssigning_bootstrap" = "Siapkan";
+"security_settings_backup" = "CADANGAN PESAN";
+"security_settings_secure_backup_delete" = "Hapus Cadangan";
+"people_conversation_section" = "OBROLAN";
+
+// People tab
+"people_invites_section" = "UNDANGAN";
+"room_recents_invites_section" = "UNDANGAN";
+"room_recents_conversations_section" = "RUANGAN";
+"room_recents_people_section" = "ORANG";
+"room_recents_favourites_section" = "FAVORIT";
+"room_creation_privacy" = "Privasi";
+"room_creation_appearance_name" = "Nama";
+"room_creation_appearance" = "Tampilan";
+"room_creation_account" = "Akun";
+"social_login_list_title_sign_up" = "Atau";
+"social_login_list_title_sign_in" = "Atau";
+"auth_reset_password_error_is_required" = "Tidak ada server identitas yang diatur: tambahkan di pengaturan server untuk mengatur ulang kata sandi Anda.";
+"auth_reset_password_error_not_found" = "Alamat email Anda terlihat tidak diasosiasikan dengan sebuah ID Matrix di homeserver ini.";
+"auth_reset_password_error_unauthorized" = "Gagal untuk memverifikasi alamat email: pastikan Anda membuka tautan yang ada di email";
+"auth_reset_password_next_step_button" = "Saya telah memverifikasi alamat email saya";
+"auth_reset_password_email_validation_message" = "Sebuah email telah dikirim ke %@. Setelah Anda membuka tautan yang ada, klik di bawah.";
+"auth_reset_password_missing_password" = "Sebuah kata sandi baru harus dimasukkan.";
+"auth_reset_password_missing_email" = "Alamat email yang tertaut dengan akun Anda harus dimasukkan.";
+"auth_reset_password_message" = "Untuk mengatur ulang kata sandi Anda, masukkan alamat email yang tertaut ke akun Anda:";
+"auth_recaptcha_message" = "Homeserver ini ingin memastikan bahwa Anda bukan sebuah robot";
+"auth_msisdn_validation_error" = "Tidak dapat memverifikasi nomor telepon.";
+"auth_msisdn_validation_message" = "Kami telah mengirim sebuah SMS dengan kode aktivasi. Silakan masukkan kodenya di bawah.";
+"auth_msisdn_validation_title" = "Menunggu Verifikasi";
+"done" = "Selesai";
+"open" = "Buka";
