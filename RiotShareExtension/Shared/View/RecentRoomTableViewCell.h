@@ -20,4 +20,6 @@
 
 + (CGFloat)cellHeight;
 
+- (void)setCustomSelected:(BOOL)selected animated:(BOOL)animated;
+
 @end

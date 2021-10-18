@@ -31,6 +31,7 @@
 #endif
 
 static const CGFloat kLargeImageSizeMaxDimension = 2048.0;
+static const CGSize kThumbnailSize = {800.0, 600.0};
 
 typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
@@ -61,6 +62,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 @implementation ShareManager
 
 - (instancetype)initWithShareItemProvider:(id<ShareItemProviderProtocol>)shareItemProvider
+                                     type:(ShareManagerType)type
 {
     if (self = [super init])
     {
@@ -91,7 +93,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         [MXLog configure:configuration];
         
-        _shareViewController = [[ShareViewController alloc] initWithType:ShareViewControllerTypeSend
+        _shareViewController = [[ShareViewController alloc] initWithType:(type == ShareManagerTypeForward ? ShareViewControllerTypeForward : ShareViewControllerTypeSend)
                                                             currentState:ShareViewControllerAccountStateNotConfigured];
         [_shareViewController setDelegate:self];
         
@@ -101,7 +103,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [NSBundle mxk_setLanguage:language];
         [NSBundle mxk_setFallbackLanguage:@"en"];
         
-        // Check the current matrix user.
         [self checkUserAccount];
     }
     
@@ -117,8 +118,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 #pragma mark - ShareViewControllerDelegate
 
-- (void)shareViewControllerDidRequestShare:(ShareViewController *)shareViewController
-                         forRoomIdentifier:(NSString *)roomIdentifier
+- (void)shareViewController:(ShareViewController *)shareViewController didRequestShareForRoomIdentifiers:(NSSet<NSString *> *)roomIdentifiers
 {
     MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
     [MXFileStore setPreloadOptions:0];
@@ -129,12 +129,22 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         
         session.crypto.warnOnUnknowDevices = NO; // Do not warn for unknown devices. We have cross-signing now
         
-        MXRoom *selectedRoom = [MXRoom loadRoomFromStore:self.fileStore withRoomId:roomIdentifier matrixSession:session];
-        [self sendContentToRoom:selectedRoom success:nil failure:^(NSError *error){
+        NSMutableArray<MXRoom *> *rooms = [NSMutableArray array];
+        for (NSString *roomIdentifier in roomIdentifiers) {
+            MXRoom *room = [MXRoom loadRoomFromStore:self.fileStore withRoomId:roomIdentifier matrixSession:session];
+            if (room) {
+                [rooms addObject:room];
+            }
+        }
+        
+        [self sendContentToRooms:rooms success:^{
+            self.completionCallback(ShareManagerResultFinished);
+        } failure:^(NSError *error){
             [self showFailureAlert:[VectorL10n roomEventFailedToSend]];
         }];
+        
     } failure:^(NSError *error) {
-        MXLogError(@"[ShareManager] Failed preparign matrix session");
+        MXLogError(@"[ShareManager] Failed preparing matrix session");
     }];
 }
 
@@ -145,16 +155,37 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 #pragma mark - Private
 
-- (void)sendContentToRoom:(MXRoom *)room success:(void(^)(void))success failure:(void(^)(NSError *))failure
+- (void)showFailureAlert:(NSString *)title
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    MXWeakify(self);
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (self.completionCallback)
+        {
+            self.completionCallback(ShareManagerResultFailed);
+        }
+    }];
+    
+    [alertController addAction:okAction];
+    
+    [self.mainViewController presentViewController:alertController animated:YES completion:nil];
+}
+
+- (void)sendContentToRooms:(NSArray<MXRoom *> *)rooms success:(void(^)(void))success failure:(void(^)(NSError *))failure
 {
     [self resetPendingData];
-    
-    NSMutableArray <id<ShareItemProtocol>> *pendingImagesItemProviders = [NSMutableArray array]; // Used to keep the items associated to pending images (used only when all items are images).
     
     __block NSError *firstRequestError = nil;
     dispatch_group_t dispatchGroup = dispatch_group_create();
     
-    void (^requestFailure)(NSError*) = ^(NSError *requestError) {
+    void (^requestSuccess)(void) = ^() {
+        dispatch_group_leave(dispatchGroup);
+    };
+    
+    void (^requestFailure)(NSError *) = ^(NSError *requestError) {
         if (requestError && !firstRequestError)
         {
             firstRequestError = requestError;
@@ -166,68 +197,93 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     MXWeakify(self);
     for (id<ShareItemProtocol> item in self.shareItemProvider.items)
     {
+        if (item.type == ShareItemTypeText || item.type == ShareItemTypeURL) {
+            dispatch_group_enter(dispatchGroup);
+            [self.shareItemProvider loadItem:item completion:^(id item, NSError *error) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                if (error)
+                {
+                    requestFailure(error);
+                    return;
+                }
+                
+                NSString *text = nil;
+                if([item isKindOfClass:[NSString class]])
+                {
+                    text = item;
+                }
+                else if([item isKindOfClass:[NSURL class]])
+                {
+                    text = [(NSURL *)item absoluteString];
+                }
+                
+                if(text.length == 0)
+                {
+                    requestFailure(nil);
+                    return;
+                }
+                
+                [self sendText:text toRooms:rooms success:requestSuccess failure:requestFailure];
+            }];
+        }
+        
         if (item.type == ShareItemTypeFileURL) {
             dispatch_group_enter(dispatchGroup);
             [self.shareItemProvider loadItem:item completion:^(NSURL *url, NSError *error) {
-                if (error) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                if (error)
+                {
                     requestFailure(error);
-                    dispatch_group_leave(dispatchGroup);
                     return;
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self sendFileWithUrl:url toRoom:room success:^{
-                        dispatch_group_leave(dispatchGroup);
-                    } failure:requestFailure];
-                });
+                [self sendFileWithUrl:url toRooms:rooms success:requestSuccess failure:requestFailure];
             }];
         }
         
-        if (item.type == ShareItemTypeText) {
-            dispatch_group_enter(dispatchGroup);
-            [self.shareItemProvider loadItem:item completion:^(NSString *text, NSError *error) {
-                if (error) {
-                    requestFailure(error);
-                    dispatch_group_leave(dispatchGroup);
-                    return;
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self sendText:text toRoom:room success:^{
-                        dispatch_group_leave(dispatchGroup);
-                    } failure:requestFailure];
-                });
-            }];
-        }
-        
-        if (item.type == ShareItemTypeURL)
+        if (item.type == ShareItemTypeVideo || item.type == ShareItemTypeMovie)
         {
             dispatch_group_enter(dispatchGroup);
-            [self.shareItemProvider loadItem:item completion:^(NSURL *url, NSError *error) {
-                if (error) {
+            [self.shareItemProvider loadItem:item completion:^(NSURL *videoLocalUrl, NSError *error) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                if (error)
+                {
                     requestFailure(error);
-                    dispatch_group_leave(dispatchGroup);
                     return;
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self sendText:url.absoluteString toRoom:room success:^{
-                        dispatch_group_leave(dispatchGroup);
-                    } failure:requestFailure];
-                });
+                [self sendVideo:videoLocalUrl toRooms:rooms success:requestSuccess failure:requestFailure];
             }];
         }
         
+        if (item.type == ShareItemTypeVoiceMessage)
+        {
+            dispatch_group_enter(dispatchGroup);
+            [self.shareItemProvider loadItem:item completion:^(NSURL *fileURL, NSError *error) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                if (error)
+                {
+                    requestFailure(error);
+                    return;
+                }
+                
+                [self sendVoiceMessage:fileURL toRooms:rooms success:requestSuccess failure:requestFailure];
+            }];
+        }
+
         if (item.type == ShareItemTypeImage)
         {
             dispatch_group_enter(dispatchGroup);
             [self.shareItemProvider loadItem:item completion:^(id<NSSecureCoding> itemProviderItem, NSError *error) {
-                if (error) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                if (error)
+                {
                     requestFailure(error);
-                    dispatch_group_leave(dispatchGroup);
                     return;
                 }
                 
@@ -250,30 +306,23 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                     imageData = UIImagePNGRepresentation(image);
                 }
                 
-                MXStrongifyAndReturnIfNil(self);
-                
-                if (imageData)
+                if (!imageData)
                 {
-                    if ([self.shareItemProvider areAllItemsImages])
-                    {
-                        [self.pendingImages addObject:imageData];
-                        [pendingImagesItemProviders addObject:item];
-                    }
-                    else
-                    {
-                        CGSize imageSize = [self imageSizeFromImageData:imageData];
-                        self.imageCompressionMode = ImageCompressionModeNone;
-                        self.actualLargeSize = MAX(imageSize.width, imageSize.height);
-                        
-                        [self sendImageData:imageData withItem:item toRoom:room success:^{
-                            dispatch_group_leave(dispatchGroup);
-                        } failure:requestFailure];
-                    }
+                    requestFailure(error);
+                    return;
+                }
+                
+                if ([self.shareItemProvider areAllItemsImages])
+                {
+                    [self.pendingImages addObject:imageData];
                 }
                 else
                 {
-                    MXLogError(@"[ShareManager] sendContentToRoom: failed to loadItemForTypeIdentifier. Error: %@", error);
-                    dispatch_group_leave(dispatchGroup);
+                    CGSize imageSize = [self imageSizeFromImageData:imageData];
+                    self.imageCompressionMode = ImageCompressionModeNone;
+                    self.actualLargeSize = MAX(imageSize.width, imageSize.height);
+                    
+                    [self sendImageData:imageData toRooms:rooms success:requestSuccess failure:requestFailure];
                 }
                 
                 // Only prompt for image resize if all items are images
@@ -283,9 +332,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                     if ([self.shareItemProvider areAllItemsLoaded])
                     {
                         UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
-                            [self sendImageDatas:self.pendingImages.copy withItems:pendingImagesItemProviders toRoom:room success:^{
-                                dispatch_group_leave(dispatchGroup);
-                            } failure:requestFailure];
+                            [self sendImageDatas:self.pendingImages.copy toRooms:rooms success:requestSuccess failure:requestFailure];
                         }];
                         
                         if (compressionPrompt)
@@ -300,63 +347,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 }
             }];
         }
-        
-        if (item.type == ShareItemTypeVideo)
-        {
-            dispatch_group_enter(dispatchGroup);
-            [self.shareItemProvider loadItem:item completion:^(NSURL *videoLocalUrl, NSError *error) {
-                if (error) {
-                    requestFailure(error);
-                    dispatch_group_leave(dispatchGroup);
-                    return;
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self sendVideo:videoLocalUrl toRoom:room success:^{
-                        dispatch_group_leave(dispatchGroup);
-                    } failure:requestFailure];
-                });
-            }];
-        }
-        
-        if (item.type == ShareItemTypeMovie)
-        {
-            dispatch_group_enter(dispatchGroup);
-            [self.shareItemProvider loadItem:item completion:^(NSURL *videoLocalUrl, NSError *error) {
-                if (error) {
-                    requestFailure(error);
-                    dispatch_group_leave(dispatchGroup);
-                    return;
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self sendVideo:videoLocalUrl toRoom:room success:^{
-                        dispatch_group_leave(dispatchGroup);
-                    } failure:requestFailure];
-                });
-            }];
-        }
-        
-        if (item.type == ShareItemTypeVoiceMessage)
-        {
-            dispatch_group_enter(dispatchGroup);
-            [self.shareItemProvider loadItem:item completion:^(NSURL *fileURL, NSError *error) {
-                if (error) {
-                    requestFailure(error);
-                    dispatch_group_leave(dispatchGroup);
-                    return;
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self sendVoiceMessage:fileURL toRoom:room success:^{
-                        dispatch_group_leave(dispatchGroup);
-                    } failure:requestFailure];
-                });
-            }];
-        }
     }
     
     dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
@@ -368,28 +358,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         else
         {
-            self.completionCallback(ShareManagerResultFinished);
+            success();
         }
     });
-}
-
-- (void)showFailureAlert:(NSString *)title
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    MXWeakify(self);
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        if (self.completionCallback)
-        {
-            self.completionCallback(ShareManagerResultFailed);
-        }
-    }];
-    
-    [alertController addAction:okAction];
-    
-    [self.mainViewController presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)checkUserAccount
@@ -428,21 +399,14 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     {
         _fileStore = [[MXFileStore alloc] initWithCredentials:self.userAccount.mxCredentials];
         
-        ShareDataSource *roomDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModeRooms
-                                                                      fileStore:_fileStore
-                                                                    credentials:self.userAccount.mxCredentials];
-        
-        ShareDataSource *peopleDataSource = [[ShareDataSource alloc] initWithMode:DataSourceModePeople
-                                                                        fileStore:_fileStore
-                                                                      credentials:self.userAccount.mxCredentials];
+        ShareDataSource *roomDataSource = [[ShareDataSource alloc] initWithFileStore:_fileStore
+                                                                         credentials:self.userAccount.mxCredentials];
         
         [self.shareViewController configureWithState:ShareViewControllerAccountStateConfigured
-                                      roomDataSource:roomDataSource
-                                    peopleDataSource:peopleDataSource];
+                                      roomDataSource:roomDataSource];
     } else {
         [self.shareViewController configureWithState:ShareViewControllerAccountStateNotConfigured
-                                      roomDataSource:nil
-                                    peopleDataSource:nil];
+                                      roomDataSource:nil];
     }
 }
 
@@ -581,7 +545,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     return compressionPrompt;
 }
 
-- (void)didStartSendingToRoom:(MXRoom *)room
+- (void)didStartSending
 {
     [self.shareViewController showProgressIndicator];
 }
@@ -738,11 +702,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 
 - (void)presentCompressionPrompt:(UIAlertController *)compressionPrompt
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [compressionPrompt popoverPresentationController].sourceView = self.mainViewController.view;
-        [compressionPrompt popoverPresentationController].sourceRect = self.mainViewController.view.frame;
-        [self.mainViewController presentViewController:compressionPrompt animated:YES completion:nil];
-    });
+    [compressionPrompt popoverPresentationController].sourceView = self.mainViewController.view;
+    [compressionPrompt popoverPresentationController].sourceRect = self.mainViewController.view.frame;
+    [self.mainViewController presentViewController:compressionPrompt animated:YES completion:nil];
 }
 
 #pragma mark - Notifications
@@ -781,11 +743,11 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
 #pragma mark - Sharing
 
 - (void)sendText:(NSString *)text
-          toRoom:(MXRoom *)room
+         toRooms:(NSArray<MXRoom *> *)rooms
          success:(dispatch_block_t)success
          failure:(void(^)(NSError *error))failure
 {
-    [self didStartSendingToRoom:room];
+    [self didStartSending];
     if (!text)
     {
         MXLogError(@"[ShareManager] Invalid text.");
@@ -793,19 +755,34 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         return;
     }
     
-    [room sendTextMessage:text success:^(NSString *eventId) {
-        success();
-    } failure:^(NSError *error) {
-        MXLogError(@"[ShareManager] sendTextMessage failed with error %@", error);
-        failure(error);
-    }];
+    __block NSError *error = nil;
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    for (MXRoom *room in rooms) {
+        dispatch_group_enter(dispatchGroup);
+        [room sendTextMessage:text success:^(NSString *eventId) {
+            dispatch_group_leave(dispatchGroup);
+        } failure:^(NSError *innerError) {
+            MXLogError(@"[ShareManager] sendTextMessage failed with error %@", error);
+            error = innerError;
+            dispatch_group_leave(dispatchGroup);
+        }];
+    }
+    
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+        if(error) {
+            failure(error);
+        } else {
+            success();
+        }
+    });
 }
 
-- (void)sendFileWithUrl:(NSURL *)fileUrl toRoom:(MXRoom *)room
-           success:(dispatch_block_t)success
-           failure:(void(^)(NSError *error))failure
+- (void)sendFileWithUrl:(NSURL *)fileUrl
+                toRooms:(NSArray<MXRoom *> *)rooms
+                success:(dispatch_block_t)success
+                failure:(void(^)(NSError *error))failure
 {
-    [self didStartSendingToRoom:room];
+    [self didStartSending];
     if (!fileUrl)
     {
         MXLogError(@"[ShareManager] Invalid file url.");
@@ -818,21 +795,185 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     mimeType = [self mimeTypeFromUTI:(__bridge NSString *)uti];
     CFRelease(uti);
     
-    [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
-        success();
-    } failure:^(NSError *error) {
-        MXLogError(@"[ShareManager] sendFile failed with error %@", error);
-        failure(error);
-    } keepActualFilename:YES];
+    __block NSError *error = nil;
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    for (MXRoom *room in rooms) {
+        dispatch_group_enter(dispatchGroup);
+        [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
+            dispatch_group_leave(dispatchGroup);
+        } failure:^(NSError *innerError) {
+            MXLogError(@"[ShareManager] sendFile failed with error %@", innerError);
+            error = innerError;
+            dispatch_group_leave(dispatchGroup);
+        } keepActualFilename:YES];
+    }
+    
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+        if(error) {
+            failure(error);
+        } else {
+            success();
+        }
+    });
+}
+
+- (void)sendVideo:(NSURL *)videoLocalUrl
+          toRooms:(NSArray<MXRoom *> *)rooms
+          success:(dispatch_block_t)success
+          failure:(void(^)(NSError *error))failure
+{
+    AVURLAsset *videoAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
+    
+    MXWeakify(self);
+    
+    // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
+    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString *presetName) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        // If the preset name is nil, the user cancelled.
+        if (!presetName)
+        {
+            return;
+        }
+        
+        // Set the chosen video conversion preset.
+        [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
+        
+        [self didStartSending];
+        if (!videoLocalUrl)
+        {
+            MXLogError(@"[ShareManager] Invalid video file url.");
+            failure(nil);
+            return;
+        }
+        
+        // Retrieve the video frame at 1 sec to define the video thumbnail
+        AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
+        assetImageGenerator.appliesPreferredTrackTransform = YES;
+        CMTime time = CMTimeMake(1, 1);
+        CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
+        // Finalize video attachment
+        UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+        CFRelease(imageRef);
+        
+        __block NSError *error = nil;
+        dispatch_group_t dispatchGroup = dispatch_group_create();
+        for (MXRoom *room in rooms) {
+            dispatch_group_enter(dispatchGroup);
+            [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+                dispatch_group_leave(dispatchGroup);
+            } failure:^(NSError *innerError) {
+                MXLogError(@"[ShareManager] Failed sending video with error %@", innerError);
+                error = innerError;
+                dispatch_group_leave(dispatchGroup);
+            }];
+        }
+        
+        dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+            if(error) {
+                failure(error);
+            } else {
+                success();
+            }
+        });
+    }];
+    
+    [self presentCompressionPrompt:compressionPrompt];
+}
+
+- (void)sendVoiceMessage:(NSURL *)fileUrl
+                 toRooms:(NSArray<MXRoom *> *)rooms
+                 success:(dispatch_block_t)success
+                 failure:(void(^)(NSError *error))failure
+{
+    [self didStartSending];
+    if (!fileUrl)
+    {
+        MXLogError(@"[ShareManager] Invalid voice message file url.");
+        failure(nil);
+        return;
+    }
+    
+    __block NSError *error = nil;
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    for (MXRoom *room in rooms) {
+        dispatch_group_enter(dispatchGroup);
+        [room sendVoiceMessage:fileUrl mimeType:nil duration:0.0 samples:nil localEcho:nil success:^(NSString *eventId) {
+            dispatch_group_leave(dispatchGroup);
+        } failure:^(NSError *innerError) {
+            MXLogError(@"[ShareManager] sendVoiceMessage failed with error %@", error);
+            error = innerError;
+            dispatch_group_leave(dispatchGroup);
+        } keepActualFilename:YES];
+    }
+    
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+        if(error) {
+            failure(error);
+        } else {
+            success();
+        }
+    });
+}
+
+- (void)sendImageDatas:(NSArray<id<ShareItemProtocol>> *)imageDatas
+               toRooms:(NSArray<MXRoom *> *)rooms
+               success:(dispatch_block_t)success
+               failure:(void(^)(NSError *error))failure
+{
+    if (imageDatas.count == 0)
+    {
+        MXLogError(@"[ShareManager] sendImages: no images to send.");
+        failure(nil);
+        return;
+    }
+    
+    [self didStartSending];
+    
+    dispatch_group_t requestsGroup = dispatch_group_create();
+    __block NSError *firstRequestError;
+    
+    NSUInteger index = 0;
+    
+    for (NSData *imageData in imageDatas)
+    {
+        @autoreleasepool
+        {
+            dispatch_group_enter(requestsGroup);
+            [self sendImageData:imageData toRooms:rooms success:^{
+                dispatch_group_leave(requestsGroup);
+            } failure:^(NSError *error) {
+                if (error && !firstRequestError)
+                {
+                    firstRequestError = error;
+                }
+                
+               dispatch_group_leave(requestsGroup);
+            }];
+        }
+        
+        index++;
+    }
+    
+    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
+        
+        if (firstRequestError)
+        {
+            failure(firstRequestError);
+        }
+        else
+        {
+            success();
+        }
+    });
 }
 
 - (void)sendImageData:(NSData *)imageData
-             withItem:(id<ShareItemProtocol>)item
-               toRoom:(MXRoom *)room
+              toRooms:(NSArray<MXRoom *> *)rooms
               success:(dispatch_block_t)success
               failure:(void(^)(NSError *error))failure
 {
-    [self didStartSendingToRoom:room];
+    [self didStartSending];
     
     NSString *imageUTI;
     NSString *mimeType;
@@ -848,7 +989,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (!mimeType)
     {
-        MXLogError(@"[ShareManager] sendImage failed. Cannot determine MIME type of %@", item);
+        MXLogError(@"[ShareManager] sendImage failed. Cannot determine MIME type .");
         if (failure)
         {
             failure(nil);
@@ -921,142 +1062,33 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         imageSize = [self imageSizeFromImageData:imageData];
     }
     
-    UIImage *thumbnail = nil;
-    // Thumbnail is useful only in case of encrypted room
-    if (room.summary.isEncrypted)
-    {
-        thumbnail = [MXKTools resizeImageWithData:imageData toFitInSize:CGSizeMake(800, 600)];
-    }
-    
-    [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
-        success();
-    } failure:^(NSError *error) {
-        MXLogError(@"[ShareManager] sendImage failed with error %@", error);
-        failure(error);
-    }];
-}
-
-- (void)sendImageDatas:(NSArray<id<ShareItemProtocol>> *)imageDatas
-             withItems:(NSArray<id<ShareItemProtocol>> *)items toRoom:(MXRoom *)room
-               success:(dispatch_block_t)success
-               failure:(void(^)(NSError *error))failure
-{
-    if (imageDatas.count == 0 || imageDatas.count != items.count)
-    {
-        MXLogError(@"[ShareManager] sendImages: no images to send.");
-        failure(nil);
-        return;
-    }
-    
-    [self didStartSendingToRoom:room];
-    
-    dispatch_group_t requestsGroup = dispatch_group_create();
-    __block NSError *firstRequestError;
-    
-    NSUInteger index = 0;
-    
-    for (NSData *imageData in imageDatas)
-    {
-        @autoreleasepool
-        {
-            dispatch_group_enter(requestsGroup);
-            [self sendImageData:imageData withItem:items[index] toRoom:room success:^{
-                dispatch_group_leave(requestsGroup);
-            } failure:^(NSError *error) {
-                if (error && !firstRequestError)
-                {
-                    firstRequestError = error;
-                }
+    __block NSError *error = nil;
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    for (MXRoom *room in rooms) {
                 
-               dispatch_group_leave(requestsGroup);
-            }];
+        UIImage *thumbnail = nil;
+        if (room.summary.isEncrypted) // Thumbnail is useful only in case of encrypted room
+        {
+            thumbnail = [MXKTools resizeImageWithData:imageData toFitInSize:kThumbnailSize];
         }
         
-        index++;
+        dispatch_group_enter(dispatchGroup);
+        [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+            dispatch_group_leave(dispatchGroup);
+        } failure:^(NSError *innerError) {
+            MXLogError(@"[ShareManager] sendImage failed with error %@", error);
+            error = innerError;
+            dispatch_group_leave(dispatchGroup);
+        }];
     }
     
-    dispatch_group_notify(requestsGroup, dispatch_get_main_queue(), ^{
-        
-        if (firstRequestError)
-        {
-            failure(firstRequestError);
-        }
-        else
-        {
+    dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{
+        if(error) {
+            failure(error);
+        } else {
             success();
         }
     });
-}
-
-- (void)sendVideo:(NSURL *)videoLocalUrl
-           toRoom:(MXRoom *)room
-          success:(dispatch_block_t)success
-          failure:(void(^)(NSError *error))failure
-{
-    AVURLAsset *videoAsset = [[AVURLAsset alloc] initWithURL:videoLocalUrl options:nil];
-    
-    MXWeakify(self);
-    
-    // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
-    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString *presetName) {
-        MXStrongifyAndReturnIfNil(self);
-        
-        // If the preset name is nil, the user cancelled.
-        if (!presetName)
-        {
-            return;
-        }
-        
-        // Set the chosen video conversion preset.
-        [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
-        
-        [self didStartSendingToRoom:room];
-        if (!videoLocalUrl)
-        {
-            MXLogError(@"[ShareManager] Invalid video file url.");
-            failure(nil);
-            return;
-        }
-        
-        // Retrieve the video frame at 1 sec to define the video thumbnail
-        AVAssetImageGenerator *assetImageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:videoAsset];
-        assetImageGenerator.appliesPreferredTrackTransform = YES;
-        CMTime time = CMTimeMake(1, 1);
-        CGImageRef imageRef = [assetImageGenerator copyCGImageAtTime:time actualTime:NULL error:nil];
-        // Finalize video attachment
-        UIImage *videoThumbnail = [[UIImage alloc] initWithCGImage:imageRef];
-        CFRelease(imageRef);
-        
-        [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
-            success();
-        } failure:^(NSError *error) {
-            MXLogError(@"[ShareManager] Failed sending video with error %@", error);
-            failure(error);
-        }];
-    }];
-    
-    [self presentCompressionPrompt:compressionPrompt];
-}
-
-- (void)sendVoiceMessage:(NSURL *)fileUrl
-                  toRoom:(MXRoom *)room
-                 success:(dispatch_block_t)success
-                 failure:(void(^)(NSError *error))failure
-{
-    [self didStartSendingToRoom:room];
-    if (!fileUrl)
-    {
-        MXLogError(@"[ShareManager] Invalid voice message file url.");
-        failure(nil);
-        return;
-    }
-    
-    [room sendVoiceMessage:fileUrl mimeType:nil duration:0.0 samples:nil localEcho:nil success:^(NSString *eventId) {
-        success();
-    } failure:^(NSError *error) {
-        MXLogError(@"[ShareManager] sendVoiceMessage failed with error %@", error);
-        failure(error);
-    } keepActualFilename:YES];
 }
 
 @end

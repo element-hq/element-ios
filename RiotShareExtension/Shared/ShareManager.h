@@ -20,6 +20,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, ShareManagerType) {
+    ShareManagerTypeSend,
+    ShareManagerTypeForward,
+};
+
 typedef NS_ENUM(NSUInteger, ShareManagerResult) {
     ShareManagerResultFinished,
     ShareManagerResultCancelled,
@@ -30,17 +35,12 @@ typedef NS_ENUM(NSUInteger, ShareManagerResult) {
 
 @property (nonatomic, copy) void (^completionCallback)(ShareManagerResult);
 
-- (instancetype)initWithShareItemProvider:(id<ShareItemProviderProtocol>)shareItemProvider;
+- (instancetype)initWithShareItemProvider:(id<ShareItemProviderProtocol>)shareItemProvider
+                                     type:(ShareManagerType)type;
 
 - (UIViewController *)mainViewController;
 
 @end
 
-
-@interface NSItemProvider (ShareManager)
-
-@property BOOL isLoaded;
-
-@end
 
 NS_ASSUME_NONNULL_END

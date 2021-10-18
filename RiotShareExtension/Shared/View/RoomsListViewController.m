@@ -18,6 +18,7 @@
 
 #import "RoomsListViewController.h"
 #import "RecentRoomTableViewCell.h"
+#import "ShareDataSource.h"
 #import "RecentCellData.h"
 #import "ThemeService.h"
 
@@ -138,6 +139,22 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [RecentRoomTableViewCell cellHeight];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSString *roomIdentifier = [self.dataSource cellDataAtIndexPath:indexPath].roomSummary.roomId;
+    
+    ShareDataSource *dataSource = (ShareDataSource *)self.dataSource;
+    if ([dataSource.selectedRoomIdentifiers containsObject:roomIdentifier]) {
+        [dataSource deselectRoomWithIdentifier:roomIdentifier animated:YES];
+    } else {
+        [dataSource selectRoomWithIdentifier:roomIdentifier animated:YES];
+    }
+    
+    [self.recentsTableView reloadData];
 }
 
 #pragma mark - MXKDataSourceDelegate

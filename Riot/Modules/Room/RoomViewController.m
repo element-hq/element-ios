@@ -2399,10 +2399,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             // Set a default title view class without handling tap gesture (Let [self refreshRoomTitle] refresh this view correctly).
             [self setRoomTitleViewClass:RoomTitleView.class];
-            
-            // Remove details icon
-            RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
-            
+                        
             // Remove the shadow image used to hide the bottom border of the navigation bar when the preview header is displayed
             [mainNavigationController.navigationBar setShadowImage:nil];
             [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
@@ -3198,7 +3195,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
-            self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithTextMessage:selectedComponent.textMessage]];
+            self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithTextMessage:selectedComponent.textMessage]
+                                                                           type:ShareManagerTypeForward];
             
             MXWeakify(self);
             [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
@@ -3264,6 +3262,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else // Add action for attachment
     {
+        if (attachment.type == MXKAttachmentTypeFile ||
+            attachment.type == MXKAttachmentTypeImage ||
+            attachment.type == MXKAttachmentTypeVideo ||
+            attachment.type == MXKAttachmentTypeVoiceMessage) {
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithAttachment:attachment]
+                                                                               type:ShareManagerTypeForward];
+                
+                MXWeakify(self);
+                [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
+                    MXStrongifyAndReturnIfNil(self);
+                    [attachment onShareEnded];
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                    self.shareManager = nil;
+                }];
+                
+                [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
+            }]];
+        }
+        
         if (BuildSettings.messageDetailsAllowSave)
         {
             if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
@@ -3389,37 +3410,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     
                 }]];
             }
-        }
-        
-        if (attachment.type == MXKAttachmentTypeFile ||
-            attachment.type == MXKAttachmentTypeImage ||
-            attachment.type == MXKAttachmentTypeVideo ||
-            attachment.type == MXKAttachmentTypeVoiceMessage) {
-            
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                [self startActivityIndicator];
-                
-                [attachment prepareShare:^(NSURL *fileURL) {
-                    [self stopActivityIndicator];
-                    
-                    self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithAttachment:attachment]];
-                    
-                    MXWeakify(self);
-                    [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
-                        MXStrongifyAndReturnIfNil(self);
-                        [attachment onShareEnded];
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                        self.shareManager = nil;
-                    }];
-                    
-                    [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
-                } failure:^(NSError *error) {
-                    [self showError:error];
-                    [self stopActivityIndicator];
-                }];
-            }]];
         }
     }
     

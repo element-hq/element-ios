@@ -16,13 +16,7 @@
 
 import Foundation
 import MobileCoreServices
-
-let UTTypeText = kUTTypeText as String
-let UTTypeURL = kUTTypeURL as String
-let UTTypeFileUrl = kUTTypeFileURL as String
-let UTTypeImage = kUTTypeImage as String
-let UTTypeVideo = kUTTypeVideo as String
-let UTTypeMovie = kUTTypeMovie as String
+import MatrixKit
 
 private class ShareExtensionItem: ShareItemProtocol {
     let itemProvider: NSItemProvider
@@ -34,17 +28,17 @@ private class ShareExtensionItem: ShareItemProtocol {
     }
     
     var type: ShareItemType {
-        if itemProvider.hasItemConformingToTypeIdentifier(UTTypeText) {
+        if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.text.rawValue) {
             return .text
-        } else if itemProvider.hasItemConformingToTypeIdentifier(UTTypeURL) {
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.url.rawValue) {
             return .URL
-        } else if itemProvider.hasItemConformingToTypeIdentifier(UTTypeFileUrl) {
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.fileUrl.rawValue) {
             return .fileURL
-        } else if itemProvider.hasItemConformingToTypeIdentifier(UTTypeImage) {
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.image.rawValue) {
             return .image
-        } else if itemProvider.hasItemConformingToTypeIdentifier(UTTypeVideo) {
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.video.rawValue) {
             return .video
-        } else if itemProvider.hasItemConformingToTypeIdentifier(UTTypeMovie) {
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.movie.rawValue) {
             return .movie
         }
         
@@ -105,7 +99,9 @@ class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
                 shareExtensionItem.loaded = true
             }
             
-            completion(result, error)
+            DispatchQueue.main.async {
+                completion(result, error)
+            }
         }
     }
     
@@ -114,19 +110,19 @@ class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
     private func typeIdentifierForType(_ type: ShareItemType) -> String {
         switch type {
         case .text:
-            return UTTypeText
+            return MXKUTI.text.rawValue
         case .URL:
-            return UTTypeURL
+            return MXKUTI.url.rawValue
         case .fileURL:
-            return UTTypeFileUrl
+            return MXKUTI.fileUrl.rawValue
         case .image:
-            return UTTypeImage
+            return MXKUTI.image.rawValue
         case .video:
-            return UTTypeVideo
+            return MXKUTI.video.rawValue
         case .movie:
-            return UTTypeMovie
+            return MXKUTI.movie.rawValue
         case .voiceMessage:
-            return UTTypeFileUrl
+            return MXKUTI.fileUrl.rawValue
         default:
             return ""
         }

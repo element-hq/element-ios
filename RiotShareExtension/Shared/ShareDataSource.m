@@ -19,26 +19,27 @@
 
 @interface ShareDataSource ()
 
-@property (nonatomic, assign, readonly) ShareDataSourceMode dataSourceMode;
 @property (nonatomic, strong, readonly) MXFileStore *fileStore;
 @property (nonatomic, strong, readonly) MXCredentials *credentials;
 
 @property NSArray <MXKRecentCellData *> *recentCellDatas;
 @property NSMutableArray <MXKRecentCellData *> *visibleRoomCellDatas;
 
+@property (nonatomic, strong) NSMutableSet<NSString *> *internalSelectedRoomIdentifiers;
+
 @end
 
 @implementation ShareDataSource
 
-- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode
-                   fileStore:(MXFileStore *)fileStore
-                 credentials:(MXCredentials *)credentials
+- (instancetype)initWithFileStore:(MXFileStore *)fileStore
+                      credentials:(MXCredentials *)credentials
 {
     if (self = [super init])
     {
-        _dataSourceMode = dataSourceMode;
         _fileStore = fileStore;
         _credentials = credentials;
+        
+        _internalSelectedRoomIdentifiers = [NSMutableSet set];
         
         [self loadCellData];
     }
@@ -51,6 +52,25 @@
     
     _recentCellDatas = nil;
     _visibleRoomCellDatas = nil;
+}
+
+- (NSSet<NSString *> *)selectedRoomIdentifiers
+{
+    return self.internalSelectedRoomIdentifiers.copy;
+}
+
+- (void)selectRoomWithIdentifier:(NSString *)roomIdentifier animated:(BOOL)animated
+{
+    [self.internalSelectedRoomIdentifiers addObject:roomIdentifier];
+    
+    [self.shareDelegate shareDataSourceDidChangeSelectedRoomIdentifiers:self];
+}
+
+- (void)deselectRoomWithIdentifier:(NSString *)roomIdentifier animated:(BOOL)animated
+{
+    [self.internalSelectedRoomIdentifiers removeObject:roomIdentifier];
+    
+    [self.shareDelegate shareDataSourceDidChangeSelectedRoomIdentifiers:self];
 }
 
 #pragma mark - Private
@@ -66,7 +86,7 @@
         
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {
-            if (!roomSummary.hiddenFromUser && ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect))
+            if (!roomSummary.hiddenFromUser)
             {
                 [roomSummary setMatrixSession:session];
                 
@@ -137,6 +157,7 @@
     {
         self.visibleRoomCellDatas = nil;
     }
+    
     [self.delegate dataSource:self didCellChange:nil];
 }
 
@@ -160,7 +181,11 @@
 {
     RecentRoomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
     
-    [cell render:[self cellDataAtIndexPath:indexPath]];
+    MXKRecentCellData *data = [self cellDataAtIndexPath:indexPath];
+    
+    [cell render:data];
+    
+    [cell setCustomSelected:[self.selectedRoomIdentifiers containsObject:data.roomSummary.roomId] animated:NO];
     
     return cell;
 }

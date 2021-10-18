@@ -42,7 +42,7 @@
                                         <action selector="onCancelButtonTap:" destination="-1" eventType="touchUpInside" id="47D-fR-8PQ"/>
                                     </connections>
                                 </button>
-                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="otu-Ag-Bwo">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="otu-Ag-Bwo">
                                     <rect key="frame" x="315" y="12" width="44" height="33"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <state key="normal" title="Share"/>

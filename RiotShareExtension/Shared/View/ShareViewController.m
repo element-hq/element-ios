@@ -15,10 +15,9 @@
  */
 
 #import "ShareViewController.h"
-#import "SegmentedViewController.h"
+#import "ShareDataSource.h"
 #import "RoomsListViewController.h"
 #import "FallbackViewController.h"
-#import "ShareDataSource.h"
 
 #import "ThemeService.h"
 
@@ -28,21 +27,22 @@
 #import "Riot-Swift.h"
 #endif
 
-@interface ShareViewController () <MXKRecentListViewControllerDelegate>
+@interface ShareViewController () <MXKRecentListViewControllerDelegate, ShareDataSourceDelegate>
 
 @property (nonatomic, assign, readonly) ShareViewControllerType type;
 
 @property (nonatomic, assign) ShareViewControllerAccountState state;
+
+@property (nonatomic, strong) RoomsListViewController *roomListViewController;
 @property (nonatomic, strong) ShareDataSource *roomDataSource;
-@property (nonatomic, strong) ShareDataSource *peopleDataSource;
+
+@property (nonatomic, strong) FallbackViewController *fallbackViewController;
 
 @property (nonatomic, weak) IBOutlet UIView *masterContainerView;
 @property (nonatomic, weak) IBOutlet UIButton *cancelButton;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UIButton *shareButton;
 @property (nonatomic, weak) IBOutlet UIView *contentView;
-
-@property (nonatomic, strong) SegmentedViewController *segmentedViewController;
 
 @property (nonatomic, strong) MXKPieChartHUD *hudView;
 
@@ -76,17 +76,17 @@
     [self.cancelButton setTitle:[VectorL10n cancel] forState:UIControlStateNormal];
     
     [self.shareButton setTintColor:ThemeService.shared.theme.tintColor];
+    [self.shareButton setEnabled:NO];
     
-    [self configureWithState:self.state roomDataSource:self.roomDataSource peopleDataSource:self.peopleDataSource];
+    [self configureWithState:self.state roomDataSource:self.roomDataSource];
 }
 
 - (void)configureWithState:(ShareViewControllerAccountState)state
             roomDataSource:(ShareDataSource *)roomDataSource
-          peopleDataSource:(ShareDataSource *)peopleDataSource
 {
     self.state = state;
     self.roomDataSource = roomDataSource;
-    self.peopleDataSource = peopleDataSource;
+    self.roomDataSource.shareDelegate = self;
     
     if (!self.isViewLoaded) {
         return;
@@ -110,19 +110,11 @@
     [self.hudView setProgress:progress];
 }
 
-#pragma mark - MXKRecentListViewControllerDelegate
+#pragma mark - ShareDataSourceDelegate
 
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController
-                   didSelectRoom:(NSString *)roomId
-                 inMatrixSession:(MXSession *)mxSession
+- (void)shareDataSourceDidChangeSelectedRoomIdentifiers:(ShareDataSource *)shareDataSource
 {
-    [self.delegate shareViewControllerDidRequestShare:self forRoomIdentifier:roomId];
-}
-
-- (void)recentListViewController:(MXKRecentListViewController *)recentListViewController
-          didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
-{
-    [self.delegate shareViewControllerDidRequestShare:self forRoomIdentifier:childInfo.childRoomId];
+    self.shareButton.enabled = (shareDataSource.selectedRoomIdentifiers.count > 0);
 }
 
 #pragma mark - Private
@@ -133,60 +125,53 @@
     
     if (self.state == ShareViewControllerAccountStateConfigured)
     {
-        self.titleLabel.text = [VectorL10n sendTo:@""];
-        [self.shareButton setTitle:[VectorL10n roomEventActionForward] forState:UIControlStateNormal];
-        
         [self configureSegmentedViewController];
+        [self.shareButton setHidden:NO];
+        
+        if (self.type == ShareViewControllerTypeSend) {
+            [self.titleLabel setText:[VectorL10n sendTo:@""]];
+            [self.shareButton setTitle:[VectorL10n sendTo:@""] forState:UIControlStateNormal];
+        } else {
+            [self.titleLabel setText:[VectorL10n roomEventActionForward]];
+            [self.shareButton setTitle:[VectorL10n roomEventActionForward] forState:UIControlStateNormal];
+        }
     }
     else
     {
-        self.titleLabel.text = [AppInfo.current displayName];
         [self configureFallbackViewController];
+        [self.shareButton setHidden:NO];
+        
+        self.titleLabel.text = [AppInfo.current displayName];
     }
 }
 
 - (void)configureSegmentedViewController
 {
-    RoomsListViewController *roomsViewController = [RoomsListViewController recentListViewController];
-    [roomsViewController displayList:self.roomDataSource];
-    [roomsViewController setDelegate:self];
-    
-    RoomsListViewController *peopleViewController = [RoomsListViewController recentListViewController];
-    [peopleViewController setDelegate:self];
-    [peopleViewController displayList:self.peopleDataSource];
-    
-    self.segmentedViewController = [SegmentedViewController segmentedViewController];
-    [self.segmentedViewController initWithTitles:@[[VectorL10n titleRooms], [VectorL10n titlePeople]]
-                                 viewControllers:@[roomsViewController, peopleViewController] defaultSelected:0];
-    
-    [self addChildViewController:self.segmentedViewController];
-    [self.contentView vc_addSubViewMatchingParent:self.segmentedViewController.view];
-    [self.segmentedViewController didMoveToParentViewController:self];
+    self.roomListViewController = [RoomsListViewController recentListViewController];
+    [self.roomListViewController displayList:self.roomDataSource];
+        
+    [self addChildViewController:self.roomListViewController];
+    [self.contentView vc_addSubViewMatchingParent:self.roomListViewController.view];
+    [self.roomListViewController didMoveToParentViewController:self];
 }
 
 - (void)configureFallbackViewController
 {
-    FallbackViewController *fallbackVC = [FallbackViewController new];
-    [self addChildViewController:fallbackVC];
-    [self.contentView vc_addSubViewMatchingParent:fallbackVC.view];
-    [fallbackVC didMoveToParentViewController:self];
+    self.fallbackViewController = [FallbackViewController new];
+    [self addChildViewController:self.fallbackViewController];
+    [self.contentView vc_addSubViewMatchingParent:self.fallbackViewController.view];
+    [self.fallbackViewController didMoveToParentViewController:self];
 }
 
 - (void)resetContentView
 {
-    NSArray *subviews = self.contentView.subviews;
-    for (UIView *subview in subviews)
-    {
-        [subview removeFromSuperview];
-    }
+    [self.roomListViewController willMoveToParentViewController:nil];
+    [self.roomListViewController.view removeFromSuperview];
+    [self.roomListViewController removeFromParentViewController];
     
-    if (self.segmentedViewController)
-    {
-        [self.segmentedViewController removeFromParentViewController];
-        
-        [self.segmentedViewController destroy];
-        self.segmentedViewController = nil;
-    }
+    [self.fallbackViewController willMoveToParentViewController:nil];
+    [self.fallbackViewController.view removeFromSuperview];
+    [self.fallbackViewController removeFromParentViewController];
 }
 
 #pragma mark - Actions
@@ -198,7 +183,11 @@
 
 - (IBAction)onShareButtonTap:(UIButton *)sender
 {
+    if (self.roomDataSource.selectedRoomIdentifiers.count == 0) {
+        return;
+    }
     
+    [self.delegate shareViewController:self didRequestShareForRoomIdentifiers:self.roomDataSource.selectedRoomIdentifiers];
 }
 
 @end

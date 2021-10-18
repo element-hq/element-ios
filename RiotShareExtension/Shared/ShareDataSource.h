@@ -16,25 +16,25 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-typedef NS_ENUM(NSInteger, ShareDataSourceMode)
-{
-    DataSourceModePeople,
-    DataSourceModeRooms
-};
+@class ShareDataSource;
 
+@protocol ShareDataSourceDelegate <NSObject>
+
+- (void)shareDataSourceDidChangeSelectedRoomIdentifiers:(ShareDataSource *)shareDataSource;
+
+@end
 
 @interface ShareDataSource : MXKRecentsDataSource
 
-- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode
-                   fileStore:(MXFileStore *)fileStore
-                 credentials:(MXCredentials *)credentials;
+@property (nonatomic, weak) id<ShareDataSourceDelegate> shareDelegate;
 
-/**
- Returns the cell data at the index path
- 
- @param indexPath the index of the cell
- @return the MXKRecentCellData instance if it exists
- */
-- (MXKRecentCellData *)cellDataAtIndexPath:(NSIndexPath *)indexPath;
+@property (nonatomic, strong, readonly) NSSet<NSString *> *selectedRoomIdentifiers;
+
+- (instancetype)initWithFileStore:(MXFileStore *)fileStore
+                      credentials:(MXCredentials *)credentials;
+
+- (void)selectRoomWithIdentifier:(NSString *)roomIdentifier animated:(BOOL)animated;
+
+- (void)deselectRoomWithIdentifier:(NSString *)roomIdentifier animated:(BOOL)animated;
 
 @end

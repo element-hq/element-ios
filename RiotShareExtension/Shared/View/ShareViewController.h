@@ -33,9 +33,7 @@ typedef NS_ENUM(NSUInteger, ShareViewControllerAccountState) {
 
 @protocol ShareViewControllerDelegate <NSObject>
 
-- (void)shareViewControllerDidRequestShare:(ShareViewController *)shareViewController
-                         forRoomIdentifier:(NSString *)roomIdentifier;
-
+- (void)shareViewController:(ShareViewController *)shareViewController didRequestShareForRoomIdentifiers:(NSSet<NSString *> *)roomIdentifiers;
 - (void)shareViewControllerDidRequestDismissal:(ShareViewController *)shareViewController;
 
 @end
@@ -48,8 +46,7 @@ typedef NS_ENUM(NSUInteger, ShareViewControllerAccountState) {
                 currentState:(ShareViewControllerAccountState)state;
 
 - (void)configureWithState:(ShareViewControllerAccountState)state
-            roomDataSource:(nullable ShareDataSource *)roomDataSource
-          peopleDataSource:(nullable ShareDataSource *)peopleDataSource;
+            roomDataSource:(nullable ShareDataSource *)roomDataSource;
 
 - (void)showProgressIndicator;
 

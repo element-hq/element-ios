@@ -60,6 +60,12 @@ private class SimpleShareItem: ShareItemProtocol {
     
     let items: [ShareItemProtocol]
     
+    private override init() {
+        attachment = nil
+        textMessage = nil
+        self.items = []
+    }
+    
     @objc public init(withAttachment attachment: MXKAttachment) {
         self.attachment = attachment
         self.items = [SimpleShareItem(withAttachment: attachment)];
@@ -78,10 +84,18 @@ private class SimpleShareItem: ShareItemProtocol {
             return
         }
         
-        attachment?.prepareShare({ url in
-            completion(url, nil)
+        guard let attachment = attachment else {
+            fatalError("[SimpleShareItemProvider] Invalid item provider state.")
+        }
+        
+        attachment.prepareShare({ url in
+            DispatchQueue.main.async {
+                completion(url, nil)
+            }
         }, failure: { error in
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
         })
     }
     

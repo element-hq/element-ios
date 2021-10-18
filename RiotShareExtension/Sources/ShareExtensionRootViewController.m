@@ -39,7 +39,7 @@
     [ThemeService.shared setThemeId:RiotSettings.shared.userInterfaceTheme];
     
     ShareExtensionShareItemProvider *provider = [[ShareExtensionShareItemProvider alloc] initWithExtensionContext:self.extensionContext];
-    _shareManager = [[ShareManager alloc] initWithShareItemProvider:provider];
+    _shareManager = [[ShareManager alloc] initWithShareItemProvider:provider type:ShareManagerTypeSend];
     
     MXWeakify(self);
     [_shareManager setCompletionCallback:^(ShareManagerResult result) {
@@ -49,27 +49,28 @@
         {
             case ShareManagerResultFinished:
                 [self.extensionContext completeRequestReturningItems:nil completionHandler:nil];
-                [self _dismiss];
+                [self dismiss];
                 break;
             case ShareManagerResultCancelled:
                 [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXUserCancelErrorDomain" code:4201 userInfo:nil]];
-                [self _dismiss];
+                [self dismiss];
                 break;
             case ShareManagerResultFailed:
                 [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:@"MXFailureErrorDomain" code:500 userInfo:nil]];
-                [self _dismiss];
+                [self dismiss];
                 break;
             default:
                 break;
         }
     }];
     
+    [self.shareManager.mainViewController setModalInPopover:YES];
     [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
 }
 
 #pragma mark - Private
 
-- (void)_dismiss
+- (void)dismiss
 {
     [self dismissViewControllerAnimated:true completion:^{
         [self.presentingViewController dismissViewControllerAnimated:false completion:nil];
