@@ -38,7 +38,7 @@ const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 const CGFloat kComposerContainerTrailingPadding = 12;
 
-@interface RoomInputToolbarView() <GrowingTextViewDelegate>
+@interface RoomInputToolbarView() <GrowingTextViewDelegate, RoomInputToolbarTextViewDelegate>
 {
     // The intermediate action sheet
     UIAlertController *actionSheet;
@@ -83,6 +83,8 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
     [self updateUIWithTextMessage:nil animated:NO];
+    
+    self.textView.toolbarDelegate = self;
 }
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
@@ -382,6 +384,16 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     [super onTouchUpInside:button];
 }
 
+- (BOOL)becomeFirstResponder
+{
+    return [self.textView becomeFirstResponder];
+}
+
+- (void)dismissKeyboard
+{
+    [self.textView resignFirstResponder];
+}
+
 - (void)destroy
 {
     if (actionSheet)
@@ -453,6 +465,11 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     // TODO Custom here the validation screen for each available item
     
     [super paste:sender];
+}
+
+- (void)textView:(GrowingTextView *)textView didReceivePasteForMediaFromSender:(id)sender
+{
+    [self paste:sender];
 }
 
 #pragma mark - Private
