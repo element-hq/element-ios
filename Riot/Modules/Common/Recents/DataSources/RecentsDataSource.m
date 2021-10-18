@@ -1610,7 +1610,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     
     MXLogDebug(@"[RecentsDataSource] refreshRoomsSections: Done in %.0fms", [[NSDate date] timeIntervalSinceDate:startDate] * 1000);
-    MXLogDebug(@"[Spaces] refreshRoomsSections with %ld suggested room", suggestedRoomCellDataArray.count);
+    MXLogDebug(@"[RecentsDataSource] refreshRoomsSections with %ld suggested room", suggestedRoomCellDataArray.count);
 
     return [[RecentsDataSourceState alloc]
             initWithInvitesCellDataArray:invitesCellDataArray

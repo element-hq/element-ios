@@ -17,13 +17,13 @@
 import Foundation
 import Reusable
 
-class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
+class SpaceMenuSwitchViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     
     // MARK: - Properties
     
-    @IBOutlet private weak var iconView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var selectionView: UIView!
+    @IBOutlet private weak var switchView: UISwitch!
 
     // MARK: - Private
     
@@ -50,28 +50,24 @@ class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     // MARK: - Public
     
     func update(with viewData: SpaceMenuListItemViewData) {
-        self.iconView.image = viewData.icon
         self.titleLabel.text = viewData.title
+        self.switchView.isOn = (viewData.value as? Bool) ?? false
         
-        guard let theme = self.theme else {
-            return
-        }
-        
-        if viewData.style == .destructive {
-            self.titleLabel.textColor = theme.colors.alert
-            self.iconView.tintColor = theme.colors.alert
-        } else {
-            self.titleLabel.textColor = theme.colors.primaryContent
-            self.iconView.tintColor = theme.colors.secondaryContent
-        }
+        viewData.delegate = self
     }
     
     func update(theme: Theme) {
         self.theme = theme
         self.backgroundColor = theme.colors.background
-        self.iconView.tintColor = theme.colors.secondaryContent
         self.titleLabel.textColor = theme.colors.primaryContent
         self.titleLabel.font = theme.fonts.body
         self.selectionView.backgroundColor = theme.colors.separator
+    }
+}
+
+// MARK: - SpaceMenuListItemViewDataDelegate
+extension SpaceMenuSwitchViewCell: SpaceMenuListItemViewDataDelegate {
+    func spaceMenuItemValueDidChange(_ item: SpaceMenuListItemViewData) {
+        self.switchView.setOn((item.value as? Bool) ?? false, animated: true)
     }
 }
