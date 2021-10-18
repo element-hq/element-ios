@@ -16,8 +16,8 @@
 
 import Foundation
 
-/// Possible action ID related to a `SpaceMenuListViewCell` view data
-enum SpaceMenuListItemActionId {
+/// Possible action related to a `SpaceMenuListViewCell` view data
+enum SpaceMenuListItemAction {
     case showAllRoomsInHomeSpace
     case exploreSpaceMembers
     case exploreSpaceRooms
@@ -27,7 +27,7 @@ enum SpaceMenuListItemActionId {
 /// Style of the `SpaceMenuListViewCell`
 enum SpaceMenuListItemStyle {
     case normal
-    case boolean
+    case toggle
     case destructive
 }
 
@@ -38,7 +38,7 @@ protocol SpaceMenuListItemViewDataDelegate: AnyObject {
 
 /// `SpaceMenuListViewCell` view data
 class SpaceMenuListItemViewData {
-    let actionId: SpaceMenuListItemActionId
+    let action: SpaceMenuListItemAction
     let style: SpaceMenuListItemStyle
     let title: String?
     let icon: UIImage?
@@ -50,8 +50,8 @@ class SpaceMenuListItemViewData {
     }
     weak var delegate: SpaceMenuListItemViewDataDelegate?
     
-    init(actionId: SpaceMenuListItemActionId, style: SpaceMenuListItemStyle, title: String?, icon: UIImage?, value: Any?) {
-        self.actionId = actionId
+    init(action: SpaceMenuListItemAction, style: SpaceMenuListItemStyle, title: String?, icon: UIImage?, value: Any?) {
+        self.action = action
         self.style = style
         self.title = title
         self.icon = icon

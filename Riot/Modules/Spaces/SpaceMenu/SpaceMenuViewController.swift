@@ -248,7 +248,7 @@ extension SpaceMenuViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let viewData = viewModel.menuItems[indexPath.row]
         
-        let cell = viewData.style == .boolean ? tableView.dequeueReusableCell(for: indexPath, cellType: SpaceMenuSwitchViewCell.self) :
+        let cell = viewData.style == .toggle ? tableView.dequeueReusableCell(for: indexPath, cellType: SpaceMenuSwitchViewCell.self) :
                         tableView.dequeueReusableCell(for: indexPath, cellType: SpaceMenuListViewCell.self)
         
         if let cell = cell as? SpaceMenuCell {
