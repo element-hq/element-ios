@@ -16,23 +16,10 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-typedef NS_ENUM(NSInteger, ShareDataSourceMode)
-{
-    DataSourceModePeople,
-    DataSourceModeRooms
-};
+@interface RecentRoomTableViewCell : MXKRecentTableViewCell
 
++ (CGFloat)cellHeight;
 
-@interface ShareDataSource : MXKRecentsDataSource
-
-- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode;
-
-/**
- Returns the cell data at the index path
- 
- @param indexPath the index of the cell
- @return the MXKRecentCellData instance if it exists
- */
-- (MXKRecentCellData *)cellDataAtIndexPath:(NSIndexPath *)indexPath;
+- (void)setCustomSelected:(BOOL)selected animated:(BOOL)animated;
 
 @end

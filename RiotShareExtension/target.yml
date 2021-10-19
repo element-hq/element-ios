@@ -52,9 +52,11 @@ targets:
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/Managers/Settings/RiotSettings.swift
+    - path: ../Riot/Managers/AppInfo/
     - path: ../Riot/Categories/UIColor.swift
     - path: ../Riot/Categories/UISearchBar.swift
     - path: ../Riot/Categories/String.swift
+    - path: ../Riot/Categories/UIView.swift
     - path: ../Riot/Modules/Common/Recents/CellData/RecentCellData.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Generated/Strings.swift

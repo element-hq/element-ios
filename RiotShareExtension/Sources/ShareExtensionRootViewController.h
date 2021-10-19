@@ -15,11 +15,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "MXRoom+Riot.h"
-#import "ShareDataSource.h"
 
-@interface RoomsListViewController : MXKRecentListViewController
-
-@property (copy) void (^failureBlock)(void);
+@interface ShareExtensionRootViewController : UIViewController
 
 @end

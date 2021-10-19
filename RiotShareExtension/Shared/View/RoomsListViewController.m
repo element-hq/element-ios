@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
+#import <MatrixKit/MatrixKit.h>
+
 #import "RoomsListViewController.h"
 #import "RecentRoomTableViewCell.h"
-#import "NSBundle+MatrixKit.h"
-#import "ShareExtensionManager.h"
+#import "ShareDataSource.h"
 #import "RecentCellData.h"
 #import "ThemeService.h"
-#import <MatrixKit/MatrixKit.h>
 
 #ifdef IS_SHARE_EXTENSION
 #import "RiotShareExtension-Swift.h"
@@ -28,9 +28,7 @@
 #import "Riot-Swift.h"
 #endif
 
-@interface RoomsListViewController () <ShareExtensionManagerDelegate>
-
-@property (nonatomic) MXKPieChartHUD *hudView;
+@interface RoomsListViewController ()
 
 // The fake search bar displayed at the top of the recents table. We switch on the actual search bar (self.recentsSearchBar)
 // when the user selects it.
@@ -136,76 +134,6 @@
     return;
 }
 
-#pragma mark - Private
-
-- (void)showShareAlertForRoomPath:(NSIndexPath *)indexPath
-{
-    MXKRecentCellData *recentCellData = [self.dataSource cellDataAtIndexPath:indexPath];
-    NSString *roomName = recentCellData.roomSummary.displayname;
-    if (!roomName.length)
-    {
-        roomName = [MatrixKitL10n roomDisplaynameEmptyRoom];
-    }
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[VectorL10n sendTo:roomName] message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:cancelAction];
-    
-    UIAlertAction *sendAction = [UIAlertAction actionWithTitle:[MatrixKitL10n send] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
-        // The selected room is instanciated here
-        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
-
-        [MXFileStore setPreloadOptions:0];
-
-        MXWeakify(session);
-        [session setStore:[ShareExtensionManager sharedManager].fileStore success:^{
-            MXStrongifyAndReturnIfNil(session);
-
-            MXRoom *selectedRoom = [MXRoom loadRoomFromStore:[ShareExtensionManager sharedManager].fileStore withRoomId:recentCellData.roomSummary.roomId matrixSession:session];
-            
-            // Do not warn for unknown devices. We have cross-signing now
-            session.crypto.warnOnUnknowDevices = NO;
-
-            [ShareExtensionManager sharedManager].delegate = self;
-
-            [[ShareExtensionManager sharedManager] sendContentToRoom:selectedRoom failureBlock:^(NSError* error) {
-
-                NSString *title;
-                if ([error.domain isEqualToString:MXEncryptingErrorDomain])
-                {
-                    title = [VectorL10n shareExtensionFailedToEncrypt];
-                }
-
-                [self showFailureAlert:title];
-            }];
-
-        } failure:^(NSError *error) {
-
-            MXLogDebug(@"[RoomsListViewController] failed to prepare matrix session]");
-
-        }];
-    }];
-    
-    [alertController addAction:sendAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)showFailureAlert:(NSString *)title
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title.length ? title : [VectorL10n roomEventFailedToSend] message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if (self.failureBlock)
-        {
-            self.failureBlock();
-        }
-    }];
-    [alertController addAction:okAction];
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -217,7 +145,16 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [self showShareAlertForRoomPath:indexPath];
+    NSString *roomIdentifier = [self.dataSource cellDataAtIndexPath:indexPath].roomSummary.roomId;
+    
+    ShareDataSource *dataSource = (ShareDataSource *)self.dataSource;
+    if ([dataSource.selectedRoomIdentifiers containsObject:roomIdentifier]) {
+        [dataSource deselectRoomWithIdentifier:roomIdentifier animated:YES];
+    } else {
+        [dataSource selectRoomWithIdentifier:roomIdentifier animated:YES];
+    }
+    
+    [self.recentsTableView reloadData];
 }
 
 #pragma mark - MXKDataSourceDelegate
@@ -302,36 +239,6 @@
             }
         }
     }
-}
-
-#pragma mark - ShareExtensionManagerDelegate
-
-- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager showImageCompressionPrompt:(UIAlertController *)compressionPrompt
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [compressionPrompt popoverPresentationController].sourceView = self.view;
-        [compressionPrompt popoverPresentationController].sourceRect = self.view.frame;
-        [self presentViewController:compressionPrompt animated:YES completion:nil];
-    });
-}
-
-- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager didStartSendingContentToRoom:(MXRoom *)room
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (!self.hudView)
-        {
-            self.parentViewController.view.userInteractionEnabled = NO;
-            self.hudView = [MXKPieChartHUD showLoadingHudOnView:self.view WithMessage:[VectorL10n sending]];
-            [self.hudView setProgress:0.0];
-        }
-    });
-}
-
-- (void)shareExtensionManager:(ShareExtensionManager *)extensionManager mediaUploadProgress:(CGFloat)progress
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.hudView setProgress:progress];
-    });
 }
 
 @end

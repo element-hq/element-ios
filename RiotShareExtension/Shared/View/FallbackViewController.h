@@ -14,10 +14,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+@import UIKit;
 
-@interface RecentRoomTableViewCell : MXKRecentTableViewCell
-
-+ (CGFloat)cellHeight;
+@interface FallbackViewController : UIViewController
 
 @end

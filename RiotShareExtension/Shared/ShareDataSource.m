@@ -15,26 +15,31 @@
  */
 
 #import "ShareDataSource.h"
-#import "ShareExtensionManager.h"
 #import "RecentRoomTableViewCell.h"
 
 @interface ShareDataSource ()
 
-@property (nonatomic, readwrite) ShareDataSourceMode dataSourceMode;
+@property (nonatomic, strong, readonly) MXFileStore *fileStore;
+@property (nonatomic, strong, readonly) MXCredentials *credentials;
 
 @property NSArray <MXKRecentCellData *> *recentCellDatas;
 @property NSMutableArray <MXKRecentCellData *> *visibleRoomCellDatas;
+
+@property (nonatomic, strong) NSMutableSet<NSString *> *internalSelectedRoomIdentifiers;
 
 @end
 
 @implementation ShareDataSource
 
-- (instancetype)initWithMode:(ShareDataSourceMode)dataSourceMode
+- (instancetype)initWithFileStore:(MXFileStore *)fileStore
+                      credentials:(MXCredentials *)credentials
 {
-    self = [super init];
-    if (self)
+    if (self = [super init])
     {
-        self.dataSourceMode = dataSourceMode;
+        _fileStore = fileStore;
+        _credentials = credentials;
+        
+        _internalSelectedRoomIdentifiers = [NSMutableSet set];
         
         [self loadCellData];
     }
@@ -49,20 +54,39 @@
     _visibleRoomCellDatas = nil;
 }
 
+- (NSSet<NSString *> *)selectedRoomIdentifiers
+{
+    return self.internalSelectedRoomIdentifiers.copy;
+}
+
+- (void)selectRoomWithIdentifier:(NSString *)roomIdentifier animated:(BOOL)animated
+{
+    [self.internalSelectedRoomIdentifiers addObject:roomIdentifier];
+    
+    [self.shareDelegate shareDataSourceDidChangeSelectedRoomIdentifiers:self];
+}
+
+- (void)deselectRoomWithIdentifier:(NSString *)roomIdentifier animated:(BOOL)animated
+{
+    [self.internalSelectedRoomIdentifiers removeObject:roomIdentifier];
+    
+    [self.shareDelegate shareDataSourceDidChangeSelectedRoomIdentifiers:self];
+}
+
 #pragma mark - Private
      
 - (void)loadCellData
 {
-    [[ShareExtensionManager sharedManager].fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+    [self.fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> *roomsSummaries) {
         
         NSMutableArray *cellData = [NSMutableArray array];
         
         // Add a fake matrix session to each room summary to provide it a REST client (used to handle correctly the room avatar).
-        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:[ShareExtensionManager sharedManager].userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil]];
+        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.credentials andOnUnrecognizedCertificateBlock:nil]];
         
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {
-            if (!roomSummary.hiddenFromUser && ((self.dataSourceMode == DataSourceModeRooms) ^ roomSummary.isDirect))
+            if (!roomSummary.hiddenFromUser)
             {
                 [roomSummary setMatrixSession:session];
                 
@@ -133,6 +157,7 @@
     {
         self.visibleRoomCellDatas = nil;
     }
+    
     [self.delegate dataSource:self didCellChange:nil];
 }
 
@@ -156,7 +181,11 @@
 {
     RecentRoomTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[RecentRoomTableViewCell defaultReuseIdentifier]];
     
-    [cell render:[self cellDataAtIndexPath:indexPath]];
+    MXKRecentCellData *data = [self cellDataAtIndexPath:indexPath];
+    
+    [cell render:data];
+    
+    [cell setCustomSelected:[self.selectedRoomIdentifiers containsObject:data.roomSummary.roomId] animated:NO];
     
     return cell;
 }
