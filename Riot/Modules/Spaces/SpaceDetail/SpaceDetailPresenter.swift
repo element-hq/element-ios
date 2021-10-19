@@ -88,17 +88,17 @@ class SpaceDetailPresenter: NSObject {
     
     private func present(_ viewController: SpaceDetailViewController, animated: Bool) {
         
+        guard let presentingViewController = self.presentingViewController?.presentedViewController ??  self.presentingViewController else {
+            MXLog.error("[SpaceDetailPresenter] present no presentingViewController found")
+            return
+        }
+        
         if UIDevice.current.isPhone {
-            guard let rootViewController = self.presentingViewController else {
-                MXLog.error("[SpaceDetailPresenter] present no rootViewController found")
-                return
-            }
-
-            slidingModalPresenter.present(viewController, from: rootViewController.presentedViewController ?? rootViewController, animated: true, completion: nil)
+            slidingModalPresenter.present(viewController, from: presentingViewController, animated: true, completion: nil)
         } else {
             // Configure source view when view controller is presented with a popover
             viewController.modalPresentationStyle = .popover
-            if let popoverPresentationController = viewController.popoverPresentationController, let sourceView = sourceView ?? viewController.view {
+            if let popoverPresentationController = viewController.popoverPresentationController, let sourceView = sourceView ?? presentingViewController.view {
                 
                 popoverPresentationController.sourceView = sourceView
                 popoverPresentationController.sourceRect = sourceView.bounds
