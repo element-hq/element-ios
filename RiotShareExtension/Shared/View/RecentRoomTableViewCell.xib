@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,12 +25,9 @@
                             <constraint firstAttribute="width" constant="42" id="Xp0-5S-1wI"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBS-iO-8H6">
-                        <rect key="frame" x="78" y="27" width="33" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Text" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vBS-iO-8H6">
+                        <rect key="frame" x="76" y="15" width="32" height="44"/>
                         <accessibility key="accessibilityConfiguration" identifier="TitleLabel"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="H21-1K-fGz"/>
-                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -43,15 +40,27 @@
                             <constraint firstAttribute="width" constant="11" id="Mai-xD-TqV"/>
                         </constraints>
                     </imageView>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m0f-of-6xq">
+                        <rect key="frame" x="562" y="29" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="Wue-Ih-eVg"/>
+                            <constraint firstAttribute="width" constant="16" id="s5a-PW-58p"/>
+                        </constraints>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain" image="radio-button-selected"/>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="vBS-iO-8H6" firstAttribute="top" secondItem="b83-aU-AJ3" secondAttribute="topMargin" constant="4" id="0nI-h1-enE"/>
                     <constraint firstItem="HJd-Am-cCx" firstAttribute="leading" secondItem="b83-aU-AJ3" secondAttribute="leadingMargin" constant="6" id="4df-2f-865"/>
+                    <constraint firstItem="m0f-of-6xq" firstAttribute="centerY" secondItem="b83-aU-AJ3" secondAttribute="centerY" id="B3g-N6-bh1"/>
                     <constraint firstItem="hqD-YY-LWz" firstAttribute="top" secondItem="b83-aU-AJ3" secondAttribute="topMargin" constant="34" id="Cdm-v3-js8"/>
                     <constraint firstItem="hqD-YY-LWz" firstAttribute="leading" secondItem="b83-aU-AJ3" secondAttribute="leadingMargin" constant="42" id="UIE-13-LGw"/>
+                    <constraint firstItem="m0f-of-6xq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vBS-iO-8H6" secondAttribute="trailing" constant="16" id="dyz-rB-vUR"/>
                     <constraint firstItem="HJd-Am-cCx" firstAttribute="centerY" secondItem="b83-aU-AJ3" secondAttribute="centerY" id="flh-LO-k3n"/>
-                    <constraint firstItem="vBS-iO-8H6" firstAttribute="centerY" secondItem="b83-aU-AJ3" secondAttribute="centerY" id="ocY-mt-0n0"/>
-                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="vBS-iO-8H6" secondAttribute="trailing" constant="15" id="qqy-zs-Ccy"/>
-                    <constraint firstItem="vBS-iO-8H6" firstAttribute="leading" secondItem="HJd-Am-cCx" secondAttribute="trailing" constant="14" id="quv-47-R9n"/>
+                    <constraint firstAttribute="trailing" secondItem="m0f-of-6xq" secondAttribute="trailing" constant="22" id="k1V-mv-zgW"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="vBS-iO-8H6" secondAttribute="bottom" constant="4" id="k1n-ZD-FS0"/>
+                    <constraint firstItem="vBS-iO-8H6" firstAttribute="leading" secondItem="HJd-Am-cCx" secondAttribute="trailing" constant="12" id="quv-47-R9n"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -60,11 +69,13 @@
                 <outlet property="avatarImageView" destination="HJd-Am-cCx" id="Mv2-Kb-aG4"/>
                 <outlet property="encryptedRoomIcon" destination="hqD-YY-LWz" id="Ikp-Sf-Vlc"/>
                 <outlet property="roomTitleLabel" destination="vBS-iO-8H6" id="0J9-p3-Lzx"/>
+                <outlet property="selectionButton" destination="m0f-of-6xq" id="pzc-VN-t72"/>
             </connections>
             <point key="canvasLocation" x="-53" y="-43"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="e2e_verified" width="10" height="12"/>
+        <image name="radio-button-selected" width="24" height="24"/>
     </resources>
 </document>

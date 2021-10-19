@@ -18,13 +18,19 @@
 
 #import "MXRoomSummary+Riot.h"
 #import "ThemeService.h"
+
+#ifdef IS_SHARE_EXTENSION
 #import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
 
 @interface RecentRoomTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet MXKImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *roomTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *encryptedRoomIcon;
+@property (weak, nonatomic) IBOutlet UIButton *selectionButton;
 
 @end
 
@@ -51,6 +57,12 @@
     
     self.roomTitleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.contentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    
+    [self.selectionButton setImage:[UIImage imageNamed:@"radio-button-default"] forState:UIControlStateNormal];
+    [self.selectionButton setImage:[UIImage imageNamed:@"radio-button-selected"] forState:UIControlStateSelected];
+    
+    [self.selectionButton setTitle:@"" forState:UIControlStateNormal];
+    [self.selectionButton setTitle:@"" forState:UIControlStateSelected];
 }
 
 - (void)layoutSubviews
@@ -88,6 +100,13 @@
 + (CGFloat)cellHeight
 {
     return 74;
+}
+
+- (void)setCustomSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [UIView animateWithDuration:(animated ? 0.25f : 0.0f) animations:^{
+        [self.selectionButton setSelected:selected];
+    }];
 }
 
 @end

@@ -42,10 +42,4 @@
     self.logoImageView.tintColor = ThemeService.shared.theme.tintColor;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 @end

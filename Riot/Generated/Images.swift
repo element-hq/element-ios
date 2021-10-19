@@ -211,6 +211,8 @@ internal enum Asset {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
+    internal static let radioButtonDefault = ImageAsset(name: "radio-button-default")
+    internal static let radioButtonSelected = ImageAsset(name: "radio-button-selected")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

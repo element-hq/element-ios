@@ -14,9 +14,12 @@
  limitations under the License.
  */
 
-#import <Social/Social.h>
-#import <MatrixKit/MatrixKit.h>
+#import <UIKit/UIKit.h>
+#import "MXRoom+Riot.h"
+#import "ShareDataSource.h"
 
-@interface ShareViewController : MXKViewController
+@class RoomsListViewController;
+
+@interface RoomsListViewController : MXKRecentListViewController
 
 @end
