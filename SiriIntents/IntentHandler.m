@@ -217,58 +217,57 @@
     {
         MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-        [fileStore asyncRoomsSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull roomsSummaries) {
-                                    NSString *roomID = person.customIdentifier;
+        [fileStore.summariesModule fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull roomsSummaries) {
+            NSString *roomID = person.customIdentifier;
             
-                                    BOOL isEncrypted = NO;
-                                    for (id<MXRoomSummaryProtocol> roomSummary in roomsSummaries)
-                                    {
-                                        if ([roomSummary.roomId isEqualToString:roomID])
-                                        {
-                                            isEncrypted = roomSummary.isEncrypted;
-                                            break;
-                                        }
-                                    }
+            BOOL isEncrypted = NO;
+            for (id<MXRoomSummaryProtocol> roomSummary in roomsSummaries)
+            {
+                if ([roomSummary.roomId isEqualToString:roomID])
+                {
+                    isEncrypted = roomSummary.isEncrypted;
+                    break;
+                }
+            }
             
-                                    if (isEncrypted)
-                                    {
-                                        [MXFileStore setPreloadOptions:0];
-                                                
-                                        MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
-                                        MXWeakify(session);
-                                        [session setStore:fileStore success:^{
-                                            MXStrongifyAndReturnIfNil(session);
-                                            
-                                            MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
-                                            
-                                            // Do not warn for unknown devices. We have cross-signing now
-                                            session.crypto.warnOnUnknowDevices = NO;
-
-                                            [room sendTextMessage:intent.content
-                                                          success:^(NSString *eventId) {
-                                                              completeWithCode(INSendMessageIntentResponseCodeSuccess);
-                                                          } failure:^(NSError *error) {
-                                                              completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                                          }];
-
-                                        } failure:^(NSError *error) {
-                                            completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                        }];
-
-                                        return;
-                                    }
+            if (isEncrypted)
+            {
+                [MXFileStore setPreloadOptions:0];
+                
+                MXSession *session = [[MXSession alloc] initWithMatrixRestClient:account.mxRestClient];
+                MXWeakify(session);
+                [session setStore:fileStore success:^{
+                    MXStrongifyAndReturnIfNil(session);
+                    
+                    MXRoom *room = [MXRoom loadRoomFromStore:fileStore withRoomId:roomID matrixSession:session];
+                    
+                    // Do not warn for unknown devices. We have cross-signing now
+                    session.crypto.warnOnUnknowDevices = NO;
+                    
+                    [room sendTextMessage:intent.content
+                                  success:^(NSString *eventId) {
+                        completeWithCode(INSendMessageIntentResponseCodeSuccess);
+                    } failure:^(NSError *error) {
+                        completeWithCode(INSendMessageIntentResponseCodeFailure);
+                    }];
+                    
+                } failure:^(NSError *error) {
+                    completeWithCode(INSendMessageIntentResponseCodeFailure);
+                }];
+                
+                return;
+            }
             
-                                    [account.mxRestClient sendTextMessageToRoom:roomID
-                                                                           text:intent.content
-                                                                        success:^(NSString *eventId) {
-                                                                            completeWithCode(INSendMessageIntentResponseCodeSuccess);
-                                                                        }
-                                                                        failure:^(NSError *error) {
-                                                                            completeWithCode(INSendMessageIntentResponseCodeFailure);
-                                                                        }];
+            [account.mxRestClient sendTextMessageToRoom:roomID
+                                                   text:intent.content
+                                                success:^(NSString *eventId) {
+                completeWithCode(INSendMessageIntentResponseCodeSuccess);
+            }
+                                                failure:^(NSError *error) {
+                completeWithCode(INSendMessageIntentResponseCodeFailure);
+            }];
             
-                               }
-                               failure:nil];
+        }];
     }
     else
     {
@@ -318,7 +317,7 @@
         if (account)
         {
             MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-            [fileStore asyncRoomsSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull roomsSummaries) {
+            [fileStore.summariesModule fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull roomsSummaries) {
                 
                 // Contains userIds of all users with whom the current user has direct chats
                 // Use set to avoid duplicates
@@ -422,7 +421,7 @@
                         completion(@[[INPersonResolutionResult disambiguationWithPeopleToDisambiguate:persons]]);
                     }
                 } failure:nil];
-            } failure:nil];
+            }];
         }
         else
         {

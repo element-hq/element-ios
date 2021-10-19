@@ -77,7 +77,7 @@
      
 - (void)loadCellData
 {
-    [self.fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> *roomsSummaries) {
+    [self.fileStore.summariesModule fetchAllSummaries:^(NSArray<MXRoomSummary *> *roomsSummaries) {
         
         NSMutableArray *cellData = [NSMutableArray array];
         
@@ -110,10 +110,6 @@
             [self.delegate dataSource:self didCellChange:nil];
             
         });
-        
-    } failure:^(NSError * _Nonnull error) {
-        
-        MXLogDebug(@"[ShareDataSource failed to get room summaries]");
         
     }];
 }
