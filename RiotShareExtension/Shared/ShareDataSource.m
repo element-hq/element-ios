@@ -90,7 +90,7 @@
             {
                 [roomSummary setMatrixSession:session];
                 
-                MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary andRecentListDataSource:nil];
+                MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary dataSource:nil];
                 
                 [cellData addObject:recentCellData];
             }
