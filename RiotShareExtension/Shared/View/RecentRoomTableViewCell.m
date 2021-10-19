@@ -82,9 +82,12 @@
     roomCellData = (id<MXKRecentCellDataStoring>)cellData;
     if (roomCellData)
     {
-        [roomCellData.roomSummary setRoomAvatarImageIn:self.avatarImageView];
+        [self.avatarImageView vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                                 roomId:roomCellData.roomIdentifier
+                                            displayName:roomCellData.roomDisplayname
+                                           mediaManager:roomCellData.mxSession.mediaManager];
         
-        self.roomTitleLabel.text = roomCellData.roomSummary.displayname;
+        self.roomTitleLabel.text = roomCellData.roomDisplayname;
         if (!self.roomTitleLabel.text.length)
         {
             self.roomTitleLabel.text = [MatrixKitL10n roomDisplaynameEmptyRoom];

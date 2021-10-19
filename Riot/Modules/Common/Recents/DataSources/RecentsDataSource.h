@@ -19,20 +19,22 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
+@protocol RecentsListServiceProtocol;
+@class DiscussionsCount;
 @class MXSpace;
 
 /**
  List the different modes used to prepare the recents data source.
  Each mode corresponds to an application tab: Home, Favourites, People and Rooms.
+ Used as the tag of UITableView, starting from 1 in order to avoid collision with default tag of UIView.
  */
-typedef enum : NSUInteger
+typedef NS_ENUM(NSInteger, RecentsDataSourceMode)
 {
-    RecentsDataSourceModeHome,
+    RecentsDataSourceModeHome = 1,
     RecentsDataSourceModeFavourites,
     RecentsDataSourceModePeople,
     RecentsDataSourceModeRooms
-    
-} RecentsDataSourceMode;
+};
 
 /**
  List the different secure backup banners that could be displayed.
@@ -76,16 +78,39 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) NSInteger serverNoticeSection;
 @property (nonatomic) NSInteger suggestedRoomsSection;
 
-@property (nonatomic, readonly) NSArray* invitesCellDataArray;
-@property (nonatomic, readonly) NSArray* favoriteCellDataArray;
-@property (nonatomic, readonly) NSArray* peopleCellDataArray;
-@property (nonatomic, readonly) NSArray* conversationCellDataArray;
-@property (nonatomic, readonly) NSArray* lowPriorityCellDataArray;
-@property (nonatomic, readonly) NSArray* serverNoticeCellDataArray;
-@property (nonatomic, readonly) NSArray* suggestedRoomCellDataArray;
+@property (nonatomic, readonly) NSInteger totalVisibleItemCount;
+
+/**
+ Counts for favorited rooms.
+ */
+@property (nonatomic, readonly) DiscussionsCount *favoriteMissedDiscussionsCount;
+
+/**
+ Counts for direct rooms.
+ */
+@property (nonatomic, readonly) DiscussionsCount *directMissedDiscussionsCount;
+
+/**
+ Counts for group rooms.
+ */
+@property (nonatomic, readonly) DiscussionsCount *groupMissedDiscussionsCount;
 
 @property (nonatomic, readonly) SecureBackupBannerDisplay secureBackupBannerDisplay;
 @property (nonatomic, readonly) CrossSigningBannerDisplay crossSigningBannerDisplay;
+
+@property (nonatomic, readonly) id<RecentsListServiceProtocol> recentsListService;
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithMatrixSession:(MXSession*)mxSession NS_UNAVAILABLE;
+
+/**
+ Initializer
+ @param mxSession session instance
+ @param recentsListService service instance
+ */
+- (instancetype)initWithMatrixSession:(MXSession*)mxSession
+                   recentsListService:(id<RecentsListServiceProtocol>)recentsListService;
 
 /**
  Set the delegate by specifying the selected display mode.
@@ -162,45 +187,5 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
  It is based on room Tag.
  */
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)(void))moveSuccess failure:(void (^)(NSError *error))moveFailure;
-
-/**
- The current number of the favourite rooms with missed notifications.
- */
-@property (nonatomic, readonly) NSUInteger missedFavouriteDiscussionsCount;
-
-/**
- The current number of the favourite rooms with unread highlighted messages.
- */
-@property (nonatomic, readonly) NSUInteger missedHighlightFavouriteDiscussionsCount;
-
-/**
- The current number of the direct chats with missed notifications, including the invites.
- */
-@property (nonatomic, readonly) NSUInteger missedDirectDiscussionsCount;
-
-/**
- The current number of the direct chats with unread highlighted messages.
- */
-@property (nonatomic, readonly) NSUInteger missedHighlightDirectDiscussionsCount;
-
-/**
- The current number of the direct chats with unsent messages.
- */
-@property (nonatomic, readonly) NSUInteger unsentMessagesDirectDiscussionsCount;
-
-/**
- The current number of the group chats with missed notifications, including the invites.
- */
-@property (nonatomic, readonly) NSUInteger missedGroupDiscussionsCount;
-
-/**
- The current number of the group chats with unread highlighted messages.
- */
-@property (nonatomic, readonly) NSUInteger missedHighlightGroupDiscussionsCount;
-
-/**
- The current number of the group chats with unsent messages.
- */
-@property (nonatomic, readonly) NSUInteger unsentMessagesGroupDiscussionsCount;
 
 @end

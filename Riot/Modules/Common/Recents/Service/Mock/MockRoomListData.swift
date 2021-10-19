@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 New Vector Ltd
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,16 @@
 // limitations under the License.
 //
 
-import Foundation
+import MatrixSDK
 
-extension RecentsViewController {
+@objcMembers
+public class MockRoomListData: MXRoomListData {
     
-    @objc
-    func canShowRoomPreview(for summary: MXRoomSummaryProtocol) -> Bool {
-        let membershipTransitionState = summary.membershipTransitionState
-        
-        // NOTE: For the moment do not offer the possibility to show room preview when invitation action is in progress
-        
-        switch membershipTransitionState {
-        case .failedJoining, .failedLeaving:
-            return false
-        default:
-            return true
-        }
+    public init(withRooms rooms: [MXRoomSummaryProtocol]) {
+        super.init(rooms: rooms,
+                   counts: MXStoreRoomListDataCounts(withRooms: rooms,
+                                                     totalRoomsCount: rooms.count),
+                   paginationOptions: .none)
     }
+    
 }

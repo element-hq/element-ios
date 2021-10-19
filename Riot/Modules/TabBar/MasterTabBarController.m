@@ -339,7 +339,9 @@
         MXLogDebug(@"[MasterTabBarController] initializeDataSources");
         
         // Init the recents data source
-        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
+        RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
+        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession
+                                                          recentsListService:recentsListService];
         
         [self.homeViewController displayList:recentsDataSource];
         [self.favouritesViewController displayList:recentsDataSource];
@@ -786,15 +788,15 @@
     // Use a middle dot to signal missed notif in favourites
     if (RiotSettings.shared.homeScreenShowFavouritesTab)
     {
-        [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
+        [self setMissedDiscussionsMark:(recentsDataSource.favoriteMissedDiscussionsCount.numberOfNotified ? @"\u00B7": nil)
                           onTabBarItem:TABBAR_FAVOURITES_INDEX
-                        withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+                        withBadgeColor:(recentsDataSource.favoriteMissedDiscussionsCount.hasHighlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
     }
     
     // Update the badge on People and Rooms tabs
     if (RiotSettings.shared.homeScreenShowPeopleTab)
     {
-        if (recentsDataSource.unsentMessagesDirectDiscussionsCount)
+        if (recentsDataSource.directMissedDiscussionsCount.hasUnsent)
         {
             [self setBadgeValue:@"!"
                                onTabBarItem:TABBAR_PEOPLE_INDEX
@@ -802,25 +804,25 @@
         }
         else
         {
-            [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
+            [self setMissedDiscussionsCount:recentsDataSource.directMissedDiscussionsCount.numberOfNotified
                                onTabBarItem:TABBAR_PEOPLE_INDEX
-                             withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+                             withBadgeColor:(recentsDataSource.directMissedDiscussionsCount.hasHighlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
         }
     }
     
     if (RiotSettings.shared.homeScreenShowRoomsTab)
     {
-        if (recentsDataSource.unsentMessagesGroupDiscussionsCount)
+        if (recentsDataSource.groupMissedDiscussionsCount.hasUnsent)
         {
-            [self setMissedDiscussionsCount:recentsDataSource.unsentMessagesGroupDiscussionsCount
+            [self setMissedDiscussionsCount:recentsDataSource.groupMissedDiscussionsCount.numberOfUnsent
                                onTabBarItem:TABBAR_ROOMS_INDEX
                              withBadgeColor:ThemeService.shared.theme.noticeColor];
         }
         else
         {
-            [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
+            [self setMissedDiscussionsCount:recentsDataSource.groupMissedDiscussionsCount.numberOfNotified
                                onTabBarItem:TABBAR_ROOMS_INDEX
-                             withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+                             withBadgeColor:(recentsDataSource.groupMissedDiscussionsCount.hasHighlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
         }
     }
 }

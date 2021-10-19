@@ -45,7 +45,7 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
             self.menuItems = spaceMenuItems
         } else {
             self.menuItems = [
-                SpaceMenuListItemViewData(action: .showAllRoomsInHomeSpace, style: .toggle, title: VectorL10n.spaceHomeShowAllRooms, icon: nil, value: MXKAppSettings.standard().showAllRoomsInHomeSpace)
+                SpaceMenuListItemViewData(action: .showAllRoomsInHomeSpace, style: .toggle, title: VectorL10n.spaceHomeShowAllRooms, icon: nil, value: RiotSettings.shared.showAllRoomsInHomeSpace)
             ]
         }
     }
@@ -70,8 +70,8 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     private func processAction(with action: SpaceMenuListItemAction, at indexPath: IndexPath) {
         switch action {
         case .showAllRoomsInHomeSpace:
-            MXKAppSettings.standard().showAllRoomsInHomeSpace = !MXKAppSettings.standard().showAllRoomsInHomeSpace
-            self.menuItems[indexPath.row].value = MXKAppSettings.standard().showAllRoomsInHomeSpace
+            RiotSettings.shared.showAllRoomsInHomeSpace.toggle()
+            self.menuItems[indexPath.row].value = RiotSettings.shared.showAllRoomsInHomeSpace
             self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
         case .leaveSpace:
             self.leaveSpace()

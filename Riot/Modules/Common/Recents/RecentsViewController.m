@@ -901,7 +901,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     id<MXKRecentCellDataStoring> cellDataStoring = (id<MXKRecentCellDataStoring> )cellData;
     
-    if (cellDataStoring.roomSummary.room.summary.membership != MXMembershipInvite)
+    if (cellDataStoring.roomSummary.membership != MXMembershipInvite)
     {
         return RecentTableViewCell.class;
     }
@@ -1451,18 +1451,18 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         id<MXKRecentCellDataStoring> cellData = [self.dataSource cellDataAtIndexPath:indexPath];
 
         // Retrieve the invited room
-        MXRoom* invitedRoom = cellData.roomSummary.room;
         
-        if (invitedRoom.summary.roomType == MXRoomTypeSpace)
+        if (cellData.roomSummary.roomType == MXRoomTypeSpace)
         {
             // Indicates that spaces are not supported
             [self showSpaceInviteNotAvailable];
         }
         // Check if can show preview for the invited room 
-        else if ([self canShowRoomPreviewFor:invitedRoom])
+        else if ([self canShowRoomPreviewFor:cellData.roomSummary])
         {
             // Display the room preview
-            [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+            [self dispayRoomWithRoomId:cellData.roomIdentifier
+                       inMatrixSession:cellData.mxSession];
         }
         else
         {
@@ -2217,7 +2217,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (BOOL)shouldShowEmptyView
 {
-    return NO;
+    // Do not present empty screen while searching
+    if (self.recentsDataSource.searchPatternsList.count)
+    {
+        return NO;
+    }
+    
+    return self.recentsDataSource.totalVisibleItemCount == 0;
 }
 
 #pragma mark - RoomsDirectoryCoordinatorBridgePresenterDelegate

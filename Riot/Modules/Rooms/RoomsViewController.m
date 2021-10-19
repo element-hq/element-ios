@@ -144,24 +144,4 @@
     }
 }
 
-- (BOOL)shouldShowEmptyView
-{
-    // Do not present empty screen while searching
-    if (recentsDataSource.searchPatternsList.count)
-    {
-        return NO;
-    }
-    
-    // Otherwise check the number of items to display
-    return [self totalItemCounts] == 0;
-}
-
-// Total items to display on the screen
-- (NSUInteger)totalItemCounts
-{
-    return recentsDataSource.conversationCellDataArray.count
-    + recentsDataSource.invitesCellDataArray.count
-    + recentsDataSource.suggestedRoomCellDataArray.count;
-}
-
 @end
