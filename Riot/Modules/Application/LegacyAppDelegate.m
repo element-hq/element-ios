@@ -1245,11 +1245,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return [self handleUniversalLinkWithParameters:parameters];
 }
 
-- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)universalLinkParameters
 {
-    NSString *fragment = parameters.fragment;
-    NSURL *universalLinkURL = parameters.universalLinkURL;
-    BOOL stackAboveVisibleViewsOnRedirect = parameters.stackAboveVisibleViewsOnRedirect;
+    NSString *fragment = universalLinkParameters.fragment;
+    NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
+    BOOL stackAboveVisibleViewsOnRedirect = universalLinkParameters.stackAboveVisibleViewsOnRedirect;
+    BOOL restoreInitialDisplay = !stackAboveVisibleViewsOnRedirect;
     
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
@@ -1351,16 +1352,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    [self restoreInitialDisplay:^{
-                        self.spaceDetailPresenter = [SpaceDetailPresenter new];
-                        self.spaceDetailPresenter.delegate = self;
-                        [self.spaceDetailPresenter presentForSpaceWithId:room.roomId from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
-                    }];
+                    SpacePresentationParameters *spacePresentationParameters = [[SpacePresentationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession restoreInitialDisplay:restoreInitialDisplay];
+                    
+                    [self showSpaceWithParameters:spacePresentationParameters];
                 }
                 else
                 {
                     // Open the room page
-                    RoomPresentationParameters *roomPresentationParameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession restoreInitialDisplay:!stackAboveVisibleViewsOnRedirect stackAboveVisibleViews:stackAboveVisibleViewsOnRedirect];
+                    RoomPresentationParameters *roomPresentationParameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession restoreInitialDisplay:restoreInitialDisplay stackAboveVisibleViews:stackAboveVisibleViewsOnRedirect];
                     
                     [self showRoomWithParameters:roomPresentationParameters];
                 }
@@ -1369,10 +1368,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             else
             {
-                // We will display something but we need to do some requests before.
-                // So, come back to the home VC and show its loading wheel while processing
-                [self restoreInitialDisplay:^{
-                    
+                void(^findRoom)(void) = ^{
                     if ([_masterTabBarController.selectedViewController isKindOfClass:MXKActivityHandlingViewController.class])
                     {
                         MXKActivityHandlingViewController *homeViewController = (MXKActivityHandlingViewController*)_masterTabBarController.selectedViewController;
@@ -1453,7 +1449,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
                                     {
                                         MXLogDebug(@"[AppDelegate] Universal link: The session is running. Retry the link");
-                                        [self handleUniversalLinkWithParameters:parameters];
+                                        [self handleUniversalLinkWithParameters:universalLinkParameters];
                                     }
                                 }
                             }];
@@ -1472,26 +1468,44 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
+                            RoomPreviewPresentationParameters *roomPreviewPresentationParameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData restoreInitialDisplay:restoreInitialDisplay stackAboveVisibleViews:stackAboveVisibleViewsOnRedirect];
+                            
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
                                 {
                                     [homeViewController stopActivityIndicator];
                                     
-                                    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-                                    self.spaceDetailPresenter.delegate = self;
-                                    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:room from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
+                                    SpacePreviewPresentationParameters *spacePreviewPresentationParameters = [[SpacePreviewPresentationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession restoreInitialDisplay:restoreInitialDisplay];
+                                    
+                                    [self showSpacePreviewWithParameters:spacePreviewPresentationParameters];  
                                 }
                                 else
                                 {
-                                    [self peekInRoomWithId:roomIdOrAlias forPreviewData:roomPreviewData params:pathParams];
+                                    [self peekInRoomWithPresentationParameters:roomPreviewPresentationParameters pathParams:pathParams];
                                 }
                             } failure:^(NSError *error) {
-                                [self peekInRoomWithId:roomIdOrAlias forPreviewData:roomPreviewData params:pathParams];
+                                [self peekInRoomWithPresentationParameters:roomPreviewPresentationParameters pathParams:pathParams];
                             }];
                         }
                         
                     }
-                }];
+                };
+                
+                
+                // We will display something but we need to do some requests before.
+                // So, come back to the home VC and show its loading wheel while processing
+                
+                if (restoreInitialDisplay)
+                {
+                    [self restoreInitialDisplay:^{
+                        findRoom();
+                    }];
+                }
+                else
+                {
+                    findRoom();
+                }
+                                
                 
                 // Let's say we are handling the case
                 continueUserActivity = YES;
@@ -1511,7 +1525,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkWithParameters:parameters];
+                    [self handleUniversalLinkWithParameters:universalLinkParameters];
                 }
             }];
         }
@@ -1576,7 +1590,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkWithParameters:parameters];
+                    [self handleUniversalLinkWithParameters:universalLinkParameters];
                 }
             }];
         }
@@ -1594,7 +1608,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // Unknown command: Do nothing except coming back to the main screen
         MXLogDebug(@"[AppDelegate] Universal link: TODO: Do not know what to do with the link arguments: %@", pathParams);
         
-        [self popToHomeViewControllerAnimated:NO completion:nil];
+        if (restoreInitialDisplay)
+        {
+            [self popToHomeViewControllerAnimated:NO completion:nil];
+        }
     }
     
     return continueUserActivity;
@@ -1618,8 +1635,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)peekInRoomWithId:(NSString*)roomIdOrAlias forPreviewData:(RoomPreviewData *)roomPreviewData params:(NSArray<NSString*> *)pathParams
+- (void)peekInRoomWithPresentationParameters:(RoomPreviewPresentationParameters*)presentationParameters pathParams:(NSArray<NSString*> *)pathParams
 {
+    RoomPreviewData *roomPreviewData = presentationParameters.previewData;
+    NSString *roomIdOrAlias = presentationParameters.roomId;
+    
     // Is it a link to an event of a room?
     // If yes, the event will be displayed once the room is joined
     roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
@@ -1641,7 +1661,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         self->universalLinkFragmentPendingRoomAlias = nil;
         
-        [self showRoomPreview:roomPreviewData];
+        [self showRoomPreviewWithParameters:presentationParameters];
     }];
 }
 
@@ -2891,6 +2911,60 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData restoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
     [self showRoomPreviewWithParameters:parameters];
+}
+
+- (void)showSpacePreviewWithParameters:(SpacePreviewPresentationParameters*)parameters
+{
+    UIViewController *presentingViewController = self.presentedViewController;
+    UIView *sourceView = presentingViewController.view;
+    
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    
+    void(^showSpace)(void) = ^{
+        [self.spaceDetailPresenter presentForSpaceWithPublicRoom:parameters.publicRoom
+                                                            from:presentingViewController sourceView:sourceView
+                                                         session:parameters.mxSession animated:YES];
+    };
+    
+    if (parameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showSpace();
+        }];
+    }
+    else
+    {
+        showSpace();
+    }
+}
+
+- (void)showSpaceWithParameters:(SpacePresentationParameters*)parameters
+{
+    UIViewController *presentingViewController = self.presentedViewController;
+    UIView *sourceView = presentingViewController.view;
+
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    
+    void(^showSpace)(void) = ^{
+        [self.spaceDetailPresenter presentForSpaceWithId:parameters.roomId
+                                                    from:presentingViewController
+                                              sourceView:sourceView
+                                                 session:parameters.mxSession
+                                                animated:YES];
+    };
+    
+    if (parameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showSpace();
+        }];
+    }
+    else
+    {
+        showSpace();
+    }
 }
 
 - (void)setVisibleRoomId:(NSString *)roomId
