@@ -4903,6 +4903,10 @@ public class VectorL10n: NSObject {
   public static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
   }
+  /// Show all rooms
+  public static var spaceHomeShowAllRooms: String { 
+    return VectorL10n.tr("Vector", "space_home_show_all_rooms") 
+  }
   /// Ban from this space
   public static var spaceParticipantsActionBan: String { 
     return VectorL10n.tr("Vector", "space_participants_action_ban") 

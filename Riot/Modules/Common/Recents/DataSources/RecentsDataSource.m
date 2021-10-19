@@ -1177,7 +1177,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 }
 
 #pragma mark - MXKDataSourceDelegate
-        
+
 - (void)dataSource:(MXKDataSource*)dataSource didCellChange:(id)changes
 {
     // Refresh is disabled during drag&drop animation

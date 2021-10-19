@@ -101,16 +101,15 @@ extension SpaceMenuPresenter: SpaceMenuModelViewModelCoordinatorDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWithId itemId: String) {
-        let actionId = SpaceMenuViewModel.ActionId(rawValue: itemId)
-        switch actionId {
-        case .leave: break
-        case .members:
+    func spaceMenuViewModel(_ viewModel: SpaceMenuViewModelType, didSelectItemWith action: SpaceMenuListItemAction) {
+        switch action {
+        case .leaveSpace: break
+        case .exploreSpaceMembers:
             self.delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreMembers, forSpaceWithId: self.spaceId, with: self.session)
-        case .rooms:
+        case .exploreSpaceRooms:
             self.delegate?.spaceMenuPresenter(self, didCompleteWith: .exploreRooms, forSpaceWithId: self.spaceId, with: self.session)
         default:
-            MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItemWithId: invalid itemId \(itemId)")
+            MXLog.error("[SpaceMenuPresenter] spaceListViewModel didSelectItem: invalid action \(action)")
         }
     }
 }
