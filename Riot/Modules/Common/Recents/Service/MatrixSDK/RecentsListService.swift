@@ -138,6 +138,10 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         return MXSDKOptions.sharedInstance().autoAcceptRoomInvites
     }
     
+    private var showAllRoomsInHomeSpace: Bool {
+        return RiotSettings.shared.showAllRoomsInHomeSpace
+    }
+    
     // swiftlint:disable weak_delegate
     private let multicastDelegate: MXMulticastDelegate<RecentsListServiceDelegate> = MXMulticastDelegate()
     // swiftlint:enable weak_delegate
@@ -253,6 +257,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     public func refresh() {
         allFetchers.forEach({ $0.fetchOptions.sortOptions = sortOptions })
+        allFetchers.forEach({ $0.fetchOptions.filterOptions.showAllRoomsInHomeSpace = showAllRoomsInHomeSpace })
     }
     
     public func stop() {
@@ -298,6 +303,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         switch key {
         case RiotSettings.UserDefaultsKeys.pinRoomsWithMissedNotificationsOnHome,
              RiotSettings.UserDefaultsKeys.pinRoomsWithUnreadMessagesOnHome:
+            refresh()
+        case RiotSettings.UserDefaultsKeys.showAllRoomsInHomeSpace:
             refresh()
         default:
             break
@@ -357,7 +364,8 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         let filterOptions = MXRoomListDataFilterOptions(dataTypes: dataTypes,
                                                         onlySuggested: onlySuggested,
                                                         query: query,
-                                                        space: space)
+                                                        space: space,
+                                                        showAllRoomsInHomeSpace: showAllRoomsInHomeSpace)
         
         let fetchOptions = MXRoomListDataFetchOptions(filterOptions: filterOptions,
                                                       sortOptions: sortOptions,

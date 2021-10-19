@@ -28,6 +28,7 @@ final class RiotSettings: NSObject {
         static let allowStunServerFallback = "allowStunServerFallback"
         static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
         static let pinRoomsWithUnreadMessagesOnHome = "pinRoomsWithUnread"
+        static let showAllRoomsInHomeSpace = "showAllRoomsInHomeSpace"
     }
     
     static let shared = RiotSettings()
@@ -141,6 +142,9 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "roomsAllowToJoinPublicRooms", defaultValue: BuildSettings.roomsAllowToJoinPublicRooms, storage: defaults)
     var roomsAllowToJoinPublicRooms
+    
+    @UserDefault(key: UserDefaultsKeys.showAllRoomsInHomeSpace, defaultValue: false, storage: defaults)
+    var showAllRoomsInHomeSpace
     
     // MARK: - Room Screen
     
