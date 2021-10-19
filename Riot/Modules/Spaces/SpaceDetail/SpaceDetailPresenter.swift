@@ -98,7 +98,8 @@ class SpaceDetailPresenter: NSObject {
         } else {
             // Configure source view when view controller is presented with a popover
             viewController.modalPresentationStyle = .popover
-            if let sourceView = self.sourceView, let popoverPresentationController = viewController.popoverPresentationController {
+            if let popoverPresentationController = viewController.popoverPresentationController, let sourceView = sourceView ?? viewController.view {
+                
                 popoverPresentationController.sourceView = sourceView
                 popoverPresentationController.sourceRect = sourceView.bounds
             }
