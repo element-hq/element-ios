@@ -63,7 +63,7 @@ enum
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
     SECTION_TAG_ADVANCED,
-    SECTION_TAG_OTHER,
+    SECTION_TAG_ABOUT,
     SECTION_TAG_LABS,
     SECTION_TAG_FLAIR,
     SECTION_TAG_DEACTIVATE_ACCOUNT
@@ -77,8 +77,7 @@ enum
     USER_SETTINGS_FIRST_NAME_INDEX,
     USER_SETTINGS_SURNAME_INDEX,
     USER_SETTINGS_ADD_EMAIL_INDEX,
-    USER_SETTINGS_ADD_PHONENUMBER_INDEX,
-    USER_SETTINGS_INVITE_FRIENDS_INDEX
+    USER_SETTINGS_ADD_PHONENUMBER_INDEX
 };
 
 enum
@@ -138,18 +137,20 @@ enum
 
 enum
 {
-    OTHER_VERSION_INDEX = 0,
-    OTHER_OLM_VERSION_INDEX,
-    OTHER_COPYRIGHT_INDEX,
-    OTHER_TERM_CONDITIONS_INDEX,
-    OTHER_PRIVACY_INDEX,
-    OTHER_THIRD_PARTY_INDEX,
-    OTHER_SHOW_NSFW_ROOMS_INDEX,
-    OTHER_CRASH_REPORT_INDEX,
-    OTHER_ENABLE_RAGESHAKE_INDEX,
-    OTHER_MARK_ALL_AS_READ_INDEX,
-    OTHER_CLEAR_CACHE_INDEX,
-    OTHER_REPORT_BUG_INDEX,
+    ADVANCED_SHOW_NSFW_ROOMS_INDEX = 0,
+    ADVANCED_CRASH_REPORT_INDEX,
+    ADVANCED_ENABLE_RAGESHAKE_INDEX,
+    ADVANCED_MARK_ALL_AS_READ_INDEX,
+    ADVANCED_CLEAR_CACHE_INDEX,
+    ADVANCED_REPORT_BUG_INDEX,
+};
+
+enum
+{
+    ABOUT_COPYRIGHT_INDEX = 0,
+    ABOUT_TERM_CONDITIONS_INDEX,
+    ABOUT_PRIVACY_INDEX,
+    ABOUT_THIRD_PARTY_INDEX,
 };
 
 enum
@@ -267,8 +268,6 @@ TableViewSectionsDelegate>
 
 @property (nonatomic, strong) TableViewSections *tableViewSections;
 
-@property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
-
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
@@ -359,10 +358,6 @@ TableViewSectionsDelegate>
         [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
         [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{}]];
         sectionUserSettings.attributedFooterTitle = attributedString;
-    }
-    if (RiotSettings.shared.settingsScreenShowInviteFriends)
-    {
-        [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
     }
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
@@ -498,51 +493,57 @@ TableViewSectionsDelegate>
     sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
     [tmpSections addObject: sectionUserInterface];
     
-    if (BuildSettings.settingsScreenShowAdvancedSettings)
-    {
-        Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
-        [sectionAdvanced addRowWithTag:0];
-        sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
-        [tmpSections addObject:sectionAdvanced];
-    }
+    Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
+    sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
     
-    Section *sectionOther = [Section sectionWithTag:SECTION_TAG_OTHER];
-    [sectionOther addRowWithTag:OTHER_VERSION_INDEX];
-    [sectionOther addRowWithTag:OTHER_OLM_VERSION_INDEX];
-    if (BuildSettings.applicationCopyrightUrlString.length)
-    {
-        [sectionOther addRowWithTag:OTHER_COPYRIGHT_INDEX];
-    }
-    if (BuildSettings.applicationTermsConditionsUrlString.length)
-    {
-        [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
-    }
-    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
-    {
-        [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
-    }
-    [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
     if (RiotSettings.shared.settingsScreenShowNsfwRoomsOption)
     {
-        [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_SHOW_NSFW_ROOMS_INDEX];
     }
     
     if (BuildSettings.settingsScreenAllowChangingCrashUsageDataSettings)
     {
-        [sectionOther addRowWithTag:OTHER_CRASH_REPORT_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_CRASH_REPORT_INDEX];
     }
     if (BuildSettings.settingsScreenAllowChangingRageshakeSettings)
     {
-        [sectionOther addRowWithTag:OTHER_ENABLE_RAGESHAKE_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_ENABLE_RAGESHAKE_INDEX];
     }
-    [sectionOther addRowWithTag:OTHER_MARK_ALL_AS_READ_INDEX];
-    [sectionOther addRowWithTag:OTHER_CLEAR_CACHE_INDEX];
+    [sectionAdvanced addRowWithTag:ADVANCED_MARK_ALL_AS_READ_INDEX];
+    [sectionAdvanced addRowWithTag:ADVANCED_CLEAR_CACHE_INDEX];
     if (BuildSettings.settingsScreenAllowBugReportingManually)
     {
-        [sectionOther addRowWithTag:OTHER_REPORT_BUG_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_REPORT_BUG_INDEX];
     }
-    sectionOther.headerTitle = [VectorL10n settingsOther];
-    [tmpSections addObject:sectionOther];
+    
+    [tmpSections addObject:sectionAdvanced];
+    
+    Section *sectionAbout = [Section sectionWithTag:SECTION_TAG_ABOUT];
+    if (BuildSettings.applicationCopyrightUrlString.length)
+    {
+        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
+    }
+    if (BuildSettings.applicationTermsConditionsUrlString.length)
+    {
+        [sectionAbout addRowWithTag:ABOUT_TERM_CONDITIONS_INDEX];
+    }
+    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
+    {
+        [sectionAbout addRowWithTag:ABOUT_PRIVACY_INDEX];
+    }
+    [sectionAbout addRowWithTag:ABOUT_THIRD_PARTY_INDEX];
+    sectionAbout.headerTitle = VectorL10n.settingsAbout;
+
+    if (BuildSettings.settingsScreenShowAdvancedSettings)
+    {
+        sectionAbout.footerTitle = [NSString stringWithFormat:@"Element %@ / Olm %@\n%@\n%@",
+                                    AppInfo.current.appVersion.description,
+                                    [OLMKit versionString],
+                                    [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId],
+                                    [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer]];
+    }
+    
+    [tmpSections addObject:sectionAbout];
     
     if (BuildSettings.settingsScreenShowLabSettings)
     {
@@ -1857,18 +1858,6 @@ TableViewSectionsDelegate>
                 cell = newPhoneCell;
             }
         }
-        else if (row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
-        {
-            MXKTableViewCell *inviteFriendsCell = [self getDefaultTableViewCell:tableView];
-
-            inviteFriendsCell.textLabel.text = [VectorL10n inviteFriendsAction:BuildSettings.bundleDisplayName];
-            
-            UIImage *shareActionImage = [[UIImage imageNamed:@"share_action_button"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
-            UIImageView *accessoryView = [[UIImageView alloc] initWithImage:shareActionImage];
-            inviteFriendsCell.accessoryView = accessoryView;
-            
-            cell = inviteFriendsCell;
-        }
         else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
@@ -2182,79 +2171,7 @@ TableViewSectionsDelegate>
     }
     else if (section == SECTION_TAG_ADVANCED)
     {
-        MXKTableViewCellWithTextView *configCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-        
-        configCell.mxkTextView.text = [NSString stringWithFormat:@"%@\n%@\n%@", [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId], [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer], [MatrixKitL10n settingsConfigIdentityServer:account.identityServerURL]];
-        configCell.mxkTextView.accessibilityIdentifier=@"SettingsVCConfigStaticText";
-        
-        cell = configCell;
-    }
-    else if (section == SECTION_TAG_OTHER)
-    {
-        if (row == OTHER_VERSION_INDEX)
-        {
-            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
-            
-            NSString* appVersion = [AppDelegate theDelegate].appVersion;
-            NSString* build = [AppDelegate theDelegate].build;
-            
-            versionCell.textLabel.text = [VectorL10n settingsVersion:[NSString stringWithFormat:@"%@ %@", appVersion, build]];
-            
-            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = versionCell;
-        }
-        else if (row == OTHER_OLM_VERSION_INDEX)
-        {
-            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
-            
-            versionCell.textLabel.text = [VectorL10n settingsOlmVersion:[OLMKit versionString]];
-            
-            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = versionCell;
-        }
-        else if (row == OTHER_TERM_CONDITIONS_INDEX)
-        {
-            MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
-
-            termAndConditionCell.textLabel.text = [VectorL10n settingsTermConditions];
-            
-            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = termAndConditionCell;
-        }
-        else if (row == OTHER_COPYRIGHT_INDEX)
-        {
-            MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
-
-            copyrightCell.textLabel.text = [VectorL10n settingsCopyright];
-            
-            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = copyrightCell;
-        }
-        else if (row == OTHER_PRIVACY_INDEX)
-        {
-            MXKTableViewCell *privacyPolicyCell = [self getDefaultTableViewCell:tableView];
-            
-            privacyPolicyCell.textLabel.text = [VectorL10n settingsPrivacyPolicy];
-            
-            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = privacyPolicyCell;
-        }
-        else if (row == OTHER_THIRD_PARTY_INDEX)
-        {
-            MXKTableViewCell *thirdPartyCell = [self getDefaultTableViewCell:tableView];
-            
-            thirdPartyCell.textLabel.text = [VectorL10n settingsThirdPartyNotices];
-            
-            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = thirdPartyCell;
-        }
-        else if (row == OTHER_SHOW_NSFW_ROOMS_INDEX)
+        if (row == ADVANCED_SHOW_NSFW_ROOMS_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
@@ -2267,7 +2184,7 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
-        else if (row == OTHER_CRASH_REPORT_INDEX)
+        else if (row == ADVANCED_CRASH_REPORT_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
@@ -2279,7 +2196,7 @@ TableViewSectionsDelegate>
             
             cell = sendCrashReportCell;
         }
-        else if (row == OTHER_ENABLE_RAGESHAKE_INDEX)
+        else if (row == ADVANCED_ENABLE_RAGESHAKE_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* enableRageShakeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2291,7 +2208,7 @@ TableViewSectionsDelegate>
 
             cell = enableRageShakeCell;
         }
-        else if (row == OTHER_MARK_ALL_AS_READ_INDEX)
+        else if (row == ADVANCED_MARK_ALL_AS_READ_INDEX)
         {
             MXKTableViewCellWithButton *markAllBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!markAllBtnCell)
@@ -2316,7 +2233,7 @@ TableViewSectionsDelegate>
             
             cell = markAllBtnCell;
         }
-        else if (row == OTHER_CLEAR_CACHE_INDEX)
+        else if (row == ADVANCED_CLEAR_CACHE_INDEX)
         {
             MXKTableViewCellWithButton *clearCacheBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!clearCacheBtnCell)
@@ -2341,7 +2258,7 @@ TableViewSectionsDelegate>
             
             cell = clearCacheBtnCell;
         }
-        else if (row == OTHER_REPORT_BUG_INDEX)
+        else if (row == ADVANCED_REPORT_BUG_INDEX)
         {
             MXKTableViewCellWithButton *reportBugBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!reportBugBtnCell)
@@ -2365,6 +2282,49 @@ TableViewSectionsDelegate>
             reportBugBtnCell.mxkButton.accessibilityIdentifier = nil;
 
             cell = reportBugBtnCell;
+        }
+    }
+    else if (section == SECTION_TAG_ABOUT)
+    {
+        if (row == ABOUT_TERM_CONDITIONS_INDEX)
+        {
+            MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
+
+            termAndConditionCell.textLabel.text = [VectorL10n settingsTermConditions];
+            
+            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = termAndConditionCell;
+        }
+        else if (row == ABOUT_COPYRIGHT_INDEX)
+        {
+            MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
+
+            copyrightCell.textLabel.text = [VectorL10n settingsCopyright];
+            
+            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = copyrightCell;
+        }
+        else if (row == ABOUT_PRIVACY_INDEX)
+        {
+            MXKTableViewCell *privacyPolicyCell = [self getDefaultTableViewCell:tableView];
+            
+            privacyPolicyCell.textLabel.text = [VectorL10n settingsPrivacyPolicy];
+            
+            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = privacyPolicyCell;
+        }
+        else if (row == ABOUT_THIRD_PARTY_INDEX)
+        {
+            MXKTableViewCell *thirdPartyCell = [self getDefaultTableViewCell:tableView];
+            
+            thirdPartyCell.textLabel.text = [VectorL10n settingsThirdPartyNotices];
+            
+            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = thirdPartyCell;
         }
     }
     else if (section == SECTION_TAG_LABS)
@@ -2595,11 +2555,6 @@ TableViewSectionsDelegate>
                 [self showThemePicker];
             }
         }
-        else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
-        {
-            UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-            [self showInviteFriendsFromSourceView:selectedCell];
-        }
         else if (section == SECTION_TAG_NOTIFICATIONS && row == NOTIFICATION_SETTINGS_SYSTEM_SETTINGS)
         {
             [self openSystemSettingsApp];
@@ -2678,9 +2633,9 @@ TableViewSectionsDelegate>
                 [self presentViewController:currentAlert animated:YES completion:nil];
             }
         }
-        else if (section == SECTION_TAG_OTHER)
+        else if (section == SECTION_TAG_ABOUT)
         {
-            if (row == OTHER_COPYRIGHT_INDEX)
+            if (row == ABOUT_COPYRIGHT_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
@@ -2688,7 +2643,7 @@ TableViewSectionsDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == OTHER_TERM_CONDITIONS_INDEX)
+            else if (row == ABOUT_TERM_CONDITIONS_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
@@ -2696,7 +2651,7 @@ TableViewSectionsDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == OTHER_PRIVACY_INDEX)
+            else if (row == ABOUT_PRIVACY_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
@@ -2704,7 +2659,7 @@ TableViewSectionsDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == OTHER_THIRD_PARTY_INDEX)
+            else if (row == ABOUT_THIRD_PARTY_INDEX)
             {
                 NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
 
@@ -3817,21 +3772,6 @@ TableViewSectionsDelegate>
     deactivateAccountViewController.delegate = self;
     
     self.deactivateAccountViewController = deactivateAccountViewController;
-}
-
-- (void)showInviteFriendsFromSourceView:(UIView*)sourceView
-{
-    if (!self.inviteFriendsPresenter)
-    {
-        self.inviteFriendsPresenter = [InviteFriendsPresenter new];
-    }
-    
-    NSString *userId = self.mainSession.myUser.userId;
-    
-    [self.inviteFriendsPresenter presentFor:userId
-                                       from:self
-                                 sourceView:sourceView
-                                   animated:YES];
 }
 
 - (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender

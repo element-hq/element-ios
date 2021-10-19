@@ -96,7 +96,7 @@ final class AppVersion: NSObject {
     }
     
     override var description: String {
-        return "\(bundleShortVersion)(\(bundleVersion))"
+        return "\(bundleShortVersion) (\(bundleVersion))"
     }
 
     // MARK: - Private
