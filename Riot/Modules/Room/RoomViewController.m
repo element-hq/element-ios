@@ -2218,7 +2218,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else
     {
-        return [self handleSpaceUniversalLinkWith:parameters];
+        return [[AppDelegate theDelegate] handleUniversalLinkWithParameters:parameters];
     }
 }
 
@@ -6518,20 +6518,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXLogError(@"Failed sending voice message");
         completion(NO);
     }];
-}
-
-- (void)showSpaceDetailWithPublicRoom:(MXPublicRoom *)publicRoom
-{
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
-}
-
-- (void)showSpaceDetailWithId:(NSString *)spaceId
-{
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    [self.spaceDetailPresenter presentForSpaceWithId:spaceId from:self sourceView:nil session:self.mainSession animated:YES];
 }
 
 #pragma mark - SpaceDetailPresenterDelegate

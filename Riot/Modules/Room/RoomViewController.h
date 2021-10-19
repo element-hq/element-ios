@@ -87,10 +87,6 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  */
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
 
-- (void)showSpaceDetailWithPublicRoom:(MXPublicRoom *)publicRoom;
-
-- (void)showSpaceDetailWithId:(NSString *)spaceId;
-
 /**
  Action used to handle some buttons.
  */
