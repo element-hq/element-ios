@@ -2197,21 +2197,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return [[AppDelegate theDelegate] showAlertWithTitle:title message:message];
 }
 
-- (UniversalLinkPresentationParameters*)buildUniversalLinkPresentationParamters
+- (UniversalLinkPresentationParameters*)buildUniversalLinkPresentationParameters
 {
     return [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
 }
 
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
 {
-    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParamters]];
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
     return [self handleUniversalLinkWithParameters:parameters];
 }
 
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
 {
     UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
-                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParamters]];
+                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
     return [self handleUniversalLinkWithParameters:parameters];
 }
 
