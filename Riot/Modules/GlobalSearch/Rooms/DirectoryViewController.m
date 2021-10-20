@@ -193,7 +193,7 @@
     if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
         // Open the public room.
-        [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+        [self showRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
     }
     else
     {
@@ -232,7 +232,7 @@
 
 #pragma mark - Private methods
 
-- (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
+- (void)showRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
     UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
