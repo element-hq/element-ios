@@ -31,25 +31,19 @@ class RoomPresentationParameters: NSObject {
     /// The Matrix session in which the room should be available.
     let mxSession: MXSession
     
-    /// Indicate to pop to home and restore initial view hierarchy
-    let restoreInitialDisplay: Bool
-    
-    /// Indicate to stack above visible views
-    /// If this variable is set to true `restoreInitialDisplay` should be set to false to have effect
-    let stackAboveVisibleViews: Bool
+    /// Universal link presentation parameters.
+    let presentationParameters: UniversalLinkPresentationParameters
     
     // MARK: - Setup
     
     init(roomId: String,
          eventId: String?,
          mxSession: MXSession,
-         restoreInitialDisplay: Bool,
-         stackAboveVisibleViews: Bool) {
+         presentationParameters: UniversalLinkPresentationParameters) {
         self.roomId = roomId
         self.eventId = eventId
         self.mxSession = mxSession
-        self.restoreInitialDisplay = restoreInitialDisplay
-        self.stackAboveVisibleViews = stackAboveVisibleViews
+        self.presentationParameters = presentationParameters
         
         super.init()
     }

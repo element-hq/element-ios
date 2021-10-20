@@ -28,13 +28,11 @@ class RoomPreviewPresentationParameters: RoomPresentationParameters {
     
     // MARK: - Setup
     
-    init(previewData: RoomPreviewData, restoreInitialDisplay: Bool, stackAboveVisibleViews: Bool) {
+    init(previewData: RoomPreviewData, presentationParameters: UniversalLinkPresentationParameters) {
         self.previewData = previewData
-        
+
         super.init(roomId: previewData.roomId,
                    eventId: previewData.eventId,
-                   mxSession: previewData.mxSession,
-                   restoreInitialDisplay: restoreInitialDisplay,
-                   stackAboveVisibleViews: stackAboveVisibleViews)
+                   mxSession: previewData.mxSession, presentationParameters: presentationParameters)
     }
 }
