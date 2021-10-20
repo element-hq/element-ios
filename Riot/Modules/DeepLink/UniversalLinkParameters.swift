@@ -27,33 +27,46 @@ class UniversalLinkParameters: NSObject {
     
     /// The fragment part of the universal link
     let fragment: String
-    
-    /// Indicates if the view to open after the link should replace or be stacked on visible views
-    let stackAboveVisibleViewsOnRedirect: Bool
+        
+    /// Presentation parameters
+    let presentationParameters: UniversalLinkPresentationParameters
     
     // MARK: - Setup
     
     init(fragment: String,
          universalLinkURL: URL,
-         stackAboveVisibleViewsOnRedirect: Bool) {
+         presentationParameters: UniversalLinkPresentationParameters) {
         self.fragment = fragment
         self.universalLinkURL = universalLinkURL
-        self.stackAboveVisibleViewsOnRedirect = stackAboveVisibleViewsOnRedirect
+        self.presentationParameters = presentationParameters
         
         super.init()
     }
     
-    init?(universalLinkURL: URL,
+    convenience init(fragment: String,
+         universalLinkURL: URL,
          stackAboveVisibleViewsOnRedirect: Bool) {
+        
+        let presentationParameters = UniversalLinkPresentationParameters( stackAboveVisibleViews: stackAboveVisibleViewsOnRedirect)
+        
+        self.init(fragment: fragment, universalLinkURL: universalLinkURL, presentationParameters: presentationParameters)
+    }
+    
+    convenience init?(universalLinkURL: URL,
+          presentationParameters: UniversalLinkPresentationParameters) {
         
         guard let fixedURL = Tools.fixURL(withSeveralHashKeys: universalLinkURL), let fragment = fixedURL.fragment else {
             return nil
         }
         
-        self.fragment = fragment
-        self.universalLinkURL = universalLinkURL
-        self.stackAboveVisibleViewsOnRedirect = stackAboveVisibleViewsOnRedirect
+        self.init(fragment: fragment, universalLinkURL: universalLinkURL, presentationParameters: presentationParameters)
+    }
+    
+    convenience init?(universalLinkURL: URL,
+                      stackAboveVisibleViewsOnRedirect: Bool) {
         
-        super.init()
+        let presentationParameters = UniversalLinkPresentationParameters( stackAboveVisibleViews: stackAboveVisibleViewsOnRedirect)
+        
+        self.init(universalLinkURL: universalLinkURL, presentationParameters: presentationParameters)
     }
 }
