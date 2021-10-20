@@ -2830,7 +2830,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *roomId = parameters.roomId;
     MXSession *mxSession = parameters.mxSession;
-    BOOL restoreInitialDisplay = parameters.presentationParameters. restoreInitialDisplay;
+    BOOL restoreInitialDisplay = parameters.presentationParameters.restoreInitialDisplay;
     
     if (roomId && mxSession)
     {
