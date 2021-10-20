@@ -1998,7 +1998,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // Open the public room
         [self showRoomWithRoomId:publicRoom.roomId
-                   inMatrixSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
+                 inMatrixSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
     }
     else
     {
