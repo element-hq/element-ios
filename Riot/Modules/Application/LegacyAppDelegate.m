@@ -1249,8 +1249,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *fragment = universalLinkParameters.fragment;
     NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
-    BOOL stackAboveVisibleViewsOnRedirect = universalLinkParameters.stackAboveVisibleViewsOnRedirect;
-    BOOL restoreInitialDisplay = !stackAboveVisibleViewsOnRedirect;
+    UniversalLinkPresentationParameters *universalLinkPresentationParameters = universalLinkParameters.presentationParameters;
+    BOOL stackAboveVisibleViewsOnRedirect = universalLinkPresentationParameters.stackAboveVisibleViews;
+    BOOL restoreInitialDisplay = universalLinkPresentationParameters.restoreInitialDisplay;
     
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
@@ -1352,7 +1353,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    SpacePresentationParameters *spacePresentationParameters = [[SpacePresentationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession restoreInitialDisplay:restoreInitialDisplay];
+                    SpacePresentationParameters *spacePresentationParameters = [[SpacePresentationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
                     
                     [self showSpaceWithParameters:spacePresentationParameters];
                 }
@@ -1409,7 +1410,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     {
                                         universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
-                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL stackAboveVisibleViewsOnRedirect:stackAboveVisibleViewsOnRedirect];
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:universalLinkPresentationParameters];
                                         
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1475,7 +1476,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 {
                                     [homeViewController stopActivityIndicator];
                                     
-                                    SpacePreviewPresentationParameters *spacePreviewPresentationParameters = [[SpacePreviewPresentationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession restoreInitialDisplay:restoreInitialDisplay];
+                                    SpacePreviewPresentationParameters *spacePreviewPresentationParameters = [[SpacePreviewPresentationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
                                     
                                     [self showSpacePreviewWithParameters:spacePreviewPresentationParameters];  
                                 }
@@ -2915,8 +2916,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showSpacePreviewWithParameters:(SpacePreviewPresentationParameters*)parameters
 {
-    UIViewController *presentingViewController = self.presentedViewController;
-    UIView *sourceView = presentingViewController.view;
+    UIViewController *presentingViewController;
+    UIView *sourceView;
+    
+    if (parameters.presentationParameters.presentingViewController)
+    {
+        presentingViewController = parameters.presentationParameters.presentingViewController;
+        sourceView = parameters.presentationParameters.sourceView;
+    }
+    else
+    {
+        presentingViewController = self.masterNavigationController;
+    }
     
     self.spaceDetailPresenter = [SpaceDetailPresenter new];
     self.spaceDetailPresenter.delegate = self;
@@ -2927,7 +2938,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                          session:parameters.mxSession animated:YES];
     };
     
-    if (parameters.restoreInitialDisplay)
+    if (parameters.presentationParameters.restoreInitialDisplay)
     {
         [self restoreInitialDisplay:^{
             showSpace();
@@ -2941,8 +2952,18 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showSpaceWithParameters:(SpacePresentationParameters*)parameters
 {
-    UIViewController *presentingViewController = self.presentedViewController;
-    UIView *sourceView = presentingViewController.view;
+    UIViewController *presentingViewController;
+    UIView *sourceView;
+    
+    if (parameters.presentationParameters.presentingViewController)
+    {
+        presentingViewController = parameters.presentationParameters.presentingViewController;
+        sourceView = parameters.presentationParameters.sourceView;
+    }
+    else
+    {
+        presentingViewController = self.masterNavigationController;
+    }
 
     self.spaceDetailPresenter = [SpaceDetailPresenter new];
     self.spaceDetailPresenter.delegate = self;
@@ -2955,7 +2976,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                                 animated:YES];
     };
     
-    if (parameters.restoreInitialDisplay)
+    if (parameters.presentationParameters.restoreInitialDisplay)
     {
         [self restoreInitialDisplay:^{
             showSpace();
