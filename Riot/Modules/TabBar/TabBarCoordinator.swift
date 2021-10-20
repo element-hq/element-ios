@@ -446,6 +446,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
     }
     
+    // MARK: Split view
+    
     /// If the split view is collapsed (one column visible) it will push the Presentable on the primary navigation controller, otherwise it will show the Presentable as the secondary view of the split view.
     private func replaceSplitViewDetails(with presentable: Presentable, popCompletion: (() -> Void)? = nil) {
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToReplaceDetailWith: presentable, popCompletion: popCompletion)
@@ -463,6 +465,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         } else {
             self.replaceSplitViewDetails(with: presentable, popCompletion: popCompletion)
         }
+    }
+    
+    private func resetSplitViewDetails() {
+        self.splitViewMasterPresentableDelegate?.splitViewMasterPresentableWantsToResetDetail(self)
     }
     
     // MARK: UserSessions management
@@ -566,7 +572,8 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     }
         
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
-        self.navigationRouter.popModule(animated: true)
+        // For the moment when a room is leaved reset the split detail with placeholder
+        self.resetSplitViewDetails()
     }
     
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {
