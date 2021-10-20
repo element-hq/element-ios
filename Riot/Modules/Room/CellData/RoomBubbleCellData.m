@@ -1117,6 +1117,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         });
         
     } failure:^(NSError * _Nullable error) {
+        MXStrongifyAndReturnIfNil(self);
+        
         MXLogDebug(@"[RoomBubbleCellData] Failed to get url preview")
         
         // Remove the loading URLPreviewView, indicate that the layout needs refreshing and send a notification for refresh

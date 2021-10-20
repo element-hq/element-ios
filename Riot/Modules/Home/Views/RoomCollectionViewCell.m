@@ -101,8 +101,8 @@
         }
         
         // Notify unreads and bing
-        if (roomCellData.roomSummary.room.summary.membership == MXMembershipInvite
-                 || roomCellData.roomSummary.room.sentStatus != RoomSentStatusOk)
+        if (roomCellData.roomSummary.membership == MXMembershipInvite
+                 || roomCellData.roomSummary.sentStatus != MXRoomSummarySentStatusOk)
         {
             self.badgeLabel.hidden = NO;
             self.badgeLabel.badgeColor = ThemeService.shared.theme.noticeColor;
@@ -130,20 +130,10 @@
             
         }
         
-        if (roomCellData.roomSummary)
-        {
-            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.roomSummary.avatar
-                                                roomId:roomCellData.roomSummary.roomId
-                                           displayName:roomCellData.roomSummary.displayname
-                                          mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
-        }
-        else
-        {
-            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl
-                                                roomId:roomCellData.spaceChildInfo.childRoomId
-                                           displayName:roomCellData.spaceChildInfo.displayName
-                                          mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
-        }
+        [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                            roomId:roomCellData.roomIdentifier
+                                       displayName:roomCellData.roomDisplayname
+                                      mediaManager:roomCellData.mxSession.mediaManager];
     }
 }
 
@@ -182,11 +172,7 @@
 
 - (NSString*)roomId
 {
-    if (roomCellData)
-    {
-        return roomCellData.spaceChildInfo ? roomCellData.spaceChildInfo.childRoomId : roomCellData.roomSummary.roomId;
-    }
-    return nil;
+    return roomCellData.roomIdentifier;
 }
 
 @end

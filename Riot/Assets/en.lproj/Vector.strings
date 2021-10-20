@@ -360,6 +360,7 @@ Tap the + to start adding people.";
 "room_event_action_redact" = "Remove";
 "room_event_action_more" = "More";
 "room_event_action_share" = "Share";
+"room_event_action_forward" = "Forward";
 "room_event_action_permalink" = "Permalink";
 "room_event_action_view_source" = "View Source";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";
@@ -1730,6 +1731,7 @@ Tap the + to start adding people.";
 "spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.";
 "space_participants_action_remove" = "Remove from this space";
 "space_participants_action_ban" = "Ban from this space";
+"space_home_show_all_rooms" = "Show all rooms";
 
 "space_private_join_rule" = "Private space";
 "space_public_join_rule" = "Public space";
