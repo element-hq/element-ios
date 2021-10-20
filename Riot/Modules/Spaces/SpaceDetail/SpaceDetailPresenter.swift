@@ -88,7 +88,7 @@ class SpaceDetailPresenter: NSObject {
     
     private func present(_ viewController: SpaceDetailViewController, animated: Bool) {
         
-        guard let presentingViewController = self.presentingViewController?.presentedViewController ??  self.presentingViewController else {
+        guard let presentingViewController = self.presentingViewController?.presentedViewController ?? self.presentingViewController else {
             MXLog.error("[SpaceDetailPresenter] present no presentingViewController found")
             return
         }
