@@ -1553,7 +1553,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         // Create the contact related to this member
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-        [self showContact:contact];
+        [self showContact:contact presentationParameters:universalLinkPresentationParameters];
 
         continueUserActivity = YES;
     }
@@ -3105,13 +3105,22 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Contacts handling
 
-- (void)showContact:(MXKContact*)contact
+- (void)showContact:(MXKContact*)contact presentationParameters:(UniversalLinkPresentationParameters*)presentationParameters
 {
-    [self restoreInitialDisplay:^{
-
+    void(^showContact)(void) = ^{
         [self.masterTabBarController selectContact:contact];
-
-    }];
+    };
+    
+    if (presentationParameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showContact();
+        }];
+    }
+    else
+    {
+        showContact();
+    }
 }
 
 #pragma mark - Matrix Groups handling
