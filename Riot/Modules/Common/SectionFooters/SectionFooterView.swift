@@ -15,15 +15,43 @@
 //
 
 import UIKit
+import Reusable
 
-/// A subclass of `UITableViewHeaderFooterView` that conforms `Themable`
+/// A subclass of `UITableViewHeaderFooterView` that conforms to `Themable`
 /// to create a consistent looking custom footer inside of the app. If using gesture
 /// recognizers on the view, be aware that these will be automatically removed on reuse.
 @objcMembers
-class SectionFooterView: UITableViewHeaderFooterView, Themable {
+class SectionFooterView: UITableViewHeaderFooterView, NibLoadable, Themable {
+    
+    // MARK: - Properties
+    
     static var defaultReuseIdentifier: String {
         String(describing: Self.self)
     }
+    
+    static var nib: UINib {
+        // Copy paste from NibReusable in order to expose to ObjC
+        UINib(nibName: String(describing: self), bundle: Bundle(for: self))
+    }
+    
+    var leadingInset: CGFloat {
+        get { footerLabelLeadingConstraint.constant }
+        set { footerLabelLeadingConstraint.constant = newValue }
+    }
+    
+    // Expose `footerLabel` as the default label property.
+    override var textLabel: UILabel? {
+        footerLabel
+    }
+    
+    /// The text label added in the xib file. Using our own label was necessary due to the behaviour
+    /// on iOS 12-14 where any customisation to the text label would be wiped out after being set
+    /// in `tableView:viewForFooterInSection`. This behaviour is fixed in iOS 15.
+    @IBOutlet private weak var footerLabel: UILabel!
+    /// The label's leading constraint, relative to the safe area insets.
+    @IBOutlet private weak var footerLabelLeadingConstraint: NSLayoutConstraint!
+    
+    // MARK: - Public
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -34,8 +62,8 @@ class SectionFooterView: UITableViewHeaderFooterView, Themable {
     }
     
     func update(theme: Theme) {
-        textLabel?.textColor = theme.colors.secondaryContent
-        textLabel?.font = theme.fonts.subheadline
-        textLabel?.numberOfLines = 0
+        footerLabel.textColor = theme.colors.secondaryContent
+        footerLabel.font = theme.fonts.subheadline
+        footerLabel.numberOfLines = 0
     }
 }

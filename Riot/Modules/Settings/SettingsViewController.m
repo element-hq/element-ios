@@ -602,7 +602,7 @@ TableViewSectionsDelegate>
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
     [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
-    [self.tableView registerClass:SectionFooterView.class forHeaderFooterViewReuseIdentifier:[SectionFooterView defaultReuseIdentifier]];
+    [self.tableView registerNib:SectionFooterView.nib forHeaderFooterViewReuseIdentifier:[SectionFooterView defaultReuseIdentifier]];
     
     // Enable self sizing cells and footers
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -2442,6 +2442,7 @@ TableViewSectionsDelegate>
     
     SectionFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionFooterView.defaultReuseIdentifier];
     [view updateWithTheme:ThemeService.shared.theme];
+    view.leadingInset = tableView.vc_separatorInset.left;
     view.textLabel.attributedText = attributedFooterTitle;
     
     if (section == SECTION_TAG_USER_SETTINGS)

@@ -159,7 +159,7 @@ TableViewSectionsDelegate>
     [self.tableView registerClass:MXKTableViewCellWithLabelAndSwitch.class forCellReuseIdentifier:[MXKTableViewCellWithLabelAndSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithButton.nib forCellReuseIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
-    [self.tableView registerClass:SectionFooterView.class forHeaderFooterViewReuseIdentifier:[SectionFooterView defaultReuseIdentifier]];
+    [self.tableView registerNib:SectionFooterView.nib forHeaderFooterViewReuseIdentifier:[SectionFooterView defaultReuseIdentifier]];
 
     // Enable self sizing cells and footers
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -1313,6 +1313,7 @@ TableViewSectionsDelegate>
     
     SectionFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionFooterView.defaultReuseIdentifier];
     [view updateWithTheme:ThemeService.shared.theme];
+    view.leadingInset = tableView.vc_separatorInset.left;
     view.textLabel.text = footerTitle;
     
     return view;
@@ -1345,20 +1346,6 @@ TableViewSectionsDelegate>
         }
     }
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    if (section == SECTION_CRYPTO_SESSIONS)
-//    {
-//        return 44;
-//    }
-//    return 24;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    return 24;
-//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
