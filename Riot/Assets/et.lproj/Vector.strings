@@ -691,10 +691,10 @@
 "user_verification_sessions_list_user_trust_level_unknown_title" = "Teadmata olek";
 "user_verification_sessions_list_information" = "Sõnumid selle kasutajaga selles jututoas on läbivalt krüptitud ning kolmandad osapooled ei saa neid lugeda.";
 "user_verification_sessions_list_table_title" = "Sessioonid";
-"user_verification_sessions_list_session_trusted" = "Usaldusväärsed";
-"user_verification_sessions_list_session_untrusted" = "Ei ole usaldusväärsed";
-"user_verification_session_details_trusted_title" = "Usaldusväärsed";
-"user_verification_session_details_untrusted_title" = "Ei ole usaldusväärsed";
+"user_verification_sessions_list_session_trusted" = "Usaldusväärne";
+"user_verification_sessions_list_session_untrusted" = "Ei ole usaldusväärne";
+"user_verification_session_details_trusted_title" = "Usaldusväärne";
+"user_verification_session_details_untrusted_title" = "Ei ole usaldusväärne";
 // Chat creation
 "room_creation_title" = "Uus vestlus";
 "room_creation_account" = "Kasutajakonto";
@@ -710,7 +710,7 @@
 "room_creation_keep_private" = "Jäta privaatseks";
 "room_creation_make_private" = "Muuda privaatseks";
 "room_creation_wait_for_creation" = "Jututuba on just loomisel. Palun oota üks hetk.";
-"room_creation_invite_another_user" = "Otsi või kutsu uut kasutajat tema kasutajatunnuse, nime või e-posti aadressi alusel";
+"room_creation_invite_another_user" = "Kasutajatunnus, nimi või e-posti aadress";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Ühtegi isikutuvastusserverit pole seadistatud ning sul ei ole võimalik lisada kasutajaid e-posti aadressi alusel.";
 "room_recents_low_priority_section" = "VÄHETÄHTIS";
 "room_recents_server_notice_section" = "SÜSTEEMSED TEATED";
@@ -757,7 +757,7 @@
 "settings_integrations" = "LÕIMINGUD";
 "settings_user_interface" = "KASUTAJALIIDES";
 "settings_ignored_users" = "EIRATUD KASUTAJAD";
-"settings_contacts" = "KONTAKTID SIIN SEADMES";
+"settings_contacts" = "KONTAKTID SEADMES";
 "settings_advanced" = "KEERUKAMAD SEADISTUSED";
 "settings_other" = "MUUD SEADISTUSED";
 "settings_labs" = "KATSED";
@@ -916,7 +916,7 @@
 "user_verification_start_information_part2" = " võrreldes selleks üheks korraks loodud koodi mõlemas seadmes.";
 "user_verification_start_waiting_partner" = "Ootan vastust kasutajalt %@…";
 "user_verification_start_additional_information" = "Turvalisuse mõttes on oluline, et teed seda nii, et kas olete üheskoos või kasutate suhtluskanalit, mida mõlemad usaldate.";
-"user_verification_sessions_list_user_trust_level_trusted_title" = "Usaldusväärsed";
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Usaldusväärne";
 "user_verification_session_details_information_trusted_current_user" = "Kuna sina oled selle sessiooni verifitseerinud, siis see sessioon on krüptitud sõnumite saatmiseks usaldusväärne:";
 "user_verification_session_details_information_trusted_other_user_part1" = "See sessioon on krüptitud sõnumite saatmiseks usaldusväärne, sest ";
 "user_verification_session_details_information_trusted_other_user_part2" = " verifitseeris selle:";
@@ -1443,3 +1443,27 @@
 "room_recents_suggested_rooms_section" = "SOOVITATUD JUTUTOAD";
 "done" = "Valmis";
 "open" = "Ava";
+"settings_contacts_enable_sync_description" = "Sellega võimaldad oma isikutuvastusserveril lubada sind leida.";
+
+// Service terms
+"service_terms_modal_title_message" = "Jätkamiseks palun nõustu kasutustingimustega";
+"settings_phone_contacts" = "KONTAKTID NUTISEADMES";
+"settings_contacts_enable_sync" = "Otsi kontakte";
+"service_terms_modal_information_description_integration_manager" = "Lõiminguhalduri alusel saad lisada ja kasutada kolmandate osapoolte loodud lisavõimalusi.";
+"service_terms_modal_information_description_identity_server" = "Isikutuvastusserver võimaldab sul telefoninumbri või e-posti aadressi alusel leida Matrix'i kasutajaid.";
+"service_terms_modal_information_title_integration_manager" = "Lõiminguhaldur";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Isikutuvastusserver";
+"service_terms_modal_description_integration_manager" = "Sellega tekib sul võimalus kasutada roboteid, sõnumisildu, vidinaid ja kleepsupakke.";
+"service_terms_modal_description_identity_server" = "Sellega annad teistele inimestele võimaluse sind leida, kui nende aadressiraamatus on sinu telefoninumber või e-posti aadress.";
+"service_terms_modal_table_header_integration_manager" = "LÕIMINGUHALDURI TINGIMUSED";
+"service_terms_modal_table_header_identity_server" = "ISIKUTUVASTUSSERVERI TINGIMUSED";
+"service_terms_modal_footer" = "Selle võimaluse saad alati seadistustest välja lülitada.";
+"find_your_contacts_identity_service_error" = "Ei õnnestu leida isikutuvastusserverit.";
+"find_your_contacts_footer" = "Selle võimaluse saad alati seadistustest välja lülitada.";
+"find_your_contacts_message" = "Las %@ näitab sulle kontakte ja nii saad tuttavatega kiiresti vestlema asuda.";
+"find_your_contacts_button_title" = "Otsi kontakte";
+"find_your_contacts_title" = "Alusta kontaktide looendist";
+"contacts_address_book_permission_denied_alert_message" = "Palun luba seadistustest aadressiraamatu lugemine.";
+"contacts_address_book_permission_denied_alert_title" = "Kontaktid pole kasutusel";

@@ -109,7 +109,7 @@
 "room_creation_keep_private" = "Mantieni privata";
 "room_creation_make_private" = "Rendi privata";
 "room_creation_wait_for_creation" = "Una stanza è già in fase di creazione. Per favore attendi.";
-"room_creation_invite_another_user" = "Cerca / invita per ID utente, nome o email";
+"room_creation_invite_another_user" = "ID utente, nome o email";
 // Room recents
 "room_recents_directory_section" = "ELENCO STANZE";
 "room_recents_favourites_section" = "PREFERITI";
@@ -295,7 +295,7 @@
 "settings_calls_settings" = "CHIAMATE";
 "settings_user_interface" = "INTERFACCIA UTENTE";
 "settings_ignored_users" = "UTENTI IGNORATI";
-"settings_contacts" = "CONTATTI LOCALI";
+"settings_contacts" = "CONTATTI DEL DISPOSITIVO";
 "settings_advanced" = "AVANZATE";
 "settings_other" = "ALTRO";
 "settings_labs" = "LABORATORIO";
@@ -892,7 +892,7 @@
 "widget_menu_remove" = "Rimuovi per tutti";
 "settings_integrations" = "INTEGRAZIONI";
 "settings_integrations_allow_button" = "Gestisci le integrazioni";
-"settings_integrations_allow_description" = "Usa un Integration Manager (%@) per gestire bot, bridge, widget e pacchetti di sticker.\n\nGli Integration Manager possono ricevere dati di configurazione, modificare widget, mandare inviti alle stanze e modificare permessi a tuo nome.";
+"settings_integrations_allow_description" = "Usa un gestore di integrazioni (%@) per gestire bot, bridge, widget e pacchetti di sticker.\n\nI gestori di integrazioni possono ricevere dati di configurazione, modificare widget, mandare inviti alle stanze e modificare permessi a tuo nome.";
 "widget_integration_manager_disabled" = "Devi attivare il gestore di integrazioni nelle impostazioni";
 // Room widget permissions
 "room_widget_permission_title" = "Carica widget";
@@ -1477,3 +1477,27 @@
 "room_recents_suggested_rooms_section" = "STANZE CONSIGLIATE";
 "done" = "Fatto";
 "open" = "Apri";
+"service_terms_modal_information_description_integration_manager" = "Un gestore di integrazioni ti permette di aggiungere funzioni da terze parti.";
+"service_terms_modal_information_description_identity_server" = "Un server d'identità ti aiuta a trovare i tuoi contatti, cercando il loro numero di telefono o l'indirizzo email, per vedere se hanno già un account.";
+"service_terms_modal_information_title_integration_manager" = "Gestore di integrazioni";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Server d'identità";
+"service_terms_modal_description_integration_manager" = "Ciò ti permetterà di usare bot, bridge, widget e pacchetti di sticker.";
+"service_terms_modal_description_identity_server" = "Ciò aiuterà qualcuno a trovarti se ha il tuo numero di telefono o l'email salvati nei suoi contatti.";
+"service_terms_modal_table_header_integration_manager" = "TERMINI DEL GESTORE DI INTEGRAZIONI";
+"service_terms_modal_table_header_identity_server" = "TERMINI DEL SERVER D'IDENTITÀ";
+"service_terms_modal_footer" = "Può essere disattivato in qualsiasi momento nelle impostazioni.";
+
+// Service terms
+"service_terms_modal_title_message" = "Per continuare, accetta i termini e condizioni sottostanti";
+"settings_contacts_enable_sync_description" = "Verrà usato il tuo server d'identità per connetterti ai tuoi contatti e per aiutarli a trovarti.";
+"settings_contacts_enable_sync" = "Trova i tuoi contatti";
+"settings_phone_contacts" = "CONTATTI DEL TELEFONO";
+"find_your_contacts_identity_service_error" = "Impossibile connettersi al server d'identità.";
+"find_your_contacts_footer" = "Può essere disattivato in qualsiasi momento dalle impostazioni.";
+"find_your_contacts_button_title" = "Trova i tuoi contatti";
+"find_your_contacts_message" = "Lascia che %@ mostri i tuoi contatti per poter iniziare subito a chattare con chi conosci già.";
+"find_your_contacts_title" = "Inizia elencando i tuoi contatti";
+"contacts_address_book_permission_denied_alert_message" = "Per attivare i contatti, vai nelle impostazioni del tuo dispositivo.";
+"contacts_address_book_permission_denied_alert_title" = "Contatti disattivati";

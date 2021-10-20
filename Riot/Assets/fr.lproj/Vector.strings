@@ -62,7 +62,7 @@
 "auth_missing_phone" = "Numéro de téléphone manquant";
 "auth_missing_email_or_phone" = "Adresse e-mail ou numéro de téléphone manquant";
 "auth_password_dont_match" = "Les mots de passe ne correspondent pas";
-"auth_username_in_use" = "L’identifiant est déjà utilisé";
+"auth_username_in_use" = "";
 "auth_forgot_password" = "Mot de passe oublié ?";
 "auth_use_server_options" = "Utiliser un serveur personnalisé (avancé)";
 "auth_email_validation_message" = "Merci de vérifier vos e-mails pour continuer l’inscription";
