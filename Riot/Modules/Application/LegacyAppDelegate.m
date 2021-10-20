@@ -1240,7 +1240,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
 
 {
-    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL stackAboveVisibleViewsOnRedirect:NO];
+    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
     
     return [self handleUniversalLinkWithParameters:parameters];
 }
@@ -1572,7 +1574,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             
             // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession];
+            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:universalLinkPresentationParameters];
             
             continueUserActivity = YES;
         }
@@ -3125,14 +3127,23 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix Groups handling
 
-- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession
+- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession presentationParamters:(UniversalLinkPresentationParameters*)presentationParameters
 {
-    [self restoreInitialDisplay:^{
-        
+    void(^showGroup)(void) = ^{
         // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_masterTabBarController selectGroup:group inMatrixSession:mxSession];
-        
-    }];
+        [self.masterTabBarController selectGroup:group inMatrixSession:mxSession];
+    };
+
+    if (presentationParameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showGroup();
+        }];
+    }
+    else
+    {
+        showGroup();
+    }
 }
 
 - (void)promptForStunServerFallback
