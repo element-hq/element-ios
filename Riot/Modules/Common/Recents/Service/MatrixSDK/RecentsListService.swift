@@ -67,35 +67,17 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     ]
     
     private var allFetchers: [MXRoomListDataFetcher] {
-        var result: [MXRoomListDataFetcher] = []
-        if let fetcher = invitedRoomListDataFetcher {
-            result.append(fetcher)
-        }
-        if let fetcher = favoritedRoomListDataFetcher {
-            result.append(fetcher)
-        }
-        if let fetcher = directRoomListDataFetcherForHome {
-            result.append(fetcher)
-        }
-        if let fetcher = directRoomListDataFetcherForPeople {
-            result.append(fetcher)
-        }
-        if let fetcher = conversationRoomListDataFetcherForHome {
-            result.append(fetcher)
-        }
-        if let fetcher = conversationRoomListDataFetcherForRooms {
-            result.append(fetcher)
-        }
-        if let fetcher = lowPriorityRoomListDataFetcher {
-            result.append(fetcher)
-        }
-        if let fetcher = serverNoticeRoomListDataFetcher {
-            result.append(fetcher)
-        }
-        if let fetcher = suggestedRoomListDataFetcher {
-            result.append(fetcher)
-        }
-        return result
+        return [
+            invitedRoomListDataFetcher,
+            favoritedRoomListDataFetcher,
+            directRoomListDataFetcherForHome,
+            directRoomListDataFetcherForPeople,
+            conversationRoomListDataFetcherForHome,
+            conversationRoomListDataFetcherForRooms,
+            lowPriorityRoomListDataFetcher,
+            serverNoticeRoomListDataFetcher,
+            suggestedRoomListDataFetcher
+        ].compactMap({ $0 })
     }
     
     private var visibleFetchers: [MXRoomListDataFetcher] {
@@ -127,8 +109,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         if let fetcher = serverNoticeRoomListDataFetcher, fetcherTypes.contains(.serverNotice) {
             result.append(fetcher)
         }
-        if let fetcher = suggestedRoomListDataFetcher,
-           fetcherTypes.contains(.suggested) {
+        if let fetcher = suggestedRoomListDataFetcher, fetcherTypes.contains(.suggested) {
             result.append(fetcher)
         }
         return result
