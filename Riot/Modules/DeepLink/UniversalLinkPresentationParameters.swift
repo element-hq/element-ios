@@ -62,9 +62,4 @@ class UniversalLinkPresentationParameters: NSObject {
     convenience init(restoreInitialDisplay: Bool) {
         self.init(restoreInitialDisplay: restoreInitialDisplay, stackAboveVisibleViews: false, sender: nil, sourceView: nil)
     }
-    
-    /// For the moment this initializer assume that `stackAboveVisibleViews = false` means `restoreInitialDisplay = true` and the opposite
-    convenience init(stackAboveVisibleViews: Bool) {
-        self.init(restoreInitialDisplay: !stackAboveVisibleViews, stackAboveVisibleViews: stackAboveVisibleViews, sender: nil, sourceView: nil)
-    }
 }

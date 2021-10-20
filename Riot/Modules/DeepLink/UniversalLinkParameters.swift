@@ -43,15 +43,6 @@ class UniversalLinkParameters: NSObject {
         super.init()
     }
     
-    convenience init(fragment: String,
-         universalLinkURL: URL,
-         stackAboveVisibleViewsOnRedirect: Bool) {
-        
-        let presentationParameters = UniversalLinkPresentationParameters( stackAboveVisibleViews: stackAboveVisibleViewsOnRedirect)
-        
-        self.init(fragment: fragment, universalLinkURL: universalLinkURL, presentationParameters: presentationParameters)
-    }
-    
     convenience init?(universalLinkURL: URL,
           presentationParameters: UniversalLinkPresentationParameters) {
         
@@ -60,13 +51,5 @@ class UniversalLinkParameters: NSObject {
         }
         
         self.init(fragment: fragment, universalLinkURL: universalLinkURL, presentationParameters: presentationParameters)
-    }
-    
-    convenience init?(universalLinkURL: URL,
-                      stackAboveVisibleViewsOnRedirect: Bool) {
-        
-        let presentationParameters = UniversalLinkPresentationParameters( stackAboveVisibleViews: stackAboveVisibleViewsOnRedirect)
-        
-        self.init(universalLinkURL: universalLinkURL, presentationParameters: presentationParameters)
     }
 }
