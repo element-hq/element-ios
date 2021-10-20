@@ -153,8 +153,9 @@
     UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId
-                                                                                                        eventId:eventId                                                                                                      mxSession:session
-                                                                         presentationParameters: presentationParameters];
+                                                                                        eventId:eventId
+                                                                                      mxSession:session
+                                                                         presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters];
 }
