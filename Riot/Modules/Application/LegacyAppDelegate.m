@@ -1250,7 +1250,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     NSString *fragment = universalLinkParameters.fragment;
     NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
     UniversalLinkPresentationParameters *universalLinkPresentationParameters = universalLinkParameters.presentationParameters;
-    BOOL stackAboveVisibleViewsOnRedirect = universalLinkPresentationParameters.stackAboveVisibleViews;
     BOOL restoreInitialDisplay = universalLinkPresentationParameters.restoreInitialDisplay;
     
     BOOL continueUserActivity = NO;
@@ -1360,7 +1359,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 else
                 {
                     // Open the room page
-                    RoomPresentationParameters *roomPresentationParameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession restoreInitialDisplay:restoreInitialDisplay stackAboveVisibleViews:stackAboveVisibleViewsOnRedirect];
+                    RoomPresentationParameters *roomPresentationParameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: universalLinkPresentationParameters];
                     
                     [self showRoomWithParameters:roomPresentationParameters];
                 }
@@ -1469,7 +1468,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
-                            RoomPreviewPresentationParameters *roomPreviewPresentationParameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData restoreInitialDisplay:restoreInitialDisplay stackAboveVisibleViews:stackAboveVisibleViewsOnRedirect];
+                            RoomPreviewPresentationParameters *roomPreviewPresentationParameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:universalLinkPresentationParameters];
                             
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
@@ -2829,7 +2828,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *roomId = parameters.roomId;
     MXSession *mxSession = parameters.mxSession;
-    BOOL restoreInitialDisplay = parameters.restoreInitialDisplay;
+    BOOL restoreInitialDisplay = parameters.presentationParameters. restoreInitialDisplay;
     
     if (roomId && mxSession)
     {
@@ -2878,8 +2877,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
+    // Ask to restore initial display
+    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    
     RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId
-                                                                                        eventId:eventId mxSession:mxSession restoreInitialDisplay:YES stackAboveVisibleViews:NO];
+                                                                                        eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
 }
@@ -2890,7 +2892,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self.masterTabBarController selectRoomPreviewWithParameters:parameters completion:completion];
     };
     
-    if (parameters.restoreInitialDisplay)
+    if (parameters.presentationParameters.restoreInitialDisplay)
     {
         [self restoreInitialDisplay:^{
             showRoomPreview();
@@ -2909,7 +2911,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
 {
-    RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData restoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    // Ask to restore initial display
+    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    
+    RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
     
     [self showRoomPreviewWithParameters:parameters];
 }

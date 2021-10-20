@@ -382,7 +382,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                   eventId: roomPresentationParameters.eventId)
         
         self.showRoom(with: roomCoordinatorParameters,
-                      stackOnSplitViewDetail: roomPresentationParameters.stackAboveVisibleViews,
+                      stackOnSplitViewDetail: roomPresentationParameters.presentationParameters.stackAboveVisibleViews,
                       completion: completion)
     }
         
@@ -412,7 +412,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                   previewData: roomPreviewPresentationParameters.previewData)
         
         self.showRoom(with: roomCoordinatorParameters,
-                      stackOnSplitViewDetail: roomPreviewPresentationParameters.stackAboveVisibleViews,
+                      stackOnSplitViewDetail: roomPreviewPresentationParameters.presentationParameters.stackAboveVisibleViews,
                       completion: completion)
     }
     

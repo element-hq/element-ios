@@ -862,9 +862,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.userInteractionEnabled = NO;
 
     // Do not stack views when showing room
+    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
     RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:nil
-                                                                                      mxSession:matrixSession restoreInitialDisplay:NO
-                                                                         stackAboveVisibleViews:NO];
+                                                                                      mxSession:matrixSession presentationParameters: presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
         self.userInteractionEnabled = YES;
@@ -873,8 +874,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
 {
-    RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData
-                                                                                             restoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    // Do not stack views when showing room
+    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO sender:nil sourceView:nil];
+    
+    RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters: presentationParameters];
     
     [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
 }
