@@ -865,7 +865,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:nil
-                                                                                      mxSession:matrixSession presentationParameters: presentationParameters];
+                                                                                      mxSession:matrixSession presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
         self.userInteractionEnabled = YES;
