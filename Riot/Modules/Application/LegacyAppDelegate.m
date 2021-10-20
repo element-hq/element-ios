@@ -2941,8 +2941,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     void(^showSpace)(void) = ^{
         [self.spaceDetailPresenter presentForSpaceWithPublicRoom:parameters.publicRoom
-                                                            from:presentingViewController sourceView:sourceView
-                                                         session:parameters.mxSession animated:YES];
+                                                            from:presentingViewController
+                                                      sourceView:sourceView
+                                                         session:parameters.mxSession 
+                                                        animated:YES];
     };
     
     if (parameters.presentationParameters.restoreInitialDisplay)
