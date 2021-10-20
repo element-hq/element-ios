@@ -44,7 +44,7 @@ class UniversalLinkParameters: NSObject {
     }
     
     convenience init?(universalLinkURL: URL,
-          presentationParameters: UniversalLinkPresentationParameters) {
+                      presentationParameters: UniversalLinkPresentationParameters) {
         
         guard let fixedURL = Tools.fixURL(withSeveralHashKeys: universalLinkURL), let fragment = fixedURL.fragment else {
             return nil
