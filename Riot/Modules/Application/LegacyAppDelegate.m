@@ -2853,7 +2853,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     void (^selectRoom)(void) = ^() {
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-                
+        
         [self.masterTabBarController selectRoomWithParameters:parameters completion:^{
             // Remove delivered notifications for this room
             [self.pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:nil];
