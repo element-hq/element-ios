@@ -351,4 +351,8 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         
         detailNavigationRouter.push(detailPresentable, animated: true, popCompletion: popCompletion)
     }
+    
+    func splitViewMasterPresentableWantsToResetDetail(_ presentable: Presentable) {
+        self.resetDetailNavigationControllerWithPlaceholder(animated: false)
+    }
 }
