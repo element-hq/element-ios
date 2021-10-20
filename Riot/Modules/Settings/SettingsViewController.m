@@ -274,6 +274,11 @@ TableViewSectionsDelegate>
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
 
+/**
+ Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
+ set automatically when calling `prepareIdentityServiceAndPresentTermsWithSession:checkingAccessForContactsOnAccept`
+*/
+@property (nonatomic) BOOL serviceTermsModalShouldCheckAccessForContactsOnAccept;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @end
@@ -3017,37 +3022,7 @@ TableViewSectionsDelegate>
         }
         else
         {
-            MXWeakify(self);
-            
-            // The preparation can take some time so indicate this to the user
-            [self startActivityIndicator];
-            
-            [session prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
-                                                       success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self stopActivityIndicator];
-                
-                // Present the terms of the identity server.
-                [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
-            } failure:^(NSError *error) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self stopActivityIndicator];
-                
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
-                                                                                         message:nil
-                                                                                  preferredStyle:UIAlertControllerStyleAlert];
-                
-                [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:nil]];
-                
-                [self presentViewController:alertController animated:YES completion:nil];
-                
-                [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
-                [self updateSections];
-            }];
+            [self prepareIdentityServiceAndPresentTermsWithSession:session checkingAccessForContactsOnAccept:YES];
         }
     }
     else
@@ -4372,6 +4347,15 @@ TableViewSectionsDelegate>
     self.discoveryThreePidDetailsPresenter = discoveryThreePidDetailsPresenter;
 }
 
+- (void)settingsDiscoveryViewModelDidTapAcceptIdentityServerTerms:(SettingsDiscoveryViewModel *)viewModel
+{
+    MXSession *session = self.mainSession;
+    if (!session.identityService.areAllTermsAgreed)
+    {
+        [self prepareIdentityServiceAndPresentTermsWithSession:session checkingAccessForContactsOnAccept:NO];
+    }
+}
+
 #pragma mark - Local Contacts Sync
     
  - (void)checkAccessForContacts
@@ -4405,6 +4389,44 @@ TableViewSectionsDelegate>
     identityServerSettingsCoordinatorBridgePresenter.delegate = self;
 }
 
+- (void)prepareIdentityServiceAndPresentTermsWithSession:(MXSession *)session
+                       checkingAccessForContactsOnAccept:(BOOL)checkAccessForContacts
+{
+    self.serviceTermsModalShouldCheckAccessForContactsOnAccept = checkAccessForContacts;
+    
+    MXWeakify(self);
+    
+    // The preparation can take some time so indicate this to the user
+    [self startActivityIndicator];
+    
+    [session prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
+                                               success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        // Present the terms of the identity server.
+        [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
+        [self updateSections];
+    }];
+}
+
 - (void)presentIdentityServerTermsWithSession:(MXSession*)mxSession baseURL:(NSString*)baseURL andAccessToken:(NSString*)accessToken
 {
     if (!mxSession || !baseURL || !accessToken || self.serviceTermsModalCoordinatorBridgePresenter.isPresenting)
@@ -4412,15 +4434,13 @@ TableViewSectionsDelegate>
         return;
     }
     
-    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
-                                                                                                                                                            baseUrl:baseURL
-                                                                                                                                                        serviceType:MXServiceTypeIdentityService
-                                                                                                                                                        accessToken:accessToken];
+    self.serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
+                                                                                                                    baseUrl:baseURL
+                                                                                                                serviceType:MXServiceTypeIdentityService
+                                                                                                                accessToken:accessToken];
     
-    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
-    
-    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
-    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+    self.serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+    [self.serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
 #pragma mark SettingsIdentityServerCoordinatorBridgePresenterDelegate
@@ -4436,7 +4456,11 @@ TableViewSectionsDelegate>
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self checkAccessForContacts];
+        [self.settingsDiscoveryTableViewSection reload];
+        if (self.serviceTermsModalShouldCheckAccessForContactsOnAccept)
+        {
+            [self checkAccessForContacts];
+        }
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
