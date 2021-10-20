@@ -2096,7 +2096,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     MXWeakify(self);
     [previewData peekInRoom:^(BOOL succeeded) {
         MXStrongifyAndReturnIfNil(self);
-        [self stopActivityIndicator];                
+        [self stopActivityIndicator];
         [self showRoomPreviewWithData:previewData];
     }];
 }
