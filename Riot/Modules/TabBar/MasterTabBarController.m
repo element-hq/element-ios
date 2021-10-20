@@ -616,23 +616,37 @@
 
 - (void)selectContact:(MXKContact*)contact
 {
+    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    [self selectContact:contact withPresentationParameters:presentationParameters];
+}
+
+- (void)selectContact:(MXKContact*)contact withPresentationParameters:(UniversalLinkPresentationParameters*)presentationParameters
+{
     [self releaseSelectedItem];
     
     _selectedContact = contact;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact withPresentationParameters:presentationParameters];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
 {
+    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    [self selectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
+}
+
+- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(UniversalLinkPresentationParameters*)presentationParameters
+{
     [self releaseSelectedItem];
     
     _selectedGroup = group;
     _selectedGroupSession = matrixSession;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }

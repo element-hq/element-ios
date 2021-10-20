@@ -3110,7 +3110,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)showContact:(MXKContact*)contact presentationParameters:(UniversalLinkPresentationParameters*)presentationParameters
 {
     void(^showContact)(void) = ^{
-        [self.masterTabBarController selectContact:contact];
+        [self.masterTabBarController selectContact:contact withPresentationParameters:presentationParameters];
     };
     
     if (presentationParameters.restoreInitialDisplay)
@@ -3131,7 +3131,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     void(^showGroup)(void) = ^{
         // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [self.masterTabBarController selectGroup:group inMatrixSession:mxSession];
+        [self.masterTabBarController selectGroup:group inMatrixSession:mxSession presentationParameters:presentationParameters];
     };
 
     if (presentationParameters.restoreInitialDisplay)
