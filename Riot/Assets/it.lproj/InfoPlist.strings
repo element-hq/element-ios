@@ -2,6 +2,6 @@
 "NSCameraUsageDescription" = "La fotocamera viene utilizzata per scattare fotografie, registrare video ed eseguire videochiamate.";
 "NSPhotoLibraryUsageDescription" = "La libreria fotografica viene utilizzata per inviare foto e video.";
 "NSMicrophoneUsageDescription" = "Element ha bisogno di accedere al microfono per effettuare e ricevere chiamate, registrare video e messaggi vocali.";
-"NSContactsUsageDescription" = "Per scoprire i contatti che già usano Matrix, Element può inviare gli indirizzi email e i numeri di telefono della tua rubrica al server identità che hai scelto. Se supportato, viene fatto un hash dei dati personali prima dell'invio - controlla la politica sulla privacy del tuo server di identità per maggiori informazioni.";
+"NSContactsUsageDescription" = "Element mostrerà i tuoi contatti così da poterli invitare in chat.";
 "NSCalendarsUsageDescription" = "Vedi le tue riunioni programmate nell'app.";
 "NSFaceIDUsageDescription" = "Face ID viene usato per accedere all'app.";
