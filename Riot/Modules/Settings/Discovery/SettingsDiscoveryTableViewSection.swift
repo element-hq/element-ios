@@ -216,12 +216,10 @@ private enum DiscoverySectionRows {
     }
     
     private func threePidsManagementInfoAttributedString() -> NSAttributedString {
-        let attributedInfoString = NSMutableAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart1,
-                                                             attributes: [:])
+        let attributedInfoString = NSMutableAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart1)
         attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart2,
                                                        attributes: [.foregroundColor: self.theme.tintColor]))
-        attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart3,
-                                                       attributes: [:]))
+        attributedInfoString.append(NSAttributedString(string: VectorL10n.settingsDiscoveryThreePidsManagementInformationPart3))
         return attributedInfoString
     }
 }

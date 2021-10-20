@@ -34,19 +34,15 @@ class SectionFooterView: UITableViewHeaderFooterView, NibLoadable, Themable {
         UINib(nibName: String(describing: self), bundle: Bundle(for: self))
     }
     
+    /// The amount to inset the footer label on its leading side, relative to the safe area insets.
     var leadingInset: CGFloat {
         get { footerLabelLeadingConstraint.constant }
         set { footerLabelLeadingConstraint.constant = newValue }
     }
     
-    // Expose `footerLabel` as the default label property.
-    override var textLabel: UILabel? {
-        footerLabel
-    }
-    
     /// The text label added in the xib file. Using our own label was necessary due to the behaviour
-    /// on iOS 12-14 where any customisation to the text label would be wiped out after being set
-    /// in `tableView:viewForFooterInSection`. This behaviour is fixed in iOS 15.
+    /// on iOS 12-14 where any customisation to the existing text label is wiped out after being
+    /// set in `tableView:viewForFooterInSection`. This behaviour is fixed in iOS 15.
     @IBOutlet private weak var footerLabel: UILabel!
     /// The label's leading constraint, relative to the safe area insets.
     @IBOutlet private weak var footerLabelLeadingConstraint: NSLayoutConstraint!
@@ -65,5 +61,16 @@ class SectionFooterView: UITableViewHeaderFooterView, NibLoadable, Themable {
         footerLabel.textColor = theme.colors.secondaryContent
         footerLabel.font = theme.fonts.subheadline
         footerLabel.numberOfLines = 0
+    }
+    
+    /// Update the footer with new text.
+    func update(withText text: String) {
+        footerLabel.text = text
+    }
+    
+    /// Update the footer with attributed text. Be sure to call this after calling `update(theme:)`
+    /// otherwise any color or font attributes will be wiped out by the theme.
+    func update(withAttributedText attributedText: NSAttributedString) {
+        footerLabel.attributedText = attributedText
     }
 }

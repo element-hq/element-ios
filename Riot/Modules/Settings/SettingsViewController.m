@@ -279,6 +279,7 @@ TableViewSectionsDelegate>
  set automatically when calling `prepareIdentityServiceAndPresentTermsWithSession:checkingAccessForContactsOnAccept`
 */
 @property (nonatomic) BOOL serviceTermsModalShouldCheckAccessForContactsOnAccept;
+@property (nonatomic) BOOL isPreparingIdentityService;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @end
@@ -541,8 +542,9 @@ TableViewSectionsDelegate>
 
     if (BuildSettings.settingsScreenShowAdvancedSettings)
     {
-        sectionAbout.footerTitle = [NSString stringWithFormat:@"Element %@ / Olm %@\n%@\n%@",
-                                    AppInfo.current.appVersion.description,
+        sectionAbout.footerTitle = [NSString stringWithFormat:@"Element %@ (%@) / Olm %@\n%@\n%@",
+                                    AppInfo.current.appVersion.bundleShortVersion,
+                                    AppInfo.current.appVersion.bundleVersion,
                                     [OLMKit versionString],
                                     [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId],
                                     [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer]];
@@ -2443,7 +2445,7 @@ TableViewSectionsDelegate>
     SectionFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionFooterView.defaultReuseIdentifier];
     [view updateWithTheme:ThemeService.shared.theme];
     view.leadingInset = tableView.vc_separatorInset.left;
-    view.textLabel.attributedText = attributedFooterTitle;
+    [view updateWithAttributedText:attributedFooterTitle];
     
     if (section == SECTION_TAG_USER_SETTINGS)
     {
@@ -4393,6 +4395,12 @@ TableViewSectionsDelegate>
 - (void)prepareIdentityServiceAndPresentTermsWithSession:(MXSession *)session
                        checkingAccessForContactsOnAccept:(BOOL)checkAccessForContacts
 {
+    if (self.isPreparingIdentityService)
+    {
+        return;
+    }
+    
+    self.isPreparingIdentityService = YES;
     self.serviceTermsModalShouldCheckAccessForContactsOnAccept = checkAccessForContacts;
     
     MXWeakify(self);
@@ -4405,6 +4413,7 @@ TableViewSectionsDelegate>
         MXStrongifyAndReturnIfNil(self);
         
         [self stopActivityIndicator];
+        self.isPreparingIdentityService = NO;
         
         // Present the terms of the identity server.
         [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
@@ -4412,6 +4421,7 @@ TableViewSectionsDelegate>
         MXStrongifyAndReturnIfNil(self);
         
         [self stopActivityIndicator];
+        self.isPreparingIdentityService = NO;
         
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
                                                                                  message:nil
@@ -4468,8 +4478,9 @@ TableViewSectionsDelegate>
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession *)session
 {
-    // Disable the contacts toggle as the terms weren't accepted.
+    // Terms weren't accepted: disable contacts toggle and refresh discovery
     [self updateSections];
+    [self.settingsDiscoveryTableViewSection reload];
     
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
@@ -4477,7 +4488,10 @@ TableViewSectionsDelegate>
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [self updateSections];  // Disables the contacts toggle as the terms weren't accepted.
+    // Terms weren't accepted: disable contacts toggle and refresh discovery
+    [self updateSections];
+    [self.settingsDiscoveryTableViewSection reload];
+    
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 

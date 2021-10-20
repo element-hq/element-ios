@@ -1314,7 +1314,7 @@ TableViewSectionsDelegate>
     SectionFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionFooterView.defaultReuseIdentifier];
     [view updateWithTheme:ThemeService.shared.theme];
     view.leadingInset = tableView.vc_separatorInset.left;
-    view.textLabel.text = footerTitle;
+    [view updateWithText:footerTitle];
     
     return view;
 }
