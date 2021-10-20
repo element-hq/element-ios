@@ -2276,7 +2276,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // Room is known show it directly
         [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
             [self showRoomWithRoomId:room.roomId
-                       inMatrixSession:self.mainSession];
+                     inMatrixSession:self.mainSession];
         }];
         coordinatorBridgePresenter = nil;
     }
