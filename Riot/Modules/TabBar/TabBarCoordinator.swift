@@ -457,7 +457,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToStack: presentable, popCompletion: popCompletion)
     }
     
-    private func showSplitViewDetails(with presentable: Presentable, stackOnSplitViewDetail: Bool, popCompletion: (() -> Void)? = nil) {
+    private func showSplitViewDetails(with presentable: Presentable, stackedOnSplitViewDetail: Bool, popCompletion: (() -> Void)? = nil) {
         
         if stackOnSplitViewDetail {
             self.stackSplitViewDetails(with: presentable, popCompletion: popCompletion)
