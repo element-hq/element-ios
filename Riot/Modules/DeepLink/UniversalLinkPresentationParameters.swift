@@ -35,7 +35,7 @@ class UniversalLinkPresentationParameters: NSObject {
     /// The view containing the anchor rectangle for the popover. Useful for iPad if a universlink trigger a pop over.
     let sourceView: UIView?
         
-    /// The view controller from which the universal link is triggered
+    /// The view controller from which the universal link is triggered. `nil` if triggered from some other kind of object.
     var presentingViewController: UIViewController? {
         return self.sender as? UIViewController
     }
