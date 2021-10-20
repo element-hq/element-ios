@@ -347,7 +347,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         coordinator.start()
         self.add(childCoordinator: coordinator)
         
-        self.showSplitViewDetails(with: coordinator, stackOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
+        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
@@ -359,7 +359,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         coordinator.start()
         self.add(childCoordinator: coordinator)
         
-        self.showSplitViewDetails(with: coordinator, stackOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
+        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: presentationParameters.stackAboveVisibleViews) { [weak self] in
             self?.remove(childCoordinator: coordinator)
         }
     }
@@ -439,7 +439,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         coordinator.start(withCompletion: completion)
         self.add(childCoordinator: coordinator)
         
-        self.showSplitViewDetails(with: coordinator, stackOnSplitViewDetail: stackOnSplitViewDetail) { [weak self] in
+        self.showSplitViewDetails(with: coordinator, stackedOnSplitViewDetail: stackOnSplitViewDetail) { [weak self] in
             // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
             self?.remove(childCoordinator: coordinator)
         }
@@ -459,7 +459,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func showSplitViewDetails(with presentable: Presentable, stackedOnSplitViewDetail: Bool, popCompletion: (() -> Void)? = nil) {
         
-        if stackOnSplitViewDetail {
+        if stackedOnSplitViewDetail {
             self.stackSplitViewDetails(with: presentable, popCompletion: popCompletion)
         } else {
             self.replaceSplitViewDetails(with: presentable, popCompletion: popCompletion)
