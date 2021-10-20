@@ -23,7 +23,7 @@ class UniversalLinkParameters: NSObject {
     // MARK: - Properties
         
     /// The unprocessed the universal link URL
-    let universalLinkURL: URL?
+    let universalLinkURL: URL
     
     /// The fragment part of the universal link
     let fragment: String
