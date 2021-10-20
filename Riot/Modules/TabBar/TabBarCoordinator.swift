@@ -571,7 +571,7 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     }
         
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
-        // For the moment when a room is leaved reset the split detail with placeholder
+        // For the moment when a room is left, reset the split detail with placeholder
         self.resetSplitViewDetails()
     }
     
