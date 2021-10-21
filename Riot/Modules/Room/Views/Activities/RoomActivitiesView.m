@@ -73,6 +73,17 @@
             [self setHeight:height notify:notify];
         }
     }
+    else if (!self.unsentMessagesContentView.isHidden)
+    {
+        CGSize fittingSize = CGSizeMake(self.bounds.size.width, UILayoutFittingCompressedSize.height);
+        CGFloat height = [self.unsentMessagesContentView systemLayoutSizeFittingSize:fittingSize].height + 4;
+
+        height = MAX(xibMainHeightConstraint, height);
+        if (height != self.mainHeightConstraint.constant)
+        {
+            [self setHeight:height notify:notify];
+        }
+    }
     else
     {
         // In other use case, come back to the default xib value
@@ -128,8 +139,15 @@
     [self.deleteButton setImage:image forState:UIControlStateNormal];
     self.deleteButton.tintColor = ThemeService.shared.theme.warningColor;
     
-    self.unsentMessageLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-    self.unsentMessagesContentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.unsentMessagesTitleLabel.font = ThemeService.shared.theme.fonts.footnoteSB;
+    self.unsentMessagesTitleLabel.textColor = ThemeService.shared.theme.colors.primaryContent;
+    self.unsentMessagesInfoLabel.font = ThemeService.shared.theme.fonts.footnote;
+    self.unsentMessagesInfoLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+    self.unsentMessagesContentView.backgroundColor = ThemeService.shared.theme.colors.background;
+    
+    self.unsentErrorLabel.font = ThemeService.shared.theme.fonts.subheadline;
+    self.unsentErrorLabel.textColor = ThemeService.shared.theme.colors.primaryContent;
+    self.unsentErrorContainer.backgroundColor = ThemeService.shared.theme.colors.background;
 }
 
 #pragma mark -
@@ -159,12 +177,57 @@
     if (onResendLinkPressed && onCancelLinkPressed)
     {
         self.unsentMessagesContentView.hidden = NO;
-        self.unsentMessageLabel.text = notification;
+        self.unsentMessagesTitleLabel.text = notification;
+        self.unsentMessagesInfoLabel.text = VectorL10n.roomUnsentMessagesTapMessage;
         
         objc_setAssociatedObject(self.resendButton, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         objc_setAssociatedObject(self.deleteButton, "onCancelLinkPressed", [onCancelLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
 
+    [self checkHeight:YES];
+}
+
+- (void)displayUnsentMessageError:(NSError *)error
+{
+    if (self.unsentMessagesContentView.isHidden)
+    {
+        return;
+    }
+    
+    if ([MXError isMXError:error])
+    {
+        MXError *mxError = [[MXError alloc] initWithNSError:error];
+        self.unsentErrorLabel.text = mxError.error;
+    }
+    else
+    {
+        NSHTTPURLResponse *response = [MXHTTPOperation urlResponseFromError:error];
+        if (response)
+        {
+            // This provides a more friendly message than using the localizedDescription directly.
+            NSString *localizedDescription = [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode];
+            self.unsentErrorLabel.text = [VectorL10n roomUnsentMessageErrorNetwork:localizedDescription];
+        }
+        else if ([error.domain isEqualToString:AVFoundationErrorDomain])
+        {
+            self.unsentErrorLabel.text = [VectorL10n roomUnsentMessageErrorEncoding:error.localizedDescription];
+        }
+        else
+        {
+            self.unsentErrorLabel.text = error.localizedDescription;
+        }
+    }
+    
+    self.unsentErrorContainer.hidden = NO;
+    
+    [self checkHeight:YES];
+}
+
+- (void)hideUnsentMessageError
+{
+    self.unsentErrorContainer.hidden = YES;
+    self.unsentErrorLabel.text = nil;
+    
     [self checkHeight:YES];
 }
 
@@ -182,83 +245,6 @@
         self.iconImageView.hidden = NO;
         self.messageLabel.hidden = NO;
     }
-
-    [self checkHeight:YES];
-}
-
-- (void)displayTypingNotification:(NSString*)labelText
-{
-    [self reset];
-    
-    if (labelText.length)
-    {
-        self.iconImageView.image = [UIImage imageNamed:@"typing"];
-        self.iconImageView.tintColor = ThemeService.shared.theme.tintColor;
-        self.messageLabel.text = labelText;
-        
-        self.iconImageView.hidden = NO;
-        self.messageLabel.hidden = NO;
-    }
-
-    [self checkHeight:YES];
-}
-
-- (void)displayOngoingConferenceCall:(void (^)(BOOL))onOngoingConferenceCallPressed onClosePressed:(void (^)(void))onOngoingConferenceCallClosePressed
-{
-    [self reset];
-
-    objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed", [onOngoingConferenceCallPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-    // Build the string to display in the banner
-    NSString *onGoingConferenceCall;
-
-    if (!onOngoingConferenceCallClosePressed)
-    {
-        onGoingConferenceCall = [VectorL10n roomOngoingConferenceCall:[VectorL10n voice] :[VectorL10n video]];
-    }
-    else
-    {
-        // Display the banner with a "Close it" string
-        objc_setAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed", [onOngoingConferenceCallClosePressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        
-        onGoingConferenceCall = [VectorL10n roomOngoingConferenceCallWithClose:[VectorL10n voice] :[VectorL10n video] :[VectorL10n roomOngoingConferenceCallClose]];
-    }
-
-    NSMutableAttributedString *onGoingConferenceCallAttibutedString = [[NSMutableAttributedString alloc] initWithString:onGoingConferenceCall];
-
-    // Add a link on the "voice" string
-    NSRange voiceRange = [onGoingConferenceCall rangeOfString:[VectorL10n voice]];
-    [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:voiceRange];
-    [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVoicePressed" range:voiceRange];
-
-    // Add a link on the "video" string
-    NSRange videoRange = [onGoingConferenceCall rangeOfString:[VectorL10n video]];
-    [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:videoRange];
-    [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallWithVideoPressed" range:videoRange];
-
-    // Add a link on the "Close" string
-    if (onOngoingConferenceCallClosePressed)
-    {
-        NSRange closeRange = [onGoingConferenceCall rangeOfString:[VectorL10n roomOngoingConferenceCallClose]];
-        [onGoingConferenceCallAttibutedString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:closeRange];
-        [onGoingConferenceCallAttibutedString addAttribute:NSLinkAttributeName value:@"onOngoingConferenceCallClosePressed" range:closeRange];
-    }
-
-    // Display the string in white on pink red
-    NSRange wholeString = NSMakeRange(0, onGoingConferenceCallAttibutedString.length);
-    [onGoingConferenceCallAttibutedString addAttribute:NSForegroundColorAttributeName value:ThemeService.shared.theme.backgroundColor range:wholeString];
-    [onGoingConferenceCallAttibutedString addAttribute:NSBackgroundColorAttributeName value:ThemeService.shared.theme.tintColor range:wholeString];
-    [onGoingConferenceCallAttibutedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:wholeString];
-
-    self.messageTextView.attributedText = onGoingConferenceCallAttibutedString;
-    self.messageTextView.tintColor = ThemeService.shared.theme.backgroundColor;
-    self.messageTextView.hidden = NO;
-
-    self.backgroundColor = ThemeService.shared.theme.tintColor;
-    self.messageTextView.backgroundColor = ThemeService.shared.theme.tintColor;
-
-    // Hide the separator to display correctly the red pink conf call banner
-    self.separatorView.hidden = YES;
 
     [self checkHeight:YES];
 }
@@ -466,8 +452,6 @@
     self.iconImageView.userInteractionEnabled = NO;
     
     objc_removeAssociatedObjects(self.iconImageView);
-
-    [self checkHeight:YES];
 }
 
 - (void)resetMessage

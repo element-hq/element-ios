@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,7 +9,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RoomActivitiesView">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="53"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="54"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qhJ-5H-64e" userLabel="Container">
@@ -43,11 +41,10 @@
                             <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6ND-Cq-ABj">
+                        <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" text="Text View" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6ND-Cq-ABj">
                             <rect key="frame" x="56" y="10" width="514" height="33"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageTextView"/>
-                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" red="1" green="0.119521145" blue="0.2069467156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -61,13 +58,25 @@
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="error_icon" translatesAutoresizingMaskIntoConstraints="NO" id="f50-cK-AVb">
                                     <rect key="frame" x="13" y="18" width="16" height="16"/>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Messages failed to send" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZD8-X6-qAB" userLabel="Message Label">
-                                    <rect key="frame" x="41" y="17" width="166" height="18"/>
-                                    <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageLabel"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                    <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="r9x-FY-81W">
+                                    <rect key="frame" x="41" y="10" width="159" height="32"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Couldn't send messages" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZD8-X6-qAB" userLabel="Title Label">
+                                            <rect key="frame" x="0.0" y="0.0" width="159" height="16"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageLabel"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                                            <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap each message for info" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bAU-O8-I8w" userLabel="Information Label">
+                                            <rect key="frame" x="0.0" y="16" width="159" height="16"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageLabel"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwY-F8-8nJ">
                                     <rect key="frame" x="477" y="14" width="24" height="24"/>
                                     <state key="normal" image="room_context_menu_delete"/>
@@ -92,17 +101,43 @@
                                         <action selector="onResendMessagesPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="Aj1-oT-c0C"/>
                                     </connections>
                                 </button>
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zjD-Fx-vf4">
+                                    <rect key="frame" x="41" y="0.0" width="559" height="52"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Send error description" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTr-eY-sYo" userLabel="Unsent Error Label">
+                                            <rect key="frame" x="0.0" y="17" width="153.5" height="18"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="RoomActivitiesViewMessageLabel"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <color key="textColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    <constraints>
+                                        <constraint firstItem="FTr-eY-sYo" firstAttribute="centerY" secondItem="zjD-Fx-vf4" secondAttribute="centerY" id="BkB-0T-NJA"/>
+                                        <constraint firstItem="FTr-eY-sYo" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zjD-Fx-vf4" secondAttribute="top" constant="4" id="Esv-tO-V11"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="FTr-eY-sYo" secondAttribute="trailing" constant="12" id="PEQ-h7-iwq"/>
+                                        <constraint firstItem="FTr-eY-sYo" firstAttribute="leading" secondItem="zjD-Fx-vf4" secondAttribute="leading" id="fzY-GC-a5Y"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FTr-eY-sYo" secondAttribute="bottom" constant="4" id="guB-ba-1iI"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
+                                <constraint firstItem="UwY-F8-8nJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r9x-FY-81W" secondAttribute="trailing" constant="12" id="35n-1A-eft"/>
+                                <constraint firstItem="r9x-FY-81W" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="78t-B3-vOc"/>
+                                <constraint firstAttribute="trailing" secondItem="zjD-Fx-vf4" secondAttribute="trailing" id="7nf-3l-B6X"/>
                                 <constraint firstItem="d0g-ev-lDj" firstAttribute="leading" secondItem="UwY-F8-8nJ" secondAttribute="trailing" constant="12" id="IZZ-du-a29"/>
+                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="r9x-FY-81W" secondAttribute="bottom" constant="4" id="Lv7-ND-WLh"/>
+                                <constraint firstItem="r9x-FY-81W" firstAttribute="top" relation="greaterThanOrEqual" secondItem="l7B-JK-ZKf" secondAttribute="top" constant="4" id="Oa4-m2-vp7"/>
                                 <constraint firstItem="d0g-ev-lDj" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="Uos-j3-ARf"/>
-                                <constraint firstItem="ZD8-X6-qAB" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="YCs-5T-5kQ"/>
                                 <constraint firstItem="UwY-F8-8nJ" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="YRY-fg-2qs"/>
+                                <constraint firstAttribute="bottom" secondItem="zjD-Fx-vf4" secondAttribute="bottom" id="ZfQ-aj-CUE"/>
                                 <constraint firstItem="f50-cK-AVb" firstAttribute="leading" secondItem="l7B-JK-ZKf" secondAttribute="leading" constant="13" id="da5-bp-l7B"/>
                                 <constraint firstAttribute="trailing" secondItem="d0g-ev-lDj" secondAttribute="trailing" constant="12" id="foj-YD-tjx"/>
-                                <constraint firstItem="UwY-F8-8nJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZD8-X6-qAB" secondAttribute="trailing" constant="12" id="mPP-0E-MHa"/>
-                                <constraint firstItem="ZD8-X6-qAB" firstAttribute="leading" secondItem="f50-cK-AVb" secondAttribute="trailing" constant="12" id="tWy-Tu-kM5"/>
+                                <constraint firstItem="zjD-Fx-vf4" firstAttribute="top" secondItem="l7B-JK-ZKf" secondAttribute="top" id="rq6-eX-lbk"/>
+                                <constraint firstItem="zjD-Fx-vf4" firstAttribute="leading" secondItem="f50-cK-AVb" secondAttribute="trailing" constant="12" id="stz-cu-qU1"/>
+                                <constraint firstItem="r9x-FY-81W" firstAttribute="leading" secondItem="f50-cK-AVb" secondAttribute="trailing" constant="12" id="uxg-mZ-W7I"/>
                                 <constraint firstItem="f50-cK-AVb" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="zea-t6-SnQ"/>
                             </constraints>
                         </view>
@@ -148,10 +183,13 @@
                 <outlet property="messageTextView" destination="6ND-Cq-ABj" id="xWk-ga-9xS"/>
                 <outlet property="resendButton" destination="d0g-ev-lDj" id="iQ1-LZ-cZh"/>
                 <outlet property="separatorView" destination="1Mq-77-vvo" id="8fc-AO-8hF"/>
-                <outlet property="unsentMessageLabel" destination="ZD8-X6-qAB" id="0FN-Nu-lfo"/>
+                <outlet property="unsentErrorContainer" destination="zjD-Fx-vf4" id="eMJ-nk-xin"/>
+                <outlet property="unsentErrorLabel" destination="FTr-eY-sYo" id="lE7-jG-oQK"/>
                 <outlet property="unsentMessagesContentView" destination="l7B-JK-ZKf" id="6aW-n4-Bc5"/>
+                <outlet property="unsentMessagesInfoLabel" destination="bAU-O8-I8w" id="wYK-2F-Wmv"/>
+                <outlet property="unsentMessagesTitleLabel" destination="ZD8-X6-qAB" id="0FN-Nu-lfo"/>
             </connections>
-            <point key="canvasLocation" x="-390.39999999999998" y="80.50974512743629"/>
+            <point key="canvasLocation" x="-390.39999999999998" y="80.059970014992516"/>
         </view>
     </objects>
     <resources>

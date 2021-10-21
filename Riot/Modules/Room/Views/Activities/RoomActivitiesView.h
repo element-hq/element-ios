@@ -33,7 +33,11 @@
 @property (weak, nonatomic) IBOutlet UIView *unsentMessagesContentView;
 @property (weak, nonatomic) IBOutlet UIButton *resendButton;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
-@property (weak, nonatomic) IBOutlet UILabel *unsentMessageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *unsentMessagesTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *unsentMessagesInfoLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *unsentErrorContainer;
+@property (weak, nonatomic) IBOutlet UILabel *unsentErrorLabel;
 
 /**
  Notify that some messages are not sent.
@@ -47,31 +51,25 @@
 - (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture;
 
 /**
+ Show the a reason that a message failed to send using the error passed in.
+ Overlaid on top of the unsent messages notification, must be removed manually
+ by calling `hideUnsentMessageError`.
+ @param error The error to display to the user.
+ */
+- (void)displayUnsentMessageError:(NSError *)error;
+
+/**
+ Hide the overlay showing the reason that a message failed to send.
+*/
+- (void)hideUnsentMessageError;
+
+/**
  Display network error.
  Replace the current notification if any.
  
  @param labelText the notification message
  */
 - (void)displayNetworkErrorNotification:(NSString*)labelText;
-
-/**
- Display a typing notification.
- Replace the current notification if any.
- 
- @param labelText the current typing message.
- */
-- (void)displayTypingNotification:(NSString*)labelText;
-
-/**
- Display an ongoing conference call.
- Replace the current notification if any.
-
- @param ongoingConferenceCallPressed the block called when the user clicks on the banner.
-                                     video is YES if the user chose to join the conf in video mode.
- @param ongoingConferenceCallClosePressed the block called when the user clicks on the banner close button.
-                                          nil means do not display a close button.
- */
-- (void)displayOngoingConferenceCall:(void (^)(BOOL video))ongoingConferenceCallPressed onClosePressed:(void (^)(void))ongoingConferenceCallClosePressed;
 
 /**
  Notify that the a room is obsolete and a replacement room is available.

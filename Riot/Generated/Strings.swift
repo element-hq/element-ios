@@ -3255,18 +3255,6 @@ public class VectorL10n: NSObject {
   public static func roomOneUserIsTyping(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_one_user_is_typing", p1)
   }
-  /// Ongoing conference call. Join as %@ or %@.
-  public static func roomOngoingConferenceCall(_ p1: String, _ p2: String) -> String {
-    return VectorL10n.tr("Vector", "room_ongoing_conference_call", p1, p2)
-  }
-  /// Close
-  public static var roomOngoingConferenceCallClose: String { 
-    return VectorL10n.tr("Vector", "room_ongoing_conference_call_close") 
-  }
-  /// Ongoing conference call. Join as %@ or %@. %@ it.
-  public static func roomOngoingConferenceCallWithClose(_ p1: String, _ p2: String, _ p3: String) -> String {
-    return VectorL10n.tr("Vector", "room_ongoing_conference_call_with_close", p1, p2, p3)
-  }
   /// Dial pad
   public static var roomOpenDialpad: String { 
     return VectorL10n.tr("Vector", "room_open_dialpad") 
@@ -3663,6 +3651,14 @@ public class VectorL10n: NSObject {
   public static func roomTwoUsersAreTyping(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_two_users_are_typing", p1, p2)
   }
+  /// Encoder: %@
+  public static func roomUnsentMessageErrorEncoding(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_unsent_message_error_encoding", p1)
+  }
+  /// Upload: %@
+  public static func roomUnsentMessageErrorNetwork(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_unsent_message_error_network", p1)
+  }
   /// Are you sure you want to delete all unsent messages in this room?
   public static var roomUnsentMessagesCancelMessage: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_cancel_message") 
@@ -3671,9 +3667,13 @@ public class VectorL10n: NSObject {
   public static var roomUnsentMessagesCancelTitle: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_cancel_title") 
   }
-  /// Messages failed to send.
+  /// Couldn't send messages
   public static var roomUnsentMessagesNotification: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_notification") 
+  }
+  /// Tap each message for info.
+  public static var roomUnsentMessagesTapMessage: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_tap_message") 
   }
   /// Message failed to send due to unknown sessions being present.
   public static var roomUnsentMessagesUnknownDevicesNotification: String { 

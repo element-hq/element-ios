@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2eW-Ga-w3t">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2eW-Ga-w3t">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Szx-Dr-Ndt">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="793"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="802"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vdy-rp-3g9">
                                         <rect key="frame" x="10" y="150" width="394" height="50"/>
@@ -38,13 +36,14 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0GC-JU-rI3" customClass="RoomContextualMenuToolbarView" customModule="Riot" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="793" width="414" height="69"/>
+                                <rect key="frame" x="0.0" y="802" width="414" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="69" id="ynL-KP-iB4"/>
+                                    <constraint firstAttribute="height" constant="60" id="ynL-KP-iB4"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="225-y0-Elg"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Szx-Dr-Ndt" secondAttribute="trailing" id="2eB-6O-P3h"/>
@@ -57,7 +56,6 @@
                             <constraint firstAttribute="trailing" secondItem="0GC-JU-rI3" secondAttribute="trailing" id="lzM-FD-x89"/>
                             <constraint firstItem="225-y0-Elg" firstAttribute="bottom" secondItem="0GC-JU-rI3" secondAttribute="bottom" id="s4i-80-0iu"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="225-y0-Elg"/>
                     </view>
                     <connections>
                         <outlet property="backgroundOverlayView" destination="Szx-Dr-Ndt" id="Whj-e5-bas"/>
