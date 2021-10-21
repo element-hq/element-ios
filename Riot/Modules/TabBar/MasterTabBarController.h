@@ -43,7 +43,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 
 @protocol MasterTabBarControllerDelegate;
 @class RoomNavigationParameters;
-@class RoomPreviewScreenParameters;
+@class RoomPreviewNavigationParameters;
 @class ScreenPresentationParameters;
 
 @interface MasterTabBarController : UITabBarController
@@ -90,7 +90,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 /// This room can come from an email invitation link or a simple link to a room.
 /// @param parameters the presentation parameters that contains room preview information plus display information.
 /// @param completion the block to execute at the end of the operation.
-- (void)selectRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters completion:(void (^)(void))completion;
+- (void)selectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion;
 
 /**
  Open a ContactDetailsViewController to display the information of the provided contact.
@@ -192,7 +192,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)masterTabBarControllerDidCompleteAuthentication:(MasterTabBarController *)masterTabBarController;
 - (void)masterTabBarController:(MasterTabBarController*)masterTabBarController needsSideMenuIconWithNotification:(BOOL)displayNotification;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithParameters:(RoomNavigationParameters*)roomNavigationParameters completion:(void (^)(void))completion;
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewScreenParameters*)roomScreenPresentationParameters completion:(void (^)(void))completion;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)roomPreviewNavigationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
 
