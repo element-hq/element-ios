@@ -31,6 +31,9 @@
 @protocol LegacyAppDelegateDelegate;
 @class CallBar;
 @class CallPresenter;
+@class RoomNavigationParameters;
+@class RoomPreviewNavigationParameters;
+@class UniversalLinkParameters;
 
 #pragma mark - Notifications
 /**
@@ -204,14 +207,23 @@ UINavigationControllerDelegate
 #pragma mark - Matrix Room handling
 
 // Show a room and jump to the given event if event id is not nil otherwise go to last messages.
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay completion:(void (^)(void))completion;
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion;
 
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay;
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters;
 
+// Restore display and show the room
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;
 
 // Creates a new direct chat with the provided user id
 - (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
+
+// Show room preview
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion;
+
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters;
+
+// Restore display and show the room preview
+- (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 // Reopen an existing direct room with this userId or creates a new one (if it doesn't exist)
 - (void)startDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
@@ -240,6 +252,14 @@ UINavigationControllerDelegate
  @return YES in case of processing success.
  */
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL;
+
+/**
+ Process universal link.
+ 
+ @param parameters the universal link parameters.
+ @return YES in case of processing success.
+ */
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 
 /**
  Extract params from the URL fragment part (after '#') of a vector.im Universal link:

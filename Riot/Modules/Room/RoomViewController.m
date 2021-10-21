@@ -2202,28 +2202,33 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return [[AppDelegate theDelegate] showAlertWithTitle:title message:message];
 }
 
+- (ScreenPresentationParameters*)buildUniversalLinkPresentationParameters
+{
+    return [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
+}
+
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
 {
-    if (self.delegate)
-    {
-        return [self.delegate roomViewController:self handleUniversalLinkURL:universalLinkURL];
-    }
-    else
-    {
-        [self handleSpaceUniversalLinkWith:universalLinkURL];
-        return YES;
-    }
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    return [self handleUniversalLinkWithParameters:parameters];
 }
-    
+
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+{
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
+                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    return [self handleUniversalLinkWithParameters:parameters];
+}
+
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
 {
     if (self.delegate)
     {
-        return [self.delegate roomViewController:self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+        return [self.delegate roomViewController:self handleUniversalLinkWithParameters:parameters];
     }
     else
     {
-        return [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+        return [[AppDelegate theDelegate] handleUniversalLinkWithParameters:parameters];
     }
 }
 
@@ -6561,20 +6566,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         MXLogError(@"Failed sending voice message");
         completion(NO);
     }];
-}
-
-- (void)showSpaceDetailWithPublicRoom:(MXPublicRoom *)publicRoom
-{
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
-}
-
-- (void)showSpaceDetailWithId:(NSString *)spaceId
-{
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    [self.spaceDetailPresenter presentForSpaceWithId:spaceId from:self sourceView:nil session:self.mainSession animated:YES];
 }
 
 #pragma mark - SpaceDetailPresenterDelegate
