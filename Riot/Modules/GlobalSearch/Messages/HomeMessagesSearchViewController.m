@@ -153,9 +153,9 @@
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                        eventId:eventId
-                                                                                      mxSession:session
-                                                                         presentationParameters:presentationParameters];
+                                                                                    eventId:eventId
+                                                                                  mxSession:session
+                                                                     presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters];
 }
