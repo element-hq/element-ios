@@ -16,9 +16,9 @@
 
 import Foundation
 
-/// Presentation parameters to display a preview of a space that is unknown for the user.
+/// Navigation parameters to display a preview of a space that is unknown for the user.
 @objcMembers
-class SpacePreviewPresentationParameters: SpacePresentationParameters {
+class SpacePreviewNavigationParameters: SpaceNavigationParameters {
     
     // MARK: - Properties
 
@@ -32,6 +32,8 @@ class SpacePreviewPresentationParameters: SpacePresentationParameters {
          presentationParameters: ScreenPresentationParameters) {
         self.publicRoom = publicRoom
         
-        super.init(roomId: publicRoom.roomId, mxSession: mxSession, presentationParameters: presentationParameters)
+        super.init(roomId: publicRoom.roomId,
+                   mxSession: mxSession,
+                   presentationParameters: presentationParameters)
     }
 }

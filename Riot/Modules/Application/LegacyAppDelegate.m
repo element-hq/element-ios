@@ -1354,9 +1354,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    SpacePresentationParameters *spacePresentationParameters = [[SpacePresentationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
+                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
                     
-                    [self showSpaceWithParameters:spacePresentationParameters];
+                    [self showSpaceWithParameters:spaceNavigationParameters];
                 }
                 else
                 {
@@ -1477,9 +1477,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 {
                                     [homeViewController stopActivityIndicator];
                                     
-                                    SpacePreviewPresentationParameters *spacePreviewPresentationParameters = [[SpacePreviewPresentationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
+                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
                                     
-                                    [self showSpacePreviewWithParameters:spacePreviewPresentationParameters];  
+                                    [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];  
                                 }
                                 else
                                 {
@@ -2921,7 +2921,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self showRoomPreviewWithParameters:parameters];
 }
 
-- (void)showSpacePreviewWithParameters:(SpacePreviewPresentationParameters*)parameters
+- (void)showSpacePreviewWithParameters:(SpacePreviewNavigationParameters*)parameters
 {
     UIViewController *presentingViewController;
     UIView *sourceView;
@@ -2959,7 +2959,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showSpaceWithParameters:(SpacePresentationParameters*)parameters
+- (void)showSpaceWithParameters:(SpaceNavigationParameters*)parameters
 {
     UIViewController *presentingViewController;
     UIView *sourceView;

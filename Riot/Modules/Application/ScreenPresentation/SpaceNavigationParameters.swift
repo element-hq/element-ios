@@ -16,9 +16,9 @@
 
 import Foundation
 
-/// Presentation parameters to display a space with a provided identifier in a specific matrix session.
+/// Navigation parameters to display a space with a provided identifier in a specific matrix session.
 @objcMembers
-class SpacePresentationParameters: NSObject {
+class SpaceNavigationParameters: NSObject {
     
     // MARK: - Properties
 
@@ -28,7 +28,7 @@ class SpacePresentationParameters: NSObject {
     /// The Matrix session in which the room should be available.
     let mxSession: MXSession
     
-    /// Universal link presentation parameters.
+    /// Screen presentation parameters.
     let presentationParameters: ScreenPresentationParameters
     
     // MARK: - Setup
