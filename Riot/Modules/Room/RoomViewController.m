@@ -16,6 +16,8 @@
  limitations under the License.
  */
 
+@import MobileCoreServices;
+
 #import "RoomViewController.h"
 
 #import "RoomDataSource.h"
@@ -106,6 +108,7 @@
 #import "AvatarGenerator.h"
 #import "Tools.h"
 #import "WidgetManager.h"
+#import "ShareManager.h"
 
 #import "GBDeviceInfo_iOS.h"
 
@@ -137,7 +140,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate>
 {
     
     // The preview header
@@ -248,6 +251,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 @property (nonatomic, strong) VoiceMessageController *voiceMessageController;
 @property (nonatomic, strong) SpaceDetailPresenter *spaceDetailPresenter;
+
+@property (nonatomic, strong) ShareManager *shareManager;
+
+@property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
+@property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
 
 @end
 
@@ -410,6 +418,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [self vc_removeBackTitle];
     
+    // Display leftBarButtonItems or leftBarButtonItem to the right of the Back button
+    self.navigationItem.leftItemsSupplementBackButton = YES;
+    
     [self setupRemoveJitsiWidgetRemoveView];
     
     // Replace the default input toolbar view.
@@ -449,6 +460,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self userInterfaceThemeDidChange];
         
     }];
+    
     [self userInterfaceThemeDidChange];
     
     // Observe URL preview updates.
@@ -1016,6 +1028,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [VoiceMessageMediaServiceProvider.sharedProvider setCurrentRoomSummary:dataSource.room.summary];
     _voiceMessageController.roomId = dataSource.roomId;
+    
+    _userSuggestionCoordinator = [[UserSuggestionCoordinatorBridge alloc] initWithMediaManager:self.roomDataSource.mxSession.mediaManager
+                                                                                          room:dataSource.room];
+    _userSuggestionCoordinator.delegate = self;
+    
+    [self setupUserSuggestionView];
 }
 
 - (void)onRoomDataSourceReady
@@ -2184,29 +2202,55 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return [[AppDelegate theDelegate] showAlertWithTitle:title message:message];
 }
 
+- (ScreenPresentationParameters*)buildUniversalLinkPresentationParameters
+{
+    return [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
+}
+
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL
 {
-    if (self.delegate)
-    {
-        return [self.delegate roomViewController:self handleUniversalLinkURL:universalLinkURL];
-    }
-    else
-    {
-        [self handleSpaceUniversalLinkWith:universalLinkURL];
-        return YES;
-    }
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithUniversalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    return [self handleUniversalLinkWithParameters:parameters];
 }
-    
+
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+{
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment
+                                                                           universalLinkURL:universalLinkURL presentationParameters:[self buildUniversalLinkPresentationParameters]];
+    return [self handleUniversalLinkWithParameters:parameters];
+}
+
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters
 {
     if (self.delegate)
     {
-        return [self.delegate roomViewController:self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+        return [self.delegate roomViewController:self handleUniversalLinkWithParameters:parameters];
     }
     else
     {
-        return [[AppDelegate theDelegate] handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+        return [[AppDelegate theDelegate] handleUniversalLinkWithParameters:parameters];
     }
+}
+
+- (void)setupUserSuggestionView
+{
+    if(!self.isViewLoaded) {
+        MXLogError(@"Failed setting up user suggestions. View not loaded.");
+        return;
+    }
+    
+    UIViewController *suggestionsViewController = self.userSuggestionCoordinator.toPresentable;
+    [suggestionsViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self addChildViewController:suggestionsViewController];
+    [self.userSuggestionContainerView addSubview:suggestionsViewController.view];
+    
+    [NSLayoutConstraint activateConstraints:@[[suggestionsViewController.view.topAnchor constraintEqualToAnchor:self.userSuggestionContainerView.topAnchor],
+                                              [suggestionsViewController.view.leadingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.leadingAnchor],
+                                              [suggestionsViewController.view.trailingAnchor constraintEqualToAnchor:self.userSuggestionContainerView.trailingAnchor],
+                                              [suggestionsViewController.view.bottomAnchor constraintEqualToAnchor:self.userSuggestionContainerView.bottomAnchor],]];
+    
+    [suggestionsViewController didMoveToParentViewController:self];
 }
 
 #pragma mark - Jitsi
@@ -2360,10 +2404,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
             // Set a default title view class without handling tap gesture (Let [self refreshRoomTitle] refresh this view correctly).
             [self setRoomTitleViewClass:RoomTitleView.class];
-            
-            // Remove details icon
-            RoomTitleView *roomTitleView = (RoomTitleView*)self.titleView;
-            
+                        
             // Remove the shadow image used to hide the bottom border of the navigation bar when the preview header is displayed
             [mainNavigationController.navigationBar setShadowImage:nil];
             [mainNavigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
@@ -3156,6 +3197,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+            self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithTextMessage:selectedComponent.textMessage]
+                                                                           type:ShareManagerTypeForward];
+            
+            MXWeakify(self);
+            [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
+                MXStrongifyAndReturnIfNil(self);
+                [attachment onShareEnded];
+                [self dismissViewControllerAnimated:YES completion:nil];
+                self.shareManager = nil;
+            }];
+            
+            [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
+        }]];
+        
         if (!isJitsiCallEvent)
         {
             [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
@@ -3209,6 +3267,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else // Add action for attachment
     {
+        if (attachment.type == MXKAttachmentTypeFile ||
+            attachment.type == MXKAttachmentTypeImage ||
+            attachment.type == MXKAttachmentTypeVideo ||
+            attachment.type == MXKAttachmentTypeVoiceMessage) {
+            
+            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                self.shareManager = [[ShareManager alloc] initWithShareItemProvider:[[SimpleShareItemProvider alloc] initWithAttachment:attachment]
+                                                                               type:ShareManagerTypeForward];
+                
+                MXWeakify(self);
+                [self.shareManager setCompletionCallback:^(ShareManagerResult result) {
+                    MXStrongifyAndReturnIfNil(self);
+                    [attachment onShareEnded];
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                    self.shareManager = nil;
+                }];
+                
+                [self presentViewController:self.shareManager.mainViewController animated:YES completion:nil];
+            }]];
+        }
+        
         if (BuildSettings.messageDetailsAllowSave)
         {
             if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
@@ -3306,7 +3387,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         
                         [self cancelEventSelection];
                         
+                        [self startActivityIndicator];
+                        
                         [attachment prepareShare:^(NSURL *fileURL) {
+                            [self stopActivityIndicator];
                             
                             __strong __typeof(weakSelf)self = weakSelf;
                             self->documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:fileURL];
@@ -3321,10 +3405,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                             }
                             
                         } failure:^(NSError *error) {
-                            
-                            //Alert user
                             [self showError:error];
-                            
+                            [self stopActivityIndicator];
                         }];
                         
                         // Start animation in case of download during attachment preparing
@@ -4197,6 +4279,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [self cancelEventSelection];
 }
+ 
+- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView *)toolbarView
+{
+    [self.userSuggestionCoordinator processTextMessage:toolbarView.textMessage];
+}
 
 #pragma mark - MXKRoomMemberDetailsViewControllerDelegate
 
@@ -5031,14 +5118,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 -(BOOL)checkUnsentMessages
 {
-    RoomSentStatus sentStatus = RoomSentStatusOk;
+    MXRoomSummarySentStatus sentStatus = MXRoomSummarySentStatusOk;
     if ([self.activitiesView isKindOfClass:RoomActivitiesView.class])
     {
-        sentStatus = self.roomDataSource.room.sentStatus;
+        sentStatus = self.roomDataSource.room.summary.sentStatus;
         
-        if (sentStatus != RoomSentStatusOk)
+        if (sentStatus != MXRoomSummarySentStatusOk)
         {
-            NSString *notification = sentStatus == RoomSentStatusSentFailedDueToUnknownDevices ?
+            NSString *notification = sentStatus == MXRoomSummarySentStatusSentFailedDueToUnknownDevices ?
             [VectorL10n roomUnsentMessagesUnknownDevicesNotification] :
             [VectorL10n roomUnsentMessagesNotification];
             
@@ -5109,7 +5196,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
     
-    return sentStatus != RoomSentStatusOk;
+    return sentStatus != MXRoomSummarySentStatusOk;
 }
 
 - (void)eventDidChangeSentState:(NSNotification *)notif
@@ -6481,20 +6568,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
 }
 
-- (void)showSpaceDetailWithPublicRoom:(MXPublicRoom *)publicRoom
-{
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:publicRoom from:self sourceView:nil session:self.mainSession animated:YES];
-}
-
-- (void)showSpaceDetailWithId:(NSString *)spaceId
-{
-    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-    self.spaceDetailPresenter.delegate = self;
-    [self.spaceDetailPresenter presentForSpaceWithId:spaceId from:self sourceView:nil session:self.mainSession animated:YES];
-}
-
 #pragma mark - SpaceDetailPresenterDelegate
 
 - (void)spaceDetailPresenterDidComplete:(SpaceDetailPresenter *)presenter
@@ -6512,6 +6585,24 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     self.spaceDetailPresenter = nil;
     [[LegacyAppDelegate theDelegate] openSpaceWithId:spaceId];
+}
+
+#pragma mark - UserSuggestionCoordinatorBridgeDelegate
+
+- (void)userSuggestionCoordinatorBridge:(UserSuggestionCoordinatorBridge *)coordinator
+             didRequestMentionForMember:(MXRoomMember *)member
+                            textTrigger:(NSString *)textTrigger
+{
+    if (textTrigger.length) {
+        NSString *textMessage = [self.inputToolbarView textMessage];
+        textMessage = [textMessage stringByReplacingOccurrencesOfString:textTrigger
+                                                             withString:@""
+                                                                options:NSBackwardsSearch | NSAnchoredSearch
+                                                                  range:NSMakeRange(0, textMessage.length)];
+        [self.inputToolbarView setTextMessage:textMessage];
+    }
+    
+    [self mention:member];
 }
 
 @end

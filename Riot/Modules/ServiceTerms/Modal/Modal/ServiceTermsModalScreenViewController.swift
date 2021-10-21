@@ -22,17 +22,27 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     
     // MARK: - Constants
     
+    private enum Constants {
+        /// Reuse identifier for the prototype cell in the storyboard.
+        static let cellReuseIdentifier = "Service Terms Cell"
+        static let minimumTableViewHeight: CGFloat = 120
+    }
+    
     // MARK: - Properties
     
     // MARK: Outlets
 
     @IBOutlet private weak var scrollView: UIScrollView!
     
-    @IBOutlet private weak var messageLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var descriptionLabel: UILabel!
+    @IBOutlet private weak var footerLabel: UILabel!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var acceptButton: UIButton!
     @IBOutlet private weak var declineButton: UIButton!
-
+    @IBOutlet private weak var tableViewHeightConstraint: NSLayoutConstraint!
+    
     // MARK: Private
 
     private var viewModel: ServiceTermsModalScreenViewModelType!
@@ -41,9 +51,8 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
 
     private var policies: [MXLoginPolicyData] = []
-
-    /// Policies checked by the end user
-    private var checkedPolicies: Set<Int> = []
+    
+    private var tableHeaderView: ServiceTermsModalTableHeaderView!
 
     // MARK: - Setup
     
@@ -60,8 +69,6 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
-        self.title = VectorL10n.serviceTermsModalTitle
 
         self.setupViews()
         self.activityPresenter = ActivityIndicatorPresenter()
@@ -75,6 +82,11 @@ final class ServiceTermsModalScreenViewController: UIViewController {
         self.viewModel.process(viewAction: .load)
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        tableViewHeightConstraint.constant = max(Constants.minimumTableViewHeight, tableView.contentSize.height)
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }
@@ -84,19 +96,30 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     private func update(theme: Theme) {
         self.theme = theme
         
-        self.view.backgroundColor = theme.headerBackgroundColor
+        view.backgroundColor = theme.headerBackgroundColor
         
-        if let navigationBar = self.navigationController?.navigationBar {
+        if let navigationBar = navigationController?.navigationBar {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-        self.messageLabel.textColor = theme.textPrimaryColor
+        titleLabel.font = theme.fonts.bodySB
+        titleLabel.textColor = theme.colors.primaryContent
+        
+        descriptionLabel.font = theme.fonts.body
+        descriptionLabel.textColor = theme.colors.secondaryContent
+        
+        tableHeaderView.update(theme: theme)
+        
+        footerLabel.font = theme.fonts.footnote.withSize(13)
+        footerLabel.textColor = theme.colors.secondaryContent
 
-        self.acceptButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.acceptButton)
+        acceptButton.titleLabel?.font = theme.fonts.body
+        acceptButton.setTitleColor(theme.colors.background, for: .normal)
+        acceptButton.backgroundColor = theme.colors.accent
 
         theme.applyStyle(onButton: self.declineButton)
-        self.declineButton.setTitleColor(self.theme.warningColor, for: .normal)
+        declineButton.titleLabel?.font = theme.fonts.body
+        declineButton.setTitleColor(theme.warningColor, for: .normal)
 
         self.refreshViews()
     }
@@ -110,40 +133,53 @@ final class ServiceTermsModalScreenViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
-        }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
-
         self.setupTableView()
         self.scrollView.keyboardDismissMode = .interactive
         
-        self.messageLabel.text = VectorL10n.serviceTermsModalMessage(self.viewModel.serviceUrl)
+        self.titleLabel.text = VectorL10n.serviceTermsModalTitleMessage
+        self.footerLabel.text = VectorL10n.serviceTermsModalFooter
+        
+        self.tableHeaderView.serviceURLLabel.text = viewModel.serviceUrl
 
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .normal)
         self.acceptButton.setTitle(VectorL10n.serviceTermsModalAcceptButton, for: .highlighted)
-        self.refreshAcceptButton()
+        self.acceptButton.layer.cornerRadius = 8
 
-        if self.viewModel.outOfContext
-            && self.viewModel.serviceType == MXServiceTypeIdentityService {
-            self.title = VectorL10n.serviceTermsModalTitleIdentityServer
-            self.messageLabel.text = VectorL10n.serviceTermsModalMessageIdentityServer(self.viewModel.serviceUrl)
-
-            self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .normal)
-            self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .highlighted)
+        self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .normal)
+        self.declineButton.setTitle(VectorL10n.serviceTermsModalDeclineButton, for: .highlighted)
+        
+        if self.viewModel.serviceType == MXServiceTypeIdentityService {
+            self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIdentityServer
+            self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIdentityServer
+            self.imageView.image = Asset.Images.findYourContactsFacepile.image
         } else {
-            self.declineButton.isHidden = true
+            self.descriptionLabel.text = VectorL10n.serviceTermsModalDescriptionIntegrationManager
+            self.tableHeaderView.titleLabel.text = VectorL10n.serviceTermsModalTableHeaderIntegrationManager
+            self.imageView.image = Asset.Images.integrationManagerIconpile.image
         }
     }
 
     private func setupTableView() {
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.separatorStyle = .none
-        self.tableView.alwaysBounceVertical = false
-        self.tableView.backgroundColor = .clear
-        self.tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
+        guard let tableView = tableView else { return }
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.alwaysBounceVertical = false
+        tableView.backgroundColor = .clear
+        tableView.register(TableViewCellWithCheckBoxAndLabel.nib(), forCellReuseIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier())
+        
+        tableHeaderView = ServiceTermsModalTableHeaderView.instantiate()
+        tableHeaderView.delegate = self
+        tableView.tableHeaderView = tableHeaderView
+        
+        tableView.addConstraint(NSLayoutConstraint(item: tableView,
+                                                   attribute: .width,
+                                                   relatedBy: .equal,
+                                                   toItem: tableHeaderView,
+                                                   attribute: .width,
+                                                   multiplier: 1,
+                                                   constant: 10))
     }
 
     private func render(viewState: ServiceTermsModalScreenViewState) {
@@ -161,13 +197,14 @@ final class ServiceTermsModalScreenViewController: UIViewController {
 
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
+        self.acceptButton.isEnabled = false
     }
 
     private func renderLoaded(policies: [MXLoginPolicyData], alreadyAcceptedPoliciesUrls: [String]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
 
         self.policies = policies
-        self.updateCheckedPolicies(with: alreadyAcceptedPoliciesUrls)
+        self.acceptButton.isEnabled = true
 
         self.refreshViews()
     }
@@ -187,21 +224,6 @@ final class ServiceTermsModalScreenViewController: UIViewController {
 
     private func refreshViews() {
         self.tableView.reloadData()
-        self.refreshAcceptButton()
-    }
-
-    private func refreshAcceptButton() {
-        // Enable the button only if the user has accepted all policies
-        self.acceptButton.isEnabled = (self.policies.count == self.checkedPolicies.count)
-    }
-
-    // Pre-check policies already accepted by the user
-    private func updateCheckedPolicies(with acceptedPoliciesUrls: [String]) {
-        for url in acceptedPoliciesUrls {
-            if let policyIndex = self.policies.firstIndex(where: { $0.url == url }) {
-                checkedPolicies.insert(policyIndex)
-            }
-        }
     }
 
     
@@ -213,37 +235,6 @@ final class ServiceTermsModalScreenViewController: UIViewController {
 
     @IBAction private func declineButtonAction(_ sender: Any) {
         self.viewModel.process(viewAction: .decline)
-    }
-    
-    private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
-    }
-
-    @objc private func didTapCheckbox(sender: UITapGestureRecognizer) {
-
-        guard let policyIndex = sender.view?.tag else {
-            return
-        }
-        
-        let isCheckBoxSelected: Bool
-
-        if self.checkedPolicies.contains(policyIndex) {
-            self.checkedPolicies.remove(policyIndex)
-            isCheckBoxSelected = false
-        } else {
-            checkedPolicies.insert(policyIndex)
-            isCheckBoxSelected = true
-        }
-        
-        if let checkBoxImageView = sender.view as? UIImageView {
-            if isCheckBoxSelected {
-                checkBoxImageView.accessibilityTraits.insert(.selected)
-            } else {
-                checkBoxImageView.accessibilityTraits.remove(.selected)
-            }
-        }
-
-        self.refreshViews()
     }
 }
 
@@ -259,72 +250,71 @@ extension ServiceTermsModalScreenViewController: ServiceTermsModalScreenViewMode
 // MARK: - UITableViewDataSource
 
 extension ServiceTermsModalScreenViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // Use individual sections for each policy so the cells aren't grouped together.
+        return policies.count
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.policies.count
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // Reduce the height between sections to only be the footer height value.
+        return CGFloat.leastNormalMagnitude
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Modify the footer size to reduce cell spacing.
+        return 8.0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier, for: indexPath)
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellWithCheckBoxAndLabel.defaultReuseIdentifier(), for: indexPath) as? TableViewCellWithCheckBoxAndLabel else {
-            fatalError("\(String(describing: TableViewCellWithCheckBoxAndLabel.self)) should be registered")
-        }
+        let policy = policies[indexPath.section]
 
-        let policy = policies[indexPath.row]
-        let checked = checkedPolicies.contains(indexPath.row)
-
-        cell.label.attributedText = self.cellLabel(for: policy)
-        cell.label.font = .systemFont(ofSize: 15)
-        cell.isEnabled = checked
+        cell.textLabel?.text = policy.name
+        cell.textLabel?.textColor = theme.colors.primaryContent
+        cell.textLabel?.font = theme.fonts.body
         cell.vc_setAccessoryDisclosureIndicator(withTheme: self.theme)
-        cell.backgroundColor = self.theme.backgroundColor
-
-        if let checkBox = cell.checkBox, checkBox.gestureRecognizers?.isEmpty ?? true {
-            let gesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapCheckbox))
-            gesture.numberOfTapsRequired = 1
-            gesture.numberOfTouchesRequired = 1
-
-            checkBox.isUserInteractionEnabled = true
-            checkBox.tag = indexPath.row
-            checkBox.addGestureRecognizer(gesture)
-            
-            checkBox.isAccessibilityElement = true
-            checkBox.accessibilityTraits = .button
-            checkBox.accessibilityLabel = VectorL10n.accessibilityCheckboxLabel
-            checkBox.accessibilityHint = VectorL10n.serviceTermsModalPolicyCheckboxAccessibilityHint(policy.name)
-        }
+        cell.accessoryView?.tintColor = theme.colors.quarterlyContent
+        cell.backgroundColor = theme.colors.background
+        cell.selectionStyle = .default
 
         return cell
     }
-
-    func cellLabel(for policy: MXLoginPolicyData) -> NSAttributedString {
-
-        // TableViewCellWithCheckBoxAndLabel does not have a detailTextLabel
-        // Do it by hand
-
-        var labelDetail: String = ""
-        switch self.viewModel.serviceType {
-        case MXServiceTypeIdentityService:
-            labelDetail = VectorL10n.serviceTermsModalDescriptionForIdentityServer1
-                + "\n"
-                + VectorL10n.serviceTermsModalDescriptionForIdentityServer2
-        case MXServiceTypeIntegrationManager:
-            labelDetail = VectorL10n.serviceTermsModalDescriptionForIntegrationManager
-        default: break
-        }
-
-        let label = NSMutableAttributedString(string: policy.name,
-                                              attributes: [.foregroundColor: theme.textPrimaryColor])
-        label.append(NSAttributedString(string: "\n"))
-        label.append(NSAttributedString(string: labelDetail,
-                                        attributes: [.foregroundColor: theme.textSecondaryColor]))
-        return label
-    }
 }
+
+// MARK: - UITableViewDelegate
 
 extension ServiceTermsModalScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let policy = policies[indexPath.row]
-        self.viewModel.process(viewAction: .display(policy))
+        let policy = policies[indexPath.section]
+        viewModel.process(viewAction: .display(policy))
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+
+// MARK: - ServiceTermsModalTableHeaderViewDelegate
+extension ServiceTermsModalScreenViewController: ServiceTermsModalTableHeaderViewDelegate {
+    func tableHeaderViewDidTapInformationButton() {
+        let title: String
+        let message: String
+        
+        if viewModel.serviceType == MXServiceTypeIdentityService {
+            title = VectorL10n.serviceTermsModalInformationTitleIdentityServer
+            message = VectorL10n.serviceTermsModalInformationDescriptionIdentityServer
+        } else {
+            title = VectorL10n.serviceTermsModalInformationTitleIntegrationManager
+            message = VectorL10n.serviceTermsModalInformationDescriptionIntegrationManager
+        }
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: Bundle.mxk_localizedString(forKey: "ok"), style: .default))
+        
+        present(alertController, animated: true)
     }
 }

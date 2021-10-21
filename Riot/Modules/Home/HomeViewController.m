@@ -378,8 +378,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count)
+    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms)
         || (indexPath.section == recentsDataSource.secureBackupBannerSection)
         || (indexPath.section == recentsDataSource.crossSigningBannerSection)
         )
@@ -470,8 +470,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.conversationCellDataArray.count)
-        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.peopleCellDataArray.count))
+    if ((indexPath.section == recentsDataSource.conversationSection && !recentsDataSource.recentsListService.conversationRoomListData.counts.numberOfRooms)
+        || (indexPath.section == recentsDataSource.peopleSection && !recentsDataSource.recentsListService.peopleRoomListData.counts.numberOfRooms))
     {
         return [recentsDataSource cellHeightAtIndexPath:indexPath];
     }
@@ -601,7 +601,7 @@
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCollectionViewCellTap:)];
             [cell addGestureRecognizer:tapGesture];
             
-            if ([cellData.roomSummary.roomId isEqualToString:editedRoomId])
+            if ([cellData.roomIdentifier isEqualToString:editedRoomId])
             {
                 cell.editionArrowView.hidden = NO;
             }
@@ -631,11 +631,14 @@
         
         if (renderedCellData.isSuggestedRoom)
         {
-            [self.delegate recentListViewController:self didSelectSuggestedRoom:renderedCellData.spaceChildInfo];
+            [self.delegate recentListViewController:self
+                             didSelectSuggestedRoom:renderedCellData.roomSummary.spaceChildInfo];
         }
         else
         {
-            [self.delegate recentListViewController:self didSelectRoom:renderedCellData.roomSummary.roomId inMatrixSession:renderedCellData.roomSummary.room.mxSession];
+            [self.delegate recentListViewController:self
+                                      didSelectRoom:renderedCellData.roomIdentifier
+                                    inMatrixSession:renderedCellData.mxSession];
         }
     }
     
@@ -924,19 +927,7 @@
     }
     
     // Otherwise check the number of items to display
-    return [self totalItemCounts] == 0;
-}
-
-// Total items to display on the screen
-- (NSUInteger)totalItemCounts
-{
-    return recentsDataSource.invitesCellDataArray.count
-    + recentsDataSource.favoriteCellDataArray.count
-    + recentsDataSource.peopleCellDataArray.count
-    + recentsDataSource.conversationCellDataArray.count
-    + recentsDataSource.lowPriorityCellDataArray.count
-    + recentsDataSource.serverNoticeCellDataArray.count
-    + recentsDataSource.suggestedRoomCellDataArray.count;
+    return recentsDataSource.totalVisibleItemCount == 0;
 }
 
 #pragma mark - SpaceMembersCoordinatorBridgePresenterDelegate

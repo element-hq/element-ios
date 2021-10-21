@@ -100,7 +100,7 @@
 "room_creation_keep_private" = "Manter privado";
 "room_creation_make_private" = "Fazer privado";
 "room_creation_wait_for_creation" = "Uma sala já está sendo criada. Por favor espere.";
-"room_creation_invite_another_user" = "Buscar / convidar por ID de usuária(o), Nome ou email";
+"room_creation_invite_another_user" = "ID de usuária(o), nome ou email";
 "room_recents_favourites_section" = "FAVORITOS";
 "room_recents_people_section" = "PESSOAS";
 "room_recents_conversations_section" = "SALAS";
@@ -288,7 +288,7 @@
 "settings_calls_settings" = "CHAMADAS";
 "settings_user_interface" = "INTERFACE DE USUÁRIA(O)";
 "settings_ignored_users" = "USUÁRIAS(OS) IGNORADAS(OS)";
-"settings_contacts" = "CONTATOS LOCAIS";
+"settings_contacts" = "CONTATOS DE DISPOSITIVO";
 "settings_advanced" = "AVANÇADAS";
 "settings_other" = "OUTRAS";
 "settings_labs" = "LABS";
@@ -556,7 +556,7 @@
 "rerequest_keys_alert_message" = "Por favor lance %@ num outro dispositivo que possa decriptar a mensagem para que ele possa enviar as chaves para esta sessão.";
 // String for App Store
 "store_short_description" = "Chat/VoIP descentralizado e seguro";
-"store_full_description" = "Element is um novo tipo de mensageiro e app de colaboração que:\n\n1. Põe você em controle para preservar sua privacidade\n2. Permite você se comunicar com qualquer pessoa na rede Matrix, e até além ao integrar-se com apps como Slack\n3. Protege você de publicidade, datamining, backdoors e jardins murados\n4. Assegura você através de encriptação ponta-a-pontam com assinatura cruzada para verificar ouras(os)\n\nElement é completamente diferente de outros apps de mensageria e colaboração porque ele é descentralizado e open source.\n\nElement permite você auto-hospedar - ou escolher um host - para que você tenha privacidade, propriedade e controle de seus dados e conversas. Ele dá a você acesso a uma rede aberta; então você não está simplesmente preso falando com outras(os) usuárias(os) Element somente. E ele é muito seguro.\n\nElement é capaz de fazer tudo isso porque ele opera em Matrix - o padrão para comunicação aberta e descentralizada.\n\nElement põe você em controle ao permitir você escolher quem hospeda suas conversas. De seu app Element, você pode escolher hospedar de diferentes maneiras:\n\n1. Pegar uma conta grátis no servidor público matrix.org\n2. Auto-hospedar sua conta ao rodar um servidor em seu próprio hardware\n3. Registrar-se para uma conta num servidor personalizado ao simplesmente assinar a plataforma de hospedagem Element Matrix Services\n\nPorquê escolher Element?\n\nTENHA POSSE DE SEUS DADOS: Você decide onde manter seus dados e mensagens. Você os possui e controla, não alguma MEGACORP que mina seus dados ou dá acesso a terceiros.\n\nMENSAGERIA E COLABORAÇÃO ABERTOS: Você pode fazer chat com qualquer outra pessoa na rede Matrix, caso ela esteja usando Element ou um outro app Matrix, e mesmo se ela estiver usando um sistema de mensageria diferente, do tipo de Slack, IRC ou XMPP.\n\nSUPER-SEGURO: Encriptação ponta-a-ponta real (somente aquelas/es na conversa podem decriptar mensagens), e assinatura cruzada para verificar os dispositivos de participantes de conversa.\n\nCOMUNICAÇÃO COMPLETA: Mensageria, chamadas de voz e vídeo, compartilhamento de arquivo, compartilhamento de tela e um monte de integrações, bots e widgets. Construa salas, comunidades, fique em contato e tenha as coisas feitas.\n\nEM TODO LUGAR ONDE VOCÊ ESTEJA: Fique em contato onde quer que você esteja com histórico de mensagem sincronizado por todos os dispositivos e na web em https://element.io/app.";
+"store_full_description" = "Element is um novo tipo de mensageiro e app de colaboração que:\n\n1. Põe você em controle para preservar sua privacidade\n2. Permite você se comunicar com qualquer pessoa na rede Matrix, e até além ao integrar-se com apps como Slack\n3. Protege você de publicidade, datamining, backdoors e jardins murados\n4. Assegura você através de encriptação ponta-a-pontam com assinatura cruzada para verificar ouras(os)\n\nElement é completamente diferente de outros apps de mensageria e colaboração porque ele é descentralizado e open source.\n\nElement permite você auto-hospedar - ou escolher um host - para que você tenha privacidade, propriedade e controle de seus dados e conversas. Ele dá a você acesso a uma rede aberta; então você não está simplesmente preso falando com outras(os) usuárias(os) Element somente. E ele é muito seguro.\n\nElement é capaz de fazer tudo isso porque ele opera em Matrix - o padrão para comunicação aberta e descentralizada.\n\nElement põe você em controle ao permitir você escolher quem hospeda suas conversas. De seu app Element, você pode escolher hospedar de diferentes maneiras:\n\n1. Pegar uma conta grátis no servidor público matrix.org\n2. Auto-hospedar sua conta ao rodar um servidor em seu próprio hardware\n3. Registrar-se para uma conta num servidor personalizado ao simplesmente assinar a plataforma de hospedagem Element Matrix Services\n\nPorquê escolher Element?\n\nTENHA POSSE DE SEUS DADOS: Você decide onde manter seus dados e mensagens. Você os possui e controla, não alguma MEGACORP que mina seus dados ou dá acesso a terceiros.\n\nMENSAGERIA E COLABORAÇÃO ABERTOS: Você pode conversar com qualquer outra pessoa na rede Matrix, caso ela esteja usando Element ou um outro app Matrix, e mesmo se ela estiver usando um sistema de mensageria diferente, do tipo de Slack, IRC ou XMPP.\n\nSUPER-SEGURO: Encriptação ponta-a-ponta real (somente aquelas/es na conversa podem decriptar mensagens), e assinatura cruzada para verificar os dispositivos de participantes de conversa.\n\nCOMUNICAÇÃO COMPLETA: Mensageria, chamadas de voz e vídeo, compartilhamento de arquivo, compartilhamento de tela e um monte de integrações, bots e widgets. Construa salas, comunidades, fique em contato e tenha as coisas feitas.\n\nEM TODO LUGAR ONDE VOCÊ ESTEJA: Fique em contato onde quer que você esteja com histórico de mensagem sincronizado por todos os dispositivos e na web em https://element.io/app.";
 "auth_login_single_sign_on" = "Fazer Sign In";
 "auth_autodiscover_invalid_response" = "Resposta de descoberta de servidorcasa inválida";
 "room_message_unable_open_link_error_message" = "Incapaz de abrir o link.";
@@ -720,7 +720,7 @@
 "settings_three_pids_management_information_part3" = ".";
 "settings_security" = "SEGURANÇA";
 "settings_integrations_allow_button" = "Gerenciar integrações";
-"settings_integrations_allow_description" = "Use um Gerenciador de Integrações (%@) para gerenciar bots, bridges, widgets e pacotes de stickers.\n\nGerenciadores de Integrações recebem dados de configuração, e podem modificar widgets, enviar convites de sala e definir níveis de poder em seu nome.";
+"settings_integrations_allow_description" = "Use um gerenciador de integrações (%@) para gerenciar bots, bridges, widgets e pacotes de stickers.\n\nGerenciadores de integrações recebem dados de configuração, e podem modificar widgets, enviar convites de sala e definir níveis de poder em seu nome.";
 "settings_add_3pid_password_title_email" = "Adicionar endereço de email";
 "settings_discovery_three_pids_management_information_part2" = "Configurações de Usuária(o)";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -779,7 +779,7 @@
 "room_participants_action_security_status_warning" = "Aviso";
 "settings_three_pids_management_information_part1" = "Gerencie quais endereços de email ou números de telefone você pode usar para fazer login ou recuperar sua conta aqui. Controle quem pode encontrar você em ";
 "settings_calls_stun_server_fallback_button" = "Permitir servidor fallback de assistência de chamadas";
-"settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do Servidor de Identidade (%@) para permitir que você mesma(o) seja descobertável por endereço de email ou número de telefone.";
+"settings_discovery_terms_not_signed" = "Concorde com os Termos de Serviço do servidor de identidade (%@) para permitir que você mesma(o) seja descobertável por endereço de email ou número de telefone.";
 "settings_discovery_three_pids_management_information_part1" = "Gerencie quais endereços de email ou números de telefone outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você para salas. Adicione ou remova endereços de email ou números de telefone desta lista em ";
 "settings_discovery_three_pid_details_title_email" = "Gerenciar email";
 "settings_discovery_three_pid_details_information_email" = "Gerencie preferências para este endereço de email, que outras(os) usuárias(os) podem usar para descobrir você e usar para convidar você para salas. Adicione ou remova endereços de email em Contas.";
@@ -794,7 +794,7 @@
 "identity_server_settings_disconnect_info" = "Desconectar-se de seu servidor de identidade vai significar que você não vai ser descobertável por outras(os) usuárias(os) e ser capaz de convidar outras(os) por email ou telefone.";
 "identity_server_settings_alert_disconnect_still_sharing_3pid" = "Você ainda está compartilhando seus dados pessoais no servidor de identidade %@.\n\nNós recomendamos que você remova seus endereços de email e números de telefone do servidor de identidade antes de se desconectar.";
 "call_no_stun_server_error_title" = "Chamada falhou devido a servidor malconfigurado";
-"widget_integration_manager_disabled" = "Você precisa habilitar Gerenciador de Integrações em configurações";
+"widget_integration_manager_disabled" = "Você precisa habilitar gerenciador de integrações em configurações";
 "service_terms_modal_description_for_identity_server_1" = "Encontrar outras(os) por telefone ou email";
 "service_terms_modal_description_for_identity_server_2" = "Ser encontrada(o) por telefone ou email";
 "device_verification_self_verify_wait_additional_information" = "Isto funciona com %@ e outros clientes Matrix capazes de assinatura cruzada.";
@@ -885,7 +885,7 @@
 "manage_session_not_trusted" = "Não confiada";
 "manage_session_sign_out" = "Fazer signout desta sessão";
 // Identity server settings
-"identity_server_settings_title" = "Servidor de Identidade";
+"identity_server_settings_title" = "Servidor de identidade";
 "identity_server_settings_description" = "Vvocê está atualmente usando %@ para descobrir e ser descobertável por contatos existentes que você conhece.";
 "identity_server_settings_no_is_description" = "Você não está atualmente usando um servidor de identidade. Para descobrir e ser descobertável por contatos existentes, adicione um acima.";
 "identity_server_settings_place_holder" = "Entrar um servidor de identidade";
@@ -1474,3 +1474,27 @@
 "room_recents_suggested_rooms_section" = "SALAS SUGERIDAS";
 "done" = "Feito";
 "open" = "Abrir";
+"service_terms_modal_information_description_integration_manager" = "Um gerenciador de integrações deixa você adicionar funcionalidades de terceiros.";
+"service_terms_modal_information_description_identity_server" = "Um servidor de identidade ajuda você a encontrar seus contatos, ao buscar o número de telefone ou endereço de email deles, para ver se eles já têm uma conta.";
+"service_terms_modal_information_title_integration_manager" = "Gerenciador de Integrações";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Servidor de Identidade";
+"service_terms_modal_description_integration_manager" = "Isto vai permitir você usar bots, bridges, widgets e pacotes de stickers.";
+"service_terms_modal_description_identity_server" = "Isto vai permitir alguém encontrar você se ela/ele tem seu número de telefone ou email salvo nos contatos de telefone dela/dele.";
+"service_terms_modal_table_header_integration_manager" = "TERMOS DE GERENCIADOR DE INTEGRAÇÕES";
+"service_terms_modal_table_header_identity_server" = "TERMOS DE SERVIDOR DE IDENTIDADE";
+"service_terms_modal_footer" = "Isto pode ser desabilitado a qualquer hora em configurações.";
+
+// Service terms
+"service_terms_modal_title_message" = "Para continuar, aceite os termos e condições abaixo";
+"settings_contacts_enable_sync_description" = "Isto vai usar seu servidor de identidade para conectar você com seus contatos, e ajudá-los a encontrar você.";
+"settings_contacts_enable_sync" = "Encontre seus contatos";
+"settings_phone_contacts" = "CONTATOS DE TELEFONE";
+"find_your_contacts_identity_service_error" = "Incapaz de se conectar ao servidor de identidade.";
+"find_your_contacts_footer" = "Isto pode ser desabilitado a qualquer hora a partir de configurações.";
+"find_your_contacts_button_title" = "Encontre seus contatos";
+"find_your_contacts_message" = "Deixe %@ mostrar seus contatos para que você possa rapidamente começar a conversar com aqueles que você conhece melhor.";
+"find_your_contacts_title" = "Comece por listar seus contatos";
+"contacts_address_book_permission_denied_alert_message" = "Para habilitar contatos, vá para as configurações de seu dispositivo.";
+"contacts_address_book_permission_denied_alert_title" = "Contatos desabilitados";

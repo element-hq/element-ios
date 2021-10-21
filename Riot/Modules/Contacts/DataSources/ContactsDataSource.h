@@ -51,6 +51,14 @@ typedef enum : NSUInteger
 }
 
 /**
+ Whether the data source should include local contacts in the table view. The default
+ value is set at initialisation to match the `MXKAppSettings` value for `syncLocalContacts`.
+ Note: After updating this property, the table view's data will need to be reloaded for it to have
+ any effect.
+ */
+@property (nonatomic) BOOL showLocalContacts;
+
+/**
  Get the contact at the given index path.
  
  @param indexPath the index of the cell

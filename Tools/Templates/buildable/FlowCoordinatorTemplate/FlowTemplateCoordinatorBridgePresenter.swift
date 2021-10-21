@@ -18,6 +18,7 @@ import Foundation
 
 @objc protocol FlowTemplateCoordinatorBridgePresenterDelegate {
     func flowTemplateCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: FlowTemplateCoordinatorBridgePresenter)
+    func flowTemplateCoordinatorBridgePresenterDidDismissInteractively(_ coordinatorBridgePresenter: FlowTemplateCoordinatorBridgePresenter)
 }
 
 /// FlowTemplateCoordinatorBridgePresenter enables to start FlowTemplateCoordinator from a view controller.
@@ -66,7 +67,6 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
         let flowTemplateCoordinator = FlowTemplateCoordinator(parameters: flowTemplateCoordinatorParameters)
         flowTemplateCoordinator.delegate = self
         let presentable = flowTemplateCoordinator.toPresentable()
-        presentable.presentationController?.delegate = self
         viewController.present(presentable, animated: animated, completion: nil)
         flowTemplateCoordinator.start()
         
@@ -76,7 +76,7 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
     
     func push(from navigationController: UINavigationController, animated: Bool) {
                 
-        let navigationRouter = NavigationRouter(navigationController: navigationController)
+        let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
         let flowTemplateCoordinatorParameters = FlowTemplateCoordinatorParameters(session: self.session, navigationRouter: navigationRouter)
         
@@ -120,17 +120,12 @@ final class FlowTemplateCoordinatorBridgePresenter: NSObject {
 
 // MARK: - FlowTemplateCoordinatorDelegate
 extension FlowTemplateCoordinatorBridgePresenter: FlowTemplateCoordinatorDelegate {
+    
     func flowTemplateCoordinatorDidComplete(_ coordinator: FlowTemplateCoordinatorProtocol) {
         self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
     }
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate
-
-extension FlowTemplateCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
-    func flowTemplateCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        self.delegate?.flowTemplateCoordinatorBridgePresenterDelegateDidComplete(self)
+    func flowTemplateCoordinatorDidDismissInteractively(_ coordinator: FlowTemplateCoordinatorProtocol) {
+        self.delegate?.flowTemplateCoordinatorBridgePresenterDidDismissInteractively(self)
     }
-    
 }

@@ -323,7 +323,7 @@
     // Update here the index of the current selected cell (if any) - Useful in landscape mode with split view controller.
     NSIndexPath *currentSelectedCellIndexPath = nil;
     MasterTabBarController *masterTabBarController = [AppDelegate theDelegate].masterTabBarController;
-    if (masterTabBarController.currentGroupDetailViewController)
+    if (masterTabBarController.selectedGroup)
     {
         // Look for the rank of this selected group in displayed groups
         currentSelectedCellIndexPath = [self.dataSource cellIndexPathWithGroupId:masterTabBarController.selectedGroup.groupId];

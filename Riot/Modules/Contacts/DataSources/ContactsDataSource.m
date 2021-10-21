@@ -92,6 +92,16 @@
     return self;
 }
 
+- (instancetype)initWithMatrixSession:(MXSession *)mxSession
+{
+    self = [super initWithMatrixSession:mxSession];
+    if (self) {
+        // Only show local contacts when contact sync is enabled and the identity server terms of service have been accepted.
+        _showLocalContacts = MXKAppSettings.standardAppSettings.syncLocalContacts && self.mxSession.identityService.areAllTermsAgreed;
+    }
+    return self;
+}
+
 - (void)destroy
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kMXKContactManagerDidUpdateMatrixContactsNotification object:nil];
@@ -473,8 +483,8 @@
             searchInputSection = count++;
         }
         
-        // Keep visible the header for the both contact sections, even if their are empty.
-        if (BuildSettings.allowLocalContactsAccess)
+        // Keep visible the header for the both contact sections, even if they're are empty.
+        if (BuildSettings.allowLocalContactsAccess && self.showLocalContacts && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
         {
             filteredLocalContactsSection = count++;
         }
@@ -489,7 +499,7 @@
         }
         
         // Keep visible the local contact header, even if the section is empty.
-        if (BuildSettings.allowLocalContactsAccess)
+        if (BuildSettings.allowLocalContactsAccess && self.showLocalContacts && [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts] == CNAuthorizationStatusAuthorized)
         {
             filteredLocalContactsSection = count++;
         }

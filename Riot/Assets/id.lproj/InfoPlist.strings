@@ -1,0 +1,9 @@
+
+
+"NSContactsUsageDescription" = "Element akan menampilkan kontak Anda supaya Anda bisa mengundang mereka ke obrolan.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kamera digunakan untuk mengambil foto dan video, dan melakukan panggilan video.";
+"NSFaceIDUsageDescription" = "Face ID digunakan untuk mengakses aplikasi Anda.";
+"NSCalendarsUsageDescription" = "Lihat pertemuan yang sudah dijadwalkan di aplikasi.";
+"NSMicrophoneUsageDescription" = "Element membutuhkan akses ke mikrofon Anda untuk melakukan dan menerima panggilan, mengambil video, dan merekam pesan suara.";
+"NSPhotoLibraryUsageDescription" = "Galeri digunakan untuk mengirim foto dan video.";

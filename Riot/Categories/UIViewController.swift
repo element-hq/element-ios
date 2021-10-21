@@ -103,4 +103,16 @@ extension UIViewController {
         
         return fabImageView
     }
+    
+    /// Set leftBarButtonItem with split view display mode button if there is no leftBarButtonItem defined and splitViewController exists.
+    /// To be Used when view controller is displayed as detail controller in split view.
+    func vc_setupDisplayModeLeftBarButtonItemIfNeeded() {
+        guard let splitViewController = self.splitViewController, self.navigationItem.leftBarButtonItem == nil else {
+            return
+        }
+        
+        // If there is no leftBarButtonItem defined,
+        // set split view display mode button as left bar button item
+        self.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
+    }
 }

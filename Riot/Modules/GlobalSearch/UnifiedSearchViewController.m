@@ -91,6 +91,7 @@
     [titles addObject:[VectorL10n searchPeople]];
     peopleSearchViewController = [ContactsTableViewController contactsTableViewController];
     peopleSearchViewController.contactsTableViewControllerDelegate = self;
+    peopleSearchViewController.disableFindYourContactsFooter = YES;
     [viewControllers addObject:peopleSearchViewController];
     
     // add Files tab
@@ -229,7 +230,9 @@
     if (mainSession)
     {
         // Init the recents data source
-        recentsDataSource = [[UnifiedSearchRecentsDataSource alloc] initWithMatrixSession:mainSession];
+        RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
+        recentsDataSource = [[UnifiedSearchRecentsDataSource alloc] initWithMatrixSession:mainSession
+                             recentsListService:recentsListService];
         [recentsViewController displayList:recentsDataSource];
         
         // Init the search for messages
@@ -245,6 +248,7 @@
         
         // Init the search for people
         peopleSearchDataSource = [[ContactsDataSource alloc] initWithMatrixSession:mainSession];
+        peopleSearchDataSource.showLocalContacts = NO;
         peopleSearchDataSource.areSectionsShrinkable = YES;
         peopleSearchDataSource.displaySearchInputInContactsList = YES;
         peopleSearchDataSource.contactCellAccessoryImage = [[UIImage imageNamed: @"disclosure_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textSecondaryColor];;

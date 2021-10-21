@@ -54,13 +54,11 @@ import Foundation
     func process(viewAction: SettingsDiscoveryViewAction) {
         switch viewAction {
         case .load:
-            self.checkTerms()
+            checkTerms()
         case .acceptTerms:
-            self.acceptTerms()
+            coordinatorDelegate?.settingsDiscoveryViewModelDidTapAcceptIdentityServerTerms(self)
         case .select(threePid: let threePid):
-            self.coordinatorDelegate?.settingsDiscoveryViewModel(self, didSelectThreePidWith: threePid.medium.identifier, and: threePid.address)
-        case .tapUserSettingsLink:
-            self.coordinatorDelegate?.settingsDiscoveryViewModelDidTapUserSettingsLink(self)
+            coordinatorDelegate?.settingsDiscoveryViewModel(self, didSelectThreePidWith: threePid.medium.identifier, and: threePid.address)
         }
     }
     
@@ -114,28 +112,6 @@ import Foundation
         }, failure: { (error) in
             self.update(viewState: .error(error))
         })
-    }
-    
-    private func acceptTerms() {
-        guard let identityService = self.identityService else {
-            self.update(viewState: .loaded(displayMode: .noIdentityServer))
-            return
-        }
-        
-        // Launch an identity server request to trigger terms modal apparition
-        identityService.account { (response) in
-            switch response {
-            case .success:
-                // Display three pids if presents
-                self.updateViewStateFromCurrentThreePids()
-            case .failure(let error):
-                if MXError(nsError: error)?.errcode == kMXErrCodeStringTermsNotSigned {
-                    // Identity terms modal should appear
-                } else {
-                    self.update(viewState: .error(error))
-                }
-            }
-        }
     }
     
     private func canCheckTerms() -> Bool {

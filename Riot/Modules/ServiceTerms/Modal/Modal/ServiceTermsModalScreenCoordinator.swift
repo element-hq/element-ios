@@ -37,9 +37,9 @@ final class ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenCoordinat
     
     // MARK: - Setup
     
-    init(serviceTerms: MXServiceTerms, outOfContext: Bool = false) {
+    init(serviceTerms: MXServiceTerms) {
         
-        let serviceTermsModalScreenViewModel = ServiceTermsModalScreenViewModel(serviceTerms: serviceTerms, outOfContext: outOfContext)
+        let serviceTermsModalScreenViewModel = ServiceTermsModalScreenViewModel(serviceTerms: serviceTerms)
         let serviceTermsModalScreenViewController = ServiceTermsModalScreenViewController.instantiate(with: serviceTermsModalScreenViewModel)
         self.serviceTermsModalScreenViewModel = serviceTermsModalScreenViewModel
         self.serviceTermsModalScreenViewController = serviceTermsModalScreenViewController
@@ -69,9 +69,5 @@ extension ServiceTermsModalScreenCoordinator: ServiceTermsModalScreenViewModelCo
 
     func serviceTermsModalScreenViewModelDidDecline(_ viewModel: ServiceTermsModalScreenViewModelType) {
         self.delegate?.serviceTermsModalScreenCoordinatorDidDecline(self)
-    }
-
-    func serviceTermsModalScreenViewModelDidCancel(_ viewModel: ServiceTermsModalScreenViewModelType) {
-        self.delegate?.serviceTermsModalScreenCoordinatorDidCancel(self)
     }
 }

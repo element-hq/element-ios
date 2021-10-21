@@ -13,7 +13,7 @@ use_frameworks!
 # - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.16.7'
+$matrixKitVersion = '= 0.16.9'
 # $matrixKitVersion = :local
 # $matrixKitVersion = {'develop' => 'develop'}
 
@@ -48,6 +48,7 @@ abstract_target 'RiotPods' do
   pod 'GBDeviceInfo', '~> 6.6.0'
   pod 'Reusable', '~> 4.1'
   pod 'KeychainAccess', '~> 4.2.2'
+  pod 'WeakDictionary', '~> 2.0'
 
   # Piwik for analytics
   pod 'MatomoTracker', '~> 7.4.1'
@@ -55,7 +56,6 @@ abstract_target 'RiotPods' do
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
   pod 'zxcvbn-ios', :inhibit_warnings => true
-  pod 'HPGrowingTextView', :inhibit_warnings => true
 
   # Tools
   pod 'SwiftGen', '~> 6.3'
@@ -73,6 +73,7 @@ abstract_target 'RiotPods' do
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '~> 4.5'
+    pod 'GrowingTextView', '~> 0.7.2'
 
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 

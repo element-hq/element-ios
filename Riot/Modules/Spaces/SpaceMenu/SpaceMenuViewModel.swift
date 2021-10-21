@@ -19,24 +19,18 @@ import Foundation
 /// View model used by `SpaceMenuViewController`
 class SpaceMenuViewModel: SpaceMenuViewModelType {
     
-    // MARK: - Enum
-    
-    enum ActionId: String {
-        case members = "members"
-        case rooms = "rooms"
-        case leave = "leave"
-    }
-    
     // MARK: - Properties
     
     weak var coordinatorDelegate: SpaceMenuModelViewModelCoordinatorDelegate?
     weak var viewDelegate: SpaceMenuViewModelViewDelegate?
 
-    var menuItems: [SpaceMenuListItemViewData] = [
-        SpaceMenuListItemViewData(actionId: ActionId.members.rawValue, style: .normal, title: VectorL10n.roomDetailsPeople, icon: UIImage(named: "space_menu_members")),
-        SpaceMenuListItemViewData(actionId: ActionId.rooms.rawValue, style: .normal, title: VectorL10n.spacesExploreRooms, icon: UIImage(named: "space_menu_rooms")),
-        SpaceMenuListItemViewData(actionId: ActionId.leave.rawValue, style: .destructive, title: VectorL10n.leave, icon: UIImage(named: "space_menu_leave"))
+    private let spaceMenuItems: [SpaceMenuListItemViewData] = [
+        SpaceMenuListItemViewData(action: .exploreSpaceMembers, style: .normal, title: VectorL10n.roomDetailsPeople, icon: Asset.Images.spaceMenuMembers.image, value: nil),
+        SpaceMenuListItemViewData(action: .exploreSpaceRooms, style: .normal, title: VectorL10n.spacesExploreRooms, icon: Asset.Images.spaceMenuRooms.image, value: nil),
+        SpaceMenuListItemViewData(action: .leaveSpace, style: .destructive, title: VectorL10n.leave, icon: Asset.Images.spaceMenuLeave.image, value: nil)
     ]
+    
+    var menuItems: [SpaceMenuListItemViewData] = []
     
     private let session: MXSession
     private let spaceId: String
@@ -46,6 +40,14 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     init(session: MXSession, spaceId: String) {
         self.session = session
         self.spaceId = spaceId
+        
+        if spaceId != SpaceListViewModel.Constants.homeSpaceId {
+            self.menuItems = spaceMenuItems
+        } else {
+            self.menuItems = [
+                SpaceMenuListItemViewData(action: .showAllRoomsInHomeSpace, style: .toggle, title: VectorL10n.spaceHomeShowAllRooms, icon: nil, value: RiotSettings.shared.showAllRoomsInHomeSpace)
+            ]
+        }
     }
     
     // MARK: - Public
@@ -55,7 +57,7 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
         case .dismiss:
             self.coordinatorDelegate?.spaceMenuViewModelDidDismiss(self)
         case .selectRow(at: let indexPath):
-            self.processAction(with: menuItems[indexPath.row].actionId)
+            self.processAction(with: menuItems[indexPath.row].action, at: indexPath)
         case .leaveSpaceAndKeepRooms:
             self.leaveSpaceAndKeepRooms()
         case .leaveSpaceAndLeaveRooms:
@@ -65,13 +67,16 @@ class SpaceMenuViewModel: SpaceMenuViewModelType {
     
     // MARK: - Private
     
-    private func processAction(with actionStringId: String) {
-        let actionId = ActionId(rawValue: actionStringId)
-        switch actionId {
-        case .leave:
+    private func processAction(with action: SpaceMenuListItemAction, at indexPath: IndexPath) {
+        switch action {
+        case .showAllRoomsInHomeSpace:
+            RiotSettings.shared.showAllRoomsInHomeSpace.toggle()
+            self.menuItems[indexPath.row].value = RiotSettings.shared.showAllRoomsInHomeSpace
+            self.viewDelegate?.spaceMenuViewModel(self, didUpdateViewState: .deselect)
+        case .leaveSpace:
             self.leaveSpace()
         default:
-            self.coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWithId: actionStringId)
+            self.coordinatorDelegate?.spaceMenuViewModel(self, didSelectItemWith: action)
         }
     }
 

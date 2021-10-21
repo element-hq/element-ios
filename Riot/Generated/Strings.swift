@@ -559,6 +559,14 @@ public class VectorL10n: NSObject {
   public static func contactsAddressBookPermissionDenied(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "contacts_address_book_permission_denied", p1)
   }
+  /// To enable contacts, go to your device settings.
+  public static var contactsAddressBookPermissionDeniedAlertMessage: String { 
+    return VectorL10n.tr("Vector", "contacts_address_book_permission_denied_alert_message") 
+  }
+  /// Contacts disabled
+  public static var contactsAddressBookPermissionDeniedAlertTitle: String { 
+    return VectorL10n.tr("Vector", "contacts_address_book_permission_denied_alert_title") 
+  }
   /// Permission required to access local contacts
   public static var contactsAddressBookPermissionRequired: String { 
     return VectorL10n.tr("Vector", "contacts_address_book_permission_required") 
@@ -1402,6 +1410,26 @@ public class VectorL10n: NSObject {
   /// File type not supported.
   public static var fileUploadErrorUnsupportedFileTypeMessage: String { 
     return VectorL10n.tr("Vector", "file_upload_error_unsupported_file_type_message") 
+  }
+  /// Find your contacts
+  public static var findYourContactsButtonTitle: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_button_title") 
+  }
+  /// This can be disabled anytime from settings.
+  public static var findYourContactsFooter: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_footer") 
+  }
+  /// Unable to connect to the identity server.
+  public static var findYourContactsIdentityServiceError: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_identity_service_error") 
+  }
+  /// Let %@ show your contacts so you can quickly start chatting with those you know best.
+  public static func findYourContactsMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "find_your_contacts_message", p1)
+  }
+  /// Start by listing your contacts
+  public static var findYourContactsTitle: String { 
+    return VectorL10n.tr("Vector", "find_your_contacts_title") 
   }
   /// To continue using the %@ homeserver you must review and agree to the terms and conditions.
   public static func gdprConsentNotGivenAlertMessage(_ p1: String) -> String {
@@ -2463,7 +2491,7 @@ public class VectorL10n: NSObject {
   public static var roomCreationErrorInviteUserByEmailWithoutIdentityServer: String { 
     return VectorL10n.tr("Vector", "room_creation_error_invite_user_by_email_without_identity_server") 
   }
-  /// Search / invite by User ID, Name or email
+  /// User ID, name or email
   public static var roomCreationInviteAnotherUser: String { 
     return VectorL10n.tr("Vector", "room_creation_invite_another_user") 
   }
@@ -2858,6 +2886,10 @@ public class VectorL10n: NSObject {
   /// Edit
   public static var roomEventActionEdit: String { 
     return VectorL10n.tr("Vector", "room_event_action_edit") 
+  }
+  /// Forward
+  public static var roomEventActionForward: String { 
+    return VectorL10n.tr("Vector", "room_event_action_forward") 
   }
   /// Reason for kicking this user
   public static var roomEventActionKickPromptReason: String { 
@@ -4011,37 +4043,53 @@ public class VectorL10n: NSObject {
   public static var serviceTermsModalDeclineButton: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_decline_button") 
   }
-  /// Find others by phone or email
-  public static var serviceTermsModalDescriptionForIdentityServer1: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_description_for_identity_server_1") 
+  /// This will allow someone to find you if they have your phone number or email saved in their phone contacts.
+  public static var serviceTermsModalDescriptionIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_description_identity_server") 
   }
-  /// Be found by phone or email
-  public static var serviceTermsModalDescriptionForIdentityServer2: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_description_for_identity_server_2") 
+  /// This will allow you to use bots, bridges, widgets and sticker packs.
+  public static var serviceTermsModalDescriptionIntegrationManager: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_description_integration_manager") 
   }
-  /// Use Bots, bridges, widgets and sticker packs
-  public static var serviceTermsModalDescriptionForIntegrationManager: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_description_for_integration_manager") 
+  /// This can be disabled anytime in settings.
+  public static var serviceTermsModalFooter: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_footer") 
   }
-  /// To continue you need to accept the terms of this service (%@).
-  public static func serviceTermsModalMessage(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "service_terms_modal_message", p1)
+  /// An identity server helps you find your contacts, by looking up their phone number or email address, to see if they already have an account.
+  public static var serviceTermsModalInformationDescriptionIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_information_description_identity_server") 
   }
-  /// Accept the terms of the identity server (%@) to discover contacts.
-  public static func serviceTermsModalMessageIdentityServer(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "service_terms_modal_message_identity_server", p1)
+  /// An integration manager lets you add features from third parties.
+  public static var serviceTermsModalInformationDescriptionIntegrationManager: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_information_description_integration_manager") 
+  }
+  /// Identity Server
+  public static var serviceTermsModalInformationTitleIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_information_title_identity_server") 
+  }
+  /// Integration Manager
+  public static var serviceTermsModalInformationTitleIntegrationManager: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_information_title_integration_manager") 
   }
   /// Check to accept %@
   public static func serviceTermsModalPolicyCheckboxAccessibilityHint(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "service_terms_modal_policy_checkbox_accessibility_hint", p1)
   }
-  /// Terms Of Service
-  public static var serviceTermsModalTitle: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_title") 
+  /// IDENTITY SERVER TERMS
+  public static var serviceTermsModalTableHeaderIdentityServer: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_table_header_identity_server") 
   }
-  /// Contact discovery
-  public static var serviceTermsModalTitleIdentityServer: String { 
-    return VectorL10n.tr("Vector", "service_terms_modal_title_identity_server") 
+  /// INTEGRATION MANAGER TERMS
+  public static var serviceTermsModalTableHeaderIntegrationManager: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_table_header_integration_manager") 
+  }
+  /// To continue, accept the below terms and conditions
+  public static var serviceTermsModalTitleMessage: String { 
+    return VectorL10n.tr("Vector", "service_terms_modal_title_message") 
+  }
+  /// ABOUT
+  public static var settingsAbout: String { 
+    return VectorL10n.tr("Vector", "settings_about") 
   }
   /// Invalid credentials
   public static var settingsAdd3pidInvalidPasswordMessage: String { 
@@ -4103,10 +4151,6 @@ public class VectorL10n: NSObject {
   public static func settingsConfigHomeServer(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_home_server", p1)
   }
-  /// Identity server is %@
-  public static func settingsConfigIdentityServer(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_config_identity_server", p1)
-  }
   /// No build info
   public static var settingsConfigNoBuildInfo: String { 
     return VectorL10n.tr("Vector", "settings_config_no_build_info") 
@@ -4127,13 +4171,17 @@ public class VectorL10n: NSObject {
   public static var settingsConfirmPassword: String { 
     return VectorL10n.tr("Vector", "settings_confirm_password") 
   }
-  /// LOCAL CONTACTS
+  /// DEVICE CONTACTS
   public static var settingsContacts: String { 
     return VectorL10n.tr("Vector", "settings_contacts") 
   }
-  /// Use emails and phone numbers to discover users
-  public static var settingsContactsDiscoverMatrixUsers: String { 
-    return VectorL10n.tr("Vector", "settings_contacts_discover_matrix_users") 
+  /// Find your contacts
+  public static var settingsContactsEnableSync: String { 
+    return VectorL10n.tr("Vector", "settings_contacts_enable_sync") 
+  }
+  /// This will use your identity server to connect you with your contacts, and help them find you.
+  public static var settingsContactsEnableSyncDescription: String { 
+    return VectorL10n.tr("Vector", "settings_contacts_enable_sync_description") 
   }
   /// Phonebook country
   public static var settingsContactsPhonebookCountry: String { 
@@ -4194,6 +4242,10 @@ public class VectorL10n: NSObject {
   /// Direct messages
   public static var settingsDirectMessages: String { 
     return VectorL10n.tr("Vector", "settings_direct_messages") 
+  }
+  /// Accept Identity Server Terms
+  public static var settingsDiscoveryAcceptTerms: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_accept_terms") 
   }
   /// An error occured. Please retry.
   public static var settingsDiscoveryErrorMessage: String { 
@@ -4543,6 +4595,10 @@ public class VectorL10n: NSObject {
   public static var settingsPasswordUpdated: String { 
     return VectorL10n.tr("Vector", "settings_password_updated") 
   }
+  /// PHONE CONTACTS
+  public static var settingsPhoneContacts: String { 
+    return VectorL10n.tr("Vector", "settings_phone_contacts") 
+  }
   /// Phone
   public static var settingsPhoneNumber: String { 
     return VectorL10n.tr("Vector", "settings_phone_number") 
@@ -4854,6 +4910,10 @@ public class VectorL10n: NSObject {
   /// Spaces aren’t here yet
   public static var spaceFeatureUnavailableTitle: String { 
     return VectorL10n.tr("Vector", "space_feature_unavailable_title") 
+  }
+  /// Show all rooms
+  public static var spaceHomeShowAllRooms: String { 
+    return VectorL10n.tr("Vector", "space_home_show_all_rooms") 
   }
   /// Ban from this space
   public static var spaceParticipantsActionBan: String { 

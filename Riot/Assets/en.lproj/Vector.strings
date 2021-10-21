@@ -178,7 +178,7 @@
 "room_creation_keep_private" = "Keep private";
 "room_creation_make_private" = "Make private";
 "room_creation_wait_for_creation" = "A room is already being created. Please wait.";
-"room_creation_invite_another_user" = "Search / invite by User ID, Name or email";
+"room_creation_invite_another_user" = "User ID, name or email";
 "room_creation_error_invite_user_by_email_without_identity_server" = "No identity server is configured so you cannot add a participant with an email.";
 "room_creation_dm_error" = "We couldn't create your DM. Please check the users you want to invite and try again.";
 
@@ -244,8 +244,15 @@ Tap the + to start adding people.";
 "contacts_address_book_no_contact" = "No local contacts";
 "contacts_address_book_permission_required" = "Permission required to access local contacts";
 "contacts_address_book_permission_denied" = "You didn't allow %@ to access your local contacts";
+"contacts_address_book_permission_denied_alert_title" = "Contacts disabled";
+"contacts_address_book_permission_denied_alert_message" = "To enable contacts, go to your device settings.";
 "contacts_user_directory_section" = "USER DIRECTORY";
 "contacts_user_directory_offline_section" = "USER DIRECTORY (offline)";
+"find_your_contacts_title" = "Start by listing your contacts";
+"find_your_contacts_message" = "Let %@ show your contacts so you can quickly start chatting with those you know best.";
+"find_your_contacts_button_title" = "Find your contacts";
+"find_your_contacts_footer" = "This can be disabled anytime from settings.";
+"find_your_contacts_identity_service_error" = "Unable to connect to the identity server.";
 
 // Chat participants
 "room_participants_title" = "Participants";
@@ -353,6 +360,7 @@ Tap the + to start adding people.";
 "room_event_action_redact" = "Remove";
 "room_event_action_more" = "More";
 "room_event_action_share" = "Share";
+"room_event_action_forward" = "Forward";
 "room_event_action_permalink" = "Permalink";
 "room_event_action_view_source" = "View Source";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";
@@ -449,7 +457,6 @@ Tap the + to start adding people.";
 "settings_report_bug" = "Report bug";
 "settings_clear_cache" = "Clear cache";
 "settings_config_home_server" = "Homeserver is %@";
-"settings_config_identity_server" = "Identity server is %@";
 "settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
@@ -462,9 +469,10 @@ Tap the + to start adding people.";
 "settings_integrations" = "INTEGRATIONS";
 "settings_user_interface" = "USER INTERFACE";
 "settings_ignored_users" = "IGNORED USERS";
-"settings_contacts" = "LOCAL CONTACTS";
+"settings_contacts" = "DEVICE CONTACTS";
+"settings_phone_contacts" = "PHONE CONTACTS";
 "settings_advanced" = "ADVANCED";
-"settings_other" = "OTHER";
+"settings_about" = "ABOUT";
 "settings_labs" = "LABS";
 "settings_flair" = "Show flair where allowed";
 "settings_devices" = "SESSIONS";
@@ -550,8 +558,9 @@ Tap the + to start adding people.";
 
 "settings_unignore_user" = "Show all messages from %@?";
 
-"settings_contacts_discover_matrix_users" = "Use emails and phone numbers to discover users";
+"settings_contacts_enable_sync" = "Find your contacts";
 "settings_contacts_phonebook_country" = "Phonebook country";
+"settings_contacts_enable_sync_description" = "This will use your identity server to connect you with your contacts, and help them find you.";
 
 "settings_labs_e2e_encryption" = "End-to-End Encryption";
 "settings_labs_e2e_encryption_prompt_message" = "To finish setting up encryption you must log in again.";
@@ -619,6 +628,7 @@ Tap the + to start adding people.";
 
 "settings_discovery_no_identity_server" = "You are not currently using an identity server. To be discoverable by existing contacts you known, add one.";
 "settings_discovery_terms_not_signed" = "Agree to the identity server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
+"settings_discovery_accept_terms" = "Accept Identity Server Terms";
 "settings_discovery_three_pids_management_information_part1" = "Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in ";
 "settings_discovery_three_pids_management_information_part2" = "User Settings";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -1020,18 +1030,21 @@ Tap the + to start adding people.";
 "gdpr_consent_not_given_alert_review_now_action" = "Review now";
 
 // Service terms
-"service_terms_modal_title" = "Terms Of Service";
-"service_terms_modal_message" = "To continue you need to accept the terms of this service (%@).";
+"service_terms_modal_title_message" = "To continue, accept the below terms and conditions";
 "service_terms_modal_accept_button" = "Accept";
 "service_terms_modal_decline_button" = "Decline";
+"service_terms_modal_footer" = "This can be disabled anytime in settings.";
 
-"service_terms_modal_description_for_identity_server_1" = "Find others by phone or email";
-"service_terms_modal_description_for_identity_server_2" = "Be found by phone or email";
-"service_terms_modal_description_for_integration_manager" = "Use Bots, bridges, widgets and sticker packs";
+"service_terms_modal_table_header_identity_server" = "IDENTITY SERVER TERMS";
+"service_terms_modal_table_header_integration_manager" = "INTEGRATION MANAGER TERMS";
+"service_terms_modal_description_identity_server" = "This will allow someone to find you if they have your phone number or email saved in their phone contacts.";
+"service_terms_modal_description_integration_manager" = "This will allow you to use bots, bridges, widgets and sticker packs.";
 
-// Service terms - Variant for identity server when displayed out of a context
-"service_terms_modal_title_identity_server" = "Contact discovery";
-"service_terms_modal_message_identity_server" = "Accept the terms of the identity server (%@) to discover contacts.";
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Identity Server";
+"service_terms_modal_information_title_integration_manager" = "Integration Manager";
+"service_terms_modal_information_description_identity_server" = "An identity server helps you find your contacts, by looking up their phone number or email address, to see if they already have an account.";
+"service_terms_modal_information_description_integration_manager" = "An integration manager lets you add features from third parties.";
 
 "service_terms_modal_policy_checkbox_accessibility_hint" = "Check to accept %@";
 
@@ -1718,6 +1731,7 @@ Tap the + to start adding people.";
 "spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.";
 "space_participants_action_remove" = "Remove from this space";
 "space_participants_action_ban" = "Ban from this space";
+"space_home_show_all_rooms" = "Show all rooms";
 
 "space_private_join_rule" = "Private space";
 "space_public_join_rule" = "Public space";

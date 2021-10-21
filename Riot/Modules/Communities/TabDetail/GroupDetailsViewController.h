@@ -35,7 +35,7 @@
  @discussion This is the designated initializer for programmatic instantiation.
  @return An initialized `GroupDetailsViewController` object if successful, `nil` otherwise.
  */
-+ (instancetype)groupDetailsViewController;
++ (instancetype)instantiate;
 
 /**
  Set the group for which the details are displayed.

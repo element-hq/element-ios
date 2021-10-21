@@ -142,21 +142,4 @@
     }
 }
 
-- (BOOL)shouldShowEmptyView
-{
-    // Do not present empty screen while searching
-    if (recentsDataSource.searchPatternsList.count)
-    {
-        return NO;
-    }
-    
-    return [self totalItemCounts] == 0;
-}
-
-// Total items to display on the screen
-- (NSUInteger)totalItemCounts
-{
-    return recentsDataSource.favoriteCellDataArray.count;
-}
-
 @end

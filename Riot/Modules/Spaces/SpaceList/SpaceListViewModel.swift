@@ -91,7 +91,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         case .moreAction(at: let indexPath, from: let sourceView):
             let section = self.sections[indexPath.section]
             switch section {
-            case .home: break
+            case .home:
+                self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: Constants.homeSpaceId, from: sourceView)
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
                 self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: spaceViewData.spaceId, from: sourceView)

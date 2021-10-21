@@ -40,13 +40,20 @@ typedef enum : NSUInteger
  */
 - (void)roomInputToolbarViewDidTapCancel:(MXKRoomInputToolbarView*)toolbarView;
 
+/**
+ Inform the delegate that the text message has changed.
+ 
+ @param toolbarView the room input toolbar view
+ */
+- (void)roomInputToolbarViewDidChangeTextMessage:(MXKRoomInputToolbarView*)toolbarView;
+
 @end
 
 /**
  `RoomInputToolbarView` instance is a view used to handle all kinds of available inputs
  for a room (message composer, attachments selection...).
  */
-@interface RoomInputToolbarView : MXKRoomInputToolbarViewWithHPGrowingText
+@interface RoomInputToolbarView : MXKRoomInputToolbarView
 
 /**
  The delegate notified when inputs are ready.
