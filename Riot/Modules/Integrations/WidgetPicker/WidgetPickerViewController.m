@@ -151,7 +151,6 @@
     
     ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:widget.mxSession baseUrl:config.baseUrl
                                                                                                                                                         serviceType:MXServiceTypeIntegrationManager
-                                                                                                                                                       outOfContext:NO
                                                                                                                                                         accessToken:config.scalarToken];
     serviceTermsModalCoordinatorBridgePresenter.delegate = self;
     
@@ -173,15 +172,14 @@
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidCancel:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
-- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession * _Nonnull)session
+- (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 

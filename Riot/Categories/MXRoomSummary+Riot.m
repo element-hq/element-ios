@@ -19,32 +19,20 @@
 
 #import "AvatarGenerator.h"
 
+#ifdef IS_SHARE_EXTENSION
+#import "RiotShareExtension-Swift.h"
+#else
+#import "Riot-Swift.h"
+#endif
+
 @implementation MXRoomSummary (Riot)
 
 - (void)setRoomAvatarImageIn:(MXKImageView*)mxkImageView
 {
-    // Use the room display name to prepare the default avatar image.
-    NSString *avatarDisplayName = self.displayname;
-    UIImage* avatarImage = [AvatarGenerator generateAvatarForMatrixItem:self.roomId withDisplayName:avatarDisplayName];
-    
-    if (self.avatar)
-    {
-        mxkImageView.enableInMemoryCache = YES;
-        
-        [mxkImageView setImageURI:self.avatar
-                         withType:nil
-              andImageOrientation:UIImageOrientationUp
-                    toFitViewSize:mxkImageView.frame.size
-                       withMethod:MXThumbnailingMethodCrop
-                     previewImage:avatarImage
-                     mediaManager:self.mxSession.mediaManager];
-    }
-    else
-    {
-        mxkImageView.image = avatarImage;
-    }
-    
-    mxkImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [mxkImageView vc_setRoomAvatarImageWith:self.avatar
+                                     roomId:self.roomId
+                                displayName:self.displayname
+                               mediaManager:self.mxSession.mediaManager];
 }
 
 - (RoomEncryptionTrustLevel)roomEncryptionTrustLevel

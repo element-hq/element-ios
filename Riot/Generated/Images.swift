@@ -60,6 +60,7 @@ internal enum Asset {
     internal static let errorIcon = ImageAsset(name: "error_icon")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")
     internal static let group = ImageAsset(name: "group")
+    internal static let informationButton = ImageAsset(name: "information_button")
     internal static let monitor = ImageAsset(name: "monitor")
     internal static let placeholder = ImageAsset(name: "placeholder")
     internal static let plusIcon = ImageAsset(name: "plus_icon")
@@ -74,6 +75,7 @@ internal enum Asset {
     internal static let touchidIcon = ImageAsset(name: "touchid_icon")
     internal static let addGroupParticipant = ImageAsset(name: "add_group_participant")
     internal static let removeIconBlue = ImageAsset(name: "remove_icon_blue")
+    internal static let findYourContactsFacepile = ImageAsset(name: "find_your_contacts_facepile")
     internal static let captureAvatar = ImageAsset(name: "capture_avatar")
     internal static let e2eBlocked = ImageAsset(name: "e2e_blocked")
     internal static let e2eUnencrypted = ImageAsset(name: "e2e_unencrypted")
@@ -95,6 +97,7 @@ internal enum Asset {
     internal static let plusFloatingAction = ImageAsset(name: "plus_floating_action")
     internal static let versionCheckCloseIcon = ImageAsset(name: "version_check_close_icon")
     internal static let versionCheckInfoIcon = ImageAsset(name: "version_check_info_icon")
+    internal static let integrationManagerIconpile = ImageAsset(name: "integration_manager_iconpile")
     internal static let closeBanner = ImageAsset(name: "close_banner")
     internal static let importFilesButton = ImageAsset(name: "import_files_button")
     internal static let keyBackupLogo = ImageAsset(name: "key_backup_logo")
@@ -192,6 +195,7 @@ internal enum Asset {
     internal static let spaceMenuLeave = ImageAsset(name: "space_menu_leave")
     internal static let spaceMenuMembers = ImageAsset(name: "space_menu_members")
     internal static let spaceMenuRooms = ImageAsset(name: "space_menu_rooms")
+    internal static let spacePrivateIcon = ImageAsset(name: "space_private_icon")
     internal static let spaceRoomIcon = ImageAsset(name: "space_room_icon")
     internal static let spaceTypeIcon = ImageAsset(name: "space_type_icon")
     internal static let spaceUserIcon = ImageAsset(name: "space_user_icon")
@@ -207,6 +211,8 @@ internal enum Asset {
     internal static let cancel = ImageAsset(name: "cancel")
     internal static let e2eVerified = ImageAsset(name: "e2e_verified")
     internal static let horizontalLogo = ImageAsset(name: "horizontal_logo")
+    internal static let radioButtonDefault = ImageAsset(name: "radio-button-default")
+    internal static let radioButtonSelected = ImageAsset(name: "radio-button-selected")
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
@@ -222,6 +228,7 @@ internal struct ImageAsset {
   internal typealias Image = UIImage
   #endif
 
+  @available(iOS 8.0, tvOS 9.0, watchOS 2.0, macOS 10.7, *)
   internal var image: Image {
     let bundle = BundleToken.bundle
     #if os(iOS) || os(tvOS)
@@ -233,13 +240,25 @@ internal struct ImageAsset {
     let image = Image(named: name)
     #endif
     guard let result = image else {
-      fatalError("Unable to load image named \(name).")
+      fatalError("Unable to load image asset named \(name).")
     }
     return result
   }
+
+  #if os(iOS) || os(tvOS)
+  @available(iOS 8.0, tvOS 9.0, *)
+  internal func image(compatibleWith traitCollection: UITraitCollection) -> Image {
+    let bundle = BundleToken.bundle
+    guard let result = Image(named: name, in: bundle, compatibleWith: traitCollection) else {
+      fatalError("Unable to load image asset named \(name).")
+    }
+    return result
+  }
+  #endif
 }
 
 internal extension ImageAsset.Image {
+  @available(iOS 8.0, tvOS 9.0, watchOS 2.0, *)
   @available(macOS, deprecated,
     message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
   convenience init!(asset: ImageAsset) {

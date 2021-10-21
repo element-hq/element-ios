@@ -17,7 +17,7 @@
 import Foundation
 import Reusable
 
-class SpaceMenuListViewCell: UITableViewCell, Themable, NibReusable {
+class SpaceMenuListViewCell: UITableViewCell, SpaceMenuCell, NibReusable {
     
     // MARK: - Properties
     
@@ -49,7 +49,7 @@ class SpaceMenuListViewCell: UITableViewCell, Themable, NibReusable {
 
     // MARK: - Public
     
-    func fill(with viewData: SpaceMenuListItemViewData) {
+    func update(with viewData: SpaceMenuListItemViewData) {
         self.iconView.image = viewData.icon
         self.titleLabel.text = viewData.title
         

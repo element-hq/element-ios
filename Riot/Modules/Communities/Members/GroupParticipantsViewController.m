@@ -964,7 +964,7 @@
     
     if (contact)
     {
-        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController contactDetailsViewController];
+        ContactDetailsViewController *contactDetailsViewController = [ContactDetailsViewController instantiate];
         contactDetailsViewController.enableVoipCall = NO;
         contactDetailsViewController.contact = contact;
         

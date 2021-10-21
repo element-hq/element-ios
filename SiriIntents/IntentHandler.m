@@ -217,11 +217,11 @@
     {
         MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-        [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+        [fileStore asyncRoomsSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull roomsSummaries) {
                                     NSString *roomID = person.customIdentifier;
             
                                     BOOL isEncrypted = NO;
-                                    for (MXRoomSummary *roomSummary in roomsSummaries)
+                                    for (id<MXRoomSummaryProtocol> roomSummary in roomsSummaries)
                                     {
                                         if ([roomSummary.roomId isEqualToString:roomID])
                                         {
@@ -318,16 +318,16 @@
         if (account)
         {
             MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-            [fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> * _Nonnull roomsSummaries) {
+            [fileStore asyncRoomsSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull roomsSummaries) {
                 
                 // Contains userIds of all users with whom the current user has direct chats
                 // Use set to avoid duplicates
                 NSMutableSet<NSString *> *directUserIds = [NSMutableSet set];
                 
                 // Contains room summaries for all direct rooms connected with particular userId
-                NSMutableDictionary<NSString *, NSMutableArray<MXRoomSummary *> *> *roomSummaries = [NSMutableDictionary dictionary];
+                NSMutableDictionary<NSString *, NSMutableArray<id<MXRoomSummaryProtocol>> *> *roomSummaries = [NSMutableDictionary dictionary];
                 
-                for (MXRoomSummary *summary in roomsSummaries)
+                for (id<MXRoomSummaryProtocol> summary in roomsSummaries)
                 {
                     // TODO: We also need to check if joined room members count equals 2
                     // It is pointlessly to save rooms with 1 joined member or room with more than 2 joined members
@@ -343,7 +343,7 @@
                         [directUserIds addObject:diretUserId];
                         
                         // Save associated with diretUserId room summary
-                        NSMutableArray<MXRoomSummary *> *userRoomSummaries = roomSummaries[diretUserId];
+                        NSMutableArray<id<MXRoomSummaryProtocol>> *userRoomSummaries = roomSummaries[diretUserId];
                         if (userRoomSummaries)
                             [userRoomSummaries addObject:summary];
                         else
@@ -373,8 +373,8 @@
                         MXUser *user = matchingUsers.firstObject;
                         
                         // Provide to the user a list of direct rooms to choose from
-                        NSArray<MXRoomSummary *> *summaries = roomSummaries[user.userId];
-                        for (MXRoomSummary *summary in summaries)
+                        NSArray<id<MXRoomSummaryProtocol>> *summaries = roomSummaries[user.userId];
+                        for (id<MXRoomSummaryProtocol> summary in summaries)
                         {
                             INPersonHandle *personHandle = [[INPersonHandle alloc] initWithValue:user.userId type:INPersonHandleTypeUnknown];
                             

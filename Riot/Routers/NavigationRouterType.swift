@@ -40,6 +40,13 @@ protocol NavigationRouterType: AnyObject, Presentable {
     /// - Parameter popCompletion: Completion called when `module` is removed from the navigation stack.
     func setRootModule(_ module: Presentable, hideNavigationBar: Bool, animated: Bool, popCompletion: (() -> Void)?)
     
+    /// Set view controllers stack of navigation controller
+    /// - Parameters:
+    ///   - modules: The presentables stack to set.
+    ///   - hideNavigationBar: Specify true to hide the UINavigationBar.
+    ///   - animated: Specify true to animate the transition.
+    func setModules(_ modules: [Presentable], hideNavigationBar: Bool, animated: Bool)
+    
     /// Pop to root view controller of navigation controller and remove all others
     ///
     /// - Parameter animated: Specify true to animate the transition.
@@ -62,17 +69,31 @@ protocol NavigationRouterType: AnyObject, Presentable {
     /// - Parameter animated: Specify true to animate the transition.
     func popModule(animated: Bool)
     
+    /// Pops all view controllers
+    ///
+    /// - Parameter animated: Specify true to animate the transition.
+    func popAllModules(animated: Bool)
+    
     /// Returns the modules that are currently in the navigation stack
     var modules: [Presentable] { get }
+    
+    /// Check if the navigation controller contains the given presentable.
+    /// - Parameter module: The presentable for which to check the existence.
+    func contains(_ module: Presentable) -> Bool
 }
 
 // `NavigationRouterType` default implementation
 extension NavigationRouterType {
+    
     func setRootModule(_ module: Presentable) {
         setRootModule(module, hideNavigationBar: false, animated: false, popCompletion: nil)
     }
     
     func setRootModule(_ module: Presentable, popCompletion: (() -> Void)?) {
         setRootModule(module, hideNavigationBar: false, animated: false, popCompletion: popCompletion)
+    }
+    
+    func setModules(_ modules: [Presentable], animated: Bool) {
+        setModules(modules, hideNavigationBar: false, animated: animated)
     }
 }

@@ -33,7 +33,7 @@
 /* Look, stuff's happened, alright? Just open the app. */
 "MSGS_IN_TWO_PLUS_ROOMS" = "%@ novas mensagens em %@, %@ e outras";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ tem conviado você para fazer chat";
+"USER_INVITE_TO_CHAT" = "%@ tem conviado você para conversar";
 /* A user has invited you to an (unamed) group chat */
 "USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ tem convidado você para um chat de grupo";
 /* A user has invited you to a named room */

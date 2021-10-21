@@ -26,8 +26,8 @@ extension InviteRecentTableViewCell {
     }
     
     /// Update buttons according to current MXMembershipChangeState of the room
-    @objc func updateButtonViews(with room: MXRoom) {
-        let membershipTransitionState = room.summary.membershipTransitionState
+    @objc func updateButtonViews(with summary: MXRoomSummaryProtocol) {
+        let membershipTransitionState = summary.membershipTransitionState
         
         var joinButtonIsLoading = false
         var leaveButtonIsLoading = false

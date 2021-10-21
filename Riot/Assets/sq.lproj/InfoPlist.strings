@@ -2,6 +2,6 @@
 "NSCameraUsageDescription" = "Kamera përdoret për të bërë foto dhe regjistruar video, dhe për të bërë thirrje video.";
 "NSPhotoLibraryUsageDescription" = "Fototeka përdoret për të dërguar foto dhe video.";
 "NSMicrophoneUsageDescription" = "Element-it i duhet të përdorë mikrofonin tuaj për të bërë dhe marrë thirrje, për të regjistruar video, dhe për të regjistruar mesazhe zanorë.";
-"NSContactsUsageDescription" = "Për zbulim kontaktesh që përdorin tashmë Matrix-in, Element-i mund të dërgojë adresa email dhe numra telefonash nga libri juaj i adresave te shërbyesi juaj i zgjedhur Matrix i identiteteve. Kur kjo mbulohet, të dhënat personale fshehtëzohen, para se të dërgohen - ju lutemi, për më tepër hollësi, shihni rregulla privatësie të shërbyesit tuaj të identiteteve.";
+"NSContactsUsageDescription" = "Element-i do të shfaqë kontaktet tuaja, që kështu të mund t’i ftoni për të biseduar.";
 "NSCalendarsUsageDescription" = "Shihini te aplikacioni takimet tuaja të planifikuara.";
 "NSFaceIDUsageDescription" = "Face ID përdoret që të hyni në aplikacionin tuaj.";

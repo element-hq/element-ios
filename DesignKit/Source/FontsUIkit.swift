@@ -20,7 +20,7 @@ import UIKit
 /**
  ObjC class for holding fonts for use in UIKit.
  */
-@objc public class FontsUIKit: NSObject, Fonts {
+@objcMembers public class FontsUIKit: NSObject, Fonts {
     
     public var largeTitle: UIFont
     
