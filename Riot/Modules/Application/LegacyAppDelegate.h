@@ -31,7 +31,7 @@
 @protocol LegacyAppDelegateDelegate;
 @class CallBar;
 @class CallPresenter;
-@class RoomScreenParameters;
+@class RoomNavigationParameters;
 @class RoomPreviewScreenParameters;
 @class UniversalLinkParameters;
 
@@ -207,9 +207,9 @@ UINavigationControllerDelegate
 #pragma mark - Matrix Room handling
 
 // Show a room and jump to the given event if event id is not nil otherwise go to last messages.
-- (void)showRoomWithParameters:(RoomScreenParameters*)parameters completion:(void (^)(void))completion;
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion;
 
-- (void)showRoomWithParameters:(RoomScreenParameters*)parameters;
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters;
 
 // Restore display and show the room
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession;

@@ -1361,9 +1361,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 else
                 {
                     // Open the room page
-                    RoomScreenParameters *roomScreenParameters = [[RoomScreenParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: universalLinkPresentationParameters];
+                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: universalLinkPresentationParameters];
                     
-                    [self showRoomWithParameters:roomScreenParameters];
+                    [self showRoomWithParameters:roomNavigationParameters];
                 }
                 
                 continueUserActivity = YES;
@@ -1470,7 +1470,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
-                            RoomPreviewPresentationParameters *roomPreviewPresentationParameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:universalLinkPresentationParameters];
+                            RoomPreviewScreenParameters *roomPreviewScreenParameters = [[RoomPreviewScreenParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:universalLinkPresentationParameters];
                             
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
@@ -1483,10 +1483,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 }
                                 else
                                 {
-                                    [self peekInRoomWithPresentationParameters:roomPreviewPresentationParameters pathParams:pathParams];
+                                    [self peekInRoomWithPresentationParameters:roomPreviewScreenParameters pathParams:pathParams];
                                 }
                             } failure:^(NSError *error) {
-                                [self peekInRoomWithPresentationParameters:roomPreviewPresentationParameters pathParams:pathParams];
+                                [self peekInRoomWithPresentationParameters:roomPreviewScreenParameters pathParams:pathParams];
                             }];
                         }
                         
@@ -1637,7 +1637,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)peekInRoomWithPresentationParameters:(RoomPreviewPresentationParameters*)presentationParameters pathParams:(NSArray<NSString*> *)pathParams
+- (void)peekInRoomWithPresentationParameters:(RoomPreviewScreenParameters*)presentationParameters pathParams:(NSArray<NSString*> *)pathParams
 {
     RoomPreviewData *roomPreviewData = presentationParameters.previewData;
     NSString *roomIdOrAlias = presentationParameters.roomId;
@@ -2821,12 +2821,12 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showRoomWithParameters:(RoomScreenParameters*)parameters
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters
 {
     [self showRoomWithParameters:parameters completion:nil];
 }
 
-- (void)showRoomWithParameters:(RoomScreenParameters*)parameters completion:(void (^)(void))completion
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion
 {
     NSString *roomId = parameters.roomId;
     MXSession *mxSession = parameters.mxSession;
@@ -2882,13 +2882,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
-    RoomScreenParameters *parameters = [[RoomScreenParameters alloc] initWithRoomId:roomId
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                         eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
 }
 
-- (void)showRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters completion:(void (^)(void))completion
+- (void)showRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters completion:(void (^)(void))completion
 {
     void (^showRoomPreview)(void) = ^() {
         [self.masterTabBarController selectRoomPreviewWithParameters:parameters completion:completion];
@@ -2906,7 +2906,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters
+- (void)showRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters
 {
     [self showRoomPreviewWithParameters:parameters completion:nil];
 }
@@ -2916,7 +2916,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
-    RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    RoomPreviewScreenParameters *parameters = [[RoomPreviewScreenParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
     
     [self showRoomPreviewWithParameters:parameters];
 }

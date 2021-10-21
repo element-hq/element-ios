@@ -864,8 +864,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Do not stack views when showing room
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
-    RoomScreenParameters *parameters = [[RoomScreenParameters alloc] initWithRoomId:roomId eventId:nil
-                                                                                      mxSession:matrixSession presentationParameters:presentationParameters];
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                    eventId:nil
+                                                                                  mxSession:matrixSession
+                                                                     presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
         self.userInteractionEnabled = YES;

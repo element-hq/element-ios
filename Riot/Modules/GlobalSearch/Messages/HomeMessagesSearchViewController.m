@@ -152,7 +152,7 @@
 {
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
-    RoomScreenParameters *parameters = [[RoomScreenParameters alloc] initWithRoomId:roomId
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                         eventId:eventId
                                                                                       mxSession:session
                                                                          presentationParameters:presentationParameters];

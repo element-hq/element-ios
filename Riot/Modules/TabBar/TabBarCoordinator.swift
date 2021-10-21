@@ -373,15 +373,15 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.showRoom(with: roomId, eventId: nil, matrixSession: matrixSession)
     }
     
-    private func showRoom(withPresentationParameters roomScreenParameters: RoomScreenParameters, completion: (() -> Void)?) {
+    private func showRoom(withNavigationParameters roomNavigationParameters: RoomNavigationParameters, completion: (() -> Void)?) {
         
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                  session: roomScreenParameters.mxSession,
-                                                                  roomId: roomScreenParameters.roomId,
-                                                                  eventId: roomScreenParameters.eventId)
+                                                                  session: roomNavigationParameters.mxSession,
+                                                                  roomId: roomNavigationParameters.roomId,
+                                                                  eventId: roomNavigationParameters.eventId)
         
         self.showRoom(with: roomCoordinatorParameters,
-                      stackOnSplitViewDetail: roomScreenParameters.presentationParameters.stackAboveVisibleViews,
+                      stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,
                       completion: completion)
     }
         
@@ -528,8 +528,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
 // MARK: - MasterTabBarControllerDelegate
 extension TabBarCoordinator: MasterTabBarControllerDelegate {
        
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomWith roomScreenParameters: RoomScreenParameters!, completion: (() -> Void)!) {
-        self.showRoom(withPresentationParameters: roomScreenParameters, completion: completion)
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomWith roomNavigationParameters: RoomNavigationParameters!, completion: (() -> Void)!) {
+        self.showRoom(withNavigationParameters: roomNavigationParameters, completion: completion)
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomPreviewWith roomPreviewScreenParameters: RoomPreviewScreenParameters!, completion: (() -> Void)!) {

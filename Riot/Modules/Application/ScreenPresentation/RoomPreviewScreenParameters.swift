@@ -19,7 +19,7 @@ import Foundation
 /// Presentation parameters to display a preview of a room that is unknown for the user.
 /// This room can come from an email invitation link or a simple link to a room.
 @objcMembers
-class RoomPreviewScreenParameters: RoomScreenParameters {
+class RoomPreviewScreenParameters: RoomNavigationParameters {
     
     // MARK: - Properties
 
