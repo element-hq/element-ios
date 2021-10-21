@@ -1251,8 +1251,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *fragment = universalLinkParameters.fragment;
     NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
-    ScreenPresentationParameters *universalLinkPresentationParameters = universalLinkParameters.presentationParameters;
-    BOOL restoreInitialDisplay = universalLinkPresentationParameters.restoreInitialDisplay;
+    ScreenPresentationParameters *screenPresentationParameters = universalLinkParameters.presentationParameters;
+    BOOL restoreInitialDisplay = screenPresentationParameters.restoreInitialDisplay;
     
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
@@ -1354,14 +1354,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
+                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:screenPresentationParameters];
                     
                     [self showSpaceWithParameters:spaceNavigationParameters];
                 }
                 else
                 {
                     // Open the room page
-                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: universalLinkPresentationParameters];
+                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: screenPresentationParameters];
                     
                     [self showRoomWithParameters:roomNavigationParameters];
                 }
@@ -1411,7 +1411,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     {
                                         universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
-                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:universalLinkPresentationParameters];
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:screenPresentationParameters];
                                         
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1470,14 +1470,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
-                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:universalLinkPresentationParameters];
+                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:screenPresentationParameters];
                             
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
                                 {
                                     [homeViewController stopActivityIndicator];
                                     
-                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:universalLinkPresentationParameters];
+                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:screenPresentationParameters];
                                     
                                     [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];  
                                 }
@@ -1555,7 +1555,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         // Create the contact related to this member
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-        [self showContact:contact presentationParameters:universalLinkPresentationParameters];
+        [self showContact:contact presentationParameters:screenPresentationParameters];
 
         continueUserActivity = YES;
     }
@@ -1574,7 +1574,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             
             // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:universalLinkPresentationParameters];
+            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:screenPresentationParameters];
             
             continueUserActivity = YES;
         }
