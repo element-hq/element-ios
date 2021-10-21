@@ -247,7 +247,7 @@
 {
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
-    RoomPreviewScreenParameters *parameters = [[RoomPreviewScreenParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
     [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
 }
 

@@ -16,10 +16,10 @@
 
 import Foundation
 
-/// Presentation parameters to display a preview of a room that is unknown for the user.
+/// Navigation parameters to display a preview of a room that is unknown for the user.
 /// This room can come from an email invitation link or a simple link to a room.
 @objcMembers
-class RoomPreviewScreenParameters: RoomNavigationParameters {
+class RoomPreviewNavigationParameters: RoomNavigationParameters {
     
     // MARK: - Properties
 
@@ -33,6 +33,7 @@ class RoomPreviewScreenParameters: RoomNavigationParameters {
 
         super.init(roomId: previewData.roomId,
                    eventId: previewData.eventId,
-                   mxSession: previewData.mxSession, presentationParameters: presentationParameters)
+                   mxSession: previewData.mxSession,
+                   presentationParameters: presentationParameters)
     }
 }

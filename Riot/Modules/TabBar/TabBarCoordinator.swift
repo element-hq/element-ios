@@ -405,13 +405,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.showRoom(with: roomCoordinatorParameters)
     }
     
-    private func showRoomPreview(withPresentationParameters roomPreviewScreenParameters: RoomPreviewScreenParameters, completion: (() -> Void)?) {
+    private func showRoomPreview(withNavigationParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
         
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                  previewData: roomPreviewScreenParameters.previewData)
+                                                                  previewData: roomPreviewNavigationParameters.previewData)
         
         self.showRoom(with: roomCoordinatorParameters,
-                      stackOnSplitViewDetail: roomPreviewScreenParameters.presentationParameters.stackAboveVisibleViews,
+                      stackOnSplitViewDetail: roomPreviewNavigationParameters.presentationParameters.stackAboveVisibleViews,
                       completion: completion)
     }
     
@@ -532,8 +532,8 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         self.showRoom(withNavigationParameters: roomNavigationParameters, completion: completion)
     }
     
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomPreviewWith roomPreviewScreenParameters: RoomPreviewScreenParameters!, completion: (() -> Void)!) {
-        self.showRoomPreview(withPresentationParameters: roomPreviewScreenParameters, completion: completion)
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelectRoomPreviewWith roomPreviewScreenParameters: RoomPreviewNavigationParameters!, completion: (() -> Void)!) {
+        self.showRoomPreview(withNavigationParameters: roomPreviewScreenParameters, completion: completion)
     }
     
     func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect contact: MXKContact!, with presentationParameters: ScreenPresentationParameters!) {

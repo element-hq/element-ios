@@ -1470,7 +1470,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
-                            RoomPreviewScreenParameters *roomPreviewScreenParameters = [[RoomPreviewScreenParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:universalLinkPresentationParameters];
+                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:universalLinkPresentationParameters];
                             
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
@@ -1483,10 +1483,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 }
                                 else
                                 {
-                                    [self peekInRoomWithPresentationParameters:roomPreviewScreenParameters pathParams:pathParams];
+                                    [self peekInRoomWithNavigationParameters:roomPreviewNavigationParameters pathParams:pathParams];
                                 }
                             } failure:^(NSError *error) {
-                                [self peekInRoomWithPresentationParameters:roomPreviewScreenParameters pathParams:pathParams];
+                                [self peekInRoomWithNavigationParameters:roomPreviewNavigationParameters pathParams:pathParams];
                             }];
                         }
                         
@@ -1637,7 +1637,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)peekInRoomWithPresentationParameters:(RoomPreviewScreenParameters*)presentationParameters pathParams:(NSArray<NSString*> *)pathParams
+- (void)peekInRoomWithNavigationParameters:(RoomPreviewNavigationParameters*)presentationParameters pathParams:(NSArray<NSString*> *)pathParams
 {
     RoomPreviewData *roomPreviewData = presentationParameters.previewData;
     NSString *roomIdOrAlias = presentationParameters.roomId;
@@ -2888,7 +2888,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     [self showRoomWithParameters:parameters];
 }
 
-- (void)showRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters completion:(void (^)(void))completion
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion
 {
     void (^showRoomPreview)(void) = ^() {
         [self.masterTabBarController selectRoomPreviewWithParameters:parameters completion:completion];
@@ -2906,7 +2906,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters
 {
     [self showRoomPreviewWithParameters:parameters completion:nil];
 }
@@ -2916,7 +2916,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Ask to restore initial display
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
-    RoomPreviewScreenParameters *parameters = [[RoomPreviewScreenParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
     
     [self showRoomPreviewWithParameters:parameters];
 }
