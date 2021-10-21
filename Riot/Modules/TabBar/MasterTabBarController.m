@@ -599,7 +599,7 @@
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
-- (void)selectRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters completion:(void (^)(void))completion
+- (void)selectRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters completion:(void (^)(void))completion
 {
     [self releaseSelectedItem];
     

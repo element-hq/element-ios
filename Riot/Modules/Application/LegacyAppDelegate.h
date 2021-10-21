@@ -32,7 +32,7 @@
 @class CallBar;
 @class CallPresenter;
 @class RoomScreenParameters;
-@class RoomPreviewPresentationParameters;
+@class RoomPreviewScreenParameters;
 @class UniversalLinkParameters;
 
 #pragma mark - Notifications
@@ -218,9 +218,9 @@ UINavigationControllerDelegate
 - (void)createDirectChatWithUserId:(NSString*)userId completion:(void (^)(void))completion;
 
 // Show room preview
-- (void)showRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters completion:(void (^)(void))completion;
+- (void)showRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters completion:(void (^)(void))completion;
 
-- (void)showRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)parameters;
+- (void)showRoomPreviewWithParameters:(RoomPreviewScreenParameters*)parameters;
 
 // Restore display and show the room preview
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData;
