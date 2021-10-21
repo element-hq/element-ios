@@ -16,7 +16,7 @@
 
 import Foundation
 
-/// Presentation parameters used when a universal link is triggered
+/// Screen presentation parameters used when a universal link is triggered
 @objcMembers
 class ScreenPresentationParameters: NSObject {
     
