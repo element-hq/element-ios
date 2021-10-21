@@ -586,7 +586,7 @@
     }
 }
 
-- (void)selectRoomWithParameters:(RoomPresentationParameters*)paramaters completion:(void (^)(void))completion
+- (void)selectRoomWithParameters:(RoomScreenParameters*)paramaters completion:(void (^)(void))completion
 {
     [self releaseSelectedItem];
     

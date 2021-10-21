@@ -18,7 +18,7 @@ import Foundation
 
 /// Presentation parameters to display a room with a provided identifier in a specific matrix session.
 @objcMembers
-class RoomPresentationParameters: NSObject {
+class RoomScreenParameters: NSObject {
     
     // MARK: - Properties
 
