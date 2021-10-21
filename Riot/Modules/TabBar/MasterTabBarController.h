@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @protocol MasterTabBarControllerDelegate;
 @class RoomPresentationParameters;
 @class RoomPreviewPresentationParameters;
-@class UniversalLinkPresentationParameters;
+@class ScreenPresentationParameters;
 
 @interface MasterTabBarController : UITabBarController
 
@@ -97,7 +97,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
  */
 - (void)selectContact:(MXKContact*)contact;
 
-- (void)selectContact:(MXKContact*)contact withPresentationParameters:(UniversalLinkPresentationParameters*)presentationParameters;
+- (void)selectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
 
 /**
  Open a GroupDetailsViewController to display the information of the provided group.
@@ -107,7 +107,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
  */
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession;
 
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(UniversalLinkPresentationParameters*)presentationParameters;
+- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
 
 /**
  Release the current selected item (if any).
@@ -194,7 +194,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomWithParameters:(RoomPresentationParameters*)roomPresentationParameters completion:(void (^)(void))completion;
 - (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectRoomPreviewWithParameters:(RoomPreviewPresentationParameters*)roomPreviewPresentationParameters completion:(void (^)(void))completion;
 
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact withPresentationParameters:(UniversalLinkPresentationParameters*)presentationParameters;
-- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(UniversalLinkPresentationParameters*)presentationParameters;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters;
+- (void)masterTabBarController:(MasterTabBarController *)masterTabBarController didSelectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters;
 
 @end

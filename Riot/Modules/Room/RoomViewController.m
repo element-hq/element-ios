@@ -2202,9 +2202,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return [[AppDelegate theDelegate] showAlertWithTitle:title message:message];
 }
 
-- (UniversalLinkPresentationParameters*)buildUniversalLinkPresentationParameters
+- (ScreenPresentationParameters*)buildUniversalLinkPresentationParameters
 {
-    return [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
+    return [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:BuildSettings.allowSplitViewDetailsScreenStacking sender:self sourceView:nil];
 }
 
 - (BOOL)handleUniversalLinkURL:(NSURL*)universalLinkURL

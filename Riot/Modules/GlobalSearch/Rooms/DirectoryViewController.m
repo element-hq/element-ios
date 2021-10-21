@@ -234,7 +234,7 @@
 
 - (void)showRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
 {
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId eventId:nil mxSession:mxSession
                                                                          presentationParameters:presentationParameters];
@@ -243,7 +243,7 @@
 
 - (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
 {
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
     [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];

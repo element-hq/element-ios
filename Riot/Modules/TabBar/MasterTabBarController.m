@@ -616,12 +616,12 @@
 
 - (void)selectContact:(MXKContact*)contact
 {
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
     [self selectContact:contact withPresentationParameters:presentationParameters];
 }
 
-- (void)selectContact:(MXKContact*)contact withPresentationParameters:(UniversalLinkPresentationParameters*)presentationParameters
+- (void)selectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters
 {
     [self releaseSelectedItem];
     
@@ -634,12 +634,12 @@
 
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
 {
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
     [self selectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
 }
 
-- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(UniversalLinkPresentationParameters*)presentationParameters
+- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters
 {
     [self releaseSelectedItem];
     

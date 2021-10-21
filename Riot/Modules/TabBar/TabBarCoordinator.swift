@@ -340,7 +340,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     // FIXME: Should be displayed from a tab.
-    private func showContactDetails(with contact: MXKContact, presentationParameters: UniversalLinkPresentationParameters) {
+    private func showContactDetails(with contact: MXKContact, presentationParameters: ScreenPresentationParameters) {
         
         let coordinatorParameters = ContactDetailsCoordinatorParameters(contact: contact)
         let coordinator = ContactDetailsCoordinator(parameters: coordinatorParameters)
@@ -353,7 +353,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     // FIXME: Should be displayed from a tab.
-    private func showGroupDetails(with group: MXGroup, for matrixSession: MXSession, presentationParameters: UniversalLinkPresentationParameters) {
+    private func showGroupDetails(with group: MXGroup, for matrixSession: MXSession, presentationParameters: ScreenPresentationParameters) {
         let coordinatorParameters = GroupDetailsCoordinatorParameters(session: matrixSession, group: group)
         let coordinator = GroupDetailsCoordinator(parameters: coordinatorParameters)
         coordinator.start()
@@ -536,7 +536,7 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         self.showRoomPreview(withPresentationParameters: roomPreviewPresentationParameters, completion: completion)
     }
     
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect contact: MXKContact!, with presentationParameters: UniversalLinkPresentationParameters!) {
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect contact: MXKContact!, with presentationParameters: ScreenPresentationParameters!) {
         self.showContactDetails(with: contact, presentationParameters: presentationParameters)
     }
         
@@ -548,7 +548,7 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession, completion: completion)
     }
     
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect group: MXGroup!, inMatrixSession matrixSession: MXSession!, presentationParameters: UniversalLinkPresentationParameters!) {
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, didSelect group: MXGroup!, inMatrixSession matrixSession: MXSession!, presentationParameters: ScreenPresentationParameters!) {
         self.showGroupDetails(with: group, for: matrixSession, presentationParameters: presentationParameters)
     }
     

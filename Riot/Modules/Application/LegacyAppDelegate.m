@@ -1240,7 +1240,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
 
 {
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
     
     UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
     
@@ -1251,7 +1251,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *fragment = universalLinkParameters.fragment;
     NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
-    UniversalLinkPresentationParameters *universalLinkPresentationParameters = universalLinkParameters.presentationParameters;
+    ScreenPresentationParameters *universalLinkPresentationParameters = universalLinkParameters.presentationParameters;
     BOOL restoreInitialDisplay = universalLinkPresentationParameters.restoreInitialDisplay;
     
     BOOL continueUserActivity = NO;
@@ -2880,7 +2880,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
     // Ask to restore initial display
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
     RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId
                                                                                         eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
@@ -2914,7 +2914,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
 {
     // Ask to restore initial display
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
     RoomPreviewPresentationParameters *parameters = [[RoomPreviewPresentationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
     
@@ -3109,7 +3109,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Contacts handling
 
-- (void)showContact:(MXKContact*)contact presentationParameters:(UniversalLinkPresentationParameters*)presentationParameters
+- (void)showContact:(MXKContact*)contact presentationParameters:(ScreenPresentationParameters*)presentationParameters
 {
     void(^showContact)(void) = ^{
         [self.masterTabBarController selectContact:contact withPresentationParameters:presentationParameters];
@@ -3129,7 +3129,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Matrix Groups handling
 
-- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession presentationParamters:(UniversalLinkPresentationParameters*)presentationParameters
+- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession presentationParamters:(ScreenPresentationParameters*)presentationParameters
 {
     void(^showGroup)(void) = ^{
         // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)

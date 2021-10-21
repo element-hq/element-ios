@@ -150,7 +150,7 @@
             andEventId:(NSString*)eventId
        inMatrixSession:(MXSession*)session
 {
-    UniversalLinkPresentationParameters *presentationParameters = [[UniversalLinkPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomPresentationParameters *parameters = [[RoomPresentationParameters alloc] initWithRoomId:roomId
                                                                                         eventId:eventId

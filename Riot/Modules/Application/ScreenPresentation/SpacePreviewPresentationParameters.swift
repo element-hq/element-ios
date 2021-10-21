@@ -29,7 +29,7 @@ class SpacePreviewPresentationParameters: SpacePresentationParameters {
     
     init(publicRoom: MXPublicRoom,
          mxSession: MXSession,
-         presentationParameters: UniversalLinkPresentationParameters) {
+         presentationParameters: ScreenPresentationParameters) {
         self.publicRoom = publicRoom
         
         super.init(roomId: publicRoom.roomId, mxSession: mxSession, presentationParameters: presentationParameters)

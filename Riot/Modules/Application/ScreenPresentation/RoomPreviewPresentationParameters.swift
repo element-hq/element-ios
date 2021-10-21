@@ -28,7 +28,7 @@ class RoomPreviewPresentationParameters: RoomPresentationParameters {
     
     // MARK: - Setup
     
-    init(previewData: RoomPreviewData, presentationParameters: UniversalLinkPresentationParameters) {
+    init(previewData: RoomPreviewData, presentationParameters: ScreenPresentationParameters) {
         self.previewData = previewData
 
         super.init(roomId: previewData.roomId,

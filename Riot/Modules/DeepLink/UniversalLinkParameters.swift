@@ -29,13 +29,13 @@ class UniversalLinkParameters: NSObject {
     let fragment: String
         
     /// Presentation parameters
-    let presentationParameters: UniversalLinkPresentationParameters
+    let presentationParameters: ScreenPresentationParameters
     
     // MARK: - Setup
     
     init(fragment: String,
          universalLinkURL: URL,
-         presentationParameters: UniversalLinkPresentationParameters) {
+         presentationParameters: ScreenPresentationParameters) {
         self.fragment = fragment
         self.universalLinkURL = universalLinkURL
         self.presentationParameters = presentationParameters
@@ -44,7 +44,7 @@ class UniversalLinkParameters: NSObject {
     }
     
     convenience init?(universalLinkURL: URL,
-                      presentationParameters: UniversalLinkPresentationParameters) {
+                      presentationParameters: ScreenPresentationParameters) {
         
         guard let fixedURL = Tools.fixURL(withSeveralHashKeys: universalLinkURL), let fragment = fixedURL.fragment else {
             return nil

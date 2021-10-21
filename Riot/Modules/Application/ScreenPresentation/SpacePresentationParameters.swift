@@ -29,13 +29,13 @@ class SpacePresentationParameters: NSObject {
     let mxSession: MXSession
     
     /// Universal link presentation parameters.
-    let presentationParameters: UniversalLinkPresentationParameters
+    let presentationParameters: ScreenPresentationParameters
     
     // MARK: - Setup
     
     init(roomId: String,
          mxSession: MXSession,
-         presentationParameters: UniversalLinkPresentationParameters) {
+         presentationParameters: ScreenPresentationParameters) {
         self.roomId = roomId
         self.mxSession = mxSession
         self.presentationParameters = presentationParameters
