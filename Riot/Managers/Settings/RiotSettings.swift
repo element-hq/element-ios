@@ -233,9 +233,6 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "settingsScreenShowChangePassword", defaultValue: BuildSettings.settingsScreenShowChangePassword, storage: defaults)
     var settingsScreenShowChangePassword
     
-    @UserDefault(key: "settingsScreenShowInviteFriends", defaultValue: BuildSettings.settingsScreenShowInviteFriends, storage: defaults)
-    var settingsScreenShowInviteFriends
-    
     @UserDefault(key: "settingsScreenShowEnableStunServerFallback", defaultValue: BuildSettings.settingsScreenShowEnableStunServerFallback, storage: defaults)
     var settingsScreenShowEnableStunServerFallback
     

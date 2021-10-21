@@ -21,5 +21,4 @@ enum SettingsDiscoveryViewAction {
     case load
     case acceptTerms
     case select(threePid: MX3PID)
-    case tapUserSettingsLink
 }

@@ -457,7 +457,6 @@ Tap the + to start adding people.";
 "settings_report_bug" = "Report bug";
 "settings_clear_cache" = "Clear cache";
 "settings_config_home_server" = "Homeserver is %@";
-"settings_config_identity_server" = "Identity server is %@";
 "settings_config_user_id" = "Logged in as %@";
 
 "settings_user_settings" = "USER SETTINGS";
@@ -473,7 +472,7 @@ Tap the + to start adding people.";
 "settings_contacts" = "DEVICE CONTACTS";
 "settings_phone_contacts" = "PHONE CONTACTS";
 "settings_advanced" = "ADVANCED";
-"settings_other" = "OTHER";
+"settings_about" = "ABOUT";
 "settings_labs" = "LABS";
 "settings_flair" = "Show flair where allowed";
 "settings_devices" = "SESSIONS";
@@ -629,6 +628,7 @@ Tap the + to start adding people.";
 
 "settings_discovery_no_identity_server" = "You are not currently using an identity server. To be discoverable by existing contacts you known, add one.";
 "settings_discovery_terms_not_signed" = "Agree to the identity server (%@) Terms of Service to allow yourself to be discoverable by email address or phone number.";
+"settings_discovery_accept_terms" = "Accept Identity Server Terms";
 "settings_discovery_three_pids_management_information_part1" = "Manage which email addresses or phone numbers other users can use to discover you and use to invite you to rooms. Add or remove email addresses or phone numbers from this list in ";
 "settings_discovery_three_pids_management_information_part2" = "User Settings";
 "settings_discovery_three_pids_management_information_part3" = ".";
