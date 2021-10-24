@@ -77,7 +77,7 @@
 "auth_missing_phone" = "Telefoonnummer ontbreekt";
 "auth_missing_email_or_phone" = "E-mailadres of telefoonnummer ontbreekt";
 "auth_password_dont_match" = "De wachtwoorden komen niet overeen";
-"auth_username_in_use" = "De gebruikersnaam is al in gebruik";
+"auth_username_in_use" = "Inlognaam al in gebruik";
 "auth_forgot_password" = "Wachtwoord vergeten?";
 "auth_use_server_options" = "Aangepaste serverinstellingen gebruiken (geavanceerd)";
 "auth_email_validation_message" = "Bekijk uw e-mail om verder te gaan met de registratie";
@@ -109,7 +109,7 @@
 "room_creation_keep_private" = "Privé houden";
 "room_creation_make_private" = "Privé maken";
 "room_creation_wait_for_creation" = "Er wordt al een kamer aangemaakt. Even geduld.";
-"room_creation_invite_another_user" = "Zoeken/uitnodigen met gebruikers-ID, naam of e-mailadres";
+"room_creation_invite_another_user" = "Persoon-ID, naam of e-mail";
 // Room recents
 "room_recents_directory_section" = "KAMERGIDS";
 "room_recents_favourites_section" = "FAVORIETEN";
@@ -261,7 +261,7 @@
 "settings_user_settings" = "GEBRUIKERSINSTELLINGEN";
 "settings_notifications_settings" = "MELDINGSINSTELLINGEN";
 "settings_ignored_users" = "GENEGEERDE GEBRUIKERS";
-"settings_contacts" = "LOKALE CONTACTEN";
+"settings_contacts" = "APPARAAT CONTACTEN";
 "settings_advanced" = "GEAVANCEERD";
 "settings_other" = "OVERIGE";
 "settings_labs" = "EXPERIMENTEEL";
@@ -1371,7 +1371,7 @@
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_discovery_three_pids_management_information_part2" = "Gebruikersinstellingen";
 "settings_discovery_three_pids_management_information_part1" = "Beheer e-mailadressen en telefoonnummers die andere personen kunnen gebruiken om u te vinden en u uit te nodigen voor kamers. E-mailadressen of telefoonnummers toevoegen of verwijderen van deze lijst kan in ";
-"settings_discovery_terms_not_signed" = "Aanvaard de gebruikersvoorwaarden van de identiteitsserver (%@) om vindbaar te zijn op e-mailadres of telefoonnummer.";
+"settings_discovery_terms_not_signed" = "Aanvaard de voorwaarden van de identiteitsserver (%@) om vindbaar te zijn op e-mailadres of telefoonnummer.";
 "settings_discovery_no_identity_server" = "U gebruikt momenteel geen identiteitsserver. Om door de u bekende contacten vindbaar te zijn, voeg er een toe.";
 "settings_devices_description" = "De publieke naam van een sessie is zichtbaar voor de personen waarmee u communiceert";
 "settings_add_3pid_invalid_password_message" = "Ongeldig wachtwoord";
@@ -1606,3 +1606,29 @@
 "spaces_suggested_room" = "Aanbevolen";
 "done" = "Klaar";
 "open" = "Openen";
+"space_home_show_all_rooms" = "Alle kamers tonen";
+"service_terms_modal_information_description_integration_manager" = "Met een integratiebeheerder kunt u functies van derden toevoegen.";
+"service_terms_modal_information_description_identity_server" = "Een identiteitsserver helpt u uw contactpersonen te vinden, door hun telefoonnummer of e-mail op te zoeken, om te zien of zij al een account hebben.";
+"service_terms_modal_information_title_integration_manager" = "Integratiebeheerder";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Indentiteitsserver";
+"service_terms_modal_description_integration_manager" = "Hiermee kunt u bots, bruggen, widgets en stickerpakketten gebruiken.";
+"service_terms_modal_description_identity_server" = "Zo kan iemand u vinden als hij uw telefoonnummer of e-mail in zijn telefooncontacten heeft opgeslagen.";
+"service_terms_modal_table_header_integration_manager" = "INTEGRATIEBEHEERDER VOORWAARDEN";
+"service_terms_modal_table_header_identity_server" = "IDENTITEITSSERVER VOORWAARDEN";
+"service_terms_modal_footer" = "Dit kan elk moment worden uitgeschakeld in uw instellingen.";
+
+// Service terms
+"service_terms_modal_title_message" = "Om door te gaan, aanvaard de onderstaande voorwaarden";
+"settings_contacts_enable_sync_description" = "Dit zal uw identiteitsserver gebruiken om u te verbinden met uw contacten, en hen helpen u te vinden.";
+"settings_contacts_enable_sync" = "Vind uw contacten";
+"settings_phone_contacts" = "TELEFOON CONTACTEN";
+"room_event_action_forward" = "Doorsturen";
+"find_your_contacts_identity_service_error" = "Kan geen verbinding maken met de identiteitsserver.";
+"find_your_contacts_footer" = "Dit kan op elk moment worden uitgeschakeld via de instellingen.";
+"find_your_contacts_button_title" = "Vind uw contacten";
+"find_your_contacts_message" = "Laat %@ uw contacten zien, zodat u snel kunt beginnen te chatten met degenen die u het beste kent.";
+"find_your_contacts_title" = "Begin met een lijst van uw contacten";
+"contacts_address_book_permission_denied_alert_message" = "Om contacten in te schakelen, ga naar uw apparaatinstellingen.";
+"contacts_address_book_permission_denied_alert_title" = "Contacten uitgeschakeld";
