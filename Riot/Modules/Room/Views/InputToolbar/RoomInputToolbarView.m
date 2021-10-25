@@ -85,6 +85,10 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     [self updateUIWithTextMessage:nil animated:NO];
     
     self.textView.toolbarDelegate = self;
+    
+    // Add an accessory view to the text view in order to retrieve keyboard view.
+    inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.textView.inputAccessoryView = inputAccessoryView;
 }
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
