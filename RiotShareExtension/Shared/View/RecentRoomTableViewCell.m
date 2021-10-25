@@ -57,6 +57,7 @@
     
     self.roomTitleLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
     self.contentView.backgroundColor = ThemeService.shared.theme.backgroundColor;
+    self.selectionButton.tintColor = ThemeService.shared.theme.tintColor;
     
     [self.selectionButton setImage:[UIImage imageNamed:@"radio-button-default"] forState:UIControlStateNormal];
     [self.selectionButton setImage:[UIImage imageNamed:@"radio-button-selected"] forState:UIControlStateSelected];
