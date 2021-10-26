@@ -14,26 +14,91 @@
 // limitations under the License.
 //
 
-import GrowingTextView
-
 @objc protocol RoomInputToolbarTextViewDelegate: AnyObject {
+    func textView(_ textView: RoomInputToolbarTextView, didChangeHeight height: CGFloat)
     func textView(_ textView: RoomInputToolbarTextView, didReceivePasteForMediaFromSender sender: Any?)
 }
 
-class RoomInputToolbarTextView: GrowingTextView {
+@objcMembers
+class RoomInputToolbarTextView: UITextView {
     
-    @objc weak var toolbarDelegate: RoomInputToolbarTextViewDelegate?
+    private var heightConstraint: NSLayoutConstraint!
+        
+    weak var toolbarDelegate: RoomInputToolbarTextViewDelegate?
+        
+    var placeholder: String?
+    var placeholderColor: UIColor = UIColor(white: 0.8, alpha: 1.0)
     
-    override var keyCommands: [UIKeyCommand]? {
-        return [UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(keyCommandSelector(_:)))]
+    var minHeight: CGFloat = 30.0 {
+        didSet {
+            updateUI()
+        }
     }
     
-    @objc private func keyCommandSelector(_ keyCommand: UIKeyCommand) {
-        guard keyCommand.input == "\r", let delegate = (self.delegate as? RoomInputToolbarView) else {
+    var maxHeight: CGFloat = 0.0 {
+        didSet {
+            updateUI()
+        }
+    }
+    
+    override var text: String! {
+        didSet {
+            updateUI()
+        }
+    }
+    
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        contentMode = .redraw
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: UITextView.textDidChangeNotification, object: self)
+        
+        if let heightConstraint = constraints.filter({ $0.firstAttribute == .height && $0.relation == .equal }).first {
+            self.heightConstraint = heightConstraint
+        } else {
+            heightConstraint = self.heightAnchor.constraint(equalToConstant: minHeight)
+            addConstraint(heightConstraint)
+        }
+    }
+    
+    // MARK: - Overrides
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateUI()
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        guard text.isEmpty, let placeholder = placeholder else {
             return
         }
         
-        delegate.onTouchUp(inside: delegate.rightInputToolbarButton)
+        var attributes: [NSAttributedString.Key: Any] = [.foregroundColor: placeholderColor]
+        if let font = font {
+            attributes[.font] = font
+        }
+        
+        let frame = rect.inset(by: .init(top: textContainerInset.top,
+                                         left: textContainerInset.left + textContainer.lineFragmentPadding,
+                                         bottom: textContainerInset.bottom,
+                                         right: textContainerInset.right))
+        
+        placeholder.draw(in: frame, withAttributes: attributes)
+    }
+    
+    override var keyCommands: [UIKeyCommand]? {
+        return [UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(keyCommandSelector(_:)))]
     }
     
     /// Overrides paste to handle images pasted from Safari, passing them up to the input toolbar.
@@ -48,5 +113,37 @@ class RoomInputToolbarTextView: GrowingTextView {
         } else {
             super.paste(sender)
         }
+    }
+    
+    // MARK: - Private
+
+    @objc private func textDidChange(notification: Notification) {
+        if let sender = notification.object as? RoomInputToolbarTextView, sender == self {
+            updateUI()
+        }
+    }
+    
+    private func updateUI() {
+        var height = sizeThatFits(CGSize(width: bounds.size.width, height: CGFloat.greatestFiniteMagnitude)).height
+        height = minHeight > 0 ? max(height, minHeight) : height
+        height = maxHeight > 0 ? min(height, maxHeight) : height
+        
+        // Update placeholder
+        self.setNeedsDisplay()
+        
+        guard height != heightConstraint.constant else {
+            return
+        }
+        
+        heightConstraint.constant = height
+        toolbarDelegate?.textView(self, didChangeHeight: height)
+    }
+    
+    @objc private func keyCommandSelector(_ keyCommand: UIKeyCommand) {
+        guard keyCommand.input == "\r", let delegate = (self.delegate as? RoomInputToolbarView) else {
+            return
+        }
+        
+        delegate.onTouchUp(inside: delegate.rightInputToolbarButton)
     }
 }
