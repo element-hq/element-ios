@@ -17,7 +17,7 @@
 
 #import "GroupHomeViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "ThemeService.h"
 #import "Tools.h"

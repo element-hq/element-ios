@@ -18,3 +18,5 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "Pods/Target Support Files/Pods-RiotTests/Pods-RiotTests.debug.xcconfig"
+
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h

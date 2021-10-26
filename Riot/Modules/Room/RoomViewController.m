@@ -131,7 +131,7 @@
 
 #import "MXSDKOptions.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";

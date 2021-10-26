@@ -17,7 +17,7 @@
 
 #import "MediaPickerViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import <Photos/Photos.h>
 

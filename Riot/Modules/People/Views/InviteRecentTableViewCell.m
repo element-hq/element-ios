@@ -22,7 +22,7 @@
 #import "MXEvent.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #pragma mark - Constant definitions
 

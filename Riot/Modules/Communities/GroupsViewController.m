@@ -19,7 +19,7 @@
 #import "GroupTableViewCell.h"
 #import "GroupInviteTableViewCell.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface GroupsViewController ()
 {

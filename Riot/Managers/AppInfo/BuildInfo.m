@@ -16,11 +16,7 @@
 
 #import "BuildInfo.h"
 
-#ifdef IS_SHARE_EXTENSION
-#import "RiotShareExtension-Swift.h"
-#else
-#import "Riot-Swift.h"
-#endif
+#import "GeneratedInterface-Swift.h"
 
 #define MAKE_STRING(x) #x
 #define MAKE_NS_STRING(x) @MAKE_STRING(x)

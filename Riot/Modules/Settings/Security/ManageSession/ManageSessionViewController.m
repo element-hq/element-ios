@@ -24,7 +24,7 @@
 
 #import "ThemeService.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 
 enum

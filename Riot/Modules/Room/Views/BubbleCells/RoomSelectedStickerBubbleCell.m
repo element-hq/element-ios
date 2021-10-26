@@ -25,7 +25,7 @@
 #import "RoomIncomingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation RoomSelectedStickerBubbleCell
 

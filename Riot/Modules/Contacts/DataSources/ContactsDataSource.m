@@ -21,7 +21,7 @@
 #import "LocalContactsSectionHeaderContainerView.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #define CONTACTSDATASOURCE_LOCALCONTACTS_BITWISE 0x01
 #define CONTACTSDATASOURCE_USERDIRECTORY_BITWISE 0x02
