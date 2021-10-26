@@ -13,33 +13,23 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="68" id="gUf-SL-Ia7" customClass="SpaceChildLoadingViewCell" customModule="Riot" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="gUf-SL-Ia7" id="YoL-49-1Hj">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gUf-SL-Ia7" id="YoL-49-1Hj">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5jj-Mm-zIy" customClass="CircleProgressView" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="145" y="17" width="30" height="30"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="30" id="te7-y9-XYx"/>
-                            <constraint firstAttribute="width" constant="30" id="wyU-vS-Ya3"/>
-                        </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                <real key="value" value="3"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </view>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Tld-uY-uDU">
+                        <rect key="frame" x="141.5" y="17" width="37" height="34"/>
+                    </activityIndicatorView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="5jj-Mm-zIy" firstAttribute="top" secondItem="YoL-49-1Hj" secondAttribute="top" constant="17" id="8Pv-JU-gCS"/>
-                    <constraint firstAttribute="bottom" secondItem="5jj-Mm-zIy" secondAttribute="bottom" constant="17" id="Mun-fA-Ipo"/>
-                    <constraint firstItem="5jj-Mm-zIy" firstAttribute="centerX" secondItem="YoL-49-1Hj" secondAttribute="centerX" id="sbu-fq-yph"/>
+                    <constraint firstAttribute="bottom" secondItem="Tld-uY-uDU" secondAttribute="bottom" constant="17" id="cib-oa-sGv"/>
+                    <constraint firstItem="Tld-uY-uDU" firstAttribute="top" secondItem="YoL-49-1Hj" secondAttribute="top" constant="17" id="fuX-uS-ylN"/>
+                    <constraint firstItem="Tld-uY-uDU" firstAttribute="centerX" secondItem="YoL-49-1Hj" secondAttribute="centerX" id="ots-Sg-fHU"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="wBe-er-msB"/>
             <connections>
-                <outlet property="circleProgressView" destination="5jj-Mm-zIy" id="XHo-F5-Eaf"/>
+                <outlet property="activityIndicator" destination="Tld-uY-uDU" id="mq3-lG-y9D"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="107.14285714285714"/>
         </tableViewCell>

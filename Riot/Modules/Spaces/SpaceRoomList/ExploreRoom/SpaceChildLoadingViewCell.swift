@@ -21,25 +21,12 @@ class SpaceChildLoadingViewCell: UITableViewCell, NibReusable, Themable {
     
     // MARK: - Properties
     
-    @IBOutlet var circleProgressView: CircleProgressView!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
-    // MARK: - Life cycle
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        setupViews()
-    }
-
     // MARK: - Public
     
     func update(theme: Theme) {
-        self.circleProgressView.lineColor = theme.colors.tertiaryContent
-    }
-    
-    // MARK: - Private
-    
-    private func setupViews() {
-        self.circleProgressView.startAnimating()
+        self.activityIndicator.tintColor = theme.colors.tertiaryContent
+        self.activityIndicator.startAnimating()
     }
 }
