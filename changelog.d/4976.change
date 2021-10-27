@@ -1,0 +1,1 @@
+Replaced GrowingTextView with simpler, custom implementation.  Cleaned up the RoomInputToolbar header.
