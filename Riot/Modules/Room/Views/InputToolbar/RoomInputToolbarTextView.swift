@@ -16,7 +16,13 @@
 
 import GrowingTextView
 
+@objc protocol RoomInputToolbarTextViewDelegate: AnyObject {
+    func textView(_ textView: RoomInputToolbarTextView, didReceivePasteForMediaFromSender sender: Any?)
+}
+
 class RoomInputToolbarTextView: GrowingTextView {
+    
+    @objc weak var toolbarDelegate: RoomInputToolbarTextViewDelegate?
     
     override var keyCommands: [UIKeyCommand]? {
         return [UIKeyCommand(input: "\r", modifierFlags: [], action: #selector(keyCommandSelector(_:)))]
@@ -28,5 +34,19 @@ class RoomInputToolbarTextView: GrowingTextView {
         }
         
         delegate.onTouchUp(inside: delegate.rightInputToolbarButton)
-    }    
+    }
+    
+    /// Overrides paste to handle images pasted from Safari, passing them up to the input toolbar.
+    /// This is required as the pasteboard contains both the image and the image's URL, with the
+    /// default implementation choosing to paste the URL and completely ignore the image data.
+    override func paste(_ sender: Any?) {
+        let pasteboard = MXKPasteboardManager.shared.pasteboard
+        let types = pasteboard.types.map { UTI(rawValue: $0) }
+        
+        if types.contains(where: { $0.conforms(to: .image) }) {
+            toolbarDelegate?.textView(self, didReceivePasteForMediaFromSender: sender)
+        } else {
+            super.paste(sender)
+        }
+    }
 }

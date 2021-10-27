@@ -58,7 +58,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     func fill(with viewData: SpaceListItemViewData) {
         self.avatarView.fill(with: viewData.avatarViewData)
         self.titleLabel.text = viewData.title
-        self.moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.homeSpaceId || viewData.isInvite
+        self.moreButton.isHidden = viewData.isInvite
         if viewData.isInvite {
             self.isBadgeAlert = true
             self.badgeLabel.isHidden = false

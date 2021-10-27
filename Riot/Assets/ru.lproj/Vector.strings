@@ -95,7 +95,7 @@
 "room_creation_keep_private" = "Оставить приватным";
 "room_creation_make_private" = "Сделать приватным";
 "room_creation_wait_for_creation" = "Комната уже создана. Подождите.";
-"room_creation_invite_another_user" = "Поиск / приглашение по идентификатору пользователя, имени или адресу электронной почты";
+"room_creation_invite_another_user" = "Идентификатор пользователя, имя или электронная почта";
 // Room recents
 "room_recents_directory_section" = "КАТАЛОГ КОМНАТ";
 "room_recents_favourites_section" = "ИЗБРАННЫЕ";
@@ -237,7 +237,7 @@
 "settings_notifications_settings" = "НАСТРОЙКИ УВЕДОМЛЕНИЙ";
 "settings_user_interface" = "ПОЛЬЗОВАТЕЛЬСКИЙ ИНТЕРФЕЙС";
 "settings_ignored_users" = "ИГНОРИРУЕМЫЕ ПОЛЬЗОВАТЕЛИ";
-"settings_contacts" = "ЛОКАЛЬНЫЕ КОНТАКТЫ";
+"settings_contacts" = "КОНТАКТЫ УСТРОЙСТВА";
 "settings_advanced" = "ДОПОЛНИТЕЛЬНО";
 "settings_other" = "ДРУГИЕ";
 "settings_labs" = "ЛАБОРАТОРИЯ";
@@ -1420,20 +1420,20 @@
 "event_formatter_call_has_ended_with_time" = "Вызов закончен • %@";
 "settings_notifications" = "УВЕДОМЛЕНИЯ";
 "version_check_modal_action_title_deprecated" = "Узнайте, как";
-"version_check_modal_subtitle_deprecated" = "Мы работали над улучшением Element для более быстрой и совершенной работы. К сожалению, ваша текущая версия iOS не совместима с некоторыми из этих исправлений и больше не будет поддерживаться.\nМы советуем вам обновить свою операционную систему, чтобы использовать Element в полной мере.";
+"version_check_modal_subtitle_deprecated" = "Мы работали над улучшением %@ для более быстрой и совершенной работы. К сожалению, ваша текущая версия iOS не совместима с некоторыми из этих исправлений и больше не будет поддерживаться.\nМы советуем вам обновить свою операционную систему, чтобы использовать %@ в полной мере.";
 "version_check_modal_title_deprecated" = "Мы больше не поддерживаем iOS %@";
 "version_check_modal_action_title_supported" = "Понятно";
-"version_check_modal_subtitle_supported" = "Мы работали над улучшением Element для более быстрой и совершенной работы. К сожалению, ваша текущая версия iOS не совместима с некоторыми из этих исправлений и больше не будет поддерживаться.\nМы советуем вам обновить свою операционную систему, чтобы использовать Element в полной мере.";
+"version_check_modal_subtitle_supported" = "Мы работали над улучшением %@ для более быстрой и совершенной работы. К сожалению, ваша текущая версия iOS не совместима с некоторыми из этих исправлений и больше не будет поддерживаться.\nМы советуем вам обновить свою операционную систему, чтобы использовать %@ в полной мере.";
 "version_check_modal_title_supported" = "Мы прекращаем поддержку iOS %@";
-"version_check_banner_subtitle_deprecated" = "Мы больше не поддерживаем Element на iOS %@. Чтобы продолжать использовать Element в полной мере, мы советуем вам обновить версию iOS.";
+"version_check_banner_subtitle_deprecated" = "Мы больше не поддерживаем %@ на iOS %@. Чтобы продолжать использовать %@ в полной мере, мы советуем вам обновить версию iOS.";
 "version_check_banner_title_deprecated" = "Мы больше не поддерживаем iOS %@";
-"version_check_banner_subtitle_supported" = "В ближайшее время мы прекращаем поддержку Element на iOS %@. Чтобы продолжать использовать Element в полной мере, мы советуем вам обновить вашу версию iOS.";
+"version_check_banner_subtitle_supported" = "В ближайшее время мы прекращаем поддержку %@ на iOS %@. Чтобы продолжать использовать %@ в полной мере, мы советуем вам обновить версию iOS.";
 
 // Mark: - Version check
 
 "version_check_banner_title_supported" = "Мы прекращаем поддержку iOS %@";
 "settings_show_url_previews_description" = "Предварительный просмотр будет осуществляться только в незашифрованных комнатах.";
-"settings_show_url_previews" = "Показывать встроенные предварительные просмотры URL-адресов";
+"settings_show_url_previews" = "Предварительный просмотр веб-сайта";
 "settings_mentions_and_keywords_encryption_notice" = "Вы не будете получать уведомления об упоминаниях и ключевых словах в зашифрованных комнатах на мобильных устройствах.";
 "settings_new_keyword" = "Добавить новое ключевое слово";
 "settings_your_keywords" = "Ваши ключевые слова";
@@ -1487,3 +1487,27 @@
 "settings_links" = "ССЫЛКИ";
 "done" = "Готово";
 "open" = "Открыть";
+"service_terms_modal_information_description_integration_manager" = "Менеджер интеграции позволяет добавлять функции от сторонних производителей.";
+"service_terms_modal_information_description_identity_server" = "Сервер идентификации помогает найти контакты, просматривая номер телефона или адрес электронной почты, чтобы узнать, есть ли у них учетная запись.";
+"service_terms_modal_information_title_integration_manager" = "Менеджер интеграции";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Сервер идентификации";
+"service_terms_modal_description_integration_manager" = "Это позволит вам использовать ботов, мосты, виджеты и пакеты стикеров.";
+"service_terms_modal_description_identity_server" = "Это позволит найти вас, если у них есть ваш номер телефона или электронная почта, сохраненные в контактах на его телефоне.";
+"service_terms_modal_table_header_integration_manager" = "УСЛОВИЯ МЕНЕДЖЕРА ИНТЕГРАЦИИ";
+"service_terms_modal_table_header_identity_server" = "УСЛОВИЯ СЕРВЕРА ИДЕНТИФИКАЦИИ";
+"service_terms_modal_footer" = "Это можно отключить в любое время в настройках.";
+
+// Service terms
+"service_terms_modal_title_message" = "Чтобы продолжить, примите приведенные ниже положения и условия";
+"settings_contacts_enable_sync_description" = "Это позволит использовать ваш сервер идентификации для связи с вашими контактами и поможет им найти вас.";
+"settings_contacts_enable_sync" = "Поиск контактов";
+"settings_phone_contacts" = "КОНТАКТЫ ТЕЛЕФОНА";
+"find_your_contacts_identity_service_error" = "Невозможно подключиться к серверу идентификации.";
+"find_your_contacts_footer" = "Это можно отключить в настройках в любое время.";
+"find_your_contacts_button_title" = "Поиск контактов";
+"find_your_contacts_message" = "Пусть %@ покажет ваши контакты, так вы сразу начнёте общаться с теми, кого вы хорошо знаете.";
+"find_your_contacts_title" = "Начните с составления списка контактов";
+"contacts_address_book_permission_denied_alert_message" = "Для включения контактов, перейдите в настройки устройства.";
+"contacts_address_book_permission_denied_alert_title" = "Контакты отключены";

@@ -21,7 +21,35 @@ final class Section: NSObject {
     
     let tag: Int
     var rows: [Row]
-    var headerTitle: String?
+    var attributedHeaderTitle: NSAttributedString?
+    var attributedFooterTitle: NSAttributedString?
+    
+    var headerTitle: String? {
+        get {
+            attributedHeaderTitle?.string
+        }
+        set {
+            guard let newValue = newValue else {
+                attributedHeaderTitle = nil
+                return
+            }
+            
+            attributedHeaderTitle = NSAttributedString(string: newValue)
+        }
+    }
+    var footerTitle: String? {
+        get {
+            attributedFooterTitle?.string
+        }
+        set {
+            guard let newValue = newValue else {
+                attributedFooterTitle = nil
+                return
+            }
+            
+            attributedFooterTitle = NSAttributedString(string: newValue)
+        }
+    }
     
     init(withTag tag: Int) {
         self.tag = tag

@@ -38,7 +38,7 @@ const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
 const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 const CGFloat kComposerContainerTrailingPadding = 12;
 
-@interface RoomInputToolbarView() <GrowingTextViewDelegate>
+@interface RoomInputToolbarView() <GrowingTextViewDelegate, RoomInputToolbarTextViewDelegate>
 {
     // The intermediate action sheet
     UIAlertController *actionSheet;
@@ -83,6 +83,12 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     self.isEncryptionEnabled = _isEncryptionEnabled;
     
     [self updateUIWithTextMessage:nil animated:NO];
+    
+    self.textView.toolbarDelegate = self;
+    
+    // Add an accessory view to the text view in order to retrieve keyboard view.
+    inputAccessoryView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.textView.inputAccessoryView = inputAccessoryView;
 }
 
 - (void)setVoiceMessageToolbarView:(UIView *)voiceMessageToolbarView
@@ -157,6 +163,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     
     self.textView.text = textMessage;
     [self updateUIWithTextMessage:textMessage animated:YES];
+    [self textViewDidChange:self.textView];
 }
 
 - (NSString *)textMessage
@@ -324,7 +331,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 {
     NSString *newText = [textView.text stringByReplacingCharactersInRange:range withString:text];
     [self updateUIWithTextMessage:newText animated:YES];
-
+    
     return YES;
 }
 
@@ -340,6 +347,8 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     {
         [self.delegate roomInputToolbarView:self isTyping:(self.textMessage.length > 0 ? YES : NO)];
     }
+
+    [self.delegate roomInputToolbarViewDidChangeTextMessage:self];
 }
 
 - (void)textViewDidChangeHeight:(GrowingTextView *)textView height:(CGFloat)height
@@ -377,6 +386,16 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     }
 
     [super onTouchUpInside:button];
+}
+
+- (BOOL)becomeFirstResponder
+{
+    return [self.textView becomeFirstResponder];
+}
+
+- (void)dismissKeyboard
+{
+    [self.textView resignFirstResponder];
 }
 
 - (void)destroy
@@ -450,6 +469,11 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     // TODO Custom here the validation screen for each available item
     
     [super paste:sender];
+}
+
+- (void)textView:(GrowingTextView *)textView didReceivePasteForMediaFromSender:(id)sender
+{
+    [self paste:sender];
 }
 
 #pragma mark - Private

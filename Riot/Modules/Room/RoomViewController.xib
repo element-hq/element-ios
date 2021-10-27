@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -32,6 +32,7 @@
                 <outlet property="roomInputToolbarContainerHeightConstraint" destination="5eD-Fm-RDb" id="6ny-5w-1UA"/>
                 <outlet property="scrollToBottomBadgeLabel" destination="QHs-rM-UU8" id="wk7-PQ-9Jm"/>
                 <outlet property="scrollToBottomButton" destination="Ih9-EU-BOU" id="Wwg-gS-Sfp"/>
+                <outlet property="userSuggestionContainerView" destination="oni-F4-X1U" id="0js-Ji-8Mm"/>
                 <outlet property="view" destination="iN0-l3-epB" id="ieV-u7-rXU"/>
             </connections>
         </placeholder>
@@ -136,14 +137,14 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </stackView>
                 <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ih9-EU-BOU" userLabel="scroll Button">
-                    <rect key="frame" x="327" y="570" width="32" height="32"/>
+                    <rect key="frame" x="321" y="564" width="38" height="38"/>
                     <state key="normal" image="scrolldown"/>
                     <connections>
                         <action selector="scrollToBottomAction:" destination="-1" eventType="touchUpInside" id="TOf-aY-J6a"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QHs-rM-UU8" userLabel="scroll badge" customClass="BadgeLabel" customModule="Riot" customModuleProvider="target">
-                    <rect key="frame" x="334.5" y="562" width="17.5" height="16.5"/>
+                    <rect key="frame" x="336.5" y="557.5" width="7.5" height="13.5"/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -158,6 +159,13 @@
                     <accessibility key="accessibilityConfiguration" identifier="RoomVCActivitiesContainer"/>
                     <constraints>
                         <constraint firstAttribute="height" id="E8v-l2-8eV"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oni-F4-X1U" userLabel="User suggestion container">
+                    <rect key="frame" x="0.0" y="626" width="375" height="0.0"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" placeholder="YES" id="1Cd-cT-gOr"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nLd-BP-JAE" userLabel="Room Input Toolbar Container">
@@ -177,6 +185,7 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomVCView"/>
             <constraints>
+                <constraint firstItem="QpJ-1u-4ii" firstAttribute="trailing" secondItem="oni-F4-X1U" secondAttribute="trailing" id="0Bn-nV-E8U"/>
                 <constraint firstAttribute="bottom" secondItem="BGD-sd-SQR" secondAttribute="bottom" constant="41" id="1SD-y2-oTg"/>
                 <constraint firstItem="Xt7-83-dQh" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="6lr-Tx-pEb"/>
                 <constraint firstItem="QpJ-1u-4ii" firstAttribute="trailing" secondItem="Ih9-EU-BOU" secondAttribute="trailing" constant="16" id="6rq-lR-0sB"/>
@@ -198,7 +207,10 @@
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="YfN-0Z-0bc"/>
                 <constraint firstItem="54r-18-K1g" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="aR5-rp-1Cp"/>
                 <constraint firstItem="gt1-EO-UVY" firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="acJ-g8-R7x"/>
+                <constraint firstItem="nLd-BP-JAE" firstAttribute="top" secondItem="oni-F4-X1U" secondAttribute="bottom" id="ave-fu-X1D"/>
                 <constraint firstItem="BGD-sd-SQR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="bFw-dg-qEr"/>
+                <constraint firstItem="oni-F4-X1U" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QpJ-1u-4ii" secondAttribute="top" id="hzP-Ee-xzI"/>
+                <constraint firstItem="oni-F4-X1U" firstAttribute="leading" secondItem="QpJ-1u-4ii" secondAttribute="leading" id="k83-dd-hdL"/>
                 <constraint firstAttribute="bottom" secondItem="nLd-BP-JAE" secondAttribute="bottom" id="omU-sm-3bK"/>
                 <constraint firstItem="nLd-BP-JAE" firstAttribute="trailing" secondItem="QpJ-1u-4ii" secondAttribute="trailing" id="pRw-S0-6WL"/>
                 <constraint firstItem="fmF-ad-erE" firstAttribute="top" secondItem="QpJ-1u-4ii" secondAttribute="top" id="qYq-nb-cu5"/>
@@ -212,13 +224,13 @@
     </objects>
     <designables>
         <designable name="QHs-rM-UU8">
-            <size key="intrinsicContentSize" width="17.5" height="16.5"/>
+            <size key="intrinsicContentSize" width="7.5" height="13.5"/>
         </designable>
     </designables>
     <resources>
         <image name="new_close" width="16" height="16"/>
         <image name="room_scroll_up" width="24" height="24"/>
-        <image name="scrolldown" width="32" height="32"/>
+        <image name="scrolldown" width="38" height="38"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

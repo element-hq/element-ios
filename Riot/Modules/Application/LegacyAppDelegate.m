@@ -1236,8 +1236,24 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return [self handleUniversalLinkFragment:fragment fromURL:nil];
 }
 
+
 - (BOOL)handleUniversalLinkFragment:(NSString*)fragment fromURL:(NSURL*)universalLinkURL
+
 {
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    UniversalLinkParameters *parameters = [[UniversalLinkParameters alloc] initWithFragment:fragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
+    
+    return [self handleUniversalLinkWithParameters:parameters];
+}
+
+- (BOOL)handleUniversalLinkWithParameters:(UniversalLinkParameters*)universalLinkParameters
+{
+    NSString *fragment = universalLinkParameters.fragment;
+    NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
+    ScreenPresentationParameters *screenPresentationParameters = universalLinkParameters.presentationParameters;
+    BOOL restoreInitialDisplay = screenPresentationParameters.restoreInitialDisplay;
+    
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
     
@@ -1338,26 +1354,23 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    [self restoreInitialDisplay:^{
-                        self.spaceDetailPresenter = [SpaceDetailPresenter new];
-                        self.spaceDetailPresenter.delegate = self;
-                        [self.spaceDetailPresenter presentForSpaceWithId:room.roomId from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
-                    }];
+                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:screenPresentationParameters];
+                    
+                    [self showSpaceWithParameters:spaceNavigationParameters];
                 }
                 else
                 {
                     // Open the room page
-                    [self showRoom:roomId andEventId:eventId withMatrixSession:account.mxSession];
+                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: screenPresentationParameters];
+                    
+                    [self showRoomWithParameters:roomNavigationParameters];
                 }
                 
                 continueUserActivity = YES;
             }
             else
             {
-                // We will display something but we need to do some requests before.
-                // So, come back to the home VC and show its loading wheel while processing
-                [self restoreInitialDisplay:^{
-                    
+                void(^findRoom)(void) = ^{
                     if ([_masterTabBarController.selectedViewController isKindOfClass:MXKActivityHandlingViewController.class])
                     {
                         MXKActivityHandlingViewController *homeViewController = (MXKActivityHandlingViewController*)_masterTabBarController.selectedViewController;
@@ -1398,7 +1411,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     {
                                         universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
-                                        [self handleUniversalLinkFragment:newUniversalLinkFragment fromURL:universalLinkURL];
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:screenPresentationParameters];
+                                        
+                                        [self handleUniversalLinkWithParameters:newParameters];
                                     }
                                     else
                                     {
@@ -1436,7 +1451,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     if (notif.object == account.mxSession && account.mxSession.state == MXSessionStateRunning)
                                     {
                                         MXLogDebug(@"[AppDelegate] Universal link: The session is running. Retry the link");
-                                        [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+                                        [self handleUniversalLinkWithParameters:universalLinkParameters];
                                     }
                                 }
                             }];
@@ -1455,26 +1470,44 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
+                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:screenPresentationParameters];
+                            
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
                                 {
                                     [homeViewController stopActivityIndicator];
                                     
-                                    self.spaceDetailPresenter = [SpaceDetailPresenter new];
-                                    self.spaceDetailPresenter.delegate = self;
-                                    [self.spaceDetailPresenter presentForSpaceWithPublicRoom:room from:self.masterNavigationController sourceView:nil session:account.mxSession animated:YES];
+                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:screenPresentationParameters];
+                                    
+                                    [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];  
                                 }
                                 else
                                 {
-                                    [self peekInRoomWithId:roomIdOrAlias forPreviewData:roomPreviewData params:pathParams];
+                                    [self peekInRoomWithNavigationParameters:roomPreviewNavigationParameters pathParams:pathParams];
                                 }
                             } failure:^(NSError *error) {
-                                [self peekInRoomWithId:roomIdOrAlias forPreviewData:roomPreviewData params:pathParams];
+                                [self peekInRoomWithNavigationParameters:roomPreviewNavigationParameters pathParams:pathParams];
                             }];
                         }
                         
                     }
-                }];
+                };
+                
+                
+                // We will display something but we need to do some requests before.
+                // So, come back to the home VC and show its loading wheel while processing
+                
+                if (restoreInitialDisplay)
+                {
+                    [self restoreInitialDisplay:^{
+                        findRoom();
+                    }];
+                }
+                else
+                {
+                    findRoom();
+                }
+                                
                 
                 // Let's say we are handling the case
                 continueUserActivity = YES;
@@ -1494,7 +1527,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+                    [self handleUniversalLinkWithParameters:universalLinkParameters];
                 }
             }];
         }
@@ -1522,7 +1555,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         // Create the contact related to this member
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-        [self showContact:contact];
+        [self showContact:contact presentationParameters:screenPresentationParameters];
 
         continueUserActivity = YES;
     }
@@ -1541,7 +1574,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             
             // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession];
+            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:screenPresentationParameters];
             
             continueUserActivity = YES;
         }
@@ -1559,7 +1592,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
                     MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
-                    [self handleUniversalLinkFragment:fragment fromURL:universalLinkURL];
+                    [self handleUniversalLinkWithParameters:universalLinkParameters];
                 }
             }];
         }
@@ -1577,7 +1610,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         // Unknown command: Do nothing except coming back to the main screen
         MXLogDebug(@"[AppDelegate] Universal link: TODO: Do not know what to do with the link arguments: %@", pathParams);
         
-        [self popToHomeViewControllerAnimated:NO completion:nil];
+        if (restoreInitialDisplay)
+        {
+            [self popToHomeViewControllerAnimated:NO completion:nil];
+        }
     }
     
     return continueUserActivity;
@@ -1601,8 +1637,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)peekInRoomWithId:(NSString*)roomIdOrAlias forPreviewData:(RoomPreviewData *)roomPreviewData params:(NSArray<NSString*> *)pathParams
+- (void)peekInRoomWithNavigationParameters:(RoomPreviewNavigationParameters*)presentationParameters pathParams:(NSArray<NSString*> *)pathParams
 {
+    RoomPreviewData *roomPreviewData = presentationParameters.previewData;
+    NSString *roomIdOrAlias = presentationParameters.roomId;
+    
     // Is it a link to an event of a room?
     // If yes, the event will be displayed once the room is joined
     roomPreviewData.eventId = (pathParams.count >= 3) ? pathParams[2] : nil;
@@ -1624,7 +1663,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         self->universalLinkFragmentPendingRoomAlias = nil;
         
-        [self showRoomPreview:roomPreviewData];
+        [self showRoomPreviewWithParameters:presentationParameters];
     }];
 }
 
@@ -2782,8 +2821,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay completion:(void (^)(void))completion
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters
 {
+    [self showRoomWithParameters:parameters completion:nil];
+}
+
+- (void)showRoomWithParameters:(RoomNavigationParameters*)parameters completion:(void (^)(void))completion
+{
+    NSString *roomId = parameters.roomId;
+    MXSession *mxSession = parameters.mxSession;
+    BOOL restoreInitialDisplay = parameters.presentationParameters.restoreInitialDisplay;
+    
     if (roomId && mxSession)
     {
         MXRoom *room = [mxSession roomWithRoomId:roomId];
@@ -2805,8 +2853,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     void (^selectRoom)(void) = ^() {
         // Select room to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [self.masterTabBarController selectRoomWithId:roomId andEventId:eventId inMatrixSession:mxSession completion:^{
-            
+        
+        [self.masterTabBarController selectRoomWithParameters:parameters completion:^{
             // Remove delivered notifications for this room
             [self.pushNotificationService removeDeliveredNotificationsWithRoomId:roomId completion:nil];
             
@@ -2829,23 +2877,124 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
 }
 
-- (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession restoreInitialDisplay:(BOOL)restoreInitialDisplay
-{
-    [self showRoom:roomId andEventId:eventId withMatrixSession:mxSession restoreInitialDisplay:restoreInitialDisplay completion:nil];
-}
-
 - (void)showRoom:(NSString*)roomId andEventId:(NSString*)eventId withMatrixSession:(MXSession*)mxSession
 {
-    [self showRoom:roomId andEventId:eventId withMatrixSession:mxSession restoreInitialDisplay:YES completion:nil];
+    // Ask to restore initial display
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                        eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
+    
+    [self showRoomWithParameters:parameters];
+}
+
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion
+{
+    void (^showRoomPreview)(void) = ^() {
+        [self.masterTabBarController selectRoomPreviewWithParameters:parameters completion:completion];
+    };
+    
+    if (parameters.presentationParameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showRoomPreview();
+        }];
+    }
+    else
+    {
+        showRoomPreview();
+    }
+}
+
+- (void)showRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters
+{
+    [self showRoomPreviewWithParameters:parameters completion:nil];
 }
 
 - (void)showRoomPreview:(RoomPreviewData*)roomPreviewData
 {
-    [self restoreInitialDisplay:^{
-        
-        [_masterTabBarController showRoomPreview:roomPreviewData];
-        
-    }];
+    // Ask to restore initial display
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
+    
+    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    
+    [self showRoomPreviewWithParameters:parameters];
+}
+
+- (void)showSpacePreviewWithParameters:(SpacePreviewNavigationParameters*)parameters
+{
+    UIViewController *presentingViewController;
+    UIView *sourceView;
+    
+    if (parameters.presentationParameters.presentingViewController)
+    {
+        presentingViewController = parameters.presentationParameters.presentingViewController;
+        sourceView = parameters.presentationParameters.sourceView;
+    }
+    else
+    {
+        presentingViewController = self.masterNavigationController;
+    }
+    
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    
+    void(^showSpace)(void) = ^{
+        [self.spaceDetailPresenter presentForSpaceWithPublicRoom:parameters.publicRoom
+                                                            from:presentingViewController
+                                                      sourceView:sourceView
+                                                         session:parameters.mxSession 
+                                                        animated:YES];
+    };
+    
+    if (parameters.presentationParameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showSpace();
+        }];
+    }
+    else
+    {
+        showSpace();
+    }
+}
+
+- (void)showSpaceWithParameters:(SpaceNavigationParameters*)parameters
+{
+    UIViewController *presentingViewController;
+    UIView *sourceView;
+    
+    if (parameters.presentationParameters.presentingViewController)
+    {
+        presentingViewController = parameters.presentationParameters.presentingViewController;
+        sourceView = parameters.presentationParameters.sourceView;
+    }
+    else
+    {
+        presentingViewController = self.masterNavigationController;
+    }
+
+    self.spaceDetailPresenter = [SpaceDetailPresenter new];
+    self.spaceDetailPresenter.delegate = self;
+    
+    void(^showSpace)(void) = ^{
+        [self.spaceDetailPresenter presentForSpaceWithId:parameters.roomId
+                                                    from:presentingViewController
+                                              sourceView:sourceView
+                                                 session:parameters.mxSession
+                                                animated:YES];
+    };
+    
+    if (parameters.presentationParameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showSpace();
+        }];
+    }
+    else
+    {
+        showSpace();
+    }
 }
 
 - (void)setVisibleRoomId:(NSString *)roomId
@@ -2960,25 +3109,43 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 #pragma mark - Contacts handling
 
-- (void)showContact:(MXKContact*)contact
+- (void)showContact:(MXKContact*)contact presentationParameters:(ScreenPresentationParameters*)presentationParameters
 {
-    [self restoreInitialDisplay:^{
-
-        [self.masterTabBarController selectContact:contact];
-
-    }];
+    void(^showContact)(void) = ^{
+        [self.masterTabBarController selectContact:contact withPresentationParameters:presentationParameters];
+    };
+    
+    if (presentationParameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showContact();
+        }];
+    }
+    else
+    {
+        showContact();
+    }
 }
 
 #pragma mark - Matrix Groups handling
 
-- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession
+- (void)showGroup:(MXGroup*)group withMatrixSession:(MXSession*)mxSession presentationParamters:(ScreenPresentationParameters*)presentationParameters
 {
-    [self restoreInitialDisplay:^{
-        
+    void(^showGroup)(void) = ^{
         // Select group to display its details (dispatch this action in order to let TabBarController end its refresh)
-        [_masterTabBarController selectGroup:group inMatrixSession:mxSession];
-        
-    }];
+        [self.masterTabBarController selectGroup:group inMatrixSession:mxSession presentationParameters:presentationParameters];
+    };
+
+    if (presentationParameters.restoreInitialDisplay)
+    {
+        [self restoreInitialDisplay:^{
+            showGroup();
+        }];
+    }
+    else
+    {
+        showGroup();
+    }
 }
 
 - (void)promptForStunServerFallback

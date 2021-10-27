@@ -281,6 +281,9 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowStickerAction: Bool = true
     static let roomScreenAllowFilesAction: Bool = true
     
+    /// Allow split view detail view stacking    
+    static let allowSplitViewDetailsScreenStacking: Bool = true
+    
     // MARK: - Room Contextual Menu
 
     static let roomContextualMenuShowMoreOptionForMessages: Bool = true

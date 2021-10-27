@@ -230,7 +230,9 @@
     if (mainSession)
     {
         // Init the recents data source
-        recentsDataSource = [[UnifiedSearchRecentsDataSource alloc] initWithMatrixSession:mainSession];
+        RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
+        recentsDataSource = [[UnifiedSearchRecentsDataSource alloc] initWithMatrixSession:mainSession
+                             recentsListService:recentsListService];
         [recentsViewController displayList:recentsDataSource];
         
         // Init the search for messages

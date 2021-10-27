@@ -339,7 +339,9 @@
         MXLogDebug(@"[MasterTabBarController] initializeDataSources");
         
         // Init the recents data source
-        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession];
+        RecentsListService *recentsListService = [[RecentsListService alloc] initWithSession:mainSession];
+        recentsDataSource = [[RecentsDataSource alloc] initWithMatrixSession:mainSession
+                                                          recentsListService:recentsListService];
         
         [self.homeViewController displayList:recentsDataSource];
         [self.favouritesViewController displayList:recentsDataSource];
@@ -584,56 +586,67 @@
     }
 }
 
-- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession
-{
-    [self selectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:nil];
-}
-
-- (void)selectRoomWithId:(NSString*)roomId andEventId:(NSString*)eventId inMatrixSession:(MXSession*)matrixSession completion:(void (^)(void))completion
+- (void)selectRoomWithParameters:(RoomNavigationParameters*)paramaters completion:(void (^)(void))completion
 {
     [self releaseSelectedItem];
     
-    _selectedRoomId = roomId;
-    _selectedEventId = eventId;
-    _selectedRoomSession = matrixSession;    
+    _selectedRoomId = paramaters.roomId;
+    _selectedEventId = paramaters.eventId;
+    _selectedRoomSession = paramaters.mxSession;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithId:roomId andEventId:eventId inMatrixSession:matrixSession completion:completion];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomWithParameters:paramaters completion:completion];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
-- (void)showRoomPreview:(RoomPreviewData *)roomPreviewData
+- (void)selectRoomPreviewWithParameters:(RoomPreviewNavigationParameters*)parameters completion:(void (^)(void))completion
 {
     [self releaseSelectedItem];
+    
+    RoomPreviewData *roomPreviewData = parameters.previewData;
     
     _selectedRoomPreviewData = roomPreviewData;
     _selectedRoomId = roomPreviewData.roomId;
     _selectedRoomSession = roomPreviewData.mxSession;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithData:roomPreviewData];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectRoomPreviewWithParameters:parameters completion:completion];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)selectContact:(MXKContact*)contact
 {
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    [self selectContact:contact withPresentationParameters:presentationParameters];
+}
+
+- (void)selectContact:(MXKContact*)contact withPresentationParameters:(ScreenPresentationParameters*)presentationParameters
+{
     [self releaseSelectedItem];
     
     _selectedContact = contact;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectContact:contact withPresentationParameters:presentationParameters];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
 
 - (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession
 {
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+    
+    [self selectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
+}
+
+- (void)selectGroup:(MXGroup*)group inMatrixSession:(MXSession*)matrixSession presentationParameters:(ScreenPresentationParameters*)presentationParameters
+{
     [self releaseSelectedItem];
     
     _selectedGroup = group;
     _selectedGroupSession = matrixSession;
     
-    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession];
+    [self.masterTabBarDelegate masterTabBarController:self didSelectGroup:group inMatrixSession:matrixSession presentationParameters:presentationParameters];
     
     [self refreshSelectedControllerSelectedCellIfNeeded];
 }
@@ -786,15 +799,15 @@
     // Use a middle dot to signal missed notif in favourites
     if (RiotSettings.shared.homeScreenShowFavouritesTab)
     {
-        [self setMissedDiscussionsMark:(recentsDataSource.missedFavouriteDiscussionsCount? @"\u00B7": nil)
+        [self setMissedDiscussionsMark:(recentsDataSource.favoriteMissedDiscussionsCount.numberOfNotified ? @"\u00B7": nil)
                           onTabBarItem:TABBAR_FAVOURITES_INDEX
-                        withBadgeColor:(recentsDataSource.missedHighlightFavouriteDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+                        withBadgeColor:(recentsDataSource.favoriteMissedDiscussionsCount.hasHighlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
     }
     
     // Update the badge on People and Rooms tabs
     if (RiotSettings.shared.homeScreenShowPeopleTab)
     {
-        if (recentsDataSource.unsentMessagesDirectDiscussionsCount)
+        if (recentsDataSource.directMissedDiscussionsCount.hasUnsent)
         {
             [self setBadgeValue:@"!"
                                onTabBarItem:TABBAR_PEOPLE_INDEX
@@ -802,25 +815,25 @@
         }
         else
         {
-            [self setMissedDiscussionsCount:recentsDataSource.missedDirectDiscussionsCount
+            [self setMissedDiscussionsCount:recentsDataSource.directMissedDiscussionsCount.numberOfNotified
                                onTabBarItem:TABBAR_PEOPLE_INDEX
-                             withBadgeColor:(recentsDataSource.missedHighlightDirectDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+                             withBadgeColor:(recentsDataSource.directMissedDiscussionsCount.hasHighlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
         }
     }
     
     if (RiotSettings.shared.homeScreenShowRoomsTab)
     {
-        if (recentsDataSource.unsentMessagesGroupDiscussionsCount)
+        if (recentsDataSource.groupMissedDiscussionsCount.hasUnsent)
         {
-            [self setMissedDiscussionsCount:recentsDataSource.unsentMessagesGroupDiscussionsCount
+            [self setMissedDiscussionsCount:recentsDataSource.groupMissedDiscussionsCount.numberOfUnsent
                                onTabBarItem:TABBAR_ROOMS_INDEX
                              withBadgeColor:ThemeService.shared.theme.noticeColor];
         }
         else
         {
-            [self setMissedDiscussionsCount:recentsDataSource.missedGroupDiscussionsCount
+            [self setMissedDiscussionsCount:recentsDataSource.groupMissedDiscussionsCount.numberOfNotified
                                onTabBarItem:TABBAR_ROOMS_INDEX
-                             withBadgeColor:(recentsDataSource.missedHighlightGroupDiscussionsCount ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
+                             withBadgeColor:(recentsDataSource.groupMissedDiscussionsCount.hasHighlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
         }
     }
 }

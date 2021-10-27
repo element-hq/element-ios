@@ -76,7 +76,7 @@
         self.lastEventDate.text = roomCellData.lastEventDate;
         
         // Manage lastEventAttributedTextMessage optional property
-        if (!roomCellData.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
+        if (!roomCellData.roomSummary.spaceChildInfo && [roomCellData respondsToSelector:@selector(lastEventAttributedTextMessage)])
         {
             // Force the default text color for the last message (cancel highlighted message color)
             NSMutableAttributedString *lastEventDescription = [[NSMutableAttributedString alloc] initWithAttributedString:roomCellData.lastEventAttributedTextMessage];
@@ -88,7 +88,7 @@
             self.lastEventDescription.text = roomCellData.lastEventTextMessage;
         }
         
-        self.unsentImageView.hidden = roomCellData.roomSummary.room.sentStatus == RoomSentStatusOk;
+        self.unsentImageView.hidden = roomCellData.roomSummary.sentStatus == MXRoomSummarySentStatusOk;
         self.lastEventDecriptionLabelTrailingConstraint.constant = self.unsentImageView.hidden ? 10 : 30;
 
         // Notify unreads and bing
@@ -124,20 +124,10 @@
             self.roomTitle.font = [UIFont systemFontOfSize:17 weight:UIFontWeightMedium];
         }
 
-        if (roomCellData.spaceChildInfo)
-        {
-            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.spaceChildInfo.avatarUrl
-                                                roomId:roomCellData.spaceChildInfo.childRoomId
-                                           displayName:roomCellData.spaceChildInfo.displayName
-                                          mediaManager:roomCellData.recentsDataSource.mxSession.mediaManager];
-        }
-        else
-        {
-            [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.roomSummary.avatar
-                                                roomId:roomCellData.roomSummary.roomId
-                                           displayName:roomCellData.roomSummary.displayname
-                                          mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
-        }
+        [self.roomAvatar vc_setRoomAvatarImageWith:roomCellData.avatarUrl
+                                            roomId:roomCellData.roomIdentifier
+                                       displayName:roomCellData.roomDisplayname
+                                      mediaManager:roomCellData.mxSession.mediaManager];
     }
     else
     {
