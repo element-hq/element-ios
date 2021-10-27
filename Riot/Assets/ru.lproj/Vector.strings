@@ -1511,3 +1511,5 @@
 "find_your_contacts_title" = "Начните с составления списка контактов";
 "contacts_address_book_permission_denied_alert_message" = "Для включения контактов, перейдите в настройки устройства.";
 "contacts_address_book_permission_denied_alert_title" = "Контакты отключены";
+"space_home_show_all_rooms" = "Показать все комнаты";
+"room_event_action_forward" = "Переслать";
