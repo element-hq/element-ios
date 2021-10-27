@@ -26,8 +26,17 @@ class RoomInputToolbarTextView: UITextView {
         
     weak var toolbarDelegate: RoomInputToolbarTextViewDelegate?
         
-    var placeholder: String?
-    var placeholderColor: UIColor = UIColor(white: 0.8, alpha: 1.0)
+    var placeholder: String? {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    var placeholderColor: UIColor = UIColor(white: 0.8, alpha: 1.0) {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     
     var minHeight: CGFloat = 30.0 {
         didSet {
