@@ -17,7 +17,7 @@
 import UIKit
 import Reusable
 
-class SpaceChildLoadingViewCell: UITableViewCell, NibReusable, Themable {
+class PaginationLoadingViewCell: UITableViewCell, NibReusable, Themable {
     
     // MARK: - Properties
     

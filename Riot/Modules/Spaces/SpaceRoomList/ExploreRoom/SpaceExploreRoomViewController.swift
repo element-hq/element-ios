@@ -169,7 +169,7 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.tableView.allowsSelection = true
         self.tableView.register(cellType: SpaceChildViewCell.self)
         self.tableView.register(cellType: SpaceChildSpaceViewCell.self)
-        self.tableView.register(cellType: SpaceChildLoadingViewCell.self)
+        self.tableView.register(cellType: PaginationLoadingViewCell.self)
         self.tableView.tableFooterView = UIView()
     }
 
@@ -248,7 +248,7 @@ extension SpaceExploreRoomViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard indexPath.row < self.itemDataList.count else {
-            let cell = tableView.dequeueReusableCell(for: indexPath, cellType: SpaceChildLoadingViewCell.self)
+            let cell = tableView.dequeueReusableCell(for: indexPath, cellType: PaginationLoadingViewCell.self)
             cell.update(theme: self.theme)
             return cell
         }

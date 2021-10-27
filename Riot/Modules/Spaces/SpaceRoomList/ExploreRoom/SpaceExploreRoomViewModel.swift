@@ -104,7 +104,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             self.update(viewState: .loading)
         }
         
-        self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, maxDepth: 1, from: self.nextBatch, completion: { [weak self] response in
+        self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, maxDepth: 1, paginationToken: self.nextBatch, completion: { [weak self] response in
             guard let self = self else {
                 return
             }
