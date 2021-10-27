@@ -100,7 +100,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
+    [Analytics.shared trackScreen:@"CountryPicker"];
 }
 
 - (void)destroy

@@ -3,6 +3,9 @@ GEM
   specs:
     CFPropertyList (3.0.4)
       rexml
+    RubyInline (3.12.5)
+      ZenTest (~> 4.3)
+    ZenTest (4.12.0)
     activesupport (6.1.4.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
@@ -64,6 +67,9 @@ GEM
       typhoeus (~> 1.0)
     cocoapods-deintegrate (1.0.5)
     cocoapods-downloader (1.5.1)
+    cocoapods-keys (2.2.1)
+      dotenv
+      osx_keychain
     cocoapods-plugins (1.0.0)
       nap
     cocoapods-search (1.0.1)
@@ -225,6 +231,8 @@ GEM
     netrc (0.11.0)
     optparse (0.1.1)
     os (1.1.1)
+    osx_keychain (1.0.2)
+      RubyInline (~> 3)
     plist (3.6.0)
     public_suffix (4.0.6)
     rake (13.0.6)
@@ -292,6 +300,7 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods (~> 1.11.2)
+  cocoapods-keys
   fastlane
   fastlane-plugin-diawi
   fastlane-plugin-versioning

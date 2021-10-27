@@ -165,7 +165,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"MediaAlbumContent"];
+    [Analytics.shared trackScreen:@"MediaAlbumContent"];
     
     self.navigationItem.title = _assetsCollection.localizedTitle;
     

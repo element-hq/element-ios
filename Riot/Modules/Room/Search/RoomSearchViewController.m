@@ -108,7 +108,7 @@
     }
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomsSearch"];
+    [Analytics.shared trackScreen:@"RoomsSearch"];
     
     // Enable the search field by default at the screen opening
     if (self.searchBarHidden)

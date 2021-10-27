@@ -196,11 +196,15 @@
 
     if (!authIsShown)
     {
-        // Check whether the user has been already prompted to send crash reports.
-        // (Check whether 'enableCrashReport' flag has been set once)        
-        if (!RiotSettings.shared.isEnableCrashReportHasBeenSetOnce)
+        // Check whether the user should be prompted to send analytics.
+        MXSession *mxSession = self.mxSessions.firstObject;
+        if (mxSession && [Analytics.shared shouldShowPseudonymousAnalyticsPromptFor:mxSession])
         {
-            [self promptUserBeforeUsingAnalytics];
+            // We don't need to prompt users who previously declined the old analytics.
+            if (!RiotSettings.shared.hasSeenAndDeclinedMatomoAnalytics)
+            {
+                [self promptUserBeforeUsingAnalytics];
+            }
         }
         
         [self refreshTabBarBadges];
@@ -923,45 +927,51 @@
 
 - (void)promptUserBeforeUsingAnalytics
 {
-    MXLogDebug(@"[MasterTabBarController]: Invite the user to send crash reports");
+    MXLogDebug(@"[MasterTabBarController]: Invite the user to send analytics");
     
-    __weak typeof(self) weakSelf = self;
+    MXSession *mxSession = self.mxSessions.firstObject;
+    
+    if (!mxSession)
+    {
+        MXLogError(@"[MasterTabBarController]: Failed to prompt for Analytics due to missing MXSession.");
+        return;
+    }
+    
+    MXWeakify(self);
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
+    NSString *title = [VectorL10n analyticsPromptTitle:AppInfo.current.displayName];
+    NSString *message;
+    if (RiotSettings.shared.hasAcceptedMatomoAnalytics)
+    {
+        message = [VectorL10n analyticsPromptPosthogUpgrade:AppInfo.current.displayName];
+    }
+    else
+    {
+        message = [VectorL10n analyticsPromptNewUser:AppInfo.current.displayName];
+    }
     
-    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n googleAnalyticsUsePrompt:appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    currentAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
-                                                       
-                                                       RiotSettings.shared.enableCrashReport = NO;
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
+        
+        MXStrongifyAndReturnIfNil(self);
+        [Analytics.shared optOutWith:mxSession];
+        self->currentAlert = nil;
+        
+    }]];
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
-                                                                                                              
-                                                       RiotSettings.shared.enableCrashReport = YES;
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-
-                                                       [[Analytics sharedInstance] start];
-                                                       
-                                                   }]];
+        
+        MXStrongifyAndReturnIfNil(self);
+        [Analytics.shared optInWith:mxSession];
+        self->currentAlert = nil;
+    }]];
     
     [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseAnalyticsAlert"];
     [self presentViewController:currentAlert animated:YES completion:nil];

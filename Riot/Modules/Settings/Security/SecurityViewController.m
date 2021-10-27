@@ -251,7 +251,7 @@ TableViewSectionsDelegate>
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Security"];
+    [Analytics.shared trackScreen:@"Security"];
 
     // Release the potential pushed view controller
     [self releasePushedViewController];

@@ -247,7 +247,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
+    [Analytics.shared trackScreen:@"RoomParticipants"];
     
     // Refresh display
     [self refreshTableView];

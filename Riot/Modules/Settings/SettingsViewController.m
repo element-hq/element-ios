@@ -778,7 +778,7 @@ TableViewSectionsDelegate>
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Settings"];
+    [Analytics.shared trackScreen:@"Settings"];
     
     // Refresh display
     [self refreshSettings];
@@ -2251,11 +2251,11 @@ TableViewSectionsDelegate>
         {
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
-            sendCrashReportCell.mxkLabel.text = [VectorL10n settingsSendCrashReport];
-            sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableCrashReport;
+            sendCrashReportCell.mxkLabel.text = VectorL10n.settingsAnalyticsAndCrashData;
+            sendCrashReportCell.mxkSwitch.on = Analytics.shared.isRunning;
             sendCrashReportCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             sendCrashReportCell.mxkSwitch.enabled = YES;
-            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleSendCrashReport:) forControlEvents:UIControlEventTouchUpInside];
+            [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleAnalytics:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = sendCrashReportCell;
         }
@@ -3115,27 +3115,20 @@ TableViewSectionsDelegate>
     [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
 }
 
-- (void)toggleSendCrashReport:(id)sender
+- (void)toggleAnalytics:(UISwitch *)sender
 {
-    BOOL enable = RiotSettings.shared.enableCrashReport;
-    if (enable)
+    if (sender.isOn)
     {
-        MXLogDebug(@"[SettingsViewController] disable automatic crash report and analytics sending");
-        
-        RiotSettings.shared.enableCrashReport = NO;
-        
-        [[Analytics sharedInstance] stop];
-        
-        // Remove potential crash file.
-        [MXLogger deleteCrashLog];
+        MXLogDebug(@"[SettingsViewController] enable automatic crash report and analytics sending");
+        [Analytics.shared optInWith:self.mainSession];
     }
     else
     {
-        MXLogDebug(@"[SettingsViewController] enable automatic crash report and analytics sending");
+        MXLogDebug(@"[SettingsViewController] disable automatic crash report and analytics sending");
+        [Analytics.shared optOutWith:self.mainSession];
         
-        RiotSettings.shared.enableCrashReport = YES;
-        
-        [[Analytics sharedInstance] start];
+        // Remove potential crash file.
+        [MXLogger deleteCrashLog];
     }
 }
 

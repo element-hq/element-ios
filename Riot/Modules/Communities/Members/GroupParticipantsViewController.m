@@ -220,7 +220,7 @@
     [super viewWillAppear:animated];
     
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"GroupDetailsPeople"];
+    [Analytics.shared trackScreen:@"GroupDetailsPeople"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];

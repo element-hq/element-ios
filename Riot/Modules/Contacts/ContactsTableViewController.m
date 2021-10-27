@@ -161,7 +161,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
+    [Analytics.shared trackScreen:_screenName];
     
     MXWeakify(self);
 

@@ -97,7 +97,7 @@ static CGFloat const kTextFontSize = 15.0;
     [self userInterfaceThemeDidChange];
     
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"DeactivateAccount"];
+    [Analytics.shared trackScreen:@"DeactivateAccount"];
 }
 
 - (void)viewDidLayoutSubviews

@@ -165,7 +165,8 @@ final class BuildSettings: NSObject {
     static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    static let analyticsServerUrl = URL(string: "https://piwik.riot.im/piwik.php")
+    #warning("Testing environment.")
+    static let analyticsHost = "https://posthog-poc.lab.element.dev"
     static let analyticsAppId = "14"
     
     

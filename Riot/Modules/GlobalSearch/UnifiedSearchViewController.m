@@ -145,7 +145,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"UnifiedSearch"];
+    [Analytics.shared trackScreen:@"UnifiedSearch"];
 
     // Let's child display the loading not the home view controller
     if (self.activityIndicator)

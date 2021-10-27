@@ -31,6 +31,18 @@ public class VectorL10n: NSObject {
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
   }
+  /// Would you like to help improve %@ by automatically reporting crash reports and usage data?\n\nWe don't record or profile any personal data, and we don't share anything with any third parties.
+  public static func analyticsPromptNewUser(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_new_user", p1)
+  }
+  /// To allow us to understand how people use multiple devices, we've enhanced our analytics data to include a randomly generated identifier associated with your account that will be shared across your devices.\n\nWe don't record or profile any personal data, and we don't share anything with any third parties.\n\nYou previously agreed to send anonymous usage data to %@ - is this still okay?
+  public static func analyticsPromptPosthogUpgrade(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_posthog_upgrade", p1)
+  }
+  /// Help us improve %@
+  public static func analyticsPromptTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_title", p1)
+  }
   /// Please review and accept the policies of this homeserver:
   public static var authAcceptPolicies: String { 
     return VectorL10n.tr("Vector", "auth_accept_policies") 
@@ -1438,10 +1450,6 @@ public class VectorL10n: NSObject {
   /// Review now
   public static var gdprConsentNotGivenAlertReviewNowAction: String { 
     return VectorL10n.tr("Vector", "gdpr_consent_not_given_alert_review_now_action") 
-  }
-  /// Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?
-  public static func googleAnalyticsUsePrompt(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "google_analytics_use_prompt", p1)
   }
   /// Home
   public static var groupDetailsHome: String { 
@@ -4227,6 +4235,10 @@ public class VectorL10n: NSObject {
   public static var settingsAdvanced: String { 
     return VectorL10n.tr("Vector", "settings_advanced") 
   }
+  /// Send crash and analytics data
+  public static var settingsAnalyticsAndCrashData: String { 
+    return VectorL10n.tr("Vector", "settings_analytics_and_crash_data") 
+  }
   /// Call invitations
   public static var settingsCallInvitations: String { 
     return VectorL10n.tr("Vector", "settings_call_invitations") 
@@ -4754,10 +4766,6 @@ public class VectorL10n: NSObject {
   /// SECURITY
   public static var settingsSecurity: String { 
     return VectorL10n.tr("Vector", "settings_security") 
-  }
-  /// Send anon crash & usage data
-  public static var settingsSendCrashReport: String { 
-    return VectorL10n.tr("Vector", "settings_send_crash_report") 
   }
   /// SENDING IMAGES AND VIDEOS
   public static var settingsSendingMedia: String { 

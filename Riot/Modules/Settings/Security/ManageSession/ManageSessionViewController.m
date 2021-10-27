@@ -162,7 +162,7 @@ enum {
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"ManageSession"];
+    [Analytics.shared trackScreen:@"ManageSession"];
 
     // Release the potential pushed view controller
     [self releasePushedViewController];

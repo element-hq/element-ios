@@ -214,7 +214,7 @@
     [self userInterfaceThemeDidChange];
 
     // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"MediaPicker"];
+    [Analytics.shared trackScreen:@"MediaPicker"];
     
     if (!userAlbumsQueue)
     {
