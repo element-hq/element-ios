@@ -343,7 +343,7 @@ Tap the + to start adding people.";
 "room_message_short_placeholder" = "Send a message…";
 "room_message_reply_to_short_placeholder" = "Send a reply…";
 "room_offline_notification" = "Connectivity to the server has been lost.";
-"room_unsent_messages_notification" = "Couldn't send messages";
+"room_unsent_messages_notification" = "Couldn't send";
 "room_unsent_messages_unknown_devices_notification" = "Message failed to send due to unknown sessions being present.";
 "room_unsent_messages_tap_message" = "Tap each message for info.";
 "room_unsent_messages_cancel_title" = "Delete unsent messages";

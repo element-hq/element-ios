@@ -490,36 +490,6 @@
 
         return NO;
     }
-    else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallWithVoicePressed"])
-    {
-        void (^onOngoingConferenceCallPressed)(BOOL) = objc_getAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed");
-        if (onOngoingConferenceCallPressed)
-        {
-            onOngoingConferenceCallPressed(NO);
-        }
-
-        return NO;
-    }
-    else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallWithVideoPressed"])
-    {
-        void (^onOngoingConferenceCallPressed)(BOOL) = objc_getAssociatedObject(self.messageTextView, "onOngoingConferenceCallPressed");
-        if (onOngoingConferenceCallPressed)
-        {
-            onOngoingConferenceCallPressed(YES);
-        }
-
-        return NO;
-    }
-    else if ([[URL absoluteString] isEqualToString:@"onOngoingConferenceCallClosePressed"])
-    {
-        void (^onOngoingConferenceCallClosePressed)(BOOL) = objc_getAssociatedObject(self.messageTextView, "onOngoingConferenceCallClosePressed");
-        if (onOngoingConferenceCallClosePressed)
-        {
-            onOngoingConferenceCallClosePressed(YES);
-        }
-
-        return NO;
-    }
     else if ([[URL absoluteString] isEqualToString:@"onRoomReplacementLinkTapped"])
     {
         void (^onRoomReplacementLinkTapped)(void) = objc_getAssociatedObject(self.messageTextView, "onRoomReplacementLinkTapped");

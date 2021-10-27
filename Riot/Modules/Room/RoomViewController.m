@@ -499,6 +499,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     [self.inputToolbarView customizeViewRendering];
+    [self.activitiesView customizeViewRendering];
     
     self.activityIndicator.backgroundColor = ThemeService.shared.theme.overlayBackgroundColor;
     

@@ -3667,7 +3667,7 @@ public class VectorL10n: NSObject {
   public static var roomUnsentMessagesCancelTitle: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_cancel_title") 
   }
-  /// Couldn't send messages
+  /// Couldn't send
   public static var roomUnsentMessagesNotification: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_notification") 
   }
