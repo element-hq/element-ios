@@ -299,13 +299,12 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         self.postNotification(withName: NavigationRouter.willPopModule, for: viewController)
     }
     
-    private func didPopViewController(_ viewController: UIViewController) {
+    private func didPopViewController(_ viewController: UIViewController) {                
+        self.postNotification(withName: NavigationRouter.didPopModule, for: viewController)
         
         // Call completion closure associated to the view controller
         // So associated coordinator can be deallocated
         runCompletion(for: viewController)
-                        
-        self.postNotification(withName: NavigationRouter.didPopModule, for: viewController)
         
         self.removeModule(for: viewController)
     }
