@@ -284,7 +284,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self scrollToTop:YES];
         
     }];
-        
+    
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
         
