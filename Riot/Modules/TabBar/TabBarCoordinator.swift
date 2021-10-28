@@ -284,9 +284,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     private func updateMasterTabBarController(with spaceId: String?, forceReload: Bool = false) {
         
-        if !forceReload && spaceId == self.currentSpaceId {
-            return
-        }
+        guard forceReload || spaceId != self.currentSpaceId else { return }
                 
         self.updateTabControllers(for: self.masterTabBarController, showCommunities: spaceId == nil)
         self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: self.currentMatrixSession)
