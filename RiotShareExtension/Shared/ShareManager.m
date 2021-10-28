@@ -314,30 +314,41 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 
                 if ([self.shareItemProvider areAllItemsImages])
                 {
+                    // When all items are images, they're processed together from the
+                    // pending list, immediately after the final image has been loaded.
                     [self.pendingImages addObject:imageData];
                 }
                 else
                 {
-                    CGSize imageSize = [self imageSizeFromImageData:imageData];
+                    // Otherwise, the image is sent as is, without prompting for a resize
+                    // as that wouldn't make much sense with multiple content types.
                     self.imageCompressionMode = ImageCompressionModeNone;
-                    self.actualLargeSize = MAX(imageSize.width, imageSize.height);
-                    
                     [self sendImageData:imageData toRooms:rooms success:requestSuccess failure:requestFailure];
                 }
                 
-                // Only prompt for image resize if all items are images
-                // Ignore showMediaCompressionPrompt setting due to memory constraints with full size images.
+                // When there are multiple content types the image will have been sent above.
+                // Otherwise, if we have loaded all of the images we can send them all together.
                 if ([self.shareItemProvider areAllItemsImages])
                 {
                     if ([self.shareItemProvider areAllItemsLoaded])
                     {
-                        UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
+                        void (^sendPendingImages)(void) = ^void() {
                             [self sendImageDatas:self.pendingImages.copy toRooms:rooms success:requestSuccess failure:requestFailure];
-                        }];
+                        };
                         
-                        if (compressionPrompt)
+                        if (RiotSettings.shared.showMediaCompressionPrompt)
                         {
-                            [self presentCompressionPrompt:compressionPrompt];
+                            // Create a compression prompt which will be nil when the sizes can't be determined or if there are no pending images.
+                            UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:sendPendingImages];
+                            if (compressionPrompt)
+                            {
+                                [self presentCompressionPrompt:compressionPrompt];
+                            }
+                        }
+                        else
+                        {
+                            self.imageCompressionMode = ImageCompressionModeNone;
+                            sendPendingImages();
                         }
                     }
                     else
@@ -1021,17 +1032,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 break;
         }
         
-        if (CGSizeEqualToSize(newImageSize, CGSizeZero))
-        {
-            // No resize to make
-            // Make sure the uploaded image orientation is up
-            if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
-            {
-                UIImage *image = [UIImage imageWithData:imageData];
-                convertedImage = [MXKTools forceImageOrientationUp:image];
-            }
-        }
-        else
+        if (!CGSizeEqualToSize(newImageSize, CGSizeZero))
         {
             // Resize the image and set image in right orientation too
             convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];
