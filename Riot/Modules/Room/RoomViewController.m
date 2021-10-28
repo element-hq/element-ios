@@ -1412,8 +1412,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     if (URLPreviewDidUpdateNotificationObserver)
     {
-        [NSNotificationCenter.defaultCenter removeObserver:URLPreviewDidUpdateNotificationObserver];
-        (URLPreviewDidUpdateNotificationObserver) = nil;
+        [NSNotificationCenter.defaultCenter removeObserver:URLPreviewDidUpdateNotificationObserver];        
     }
     
     [self removeCallNotificationsListeners];
