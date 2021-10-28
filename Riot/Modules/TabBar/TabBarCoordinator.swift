@@ -105,9 +105,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 versionCheckCoordinator.start()
                 add(childCoordinator: versionCheckCoordinator)
             }
+            
+            self.updateMasterTabBarController(with: spaceId, forceReload: true)
+        } else {            
+            self.updateMasterTabBarController(with: spaceId)            
         }
-                
-        self.updateMasterTabBarController(with: spaceId)
     }
     
     func toPresentable() -> UIViewController {
@@ -280,7 +282,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         gesture.delegate = self
     }
     
-    private func updateMasterTabBarController(with spaceId: String?) {
+    private func updateMasterTabBarController(with spaceId: String?, forceReload: Bool = false) {
+        
+        if !forceReload && spaceId == self.currentSpaceId {
+            return
+        }
                 
         self.updateTabControllers(for: self.masterTabBarController, showCommunities: spaceId == nil)
         self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: self.currentMatrixSession)
