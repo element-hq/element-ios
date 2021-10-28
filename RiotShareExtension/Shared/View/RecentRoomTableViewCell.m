@@ -44,6 +44,7 @@
     {
         return [UINib nibWithNibName:NSStringFromClass([self class]) bundle:mainBundle];
     }
+    
     return nil;
 }
 

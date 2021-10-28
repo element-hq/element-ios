@@ -45,3 +45,4 @@
 #import "GroupDetailsViewController.h"
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
+#import "ShareItemSender.h"

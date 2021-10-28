@@ -17,10 +17,13 @@
 #import "ShareExtensionRootViewController.h"
 #import "ShareManager.h"
 #import "ThemeService.h"
+#import "ShareItemSender.h"
 
 #import "GeneratedInterface-Swift.h"
 
 @interface ShareExtensionRootViewController ()
+
+@property (nonatomic, strong, readonly) id<Configurable> configuration;
 
 @property (nonatomic, strong, readonly) ShareManager *shareManager;
 
@@ -32,10 +35,32 @@
 {
     [super viewDidLoad];
     
+    _configuration = [[CommonConfiguration alloc] init];
+    [_configuration setupSettings];
+    
+    // NSLog -> console.log file when not debugging the app
+    MXLogConfiguration *configuration = [[MXLogConfiguration alloc] init];
+    configuration.logLevel = MXLogLevelVerbose;
+    configuration.logFilesSizeLimit = 0;
+    configuration.maxLogFilesCount = 10;
+    configuration.subLogName = @"share";
+    
+    // Redirect NSLogs to files only if we are not debugging
+    if (!isatty(STDERR_FILENO)) {
+        configuration.redirectLogsToFiles = YES;
+    }
+    
+    [MXLog configure:configuration];
+
+    
     [ThemeService.shared setThemeId:RiotSettings.shared.userInterfaceTheme];
     
-    ShareExtensionShareItemProvider *provider = [[ShareExtensionShareItemProvider alloc] initWithExtensionContext:self.extensionContext];
-    _shareManager = [[ShareManager alloc] initWithShareItemProvider:provider type:ShareManagerTypeSend];
+    ShareExtensionShareItemProvider *shareItemProvider = [[ShareExtensionShareItemProvider alloc] initWithExtensionContext:self.extensionContext];
+    ShareItemSender *shareItemSender = [[ShareItemSender alloc] initWithRootViewController:self
+                                                                         shareItemProvider:shareItemProvider];
+    
+    _shareManager = [[ShareManager alloc] initWithShareItemSender:shareItemSender
+                                                             type:ShareManagerTypeSend];
     
     MXWeakify(self);
     [_shareManager setCompletionCallback:^(ShareManagerResult result) {
