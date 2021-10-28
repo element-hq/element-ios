@@ -32,6 +32,8 @@
 
 static const CGFloat kLargeImageSizeMaxDimension = 2048.0;
 static const CGSize kThumbnailSize = {800.0, 600.0};
+/// A safe maximum file size for an image to send the original.
+static const NSUInteger kImageMaxFileSize = 20 * 1024 * 1024;
 
 typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
@@ -427,22 +429,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     [self.imageUploadProgresses removeAllObjects];
 }
 
-- (BOOL)isAPendingImageNotOrientedUp
-{
-    BOOL isAPendingImageNotOrientedUp = NO;
-    
-    for (NSData *imageData in self.pendingImages)
-    {
-        if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
-        {
-            isAPendingImageNotOrientedUp = YES;
-            break;
-        }
-    }
-    
-    return isAPendingImageNotOrientedUp;
-}
-
 // TODO: When select multiple images:
 // - Enhance prompt to display sum of all file sizes for each compression.
 // - Find a way to choose compression sizes for all images.
@@ -453,8 +439,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         return nil;
     }
     
-    BOOL isAPendingImageNotOrientedUp = [self isAPendingImageNotOrientedUp];
-    
     NSData *firstImageData = self.pendingImages.firstObject;
     UIImage *firstImage = [UIImage imageWithData:firstImageData];
     
@@ -462,16 +446,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (compressionSizes.small.fileSize == 0 && compressionSizes.medium.fileSize == 0 && compressionSizes.large.fileSize == 0)
     {
-        if (isAPendingImageNotOrientedUp && self.pendingImages.count > 1)
-        {
-            self.imageCompressionMode = ImageCompressionModeSmall;
-        }
-        else
-        {
-            self.imageCompressionMode = ImageCompressionModeNone;
-        }
-        
-        MXLogDebug(@"[ShareManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
+        self.imageCompressionMode = ImageCompressionModeNone;
+        MXLogDebug(@"[ShareManager] Bypass compression prompt and send originals for %lu image(s) due to undetermined file sizes", (unsigned long)self.pendingImages.count);
         
         shareBlock();
         
@@ -491,7 +467,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             MXStrongifyAndReturnIfNil(self);
             
             self.imageCompressionMode = ImageCompressionModeSmall;
-            [self logCompressionSizeChoice:compressionSizes.large];
+            [self logCompressionSizeChoice:compressionSizes.small];
             
             shareBlock();
         }]];
@@ -506,7 +482,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             MXStrongifyAndReturnIfNil(self);
             
             self.imageCompressionMode = ImageCompressionModeMedium;
-            [self logCompressionSizeChoice:compressionSizes.large];
+            [self logCompressionSizeChoice:compressionSizes.medium];
             
             shareBlock();
         }]];
@@ -531,8 +507,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }]];
     }
     
-    // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
-    if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
+    // To limit memory consumption when encrypting, we suggest the original resolution only if the image size is moderate
+    if (compressionSizes.original.fileSize < kImageMaxFileSize)
     {
         NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
         
@@ -543,7 +519,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             MXStrongifyAndReturnIfNil(self);
             
             self.imageCompressionMode = ImageCompressionModeNone;
-            [self logCompressionSizeChoice:compressionSizes.large];
+            [self logCompressionSizeChoice:compressionSizes.original];
             
             shareBlock();
         }]];
@@ -635,46 +611,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
     
     return CGSizeMake(width, height);
-}
-
-- (NSNumber*)cgImageimageOrientationNumberFromImageData:(NSData*)imageData
-{
-    NSNumber *orientationNumber;
-    
-    CGImageSourceRef imageSource = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
-    
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
-    
-    CFRelease(imageSource);
-    
-    if (imageProperties != NULL)
-    {
-        CFNumberRef orientationNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyOrientation);
-        
-        // Check orientation and flip size if required
-        if (orientationNum != NULL)
-        {
-            orientationNumber = (__bridge NSNumber *)orientationNum;
-        }
-        
-        CFRelease(imageProperties);
-    }
-    
-    return orientationNumber;
-}
-
-- (BOOL)isImageOrientationNotUpOrUndeterminedForImageData:(NSData*)imageData
-{
-    BOOL isImageNotOrientedUp = YES;
-    
-    NSNumber *cgImageOrientationNumber = [self cgImageimageOrientationNumberFromImageData:imageData];
-    
-    if (cgImageOrientationNumber && cgImageOrientationNumber.unsignedIntegerValue == (NSUInteger)kCGImagePropertyOrientationUp)
-    {
-        isImageNotOrientedUp = NO;
-    }
-    
-    return isImageNotOrientedUp;
 }
 
 - (void)logCompressionSizeChoice:(MXKImageCompressionSize)compressionSize
