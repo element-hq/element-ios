@@ -77,8 +77,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
         
     func start(with spaceId: String?) {
-        self.currentSpaceId = spaceId
-        
+                
         // If start has been done once do not setup view controllers again
         if self.hasStartedOnce == false {
             let masterTabBarController = self.createMasterTabBarController()
@@ -108,8 +107,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             
             self.updateMasterTabBarController(with: spaceId, forceReload: true)
         } else {            
-            self.updateMasterTabBarController(with: spaceId)            
+            self.updateMasterTabBarController(with: spaceId)
         }
+        
+        self.currentSpaceId = spaceId
     }
     
     func toPresentable() -> UIViewController {
