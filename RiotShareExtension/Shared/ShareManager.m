@@ -334,7 +334,9 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 {
                     if ([self.shareItemProvider areAllItemsLoaded])
                     {
+                        MXWeakify(self);
                         void (^sendPendingImages)(void) = ^void() {
+                            MXStrongifyAndReturnIfNil(self);
                             [self sendImageDatas:self.pendingImages.copy toRooms:rooms success:requestSuccess failure:requestFailure];
                         };
                         
@@ -421,6 +423,22 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         [self.shareViewController configureWithState:ShareViewControllerAccountStateNotConfigured
                                       roomDataSource:nil];
     }
+}
+
+- (BOOL)roomsContainEncryptedRoom:(NSArray<MXRoom *> *)rooms
+{
+    BOOL foundEncryptedRoom = NO;
+    
+    for (MXRoom *room in rooms)
+    {
+        if (room.summary.isEncrypted)
+        {
+            foundEncryptedRoom = YES;
+            break;
+        }
+    }
+    
+    return foundEncryptedRoom;
 }
 
 - (void)resetPendingData
@@ -773,18 +791,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     MXWeakify(self);
     
-    // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
-    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString *presetName) {
+    void (^sendVideo)(void) = ^void()  {
         MXStrongifyAndReturnIfNil(self);
-        
-        // If the preset name is nil, the user cancelled.
-        if (!presetName)
-        {
-            return;
-        }
-        
-        // Set the chosen video conversion preset.
-        [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
         
         [self didStartSending];
         if (!videoLocalUrl)
@@ -823,9 +831,57 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 success();
             }
         });
-    }];
+    };
     
-    [self presentCompressionPrompt:compressionPrompt];
+    BOOL allRoomsAreUnencrypted = ![self roomsContainEncryptedRoom:rooms];
+    
+    // When rooms are unencrypted convert the video according to the user's normal preferences
+    if (allRoomsAreUnencrypted)
+    {
+        if (!RiotSettings.shared.showMediaCompressionPrompt)
+        {
+            [MXSDKOptions sharedInstance].videoConversionPresetName = AVCaptureSessionPreset1920x1080;
+            sendVideo();
+        }
+        else
+        {
+            UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString *presetName) {
+                // If the preset name is nil, the user cancelled.
+                if (!presetName)
+                {
+                    return;
+                }
+                
+                // Set the chosen video conversion preset.
+                [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
+                sendVideo();
+            }];
+            
+            [self presentCompressionPrompt:compressionPrompt];
+        }
+    }
+    else
+    {
+        // When rooms are encrypted we quickly run out of memory encrypting the video
+        // Prompt the user if they're happy to send a low quality video (320p).
+        UIAlertController *lowQualityPrompt = [UIAlertController alertControllerWithTitle:VectorL10n.shareExtensionLowQualityVideoTitle
+                                                                                  message:[VectorL10n shareExtensionLowQualityVideoMessage:AppInfo.current.displayName]
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:MatrixKitL10n.cancel style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            // Do nothing
+        }];
+        UIAlertAction *sendAction = [UIAlertAction actionWithTitle:VectorL10n.shareExtensionSendNow style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPresetMediumQuality;
+            sendVideo();
+        }];
+        
+        [lowQualityPrompt addAction:cancelAction];
+        [lowQualityPrompt addAction:sendAction];
+        [lowQualityPrompt setPreferredAction:sendAction];
+        
+        [self presentCompressionPrompt:lowQualityPrompt];
+    }
 }
 
 - (void)sendVoiceMessage:(NSURL *)fileUrl
