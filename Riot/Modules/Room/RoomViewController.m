@@ -144,7 +144,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     
     // The preview header
-    PreviewRoomTitleView *previewHeader;
+    __weak PreviewRoomTitleView *previewHeader;
     
     // The customized room data source for Vector
     RoomDataSource *customizedRoomDataSource;
@@ -156,7 +156,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     NSArray *currentTypingUsers;
     
     // Typing notifications listener.
-    id typingNotifListener;
+    __weak id typingNotifListener;
     
     // The position of the first touch down event stored in case of scrolling when the expanded header is visible.
     CGPoint startScrollingPoint;
@@ -168,33 +168,33 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     UIView *missedDiscussionsDotView;
     
     // Potential encryption details view.
-    EncryptionInfoView *encryptionInfoView;
+    __weak EncryptionInfoView *encryptionInfoView;
     
     // The list of unknown devices that prevent outgoing messages from being sent
     MXUsersDevicesMap<MXDeviceInfo*> *unknownDevices;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kAppDelegateNetworkStatusDidChangeNotification to handle network status change.
-    id kAppDelegateNetworkStatusDidChangeNotificationObserver;
+    __weak id kAppDelegateNetworkStatusDidChangeNotificationObserver;
 
     // Observers to manage MXSession state (and sync errors)
-    id kMXSessionStateDidChangeObserver;
+    __weak id kMXSessionStateDidChangeObserver;
 
     // Observers to manage ongoing conference call banner
-    id kMXCallStateDidChangeObserver;
-    id kMXCallManagerConferenceStartedObserver;
-    id kMXCallManagerConferenceFinishedObserver;
+    __weak id kMXCallStateDidChangeObserver;
+    __weak id kMXCallManagerConferenceStartedObserver;
+    __weak id kMXCallManagerConferenceFinishedObserver;
 
     // Observers to manage widgets
-    id kMXKWidgetManagerDidUpdateWidgetObserver;
+    __weak id kMXKWidgetManagerDidUpdateWidgetObserver;
     
     // Observer kMXRoomSummaryDidChangeNotification to keep updated the missed discussion count
-    id mxRoomSummaryDidChangeObserver;
+    __weak id mxRoomSummaryDidChangeObserver;
 
     // Observer for removing the re-request explanation/waiting dialog
-    id mxEventDidDecryptNotificationObserver;
+    __weak id mxEventDidDecryptNotificationObserver;
     
     // The table view cell in which the read marker is displayed (nil by default).
     MXKRoomBubbleTableViewCell *readMarkerTableViewCell;
@@ -209,13 +209,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     NSArray<UIBarButtonItem *> *rightBarButtonItems;
 
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
     
     // Observe URL preview updates to refresh cells.
-    id URLPreviewDidUpdateNotificationObserver;
+    __weak id URLPreviewDidUpdateNotificationObserver;
     
     // Listener for `m.room.tombstone` event type
-    id tombstoneEventNotificationsListener;
+    __weak id tombstoneEventNotificationsListener;
 
     // Homeserver notices
     MXServerNotices *serverNotices;
@@ -454,8 +454,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     self.jumpToLastUnreadLabel.text = [VectorL10n roomJumpToFirstUnread];
     
+    MXWeakify(self);
+    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         
@@ -587,8 +591,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self listenTombstoneEventNotifications];
     [self listenMXSessionStateChangeNotifications];
     
+    MXWeakify(self);
+    
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self setBubbleTableViewContentOffset:CGPointMake(-self.bubblesTableView.adjustedContentInset.left, -self.bubblesTableView.adjustedContentInset.top) animated:YES];
     }];
@@ -661,8 +669,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [AppDelegate theDelegate].visibleRoomId = self.roomDataSource.roomId;
     }
     
+    MXWeakify(self);
+    
     // Observe network reachability
     kAppDelegateNetworkStatusDidChangeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateNetworkStatusDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self refreshActivitiesViewDisplay];
         
@@ -672,6 +684,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Observe missed notifications
     mxRoomSummaryDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXRoomSummaryDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         MXRoomSummary *roomSummary = notif.object;
         
@@ -1398,8 +1412,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     if (URLPreviewDidUpdateNotificationObserver)
     {
-        [NSNotificationCenter.defaultCenter removeObserver:URLPreviewDidUpdateNotificationObserver];
-        URLPreviewDidUpdateNotificationObserver = nil;
+        [NSNotificationCenter.defaultCenter removeObserver:URLPreviewDidUpdateNotificationObserver];        
     }
     
     [self removeCallNotificationsListeners];
@@ -1555,7 +1568,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)registerURLPreviewNotifications
 {
+    MXWeakify(self);
+    
     URLPreviewDidUpdateNotificationObserver = [NSNotificationCenter.defaultCenter addObserverForName:URLPreviewDidUpdateNotification object:nil queue:NSOperationQueue.mainQueue usingBlock:^(NSNotification * _Nonnull notification) {
+        
+        MXStrongifyAndReturnIfNil(self);        
         
         // Ensure this is the correct room
         if (![(NSString*)notification.userInfo[@"roomId"] isEqualToString:self.roomDataSource.roomId])
@@ -4768,10 +4785,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)listenCallNotifications
 {
+    MXWeakify(self);
+    
     kMXCallStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallStateDidChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         MXCall *call = notif.object;
-        if ([call.room.roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([call.room.roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
@@ -4779,16 +4800,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }];
     kMXCallManagerConferenceStartedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceStarted object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
         }
     }];
     kMXCallManagerConferenceFinishedObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXCallManagerConferenceFinished object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         NSString *roomId = notif.object;
-        if ([roomId isEqualToString:customizedRoomDataSource.roomId])
+        if ([roomId isEqualToString:self->customizedRoomDataSource.roomId])
         {
             [self refreshActivitiesViewDisplay];
             [self refreshRoomInputToolbar];
@@ -5839,7 +5864,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)listenMXSessionStateChangeNotifications
 {
+    MXWeakify(self);
+    
     kMXSessionStateDidChangeObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionStateDidChangeNotification object:self.roomDataSource.mxSession queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         if (self.roomDataSource.mxSession.state == MXSessionStateSyncError
             || self.roomDataSource.mxSession.state == MXSessionStateRunning)
