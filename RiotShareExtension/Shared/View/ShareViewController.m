@@ -23,7 +23,7 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface ShareViewController () <MXKRecentListViewControllerDelegate, ShareDataSourceDelegate>
+@interface ShareViewController () <ShareDataSourceDelegate>
 
 @property (nonatomic, assign, readonly) ShareViewControllerType type;
 

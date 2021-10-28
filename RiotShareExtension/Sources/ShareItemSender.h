@@ -14,22 +14,19 @@
 // limitations under the License.
 //
 
-import Foundation
+#import <UIKit/UIKit.h>
 
-@objc public enum ShareItemType: UInt {
-    case fileURL, text, URL, image, video, movie, voiceMessage, unknown
-}
+#import "ShareItemSenderProtocol.h"
 
-@objc public protocol ShareItemProtocol {
-    var type: ShareItemType { get }
-}
+@class ShareExtensionShareItemProvider;
 
-@objc public protocol ShareItemProviderProtocol {
-    var items: [ShareItemProtocol] { get }
-    
-    func areAllItemsImages() -> Bool
-    
-    func areAllItemsLoaded() -> Bool
-    
-    func loadItem(_ item: ShareItemProtocol, completion: @escaping (Any?, Error?) -> Void)
-}
+NS_ASSUME_NONNULL_BEGIN
+
+@interface ShareItemSender : NSObject <ShareItemSenderProtocol>
+
+- (instancetype)initWithRootViewController:(UIViewController *)rootViewController
+                         shareItemProvider:(ShareExtensionShareItemProvider *)shareItemProvider;
+
+@end
+
+NS_ASSUME_NONNULL_END
