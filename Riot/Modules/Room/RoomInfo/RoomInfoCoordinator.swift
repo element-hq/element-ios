@@ -156,7 +156,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
                 roomSearchViewController.loadViewIfNeeded()
                 roomSearchViewController.roomDataSource = dataSource
                 self.navigationRouter.push(roomSearchViewController, animated: animated, popCompletion: nil)
-                })
+            })
         case .notifications:
             let coordinator = createRoomNotificationSettingsCoordinator()
             coordinator.start()
