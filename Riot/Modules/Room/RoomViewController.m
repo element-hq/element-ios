@@ -2257,6 +2257,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     UIViewController *suggestionsViewController = self.userSuggestionCoordinator.toPresentable;
+    
+    if (!suggestionsViewController)
+    {
+        return;
+    }
+    
     [suggestionsViewController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [self addChildViewController:suggestionsViewController];
