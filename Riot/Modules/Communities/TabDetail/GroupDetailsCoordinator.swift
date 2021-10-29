@@ -43,6 +43,10 @@ final class GroupDetailsCoordinator: GroupDetailsCoordinatorProtocol {
         self.groupDetailsViewController = groupDetailsViewController
     }
     
+    deinit {
+        groupDetailsViewController.destroy()
+    }
+    
     // MARK: - Public
     
     func start() {

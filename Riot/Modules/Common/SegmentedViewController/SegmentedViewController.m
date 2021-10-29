@@ -50,7 +50,7 @@
     NSLayoutConstraint *leftMarkerViewConstraint;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -183,8 +183,12 @@
     
     [self createSegmentedViews];
     
+    MXWeakify(self);
+    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         

@@ -90,7 +90,7 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<RoomParticipantsViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<RoomParticipantsViewControllerDelegate> delegate;
 
 /**
  Returns the `UINib` object initialized for a `RoomParticipantsViewController`.
