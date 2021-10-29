@@ -29,7 +29,7 @@
 "warning" = "Varning";
 "active_call" = "Aktivt samtal";
 "active_call_details" = "Aktivt samtal (%@)";
-"rename" = "Byt namn";
+"rename" = "Döp om";
 "send_to" = "Skicka till %@";
 "sending" = "Skickar";
 "close" = "Stäng";
@@ -62,7 +62,7 @@
 "auth_email_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till en e-postadress för att återställa ditt lösenord i framtiden.";
 "auth_phone_is_required" = "Ingen identitetsserver är konfigurerad, så du kan inte lägga till ett telefonnummer för att återställa ditt lösenord i framtiden.";
 "auth_password_dont_match" = "Lösenorden matchar inte";
-"auth_username_in_use" = "Användarnamnet är upptaget";
+"auth_username_in_use" = "Användarnamn upptaget";
 "auth_forgot_password" = "Glömt lösenordet?";
 "auth_email_not_found" = "Misslyckades att skicka e-post: Den här e-postadressen hittades inte";
 "auth_use_server_options" = "Använd anpassade serveralternativ (avancerat)";
@@ -97,7 +97,7 @@
 "room_creation_keep_private" = "Behåll privat";
 "room_creation_make_private" = "Gör privat";
 "room_creation_wait_for_creation" = "Ett rum håller redan på att skapas. Vänligen vänta.";
-"room_creation_invite_another_user" = "Sök / bjud in efter användar-ID, namn eller e-postadress";
+"room_creation_invite_another_user" = "Användar-ID, namn eller e-postadress";
 "room_recents_favourites_section" = "FAVORITER";
 "room_recents_people_section" = "PERSONER";
 "room_recents_conversations_section" = "RUM";
@@ -274,7 +274,7 @@
 "settings_integrations" = "INTEGRATIONER";
 "settings_user_interface" = "ANVÄNDARGRÄNSSNITT";
 "settings_ignored_users" = "IGNORERADE ANVÄNDARE";
-"settings_contacts" = "LOKALA KONTAKTER";
+"settings_contacts" = "ENHETSKONTAKTER";
 "settings_advanced" = "AVANCERAT";
 "settings_other" = "ANNAT";
 "settings_labs" = "EXPERIMENT";
@@ -1417,3 +1417,28 @@
 "room_recents_suggested_rooms_section" = "FÖRESLAGNA RUM";
 "done" = "Klar";
 "open" = "Öppna";
+"service_terms_modal_information_description_integration_manager" = "En integrationshanterare låter dig lägga till funktioner från tredje parter.";
+"service_terms_modal_information_description_identity_server" = "En identitetsserver hjälper dig att hitta dina kontakter genom att leta upp deras telefonnummer eller e-postadress för att se om de redan har ett konto.";
+"service_terms_modal_information_title_integration_manager" = "Integrationshanterare";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Identitetsserver";
+"service_terms_modal_description_integration_manager" = "Detta kommer att låta dig använda bottar, bryggor, widgets och dekalpaket.";
+"service_terms_modal_description_identity_server" = "Detta kommer att låta personer hitta dig om de har ditt telefonnummer eller din e-postadress sparat i sina telefonkontakter.";
+"service_terms_modal_table_header_integration_manager" = "INTEGRATIONSHANTERARVILLKOR";
+"service_terms_modal_table_header_identity_server" = "IDENTITETSSERVERVILLKOR";
+"service_terms_modal_footer" = "Detta kan inaktiveras när som helst i inställningarna.";
+
+// Service terms
+"service_terms_modal_title_message" = "För att fortsätta, acceptera användarvillkoren nedan";
+"settings_contacts_enable_sync_description" = "Detta kommer att använda din identitetsserver för att koppla dig till dina kontakter, och hjälpa dem att hitta dig.";
+"settings_contacts_enable_sync" = "Hitta dina kontakter";
+"settings_phone_contacts" = "TELEFONKONTAKTER";
+"room_event_action_forward" = "Vidarebefordra";
+"find_your_contacts_identity_service_error" = "Kan inte ansluta till identitetsservern.";
+"find_your_contacts_footer" = "Detta kan inaktiveras när som helst från inställningarna.";
+"find_your_contacts_button_title" = "Hitta dina kontakter";
+"find_your_contacts_message" = "Låt %@ visa dina kontakter så att du snabbt kan börja chatta med dem du känner bäst.";
+"find_your_contacts_title" = "Börja genom att lista dina kontakter";
+"contacts_address_book_permission_denied_alert_message" = "För att aktivera kontakter, gå till dina enhetsinställningar.";
+"contacts_address_book_permission_denied_alert_title" = "Kontakter inaktiverat";
