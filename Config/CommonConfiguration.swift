@@ -75,6 +75,7 @@ class CommonConfiguration: NSObject, Configurable {
         // Disable key backup on common
         sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
         
+        sdkOptions.clientPermalinkBaseUrl = BuildSettings.clientPermalinkBaseUrl
         // Configure key provider delegate
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
     }

@@ -133,8 +133,14 @@ final class BuildSettings: NSObject {
         // Official Matrix ones
         "matrix.to": ["/"],
         "www.matrix.to": ["/"],
+        // Client Permalinks (for use with `BuildSettings.clientPermalinkBaseUrl`)
+//        "clienturl.com": ["/"],
+//        "www.clienturl.com": ["/"],
     ]
     
+    // For use in clients that use a custom base url for permalinks rather than matrix.to.
+    // This baseURL is used to generate permalinks within the app (E.g. timeline message permalinks).
+    static let clientPermalinkBaseUrl: String? = nil
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
