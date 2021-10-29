@@ -28,18 +28,18 @@ private class ShareExtensionItem: ShareItemProtocol {
     }
     
     var type: ShareItemType {
-        if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.text.rawValue) {
-            return .text
-        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.url.rawValue) {
-            return .URL
-        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.fileUrl.rawValue) {
-            return .fileURL
-        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.image.rawValue) {
+        if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.image.rawValue) {
             return .image
         } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.video.rawValue) {
             return .video
         } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.movie.rawValue) {
             return .movie
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.fileUrl.rawValue) {
+            return .fileURL
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.url.rawValue) {
+            return .URL
+        } else if itemProvider.hasItemConformingToTypeIdentifier(MXKUTI.text.rawValue) {
+            return .text
         }
         
         return .unknown
