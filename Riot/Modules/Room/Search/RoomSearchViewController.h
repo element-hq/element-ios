@@ -25,4 +25,6 @@
  */
 @property (nonatomic) MXKRoomDataSource *roomDataSource;
 
++ (instancetype)instantiate;
+
 @end

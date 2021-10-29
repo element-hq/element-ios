@@ -152,12 +152,11 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         case .search:
             MXKRoomDataSourceManager.sharedManager(forMatrixSession: session)?.roomDataSource(forRoom: self.room.roomId, create: false, onComplete: { (roomDataSource) in
                 guard let dataSource = roomDataSource else { return }
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                if let search = storyboard.instantiateViewController(withIdentifier: "RoomSearch") as? RoomSearchViewController {
-                    search.roomDataSource = dataSource
-                    self.navigationRouter.push(search, animated: animated, popCompletion: nil)
-                }
-            })
+                let roomSearchViewController: RoomSearchViewController = RoomSearchViewController.instantiate()
+                roomSearchViewController.loadViewIfNeeded()
+                roomSearchViewController.roomDataSource = dataSource
+                self.navigationRouter.push(roomSearchViewController, animated: animated, popCompletion: nil)
+                })
         case .notifications:
             let coordinator = createRoomNotificationSettingsCoordinator()
             coordinator.start()
