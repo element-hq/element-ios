@@ -2353,11 +2353,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (isVisible)
         {
-            previewHeader = [PreviewRoomTitleView roomTitleView];
+            PreviewRoomTitleView *previewHeader = [PreviewRoomTitleView roomTitleView];
             previewHeader.delegate = self;
             previewHeader.tapGestureDelegate = self;
             previewHeader.translatesAutoresizingMaskIntoConstraints = NO;
             [self.previewHeaderContainer addSubview:previewHeader];
+            
+            self->previewHeader = previewHeader;
+            
             // Force preview header in full width
             NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:previewHeader
                                                                               attribute:NSLayoutAttributeLeading
@@ -5398,7 +5401,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     // Remove potential existing subviews
     [self dismissTemporarySubViews];
     
-    encryptionInfoView = [[EncryptionInfoView alloc] initWithEvent:event andMatrixSession:self.roomDataSource.mxSession];
+    EncryptionInfoView *encryptionInfoView = [[EncryptionInfoView alloc] initWithEvent:event andMatrixSession:self.roomDataSource.mxSession];
     
     // Add shadow on added view
     encryptionInfoView.layer.cornerRadius = 5;
@@ -5407,6 +5410,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Add the view and define edge constraints
     [self.view addSubview:encryptionInfoView];
+    
+    self->encryptionInfoView = encryptionInfoView;
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:encryptionInfoView
                                                           attribute:NSLayoutAttributeTop
