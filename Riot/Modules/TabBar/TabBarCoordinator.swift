@@ -41,7 +41,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private let masterNavigationController: UINavigationController
     
     private var currentSpaceId: String?
-    private var homeViewControllerWrapperViewController: HomeViewControllerWithBannerWrapperViewController?
+    
+    private weak var versionCheckCoordinator: VersionCheckCoordinator?
     
     private var currentMatrixSession: MXSession? {
         return parameters.userSessionsService.mainUserSession?.matrixSession
@@ -96,14 +97,6 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             
             self.registerUserSessionsServiceNotifications()
             self.registerSessionChange()
-            
-            if let homeViewController = homeViewControllerWrapperViewController {
-                let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: masterTabBarController,
-                                                                      bannerPresenter: homeViewController,
-                                                                      themeService: ThemeService.shared())
-                versionCheckCoordinator.start()
-                add(childCoordinator: versionCheckCoordinator)
-            }
             
             self.updateMasterTabBarController(with: spaceId, forceReload: true)
         } else {            
@@ -214,21 +207,25 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
         searchBarButtonItem.accessibilityLabel = VectorL10n.searchDefaultPlaceholder
         
-        tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem
-        
-        self.updateTabControllers(for: tabBarController, showCommunities: true)
+        tabBarController.navigationItem.rightBarButtonItem = searchBarButtonItem    
         
         return tabBarController
     }
     
-    private func createHomeViewController() -> UIViewController {
+    private func createVersionCheckCoordinator(withRootViewController rootViewController: UIViewController, bannerPresentrer: BannerPresentationProtocol) -> VersionCheckCoordinator {
+        let versionCheckCoordinator = VersionCheckCoordinator(rootViewController: rootViewController,
+                                                              bannerPresenter: bannerPresentrer,
+                                                              themeService: ThemeService.shared()) 
+        return versionCheckCoordinator
+    }
+    
+    private func createHomeViewController() -> HomeViewControllerWithBannerWrapperViewController {
         let homeViewController: HomeViewController = HomeViewController.instantiate()
         homeViewController.tabBarItem.tag = Int(TABBAR_HOME_INDEX)
         homeViewController.tabBarItem.image = homeViewController.tabBarItem.image
         homeViewController.accessibilityLabel = VectorL10n.titleHome
         
-        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)
-        homeViewControllerWrapperViewController = wrapperViewController
+        let wrapperViewController = HomeViewControllerWithBannerWrapperViewController(viewController: homeViewController)        
         return wrapperViewController
     }
     
@@ -291,11 +288,26 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.masterTabBarController.filterRooms(withParentId: spaceId, inMatrixSession: self.currentMatrixSession)
     }
     
+    // TODO: Avoid to reinstantiate controllers everytime
     private func updateTabControllers(for tabBarController: MasterTabBarController, showCommunities: Bool) {
         var viewControllers: [UIViewController] = []
-                
+          
         let homeViewController = self.createHomeViewController()
+        
         viewControllers.append(homeViewController)
+        
+        if let existingVersionCheckCoordinator = self.versionCheckCoordinator {
+            self.remove(childCoordinator: existingVersionCheckCoordinator)
+        }
+        
+        if let masterTabBarController = self.masterTabBarController {
+            
+            let versionCheckCoordinator = self.createVersionCheckCoordinator(withRootViewController: masterTabBarController, bannerPresentrer: homeViewController)
+            versionCheckCoordinator.start()
+            self.add(childCoordinator: versionCheckCoordinator)
+            
+            self.versionCheckCoordinator = versionCheckCoordinator
+        }
         
         if RiotSettings.shared.homeScreenShowFavouritesTab {
             let favouritesViewController = self.createFavouritesViewController()
