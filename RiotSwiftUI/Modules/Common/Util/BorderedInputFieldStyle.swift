@@ -16,6 +16,7 @@
 
 import Foundation
 import SwiftUI
+import Introspect
 
 @available(iOS 14.0, *)
 /// A bordered style of text input
@@ -49,10 +50,11 @@ struct BorderedInputFieldStyle: TextFieldStyle {
     }
     
     private var textColor: Color {
-        if !isEnabled {
-            return theme.colors.quarterlyContent
+        if (theme.identifier == ThemeIdentifier.dark) {
+            return (isEnabled ? theme.colors.primaryContent : theme.colors.tertiaryContent)
+        } else {
+            return (isEnabled ? theme.colors.primaryContent : theme.colors.quarterlyContent)
         }
-        return theme.colors.primaryContent
     }
     
     private var backgroundColor: Color {
@@ -62,21 +64,31 @@ struct BorderedInputFieldStyle: TextFieldStyle {
         return theme.colors.background
     }
     
+    private var placeholderColor: Color {
+        return theme.colors.tertiaryContent
+    }
+        
     private var borderWidth: CGFloat {
-        return isEditing || isError ? 2 : 1.5
+        return isEditing || isError ? 2.0 : 1.5
     }
     
     func _body(configuration: TextField<_Label>) -> some View {
-        let rect = RoundedRectangle(cornerRadius: 8)
+        let rect = RoundedRectangle(cornerRadius: 8.0)
         return configuration
             .font(theme.fonts.callout)
             .foregroundColor(textColor)
             .accentColor(accentColor)
-            .frame(height: 48)
-            .padding(.horizontal, 8)
+            .frame(height: 48.0)
+            .padding(.horizontal, 8.0)
             .background(backgroundColor)
             .clipShape(rect)
             .overlay(rect.stroke(borderColor, lineWidth: borderWidth))
+            .introspectTextField { textField in
+                textField.returnKeyType = .done
+                textField.clearButtonMode = .whileEditing
+                textField.attributedPlaceholder = NSAttributedString(string: textField.placeholder ?? "",
+                                                                     attributes: [NSAttributedString.Key.foregroundColor: UIColor(placeholderColor)])
+            }
     }
 }
 
@@ -118,6 +130,5 @@ struct BorderedInputFieldStyle_Previews: PreviewProvider {
             .padding()
             .theme(ThemeIdentifier.dark)
         }
-
     }
 }

@@ -18,3 +18,4 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "Common.xcconfig"
+#include "Pods/Target Support Files/Pods-RiotPods-RiotSwiftUI/Pods-RiotPods-RiotSwiftUI.release.xcconfig"

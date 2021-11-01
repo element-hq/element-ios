@@ -176,6 +176,13 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
 handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
 
+/**
+ Ask the coordinator to invoke the poll creation form coordinator.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ */
+- (void)roomViewControllerDidRequestPollCreationFormPresentation:(RoomViewController *)roomViewController;
+
 @end
 
 NS_ASSUME_NONNULL_END

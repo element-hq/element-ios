@@ -43,6 +43,10 @@ end
 
 ########################################
 
+def import_SwiftUI_pods
+    pod 'Introspect', '~> 0.1'
+end
+
 abstract_target 'RiotPods' do
 
   pod 'GBDeviceInfo', '~> 6.6.0'
@@ -63,6 +67,9 @@ abstract_target 'RiotPods' do
 
   target "Riot" do
     import_MatrixKit
+
+    import_SwiftUI_pods
+
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
@@ -73,7 +80,7 @@ abstract_target 'RiotPods' do
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '~> 4.5'
-
+    
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 
     target 'RiotTests' do
@@ -84,6 +91,14 @@ abstract_target 'RiotPods' do
   target "RiotShareExtension" do
     import_MatrixKit
   end
+
+  target "RiotSwiftUI" do
+    import_SwiftUI_pods
+  end 
+
+  target "RiotSwiftUITests" do
+    import_SwiftUI_pods
+  end 
 
   target "SiriIntents" do
     import_MatrixKit
