@@ -50,13 +50,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     NSIndexPath* lastPotentialCellPath;
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
-    id UIApplicationDidEnterBackgroundNotificationObserver;
+    __weak id UIApplicationDidEnterBackgroundNotificationObserver;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kMXNotificationCenterDidUpdateRules to update missed messages counts.
-    id kMXNotificationCenterDidUpdateRulesObserver;
+    __weak id kMXNotificationCenterDidUpdateRulesObserver;
     
     MXHTTPOperation *currentRequest;
     
@@ -65,7 +65,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     UISearchBar *tableSearchBar;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic, strong) CreateRoomCoordinatorBridgePresenter *createRoomCoordinatorBridgePresenter;
@@ -156,11 +156,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Apply dragging settings
     self.enableDragging = _enableDragging;
     
+    MXWeakify(self);
+    
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         // Leave potential editing mode
-        [self cancelEditionMode:isRefreshPending];
+        [self cancelEditionMode:self->isRefreshPending];
         
     }];
     
@@ -169,6 +173,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         
@@ -268,8 +274,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         [self.recentsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
+    MXWeakify(self);
+    
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self scrollToTop:YES];
         
@@ -277,6 +287,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     // Observe kMXNotificationCenterDidUpdateRules to refresh missed messages counts
     kMXNotificationCenterDidUpdateRulesObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXNotificationCenterDidUpdateRules object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *note) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self refreshRecentsTable];
         
@@ -856,14 +868,32 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
 }
 
-- (void)dispayRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
+- (void)showRoomWithRoomId:(NSString*)roomId inMatrixSession:(MXSession*)matrixSession
 {
     // Avoid multiple openings of rooms
     self.userInteractionEnabled = NO;
+
+    // Do not stack views when showing room
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
-    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:matrixSession restoreInitialDisplay:NO completion:^{
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                    eventId:nil
+                                                                                  mxSession:matrixSession
+                                                                     presentationParameters:presentationParameters];
+    
+    [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{
         self.userInteractionEnabled = YES;
     }];
+}
+
+- (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
+{
+    // Do not stack views when showing room
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO sender:nil sourceView:nil];
+    
+    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    
+    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
 }
 
 // Disable UI interactions in this screen while we are going to open another screen.
@@ -939,7 +969,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         
         // Display the room preview
-        [self dispayRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
+        [self showRoomWithRoomId:invitedRoom.roomId inMatrixSession:invitedRoom.mxSession];
     }
     else if ([actionIdentifier isEqualToString:kInviteRecentTableViewCellAcceptButtonPressed])
     {
@@ -1461,8 +1491,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         else if ([self canShowRoomPreviewFor:cellData.roomSummary])
         {
             // Display the room preview
-            [self dispayRoomWithRoomId:cellData.roomIdentifier
-                       inMatrixSession:cellData.mxSession];
+            [self showRoomWithRoomId:cellData.roomIdentifier inMatrixSession:cellData.mxSession];
         }
         else
         {
@@ -1982,7 +2011,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
         // Open the public room
-        [[AppDelegate theDelegate] showRoom:publicRoom.roomId andEventId:nil withMatrixSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession restoreInitialDisplay:NO];
+        [self showRoomWithRoomId:publicRoom.roomId
+                 inMatrixSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
     }
     else
     {
@@ -1996,14 +2026,15 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
             // Try to get more information about the room before opening its preview
             [roomPreviewData peekInRoom:^(BOOL succeeded) {
                 [self stopActivityIndicator];
-
-                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                
+                [self showRoomPreviewWithData:roomPreviewData];
             }];
         }
         else
         {
             RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession];
-            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+            
+            [self showRoomPreviewWithData:roomPreviewData];
         }
     }
 }
@@ -2069,7 +2100,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectRoom:(NSString *)roomId inMatrixSession:(MXSession *)matrixSession
 {
-    [self dispayRoomWithRoomId:roomId inMatrixSession:matrixSession];
+    [self showRoomWithRoomId:roomId inMatrixSession:matrixSession];
 }
 
 - (void)recentListViewController:(MXKRecentListViewController *)recentListViewController didSelectSuggestedRoom:(MXSpaceChildInfo *)childInfo
@@ -2080,7 +2111,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [previewData peekInRoom:^(BOOL succeeded) {
         MXStrongifyAndReturnIfNil(self);
         [self stopActivityIndicator];
-        [[AppDelegate theDelegate].masterTabBarController showRoomPreview:previewData];
+        [self showRoomPreviewWithData:previewData];
     }];
 }
 
@@ -2123,7 +2154,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)createRoomCoordinatorBridgePresenterDelegate:(CreateRoomCoordinatorBridgePresenter *)coordinatorBridgePresenter didCreateNewRoom:(MXRoom *)room
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+        [self showRoomWithRoomId:room.roomId inMatrixSession:self.mainSession];
     }];
     coordinatorBridgePresenter = nil;
 }
@@ -2258,7 +2289,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     {
         // Room is known show it directly
         [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-            [[AppDelegate theDelegate] showRoom:room.roomId andEventId:nil withMatrixSession:self.mainSession restoreInitialDisplay:NO];
+            [self showRoomWithRoomId:room.roomId
+                     inMatrixSession:self.mainSession];
         }];
         coordinatorBridgePresenter = nil;
     }
@@ -2286,7 +2318,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                         
             if (succeeded) {
                 [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-                    [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                    
+                    [self showRoomPreviewWithData:roomPreviewData];
                 }];
                 self.roomsDirectoryCoordinatorBridgePresenter = nil;
             } else {

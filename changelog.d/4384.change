@@ -1,1 +1,1 @@
-RecentsDataSource: Refactorings for lazy loading room summaries.
+Using mutable room list fetch sort options after chaning them to be a structure.

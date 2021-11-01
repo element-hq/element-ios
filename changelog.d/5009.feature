@@ -1,1 +1,0 @@
-Implemented message forwarding from within the main application. Updated the share extension designs.

@@ -421,7 +421,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         case .home:
             fetcher.fetchOptions.sortOptions = sortOptions
         case .favourites:
-            let newSortOptions = sortOptions
+            var newSortOptions = sortOptions
             newSortOptions.favoriteTag = true
             fetcher.fetchOptions.sortOptions = newSortOptions
         default:

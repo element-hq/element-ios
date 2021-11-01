@@ -4087,6 +4087,10 @@ public class VectorL10n: NSObject {
   public static var serviceTermsModalTitleMessage: String { 
     return VectorL10n.tr("Vector", "service_terms_modal_title_message") 
   }
+  /// ABOUT
+  public static var settingsAbout: String { 
+    return VectorL10n.tr("Vector", "settings_about") 
+  }
   /// Invalid credentials
   public static var settingsAdd3pidInvalidPasswordMessage: String { 
     return VectorL10n.tr("Vector", "settings_add_3pid_invalid_password_message") 
@@ -4146,10 +4150,6 @@ public class VectorL10n: NSObject {
   /// Homeserver is %@
   public static func settingsConfigHomeServer(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "settings_config_home_server", p1)
-  }
-  /// Identity server is %@
-  public static func settingsConfigIdentityServer(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "settings_config_identity_server", p1)
   }
   /// No build info
   public static var settingsConfigNoBuildInfo: String { 
@@ -4242,6 +4242,10 @@ public class VectorL10n: NSObject {
   /// Direct messages
   public static var settingsDirectMessages: String { 
     return VectorL10n.tr("Vector", "settings_direct_messages") 
+  }
+  /// Accept Identity Server Terms
+  public static var settingsDiscoveryAcceptTerms: String { 
+    return VectorL10n.tr("Vector", "settings_discovery_accept_terms") 
   }
   /// An error occured. Please retry.
   public static var settingsDiscoveryErrorMessage: String { 
@@ -4770,6 +4774,18 @@ public class VectorL10n: NSObject {
   /// Failed to send. Check in the main app the encryption settings for this room
   public static var shareExtensionFailedToEncrypt: String { 
     return VectorL10n.tr("Vector", "share_extension_failed_to_encrypt") 
+  }
+  /// Send in %@ for better quality, or send in low quality below.
+  public static func shareExtensionLowQualityVideoMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_extension_low_quality_video_message", p1)
+  }
+  /// Video will be sent in low quality
+  public static var shareExtensionLowQualityVideoTitle: String { 
+    return VectorL10n.tr("Vector", "share_extension_low_quality_video_title") 
+  }
+  /// Send now
+  public static var shareExtensionSendNow: String { 
+    return VectorL10n.tr("Vector", "share_extension_send_now") 
   }
   /// Feedback
   public static var sideMenuActionFeedback: String { 

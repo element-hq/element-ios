@@ -77,6 +77,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         super.init()
     }
+    
+    deinit {
+        roomViewController.destroy()
+    }
 
     // MARK: - Public
     
@@ -90,7 +94,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.roomViewController.delegate = self
         
         // Detect when view controller has been dismissed by gesture when presented modally (not in full screen).
-        self.roomViewController.presentationController?.delegate = self
+        // FIXME: Find a better way to manage modal dismiss. This makes the `roomViewController` to never be released
+        // self.roomViewController.presentationController?.delegate = self
         
         if let eventId = self.selectedEventId {
             self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
@@ -231,12 +236,8 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
         AppDelegate.theDelegate().presentCompleteSecurity(for: session)
     }
-
-    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkFragment fragment: String, from universalLinkURL: URL?) -> Bool {
-        return AppDelegate.theDelegate().handleUniversalLinkFragment(fragment, from: universalLinkURL)
-    }
     
-    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkURL universalLinkURL: URL) -> Bool {
-        return AppDelegate.theDelegate().handleUniversalLinkURL(universalLinkURL)
+    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
+        return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
     }
 }

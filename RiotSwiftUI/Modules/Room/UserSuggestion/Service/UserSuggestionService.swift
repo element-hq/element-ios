@@ -45,7 +45,7 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     
     // MARK: Private
     
-    private let roomMembersProvider: RoomMembersProviderProtocol
+    private let roomMemberProvider: RoomMembersProviderProtocol
     
     private var suggestionItems: [UserSuggestionItemProtocol] = []
     private let currentTextTriggerSubject = CurrentValueSubject<String?, Never>(nil)
@@ -61,13 +61,13 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     
     // MARK: - Setup
     
-    init(roomMembersProvider: RoomMembersProviderProtocol) {
-        self.roomMembersProvider = roomMembersProvider
+    init(roomMemberProvider: RoomMembersProviderProtocol) {
+        self.roomMemberProvider = roomMemberProvider
         
         currentTextTriggerSubject
             .debounce(for: 0.5, scheduler: RunLoop.main)
             .removeDuplicates()
-            .sink { self.fetchAndFilterMembersForTextTrigger($0) }
+            .sink { [weak self] in self?.fetchAndFilterMembersForTextTrigger($0) }
             .store(in: &cancellables)
     }
     
@@ -96,7 +96,7 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
         
         partialName.removeFirst() // remove the '@' prefix
         
-        roomMembersProvider.fetchMembers { [weak self] members in
+        roomMemberProvider.fetchMembers { [weak self] members in
             guard let self = self else {
                 return
             }

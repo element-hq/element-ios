@@ -63,7 +63,7 @@ enum
     SECTION_TAG_INTEGRATIONS,
     SECTION_TAG_USER_INTERFACE,
     SECTION_TAG_ADVANCED,
-    SECTION_TAG_OTHER,
+    SECTION_TAG_ABOUT,
     SECTION_TAG_LABS,
     SECTION_TAG_FLAIR,
     SECTION_TAG_DEACTIVATE_ACCOUNT
@@ -77,9 +77,7 @@ enum
     USER_SETTINGS_FIRST_NAME_INDEX,
     USER_SETTINGS_SURNAME_INDEX,
     USER_SETTINGS_ADD_EMAIL_INDEX,
-    USER_SETTINGS_ADD_PHONENUMBER_INDEX,
-    USER_SETTINGS_THREEPIDS_INFORMATION_INDEX,
-    USER_SETTINGS_INVITE_FRIENDS_INDEX
+    USER_SETTINGS_ADD_PHONENUMBER_INDEX
 };
 
 enum
@@ -90,8 +88,7 @@ enum
 
 enum
 {
-    SENDING_MEDIA_CONFIRM_SIZE = 0,
-    SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION,
+    SENDING_MEDIA_CONFIRM_SIZE = 0
 };
 
 enum
@@ -105,7 +102,6 @@ enum
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
     NOTIFICATION_SETTINGS_SYSTEM_SETTINGS,
     NOTIFICATION_SETTINGS_SHOW_DECODED_CONTENT,
-    NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX,
     NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX,
     NOTIFICATION_SETTINGS_PIN_UNREAD_INDEX,
     NOTIFICATION_SETTINGS_DEFAULT_SETTINGS_INDEX,
@@ -115,20 +111,17 @@ enum
 
 enum
 {
-    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX=0,
-    CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX,
+    CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX = 0
 };
 
 enum
 {
-    INTEGRATIONS_INDEX,
-    INTEGRATIONS_DESCRIPTION_INDEX,
+    INTEGRATIONS_INDEX
 };
 
 enum {
     LOCAL_CONTACTS_SYNC_INDEX,
-    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX,
-    LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX
+    LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX
 };
 
 enum
@@ -139,24 +132,25 @@ enum
 
 enum
 {
-    IDENTITY_SERVER_INDEX,
-    IDENTITY_SERVER_DESCRIPTION_INDEX,
+    IDENTITY_SERVER_INDEX
 };
 
 enum
 {
-    OTHER_VERSION_INDEX = 0,
-    OTHER_OLM_VERSION_INDEX,
-    OTHER_COPYRIGHT_INDEX,
-    OTHER_TERM_CONDITIONS_INDEX,
-    OTHER_PRIVACY_INDEX,
-    OTHER_THIRD_PARTY_INDEX,
-    OTHER_SHOW_NSFW_ROOMS_INDEX,
-    OTHER_CRASH_REPORT_INDEX,
-    OTHER_ENABLE_RAGESHAKE_INDEX,
-    OTHER_MARK_ALL_AS_READ_INDEX,
-    OTHER_CLEAR_CACHE_INDEX,
-    OTHER_REPORT_BUG_INDEX,
+    ADVANCED_SHOW_NSFW_ROOMS_INDEX = 0,
+    ADVANCED_CRASH_REPORT_INDEX,
+    ADVANCED_ENABLE_RAGESHAKE_INDEX,
+    ADVANCED_MARK_ALL_AS_READ_INDEX,
+    ADVANCED_CLEAR_CACHE_INDEX,
+    ADVANCED_REPORT_BUG_INDEX,
+};
+
+enum
+{
+    ABOUT_COPYRIGHT_INDEX = 0,
+    ABOUT_TERM_CONDITIONS_INDEX,
+    ABOUT_PRIVACY_INDEX,
+    ABOUT_THIRD_PARTY_INDEX,
 };
 
 enum
@@ -184,16 +178,16 @@ ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate>
 {
     // Current alert (if any).
-    UIAlertController *currentAlert;
+    __weak UIAlertController *currentAlert;
     
     // listener
-    id removedAccountObserver;
-    id accountUserInfoObserver;
-    id pushInfoUpdateObserver;
+    __weak id removedAccountObserver;
+    __weak id accountUserInfoObserver;
+    __weak id pushInfoUpdateObserver;
     
-    id notificationCenterWillUpdateObserver;
-    id notificationCenterDidUpdateObserver;
-    id notificationCenterDidFailObserver;
+    __weak id notificationCenterWillUpdateObserver;
+    __weak id notificationCenterDidUpdateObserver;
+    __weak id notificationCenterDidFailObserver;
     
     // profile updates
     // avatar
@@ -222,10 +216,10 @@ TableViewSectionsDelegate>
     GroupsDataSource *groupsDataSource;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
     
     // Postpone destroy operation when saving, pwd reset or email binding is in progress
     BOOL isSavingInProgress;
@@ -274,14 +268,18 @@ TableViewSectionsDelegate>
 
 @property (nonatomic, strong) TableViewSections *tableViewSections;
 
-@property (nonatomic, strong) InviteFriendsPresenter *inviteFriendsPresenter;
-
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) ReauthenticationCoordinatorBridgePresenter *reauthenticationCoordinatorBridgePresenter;
 
 @property (nonatomic, strong) UserInteractiveAuthenticationService *userInteractiveAuthenticationService;
 
+/**
+ Whether or not to check for contacts access after the user accepts the service terms. The value of this property is
+ set automatically when calling `prepareIdentityServiceAndPresentTermsWithSession:checkingAccessForContactsOnAccept`
+*/
+@property (nonatomic) BOOL serviceTermsModalShouldCheckAccessForContactsOnAccept;
+@property (nonatomic) BOOL isPreparingIdentityService;
 @property (nonatomic, strong) ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter;
 
 @end
@@ -362,11 +360,10 @@ TableViewSectionsDelegate>
     }
     if (BuildSettings.settingsScreenShowThreepidExplanatory)
     {
-        [sectionUserSettings addRowWithTag:USER_SETTINGS_THREEPIDS_INFORMATION_INDEX];
-    }
-    if (RiotSettings.shared.settingsScreenShowInviteFriends)
-    {
-        [sectionUserSettings addRowWithTag:USER_SETTINGS_INVITE_FRIENDS_INDEX];
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{}];
+        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
+        [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{}]];
+        sectionUserSettings.attributedFooterTitle = attributedString;
     }
     
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
@@ -376,15 +373,15 @@ TableViewSectionsDelegate>
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
         [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE];
-        [sectionMedia addRowWithTag:SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION];
         sectionMedia.headerTitle = [VectorL10n settingsSendingMedia];
+        sectionMedia.footerTitle = VectorL10n.settingsConfirmMediaSizeDescription;
         [tmpSections addObject:sectionMedia];
     }
     
     Section *sectionLinks = [Section sectionWithTag:SECTION_TAG_LINKS];
     [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_INDEX];
-    [sectionLinks addRowWithTag:LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX];
     sectionLinks.headerTitle = [VectorL10n settingsLinks];
+    sectionLinks.footerTitle = VectorL10n.settingsShowUrlPreviewsDescription;
     [tmpSections addObject:sectionLinks];
     
     Section *sectionSecurity = [Section sectionWithTag:SECTION_TAG_SECURITY];
@@ -401,9 +398,9 @@ TableViewSectionsDelegate>
     }
     
     if (@available(iOS 14.0, *)) {
-        // Don't add Global settings message for iOS 14+
+        // Don't display Global settings footer for iOS 14+
     } else {
-        [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX];
+        sectionNotificationSettings.footerTitle = [VectorL10n settingsGlobalSettingsInfo:AppInfo.current.displayName];
     }
 
     [sectionNotificationSettings addRowWithTag:NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX];
@@ -420,21 +417,17 @@ TableViewSectionsDelegate>
     sectionNotificationSettings.headerTitle = [VectorL10n settingsNotifications];
     [tmpSections addObject:sectionNotificationSettings];
     
-    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString)
+    if (BuildSettings.allowVoIPUsage && BuildSettings.stunServerFallbackUrlString && RiotSettings.shared.settingsScreenShowEnableStunServerFallback)
     {
         Section *sectionCalls = [Section sectionWithTag:SECTION_TAG_CALLS];
         sectionCalls.headerTitle = [VectorL10n settingsCallsSettings];
-
-        if (RiotSettings.shared.settingsScreenShowEnableStunServerFallback)
-        {
-            [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
-            [sectionCalls addRowWithTag:CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX];
-        }
         
-        if (sectionCalls.rows.count)
-        {
-            [tmpSections addObject:sectionCalls];
-        }
+        // Remove "stun:"
+        NSString* stunFallbackHost = [BuildSettings.stunServerFallbackUrlString componentsSeparatedByString:@":"].lastObject;
+        sectionCalls.footerTitle = [VectorL10n settingsCallsStunServerFallbackDescription:stunFallbackHost];
+
+        [sectionCalls addRowWithTag:CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX];
+        [tmpSections addObject:sectionCalls];
     }
     
     if (BuildSettings.settingsScreenShowDiscoverySettings)
@@ -446,6 +439,7 @@ TableViewSectionsDelegate>
             [sectionDiscovery addRowWithTag:index];
         }
         sectionDiscovery.headerTitle = [VectorL10n settingsDiscoverySettings];
+        sectionDiscovery.attributedFooterTitle = self.settingsDiscoveryTableViewSection.attributedFooterTitle;
         [tmpSections addObject:sectionDiscovery];
     }
     
@@ -453,8 +447,9 @@ TableViewSectionsDelegate>
     {
         Section *sectionIdentityServer = [Section sectionWithTag:SECTION_TAG_IDENTITY_SERVER];
         [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_INDEX];
-        [sectionIdentityServer addRowWithTag:IDENTITY_SERVER_DESCRIPTION_INDEX];
+        
         sectionIdentityServer.headerTitle = [VectorL10n settingsIdentityServerSettings];
+        sectionIdentityServer.footerTitle = account.mxSession.identityService.identityServer ? VectorL10n.settingsIdentityServerDescription : VectorL10n.settingsIdentityServerNoIsDescription;
         [tmpSections addObject:sectionIdentityServer];
     }
     
@@ -466,12 +461,10 @@ TableViewSectionsDelegate>
         {
             [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX];
         }
-        else
-        {
-            [sectionLocalContacts addRowWithTag:LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX];
-        }
+        
         NSString *headerTitle = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone ? VectorL10n.settingsPhoneContacts : VectorL10n.settingsContacts;
         sectionLocalContacts.headerTitle = headerTitle;
+        sectionLocalContacts.footerTitle = VectorL10n.settingsContactsEnableSyncDescription;
         [tmpSections addObject:sectionLocalContacts];
     }
     
@@ -491,8 +484,12 @@ TableViewSectionsDelegate>
     {
         Section *sectionIntegrations = [Section sectionWithTag:SECTION_TAG_INTEGRATIONS];
         [sectionIntegrations addRowWithTag:INTEGRATIONS_INDEX];
-        [sectionIntegrations addRowWithTag:INTEGRATIONS_DESCRIPTION_INDEX];
         sectionIntegrations.headerTitle = [VectorL10n settingsIntegrations];
+        
+        NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
+        NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;
+        sectionIntegrations.footerTitle = [VectorL10n settingsIntegrationsAllowDescription:integrationManagerDomain];
+        
         [tmpSections addObject:sectionIntegrations];
     }
     
@@ -502,51 +499,58 @@ TableViewSectionsDelegate>
     sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
     [tmpSections addObject: sectionUserInterface];
     
-    if (BuildSettings.settingsScreenShowAdvancedSettings)
-    {
-        Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
-        [sectionAdvanced addRowWithTag:0];
-        sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
-        [tmpSections addObject:sectionAdvanced];
-    }
+    Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
+    sectionAdvanced.headerTitle = [VectorL10n settingsAdvanced];
     
-    Section *sectionOther = [Section sectionWithTag:SECTION_TAG_OTHER];
-    [sectionOther addRowWithTag:OTHER_VERSION_INDEX];
-    [sectionOther addRowWithTag:OTHER_OLM_VERSION_INDEX];
-    if (BuildSettings.applicationCopyrightUrlString.length)
-    {
-        [sectionOther addRowWithTag:OTHER_COPYRIGHT_INDEX];
-    }
-    if (BuildSettings.applicationTermsConditionsUrlString.length)
-    {
-        [sectionOther addRowWithTag:OTHER_TERM_CONDITIONS_INDEX];
-    }
-    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
-    {
-        [sectionOther addRowWithTag:OTHER_PRIVACY_INDEX];
-    }
-    [sectionOther addRowWithTag:OTHER_THIRD_PARTY_INDEX];
     if (RiotSettings.shared.settingsScreenShowNsfwRoomsOption)
     {
-        [sectionOther addRowWithTag:OTHER_SHOW_NSFW_ROOMS_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_SHOW_NSFW_ROOMS_INDEX];
     }
     
     if (BuildSettings.settingsScreenAllowChangingCrashUsageDataSettings)
     {
-        [sectionOther addRowWithTag:OTHER_CRASH_REPORT_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_CRASH_REPORT_INDEX];
     }
     if (BuildSettings.settingsScreenAllowChangingRageshakeSettings)
     {
-        [sectionOther addRowWithTag:OTHER_ENABLE_RAGESHAKE_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_ENABLE_RAGESHAKE_INDEX];
     }
-    [sectionOther addRowWithTag:OTHER_MARK_ALL_AS_READ_INDEX];
-    [sectionOther addRowWithTag:OTHER_CLEAR_CACHE_INDEX];
+    [sectionAdvanced addRowWithTag:ADVANCED_MARK_ALL_AS_READ_INDEX];
+    [sectionAdvanced addRowWithTag:ADVANCED_CLEAR_CACHE_INDEX];
     if (BuildSettings.settingsScreenAllowBugReportingManually)
     {
-        [sectionOther addRowWithTag:OTHER_REPORT_BUG_INDEX];
+        [sectionAdvanced addRowWithTag:ADVANCED_REPORT_BUG_INDEX];
     }
-    sectionOther.headerTitle = [VectorL10n settingsOther];
-    [tmpSections addObject:sectionOther];
+    
+    [tmpSections addObject:sectionAdvanced];
+    
+    Section *sectionAbout = [Section sectionWithTag:SECTION_TAG_ABOUT];
+    if (BuildSettings.applicationCopyrightUrlString.length)
+    {
+        [sectionAbout addRowWithTag:ABOUT_COPYRIGHT_INDEX];
+    }
+    if (BuildSettings.applicationTermsConditionsUrlString.length)
+    {
+        [sectionAbout addRowWithTag:ABOUT_TERM_CONDITIONS_INDEX];
+    }
+    if (BuildSettings.applicationPrivacyPolicyUrlString.length)
+    {
+        [sectionAbout addRowWithTag:ABOUT_PRIVACY_INDEX];
+    }
+    [sectionAbout addRowWithTag:ABOUT_THIRD_PARTY_INDEX];
+    sectionAbout.headerTitle = VectorL10n.settingsAbout;
+
+    if (BuildSettings.settingsScreenShowAdvancedSettings)
+    {
+        sectionAbout.footerTitle = [NSString stringWithFormat:@"Element %@ (%@) / Olm %@\n%@\n%@",
+                                    AppInfo.current.appVersion.bundleShortVersion,
+                                    AppInfo.current.appVersion.bundleVersion,
+                                    [OLMKit versionString],
+                                    [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId],
+                                    [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer]];
+    }
+    
+    [tmpSections addObject:sectionAbout];
     
     if (BuildSettings.settingsScreenShowLabSettings)
     {
@@ -600,13 +604,20 @@ TableViewSectionsDelegate>
     [self.tableView registerClass:TableViewCellWithPhoneNumberTextField.class forCellReuseIdentifier:[TableViewCellWithPhoneNumberTextField defaultReuseIdentifier]];
     [self.tableView registerClass:GroupTableViewCellWithSwitch.class forCellReuseIdentifier:[GroupTableViewCellWithSwitch defaultReuseIdentifier]];
     [self.tableView registerNib:MXKTableViewCellWithTextView.nib forCellReuseIdentifier:[MXKTableViewCellWithTextView defaultReuseIdentifier]];
+    [self.tableView registerNib:SectionFooterView.nib forHeaderFooterViewReuseIdentifier:[SectionFooterView defaultReuseIdentifier]];
     
-    // Enable self sizing cells
+    // Enable self sizing cells and footers
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 50;
+    self.tableView.sectionFooterHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedSectionFooterHeight = 50;
+    
+    MXWeakify(self);
     
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         if ([MXKAccountManager sharedManager].accounts.count)
         {
@@ -619,6 +630,8 @@ TableViewSectionsDelegate>
     // Add observer to handle accounts update
     accountUserInfoObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountUserInfoDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         [self stopActivityIndicator];
         
         [self refreshSettings];
@@ -627,6 +640,8 @@ TableViewSectionsDelegate>
     
     // Add observer to push settings
     pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self stopActivityIndicator];
         
@@ -655,6 +670,8 @@ TableViewSectionsDelegate>
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         
@@ -770,9 +787,13 @@ TableViewSectionsDelegate>
 
     // Refresh linked emails and phone numbers in parallel
     [self loadAccount3PIDs];
+    
+    MXWeakify(self);
         
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self.tableView setContentOffset:CGPointMake(-self.tableView.adjustedContentInset.left, -self.tableView.adjustedContentInset.top) animated:YES];
         
@@ -1357,6 +1378,38 @@ TableViewSectionsDelegate>
     return userInteractiveAuthenticationService;
 }
 
+- (void)scrollToDiscoverySection
+{
+    // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
+    if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
+    {
+        NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+        if (discoveryIndexPath)
+        {
+            [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+    }
+    else
+    {
+        //  this won't be precise in scroll location, but seems the best option for now
+        NSIndexPath *discoveryIndexPath = [_tableViewSections nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
+        if (discoveryIndexPath)
+        {
+            [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
+    }
+}
+
+- (void)scrollToUserSettingsSection
+{
+    NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
+                                                         sectionTag:SECTION_TAG_USER_SETTINGS];
+    if (discoveryIndexPath)
+    {
+        [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+}
+
 #pragma mark - 3Pid Add
 
 - (void)showAuthenticationIfNeededForAdding:(MX3PIDMedium)medium withSession:(MXSession*)session completion:(void (^)(NSDictionary* authParams))completion
@@ -1826,33 +1879,6 @@ TableViewSectionsDelegate>
                 cell = newPhoneCell;
             }
         }
-        else if (row == USER_SETTINGS_THREEPIDS_INFORMATION_INDEX)
-        {
-            MXKTableViewCell *threePidsInformationCell = [self getDefaultTableViewCell:self.tableView];
-            
-            NSMutableAttributedString *attributedString =  [[NSMutableAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart1] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}];
-            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart2] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.tintColor}]];
-            [attributedString appendAttributedString:[[NSAttributedString alloc] initWithString:[VectorL10n settingsThreePidsManagementInformationPart3] attributes:@{NSForegroundColorAttributeName: ThemeService.shared.theme.textPrimaryColor}]];
-            
-            threePidsInformationCell.textLabel.attributedText = attributedString;
-            threePidsInformationCell.textLabel.numberOfLines = 0;
-            
-            threePidsInformationCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = threePidsInformationCell;
-        }
-        else if (row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
-        {
-            MXKTableViewCell *inviteFriendsCell = [self getDefaultTableViewCell:tableView];
-
-            inviteFriendsCell.textLabel.text = [VectorL10n inviteFriendsAction:BuildSettings.bundleDisplayName];
-            
-            UIImage *shareActionImage = [[UIImage imageNamed:@"share_action_button"] vc_tintedImageUsingColor:ThemeService.shared.theme.tintColor];
-            UIImageView *accessoryView = [[UIImageView alloc] initWithImage:shareActionImage];
-            inviteFriendsCell.accessoryView = accessoryView;
-            
-            cell = inviteFriendsCell;
-        }
         else if (row == USER_SETTINGS_CHANGE_PASSWORD_INDEX)
         {
             MXKTableViewCellWithLabelAndTextField *passwordCell = [self getLabelAndTextFieldCell:tableView forIndexPath:indexPath];
@@ -1878,15 +1904,6 @@ TableViewSectionsDelegate>
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleConfirmMediaSize:) forControlEvents:UIControlEventTouchUpInside];
             
             cell = labelAndSwitchCell;
-        }
-        else if (row == SENDING_MEDIA_CONFIRM_SIZE_DESCRIPTION)
-        {
-            MXKTableViewCell *infoCell = [self getDefaultTableViewCell:tableView];
-            infoCell.textLabel.text = [VectorL10n settingsConfirmMediaSizeDescription];
-            infoCell.textLabel.numberOfLines = 0;
-            infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = infoCell;
         }
     }
     else if (section == SECTION_TAG_LINKS)
@@ -1966,19 +1983,6 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
-        else if (row == NOTIFICATION_SETTINGS_GLOBAL_SETTINGS_INDEX)
-        {
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-
-            NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-
-            globalInfoCell.textLabel.text = [VectorL10n settingsGlobalSettingsInfo:appDisplayName];
-            globalInfoCell.textLabel.numberOfLines = 0;
-            
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = globalInfoCell;
-        }
         else if (row == NOTIFICATION_SETTINGS_PIN_MISSED_NOTIFICATIONS_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
@@ -2034,19 +2038,6 @@ TableViewSectionsDelegate>
 
             cell = labelAndSwitchCell;
         }
-        else if (row == CALLS_STUN_SERVER_FALLBACK_DESCRIPTION_INDEX)
-        {
-            NSString *stunFallbackHost = BuildSettings.stunServerFallbackUrlString;
-            // Remove "stun:"
-            stunFallbackHost = [stunFallbackHost componentsSeparatedByString:@":"].lastObject;
-
-            MXKTableViewCell *globalInfoCell = [self getDefaultTableViewCell:tableView];
-            globalInfoCell.textLabel.text = [VectorL10n settingsCallsStunServerFallbackDescription:stunFallbackHost];
-            globalInfoCell.textLabel.numberOfLines = 0;
-            globalInfoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-            cell = globalInfoCell;
-        }
     }
     else if (section == SECTION_TAG_DISCOVERY)
     {
@@ -2073,25 +2064,6 @@ TableViewSectionsDelegate>
                 break;
             }
 
-            case IDENTITY_SERVER_DESCRIPTION_INDEX:
-            {
-                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-
-                if (account.mxSession.identityService.identityServer)
-                {
-                    descriptionCell.textLabel.text = [VectorL10n settingsIdentityServerDescription];
-                }
-                else
-                {
-                    descriptionCell.textLabel.text = [VectorL10n settingsIdentityServerNoIsDescription];
-                }
-                descriptionCell.textLabel.numberOfLines = 0;
-                descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-                cell = descriptionCell;
-                break;
-            }
-
             default:
                 break;
         }
@@ -2111,22 +2083,6 @@ TableViewSectionsDelegate>
                 [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleAllowIntegrations:) forControlEvents:UIControlEventTouchUpInside];
 
                 cell = labelAndSwitchCell;
-                break;
-            }
-
-            case INTEGRATIONS_DESCRIPTION_INDEX:
-            {
-                MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-
-                NSString *integrationManager = [WidgetManager.sharedManager configForUser:session.myUser.userId].apiUrl;
-                NSString *integrationManagerDomain = [NSURL URLWithString:integrationManager].host;
-
-                NSString *description = [VectorL10n settingsIntegrationsAllowDescription:integrationManagerDomain];
-                descriptionCell.textLabel.text = description;
-                descriptionCell.textLabel.numberOfLines = 0;
-                descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-
-                cell = descriptionCell;
                 break;
             }
 
@@ -2233,91 +2189,10 @@ TableViewSectionsDelegate>
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-        else if (row == LOCAL_CONTACTS_SYNC_DESCRIPTION_INDEX)
-        {
-            MXKTableViewCell *descriptionCell = [self getDefaultTableViewCell:tableView];
-            descriptionCell.textLabel.text = VectorL10n.settingsContactsEnableSyncDescription;
-            descriptionCell.textLabel.numberOfLines = 0;
-            descriptionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = descriptionCell;
-        }
     }
     else if (section == SECTION_TAG_ADVANCED)
     {
-        MXKTableViewCellWithTextView *configCell = [self textViewCellForTableView:tableView atIndexPath:indexPath];
-        
-        configCell.mxkTextView.text = [NSString stringWithFormat:@"%@\n%@\n%@", [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId], [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer], [MatrixKitL10n settingsConfigIdentityServer:account.identityServerURL]];
-        configCell.mxkTextView.accessibilityIdentifier=@"SettingsVCConfigStaticText";
-        
-        cell = configCell;
-    }
-    else if (section == SECTION_TAG_OTHER)
-    {
-        if (row == OTHER_VERSION_INDEX)
-        {
-            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
-            
-            NSString* appVersion = [AppDelegate theDelegate].appVersion;
-            NSString* build = [AppDelegate theDelegate].build;
-            
-            versionCell.textLabel.text = [VectorL10n settingsVersion:[NSString stringWithFormat:@"%@ %@", appVersion, build]];
-            
-            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = versionCell;
-        }
-        else if (row == OTHER_OLM_VERSION_INDEX)
-        {
-            MXKTableViewCell *versionCell = [self getDefaultTableViewCell:tableView];
-            
-            versionCell.textLabel.text = [VectorL10n settingsOlmVersion:[OLMKit versionString]];
-            
-            versionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            cell = versionCell;
-        }
-        else if (row == OTHER_TERM_CONDITIONS_INDEX)
-        {
-            MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
-
-            termAndConditionCell.textLabel.text = [VectorL10n settingsTermConditions];
-            
-            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = termAndConditionCell;
-        }
-        else if (row == OTHER_COPYRIGHT_INDEX)
-        {
-            MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
-
-            copyrightCell.textLabel.text = [VectorL10n settingsCopyright];
-            
-            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = copyrightCell;
-        }
-        else if (row == OTHER_PRIVACY_INDEX)
-        {
-            MXKTableViewCell *privacyPolicyCell = [self getDefaultTableViewCell:tableView];
-            
-            privacyPolicyCell.textLabel.text = [VectorL10n settingsPrivacyPolicy];
-            
-            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = privacyPolicyCell;
-        }
-        else if (row == OTHER_THIRD_PARTY_INDEX)
-        {
-            MXKTableViewCell *thirdPartyCell = [self getDefaultTableViewCell:tableView];
-            
-            thirdPartyCell.textLabel.text = [VectorL10n settingsThirdPartyNotices];
-            
-            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
-            
-            cell = thirdPartyCell;
-        }
-        else if (row == OTHER_SHOW_NSFW_ROOMS_INDEX)
+        if (row == ADVANCED_SHOW_NSFW_ROOMS_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
@@ -2330,7 +2205,7 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
-        else if (row == OTHER_CRASH_REPORT_INDEX)
+        else if (row == ADVANCED_CRASH_REPORT_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
@@ -2342,7 +2217,7 @@ TableViewSectionsDelegate>
             
             cell = sendCrashReportCell;
         }
-        else if (row == OTHER_ENABLE_RAGESHAKE_INDEX)
+        else if (row == ADVANCED_ENABLE_RAGESHAKE_INDEX)
         {
             MXKTableViewCellWithLabelAndSwitch* enableRageShakeCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
 
@@ -2354,7 +2229,7 @@ TableViewSectionsDelegate>
 
             cell = enableRageShakeCell;
         }
-        else if (row == OTHER_MARK_ALL_AS_READ_INDEX)
+        else if (row == ADVANCED_MARK_ALL_AS_READ_INDEX)
         {
             MXKTableViewCellWithButton *markAllBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!markAllBtnCell)
@@ -2379,7 +2254,7 @@ TableViewSectionsDelegate>
             
             cell = markAllBtnCell;
         }
-        else if (row == OTHER_CLEAR_CACHE_INDEX)
+        else if (row == ADVANCED_CLEAR_CACHE_INDEX)
         {
             MXKTableViewCellWithButton *clearCacheBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!clearCacheBtnCell)
@@ -2404,7 +2279,7 @@ TableViewSectionsDelegate>
             
             cell = clearCacheBtnCell;
         }
-        else if (row == OTHER_REPORT_BUG_INDEX)
+        else if (row == ADVANCED_REPORT_BUG_INDEX)
         {
             MXKTableViewCellWithButton *reportBugBtnCell = [tableView dequeueReusableCellWithIdentifier:[MXKTableViewCellWithButton defaultReuseIdentifier]];
             if (!reportBugBtnCell)
@@ -2428,6 +2303,49 @@ TableViewSectionsDelegate>
             reportBugBtnCell.mxkButton.accessibilityIdentifier = nil;
 
             cell = reportBugBtnCell;
+        }
+    }
+    else if (section == SECTION_TAG_ABOUT)
+    {
+        if (row == ABOUT_TERM_CONDITIONS_INDEX)
+        {
+            MXKTableViewCell *termAndConditionCell = [self getDefaultTableViewCell:tableView];
+
+            termAndConditionCell.textLabel.text = [VectorL10n settingsTermConditions];
+            
+            [termAndConditionCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = termAndConditionCell;
+        }
+        else if (row == ABOUT_COPYRIGHT_INDEX)
+        {
+            MXKTableViewCell *copyrightCell = [self getDefaultTableViewCell:tableView];
+
+            copyrightCell.textLabel.text = [VectorL10n settingsCopyright];
+            
+            [copyrightCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = copyrightCell;
+        }
+        else if (row == ABOUT_PRIVACY_INDEX)
+        {
+            MXKTableViewCell *privacyPolicyCell = [self getDefaultTableViewCell:tableView];
+            
+            privacyPolicyCell.textLabel.text = [VectorL10n settingsPrivacyPolicy];
+            
+            [privacyPolicyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = privacyPolicyCell;
+        }
+        else if (row == ABOUT_THIRD_PARTY_INDEX)
+        {
+            MXKTableViewCell *thirdPartyCell = [self getDefaultTableViewCell:tableView];
+            
+            thirdPartyCell.textLabel.text = [VectorL10n settingsThirdPartyNotices];
+            
+            [thirdPartyCell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
+            
+            cell = thirdPartyCell;
         }
     }
     else if (section == SECTION_TAG_LABS)
@@ -2524,9 +2442,37 @@ TableViewSectionsDelegate>
     {
         // Customize label style
         UITableViewHeaderFooterView *tableViewHeaderFooterView = (UITableViewHeaderFooterView*)view;
-        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
-        tableViewHeaderFooterView.textLabel.font = [UIFont systemFontOfSize:15];
+        tableViewHeaderFooterView.textLabel.textColor = ThemeService.shared.theme.colors.secondaryContent;
+        tableViewHeaderFooterView.textLabel.font = ThemeService.shared.theme.fonts.footnote;
     }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    NSAttributedString *attributedFooterTitle = [_tableViewSections sectionAtIndex:section].attributedFooterTitle;
+    
+    if (!attributedFooterTitle)
+    {
+        return nil;
+    }
+    
+    SectionFooterView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:SectionFooterView.defaultReuseIdentifier];
+    [view updateWithTheme:ThemeService.shared.theme];
+    view.leadingInset = tableView.vc_separatorInset.left;
+    [view updateWithAttributedText:attributedFooterTitle];
+    
+    if (section == SECTION_TAG_USER_SETTINGS)
+    {
+        UIGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollToDiscoverySection)];
+        [view addGestureRecognizer:recognizer];
+    }
+    else if (section == SECTION_TAG_DISCOVERY && self.settingsDiscoveryTableViewSection.footerShouldScrollToUserSettings)
+    {
+        UIGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollToUserSettingsSection)];
+        [view addGestureRecognizer:recognizer];
+    }
+    
+    return view;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2573,16 +2519,6 @@ TableViewSectionsDelegate>
             }
         }
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 24;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 24;
 }
 
 - (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2640,32 +2576,6 @@ TableViewSectionsDelegate>
             {
                 [self showThemePicker];
             }
-        }
-        else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_THREEPIDS_INFORMATION_INDEX)
-        {
-            // settingsDiscoveryTableViewSection is a dynamic section, so check number of rows before scroll to avoid crashes
-            if (self.settingsDiscoveryTableViewSection.numberOfRows > 0)
-            {
-                NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
-                if (discoveryIndexPath)
-                {
-                    [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                }
-            }
-            else
-            {
-                //  this won't be precise in scroll location, but seems the best option for now
-                NSIndexPath *discoveryIndexPath = [_tableViewSections nearestIndexPathForRowTag:0 sectionTag:SECTION_TAG_DISCOVERY];
-                if (discoveryIndexPath)
-                {
-                    [tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-                }
-            }
-        }
-        else if (section == SECTION_TAG_USER_SETTINGS && row == USER_SETTINGS_INVITE_FRIENDS_INDEX)
-        {
-            UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
-            [self showInviteFriendsFromSourceView:selectedCell];
         }
         else if (section == SECTION_TAG_NOTIFICATIONS && row == NOTIFICATION_SETTINGS_SYSTEM_SETTINGS)
         {
@@ -2745,9 +2655,9 @@ TableViewSectionsDelegate>
                 [self presentViewController:currentAlert animated:YES completion:nil];
             }
         }
-        else if (section == SECTION_TAG_OTHER)
+        else if (section == SECTION_TAG_ABOUT)
         {
-            if (row == OTHER_COPYRIGHT_INDEX)
+            if (row == ABOUT_COPYRIGHT_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationCopyrightUrlString];
                 
@@ -2755,7 +2665,7 @@ TableViewSectionsDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == OTHER_TERM_CONDITIONS_INDEX)
+            else if (row == ABOUT_TERM_CONDITIONS_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationTermsConditionsUrlString];
                 
@@ -2763,7 +2673,7 @@ TableViewSectionsDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == OTHER_PRIVACY_INDEX)
+            else if (row == ABOUT_PRIVACY_INDEX)
             {
                 WebViewViewController *webViewViewController = [[WebViewViewController alloc] initWithURL:BuildSettings.applicationPrivacyPolicyUrlString];
                 
@@ -2771,7 +2681,7 @@ TableViewSectionsDelegate>
                 
                 [self pushViewController:webViewViewController];
             }
-            else if (row == OTHER_THIRD_PARTY_INDEX)
+            else if (row == ABOUT_THIRD_PARTY_INDEX)
             {
                 NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"third_party_licenses" ofType:@"html" inDirectory:nil];
 
@@ -3129,37 +3039,7 @@ TableViewSectionsDelegate>
         }
         else
         {
-            MXWeakify(self);
-            
-            // The preparation can take some time so indicate this to the user
-            [self startActivityIndicator];
-            
-            [session prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
-                                                       success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self stopActivityIndicator];
-                
-                // Present the terms of the identity server.
-                [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
-            } failure:^(NSError *error) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self stopActivityIndicator];
-                
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
-                                                                                         message:nil
-                                                                                  preferredStyle:UIAlertControllerStyleAlert];
-                
-                [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
-                                                                    style:UIAlertActionStyleDefault
-                                                                  handler:nil]];
-                
-                [self presentViewController:alertController animated:YES completion:nil];
-                
-                [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
-                [self updateSections];
-            }];
+            [self prepareIdentityServiceAndPresentTermsWithSession:session checkingAccessForContactsOnAccept:YES];
         }
     }
     else
@@ -3886,21 +3766,6 @@ TableViewSectionsDelegate>
     self.deactivateAccountViewController = deactivateAccountViewController;
 }
 
-- (void)showInviteFriendsFromSourceView:(UIView*)sourceView
-{
-    if (!self.inviteFriendsPresenter)
-    {
-        self.inviteFriendsPresenter = [InviteFriendsPresenter new];
-    }
-    
-    NSString *userId = self.mainSession.myUser.userId;
-    
-    [self.inviteFriendsPresenter presentFor:userId
-                                       from:self
-                                 sourceView:sourceView
-                                   animated:YES];
-}
-
 - (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender
 {
     RiotSettings.shared.showNSFWPublicRooms = sender.isOn;
@@ -4499,13 +4364,12 @@ TableViewSectionsDelegate>
     self.discoveryThreePidDetailsPresenter = discoveryThreePidDetailsPresenter;
 }
 
-- (void)settingsDiscoveryViewModelDidTapUserSettingsLink:(SettingsDiscoveryViewModel *)viewModel
+- (void)settingsDiscoveryViewModelDidTapAcceptIdentityServerTerms:(SettingsDiscoveryViewModel *)viewModel
 {
-    NSIndexPath *discoveryIndexPath = [_tableViewSections exactIndexPathForRowTag:USER_SETTINGS_ADD_EMAIL_INDEX
-                                                         sectionTag:SECTION_TAG_USER_SETTINGS];
-    if (discoveryIndexPath)
+    MXSession *session = self.mainSession;
+    if (!session.identityService.areAllTermsAgreed)
     {
-        [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        [self prepareIdentityServiceAndPresentTermsWithSession:session checkingAccessForContactsOnAccept:NO];
     }
 }
 
@@ -4542,6 +4406,52 @@ TableViewSectionsDelegate>
     identityServerSettingsCoordinatorBridgePresenter.delegate = self;
 }
 
+- (void)prepareIdentityServiceAndPresentTermsWithSession:(MXSession *)session
+                       checkingAccessForContactsOnAccept:(BOOL)checkAccessForContacts
+{
+    if (self.isPreparingIdentityService)
+    {
+        return;
+    }
+    
+    self.isPreparingIdentityService = YES;
+    self.serviceTermsModalShouldCheckAccessForContactsOnAccept = checkAccessForContacts;
+    
+    MXWeakify(self);
+    
+    // The preparation can take some time so indicate this to the user
+    [self startActivityIndicator];
+    
+    [session prepareIdentityServiceForTermsWithDefault:RiotSettings.shared.identityServerUrlString
+                                               success:^(MXSession *session, NSString *baseURL, NSString *accessToken) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        self.isPreparingIdentityService = NO;
+        
+        // Present the terms of the identity server.
+        [self presentIdentityServerTermsWithSession:session baseURL:baseURL andAccessToken:accessToken];
+    } failure:^(NSError *error) {
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self stopActivityIndicator];
+        self.isPreparingIdentityService = NO;
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:VectorL10n.findYourContactsIdentityServiceError
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:MatrixKitL10n.ok
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+        [MXKAppSettings standardAppSettings].syncLocalContacts = NO;
+        [self updateSections];
+    }];
+}
+
 - (void)presentIdentityServerTermsWithSession:(MXSession*)mxSession baseURL:(NSString*)baseURL andAccessToken:(NSString*)accessToken
 {
     if (!mxSession || !baseURL || !accessToken || self.serviceTermsModalCoordinatorBridgePresenter.isPresenting)
@@ -4549,15 +4459,13 @@ TableViewSectionsDelegate>
         return;
     }
     
-    ServiceTermsModalCoordinatorBridgePresenter *serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
-                                                                                                                                                            baseUrl:baseURL
-                                                                                                                                                        serviceType:MXServiceTypeIdentityService
-                                                                                                                                                        accessToken:accessToken];
+    self.serviceTermsModalCoordinatorBridgePresenter = [[ServiceTermsModalCoordinatorBridgePresenter alloc] initWithSession:mxSession
+                                                                                                                    baseUrl:baseURL
+                                                                                                                serviceType:MXServiceTypeIdentityService
+                                                                                                                accessToken:accessToken];
     
-    serviceTermsModalCoordinatorBridgePresenter.delegate = self;
-    
-    [serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
-    self.serviceTermsModalCoordinatorBridgePresenter = serviceTermsModalCoordinatorBridgePresenter;
+    self.serviceTermsModalCoordinatorBridgePresenter.delegate = self;
+    [self.serviceTermsModalCoordinatorBridgePresenter presentFrom:self animated:YES];
 }
 
 #pragma mark SettingsIdentityServerCoordinatorBridgePresenterDelegate
@@ -4573,15 +4481,20 @@ TableViewSectionsDelegate>
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidAccept:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:^{
-        [self checkAccessForContacts];
+        [self.settingsDiscoveryTableViewSection reload];
+        if (self.serviceTermsModalShouldCheckAccessForContactsOnAccept)
+        {
+            [self checkAccessForContacts];
+        }
     }];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidDecline:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter session:(MXSession *)session
 {
-    // Disable the contacts toggle as the terms weren't accepted.
+    // Terms weren't accepted: disable contacts toggle and refresh discovery
     [self updateSections];
+    [self.settingsDiscoveryTableViewSection reload];
     
     [coordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
@@ -4589,7 +4502,10 @@ TableViewSectionsDelegate>
 
 - (void)serviceTermsModalCoordinatorBridgePresenterDelegateDidClose:(ServiceTermsModalCoordinatorBridgePresenter * _Nonnull)coordinatorBridgePresenter
 {
-    [self updateSections];  // Disables the contacts toggle as the terms weren't accepted.
+    // Terms weren't accepted: disable contacts toggle and refresh discovery
+    [self updateSections];
+    [self.settingsDiscoveryTableViewSection reload];
+    
     self.serviceTermsModalCoordinatorBridgePresenter = nil;
 }
 

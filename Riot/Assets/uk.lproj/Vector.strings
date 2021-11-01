@@ -139,7 +139,7 @@
 "client_web_name" = "Element Web";
 "client_ios_name" = "Element iOS";
 "auth_login_single_sign_on" = "Увійти";
-"room_creation_invite_another_user" = "Пошук / запрошення за ID користувача, іменем або е-поштою";
+"room_creation_invite_another_user" = "ID користувача, ім'я або е-пошта";
 "room_creation_error_invite_user_by_email_without_identity_server" = "Сервер ідентифікації не налаштовано, тому ви не можете додати учасника з е-поштою.";
 // Room recents
 "room_recents_directory_section" = "КАТАЛОГ КІМНАТ";
@@ -381,7 +381,7 @@
 "secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
 "key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
 "settings_discovery_three_pids_management_information_part3" = ".";
-"settings_contacts" = "ЛОКАЛЬНІ КОНТАКТИ";
+"settings_contacts" = "КОНТАКТИ ПРИСТРОЮ";
 "settings_ignored_users" = "НЕХТУВАНІ КОРИСТУВАЧІ";
 "settings_user_interface" = "КОРИСТУВАЦЬКИЙ ІНТЕРФЕЙС";
 "settings_integrations" = "ІНТЕГРАЦІЇ";

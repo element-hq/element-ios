@@ -193,7 +193,7 @@
     if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
     {
         // Open the public room.
-        [self openRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
+        [self showRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];
     }
     else
     {
@@ -209,13 +209,13 @@
                 
                 [self stopActivityIndicator];
                 
-                [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+                [self showRoomPreviewWithData:roomPreviewData];
             }];
         }
         else
         {
             RoomPreviewData *roomPreviewData = [[RoomPreviewData alloc] initWithPublicRoom:publicRoom andSession:dataSource.mxSession];
-            [[AppDelegate theDelegate].masterTabBarController showRoomPreview:roomPreviewData];
+            [self showRoomPreviewWithData:roomPreviewData];
         }
         
     }
@@ -232,9 +232,23 @@
 
 #pragma mark - Private methods
 
-- (void)openRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
-{    
-    [[AppDelegate theDelegate] showRoom:roomId andEventId:nil withMatrixSession:mxSession restoreInitialDisplay:NO];
+- (void)showRoomWithId:(NSString*)roomId inMatrixSession:(MXSession*)mxSession
+{
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                    eventId:nil
+                                                                                  mxSession:mxSession
+                                                                     presentationParameters:presentationParameters];
+    [[AppDelegate theDelegate] showRoomWithParameters:parameters];
+}
+
+- (void)showRoomPreviewWithData:(RoomPreviewData*)roomPreviewData
+{
+    ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
+    
+    RoomPreviewNavigationParameters *parameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
+    [[AppDelegate theDelegate] showRoomPreviewWithParameters:parameters];
 }
 
 - (void)refreshCurrentSelectedCell:(BOOL)forceVisible

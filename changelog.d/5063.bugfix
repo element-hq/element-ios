@@ -1,0 +1,1 @@
+Fixed retain cycles between the user suggestion coordinator and the suggestion service, and in the suggestion service currentTextTrigger subject sink.
