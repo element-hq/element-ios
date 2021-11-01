@@ -2363,6 +2363,34 @@ public class VectorL10n: NSObject {
   public static func pinProtectionSettingsSectionHeaderWithBiometrics(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "pin_protection_settings_section_header_with_biometrics", p1)
   }
+  /// Add option
+  public static var pollEditFormAddOption: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_add_option") 
+  }
+  /// Create options
+  public static var pollEditFormCreateOptions: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_create_options") 
+  }
+  /// Create poll
+  public static var pollEditFormCreatePoll: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_create_poll") 
+  }
+  /// Write something
+  public static var pollEditFormInputPlaceholder: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_input_placeholder") 
+  }
+  /// Option %d
+  public static func pollEditFormOptionNumber(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_edit_form_option_number", p1)
+  }
+  /// Poll question or topic
+  public static var pollEditFormPollQuestionOrTopic: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
+  }
+  /// Question or topic
+  public static var pollEditFormQuestionOrTopic: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
+  }
   /// Preview
   public static var preview: String { 
     return VectorL10n.tr("Vector", "preview") 

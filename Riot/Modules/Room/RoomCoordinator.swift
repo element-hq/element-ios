@@ -29,6 +29,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let roomViewController: RoomViewController
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private var selectedEventId: String?
+    
+    private var pollEditFormCoordinator: PollEditFormCoordinator?
 
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -239,5 +241,17 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
         return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
+    }
+    
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter)
+        
+        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        pollEditFormCoordinator?.start()
     }
 }
