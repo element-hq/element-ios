@@ -350,7 +350,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         
         let fetchOptions = MXRoomListDataFetchOptions(filterOptions: filterOptions,
                                                       sortOptions: sortOptions,
-                                                      async: false)
+                                                      async: true)
         let fetcher = session.roomListDataManager.fetcher(withOptions: fetchOptions)
         if paginate {
             fetcher.addDelegate(self)
