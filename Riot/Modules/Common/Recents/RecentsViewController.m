@@ -2008,7 +2008,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
     
     // Check whether the user has already joined the selected public room
-    if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
     {
         // Open the public room
         [self showRoomWithRoomId:publicRoom.roomId

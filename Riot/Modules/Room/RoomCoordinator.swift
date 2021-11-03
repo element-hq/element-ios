@@ -97,7 +97,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         // FIXME: Find a better way to manage modal dismiss. This makes the `roomViewController` to never be released
         // self.roomViewController.presentationController?.delegate = self
         
-        if let eventId = self.selectedEventId {
+        if let previewData = self.parameters.previewData {
+            self.loadRoomPreview(withData: previewData, completion: completion)
+        } else if let eventId = self.selectedEventId {
             self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
         } else {
             self.loadRoom(withId: self.parameters.roomId, completion: completion)
@@ -182,6 +184,13 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             
             completion?()
         }
+    }
+    
+    private func loadRoomPreview(withData previewData: RoomPreviewData, completion: (() -> Void)?) {
+        
+        self.roomViewController.displayRoomPreview(previewData)
+        
+        completion?()
     }
 }
 

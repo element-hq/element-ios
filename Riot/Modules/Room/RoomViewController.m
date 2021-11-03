@@ -1098,16 +1098,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (self.roomDataSource)
         {
-            // Restore tool bar view and room activities view if none
-            if (!self.inputToolbarView)
-            {
-                [self updateRoomInputToolbarViewClassIfNeeded];
-                
-                [self refreshRoomInputToolbar];
-                
-                self.inputToolbarView.hidden = (self.roomDataSource.state != MXKDataSourceStateReady);
-            }
+            // Update the input toolbar class and update the layout
+            [self updateRoomInputToolbarViewClassIfNeeded];
             
+            self.inputToolbarView.hidden = (self.roomDataSource.state != MXKDataSourceStateReady);
+            
+            // Restore room activities view if none
             if (!self.activitiesView)
             {
                 // And the extra area
@@ -1192,6 +1188,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         
         [self updateInputToolBarViewHeight];
+        [self refreshRoomInputToolbar];
     }
 }
 
