@@ -724,7 +724,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     dispatch_group_t dispatchGroup = dispatch_group_create();
     for (MXRoom *room in rooms) {
         dispatch_group_enter(dispatchGroup);
-        [room sendTextMessage:text success:^(NSString *eventId) {
+        [room sendTextMessage:text threadId:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareManager] sendTextMessage failed with error %@", error);
@@ -764,7 +764,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     dispatch_group_t dispatchGroup = dispatch_group_create();
     for (MXRoom *room in rooms) {
         dispatch_group_enter(dispatchGroup);
-        [room sendFile:fileUrl mimeType:mimeType localEcho:nil success:^(NSString *eventId) {
+        [room sendFile:fileUrl mimeType:mimeType threadId:nil localEcho:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareManager] sendFile failed with error %@", innerError);
@@ -815,7 +815,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         dispatch_group_t dispatchGroup = dispatch_group_create();
         for (MXRoom *room in rooms) {
             dispatch_group_enter(dispatchGroup);
-            [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:nil success:^(NSString *eventId) {
+            [room sendVideoAsset:videoAsset withThumbnail:videoThumbnail threadId:nil localEcho:nil success:^(NSString *eventId) {
                 dispatch_group_leave(dispatchGroup);
             } failure:^(NSError *innerError) {
                 MXLogError(@"[ShareManager] Failed sending video with error %@", innerError);
@@ -901,7 +901,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     dispatch_group_t dispatchGroup = dispatch_group_create();
     for (MXRoom *room in rooms) {
         dispatch_group_enter(dispatchGroup);
-        [room sendVoiceMessage:fileUrl mimeType:nil duration:0.0 samples:nil localEcho:nil success:^(NSString *eventId) {
+        [room sendVoiceMessage:fileUrl mimeType:nil duration:0.0 samples:nil threadId:nil localEcho:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareManager] sendVoiceMessage failed with error %@", error);
@@ -1066,7 +1066,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }
         
         dispatch_group_enter(dispatchGroup);
-        [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail localEcho:nil success:^(NSString *eventId) {
+        [room sendImage:finalImageData withImageSize:imageSize mimeType:mimeType andThumbnail:thumbnail threadId:nil localEcho:nil success:^(NSString *eventId) {
             dispatch_group_leave(dispatchGroup);
         } failure:^(NSError *innerError) {
             MXLogError(@"[ShareManager] sendImage failed with error %@", error);

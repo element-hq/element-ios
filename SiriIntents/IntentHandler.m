@@ -245,6 +245,7 @@
                                             session.crypto.warnOnUnknowDevices = NO;
 
                                             [room sendTextMessage:intent.content
+                                                         threadId:nil
                                                           success:^(NSString *eventId) {
                                                               completeWithCode(INSendMessageIntentResponseCodeSuccess);
                                                           } failure:^(NSError *error) {
@@ -259,6 +260,7 @@
                                     }
             
                                     [account.mxRestClient sendTextMessageToRoom:roomID
+                                                                       threadId:nil
                                                                            text:intent.content
                                                                         success:^(NSString *eventId) {
                                                                             completeWithCode(INSendMessageIntentResponseCodeSuccess);
