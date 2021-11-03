@@ -244,6 +244,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
+@property (nonatomic, strong) RoomCoordinatorBridgePresenter *threadBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
@@ -4364,7 +4365,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         // Jump to the last unread event by using a temporary room data source initialized with the last unread event id.
         MXWeakify(self);
-        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:self.roomDataSource.room.accountData.readMarkerEventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                      initialEventId:self.roomDataSource.room.accountData.readMarkerEventId
+                                            threadId:self.roomDataSource.threadId
+                                    andMatrixSession:self.mainSession
+                                          onComplete:^(id roomDataSource) {
             MXStrongifyAndReturnIfNil(self);
             
             [roomDataSource finalizeInitialization];
@@ -4587,7 +4592,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     if (eventId)
                     {
                         MXWeakify(self);
-                        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId initialEventId:eventId andMatrixSession:self.mainSession onComplete:^(id roomDataSource) {
+                        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                                      initialEventId:eventId
+                                                            threadId:self.roomDataSource.threadId
+                                                    andMatrixSession:self.mainSession
+                                                          onComplete:^(id roomDataSource) {
                             MXStrongifyAndReturnIfNil(self);
                             
                             [roomDataSource finalizeInitialization];
@@ -5915,27 +5924,25 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         ];
     }
     
-    BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates) || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
+    BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
+        || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
     
+    NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
+    
+    [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
+    [items addObject:[self replyMenuItemWithEvent:event]];
+    if (!event.threadIdentifier)
+    {
+        //  add "reply in thread" option only if not a thread already
+        [items addObject:[self replyInThreadMenuItemWithEvent:event]];
+    }
+    [items addObject:[self editMenuItemWithEvent:event]];
     if (showMoreOption)
     {
-        return @[
-            [self copyMenuItemWithEvent:event andCell:cell],
-            [self replyMenuItemWithEvent:event],
-            [self replyInThreadMenuItemWithEvent:event],
-            [self editMenuItemWithEvent:event],
-            [self moreMenuItemWithEvent:event andCell:cell]
-        ];
+        [items addObject:[self moreMenuItemWithEvent:event andCell:cell]];
     }
-    else
-    {
-        return @[
-            [self copyMenuItemWithEvent:event andCell:cell],
-            [self replyMenuItemWithEvent:event],
-            [self replyInThreadMenuItemWithEvent:event],
-            [self editMenuItemWithEvent:event]
-        ];
-    }
+    
+    return items;
 }
 
 - (void)showContextualMenuForEvent:(MXEvent*)event fromSingleTapGesture:(BOOL)usedSingleTapGesture cell:(id<MXKCellRendering>)cell animated:(BOOL)animated
@@ -6245,7 +6252,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
 
-        //  TODO: Implement starting a thread
+        [self openThreadWithId:event.eventId];
     };
     
     return item;
@@ -6263,6 +6270,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     };
     
     return moreMenuItem;
+}
+
+#pragma mark - Threads
+
+- (void)openThreadWithId:(NSString *)threadId
+{
+    if (self.threadBridgePresenter)
+    {
+        [self.threadBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.threadBridgePresenter = nil;
+    }
+    
+    RoomCoordinatorBridgePresenterParameters *parameters = [[RoomCoordinatorBridgePresenterParameters alloc] initWithSession:self.mainSession
+                                                                                                                      roomId:self.roomDataSource.roomId
+                                                                                                                     eventId:nil
+                                                                                                                    threadId:threadId
+                                                                                                                 previewData:nil];
+    RoomCoordinatorBridgePresenter *presenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
+    self.threadBridgePresenter = presenter;
+    [presenter presentFrom:self animated:YES];
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate

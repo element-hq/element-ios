@@ -97,8 +97,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         // FIXME: Find a better way to manage modal dismiss. This makes the `roomViewController` to never be released
         // self.roomViewController.presentationController?.delegate = self
         
-        if let eventId = self.selectedEventId {
-            self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
+        if let threadId = self.parameters.threadId {
+            self.loadRoom(withId: self.parameters.roomId, andThreadId: threadId, completion: completion)
+        } else if let eventId = self.selectedEventId {
+            self.loadRoom(withId: self.parameters.roomId, andEventId: eventId, completion: completion)
         } else {
             self.loadRoom(withId: self.parameters.roomId, completion: completion)
         }
@@ -118,7 +120,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.selectedEventId = eventId
         
         if self.hasStartedOnce {
-            self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
+            self.loadRoom(withId: self.parameters.roomId, andEventId: eventId, completion: completion)
         } else {
             self.start(withCompletion: completion)
         }
@@ -154,7 +156,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         })
     }
 
-    private func loadRoom(withId roomId: String, and eventId: String, completion: (() -> Void)?) {
+    private func loadRoom(withId roomId: String, andEventId eventId: String, completion: (() -> Void)?) {
 
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
@@ -162,6 +164,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         // Open the room on the requested event
         RoomDataSource.load(withRoomId: roomId,
                             initialEventId: eventId,
+                            threadId: nil,
                             andMatrixSession: self.parameters.session) { [weak self] (dataSource) in
 
             guard let self = self else {
@@ -176,6 +179,37 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
 
             roomDataSource.markTimelineInitialEvent = true
             self.roomViewController.displayRoom(roomDataSource)
+
+            // Give the data source ownership to the room view controller.
+            self.roomViewController.hasRoomDataSourceOwnership = true
+            
+            completion?()
+        }
+    }
+    
+    private func loadRoom(withId roomId: String, andThreadId threadId: String, completion: (() -> Void)?) {
+
+        // Present activity indicator when retrieving roomDataSource for given room ID
+        self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
+
+        // Open the room on the requested event
+        ThreadDataSource.load(withRoomId: roomId,
+                              initialEventId: nil,
+                              threadId: threadId,
+                              andMatrixSession: self.parameters.session) { [weak self] (dataSource) in
+
+            guard let self = self else {
+                return
+            }
+
+            self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
+
+            guard let threadDataSource = dataSource as? ThreadDataSource else {
+                return
+            }
+
+            threadDataSource.markTimelineInitialEvent = false
+            self.roomViewController.displayRoom(threadDataSource)
 
             // Give the data source ownership to the room view controller.
             self.roomViewController.hasRoomDataSourceOwnership = true

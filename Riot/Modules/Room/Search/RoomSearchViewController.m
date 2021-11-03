@@ -317,7 +317,9 @@
 
             [RoomDataSource loadRoomDataSourceWithRoomId:selectedSearchEvent.roomId
                                           initialEventId:selectedSearchEvent.eventId
-                                        andMatrixSession:selectedSearchEventSession onComplete:^(RoomDataSource *roomDataSource) {
+                                                threadId:selectedSearchEvent.threadIdentifier
+                                        andMatrixSession:selectedSearchEventSession
+                                              onComplete:^(RoomDataSource *roomDataSource) {
 
                                             [roomDataSource finalizeInitialization];
                                             roomDataSource.markTimelineInitialEvent = YES;
