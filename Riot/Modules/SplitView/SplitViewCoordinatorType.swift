@@ -30,8 +30,10 @@ protocol SplitViewCoordinatorType: Coordinator, Presentable {
     /// - Parameter spaceId: The id of the Space to use.
     func start(with spaceId: String?)
     
+    /// Restore navigation stack and show home screen
     func popToHome(animated: Bool, completion: (() -> Void)?)
-    
+        
     // TODO: Do not expose publicly this method
-    func restorePlaceholderDetails()
+    /// Remove detail screens and display placeholder if needed 
+    func resetDetails(animated: Bool)
 }
