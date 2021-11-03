@@ -5922,6 +5922,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         return @[
             [self copyMenuItemWithEvent:event andCell:cell],
             [self replyMenuItemWithEvent:event],
+            [self replyInThreadMenuItemWithEvent:event],
             [self editMenuItemWithEvent:event],
             [self moreMenuItemWithEvent:event andCell:cell]
         ];
@@ -5931,6 +5932,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         return @[
             [self copyMenuItemWithEvent:event andCell:cell],
             [self replyMenuItemWithEvent:event],
+            [self replyInThreadMenuItemWithEvent:event],
             [self editMenuItemWithEvent:event]
         ];
     }
@@ -6230,6 +6232,23 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     };
     
     return replyMenuItem;
+}
+
+- (RoomContextualMenuItem *)replyInThreadMenuItemWithEvent:(MXEvent*)event
+{
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *item = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionReplyInThread];
+    item.isEnabled = [self.roomDataSource canReplyToEventWithId:event.eventId] && !self.voiceMessageController.isRecordingAudio;
+    item.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+
+        //  TODO: Implement starting a thread
+    };
+    
+    return item;
 }
 
 - (RoomContextualMenuItem *)moreMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
