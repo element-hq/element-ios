@@ -427,7 +427,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private func updateDirectFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
         switch mode {
         case .home:
-            fetcher.fetchOptions.filterOptions.notDataTypes = [.invited, .lowPriority]
+            fetcher.fetchOptions.filterOptions.notDataTypes = [.invited, .favorited, .lowPriority]
         case .people:
             fetcher.fetchOptions.filterOptions.notDataTypes = [.lowPriority]
         default:
