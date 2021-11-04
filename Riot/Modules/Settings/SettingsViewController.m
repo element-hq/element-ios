@@ -541,13 +541,8 @@ TableViewSectionsDelegate>
     sectionAbout.headerTitle = VectorL10n.settingsAbout;
 
     if (BuildSettings.settingsScreenShowAdvancedSettings)
-    {
-        sectionAbout.footerTitle = [NSString stringWithFormat:@"Element %@ (%@) / Olm %@\n%@\n%@",
-                                    AppInfo.current.appVersion.bundleShortVersion,
-                                    AppInfo.current.appVersion.bundleVersion,
-                                    [OLMKit versionString],
-                                    [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId],
-                                    [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer]];
+    {        
+        sectionAbout.footerTitle = [self buildAboutSectionFooterTitleWithAccount:account];
     }
     
     [tmpSections addObject:sectionAbout];
@@ -1408,6 +1403,35 @@ TableViewSectionsDelegate>
     {
         [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
+}
+
+- (NSString*)buildAboutSectionFooterTitleWithAccount:(MXKAccount*)account
+{    
+    NSMutableString *footerText = [NSMutableString new];
+    
+    AppInfo *appInfo = AppInfo.current;
+    
+    NSString *appName = appInfo.displayName;
+    NSString *appVersion = appInfo.appVersion.bundleShortVersion;
+    NSString *buildVersion = appInfo.appVersion.bundleVersion;
+    
+    NSString *appVersionInfo = [NSString stringWithFormat:@"%@ %@ (%@)", appName, appVersion, buildVersion];
+ 
+    NSString *loggedUserInfo = [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId];
+    
+    NSString *homeserverInfo = [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer];       
+    
+    NSString *sdkVersionInfo = [NSString stringWithFormat:@"Matrix SDK %@", MatrixSDKVersion];
+    
+    NSString *olmVersionInfo = [NSString stringWithFormat:@"OLM %@", [OLMKit versionString]];    
+    
+    [footerText appendFormat:@"%@\n", loggedUserInfo];
+    [footerText appendFormat:@"%@\n", homeserverInfo];
+    [footerText appendFormat:@"%@\n", appVersionInfo];
+    [footerText appendFormat:@"%@\n", sdkVersionInfo];
+    [footerText appendFormat:@"%@", olmVersionInfo];
+    
+    return [footerText copy];
 }
 
 #pragma mark - 3Pid Add
