@@ -1,0 +1,1 @@
+Fix a crash when selected space is not home and a clear cache or logout is performed.
