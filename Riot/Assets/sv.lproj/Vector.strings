@@ -1442,3 +1442,29 @@
 "find_your_contacts_title" = "Börja genom att lista dina kontakter";
 "contacts_address_book_permission_denied_alert_message" = "För att aktivera kontakter, gå till dina enhetsinställningar.";
 "contacts_address_book_permission_denied_alert_title" = "Kontakter inaktiverat";
+"space_avatar_view_accessibility_hint" = "Byt utrymmesavatar";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_public_join_rule" = "Offentligt utrymme";
+"space_private_join_rule" = "Privat utrymme";
+"space_home_show_all_rooms" = "Visa alla rum";
+"space_participants_action_ban" = "Banna från det här utrymmet";
+"space_participants_action_remove" = "Ta bort från det här utrymmet";
+"spaces_coming_soon_detail" = "Den här funktionen har inte bjudits in än, men den är på väg. För tillfället så kan du göra det med Element på din dator.";
+"spaces_invites_coming_soon_title" = "Inbjudningar kommer snart";
+"spaces_add_rooms_coming_soon_title" = "Tilläggning av rum kommer snart";
+"spaces_coming_soon_title" = "Kommer snart";
+"spaces_no_member_found_detail" = "Söker du någon som inte är i %@? För tillfället så kan du bjuda in dem på webben eller i skrivbordsappen.";
+"spaces_no_room_found_detail" = "Vissa resultat kan vara dolda för att de är privata och du behöver en inbjudan för att gå med i dem.";
+"spaces_no_result_found_title" = "Inga resultat funna";
+"spaces_empty_space_detail" = "Vissa rum kan vara dolda för att det är privata och du behöver en inbjudan.";
+"spaces_empty_space_title" = "Det här utrymmet har inge rum (än)";
+"space_tag" = "utrymme";
+"spaces_suggested_room" = "Föreslaget";
+"spaces_explore_rooms" = "Utforska rum";
+"leave_space_and_all_rooms_action" = "Lämna alla rum och utrymmen";
+"leave_space_only_action" = "Lämna inga rum";
+"leave_space_message_admin_warning" = "Du är admin för det här utrymmet, försäkra att du har överfört adminrättigheter till en annan medlem innan du lämnar.";
+"leave_space_message" = "Är du säker på att du vill lämna %@? Vill du även lämna alla rum och utrymmen i det här utrymmet?";
