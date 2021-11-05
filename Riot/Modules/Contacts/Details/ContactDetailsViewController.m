@@ -18,7 +18,7 @@
 
 #import "ContactDetailsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 #import "MXSession+Riot.h"
 
 #import "RoomMemberTitleView.h"

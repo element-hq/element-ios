@@ -19,7 +19,7 @@
 #import "WidgetManager.h"
 #import "WidgetViewController.h"
 #import "IntegrationManagerViewController.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface WidgetPickerViewController () <ServiceTermsModalCoordinatorBridgePresenterDelegate>
 {

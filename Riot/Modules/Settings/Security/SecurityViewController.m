@@ -26,7 +26,7 @@
 
 #import "ThemeService.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV

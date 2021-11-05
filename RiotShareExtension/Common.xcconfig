@@ -33,3 +33,5 @@ SKIP_INSTALL = YES
 SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/RiotShareExtension-Bridging-Header.h
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) IS_SHARE_EXTENSION=1
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h

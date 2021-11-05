@@ -16,7 +16,7 @@
 
 #import "GroupParticipantsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 #import "ContactTableViewCell.h"

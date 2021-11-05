@@ -19,7 +19,7 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 

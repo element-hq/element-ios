@@ -22,7 +22,7 @@
 
 #import "CircleButton.h"
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 static const CGFloat kAvatarSize = 100.0;
 static const CGFloat kButtonSize = 80.0;
