@@ -4775,6 +4775,18 @@ public class VectorL10n: NSObject {
   public static var shareExtensionFailedToEncrypt: String { 
     return VectorL10n.tr("Vector", "share_extension_failed_to_encrypt") 
   }
+  /// Send in %@ for better quality, or send in low quality below.
+  public static func shareExtensionLowQualityVideoMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_extension_low_quality_video_message", p1)
+  }
+  /// Video will be sent in low quality
+  public static var shareExtensionLowQualityVideoTitle: String { 
+    return VectorL10n.tr("Vector", "share_extension_low_quality_video_title") 
+  }
+  /// Send now
+  public static var shareExtensionSendNow: String { 
+    return VectorL10n.tr("Vector", "share_extension_send_now") 
+  }
   /// Feedback
   public static var sideMenuActionFeedback: String { 
     return VectorL10n.tr("Vector", "side_menu_action_feedback") 

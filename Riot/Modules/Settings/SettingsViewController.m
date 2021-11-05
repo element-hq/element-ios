@@ -178,16 +178,16 @@ ServiceTermsModalCoordinatorBridgePresenterDelegate,
 TableViewSectionsDelegate>
 {
     // Current alert (if any).
-    UIAlertController *currentAlert;
+    __weak UIAlertController *currentAlert;
     
     // listener
-    id removedAccountObserver;
-    id accountUserInfoObserver;
-    id pushInfoUpdateObserver;
+    __weak id removedAccountObserver;
+    __weak id accountUserInfoObserver;
+    __weak id pushInfoUpdateObserver;
     
-    id notificationCenterWillUpdateObserver;
-    id notificationCenterDidUpdateObserver;
-    id notificationCenterDidFailObserver;
+    __weak id notificationCenterWillUpdateObserver;
+    __weak id notificationCenterDidUpdateObserver;
+    __weak id notificationCenterDidFailObserver;
     
     // profile updates
     // avatar
@@ -216,10 +216,10 @@ TableViewSectionsDelegate>
     GroupsDataSource *groupsDataSource;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
     
     // Postpone destroy operation when saving, pwd reset or email binding is in progress
     BOOL isSavingInProgress;
@@ -612,8 +612,12 @@ TableViewSectionsDelegate>
     self.tableView.sectionFooterHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedSectionFooterHeight = 50;
     
+    MXWeakify(self);
+    
     // Add observer to handle removed accounts
     removedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         if ([MXKAccountManager sharedManager].accounts.count)
         {
@@ -626,6 +630,8 @@ TableViewSectionsDelegate>
     // Add observer to handle accounts update
     accountUserInfoObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountUserInfoDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         [self stopActivityIndicator];
         
         [self refreshSettings];
@@ -634,6 +640,8 @@ TableViewSectionsDelegate>
     
     // Add observer to push settings
     pushInfoUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountAPNSActivityDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self stopActivityIndicator];
         
@@ -662,6 +670,8 @@ TableViewSectionsDelegate>
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         
@@ -777,9 +787,13 @@ TableViewSectionsDelegate>
 
     // Refresh linked emails and phone numbers in parallel
     [self loadAccount3PIDs];
+    
+    MXWeakify(self);
         
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self.tableView setContentOffset:CGPointMake(-self.tableView.adjustedContentInset.left, -self.tableView.adjustedContentInset.top) animated:YES];
         

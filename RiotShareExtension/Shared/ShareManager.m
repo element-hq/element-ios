@@ -28,6 +28,8 @@
 
 static const CGFloat kLargeImageSizeMaxDimension = 2048.0;
 static const CGSize kThumbnailSize = {800.0, 600.0};
+/// A safe maximum file size for an image to send the original.
+static const NSUInteger kImageMaxFileSize = 20 * 1024 * 1024;
 
 typedef NS_ENUM(NSInteger, ImageCompressionMode)
 {
@@ -310,30 +312,43 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 
                 if ([self.shareItemProvider areAllItemsImages])
                 {
+                    // When all items are images, they're processed together from the
+                    // pending list, immediately after the final image has been loaded.
                     [self.pendingImages addObject:imageData];
                 }
                 else
                 {
-                    CGSize imageSize = [self imageSizeFromImageData:imageData];
+                    // Otherwise, the image is sent as is, without prompting for a resize
+                    // as that wouldn't make much sense with multiple content types.
                     self.imageCompressionMode = ImageCompressionModeNone;
-                    self.actualLargeSize = MAX(imageSize.width, imageSize.height);
-                    
                     [self sendImageData:imageData toRooms:rooms success:requestSuccess failure:requestFailure];
                 }
                 
-                // Only prompt for image resize if all items are images
-                // Ignore showMediaCompressionPrompt setting due to memory constraints with full size images.
+                // When there are multiple content types the image will have been sent above.
+                // Otherwise, if we have loaded all of the images we can send them all together.
                 if ([self.shareItemProvider areAllItemsImages])
                 {
                     if ([self.shareItemProvider areAllItemsLoaded])
                     {
-                        UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:^{
+                        MXWeakify(self);
+                        void (^sendPendingImages)(void) = ^void() {
+                            MXStrongifyAndReturnIfNil(self);
                             [self sendImageDatas:self.pendingImages.copy toRooms:rooms success:requestSuccess failure:requestFailure];
-                        }];
+                        };
                         
-                        if (compressionPrompt)
+                        if (RiotSettings.shared.showMediaCompressionPrompt)
                         {
-                            [self presentCompressionPrompt:compressionPrompt];
+                            // Create a compression prompt which will be nil when the sizes can't be determined or if there are no pending images.
+                            UIAlertController *compressionPrompt = [self compressionPromptForPendingImagesWithShareBlock:sendPendingImages];
+                            if (compressionPrompt)
+                            {
+                                [self presentCompressionPrompt:compressionPrompt];
+                            }
+                        }
+                        else
+                        {
+                            self.imageCompressionMode = ImageCompressionModeNone;
+                            sendPendingImages();
                         }
                     }
                     else
@@ -406,26 +421,26 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
 }
 
-- (void)resetPendingData
+- (BOOL)roomsContainEncryptedRoom:(NSArray<MXRoom *> *)rooms
 {
-    [self.pendingImages removeAllObjects];
-    [self.imageUploadProgresses removeAllObjects];
-}
-
-- (BOOL)isAPendingImageNotOrientedUp
-{
-    BOOL isAPendingImageNotOrientedUp = NO;
+    BOOL foundEncryptedRoom = NO;
     
-    for (NSData *imageData in self.pendingImages)
+    for (MXRoom *room in rooms)
     {
-        if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
+        if (room.summary.isEncrypted)
         {
-            isAPendingImageNotOrientedUp = YES;
+            foundEncryptedRoom = YES;
             break;
         }
     }
     
-    return isAPendingImageNotOrientedUp;
+    return foundEncryptedRoom;
+}
+
+- (void)resetPendingData
+{
+    [self.pendingImages removeAllObjects];
+    [self.imageUploadProgresses removeAllObjects];
 }
 
 // TODO: When select multiple images:
@@ -438,8 +453,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         return nil;
     }
     
-    BOOL isAPendingImageNotOrientedUp = [self isAPendingImageNotOrientedUp];
-    
     NSData *firstImageData = self.pendingImages.firstObject;
     UIImage *firstImage = [UIImage imageWithData:firstImageData];
     
@@ -447,16 +460,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     if (compressionSizes.small.fileSize == 0 && compressionSizes.medium.fileSize == 0 && compressionSizes.large.fileSize == 0)
     {
-        if (isAPendingImageNotOrientedUp && self.pendingImages.count > 1)
-        {
-            self.imageCompressionMode = ImageCompressionModeSmall;
-        }
-        else
-        {
-            self.imageCompressionMode = ImageCompressionModeNone;
-        }
-        
-        MXLogDebug(@"[ShareManager] Send %lu image(s) without compression prompt using compression mode: %ld", (unsigned long)self.pendingImages.count, (long)self.imageCompressionMode);
+        self.imageCompressionMode = ImageCompressionModeNone;
+        MXLogDebug(@"[ShareManager] Bypass compression prompt and send originals for %lu image(s) due to undetermined file sizes", (unsigned long)self.pendingImages.count);
         
         shareBlock();
         
@@ -476,7 +481,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             MXStrongifyAndReturnIfNil(self);
             
             self.imageCompressionMode = ImageCompressionModeSmall;
-            [self logCompressionSizeChoice:compressionSizes.large];
+            [self logCompressionSizeChoice:compressionSizes.small];
             
             shareBlock();
         }]];
@@ -491,7 +496,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             MXStrongifyAndReturnIfNil(self);
             
             self.imageCompressionMode = ImageCompressionModeMedium;
-            [self logCompressionSizeChoice:compressionSizes.large];
+            [self logCompressionSizeChoice:compressionSizes.medium];
             
             shareBlock();
         }]];
@@ -516,8 +521,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
         }]];
     }
     
-    // To limit memory consumption, we suggest the original resolution only if the image orientation is up, or if the image size is moderate
-    if (!isAPendingImageNotOrientedUp || !compressionSizes.large.fileSize)
+    // To limit memory consumption when encrypting, we suggest the original resolution only if the image size is moderate
+    if (compressionSizes.original.fileSize < kImageMaxFileSize)
     {
         NSString *fileSizeString = [MXTools fileSizeToString:compressionSizes.original.fileSize];
         
@@ -528,7 +533,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
             MXStrongifyAndReturnIfNil(self);
             
             self.imageCompressionMode = ImageCompressionModeNone;
-            [self logCompressionSizeChoice:compressionSizes.large];
+            [self logCompressionSizeChoice:compressionSizes.original];
             
             shareBlock();
         }]];
@@ -620,46 +625,6 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     }
     
     return CGSizeMake(width, height);
-}
-
-- (NSNumber*)cgImageimageOrientationNumberFromImageData:(NSData*)imageData
-{
-    NSNumber *orientationNumber;
-    
-    CGImageSourceRef imageSource = CGImageSourceCreateWithData((CFDataRef)imageData, NULL);
-    
-    CFDictionaryRef imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
-    
-    CFRelease(imageSource);
-    
-    if (imageProperties != NULL)
-    {
-        CFNumberRef orientationNum = CFDictionaryGetValue(imageProperties, kCGImagePropertyOrientation);
-        
-        // Check orientation and flip size if required
-        if (orientationNum != NULL)
-        {
-            orientationNumber = (__bridge NSNumber *)orientationNum;
-        }
-        
-        CFRelease(imageProperties);
-    }
-    
-    return orientationNumber;
-}
-
-- (BOOL)isImageOrientationNotUpOrUndeterminedForImageData:(NSData*)imageData
-{
-    BOOL isImageNotOrientedUp = YES;
-    
-    NSNumber *cgImageOrientationNumber = [self cgImageimageOrientationNumberFromImageData:imageData];
-    
-    if (cgImageOrientationNumber && cgImageOrientationNumber.unsignedIntegerValue == (NSUInteger)kCGImagePropertyOrientationUp)
-    {
-        isImageNotOrientedUp = NO;
-    }
-    
-    return isImageNotOrientedUp;
 }
 
 - (void)logCompressionSizeChoice:(MXKImageCompressionSize)compressionSize
@@ -822,18 +787,8 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
     
     MXWeakify(self);
     
-    // Ignore showMediaCompressionPrompt setting due to memory constraints when encrypting large videos.
-    UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString *presetName) {
+    void (^sendVideo)(void) = ^void()  {
         MXStrongifyAndReturnIfNil(self);
-        
-        // If the preset name is nil, the user cancelled.
-        if (!presetName)
-        {
-            return;
-        }
-        
-        // Set the chosen video conversion preset.
-        [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
         
         [self didStartSending];
         if (!videoLocalUrl)
@@ -872,9 +827,57 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 success();
             }
         });
-    }];
+    };
     
-    [self presentCompressionPrompt:compressionPrompt];
+    BOOL allRoomsAreUnencrypted = ![self roomsContainEncryptedRoom:rooms];
+    
+    // When rooms are unencrypted convert the video according to the user's normal preferences
+    if (allRoomsAreUnencrypted)
+    {
+        if (!RiotSettings.shared.showMediaCompressionPrompt)
+        {
+            [MXSDKOptions sharedInstance].videoConversionPresetName = AVCaptureSessionPreset1920x1080;
+            sendVideo();
+        }
+        else
+        {
+            UIAlertController *compressionPrompt = [MXKTools videoConversionPromptForVideoAsset:videoAsset withCompletion:^(NSString *presetName) {
+                // If the preset name is nil, the user cancelled.
+                if (!presetName)
+                {
+                    return;
+                }
+                
+                // Set the chosen video conversion preset.
+                [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
+                sendVideo();
+            }];
+            
+            [self presentCompressionPrompt:compressionPrompt];
+        }
+    }
+    else
+    {
+        // When rooms are encrypted we quickly run out of memory encrypting the video
+        // Prompt the user if they're happy to send a low quality video (320p).
+        UIAlertController *lowQualityPrompt = [UIAlertController alertControllerWithTitle:VectorL10n.shareExtensionLowQualityVideoTitle
+                                                                                  message:[VectorL10n shareExtensionLowQualityVideoMessage:AppInfo.current.displayName]
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:MatrixKitL10n.cancel style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            // Do nothing
+        }];
+        UIAlertAction *sendAction = [UIAlertAction actionWithTitle:VectorL10n.shareExtensionSendNow style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [MXSDKOptions sharedInstance].videoConversionPresetName = AVAssetExportPresetMediumQuality;
+            sendVideo();
+        }];
+        
+        [lowQualityPrompt addAction:cancelAction];
+        [lowQualityPrompt addAction:sendAction];
+        [lowQualityPrompt setPreferredAction:sendAction];
+        
+        [self presentCompressionPrompt:lowQualityPrompt];
+    }
 }
 
 - (void)sendVoiceMessage:(NSURL *)fileUrl
@@ -1017,17 +1020,7 @@ typedef NS_ENUM(NSInteger, ImageCompressionMode)
                 break;
         }
         
-        if (CGSizeEqualToSize(newImageSize, CGSizeZero))
-        {
-            // No resize to make
-            // Make sure the uploaded image orientation is up
-            if ([self isImageOrientationNotUpOrUndeterminedForImageData:imageData])
-            {
-                UIImage *image = [UIImage imageWithData:imageData];
-                convertedImage = [MXKTools forceImageOrientationUp:image];
-            }
-        }
-        else
+        if (!CGSizeEqualToSize(newImageSize, CGSizeZero))
         {
             // Resize the image and set image in right orientation too
             convertedImage = [MXKTools resizeImageWithData:imageData toFitInSize:newImageSize];

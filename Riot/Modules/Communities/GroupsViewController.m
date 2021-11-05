@@ -27,10 +27,10 @@
     BOOL isRefreshPending;
     
     // Observe UIApplicationDidEnterBackgroundNotification to cancel editing mode when app leaves the foreground state.
-    id UIApplicationDidEnterBackgroundNotificationObserver;
+    __weak id UIApplicationDidEnterBackgroundNotificationObserver;
     
     // Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     MXHTTPOperation *currentRequest;
     
@@ -39,7 +39,7 @@
     UISearchBar *tableSearchBar;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @end
@@ -98,11 +98,15 @@
     self.groupsTableView.estimatedSectionHeaderHeight = 30;
     self.groupsTableView.estimatedSectionFooterHeight = 0;
     
+    MXWeakify(self);
+    
     // Observe UIApplicationDidEnterBackgroundNotification to refresh bubbles when app leaves the foreground state.
     UIApplicationDidEnterBackgroundNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidEnterBackgroundNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
         
+        MXStrongifyAndReturnIfNil(self);
+        
         // Leave potential editing mode
-        [self cancelEditionMode:isRefreshPending];
+        [self cancelEditionMode:self->isRefreshPending];
         
     }];
     
@@ -116,6 +120,8 @@
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         
@@ -207,8 +213,12 @@
         [self.groupsTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
+    MXWeakify(self);
+    
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self scrollToTop:YES];
         

@@ -82,7 +82,7 @@
         [self.avatarImageView vc_setRoomAvatarImageWith:roomCellData.avatarUrl
                                                  roomId:roomCellData.roomIdentifier
                                             displayName:roomCellData.roomDisplayname
-                                           mediaManager:roomCellData.mxSession.mediaManager];
+                                           mediaManager:roomCellData.roomSummary.mxSession.mediaManager];
         
         self.roomTitleLabel.text = roomCellData.roomDisplayname;
         if (!self.roomTitleLabel.text.length)

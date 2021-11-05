@@ -122,7 +122,7 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
+@property (nonatomic, weak) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
 
 @end
 

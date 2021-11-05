@@ -73,7 +73,6 @@ abstract_target 'RiotPods' do
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '~> 4.5'
-    pod 'GrowingTextView', '~> 0.7.2'
 
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 

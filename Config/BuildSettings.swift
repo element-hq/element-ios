@@ -118,9 +118,9 @@ final class BuildSettings: NSObject {
     "https://element.io/help"
     
     
-    // MARk: - Matrix permalinks
-    // Paths for URLs that will considered as Matrix permalinks. Those permalinks are opened within the app
-    static let matrixPermalinkPaths: [String: [String]] = [
+    // MARK: - Permalinks
+    // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
+    static let permalinkSupportedHosts: [String: [String]] = [
         "app.element.io": [],
         "staging.element.io": [],
         "develop.element.io": [],
@@ -133,8 +133,16 @@ final class BuildSettings: NSObject {
         // Official Matrix ones
         "matrix.to": ["/"],
         "www.matrix.to": ["/"],
+        // Client Permalinks (for use with `BuildSettings.clientPermalinkBaseUrl`)
+//        "example.com": ["/"],
+//        "www.example.com": ["/"],
     ]
     
+    // For use in clients that use a custom base url for permalinks rather than matrix.to.
+    // This baseURL is used to generate permalinks within the app (E.g. timeline message permalinks).
+    // Optional String that when set is used as permalink base, when nil matrix.to format is used.
+    // Example value would be "https://www.example.com", note there is no trailing '/'.
+    static let clientPermalinkBaseUrl: String? = nil
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {

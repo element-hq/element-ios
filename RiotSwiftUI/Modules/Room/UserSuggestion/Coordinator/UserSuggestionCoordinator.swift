@@ -34,11 +34,10 @@ final class UserSuggestionCoordinator: Coordinator {
     
     private let parameters: UserSuggestionCoordinatorParameters
     
-    private var userSuggestionHostingController: UIViewController!
-    private var userSuggestionService: UserSuggestionServiceProtocol!
-    private var userSuggestionViewModel: UserSuggestionViewModelProtocol!
-    
-    private var roomMembers: [MXRoomMember] = []
+    private var userSuggestionHostingController: UIViewController
+    private var userSuggestionService: UserSuggestionServiceProtocol
+    private var userSuggestionViewModel: UserSuggestionViewModelProtocol
+    private var roomMemberProvider: UserSuggestionCoordinatorRoomMemberProvider
     
     // MARK: Public
 
@@ -54,9 +53,10 @@ final class UserSuggestionCoordinator: Coordinator {
     init(parameters: UserSuggestionCoordinatorParameters) {
         self.parameters = parameters
         
-        userSuggestionService = UserSuggestionService(roomMembersProvider: self)
+        roomMemberProvider = UserSuggestionCoordinatorRoomMemberProvider(room: parameters.room)
+        userSuggestionService = UserSuggestionService(roomMemberProvider: roomMemberProvider)
         userSuggestionViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: userSuggestionService)
-
+        
         let view = UserSuggestionList(viewModel: userSuggestionViewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         
@@ -69,7 +69,7 @@ final class UserSuggestionCoordinator: Coordinator {
             
             switch result {
             case .selectedItemWithIdentifier(let identifier):
-                guard let member = self.roomMembers.filter({ $0.userId == identifier }).first else {
+                guard let member = self.roomMemberProvider.roomMembers.filter({ $0.userId == identifier }).first else {
                     return
                 }
                 
@@ -93,9 +93,18 @@ final class UserSuggestionCoordinator: Coordinator {
 }
 
 @available(iOS 14.0, *)
-extension UserSuggestionCoordinator: RoomMembersProviderProtocol {
+private class UserSuggestionCoordinatorRoomMemberProvider: RoomMembersProviderProtocol {
+    
+    private let room: MXRoom
+    
+    var roomMembers: [MXRoomMember] = []
+    
+    init(room: MXRoom) {
+        self.room = room;
+    }
+    
     func fetchMembers(_ members: @escaping ([RoomMembersProviderMember]) -> Void) {
-        parameters.room.members({ [weak self] roomMembers in
+        room.members({ [weak self] roomMembers in
             guard let self = self, let joinedMembers = roomMembers?.joinedMembers else {
                 return
             }
@@ -108,7 +117,7 @@ extension UserSuggestionCoordinator: RoomMembersProviderProtocol {
             self.roomMembers = joinedMembers
             members(self.roomMembersToProviderMembers(joinedMembers))
         }, failure: { error in
-            MXLog.error("[UserSuggestionCoordinator] Failed loading room with error: \(String(describing: error))")
+            MXLog.error("[UserSuggestionCoordinatorRoomMemberProvider] Failed loading room with error: \(String(describing: error))")
         })
     }
     

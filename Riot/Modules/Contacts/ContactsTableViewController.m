@@ -33,12 +33,12 @@
     /**
      Observe kAppDelegateDidTapStatusBarNotification to handle tap on clock status bar.
      */
-    id kAppDelegateDidTapStatusBarNotificationObserver;
+    __weak id kAppDelegateDidTapStatusBarNotificationObserver;
     
     /**
      Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
      */
-    id kThemeServiceDidChangeThemeNotificationObserver;
+    __weak id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
 @property (nonatomic, strong) FindYourContactsFooterView *findYourContactsFooterView;
@@ -102,8 +102,12 @@
     self.contactsTableView.tableFooterView = [[UIView alloc] init];
     self.contactsAreFilteredWithSearch = NO;
     
+    MXWeakify(self);
+    
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self userInterfaceThemeDidChange];
         
@@ -158,9 +162,13 @@
 
     // Screen tracking
     [[Analytics sharedInstance] trackScreen:_screenName];
+    
+    MXWeakify(self);
 
     // Observe kAppDelegateDidTapStatusBarNotification.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        
+        MXStrongifyAndReturnIfNil(self);
         
         [self.contactsTableView setContentOffset:CGPointMake(-self.contactsTableView.adjustedContentInset.left, -self.contactsTableView.adjustedContentInset.top) animated:YES];
         

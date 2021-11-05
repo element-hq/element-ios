@@ -37,6 +37,13 @@
 
 @implementation RoomSearchViewController
 
++ (instancetype)instantiate
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    RoomSearchViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"RoomSearch"];
+    return viewController;
+}
+
 - (void)finalizeInit
 {
     [super finalizeInit];

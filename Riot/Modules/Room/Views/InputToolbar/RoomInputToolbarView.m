@@ -19,32 +19,39 @@
 
 #import "ThemeService.h"
 #import "GeneratedInterface-Swift.h"
-
 #import "GBDeviceInfo_iOS.h"
 
-#import "UINavigationController+Riot.h"
+static const CGFloat kContextBarHeight = 24;
+static const CGFloat kActionMenuAttachButtonSpringVelocity = 7;
+static const CGFloat kActionMenuAttachButtonSpringDamping = .45;
 
-#import "WidgetManager.h"
-#import "IntegrationManagerViewController.h"
+static const NSTimeInterval kSendModeAnimationDuration = .15;
+static const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
+static const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
+static const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
 
-@import GrowingTextView;
+@interface RoomInputToolbarView() <UITextViewDelegate, RoomInputToolbarTextViewDelegate>
 
-const double kContextBarHeight = 24;
-const NSTimeInterval kSendModeAnimationDuration = .15;
-const NSTimeInterval kActionMenuAttachButtonAnimationDuration = .4;
-const CGFloat kActionMenuAttachButtonSpringVelocity = 7;
-const CGFloat kActionMenuAttachButtonSpringDamping = .45;
-const NSTimeInterval kActionMenuContentAlphaAnimationDuration = .2;
-const NSTimeInterval kActionMenuComposerHeightAnimationDuration = .3;
-const CGFloat kComposerContainerTrailingPadding = 12;
+@property (nonatomic, weak) IBOutlet UIView *mainToolbarView;
 
-@interface RoomInputToolbarView() <GrowingTextViewDelegate, RoomInputToolbarTextViewDelegate>
-{
-    // The intermediate action sheet
-    UIAlertController *actionSheet;
-}
+@property (nonatomic, weak) IBOutlet UIButton *attachMediaButton;
 
 @property (nonatomic, weak) IBOutlet RoomInputToolbarTextView *textView;
+@property (nonatomic, weak) IBOutlet UIImageView *inputTextBackgroundView;
+
+@property (nonatomic, weak) IBOutlet UIImageView *inputContextImageView;
+@property (nonatomic, weak) IBOutlet UILabel *inputContextLabel;
+@property (nonatomic, weak) IBOutlet UIButton *inputContextButton;
+
+@property (nonatomic, weak) IBOutlet RoomActionsBar *actionsBar;
+
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *mainToolbarMinHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *mainToolbarHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *messageComposerContainerTrailingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *inputContextViewHeightConstraint;
+
+@property (nonatomic, weak) UIView *voiceMessageToolbarView;
+
 @property (nonatomic, assign) CGFloat expandedMainToolbarHeight;
 
 @end
@@ -52,22 +59,10 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 @implementation RoomInputToolbarView
 @dynamic delegate;
 
-+ (UINib *)nib
-{
-    return [UINib nibWithNibName:NSStringFromClass([RoomInputToolbarView class])
-                          bundle:[NSBundle bundleForClass:[RoomInputToolbarView class]]];
-}
-
 + (instancetype)roomInputToolbarView
 {
-    if ([[self class] nib])
-    {
-        return [[[self class] nib] instantiateWithOwner:nil options:nil].firstObject;
-    }
-    else
-    {
-        return [[self alloc] init];
-    }
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([RoomInputToolbarView class]) bundle:nil];
+    return [nib instantiateWithOwner:nil options:nil].firstObject;
 }
 
 - (void)awakeFromNib
@@ -315,6 +310,11 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     self.textView.placeholder = inPlaceholder;
 }
 
+- (void)pasteText:(NSString *)text
+{
+    self.textMessage = [self.textView.text stringByReplacingCharactersInRange:self.textView.selectedRange withString:text];
+}
+
 #pragma mark - Actions
 
 - (IBAction)cancelAction:(id)sender
@@ -325,7 +325,7 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     }
 }
 
-#pragma mark - GrowingTextViewDelegate
+#pragma mark - UITextViewDelegate
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
@@ -351,7 +351,9 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     [self.delegate roomInputToolbarViewDidChangeTextMessage:self];
 }
 
-- (void)textViewDidChangeHeight:(GrowingTextView *)textView height:(CGFloat)height
+#pragma mark - RoomInputToolbarTextViewDelegate
+
+- (void)textView:(RoomInputToolbarTextView *)textView didChangeHeight:(CGFloat)height
 {
     // Update height of the main toolbar (message composer)
     CGFloat updatedHeight = height + (self.messageComposerContainerTopConstraint.constant + self.messageComposerContainerBottomConstraint.constant) + self.inputContextViewHeightConstraint.constant;
@@ -376,13 +378,18 @@ const CGFloat kComposerContainerTrailingPadding = 12;
     }
 }
 
+- (void)textView:(RoomInputToolbarTextView *)textView didReceivePasteForMediaFromSender:(id)sender
+{
+    [self paste:sender];
+}
+
 #pragma mark - Override MXKRoomInputToolbarView
 
 - (IBAction)onTouchUpInside:(UIButton*)button
 {
     if (button == self.attachMediaButton)
     {
-        self.actionMenuOpened = !self.isActionMenuOpened;
+        self.actionMenuOpened = !self.actionMenuOpened;
     }
 
     [super onTouchUpInside:button];
@@ -400,12 +407,6 @@ const CGFloat kComposerContainerTrailingPadding = 12;
 
 - (void)destroy
 {
-    if (actionSheet)
-    {
-        [actionSheet dismissViewControllerAnimated:NO completion:nil];
-        actionSheet = nil;
-    }
-    
     [super destroy];
 }
 
@@ -460,20 +461,6 @@ const CGFloat kComposerContainerTrailingPadding = 12;
             [self.delegate roomInputToolbarView:self heightDidChanged:self.mainToolbarHeightConstraint.constant completion:nil];
         }];
     }
-}
-
-#pragma mark - Clipboard - Handle image/data paste from general pasteboard
-
-- (void)paste:(id)sender
-{
-    // TODO Custom here the validation screen for each available item
-    
-    [super paste:sender];
-}
-
-- (void)textView:(GrowingTextView *)textView didReceivePasteForMediaFromSender:(id)sender
-{
-    [self paste:sender];
 }
 
 #pragma mark - Private
