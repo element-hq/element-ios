@@ -2030,6 +2030,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     roomInputView.actionsBar.actionItems = actionItems;
 }
 
+- (NSString *)textInputContextIdentifier
+{
+    return self.roomDataSource.roomId;
+}
+
 - (void)roomInputToolbarViewPresentStickerPicker
 {
     // Search for the sticker picker widget in the user account
