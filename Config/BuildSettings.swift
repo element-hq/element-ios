@@ -142,7 +142,7 @@ final class BuildSettings: NSObject {
     // This baseURL is used to generate permalinks within the app (E.g. timeline message permalinks).
     // Optional String that when set is used as permalink base, when nil matrix.to format is used.
     // Example value would be "https://www.example.com", note there is no trailing '/'.
-    static let clientPermalinkBaseUrl: String? = "https://app.element.io"
+    static let clientPermalinkBaseUrl: String? = nil
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
