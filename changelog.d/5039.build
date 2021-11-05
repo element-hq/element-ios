@@ -1,0 +1,1 @@
+Add concurrency to the GitHub workflows to auto-cancel older runs of each action.

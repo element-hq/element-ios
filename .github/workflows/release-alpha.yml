@@ -16,6 +16,11 @@ jobs:
   build:
     name: Release
     runs-on: macos-11
+    
+    # Only allow a single run of this workflow on each branch (cancel older runs automatically)
+    concurrency:
+      group: alpha-${{ github.head_ref }}
+      cancel-in-progress: true
 
     steps:
       - uses: actions/checkout@v2
