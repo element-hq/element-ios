@@ -55,6 +55,8 @@
 #import "MXSession+Riot.h"
 #import "MXRoom+Riot.h"
 
+#import "UserActivityService.h"
+
 #import "Riot-Swift.h"
 #import "PushNotificationService.h"
 
@@ -745,13 +747,22 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         continueUserActivity = [self handleUniversalLink:userActivity];
     }
+    else if ([userActivity.activityType isEqualToString:MXUserActivityTypeRoom])
+    {
+        NSString *roomID = userActivity.userInfo[UserActivityFieldRoom];
+        if (!roomID)
+            return continueUserActivity;
+        
+        [self navigateToRoomById:roomID];
+        continueUserActivity = YES;
+    }
     else if ([userActivity.activityType isEqualToString:INStartAudioCallIntentIdentifier] ||
              [userActivity.activityType isEqualToString:INStartVideoCallIntentIdentifier])
     {
         INInteraction *interaction = userActivity.interaction;
         
         // roomID provided by Siri intent
-        NSString *roomID = userActivity.userInfo[@"roomID"];
+        NSString *roomID = userActivity.userInfo[UserActivityFieldRoom];
         
         // We've launched from calls history list
         if (!roomID)
@@ -2780,6 +2791,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)navigateToRoomById:(NSString *)roomId
 {
+    [self navigateToRoomById:roomId andEventId:nil];
+}
+
+- (void)navigateToRoomById:(NSString *)roomId andEventId:(NSString *)eventId
+{
     if (roomId.length)
     {
         // TODO retrieve the right matrix session
@@ -2812,7 +2828,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         {
             MXLogDebug(@"[AppDelegate][Push] navigateToRoomById: open the roomViewController %@", roomId);
 
-            [self showRoom:roomId andEventId:nil withMatrixSession:dedicatedAccount.mxSession];
+            [self showRoom:roomId andEventId:eventId withMatrixSession:dedicatedAccount.mxSession];
         }
         else
         {

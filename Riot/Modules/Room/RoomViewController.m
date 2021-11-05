@@ -17,6 +17,7 @@
  */
 
 @import MobileCoreServices;
+@import CoreSpotlight;
 
 #import "RoomViewController.h"
 
@@ -128,6 +129,7 @@
 #import "SecurityViewController.h"
 
 #import "TypingUserInfo.h"
+#import "UserActivityService.h"
 
 #import "MXSDKOptions.h"
 
@@ -610,6 +612,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
                                                                                           category:AnalyticsNoficationsCategory];
     }
+    
+    [self updateUserActivity];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -2028,6 +2032,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }]];
     }
     roomInputView.actionsBar.actionItems = actionItems;
+}
+
+- (void)updateUserActivity
+{
+    if (!self.userActivity) {
+        self.userActivity = [[NSUserActivity alloc] initWithActivityType:MXUserActivityTypeRoom];
+    }
+    
+    [UserActivityService.shared update:self.userActivity from:self.roomDataSource.room];
+    
+    // TODO: add a NSUserActivityDelegate to save the current text in the userinfo of the activity
+    // self.userActivity.delegate = self;
+    // self.userActivity.needsSave = true;
 }
 
 - (void)roomInputToolbarViewPresentStickerPicker
