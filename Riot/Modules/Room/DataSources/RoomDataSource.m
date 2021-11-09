@@ -343,7 +343,7 @@ const CGFloat kTypingCellHeight = 24;
         // Handle read receipts and read marker display.
         // Ignore the read receipts on the bubble without actual display.
         // Ignore the read receipts on collapsed bubbles
-        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink) && !isCollapsableCellCollapsed) || self.showReadMarker)
+        if ((((self.showBubbleReceipts && cellData.readReceipts.count) || cellData.reactions.count || cellData.hasLink || cellData.hasThreadRoot) && !isCollapsableCellCollapsed) || self.showReadMarker)
         {
             // Read receipts container are inserted here on the right side into the content view.
             // Some vertical whitespaces are added in message text view (see RoomBubbleCellData class) to insert correctly multiple receipts.
@@ -380,11 +380,6 @@ const CGFloat kTypingCellHeight = 24;
                         urlPreviewView.tag = index;
                         
                         [temporaryViews addObject:urlPreviewView];
-                        
-                        if (!bubbleCell.tmpSubviews)
-                        {
-                            bubbleCell.tmpSubviews = [NSMutableArray array];
-                        }
                         [bubbleCell.tmpSubviews addObject:urlPreviewView];
                         
                         urlPreviewView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -423,11 +418,6 @@ const CGFloat kTypingCellHeight = 24;
                         bubbleReactionsViewModel.viewModelDelegate = self;
                         
                         [temporaryViews addObject:reactionsView];
-                        
-                        if (!bubbleCell.tmpSubviews)
-                        {
-                            bubbleCell.tmpSubviews = [NSMutableArray array];
-                        }
                         [bubbleCell.tmpSubviews addObject:reactionsView];
                         
                         if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReactionsDisplayable)])
@@ -466,6 +456,53 @@ const CGFloat kTypingCellHeight = 24;
                                topConstraint
                                ]];
                         }
+                    }
+                    
+                    ThreadSummaryView *threadSummaryView;
+                    
+                    //  display thread summary view if the component has a thread in the room timeline
+                    if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
+                    {
+                        threadSummaryView = [ThreadSummaryView instantiateWithThread:component.thread];
+                        
+                        [temporaryViews addObject:threadSummaryView];
+                        [bubbleCell.tmpSubviews addObject:threadSummaryView];
+                        
+                        threadSummaryView.translatesAutoresizingMaskIntoConstraints = NO;
+                        [bubbleCell.contentView addSubview:threadSummaryView];
+                        
+                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                        if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                        {
+                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                        }
+                        
+                        // The top constraint may need to include the URL preview view or reactions view
+                        NSLayoutConstraint *topConstraint;
+                        if (reactionsView)
+                        {
+                            topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor
+                                                                            constant:RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                        }
+                        else if (urlPreviewView)
+                        {
+                            topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor
+                                                                            constant:RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                        }
+                        else
+                        {
+                            topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
+                                                                            constant:bottomPositionY + RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                        }
+                        
+                        // Set constraints for the summary view
+                        [NSLayoutConstraint activateConstraints: @[
+                            [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
+                                                                constant:leftMargin],
+                            topConstraint,
+                            [threadSummaryView.heightAnchor constraintEqualToConstant:[ThreadSummaryView contentViewHeightForThread:component.thread fitting:cellData.maxTextViewWidth]],
+                            [threadSummaryView.trailingAnchor constraintEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
+                        ]];
                     }
                     
                     MXKReceiptSendersContainer* avatarsContainer;
@@ -523,16 +560,8 @@ const CGFloat kTypingCellHeight = 24;
                             avatarsContainer.accessibilityIdentifier = @"readReceiptsContainer";
                             
                             [temporaryViews addObject:avatarsContainer];
-                            
                             // Add this read receipts container in the content view
-                            if (!bubbleCell.tmpSubviews)
-                            {
-                                bubbleCell.tmpSubviews = [NSMutableArray arrayWithArray:@[avatarsContainer]];
-                            }
-                            else
-                            {
-                                [bubbleCell.tmpSubviews addObject:avatarsContainer];
-                            }
+                            [bubbleCell.tmpSubviews addObject:avatarsContainer];
                             
                             if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellReadReceiptsDisplayable)])
                             {
@@ -569,9 +598,13 @@ const CGFloat kTypingCellHeight = 24;
                                                                                                      multiplier:1.0
                                                                                                        constant:-RoomBubbleCellLayout.readReceiptsViewRightMargin];
                                 
-                                // At the bottom, we either have reactions, a URL preview or nothing
+                                // At the bottom, we either have a thread summary, a reactions, a URL preview or nothing
                                 NSLayoutConstraint *topConstraint;
-                                if (reactionsView)
+                                if (threadSummaryView)
+                                {
+                                    topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:threadSummaryView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
+                                }
+                                else if (reactionsView)
                                 {
                                     topConstraint = [avatarsContainer.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor constant:RoomBubbleCellLayout.readReceiptsViewTopMargin];
                                 }
