@@ -2927,7 +2927,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionReply: String { 
     return VectorL10n.tr("Vector", "room_event_action_reply") 
   }
-  /// Reply in thread
+  /// Thread
   public static var roomEventActionReplyInThread: String { 
     return VectorL10n.tr("Vector", "room_event_action_reply_in_thread") 
   }

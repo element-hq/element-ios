@@ -5931,7 +5931,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
     [items addObject:[self replyMenuItemWithEvent:event]];
-    if (!event.threadIdentifier)
+    if (RiotSettings.shared.enableThreads && !event.threadIdentifier)
     {
         //  add "reply in thread" option only if not a thread already
         [items addObject:[self replyInThreadMenuItemWithEvent:event]];

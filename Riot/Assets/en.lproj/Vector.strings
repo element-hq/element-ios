@@ -378,7 +378,7 @@ Tap the + to start adding people.";
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 "room_event_action_reply" = "Reply";
-"room_event_action_reply_in_thread" = "Reply in thread";
+"room_event_action_reply_in_thread" = "Thread";
 "room_event_action_edit" = "Edit";
 "room_event_action_reaction_show_all" = "Show all";
 "room_event_action_reaction_show_less" = "Show less";
