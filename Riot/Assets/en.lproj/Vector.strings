@@ -569,6 +569,7 @@ Tap the + to start adding people.";
 "settings_labs_message_reaction" = "React to messages with emoji";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
 "settings_labs_voice_messages" = "Voice messages";
+"settings_labs_enable_threads" = "Threaded messaging";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
