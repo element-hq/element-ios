@@ -625,8 +625,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         //  component is not a thread root
         return 0;
     }
-    //  TODO: Fix hardcoded height
-    return RoomBubbleCellLayout.threadSummaryViewTopMargin + 30;
+    return RoomBubbleCellLayout.threadSummaryViewTopMargin + [ThreadSummaryView contentViewHeightForThread:component.thread fitting:self.maxTextViewWidth];
 }
 
 - (CGFloat)urlPreviewHeightForEventId:(NSString*)eventId
