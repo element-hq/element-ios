@@ -117,6 +117,10 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "enableRingingForGroupCalls", defaultValue: false, storage: defaults)
     var enableRingingForGroupCalls
     
+    /// Indicates if threads enabled in the timeline.
+    @UserDefault(key: "enableThreads", defaultValue: true, storage: defaults)
+    var enableThreads
+    
     // MARK: Calls
     
     /// Indicate if `allowStunServerFallback` settings has been set once.
