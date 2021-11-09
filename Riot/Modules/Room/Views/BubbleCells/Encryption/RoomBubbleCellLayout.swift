@@ -46,4 +46,8 @@ final class RoomBubbleCellLayout: NSObject {
     
     static let encryptedContentLeftMargin: CGFloat = 15.0
     static let urlPreviewViewTopMargin: CGFloat = 8.0
+    
+    // Threads
+    
+    static let threadSummaryViewTopMargin: CGFloat = 8.0
 }
