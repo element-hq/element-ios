@@ -18,11 +18,7 @@
 
 #import "ShareItemSender.h"
 
-#ifdef IS_SHARE_EXTENSION
-#import "RiotShareExtension-Swift.h"
-#else
-#import "Riot-Swift.h"
-#endif
+#import "GeneratedInterface-Swift.h"
 
 static const CGFloat kLargeImageSizeMaxDimension = 2048.0;
 static const CGSize kThumbnailSize = {800.0, 600.0};
