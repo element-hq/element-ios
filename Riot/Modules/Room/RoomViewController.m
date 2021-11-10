@@ -4664,6 +4664,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [self declineRoomInvitation];
     }
+    else if ([titleView isKindOfClass:ThreadRoomTitleView.class])
+    {
+        ThreadRoomTitleView *threadTitleView = (ThreadRoomTitleView *)titleView;
+        if (tappedView == threadTitleView.closeButton)
+        {
+            //  dismiss self
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
 }
 
 - (void)declineRoomInvitation
