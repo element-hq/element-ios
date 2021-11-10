@@ -40,6 +40,9 @@ struct RoomCoordinatorParameters {
     /// If not nil, specified thread will be opened.
     let threadId: String?
     
+    /// Display configuration for the room
+    let displayConfiguration: RoomDisplayConfiguration
+    
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
@@ -51,6 +54,7 @@ struct RoomCoordinatorParameters {
                  roomId: String,
                  eventId: String?,
                  threadId: String?,
+                 displayConfiguration: RoomDisplayConfiguration,
                  previewData: RoomPreviewData?) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
@@ -58,6 +62,7 @@ struct RoomCoordinatorParameters {
         self.roomId = roomId
         self.eventId = eventId
         self.threadId = threadId
+        self.displayConfiguration = displayConfiguration
         self.previewData = previewData
     }
     
@@ -67,9 +72,17 @@ struct RoomCoordinatorParameters {
          session: MXSession,
          roomId: String,
          eventId: String? = nil,
-         threadId: String? = nil) {
+         threadId: String? = nil,
+         displayConfiguration: RoomDisplayConfiguration = .default) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: session, roomId: roomId, eventId: eventId, threadId: threadId, previewData: nil)
+        self.init(navigationRouter: navigationRouter,
+                  navigationRouterStore: navigationRouterStore,
+                  session: session,
+                  roomId: roomId,
+                  eventId: eventId,
+                  threadId: threadId,
+                  displayConfiguration: displayConfiguration,
+                  previewData: nil)
     }
     
     /// Init to present a room preview
@@ -77,6 +90,13 @@ struct RoomCoordinatorParameters {
          navigationRouterStore: NavigationRouterStoreProtocol? = nil,
          previewData: RoomPreviewData) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: previewData.mxSession, roomId: previewData.roomId, eventId: nil, threadId: nil, previewData: previewData)
+        self.init(navigationRouter: navigationRouter,
+                  navigationRouterStore: navigationRouterStore,
+                  session: previewData.mxSession,
+                  roomId: previewData.roomId,
+                  eventId: nil,
+                  threadId: nil,
+                  displayConfiguration: .default,
+                  previewData: previewData)
     }
 }

@@ -258,6 +258,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) UserSuggestionCoordinatorBridge *userSuggestionCoordinator;
 @property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
 
+@property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
+
 @end
 
 @implementation RoomViewController
@@ -273,14 +275,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 + (instancetype)roomViewController
 {
-    return [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
-                                          bundle:[NSBundle bundleForClass:self.class]];
+    RoomViewController *controller = [[[self class] alloc] initWithNibName:NSStringFromClass(self.class)
+                                                                    bundle:[NSBundle bundleForClass:self.class]];
+    controller.displayConfiguration = [RoomDisplayConfiguration default];
+    return controller;
 }
 
-+ (instancetype)instantiate
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    return [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+    RoomViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+    controller.displayConfiguration = configuration;
+    return controller;
 }
 
 #pragma mark -
@@ -1502,6 +1508,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)setupRemoveJitsiWidgetRemoveView
 {
+    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
+    {
+        return;
+    }
+    
     self.removeJitsiWidgetView = [RemoveJitsiWidgetView instantiate];
     self.removeJitsiWidgetView.delegate = self;
     
@@ -1544,6 +1555,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (BOOL)supportCallOption
 {
+    if (!self.displayConfiguration.callsEnabled)
+    {
+        return NO;
+    }
     BOOL callOptionAllowed = (self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForDirectRoom) || (!self.roomDataSource.room.isDirect && RiotSettings.shared.roomScreenAllowVoIPForNonDirectRoom);
     return callOptionAllowed && BuildSettings.allowVoIPUsage && self.roomDataSource.mxSession.callManager && self.roomDataSource.room.summary.membersCount.joined >= 2;
 }
@@ -4883,6 +4898,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)listenWidgetNotifications
 {
+    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
+    {
+        return;
+    }
+    
     MXWeakify(self);
     
     kMXKWidgetManagerDidUpdateWidgetObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kWidgetManagerDidUpdateWidgetNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -4919,6 +4939,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (NSUInteger)widgetsCount:(BOOL)includeUserWidgets
 {
+    if (!self.displayConfiguration.integrationsEnabled)
+    {
+        return 0;
+    }
+    
     NSUInteger widgetsCount = [[WidgetManager sharedManager] widgetsNotOfTypes:@[kWidgetTypeJitsiV1, kWidgetTypeJitsiV2]
                                                                         inRoom:self.roomDataSource.room
                                                                  withRoomState:self.roomDataSource.roomState].count;
@@ -5549,6 +5574,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)refreshRemoveJitsiWidgetView
 {
+    if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
+    {
+        return;
+    }
+    
     if (self.roomDataSource.isLive && !self.roomDataSource.isPeeking)
     {
         Widget *jitsiWidget = [customizedRoomDataSource jitsiWidget];
@@ -6287,10 +6317,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.threadBridgePresenter = nil;
     }
     
+    RoomDisplayConfiguration *configuration = RoomDisplayConfiguration.forThreads;
     RoomCoordinatorBridgePresenterParameters *parameters = [[RoomCoordinatorBridgePresenterParameters alloc] initWithSession:self.mainSession
                                                                                                                       roomId:self.roomDataSource.roomId
                                                                                                                      eventId:nil
                                                                                                                     threadId:threadId
+                                                                                                        displayConfiguration:configuration
                                                                                                                  previewData:nil];
     RoomCoordinatorBridgePresenter *presenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     self.threadBridgePresenter = presenter;

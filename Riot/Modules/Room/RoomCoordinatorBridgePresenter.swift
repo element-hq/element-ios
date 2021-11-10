@@ -37,6 +37,9 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
     /// If not nil, specified thread will be opened.
     let threadId: String?
     
+    /// Display configuration for the room
+    let displayConfiguration: RoomDisplayConfiguration
+    
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
@@ -44,11 +47,13 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
          roomId: String,
          eventId: String?,
          threadId: String?,
+         displayConfiguration: RoomDisplayConfiguration,
          previewData: RoomPreviewData?) {
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
         self.threadId = threadId
+        self.displayConfiguration = displayConfiguration
         self.previewData = previewData
     }
 }
@@ -126,7 +131,8 @@ final class RoomCoordinatorBridgePresenter: NSObject {
                                                                session: self.bridgeParameters.session,
                                                                roomId: self.bridgeParameters.roomId,
                                                                eventId: self.bridgeParameters.eventId,
-                                                               threadId: self.bridgeParameters.threadId)
+                                                               threadId: self.bridgeParameters.threadId,
+                                                               displayConfiguration: self.bridgeParameters.displayConfiguration)
         }
         
         return RoomCoordinator(parameters: coordinatorParameters)

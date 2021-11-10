@@ -30,6 +30,7 @@
 @class BadgeLabel;
 @class UniversalLinkParameters;
 @protocol RoomViewControllerDelegate;
+@class RoomDisplayConfiguration;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -73,6 +74,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 @property (nonatomic, readonly, nullable) RoomPreviewData *roomPreviewData;
 
 /**
+ Display configuration for the room view controller.
+ */
+@property (nonatomic, readonly) RoomDisplayConfiguration *displayConfiguration;
+
+/**
  Tell whether a badge must be added next to the chevron (back button) showing number of unread rooms.
  YES by default.
  */
@@ -97,9 +103,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 /**
  Creates and returns a new `RoomViewController` object.
  
+ @param configuration display configuration for the room view controller.
+ 
  @return An initialized `RoomViewController` object.
  */
-+ (instancetype)instantiate;
++ (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration;
 
 @end
 

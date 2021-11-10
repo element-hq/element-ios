@@ -72,7 +72,12 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.parameters = parameters
         self.selectedEventId = parameters.eventId
 
-        self.roomViewController = RoomViewController.instantiate()
+        if let threadId = parameters.threadId {
+            self.roomViewController = ThreadViewController.instantiate(withThreadId: threadId,
+                                                                       configuration: parameters.displayConfiguration)
+        } else {
+            self.roomViewController = RoomViewController.instantiate(with: parameters.displayConfiguration)
+        }
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
         super.init()
@@ -127,6 +132,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
 
     func toPresentable() -> UIViewController {
+        if parameters.threadId != nil {
+            return self.navigationRouter?.toPresentable() ?? self.roomViewController
+        }
         return self.roomViewController
     }
 
