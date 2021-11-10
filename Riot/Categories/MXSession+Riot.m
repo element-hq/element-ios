@@ -65,7 +65,7 @@
     }
     else
     {
-        MXLogInfo(@"[MXSession] E2EE is disabled by default on this homeserver");
+        MXLogWarning(@"[MXSession] E2EE is disabled by default on this homeserver.");        
         success(NO);
         return [MXHTTPOperation new];
     }
