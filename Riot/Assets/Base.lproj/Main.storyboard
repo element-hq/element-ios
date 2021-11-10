@@ -543,6 +543,26 @@
             </objects>
             <point key="canvasLocation" x="374" y="449"/>
         </scene>
+        <!--Room-->
+        <scene sceneID="Opl-gU-pwm">
+            <objects>
+                <viewController storyboardIdentifier="ThreadViewControllerStoryboardId" title="Room" hidesBottomBarWhenPushed="YES" id="R2h-H9-hdJ" customClass="ThreadViewController" customModule="Riot" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="TFF-nx-BSb">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="e4J-vI-jzo" userLabel="Room title view container">
+                            <rect key="frame" x="8" y="2" width="312" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="roomTitleViewContainer" destination="e4J-vI-jzo" id="b1C-TY-2R6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kHX-sJ-uYE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-153" y="-419"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Tfl-tq-LQp"/>

@@ -284,9 +284,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 + (instancetype)instantiateWithConfiguration:(RoomDisplayConfiguration *)configuration
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    RoomViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"RoomViewControllerStoryboardId"];
+    NSString *storyboardId = [NSString stringWithFormat:@"%@StoryboardId", self.className];
+    RoomViewController *controller = [storyboard instantiateViewControllerWithIdentifier:storyboardId];
     controller.displayConfiguration = configuration;
     return controller;
+}
+
++ (NSString *)className
+{
+    NSString *result = NSStringFromClass(self.class);
+    if ([result containsString:@"."])
+    {
+        result = [result componentsSeparatedByString:@"."].lastObject;
+    }
+    return result;
 }
 
 #pragma mark -
