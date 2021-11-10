@@ -33,7 +33,7 @@
 /**
  The event id of the current selected event if any. Default is nil.
  */
-@property(nonatomic) NSString *selectedEventId;
+@property(nonatomic, nullable) NSString *selectedEventId;
 
 /**
  Tell whether the initial event of the timeline (if any) must be marked. Default is NO.
@@ -60,7 +60,7 @@
 
  @return a widget representating the active jitsi conference in the room. Else, nil.
  */
-- (Widget *)jitsiWidget;
+- (Widget * _Nullable)jitsiWidget;
 
 /**
  Send a video to the room.
@@ -74,9 +74,9 @@
  the event id of the event generated on the homeserver
  @param failure A block object called when the operation fails.
  */
-- (void)sendVideo:(NSURL*)videoLocalURL
-          success:(void (^)(NSString *eventId))success
-          failure:(void (^)(NSError *error))failure;
+- (void)sendVideo:(NSURL * _Nonnull)videoLocalURL
+          success:(nullable void (^)(NSString * _Nonnull))success
+          failure:(nullable void (^)(NSError * _Nullable))failure;
 
 /**
  Accept incoming key verification request.
@@ -85,9 +85,9 @@
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
-- (void)acceptVerificationRequestForEventId:(NSString*)eventId
-                                    success:(void(^)(void))success
-                                    failure:(void(^)(NSError*))failure;
+- (void)acceptVerificationRequestForEventId:(NSString * _Nonnull)eventId
+                                    success:(nullable void(^)(void))success
+                                    failure:(nullable void(^)(NSError * _Nullable))failure;
 
 /**
  Decline incoming key verification request.
@@ -96,9 +96,9 @@
  @param success A block object called when the operation succeeds.
  @param failure A block object called when the operation fails.
  */
-- (void)declineVerificationRequestForEventId:(NSString*)eventId
-                                     success:(void(^)(void))success
-                                     failure:(void(^)(NSError*))failure;
+- (void)declineVerificationRequestForEventId:(NSString * _Nonnull)eventId
+                                     success:(nullable void(^)(void))success
+                                     failure:(nullable void(^)(NSError * _Nullable))failure;
 
 - (void)resetTypingNotification;
 
@@ -106,9 +106,19 @@
 
 @protocol RoomDataSourceDelegate <MXKDataSourceDelegate>
 
-- (void)roomDataSource:(RoomDataSource*)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel;
+/**
+ Called when the room's encryption trust level did updated.
+ 
+ @param roomDataSource room data source instance
+ */
+- (void)roomDataSourceDidUpdateEncryptionTrustLevel:(RoomDataSource * _Nonnull)roomDataSource;
 
-- (void)roomDataSource:(RoomDataSource*)roomDataSource didCancel:(MXEvent *)event;
-
+/**
+ Called when a thread summary view
+ 
+ @param roomDataSource room data source instance
+ */
+- (void)roomDataSource:(RoomDataSource * _Nonnull)roomDataSource
+          didTapThread:(MXThread * _Nonnull)thread;
 
 @end

@@ -29,7 +29,7 @@
 
 const CGFloat kTypingCellHeight = 24;
 
-@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate>
+@interface RoomDataSource() <BubbleReactionsViewModelDelegate, URLPreviewViewDelegate, ThreadSummaryViewDelegate>
 {
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
@@ -231,7 +231,7 @@ const CGFloat kTypingCellHeight = 24;
 - (void)fetchEncryptionTrustedLevel
 {
     self.encryptionTrustLevel = self.room.summary.roomEncryptionTrustLevel;
-    [self.roomDataSourceDelegate roomDataSource:self didUpdateEncryptionTrustLevel:self.encryptionTrustLevel];
+    [self.roomDataSourceDelegate roomDataSourceDidUpdateEncryptionTrustLevel:self];
 }
 
 - (void)roomDidSet
@@ -510,6 +510,7 @@ const CGFloat kTypingCellHeight = 24;
                     if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
                     {
                         threadSummaryView = [ThreadSummaryView instantiateWithThread:component.thread];
+                        threadSummaryView.delegate = self;
                         
                         [temporaryViews addObject:threadSummaryView];
                         [bubbleCell.tmpSubviews addObject:threadSummaryView];
@@ -1013,9 +1014,9 @@ const CGFloat kTypingCellHeight = 24;
     return jitsiWidget;
 }
 
-- (void)sendVideo:(NSURL*)videoLocalURL
-          success:(void (^)(NSString *eventId))success
-          failure:(void (^)(NSError *error))failure
+- (void)sendVideo:(NSURL *)videoLocalURL
+          success:(void (^)(NSString * _Nonnull))success
+          failure:(void (^)(NSError * _Nullable))failure
 {
     AVURLAsset *videoAsset = [AVURLAsset assetWithURL:videoLocalURL];
     UIImage *videoThumbnail = [MXKVideoThumbnailGenerator.shared generateThumbnailFrom:videoLocalURL];
@@ -1331,6 +1332,14 @@ const CGFloat kTypingCellHeight = 24;
     [cellData invalidateLayout];
     
     [self refreshCells];
+}
+
+#pragma mark - ThreadSummaryViewDelegate
+
+- (void)threadSummaryViewTapped:(ThreadSummaryView *)summaryView
+{
+    [self.roomDataSourceDelegate roomDataSource:self
+                                   didTapThread:summaryView.thread];
 }
 
 @end

@@ -4032,10 +4032,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 #pragma mark - RoomDataSourceDelegate
 
-- (void)roomDataSource:(RoomDataSource *)roomDataSource didUpdateEncryptionTrustLevel:(RoomEncryptionTrustLevel)roomEncryptionTrustLevel
+- (void)roomDataSourceDidUpdateEncryptionTrustLevel:(RoomDataSource *)roomDataSource
 {
     [self updateInputToolbarEncryptionDecoration];
     [self updateTitleViewEncryptionDecoration];
+}
+
+- (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(MXThread *)thread
+{
+    [self openThreadWithId:thread.identifier];
 }
 
 #pragma mark - Segues
