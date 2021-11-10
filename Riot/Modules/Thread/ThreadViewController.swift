@@ -27,4 +27,25 @@ class ThreadViewController: RoomViewController {
         return threadVC
     }
     
+    override class func nib() -> UINib! {
+        //  reuse 'RoomViewController.xib' file as the nib
+        return UINib(nibName: String(describing: RoomViewController.self), bundle: .main)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.setRoomTitleViewClass(ThreadRoomTitleView.self)
+        
+        guard let threadTitleView = self.titleView as? ThreadRoomTitleView else {
+            return
+        }
+        
+        threadTitleView.threadId = threadId
+    }
+    
+    override func setRoomTitleViewClass(_ roomTitleViewClass: AnyClass!) {
+        super.setRoomTitleViewClass(ThreadRoomTitleView.self)
+    }
+    
 }
