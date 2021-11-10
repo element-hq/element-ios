@@ -94,3 +94,102 @@
 "bug_report_send" = "ارسال";
 "done" = "انجام شد";
 "open" = "باز کردن";
+"contacts_address_book_matrix_users_toggle" = "فقط کاربران ماتریس";
+"directory_search_results_more_than" = ">%tu نتیجه یافت شد برای %@";
+"directory_search_results" = "%tu نتیجه یافت شد برای %@";
+"search_in_progress" = "در حال جست وجو";
+"search_no_result" = "نتیچه ای یافت نشد";
+"search_people_placeholder" = "جستجو بر اساس شناسه کاربری، نام یا ایمیل";
+"search_default_placeholder" = "جست و جو";
+"search_files" = "فایل ها";
+"search_people" = "افراد";
+"search_messages" = "پیام ها";
+
+// Search
+"search_rooms" = "اتاق های گفت و گو";
+
+// Groups tab
+"group_invite_section" = "دعوت ها";
+"rooms_empty_view_information" = "اتاق ها برای هر چت گروهی، خصوصی یا عمومی عالی هستند. برای پیدا کردن اتاق‌های موجود یا ایجاد اتاق‌های جدید، روی + ضربه بزنید.";
+"rooms_empty_view_title" = "اتاق های گفت و گو";
+
+// Rooms tab
+"room_directory_no_public_room" = "هیچ اتاق گفت و گو عمومی موجود نیست";
+"people_empty_view_information" = "با همه ایمن چت کنید. برای شروع اضافه کردن افراد، روی + ضربه بزنید.";
+"people_empty_view_title" = "افراد";
+"people_no_conversation" = "هیچ گفت و گویی موجود نیست";
+"people_conversation_section" = "گفت و گو ها";
+
+// People tab
+"people_invites_section" = "دعوت ها";
+"room_recents_unknown_room_error_message" = "اتاق گفت و گو مورد نظر پیدا نشد. مطمئن شوید که این اتاق وجود دارد";
+"room_recents_join_room_prompt" = "شناسه اتاق گفت و گو یا نام مستعار اتاق گفت و گو را تایپ کنید";
+"room_recents_join_room_title" = "به یک اتاق گفت و گو بپیوندید";
+"room_recents_join_room" = "پیوستن به اتاق گفت و گو";
+"room_recents_create_empty_room" = "ایجاد اتاق گفت و گو";
+"room_recents_start_chat_with" = "شروع چت";
+"room_recents_suggested_rooms_section" = "تالارهای گفت و گوی پیشنهادی";
+"room_recents_invites_section" = "دعوت ها";
+"room_recents_server_notice_section" = "هشدارهای سیستم";
+"room_recents_no_conversation" = "چت رومی موجود نیست";
+"room_recents_conversations_section" = "تالارهای گفت و گو";
+"room_recents_people_section" = "افراد";
+"room_recents_favourites_section" = "علاقه مندی ها";
+"room_creation_make_public_prompt_title" = "چت عمومی شود؟";
+"room_creation_invite_another_user" = "شناسه کاربری، نام یا ایمیل";
+"room_creation_wait_for_creation" = "یک تالار گفت و گو از قبل در حال ایجاد است. لطفا صبر کنید.";
+"room_creation_make_private" = "شخصی سازی";
+"room_creation_keep_private" = "خصوصی نگه دارید";
+"room_creation_make_public_prompt_msg" = "آیا مطمئن هستید که می خواهید این چت را عمومی کنید؟ هر کسی می تواند پیام های شما را بخواند و به چت بپیوندد.";
+"room_creation_make_public" = "عمومی کردن";
+"room_creation_public_room" = "این چت عمومی است";
+"room_creation_private_room" = "این چت خصوصی است";
+"room_creation_privacy" = "حریم خصوصی";
+"room_creation_appearance_picture" = "عکس چت (اختیاری)";
+"room_creation_appearance_name" = "نام";
+"room_creation_account" = "حساب کاربری";
+
+// Chat creation
+"room_creation_title" = "گفت و گو جدید";
+"social_login_button_title_sign_up" = "ثبت نام با %@";
+"social_login_button_title_sign_in" = "ورود با %@";
+"social_login_button_title_continue" = "ادامه دادن با %@";
+"social_login_list_title_sign_up" = "یا";
+"social_login_list_title_sign_in" = "یا";
+
+// Social login
+
+"social_login_list_title_continue" = "ادامه دادن با";
+"auth_softlogout_clear_data_sign_out" = "خروج";
+"auth_softlogout_clear_data_sign_out_msg" = "آیا مطمئن هستید که می خواهید تمام داده های ذخیره شده در این دستگاه را پاک کنید؟ برای دسترسی به داده ها و پیام های حساب خود دوباره وارد شوید.";
+"auth_softlogout_clear_data_sign_out_title" = "آیا مطمئن هستید؟";
+"auth_softlogout_clear_data_button" = "تمام داده ها را پاک کنید";
+"auth_softlogout_clear_data_message_2" = "اگر استفاده از این دستگاه را تمام کرده‌اید یا می‌خواهید به حساب دیگری وارد شوید، آن را پاک کنید.";
+"auth_softlogout_clear_data_message_1" = "هشدار: اطلاعات شخصی شما (از جمله کلیدهای رمزگذاری) همچنان در این دستگاه ذخیره شده است.";
+"auth_softlogout_clear_data" = "پاک کردن اطلاعات شخصی";
+"auth_softlogout_recover_encryption_keys" = "برای بازیابی کلیدهای رمزگذاری ذخیره شده منحصراً در این دستگاه وارد سیستم شوید. برای خواندن همه پیام‌های امن خود در هر دستگاهی به آنها نیاز دارید.";
+"auth_softlogout_sign_in" = "ورود";
+"auth_softlogout_signed_out" = "شما از سیستم خارج شده اید";
+"auth_add_email_and_phone_warning" = "ثبت نام همزمان با ایمیل و شماره تلفن هنوز پشتیبانی نمی شود تا زمانی که api وجود داشته باشد. فقط شماره تلفن در نظر گرفته خواهد شد. می توانید ایمیل خود را در تنظیمات به نمایه خود اضافه کنید.";
+"auth_reset_password_success_message" = "رمز عبور شما بازنشانی شده است\nشما از تمام قسمت ها خارج شده اید و دیگر اعلان ها را دریافت نخواهید کرد. برای فعال کردن مجدد اعلان‌ها، مجدداً در هر دستگاه وارد سیستم شوید.";
+"auth_reset_password_error_unauthorized" = "آدرس ایمیل تأیید نشد: مطمئن شوید که روی لینک موجود در ایمیل کلیک کرده اید";
+"auth_reset_password_next_step_button" = "من آدرس ایمیلم را تایید کرده ام";
+"auth_reset_password_email_validation_message" = "یک ایمیل به %@ ارسال شده است. پس از دنبال کردن پیوند موجود در آن، در قسمت پایین کلیک کنید.";
+"auth_reset_password_missing_password" = "رمز جدید را وارد نمایید.";
+"auth_reset_password_missing_email" = "آدرس ایمیل مرتبط با حساب کاربری شما باید وارد شود.";
+"auth_reset_password_message" = "برای بازنشانی رمز عبور، آدرس ایمیل مرتبط با حساب کاربری خود را وارد کنید:";
+"auth_msisdn_validation_error" = "تأیید شماره تلفن امکان پذیر نیست.";
+"auth_msisdn_validation_message" = "ما یک پیامک حاوی کد فعال سازی ارسال کرده ایم. لطفا این کد را در زیر وارد کنید.";
+"auth_msisdn_validation_title" = "تأیید در حال انتظار";
+"auth_email_validation_message" = "لطفا برای ادامه ثبت نام ایمیل خود را بررسی کنید";
+"auth_email_not_found" = "خطا در ارسال ایمیل: آدرس ایمیل مورد نظر یافت نشد";
+"auth_forgot_password" = "فراموشی رمز؟";
+"auth_username_in_use" = "نام کاربری اشتباه است";
+"auth_password_dont_match" = "رمز ورود اشتباه است";
+"auth_phone_in_use" = "این شماره تلفن همراه در حال حاضر موجود است";
+"auth_email_in_use" = "این آدرس ایمیل در حال حاضر موجود است";
+"auth_missing_email_or_phone" = "فراموشی آدرس ایمیل یا شماره تلفن همراه";
+"auth_missing_phone" = "فراموشی تلفن همراه";
+"auth_add_phone_message_2" = "یک شماره تلفن تنظیم نمایید که بعداً برای افرادی که شما را می شناسند به صورت اختیاری قابل شناسایی باشد.";
+"auth_add_email_message_2" = "یک ایمیل برای بازیابی حساب کاربری خود تنظیم کنید که بعداً برای افرادی که شما را می شناسند به صورت اختیاری قابل شناسایی باشد.";
+"auth_missing_email" = "فراموشی آدرس ایمیل";
