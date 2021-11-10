@@ -32,20 +32,14 @@ class ThreadViewController: RoomViewController {
         return UINib(nibName: String(describing: RoomViewController.self), bundle: .main)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.setRoomTitleViewClass(ThreadRoomTitleView.self)
+    override func setRoomTitleViewClass(_ roomTitleViewClass: AnyClass!) {
+        super.setRoomTitleViewClass(ThreadRoomTitleView.self)
         
         guard let threadTitleView = self.titleView as? ThreadRoomTitleView else {
             return
         }
         
         threadTitleView.threadId = threadId
-    }
-    
-    override func setRoomTitleViewClass(_ roomTitleViewClass: AnyClass!) {
-        super.setRoomTitleViewClass(ThreadRoomTitleView.self)
     }
     
 }

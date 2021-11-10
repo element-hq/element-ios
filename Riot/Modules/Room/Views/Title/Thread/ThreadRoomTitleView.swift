@@ -31,7 +31,11 @@ class ThreadRoomTitleView: RoomTitleView {
             update()
         }
     }
-    var threadId: String!
+    var threadId: String! {
+        didSet {
+            updateMode()
+        }
+    }
     
     //  Container views
     @IBOutlet private weak var partialContainerView: UIView!
@@ -47,6 +51,12 @@ class ThreadRoomTitleView: RoomTitleView {
     
     var closeButton: UIButton {
         return fullCloseButton
+    }
+    
+    override var mxRoom: MXRoom! {
+        didSet {
+            updateMode()
+        }
     }
     
     override class func nib() -> UINib! {
@@ -77,7 +87,6 @@ class ThreadRoomTitleView: RoomTitleView {
         super.awakeFromNib()
         
         update(theme: ThemeService.shared().theme)
-        update()
     }
     
     override func didMoveToSuperview() {
@@ -88,6 +97,22 @@ class ThreadRoomTitleView: RoomTitleView {
                 self.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
                 self.trailingAnchor.constraint(equalTo: superview.trailingAnchor)
             ])
+        }
+    }
+    
+    private func updateMode() {
+        //  ensure both mxRoom and threadId are set
+        guard let room = mxRoom,
+              let threadId = threadId else {
+            return
+        }
+        
+        if room.mxSession.threadingService.thread(withId: threadId) == nil {
+            //  thread not created yet
+            mode = .partial
+        } else {
+            //  thread created before
+            mode = .full
         }
     }
     
