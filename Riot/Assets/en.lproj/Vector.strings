@@ -323,7 +323,8 @@ Tap the + to start adding people.";
 "room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Custom";
 
-// Chat
+// MARK: - Chat
+
 "room_slide_to_end_group_call" = "Slide to end the call for everyone";
 "room_jump_to_first_unread" = "Jump to unread";
 "room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
@@ -412,6 +413,9 @@ Tap the + to start adding people.";
 "room_open_dialpad" = "Dial pad";
 "room_join_group_call" = "Join";
 "room_no_privileges_to_create_group_call" = "You need to be an admin or a moderator to start a call.";
+
+//  MARK: Threads
+"room_thread_title" = "Thread";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";

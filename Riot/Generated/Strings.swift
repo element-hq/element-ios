@@ -3531,6 +3531,10 @@ public class VectorL10n: NSObject {
   public static var roomSlideToEndGroupCall: String { 
     return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
   }
+  /// Thread
+  public static var roomThreadTitle: String { 
+    return VectorL10n.tr("Vector", "room_thread_title") 
+  }
   /// Invite members
   public static var roomTitleInviteMembers: String { 
     return VectorL10n.tr("Vector", "room_title_invite_members") 
