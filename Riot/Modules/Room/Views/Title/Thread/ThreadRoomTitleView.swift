@@ -92,6 +92,7 @@ class ThreadRoomTitleView: RoomTitleView {
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
+        //  TODO: Find a way to handle this properly
         if let superview = superview?.superview {
             NSLayoutConstraint.activate([
                 self.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
