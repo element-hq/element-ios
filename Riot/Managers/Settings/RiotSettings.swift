@@ -118,7 +118,7 @@ final class RiotSettings: NSObject {
     var enableRingingForGroupCalls
     
     /// Indicates if threads enabled in the timeline.
-    @UserDefault(key: "enableThreads", defaultValue: true, storage: defaults)
+    @UserDefault(key: "enableThreads", defaultValue: false, storage: defaults)
     var enableThreads
     
     // MARK: Calls
