@@ -93,6 +93,11 @@ const CGFloat kTypingCellHeight = 24;
             
         }];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(newThreadCreated:)
+                                                     name:MXThreadingService.newThreadCreated
+                                                   object:nil];
+        
         [self registerKeyVerificationRequestNotification];
         [self registerKeyVerificationTransactionNotification];
         [self registerTrustLevelDidChangeNotifications];
@@ -1117,6 +1122,13 @@ const CGFloat kTypingCellHeight = 24;
 {
     cell.messageTextView.accessibilityLabel = nil;
     cell.attachmentView.accessibilityLabel = nil;
+}
+
+#pragma mark - Threads
+
+- (void)newThreadCreated:(NSNotification *)notification
+{
+    [self reload];
 }
 
 #pragma mark - BubbleReactionsViewModelDelegate
