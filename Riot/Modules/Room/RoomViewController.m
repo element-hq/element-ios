@@ -6344,9 +6344,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                                                                     threadId:threadId
                                                                                                         displayConfiguration:configuration
                                                                                                                  previewData:nil];
-    RoomCoordinatorBridgePresenter *presenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
-    self.threadBridgePresenter = presenter;
-    [presenter presentFrom:self animated:YES];
+    self.threadBridgePresenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
+    [self.threadBridgePresenter presentFrom:self animated:YES];
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate

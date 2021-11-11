@@ -86,6 +86,22 @@ final class RoomCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         
+        if bridgeParameters.threadId != nil {
+            let coordinator = self.createRoomCoordinator()
+            coordinator.delegate = self
+            coordinator.start()
+            let presentable = coordinator.toPresentable()
+            
+            let presentationController = CustomSizedPresentationController(presentedViewController: presentable,
+                                                                           presenting: viewController)
+            presentationController.dismissOnBackgroundTap = false
+            presentationController.cornerRadius = 12
+            presentable.transitioningDelegate = presentationController
+            viewController.present(presentable, animated: animated, completion: nil)
+            
+            self.coordinator = coordinator
+            return
+        }
         let coordinator = self.createRoomCoordinator()
         coordinator.delegate = self
         let presentable = coordinator.toPresentable()
