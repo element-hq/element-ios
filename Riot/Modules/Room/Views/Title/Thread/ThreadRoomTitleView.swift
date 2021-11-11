@@ -110,6 +110,9 @@ class ThreadRoomTitleView: RoomTitleView {
         if room.mxSession.threadingService.thread(withId: threadId) == nil {
             //  thread not created yet
             mode = .partial
+            //  use full mode for every case for now
+            //  TODO: Fix in future
+            mode = .full
         } else {
             //  thread created before
             mode = .full
