@@ -18,6 +18,13 @@ import Foundation
 
 class ThreadViewController: RoomViewController {
     
+    // MARK: Private
+    
+    private enum Constants {
+        static let sizeOniPad: CGSize = CGSize(width: 375, height: 667)
+        static let additionalTopInset: CGFloat = 20
+    }
+    
     private(set) var threadId: String!
     
     class func instantiate(withThreadId threadId: String,
@@ -40,6 +47,39 @@ class ThreadViewController: RoomViewController {
         }
         
         threadTitleView.threadId = threadId
+    }
+    
+    private func topSafeAreaInset() -> CGFloat {
+        guard let window = UIApplication.shared.keyWindow else {
+            return Constants.additionalTopInset
+        }
+        
+        return window.safeAreaInsets.top + Constants.additionalTopInset
+    }
+    
+}
+
+//  MARK: - CustomSizedPresentable
+
+extension ThreadViewController: CustomSizedPresentable {
+    
+    func customSize(withParentContainerSize containerSize: CGSize) -> CGSize {
+        if UIDevice.current.isPhone {
+            return CGSize(width: containerSize.width,
+                          height: containerSize.height - topSafeAreaInset())
+        }
+        return Constants.sizeOniPad
+    }
+    
+    func position(withParentContainerSize containerSize: CGSize) -> CGPoint {
+        let mySize = customSize(withParentContainerSize: containerSize)
+        
+        if UIDevice.current.isPhone {
+            return CGPoint(x: 0, y: topSafeAreaInset())
+        }
+        
+        return CGPoint(x: (containerSize.width - mySize.width)/2,
+                       y: (containerSize.height - mySize.height)/2)
     }
     
 }
