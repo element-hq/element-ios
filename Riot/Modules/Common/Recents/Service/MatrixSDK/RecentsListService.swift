@@ -20,7 +20,12 @@ import Foundation
 public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private weak var session: MXSession?
-    public private(set) var mode: RecentsDataSourceMode
+    public private(set) var mode: RecentsDataSourceMode {
+        didSet {
+            refresh()
+        }
+    }
+    
     public private(set) var query: String?
     public private(set) var space: MXSpace?
     
