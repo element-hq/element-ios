@@ -1128,7 +1128,15 @@ const CGFloat kTypingCellHeight = 24;
 
 - (void)newThreadCreated:(NSNotification *)notification
 {
-    [self reload];
+    NSUInteger count = 0;
+    @synchronized (bubbles)
+    {
+        count = bubbles.count;
+    }
+    if (count > 0)
+    {
+        [self reload];
+    }
 }
 
 #pragma mark - BubbleReactionsViewModelDelegate
