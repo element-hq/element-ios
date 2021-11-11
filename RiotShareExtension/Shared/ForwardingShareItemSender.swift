@@ -51,7 +51,7 @@ class ForwardingShareItemSender: NSObject, ShareItemSenderProtocol {
             dispatchGroup.enter()
             
             var localEcho: MXEvent?
-            room.sendMessage(withContent: event.content, localEcho: &localEcho) { result in
+            room.sendMessage(withContent: event.content, threadId: nil, localEcho: &localEcho) { result in
                 switch result {
                 case .failure(let innerError):
                     errors.append(innerError)
