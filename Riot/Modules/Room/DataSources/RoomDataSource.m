@@ -23,7 +23,7 @@
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 #import "AvatarGenerator.h"
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "MXRoom+Riot.h"
 

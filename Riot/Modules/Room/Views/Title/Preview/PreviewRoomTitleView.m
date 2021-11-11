@@ -19,7 +19,7 @@
 #import "PreviewRoomTitleView.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "MXRoomSummary+Riot.h"
 

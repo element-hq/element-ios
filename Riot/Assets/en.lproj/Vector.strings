@@ -1786,3 +1786,19 @@ Tap the + to start adding people.";
 "version_check_modal_title_deprecated" = "We’re no longer supporting iOS %@";
 "version_check_modal_subtitle_deprecated" = "We've been working on enhancing %@ for a faster and more polished experience. Unfortunately your current version of iOS is not  compatible with some of those fixes and is no longer supported.\nWe're advising you to upgrade your operating system to use %@ to its full potential.";
 "version_check_modal_action_title_deprecated" = "Find out how";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Create poll";
+
+"poll_edit_form_poll_question_or_topic" = "Poll question or topic";
+
+"poll_edit_form_question_or_topic" = "Question or topic";
+
+"poll_edit_form_input_placeholder" = "Write something";
+
+"poll_edit_form_create_options" = "Create options";
+
+"poll_edit_form_option_number" = "Option %d";
+
+"poll_edit_form_add_option" = "Add option";

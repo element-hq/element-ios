@@ -19,7 +19,7 @@
 
 #import "WidgetManager.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 NSString *const kIntegrationManagerMainScreen = nil;
 NSString *const kIntegrationManagerAddIntegrationScreen = @"add_integ";

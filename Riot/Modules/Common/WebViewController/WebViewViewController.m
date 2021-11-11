@@ -15,7 +15,7 @@
  */
 
 #import "WebViewViewController.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface WebViewViewController ()
 {

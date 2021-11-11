@@ -15,7 +15,7 @@
  */
 
 #import "AuthFallBackViewController.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 // Generic method to make a bridge between JS and the WKWebView
 NSString *FallBackViewControllerJavascriptSendObjectMessage = @"window.sendObjectMessage = function(parameters) {   \

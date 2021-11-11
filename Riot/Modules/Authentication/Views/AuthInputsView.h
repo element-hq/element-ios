@@ -17,7 +17,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface AuthInputsView : MXKAuthInputsView <MXKCountryPickerViewControllerDelegate>
 

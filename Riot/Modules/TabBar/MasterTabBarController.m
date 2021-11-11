@@ -27,7 +27,7 @@
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface MasterTabBarController () <AuthenticationViewControllerDelegate, UITabBarControllerDelegate>
 {

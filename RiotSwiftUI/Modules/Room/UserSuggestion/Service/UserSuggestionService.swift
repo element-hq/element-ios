@@ -61,14 +61,20 @@ class UserSuggestionService: UserSuggestionServiceProtocol {
     
     // MARK: - Setup
     
-    init(roomMemberProvider: RoomMembersProviderProtocol) {
+    init(roomMemberProvider: RoomMembersProviderProtocol, shouldDebounce: Bool = true) {
         self.roomMemberProvider = roomMemberProvider
         
-        currentTextTriggerSubject
-            .debounce(for: 0.5, scheduler: RunLoop.main)
-            .removeDuplicates()
-            .sink { [weak self] in self?.fetchAndFilterMembersForTextTrigger($0) }
-            .store(in: &cancellables)
+        if (shouldDebounce) {
+            currentTextTriggerSubject
+                .debounce(for: 0.5, scheduler: RunLoop.main)
+                .removeDuplicates()
+                .sink { [weak self] in self?.fetchAndFilterMembersForTextTrigger($0) }
+                .store(in: &cancellables)
+        } else {
+            currentTextTriggerSubject
+                .sink { [weak self] in self?.fetchAndFilterMembersForTextTrigger($0) }
+                .store(in: &cancellables)
+        }
     }
     
     // MARK: - UserSuggestionServiceProtocol

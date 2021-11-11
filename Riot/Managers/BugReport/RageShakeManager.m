@@ -23,7 +23,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 static RageShakeManager* sharedInstance = nil;
 

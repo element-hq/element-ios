@@ -27,7 +27,7 @@ class UserSuggestionServiceTests: XCTestCase {
     var service: UserSuggestionService?
     
     override func setUp() {
-        service = UserSuggestionService(roomMembersProvider: self)
+        service = UserSuggestionService(roomMemberProvider: self, shouldDebounce: false)
     }
     
     func testAlice() {
@@ -116,7 +116,7 @@ extension UserSuggestionServiceTests: RoomMembersProviderProtocol {
                      ("Bob", "@bob:matrix.org")]
         
         members(users.map({ user in
-            RoomMembersProviderMember(identifier: user.1, displayName: user.0, avatarURL: "")
+            RoomMembersProviderMember(userId: user.1, displayName: user.0, avatarUrl: "")
         }))
     }
 }

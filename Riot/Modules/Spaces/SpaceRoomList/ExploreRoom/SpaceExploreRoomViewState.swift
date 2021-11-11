@@ -22,7 +22,7 @@ import Foundation
 enum SpaceExploreRoomViewState {
     case loading
     case spaceNameFound(_ spaceName: String)
-    case loaded(_ children: [SpaceExploreRoomListItemViewData])
+    case loaded(_ children: [SpaceExploreRoomListItemViewData], _ hasMore: Bool)
     case emptySpace
     case emptyFilterResult
     case error(Error)

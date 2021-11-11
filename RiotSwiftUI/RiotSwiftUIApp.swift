@@ -21,6 +21,14 @@ import SwiftUI
 struct RiotSwiftUIApp: App {
     init() {
         UILog.configure(logger: PrintLogger.self)
+        
+        switch UITraitCollection.current.userInterfaceStyle {
+        case .dark:
+            ThemePublisher.configure(themeId: .dark)
+        default:
+            ThemePublisher.configure(themeId: .light)
+        }
+        
     }
     var body: some Scene {
         WindowGroup {
