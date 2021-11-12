@@ -381,13 +381,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         }
     }
     
-    private func showRoom(withId roomId: String) {
+    private func showRoom(withId roomId: String, eventId: String? = nil) {
         
         guard let matrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
             return
         }
         
-        self.showRoom(with: roomId, eventId: nil, matrixSession: matrixSession)
+        self.showRoom(with: roomId, eventId: eventId, matrixSession: matrixSession)
     }
     
     private func showRoom(withNavigationParameters roomNavigationParameters: RoomNavigationParameters, completion: (() -> Void)?) {
@@ -596,9 +596,10 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
         self.navigationRouter.popModule(animated: true)
     }
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
-        self.showRoom(withId: roomId)
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        self.showRoom(withId: roomId, eventId: eventId)
     }
+    
 }
 
 // MARK: - UIGestureRecognizerDelegate

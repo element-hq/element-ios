@@ -18,7 +18,9 @@ import Foundation
 @objc protocol RoomCoordinatorBridgePresenterDelegate {
     func roomCoordinatorBridgePresenterDidLeaveRoom(_ bridgePresenter: RoomCoordinatorBridgePresenter)
     func roomCoordinatorBridgePresenterDidCancelRoomPreview(_ bridgePresenter: RoomCoordinatorBridgePresenter)
-    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, didSelectRoomWithId roomId: String)
+    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter,
+                                        didSelectRoomWithId roomId: String,
+                                        eventId: String?)
     func roomCoordinatorBridgePresenterDidDismissInteractively(_ bridgePresenter: RoomCoordinatorBridgePresenter)
 }
 
@@ -158,8 +160,8 @@ final class RoomCoordinatorBridgePresenter: NSObject {
 // MARK: - RoomNotificationSettingsCoordinatorDelegate
 extension RoomCoordinatorBridgePresenter: RoomCoordinatorDelegate {
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
-        self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId)
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId, eventId: eventId)
     }
     
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {

@@ -137,9 +137,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  
  @param roomViewController the `RoomViewController` instance.
  @param roomID the selected roomId
+ @param eventID the selected eventId
  */
 - (void)roomViewController:(RoomViewController *)roomViewController
-            showRoomWithId:(NSString *)roomID;
+            showRoomWithId:(NSString *)roomID
+                   eventId:(nullable NSString *)eventID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.

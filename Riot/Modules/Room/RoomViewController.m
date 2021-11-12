@@ -2192,7 +2192,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     if (self.delegate)
     {
-        [self.delegate roomViewController:self showRoomWithId:roomId];
+        [self.delegate roomViewController:self showRoomWithId:roomId eventId:nil];
     }
     else
     {

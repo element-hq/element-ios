@@ -253,8 +253,8 @@ extension RoomCoordinator: UIAdaptivePresentationControllerDelegate {
 // MARK: - RoomViewControllerDelegate
 extension RoomCoordinator: RoomViewControllerDelegate {
         
-    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String) {
-        self.delegate?.roomCoordinator(self, didSelectRoomWithId: roomID)
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String, eventId eventID: String?) {
+        self.delegate?.roomCoordinator(self, didSelectRoomWithId: roomID, eventId: eventID)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
