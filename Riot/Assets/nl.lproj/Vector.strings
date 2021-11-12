@@ -267,7 +267,7 @@
 "settings_labs" = "EXPERIMENTEEL";
 "settings_devices" = "APPARATEN";
 "settings_cryptography" = "CRYPTOGRAFIE";
-"settings_sign_out" = "Afmelden";
+"settings_sign_out" = "Uitloggen";
 "settings_sign_out_confirmation" = "Weet u het zeker?";
 "settings_sign_out_e2e_warn" = "U zult uw sleutels voor eind-tot-eindversleuteling kwijtraken. Dat betekent dat u op dit apparaat geen oude berichten in versleutelde gesprekken meer zult kunnen lezen.";
 "settings_profile_picture" = "Profielfoto";
@@ -667,13 +667,13 @@
 "key_backup_setup_banner_subtitle" = "Begin sleutelback-up te gebruiken";
 "key_backup_recover_banner_title" = "Verlies nooit uw versleutelde berichten";
 "sign_out_existing_key_backup_alert_title" = "Weet u zeker dat u zich wilt afmelden?";
-"sign_out_existing_key_backup_alert_sign_out_action" = "Afmelden";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Uitloggen";
 "sign_out_non_existing_key_backup_alert_title" = "Als u zich nu afmeldt, zult u de toegang tot uw versleutelde berichten verliezen";
 "sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Begin sleutelback-up te gebruiken";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Ik wil mijn versleutelde berichten niet";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "U zult uw versleutelde berichten verliezen";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "U zult de toegang tot uw versleutelde berichten verliezen, tenzij u een back-up van uw sleutels maakt vooraleer u zich afmeldt.";
-"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Afmelden";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Uitloggen";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Back-up";
 "sign_out_key_backup_in_progress_alert_title" = "Sleutelback-up is bezig. Als u zich nu afmeldt zult u de toegang tot uw versleutelde berichten verliezen.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ik wil mijn versleutelde berichten niet";
@@ -795,7 +795,7 @@
 "auth_softlogout_clear_data_button" = "Alle gegevens wissen";
 "auth_softlogout_clear_data_sign_out_title" = "Weet u het zeker?";
 "auth_softlogout_clear_data_sign_out_msg" = "Weet u zeker dat u alle gegevens die op dit moment op dit apparaat worden opgeslagen wilt wissen? Meld u opnieuw aan om toegang te verkrijgen tot uw accountgegevens en berichten.";
-"auth_softlogout_clear_data_sign_out" = "Afmelden";
+"auth_softlogout_clear_data_sign_out" = "Uitloggen";
 "room_event_action_reaction_show_all" = "Alles tonen";
 "room_event_action_reaction_show_less" = "Minder tonen";
 "room_event_action_reaction_history" = "Reactiegeschiedenis";
