@@ -362,6 +362,7 @@ Tap the + to start adding people.";
 "room_event_action_more" = "More";
 "room_event_action_share" = "Share";
 "room_event_action_forward" = "Forward";
+"room_event_action_view_in_room" = "View in room";
 "room_event_action_permalink" = "Permalink";
 "room_event_action_view_source" = "View Source";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";

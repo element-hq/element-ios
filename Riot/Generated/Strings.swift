@@ -2991,6 +2991,10 @@ public class VectorL10n: NSObject {
   public static var roomEventActionViewEncryption: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_encryption") 
   }
+  /// View in room
+  public static var roomEventActionViewInRoom: String { 
+    return VectorL10n.tr("Vector", "room_event_action_view_in_room") 
+  }
   /// View Source
   public static var roomEventActionViewSource: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_source") 
