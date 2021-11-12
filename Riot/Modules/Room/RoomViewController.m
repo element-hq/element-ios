@@ -140,7 +140,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -6276,6 +6276,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                                                         displayConfiguration:configuration
                                                                                                                  previewData:nil];
     self.threadBridgePresenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
+    self.threadBridgePresenter.delegate = self;
     [self.threadBridgePresenter presentFrom:self animated:YES];
 }
 
@@ -6676,6 +6677,40 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     [self mention:member];
+}
+
+#pragma mark - RoomCoordinatorBridgePresenterDelegate
+
+- (void)roomCoordinatorBridgePresenterDidLeaveRoom:(RoomCoordinatorBridgePresenter *)bridgePresenter
+{
+    
+}
+
+- (void)roomCoordinatorBridgePresenterDidCancelRoomPreview:(RoomCoordinatorBridgePresenter *)bridgePresenter
+{
+    
+}
+
+- (void)roomCoordinatorBridgePresenter:(RoomCoordinatorBridgePresenter *)bridgePresenter
+                   didSelectRoomWithId:(NSString *)roomId
+                               eventId:(NSString*)eventId
+{
+    if (bridgePresenter == self.threadBridgePresenter && [roomId isEqualToString:self.roomDataSource.roomId])
+    {
+        //  thread view wants to highlight an event in the timeline
+        //  dismiss thread view first
+        [self.threadBridgePresenter dismissWithAnimated:YES completion:^{
+            self->customizedRoomDataSource.selectedEventId = eventId;
+        }];
+    }
+}
+
+- (void)roomCoordinatorBridgePresenterDidDismissInteractively:(RoomCoordinatorBridgePresenter *)bridgePresenter
+{
+    if (bridgePresenter == self.threadBridgePresenter)
+    {
+        self.threadBridgePresenter = nil;
+    }
 }
 
 @end
