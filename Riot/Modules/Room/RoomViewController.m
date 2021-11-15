@@ -3935,6 +3935,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     customizedRoomDataSource.showBubbleDateTimeOnSelection = YES;
     customizedRoomDataSource.selectedEventId = nil;
+    customizedRoomDataSource.highlightedEventId = nil;
     
     [self restoreTextMessageBeforeEditing];
     
@@ -4429,6 +4430,25 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if ([MXKRoomViewController instancesRespondToSelector:@selector(scrollViewWillBeginDragging:)])
     {
         [super scrollViewWillBeginDragging:scrollView];
+    }
+    
+    //  if data source is highlighting an event, dismiss the highlight when user dragges the table view
+    if (customizedRoomDataSource.highlightedEventId)
+    {
+        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
+        if (row == NSNotFound)
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            return;
+        }
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+        if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                         withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
     }
 }
 
@@ -6695,12 +6715,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                    didSelectRoomWithId:(NSString *)roomId
                                eventId:(NSString*)eventId
 {
-    if (bridgePresenter == self.threadBridgePresenter && [roomId isEqualToString:self.roomDataSource.roomId])
+    if (bridgePresenter == self.threadBridgePresenter && [roomId isEqualToString:self.roomDataSource.roomId] && eventId)
     {
         //  thread view wants to highlight an event in the timeline
         //  dismiss thread view first
+        MXWeakify(self);
         [self.threadBridgePresenter dismissWithAnimated:YES completion:^{
-            self->customizedRoomDataSource.selectedEventId = eventId;
+            MXStrongifyAndReturnIfNil(self);
+            
+            NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+            if (row == NSNotFound)
+            {
+                return;
+            }
+            
+            self->customizedRoomDataSource.highlightedEventId = eventId;
+            
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+            if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+            {
+                [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                             withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
+            {
+                [self.bubblesTableView scrollToRowAtIndexPath:indexPath
+                                             atScrollPosition:UITableViewScrollPositionMiddle
+                                                     animated:YES];
+            }
         }];
     }
 }
