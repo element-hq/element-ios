@@ -3189,6 +3189,22 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
+    BOOL showThreadOption = RiotSettings.shared.enableThreads
+        && !self.roomDataSource.threadId
+        && !selectedEvent.threadIdentifier;
+    if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
+    {
+        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self cancelEventSelection];
+            
+            [self copyEvent:selectedEvent inCell:cell];
+        }]];
+    }
+    
     // Add actions for a failed event
     if (selectedEvent.sentState == MXEventSentStateFailed)
     {
@@ -5898,14 +5914,18 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
         || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
+    BOOL showThreadOption = RiotSettings.shared.enableThreads && !self.roomDataSource.threadId && !event.threadIdentifier;
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     
-    [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
-    [items addObject:[self replyMenuItemWithEvent:event]];
-    if (RiotSettings.shared.enableThreads && !self.roomDataSource.threadId && !event.threadIdentifier)
+    if (!showThreadOption)
     {
-        //  add "reply in thread" option only if not in thread already
+        [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
+    }
+    [items addObject:[self replyMenuItemWithEvent:event]];
+    if (showThreadOption)
+    {
+        //  add "Thread" option only if not already in a thread
         [items addObject:[self replyInThreadMenuItemWithEvent:event]];
     }
     [items addObject:[self editMenuItemWithEvent:event]];
@@ -6089,19 +6109,32 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (RoomContextualMenuItem *)copyMenuItemWithEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
 {
+    MXWeakify(self);
+    
+    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
+    copyMenuItem.isEnabled = [self canCopyEvent:event andCell:cell];
+    copyMenuItem.action = ^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        [self copyEvent:event inCell:cell];
+    };
+    
+    return copyMenuItem;
+}
+
+- (BOOL)canCopyEvent:(MXEvent*)event andCell:(id<MXKCellRendering>)cell
+{
     MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
     MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
-    MXWeakify(self);
-    
-    BOOL isCopyActionEnabled = !attachment || attachment.type != MXKAttachmentTypeSticker;
+    BOOL result = !attachment || attachment.type != MXKAttachmentTypeSticker;
     
     if (attachment && !BuildSettings.messageDetailsAllowCopyMedia)
     {
-        isCopyActionEnabled = NO;
+        result = NO;
     }
     
-    if (isCopyActionEnabled)
+    if (result)
     {
         switch (event.eventType) {
             case MXEventTypeRoomMessage:
@@ -6110,7 +6143,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
-                    isCopyActionEnabled = NO;
+                    result = NO;
                 }
                 break;
             }
@@ -6120,7 +6153,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             case MXEventTypeKeyVerificationMac:
             case MXEventTypeKeyVerificationDone:
             case MXEventTypeKeyVerificationCancel:
-                isCopyActionEnabled = NO;
+                result = NO;
                 break;
             case MXEventTypeCustom:
                 if ([event.type isEqualToString:kWidgetMatrixEventTypeString]
@@ -6130,7 +6163,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     if ([widget.type isEqualToString:kWidgetTypeJitsiV1] ||
                         [widget.type isEqualToString:kWidgetTypeJitsiV2])
                     {
-                        isCopyActionEnabled = NO;
+                        result = NO;
                     }
                 }
             default:
@@ -6138,60 +6171,60 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
     
-    RoomContextualMenuItem *copyMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionCopy];
-    copyMenuItem.isEnabled = isCopyActionEnabled;
-    copyMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        
-        if (!attachment)
-        {
-            NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
-            MXKRoomBubbleComponent *selectedComponent;
-            for (selectedComponent in components)
-            {
-                if ([selectedComponent.event.eventId isEqualToString:event.eventId])
-                {
-                    break;
-                }
-                selectedComponent = nil;
-            }
-            NSString *textMessage = selectedComponent.textMessage;
-            
-            if (textMessage)
-            {
-                MXKPasteboardManager.shared.pasteboard.string = textMessage;
-            }
-            else
-            {
-                MXLogDebug(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
-            }
-            
-            [self hideContextualMenuAnimated:YES];
-        }
-        else if (attachment.type != MXKAttachmentTypeSticker)
-        {
-            [self hideContextualMenuAnimated:YES completion:^{
-                [self startActivityIndicator];
-                
-                [attachment copy:^{
-                    
-                    [self stopActivityIndicator];
-                    
-                } failure:^(NSError *error) {
-                    
-                    [self stopActivityIndicator];
-                    
-                    //Alert user
-                    [self showError:error];
-                }];
-                
-                // Start animation in case of download during attachment preparing
-                [roomBubbleTableViewCell startProgressUI];
-            }];
-        }
-    };
+    return result;
+}
+
+- (void)copyEvent:(MXEvent*)event inCell:(id<MXKCellRendering>)cell
+{
+    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+    MXKAttachment *attachment = roomBubbleTableViewCell.bubbleData.attachment;
     
-    return copyMenuItem;
+    if (!attachment)
+    {
+        NSArray *components = roomBubbleTableViewCell.bubbleData.bubbleComponents;
+        MXKRoomBubbleComponent *selectedComponent;
+        for (selectedComponent in components)
+        {
+            if ([selectedComponent.event.eventId isEqualToString:event.eventId])
+            {
+                break;
+            }
+            selectedComponent = nil;
+        }
+        NSString *textMessage = selectedComponent.textMessage;
+        
+        if (textMessage)
+        {
+            MXKPasteboardManager.shared.pasteboard.string = textMessage;
+        }
+        else
+        {
+            MXLogDebug(@"[RoomViewController] Contextual menu copy failed. Text is nil for room id/event id: %@/%@", selectedComponent.event.roomId, selectedComponent.event.eventId);
+        }
+        
+        [self hideContextualMenuAnimated:YES];
+    }
+    else if (attachment.type != MXKAttachmentTypeSticker)
+    {
+        [self hideContextualMenuAnimated:YES completion:^{
+            [self startActivityIndicator];
+            
+            [attachment copy:^{
+                
+                [self stopActivityIndicator];
+                
+            } failure:^(NSError *error) {
+                
+                [self stopActivityIndicator];
+                
+                //Alert user
+                [self showError:error];
+            }];
+            
+            // Start animation in case of download during attachment preparing
+            [roomBubbleTableViewCell startProgressUI];
+        }];
+    }
 }
 
 - (RoomContextualMenuItem *)replyMenuItemWithEvent:(MXEvent*)event
