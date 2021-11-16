@@ -337,7 +337,6 @@ class NotificationService: UNNotificationServiceExtension {
                                         self.sendReadReceipt(forEvent: event)
                                         ignoreBadgeUpdate = true
                                     }
-                                    self.sendVoipPush(forEvent: event)
                                     self.validateNotificationContentAndComplete(
                                         notificationTitle: notificationTitle,
                                         notificationBody: notificationBody,
@@ -350,6 +349,7 @@ class NotificationService: UNNotificationServiceExtension {
                                         onComplete: onComplete
                                     )
                                 }
+                                self.sendVoipPush(forEvent: event)
                                 return
                             } else {
                                 MXLog.debug("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
@@ -537,13 +537,13 @@ class NotificationService: UNNotificationServiceExtension {
         var validatedNotificationBody: String? = notificationBody
         var validatedNotificationTitle: String? = notificationTitle
         if self.localAuthenticationService.isProtectionSet {
-            MXLog.debug("[NotificationService] notificationContentForEvent: Resetting title and body because app protection is set")
+            MXLog.debug("[NotificationService] validateNotificationContentAndComplete: Resetting title and body because app protection is set")
             validatedNotificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
             validatedNotificationTitle = nil
         }
         
-        guard notificationBody != nil else {
-            MXLog.debug("[NotificationService] notificationContentForEvent: notificationBody is nil")
+        guard validatedNotificationBody != nil else {
+            MXLog.debug("[NotificationService] validateNotificationContentAndComplete: notificationBody is nil")
             onComplete(nil, false)
             return
         }
@@ -556,7 +556,7 @@ class NotificationService: UNNotificationServiceExtension {
                                                            pushRule: pushRule,
                                                            additionalInfo: additionalUserInfo)
         
-        MXLog.debug("[NotificationService] notificationContentForEvent: Calling onComplete.")
+        MXLog.debug("[NotificationService] validateNotificationContentAndComplete: Calling onComplete.")
         onComplete(notificationContent, ignoreBadgeUpdate)
     }
     
