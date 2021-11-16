@@ -146,17 +146,11 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private let multicastDelegate: MXMulticastDelegate<RecentsListServiceDelegate> = MXMulticastDelegate()
     // swiftlint:enable weak_delegate
     
-    private var sortOptions: MXRoomListDataSortOptions {
-        switch mode {
-        case .home:
-            let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
-            let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
-            return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
-                                             unreadMessagesFirst: pinUnread)
-        default:
-            return MXRoomListDataSortOptions(missedNotificationsFirst: false,
-                                             unreadMessagesFirst: false)
-        }
+    private var sortOptions: MXRoomListDataSortOptions {        
+        let pinMissed = RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome
+        let pinUnread = RiotSettings.shared.pinRoomsWithUnreadMessagesOnHome
+        return MXRoomListDataSortOptions(missedNotificationsFirst: pinMissed,
+                                         unreadMessagesFirst: pinUnread)        
     }
     
     //  MARK: - Public API
