@@ -246,6 +246,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomCoordinatorBridgePresenter *threadBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+@property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsCoordinatorBridgePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -1517,6 +1518,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return item;
 }
 
+- (UIBarButtonItem *)threadListBarButtonItem
+{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_reply_in_thread"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onThreadListTapped:)];
+    item.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
+    
+    return item;
+}
+
 - (void)setupRemoveJitsiWidgetRemoveView
 {
     if (!self.displayConfiguration.jitsiWidgetRemoverEnabled)
@@ -1748,6 +1760,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         
         [self refreshMissedDiscussionsCount:YES];
+        
+        if (RiotSettings.shared.enableThreads)
+        {
+            UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+            [rightBarButtonItems insertObject:itemThreadList atIndex:0];
+        }
     }
     
     self.navigationItem.rightBarButtonItems = rightBarButtonItems;
@@ -4320,6 +4338,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (IBAction)onVideoCallPressed:(id)sender
 {
     [self placeCallWithVideo:YES];
+}
+
+- (IBAction)onThreadListTapped:(id)sender
+{
+    self.threadsCoordinatorBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
+                                                                                                 roomId:self.roomDataSource.roomId];
+    [self.threadsCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
 - (IBAction)onIntegrationsPressed:(id)sender

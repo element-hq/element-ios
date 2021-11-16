@@ -409,6 +409,7 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_video_call" = "Video Call";
+"room_accessibility_threads" = "Threads";
 "room_accessibility_hangup" = "Hang up";
 "room_place_voice_call" = "Voice call";
 "room_open_dialpad" = "Dial pad";
