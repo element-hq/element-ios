@@ -726,20 +726,20 @@ class NotificationService: UNNotificationServiceExtension {
     
     private func sendReadReceipt(forEvent event: MXEvent) {
         guard let mxRestClient = mxRestClient else {
-            MXLog.error("[NotificationService] sendVoipReadReceipt: Missing mxRestClient for read receipt request.")
+            MXLog.error("[NotificationService] sendReadReceipt: Missing mxRestClient for read receipt request.")
             return
         }
         guard let eventId = event.eventId,
               let roomId = event.roomId else {
-            MXLog.error("[NotificationService] sendVoipReadReceipt: Event information missing for read receipt request.")
+            MXLog.error("[NotificationService] sendReadReceipt: Event information missing for read receipt request.")
             return
         }
         
         mxRestClient.sendReadReceipt(toRoom: roomId, forEvent: eventId) { response in
             if response.isSuccess {
-                MXLog.debug("[NotificationService] sendVoipReadReceipt: Read receipt send successfully.")
+                MXLog.debug("[NotificationService] sendReadReceipt: Read receipt send successfully.")
             } else if let error = response.error {
-                MXLog.error("[NotificationService] sendVoipReadReceipt: Read receipt send failed with error \(error).")
+                MXLog.error("[NotificationService] sendReadReceipt: Read receipt send failed with error \(error).")
             }
         }
     }
