@@ -154,9 +154,6 @@ final class BuildSettings: NSObject {
     }
     static let stunServerFallbackUrlString: String? = "stun:turn.matrix.org"
     
-    // For use in conjunction with virtual rooms. Events from virtual rooms should not be reflected in badge count for unread messages.
-    static let ignoreBadgeUpdatesForVirtualRooms = true
-    
     // MARK: -  Public rooms Directory
     #warning("Unused build setting: should this be implemented in ShowDirectory?")
     static let publicRoomsAllowServerChange: Bool = true
