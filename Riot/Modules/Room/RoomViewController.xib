@@ -163,7 +163,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oni-F4-X1U" userLabel="User suggestion container">
                     <rect key="frame" x="0.0" y="626" width="375" height="0.0"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" placeholder="YES" id="1Cd-cT-gOr"/>
                     </constraints>

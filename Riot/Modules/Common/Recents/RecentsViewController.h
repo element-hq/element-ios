@@ -40,7 +40,7 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
     /**
      Current alert (if any).
      */
-    UIAlertController *currentAlert;
+    __weak UIAlertController *currentAlert;
     
     /**
      The list of the section headers currently displayed in the recents table.

@@ -30,7 +30,7 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView)  {
-        let service = UserSuggestionService(roomMembersProvider: self)
+        let service = UserSuggestionService(roomMemberProvider: self)
         let listViewModel = UserSuggestionViewModel.makeUserSuggestionViewModel(userSuggestionService: service)
         
         let viewModel = UserSuggestionListWithInputViewModel(listViewModel: listViewModel) { textMessage in

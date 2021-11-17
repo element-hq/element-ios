@@ -44,7 +44,7 @@ const CGFloat kTypingCellHeight = 24;
 // Timer used to debounce cells refresh
 @property (nonatomic, strong) NSTimer *refreshCellsTimer;
 
-@property (nonatomic, readonly) id<RoomDataSourceDelegate> roomDataSourceDelegate;
+@property (nonatomic, weak, readonly) id<RoomDataSourceDelegate> roomDataSourceDelegate;
 
 @property(nonatomic, readwrite) RoomEncryptionTrustLevel encryptionTrustLevel;
 

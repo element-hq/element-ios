@@ -50,8 +50,8 @@ final class RoomInfoListViewController: UIViewController {
     
     private lazy var basicInfoView: RoomInfoBasicView = {
         let view = RoomInfoBasicView.loadFromNib()
-        view.onTopicSizeChange = { _ in
-            self.view.setNeedsLayout()
+        view.onTopicSizeChange = { [weak self] _ in
+            self?.view.setNeedsLayout()
         }
         return view
     }()

@@ -1016,6 +1016,9 @@ Tap the + to start adding people.";
 // Share extension
 "share_extension_auth_prompt" = "Login in the main app to share content";
 "share_extension_failed_to_encrypt" = "Failed to send. Check in the main app the encryption settings for this room";
+"share_extension_low_quality_video_title" = "Video will be sent in low quality";
+"share_extension_low_quality_video_message" = "Send in %@ for better quality, or send in low quality below.";
+"share_extension_send_now" = "Send now";
 
 // Room key request dialog
 "e2e_room_key_request_title" = "Encryption key request";

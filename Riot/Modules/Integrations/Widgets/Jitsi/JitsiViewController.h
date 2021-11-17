@@ -81,7 +81,7 @@
 /**
  The delegate for the view controller.
  */
-@property (nonatomic) id<JitsiViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<JitsiViewControllerDelegate> delegate;
 
 @end
 
