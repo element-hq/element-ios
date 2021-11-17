@@ -1,1 +1,0 @@
-Ensure alerts with weak references are retained until they've been presented.
