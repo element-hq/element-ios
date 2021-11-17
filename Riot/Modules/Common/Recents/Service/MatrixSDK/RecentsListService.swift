@@ -20,7 +20,12 @@ import Foundation
 public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     private weak var session: MXSession?
-    public private(set) var mode: RecentsDataSourceMode
+    public private(set) var mode: RecentsDataSourceMode {
+        didSet {
+            refresh()
+        }
+    }
+    
     public private(set) var query: String?
     public private(set) var space: MXSpace?
     
@@ -427,7 +432,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     private func updateDirectFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
         switch mode {
         case .home:
-            fetcher.fetchOptions.filterOptions.notDataTypes = [.invited, .lowPriority]
+            fetcher.fetchOptions.filterOptions.notDataTypes = [.invited, .favorited, .lowPriority]
         case .people:
             fetcher.fetchOptions.filterOptions.notDataTypes = [.lowPriority]
         default:

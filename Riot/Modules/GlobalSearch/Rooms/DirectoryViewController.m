@@ -190,7 +190,7 @@
     MXPublicRoom *publicRoom = [dataSource roomAtIndexPath:indexPath];
 
     // Check whether the user has already joined the selected public room
-    if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    if ([dataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
     {
         // Open the public room.
         [self showRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];

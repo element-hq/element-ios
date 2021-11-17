@@ -1098,16 +1098,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (self.roomDataSource)
         {
-            // Restore tool bar view and room activities view if none
-            if (!self.inputToolbarView)
-            {
-                [self updateRoomInputToolbarViewClassIfNeeded];
-                
-                [self refreshRoomInputToolbar];
-                
-                self.inputToolbarView.hidden = (self.roomDataSource.state != MXKDataSourceStateReady);
-            }
+            // Update the input toolbar class and update the layout
+            [self updateRoomInputToolbarViewClassIfNeeded];
             
+            self.inputToolbarView.hidden = (self.roomDataSource.state != MXKDataSourceStateReady);
+            
+            // Restore room activities view if none
             if (!self.activitiesView)
             {
                 // And the extra area
@@ -1192,6 +1188,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         
         [self updateInputToolBarViewHeight];
+        [self refreshRoomInputToolbar];
     }
 }
 
@@ -2077,20 +2074,22 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                   [VectorL10n widgetStickerPickerNoStickerpacksAlert],
                                   [VectorL10n widgetStickerPickerNoStickerpacksAlertAddNow]];
                                    
-        currentAlert = [UIAlertController alertControllerWithTitle:nil message:alertMessage preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *installPrompt = [UIAlertController alertControllerWithTitle:nil
+                                                                               message:alertMessage
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * action)
+        [installPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:^(UIAlertAction * action)
                                  {
             MXStrongifyAndReturnIfNil(self);
             self->currentAlert = nil;
             
         }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action)
+        [installPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action)
                                  {
             MXStrongifyAndReturnIfNil(self);
             self->currentAlert = nil;
@@ -2105,8 +2104,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self presentViewController:modularVC animated:NO completion:nil];
         }]];
         
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+        [installPrompt mxk_setAccessibilityIdentifier:@"RoomVCStickerPickerAlert"];
+        [self presentViewController:installPrompt animated:YES completion:nil];
+        currentAlert = installPrompt;
     }
 }
 
@@ -3160,14 +3160,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     MXWeakify(self);
-    currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *actionsMenu = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     // Add actions for a failed event
     if (selectedEvent.sentState == MXEventSentStateFailed)
     {
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n retry]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
             MXStrongifyAndReturnIfNil(self);
             
             [self cancelEventSelection];
@@ -3176,9 +3176,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self.roomDataSource resendEventWithEventId:selectedEvent.eventId success:nil failure:nil];
         }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionDelete]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionDelete]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
             MXStrongifyAndReturnIfNil(self);
             
             [self cancelEventSelection];
@@ -3208,9 +3208,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             selectedEvent.sentState == MXEventSentStateEncrypting ||
             selectedEvent.sentState == MXEventSentStateSending)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 self->currentAlert = nil;
@@ -3224,9 +3224,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         
         if (selectedEvent.sentState == MXEventSentStateSent) {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
@@ -3234,9 +3234,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (!isJitsiCallEvent)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3251,9 +3251,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (!isJitsiCallEvent && BuildSettings.messageDetailsAllowShare)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3280,9 +3280,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                 attachment.type == MXKAttachmentTypeImage ||
                                                                 attachment.type == MXKAttachmentTypeVideo ||
                                                                 attachment.type == MXKAttachmentTypeVoiceMessage)) {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
@@ -3292,9 +3292,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (attachment.type == MXKAttachmentTypeImage || attachment.type == MXKAttachmentTypeVideo)
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionSave]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionSave]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
@@ -3329,9 +3329,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             NSString *uploadId = roomBubbleTableViewCell.bubbleData.attachment.contentURL;
             if ([MXMediaManager existingUploaderWithId:uploadId])
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelSend]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
                     
                     MXStrongifyAndReturnIfNil(self);
                     
@@ -3363,9 +3363,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (BuildSettings.messageDetailsAllowShare)
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionShare]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
@@ -3410,9 +3410,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             NSString *downloadId = roomBubbleTableViewCell.bubbleData.attachment.downloadId;
             if ([MXMediaManager existingDownloaderWithIdentifier:downloadId])
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelDownload]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCancelDownload]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
@@ -3433,9 +3433,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // because it breaks everything
         if (selectedEvent.eventType != MXEventTypeRoomEncryption)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionRedact]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionRedact]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3459,9 +3459,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (BuildSettings.messageDetailsAllowPermalink)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3483,9 +3483,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         // Add reaction history if event contains reactions
         if (roomBubbleTableViewCell.bubbleData.reactions[selectedEvent.eventId].aggregatedReactionsWithNonZeroCount)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReactionHistory]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReactionHistory]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3497,9 +3497,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (BuildSettings.messageDetailsAllowViewSource)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewSource]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewSource]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
@@ -3512,9 +3512,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             // Add "View Decrypted Source" for e2ee event we can decrypt
             if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
             {
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewDecryptedSource]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewDecryptedSource]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     [self cancelEventSelection];
@@ -3527,24 +3527,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (![selectedEvent.sender isEqualToString:self.mainSession.myUser.userId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
         {
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReport]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReport]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [self cancelEventSelection];
                 
                 // Prompt user to enter a description of the problem content.
-                self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptReason]  message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *reportReasonAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptReason]
+                                                                                           message:nil
+                                                                                    preferredStyle:UIAlertControllerStyleAlert];
                 
-                [self->currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+                [reportReasonAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
                     textField.secureTextEntry = NO;
                     textField.placeholder = nil;
                     textField.keyboardType = UIKeyboardTypeDefault;
                 }];
                 
                 MXWeakify(self);
-                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     
                     NSString *text = [self->currentAlert textFields].firstObject.text;
@@ -3559,10 +3561,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                         [self stopActivityIndicator];
                         
                         // Prompt user to ignore content from this user
-                        self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptIgnoreUser]  message:nil preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertController *ignoreUserAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionReportPromptIgnoreUser]
+                                                                                                 message:nil
+                                                                                          preferredStyle:UIAlertControllerStyleAlert];
                         
                         MXWeakify(self);
-                        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                        [ignoreUserAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                             
                             MXStrongifyAndReturnIfNil(self);
                             self->currentAlert = nil;
@@ -3584,12 +3588,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                             }];
                         }]];
                         
-                        [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                        [ignoreUserAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                             MXStrongifyAndReturnIfNil(self);
                             self->currentAlert = nil;
                         }]];
                         
-                        [self presentViewController:self->currentAlert animated:YES completion:nil];
+                        [self presentViewController:ignoreUserAlert animated:YES completion:nil];
+                        self->currentAlert = ignoreUserAlert;
                         
                     } failure:^(NSError *error) {
                         MXStrongifyAndReturnIfNil(self);
@@ -3602,12 +3607,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     }];
                 }]];
                 
-                [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                [reportReasonAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
                     MXStrongifyAndReturnIfNil(self);
                     self->currentAlert = nil;
                 }]];
                 
-                [self presentViewController:self->currentAlert animated:YES completion:nil];
+                [self presentViewController:reportReasonAlert animated:YES completion:nil];
+                self->currentAlert = reportReasonAlert;
             }]];
         }
         
@@ -3626,29 +3632,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
     }
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
+        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         
         [self hideContextualMenuAnimated:YES];
     }]];
     
     // Do not display empty action sheet
-    if (currentAlert.actions.count > 1)
+    if (actionsMenu.actions.count > 1)
     {
         NSInteger bubbleComponentIndex = [roomBubbleTableViewCell.bubbleData bubbleComponentIndexForEventId:selectedEvent.eventId];
         
         CGRect sourceRect = [roomBubbleTableViewCell componentFrameInContentViewForIndex:bubbleComponentIndex];
         
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCEventMenuAlert"];
-        [currentAlert popoverPresentationController].sourceView = roomBubbleTableViewCell;
-        [currentAlert popoverPresentationController].sourceRect = sourceRect;
-        [self presentViewController:currentAlert animated:animated completion:nil];
-    }
-    else
-    {
-        currentAlert = nil;
+        [actionsMenu mxk_setAccessibilityIdentifier:@"RoomVCEventMenuAlert"];
+        [actionsMenu popoverPresentationController].sourceView = roomBubbleTableViewCell;
+        [actionsMenu popoverPresentationController].sourceRect = sourceRect;
+        [self presentViewController:actionsMenu animated:animated completion:nil];
+        currentAlert = actionsMenu;
     }
 }
 
@@ -4040,14 +4043,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)showVoiceCallActionSheet
 {
     // Ask the user the kind of the call: voice or dialpad?
-    currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                       message:nil
-                                                preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *callActionSheet = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
     
     __weak typeof(self) weakSelf = self;
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomPlaceVoiceCall]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
+    [callActionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomPlaceVoiceCall]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
         
         if (weakSelf)
         {
@@ -4059,9 +4062,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomOpenDialpad]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
+    [callActionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomOpenDialpad]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
         
         if (weakSelf)
         {
@@ -4073,9 +4076,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
+    [callActionSheet addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
         
         if (weakSelf)
         {
@@ -4085,9 +4088,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert popoverPresentationController].barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
-    [currentAlert popoverPresentationController].permittedArrowDirections = UIPopoverArrowDirectionUp;
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [callActionSheet popoverPresentationController].barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
+    [callActionSheet popoverPresentationController].permittedArrowDirections = UIPopoverArrowDirectionUp;
+    [self presentViewController:callActionSheet animated:YES completion:nil];
+    currentAlert = callActionSheet;
 }
 
 - (void)placeCallWithVideo2:(BOOL)video
@@ -4139,20 +4143,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 MXWeakify(self);
                 [currentAlert dismissViewControllerAnimated:NO completion:nil];
                 
-                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomNoPrivilegesToCreateGroupCall]
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *unprivilegedAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomNoPrivilegesToCreateGroupCall]
+                                                                                           message:nil
+                                                                                    preferredStyle:UIAlertControllerStyleAlert];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action)
+                [unprivilegedAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                                                                      style:UIAlertActionStyleDefault
+                                                                    handler:^(UIAlertAction * action)
                                          {
                     MXStrongifyAndReturnIfNil(self);
                     self->currentAlert = nil;
                 }]];
                 
-                [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
-                [self presentViewController:currentAlert animated:YES completion:nil];
+                [unprivilegedAlert mxk_setAccessibilityIdentifier:@"RoomVCCallAlert"];
+                [self presentViewController:unprivilegedAlert animated:YES completion:nil];
+                currentAlert = unprivilegedAlert;
             }
         }
     }
@@ -5080,6 +5085,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [VectorL10n roomUnsentMessagesUnknownDevicesNotification] :
             [VectorL10n roomUnsentMessagesNotification];
             
+            MXWeakify(self);
             RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
             self.activitiesViewExpanded = YES;
             [roomActivitiesView displayUnsentMessagesNotification:notification withResendLink:^{
@@ -5091,57 +5097,53 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [self cancelAllUnsentMessages];
                 
             } andIconTapGesture:^{
+                MXStrongifyAndReturnIfNil(self);
                 
-                if (currentAlert)
+                if (self->currentAlert)
                 {
-                    [currentAlert dismissViewControllerAnimated:NO completion:nil];
+                    [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                 }
                 
-                __weak __typeof(self) weakSelf = self;
-                currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+                MXWeakify(self);
+                UIAlertController *resendAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomResendUnsentMessages]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [resendAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomResendUnsentMessages]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
                     
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        [self resendAllUnsentMessages];
-                        self->currentAlert = nil;
-                    }
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    [self resendAllUnsentMessages];
+                    self->currentAlert = nil;
                     
                 }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDeleteUnsentMessages]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [resendAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDeleteUnsentMessages]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
                     
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        [self cancelAllUnsentMessages];
-                        self->currentAlert = nil;
-                    }
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    [self cancelAllUnsentMessages];
+                    self->currentAlert = nil;
                     
                 }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                                 style:UIAlertActionStyleCancel
-                                                               handler:^(UIAlertAction * action) {
+                [resendAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                                style:UIAlertActionStyleCancel
+                                                              handler:^(UIAlertAction * action) {
                     
-                    if (weakSelf)
-                    {
-                        typeof(self) self = weakSelf;
-                        self->currentAlert = nil;
-                    }
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    self->currentAlert = nil;
                     
                 }]];
                 
-                [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnsentMessagesMenuAlert"];
-                [currentAlert popoverPresentationController].sourceView = roomActivitiesView;
-                [currentAlert popoverPresentationController].sourceRect = roomActivitiesView.bounds;
-                [self presentViewController:currentAlert animated:YES completion:nil];
+                [resendAlert mxk_setAccessibilityIdentifier:@"RoomVCUnsentMessagesMenuAlert"];
+                [resendAlert popoverPresentationController].sourceView = roomActivitiesView;
+                [resendAlert popoverPresentationController].sourceRect = roomActivitiesView.bounds;
+                [self presentViewController:resendAlert animated:YES completion:nil];
+                self->currentAlert = resendAlert;
                 
             }];
         }
@@ -5181,13 +5183,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n unknownDevicesAlertTitle]
-                                                           message:[VectorL10n unknownDevicesAlert]
-                                                    preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *unknownDevicesAlert = [UIAlertController alertControllerWithTitle:[VectorL10n unknownDevicesAlertTitle]
+                                                                                     message:[VectorL10n unknownDevicesAlert]
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesVerify]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [unknownDevicesAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesVerify]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
             
             if (weakSelf)
             {
@@ -5199,9 +5201,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
         }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesSendAnyway]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [unknownDevicesAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n unknownDevicesSendAnyway]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
             
             if (weakSelf)
             {
@@ -5222,8 +5224,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             
         }]];
         
-        [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+        [unknownDevicesAlert mxk_setAccessibilityIdentifier:@"RoomVCUnknownDevicesAlert"];
+        [self presentViewController:unknownDevicesAlert animated:YES completion:nil];
+        currentAlert = unknownDevicesAlert;
     }
 }
 
@@ -5285,15 +5288,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)cancelAllUnsentMessages
 {
-    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomUnsentMessagesCancelTitle] message:[VectorL10n roomUnsentMessagesCancelMessage] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *cancelAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomUnsentMessagesCancelTitle]
+                                                                         message:[VectorL10n roomUnsentMessagesCancelMessage]
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
     
     MXWeakify(self);
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+    [cancelAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+    [cancelAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         // Remove unsent event ids
         for (NSUInteger index = 0; index < self.roomDataSource.room.outgoingMessages.count;)
@@ -5310,9 +5315,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }
         
         [self refreshActivitiesViewDisplay];
+        self->currentAlert = nil;
     }]];
     
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [self presentViewController:cancelAlert animated:YES completion:nil];
+    currentAlert = cancelAlert;
 }
 
 # pragma mark - Encryption Information view
@@ -5541,11 +5548,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Invite ?
     NSString *promptMsg = [VectorL10n roomParticipantsInvitePromptMsg:contact.displayName];
-    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsInvitePromptTitle]
-                                                       message:promptMsg
-                                                preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *invitePrompt = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsInvitePromptTitle]
+                                                                         message:promptMsg
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+    [invitePrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                      style:UIAlertActionStyleCancel
                                                    handler:^(UIAlertAction * action) {
         
@@ -5557,7 +5564,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n invite]
+    [invitePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n invite]
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
         
@@ -5652,8 +5659,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
     }]];
     
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomVCInviteAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [invitePrompt mxk_setAccessibilityIdentifier:@"RoomVCInviteAlert"];
+    [self presentViewController:invitePrompt animated:YES completion:nil];
+    currentAlert = invitePrompt;
 }
 
 #pragma mark - Re-request encryption keys
@@ -5697,8 +5705,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     alert = [UIAlertController alertControllerWithTitle:VectorL10n.rerequestKeysAlertTitle
                                                 message:[VectorL10n e2eRoomKeyRequestMessage:AppInfo.current.displayName]
                                          preferredStyle:UIAlertControllerStyleAlert];
-    currentAlert = alert;
-    
     
     [alert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                               style:UIAlertActionStyleDefault
@@ -5712,7 +5718,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self->currentAlert = nil;
     }]];
     
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [self presentViewController:alert animated:YES completion:nil];
+    currentAlert = alert;
 }
 
 - (void)presentReviewUnverifiedSessionsAlert
@@ -5986,18 +5993,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:^{
             MXStrongifyAndReturnIfNil(self);
             
-            self->currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionDeleteConfirmationTitle]
-                                                                     message:[VectorL10n roomEventActionDeleteConfirmationMessage]
-                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *deleteConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n roomEventActionDeleteConfirmationTitle]
+                                                                                        message:[VectorL10n roomEventActionDeleteConfirmationMessage]
+                                                                                 preferredStyle:UIAlertControllerStyleAlert];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
             }]];
             
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+            [deleteConfirmation addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n delete] style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
                 [self.roomDataSource removeEventWithEventId:event.eventId];
             }]];
             
-            [self presentViewController:self->currentAlert animated:YES completion:nil];
+            [self presentViewController:deleteConfirmation animated:YES completion:nil];
+            self->currentAlert = deleteConfirmation;
         }];
     };
     

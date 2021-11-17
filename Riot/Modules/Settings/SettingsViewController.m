@@ -541,13 +541,8 @@ TableViewSectionsDelegate>
     sectionAbout.headerTitle = VectorL10n.settingsAbout;
 
     if (BuildSettings.settingsScreenShowAdvancedSettings)
-    {
-        sectionAbout.footerTitle = [NSString stringWithFormat:@"Element %@ (%@) / Olm %@\n%@\n%@",
-                                    AppInfo.current.appVersion.bundleShortVersion,
-                                    AppInfo.current.appVersion.bundleVersion,
-                                    [OLMKit versionString],
-                                    [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId],
-                                    [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer]];
+    {        
+        sectionAbout.footerTitle = [self buildAboutSectionFooterTitleWithAccount:account];
     }
     
     [tmpSections addObject:sectionAbout];
@@ -991,9 +986,11 @@ TableViewSectionsDelegate>
 {
     MXWeakify(self);
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountEmailValidationTitle] message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *validationAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountEmailValidationTitle]
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [validationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
         [self stopActivityIndicator];
@@ -1002,14 +999,15 @@ TableViewSectionsDelegate>
         self.newEmailEditingEnabled = NO;
     }]];
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [validationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n continue] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         [self tryFinaliseAddEmailSession:threePidAddSession withAuthenticationParameters:authenticationParameters
                       threePidAddManager:threePidAddManager];
     }]];
 
-    [currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCEmailValidationAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [validationAlert mxk_setAccessibilityIdentifier:@"SettingsVCEmailValidationAlert"];
+    [self presentViewController:validationAlert animated:YES completion:nil];
+    currentAlert = validationAlert;
 }
 
 - (void)tryFinaliseAddEmailSession:(MX3PidAddSession*)threePidAddSession withAuthenticationParameters:(NSDictionary*)authParams threePidAddManager:(MX3PidAddManager*)threePidAddManager
@@ -1049,11 +1047,13 @@ TableViewSectionsDelegate>
             MXLogDebug(@"[SettingsViewController] tryFinaliseAddEmailSession: Wrong credentials");
 
             // Ask password again
-            self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                     message:[VectorL10n settingsAdd3pidInvalidPasswordMessage]
-                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *passwordPrompt = [UIAlertController alertControllerWithTitle:nil
+                                                                                    message:[VectorL10n settingsAdd3pidInvalidPasswordMessage]
+                                                                             preferredStyle:UIAlertControllerStyleAlert];
 
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            MXWeakify(self);
+            [passwordPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n retry] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
                 self->currentAlert = nil;
                 
                 [self showAuthenticationIfNeededForAdding:kMX3PIDMediumEmail withSession:self.mainSession completion:^(NSDictionary *authParams) {
@@ -1061,7 +1061,8 @@ TableViewSectionsDelegate>
                 }];
             }]];
 
-            [self presentViewController:self->currentAlert animated:YES completion:nil];
+            [self presentViewController:passwordPrompt animated:YES completion:nil];
+            self->currentAlert = passwordPrompt;
 
             return;
         }
@@ -1102,9 +1103,11 @@ TableViewSectionsDelegate>
     MXWeakify(self);
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountMsisdnValidationTitle] message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *validationAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountMsisdnValidationTitle]
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [validationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
 
         self->currentAlert = nil;
@@ -1115,13 +1118,13 @@ TableViewSectionsDelegate>
         self.newPhoneEditingEnabled = NO;
     }]];
 
-    [currentAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+    [validationAlert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
         textField.secureTextEntry = NO;
         textField.placeholder = nil;
         textField.keyboardType = UIKeyboardTypeDecimalPad;
     }];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+    [validationAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n submit] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
 
         MXStrongifyAndReturnIfNil(self);
 
@@ -1140,8 +1143,9 @@ TableViewSectionsDelegate>
         }
     }]];
     
-    [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCMsisdnValidationAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [validationAlert mxk_setAccessibilityIdentifier: @"SettingsVCMsisdnValidationAlert"];
+    [self presentViewController:validationAlert animated:YES completion:nil];
+    currentAlert = validationAlert;
 }
 
 - (void)finaliseAddPhoneNumberSession:(MX3PidAddSession*)threePidAddSession withToken:(NSString*)token andAuthenticationParameters:(NSDictionary*)authParams message:(NSString*)message threePidAddManager:(MX3PidAddManager*)threePidAddManager
@@ -1180,11 +1184,13 @@ TableViewSectionsDelegate>
             MXLogDebug(@"[SettingsViewController] finaliseAddPhoneNumberSession: Wrong authentication credentials");
 
             // Ask password again
-            self->currentAlert = [UIAlertController alertControllerWithTitle:nil
-                                                                     message:[VectorL10n settingsAdd3pidInvalidPasswordMessage]
-                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *passwordPrompt = [UIAlertController alertControllerWithTitle:nil
+                                                                                    message:[VectorL10n settingsAdd3pidInvalidPasswordMessage]
+                                                                             preferredStyle:UIAlertControllerStyleAlert];
 
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n retry] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            MXWeakify(self);
+            [passwordPrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n retry] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
                 self->currentAlert = nil;
                 
                 [self showAuthenticationIfNeededForAdding:kMX3PIDMediumMSISDN withSession:self.mainSession completion:^(NSDictionary *authParams) {
@@ -1192,7 +1198,8 @@ TableViewSectionsDelegate>
                 }];
             }]];
 
-            [self presentViewController:self->currentAlert animated:YES completion:nil];
+            [self presentViewController:passwordPrompt animated:YES completion:nil];
+            self->currentAlert = passwordPrompt;
 
             return;
         }
@@ -1232,17 +1239,20 @@ TableViewSectionsDelegate>
             }
 
 
-            self->currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
 
-            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            MXWeakify(self);
+            [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok] style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
                 self->currentAlert = nil;
 
                 // Ask again the sms token
                 [self showValidationMsisdnDialogWithMessage:message for3PidAddSession:threePidAddSession threePidAddManager:threePidAddManager authenticationParameters:authParams];
             }]];
 
-            [self->currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCErrorAlert"];
-            [self presentViewController:self->currentAlert animated:YES completion:nil];
+            [errorAlert mxk_setAccessibilityIdentifier: @"SettingsVCErrorAlert"];
+            [self presentViewController:errorAlert animated:YES completion:nil];
+            self->currentAlert = errorAlert;
         }
     }];
 }
@@ -1408,6 +1418,35 @@ TableViewSectionsDelegate>
     {
         [self.tableView scrollToRowAtIndexPath:discoveryIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
+}
+
+- (NSString*)buildAboutSectionFooterTitleWithAccount:(MXKAccount*)account
+{    
+    NSMutableString *footerText = [NSMutableString new];
+    
+    AppInfo *appInfo = AppInfo.current;
+    
+    NSString *appName = appInfo.displayName;
+    NSString *appVersion = appInfo.appVersion.bundleShortVersion;
+    NSString *buildVersion = appInfo.appVersion.bundleVersion;
+    
+    NSString *appVersionInfo = [NSString stringWithFormat:@"%@ %@ (%@)", appName, appVersion, buildVersion];
+ 
+    NSString *loggedUserInfo = [MatrixKitL10n settingsConfigUserId:account.mxCredentials.userId];
+    
+    NSString *homeserverInfo = [MatrixKitL10n settingsConfigHomeServer:account.mxCredentials.homeServer];       
+    
+    NSString *sdkVersionInfo = [NSString stringWithFormat:@"Matrix SDK %@", MatrixSDKVersion];
+    
+    NSString *olmVersionInfo = [NSString stringWithFormat:@"OLM %@", [OLMKit versionString]];    
+    
+    [footerText appendFormat:@"%@\n", loggedUserInfo];
+    [footerText appendFormat:@"%@\n", homeserverInfo];
+    [footerText appendFormat:@"%@\n", appVersionInfo];
+    [footerText appendFormat:@"%@\n", sdkVersionInfo];
+    [footerText appendFormat:@"%@", olmVersionInfo];
+    
+    return [footerText copy];
 }
 
 #pragma mark - 3Pid Add
@@ -2606,11 +2645,11 @@ TableViewSectionsDelegate>
 
                 __weak typeof(self) weakSelf = self;
                 
-                currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n settingsUnignoreUser:ignoredUserId] message:nil preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController *unignorePrompt = [UIAlertController alertControllerWithTitle:[VectorL10n settingsUnignoreUser:ignoredUserId] message:nil preferredStyle:UIAlertControllerStyleAlert];
 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [unignorePrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {
                                                                    
                                                                    if (weakSelf)
                                                                    {
@@ -2639,9 +2678,9 @@ TableViewSectionsDelegate>
                                                                    
                                                                }]];
                 
-                [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
-                                                                 style:UIAlertActionStyleDefault
-                                                               handler:^(UIAlertAction * action) {
+                [unignorePrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {
                                                                    
                                                                    if (weakSelf)
                                                                    {
@@ -2651,8 +2690,9 @@ TableViewSectionsDelegate>
                                                                    
                                                                }]];
                 
-                [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCUnignoreAlert"];
-                [self presentViewController:currentAlert animated:YES completion:nil];
+                [unignorePrompt mxk_setAccessibilityIdentifier: @"SettingsVCUnignoreAlert"];
+                [self presentViewController:unignorePrompt animated:YES completion:nil];
+                currentAlert = unignorePrompt;
             }
         }
         else if (section == SECTION_TAG_ABOUT)
@@ -2838,9 +2878,9 @@ TableViewSectionsDelegate>
             }
             
             // Remove ?
-            currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n settingsRemovePromptTitle] message:promptMsg preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *removePrompt = [UIAlertController alertControllerWithTitle:[VectorL10n settingsRemovePromptTitle] message:promptMsg preferredStyle:UIAlertControllerStyleAlert];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+            [removePrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -2852,7 +2892,7 @@ TableViewSectionsDelegate>
                                                                
                                                            }]];
             
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
+            [removePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n remove]
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action) {
                                                                
@@ -2892,8 +2932,9 @@ TableViewSectionsDelegate>
                                                                
                                                            }]];
             
-            [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCRemove3PIDAlert"];
-            [self presentViewController:currentAlert animated:YES completion:nil];
+            [removePrompt mxk_setAccessibilityIdentifier: @"SettingsVCRemove3PIDAlert"];
+            [self presentViewController:removePrompt animated:YES completion:nil];
+            currentAlert = removePrompt;
         }
     }
 }
@@ -2915,9 +2956,9 @@ TableViewSectionsDelegate>
         NSString *title = [VectorL10n settingsNotificationsDisabledAlertTitle];
         NSString *message = [VectorL10n settingsNotificationsDisabledAlertMessage];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *showSettingsPrompt = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+        [showSettingsPrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
                                                          style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction * action) {
                                                            
@@ -2941,13 +2982,14 @@ TableViewSectionsDelegate>
                                                             }
                                                         }];
         
-        [currentAlert addAction:settingsAction];
-        currentAlert.preferredAction = settingsAction;
+        [showSettingsPrompt addAction:settingsAction];
+        showSettingsPrompt.preferredAction = settingsAction;
         
-        [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCPushNotificationsAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+        [showSettingsPrompt mxk_setAccessibilityIdentifier: @"SettingsVCPushNotificationsAlert"];
+        [self presentViewController:showSettingsPrompt animated:YES completion:nil];
+        currentAlert = showSettingsPrompt;
         
-        // Keep off the switch
+        // Keep the the switch off.
         sender.on = NO;
     }
     else if ([MXKAccountManager sharedManager].activeAccounts.count)
@@ -3336,11 +3378,11 @@ TableViewSectionsDelegate>
         
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * action) {
                                                            
                                                            if (weakSelf)
                                                            {
@@ -3361,9 +3403,9 @@ TableViewSectionsDelegate>
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n retry]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n retry]
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * action) {
                                                            
                                                            if (weakSelf)
                                                            {
@@ -3377,8 +3419,9 @@ TableViewSectionsDelegate>
                                                            
                                                        }]];
         
-        [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCSaveChangesFailedAlert"];
-        [rootViewController presentViewController:currentAlert animated:YES completion:nil];
+        [errorAlert mxk_setAccessibilityIdentifier: @"SettingsVCSaveChangesFailedAlert"];
+        [rootViewController presentViewController:errorAlert animated:YES completion:nil];
+        currentAlert = errorAlert;
     }
 }
 
@@ -3399,13 +3442,13 @@ TableViewSectionsDelegate>
         
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         
-        currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountErrorEmailWrongTitle]
-                                                           message:[MatrixKitL10n accountErrorEmailWrongDescription]
-                                                    preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountErrorEmailWrongTitle]
+                                                                            message:[MatrixKitL10n accountErrorEmailWrongDescription]
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction * action) {
                                                            
                                                            if (weakSelf)
                                                            {
@@ -3416,8 +3459,9 @@ TableViewSectionsDelegate>
                                                            
                                                        }]];
         
-        [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCAddEmailAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+        [errorAlert mxk_setAccessibilityIdentifier: @"SettingsVCAddEmailAlert"];
+        [self presentViewController:errorAlert animated:YES completion:nil];
+        currentAlert = errorAlert;
 
         return;
     }
@@ -3509,11 +3553,11 @@ TableViewSectionsDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         __weak typeof(self) weakSelf = self;
 
-        currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountErrorMsisdnWrongTitle]
-                                                           message:[MatrixKitL10n accountErrorMsisdnWrongDescription]
-                                                    preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n accountErrorMsisdnWrongTitle]
+                                                                            message:[MatrixKitL10n accountErrorMsisdnWrongDescription]
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
 
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+        [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
 
@@ -3525,8 +3569,9 @@ TableViewSectionsDelegate>
 
                                                        }]];
 
-        [currentAlert mxk_setAccessibilityIdentifier: @"SettingsVCAddMsisdnAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+        [errorAlert mxk_setAccessibilityIdentifier: @"SettingsVCAddMsisdnAlert"];
+        [self presentViewController:errorAlert animated:YES completion:nil];
+        currentAlert = errorAlert;
 
         return;
     }
@@ -3882,9 +3927,9 @@ TableViewSectionsDelegate>
                         {
                             [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                             
-                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsPasswordUpdated] preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertController *successAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsPasswordUpdated] preferredStyle:UIAlertControllerStyleAlert];
                             
-                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                            [successAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                              style:UIAlertActionStyleDefault
                                                                            handler:^(UIAlertAction * action) {
                                                                                
@@ -3904,8 +3949,9 @@ TableViewSectionsDelegate>
                                                                                
                                                                            }]];
                             
-                            [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCOnPasswordUpdatedAlert"];
-                            [self presentViewController:self->currentAlert animated:YES completion:nil];
+                            [successAlert mxk_setAccessibilityIdentifier:@"SettingsVCOnPasswordUpdatedAlert"];
+                            [self presentViewController:successAlert animated:YES completion:nil];
+                            self->currentAlert = successAlert;
                         }
                         else
                         {
@@ -3930,9 +3976,9 @@ TableViewSectionsDelegate>
                         {
                             [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
                             
-                            self->currentAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsFailToUpdatePassword] preferredStyle:UIAlertControllerStyleAlert];
+                            UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:nil message:[VectorL10n settingsFailToUpdatePassword] preferredStyle:UIAlertControllerStyleAlert];
                             
-                            [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                            [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
                                                                                    style:UIAlertActionStyleDefault
                                                                                  handler:^(UIAlertAction * action) {
                                                                                      
@@ -3953,8 +3999,9 @@ TableViewSectionsDelegate>
                                                                                      
                                                                                  }]];
                             
-                            [self->currentAlert mxk_setAccessibilityIdentifier:@"SettingsVCPasswordChangeFailedAlert"];
-                            [rootViewController presentViewController:self->currentAlert animated:YES completion:nil];
+                            [errorAlert mxk_setAccessibilityIdentifier:@"SettingsVCPasswordChangeFailedAlert"];
+                            [rootViewController presentViewController:errorAlert animated:YES completion:nil];
+                            self->currentAlert = errorAlert;
                         }
                     }
                     
