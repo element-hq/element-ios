@@ -898,7 +898,7 @@
 "room_participants_action_security_status_complete_security" = "Завершите настройку безопасности";
 "room_participants_action_security_status_loading" = "Загрузка…";
 "room_participants_security_information_room_not_encrypted" = "Сообщения в этой комнате не шифруются сквозным шифрованием.";
-"room_participants_security_information_room_encrypted" = "Сообщения в этой комнате не шифруются сквозным шифрованием. \n \nВаши сообщения защищены замками, и только у вас и получателя есть уникальные ключи, чтобы разблокировать их.";
+"room_participants_security_information_room_encrypted" = "Сообщения в этой комнате зашифрованы сквозным шифрованием. \n \nВаши сообщения защищены замками, и только у вас и получателя есть уникальные ключи, чтобы разблокировать их.";
 "room_member_power_level_admin_in" = "Администратор в %@";
 "room_member_power_level_moderator_in" = "Модератор в %@";
 "room_member_power_level_custom_in" = "Пользовательский (%@) в %@";
