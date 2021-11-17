@@ -105,8 +105,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         var section3: Section?
         if RiotSettings.shared.roomCreationScreenAllowEncryptionConfiguration {
-            let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { (theSwitch) in
-                self.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
+            let row_3_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.isEncrypted, onValueChanged: { [weak self] (theSwitch) in
+                self?.viewModel.roomCreationParameters.isEncrypted = theSwitch.isOn
             }), text: VectorL10n.createRoomEnableEncryption, accessoryType: .none) {
                 // no-op
             }
@@ -117,11 +117,20 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         
         var section4: Section?
         if RiotSettings.shared.roomCreationScreenAllowRoomTypeConfiguration {
-            let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) {
+            let row_4_0 = Row(type: .default, text: VectorL10n.createRoomTypePrivate, accessoryType: viewModel.roomCreationParameters.isPublic ? .none : .checkmark) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                
                 self.viewModel.roomCreationParameters.isPublic = false
                 self.updateSections()
             }
-            let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) {
+            let row_4_1 = Row(type: .default, text: VectorL10n.createRoomTypePublic, accessoryType: viewModel.roomCreationParameters.isPublic ? .checkmark : .none) { [weak self] in
+                
+                guard let self = self else {
+                    return
+                }
+                
                 self.viewModel.roomCreationParameters.isPublic = true
                 self.updateSections()
                 //  scroll bottom to show user new fields
@@ -149,8 +158,8 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         }
         
         if viewModel.roomCreationParameters.isPublic {
-            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { (theSwitch) in
-                self.viewModel.roomCreationParameters.showInDirectory = theSwitch.isOn
+            let row_5_0 = Row(type: .withSwitch(isOn: viewModel.roomCreationParameters.showInDirectory, onValueChanged: { [weak self] (theSwitch) in
+                self?.viewModel.roomCreationParameters.showInDirectory = theSwitch.isOn
             }), text: VectorL10n.createRoomShowInDirectory, accessoryType: .none) {
                 // no-op
             }
@@ -389,7 +398,10 @@ extension EnterNewRoomDetailsViewController: UITableViewDataSource {
             cell.mxkLabel.text = row.text
             cell.mxkSwitch.isOn = isOn
             cell.mxkSwitch.removeTarget(nil, action: nil, for: .valueChanged)
-            cell.mxkSwitch.vc_addAction(for: .valueChanged) {
+            cell.mxkSwitch.vc_addAction(for: .valueChanged) { [weak cell] in
+                guard let cell = cell else {
+                    return
+                }
                 onValueChanged?(cell.mxkSwitch)
             }
             cell.mxkLabelLeadingConstraint.constant = cell.vc_separatorInset.left

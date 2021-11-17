@@ -86,7 +86,7 @@
         
         for (MXRoomSummary *roomSummary in roomsSummaries)
         {
-            if (!roomSummary.hiddenFromUser)
+            if (!roomSummary.hiddenFromUser && roomSummary.roomType == MXRoomTypeRoom)
             {
                 [roomSummary setMatrixSession:session];
                 

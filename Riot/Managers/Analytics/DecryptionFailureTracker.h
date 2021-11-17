@@ -32,7 +32,7 @@
 /**
  The delegate object to receive analytics events.
  */
-@property (nonatomic) id<MXAnalyticsDelegate> delegate;
+@property (nonatomic, weak) id<MXAnalyticsDelegate> delegate;
 
 /**
  Report an event unable to decrypt.

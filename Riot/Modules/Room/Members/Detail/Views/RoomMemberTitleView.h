@@ -54,6 +54,6 @@
 /**
  The delegate.
  */
-@property (nonatomic) id<RoomMemberTitleViewDelegate> delegate;
+@property (nonatomic, weak) id<RoomMemberTitleViewDelegate> delegate;
 
 @end
