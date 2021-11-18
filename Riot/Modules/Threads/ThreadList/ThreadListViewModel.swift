@@ -25,9 +25,12 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     // MARK: Private
 
     private let session: MXSession
+    private let roomId: String
+    private var threads: [MXThread] = []
+    private var eventFormatter: MXKEventFormatter?
+    private var roomState: MXRoomState?
     
     private var currentOperation: MXHTTPOperation?
-    private var userDisplayName: String?
     
     // MARK: Public
 
@@ -42,8 +45,10 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession,
+         roomId: String) {
         self.session = session
+        self.roomId = roomId
     }
     
     deinit {
@@ -57,37 +62,131 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         case .loadData:
             self.loadData()
         case .complete:
-            self.coordinatorDelegate?.threadListViewModel(self, didCompleteWithUserDisplayName: self.userDisplayName)
+            self.coordinatorDelegate?.threadListViewModelDidLoadThreads(self)
         case .cancel:
             self.cancelOperations()
             self.coordinatorDelegate?.threadListViewModelDidCancel(self)
         }
     }
     
+    var numberOfThreads: Int {
+        return threads.count
+    }
+    
+    func threadViewModel(at index: Int) -> ThreadViewModel? {
+        guard index < threads.count else {
+            return nil
+        }
+        return viewModel(forThread: threads[index])
+    }
+    
     // MARK: - Private
+    
+    private func viewModel(forThread thread: MXThread) -> ThreadViewModel {
+        let rootAvatarViewData: AvatarViewData?
+        let rootMessageSender: MXUser?
+        let lastAvatarViewData: AvatarViewData?
+        let lastMessageSender: MXUser?
+        let rootMessageText: String?
+        let lastMessageText: String?
+        let lastMessageTime: String?
+        
+        //  root message
+        if let rootMessage = thread.rootMessage, let senderId = rootMessage.sender {
+            rootMessageSender = session.user(withUserId: rootMessage.sender)
+            
+            let fallbackImage = AvatarFallbackImage.matrixItem(senderId,
+                                                               rootMessageSender?.displayname)
+            rootAvatarViewData = AvatarViewData(matrixItemId: senderId,
+                                                displayName: rootMessageSender?.displayname,
+                                                avatarUrl: rootMessageSender?.avatarUrl,
+                                                mediaManager: session.mediaManager,
+                                                fallbackImage: fallbackImage)
+        } else {
+            rootAvatarViewData = nil
+            rootMessageSender = nil
+        }
+        
+        //  last message
+        if let lastMessage = thread.lastMessage, let senderId = lastMessage.sender {
+            lastMessageSender = session.user(withUserId: lastMessage.sender)
+            
+            let fallbackImage = AvatarFallbackImage.matrixItem(senderId,
+                                                               lastMessageSender?.displayname)
+            lastAvatarViewData = AvatarViewData(matrixItemId: senderId,
+                                                displayName: lastMessageSender?.displayname,
+                                                avatarUrl: lastMessageSender?.avatarUrl,
+                                                mediaManager: session.mediaManager,
+                                                fallbackImage: fallbackImage)
+        } else {
+            lastAvatarViewData = nil
+            lastMessageSender = nil
+        }
+        
+        if let eventFormatter = eventFormatter {
+            let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+            rootMessageText = eventFormatter.string(from: thread.rootMessage,
+                                                    with: roomState,
+                                                    error: formatterError)
+            lastMessageText = eventFormatter.string(from: thread.lastMessage,
+                                                    with: roomState,
+                                                    error: formatterError)
+            lastMessageTime = eventFormatter.dateString(from: thread.lastMessage, withTime: true)
+        } else {
+            rootMessageText = nil
+            lastMessageText = nil
+            lastMessageTime = nil
+        }
+        
+        let summaryViewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
+                                                      lastMessageSenderAvatar: lastAvatarViewData,
+                                                      lastMessageText: lastMessageText)
+        
+        return ThreadViewModel(rootMessageSenderAvatar: rootAvatarViewData,
+                               rootMessageSenderDisplayName: rootMessageSender?.displayname,
+                               rootMessageText: rootMessageText,
+                               lastMessageTime: lastMessageTime,
+                               summaryViewModel: summaryViewModel)
+    }
     
     private func loadData() {
 
         viewState = .loading
-
-        // Check first that the user homeserver is federated with the  Riot-bot homeserver
-        self.currentOperation = self.session.matrixRestClient.displayName(forUser: self.session.myUser.userId) { [weak self]  (response) in
-
-            guard let self = self else {
-                return
-            }
+        
+        threads = session.threadingService.threads(inRoom: roomId)
+        session.threadingService.addDelegate(self)
+        threadsLoaded()
+    }
+    
+    private func threadsLoaded() {
+        guard let eventFormatter = session.roomSummaryUpdateDelegate as? MXKEventFormatter,
+              let room = session.room(withRoomId: roomId) else {
+            //  go into loaded state
+            self.viewState = .loaded
             
-            switch response {
-            case .success(let userDisplayName):
-                self.viewState = .loaded(userDisplayName)
-                self.userDisplayName = userDisplayName
-            case .failure(let error):
-                self.viewState = .error(error)
-            }
+            return
+        }
+        
+        room.state { [weak self] roomState in
+            guard let self = self else { return }
+            self.eventFormatter = eventFormatter
+            self.roomState = roomState
+            
+            //  go into loaded state
+            self.viewState = .loaded
         }
     }
-        
+    
     private func cancelOperations() {
         self.currentOperation?.cancel()
     }
+}
+
+extension ThreadListViewModel: MXThreadingServiceDelegate {
+    
+    func threadingServiceDidUpdateThreads(_ service: MXThreadingService) {
+        threads = service.threads(inRoom: roomId)
+        viewState = .loaded
+    }
+    
 }

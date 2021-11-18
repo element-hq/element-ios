@@ -19,7 +19,7 @@
 import Foundation
 
 protocol ThreadListCoordinatorDelegate: AnyObject {
-    func threadListCoordinator(_ coordinator: ThreadListCoordinatorProtocol, didCompleteWithUserDisplayName userDisplayName: String?)
+    func threadListCoordinatorDidLoadThreads(_ coordinator: ThreadListCoordinatorProtocol)
     func threadListCoordinatorDidCancel(_ coordinator: ThreadListCoordinatorProtocol)
 }
 

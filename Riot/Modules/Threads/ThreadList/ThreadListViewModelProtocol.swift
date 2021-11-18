@@ -23,7 +23,7 @@ protocol ThreadListViewModelViewDelegate: AnyObject {
 }
 
 protocol ThreadListViewModelCoordinatorDelegate: AnyObject {
-    func threadListViewModel(_ viewModel: ThreadListViewModelProtocol, didCompleteWithUserDisplayName userDisplayName: String?)
+    func threadListViewModelDidLoadThreads(_ viewModel: ThreadListViewModelProtocol)
     func threadListViewModelDidCancel(_ viewModel: ThreadListViewModelProtocol)
 }
 
@@ -36,4 +36,7 @@ protocol ThreadListViewModelProtocol {
     func process(viewAction: ThreadListViewAction)
     
     var viewState: ThreadListViewState { get }
+    
+    var numberOfThreads: Int { get }
+    func threadViewModel(at index: Int) -> ThreadViewModel?
 }

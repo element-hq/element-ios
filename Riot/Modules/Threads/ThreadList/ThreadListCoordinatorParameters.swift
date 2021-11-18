@@ -24,5 +24,6 @@ struct ThreadListCoordinatorParameters {
     /// The Matrix session
     let session: MXSession
     
-    
+    /// Room identifier
+    let roomId: String
 }

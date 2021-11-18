@@ -30,10 +30,7 @@ final class ThreadListViewController: UIViewController {
     
     // MARK: Outlets
 
-    @IBOutlet private weak var scrollView: UIScrollView!
-    
-    @IBOutlet private weak var informationLabel: UILabel!
-    @IBOutlet private weak var doneButton: UIButton!
+    @IBOutlet private weak var threadsTableView: UITableView!
     
     // MARK: Private
 
@@ -60,7 +57,7 @@ final class ThreadListViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.setupViews()
-        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.scrollView)
+        self.keyboardAvoider = KeyboardAvoider(scrollViewContainerView: self.view, scrollView: self.threadsTableView)
         self.activityPresenter = ActivityIndicatorPresenter()
         self.errorPresenter = MXKErrorAlertPresentation()
         
@@ -99,12 +96,9 @@ final class ThreadListViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
-
-        // TODO: Set view colors here
-        self.informationLabel.textColor = theme.textPrimaryColor
-
-        self.doneButton.backgroundColor = theme.backgroundColor
-        theme.applyStyle(onButton: self.doneButton)
+        self.threadsTableView.backgroundColor = theme.backgroundColor
+        self.threadsTableView.separatorColor = theme.colors.separator
+        self.threadsTableView.reloadData()
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -116,17 +110,18 @@ final class ThreadListViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
-        }
+        let filterBarButtonItem = UIBarButtonItem(image: Asset.Images.roomContextMenuMore.image,
+                                                  style: .plain,
+                                                  target: self,
+                                                  action: #selector(filterButtonTapped(_:)))
         
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
+        self.navigationItem.rightBarButtonItem = filterBarButtonItem
         
-        self.title = "Template"
+        self.title = "Threads"
         
-        self.scrollView.keyboardDismissMode = .interactive
-        
-        self.informationLabel.text = "VectorL10n.threadListTitle"
+        self.threadsTableView.tableFooterView = UIView()
+        self.threadsTableView.register(cellType: ThreadTableViewCell.self)
+        self.threadsTableView.keyboardDismissMode = .interactive
     }
 
     private func render(viewState: ThreadListViewState) {
@@ -135,8 +130,8 @@ final class ThreadListViewController: UIViewController {
             break
         case .loading:
             self.renderLoading()
-        case .loaded(let displayName):
-            self.renderLoaded(displayName: displayName)
+        case .loaded:
+            self.renderLoaded()
         case .error(let error):
             self.render(error: error)
         }
@@ -144,13 +139,11 @@ final class ThreadListViewController: UIViewController {
     
     private func renderLoading() {
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
-        self.informationLabel.text = "Fetch display name"
     }
     
-    private func renderLoaded(displayName: String) {
+    private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-
-        self.informationLabel.text = "You display name: \(displayName)"
+        self.threadsTableView.reloadData()
     }
     
     private func render(error: Error) {
@@ -158,23 +151,54 @@ final class ThreadListViewController: UIViewController {
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
     }
 
-    
     // MARK: - Actions
 
-    @IBAction private func doneButtonAction(_ sender: Any) {
+    @objc
+    private func filterButtonTapped(_ sender: UIBarButtonItem) {
         self.viewModel.process(viewAction: .complete)
     }
 
-    private func cancelButtonAction() {
-        self.viewModel.process(viewAction: .cancel)
+}
+
+// MARK: - ThreadListViewModelViewDelegate
+
+extension ThreadListViewController: ThreadListViewModelViewDelegate {
+
+    func threadListViewModel(_ viewModel: ThreadListViewModelProtocol,
+                             didUpdateViewState viewSate: ThreadListViewState) {
+        self.render(viewState: viewSate)
     }
 }
 
-
-// MARK: - ThreadListViewModelViewDelegate
-extension ThreadListViewController: ThreadListViewModelViewDelegate {
-
-    func threadListViewModel(_ viewModel: ThreadListViewModelProtocol, didUpdateViewState viewSate: ThreadListViewState) {
-        self.render(viewState: viewSate)
+extension ThreadListViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.numberOfThreads
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: ThreadTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+        
+        if let threadVM = viewModel.threadViewModel(at: indexPath.row) {
+            cell.configure(withViewModel: threadVM)
+        }
+        cell.update(theme: theme)
+        
+        return cell
+    }
+    
+}
+
+extension ThreadListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = theme.backgroundColor
+        cell.selectedBackgroundView = UIView()
+        cell.selectedBackgroundView?.backgroundColor = theme.selectedBackgroundColor
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
 }

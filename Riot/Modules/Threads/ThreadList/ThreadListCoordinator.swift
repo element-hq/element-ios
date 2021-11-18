@@ -40,7 +40,8 @@ final class ThreadListCoordinator: ThreadListCoordinatorProtocol {
     
     init(parameters: ThreadListCoordinatorParameters) {
         self.parameters = parameters
-        let threadListViewModel = ThreadListViewModel(session: self.parameters.session)
+        let threadListViewModel = ThreadListViewModel(session: self.parameters.session,
+                                                      roomId: self.parameters.roomId)
         let threadListViewController = ThreadListViewController.instantiate(with: threadListViewModel)
         self.threadListViewModel = threadListViewModel
         self.threadListViewController = threadListViewController
@@ -60,8 +61,8 @@ final class ThreadListCoordinator: ThreadListCoordinatorProtocol {
 // MARK: - ThreadListViewModelCoordinatorDelegate
 extension ThreadListCoordinator: ThreadListViewModelCoordinatorDelegate {
     
-    func threadListViewModel(_ viewModel: ThreadListViewModelProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
-        self.delegate?.threadListCoordinator(self, didCompleteWithUserDisplayName: userDisplayName)
+    func threadListViewModelDidLoadThreads(_ viewModel: ThreadListViewModelProtocol) {
+        self.delegate?.threadListCoordinatorDidLoadThreads(self)
     }
     
     func threadListViewModelDidCancel(_ viewModel: ThreadListViewModelProtocol) {

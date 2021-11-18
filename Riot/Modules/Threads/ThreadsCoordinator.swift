@@ -75,7 +75,8 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     // MARK: - Private
 
     private func createThreadListCoordinator() -> ThreadListCoordinator {
-        let coordinatorParameters = ThreadListCoordinatorParameters(session: self.parameters.session)
+        let coordinatorParameters = ThreadListCoordinatorParameters(session: self.parameters.session,
+                                                                    roomId: self.parameters.roomId)
         let coordinator = ThreadListCoordinator(parameters: coordinatorParameters)
         coordinator.delegate = self
         return coordinator
@@ -92,7 +93,7 @@ extension ThreadsCoordinator: UIAdaptivePresentationControllerDelegate {
 
 // MARK: - ThreadListCoordinatorDelegate
 extension ThreadsCoordinator: ThreadListCoordinatorDelegate {
-    func threadListCoordinator(_ coordinator: ThreadListCoordinatorProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
+    func threadListCoordinatorDidLoadThreads(_ coordinator: ThreadListCoordinatorProtocol) {
         self.delegate?.threadsCoordinatorDidComplete(self)
     }
     

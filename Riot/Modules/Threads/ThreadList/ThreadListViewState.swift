@@ -22,6 +22,6 @@ import Foundation
 enum ThreadListViewState {
     case idle
     case loading
-    case loaded(_ displayName: String)
+    case loaded
     case error(Error)
 }
