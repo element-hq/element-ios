@@ -1,1 +1,0 @@
-Fix retain cycles that prevents deallocation in several classes.
