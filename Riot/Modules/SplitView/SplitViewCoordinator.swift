@@ -125,20 +125,20 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
     }
             
     // TODO: Do not expose publicly this method
-    func restorePlaceholderDetails() {                
+    func resetDetails(animated: Bool) {                
         // Be sure that the primary is then visible too.
         if splitViewController.displayMode == .primaryHidden {
             splitViewController.preferredDisplayMode = .allVisible
         }
         
-        self.resetDetailNavigationControllerWithPlaceholder(animated: false)
+        self.resetDetailNavigationController(animated: animated)
 
         // Release the current selected item (room/contact/group...).
         self.tabBarCoordinator?.releaseSelectedItems()
-    }
+    }   
     
     func popToHome(animated: Bool, completion: (() -> Void)?) {
-        self.resetDetailNavigationControllerWithPlaceholder(animated: animated)
+        self.resetDetails(animated: animated)
 
         // Force back to the main screen if this is not the one that is displayed
         self.tabBarCoordinator?.popToHome(animated: animated, completion: completion)
@@ -172,6 +172,17 @@ final class SplitViewCoordinator: NSObject, SplitViewCoordinatorType {
         // Set placeholder screen as root controller of detail navigation controller
         let placeholderDetailsVC = self.createPlaceholderDetailsViewController()
         detailNavigationRouter.setRootModule(placeholderDetailsVC, hideNavigationBar: false, animated: animated, popCompletion: nil)
+    }         
+    
+    private func resetDetailNavigationController(animated: Bool) {
+        
+        if self.splitViewController.isCollapsed {
+            if let topMostNavigationController = self.selectedNavigationRouter?.modules.last as? UINavigationController, topMostNavigationController == self.detailNavigationController {                
+                self.selectedNavigationRouter?.popModule(animated: animated)
+            }            
+        } else {
+            self.resetDetailNavigationControllerWithPlaceholder(animated: animated)
+        }                
     }
     
     private func isPlaceholderShown(from secondaryViewController: UIViewController) -> Bool {
@@ -270,7 +281,7 @@ extension SplitViewCoordinator: UISplitViewControllerDelegate {
         }
         
         // Restore detail navigation controller with placeholder as root
-        self.resetDetailNavigationControllerWithPlaceholder(animated: false)
+        self.resetDetailNavigationController(animated: false)
         
         // Return up to date detail navigation controller
         // In any cases `detailNavigationController` will be used as secondary view of the split view controller.
@@ -353,6 +364,6 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
     }
     
     func splitViewMasterPresentableWantsToResetDetail(_ presentable: Presentable) {
-        self.resetDetailNavigationControllerWithPlaceholder(animated: false)
+        self.resetDetails(animated: false)
     }
 }

@@ -147,7 +147,7 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomsAllowToJoinPublicRooms", defaultValue: BuildSettings.roomsAllowToJoinPublicRooms, storage: defaults)
     var roomsAllowToJoinPublicRooms
     
-    @UserDefault(key: UserDefaultsKeys.showAllRoomsInHomeSpace, defaultValue: false, storage: defaults)
+    @UserDefault(key: UserDefaultsKeys.showAllRoomsInHomeSpace, defaultValue: true, storage: defaults)
     var showAllRoomsInHomeSpace
     
     // MARK: - Room Screen
