@@ -28,6 +28,7 @@ class ThreadSummaryView: UIView {
     
     private enum Constants {
         static let viewHeight: CGFloat = 32
+        static let viewDefaultWidth: CGFloat = 320
         static let cornerRadius: CGFloat = 4
     }
     
@@ -36,11 +37,7 @@ class ThreadSummaryView: UIView {
     @IBOutlet private weak var lastMessageAvatarView: UserAvatarView!
     @IBOutlet private weak var lastMessageContentLabel: UILabel!
     
-    private(set) var thread: MXThread! {
-        didSet {
-            configure()
-        }
-    }
+    private(set) var thread: MXThread!
     
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
@@ -50,16 +47,33 @@ class ThreadSummaryView: UIView {
     
     // MARK: - Setup
     
-    static func instantiate(withThread thread: MXThread) -> ThreadSummaryView {
-        let view = ThreadSummaryView.loadFromNib()
-        view.thread = thread
-        view.update(theme: ThemeService.shared().theme)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    init(withThread thread: MXThread) {
+        self.thread = thread
+        super.init(frame: CGRect(origin: .zero,
+                                 size: CGSize(width: Constants.viewDefaultWidth,
+                                              height: Constants.viewHeight)))
+        loadNibContent()
+        update(theme: ThemeService.shared().theme)
+        configure()
     }
     
     static func contentViewHeight(forThread thread: MXThread, fitting maxWidth: CGFloat) -> CGFloat {
         return Constants.viewHeight
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        loadNibContent()
+    }
+    
+    @nonobjc func configure(withViewModel viewModel: ThreadSummaryViewModel) {
+        numberOfRepliesLabel.text = String(viewModel.numberOfReplies)
+        if let avatar = viewModel.lastMessageSenderAvatar {
+            lastMessageAvatarView.fill(with: avatar)
+        } else {
+            lastMessageAvatarView.avatarImageView.image = nil
+        }
+        lastMessageContentLabel.text = viewModel.lastMessageText
     }
     
     private func configure() {
@@ -67,14 +81,15 @@ class ThreadSummaryView: UIView {
         layer.cornerRadius = Constants.cornerRadius
         addGestureRecognizer(tapGestureRecognizer)
         
-        guard let thread = thread else { return }
-        numberOfRepliesLabel.text = String(thread.numberOfReplies)
-        guard let lastMessage = thread.lastMessage else {
+        guard let thread = thread,
+              let lastMessage = thread.lastMessage,
+              let session = thread.session,
+              let eventFormatter = session.roomSummaryUpdateDelegate as? MXKEventFormatter,
+              let room = session.room(withRoomId: lastMessage.roomId) else {
             lastMessageAvatarView.avatarImageView.image = nil
             lastMessageContentLabel.text = nil
             return
         }
-        guard let session = thread.session else { return }
         let lastMessageSender = session.user(withUserId: lastMessage.sender)
         
         let fallbackImage = AvatarFallbackImage.matrixItem(lastMessage.sender,
@@ -84,17 +99,16 @@ class ThreadSummaryView: UIView {
                                             avatarUrl: lastMessageSender?.avatarUrl,
                                             mediaManager: session.mediaManager,
                                             fallbackImage: fallbackImage)
-        lastMessageAvatarView.fill(with: avatarViewData)
-        
-        guard let eventFormatter = session.roomSummaryUpdateDelegate as? MXKEventFormatter,
-              let room = session.room(withRoomId: lastMessage.roomId) else {
-            return
-        }
         
         room.state { [weak self] roomState in
             guard let self = self else { return }
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            self.lastMessageContentLabel.text = eventFormatter.string(from: lastMessage, with: roomState, error: formatterError)
+            let lastMessageText = eventFormatter.string(from: lastMessage, with: roomState, error: formatterError)
+            
+            let viewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
+                                                   lastMessageSenderAvatar: avatarViewData,
+                                                   lastMessageText: lastMessageText)
+            self.configure(withViewModel: viewModel)
         }
     }
     
@@ -107,7 +121,9 @@ class ThreadSummaryView: UIView {
     }
 }
 
-extension ThreadSummaryView: NibLoadable {}
+// extension ThreadSummaryView: NibLoadable {}
+
+extension ThreadSummaryView: NibOwnerLoadable {}
 
 extension ThreadSummaryView: Themable {
     

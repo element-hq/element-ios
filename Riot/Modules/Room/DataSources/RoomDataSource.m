@@ -514,7 +514,7 @@ const CGFloat kTypingCellHeight = 24;
                     //  display thread summary view if the component has a thread in the room timeline
                     if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
                     {
-                        threadSummaryView = [ThreadSummaryView instantiateWithThread:component.thread];
+                        threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread];
                         threadSummaryView.delegate = self;
                         
                         [temporaryViews addObject:threadSummaryView];
