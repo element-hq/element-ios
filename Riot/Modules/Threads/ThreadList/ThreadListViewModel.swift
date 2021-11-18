@@ -87,9 +87,8 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         let rootMessageSender: MXUser?
         let lastAvatarViewData: AvatarViewData?
         let lastMessageSender: MXUser?
-        let rootMessageText: String?
-        let lastMessageText: String?
-        let lastMessageTime: String?
+        let rootMessageText = rootMessageText(forThread: thread)
+        let (lastMessageText, lastMessageTime) = lastMessageTextAndTime(forThread: thread)
         
         //  root message
         if let rootMessage = thread.rootMessage, let senderId = rootMessage.sender {
@@ -123,21 +122,6 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             lastMessageSender = nil
         }
         
-        if let eventFormatter = eventFormatter {
-            let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            rootMessageText = eventFormatter.string(from: thread.rootMessage,
-                                                    with: roomState,
-                                                    error: formatterError)
-            lastMessageText = eventFormatter.string(from: thread.lastMessage,
-                                                    with: roomState,
-                                                    error: formatterError)
-            lastMessageTime = eventFormatter.dateString(from: thread.lastMessage, withTime: true)
-        } else {
-            rootMessageText = nil
-            lastMessageText = nil
-            lastMessageTime = nil
-        }
-        
         let summaryViewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
                                                       lastMessageSenderAvatar: lastAvatarViewData,
                                                       lastMessageText: lastMessageText)
@@ -147,6 +131,35 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                rootMessageText: rootMessageText,
                                lastMessageTime: lastMessageTime,
                                summaryViewModel: summaryViewModel)
+    }
+    
+    private func rootMessageText(forThread thread: MXThread) -> String? {
+        guard let eventFormatter = eventFormatter else {
+            return nil
+        }
+        guard let message = thread.rootMessage else {
+            return nil
+        }
+        let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+        return eventFormatter.string(from: message,
+                                     with: roomState,
+                                     error: formatterError)
+    }
+    
+    private func lastMessageTextAndTime(forThread thread: MXThread) -> (String?, String?) {
+        guard let eventFormatter = eventFormatter else {
+            return (nil, nil)
+        }
+        guard let message = thread.lastMessage else {
+            return (nil, nil)
+        }
+        let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+        return (
+            eventFormatter.string(from: message,
+                                  with: roomState,
+                                  error: formatterError),
+            eventFormatter.dateString(from: message, withTime: true)
+        )
     }
     
     private func loadData() {
