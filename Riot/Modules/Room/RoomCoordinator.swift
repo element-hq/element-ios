@@ -109,7 +109,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         } else if let threadId = self.parameters.threadId {
             self.loadRoom(withId: self.parameters.roomId, andThreadId: threadId, completion: completion)
         } else if let eventId = self.selectedEventId {
-            self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
+            self.loadRoom(withId: self.parameters.roomId, andEventId: eventId, completion: completion)
         } else {
             self.loadRoom(withId: self.parameters.roomId, completion: completion)
         }
