@@ -433,7 +433,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     _isAppForeground = NO;
     _handleSelfVerificationRequest = YES;
     
-    // Configure our analytics. It will start automatically if the option is enabled
+    // Configure our analytics. It will start if the option is enabled
     Analytics *analytics = Analytics.shared;
     [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
     [DecryptionFailureTracker sharedInstance].delegate = analytics;
@@ -441,6 +441,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXBaseProfiler *profiler = [MXBaseProfiler new];
     profiler.analytics = analytics;
     [MXSDKOptions sharedInstance].profiler = profiler;
+    
+    [analytics startIfEnabled];
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     

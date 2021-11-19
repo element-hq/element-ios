@@ -2252,7 +2252,7 @@ TableViewSectionsDelegate>
             MXKTableViewCellWithLabelAndSwitch* sendCrashReportCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
             
             sendCrashReportCell.mxkLabel.text = VectorL10n.settingsAnalyticsAndCrashData;
-            sendCrashReportCell.mxkSwitch.on = Analytics.shared.isRunning;
+            sendCrashReportCell.mxkSwitch.on = RiotSettings.shared.enableAnalytics;
             sendCrashReportCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             sendCrashReportCell.mxkSwitch.enabled = YES;
             [sendCrashReportCell.mxkSwitch addTarget:self action:@selector(toggleAnalytics:) forControlEvents:UIControlEventTouchUpInside];
@@ -3125,7 +3125,7 @@ TableViewSectionsDelegate>
     else
     {
         MXLogDebug(@"[SettingsViewController] disable automatic crash report and analytics sending");
-        [Analytics.shared optOutWith:self.mainSession];
+        [Analytics.shared optOut];
         
         // Remove potential crash file.
         [MXLogger deleteCrashLog];

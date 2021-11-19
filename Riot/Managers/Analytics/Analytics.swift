@@ -22,58 +22,70 @@ import PostHog
     
     static let shared = Analytics()
     
+    private var postHog: PHGPostHog?
+    
     private(set) var isRunning = false
     
-    private var postHog: PHGPostHog?
+    var shouldShowAnalyticsPrompt: Bool {
+        // Show an analytics prompt when the user hasn't seen the PostHog prompt before
+        // so long as they haven't previously declined the Matomo analytics prompt.
+        !RiotSettings.shared.hasSeenAnalyticsPrompt && !RiotSettings.shared.hasDeclinedMatomoAnalytics
+    }
+    
+    var promptShouldDisplayUpgradeMessage: Bool {
+        // Show an analytics prompt when the user hasn't seen the PostHog prompt before
+        // so long as they haven't previously declined the Matomo analytics prompt.
+        RiotSettings.shared.hasAcceptedMatomoAnalytics
+    }
     
     // MARK: - Public
     
-    func shouldShowPseudonymousAnalyticsPrompt(for session: MXSession) -> Bool {
-        return AnalyticsSettings(session: session).showPseudonymousAnalyticsPrompt
-    }
-    
     func optIn(with session: MXSession?) {
         guard let session = session else { return }
+        RiotSettings.shared.enableAnalytics = true
         
         var settings = AnalyticsSettings(session: session)
-        settings.generateIDIfMissing()
-        settings.pseudonymousAnalyticsOptIn = true
-        settings.showPseudonymousAnalyticsPrompt = false
         
-        session.setAccountData(settings.dictionary, forType: AnalyticsSettings.eventType) {
-            MXLog.debug("[Analytics] Successfully updated analytics settings in account data.")
-        } failure: { error in
-            MXLog.error("[Analytics] Failed to update analytics settings.")
+        if settings.id == nil {
+            settings.generateID()
+            
+            session.setAccountData(settings.dictionary, forType: AnalyticsSettings.eventType) {
+                MXLog.debug("[Analytics] Successfully updated analytics settings in account data.")
+            } failure: { error in
+                MXLog.error("[Analytics] Failed to update analytics settings.")
+            }
+        }
+        
+        startIfEnabled()
+        
+        if !RiotSettings.shared.isIdentifiedForAnalytics {
+            identify(with: settings)
         }
     }
     
-    func optOut(with session: MXSession) {
-        var settings = AnalyticsSettings(session: session)
-        settings.id = nil
-        settings.pseudonymousAnalyticsOptIn = false
-        settings.showPseudonymousAnalyticsPrompt = false
-        
-        session.setAccountData(settings.dictionary, forType: AnalyticsSettings.eventType, success: nil) { error in
-            MXLog.error("[Analytics] Failed to update analytics settings.")
-        }
+    func optOut() {
+        RiotSettings.shared.enableAnalytics = false
+        reset()
     }
     
-    private func start(with pseudonymousID: String) {
-        guard !isRunning else { return }
+    func startIfEnabled() {
+        guard RiotSettings.shared.enableAnalytics, !isRunning else { return }
         
         postHog = PHGPostHog(configuration: PHGPostHogConfiguration.standard)
         postHog?.enable()
         isRunning = true
         MXLog.debug("[Analytics] Started.")
-        
-        if !RiotSettings.shared.hasPseudonymousAnalyticsIdentified {
-            postHog?.identify(pseudonymousID)
-            MXLog.debug("[Analytics] Identified.")
-            RiotSettings.shared.hasPseudonymousAnalyticsIdentified = true
+    }
+    
+    private func identify(with settings: AnalyticsSettings) {
+        guard let id = settings.id else {
+            MXLog.warning("[Analytics] identify(with:) called before an ID has been generated.")
+            return
         }
         
-        postHog?.capture("analyticsDidStart")
-        forceUpload()
+        postHog?.identify(id)
+        MXLog.debug("[Analytics] Identified.")
+        RiotSettings.shared.isIdentifiedForAnalytics = true
     }
     
     func reset() {
@@ -84,7 +96,7 @@ import PostHog
         MXLog.debug("[Analytics] Stopped.")
         
         postHog?.reset()
-        RiotSettings.shared.hasPseudonymousAnalyticsIdentified = false
+        RiotSettings.shared.isIdentifiedForAnalytics = false
         
         postHog = nil
     }
@@ -114,27 +126,6 @@ extension Analytics {
 }
 
 extension Analytics: MXAnalyticsDelegate {
-    var settingsEventType: String { AnalyticsSettings.eventType }
-    
-    func handleSettingsEvent(_ event: [AnyHashable: Any]) {
-        guard event["type"] as? String == AnalyticsSettings.eventType,
-              let content = event["content"] as? [AnyHashable: Any]
-        else {
-            MXLog.error("[Analytics] handleSettingsEvent: invalid event")
-            return
-        }
-        
-        let settings = AnalyticsSettings(dictionary: content)
-        
-        if !settings.showPseudonymousAnalyticsPrompt,
-           settings.pseudonymousAnalyticsOptIn == true,
-           let id = settings.id {
-            start(with: id)
-        } else {
-            reset()
-        }
-    }
-    
     @objc func trackDuration(_ seconds: TimeInterval, category: String, name: String) {
 //        postHog?.capture("\(category):\(name)", properties: ["duration": seconds])
     }

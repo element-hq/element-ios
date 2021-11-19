@@ -21,22 +21,19 @@ struct AnalyticsSettings {
     
     private enum Constants {
         static let idKey = "id"
-        static let optInKey = "pseudonymousAnalyticsOptIn"
-        static let showPromptKey = "showPseudonymousAnalyticsPrompt"
+        static let webOptInKey = "pseudonymousAnalyticsOptIn"
     }
     
     /// A randomly generated analytics token for this user.
     /// This is suggested to be a 128-bit hex encoded string.
     var id: String?
     
-    /// Boolean indicating whether the user has opted in.
-    /// If nil, the user hasn't yet given consent either way
-    var pseudonymousAnalyticsOptIn: Bool?
+    /// Unused on iOS but necessary to load the value in case opt in was declined on web,
+    /// but accepted on iOS. Otherwise generating an ID would wipe out the existing value.
+    private var webOptIn: Bool?
     
-    /// Boolean indicating whether to show the analytics opt-in prompt.
-    var showPseudonymousAnalyticsPrompt: Bool
-    
-    mutating func generateIDIfMissing() {
+    /// Generate a new random analytics ID. This method has no effect if an ID already exists.
+    mutating func generateID() {
         guard id == nil else { return }
         
         // Generate a 32 character analytics ID containing the characters 0-f.
@@ -49,15 +46,13 @@ struct AnalyticsSettings {
 extension AnalyticsSettings {
     init(dictionary: Dictionary<AnyHashable, Any>?) {
         self.id = dictionary?[Constants.idKey] as? String
-        self.pseudonymousAnalyticsOptIn = dictionary?[Constants.optInKey] as? Bool
-        self.showPseudonymousAnalyticsPrompt = dictionary?[Constants.showPromptKey] as? Bool ?? true
+        self.webOptIn = dictionary?[Constants.webOptInKey] as? Bool
     }
     
     var dictionary: Dictionary<AnyHashable, Any> {
         var dictionary = [AnyHashable: Any]()
         dictionary[Constants.idKey] = id
-        dictionary[Constants.optInKey] = pseudonymousAnalyticsOptIn
-        dictionary[Constants.showPromptKey] = showPseudonymousAnalyticsPrompt
+        dictionary[Constants.webOptInKey] = webOptIn
         
         return dictionary
     }

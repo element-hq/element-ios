@@ -68,7 +68,7 @@ abstract_target 'RiotPods' do
   pod 'WeakDictionary', '~> 2.0'
 
   # PostHog for analytics
-  pod 'PostHog', '~> 1.4.2'
+  pod 'PostHog', '~> 1.4.3'
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true

@@ -103,7 +103,13 @@ final class RiotSettings: NSObject {
     
     /// Whether the user has both seen the Matomo analytics prompt and declined it.
     /// This is used to prevent users who previously opted out from being asked again.
-    var hasSeenAndDeclinedMatomoAnalytics: Bool {
+    var hasSeenAnalyticsPrompt: Bool {
+        RiotSettings.defaults.object(forKey: UserDefaultsKeys.enableAnalytics) != nil
+    }
+    
+    /// Whether the user has both seen the Matomo analytics prompt and declined it.
+    /// This is used to prevent users who previously opted out from being asked again.
+    var hasDeclinedMatomoAnalytics: Bool {
         RiotSettings.defaults.object(forKey: UserDefaultsKeys.matomoAnalytics) != nil && !RiotSettings.defaults.bool(forKey: UserDefaultsKeys.matomoAnalytics)
     }
     
@@ -113,10 +119,13 @@ final class RiotSettings: NSObject {
         RiotSettings.defaults.bool(forKey: UserDefaultsKeys.matomoAnalytics)
     }
     
-    #warning("Rename me!")
     /// Indicates if the device has already called identify for this session to PostHog.
-    @UserDefault(key: "hasPseudonymousAnalyticsIdentified", defaultValue: false, storage: defaults)
-    var hasPseudonymousAnalyticsIdentified
+    @UserDefault(key: UserDefaultsKeys.enableAnalytics, defaultValue: false, storage: defaults)
+    var enableAnalytics
+    
+    /// Indicates if the device has already called identify for this session to PostHog.
+    @UserDefault(key: "isIdentifiedForAnalytics", defaultValue: false, storage: defaults)
+    var isIdentifiedForAnalytics
     
     @UserDefault(key: "enableRageShake", defaultValue: false, storage: defaults)
     var enableRageShake

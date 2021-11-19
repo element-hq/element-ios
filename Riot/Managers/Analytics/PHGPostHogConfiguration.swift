@@ -19,6 +19,9 @@ import Keys
 
 extension PHGPostHogConfiguration {
     static var standard: PHGPostHogConfiguration {
-        PHGPostHogConfiguration(apiKey: RiotKeys().postHog, host: BuildSettings.analyticsHost)
+        let configuration = PHGPostHogConfiguration(apiKey: RiotKeys().postHog, host: BuildSettings.analyticsHost)
+        configuration.shouldSendDeviceID = false
+        
+        return configuration
     }
 }

@@ -197,14 +197,9 @@
     if (!authIsShown)
     {
         // Check whether the user should be prompted to send analytics.
-        MXSession *mxSession = self.mxSessions.firstObject;
-        if (mxSession && [Analytics.shared shouldShowPseudonymousAnalyticsPromptFor:mxSession])
+        if (Analytics.shared.shouldShowAnalyticsPrompt)
         {
-            // We don't need to prompt users who previously declined the old analytics.
-            if (!RiotSettings.shared.hasSeenAndDeclinedMatomoAnalytics)
-            {
-                [self promptUserBeforeUsingAnalytics];
-            }
+            [self promptUserBeforeUsingAnalytics];
         }
         
         [self refreshTabBarBadges];
@@ -943,7 +938,7 @@
     
     NSString *title = [VectorL10n analyticsPromptTitle:AppInfo.current.displayName];
     NSString *message;
-    if (RiotSettings.shared.hasAcceptedMatomoAnalytics)
+    if (Analytics.shared.promptShouldDisplayUpgradeMessage)
     {
         message = [VectorL10n analyticsPromptPosthogUpgrade:AppInfo.current.displayName];
     }
@@ -959,7 +954,7 @@
                                                    handler:^(UIAlertAction * action) {
         
         MXStrongifyAndReturnIfNil(self);
-        [Analytics.shared optOutWith:mxSession];
+        [Analytics.shared optOut];
         self->currentAlert = nil;
         
     }]];
