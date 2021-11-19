@@ -56,7 +56,6 @@ extension ThreadTableViewCell: NibReusable {}
 extension ThreadTableViewCell: Themable {
     
     func update(theme: Theme) {
-        contentView.backgroundColor = theme.colors.background
         rootMessageAvatarView.backgroundColor = .clear
         rootMessageContentLabel.textColor = theme.colors.primaryContent
         lastMessageTimeLabel.textColor = theme.colors.secondaryContent
