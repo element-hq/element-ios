@@ -117,7 +117,7 @@ final class ThreadListViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItem = filterBarButtonItem
         
-        self.title = "Threads"
+        self.title = VectorL10n.threadsTitle
         
         self.threadsTableView.tableFooterView = UIView()
         self.threadsTableView.register(cellType: ThreadTableViewCell.self)
@@ -132,6 +132,8 @@ final class ThreadListViewController: UIViewController {
             self.renderLoading()
         case .loaded:
             self.renderLoaded()
+        case .showingFilterTypes:
+            self.renderShowingFilterTypes()
         case .error(let error):
             self.render(error: error)
         }
@@ -146,6 +148,40 @@ final class ThreadListViewController: UIViewController {
         self.threadsTableView.reloadData()
     }
     
+    private func renderShowingFilterTypes() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let allThreadsAction = UIAlertAction(title: ThreadListFilterType.all.title,
+                                             style: .default,
+                                             handler: { [weak self] action in
+                                                 guard let self = self else { return }
+                                                 self.viewModel.process(viewAction: .selectFilterType(.all))
+                                             })
+        if self.viewModel.selectedFilterType == .all {
+            allThreadsAction.setValue(true, forKey: "checked")
+        }
+        alertController.addAction(allThreadsAction)
+        
+        let myThreadsAction = UIAlertAction(title: ThreadListFilterType.myThreads.title,
+                                            style: .default,
+                                            handler: { [weak self] action in
+                                                guard let self = self else { return }
+                                                self.viewModel.process(viewAction: .selectFilterType(.myThreads))
+                                            })
+        if self.viewModel.selectedFilterType == .myThreads {
+            myThreadsAction.setValue(true, forKey: "checked")
+        }
+        alertController.addAction(myThreadsAction)
+        
+        alertController.addAction(UIAlertAction(title: VectorL10n.cancel,
+                                                style: .cancel,
+                                                handler: nil))
+        
+        alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
@@ -155,7 +191,7 @@ final class ThreadListViewController: UIViewController {
 
     @objc
     private func filterButtonTapped(_ sender: UIBarButtonItem) {
-        self.viewModel.process(viewAction: .complete)
+        self.viewModel.process(viewAction: .showFilterTypes)
     }
 
 }

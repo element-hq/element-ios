@@ -37,6 +37,21 @@ protocol ThreadListViewModelProtocol {
     
     var viewState: ThreadListViewState { get }
     
+    var selectedFilterType: ThreadListFilterType { get }
     var numberOfThreads: Int { get }
     func threadViewModel(at index: Int) -> ThreadViewModel?
+}
+
+enum ThreadListFilterType {
+    case all
+    case myThreads
+    
+    var title: String {
+        switch self {
+        case .all:
+            return VectorL10n.threadsActionAllThreads
+        case .myThreads:
+            return VectorL10n.threadsActionMyThreads
+        }
+    }
 }

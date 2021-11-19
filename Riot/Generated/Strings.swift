@@ -5067,6 +5067,18 @@ public class VectorL10n: NSObject {
   public static var `switch`: String { 
     return VectorL10n.tr("Vector", "switch") 
   }
+  /// All threads
+  public static var threadsActionAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_all_threads") 
+  }
+  /// My threads
+  public static var threadsActionMyThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_my_threads") 
+  }
+  /// Threads
+  public static var threadsTitle: String { 
+    return VectorL10n.tr("Vector", "threads_title") 
+  }
   /// Favourites
   public static var titleFavourites: String { 
     return VectorL10n.tr("Vector", "title_favourites") 

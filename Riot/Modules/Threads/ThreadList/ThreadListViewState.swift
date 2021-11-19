@@ -23,5 +23,6 @@ enum ThreadListViewState {
     case idle
     case loading
     case loaded
+    case showingFilterTypes
     case error(Error)
 }

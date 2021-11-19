@@ -36,6 +36,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
 
     weak var viewDelegate: ThreadListViewModelViewDelegate?
     weak var coordinatorDelegate: ThreadListViewModelCoordinatorDelegate?
+    var selectedFilterType: ThreadListFilterType = .all
     
     private(set) var viewState: ThreadListViewState = .idle {
         didSet {
@@ -49,6 +50,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
          roomId: String) {
         self.session = session
         self.roomId = roomId
+        session.threadingService.addDelegate(self)
     }
     
     deinit {
@@ -60,12 +62,17 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     func process(viewAction: ThreadListViewAction) {
         switch viewAction {
         case .loadData:
-            self.loadData()
+            loadData()
+        case .showFilterTypes:
+            viewState = .showingFilterTypes
+        case .selectFilterType(let type):
+            selectedFilterType = type
+            loadData()
         case .complete:
-            self.coordinatorDelegate?.threadListViewModelDidLoadThreads(self)
+            coordinatorDelegate?.threadListViewModelDidLoadThreads(self)
         case .cancel:
-            self.cancelOperations()
-            self.coordinatorDelegate?.threadListViewModelDidCancel(self)
+            cancelOperations()
+            coordinatorDelegate?.threadListViewModelDidCancel(self)
         }
     }
     
@@ -166,8 +173,13 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
 
         viewState = .loading
         
-        threads = session.threadingService.threads(inRoom: roomId)
-        session.threadingService.addDelegate(self)
+        switch selectedFilterType {
+        case .all:
+            threads = session.threadingService.threads(inRoom: roomId)
+        case .myThreads:
+            threads = session.threadingService.participatedThreads(inRoom: roomId)
+        }
+        
         threadsLoaded()
     }
     
