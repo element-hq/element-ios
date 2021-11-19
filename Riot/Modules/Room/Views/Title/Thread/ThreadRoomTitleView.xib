@@ -34,33 +34,30 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ami-Cg-fcA">
                     <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDP-Yq-nqL">
-                            <rect key="frame" x="8" y="15" width="34" height="34"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="PDP-Yq-nqL" secondAttribute="height" multiplier="1:1" id="WBg-V1-Oj9"/>
-                            </constraints>
-                            <inset key="contentEdgeInsets" minX="6" minY="6" maxX="6" maxY="6"/>
-                            <state key="normal" image="new_close"/>
-                            <connections>
-                                <action selector="closeButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="8xF-EL-rHZ"/>
-                            </connections>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thread" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BnG-NU-7Mg">
-                            <rect key="frame" x="50" y="22.5" width="51.5" height="19.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <rect key="frame" x="48" y="22" width="56.5" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FJB-2F-rrQ" customClass="RoomAvatarView" customModule="Riot" customModuleProvider="target">
-                            <rect key="frame" x="109.5" y="24" width="16" height="16"/>
-                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <rect key="frame" x="112.5" y="24" width="16" height="16"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="Fg7-y5-fEC"/>
                                 <constraint firstAttribute="height" constant="16" id="Qxm-RC-uC5"/>
                             </constraints>
                         </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mli-PC-WUh">
+                            <rect key="frame" x="122.5" y="28" width="12" height="12"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Mli-PC-WUh" secondAttribute="height" multiplier="1:1" id="Ohw-dy-qg0"/>
+                                <constraint firstAttribute="width" constant="12" id="nKB-SN-cO0"/>
+                            </constraints>
+                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8lk-sN-3IP">
-                            <rect key="frame" x="129.5" y="24.5" width="67" height="15"/>
+                            <rect key="frame" x="139.5" y="24.5" width="67" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -77,15 +74,15 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="Unx-UY-EgO" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="30B-oO-Ka5"/>
-                        <constraint firstItem="PDP-Yq-nqL" firstAttribute="leading" secondItem="Ami-Cg-fcA" secondAttribute="leading" constant="8" id="L6L-SK-wtZ"/>
+                        <constraint firstItem="Mli-PC-WUh" firstAttribute="centerX" secondItem="FJB-2F-rrQ" secondAttribute="trailing" id="BU4-yl-DrP"/>
+                        <constraint firstItem="BnG-NU-7Mg" firstAttribute="leading" secondItem="Ami-Cg-fcA" secondAttribute="leading" constant="48" id="ES6-mL-Y9F"/>
                         <constraint firstItem="8lk-sN-3IP" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="S0S-6y-Vkn"/>
                         <constraint firstItem="FJB-2F-rrQ" firstAttribute="leading" secondItem="BnG-NU-7Mg" secondAttribute="trailing" constant="8" id="SQk-zN-CO6"/>
                         <constraint firstAttribute="trailing" secondItem="Unx-UY-EgO" secondAttribute="trailing" constant="16" id="dpB-Nz-PQ9"/>
-                        <constraint firstItem="PDP-Yq-nqL" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="gjN-k4-wFE"/>
                         <constraint firstItem="FJB-2F-rrQ" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="nY0-2s-Wgo"/>
-                        <constraint firstItem="8lk-sN-3IP" firstAttribute="leading" secondItem="FJB-2F-rrQ" secondAttribute="trailing" constant="4" id="ql2-B3-82Y"/>
+                        <constraint firstItem="8lk-sN-3IP" firstAttribute="leading" secondItem="FJB-2F-rrQ" secondAttribute="trailing" constant="11" id="ql2-B3-82Y"/>
                         <constraint firstItem="BnG-NU-7Mg" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="rwC-ak-Ydb"/>
-                        <constraint firstItem="BnG-NU-7Mg" firstAttribute="leading" secondItem="PDP-Yq-nqL" secondAttribute="trailing" constant="8" id="tV2-03-0Ss"/>
+                        <constraint firstItem="Mli-PC-WUh" firstAttribute="bottom" secondItem="FJB-2F-rrQ" secondAttribute="bottom" id="ulL-Xh-oCC"/>
                     </constraints>
                 </view>
             </subviews>
@@ -103,10 +100,10 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="fullCloseButton" destination="PDP-Yq-nqL" id="rQx-N0-cbS"/>
                 <outlet property="fullContainerView" destination="Ami-Cg-fcA" id="Fo9-bp-DMP"/>
                 <outlet property="fullOptionsButton" destination="Unx-UY-EgO" id="657-Eq-QhA"/>
                 <outlet property="fullRoomAvatarView" destination="FJB-2F-rrQ" id="iok-M1-un0"/>
+                <outlet property="fullRoomEncryptionBadgeView" destination="Mli-PC-WUh" id="Ipu-zu-qBB"/>
                 <outlet property="fullRoomNameLabel" destination="8lk-sN-3IP" id="bDF-fD-KmE"/>
                 <outlet property="fullTitleLabel" destination="BnG-NU-7Mg" id="zhJ-om-6HM"/>
                 <outlet property="partialContainerView" destination="p54-De-nkd" id="huG-Db-CIU"/>
@@ -116,7 +113,6 @@
         </view>
     </objects>
     <resources>
-        <image name="new_close" width="16" height="16"/>
         <image name="spaces_more" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

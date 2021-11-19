@@ -4636,15 +4636,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         [self declineRoomInvitation];
     }
-    else if ([titleView isKindOfClass:ThreadRoomTitleView.class])
-    {
-        ThreadRoomTitleView *threadTitleView = (ThreadRoomTitleView *)titleView;
-        if (tappedView == threadTitleView.closeButton)
-        {
-            //  dismiss self
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-    }
 }
 
 - (void)declineRoomInvitation
@@ -6338,7 +6329,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                                                                  previewData:nil];
     self.threadBridgePresenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     self.threadBridgePresenter.delegate = self;
-    [self.threadBridgePresenter presentFrom:self animated:YES];
+    [self.threadBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate
