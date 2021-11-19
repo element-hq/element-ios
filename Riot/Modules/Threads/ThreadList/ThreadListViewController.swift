@@ -110,14 +110,11 @@ final class ThreadListViewController: UIViewController {
     }
     
     private func setupViews() {
-        let filterBarButtonItem = UIBarButtonItem(image: Asset.Images.roomContextMenuMore.image,
-                                                  style: .plain,
-                                                  target: self,
-                                                  action: #selector(filterButtonTapped(_:)))
-        
-        self.navigationItem.rightBarButtonItem = filterBarButtonItem
-        
-        self.title = VectorL10n.threadsTitle
+        let titleView = ThreadRoomTitleView.loadFromNib()
+        titleView.mode = .allThreads
+        titleView.viewDelegate = self
+        titleView.configure(withViewModel: viewModel.titleViewModel)
+        navigationItem.titleView = titleView
         
         self.threadsTableView.tableFooterView = UIView()
         self.threadsTableView.register(cellType: ThreadTableViewCell.self)
@@ -189,11 +186,6 @@ final class ThreadListViewController: UIViewController {
 
     // MARK: - Actions
 
-    @objc
-    private func filterButtonTapped(_ sender: UIBarButtonItem) {
-        self.viewModel.process(viewAction: .showFilterTypes)
-    }
-
 }
 
 // MARK: - ThreadListViewModelViewDelegate
@@ -205,6 +197,8 @@ extension ThreadListViewController: ThreadListViewModelViewDelegate {
         self.render(viewState: viewSate)
     }
 }
+
+//  MARK: - UITableViewDataSource
 
 extension ThreadListViewController: UITableViewDataSource {
     
@@ -225,6 +219,8 @@ extension ThreadListViewController: UITableViewDataSource {
     
 }
 
+//  MARK: - UITableViewDelegate
+
 extension ThreadListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -235,6 +231,16 @@ extension ThreadListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+}
+
+//  MARK: - ThreadRoomTitleViewDelegate
+
+extension ThreadListViewController: ThreadRoomTitleViewDelegate {
+    
+    func threadRoomTitleViewDidTapOptions(_ view: ThreadRoomTitleView) {
+        self.viewModel.process(viewAction: .showFilterTypes)
     }
     
 }

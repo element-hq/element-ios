@@ -37,6 +37,7 @@ protocol ThreadListViewModelProtocol {
     
     var viewState: ThreadListViewState { get }
     
+    var titleViewModel: ThreadRoomTitleViewModel { get }
     var selectedFilterType: ThreadListFilterType { get }
     var numberOfThreads: Int { get }
     func threadViewModel(at index: Int) -> ThreadViewModel?

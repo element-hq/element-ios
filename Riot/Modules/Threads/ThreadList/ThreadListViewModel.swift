@@ -87,6 +87,30 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         return viewModel(forThread: threads[index])
     }
     
+    var titleViewModel: ThreadRoomTitleViewModel {
+        guard let room = session.room(withRoomId: roomId) else {
+            return .empty
+        }
+        
+        let avatarViewData = AvatarViewData(matrixItemId: room.matrixItemId,
+                                            displayName: room.displayName,
+                                            avatarUrl: room.mxContentUri,
+                                            mediaManager: room.mxSession.mediaManager,
+                                            fallbackImage: AvatarFallbackImage.matrixItem(room.matrixItemId,
+                                                                                          room.displayName))
+        
+        let encrpytionBadge: UIImage?
+        if let summary = room.summary, session.crypto != nil {
+            encrpytionBadge = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
+        } else {
+            encrpytionBadge = nil
+        }
+        
+        return ThreadRoomTitleViewModel(roomAvatar: avatarViewData,
+                                        roomEncryptionBadge: encrpytionBadge,
+                                        roomDisplayName: room.displayName)
+    }
+    
     // MARK: - Private
     
     private func viewModel(forThread thread: MXThread) -> ThreadViewModel {
