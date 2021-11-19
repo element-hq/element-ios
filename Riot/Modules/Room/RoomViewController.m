@@ -3266,15 +3266,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (selectedEvent.sentState == MXEventSentStateSent) {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
-            }]];
-        }
-        
         if (self.roomDataSource.threadId && [selectedEvent.eventId isEqualToString:self.roomDataSource.threadId])
         {
             //  if in the thread and selected event is the root event
@@ -3286,6 +3277,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [self.delegate roomViewController:self
                                    showRoomWithId:self.roomDataSource.roomId
                                           eventId:selectedEvent.eventId];
+            }]];
+        }
+        
+        if (selectedEvent.sentState == MXEventSentStateSent) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
         }
         
