@@ -75,6 +75,10 @@ import PostHog
         postHog?.enable()
         isRunning = true
         MXLog.debug("[Analytics] Started.")
+        
+        // Catch and log crashes
+        MXLogger.logCrashes(true)
+        MXLogger.setBuildVersion(AppDelegate.theDelegate().build)
     }
     
     private func identify(with settings: AnalyticsSettings) {
@@ -99,6 +103,8 @@ import PostHog
         RiotSettings.shared.isIdentifiedForAnalytics = false
         
         postHog = nil
+        
+        MXLogger.logCrashes(false)
     }
     
     func forceUpload() {
