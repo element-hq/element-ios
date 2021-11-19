@@ -3270,9 +3270,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             //  if in the thread and selected event is the root event
             //  add "View in room" action
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 [self.delegate roomViewController:self
                                    showRoomWithId:self.roomDataSource.roomId
