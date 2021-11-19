@@ -148,6 +148,7 @@ internal enum Asset {
     internal static let pollDeleteOptionIcon = ImageAsset(name: "poll_delete_option_icon")
     internal static let pollEditIcon = ImageAsset(name: "poll_edit_icon")
     internal static let pollEndIcon = ImageAsset(name: "poll_end_icon")
+    internal static let threadsFilter = ImageAsset(name: "threads_filter")
     internal static let urlPreviewClose = ImageAsset(name: "url_preview_close")
     internal static let urlPreviewCloseDark = ImageAsset(name: "url_preview_close_dark")
     internal static let voiceMessageCancelGradient = ImageAsset(name: "voice_message_cancel_gradient")
