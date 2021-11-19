@@ -16,59 +16,64 @@
 
 import Foundation
 import MatrixKit
+import Reusable
+
+enum ThreadRoomTitleViewMode {
+    case allThreads
+    case specificThread(threadId: String)
+}
 
 @objc
-enum ThreadRoomTitleViewMode: Int {
-    case partial
-    case full
+protocol ThreadRoomTitleViewDelegate: AnyObject {
+    func threadRoomTitleViewDidTapOptions(_ view: ThreadRoomTitleView)
 }
 
 @objcMembers
 class ThreadRoomTitleView: RoomTitleView {
     
-    var mode: ThreadRoomTitleViewMode = .full {
+    var mode: ThreadRoomTitleViewMode = .allThreads {
         didSet {
             update()
         }
     }
-    var threadId: String! {
-        didSet {
-            updateMode()
+    weak var viewDelegate: ThreadRoomTitleViewDelegate?
+    
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var roomAvatarView: RoomAvatarView!
+    @IBOutlet private weak var roomEncryptionBadgeView: UIImageView!
+    @IBOutlet private weak var roomNameLabel: UILabel!
+    @IBOutlet private weak var optionsButton: UIButton!
+    
+    //  MARK: - Methods
+    
+    func configure(withViewModel viewModel: ThreadRoomTitleViewModel) {
+        if let avatarViewData = viewModel.roomAvatar {
+            roomAvatarView.fill(with: avatarViewData)
+        } else {
+            roomAvatarView.avatarImageView.image = nil
         }
+        roomEncryptionBadgeView.image = viewModel.roomEncryptionBadge
+        roomEncryptionBadgeView.isHidden = viewModel.roomEncryptionBadge == nil
+        roomNameLabel.text = viewModel.roomDisplayName
     }
     
-    //  Container views
-    @IBOutlet private weak var partialContainerView: UIView!
-    @IBOutlet private weak var fullContainerView: UIView!
-    
-    //  Individual views
-    @IBOutlet private weak var partialTitleLabel: UILabel!
-    @IBOutlet private weak var fullTitleLabel: UILabel!
-    @IBOutlet private weak var fullRoomAvatarView: RoomAvatarView!
-    @IBOutlet private weak var fullRoomEncryptionBadgeView: UIImageView!
-    @IBOutlet private weak var fullRoomNameLabel: UILabel!
-    @IBOutlet private weak var fullOptionsButton: UIButton!
+    //  MARK: - Overrides
     
     override var mxRoom: MXRoom! {
         didSet {
-            updateMode()
+            update()
         }
     }
     
     override class func nib() -> UINib! {
-        return UINib(nibName: String(describing: self),
-                     bundle: .main)
+        return self.nib
     }
     
     override func refreshDisplay() {
-        partialTitleLabel.text = VectorL10n.roomThreadTitle
-        fullTitleLabel.text = VectorL10n.roomThreadTitle
-        
         guard let room = mxRoom else {
             //  room not initialized yet
             return
         }
-        fullRoomNameLabel.text = room.displayName
         
         let avatarViewData = AvatarViewData(matrixItemId: room.matrixItemId,
                                             displayName: room.displayName,
@@ -76,18 +81,18 @@ class ThreadRoomTitleView: RoomTitleView {
                                             mediaManager: room.mxSession.mediaManager,
                                             fallbackImage: AvatarFallbackImage.matrixItem(room.matrixItemId,
                                                                                           room.displayName))
-        fullRoomAvatarView.fill(with: avatarViewData)
         
-        guard let summary = room.summary else {
-            fullRoomEncryptionBadgeView.isHidden = true
-            return
-        }
-        if summary.isEncrypted && room.mxSession.crypto != nil {
-            fullRoomEncryptionBadgeView.image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
-            fullRoomEncryptionBadgeView.isHidden = false
+        let encrpytionBadge: UIImage?
+        if let summary = room.summary, room.mxSession.crypto != nil {
+            encrpytionBadge = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
         } else {
-            fullRoomEncryptionBadgeView.isHidden = true
+            encrpytionBadge = nil
         }
+        
+        let viewModel = ThreadRoomTitleViewModel(roomAvatar: avatarViewData,
+                                                 roomEncryptionBadge: encrpytionBadge,
+                                                 roomDisplayName: room.displayName)
+        configure(withViewModel: viewModel)
     }
     
     override func awakeFromNib() {
@@ -116,33 +121,14 @@ class ThreadRoomTitleView: RoomTitleView {
                                                object: nil)
     }
     
-    private func updateMode() {
-        //  ensure both mxRoom and threadId are set
-        guard let room = mxRoom,
-              let threadId = threadId else {
-            return
-        }
-        
-        if room.mxSession.threadingService.thread(withId: threadId) == nil {
-            //  thread not created yet
-            mode = .partial
-            //  use full mode for every case for now
-            //  TODO: Fix in future
-            mode = .full
-        } else {
-            //  thread created before
-            mode = .full
-        }
-    }
-    
     private func update() {
         switch mode {
-        case .partial:
-            partialContainerView.isHidden = false
-            fullContainerView.isHidden = true
-        case .full:
-            partialContainerView.isHidden = true
-            fullContainerView.isHidden = false
+        case .allThreads:
+            titleLabel.text = VectorL10n.threadsTitle
+            optionsButton.setImage(Asset.Images.threadsFilter.image, for: .normal)
+        case .specificThread:
+            titleLabel.text = VectorL10n.roomThreadTitle
+            optionsButton.setImage(Asset.Images.roomContextMenuMore.image, for: .normal)
         }
     }
     
@@ -153,19 +139,20 @@ class ThreadRoomTitleView: RoomTitleView {
     }
     
     @IBAction private func optionsButtonTapped(_ sender: UIButton) {
-        
+        viewDelegate?.threadRoomTitleViewDidTapOptions(self)
     }
     
 }
 
+extension ThreadRoomTitleView: NibLoadable {}
+
 extension ThreadRoomTitleView: Themable {
     
     func update(theme: Theme) {
-        partialTitleLabel.textColor = theme.colors.primaryContent
-        fullRoomAvatarView.backgroundColor = .clear
-        fullTitleLabel.textColor = theme.colors.primaryContent
-        fullRoomNameLabel.textColor = theme.colors.secondaryContent
-        fullOptionsButton.tintColor = theme.colors.accent
+        roomAvatarView.backgroundColor = .clear
+        titleLabel.textColor = theme.colors.primaryContent
+        roomNameLabel.textColor = theme.colors.secondaryContent
+        optionsButton.tintColor = theme.colors.accent
     }
     
 }

@@ -15,33 +15,17 @@
             <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p54-De-nkd">
-                    <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thread" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mO3-2G-Gl3">
-                            <rect key="frame" x="12" y="22.5" width="51.5" height="19.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="mO3-2G-Gl3" firstAttribute="leading" secondItem="p54-De-nkd" secondAttribute="leading" constant="12" id="Ntr-3O-lQk"/>
-                        <constraint firstItem="mO3-2G-Gl3" firstAttribute="centerY" secondItem="p54-De-nkd" secondAttribute="centerY" id="XTC-hf-K0V"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ami-Cg-fcA">
                     <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thread" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BnG-NU-7Mg">
-                            <rect key="frame" x="48" y="22" width="56.5" height="20.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Threads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BnG-NU-7Mg">
+                            <rect key="frame" x="48" y="22" width="65.5" height="20.5"/>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FJB-2F-rrQ" customClass="RoomAvatarView" customModule="Riot" customModuleProvider="target">
-                            <rect key="frame" x="112.5" y="24" width="16" height="16"/>
+                            <rect key="frame" x="121.5" y="24" width="16" height="16"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="Fg7-y5-fEC"/>
@@ -49,7 +33,7 @@
                             </constraints>
                         </view>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mli-PC-WUh">
-                            <rect key="frame" x="122.5" y="28" width="12" height="12"/>
+                            <rect key="frame" x="131.5" y="28" width="12" height="12"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Mli-PC-WUh" secondAttribute="height" multiplier="1:1" id="Ohw-dy-qg0"/>
@@ -57,7 +41,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8lk-sN-3IP">
-                            <rect key="frame" x="139.5" y="24.5" width="67" height="15"/>
+                            <rect key="frame" x="148.5" y="24.5" width="67" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -65,7 +49,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Unx-UY-EgO">
                             <rect key="frame" x="195" y="12" width="32" height="40"/>
                             <inset key="contentEdgeInsets" minX="4" minY="8" maxX="4" maxY="8"/>
-                            <state key="normal" image="spaces_more"/>
+                            <state key="normal" image="threads_filter"/>
                             <connections>
                                 <action selector="optionsButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="wOn-cR-mS5"/>
                             </connections>
@@ -89,31 +73,24 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="p54-De-nkd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="CTf-kS-H79"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Ami-Cg-fcA" secondAttribute="trailing" id="a9m-d6-0go"/>
                 <constraint firstAttribute="bottom" secondItem="Ami-Cg-fcA" secondAttribute="bottom" id="fEm-nj-yVF"/>
-                <constraint firstAttribute="bottom" secondItem="p54-De-nkd" secondAttribute="bottom" id="gn1-Jv-snP"/>
                 <constraint firstItem="Ami-Cg-fcA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="h0M-ab-EGv"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="p54-De-nkd" secondAttribute="trailing" id="nB5-Kt-Sx9"/>
-                <constraint firstItem="p54-De-nkd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="tHf-Gk-RFp"/>
                 <constraint firstItem="Ami-Cg-fcA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="zAN-VI-ZYk"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="fullContainerView" destination="Ami-Cg-fcA" id="Fo9-bp-DMP"/>
-                <outlet property="fullOptionsButton" destination="Unx-UY-EgO" id="657-Eq-QhA"/>
-                <outlet property="fullRoomAvatarView" destination="FJB-2F-rrQ" id="iok-M1-un0"/>
-                <outlet property="fullRoomEncryptionBadgeView" destination="Mli-PC-WUh" id="Ipu-zu-qBB"/>
-                <outlet property="fullRoomNameLabel" destination="8lk-sN-3IP" id="bDF-fD-KmE"/>
-                <outlet property="fullTitleLabel" destination="BnG-NU-7Mg" id="zhJ-om-6HM"/>
-                <outlet property="partialContainerView" destination="p54-De-nkd" id="huG-Db-CIU"/>
-                <outlet property="partialTitleLabel" destination="mO3-2G-Gl3" id="X0E-ry-7zp"/>
+                <outlet property="optionsButton" destination="Unx-UY-EgO" id="iOV-Of-m2N"/>
+                <outlet property="roomAvatarView" destination="FJB-2F-rrQ" id="VKY-tN-0eg"/>
+                <outlet property="roomEncryptionBadgeView" destination="Mli-PC-WUh" id="9jZ-bS-JCQ"/>
+                <outlet property="roomNameLabel" destination="8lk-sN-3IP" id="njT-pb-QqT"/>
+                <outlet property="titleLabel" destination="BnG-NU-7Mg" id="4Fn-m2-HoC"/>
             </connections>
             <point key="canvasLocation" x="0.7246376811594204" y="-152.00892857142856"/>
         </view>
     </objects>
     <resources>
-        <image name="spaces_more" width="24" height="24"/>
+        <image name="threads_filter" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

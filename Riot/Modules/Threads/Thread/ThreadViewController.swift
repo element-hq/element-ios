@@ -41,7 +41,7 @@ class ThreadViewController: RoomViewController {
             return
         }
         
-        threadTitleView.threadId = threadId
+        threadTitleView.mode = .specificThread(threadId: threadId)
     }
     
 }
