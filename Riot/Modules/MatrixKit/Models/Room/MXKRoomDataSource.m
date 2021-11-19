@@ -2697,11 +2697,27 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 - (BOOL)canPerformActionOnEvent:(MXEvent*)event
 {
     BOOL isSent = event.sentState == MXEventSentStateSent;
-    BOOL isRoomMessage = event.eventType == MXEventTypeRoomMessage;
+    
+    if (!isSent) {
+        return NO;
+    }
+    
+    if (event.eventType == MXEventTypePollStart) {
+        return YES;
+    }
+    
+    BOOL isRoomMessage = (event.eventType == MXEventTypeRoomMessage);
+    
+    if (!isRoomMessage) {
+        return NO;
+    }
     
     NSString *messageType = event.content[@"msgtype"];
+    if (messageType == nil || [messageType isEqualToString:@"m.bad.encrypted"]) {
+        return NO;
+    }
     
-    return isSent && isRoomMessage && messageType && ![messageType isEqualToString:@"m.bad.encrypted"];
+    return YES;
 }
 
 - (void)setState:(MXKDataSourceState)newState
