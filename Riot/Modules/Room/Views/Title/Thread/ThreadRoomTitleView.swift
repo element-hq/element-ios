@@ -43,15 +43,11 @@ class ThreadRoomTitleView: RoomTitleView {
     
     //  Individual views
     @IBOutlet private weak var partialTitleLabel: UILabel!
-    @IBOutlet private weak var fullCloseButton: UIButton!
     @IBOutlet private weak var fullTitleLabel: UILabel!
     @IBOutlet private weak var fullRoomAvatarView: RoomAvatarView!
+    @IBOutlet private weak var fullRoomEncryptionBadgeView: UIImageView!
     @IBOutlet private weak var fullRoomNameLabel: UILabel!
     @IBOutlet private weak var fullOptionsButton: UIButton!
-    
-    var closeButton: UIButton {
-        return fullCloseButton
-    }
     
     override var mxRoom: MXRoom! {
         didSet {
@@ -81,12 +77,24 @@ class ThreadRoomTitleView: RoomTitleView {
                                             fallbackImage: AvatarFallbackImage.matrixItem(room.matrixItemId,
                                                                                           room.displayName))
         fullRoomAvatarView.fill(with: avatarViewData)
+        
+        guard let summary = room.summary else {
+            fullRoomEncryptionBadgeView.isHidden = true
+            return
+        }
+        if summary.isEncrypted && room.mxSession.crypto != nil {
+            fullRoomEncryptionBadgeView.image = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
+            fullRoomEncryptionBadgeView.isHidden = false
+        } else {
+            fullRoomEncryptionBadgeView.isHidden = true
+        }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         update(theme: ThemeService.shared().theme)
+        registerThemeServiceDidChangeThemeNotification()
     }
     
     override func didMoveToSuperview() {
@@ -99,6 +107,13 @@ class ThreadRoomTitleView: RoomTitleView {
                 self.trailingAnchor.constraint(equalTo: superview.trailingAnchor)
             ])
         }
+    }
+    
+    private func registerThemeServiceDidChangeThemeNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(themeDidChange),
+                                               name: .themeServiceDidChangeTheme,
+                                               object: nil)
     }
     
     private func updateMode() {
@@ -133,11 +148,8 @@ class ThreadRoomTitleView: RoomTitleView {
     
     //  MARK: - Actions
     
-    @IBAction private func closeButtonTapped(_ sender: UIButton) {
-        let gesture = UITapGestureRecognizer(target: nil, action: nil)
-        closeButton.addGestureRecognizer(gesture)
-        tapGestureDelegate.roomTitleView(self, recognizeTapGesture: gesture)
-        closeButton.removeGestureRecognizer(gesture)
+    @objc private func themeDidChange() {
+        self.update(theme: ThemeService.shared().theme)
     }
     
     @IBAction private func optionsButtonTapped(_ sender: UIButton) {
@@ -150,10 +162,10 @@ extension ThreadRoomTitleView: Themable {
     
     func update(theme: Theme) {
         partialTitleLabel.textColor = theme.colors.primaryContent
-        fullCloseButton.tintColor = theme.colors.secondaryContent
+        fullRoomAvatarView.backgroundColor = .clear
         fullTitleLabel.textColor = theme.colors.primaryContent
         fullRoomNameLabel.textColor = theme.colors.secondaryContent
-        fullOptionsButton.tintColor = theme.colors.secondaryContent
+        fullOptionsButton.tintColor = theme.colors.accent
     }
     
 }

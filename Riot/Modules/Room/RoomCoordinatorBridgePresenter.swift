@@ -72,6 +72,12 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         
     private let bridgeParameters: RoomCoordinatorBridgePresenterParameters
     private var coordinator: RoomCoordinator?
+    private var navigationType: NavigationType = .present
+    
+    private enum NavigationType {
+        case present
+        case push
+    }
     
     // MARK: Public
     
@@ -87,23 +93,6 @@ final class RoomCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        
-        if bridgeParameters.threadId != nil {
-            let coordinator = self.createRoomCoordinator()
-            coordinator.delegate = self
-            coordinator.start()
-            let presentable = coordinator.toPresentable()
-            
-            let presentationController = CustomSizedPresentationController(presentedViewController: presentable,
-                                                                           presenting: viewController)
-            presentationController.dismissOnBackgroundTap = false
-            presentationController.cornerRadius = 12
-            presentable.transitioningDelegate = presentationController
-            viewController.present(presentable, animated: animated, completion: nil)
-            
-            self.coordinator = coordinator
-            return
-        }
         let coordinator = self.createRoomCoordinator()
         coordinator.delegate = self
         let presentable = coordinator.toPresentable()
@@ -112,6 +101,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         coordinator.start()
         
         self.coordinator = coordinator
+        self.navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
@@ -123,13 +113,25 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         coordinator.start() // Will trigger view controller push
         
         self.coordinator = coordinator
+        self.navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
         }
-        coordinator.toPresentable().dismiss(animated: animated) {
+        switch navigationType {
+        case .present:
+            coordinator.toPresentable().dismiss(animated: animated) {
+                self.coordinator = nil
+
+                completion?()
+            }
+        case .push:
+            guard let navigationController = coordinator.toPresentable() as? UINavigationController else {
+                return
+            }
+            navigationController.popViewController(animated: animated)
             self.coordinator = nil
 
             completion?()

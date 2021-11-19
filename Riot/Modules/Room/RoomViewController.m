@@ -3284,26 +3284,26 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
+        if (self.roomDataSource.threadId && [selectedEvent.eventId isEqualToString:self.roomDataSource.threadId])
+        {
+            //  if in the thread and selected event is the root event
+            //  add "View in room" action
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                [self.delegate roomViewController:self
+                                   showRoomWithId:self.roomDataSource.roomId
+                                          eventId:selectedEvent.eventId];
+            }]];
+        }
+        
         if (selectedEvent.sentState == MXEventSentStateSent) {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
-            }]];
-        }
-        
-        if (self.roomDataSource.threadId && [selectedEvent.eventId isEqualToString:self.roomDataSource.threadId])
-        {
-            //  if in the thread and selected event is the root event
-            //  add "View in room" action
-            [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                [self.delegate roomViewController:self
-                                   showRoomWithId:self.roomDataSource.roomId
-                                          eventId:selectedEvent.eventId];
             }]];
         }
         
@@ -4660,15 +4660,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else if (tappedView == previewHeader.leftButton)
     {
         [self declineRoomInvitation];
-    }
-    else if ([titleView isKindOfClass:ThreadRoomTitleView.class])
-    {
-        ThreadRoomTitleView *threadTitleView = (ThreadRoomTitleView *)titleView;
-        if (tappedView == threadTitleView.closeButton)
-        {
-            //  dismiss self
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
     }
 }
 
@@ -6363,7 +6354,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                                                                  previewData:nil];
     self.threadBridgePresenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     self.threadBridgePresenter.delegate = self;
-    [self.threadBridgePresenter presentFrom:self animated:YES];
+    [self.threadBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
 #pragma mark - RoomContextualMenuViewControllerDelegate
