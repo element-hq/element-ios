@@ -63,13 +63,15 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         switch viewAction {
         case .loadData:
             loadData()
+        case .complete:
+            coordinatorDelegate?.threadListViewModelDidLoadThreads(self)
         case .showFilterTypes:
             viewState = .showingFilterTypes
         case .selectFilterType(let type):
             selectedFilterType = type
             loadData()
-        case .complete:
-            coordinatorDelegate?.threadListViewModelDidLoadThreads(self)
+        case .selectThread(let index):
+            selectThread(index)
         case .cancel:
             cancelOperations()
             coordinatorDelegate?.threadListViewModelDidCancel(self)
@@ -224,6 +226,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             //  go into loaded state
             self.viewState = .loaded
         }
+    }
+    
+    private func selectThread(_ index: Int) {
+        guard index < threads.count else {
+            return
+        }
+        let thread = threads[index]
+        coordinatorDelegate?.threadListViewModelDidSelectThread(self, thread: thread)
     }
     
     private func cancelOperations() {

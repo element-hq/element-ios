@@ -26,6 +26,7 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     // MARK: Private
         
     private let parameters: ThreadsCoordinatorParameters
+    private var selectedThreadCoordinator: RoomCoordinator?
     
     private var navigationRouter: NavigationRouterType {
         return self.parameters.navigationRouter
@@ -42,6 +43,11 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     
     init(parameters: ThreadsCoordinatorParameters) {
         self.parameters = parameters
+        super.init()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didPopModule(_:)),
+                                               name: NavigationRouter.didPopModule,
+                                               object: nil)
     }    
     
     // MARK: - Public
@@ -73,11 +79,39 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
     }
     
     // MARK: - Private
+    
+    @objc
+    private func didPopModule(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let module = userInfo[NavigationRouter.NotificationUserInfoKey.module] as? Presentable,
+              let selectedThreadCoordinator = selectedThreadCoordinator else {
+            return
+        }
+        
+        if module.toPresentable() == selectedThreadCoordinator.toPresentable() {
+            selectedThreadCoordinator.delegate = nil
+            remove(childCoordinator: selectedThreadCoordinator)
+            self.selectedThreadCoordinator = nil
+        }
+    }
 
     private func createThreadListCoordinator() -> ThreadListCoordinator {
         let coordinatorParameters = ThreadListCoordinatorParameters(session: self.parameters.session,
                                                                     roomId: self.parameters.roomId)
         let coordinator = ThreadListCoordinator(parameters: coordinatorParameters)
+        coordinator.delegate = self
+        return coordinator
+    }
+    
+    private func createThreadCoordinator(forThread thread: MXThread) -> RoomCoordinator {
+        let parameters = RoomCoordinatorParameters(navigationRouter: navigationRouter,
+                                                   navigationRouterStore: nil,
+                                                   session: parameters.session,
+                                                   roomId: parameters.roomId,
+                                                   eventId: nil,
+                                                   threadId: thread.identifier,
+                                                   displayConfiguration: .forThreads)
+        let coordinator = RoomCoordinator(parameters: parameters)
         coordinator.delegate = self
         return coordinator
     }
@@ -97,7 +131,36 @@ extension ThreadsCoordinator: ThreadListCoordinatorDelegate {
         self.delegate?.threadsCoordinatorDidComplete(self)
     }
     
+    func threadListCoordinatorDidSelectThread(_ coordinator: ThreadListCoordinatorProtocol, thread: MXThread) {
+        let roomCoordinator = createThreadCoordinator(forThread: thread)
+        selectedThreadCoordinator = roomCoordinator
+        roomCoordinator.start()
+        self.add(childCoordinator: roomCoordinator)
+    }
+    
     func threadListCoordinatorDidCancel(_ coordinator: ThreadListCoordinatorProtocol) {
         self.delegate?.threadsCoordinatorDidComplete(self)
     }
+}
+
+//  MARK: - RoomCoordinatorDelegate
+
+extension ThreadsCoordinator: RoomCoordinatorDelegate {
+    
+    func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {
+        
+    }
+    
+    func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol) {
+        
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        
+    }
+    
+    func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol) {
+        
+    }
+    
 }

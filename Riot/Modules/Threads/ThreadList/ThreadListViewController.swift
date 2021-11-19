@@ -114,7 +114,9 @@ final class ThreadListViewController: UIViewController {
         titleView.mode = .allThreads
         titleView.viewDelegate = self
         titleView.configure(withViewModel: viewModel.titleViewModel)
-        navigationItem.titleView = titleView
+        navigationItem.leftItemsSupplementBackButton = true
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
         
         self.threadsTableView.tableFooterView = UIView()
         self.threadsTableView.register(cellType: ThreadTableViewCell.self)
@@ -231,6 +233,8 @@ extension ThreadListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        viewModel.process(viewAction: .selectThread(indexPath.row))
     }
     
 }

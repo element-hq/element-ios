@@ -136,9 +136,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     }
 
     func toPresentable() -> UIViewController {
-        if parameters.threadId != nil {
-            return self.navigationRouter?.toPresentable() ?? self.roomViewController
-        }
         return self.roomViewController
     }
 

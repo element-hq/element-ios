@@ -65,6 +65,10 @@ extension ThreadListCoordinator: ThreadListViewModelCoordinatorDelegate {
         self.delegate?.threadListCoordinatorDidLoadThreads(self)
     }
     
+    func threadListViewModelDidSelectThread(_ viewModel: ThreadListViewModelProtocol, thread: MXThread) {
+        self.delegate?.threadListCoordinatorDidSelectThread(self, thread: thread)
+    }
+    
     func threadListViewModelDidCancel(_ viewModel: ThreadListViewModelProtocol) {
         self.delegate?.threadListCoordinatorDidCancel(self)
     }

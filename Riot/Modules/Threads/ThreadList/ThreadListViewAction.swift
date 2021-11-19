@@ -21,8 +21,9 @@ import Foundation
 /// ThreadListViewController view actions exposed to view model
 enum ThreadListViewAction {
     case loadData
+    case complete
     case showFilterTypes
     case selectFilterType(_ type: ThreadListFilterType)
-    case complete
+    case selectThread(_ index: Int)
     case cancel
 }

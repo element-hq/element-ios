@@ -20,6 +20,7 @@ import Foundation
 
 protocol ThreadListCoordinatorDelegate: AnyObject {
     func threadListCoordinatorDidLoadThreads(_ coordinator: ThreadListCoordinatorProtocol)
+    func threadListCoordinatorDidSelectThread(_ coordinator: ThreadListCoordinatorProtocol, thread: MXThread)
     func threadListCoordinatorDidCancel(_ coordinator: ThreadListCoordinatorProtocol)
 }
 
