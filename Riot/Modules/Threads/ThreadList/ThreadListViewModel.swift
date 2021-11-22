@@ -54,6 +54,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     }
     
     deinit {
+        session.threadingService.removeDelegate(self)
         self.cancelOperations()
     }
     
@@ -111,6 +112,25 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         return ThreadRoomTitleViewModel(roomAvatar: avatarViewData,
                                         roomEncryptionBadge: encrpytionBadge,
                                         roomDisplayName: room.displayName)
+    }
+    
+    private var emptyViewModel: ThreadListEmptyViewModel {
+        switch selectedFilterType {
+        case .all:
+            return ThreadListEmptyViewModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+                                            title: VectorL10n.threadsEmptyTitle,
+                                            info: VectorL10n.threadsEmptyInfoAll,
+                                            tip: VectorL10n.threadsEmptyTip,
+                                            showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
+                                            showAllThreadsButtonHidden: true)
+        case .myThreads:
+            return ThreadListEmptyViewModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+                                            title: VectorL10n.threadsEmptyTitle,
+                                            info: VectorL10n.threadsEmptyInfoMy,
+                                            tip: VectorL10n.threadsEmptyTip,
+                                            showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
+                                            showAllThreadsButtonHidden: false)
+        }
     }
     
     // MARK: - Private
@@ -195,15 +215,22 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         )
     }
     
-    private func loadData() {
+    private func loadData(showLoading: Bool = true) {
 
-        viewState = .loading
+        if showLoading {
+            viewState = .loading
+        }
         
         switch selectedFilterType {
         case .all:
             threads = session.threadingService.threads(inRoom: roomId)
         case .myThreads:
             threads = session.threadingService.participatedThreads(inRoom: roomId)
+        }
+        
+        if threads.isEmpty {
+            viewState = .empty(emptyViewModel)
+            return
         }
         
         threadsLoaded()
@@ -244,8 +271,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
 extension ThreadListViewModel: MXThreadingServiceDelegate {
     
     func threadingServiceDidUpdateThreads(_ service: MXThreadingService) {
-        threads = service.threads(inRoom: roomId)
-        viewState = .loaded
+        loadData(showLoading: false)
     }
     
 }

@@ -5079,6 +5079,26 @@ public class VectorL10n: NSObject {
   public static var threadsActionMyThreads: String { 
     return VectorL10n.tr("Vector", "threads_action_my_threads") 
   }
+  /// Threads help keep your conversations on-topic and easy to track.
+  public static var threadsEmptyInfoAll: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_all") 
+  }
+  /// Reply to an ongoing thread or use “Thread” when selecting a message to start a new one.
+  public static var threadsEmptyInfoMy: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_my") 
+  }
+  /// Show all threads
+  public static var threadsEmptyShowAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_empty_show_all_threads") 
+  }
+  /// Tip: Use “Thread” option when selecting a message.
+  public static var threadsEmptyTip: String { 
+    return VectorL10n.tr("Vector", "threads_empty_tip") 
+  }
+  /// Keep discussions organised with threads
+  public static var threadsEmptyTitle: String { 
+    return VectorL10n.tr("Vector", "threads_empty_title") 
+  }
   /// Threads
   public static var threadsTitle: String { 
     return VectorL10n.tr("Vector", "threads_title") 

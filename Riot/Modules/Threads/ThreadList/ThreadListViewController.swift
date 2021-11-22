@@ -31,6 +31,7 @@ final class ThreadListViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet private weak var threadsTableView: UITableView!
+    @IBOutlet private weak var emptyView: ThreadListEmptyView!
     
     // MARK: Private
 
@@ -102,6 +103,8 @@ final class ThreadListViewController: UIViewController {
             theme.applyStyle(onNavigationBar: navigationBar)
         }
 
+        emptyView.update(theme: theme)
+        emptyView.backgroundColor = theme.colors.background
         self.threadsTableView.backgroundColor = theme.backgroundColor
         self.threadsTableView.separatorColor = theme.colors.separator
         self.threadsTableView.reloadData()
@@ -142,6 +145,8 @@ final class ThreadListViewController: UIViewController {
             self.renderLoading()
         case .loaded:
             self.renderLoaded()
+        case .empty(let viewModel):
+            self.renderEmptyView(withViewModel: viewModel)
         case .showingFilterTypes:
             self.renderShowingFilterTypes()
         case .error(let error):
@@ -150,12 +155,24 @@ final class ThreadListViewController: UIViewController {
     }
     
     private func renderLoading() {
+        emptyView.isHidden = true
+        threadsTableView.isHidden = true
         self.activityPresenter.presentActivityIndicator(on: self.view, animated: true)
     }
     
     private func renderLoaded() {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        threadsTableView.isHidden = false
         self.threadsTableView.reloadData()
+        navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+    
+    private func renderEmptyView(withViewModel emptyViewModel: ThreadListEmptyViewModel) {
+        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        emptyView.configure(withViewModel: emptyViewModel)
+        threadsTableView.isHidden = true
+        emptyView.isHidden = false
+        navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectedFilterType == .myThreads
     }
     
     private func renderShowingFilterTypes() {
@@ -251,6 +268,16 @@ extension ThreadListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         viewModel.process(viewAction: .selectThread(indexPath.row))
+    }
+    
+}
+
+//  MARK: - ThreadListEmptyViewDelegate
+
+extension ThreadListViewController: ThreadListEmptyViewDelegate {
+    
+    func threadListEmptyViewTappedShowAllThreads(_ emptyView: ThreadListEmptyView) {
+        viewModel.process(viewAction: .selectFilterType(.all))
     }
     
 }
