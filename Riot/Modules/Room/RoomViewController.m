@@ -1758,7 +1758,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         [self refreshMissedDiscussionsCount:YES];
         
-        if (RiotSettings.shared.enableThreads)
+        if (RiotSettings.shared.enableThreads && !self.roomDataSource.threadId)
         {
             UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
             [rightBarButtonItems insertObject:itemThreadList atIndex:0];
