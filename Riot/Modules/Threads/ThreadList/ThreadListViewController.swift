@@ -89,7 +89,11 @@ final class ThreadListViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         guard let titleView = self.titleView else { return }
-        titleView.updateLayout(for: UIApplication.shared.statusBarOrientation)
+        if UIApplication.shared.statusBarOrientation.isPortrait {
+            titleView.updateLayout(for: .landscapeLeft)
+        } else {
+            titleView.updateLayout(for: .portrait)
+        }
     }
     
     // MARK: - Private
@@ -122,6 +126,7 @@ final class ThreadListViewController: UIViewController {
         let titleView = ThreadRoomTitleView.loadFromNib()
         titleView.mode = .allThreads
         titleView.configure(withViewModel: viewModel.titleViewModel)
+        titleView.updateLayout(for: UIApplication.shared.statusBarOrientation)
         self.titleView = titleView
         navigationItem.leftItemsSupplementBackButton = true
         vc_removeBackTitle()
