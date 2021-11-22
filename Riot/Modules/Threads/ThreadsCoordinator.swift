@@ -72,7 +72,20 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
                 self?.remove(childCoordinator: rootCoordinator)
             }
         }
-      }
+    }
+    
+    func stop() {
+        if selectedThreadCoordinator != nil {
+            let modules = self.navigationRouter.modules
+            guard modules.count >= 3 else {
+                return
+            }
+            let moduleToGoBack = modules[modules.count - 3]
+            self.navigationRouter.popToModule(moduleToGoBack, animated: true)
+        } else {
+            self.navigationRouter.popModule(animated: true)
+        }
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -128,7 +141,7 @@ extension ThreadsCoordinator: UIAdaptivePresentationControllerDelegate {
 // MARK: - ThreadListCoordinatorDelegate
 extension ThreadsCoordinator: ThreadListCoordinatorDelegate {
     func threadListCoordinatorDidLoadThreads(_ coordinator: ThreadListCoordinatorProtocol) {
-        self.delegate?.threadsCoordinatorDidComplete(self)
+        
     }
     
     func threadListCoordinatorDidSelectThread(_ coordinator: ThreadListCoordinatorProtocol, thread: MXThread) {
@@ -156,7 +169,7 @@ extension ThreadsCoordinator: RoomCoordinatorDelegate {
     }
     
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
-        
+        self.delegate?.threadsCoordinatorDidSelect(self, roomId: roomId, eventId: eventId)
     }
     
     func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol) {

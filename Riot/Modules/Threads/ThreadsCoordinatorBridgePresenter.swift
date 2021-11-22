@@ -20,6 +20,9 @@ import Foundation
 
 @objc protocol ThreadsCoordinatorBridgePresenterDelegate {
     func threadsCoordinatorBridgePresenterDelegateDidComplete(_ coordinatorBridgePresenter: ThreadsCoordinatorBridgePresenter)
+    func threadsCoordinatorBridgePresenterDelegateDidSelect(_ coordinatorBridgePresenter: ThreadsCoordinatorBridgePresenter,
+                                                            roomId: String,
+                                                            eventId: String?)
     func threadsCoordinatorBridgePresenterDidDismissInteractively(_ coordinatorBridgePresenter: ThreadsCoordinatorBridgePresenter)
 }
 
@@ -107,21 +110,14 @@ final class ThreadsCoordinatorBridgePresenter: NSObject {
             coordinator.toPresentable().dismiss(animated: animated) {
                 self.coordinator = nil
 
-                if let completion = completion {
-                    completion()
-                }
+                completion?()
             }
         case .push:
-            // Pop view controller from UINavigationController
-            guard let navigationController = coordinator.toPresentable() as? UINavigationController else {
-                return
-            }
-            navigationController.popViewController(animated: animated)
+            //  stop coordinator to pop modules as needed
+            coordinator.stop()
             self.coordinator = nil
 
-            if let completion = completion {
-                completion()
-            }
+            completion?()
         }
     }
 }
@@ -131,6 +127,10 @@ extension ThreadsCoordinatorBridgePresenter: ThreadsCoordinatorDelegate {
     
     func threadsCoordinatorDidComplete(_ coordinator: ThreadsCoordinatorProtocol) {
         self.delegate?.threadsCoordinatorBridgePresenterDelegateDidComplete(self)
+    }
+    
+    func threadsCoordinatorDidSelect(_ coordinator: ThreadsCoordinatorProtocol, roomId: String, eventId: String?) {
+        self.delegate?.threadsCoordinatorBridgePresenterDelegateDidSelect(self, roomId: roomId, eventId: eventId)
     }
     
     func threadsCoordinatorDidDismissInteractively(_ coordinator: ThreadsCoordinatorProtocol) {

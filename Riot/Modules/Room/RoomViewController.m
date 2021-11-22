@@ -140,7 +140,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate, ThreadsCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -4374,6 +4374,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     self.threadsCoordinatorBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
                                                                                                  roomId:self.roomDataSource.roomId];
+    self.threadsCoordinatorBridgePresenter.delegate = self;
     [self.threadsCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
@@ -6382,6 +6383,30 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.threadBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
+- (void)highlightEvent:(NSString *)eventId
+{
+    NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+    if (row == NSNotFound)
+    {
+        return;
+    }
+    
+    self->customizedRoomDataSource.highlightedEventId = eventId;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+    {
+        [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                     withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
+    {
+        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
+                                     atScrollPosition:UITableViewScrollPositionMiddle
+                                             animated:YES];
+    }
+}
+
 #pragma mark - RoomContextualMenuViewControllerDelegate
 
 - (void)roomContextualMenuViewControllerDidTapBackgroundOverlay:(RoomContextualMenuViewController *)viewController
@@ -6805,26 +6830,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.threadBridgePresenter dismissWithAnimated:YES completion:^{
             MXStrongifyAndReturnIfNil(self);
             
-            NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
-            if (row == NSNotFound)
-            {
-                return;
-            }
-            
-            self->customizedRoomDataSource.highlightedEventId = eventId;
-            
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-            if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
-            {
-                [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
-                                             withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
-            else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
-            {
-                [self.bubblesTableView scrollToRowAtIndexPath:indexPath
-                                             atScrollPosition:UITableViewScrollPositionMiddle
-                                                     animated:YES];
-            }
+            [self highlightEvent:eventId];
         }];
     }
 }
@@ -6835,6 +6841,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         self.threadBridgePresenter = nil;
     }
+}
+
+#pragma mark - ThreadsCoordinatorBridgePresenterDelegate
+
+- (void)threadsCoordinatorBridgePresenterDelegateDidComplete:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsCoordinatorBridgePresenter = nil;
+}
+
+- (void)threadsCoordinatorBridgePresenterDelegateDidSelect:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter roomId:(NSString *)roomId eventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    [self.threadsCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (eventId)
+        {
+            [self highlightEvent:eventId];
+        }
+    }];
+}
+
+- (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsCoordinatorBridgePresenter = nil;
 }
 
 @end
