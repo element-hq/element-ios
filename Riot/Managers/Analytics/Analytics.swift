@@ -24,7 +24,7 @@ import PostHog
     
     private var postHog: PHGPostHog?
     
-    private(set) var isRunning = false
+    var isRunning: Bool { postHog?.enabled ?? false }
     
     var shouldShowAnalyticsPrompt: Bool {
         // Show an analytics prompt when the user hasn't seen the PostHog prompt before
@@ -73,7 +73,6 @@ import PostHog
         
         postHog = PHGPostHog(configuration: PHGPostHogConfiguration.standard)
         postHog?.enable()
-        isRunning = true
         MXLog.debug("[Analytics] Started.")
         
         // Catch and log crashes
@@ -96,7 +95,6 @@ import PostHog
         guard isRunning else { return }
         
         postHog?.disable()
-        isRunning = false
         MXLog.debug("[Analytics] Stopped.")
         
         postHog?.reset()
