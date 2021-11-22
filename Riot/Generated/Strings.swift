@@ -2451,6 +2451,10 @@ public class VectorL10n: NSObject {
   public static var roomAccessibilitySearch: String { 
     return VectorL10n.tr("Vector", "room_accessibility_search") 
   }
+  /// More
+  public static var roomAccessibilityThreadMore: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_thread_more") 
+  }
   /// Upload
   public static var roomAccessibilityUpload: String { 
     return VectorL10n.tr("Vector", "room_accessibility_upload") 

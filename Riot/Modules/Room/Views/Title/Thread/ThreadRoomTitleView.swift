@@ -26,6 +26,11 @@ enum ThreadRoomTitleViewMode: Int {
 @objcMembers
 class ThreadRoomTitleView: RoomTitleView {
     
+    private enum Constants {
+        static let titleLeadingMarginOnPortrait: CGFloat = 6
+        static let titleLeadingMarginOnLandscape: CGFloat = 18
+    }
+    
     var mode: ThreadRoomTitleViewMode = .full {
         didSet {
             update()
@@ -47,7 +52,7 @@ class ThreadRoomTitleView: RoomTitleView {
     @IBOutlet private weak var fullRoomAvatarView: RoomAvatarView!
     @IBOutlet private weak var fullRoomEncryptionBadgeView: UIImageView!
     @IBOutlet private weak var fullRoomNameLabel: UILabel!
-    @IBOutlet private weak var fullOptionsButton: UIButton!
+    @IBOutlet private weak var titleLabelLeadingConstraint: NSLayoutConstraint!
     
     override var mxRoom: MXRoom! {
         didSet {
@@ -97,15 +102,13 @@ class ThreadRoomTitleView: RoomTitleView {
         registerThemeServiceDidChangeThemeNotification()
     }
     
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        
-        //  TODO: Find a way to handle this properly
-        if let superview = superview?.superview {
-            NSLayoutConstraint.activate([
-                self.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
-                self.trailingAnchor.constraint(equalTo: superview.trailingAnchor)
-            ])
+    override func updateLayout(for orientation: UIInterfaceOrientation) {
+        super.updateLayout(for: orientation)
+
+        if orientation.isPortrait {
+            titleLabelLeadingConstraint.constant = Constants.titleLeadingMarginOnPortrait
+        } else {
+            titleLabelLeadingConstraint.constant = Constants.titleLeadingMarginOnLandscape
         }
     }
     
@@ -152,10 +155,6 @@ class ThreadRoomTitleView: RoomTitleView {
         self.update(theme: ThemeService.shared().theme)
     }
     
-    @IBAction private func optionsButtonTapped(_ sender: UIButton) {
-        
-    }
-    
 }
 
 extension ThreadRoomTitleView: Themable {
@@ -165,7 +164,6 @@ extension ThreadRoomTitleView: Themable {
         fullRoomAvatarView.backgroundColor = .clear
         fullTitleLabel.textColor = theme.colors.primaryContent
         fullRoomNameLabel.textColor = theme.colors.secondaryContent
-        fullOptionsButton.tintColor = theme.colors.accent
     }
     
 }
