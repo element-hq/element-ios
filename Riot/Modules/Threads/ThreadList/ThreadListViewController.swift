@@ -39,6 +39,7 @@ final class ThreadListViewController: UIViewController {
     private var keyboardAvoider: KeyboardAvoider?
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
+    private var titleView: ThreadRoomTitleView!
 
     // MARK: - Setup
     
@@ -85,6 +86,11 @@ final class ThreadListViewController: UIViewController {
         return self.theme.statusBarStyle
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        guard let titleView = self.titleView else { return }
+        titleView.updateLayout(for: UIApplication.shared.statusBarOrientation)
+    }
+    
     // MARK: - Private
     
     private func update(theme: Theme) {
@@ -112,11 +118,16 @@ final class ThreadListViewController: UIViewController {
     private func setupViews() {
         let titleView = ThreadRoomTitleView.loadFromNib()
         titleView.mode = .allThreads
-        titleView.viewDelegate = self
         titleView.configure(withViewModel: viewModel.titleViewModel)
+        self.titleView = titleView
         navigationItem.leftItemsSupplementBackButton = true
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
+        vc_removeBackTitle()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Asset.Images.threadsFilter.image,
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(filterButtonTapped(_:)))
         
         self.threadsTableView.tableFooterView = UIView()
         self.threadsTableView.register(cellType: ThreadTableViewCell.self)
@@ -187,6 +198,11 @@ final class ThreadListViewController: UIViewController {
     }
 
     // MARK: - Actions
+    
+    @objc
+    private func filterButtonTapped(_ sender: UIBarButtonItem) {
+        self.viewModel.process(viewAction: .showFilterTypes)
+    }
 
 }
 
@@ -235,16 +251,6 @@ extension ThreadListViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         viewModel.process(viewAction: .selectThread(indexPath.row))
-    }
-    
-}
-
-//  MARK: - ThreadRoomTitleViewDelegate
-
-extension ThreadListViewController: ThreadRoomTitleViewDelegate {
-    
-    func threadRoomTitleViewDidTapOptions(_ view: ThreadRoomTitleView) {
-        self.viewModel.process(viewAction: .showFilterTypes)
     }
     
 }

@@ -1515,6 +1515,17 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return item;
 }
 
+- (UIBarButtonItem *)threadMoreBarButtonItem
+{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onThreadMoreTapped:)];
+    item.accessibilityLabel = [VectorL10n roomAccessibilityThreadMore];
+    
+    return item;
+}
+
 - (UIBarButtonItem *)threadListBarButtonItem
 {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_reply_in_thread"]
@@ -1522,7 +1533,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                             target:self
                                                             action:@selector(onThreadListTapped:)];
     item.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
-    
     return item;
 }
 
@@ -1758,10 +1768,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         [self refreshMissedDiscussionsCount:YES];
         
-        if (RiotSettings.shared.enableThreads && !self.roomDataSource.threadId)
+        if (RiotSettings.shared.enableThreads)
         {
-            UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
-            [rightBarButtonItems insertObject:itemThreadList atIndex:0];
+            if (self.roomDataSource.threadId)
+            {
+                //  in a thread
+                UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
+                [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
+            }
+            else
+            {
+                //  in a regular timeline
+                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                [rightBarButtonItems insertObject:itemThreadList atIndex:0];
+            }
         }
     }
     
@@ -4343,6 +4363,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (IBAction)onVideoCallPressed:(id)sender
 {
     [self placeCallWithVideo:YES];
+}
+
+- (IBAction)onThreadMoreTapped:(id)sender
+{
+    //  TODO: Implement when design ready
 }
 
 - (IBAction)onThreadListTapped:(id)sender

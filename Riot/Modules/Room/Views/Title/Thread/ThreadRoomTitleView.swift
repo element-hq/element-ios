@@ -23,26 +23,25 @@ enum ThreadRoomTitleViewMode {
     case specificThread(threadId: String)
 }
 
-@objc
-protocol ThreadRoomTitleViewDelegate: AnyObject {
-    func threadRoomTitleViewDidTapOptions(_ view: ThreadRoomTitleView)
-}
-
 @objcMembers
 class ThreadRoomTitleView: RoomTitleView {
+    
+    private enum Constants {
+        static let titleLeadingConstraintOnPortrait: CGFloat = 6
+        static let titleLeadingConstraintOnLandscape: CGFloat = 18
+    }
     
     var mode: ThreadRoomTitleViewMode = .allThreads {
         didSet {
             update()
         }
     }
-    weak var viewDelegate: ThreadRoomTitleViewDelegate?
     
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var titleLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var roomAvatarView: RoomAvatarView!
     @IBOutlet private weak var roomEncryptionBadgeView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
-    @IBOutlet private weak var optionsButton: UIButton!
     
     //  MARK: - Methods
     
@@ -102,17 +101,17 @@ class ThreadRoomTitleView: RoomTitleView {
         registerThemeServiceDidChangeThemeNotification()
     }
     
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        
-        //  TODO: Find a way to handle this properly
-        if let superview = superview?.superview {
-            NSLayoutConstraint.activate([
-                self.leadingAnchor.constraint(equalTo: superview.leadingAnchor),
-                self.trailingAnchor.constraint(equalTo: superview.trailingAnchor)
-            ])
+    override func updateLayout(for orientation: UIInterfaceOrientation) {
+        super.updateLayout(for: orientation)
+
+        if orientation.isPortrait {
+            titleLabelLeadingConstraint.constant = Constants.titleLeadingConstraintOnPortrait
+        } else {
+            titleLabelLeadingConstraint.constant = Constants.titleLeadingConstraintOnLandscape
         }
     }
+    
+    //  MARK: - Private
     
     private func registerThemeServiceDidChangeThemeNotification() {
         NotificationCenter.default.addObserver(self,
@@ -125,10 +124,8 @@ class ThreadRoomTitleView: RoomTitleView {
         switch mode {
         case .allThreads:
             titleLabel.text = VectorL10n.threadsTitle
-            optionsButton.setImage(Asset.Images.threadsFilter.image, for: .normal)
         case .specificThread:
             titleLabel.text = VectorL10n.roomThreadTitle
-            optionsButton.setImage(Asset.Images.roomContextMenuMore.image, for: .normal)
         }
     }
     
@@ -137,11 +134,7 @@ class ThreadRoomTitleView: RoomTitleView {
     @objc private func themeDidChange() {
         self.update(theme: ThemeService.shared().theme)
     }
-    
-    @IBAction private func optionsButtonTapped(_ sender: UIButton) {
-        viewDelegate?.threadRoomTitleViewDidTapOptions(self)
-    }
-    
+
 }
 
 extension ThreadRoomTitleView: NibLoadable {}
@@ -152,7 +145,6 @@ extension ThreadRoomTitleView: Themable {
         roomAvatarView.backgroundColor = .clear
         titleLabel.textColor = theme.colors.primaryContent
         roomNameLabel.textColor = theme.colors.secondaryContent
-        optionsButton.tintColor = theme.colors.accent
     }
     
 }
