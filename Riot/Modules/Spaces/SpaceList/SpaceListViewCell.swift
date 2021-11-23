@@ -58,7 +58,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
     func fill(with viewData: SpaceListItemViewData) {
         self.avatarView.fill(with: viewData.avatarViewData)
         self.titleLabel.text = viewData.title
-        self.moreButton.isHidden = viewData.isInvite
+        self.moreButton.isHidden = viewData.spaceId == SpaceListViewModel.Constants.addSpaceId || viewData.isInvite
         if viewData.isInvite {
             self.isBadgeAlert = true
             self.badgeLabel.isHidden = false
@@ -68,7 +68,7 @@ final class SpaceListViewCell: UITableViewCell, Themable, NibReusable {
             self.badgeLabel.text = "!"
         } else {
             self.isBadgeAlert = viewData.highlightedNotificationCount > 0
-            let notificationCount = viewData.notificationCount + viewData.highlightedNotificationCount
+            let notificationCount = viewData.notificationCount
             self.badgeLabel.isHidden = notificationCount == 0
             if let theme = self.theme {
                 self.badgeLabel.badgeColor = viewData.highlightedNotificationCount == 0 ? theme.colors.tertiaryContent : theme.colors.alert

@@ -20,4 +20,5 @@ import Foundation
 enum SpaceListSection {
     case home(_ viewData: SpaceListItemViewData)
     case spaces(_ viewDataList: [SpaceListItemViewData])
+    case addSpace(_ viewData: SpaceListItemViewData)
 }

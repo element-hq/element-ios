@@ -1,0 +1,124 @@
+// File created from SimpleUserProfileExample
+// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationEmailInvites SpaceCreationEmailInvites
+// 
+// Copyright 2021 New Vector Ltd
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+import SwiftUI
+
+@available(iOS 14.0, *)
+struct SpaceCreationEmailInvites: View {
+
+    // MARK: - Properties
+    
+    @ObservedObject var viewModel: SpaceCreationEmailInvitesViewModel.Context
+    
+    // MARK: - Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+    
+    // MARK: - Public
+    
+    @ViewBuilder
+    var body: some View {
+        VStack {
+            headerView
+            GeometryReader { reader in
+                ScrollView {
+                    VStack {
+                        Spacer()
+                        formView
+                    }
+                    .frame(minHeight: reader.size.height - 2)
+                }
+            }
+            footerView
+        }
+        .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
+        .background(theme.colors.background)
+        .navigationTitle(viewModel.viewState.title)
+        .configureNavigationBar{
+            $0.navigationBar.shadowImage = UIImage()
+            $0.navigationBar.barTintColor = UIColor(theme.colors.background)
+            $0.navigationBar.tintColor = UIColor(theme.colors.secondaryContent)
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button(action: {
+                    viewModel.send(viewAction: .cancel)
+                }) {
+                    Image(uiImage: Asset.Images.spacesModalClose.image).renderingMode(.template)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Private
+
+    @ViewBuilder
+    private var headerView: some View {
+        VStack {
+            Text(VectorL10n.spacesCreationEmailInvitesTitle)
+                .multilineTextAlignment(.center)
+                .font(theme.fonts.title3SB)
+                .foregroundColor(theme.colors.primaryContent)
+            Spacer().frame(height: 20)
+            Text(VectorL10n.spacesCreationEmailInvitesMessage)
+                .multilineTextAlignment(.center)
+                .font(theme.fonts.body)
+                .foregroundColor(theme.colors.secondaryContent)
+        }
+    }
+    
+    @ViewBuilder
+    private var formView: some View {
+        VStack {
+            VStack {
+                ForEach(viewModel.emailInvites.indices) { index in
+                    RoundedBorderTextField(title: VectorL10n.spacesCreationEmailInvitesEmailTitle, placeHolder: VectorL10n.spacesCreationEmailInvitesEmailTitle, text: $viewModel.emailInvites[index], footerText: .constant(viewModel.viewState.emailAddressesValid[index] ? nil : VectorL10n.authInvalidEmail), isError: .constant(!viewModel.viewState.emailAddressesValid[index]), configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress, returnKeyType: index < viewModel.emailInvites.endIndex - 1 ? .next : .done, autocapitalizationType: .none, autocorrectionType: .no))
+                        .accessibility(identifier: "emailTextField")
+                }
+            }
+            .padding(.horizontal, 2)
+            .padding(.bottom)
+            Text(VectorL10n.or)
+                .font(theme.fonts.caption1)
+                .foregroundColor(theme.colors.secondaryContent)
+                .padding(.bottom)
+            OptionButton(icon: Asset.Images.spacesInviteUsers.image, title: VectorL10n.spacesCreationInviteByUsername, detailMessage: nil) {
+                viewModel.send(viewAction: .inviteByUsername)
+            }
+            .padding(.bottom)
+        }
+    }
+    
+    @ViewBuilder
+    private var footerView: some View {
+        ThemableButton(icon: nil, title: VectorL10n.next) {
+            viewModel.send(viewAction: .done)
+        }
+    }
+}
+
+// MARK: - Previews
+
+@available(iOS 14.0, *)
+struct SpaceCreationEmailInvites_Previews: PreviewProvider {
+    static let stateRenderer = MockSpaceCreationEmailInvitesScreenState.stateRenderer
+    static var previews: some View {
+        stateRenderer.screenGroup(addNavigation: true).theme(.light).preferredColorScheme(.light)
+        stateRenderer.screenGroup(addNavigation: true).theme(.dark).preferredColorScheme(.dark)
+    }
+}

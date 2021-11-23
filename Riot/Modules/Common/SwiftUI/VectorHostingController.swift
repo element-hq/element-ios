@@ -26,6 +26,7 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
     
+    var hidesBackTitleWhenPushed: Bool = false
     private var theme: Theme
     
     init<Content>(rootView: Content) where Content: View {
@@ -46,6 +47,14 @@ class VectorHostingController: UIHostingController<AnyView> {
         
         self.registerThemeServiceDidChangeThemeNotification()
         self.update(theme: self.theme)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if hidesBackTitleWhenPushed {
+            vc_removeBackTitle()
+        }
     }
     
     override func viewDidLayoutSubviews() {

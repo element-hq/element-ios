@@ -24,6 +24,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
     
     enum Constants {
         static let homeSpaceId: String = "home"
+        static let addSpaceId: String = "add_space"
     }
     
     // MARK: - Properties
@@ -87,12 +88,16 @@ final class SpaceListViewModel: SpaceListViewModelType {
                     self.selectedIndexPath = indexPath
                     self.update(viewState: .selectionChanged(indexPath))
                 }
+            case .addSpace:
+                self.update(viewState: .selectionChanged(self.selectedIndexPath))
+                addSpace()
             }
         case .moreAction(at: let indexPath, from: let sourceView):
             let section = self.sections[indexPath.section]
             switch section {
             case .home:
                 self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: Constants.homeSpaceId, from: sourceView)
+            case .addSpace: break
             case .spaces(let viewDataList):
                 let spaceViewData = viewDataList[indexPath.row]
                 self.coordinatorDelegate?.spaceListViewModel(self, didPressMoreForSpaceWithId: spaceViewData.spaceId, from: sourceView)
@@ -108,6 +113,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
         for (sectionIndex, section) in self.sections.enumerated() {
             switch section {
             case .home: break
+            case .addSpace:  break
             case .spaces(let viewDataList):
                 for (row, itemViewData) in viewDataList.enumerated() where itemViewData.spaceId == spaceId {
                     let indexPath = IndexPath(row: row, section: sectionIndex)
@@ -142,7 +148,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
         let homeViewData = self.createHomeViewData(session: session)
         let viewDataList = getSpacesViewData(session: session)
 
-        let sections: [SpaceListSection] = viewDataList.invites.isEmpty ? [
+        var sections: [SpaceListSection] = viewDataList.invites.isEmpty ? [
                 .home(homeViewData),
                 .spaces(viewDataList.spaces)
             ]
@@ -152,6 +158,11 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 .home(homeViewData),
                 .spaces(viewDataList.spaces)
             ]
+
+        if #available(iOS 14.0, *) {
+            let addSpaceViewData = self.createAddSpaceViewData(session: session)
+            sections.append(.addSpace(addSpaceViewData))
+        }
         
         self.sections = sections
         let homeIndexPath = viewDataList.invites.isEmpty ? IndexPath(row: 0, section: 0) : IndexPath(row: 0, section: 1)
@@ -161,8 +172,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
             var newSelection: IndexPath?
             let section = sections.last
             switch section {
-            case .home:
-                break
+            case .home: break
+            case .addSpace: break
             case .spaces(let viewDataList):
                 var index = 0
                 for itemViewData in viewDataList {
@@ -191,6 +202,10 @@ final class SpaceListViewModel: SpaceListViewModelType {
         self.coordinatorDelegate?.spaceListViewModelDidSelectHomeSpace(self)
     }
     
+    private func addSpace() {
+        self.coordinatorDelegate?.spaceListViewModelDidSelectCreateSpace(self)
+    }
+    
     private func selectSpace(with spaceId: String) {
         self.coordinatorDelegate?.spaceListViewModel(self, didSelectSpaceWithId: spaceId)
     }
@@ -204,17 +219,38 @@ final class SpaceListViewModel: SpaceListViewModelType {
         
         let homeNotificationState = session.spaceService.notificationCounter.homeNotificationState
         let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
-                                                 title: VectorL10n.spacesHomeSpaceTitle, avatarViewData: avatarViewData, isInvite: false, notificationCount: homeNotificationState.allCount, highlightedNotificationCount: homeNotificationState.allHighlightCount)
+                                                 title: VectorL10n.spacesHomeSpaceTitle,
+                                                 avatarViewData: avatarViewData,
+                                                 isInvite: false,
+                                                 notificationCount: homeNotificationState.allCount,
+                                                 highlightedNotificationCount: homeNotificationState.allHighlightCount)
         return homeViewData
     }
     
+    private func createAddSpaceViewData(session: MXSession) -> SpaceListItemViewData {
+        let avatarViewData = AvatarViewData(matrixItemId: Constants.addSpaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(Asset.Images.spacesAddSpace.image, .center))
+        
+        let homeViewData = SpaceListItemViewData(spaceId: Constants.addSpaceId,
+                                                 title: VectorL10n.spacesAddSpaceTitle,
+                                                 avatarViewData: avatarViewData,
+                                                 isInvite: false,
+                                                 notificationCount: 0,
+                                                 highlightedNotificationCount: 0)
+        return homeViewData
+    }
+
     private func getSpacesViewData(session: MXSession) -> (invites: [SpaceListItemViewData], spaces: [SpaceListItemViewData]) {
         var invites: [SpaceListItemViewData] = []
         var spaces: [SpaceListItemViewData] = []
         session.spaceService.rootSpaceSummaries.forEach { summary in
             let avatarViewData = AvatarViewData(matrixItemId: summary.roomId, displayName: summary.displayname, avatarUrl: summary.avatar, mediaManager: session.mediaManager, fallbackImage: .matrixItem(summary.roomId, summary.displayname))
             let notificationState = session.spaceService.notificationCounter.notificationState(forSpaceWithId: summary.roomId)
-            let viewData = SpaceListItemViewData(spaceId: summary.roomId, title: summary.displayname, avatarViewData: avatarViewData, isInvite: summary.membership == .invite, notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0, highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0)
+            let viewData = SpaceListItemViewData(spaceId: summary.roomId,
+                                                 title: summary.displayname,
+                                                 avatarViewData: avatarViewData,
+                                                 isInvite: summary.membership == .invite,
+                                                 notificationCount: notificationState?.groupMissedDiscussionsCount ?? 0,
+                                                 highlightedNotificationCount: notificationState?.groupMissedDiscussionsHighlightedCount ?? 0)
             if viewData.isInvite {
                 invites.append(viewData)
             } else {
@@ -244,6 +280,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         case .spaces(let viewDataList):
             let spaceViewData = viewDataList[self.selectedIndexPath.row]
             return spaceViewData.spaceId
+        case .addSpace:
+            return Constants.addSpaceId
         }
     }
     

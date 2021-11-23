@@ -190,6 +190,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
      The launch animation container view
      */
     UIView *launchAnimationContainerView;
+    
+    id graphUpdateObserver;
 }
 
 @property (strong, nonatomic) UIAlertController *mxInAppNotification;
@@ -4520,10 +4522,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     else
     {
         MXWeakify(self);
-        __block __weak id observer = [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        graphUpdateObserver = [[NSNotificationCenter defaultCenter] addObserverForName:MXSpaceService.didBuildSpaceGraph object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
             MXStrongifyAndReturnIfNil(self);
             
-            [[NSNotificationCenter defaultCenter] removeObserver:observer];
+            [[NSNotificationCenter defaultCenter] removeObserver:graphUpdateObserver];
             
             if ([session.spaceService getSpaceWithId:spaceId]) {
                 [self restoreInitialDisplay:^{
