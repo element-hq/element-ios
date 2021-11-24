@@ -36,13 +36,6 @@
     return viewController;
 }
 
-- (void)finalizeInit
-{
-    [super finalizeInit];
-    
-    self.screenName = @"Rooms";
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

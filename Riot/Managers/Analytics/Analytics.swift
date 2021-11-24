@@ -15,6 +15,7 @@
 //
 
 import PostHog
+import AnalyticsEvents
 
 @objcMembers class Analytics: NSObject {
     
@@ -112,18 +113,19 @@ import PostHog
         postHog?.flush()
     }
     
-    func log(event: String) {
-        postHog?.capture(event)
+    private func capture(event: DictionaryConvertible, named eventName: String) {
+        postHog?.capture(eventName, properties: event.dictionary)
     }
     
-    func trackScreen(_ screenName: String) {
-//        postHog?.capture("screen:\(screenName)")
+    func trackScreen(_ screen: AnalyticsScreen) {
+        let event = AnalyticsEventScreen(durationMs: nil, eventName: .screen, screenName: screen.screenName)
+        capture(event: event, named: event.eventName.rawValue)
     }
     
     func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
         for _ in 0..<count {
-            let event = AnalyticsEvent.Error(domain: .E2EE, name: reason.errorName, context: nil)
-            postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+            let event = AnalyticsEventError(context: nil, domain: .e2Ee, eventName: .error, name: reason.errorName)
+            capture(event: event, named: event.eventName.rawValue)
         }
     }
     
@@ -137,31 +139,34 @@ extension Analytics: MXAnalyticsDelegate {
     func trackDuration(_ seconds: TimeInterval, category: String, name: String) { }
     
     func trackCallStarted(_ call: MXCall) {
-        let event = AnalyticsEvent.CallStarted(placed: !call.isIncoming,
-                                               isVideo: call.isVideoCall,
-                                               numParticipants: Int(call.room.summary.membersCount.joined))
+        let event = AnalyticsEventCallStarted(eventName: .callStarted,
+                                              isVideo: call.isVideoCall,
+                                              numParticipants: Int(call.room.summary.membersCount.joined),
+                                              placed: !call.isIncoming)
         
-        postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+        capture(event: event, named: event.eventName.rawValue)
     }
     
     func trackCallEnded(_ call: MXCall) {
-        let event = AnalyticsEvent.CallEnded(placed: !call.isIncoming,
-                                             isVideo: call.isVideoCall,
-                                             durationMs: Int(call.duration),
-                                             numParticipants: Int(call.room.summary.membersCount.joined))
+        let event = AnalyticsEventCallEnded(durationMs: Int(call.duration),
+                                            eventName: .callEnded,
+                                            isVideo: call.isVideoCall,
+                                            numParticipants: Int(call.room.summary.membersCount.joined),
+                                            placed: !call.isIncoming)
         
-        postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+        capture(event: event, named: event.eventName.rawValue)
     }
     
     func trackCallError(_ call: MXCall, with reason: __MXCallHangupReason) {
-        let callEvent = AnalyticsEvent.CallError(placed: !call.isIncoming,
-                                                 isVideo: call.isVideoCall,
-                                                 numParticipants: Int(call.room.summary.membersCount.joined))
+        let callEvent = AnalyticsEventCallError(eventName: .callError,
+                                                isVideo: call.isVideoCall,
+                                                numParticipants: Int(call.room.summary.membersCount.joined),
+                                                placed: !call.isIncoming)
         
-        let event = AnalyticsEvent.Error(domain: .VOIP, name: reason.errorName, context: nil)
+        let event = AnalyticsEventError(context: nil, domain: .voip, eventName: .error, name: reason.errorName)
         
-        postHog?.capture("\(type(of: callEvent).self)", properties: callEvent.dictionary)
-        postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+        capture(event: callEvent, named: callEvent.eventName.rawValue)
+        capture(event: event, named: event.eventName.rawValue)
     }
     
     func trackContactsAccessGranted(_ granted: Bool) {

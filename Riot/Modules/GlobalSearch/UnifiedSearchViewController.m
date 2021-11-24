@@ -80,7 +80,6 @@
     [titles addObject:[VectorL10n searchRooms]];
     recentsViewController = [RecentsViewController recentListViewController];
     recentsViewController.enableSearchBar = NO;
-    recentsViewController.screenName = @"UnifiedSearchRooms";
     [viewControllers addObject:recentsViewController];
 
     [titles addObject:[VectorL10n searchMessages]];
@@ -143,9 +142,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [Analytics.shared trackScreen:@"UnifiedSearch"];
 
     // Let's child display the loading not the home view controller
     if (self.activityIndicator)

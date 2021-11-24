@@ -50,8 +50,6 @@
     [super finalizeInit];
     
     directRoomsSectionNumber = 0;
-    
-    self.screenName = @"People";
 }
 
 - (void)viewDidLoad

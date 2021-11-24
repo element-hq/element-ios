@@ -136,9 +136,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking
-    [Analytics.shared trackScreen:@"GroupDetails"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -95,9 +95,6 @@ static CGFloat const kTextFontSize = 15.0;
     [super viewWillAppear:animated];
 
     [self userInterfaceThemeDidChange];
-    
-    // Screen tracking
-    [Analytics.shared trackScreen:@"DeactivateAccount"];
 }
 
 - (void)viewDidLayoutSubviews

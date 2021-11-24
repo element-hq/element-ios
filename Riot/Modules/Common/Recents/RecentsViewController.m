@@ -106,9 +106,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // Set default screen name
-    _screenName = @"RecentsScreen";
-    
     // Enable the search bar in the recents table, and remove the search option from the navigation bar.
     _enableSearchBar = YES;
     self.enableBarButtonSearch = NO;
@@ -260,7 +257,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [Analytics.shared trackScreen:_screenName];
+    [Analytics.shared trackScreen:AnalyticsScreenHome];
 
     // Reset back user interactions
     self.userInteractionEnabled = YES;

@@ -245,9 +245,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [Analytics.shared trackScreen:@"RoomParticipants"];
     
     // Refresh display
     [self refreshTableView];

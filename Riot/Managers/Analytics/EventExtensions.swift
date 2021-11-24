@@ -15,60 +15,70 @@
 //
 
 import Foundation
+import AnalyticsEvents
 
-// MARK:  -Events
+// MARK: - Events
+//
+// All events must conform to DictionaryConvertible to be captured by PostHog
 
-extension AnalyticsEvent.Error: DictionaryConvertible { }
-extension AnalyticsEvent.CallStarted: DictionaryConvertible { }
-extension AnalyticsEvent.CallEnded: DictionaryConvertible { }
-extension AnalyticsEvent.CallError: DictionaryConvertible { }
+extension AnalyticsEventError: DictionaryConvertible { }
+extension AnalyticsEventCallStarted: DictionaryConvertible { }
+extension AnalyticsEventCallEnded: DictionaryConvertible { }
+extension AnalyticsEventCallError: DictionaryConvertible { }
+extension AnalyticsEventScreen: DictionaryConvertible { }
 
 // MARK: - Enums
+//
+// All enums must conform to CustomStringConvertible for DictionaryConvertible to access the raw value
 
-extension AnalyticsEvent.ErrorDomain: CustomStringConvertible {
-    var description: String { rawValue }
+extension AnalyticsEventErrorDomain: CustomStringConvertible {
+    public var description: String { rawValue }
 }
 
-extension AnalyticsEvent.ErrorName: CustomStringConvertible {
-    var description: String { rawValue }
+extension AnalyticsEventErrorName: CustomStringConvertible {
+    public var description: String { rawValue }
+}
+
+extension AnalyticsEventScreenName: CustomStringConvertible {
+    public var description: String { rawValue }
 }
 
 // MARK: - Helpers
 
 extension __MXCallHangupReason {
-    var errorName: AnalyticsEvent.ErrorName {
+    var errorName: AnalyticsEventErrorName {
         switch self {
         case .userHangup:
-            return .VoipUserHangup
+            return .voipUserHangup
         case .inviteTimeout:
-            return .VoipInviteTimeout
+            return .voipInviteTimeout
         case .iceFailed:
-            return .VoipIceFailed
+            return .voipIceFailed
         case .iceTimeout:
-            return .VoipIceTimeout
+            return .voipIceTimeout
         case .userMediaFailed:
-            return .VoipUserMediaFailed
+            return .voipUserMediaFailed
         case .unknownError:
-            return .UnknownError
+            return .unknownError
         default:
-            return .UnknownError
+            return .unknownError
         }
     }
 }
 
 extension DecryptionFailureReason {
-    var errorName: AnalyticsEvent.ErrorName {
+    var errorName: AnalyticsEventErrorName {
         switch self {
         case .unspecified:
-            return .OlmUnspecifiedError
+            return .olmUnspecifiedError
         case .olmKeysNotSent:
-            return .OlmKeysNotSentError
+            return .olmKeysNotSentError
         case .olmIndexError:
-            return .OlmIndexError
+            return .olmIndexError
         case .unexpected:
-            return .UnknownError
+            return .unknownError
         default:
-            return .UnknownError
+            return .unknownError
         }
     }
 }

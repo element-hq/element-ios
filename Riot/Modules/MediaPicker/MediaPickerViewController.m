@@ -212,9 +212,6 @@
     [super viewWillAppear:animated];
     
     [self userInterfaceThemeDidChange];
-
-    // Screen tracking
-    [Analytics.shared trackScreen:@"MediaPicker"];
     
     if (!userAlbumsQueue)
     {

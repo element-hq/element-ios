@@ -76,8 +76,6 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    _screenName = @"ContactsTable";
 }
 
 - (void)viewDidLoad
@@ -159,9 +157,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [Analytics.shared trackScreen:_screenName];
     
     MXWeakify(self);
 

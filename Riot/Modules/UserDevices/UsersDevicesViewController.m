@@ -120,9 +120,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [Analytics.shared trackScreen:@"UnknownDevices"];
-
     [self.tableView reloadData];
 }
 

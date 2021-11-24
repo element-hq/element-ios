@@ -73,8 +73,6 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"StartChat";
-    
     _isAddParticipantSearchBarEditing = NO;
     
     // Prepare room participants

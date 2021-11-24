@@ -73,14 +73,6 @@
     return ThemeService.shared.theme.statusBarStyle;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    // Screen tracking
-    [Analytics.shared trackScreen:@"AttachmentsViewer"];
-}
-
 - (void)destroy
 {
     [super destroy];

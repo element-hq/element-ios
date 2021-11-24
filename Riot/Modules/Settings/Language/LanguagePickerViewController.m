@@ -106,14 +106,6 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    // Screen tracking
-    [Analytics.shared trackScreen:@"CountryPicker"];
-}
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     cell.textLabel.textColor = ThemeService.shared.theme.textPrimaryColor;

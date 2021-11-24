@@ -106,9 +106,6 @@
         [self.activityIndicator stopAnimating];
         self.activityIndicator = nil;
     }
-
-    // Screen tracking
-    [Analytics.shared trackScreen:@"RoomsSearch"];
     
     // Enable the search field by default at the screen opening
     if (self.searchBarHidden)

@@ -108,7 +108,7 @@
     [super viewWillAppear:animated];
 
     // Screen tracking
-    [Analytics.shared trackScreen:@"Directory"];
+    [Analytics.shared trackScreen:AnalyticsScreenRoomDirectory];
     
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {

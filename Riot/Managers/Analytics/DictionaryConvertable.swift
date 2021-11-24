@@ -16,27 +16,28 @@
 
 import Foundation
 
-protocol DictionaryConvertible {
+protocol DictionaryConvertible: Encodable {
     var dictionary: [String: Any] { get }
 }
 
 extension DictionaryConvertible {
     var dictionary: [String: Any] {
         let mirror = Mirror(reflecting: self)
-        let dict: [String: Any] = Dictionary(uniqueKeysWithValues: mirror.children
-                                                .compactMap { (label: String?, value: Any) in
-                                                    guard let label = label else { return nil }
-                                                    
-                                                    if let value = value as? NSCoding {
-                                                        return (label, value)
-                                                    }
-                                                    
-                                                    if let value = value as? CustomStringConvertible {
-                                                        return (label, value.description)
-                                                    }
-                                                    
-                                                    return nil
-                                                })
+        let dict: [String: Any] = Dictionary(uniqueKeysWithValues: mirror.children.compactMap { (label: String?, value: Any) in
+            guard let label = label else { return nil }
+            
+            // Handle standard types such as String/Int/Bool
+            if let value = value as? NSCoding {
+                return (label, value)
+            }
+            
+            // AnalyticsEvent enums
+            if let value = value as? CustomStringConvertible {
+                return (label, value.description)
+            }
+            
+            return nil
+        })
         
         return dict
     }

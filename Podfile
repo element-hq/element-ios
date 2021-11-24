@@ -69,6 +69,7 @@ abstract_target 'RiotPods' do
 
   # PostHog for analytics
   pod 'PostHog', '~> 1.4.4'
+  pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true

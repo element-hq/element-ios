@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
+  - AnalyticsEvents (0.1.0)
   - BlueCryptor (1.0.32)
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
@@ -114,6 +115,7 @@ PODS:
   - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
+  - AnalyticsEvents (from `../matrix-analytics-events/AnalyticsEvents.podspec`)
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - DSWaveformImage (~> 6.1.1)
   - ffmpeg-kit-ios-audio (~> 4.5)
@@ -182,8 +184,13 @@ SPEC REPOS:
     - zxcvbn-ios
     - ZXingObjC
 
+EXTERNAL SOURCES:
+  AnalyticsEvents:
+    :path: "../matrix-analytics-events/AnalyticsEvents.podspec"
+
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  AnalyticsEvents: 5d210d99ddf18f3c81116e5c98f6d9f159598f80
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
@@ -224,6 +231,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 06d0fee10c99dee2531993f8cb2e54ec04f0752b
+PODFILE CHECKSUM: 1a5c7e918ee799655f370ad9fae8cd457b8d1ca1
 
 COCOAPODS: 1.11.2

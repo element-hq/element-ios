@@ -183,9 +183,6 @@
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [Analytics.shared trackScreen:@"GroupDetailsRooms"];
-    
     // Release the potential pushed view controller
     [self releasePushedViewController];
     

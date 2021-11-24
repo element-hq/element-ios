@@ -204,7 +204,7 @@
     [super viewWillAppear:animated];
     
     // Screen tracking
-    [Analytics.shared trackScreen:@"Groups"];
+    [Analytics.shared trackScreen:AnalyticsScreenMyGroups];
     
     // Deselect the current selected row, it will be restored on viewDidAppear (if any)
     NSIndexPath *indexPath = [self.groupsTableView indexPathForSelectedRow];

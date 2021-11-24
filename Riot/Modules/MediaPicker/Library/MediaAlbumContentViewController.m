@@ -163,9 +163,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [Analytics.shared trackScreen:@"MediaAlbumContent"];
     
     self.navigationItem.title = _assetsCollection.localizedTitle;
     

@@ -86,11 +86,6 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 @property (nonatomic) CGFloat stickyHeaderHeight;
 
 /**
- The analytics instance screen name (Default is "RecentsScreen").
- */
-@property (nonatomic) NSString *screenName;
-
-/**
  Empty view to display when there is no item to show on the screen.
  */
 @property (nonatomic, weak) RootTabEmptyView *emptyView;

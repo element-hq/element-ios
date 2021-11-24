@@ -39,8 +39,6 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"Favourites";
-    
     self.enableDragging = YES;
 }
 
