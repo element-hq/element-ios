@@ -107,7 +107,7 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
 
     func serviceTermsModalScreenCoordinatorDidAccept(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
         if serviceTerms.serviceType == MXServiceTypeIdentityService {
-            Analytics.shared.trackValue(1, category: MXKAnalyticsCategory.contacts.rawValue, name: Analytics.ContactsIdentityServerAccepted)
+            Analytics.shared.trackIdentityServerAccepted(granted: true)
         }
         
         self.delegate?.serviceTermsModalCoordinatorDidAccept(self)
@@ -119,7 +119,7 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
 
     func serviceTermsModalScreenCoordinatorDidDecline(_ coordinator: ServiceTermsModalScreenCoordinatorType) {
         if serviceTerms.serviceType == MXServiceTypeIdentityService {
-            Analytics.shared.trackValue(1, category: MXKAnalyticsCategory.contacts.rawValue, name: Analytics.ContactsIdentityServerAccepted)
+            Analytics.shared.trackIdentityServerAccepted(granted: false)
             disableIdentityServer()
         }
         
@@ -131,7 +131,7 @@ extension ServiceTermsModalCoordinator: ServiceTermsModalScreenCoordinatorDelega
 extension ServiceTermsModalCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         if serviceTerms.serviceType == MXServiceTypeIdentityService {
-            Analytics.shared.trackValue(0, category: MXKAnalyticsCategory.contacts.rawValue, name: Analytics.ContactsIdentityServerAccepted)
+            Analytics.shared.trackIdentityServerAccepted(granted: false)
         }
         
         self.delegate?.serviceTermsModalCoordinatorDidDismissInteractively(self)

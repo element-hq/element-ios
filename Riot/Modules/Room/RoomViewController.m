@@ -134,6 +134,8 @@
 
 NSNotificationName const RoomCallTileTappedNotification = @"RoomCallTileTappedNotification";
 NSNotificationName const RoomGroupCallTileTappedNotification = @"RoomGroupCallTileTappedNotification";
+NSString * const RoomAnalyticsNotificationsCategory = @"notifications";
+NSString * const RoomAnalyticsNotificationsTimeToDisplayContent = @"timelineDisplay";
 const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
@@ -610,8 +612,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.roomDataSource reload];
         [LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
         
-        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:Analytics.NotificationsTimeToDisplayContent
-                                                                                          category:Analytics.NotificationsCategory];
+        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:RoomAnalyticsNotificationsTimeToDisplayContent
+                                                                                          category:RoomAnalyticsNotificationsCategory];
     }
 }
 

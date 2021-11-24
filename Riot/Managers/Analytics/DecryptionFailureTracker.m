@@ -15,6 +15,7 @@
  */
 
 #import "DecryptionFailureTracker.h"
+#import "GeneratedInterface-Swift.h"
 
 
 // Call `checkFailures` every `CHECK_INTERVAL`
@@ -97,20 +98,20 @@ NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
     switch (event.decryptionError.code)
     {
         case MXDecryptingErrorUnknownInboundSessionIdCode:
-            decryptionFailure.reason = DecryptionFailureReason.olmKeysNotSent;
+            decryptionFailure.reason = DecryptionFailureReasonOlmKeysNotSent;
             break;
 
         case MXDecryptingErrorOlmCode:
-            decryptionFailure.reason = DecryptionFailureReason.olmIndexError;
+            decryptionFailure.reason = DecryptionFailureReasonOlmIndexError;
             break;
 
         case MXDecryptingErrorEncryptionNotEnabledCode:
         case MXDecryptingErrorUnableToDecryptCode:
-            decryptionFailure.reason = DecryptionFailureReason.unexpected;
+            decryptionFailure.reason = DecryptionFailureReasonUnexpected;
             break;
 
         default:
-            decryptionFailure.reason = DecryptionFailureReason.unspecified;
+            decryptionFailure.reason = DecryptionFailureReasonUnspecified;
             break;
     }
 
@@ -152,17 +153,17 @@ NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
     if (failuresToTrack.count)
     {
         // Sort failures by error reason
-        NSMutableDictionary<NSString*, NSNumber*> *failuresCounts = [NSMutableDictionary dictionary];
+        NSMutableDictionary<NSNumber*, NSNumber*> *failuresCounts = [NSMutableDictionary dictionary];
         for (DecryptionFailure *failure in failuresToTrack)
         {
-            failuresCounts[failure.reason] = @(failuresCounts[failure.reason].unsignedIntegerValue + 1);
+            failuresCounts[@(failure.reason)] = @(failuresCounts[@(failure.reason)].unsignedIntegerValue + 1);
         }
 
         MXLogDebug(@"[DecryptionFailureTracker] trackFailures: %@", failuresCounts);
         
-        for (NSString *reason in failuresCounts)
+        for (NSNumber *reason in failuresCounts)
         {
-            [_delegate trackValue:failuresCounts[reason] category:kDecryptionFailureTrackerAnalyticsCategory name:reason];
+            [self.delegate trackE2EEError:reason.integerValue count:failuresCounts[reason].integerValue];
         }
     }
 }

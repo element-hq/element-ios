@@ -2395,7 +2395,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         launchAnimationContainerView = launchLoadingView;
         
         [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:kMXAnalyticsStartupLaunchScreen
-                                                        category:kMXAnalyticsStartupCategory];
+                                                                category:kMXAnalyticsStartupCategory];
     }
 }
 

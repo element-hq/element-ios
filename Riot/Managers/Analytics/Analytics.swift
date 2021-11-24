@@ -112,29 +112,56 @@ import PostHog
     func log(event: String) {
         postHog?.capture(event)
     }
-}
-
-
-// MARK: - Legacy compatibility
-extension Analytics {
-    #warning("Use enums instead")
-    static let NotificationsCategory = "notifications"
-    static let NotificationsTimeToDisplayContent = "timelineDisplay"
-    static let ContactsIdentityServerAccepted = "identityServerAccepted"
-    static let PerformanceCategory = "Performance"
-    static let MetricsCategory = "Metrics"
     
-    @objc func trackScreen(_ screenName: String) {
+    func trackScreen(_ screenName: String) {
 //        postHog?.capture("screen:\(screenName)")
     }
-}
-
-extension Analytics: MXAnalyticsDelegate {
-    @objc func trackDuration(_ seconds: TimeInterval, category: String, name: String) {
-//        postHog?.capture("\(category):\(name)", properties: ["duration": seconds])
+    
+    func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
+        for _ in 0..<count {
+            let event = AnalyticsEvent.Error(domain: .E2EE, name: reason.errorName, context: nil)
+            postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+        }
     }
     
-    @objc func trackValue(_ value: NSNumber, category: String, name: String) {
-//        postHog?.capture("\(category):\(name)", properties: ["value": value])
+    func trackIdentityServerAccepted(granted: Bool) {
+        // Do we still want to track this?
+    }
+}
+
+// MARK: - MXAnalyticsDelegate
+extension Analytics: MXAnalyticsDelegate {
+    func trackDuration(_ seconds: TimeInterval, category: String, name: String) { }
+    
+    func trackCallStarted(_ call: MXCall) {
+        let event = AnalyticsEvent.CallStarted(placed: !call.isIncoming,
+                                               isVideo: call.isVideoCall,
+                                               numParticipants: Int(call.room.summary.membersCount.joined))
+        
+        postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+    }
+    
+    func trackCallEnded(_ call: MXCall) {
+        let event = AnalyticsEvent.CallEnded(placed: !call.isIncoming,
+                                             isVideo: call.isVideoCall,
+                                             durationMs: Int(call.duration),
+                                             numParticipants: Int(call.room.summary.membersCount.joined))
+        
+        postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+    }
+    
+    func trackCallError(_ call: MXCall, with reason: __MXCallHangupReason) {
+        let callEvent = AnalyticsEvent.CallError(placed: !call.isIncoming,
+                                                 isVideo: call.isVideoCall,
+                                                 numParticipants: Int(call.room.summary.membersCount.joined))
+        
+        let event = AnalyticsEvent.Error(domain: .VOIP, name: reason.errorName, context: nil)
+        
+        postHog?.capture("\(type(of: callEvent).self)", properties: callEvent.dictionary)
+        postHog?.capture("\(type(of: event).self)", properties: event.dictionary)
+    }
+    
+    func trackContactsAccessGranted(_ granted: Bool) {
+        // Do we still want to track this?
     }
 }

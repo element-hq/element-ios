@@ -45,6 +45,7 @@
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
+#import "DecryptionFailure.h"
 
 // MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"
