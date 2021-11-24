@@ -1359,6 +1359,10 @@ public class VectorL10n: NSObject {
   public static func eventFormatterMemberUpdates(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "event_formatter_member_updates", p1)
   }
+  /// Message deleted
+  public static var eventFormatterMessageDeleted: String { 
+    return VectorL10n.tr("Vector", "event_formatter_message_deleted") 
+  }
   /// (edited)
   public static var eventFormatterMessageEditedMention: String { 
     return VectorL10n.tr("Vector", "event_formatter_message_edited_mention") 
