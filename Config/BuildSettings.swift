@@ -166,8 +166,10 @@ final class BuildSettings: NSObject {
     
     // MARK: - Analytics
     #warning("Testing environment.")
-    static let analyticsHost = "https://posthog-poc.lab.element.dev"
-    static let analyticsAppId = "14"
+    // Optional host for PostHog analytics. Set to nil to disable analytics.
+    static let analyticsHost: String? = "https://posthog-poc.lab.element.dev"
+    // Public key for submitting analytics. Set to nil to disable analytics.
+    static let analyticsKey: String? = "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8"
     
     
     // MARK: - Bug report

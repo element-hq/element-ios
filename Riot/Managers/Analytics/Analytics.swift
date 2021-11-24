@@ -71,7 +71,10 @@ import PostHog
     func startIfEnabled() {
         guard RiotSettings.shared.enableAnalytics, !isRunning else { return }
         
-        postHog = PHGPostHog(configuration: PHGPostHogConfiguration.standard)
+        // Ensures that analytics are configured BuildSettings
+        guard let configuration = PHGPostHogConfiguration.standard else { return }
+        
+        postHog = PHGPostHog(configuration: configuration)
         postHog?.enable()
         MXLog.debug("[Analytics] Started.")
         

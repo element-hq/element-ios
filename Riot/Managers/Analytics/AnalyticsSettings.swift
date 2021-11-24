@@ -35,11 +35,7 @@ struct AnalyticsSettings {
     /// Generate a new random analytics ID. This method has no effect if an ID already exists.
     mutating func generateID() {
         guard id == nil else { return }
-        
-        // Generate a 32 character analytics ID containing the characters 0-f.
-        id = [UInt8](repeating: 0, count: 16)
-            .map { _ in String(format: "%02x", UInt8.random(in: 0...UInt8.max)) }
-            .joined()
+        id = UUID().uuidString
     }
 }
 
