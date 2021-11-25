@@ -2,8 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="H1p-Uh-vWS">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -172,7 +172,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TFZ-TK-2WH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1929" y="-2817"/>
+            <point key="canvasLocation" x="1929" y="-2819"/>
         </scene>
         <!--Favourites View Controller-->
         <scene sceneID="z6B-k5-ano">
@@ -196,6 +196,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4qY-qn-l6L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="942" y="-2049"/>
+        </scene>
+        <!--Calls View Controller-->
+        <scene sceneID="OGR-iF-y7H">
+            <objects>
+                <viewController storyboardIdentifier="CallsViewController" title="Calls View Controller" id="G8Q-fI-Hvd" customClass="CallsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4Is-ob-9t6"/>
+                        <viewControllerLayoutGuide type="bottom" id="e0a-La-awy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qD9-9C-R5e">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" tag="4" title="" image="tab_calls" id="GAU-Tz-bbH"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VvR-dH-VJ6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2908" y="-2819"/>
         </scene>
         <!--Unified Search View Controller-->
         <scene sceneID="ijO-nb-yi4">
@@ -281,6 +300,7 @@
                         <segue destination="IGB-jr-yFz" kind="relationship" relationship="viewControllers" id="CeF-yL-aO0"/>
                         <segue destination="HPQ-zg-lZR" kind="relationship" relationship="viewControllers" id="y12-eg-vhO"/>
                         <segue destination="SLx-Wj-p7E" kind="relationship" relationship="viewControllers" id="MLn-VT-30W"/>
+                        <segue destination="G8Q-fI-Hvd" kind="relationship" relationship="viewControllers" id="8IJ-bE-G5K"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k1S-FF-3Zu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -545,13 +565,14 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Tfl-tq-LQp"/>
+        <segue reference="bwO-oZ-2vj"/>
         <segue reference="f5u-Y1-7nt"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="launch_screen_logo" width="240" height="240"/>
+        <image name="launch_screen_logo" width="20" height="22.5"/>
         <image name="search_icon" width="24" height="24"/>
         <image name="settings_icon" width="24" height="24"/>
+        <image name="tab_calls" width="24" height="24"/>
         <image name="tab_favourites" width="24" height="24"/>
         <image name="tab_groups" width="24" height="24"/>
         <image name="tab_home" width="20" height="23.5"/>
@@ -559,6 +580,9 @@
         <image name="tab_rooms" width="24" height="24"/>
         <systemColor name="groupTableViewBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

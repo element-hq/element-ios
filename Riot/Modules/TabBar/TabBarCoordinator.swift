@@ -257,6 +257,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         return groupsViewController
     }
     
+    private func createCallsViewController() -> CallsViewController {
+        let callsViewController: CallsViewController = CallsViewController.instantiate()
+        callsViewController.tabBarItem.tag = Int(TABBAR_CALLS_INDEX)
+        callsViewController.accessibilityLabel = VectorL10n.titleCalls
+        return callsViewController
+    }
+
     private func createUnifiedSearchController() -> UnifiedSearchViewController {
         
         let viewController: UnifiedSearchViewController = UnifiedSearchViewController.instantiate()
@@ -327,6 +334,11 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if RiotSettings.shared.homeScreenShowCommunitiesTab && !(self.currentMatrixSession?.groups().isEmpty ?? false) && showCommunities {
             let groupsViewController = self.createGroupsViewController()
             viewControllers.append(groupsViewController)
+        }
+        
+        if RiotSettings.shared.homeScreenShowCallsTab {
+            let callsViewController = self.createCallsViewController()
+            viewControllers.append(callsViewController)
         }
         
         tabBarController.updateViewControllers(viewControllers)

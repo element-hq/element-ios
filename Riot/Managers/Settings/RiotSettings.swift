@@ -250,6 +250,9 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "homeScreenShowRoomsTab", defaultValue: BuildSettings.homeScreenShowRoomsTab, storage: defaults)
     var homeScreenShowRoomsTab
     
+    @UserDefault(key: "homeScreenShowCallsTab", defaultValue: BuildSettings.homeScreenShowCallsTab, storage: defaults)
+    var homeScreenShowCallsTab
+
     @UserDefault(key: "homeScreenShowCommunitiesTab", defaultValue: BuildSettings.homeScreenShowCommunitiesTab, storage: defaults)
     var homeScreenShowCommunitiesTab
     

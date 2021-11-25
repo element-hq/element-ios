@@ -26,6 +26,7 @@
 "title_people" = "People";
 "title_rooms" = "Rooms";
 "title_groups" = "Communities";
+"title_calls" = "Calls";
 "warning" = "Warning";
 
 // Actions
@@ -190,6 +191,7 @@
 "room_recents_favourites_section" = "FAVOURITES";
 "room_recents_people_section" = "PEOPLE";
 "room_recents_conversations_section" = "ROOMS";
+"room_recents_calls_section" = "CALLS";
 "room_recents_no_conversation" = "No rooms";
 "room_recents_low_priority_section" = "LOW PRIORITY";
 "room_recents_server_notice_section" = "SYSTEM ALERTS";
@@ -210,6 +212,10 @@
 "people_empty_view_title" = "People";
 "people_empty_view_information" = "Chat securely with anyone.
 Tap the + to start adding people.";
+
+// Calls tab
+"calls_empty_view_title" = "Calls";
+"calls_empty_view_information" = "Incoming and outgoing calls are listed here. Tap the + to start a call from the dial pad";
 
 // Rooms tab
 "room_directory_no_public_room" = "No public rooms available";

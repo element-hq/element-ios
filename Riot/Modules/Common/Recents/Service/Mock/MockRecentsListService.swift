@@ -27,7 +27,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     private var _conversationRoomListData: MXRoomListData?
     private var _lowPriorityRoomListData: MXRoomListData?
     private var _serverNoticeRoomListData: MXRoomListData?
-    
+    private var _callRoomListData: MXRoomListData?
+
     // swiftlint:disable weak_delegate
     private let multicastDelegate: MXMulticastDelegate<RecentsListServiceDelegate> = MXMulticastDelegate()
     // swiftlint:enable weak_delegate
@@ -41,7 +42,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         var conversation: [MockRoomSummary] = []
         var lowPriority: [MockRoomSummary] = []
         var serverNotice: [MockRoomSummary] = []
-        
+        var calls: [MockRoomSummary] = []
+
         rooms.forEach { summary in
             if summary.isTyped(.invited) {
                 invited.append(summary)
@@ -72,7 +74,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         _conversationRoomListData = MockRoomListData(withRooms: conversation)
         _lowPriorityRoomListData = MockRoomListData(withRooms: lowPriority)
         _serverNoticeRoomListData = MockRoomListData(withRooms: serverNotice)
-        
+        _callRoomListData = MockRoomListData(withRooms: calls)
+
         super.init()
     }
     
@@ -90,6 +93,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
                 room.dataTypes = .invited
             } else if i % 11 == 0 {
                 room.dataTypes = .serverNotice
+            } else if i % 13 == 0 {
+                room.dataTypes = .sipCall
             }
             room.displayname = "Room \(i+1)"
             if let event = MXEvent(fromJSON: [
@@ -147,6 +152,11 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         return _serverNoticeRoomListData
     }
     
+    public var callRoomListData: MXRoomListData? {
+        guard mode == .sipCalls else { return nil }
+        return _callRoomListData
+    }
+
     public var suggestedRoomListData: MXRoomListData?
     
     public var favoritedMissedDiscussionsCount: DiscussionsCount = .zero
@@ -154,7 +164,9 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
     public var peopleMissedDiscussionsCount: DiscussionsCount = .zero
     
     public var conversationMissedDiscussionsCount: DiscussionsCount = .zero
-    
+ 
+    public var callsMissedDiscussionsCount: DiscussionsCount = .zero
+
     public var totalVisibleItemCount: Int {
         switch mode {
         case .home:
@@ -165,6 +177,8 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
             return peopleRoomListData?.counts.numberOfRooms ?? 0
         case .rooms:
             return conversationRoomListData?.counts.numberOfRooms ?? 0
+        case .sipCalls:
+            return callRoomListData?.counts.numberOfRooms ?? 0
         @unknown default:
             return 0
         }
@@ -194,6 +208,7 @@ public class MockRecentsListService: NSObject, RecentsListServiceProtocol {
         _conversationRoomListData = nil
         _lowPriorityRoomListData = nil
         _serverNoticeRoomListData = nil
+        _callRoomListData = nil
         removeAllDelegates()
     }
     

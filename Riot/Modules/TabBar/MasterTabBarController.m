@@ -107,6 +107,11 @@
     return (GroupsViewController*)[self viewControllerForClass:GroupsViewController.class];
 }
 
+- (CallsViewController *)callsViewController
+{
+    return (CallsViewController*)[self viewControllerForClass:CallsViewController.class];
+}
+
 #pragma mark - Life cycle
 
 - (void)viewDidLoad
@@ -359,7 +364,8 @@
         [self.favouritesViewController displayList:recentsDataSource];
         [self.peopleViewController displayList:recentsDataSource];
         [self.roomsViewController displayList:recentsDataSource];
-        
+        [self.callsViewController displayList:recentsDataSource];
+
         // Restore the right delegate of the shared recent data source.
         id<MXKDataSourceDelegate> recentsDataSourceDelegate = self.homeViewController;
         RecentsDataSourceMode recentsDataSourceMode = RecentsDataSourceModeHome;
@@ -382,7 +388,11 @@
                 recentsDataSourceDelegate = self.roomsViewController;
                 recentsDataSourceMode = RecentsDataSourceModeRooms;
                 break;
-                
+            case TABBAR_CALLS_INDEX:
+                recentsDataSourceDelegate = self.callsViewController;
+                recentsDataSourceMode = RecentsDataSourceModeSipCalls;
+                break;
+
             default:
                 break;
         }
@@ -479,7 +489,8 @@
         [self.favouritesViewController displayList:nil];
         [self.peopleViewController displayList:nil];
         [self.roomsViewController displayList:nil];
-        
+        [self.callsViewController displayList:nil];
+
         [recentsDataSource destroy];
         recentsDataSource = nil;
     }
@@ -854,6 +865,13 @@
                              withBadgeColor:(recentsDataSource.groupMissedDiscussionsCount.hasHighlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor)];
         }
     }
+    
+    if (RiotSettings.shared.homeScreenShowCallsTab)
+    {
+        [self setMissedDiscussionsCount:recentsDataSource.callsMissedDiscussionsCount.numberOfNotified
+                            onTabBarItem:TABBAR_CALLS_INDEX
+                            withBadgeColor:ThemeService.shared.theme.noticeSecondaryColor];
+    }
 }
 
 - (void)setMissedDiscussionsCount:(NSUInteger)count onTabBarItem:(NSUInteger)index withBadgeColor:(UIColor*)badgeColor
@@ -1092,6 +1110,10 @@
         else if (item.tag == TABBAR_FAVOURITES_INDEX)
         {
             [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
+        }
+        else if (item.tag == TABBAR_CALLS_INDEX)
+        {
+            [self.callsViewController scrollToNextRoomWithMissedNotifications];
         }
     }
 }

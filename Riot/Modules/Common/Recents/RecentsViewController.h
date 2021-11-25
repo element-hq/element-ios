@@ -157,6 +157,11 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 - (void)leaveEditedRoom;
 
 /**
+ Make this function accessible to subclass
+ */
+- (void)openDialpad;
+
+/**
  Update the selected room tag.
  */
 - (void)updateEditedRoomTag:(NSString*)tag;

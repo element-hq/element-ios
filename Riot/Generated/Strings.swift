@@ -575,6 +575,14 @@ public class VectorL10n: NSObject {
   public static var callbarReturn: String { 
     return VectorL10n.tr("Vector", "callbar_return") 
   }
+  /// Incoming and outgoing calls are listed here. Tap the + to start a call from the dial pad
+  public static var callsEmptyViewInformation: String { 
+    return VectorL10n.tr("Vector", "calls_empty_view_information") 
+  }
+  /// Calls
+  public static var callsEmptyViewTitle: String { 
+    return VectorL10n.tr("Vector", "calls_empty_view_title") 
+  }
   /// Camera
   public static var camera: String { 
     return VectorL10n.tr("Vector", "camera") 
@@ -3627,6 +3635,10 @@ public class VectorL10n: NSObject {
   public static var roomPromptResend: String { 
     return VectorL10n.tr("Vector", "room_prompt_resend") 
   }
+  /// CALLS
+  public static var roomRecentsCallsSection: String { 
+    return VectorL10n.tr("Vector", "room_recents_calls_section") 
+  }
   /// ROOMS
   public static var roomRecentsConversationsSection: String { 
     return VectorL10n.tr("Vector", "room_recents_conversations_section") 
@@ -5222,6 +5234,10 @@ public class VectorL10n: NSObject {
   /// Switch
   public static var `switch`: String { 
     return VectorL10n.tr("Vector", "switch") 
+  }
+  /// Calls
+  public static var titleCalls: String { 
+    return VectorL10n.tr("Vector", "title_calls") 
   }
   /// Favourites
   public static var titleFavourites: String { 

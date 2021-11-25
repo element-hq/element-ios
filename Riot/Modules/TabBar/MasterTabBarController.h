@@ -23,20 +23,23 @@
 #import "PeopleViewController.h"
 #import "RoomsViewController.h"
 #import "GroupsViewController.h"
+#import "CallsViewController.h"
 
 #define TABBAR_HOME_INDEX         0
 #define TABBAR_FAVOURITES_INDEX   1
 #define TABBAR_PEOPLE_INDEX       2
 #define TABBAR_ROOMS_INDEX        3
 #define TABBAR_GROUPS_INDEX       4
-#define TABBAR_COUNT              5
+#define TABBAR_CALLS_INDEX        5
+#define TABBAR_COUNT              6
 
 typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
     MasterTabBarIndexHome = TABBAR_HOME_INDEX,
     MasterTabBarIndexFavourites = TABBAR_FAVOURITES_INDEX,
     MasterTabBarIndexPeople = TABBAR_PEOPLE_INDEX,
     MasterTabBarIndexRooms = TABBAR_ROOMS_INDEX,
-    MasterTabBarIndexGroups = TABBAR_GROUPS_INDEX
+    MasterTabBarIndexGroups = TABBAR_GROUPS_INDEX,
+    MasterTabBarIndexCalls = TABBAR_CALLS_INDEX
 };
 
 @protocol MasterTabBarControllerDelegate;
@@ -157,6 +160,7 @@ typedef NS_ENUM(NSUInteger, MasterTabBarIndex) {
 @property (nonatomic, readonly) PeopleViewController *peopleViewController;
 @property (nonatomic, readonly) RoomsViewController *roomsViewController;
 @property (nonatomic, readonly) GroupsViewController *groupsViewController;
+@property (nonatomic, readonly) CallsViewController *callsViewController;
 
 
 // References on the currently selected room

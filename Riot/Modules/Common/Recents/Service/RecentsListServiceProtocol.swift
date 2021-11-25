@@ -53,6 +53,9 @@ public protocol RecentsListServiceProtocol {
     /// Suggested rooms for current mode
     var suggestedRoomListData: MXRoomListData? { get }
     
+    /// Call list
+    var callRoomListData: MXRoomListData? { get }
+
     // MARK: Discussion counts
     
     /// Counts for favorite screen
@@ -63,7 +66,10 @@ public protocol RecentsListServiceProtocol {
     
     /// Counts for rooms screen
     var conversationMissedDiscussionsCount: DiscussionsCount { get }
-    
+
+    /// Counts for rooms screen
+    var callsMissedDiscussionsCount: DiscussionsCount { get }
+
     /// Total number of rooms visible in one screen. Can be used to display an empty view
     var totalVisibleItemCount: Int { get }
     
