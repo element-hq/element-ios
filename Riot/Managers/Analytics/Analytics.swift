@@ -119,7 +119,8 @@ import AnalyticsEvents
     
     func trackScreen(_ screen: AnalyticsScreen) {
         let event = AnalyticsEventScreen(durationMs: nil, eventName: .screen, screenName: screen.screenName)
-        capture(event: event, named: event.eventName.rawValue)
+        // Screen capture differs compared to event capture.
+        postHog?.screen(event.screenName.rawValue, properties: event.dictionary)
     }
     
     func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
@@ -138,30 +139,30 @@ import AnalyticsEvents
 extension Analytics: MXAnalyticsDelegate {
     func trackDuration(_ seconds: TimeInterval, category: String, name: String) { }
     
-    func trackCallStarted(_ call: MXCall) {
+    func trackCallStarted(withVideo isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
         let event = AnalyticsEventCallStarted(eventName: .callStarted,
-                                              isVideo: call.isVideoCall,
-                                              numParticipants: Int(call.room.summary.membersCount.joined),
-                                              placed: !call.isIncoming)
+                                              isVideo: isVideo,
+                                              numParticipants: numberOfParticipants,
+                                              placed: !isIncoming)
         
         capture(event: event, named: event.eventName.rawValue)
     }
     
-    func trackCallEnded(_ call: MXCall) {
-        let event = AnalyticsEventCallEnded(durationMs: Int(call.duration),
+    func trackCallEnded(withDuration duration: Int, video isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
+        let event = AnalyticsEventCallEnded(durationMs: duration,
                                             eventName: .callEnded,
-                                            isVideo: call.isVideoCall,
-                                            numParticipants: Int(call.room.summary.membersCount.joined),
-                                            placed: !call.isIncoming)
+                                            isVideo: isVideo,
+                                            numParticipants: numberOfParticipants,
+                                            placed: !isIncoming)
         
         capture(event: event, named: event.eventName.rawValue)
     }
     
-    func trackCallError(_ call: MXCall, with reason: __MXCallHangupReason) {
+    func trackCallError(with reason: __MXCallHangupReason, video isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
         let callEvent = AnalyticsEventCallError(eventName: .callError,
-                                                isVideo: call.isVideoCall,
-                                                numParticipants: Int(call.room.summary.membersCount.joined),
-                                                placed: !call.isIncoming)
+                                                isVideo: isVideo,
+                                                numParticipants: numberOfParticipants,
+                                                placed: !isIncoming)
         
         let event = AnalyticsEventError(context: nil, domain: .voip, eventName: .error, name: reason.errorName)
         
