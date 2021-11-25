@@ -317,7 +317,7 @@
 
             [RoomDataSource loadRoomDataSourceWithRoomId:selectedSearchEvent.roomId
                                           initialEventId:selectedSearchEvent.eventId
-                                                threadId:selectedSearchEvent.threadIdentifier
+                                                threadId:selectedSearchEvent.threadId
                                         andMatrixSession:selectedSearchEventSession
                                               onComplete:^(RoomDataSource *roomDataSource) {
 
