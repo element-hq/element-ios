@@ -25,6 +25,9 @@ class RoomNavigationParameters: NSObject {
     /// The room identifier
     let roomId: String
     
+    /// If not nil, the thread will be opened on this room
+    let threadId: String?
+    
     /// If not nil, the room will be opened on this event.
     let eventId: String?
     
@@ -37,10 +40,12 @@ class RoomNavigationParameters: NSObject {
     // MARK: - Setup
     
     init(roomId: String,
+         threadId: String?,
          eventId: String?,
          mxSession: MXSession,
          presentationParameters: ScreenPresentationParameters) {
         self.roomId = roomId
+        self.threadId = threadId
         self.eventId = eventId
         self.mxSession = mxSession
         self.presentationParameters = presentationParameters

@@ -395,7 +395,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                   session: roomNavigationParameters.mxSession,
                                                                   roomId: roomNavigationParameters.roomId,
-                                                                  eventId: roomNavigationParameters.eventId)
+                                                                  eventId: roomNavigationParameters.eventId,
+                                                                  threadId: roomNavigationParameters.threadId)
         
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,

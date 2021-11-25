@@ -880,6 +880,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:NO stackAboveVisibleViews:NO];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                   threadId:nil
                                                                                     eventId:nil
                                                                                   mxSession:matrixSession
                                                                      presentationParameters:presentationParameters];

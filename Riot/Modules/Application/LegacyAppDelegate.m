@@ -1280,6 +1280,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     NSString *roomIdOrAlias;
+    NSString *threadId;
     NSString *eventId;
     NSString *userId;
     NSString *groupId;
@@ -1361,7 +1362,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 else
                 {
                     // Open the room page
-                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: screenPresentationParameters];
+                    if (eventId)
+                    {
+                        MXEvent *event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
+                        threadId = event.threadIdentifier;
+                    }
+                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                                                 threadId:threadId
+                                                                                                                  eventId:eventId
+                                                                                                                mxSession:account.mxSession
+                                                                                                   presentationParameters:screenPresentationParameters];
                     
                     [self showRoomWithParameters:roomNavigationParameters];
                 }
@@ -2883,7 +2893,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                        eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
+                                                                                   threadId:nil
+                                                                                    eventId:eventId
+                                                                                  mxSession:mxSession
+                                                                     presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
 }
