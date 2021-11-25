@@ -1365,7 +1365,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     if (eventId)
                     {
                         MXEvent *event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
-                        threadId = event.threadIdentifier;
+                        threadId = event.threadId;
                     }
                     RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                                                  threadId:threadId
