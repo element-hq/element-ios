@@ -24,7 +24,6 @@
 #import "BubbleReactionsViewSizer.h"
 
 #import "GeneratedInterface-Swift.h"
-#import <MatrixKit/MXKSwiftHeader.h>
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
 
