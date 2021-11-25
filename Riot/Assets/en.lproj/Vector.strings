@@ -419,6 +419,7 @@ Tap the + to start adding people.";
 
 //  MARK: Threads
 "room_thread_title" = "Thread";
+"thread_copy_link_to_thread" = "Copy link to thread";
 "threads_title" = "Threads";
 "threads_action_all_threads" = "All threads";
 "threads_action_my_threads" = "My threads";

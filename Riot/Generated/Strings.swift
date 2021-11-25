@@ -5075,6 +5075,10 @@ public class VectorL10n: NSObject {
   public static var `switch`: String { 
     return VectorL10n.tr("Vector", "switch") 
   }
+  /// Copy link to thread
+  public static var threadCopyLinkToThread: String { 
+    return VectorL10n.tr("Vector", "thread_copy_link_to_thread") 
+  }
   /// All threads
   public static var threadsActionAllThreads: String { 
     return VectorL10n.tr("Vector", "threads_action_all_threads") 
