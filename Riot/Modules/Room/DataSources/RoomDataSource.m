@@ -249,7 +249,7 @@ const CGFloat kTypingCellHeight = 24;
     if (self.threadId)
     {
         //  if in a thread, ignore non-root event or events from other threads
-        if (![event.eventId isEqualToString:self.threadId] && ![event.threadIdentifier isEqualToString:self.threadId])
+        if (![event.eventId isEqualToString:self.threadId] && ![event.threadId isEqualToString:self.threadId])
         {
             //  Ignore the event
             return NO;
@@ -259,7 +259,7 @@ const CGFloat kTypingCellHeight = 24;
         {
             MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
                                                                     inRoom:event.roomId];
-            if (![relatedEvent.threadIdentifier isEqualToString:self.threadId])
+            if (![relatedEvent.threadId isEqualToString:self.threadId])
             {
                 //  ignore the event
                 return NO;
@@ -269,7 +269,7 @@ const CGFloat kTypingCellHeight = 24;
     else
     {
         //  if not in a thread, ignore all threaded events
-        if (event.threadIdentifier)
+        if (event.threadId)
         {
             //  ignore the event
             return NO;
@@ -279,7 +279,7 @@ const CGFloat kTypingCellHeight = 24;
         {
             MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
                                                                     inRoom:event.roomId];
-            if (relatedEvent.threadIdentifier)
+            if (relatedEvent.threadId)
             {
                 //  ignore the event
                 return NO;

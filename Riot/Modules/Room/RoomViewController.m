@@ -3211,7 +3211,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     BOOL showThreadOption = RiotSettings.shared.enableThreads
         && !self.roomDataSource.threadId
-        && !selectedEvent.threadIdentifier;
+        && !selectedEvent.threadId;
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
         [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
@@ -4022,7 +4022,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)roomDataSource:(RoomDataSource *)roomDataSource didTapThread:(MXThread *)thread
 {
-    [self openThreadWithId:thread.identifier];
+    [self openThreadWithId:thread.id];
 }
 
 #pragma mark - Segues
@@ -5937,7 +5937,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     BOOL showMoreOption = (event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForStates)
         || (!event.isState && RiotSettings.shared.roomContextualMenuShowMoreOptionForMessages);
-    BOOL showThreadOption = RiotSettings.shared.enableThreads && !self.roomDataSource.threadId && !event.threadIdentifier;
+    BOOL showThreadOption = RiotSettings.shared.enableThreads && !self.roomDataSource.threadId && !event.threadId;
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     
