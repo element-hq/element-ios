@@ -2500,17 +2500,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)checkLocalPrivateKeysInSession:(MXSession*)mxSession
 {
-    id<MXCryptoStore> cryptoStore = mxSession.crypto.store;
+    MXRecoveryService *recoveryService = mxSession.crypto.recoveryService;
     NSUInteger keysCount = 0;
-    if ([cryptoStore secretWithSecretId:MXSecretId.keyBackup])
+    if ([recoveryService hasSecretWithSecretId:MXSecretId.keyBackup])
     {
         keysCount++;
     }
-    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningUserSigning])
+    if ([recoveryService hasSecretWithSecretId:MXSecretId.crossSigningUserSigning])
     {
         keysCount++;
     }
-    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningSelfSigning])
+    if ([recoveryService hasSecretWithSecretId:MXSecretId.crossSigningSelfSigning])
     {
         keysCount++;
     }

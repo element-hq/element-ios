@@ -17,7 +17,7 @@
 
 #import <MatrixKit/MatrixKit.h>
 
-#import "GeneratedInterface-Swift.h"
+@class TermsView;
 
 @interface AuthInputsView : MXKAuthInputsView <MXKCountryPickerViewControllerDelegate>
 
