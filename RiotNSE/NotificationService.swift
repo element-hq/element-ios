@@ -67,6 +67,7 @@ class NotificationService: UNNotificationServiceExtension {
     private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
     private let localAuthenticationService = LocalAuthenticationService(pinCodePreferences: .shared)
     
+    private let backgroundServiceInitQueue = DispatchQueue(label: "backgroundServiceInitQueue")
     //  MARK: - Method Overrides
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
@@ -169,14 +170,16 @@ class NotificationService: UNNotificationServiceExtension {
         MXKAccountManager.shared()?.forceReloadAccounts()
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
-            if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
-                MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
-                self.logMemory()
-                NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
-                MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
-                self.logMemory()
+            backgroundServiceInitQueue.sync {
+                if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
+                    MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
+                    self.logMemory()
+                    NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
+                    MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
+                    self.logMemory()
+                }
+                completion()
             }
-            completion()
         } else {
             MXLog.debug("[NotificationService] setup: No active accounts")
             fallbackToBestAttemptContent(forEventId: eventId)
