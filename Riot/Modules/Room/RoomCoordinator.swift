@@ -243,6 +243,10 @@ extension RoomCoordinator: RoomIdentifiable {
         return self.parameters.roomId
     }
     
+    var threadId: String? {
+        return self.parameters.threadId
+    }
+    
     var mxSession: MXSession? {
         self.parameters.session
     }
