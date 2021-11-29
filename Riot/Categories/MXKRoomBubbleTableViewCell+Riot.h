@@ -40,11 +40,6 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
 extern NSString *const kMXKRoomBubbleCellLongPressOnReactionView;
 
 /**
- 'userInfo' dictionary key 'kMXKRoomBubbleCellEventIdKey' is associated to a 'NSString' object representing an event id.
- */
-extern NSString *const kMXKRoomBubbleCellEventIdKey;
-
-/**
  Action identifier used when the user pressed accept button for an incoming key verification request.
  
  The `userInfo` dictionary contains an `NSString` object under the `kMXKRoomBubbleCellEventIdKey` key, representing the event id associated to the key verification request.
