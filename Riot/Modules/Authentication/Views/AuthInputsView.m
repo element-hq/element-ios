@@ -26,6 +26,8 @@
 
 #import "RiotNavigationController.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @interface AuthInputsView ()
 {
     /**
