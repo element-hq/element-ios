@@ -3232,9 +3232,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         && !selectedEvent.threadId;
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
             MXStrongifyAndReturnIfNil(self);
             
             [self cancelEventSelection];
@@ -3258,7 +3258,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }]];
         
         [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionDelete]
-                                                        style:UIAlertActionStyleDefault
+                                                        style:UIAlertActionStyleDestructive
                                                       handler:^(UIAlertAction * action) {
             MXStrongifyAndReturnIfNil(self);
             
@@ -3524,34 +3524,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
-        // Do not allow to redact the event that enabled encryption (m.room.encryption)
-        // because it breaks everything
-        if (selectedEvent.eventType != MXEventTypeRoomEncryption)
-        {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionRedact]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self cancelEventSelection];
-                
-                [self startActivityIndicator];
-                
-                MXWeakify(self);
-                [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
-                    MXStrongifyAndReturnIfNil(self);
-                    [self stopActivityIndicator];
-                } failure:^(NSError *error) {
-                    MXStrongifyAndReturnIfNil(self);
-                    [self stopActivityIndicator];
-                    
-                    MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
-                    //Alert user
-                    [self showError:error];
-                }];
-            }]];
-        }
-        
         if (BuildSettings.messageDetailsAllowPermalink)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
@@ -3723,6 +3695,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 // Display encryption details
                 [self showEncryptionInformation:selectedEvent];
+            }]];
+        }
+        
+        // Do not allow to redact the event that enabled encryption (m.room.encryption)
+        // because it breaks everything
+        if (selectedEvent.eventType != MXEventTypeRoomEncryption)
+        {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionRedact]
+                                                            style:UIAlertActionStyleDestructive
+                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self cancelEventSelection];
+                
+                [self startActivityIndicator];
+                
+                MXWeakify(self);
+                [self.roomDataSource.room redactEvent:selectedEvent.eventId reason:nil success:^{
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                } failure:^(NSError *error) {
+                    MXStrongifyAndReturnIfNil(self);
+                    [self stopActivityIndicator];
+                    
+                    MXLogDebug(@"[RoomVC] Redact event (%@) failed", selectedEvent.eventId);
+                    //Alert user
+                    [self showError:error];
+                }];
             }]];
         }
     }

@@ -169,9 +169,8 @@ TableViewSectionsDelegate>
 
     if (self.mainSession.crypto.backup)
     {
-        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
-                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
-
+        MXDeviceInfo *deviceInfo = [self.mainSession.crypto deviceWithDeviceId:self.mainSession.myDeviceId ofUser:self.mainSession.myUserId];
+        
         if (deviceInfo)
         {
             secureBackupSection = [[SettingsSecureBackupTableViewSection alloc] initWithRecoveryService:self.mainSession.crypto.recoveryService keyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];

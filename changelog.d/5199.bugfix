@@ -1,0 +1,1 @@
+Fix bug where VoIP calls would not connect reliably after signout/signin.

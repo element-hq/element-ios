@@ -18,7 +18,6 @@
 #import "RecentCellData.h"
 
 #import "MXRoom+Riot.h"
-#import "MatrixSDK-Swift.h"
 
 #import "GeneratedInterface-Swift.h"
 
