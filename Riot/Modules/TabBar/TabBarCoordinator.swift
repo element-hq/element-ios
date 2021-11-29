@@ -26,6 +26,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     // MARK: Private
     
     private let parameters: TabBarCoordinatorParameters
+    private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     
     // Indicate if the Coordinator has started once
     private var hasStartedOnce: Bool {
@@ -69,6 +70,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         let masterNavigationController = RiotNavigationController()
         self.navigationRouter = NavigationRouter(navigationController: masterNavigationController)
         self.masterNavigationController = masterNavigationController
+        self.activityIndicatorPresenter = ActivityIndicatorPresenter()
     }
     
     // MARK: - Public methods
@@ -393,6 +395,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func showRoom(withNavigationParameters roomNavigationParameters: RoomNavigationParameters, completion: (() -> Void)?) {
         
         if let threadParameters = roomNavigationParameters.threadParameters, threadParameters.stackRoomScreen {
+            self.activityIndicatorPresenter.presentActivityIndicator(on: toPresentable().view, animated: false)
             let dispatchGroup = DispatchGroup()
             
             //  create room coordinator
@@ -425,7 +428,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
             }
             self.add(childCoordinator: threadCoordinator)
             
-            dispatchGroup.notify(queue: .main) {
+            dispatchGroup.notify(queue: .main) { [weak self] in
+                guard let self = self else { return }
                 let modules: [PresentableModule] = [
                     PresentableModule(presentable: roomCoordinator, popCompletion: { [weak self] in
                         // NOTE: The RoomDataSource releasing is handled in SplitViewCoordinator
@@ -439,6 +443,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 
                 self.showSplitViewDetails(with: modules,
                                           stack: roomNavigationParameters.presentationParameters.stackAboveVisibleViews)
+                
+                self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             }
         } else {
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
