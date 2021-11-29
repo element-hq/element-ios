@@ -1370,6 +1370,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                             threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
                                                                           stackRoomScreen:YES];
                         }
+                        else if ([account.mxSession.threadingService isEventThreadRoot:event])
+                        {
+                            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                                          stackRoomScreen:YES];
+                        }
                     }
                     RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                                                   eventId:eventId
