@@ -107,7 +107,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         if let previewData = self.parameters.previewData {
             self.loadRoomPreview(withData: previewData, completion: completion)
         } else if let threadId = self.parameters.threadId {
-            self.loadRoom(withId: self.parameters.roomId, andThreadId: threadId, completion: completion)
+            self.loadRoom(withId: self.parameters.roomId,
+                          andThreadId: threadId,
+                          eventId: self.parameters.eventId,
+                          completion: completion)
         } else if let eventId = self.selectedEventId {
             self.loadRoom(withId: self.parameters.roomId, andEventId: eventId, completion: completion)
         } else {
@@ -196,7 +199,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         }
     }
     
-    private func loadRoom(withId roomId: String, andThreadId threadId: String, completion: (() -> Void)?) {
+    private func loadRoom(withId roomId: String, andThreadId threadId: String, eventId: String?, completion: (() -> Void)?) {
         
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
@@ -218,6 +221,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             }
             
             threadDataSource.markTimelineInitialEvent = false
+            threadDataSource.highlightedEventId = eventId
             self.roomViewController.displayRoom(threadDataSource)
             
             // Give the data source ownership to the room view controller.
