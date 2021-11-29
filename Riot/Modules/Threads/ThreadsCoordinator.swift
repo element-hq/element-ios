@@ -122,7 +122,7 @@ final class ThreadsCoordinator: NSObject, ThreadsCoordinatorProtocol {
                                                    session: parameters.session,
                                                    roomId: parameters.roomId,
                                                    eventId: nil,
-                                                   threadId: thread.identifier,
+                                                   threadId: thread.id,
                                                    displayConfiguration: .forThreads)
         let coordinator = RoomCoordinator(parameters: parameters)
         coordinator.delegate = self
