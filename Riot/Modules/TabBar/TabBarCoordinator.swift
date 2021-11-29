@@ -437,18 +437,22 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                           stackOnSplitViewDetail: Bool = false,
                           completion: (() -> Void)? = nil) {
         
-        if let topRoomCoordinator =  self.splitViewMasterPresentableDelegate?.detailModules.last as? RoomCoordinatorProtocol,
-           parameters.roomId == topRoomCoordinator.roomId && parameters.session == topRoomCoordinator.mxSession {
-            
-                // RoomCoordinator with the same room id and Matrix session is shown
-            
-                if let eventId = parameters.eventId {
-                    // If there is an event id ask the RoomCoordinator to start with this one
-                    topRoomCoordinator.start(withEventId: eventId, completion: completion)
-                } else {
-                    // If there is no event id defined do nothing
-                    completion?()
-                }
+        //  try to find the desired room screen in the stack
+        if let roomCoordinator = self.splitViewMasterPresentableDelegate?.detailModules.last(where: { presentable in
+            guard let roomCoordinator = presentable as? RoomCoordinatorProtocol else {
+                return false
+            }
+            return roomCoordinator.roomId == parameters.roomId
+                && roomCoordinator.threadId == parameters.threadId
+                && roomCoordinator.mxSession == parameters.session
+        }) as? RoomCoordinatorProtocol {
+            self.splitViewMasterPresentableDelegate?.splitViewMasterPresentable(self, wantsToPopTo: roomCoordinator)
+            //  go to a specific event if provided
+            if let eventId = parameters.eventId {
+                roomCoordinator.start(withEventId: eventId, completion: completion)
+            } else {
+                completion?()
+            }
             return
         }
                         
