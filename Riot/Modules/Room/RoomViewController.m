@@ -3232,9 +3232,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         && !selectedEvent.threadId;
     if (showThreadOption && [self canCopyEvent:selectedEvent andCell:cell])
     {
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction * action) {
+        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionCopy]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
             MXStrongifyAndReturnIfNil(self);
             
             [self cancelEventSelection];
