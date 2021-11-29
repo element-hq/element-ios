@@ -16,7 +16,8 @@
  */
 
 #import "RoomPreviewData.h"
-#import <MatrixSDK-Swift.h>
+
+#import "GeneratedInterface-Swift.h"
 
 @implementation RoomPreviewData
 
