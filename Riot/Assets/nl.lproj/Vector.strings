@@ -564,7 +564,7 @@
 "room_message_reply_to_short_placeholder" = "Stuur een antwoord…";
 // String for App Store
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
-"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, ruimtes, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
+"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, Spaces, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
 "auth_accept_policies" = "Gelieve het beleid van deze server te lezen en aanvaarden:";
 "auth_autodiscover_invalid_response" = "Ongeldig server-ontdekkings-antwoord";
@@ -1469,16 +1469,16 @@
 
 // Chat
 "room_slide_to_end_group_call" = "Schuif om voor iedereen de oproep te beëindigen";
-"space_beta_announce_information" = "Ruimtes zijn de nieuwe manier om kamers en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu al gebruiken op Web en Desktop.";
-"space_feature_unavailable_information" = "Ruimtes zijn de nieuwe manier om kamers en personen te groeperen. \n\nHet is binnenkort beschikbaar. U kan aan ruimtes deelnemen via andere platformen en die kamers worden dan hier beschikbaar.";
+"space_beta_announce_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu al gebruiken op Web en Desktop.";
+"space_feature_unavailable_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. \n\nHet is binnenkort beschikbaar. U kan aan Spaces deelnemen via andere platformen en die kamers worden dan hier beschikbaar.";
 "space_beta_announce_subtitle" = "De nieuwe versie van gemeenschappen";
-"space_beta_announce_title" = "Ruimtes komen binnenkort";
+"space_beta_announce_title" = "Spaces komen binnenkort";
 "space_beta_announce_badge" = "BETA";
-"space_feature_unavailable_subtitle" = "Ruimtes zijn nog niet beschikbaar op iOS, maar u kunt het nu al testen op Web en Desktop";
+"space_feature_unavailable_subtitle" = "Spaces zijn nog niet beschikbaar op iOS, maar u kunt het nu al testen op Web en Desktop";
 
 // Mark: - Spaces
 
-"space_feature_unavailable_title" = "Ruimtes zijn nog niet klaar";
+"space_feature_unavailable_title" = "Spaces zijn nog niet klaar";
 "side_menu_app_version" = "Versie %@";
 "side_menu_action_feedback" = "Feedback";
 "side_menu_action_help" = "Help";
@@ -1574,14 +1574,14 @@
 "settings_confirm_media_size_description" = "Wanneer dit aan staat wordt u elke keer gevraagd welk formaat afbeeldingen en video's u wilt versturen.";
 "settings_confirm_media_size" = "Bevestig afmeting bij versturen";
 "settings_sending_media" = "AFBEELDINGEN EN VIDEO'S VERSTUREN";
-"space_avatar_view_accessibility_hint" = "Ruimte-afbeelding wijzigen";
+"space_avatar_view_accessibility_hint" = "Space-afbeelding wijzigen";
 
 // Mark: Avatar
 
 "space_avatar_view_accessibility_label" = "afbeelding";
-"space_public_join_rule" = "Publieke ruimte";
-"space_private_join_rule" = "Privéruimte";
-"space_participants_action_ban" = "Uit deze ruimte verbannen";
+"space_public_join_rule" = "Publieke Space";
+"space_private_join_rule" = "Privé Space";
+"space_participants_action_ban" = "Uit deze Space verbannen";
 "space_participants_action_remove" = "Uit deze kamer verwijderen";
 "spaces_coming_soon_detail" = "Deze functies is nog niet klaar, maar er wordt aan gewerkt. Voor nu kan u dit wel doen met Element via uw computer.";
 "spaces_invites_coming_soon_title" = "Uitnodigen komt binnenkort";
@@ -1591,15 +1591,15 @@
 "spaces_no_room_found_detail" = "Sommige resultaten kunnen verborgen zijn doordat ze privé zijn. U heeft dan een uitnodiging nodig om deel te nemen.";
 "spaces_empty_space_detail" = "Sommige kamers kunnen verborgen zijn doordat ze privé zijn. U heeft dan een uitnodiging nodig om deel te nemen.";
 "spaces_no_result_found_title" = "Geen resultaten gevonden";
-"spaces_empty_space_title" = "Deze ruimte heeft (nog) geen kamers";
-"space_tag" = "ruimte";
+"spaces_empty_space_title" = "Deze Space heeft (nog) geen kamers";
+"space_tag" = "space";
 "spaces_explore_rooms" = "Kamers ontdekken";
-"leave_space_and_all_rooms_action" = "Alle kamers en ruimtes verlaten";
+"leave_space_and_all_rooms_action" = "Alle kamers en Spaces verlaten";
 "leave_space_only_action" = "Geen kamers verlaten";
-"leave_space_message_admin_warning" = "U bent beheerder van deze ruimte, controleer of u de beheerrechten heeft overgedragen aan een andere deelnemer voordat u vertrekt.";
-"leave_space_message" = "Weet u zeker dat u %@ wilt verlaten? Wilt u ook alle kamers en ruimtes in deze ruimte verlaten?";
+"leave_space_message_admin_warning" = "U bent beheerder van deze Space, controleer of u de beheerrechten heeft overgedragen aan een andere deelnemer voordat u vertrekt.";
+"leave_space_message" = "Weet u zeker dat u %@ wilt verlaten? Wilt u ook alle kamers en Spaces in deze Space verlaten?";
 "leave_space_title" = "%@ verlaten";
-"spaces_left_panel_title" = "Ruimtes";
+"spaces_left_panel_title" = "Spaces";
 "spaces_home_space_title" = "Thuis";
 "settings_links" = "LINKS";
 "room_recents_suggested_rooms_section" = "AANBEVOLEN KAMERS";
