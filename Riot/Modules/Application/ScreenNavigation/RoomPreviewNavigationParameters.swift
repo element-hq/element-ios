@@ -32,9 +32,9 @@ class RoomPreviewNavigationParameters: RoomNavigationParameters {
         self.previewData = previewData
 
         super.init(roomId: previewData.roomId,
-                   threadId: nil,
                    eventId: previewData.eventId,
                    mxSession: previewData.mxSession,
+                   threadParameters: nil,
                    presentationParameters: presentationParameters)
     }
 }
