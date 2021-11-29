@@ -2931,7 +2931,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionMore: String { 
     return VectorL10n.tr("Vector", "room_event_action_more") 
   }
-  /// Permalink
+  /// Copy link to message
   public static var roomEventActionPermalink: String { 
     return VectorL10n.tr("Vector", "room_event_action_permalink") 
   }
