@@ -19,4 +19,6 @@
 
 #import "WidgetConstants.h"
 
+#import "MatrixKit-Bridging-Header.h"
+
 #endif /* RiotNSE_Bridging_Header_h */
