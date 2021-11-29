@@ -1752,11 +1752,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }
                 [rightBarButtonItems addObject:item];
             }
-            
-            // Do not change title view class here if the expanded header is visible.
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         }
+        
+        // Do not change title view class here if the expanded header is visible.
+        [self setRoomTitleViewClass:RoomTitleView.class];
+        ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         
         MXKImageView *userPictureView = ((RoomTitleView*)self.titleView).pictureView;
         
