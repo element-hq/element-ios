@@ -17,8 +17,9 @@
 
 #import "MatrixKit.h"
 
-@interface AuthInputsView : MXKAuthInputsView
+@class TermsView;
 
+@interface AuthInputsView : MXKAuthInputsView
 @property (weak, nonatomic) IBOutlet UITextField *userLoginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passWordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *repeatPasswordTextField;

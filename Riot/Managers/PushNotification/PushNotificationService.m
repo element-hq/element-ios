@@ -264,6 +264,15 @@ Matrix session observer used to detect new opened sessions.
 - (void)configurePushKit
 {
     MXLogDebug(@"[PushNotificationService] configurePushKit")
+    NSData* token = [_pushRegistry pushTokenForType:PKPushTypeVoIP];
+    if (token) {
+        // If the token is available, store it. This can happen if you sign out and back in.
+        // i.e We are registered, but we have cleared it from the the store on logout and the
+        // _pushRegistry lives through signin/signout as PushNotificationService is a singleton
+        // on app delegate.
+        _pushNotificationStore.pushKitToken = token;
+        MXLogDebug(@"[PushNotificationService] configurePushKit: Restored pushKit token")
+    }
     
     _pushRegistry.delegate = self;
     _pushRegistry.desiredPushTypes = [NSSet setWithObject:PKPushTypeVoIP];
