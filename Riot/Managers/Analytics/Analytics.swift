@@ -113,20 +113,19 @@ import AnalyticsEvents
         postHog?.flush()
     }
     
-    private func capture(event: DictionaryConvertible, named eventName: String) {
-        postHog?.capture(eventName, properties: event.dictionary)
+    private func capture(event: AnalyticsEventProtocol) {
+        postHog?.capture(event.eventName, properties: event.properties)
     }
     
     func trackScreen(_ screen: AnalyticsScreen) {
-        let event = AnalyticsEventScreen(durationMs: nil, eventName: .screen, screenName: screen.screenName)
-        // Screen capture differs compared to event capture.
-        postHog?.screen(event.screenName.rawValue, properties: event.dictionary)
+        let event = AnalyticsEvent.Screen(durationMs: nil, screenName: screen.screenName)
+        postHog?.screen(event.screenName.rawValue, properties: event.properties)
     }
     
     func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
         for _ in 0..<count {
-            let event = AnalyticsEventError(context: nil, domain: .e2Ee, eventName: .error, name: reason.errorName)
-            capture(event: event, named: event.eventName.rawValue)
+            let event = AnalyticsEvent.Error(context: nil, domain: .E2EE, name: reason.errorName)
+            capture(event: event)
         }
     }
     
@@ -137,37 +136,30 @@ import AnalyticsEvents
 
 // MARK: - MXAnalyticsDelegate
 extension Analytics: MXAnalyticsDelegate {
-    func trackDuration(_ seconds: TimeInterval, category: String, name: String) { }
+    func trackDuration(_ seconds: TimeInterval, category: MXTaskProfileCategory, name: MXTaskProfileName) {
+        if let analyticsName = name.analyticsName {
+            let event = AnalyticsEvent.PerformanceTimer(context: nil, name: analyticsName, timeMs: Int(seconds * 1000))
+            capture(event: event)
+        } else {
+            MXLog.warning("[Analytics] Attempt to capture unknown profile task: \(category.rawValue) - \(name.rawValue)")
+        }
+    }
     
     func trackCallStarted(withVideo isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
-        let event = AnalyticsEventCallStarted(eventName: .callStarted,
-                                              isVideo: isVideo,
-                                              numParticipants: numberOfParticipants,
-                                              placed: !isIncoming)
-        
-        capture(event: event, named: event.eventName.rawValue)
+        let event = AnalyticsEvent.CallStarted(isVideo: isVideo, numParticipants: numberOfParticipants, placed: !isIncoming)
+        capture(event: event)
     }
     
     func trackCallEnded(withDuration duration: Int, video isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
-        let event = AnalyticsEventCallEnded(durationMs: duration,
-                                            eventName: .callEnded,
-                                            isVideo: isVideo,
-                                            numParticipants: numberOfParticipants,
-                                            placed: !isIncoming)
-        
-        capture(event: event, named: event.eventName.rawValue)
+        let event = AnalyticsEvent.CallEnded(durationMs: duration, isVideo: isVideo, numParticipants: numberOfParticipants, placed: !isIncoming)
+        capture(event: event)
     }
     
     func trackCallError(with reason: __MXCallHangupReason, video isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
-        let callEvent = AnalyticsEventCallError(eventName: .callError,
-                                                isVideo: isVideo,
-                                                numParticipants: numberOfParticipants,
-                                                placed: !isIncoming)
-        
-        let event = AnalyticsEventError(context: nil, domain: .voip, eventName: .error, name: reason.errorName)
-        
-        capture(event: callEvent, named: callEvent.eventName.rawValue)
-        capture(event: event, named: event.eventName.rawValue)
+        let callEvent = AnalyticsEvent.CallError(isVideo: isVideo, numParticipants: numberOfParticipants, placed: !isIncoming)
+        let event = AnalyticsEvent.Error(context: nil, domain: .VOIP, name: reason.errorName)
+        capture(event: callEvent)
+        capture(event: event)
     }
     
     func trackContactsAccessGranted(_ granted: Bool) {

@@ -25,20 +25,20 @@ import AnalyticsEvents
     case roomDirectory
     case user
     
-    var screenName: AnalyticsEventScreenName {
+    var screenName: AnalyticsEvent.Screen.ScreenName {
         switch self {
         case .group:
-            return .group
+            return .Group
         case .home:
-            return .home
+            return .Home
         case .myGroups:
-            return .myGroups
+            return .MyGroups
         case .room:
-            return .room
+            return .Room
         case .roomDirectory:
-            return .roomDirectory
+            return .RoomDirectory
         case .user:
-            return .user
+            return .User
         }
     }
 }
