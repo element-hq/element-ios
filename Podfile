@@ -6,39 +6,39 @@ platform :ios, '12.1'
 # Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
 use_frameworks!
 
-# Different flavours of pods to MatrixKit. Can be one of:
-# - a String indicating an official MatrixKit released version number
+# Different flavours of pods to MatrixSDK. Can be one of:
+# - a String indicating an official MatrixSDK released version number
 # - `:local` (to use Development Pods)
-# - `{'kit branch name' => 'sdk branch name'}` to depend on specific branches of each repo
-# - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
+# - `{ :branch => 'sdk branch name'}` to depend on specific branch of MatrixSDK repo
+# - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.16.10'
-# $matrixKitVersion = :local
-# $matrixKitVersion = {'develop' => 'develop'}
+$matrixSDKVersion = '= 0.20.10'
+# $matrixSDKVersion = :local
+# $matrixSDKVersion = { :branch => 'develop'}
 
 ########################################
 
-case $matrixKitVersion
+case $matrixSDKVersion
 when :local
-$matrixKitVersionSpec = { :path => '../matrix-ios-kit/MatrixKit.podspec' }
 $matrixSDKVersionSpec = { :path => '../matrix-ios-sdk/MatrixSDK.podspec' }
-when Hash # kit branch name => sdk branch name – or {kit spec Hash} => {sdk spec Hash}
-kit_spec, sdk_spec = $matrixKitVersion.first # extract first and only key/value pair; key is kit_spec, value is sdk_spec
-kit_spec = { :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => kit_spec.to_s } unless kit_spec.is_a?(Hash)
-sdk_spec = { :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => sdk_spec.to_s } unless sdk_spec.is_a?(Hash)
-$matrixKitVersionSpec = kit_spec
+when Hash # :branch => sdk branch name – or :specHash => {sdk spec Hash}
+spec_mode, sdk_spec = $matrixSDKVersion.first # extract first and only key/value pair; key is spec_mode, value is sdk_spec
+
+  case spec_mode
+  when :branch
+  sdk_spec = { :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => sdk_spec.to_s } unless sdk_spec.is_a?(Hash)
+  end
+
 $matrixSDKVersionSpec = sdk_spec
-when String # specific MatrixKit released version
-$matrixKitVersionSpec = $matrixKitVersion
-$matrixSDKVersionSpec = {}
+when String # specific MatrixSDK released version
+$matrixSDKVersionSpec = $matrixSDKVersion
 end
 
 # Method to import the MatrixSDK
 def import_MatrixSDK
   pod 'MatrixSDK', $matrixSDKVersionSpec
   pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
-  # pod 'MatrixKit', $matrixKitVersionSpec
 end
 
 ########################################
