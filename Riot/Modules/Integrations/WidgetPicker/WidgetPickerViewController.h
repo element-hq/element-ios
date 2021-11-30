@@ -17,7 +17,7 @@
 #import <UIKit/UIKit.h>
 
 #import <MatrixSDK/MatrixSDK.h>
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  `WidgetPickerViewController` displays the list of widgets within a room plus a

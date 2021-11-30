@@ -15,11 +15,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
-#import "GeneratedInterface-Swift.h"
-
-@interface AuthInputsView : MXKAuthInputsView <MXKCountryPickerViewControllerDelegate>
+@interface AuthInputsView : MXKAuthInputsView
 
 @property (weak, nonatomic) IBOutlet UITextField *userLoginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passWordTextField;

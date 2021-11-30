@@ -36,8 +36,6 @@
 #import "RoomKeyRequestViewController.h"
 #import "DecryptionFailureTracker.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "Tools.h"
 #import "WidgetManager.h"
 
@@ -393,7 +391,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"------------------------------");
     MXLogDebug(@"Application info:");
     MXLogDebug(@"%@ version: %@", appDisplayName, appVersion);
-    MXLogDebug(@"MatrixKit version: %@", MatrixKitVersion);
     MXLogDebug(@"MatrixSDK version: %@", MatrixSDKVersion);
     MXLogDebug(@"Build: %@\n", build);
     MXLogDebug(@"------------------------------\n");

@@ -122,7 +122,6 @@
 #import "StickerPickerViewController.h"
 
 #import "EventFormatter.h"
-#import <MatrixKit/MXKSlashCommands.h>
 
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"

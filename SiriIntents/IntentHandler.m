@@ -16,8 +16,6 @@
 
 #import "IntentHandler.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "GeneratedInterface-Swift.h"
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)

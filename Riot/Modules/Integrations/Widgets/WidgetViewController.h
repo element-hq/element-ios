@@ -17,7 +17,7 @@
 #import "WebViewViewController.h"
 
 #import "WidgetManager.h"
-#import "MatrixKit/MatrixKit.h"
+#import "MatrixKit.h"
 
 /**
  `WidgetViewController` displays widget within a webview.

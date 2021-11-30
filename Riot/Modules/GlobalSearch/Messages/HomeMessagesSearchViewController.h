@@ -15,7 +15,7 @@
  */
 
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  `HomeMessagesSearchViewController` displays messages search in user's rooms under a `HomeViewController` segment.
