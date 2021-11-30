@@ -6378,11 +6378,30 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.threadBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
-- (void)highlightEvent:(NSString *)eventId
+- (void)highlightEvent:(NSString *)eventId completion:(void (^)(void))completion
 {
     NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
     if (row == NSNotFound)
     {
+        //  event with eventId is not loaded into data source yet, load another data source and display it
+        [self startActivityIndicator];
+        MXWeakify(self);
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                      initialEventId:eventId
+                                            threadId:nil
+                                    andMatrixSession:self.roomDataSource.mxSession
+                                          onComplete:^(RoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+            roomDataSource.markTimelineInitialEvent = YES;
+            [self displayRoom:roomDataSource];
+            // Give the data source ownership to the room view controller.
+            self.hasRoomDataSourceOwnership = YES;
+            if (completion)
+            {
+                completion();
+            }
+        }];
         return;
     }
     
@@ -6399,6 +6418,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.bubblesTableView scrollToRowAtIndexPath:indexPath
                                      atScrollPosition:UITableViewScrollPositionMiddle
                                              animated:YES];
+    }
+    if (completion)
+    {
+        completion();
     }
 }
 
@@ -6825,7 +6848,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.threadBridgePresenter dismissWithAnimated:YES completion:^{
             MXStrongifyAndReturnIfNil(self);
             
-            [self highlightEvent:eventId];
+            [self highlightEvent:eventId completion:nil];
         }];
     }
 }
@@ -6853,7 +6876,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (eventId)
         {
-            [self highlightEvent:eventId];
+            [self highlightEvent:eventId completion:nil];
         }
     }];
 }
