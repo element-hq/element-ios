@@ -3,7 +3,6 @@
 //
 
 @import MatrixSDK;
-@import MatrixKit;
 @import DTCoreText;
 
 #import "WebViewViewController.h"
@@ -46,3 +45,21 @@
 #import "RoomInputToolbarView.h"
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
+
+// MatrixKit common imports
+#import "MatrixKit-Bridging-Header.h"
+
+// MatrixKit application imports
+#import "MXKBarButtonItem.h"
+#import "MXKPieChartView.h"
+#import "MXKErrorAlertPresentation.h"
+#import "MXKErrorPresentation.h"
+#import "MXKErrorViewModel.h"
+#import "MXKEncryptionKeysExportView.h"
+#import "MXKTableViewCellWithLabelAndSwitch.h"
+#import "MXKTableViewCellWithTextView.h"
+#import "MXKTableViewCellWithButton.h"
+#import "MXKRoomDataSourceManager.h"
+#import "MXRoom+Sync.h"
+#import "UIAlertController+MatrixKit.h"
+#import "MXKAnalyticsConstants.h"
