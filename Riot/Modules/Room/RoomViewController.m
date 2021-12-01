@@ -1528,11 +1528,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (UIBarButtonItem *)threadListBarButtonItem
 {
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_reply_in_thread"]
-                                                             style:UIBarButtonItemStylePlain
-                                                            target:self
-                                                            action:@selector(onThreadListTapped:)];
-    item.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
+    UIButton *button = [[UIButton alloc] init];
+    button.contentEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 8);
+    [button setImage:[UIImage imageNamed:@"room_context_menu_reply_in_thread"]
+            forState:UIControlStateNormal];
+    [button addTarget:self
+               action:@selector(onThreadListTapped:)
+     forControlEvents:UIControlEventTouchUpInside];
+    button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
+    
+    BadgedBarButtonItem *item = [[BadgedBarButtonItem alloc] initWithBaseButton:button];
     return item;
 }
 
