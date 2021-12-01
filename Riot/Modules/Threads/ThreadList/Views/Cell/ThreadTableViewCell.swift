@@ -28,6 +28,7 @@ class ThreadTableViewCell: UITableViewCell {
     @IBOutlet private weak var rootMessageContentLabel: UILabel!
     @IBOutlet private weak var lastMessageTimeLabel: UILabel!
     @IBOutlet private weak var summaryView: ThreadSummaryView!
+    @IBOutlet private weak var notificationStatusView: ThreadNotificationStatusView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -47,6 +48,7 @@ class ThreadTableViewCell: UITableViewCell {
         if let summaryViewModel = viewModel.summaryViewModel {
             summaryView.configure(withViewModel: summaryViewModel)
         }
+        notificationStatusView.status = viewModel.notificationStatus
     }
 
 }
@@ -61,6 +63,7 @@ extension ThreadTableViewCell: Themable {
         lastMessageTimeLabel.textColor = theme.colors.secondaryContent
         summaryView.update(theme: theme)
         summaryView.backgroundColor = .clear
+        notificationStatusView.update(theme: theme)
     }
     
 }

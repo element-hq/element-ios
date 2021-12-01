@@ -33,11 +33,24 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C2U-Ih-4Oh">
-                        <rect key="frame" x="264" y="12" width="28" height="15"/>
+                        <rect key="frame" x="264" y="13" width="28" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aUq-D2-1KM" customClass="ThreadNotificationStatusView" customModule="Riot" customModuleProvider="target">
+                        <rect key="frame" x="302" y="17" width="8" height="8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="8" id="2Fi-Ug-ZZa"/>
+                            <constraint firstAttribute="height" constant="8" id="GQ5-OL-z1s"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xzR-f9-3qV">
                         <rect key="frame" x="56" y="33" width="236" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -53,15 +66,17 @@
                     <constraint firstItem="I32-A5-WWw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="28p-b3-xMJ"/>
                     <constraint firstItem="108-Xh-aZf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="2Dt-BH-xjF"/>
                     <constraint firstItem="Md3-uq-cSB" firstAttribute="top" secondItem="xzR-f9-3qV" secondAttribute="bottom" constant="8" id="6mB-Yd-Pyg"/>
+                    <constraint firstAttribute="trailing" secondItem="aUq-D2-1KM" secondAttribute="trailing" constant="10" id="Du2-UR-wBe"/>
                     <constraint firstAttribute="bottom" secondItem="Md3-uq-cSB" secondAttribute="bottom" constant="12" id="Ppd-HN-Ehg"/>
                     <constraint firstItem="I32-A5-WWw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="Trt-CK-Tly"/>
                     <constraint firstItem="Md3-uq-cSB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="47" id="Vpf-02-TgV"/>
                     <constraint firstAttribute="trailing" secondItem="xzR-f9-3qV" secondAttribute="trailing" constant="28" id="Zz9-PK-l9b"/>
                     <constraint firstItem="C2U-Ih-4Oh" firstAttribute="leading" secondItem="108-Xh-aZf" secondAttribute="trailing" constant="8" id="bE8-Yy-3B9"/>
                     <constraint firstItem="xzR-f9-3qV" firstAttribute="leading" secondItem="I32-A5-WWw" secondAttribute="trailing" constant="12" id="g8i-lt-K8f"/>
+                    <constraint firstItem="aUq-D2-1KM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="rvj-qg-S3J"/>
                     <constraint firstItem="108-Xh-aZf" firstAttribute="leading" secondItem="I32-A5-WWw" secondAttribute="trailing" constant="12" id="sXf-FI-gD3"/>
                     <constraint firstItem="xzR-f9-3qV" firstAttribute="top" secondItem="108-Xh-aZf" secondAttribute="bottom" constant="4" id="tQN-Rr-MIS"/>
-                    <constraint firstItem="C2U-Ih-4Oh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="u3s-nr-avO"/>
+                    <constraint firstItem="C2U-Ih-4Oh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="u3s-nr-avO"/>
                     <constraint firstAttribute="trailing" secondItem="Md3-uq-cSB" secondAttribute="trailing" constant="28" id="vxt-vD-jy8"/>
                     <constraint firstAttribute="trailing" secondItem="C2U-Ih-4Oh" secondAttribute="trailing" constant="28" id="wNc-xV-uIR"/>
                 </constraints>
@@ -69,6 +84,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="lastMessageTimeLabel" destination="C2U-Ih-4Oh" id="pf3-df-T65"/>
+                <outlet property="notificationStatusView" destination="aUq-D2-1KM" id="IDB-Yf-weu"/>
                 <outlet property="rootMessageAvatarView" destination="I32-A5-WWw" id="zJW-QQ-jsG"/>
                 <outlet property="rootMessageContentLabel" destination="xzR-f9-3qV" id="97u-na-8XW"/>
                 <outlet property="rootMessageSenderLabel" destination="108-Xh-aZf" id="nUc-qK-UCD"/>

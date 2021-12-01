@@ -22,4 +22,21 @@ struct ThreadViewModel {
     var rootMessageText: String?
     var lastMessageTime: String?
     var summaryViewModel: ThreadSummaryViewModel?
+    var notificationStatus: ThreadNotificationStatus
+}
+
+enum ThreadNotificationStatus {
+    case none
+    case notified
+    case highlighted
+    
+    init(withThread thread: MXThread) {
+        if thread.highlightCount > 0 {
+            self = .highlighted
+        } else if thread.notificationCount > 0 {
+            self = .notified
+        } else {
+            self = .none
+        }
+    }
 }
