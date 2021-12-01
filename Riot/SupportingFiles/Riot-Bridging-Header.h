@@ -46,10 +46,10 @@
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
 
-// MatrixKit common imports
+// MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"
 
-// MatrixKit application imports
+// MatrixKit imports for the application target (Riot)
 #import "MXKBarButtonItem.h"
 #import "MXKPieChartView.h"
 #import "MXKErrorAlertPresentation.h"
