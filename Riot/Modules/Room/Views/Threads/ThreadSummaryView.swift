@@ -129,6 +129,7 @@ extension ThreadSummaryView: Themable {
     
     func update(theme: Theme) {
         backgroundColor = theme.colors.system
+        iconView.tintColor = theme.colors.secondaryContent
         numberOfRepliesLabel.textColor = theme.colors.secondaryContent
         lastMessageContentLabel.textColor = theme.colors.secondaryContent
     }
