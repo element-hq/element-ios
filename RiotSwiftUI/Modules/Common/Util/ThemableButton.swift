@@ -58,7 +58,7 @@ struct ThemableButton: View {
             .clipShape(RoundedRectangle(cornerRadius: 8))
         })
         .buttonStyle(Style())
-        .frame(height: 48)
+        .frame(height: 44)
     }
 }
 

@@ -33,23 +33,49 @@ struct SpaceCreationRooms: View {
     
     var body: some View {
         VStack {
-            Text(VectorL10n.spacesCreationNewRoomsTitle)
-                .multilineTextAlignment(.center)
-                .font(theme.fonts.title3SB)
-                .foregroundColor(theme.colors.primaryContent)
-            Spacer().frame(height: 20)
-            Text(VectorL10n.spacesCreationNewRoomsMessage)
-                .multilineTextAlignment(.center)
-                .font(theme.fonts.body)
-                .foregroundColor(theme.colors.secondaryContent)
+            ThemableNavigationBar(title: nil, showBackButton: true) {
+                viewModel.send(viewAction: .back)
+            } closeAction: {
+                viewModel.send(viewAction: .cancel)
+            }
+            mainView
+        }
+        .background(theme.colors.background)
+        .navigationBarHidden(true)
+    }
+    
+    // MARK: - Private
+    
+    @ViewBuilder
+    private var mainView: some View {
+        VStack {
             GeometryReader { reader in
                 ScrollView {
-                    VStack {
-                        Spacer()
-                        roomNames
+                    ScrollViewReader { scrollViewReader in
+                        VStack(spacing: 20) {
+                            Text(VectorL10n.spacesCreationNewRoomsTitle)
+                                .multilineTextAlignment(.center)
+                                .font(theme.fonts.title3SB)
+                                .foregroundColor(theme.colors.primaryContent)
+                            Text(VectorL10n.spacesCreationNewRoomsMessage)
+                                .multilineTextAlignment(.center)
+                                .font(theme.fonts.body)
+                                .foregroundColor(theme.colors.secondaryContent)
+                            Spacer()
+                            ForEach(viewModel.rooms.indices) { index in
+                                RoundedBorderTextField(title: VectorL10n.spacesCreationNewRoomsRoomNameTitle, placeHolder: viewModel.rooms[index].defaultName, text: $viewModel.rooms[index].name, footerText: .constant(nil), isError: .constant(false), configuration: UIKitTextInputConfiguration( returnKeyType: index < viewModel.rooms.endIndex - 1 ? .next : .done), onEditingChanged: { editing in
+                                    if editing {
+//                                        scrollViewReader.scrollTo("roomTextField\(viewModel.rooms.count-1)", anchor: .bottom)
+                                    }
+                                })
+                                    .accessibility(identifier: "roomTextField")
+                                    .id("roomTextField\(index)")
+                            }
+                        }
+                        .padding(.horizontal, 2)
+                        .padding(.bottom)
+                        .frame(minHeight: reader.size.height - 2)
                     }
-                    .padding(.horizontal, 2)
-                    .frame(minHeight: reader.size.height - 2)
                 }
             }
             ThemableButton(icon: nil, title: VectorL10n.next) {
@@ -58,34 +84,6 @@ struct SpaceCreationRooms: View {
             }
         }
         .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
-        .background(theme.colors.background)
-        .navigationTitle(viewModel.viewState.title)
-        .configureNavigationBar{
-            $0.navigationBar.shadowImage = UIImage()
-            $0.navigationBar.barTintColor = UIColor(theme.colors.background)
-            $0.navigationBar.tintColor = UIColor(theme.colors.secondaryContent)
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: {
-                    viewModel.send(viewAction: .cancel)
-                }) {
-                    Image(uiImage: Asset.Images.spacesModalClose.image).renderingMode(.template)
-                }
-            }
-        }
-    }
-    
-    // MARK: - Private
-    
-    private var roomNames: some View {
-        VStack {
-            ForEach(viewModel.rooms.indices) { index in
-                RoundedBorderTextField(title: VectorL10n.spacesCreationNewRoomsRoomNameTitle, placeHolder: viewModel.rooms[index].defaultName, text: $viewModel.rooms[index].name, footerText: .constant(nil), isError: .constant(false), configuration: UIKitTextInputConfiguration( returnKeyType: index < viewModel.rooms.endIndex - 1 ? .next : .done))
-                    .accessibility(identifier: "roomTextField")
-            }
-        }
-        .padding(.bottom)
     }
 }
 

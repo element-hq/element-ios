@@ -22,8 +22,33 @@ import Combine
 @available(iOS 14.0, *)
 class SpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProtocol {
     
+    private let session: MXSession
+    private(set) var isLoadingSubject: CurrentValueSubject<Bool, Never>
+    
+    var isIdentityServiceReady: Bool {
+        if let identityService = session.identityService {
+            return identityService.areAllTermsAgreed
+        }
+        return false
+    }
+    
+    init(session: MXSession) {
+        self.session = session
+        isLoadingSubject = CurrentValueSubject(false)
+    }
+    
     func validate(_ emailAddresses: [String]) -> [Bool] {
         return emailAddresses.map { $0.isEmpty || MXTools.isEmailAddress($0) }
     }
 
+    func prepareIdentityService(prepared: ((String?, String?) -> Void)?, failure: ((Error?) -> Void)?) {
+        isLoadingSubject.send(true)
+        session.prepareIdentityServiceForTerms(withDefault: RiotSettings.shared.identityServerUrlString) { [weak self] session, baseURL, accessToken in
+            self?.isLoadingSubject.send(false)
+            prepared?(baseURL, accessToken)
+        } failure: { [weak self] error in
+            self?.isLoadingSubject.send(false)
+            failure?(error)
+        }
+    }
 }

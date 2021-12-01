@@ -2395,6 +2395,14 @@ public class VectorL10n: NSObject {
   public static var preview: String { 
     return VectorL10n.tr("Vector", "preview") 
   }
+  /// Private
+  public static var `private`: String { 
+    return VectorL10n.tr("Vector", "private") 
+  }
+  /// Public
+  public static var `public`: String { 
+    return VectorL10n.tr("Vector", "public") 
+  }
   /// Public Rooms (at %@):
   public static func publicRoomSectionTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "public_room_section_title", p1)
@@ -4983,11 +4991,15 @@ public class VectorL10n: NSObject {
   public static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
+  /// description
+  public static var spaceTopic: String { 
+    return VectorL10n.tr("Vector", "space_topic") 
+  }
   /// Adding rooms coming soon
   public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
   }
-  /// Add space
+  /// Create space
   public static var spacesAddSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_space_title") 
   }
@@ -5027,6 +5039,14 @@ public class VectorL10n: NSObject {
   public static func spacesCreationAddressInvalidCharacters(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_creation_address_invalid_characters", p1)
   }
+  /// You will need to start from scratch next time.
+  public static var spacesCreationCancelMessage: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_cancel_message") 
+  }
+  /// Please confirm
+  public static var spacesCreationCancelTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_cancel_title") 
+  }
   /// Email
   public static var spacesCreationEmailInvitesEmailTitle: String { 
     return VectorL10n.tr("Vector", "spaces_creation_email_invites_email_title") 
@@ -5039,7 +5059,7 @@ public class VectorL10n: NSObject {
   public static var spacesCreationEmailInvitesTitle: String { 
     return VectorL10n.tr("Vector", "spaces_creation_email_invites_title") 
   }
-  /// Name the room
+  /// Name required
   public static var spacesCreationEmptyRoomNameError: String { 
     return VectorL10n.tr("Vector", "spaces_creation_empty_room_name_error") 
   }
@@ -5050,6 +5070,26 @@ public class VectorL10n: NSObject {
   /// Spaces are a new way to group rooms and people.
   public static var spacesCreationHint: String { 
     return VectorL10n.tr("Vector", "spaces_creation_hint") 
+  }
+  /// in %@ spaces
+  public static func spacesCreationInManySpaces(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_many_spaces", p1)
+  }
+  /// in 1 space
+  public static var spacesCreationInOneSpace: String { 
+    return VectorL10n.tr("Vector", "spaces_creation_in_one_space") 
+  }
+  /// in %@
+  public static func spacesCreationInSpacename(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_spacename", p1)
+  }
+  /// in %@ + %@ spaces
+  public static func spacesCreationInSpacenamePlusMany(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_spacename_plus_many", p1, p2)
+  }
+  /// in %@ + 1 space
+  public static func spacesCreationInSpacenamePlusOne(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_creation_in_spacename_plus_one", p1)
   }
   /// Invite by username
   public static var spacesCreationInviteByUsername: String { 
@@ -5091,7 +5131,7 @@ public class VectorL10n: NSObject {
   public static func spacesCreationPostProcessAddingRooms(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_creation_post_process_adding_rooms", p1)
   }
-  /// Creating room %@
+  /// Creating %@
   public static func spacesCreationPostProcessCreatingRoom(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_creation_post_process_creating_room", p1)
   }
@@ -5099,7 +5139,7 @@ public class VectorL10n: NSObject {
   public static var spacesCreationPostProcessCreatingSpace: String { 
     return VectorL10n.tr("Vector", "spaces_creation_post_process_creating_space") 
   }
-  /// Creating space %@
+  /// Creating %@
   public static func spacesCreationPostProcessCreatingSpaceTask(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_creation_post_process_creating_space_task", p1)
   }
@@ -5139,7 +5179,7 @@ public class VectorL10n: NSObject {
   public static var spacesCreationSharingTypeMeAndTeammatesTitle: String { 
     return VectorL10n.tr("Vector", "spaces_creation_sharing_type_me_and_teammates_title") 
   }
-  /// Make sure the right people have access to %@. You can change this later.
+  /// Make sure the right people have access %@. You can change this later.
   public static func spacesCreationSharingTypeMessage(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_creation_sharing_type_message", p1)
   }

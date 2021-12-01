@@ -74,7 +74,7 @@ class SpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServi
                     return nil
                 }
                 
-                return SpaceCreationMatrixItem(mxRoom: room)
+                return SpaceCreationMatrixItem(mxRoom: room, spaceService: session.spaceService)
             }
         }
         self.itemsSubject = CurrentValueSubject(self.items)
@@ -103,8 +103,31 @@ fileprivate extension SpaceCreationMatrixItem {
         self.init(id: mxUser.userId, avatar: mxUser.avatarData, displayName: mxUser.displayname, detailText: mxUser.userId)
     }
     
-    init(mxRoom: MXRoom) {
-        self.init(id: mxRoom.roomId, avatar: mxRoom.avatarData, displayName: mxRoom.summary.displayname, detailText: mxRoom.summary.roomId)
+    init(mxRoom: MXRoom, spaceService: MXSpaceService) {
+        let parentSapceIds = mxRoom.summary.parentSpaceIds ?? Set()
+        let detailText: String?
+        if parentSapceIds.isEmpty {
+            detailText = nil
+        } else {
+            if let spaceName = spaceService.getSpace(withId: parentSapceIds.first ?? "")?.summary?.displayname {
+                let count = parentSapceIds.count - 1
+                switch count {
+                case 0:
+                    detailText = VectorL10n.spacesCreationInSpacename(spaceName)
+                case 1:
+                    detailText = VectorL10n.spacesCreationInSpacenamePlusOne(spaceName)
+                default:
+                    detailText = VectorL10n.spacesCreationInSpacenamePlusMany(spaceName, "\(count)")
+                }
+            } else {
+                if parentSapceIds.count > 1 {
+                    detailText = VectorL10n.spacesCreationInManySpaces("\(parentSapceIds.count)")
+                } else {
+                    detailText = VectorL10n.spacesCreationInOneSpace
+                }
+            }
+        }
+        self.init(id: mxRoom.roomId, avatar: mxRoom.avatarData, displayName: mxRoom.summary.displayname, detailText: detailText)
     }
     
 }

@@ -26,6 +26,7 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Private
     
+    var isNavigationBarHidden: Bool = false
     var hidesBackTitleWhenPushed: Bool = false
     private var theme: Theme
     
@@ -49,11 +50,23 @@ class VectorHostingController: UIHostingController<AnyView> {
         self.update(theme: self.theme)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if isNavigationBarHidden {
+            self.navigationController?.isNavigationBarHidden = true
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if hidesBackTitleWhenPushed {
             vc_removeBackTitle()
+        }
+        
+        if navigationController?.isNavigationBarHidden ?? false {
+            navigationController?.interactivePopGestureRecognizer?.delegate = nil
         }
     }
     

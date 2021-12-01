@@ -20,6 +20,9 @@ import Foundation
 
 enum SpaceCreationEmailInvitesViewModelResult {
     case cancel
+    case back
     case done
+    case needIdentityServiceTerms(_ baseUrl: String?, _ accessToken: String?)
+    case identityServiceFailure(_ error: Error?)
     case inviteByUsername
 }

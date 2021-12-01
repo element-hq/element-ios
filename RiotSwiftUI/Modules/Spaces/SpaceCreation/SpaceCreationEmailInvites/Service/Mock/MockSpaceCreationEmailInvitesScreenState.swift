@@ -29,7 +29,8 @@ enum MockSpaceCreationEmailInvitesScreenState: MockScreenState, CaseIterable {
     case defaultEmailValues
     case emailEntered
     case emailValidationFailed
-    
+    case loading
+
     /// The associated screen
     var screenType: Any.Type {
         SpaceCreationEmailInvites.self
@@ -37,7 +38,7 @@ enum MockSpaceCreationEmailInvitesScreenState: MockScreenState, CaseIterable {
     
     /// A list of screen state definitions
     static var allCases: [MockSpaceCreationEmailInvitesScreenState] {
-        [.defaultEmailValues, .emailEntered, .emailValidationFailed]
+        [.defaultEmailValues, .emailEntered, .emailValidationFailed, .loading]
     }
     
     /// Generate the view struct for the screen state.
@@ -46,13 +47,16 @@ enum MockSpaceCreationEmailInvitesScreenState: MockScreenState, CaseIterable {
         let service: MockSpaceCreationEmailInvitesService
         switch self {
         case .defaultEmailValues:
-            service = MockSpaceCreationEmailInvitesService(defaultValidation: true)
+            service = MockSpaceCreationEmailInvitesService(defaultValidation: true, isLoading: false)
         case .emailEntered:
             creationParams.emailInvites = ["test1@element.io", "test2@element.io"]
-            service = MockSpaceCreationEmailInvitesService(defaultValidation: true)
+            service = MockSpaceCreationEmailInvitesService(defaultValidation: true, isLoading: false)
         case .emailValidationFailed:
             creationParams.emailInvites = ["test1@element.io", "test2@element.io"]
-            service = MockSpaceCreationEmailInvitesService(defaultValidation: false)
+            service = MockSpaceCreationEmailInvitesService(defaultValidation: false, isLoading: false)
+        case .loading:
+            creationParams.emailInvites = ["test1@element.io", "test2@element.io"]
+            service = MockSpaceCreationEmailInvitesService(defaultValidation: true, isLoading: true)
         }
         let viewModel = SpaceCreationEmailInvitesViewModel(creationParameters: creationParams, service: service)
         

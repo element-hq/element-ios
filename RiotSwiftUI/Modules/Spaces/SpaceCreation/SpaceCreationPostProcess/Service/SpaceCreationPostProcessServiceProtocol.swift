@@ -23,5 +23,7 @@ import Combine
 protocol SpaceCreationPostProcessServiceProtocol: AnyObject {
     var tasksSubject: CurrentValueSubject<[SpaceCreationPostProcessTask], Never> { get }
     var createdSpaceId: String? { get }
+    var avatar: AvatarInput { get }
+    var avatarImage: UIImage? { get }
     func run()
 }

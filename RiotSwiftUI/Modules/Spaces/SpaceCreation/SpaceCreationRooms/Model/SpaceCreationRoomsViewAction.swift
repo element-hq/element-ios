@@ -20,5 +20,6 @@ import Foundation
 
 enum SpaceCreationRoomsViewAction {
     case cancel
+    case back
     case done
 }

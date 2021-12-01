@@ -23,14 +23,16 @@ import SwiftUI
 /// the relevant associated data for each case.
 @available(iOS 14.0, *)
 enum MockSpaceCreationPostProcessScreenState: MockScreenState {
-    static var screenStates: [MockScreenState] = [MockSpaceCreationPostProcessScreenState.tasks]
+    static var screenStates: [MockScreenState] = [MockSpaceCreationPostProcessScreenState.running, MockSpaceCreationPostProcessScreenState.done, MockSpaceCreationPostProcessScreenState.doneWithError]
     
     
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case tasks
-    
+    case running
+    case done
+    case doneWithError
+
     /// The associated screen
     var screenType: Any.Type {
         SpaceCreationPostProcess.self
@@ -40,8 +42,12 @@ enum MockSpaceCreationPostProcessScreenState: MockScreenState {
     var screenView: ([Any], AnyView)  {
         let service: MockSpaceCreationPostProcessService
         switch self {
-        case .tasks:
+        case .running:
             service = MockSpaceCreationPostProcessService()
+        case .done:
+            service = MockSpaceCreationPostProcessService(tasks: MockSpaceCreationPostProcessService.lastTaskDoneSuccesfully)
+        case .doneWithError:
+            service = MockSpaceCreationPostProcessService(tasks: MockSpaceCreationPostProcessService.lastTaskDoneWithError)
         }
         let viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: service)
         

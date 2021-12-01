@@ -38,7 +38,7 @@ struct SpaceAvatarImage: View {
                 Text(firstCharacter)
                     .padding(10)
                     .frame(width: CGFloat(size.rawValue), height: CGFloat(size.rawValue))
-                    .foregroundColor(theme.colors.background)
+                    .foregroundColor(.white)
                     .background(theme.colors.namesAndAvatars[colorIndex])
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     // Make the text resizable (i.e. Make it large and then allow it to scale down)

@@ -54,6 +54,8 @@ class SpaceCreationPostProcessViewModel: SpaceCreationPostProcessViewModelType, 
     private static func defaultState(spaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol) -> SpaceCreationPostProcessViewState {
         let tasks = spaceCreationPostProcessService.tasksSubject.value
         return SpaceCreationPostProcessViewState(
+            avatar: spaceCreationPostProcessService.avatar,
+            avatarImage: spaceCreationPostProcessService.avatarImage,
             tasks: tasks,
             isFinished: tasks.first?.state == .failure || tasks.reduce(true, { result, task in result && task.isFinished }),
             errorCount: tasks.reduce(0, { result, task in result + (task.state == .failure ? 1 : 0) })

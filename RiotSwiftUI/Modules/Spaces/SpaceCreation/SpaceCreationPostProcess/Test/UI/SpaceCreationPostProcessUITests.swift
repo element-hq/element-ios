@@ -33,23 +33,12 @@ class SpaceCreationPostProcessUITests: MockScreenTest {
     func verifySpaceCreationPostProcessScreen() throws {
         guard let screenState = screenState as? MockSpaceCreationPostProcessScreenState else { fatalError("no screen") }
         switch screenState {
-        case .presence(let presence):
-            verifySpaceCreationPostProcessPresence(presence: presence)
-        case .longDisplayName(let name):
-            verifySpaceCreationPostProcessLongName(name: name)
+        case .tasks:
+            verifyTasksList()
         }
     }
 
-    func verifySpaceCreationPostProcessPresence(presence: SpaceCreationPostProcessPresence) {
-        let presenceText = app.staticTexts["presenceText"]
-        XCTAssert(presenceText.exists)
-        XCTAssertEqual(presenceText.label, presence.title)
-    }
-
-    func verifySpaceCreationPostProcessLongName(name: String) {
-        let displayNameText = app.staticTexts["displayNameText"]
-        XCTAssert(displayNameText.exists)
-        XCTAssertEqual(displayNameText.label, name)
+    func verifyTasksList() {
     }
 
 }

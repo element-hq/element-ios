@@ -24,6 +24,7 @@ struct SpaceCreationMenu: View {
     // MARK: - Properties
     
     @ObservedObject var viewModel: SpaceCreationMenuViewModelType.Context
+    let showBackButton: Bool
     
     // MARK: Private
     
@@ -33,38 +34,31 @@ struct SpaceCreationMenu: View {
     
     var body: some View {
         mainScreen
-            .navigationTitle(viewModel.viewState.navTitle)
-            .configureNavigationBar{
-                $0.navigationBar.shadowImage = UIImage()
-                $0.navigationBar.barTintColor = UIColor(theme.colors.background)
-                $0.navigationBar.tintColor = UIColor(theme.colors.secondaryContent)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        viewModel.send(viewAction: .cancel)
-                    }) {
-                        Image(uiImage: Asset.Images.spacesModalClose.image).renderingMode(.template)
-                    }
-                }
-            }
+            .navigationBarHidden(true)
     }
     
     // MARK: - Private
     
     @ViewBuilder
     private var mainScreen: some View {
-        GeometryReader { reader in
-            ScrollView {
-                VStack {
-                    headerView
-                    Spacer()
-                    optionsView
-                }
-                .frame(minHeight: reader.size.height - 2)
+        VStack {
+            ThemableNavigationBar(title: nil, showBackButton: showBackButton) {
+                viewModel.send(viewAction: .back)
+            } closeAction: {
+                viewModel.send(viewAction: .cancel)
             }
+            GeometryReader { reader in
+                ScrollView {
+                    VStack {
+                        headerView
+                        Spacer()
+                        optionsView
+                    }
+                    .frame(minHeight: reader.size.height - 2)
+                }
+            }
+            .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
         }
-        .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
         .background(theme.colors.background)
     }
     
@@ -87,16 +81,18 @@ struct SpaceCreationMenu: View {
     
     @ViewBuilder
     private var optionsView: some View {
-        VStack(spacing: 16) {
-            ForEach(viewModel.viewState.options) { option in
-                OptionButton(icon: option.icon, title: option.title, detailMessage: option.detail) {
-                    viewModel.send(viewAction: .didSelectOption(option.id))
+        VStack(spacing: 24) {
+            VStack(spacing: 16) {
+                ForEach(viewModel.viewState.options) { option in
+                    OptionButton(icon: option.icon, title: option.title, detailMessage: option.detail) {
+                        viewModel.send(viewAction: .didSelectOption(option.id))
+                    }
+                    .accessibility(identifier: "optionButton")
                 }
-                .accessibility(identifier: "optionButton")
             }
             Text(VectorL10n.spacesCreationFooter)
                 .multilineTextAlignment(.center)
-                .font(theme.fonts.caption1)
+                .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.secondaryContent)
         }
     }
@@ -111,9 +107,9 @@ struct SpaceCreationMenu_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
-            stateRenderer.screenGroup(addNavigation: true)
+            stateRenderer.screenGroup()
                 .theme(.light).preferredColorScheme(.light)
-            stateRenderer.screenGroup(addNavigation: true)
+            stateRenderer.screenGroup()
                 .theme(.dark).preferredColorScheme(.dark)
         }
     }
@@ -144,7 +140,7 @@ enum MockSpaceCreationMenuScreenState: MockScreenState, CaseIterable {
         
         return (
             [viewModel],
-            AnyView(SpaceCreationMenu(viewModel: viewModel.context))
+            AnyView(SpaceCreationMenu(viewModel: viewModel.context, showBackButton: true))
         )
     }
 }

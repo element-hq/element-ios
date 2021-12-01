@@ -53,7 +53,7 @@ final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceCreationSettingsViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
-        hostingController.hidesBackTitleWhenPushed = true
+        hostingController.isNavigationBarHidden = true
         spaceCreationSettingsHostingController = hostingController
     }
     
@@ -69,6 +69,8 @@ final class SpaceCreationSettingsCoordinator: Coordinator, Presentable {
                 self.callback?(.didSetupParameters)
             case .cancel:
                 self.callback?(.cancel)
+            case .back:
+                self.callback?(.back)
             case .pickImage(let sourceRect):
                 self.pickImage(from: sourceRect)
             break

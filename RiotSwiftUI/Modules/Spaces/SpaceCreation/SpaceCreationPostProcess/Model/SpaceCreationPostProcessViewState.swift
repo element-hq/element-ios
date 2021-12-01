@@ -19,6 +19,8 @@
 import Foundation
 
 struct SpaceCreationPostProcessViewState: BindableState {
+    var avatar: AvatarInput
+    var avatarImage: UIImage?
     var tasks: [SpaceCreationPostProcessTask]
     var isFinished: Bool
     var errorCount: Int

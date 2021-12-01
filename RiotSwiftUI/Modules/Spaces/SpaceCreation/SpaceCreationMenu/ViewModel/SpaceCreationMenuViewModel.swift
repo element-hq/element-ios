@@ -74,6 +74,8 @@ class SpaceCreationMenuViewModel: SpaceCreationMenuViewModelType, SpaceCreationM
             didSelectOption(withId: optionId)
         case .cancel:
             done()
+        case .back:
+            back()
         }
     }
     
@@ -81,6 +83,10 @@ class SpaceCreationMenuViewModel: SpaceCreationMenuViewModelType, SpaceCreationM
     
     private func done() {
         callback?(.cancel)
+    }
+    
+    private func back() {
+        callback?(.back)
     }
     
     private func didSelectOption(withId optionId: SpaceCreationMenuRoomOptionId) {

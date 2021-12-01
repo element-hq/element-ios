@@ -46,11 +46,12 @@ final class SpaceCreationRoomsCoordinator: Coordinator, Presentable {
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceCreationRoomsViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
-        hostingController.hidesBackTitleWhenPushed = true
+        hostingController.isNavigationBarHidden = true
         spaceCreationRoomsHostingController = hostingController
     }
     
     // MARK: - Public
+    
     func start() {
         MXLog.debug("[SpaceCreationRoomsCoordinator] did start.")
         spaceCreationRoomsViewModel.callback = { [weak self] result in
@@ -59,6 +60,8 @@ final class SpaceCreationRoomsCoordinator: Coordinator, Presentable {
             switch result {
             case .cancel:
                 self.callback?(.cancel)
+            case .back:
+                self.callback?(.back)
             case .done:
                 self.callback?(.didSetupRooms)
             }

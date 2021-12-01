@@ -20,4 +20,5 @@ import Foundation
 
 enum SpaceCreationEmailInvitesStateAction {
     case updateEmailValidity(_ validity: [Bool])
+    case updateLoading(_ loading: Bool)
 }

@@ -60,6 +60,8 @@ class SpaceCreationRoomsViewModel: SpaceCreationRoomsViewModelType, SpaceCreatio
         switch viewAction {
         case .cancel:
             cancel()
+        case .back:
+            back()
         case .done:
             done()
         }
@@ -67,10 +69,16 @@ class SpaceCreationRoomsViewModel: SpaceCreationRoomsViewModelType, SpaceCreatio
 
     override class func reducer(state: inout SpaceCreationRoomsViewState, action: SpaceCreationRoomsStateAction) {
     }
+    
+    // MARK: - Private
 
     private func done() {
         self.creationParameters.newRooms = self.context.rooms
         callback?(.done)
+    }
+
+    private func back() {
+        callback?(.back)
     }
 
     private func cancel() {

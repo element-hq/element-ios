@@ -42,11 +42,11 @@ final class SpaceCreationMenuCoordinator: Coordinator, Presentable {
     init(parameters: SpaceCreationMenuCoordinatorParameters) {
         self.parameters = parameters
         let viewModel = SpaceCreationMenuViewModel(navTitle: parameters.navTitle, creationParams: parameters.creationParams, title: parameters.title, detail: parameters.detail, options: parameters.options)
-        let view = SpaceCreationMenu(viewModel: viewModel.context)
+        let view = SpaceCreationMenu(viewModel: viewModel.context, showBackButton: parameters.showBackButton)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceCreationMenuViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
-        hostingController.hidesBackTitleWhenPushed = true
+        hostingController.isNavigationBarHidden = true
         spaceCreationMenuHostingController = hostingController
     }
     
@@ -62,6 +62,8 @@ final class SpaceCreationMenuCoordinator: Coordinator, Presentable {
                 self.callback?(.didSelectOption(optionId))
             case .cancel:
                 self.callback?(.cancel)
+            case .back:
+                self.callback?(.back)
             break
             }
         }

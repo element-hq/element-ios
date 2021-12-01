@@ -60,7 +60,8 @@ struct RoundedBorderTextEditor: View {
                     onEditingChanged?(edit)
                 })
                 .modifier(ClearViewModifier(alignment: .top, text: $text))
-                .modifier(NextViewModifier(alignment: .bottomTrailing, isEditing: $editing))
+                // Found no good solution here. Hidding next button for the moment
+//                .modifier(NextViewModifier(alignment: .bottomTrailing, isEditing: $editing))
                 .padding(EdgeInsets(top: 2, leading: 6, bottom: 0, trailing: 0))
                 .onChange(of: text, perform: { newText in
                     onTextChanged?(newText)

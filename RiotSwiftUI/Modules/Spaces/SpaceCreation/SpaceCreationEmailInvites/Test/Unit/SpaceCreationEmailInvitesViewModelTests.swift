@@ -29,7 +29,7 @@ class SpaceCreationEmailInvitesViewModelTests: XCTestCase {
     var context: SpaceCreationEmailInvitesViewModelType.Context!
     
     override func setUpWithError() throws {
-        service = MockSpaceCreationEmailInvitesService()
+        service = MockSpaceCreationEmailInvitesService(defaultValidation: true)
         viewModel = SpaceCreationEmailInvitesViewModel(creationParameters: creationParameters, service: service)
         context = viewModel.context
     }

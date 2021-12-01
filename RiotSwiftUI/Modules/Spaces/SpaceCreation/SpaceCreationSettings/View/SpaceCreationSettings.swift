@@ -34,31 +34,28 @@ struct SpaceCreationSettings: View {
     
     @ViewBuilder
     var body: some View {
+        VStack {
+            ThemableNavigationBar(title: nil, showBackButton: true) {
+                viewModel.send(viewAction: .back)
+            } closeAction: {
+                viewModel.send(viewAction: .cancel)
+            }
+            mainView
+        }
+        .background(theme.colors.background)
+        .navigationBarHidden(true)
+    }
+    
+    // MARK: - Private
+    
+    @ViewBuilder
+    private var mainView: some View {
         VStack(alignment: .center) {
-            headerView
             formView
             footerView
         }
         .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
-        .background(theme.colors.background)
-        .navigationTitle(viewModel.viewState.title)
-        .configureNavigationBar{
-            $0.navigationBar.shadowImage = UIImage()
-            $0.navigationBar.barTintColor = UIColor(theme.colors.background)
-            $0.navigationBar.tintColor = UIColor(theme.colors.secondaryContent)
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: {
-                    viewModel.send(viewAction: .cancel)
-                }) {
-                    Image(uiImage: Asset.Images.spacesModalClose.image).renderingMode(.template)
-                }
-            }
-        }
     }
-    
-    // MARK: - Private
     
     @ViewBuilder
     private var headerView: some View {
@@ -71,66 +68,76 @@ struct SpaceCreationSettings: View {
     @ViewBuilder
     private var avatarView: some View {
         ZStack(alignment: .bottomTrailing) {
+            GeometryReader { reader in
                 ZStack {
-                    GeometryReader { reader in
                         SpaceAvatarImage(mxContentUri: viewModel.viewState.avatar.mxContentUri, matrixItemId: viewModel.viewState.avatar.matrixItemId, displayName: viewModel.viewState.avatar.displayName, size: .xxLarge)
-                        .gesture(TapGesture().onEnded { _ in
-                            viewModel.send(viewAction: .pickImage(reader.frame(in: .global)))
-                        })
-                    }
                     .padding(6)
                     if let image = viewModel.viewState.avatarImage {
                         Image(uiImage: image)
                             .resizable()
+                            .scaledToFill()
                             .frame(width: 80, height: 80, alignment: .center)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .aspectRatio(contentMode: .fill)
                     }
                 }.padding(10)
-            Image(systemName: "camera.fill")
+                .gesture(TapGesture().onEnded { _ in
+                    viewModel.send(viewAction: .pickImage(reader.frame(in: .global)))
+                })
+            }
+            Image(uiImage: Asset.Images.spaceCreationCamera.image)
                 .renderingMode(.template)
                 .foregroundColor(theme.colors.secondaryContent)
                 .frame(width: 32, height: 32, alignment: .center)
                 .background(theme.colors.background)
                 .clipShape(Circle())
-        }.frame(width: 112, height: 112)
+        }.frame(width: 104, height: 104)
     }
     
     @ViewBuilder
     private var formView: some View {
         GeometryReader { geometryReader in
             ScrollView {
-                ScrollViewReader { value in
+                ScrollViewReader { scrollViewReader in
                     VStack {
-                        avatarView
+                        headerView
                         Spacer()
-                        VStack(alignment: .leading, spacing: 20) {
-                            RoundedBorderTextField(title: VectorL10n.createRoomPlaceholderName, placeHolder: "", text: $viewModel.roomName, footerText: .constant(viewModel.viewState.roomNameError), isError: .constant(true), configuration: UIKitTextInputConfiguration( returnKeyType: .next)) { newText in
-                                viewModel.send(viewAction: .nameChanged(newText))
+                        avatarView
+                        Spacer().frame(height:40)
+                        RoundedBorderTextField(title: VectorL10n.createRoomPlaceholderName, placeHolder: "", text: $viewModel.roomName, footerText: .constant(viewModel.viewState.roomNameError), isError: .constant(true), isFirstResponder: true, configuration: UIKitTextInputConfiguration( returnKeyType: .next), onTextChanged: { newText in
+                            viewModel.send(viewAction: .nameChanged(newText))
+                        }, onEditingChanged: { editing in
+//                            if editing {
+//                                scrollDown(reader: scrollViewReader)
+//                            }
+                        })
+                        .id("nameTextField")
+                        .padding(.horizontal, 2)
+                        .padding(.bottom, 20)
+                        RoundedBorderTextEditor(title: nil, placeHolder: VectorL10n.spaceTopic, text: $viewModel.topic, textMaxHeight: 72, error: .constant(nil), onTextChanged:  {
+                            newText in
+                            viewModel.send(viewAction: .topicChanged(newText))
+                        }, onEditingChanged: { editing in
+                            if editing {
+                                scrollDown(reader: scrollViewReader)
                             }
-                            RoundedBorderTextEditor(title: nil, placeHolder: VectorL10n.roomDetailsTopic, text: $viewModel.topic, textMaxHeight: 72, error: .constant(nil), onTextChanged:  {
+                        })
+                        .id("topicTextEditor")
+                        .padding(.horizontal, 2)
+                        .padding(.bottom, viewModel.viewState.showRoomAddress ? 20 : 3)
+                        if viewModel.viewState.showRoomAddress {
+                            RoundedBorderTextField(title: VectorL10n.spacesCreationAddress, placeHolder: "# \(viewModel.viewState.defaultAddress)", text: $viewModel.address, footerText: .constant(viewModel.viewState.addressMessage), isError: .constant(!viewModel.viewState.isAddressValid), configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
                                 newText in
-                                viewModel.send(viewAction: .topicChanged(newText))
+                                viewModel.send(viewAction: .addressChanged(newText))
                             }, onEditingChanged: { editing in
-                                if editing {
-                                    value.scrollTo("topicTextEditor", anchor: .center)
-                                }
+//                                if editing {
+//                                    scrollDown(reader: scrollViewReader)
+//                                }
                             })
-                            .id("topicTextEditor")
-                            if viewModel.viewState.showRoomAddress {
-                                RoundedBorderTextField(title: VectorL10n.spacesCreationAddress, placeHolder: "# \(viewModel.viewState.defaultAddress)", text: $viewModel.address, footerText: .constant(viewModel.viewState.addressMessage), isError: .constant(!viewModel.viewState.isAddressValid), configuration: UIKitTextInputConfiguration(keyboardType: .URL, returnKeyType: .done, autocapitalizationType: .none), onTextChanged:  {
-                                    newText in
-                                    viewModel.send(viewAction: .addressChanged(newText))
-                                }, onEditingChanged: { editing in
-                                    if editing {
-                                        value.scrollTo("addressTextField", anchor: .bottom)
-                                    }
-                                })
-                                .id("addressTextField")
-                                .accessibility(identifier: "addressTextField")
-                            }
+                            .id("addressTextField")
+                            .accessibility(identifier: "addressTextField")
+                            .padding(.horizontal, 2)
+                            .padding(.bottom, 3)
                         }
-                        .padding(EdgeInsets(top: 0, leading: 2, bottom: 3, trailing: 2))
                     }
                     .animation(.easeOut(duration: 0.2))
                     .frame(minHeight: geometryReader.size.height - 2)
@@ -144,6 +151,15 @@ struct SpaceCreationSettings: View {
         ThemableButton(icon: nil, title: VectorL10n.next) {
             ResponderManager.resignFirstResponder()
             viewModel.send(viewAction: .done)
+        }
+    }
+    
+    private func scrollDown(reader: ScrollViewProxy) {
+        let identifier = viewModel.viewState.showRoomAddress ? "addressTextField" : "topicTextEditor"
+        DispatchQueue.main.async {
+            withAnimation {
+                reader.scrollTo(identifier, anchor: .bottom)
+            }
         }
     }
 }

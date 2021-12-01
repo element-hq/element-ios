@@ -20,4 +20,5 @@ import Foundation
 enum SpaceCreationMatrixItemChooserCoordinatorAction {
     case done
     case cancel
+    case back
 }

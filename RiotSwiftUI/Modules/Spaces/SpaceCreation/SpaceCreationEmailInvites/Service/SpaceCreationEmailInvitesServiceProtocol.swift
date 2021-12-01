@@ -21,5 +21,8 @@ import Combine
 
 @available(iOS 14.0, *)
 protocol SpaceCreationEmailInvitesServiceProtocol {
+    var isIdentityServiceReady: Bool { get }
+    var isLoadingSubject: CurrentValueSubject<Bool, Never> { get }
     func validate(_ emailAddresses: [String]) -> [Bool]
+    func prepareIdentityService(prepared: ((String?, String?) -> Void)?, failure: ((Error?) -> Void)?)
 }

@@ -65,6 +65,8 @@
 "less" = "Less";
 "open" = "Open";
 "done" = "Done";
+"private" = "Private";
+"public" = "Public";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -1714,7 +1716,7 @@ Tap the + to start adding people.";
 "space_beta_announce_information" = "Spaces are a new way to group rooms and people. They’re not on iOS yet, but you can use them now on Web and Desktop.";
 
 "spaces_home_space_title" = "Home";
-"spaces_add_space_title" = "Add space";
+"spaces_add_space_title" = "Create space";
 "spaces_create_space_title" = "Create a space";
 "spaces_left_panel_title" = "Spaces";
 "leave_space_title" = "Leave %@";
@@ -1743,6 +1745,8 @@ Tap the + to start adding people.";
 "space_public_join_rule" = "Public space";
 "space_public_join_rule_detail" = "Open to anyone, best for communities";
 
+"space_topic" = "description";
+
 // Mark: - Space Creation
 
 "spaces_creation_hint" = "Spaces are a new way to group rooms and people.";
@@ -1751,12 +1755,14 @@ Tap the + to start adding people.";
 "spaces_creation_footer" = "You can change this later";
 "spaces_creation_settings_message" = "Add some details to help it stand out. You can change these at any point.";
 "spaces_creation_address" = "Address";
-"spaces_creation_empty_room_name_error" = "Name the room";
+"spaces_creation_empty_room_name_error" = "Name required";
 "spaces_creation_address_default_message" = "Your space will be viewable at\n%@";
 "spaces_creation_address_invalid_characters" = "%@\nhas invalid characters";
 "spaces_creation_address_already_exists" = "%@\nalready exists";
 "spaces_creation_public_space_title" = "Your public space";
 "spaces_creation_private_space_title" = "Your private space";
+"spaces_creation_cancel_title" = "Please confirm";
+"spaces_creation_cancel_message" = "You will need to start from scratch next time.";
 
 "spaces_creation_new_rooms_title" = "What are some discussions you’ll have?";
 "spaces_creation_new_rooms_message" = "We’ll create a room for each one.";
@@ -1770,7 +1776,7 @@ Tap the + to start adding people.";
 "spaces_creation_email_invites_email_title" = "Email";
 
 "spaces_creation_sharing_type_title" = "Who are you working with?";
-"spaces_creation_sharing_type_message" = "Make sure the right people have access to %@. You can change this later.";
+"spaces_creation_sharing_type_message" = "Make sure the right people have access %@. You can change this later.";
 "spaces_creation_sharing_type_just_me_title" = "Just me";
 "spaces_creation_sharing_type_just_me_detail" = "A private space to organise your rooms";
 "spaces_creation_sharing_type_me_and_teammates_title" = "Me and teammates";
@@ -1784,11 +1790,17 @@ Tap the + to start adding people.";
 "spaces_creation_invite_by_username_message" = "You can invite them later too.";
 
 "spaces_creation_post_process_creating_space" = "Creating space";
-"spaces_creation_post_process_creating_space_task" = "Creating space %@";
+"spaces_creation_post_process_creating_space_task" = "Creating %@";
 "spaces_creation_post_process_uploading_avatar" = "Uploading avatar";
-"spaces_creation_post_process_creating_room" = "Creating room %@";
+"spaces_creation_post_process_creating_room" = "Creating %@";
 "spaces_creation_post_process_adding_rooms" = "Adding %@ rooms";
 "spaces_creation_post_process_inviting_users" = "Inviting %@ users";
+
+"spaces_creation_in_spacename" = "in %@";
+"spaces_creation_in_spacename_plus_one" = "in %@ + 1 space";
+"spaces_creation_in_spacename_plus_many" = "in %@ + %@ spaces";
+"spaces_creation_in_many_spaces" = "in %@ spaces";
+"spaces_creation_in_one_space" = "in 1 space";
 
 // Mark: Avatar
 

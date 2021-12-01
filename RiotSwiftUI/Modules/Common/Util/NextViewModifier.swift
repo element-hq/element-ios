@@ -43,7 +43,7 @@ struct NextViewModifier: ViewModifier
                         ResponderManager.resignFirstResponder()
                     }
                 }) {
-                    Image(systemName: "arrow.down.circle.fill")
+                    Image(systemName: "arrow.right.circle.fill")
                         .renderingMode(.template)
                         .foregroundColor(theme.colors.quarterlyContent)
                 }

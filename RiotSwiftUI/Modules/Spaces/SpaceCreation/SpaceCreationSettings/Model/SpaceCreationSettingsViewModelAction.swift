@@ -23,5 +23,6 @@ import UIKit
 enum SpaceCreationSettingsViewModelAction {
     case done
     case cancel
+    case back
     case pickImage(_ sourceRect: CGRect)
 }

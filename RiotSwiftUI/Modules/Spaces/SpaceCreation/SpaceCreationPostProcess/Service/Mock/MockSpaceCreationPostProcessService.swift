@@ -22,27 +22,51 @@ import Combine
 @available(iOS 14.0, *)
 class MockSpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     
+    static let defaultTasks: [SpaceCreationPostProcessTask] = [
+        SpaceCreationPostProcessTask(type: .createSpace, title: "Space creation", state: .success),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#1"), title: "Room#1 creation", state: .failure),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#2"), title: "Room#2 creation", state: .started),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#3"), title: "Room#3 creation", state: .none)
+    ]
+    
+    static let nextStepTasks: [SpaceCreationPostProcessTask] = [
+        SpaceCreationPostProcessTask(type: .createSpace, title: "Space creation", state: .success),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#1"), title: "Room#1 creation", state: .failure),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#2"), title: "Room#2 creation", state: .failure),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#3"), title: "Room#3 creation", state: .started)
+    ]
+    
+    static let lastTaskDoneWithError: [SpaceCreationPostProcessTask] = [
+        SpaceCreationPostProcessTask(type: .createSpace, title: "Space creation", state: .success),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#1"), title: "Room#1 creation", state: .failure),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#2"), title: "Room#2 creation", state: .failure),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#3"), title: "Room#3 creation", state: .success)
+    ]
+
+    static let lastTaskDoneSuccesfully: [SpaceCreationPostProcessTask] = [
+        SpaceCreationPostProcessTask(type: .createSpace, title: "Space creation", state: .success),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#1"), title: "Room#1 creation", state: .success),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#2"), title: "Room#2 creation", state: .success),
+        SpaceCreationPostProcessTask(type: .createRoom("Room#3"), title: "Room#3 creation", state: .success)
+    ]
+
     var tasksSubject: CurrentValueSubject<[SpaceCreationPostProcessTask], Never>
     private(set) var createdSpaceId: String?
+    var avatar: AvatarInput {
+        return AvatarInput(mxContentUri: nil, matrixItemId: "", displayName: "Some space")
+    }
+    var avatarImage: UIImage? {
+        return nil
+    }
 
     init(
-        tasks: [SpaceCreationPostProcessTask] = [
-            SpaceCreationPostProcessTask(type: .createSpace, title: "Space creation", state: .success),
-            SpaceCreationPostProcessTask(type: .createRoom("Room#1"), title: "Room#1 creation", state: .failure),
-            SpaceCreationPostProcessTask(type: .createRoom("Room#2"), title: "Room#2 creation", state: .started),
-            SpaceCreationPostProcessTask(type: .createRoom("Room#3"), title: "Room#3 creation", state: .none)
-        ]
+        tasks: [SpaceCreationPostProcessTask] = defaultTasks
     ) {
         self.tasksSubject = CurrentValueSubject<[SpaceCreationPostProcessTask], Never>(tasks)
     }
     
-    func simulateUpdate(presence: SpaceCreationPostProcessPresence) {
-        self.tasksSubject.send([
-            SpaceCreationPostProcessTask(type: .createSpace, title: "Space creation", state: .success),
-            SpaceCreationPostProcessTask(type: .createRoom("Room#1"), title: "Room#1 creation", state: .failure),
-            SpaceCreationPostProcessTask(type: .createRoom("Room#2"), title: "Room#2 creation", state: .success),
-            SpaceCreationPostProcessTask(type: .createRoom("Room#3"), title: "Room#3 creation", state: .started)
-        ])
+    func simulateUpdate(tasks: [SpaceCreationPostProcessTask]) {
+        self.tasksSubject.send(tasks)
     }
     
     func run() {

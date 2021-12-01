@@ -18,5 +18,6 @@ import Foundation
 
 enum SpaceCreationSettingsCoordinatorAction {
     case cancel
+    case back
     case didSetupParameters
 }

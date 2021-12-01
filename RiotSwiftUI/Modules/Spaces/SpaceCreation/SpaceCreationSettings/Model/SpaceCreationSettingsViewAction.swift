@@ -22,6 +22,7 @@ import UIKit
 /// Actions send from the `View` to the `ViewModel`.
 enum SpaceCreationSettingsViewAction {
     case cancel
+    case back
     case done
     case pickImage(_ sourceRect: CGRect)
     case nameChanged(_ newValue: String)

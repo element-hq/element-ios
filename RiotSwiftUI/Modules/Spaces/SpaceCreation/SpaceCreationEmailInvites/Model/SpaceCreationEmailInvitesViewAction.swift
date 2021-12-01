@@ -20,6 +20,7 @@ import Foundation
 
 enum SpaceCreationEmailInvitesViewAction {
     case cancel
+    case back
     case done
     case inviteByUsername
 }

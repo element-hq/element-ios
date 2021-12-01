@@ -47,7 +47,7 @@ final class SpaceCreationMatrixItemChooserCoordinator: Coordinator, Presentable 
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceCreationMatrixItemChooserViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
-        hostingController.hidesBackTitleWhenPushed = true
+        hostingController.isNavigationBarHidden = true
         spaceCreationMatrixItemChooserHostingController = hostingController
     }
     
@@ -60,6 +60,8 @@ final class SpaceCreationMatrixItemChooserCoordinator: Coordinator, Presentable 
             switch result {
             case .cancel:
                 self.callback?(.cancel)
+            case .back:
+                self.callback?(.back)
             case .done:
                 self.callback?(.done)
             }

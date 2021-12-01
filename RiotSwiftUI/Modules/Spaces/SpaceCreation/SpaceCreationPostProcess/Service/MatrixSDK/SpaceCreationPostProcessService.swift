@@ -39,7 +39,6 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             createdSpaceId = createdSpace?.spaceId
         }
     }
-    private(set) var createdSpaceId: String?
     private var createdRoomsByName: [String: MXRoom] = [:]
     
     private var currentSubTaskIndex = 0
@@ -57,7 +56,15 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     // MARK: Public
     
     private(set) var tasksSubject: CurrentValueSubject<[SpaceCreationPostProcessTask], Never>
-    
+    private(set) var createdSpaceId: String?
+    var avatar: AvatarInput {
+        let alias = creationParams.userDefinedAddress.isEmptyOrNil ? creationParams.address : creationParams.userDefinedAddress
+        return AvatarInput(mxContentUri: alias, matrixItemId: "", displayName: creationParams.name)
+    }
+    var avatarImage: UIImage? {
+        return creationParams.userSelectedAvatar
+    }
+
     // MARK: - Setup
     
     init(session: MXSession, creationParams: SpaceCreationParameters) {
@@ -90,7 +97,14 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         if creationParams.userSelectedAvatar != nil {
             tasks.append(SpaceCreationPostProcessTask(type: .uploadAvatar, title: VectorL10n.spacesCreationPostProcessUploadingAvatar, state: .none))
         }
-        if creationParams.addedRoomIds.isEmpty {
+        if let addedRoomIds = creationParams.addedRoomIds {
+            if !addedRoomIds.isEmpty {
+                let subTasks = addedRoomIds.map { roomId in
+                    SpaceCreationPostProcessTask(type: .addRooms, title: roomId, state: .none)
+                }
+                tasks.append(SpaceCreationPostProcessTask(type: .addRooms, title: VectorL10n.spacesCreationPostProcessAddingRooms("\(addedRoomIds.count)"), state: .none, subTasks: subTasks))
+            }
+        } else {
             tasks.append(contentsOf: creationParams.newRooms.compactMap({ room in
                 guard !room.name.isEmpty else {
                     return nil
@@ -98,11 +112,6 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
                 
                 return SpaceCreationPostProcessTask(type: .createRoom(room.name), title: VectorL10n.spacesCreationPostProcessCreatingRoom(room.name), state: .none)
             }))
-        } else {
-            let subTasks = creationParams.addedRoomIds.map { roomId in
-                SpaceCreationPostProcessTask(type: .addRooms, title: roomId, state: .none)
-            }
-            tasks.append(SpaceCreationPostProcessTask(type: .addRooms, title: VectorL10n.spacesCreationPostProcessAddingRooms("\(creationParams.addedRoomIds.count)"), state: .none, subTasks: subTasks))
         }
         
         if creationParams.userIdInvites.isEmpty {
@@ -132,6 +141,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             return
         }
         
+//        createdSpaceId = session.spaceService.rootSpaceSummaries.first?.roomId
 //        fakeTaskExecution(task: task)
 //        return
 
@@ -154,32 +164,19 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     }
     
     private func createSpace(andUpdate task: SpaceCreationPostProcessTask) {
-        let parameters = MXSpaceCreationParameters()
-        parameters.name = creationParams.name
-        parameters.topic = creationParams.topic
-        parameters.preset = creationParams.isPublic ? kMXRoomPresetPublicChat : kMXRoomPresetPrivateChat
-        parameters.visibility = creationParams.isPublic ? kMXRoomDirectoryVisibilityPublic : kMXRoomDirectoryVisibilityPrivate
-        if creationParams.isPublic {
-            var alias = creationParams.address
-            if let userDefinedAlias = creationParams.userDefinedAddress {
-                alias = userDefinedAlias
-            }
-            parameters.roomAlias = alias?.fullLocalAlias(with: session)
-            let guestAccessStateEvent = self.stateEventBuilder.buildGuestAccessEvent(withAccess: .canJoin)
-            parameters.addOrUpdateInitialStateEvent(guestAccessStateEvent)
-            let historyVisibilityStateEvent = self.stateEventBuilder.buildHistoryVisibilityEvent(withVisibility: .worldReadable)
-            parameters.addOrUpdateInitialStateEvent(historyVisibilityStateEvent)
-        }
-        parameters.inviteArray = creationParams.userIdInvites
-
         updateCurrentTask(with: .started)
-        session.spaceService.createSpace(with: parameters) { [weak self] response in
+        
+        var alias = creationParams.address
+        if let userDefinedAlias = creationParams.userDefinedAddress, !userDefinedAlias.isEmpty {
+            alias = userDefinedAlias
+        }
+        session.spaceService.createSpace(withName: creationParams.name, topic: creationParams.topic, isPublic: creationParams.isPublic, aliasLocalPart: alias, inviteArray: creationParams.userIdInvites) { [weak self] response in
             guard let self = self else { return }
             if response.isFailure {
                 self.updateCurrentTask(with: .failure)
             } else {
-                self.updateCurrentTask(with: .success)
                 self.createdSpace = response.value
+                self.updateCurrentTask(with: .success)
                 self.runNextTask()
             }
         }
@@ -213,6 +210,8 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     }
     
     private func setAvatar(ofRoom room: MXRoom, withURL url: URL, andUpdate task: SpaceCreationPostProcessTask) {
+        updateCurrentTask(with: .started)
+        
         room.setAvatar(url: url) { [weak self] (response) in
             guard let self = self else { return }
 
@@ -222,13 +221,17 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     }
 
     private func createRoom(withName roomName: String, andUpdate task: SpaceCreationPostProcessTask) {
-        let parameters = MXRoomCreationParameters()
-        parameters.name = roomName
-        parameters.visibility = creationParams.isPublic ? kMXRoomDirectoryVisibilityPublic : kMXRoomDirectoryVisibilityPrivate
-        parameters.preset = creationParams.isPublic ? kMXRoomPresetPublicChat : kMXRoomPresetPrivateChat
-
+        guard let createdSpace = self.createdSpace else {
+            updateCurrentTask(with: .failure)
+            runNextTask()
+            return
+        }
+        
         updateCurrentTask(with: .started)
-        session.createRoom(parameters: parameters) { [weak self] response in
+        
+        let joinRule: MXRoomJoinRule = creationParams.isPublic ? .public : .restricted
+        let parentRoomId = creationParams.isPublic ? nil : createdSpace.spaceId
+        session.createRoom(withName: roomName, joinRule: joinRule, topic: nil, parentRoomId: parentRoomId, aliasLocalPart: nil) { [weak self] response in
             guard let self = self else { return }
 
             guard response.isSuccess, let createdRoom = response.value else {
@@ -236,14 +239,20 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
                 self.runNextTask()
                 return
             }
-            
+
             self.createdRoomsByName[roomName] = createdRoom
             self.addToSpace(room: createdRoom)
         }
     }
     
     private func addToSpace(room: MXRoom) {
-        self.createdSpace?.addChild(roomId: room.matrixItemId, completion: { response in
+        guard let createdSpace = self.createdSpace else {
+            updateCurrentTask(with: .failure)
+            runNextTask()
+            return
+        }
+
+        createdSpace.addChild(roomId: room.matrixItemId, completion: { response in
             self.updateCurrentTask(with: response.isFailure ? .failure : .success)
             self.runNextTask()
         })
@@ -301,7 +310,13 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             return
         }
         
-        createdSpace.addChild(roomId: creationParams.addedRoomIds[currentSubTaskIndex], completion: { [weak self] response in
+        guard let roomId = creationParams.addedRoomIds?[currentSubTaskIndex] else {
+            updateCurrentTask(with: .failure)
+            runNextTask()
+            return
+        }
+        
+        createdSpace.addChild(roomId: roomId, completion: { [weak self] response in
             guard let self = self else { return }
             
             self.tasks[self.currentTaskIndex].subTasks[self.currentSubTaskIndex].state = response.isSuccess ? .success : .failure

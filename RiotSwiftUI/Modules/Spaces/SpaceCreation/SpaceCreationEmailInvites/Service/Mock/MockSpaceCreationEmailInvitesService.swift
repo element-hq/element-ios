@@ -21,13 +21,24 @@ import Combine
 
 @available(iOS 14.0, *)
 class MockSpaceCreationEmailInvitesService: SpaceCreationEmailInvitesServiceProtocol {
+    var isLoadingSubject: CurrentValueSubject<Bool, Never>
+    
     private let defaultValidation: Bool
     
-    init(defaultValidation: Bool) {
+    var isIdentityServiceReady: Bool {
+        return true
+    }
+    
+    init(defaultValidation: Bool, isLoading: Bool) {
         self.defaultValidation = defaultValidation
+        self.isLoadingSubject = CurrentValueSubject(isLoading)
     }
     
     func validate(_ emailAddresses: [String]) -> [Bool] {
         return emailAddresses.map { _ in defaultValidation }
+    }
+    
+    func prepareIdentityService(prepared: ((String?, String?) -> Void)?, failure: ((Error?) -> Void)?) {
+        failure?(nil)
     }
 }

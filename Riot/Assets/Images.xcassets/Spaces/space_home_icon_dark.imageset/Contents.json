@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "spaces_add_space.png",
+      "filename" : "space_home_icon_dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "spaces_add_space@2x.png",
+      "filename" : "space_home_icon_dark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "spaces_add_space@3x.png",
+      "filename" : "space_home_icon_dark@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -22,6 +22,7 @@ struct SpaceCreationMenuCoordinatorParameters {
     let session: MXSession
     let creationParams: SpaceCreationParameters
     let navTitle: String?
+    let showBackButton: Bool
     let title: String
     let detail: String
     let options: [SpaceCreationMenuRoomOption]

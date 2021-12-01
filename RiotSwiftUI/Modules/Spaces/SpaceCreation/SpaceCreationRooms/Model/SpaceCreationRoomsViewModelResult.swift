@@ -20,5 +20,6 @@ import Foundation
 
 enum SpaceCreationRoomsViewModelResult {
     case cancel
+    case back
     case done
 }

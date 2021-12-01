@@ -18,32 +18,78 @@ import Foundation
 import UIKit
 
 class SpaceCreationParameters {
-    var name: String?
-    var topic: String?
-    var address: String?
-    var userDefinedAddress: String?
-    var isPublic: Bool = false
+    var name: String? {
+        didSet {
+            isModified = true
+        }
+    }
+    var topic: String? {
+        didSet {
+            isModified = true
+        }
+    }
+    var address: String? {
+        didSet {
+            isModified = true
+        }
+    }
+    var userDefinedAddress: String? {
+        didSet {
+            isModified = true
+        }
+    }
+    var isPublic: Bool = false {
+        didSet {
+            isModified = true
+        }
+    }
     var showAddress: Bool {
         isPublic
     }
     
-    var userSelectedAvatar: UIImage?
-    var isShared: Bool = false
+    var userSelectedAvatar: UIImage? {
+        didSet {
+            isModified = true
+        }
+    }
+    var isShared: Bool = false {
+        didSet {
+            isModified = true
+        }
+    }
     
     var newRooms: [SpaceCreationNewRoom] = [
         SpaceCreationNewRoom(name: VectorL10n.spacesCreationNewRoomsGeneral, defaultName: VectorL10n.spacesCreationNewRoomsGeneral),
         SpaceCreationNewRoom(name: VectorL10n.spacesCreationNewRoomsRandom, defaultName: VectorL10n.spacesCreationNewRoomsRandom),
         SpaceCreationNewRoom(name: "", defaultName: VectorL10n.spacesCreationNewRoomsSupport)
-    ]
-    var addedRoomIds: [String] = []
+    ] {
+        didSet {
+            isModified = true
+        }
+    }
+    
+    var addedRoomIds: [String]? {
+        didSet {
+            isModified = true
+        }
+    }
 
-    var emailInvites: [String] = ["", ""]
+    var emailInvites: [String] = ["", ""] {
+        didSet {
+            isModified = true
+        }
+    }
     var userDefinedEmailInvites: [String] {
         return emailInvites.filter { address in
             return !address.isEmpty
         }
     }
-    var userIdInvites: [String] = []
+    var userIdInvites: [String] = [] {
+        didSet {
+            isModified = true
+        }
+    }
+    private(set) var isModified: Bool = false
 }
 
 struct SpaceCreationNewRoom: Equatable {

@@ -46,7 +46,7 @@ final class SpaceCreationPostProcessCoordinator: Coordinator, Presentable {
             .addDependency(AvatarService.instantiate(mediaManager: parameters.session.mediaManager))
         spaceCreationPostProcessViewModel = viewModel
         let hostingController = VectorHostingController(rootView: view)
-        hostingController.hidesBackTitleWhenPushed = true
+        hostingController.isNavigationBarHidden = true
         spaceCreationPostProcessHostingController = hostingController
     }
     

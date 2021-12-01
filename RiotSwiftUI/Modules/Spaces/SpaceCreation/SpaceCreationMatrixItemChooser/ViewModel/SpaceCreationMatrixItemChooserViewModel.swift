@@ -78,6 +78,8 @@ class SpaceCreationMatrixItemChooserViewModel: SpaceCreationMatrixItemChooserVie
         switch viewAction {
         case .cancel:
             cancel()
+        case .back:
+            back()
         case .done:
             let selectedItemIds = Array(spaceCreationMatrixItemChooserService.selectedItemIdsSubject.value)
             switch spaceCreationMatrixItemChooserService.type {
@@ -110,5 +112,9 @@ class SpaceCreationMatrixItemChooserViewModel: SpaceCreationMatrixItemChooserVie
 
     private func cancel() {
         callback?(.cancel)
+    }
+    
+    private func back() {
+        callback?(.back)
     }
 }

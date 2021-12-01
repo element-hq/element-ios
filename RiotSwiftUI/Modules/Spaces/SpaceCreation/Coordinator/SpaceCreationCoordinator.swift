@@ -51,11 +51,12 @@ final class SpaceCreationCoordinator: Coordinator {
             session: parameters.session,
             creationParams: parameters.creationParameters,
             navTitle: VectorL10n.spacesCreateSpaceTitle,
+            showBackButton: false,
             title: VectorL10n.spacesCreationVisibilityTitle,
             detail: VectorL10n.spacesCreationVisibilityMessage,
             options: [
-                SpaceCreationMenuRoomOption(id: .publicSpace, icon: Asset.Images.spaceTypeIcon.image, title: VectorL10n.spacePublicJoinRule, detail: VectorL10n.spacePublicJoinRuleDetail),
-                SpaceCreationMenuRoomOption(id: .privateSpace, icon: Asset.Images.spacePrivateIcon.image, title: VectorL10n.spacePrivateJoinRule, detail: VectorL10n.spacePrivateJoinRuleDetail)
+                SpaceCreationMenuRoomOption(id: .publicSpace, icon: Asset.Images.spaceCreationPublic.image, title: VectorL10n.public, detail: VectorL10n.spacePublicJoinRuleDetail),
+                SpaceCreationMenuRoomOption(id: .privateSpace, icon: Asset.Images.spaceCreationPrivate.image, title: VectorL10n.private, detail: VectorL10n.spacePrivateJoinRuleDetail)
             ]
         )
         
@@ -63,6 +64,7 @@ final class SpaceCreationCoordinator: Coordinator {
             session: parameters.session,
             creationParams: parameters.creationParameters,
             navTitle: nil,
+            showBackButton: true,
             title: VectorL10n.spacesCreationSharingTypeTitle,
             detail: VectorL10n.spacesCreationSharingTypeMessage(parameters.creationParameters.name ?? ""),
             options: [
@@ -132,7 +134,9 @@ final class SpaceCreationCoordinator: Coordinator {
                     self.pushScreen(with: self.createRoomsCoordinator())
                 }
             case .cancel:
-                self.callback?(.cancel)
+                self.cancel()
+            case .back:
+                self.back()
             }
         }
         return coordinator
@@ -151,7 +155,9 @@ final class SpaceCreationCoordinator: Coordinator {
                     self.pushScreen(with: self.createMenuCoordinator(with: self.spaceSharingTypeMenuParameters))
                 }
             case .cancel:
-                self.callback?(.cancel)
+                self.cancel()
+            case .back:
+                self.back()
             }
         }
         return coordinator
@@ -172,7 +178,9 @@ final class SpaceCreationCoordinator: Coordinator {
                     UILog.error("[SpaceCreationCoordinator] createRoomsCoordinator: should be public space or shared private space")
                 }
             case .cancel:
-                self.callback?(.cancel)
+                self.cancel()
+            case .back:
+                self.back()
             }
         }
         return coordinator
@@ -185,7 +193,9 @@ final class SpaceCreationCoordinator: Coordinator {
             guard let self = self else { return }
             switch result {
             case .cancel:
-                self.callback?(.cancel)
+                self.cancel()
+            case .back:
+                self.back()
             case .done:
                 self.pushScreen(with: self.createPostProcessCoordinator())
             case .inviteByUsername:
@@ -202,7 +212,9 @@ final class SpaceCreationCoordinator: Coordinator {
             guard let self = self else { return }
             switch result {
             case .cancel:
-                self.callback?(.cancel)
+                self.cancel()
+            case .back:
+                self.back()
             case .done:
                 self.pushScreen(with: self.createPostProcessCoordinator())
             }
@@ -217,7 +229,9 @@ final class SpaceCreationCoordinator: Coordinator {
             guard let self = self else { return }
             switch result {
             case .cancel:
-                self.callback?(.cancel)
+                self.cancel()
+            case .back:
+                self.back()
             case .done:
                 self.pushScreen(with: self.createPostProcessCoordinator())
             }
@@ -234,9 +248,26 @@ final class SpaceCreationCoordinator: Coordinator {
             case .done(let spaceId):
                 self.callback?(.done(spaceId))
             case .cancel:
-                self.callback?(.cancel)
+                self.cancel()
             }
         }
         return coordinator
+    }
+    
+    private func cancel() {
+        if parameters.creationParameters.isModified {
+            let alert = UIAlertController(title: VectorL10n.spacesCreationCancelTitle, message: VectorL10n.spacesCreationCancelMessage, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .destructive, handler: { action in
+                self.callback?(.cancel)
+            }))
+            alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+            navigationRouter.present(alert, animated: true)
+        } else {
+            self.callback?(.cancel)
+        }
+    }
+    
+    private func back() {
+        navigationRouter.popModule(animated: true)
     }
 }

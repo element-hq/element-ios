@@ -34,10 +34,29 @@ struct SpaceCreationEmailInvites: View {
     @ViewBuilder
     var body: some View {
         VStack {
-            headerView
+            ThemableNavigationBar(title: nil, showBackButton: true) {
+                viewModel.send(viewAction: .back)
+            } closeAction: {
+                viewModel.send(viewAction: .cancel)
+            }
+            mainView
+                .frame(width: .infinity, height: .infinity)
+                .animation(.easeInOut(duration: 0.2), value: viewModel.viewState.loading)
+                .modifier(WaitOverlay(isLoading: .constant(viewModel.viewState.loading)))
+        }
+        .background(theme.colors.background)
+        .navigationBarHidden(true)
+    }
+    
+    // MARK: - Private
+    
+    @ViewBuilder
+    private var mainView: some View {
+        VStack {
             GeometryReader { reader in
                 ScrollView {
                     VStack {
+                        headerView
                         Spacer()
                         formView
                     }
@@ -47,25 +66,7 @@ struct SpaceCreationEmailInvites: View {
             footerView
         }
         .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
-        .background(theme.colors.background)
-        .navigationTitle(viewModel.viewState.title)
-        .configureNavigationBar{
-            $0.navigationBar.shadowImage = UIImage()
-            $0.navigationBar.barTintColor = UIColor(theme.colors.background)
-            $0.navigationBar.tintColor = UIColor(theme.colors.secondaryContent)
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button(action: {
-                    viewModel.send(viewAction: .cancel)
-                }) {
-                    Image(uiImage: Asset.Images.spacesModalClose.image).renderingMode(.template)
-                }
-            }
-        }
     }
-    
-    // MARK: - Private
 
     @ViewBuilder
     private var headerView: some View {
@@ -85,7 +86,7 @@ struct SpaceCreationEmailInvites: View {
     @ViewBuilder
     private var formView: some View {
         VStack {
-            VStack {
+            VStack(spacing: 20) {
                 ForEach(viewModel.emailInvites.indices) { index in
                     RoundedBorderTextField(title: VectorL10n.spacesCreationEmailInvitesEmailTitle, placeHolder: VectorL10n.spacesCreationEmailInvitesEmailTitle, text: $viewModel.emailInvites[index], footerText: .constant(viewModel.viewState.emailAddressesValid[index] ? nil : VectorL10n.authInvalidEmail), isError: .constant(!viewModel.viewState.emailAddressesValid[index]), configuration: UIKitTextInputConfiguration(keyboardType: .emailAddress, returnKeyType: index < viewModel.emailInvites.endIndex - 1 ? .next : .done, autocapitalizationType: .none, autocorrectionType: .no))
                         .accessibility(identifier: "emailTextField")

@@ -132,7 +132,11 @@ struct ThemableTextField: UIViewRepresentable {
 @available(iOS 14.0, *)
 extension ThemableTextField {
     func makeFirstResponder() -> ThemableTextField {
-        internalParams.isFirstResponder = true
+        makeFirstResponder(true)
+        return self
+    }
+    func makeFirstResponder(_ isFirstResponder: Bool) -> ThemableTextField {
+        internalParams.isFirstResponder = isFirstResponder
         return self
     }
 }

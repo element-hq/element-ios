@@ -56,6 +56,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
         NotificationCenter.default.addObserver(self, selector: #selector(self.sessionDidSync(notification:)), name: MXSpaceService.didBuildSpaceGraph, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.counterDidUpdateNotificationCount(notification:)), name: MXSpaceNotificationCounter.didUpdateNotificationCount, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.loadData), name: NSNotification.Name.themeServiceDidChangeTheme, object: nil)
 
     }
     
@@ -135,7 +137,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
         loadData()
     }
     
-    private func loadData() {
+    @objc private func loadData() {
         guard let session = self.userSessionsService.mainUserSession?.matrixSession else {
             // If there is no main session, reset current selection and give an empty section list
             // It can happen when the user make a clear cache or logout 
@@ -159,6 +161,7 @@ final class SpaceListViewModel: SpaceListViewModelType {
                 .spaces(viewDataList.spaces)
             ]
 
+        let spacesSectionIndex = sections.count - 1
         if #available(iOS 14.0, *) {
             let addSpaceViewData = self.createAddSpaceViewData(session: session)
             sections.append(.addSpace(addSpaceViewData))
@@ -170,10 +173,9 @@ final class SpaceListViewModel: SpaceListViewModelType {
             self.selectedIndexPath = homeIndexPath
         } else if self.selectedItemId != self.itemId(with: self.selectedIndexPath) {
             var newSelection: IndexPath?
-            let section = sections.last
+            let section = sections[spacesSectionIndex]
             switch section {
-            case .home: break
-            case .addSpace: break
+            case .home, .addSpace: break
             case .spaces(let viewDataList):
                 var index = 0
                 for itemViewData in viewDataList {
@@ -182,8 +184,6 @@ final class SpaceListViewModel: SpaceListViewModelType {
                     }
                     index += 1
                 }
-            case .none:
-                break
             }
             
             if let selection = newSelection {
@@ -215,7 +215,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func createHomeViewData(session: MXSession) -> SpaceListItemViewData {
-        let avatarViewData = AvatarViewData(matrixItemId: Constants.homeSpaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
+        let defaultAsset = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.spaceHomeIconDark : Asset.Images.spaceHomeIconLight
+        let avatarViewData = AvatarViewData(matrixItemId: Constants.homeSpaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(defaultAsset.image, .center))
         
         let homeNotificationState = session.spaceService.notificationCounter.homeNotificationState
         let homeViewData = SpaceListItemViewData(spaceId: Constants.homeSpaceId,
@@ -228,7 +229,8 @@ final class SpaceListViewModel: SpaceListViewModelType {
     }
     
     private func createAddSpaceViewData(session: MXSession) -> SpaceListItemViewData {
-        let avatarViewData = AvatarViewData(matrixItemId: Constants.addSpaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(Asset.Images.spacesAddSpace.image, .center))
+        let defaultAsset = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.spacesAddSpaceDark : Asset.Images.spacesAddSpaceLight
+        let avatarViewData = AvatarViewData(matrixItemId: Constants.addSpaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(defaultAsset.image, .center))
         
         let homeViewData = SpaceListItemViewData(spaceId: Constants.addSpaceId,
                                                  title: VectorL10n.spacesAddSpaceTitle,

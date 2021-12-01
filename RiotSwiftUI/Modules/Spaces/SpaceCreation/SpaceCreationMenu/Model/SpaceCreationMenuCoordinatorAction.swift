@@ -22,4 +22,5 @@ import Foundation
 enum SpaceCreationMenuCoordinatorAction {
     case didSelectOption(_ optionId: SpaceCreationMenuRoomOptionId)
     case cancel
+    case back
 }

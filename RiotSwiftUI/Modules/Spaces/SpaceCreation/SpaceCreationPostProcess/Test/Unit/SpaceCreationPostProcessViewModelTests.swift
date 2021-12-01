@@ -23,37 +23,38 @@ import Combine
 
 @available(iOS 14.0, *)
 class SpaceCreationPostProcessViewModelTests: XCTestCase {
-    private enum Constants {
-        static let presenceInitialValue: SpaceCreationPostProcessPresence = .offline
-        static let displayName = "Alice"
-    }
+    
     var service: MockSpaceCreationPostProcessService!
     var viewModel: SpaceCreationPostProcessViewModelProtocol!
     var context: SpaceCreationPostProcessViewModelType.Context!
-    var cancellables = Set<AnyCancellable>()
+
     override func setUpWithError() throws {
-        service = MockSpaceCreationPostProcessService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
+        service = MockSpaceCreationPostProcessService(tasks: Constant.defaultTasks)
         viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: service)
         context = viewModel.context
     }
 
     func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
+        XCTAssertEqual(context.viewState.tasks, Constant.defaultTasks)
+        XCTAssertEqual(context.viewState.errorCount, 1)
+        XCTAssertEqual(context.viewState.isFinished, false)
+    }
+    
+    func testUpateToNextTask() {
+        let tasksPublisher = context.$viewState.map(\.tasks).removeDuplicates()
+        let awaitDeferred = xcAwaitDeferred(tasksPublisher)
+        service.simulateUpdate(tasks: Constant.nextStepTasks)
+        XCTAssertEqual(try awaitDeferred(), Constant.nextStepTasks)
+        XCTAssertEqual(context.viewState.errorCount, 2)
+        XCTAssertEqual(context.viewState.isFinished, false)
     }
 
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: SpaceCreationPostProcessPresence = .online
-        let newPresenceValue2: SpaceCreationPostProcessPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
+    func testLastTaskDone() {
+        let tasksPublisher = context.$viewState.map(\.tasks).removeDuplicates()
+        let awaitDeferred = xcAwaitDeferred(tasksPublisher)
+        service.simulateUpdate(tasks: Constant.lastTaskDone)
+        XCTAssertEqual(try awaitDeferred(), Constant.lastTaskDone)
+        XCTAssertEqual(context.viewState.errorCount, 2)
+        XCTAssertEqual(context.viewState.isFinished, true)
     }
 }

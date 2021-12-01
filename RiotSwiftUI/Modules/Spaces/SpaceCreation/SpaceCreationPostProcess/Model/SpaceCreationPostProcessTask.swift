@@ -16,7 +16,7 @@
 
 import Foundation
 
-enum SpaceCreationPostProcessTaskState: CaseIterable {
+enum SpaceCreationPostProcessTaskState: CaseIterable, Equatable {
     static var allCases: [SpaceCreationPostProcessTaskState] = [.none, .started, .success, .failure]
     
     case none
@@ -25,7 +25,7 @@ enum SpaceCreationPostProcessTaskState: CaseIterable {
     case failure
 }
 
-enum SpaceCreationPostProcessTaskType {
+enum SpaceCreationPostProcessTaskType: Equatable {
     case createSpace
     case uploadAvatar
     case createRoom(_ roomName: String)
@@ -33,7 +33,7 @@ enum SpaceCreationPostProcessTaskType {
     case inviteUsersByEmail
 }
 
-struct SpaceCreationPostProcessTask {
+struct SpaceCreationPostProcessTask: Equatable {
     let type: SpaceCreationPostProcessTaskType
     let title: String
     var state: SpaceCreationPostProcessTaskState
@@ -41,4 +41,8 @@ struct SpaceCreationPostProcessTask {
         return state == .failure || state == .success
     }
     var subTasks: [SpaceCreationPostProcessTask] = []
+    
+    static func == (lhs: SpaceCreationPostProcessTask, rhs: SpaceCreationPostProcessTask) -> Bool {
+        return lhs.type == rhs.type && lhs.title == rhs.title && lhs.state == rhs.state && lhs.subTasks == lhs.subTasks
+    }
 }

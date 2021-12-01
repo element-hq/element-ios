@@ -79,6 +79,7 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
             addressMessage: addressMessage(with: validationStatus),
             isAddressValid: isAddressValid(with: validationStatus),
             avatar: AvatarInput(mxContentUri: nil, matrixItemId: "", displayName: nil),
+            avatarImage: creationParameters.userSelectedAvatar,
             bindings: bindings)
     }
     
@@ -93,6 +94,8 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
         switch viewAction {
         case .done:
             done()
+        case .back:
+            back()
         case .cancel:
             cancel()
         case .pickImage(let sourceRect):
@@ -149,6 +152,10 @@ class SpaceCreationSettingsViewModel: SpaceCreationSettingsViewModelType, SpaceC
     
     private func cancel() {
         callback?(.cancel)
+    }
+    
+    private func back() {
+        callback?(.back)
     }
     
     private func pickImage(from sourceRect: CGRect) {

@@ -19,5 +19,6 @@ import Foundation
 enum SpaceCreationEmailInvitesCoordinatorAction {
     case done
     case cancel
+    case back
     case inviteByUsername
 }

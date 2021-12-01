@@ -35,30 +35,27 @@ struct SpaceCreationMatrixItemChooser: View {
     @ViewBuilder
     var body: some View {
         VStack {
-            headerView
-            listContent
-            footerView
+            ThemableNavigationBar(title: nil, showBackButton: true) {
+                viewModel.send(viewAction: .back)
+            } closeAction: {
+                viewModel.send(viewAction: .cancel)
+            }
+            mainView
         }
         .background(theme.colors.background)
-        .navigationTitle(viewModel.viewState.navTitle)
-        .configureNavigationBar{
-            $0.navigationBar.shadowImage = UIImage()
-            $0.navigationBar.barTintColor = UIColor(theme.colors.background)
-            $0.navigationBar.tintColor = UIColor(theme.colors.secondaryContent)
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    viewModel.send(viewAction: .cancel)
-                }) {
-                    Image(uiImage: Asset.Images.spacesModalClose.image).renderingMode(.template)
-                }
-            }
+        .navigationBarHidden(true)
+    }
+    
+    @ViewBuilder
+    private var mainView: some View {
+        ZStack(alignment: .bottom) {
+            listContent
+            footerView
         }
     }
     
     @ViewBuilder
-    var headerView: some View {
+    private var headerView: some View {
         VStack {
             Text(viewModel.viewState.title)
                 .font(theme.fonts.bodySB)
@@ -73,7 +70,7 @@ struct SpaceCreationMatrixItemChooser: View {
                 .padding(.horizontal)
                 .accessibility(identifier: "messageText")
             Spacer().frame(height: 24)
-            SearchBar(placeholder: VectorL10n.searchableDirectorySearchPlaceholder, text: $searchText)
+            SearchBar(placeholder: VectorL10n.searchDefaultPlaceholder, text: $searchText)
                 .onChange(of: searchText, perform: { value in
                     viewModel.send(viewAction: .searchTextChanged(searchText))
                 })
@@ -81,8 +78,9 @@ struct SpaceCreationMatrixItemChooser: View {
     }
 
     @ViewBuilder
-    var listContent: some View {
+    private var listContent: some View {
         ScrollView{
+            headerView
             if viewModel.viewState.items.isEmpty {
                 Text(viewModel.viewState.emptyListMessage)
                     .font(theme.fonts.body)
@@ -92,18 +90,18 @@ struct SpaceCreationMatrixItemChooser: View {
             } else {
                 LazyVStack(spacing: 0) {
                     ForEach(viewModel.viewState.items) { item in
-                        Button {
+                        SpaceCreationMatrixItemChooserListRow(
+                            avatar: item.avatar,
+                            displayName: item.displayName,
+                            detailText: item.detailText,
+                            isSelected: viewModel.viewState.selectedItemIds.contains(item.id)
+                        )
+                        .onTapGesture {
                             viewModel.send(viewAction: .itemTapped(item.id))
-                        } label: {
-                            SpaceCreationMatrixItemChooserListRow(
-                                avatar: item.avatar,
-                                displayName: item.displayName,
-                                detailText: item.detailText,
-                                isSelected: viewModel.viewState.selectedItemIds.contains(item.id)
-                            )
                         }
                     }
                 }
+                .padding(.bottom, 76)
                 .accessibility(identifier: "itemsList")
                 .frame(maxHeight: .infinity, alignment: .top)
             }
@@ -111,13 +109,13 @@ struct SpaceCreationMatrixItemChooser: View {
     }
     
     @ViewBuilder
-    var footerView: some View {
+    private var footerView: some View {
         ThemableButton(icon: nil, title: viewModel.viewState.selectedItemIds.isEmpty ? VectorL10n.skip : VectorL10n.next) {
             viewModel.send(viewAction: .done)
         }
         .accessibility(identifier: "doneButton")
         .padding(.horizontal, 24)
-        .padding(.bottom, 8)
+        .padding(.bottom)
     }
 }
 

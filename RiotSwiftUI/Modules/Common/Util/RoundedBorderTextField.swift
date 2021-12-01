@@ -27,7 +27,8 @@ struct RoundedBorderTextField: View {
     @Binding var text: String
     @Binding var footerText: String?
     @Binding var isError: Bool
-    
+    var isFirstResponder = false
+
     var configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration()
     
     var onTextChanged: ((String) -> Void)?
@@ -61,9 +62,11 @@ struct RoundedBorderTextField: View {
                     self.editing = edit
                     onEditingChanged?(edit)
                 })
+                .makeFirstResponder(isFirstResponder)
                 .onChange(of: text, perform: { newText in
                     onTextChanged?(newText)
                 })
+                .frame(height: 30)
                 .modifier(ClearViewModifier(alignment: .center, text: $text))
             }
             .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 0))

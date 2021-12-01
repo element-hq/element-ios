@@ -20,6 +20,7 @@ import Foundation
 
 /// Actions send from the `View` to the `ViewModel`.
 enum SpaceCreationMenuViewAction {
+    case back
     case cancel
     case didSelectOption(_ optionId: SpaceCreationMenuRoomOptionId)
 }

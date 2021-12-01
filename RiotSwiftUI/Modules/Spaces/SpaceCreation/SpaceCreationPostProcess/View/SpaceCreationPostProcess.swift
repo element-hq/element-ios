@@ -34,31 +34,11 @@ struct SpaceCreationPostProcess: View {
     var body: some View {
         VStack {
             Spacer()
-            VStack(spacing: 13) {
-                ProgressView()
-                    .isHidden(viewModel.viewState.isFinished)
-                    .scaleEffect(1.5, anchor: .center)
-                    .progressViewStyle(CircularProgressViewStyle(tint: theme.colors.secondaryContent))
-                Text(VectorL10n.spacesCreationPostProcessCreatingSpace)
-                    .font(theme.fonts.calloutSB)
-                    .foregroundColor(theme.colors.secondaryContent)
-            }
+            headerView
             Spacer()
-            VStack(alignment: .leading, spacing: 11) {
-                ForEach(viewModel.viewState.tasks.indices) { index in
-                    SpaceCreationPostProcessItem(title: viewModel.viewState.tasks[index].title, state: viewModel.viewState.tasks[index].state)
-                }
-            }
+            tasksList
             Spacer()
-            HStack {
-                ThemableButton(icon: nil, title: VectorL10n.done) {
-                    viewModel.send(viewAction: .cancel)
-                }
-                ThemableButton(icon: nil, title: VectorL10n.retry) {
-                    viewModel.send(viewAction: .retry)
-                }
-            }
-            .isHidden(!viewModel.viewState.isFinished || viewModel.viewState.errorCount == 0)
+            buttonsPanel
         }
         .animation(.easeIn(duration: 0.2), value: viewModel.viewState.errorCount)
         .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
@@ -69,6 +49,54 @@ struct SpaceCreationPostProcess: View {
             viewModel.send(viewAction: .runTasks)
         }
     }
+    
+    @ViewBuilder
+    private var headerView: some View {
+        VStack(spacing: 13) {
+            avatarView
+            Text(VectorL10n.spacesCreationPostProcessCreatingSpace)
+                .font(theme.fonts.calloutSB)
+                .foregroundColor(theme.colors.secondaryContent)
+        }
+    }
+    
+    @ViewBuilder
+    private var tasksList: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            ForEach(viewModel.viewState.tasks.indices) { index in
+                SpaceCreationPostProcessItem(title: viewModel.viewState.tasks[index].title, state: viewModel.viewState.tasks[index].state)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var buttonsPanel: some View {
+        HStack {
+            ThemableButton(icon: nil, title: VectorL10n.done) {
+                viewModel.send(viewAction: .cancel)
+            }
+            ThemableButton(icon: nil, title: VectorL10n.retry) {
+                viewModel.send(viewAction: .retry)
+            }
+        }
+        .isHidden(!viewModel.viewState.isFinished || viewModel.viewState.errorCount == 0)
+    }
+
+    @ViewBuilder
+    private var avatarView: some View {
+        ZStack {
+            SpaceAvatarImage(mxContentUri: viewModel.viewState.avatar.mxContentUri, matrixItemId: viewModel.viewState.avatar.matrixItemId, displayName: viewModel.viewState.avatar.displayName, size: .xLarge)
+            .padding(6)
+            if let image = viewModel.viewState.avatarImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 52, height: 52, alignment: .center)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+        }
+    }
+    
 }
 
 // MARK: - Previews

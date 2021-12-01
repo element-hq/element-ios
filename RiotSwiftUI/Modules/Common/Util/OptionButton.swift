@@ -47,7 +47,7 @@ struct OptionButton: View {
         Button(action: action, label: {
             HStack {
                 if let image = icon {
-                    Image(uiImage: image).renderingMode(.template).resizable().frame(width: 24, height: 24).foregroundColor(theme.colors.quarterlyContent)
+                    Image(uiImage: image).renderingMode(.template).resizable().frame(width: 24, height: 24).foregroundColor(theme.colors.secondaryContent)
                 }
                 VStack(alignment: .leading, spacing: nil) {
                     Text(title).font(theme.fonts.bodySB).foregroundColor(theme.colors.primaryContent)
@@ -59,7 +59,7 @@ struct OptionButton: View {
                 Image(systemName: "chevron.right").font(.system(size: 16, weight: .regular)).foregroundColor(theme.colors.quarterlyContent)
             }
             .padding(EdgeInsets(top: 15, leading: 16, bottom: 15, trailing: 16))
-            .background(theme.colors.system)
+            .background(theme.colors.quinaryContent)
             .foregroundColor(theme.colors.secondaryContent)
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }

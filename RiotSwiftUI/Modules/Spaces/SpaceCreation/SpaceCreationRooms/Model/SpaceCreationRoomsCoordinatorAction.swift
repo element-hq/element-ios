@@ -18,5 +18,6 @@ import Foundation
 
 enum SpaceCreationRoomsCoordinatorAction {
     case cancel
+    case back
     case didSetupRooms
 }

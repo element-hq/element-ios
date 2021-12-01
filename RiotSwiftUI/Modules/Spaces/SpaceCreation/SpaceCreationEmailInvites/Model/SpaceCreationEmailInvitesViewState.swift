@@ -21,5 +21,6 @@ import Foundation
 struct SpaceCreationEmailInvitesViewState: BindableState {
     var title: String
     var emailAddressesValid: [Bool]
+    var loading: Bool
     var bindings: SpaceCreationEmailInvitesViewModelBindings
 }
