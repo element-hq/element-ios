@@ -75,6 +75,7 @@ abstract_target 'RiotPods' do
 
   target "Riot" do
     import_MatrixSDK
+    import_MatrixKit_pods
 
     import_SwiftUI_pods
 
