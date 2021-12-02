@@ -65,7 +65,7 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
 
 - (NSAttributedString *)attributedStringFromEvent:(MXEvent *)event withRoomState:(MXRoomState *)roomState error:(MXKEventFormatterError *)error
 {
-    if (event.redactedBecause)
+    if (event.isRedactedEvent)
     {
         // Check whether the event is a thread root or redacted information is required
         if ([mxSession.threadingService isEventThreadRoot:event]
