@@ -1,0 +1,1 @@
+Allow audio file attachments to be played back inline by reusing the existing voice message UI.

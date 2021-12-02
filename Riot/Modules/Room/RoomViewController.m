@@ -2690,7 +2690,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             cellViewClass = RoomGroupCallStatusBubbleCell.class;
         }
-        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
+        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
         {
             if (bubbleData.isPaginationFirstBubble)
             {
