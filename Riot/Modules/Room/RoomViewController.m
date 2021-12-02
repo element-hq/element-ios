@@ -6479,7 +6479,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
-- (NSString *)threadListBadgeTextFor:(NSInteger)numberOfThreads
+- (NSString *)threadListBadgeTextFor:(NSUInteger)numberOfThreads
 {
     if (numberOfThreads < 100)
     {
