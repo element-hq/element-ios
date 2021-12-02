@@ -22,12 +22,16 @@ $matrixSDKVersion = '= 0.20.10'
 case $matrixSDKVersion
 when :local
 $matrixSDKVersionSpec = { :path => '../matrix-ios-sdk/MatrixSDK.podspec' }
-when Hash # :branch => sdk branch name – or :specHash => {sdk spec Hash}
+when Hash
 spec_mode, sdk_spec = $matrixSDKVersion.first # extract first and only key/value pair; key is spec_mode, value is sdk_spec
 
   case spec_mode
   when :branch
+  # :branch => sdk branch name
   sdk_spec = { :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => sdk_spec.to_s } unless sdk_spec.is_a?(Hash)
+  when :specHash
+  # :specHash => {sdk spec Hash}
+  sdk_spec = sdk_spec
   end
 
 $matrixSDKVersionSpec = sdk_spec
