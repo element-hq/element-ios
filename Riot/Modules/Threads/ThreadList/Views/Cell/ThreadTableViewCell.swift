@@ -43,7 +43,7 @@ class ThreadTableViewCell: UITableViewCell {
             rootMessageAvatarView.avatarImageView.image = nil
         }
         rootMessageSenderLabel.text = viewModel.rootMessageSenderDisplayName
-        rootMessageContentLabel.text = viewModel.rootMessageText
+        rootMessageContentLabel.attributedText = viewModel.rootMessageText
         lastMessageTimeLabel.text = viewModel.lastMessageTime
         if let summaryViewModel = viewModel.summaryViewModel {
             summaryView.configure(withViewModel: summaryViewModel)

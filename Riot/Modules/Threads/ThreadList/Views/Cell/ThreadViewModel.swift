@@ -19,7 +19,7 @@ import Foundation
 struct ThreadViewModel {
     var rootMessageSenderAvatar: AvatarViewDataProtocol?
     var rootMessageSenderDisplayName: String?
-    var rootMessageText: String?
+    var rootMessageText: NSAttributedString?
     var lastMessageTime: String?
     var summaryViewModel: ThreadSummaryViewModel?
     var notificationStatus: ThreadNotificationStatus

@@ -188,7 +188,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                notificationStatus: notificationStatus)
     }
     
-    private func rootMessageText(forThread thread: MXThread) -> String? {
+    private func rootMessageText(forThread thread: MXThread) -> NSAttributedString? {
         guard let eventFormatter = eventFormatter else {
             return nil
         }
@@ -196,9 +196,9 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             return nil
         }
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        return eventFormatter.string(from: message,
-                                     with: roomState,
-                                     error: formatterError)
+        return eventFormatter.attributedString(from: message,
+                                               with: roomState,
+                                               error: formatterError)
     }
     
     private func lastMessageTextAndTime(forThread thread: MXThread) -> (String?, String?) {
