@@ -50,6 +50,13 @@ class BadgedBarButtonItem: UIBarButtonItem {
         }
     }
     
+    private var shouldHideBadge: Bool {
+        guard let text = badgeText else {
+            return true
+        }
+        return text.isEmpty || text == "0" || text == "nil" || text == "null"
+    }
+    
     init(withBaseButton baseButton: UIButton) {
         self.baseButton = baseButton
         badgeBackgroundColor = .gray
@@ -71,6 +78,7 @@ class BadgedBarButtonItem: UIBarButtonItem {
     }
     
     private func updateBadgeLabel() {
+        badgeLabel.isHidden = shouldHideBadge
         badgeLabel.backgroundColor = badgeBackgroundColor
         badgeLabel.font = badgeFont
         badgeLabel.textColor = badgeTextColor

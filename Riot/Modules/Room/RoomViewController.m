@@ -140,7 +140,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate, ThreadsCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate, ThreadsCoordinatorBridgePresenterDelegate, MXThreadingServiceDelegate>
 {
     
     // The preview header
@@ -225,6 +225,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Time to display notification content in the timeline
     MXTaskProfile *notificationTaskProfile;
+    
+    // Reference to thread list bar button item, to update it easily later
+    BadgedBarButtonItem *threadListBarButtonItem;
 }
 
 @property (nonatomic, weak) IBOutlet UIView *overlayContainerView;
@@ -564,6 +567,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     
     self.scrollToBottomBadgeLabel.badgeColor = ThemeService.shared.theme.tintColor;
+    
+    [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
+    [threadListBarButtonItem updateWithTheme:ThemeService.shared.theme];
     
     [self setNeedsStatusBarAppearanceUpdate];
 }
@@ -998,6 +1004,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 
 #pragma mark - Override MXKRoomViewController
+
+- (void)addMatrixSession:(MXSession *)mxSession
+{
+    [super addMatrixSession:mxSession];
+    
+    [mxSession.threadingService addDelegate:self];
+    [self updateThreadListBarButtonBadgeWith:mxSession.threadingService];
+}
+
+- (void)removeMatrixSession:(MXSession *)mxSession
+{
+    [mxSession.threadingService removeDelegate:self];
+    
+    [super removeMatrixSession:mxSession];
+}
 
 - (void)onMatrixSessionChange
 {
@@ -1526,9 +1547,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     return item;
 }
 
-- (UIBarButtonItem *)threadListBarButtonItem
+- (BadgedBarButtonItem *)threadListBarButtonItem
 {
-    UIButton *button = [[UIButton alloc] init];
+    UIButton *button = [UIButton new];
     button.contentEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 8);
     [button setImage:[UIImage imageNamed:@"room_context_menu_reply_in_thread"]
             forState:UIControlStateNormal];
@@ -1537,8 +1558,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
      forControlEvents:UIControlEventTouchUpInside];
     button.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
     
-    BadgedBarButtonItem *item = [[BadgedBarButtonItem alloc] initWithBaseButton:button];
-    return item;
+    return [[BadgedBarButtonItem alloc] initWithBaseButton:button];
 }
 
 - (void)setupRemoveJitsiWidgetRemoveView
@@ -1784,8 +1804,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 //  in a regular timeline
-                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                BadgedBarButtonItem *itemThreadList = [self threadListBarButtonItem];
                 [rightBarButtonItems insertObject:itemThreadList atIndex:0];
+                threadListBarButtonItem = itemThreadList;
+                [self updateThreadListBarButtonBadgeWith:self.mainSession.threadingService];
             }
         }
     }
@@ -6430,6 +6452,45 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
 }
 
+- (void)updateThreadListBarButtonBadgeWith:(MXThreadingService *)service
+{
+    if (!threadListBarButtonItem || !service)
+    {
+        //  there is no thread list bar button, ignore
+        return;
+    }
+    
+    MXThreadNotificationsCount *notificationsCount = [service notificationsCountForRoom:self.roomDataSource.roomId];
+    
+    if (notificationsCount.numberOfHighlightedThreads > 0)
+    {
+        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfHighlightedThreads];
+        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.colors.alert;
+    }
+    else if (notificationsCount.numberOfNotifiedThreads > 0)
+    {
+        threadListBarButtonItem.badgeText = [self threadListBadgeTextFor:notificationsCount.numberOfNotifiedThreads];
+        threadListBarButtonItem.badgeBackgroundColor = ThemeService.shared.theme.noticeSecondaryColor;
+    }
+    else
+    {
+        //  remove badge
+        threadListBarButtonItem.badgeText = nil;
+    }
+}
+
+- (NSString *)threadListBadgeTextFor:(NSInteger)numberOfThreads
+{
+    if (numberOfThreads < 100)
+    {
+        return [NSString stringWithFormat:@"%tu", numberOfThreads];
+    }
+    else
+    {
+        return @"···";
+    }
+}
+
 #pragma mark - RoomContextualMenuViewControllerDelegate
 
 - (void)roomContextualMenuViewControllerDidTapBackgroundOverlay:(RoomContextualMenuViewController *)viewController
@@ -6889,6 +6950,13 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
     self.threadsCoordinatorBridgePresenter = nil;
+}
+
+#pragma mark - MXThreadingServiceDelegate
+
+- (void)threadingServiceDidUpdateThreads:(MXThreadingService *)service
+{
+    [self updateThreadListBarButtonBadgeWith:service];
 }
 
 @end
