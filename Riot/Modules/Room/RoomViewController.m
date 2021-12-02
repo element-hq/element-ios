@@ -658,6 +658,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self cancelEventSelection];
         }
     }
+    [self cancelEventHighlight];
     
     // Hide preview header to restore navigation bar settings
     [self showPreviewHeader:NO];
@@ -4526,24 +4527,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [super scrollViewWillBeginDragging:scrollView];
     }
     
-    //  if data source is highlighting an event, dismiss the highlight when user dragges the table view
-    if (customizedRoomDataSource.highlightedEventId)
-    {
-        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
-        if (row == NSNotFound)
-        {
-            customizedRoomDataSource.highlightedEventId = nil;
-            return;
-        }
-        
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-        if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
-        {
-            customizedRoomDataSource.highlightedEventId = nil;
-            [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
-                                         withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-    }
+    [self cancelEventHighlight];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -6449,6 +6433,28 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if (completion)
     {
         completion();
+    }
+}
+
+- (void)cancelEventHighlight
+{
+    //  if data source is highlighting an event, dismiss the highlight when user dragges the table view
+    if (customizedRoomDataSource.highlightedEventId)
+    {
+        NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
+        if (row == NSNotFound)
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            return;
+        }
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+        if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+        {
+            customizedRoomDataSource.highlightedEventId = nil;
+            [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                         withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
     }
 }
 
