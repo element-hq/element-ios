@@ -30,6 +30,7 @@ class ThreadSummaryView: UIView {
         static let viewHeight: CGFloat = 32
         static let viewDefaultWidth: CGFloat = 320
         static let cornerRadius: CGFloat = 4
+        static let lastMessageFont: UIFont = .systemFont(ofSize: 13)
     }
     
     @IBOutlet private weak var iconView: UIImageView!
@@ -73,7 +74,15 @@ class ThreadSummaryView: UIView {
         } else {
             lastMessageAvatarView.avatarImageView.image = nil
         }
-        lastMessageContentLabel.text = viewModel.lastMessageText
+        if let lastMessageText = viewModel.lastMessageText {
+            let mutableAttributedString = NSMutableAttributedString(attributedString: lastMessageText)
+            mutableAttributedString.setAttributes([
+                .font: Constants.lastMessageFont
+            ], range: NSRange(location: 0, length: mutableAttributedString.length))
+            lastMessageContentLabel.attributedText = mutableAttributedString
+        } else {
+            lastMessageContentLabel.attributedText = nil
+        }
     }
     
     private func configure() {
@@ -103,7 +112,7 @@ class ThreadSummaryView: UIView {
         room.state { [weak self] roomState in
             guard let self = self else { return }
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            let lastMessageText = eventFormatter.string(from: lastMessage, with: roomState, error: formatterError)
+            let lastMessageText = eventFormatter.attributedString(from: lastMessage, with: roomState, error: formatterError)
             
             let viewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
                                                    lastMessageSenderAvatar: avatarViewData,

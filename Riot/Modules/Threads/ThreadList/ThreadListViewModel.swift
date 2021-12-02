@@ -201,7 +201,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                                error: formatterError)
     }
     
-    private func lastMessageTextAndTime(forThread thread: MXThread) -> (String?, String?) {
+    private func lastMessageTextAndTime(forThread thread: MXThread) -> (NSAttributedString?, String?) {
         guard let eventFormatter = eventFormatter else {
             return (nil, nil)
         }
@@ -210,9 +210,9 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         }
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         return (
-            eventFormatter.string(from: message,
-                                  with: roomState,
-                                  error: formatterError),
+            eventFormatter.attributedString(from: message,
+                                            with: roomState,
+                                            error: formatterError),
             eventFormatter.dateString(from: message, withTime: true)
         )
     }
