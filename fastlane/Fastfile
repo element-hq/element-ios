@@ -397,7 +397,7 @@ platform :ios do
 
     UI.message "✏️ Modify Podfile to point `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
     podfile_content = File.read('../Podfile') # current dir is 'fastlane/' hence the '../'
-    podfile_content.gsub!(%r{^\$matrixSDKVersion\s*=\s*.*$}, "$matrixSDKVersion = { :branch => #{sdk_spec} }")
+    podfile_content.gsub!(%r{^\$matrixSDKVersion\s*=\s*.*$}, "$matrixSDKVersion = { :specHash => #{sdk_spec} }")
     File.write('../Podfile', podfile_content)
     UI.command_output("Content of modified Podfile:\n" + podfile_content)
   end
