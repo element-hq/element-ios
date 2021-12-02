@@ -23,9 +23,9 @@ import AnalyticsEvents
     
     static let shared = Analytics()
     
-    private var postHog: PHGPostHog?
+    private var client = PostHogAnalyticsClient()
     
-    var isRunning: Bool { postHog?.enabled ?? false }
+    var isRunning: Bool { client.isRunning }
     
     var shouldShowAnalyticsPrompt: Bool {
         // Show an analytics prompt when the user hasn't seen the PostHog prompt before
@@ -34,8 +34,7 @@ import AnalyticsEvents
     }
     
     var promptShouldDisplayUpgradeMessage: Bool {
-        // Show an analytics prompt when the user hasn't seen the PostHog prompt before
-        // so long as they haven't previously declined the Matomo analytics prompt.
+        // Only show an upgrade prompt if the user previously accepted Matomo analytics.
         RiotSettings.shared.hasAcceptedMatomoAnalytics
     }
     
@@ -72,11 +71,11 @@ import AnalyticsEvents
     func startIfEnabled() {
         guard RiotSettings.shared.enableAnalytics, !isRunning else { return }
         
-        // Ensures that analytics are configured BuildSettings
-        guard let configuration = PHGPostHogConfiguration.standard else { return }
+        client.start()
         
-        postHog = PHGPostHog(configuration: configuration)
-        postHog?.enable()
+        // Sanity check in case something went wrong.
+        guard client.isRunning else { return }
+        
         MXLog.debug("[Analytics] Started.")
         
         // Catch and log crashes
@@ -90,7 +89,7 @@ import AnalyticsEvents
             return
         }
         
-        postHog?.identify(id)
+        client.identify(id: id)
         MXLog.debug("[Analytics] Identified.")
         RiotSettings.shared.isIdentifiedForAnalytics = true
     }
@@ -98,28 +97,25 @@ import AnalyticsEvents
     func reset() {
         guard isRunning else { return }
         
-        postHog?.disable()
-        MXLog.debug("[Analytics] Stopped.")
-        
-        postHog?.reset()
+        client.reset()
+        MXLog.debug("[Analytics] Stopped and reset.")
         RiotSettings.shared.isIdentifiedForAnalytics = false
         
-        postHog = nil
-        
+        // Stop collecting crash logs
         MXLogger.logCrashes(false)
     }
     
     func forceUpload() {
-        postHog?.flush()
+        client.flush()
     }
     
     private func capture(event: AnalyticsEventProtocol) {
-        postHog?.capture(event.eventName, properties: event.properties)
+        client.capture(event)
     }
     
     func trackScreen(_ screen: AnalyticsScreen, duration milliseconds: Int?) {
         let event = AnalyticsEvent.Screen(durationMs: milliseconds, screenName: screen.screenName)
-        postHog?.screen(event.screenName.rawValue, properties: event.properties)
+        client.screen(event)
     }
     
     func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
