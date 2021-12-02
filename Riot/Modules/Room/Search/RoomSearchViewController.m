@@ -33,6 +33,8 @@
     MXKSearchDataSource *filesSearchDataSource;
 }
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation RoomSearchViewController
@@ -49,6 +51,8 @@
     [super finalizeInit];
     
     // The navigation bar tint color and the rageShake Manager are handled by super (see SegmentedViewController).
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoomSearch];
 }
 
 - (void)viewDidLoad
@@ -121,6 +125,8 @@
     // Refresh the search results.
     // Note: We wait for 'viewDidAppear' call to consider the actual view size during this update.
     [self updateSearch];
+    
+    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -133,6 +139,12 @@
     }
 
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -36,6 +36,8 @@ extension MXTaskProfileName {
             return .InitialSyncRequest
         case .initialSyncParsing:
             return .InitialSyncParsing
+        case .notificationsOpenEvent:
+            return .NotificationsOpenEvent
         default:
             return nil
         }
@@ -76,6 +78,25 @@ extension DecryptionFailureReason {
             return .UnknownError
         default:
             return .UnknownError
+        }
+    }
+}
+
+extension AnalyticsEvent.JoinedRoom.RoomSize {
+    init?(memberCount: UInt) {
+        switch memberCount {
+        case 2:
+            self = .Two
+        case 3...10:
+            self = .ThreeToTen
+        case 11...100:
+            self = .ElevenToOneHundred
+        case 101...1000:
+            self = .OneHundredAndOneToAThousand
+        case 1001...:
+            self = .MoreThanAThousand
+        default:
+            return nil
         }
     }
 }

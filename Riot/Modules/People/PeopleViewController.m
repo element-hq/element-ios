@@ -50,6 +50,8 @@
     [super finalizeInit];
     
     directRoomsSectionNumber = 0;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenPeople];
 }
 
 - (void)viewDidLoad

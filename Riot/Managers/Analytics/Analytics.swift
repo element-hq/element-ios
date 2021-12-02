@@ -117,8 +117,8 @@ import AnalyticsEvents
         postHog?.capture(event.eventName, properties: event.properties)
     }
     
-    func trackScreen(_ screen: AnalyticsScreen) {
-        let event = AnalyticsEvent.Screen(durationMs: nil, screenName: screen.screenName)
+    func trackScreen(_ screen: AnalyticsScreen, duration milliseconds: Int?) {
+        let event = AnalyticsEvent.Screen(durationMs: milliseconds, screenName: screen.screenName)
         postHog?.screen(event.screenName.rawValue, properties: event.properties)
     }
     
@@ -136,13 +136,14 @@ import AnalyticsEvents
 
 // MARK: - MXAnalyticsDelegate
 extension Analytics: MXAnalyticsDelegate {
-    func trackDuration(_ seconds: TimeInterval, category: MXTaskProfileCategory, name: MXTaskProfileName) {
-        if let analyticsName = name.analyticsName {
-            let event = AnalyticsEvent.PerformanceTimer(context: nil, name: analyticsName, timeMs: Int(seconds * 1000))
-            capture(event: event)
-        } else {
-            MXLog.warning("[Analytics] Attempt to capture unknown profile task: \(category.rawValue) - \(name.rawValue)")
+    func trackDuration(_ milliseconds: Int, name: MXTaskProfileName, units: UInt) {
+        guard let analyticsName = name.analyticsName else {
+            MXLog.warning("[Analytics] Attempt to capture unknown profile task: \(name.rawValue)")
+            return
         }
+        
+        let event = AnalyticsEvent.PerformanceTimer(context: nil, itemCount: Int(units), name: analyticsName, timeMs: milliseconds)
+        capture(event: event)
     }
     
     func trackCallStarted(withVideo isVideo: Bool, numberOfParticipants: Int, incoming isIncoming: Bool) {
@@ -164,5 +165,20 @@ extension Analytics: MXAnalyticsDelegate {
     
     func trackContactsAccessGranted(_ granted: Bool) {
         // Do we still want to track this?
+    }
+    
+    func trackCreatedRoom(asDM isDM: Bool) {
+        let event = AnalyticsEvent.CreatedRoom(isDM: isDM)
+        capture(event: event)
+    }
+    
+    func trackJoinedRoom(asDM isDM: Bool, memberCount: UInt) {
+        guard let roomSize = AnalyticsEvent.JoinedRoom.RoomSize(memberCount: memberCount) else {
+            MXLog.warning("[Analytics] Attempt to capture joined room with invalid member count: \(memberCount)")
+            return
+        }
+        
+        let event = AnalyticsEvent.JoinedRoom(isDM: isDM, roomSize: roomSize)
+        capture(event: event)
     }
 }

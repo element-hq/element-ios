@@ -36,6 +36,13 @@
     return viewController;
 }
 
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRooms];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -40,6 +40,8 @@
     [super finalizeInit];
     
     self.enableDragging = YES;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenFavourites];
 }
 
 - (void)viewDidLoad

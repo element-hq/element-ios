@@ -19,6 +19,7 @@
 #import "ContactTableViewCell.h"
 
 @class ContactsTableViewController;
+@class AnalyticsScreenTimer;
 
 /**
  `ContactsTableViewController` delegate.
@@ -118,6 +119,11 @@
  The delegate for the view controller.
  */
 @property (nonatomic, weak) id<ContactsTableViewControllerDelegate> contactsTableViewControllerDelegate;
+
+/**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 @end
 

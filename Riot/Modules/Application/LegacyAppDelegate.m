@@ -2394,8 +2394,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         launchAnimationContainerView = launchLoadingView;
         
-        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen
-                                                                category:MXTaskProfileCategoryStartup];
+        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
     }
 }
 
@@ -2404,7 +2403,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (launchAnimationContainerView)
     {
         id<MXProfiler> profiler = MXSDKOptions.sharedInstance.profiler;
-        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:MXTaskProfileNameStartupLaunchScreen category:MXTaskProfileCategoryStartup];
+        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:MXTaskProfileNameStartupLaunchScreen];
         if (launchTaskProfile)
         {
             [profiler stopMeasuringTaskWithProfile:launchTaskProfile];

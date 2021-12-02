@@ -47,6 +47,8 @@ static CGFloat const kTextFontSize = 15.0;
 
 @property (weak, nonatomic) id <NSObject> themeDidChangeNotificationObserver;
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 #pragma mark - Implementation
@@ -60,6 +62,12 @@ static CGFloat const kTextFontSize = 15.0;
    DeactivateAccountViewController* viewController = [[UIStoryboard storyboardWithName:NSStringFromClass([DeactivateAccountViewController class]) bundle:[NSBundle mainBundle]] instantiateInitialViewController];
     [viewController addMatrixSession:matrixSession];
     return viewController;
+}
+
+- (void)finalizeInit
+{
+    [super finalizeInit];
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenDeactivateAccount];
 }
 
 - (void)destroy
@@ -97,11 +105,23 @@ static CGFloat const kTextFontSize = 15.0;
     [self userInterfaceThemeDidChange];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
     [self.deactivateAcccountButton.layer setCornerRadius:kButtonCornerRadius];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

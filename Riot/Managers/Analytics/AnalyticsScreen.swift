@@ -18,27 +18,96 @@ import Foundation
 import AnalyticsEvents
 
 @objc enum AnalyticsScreen: Int {
-    case group
+    case sidebar
     case home
-    case myGroups
+    case favourites
+    case people
+    case rooms
+    case searchRooms
+    case searchMessages
+    case searchPeople
+    case searchFiles
     case room
-    case roomDirectory
+    case roomDetails
+    case roomMembers
     case user
+    case roomSearch
+    case roomUploads
+    case roomSettings
+    case roomNotifications
+    case roomDirectory
+    case switchDirectory
+    case startChat
+    case createRoom
+    case settings
+    case settingsSecurity
+    case settingsDefaultNotifications
+    case settingsMentionsAndKeywords
+    case deactivateAccount
+    case group
+    case myGroups
+    case inviteFriends
     
     var screenName: AnalyticsEvent.Screen.ScreenName {
         switch self {
-        case .group:
-            return .Group
+        case .sidebar:
+            return .MobileSidebar
         case .home:
             return .Home
-        case .myGroups:
-            return .MyGroups
+        case .favourites:
+            return .MobileFavourites
+        case .people:
+            return .MobilePeople
+        case .rooms:
+            return .MobileRooms
+        case .searchRooms:
+            return .MobileSearchRooms
+        case .searchMessages:
+            return .MobileSearchMessages
+        case .searchPeople:
+            return .MobileSearchPeople
+        case .searchFiles:
+            return .MobileSearchFiles
         case .room:
             return .Room
-        case .roomDirectory:
-            return .RoomDirectory
+        case .roomDetails:
+            return .RoomDetails
+        case .roomMembers:
+            return .RoomMembers
         case .user:
             return .User
+        case .roomSearch:
+            return .RoomSearch
+        case .roomUploads:
+            return .RoomUploads
+        case .roomSettings:
+            return .RoomSettings
+        case .roomNotifications:
+            return .RoomNotifications
+        case .roomDirectory:
+            return .RoomDirectory
+        case .switchDirectory:
+            return .MobileSwitchDirectory
+        case .startChat:
+            return .StartChat
+        case .createRoom:
+            return .CreateRoom
+        case .settings:
+            return .Settings
+        case .settingsSecurity:
+            return .SettingsSecurity
+        case .settingsDefaultNotifications:
+            return .SettingsDefaultNotifications
+        case .settingsMentionsAndKeywords:
+            return .SettingsMentionsAndKeywords
+        case .deactivateAccount:
+            return .DeactivateAccount
+        case .group:
+            return .Group
+        case .myGroups:
+            return .MyGroups
+        case .inviteFriends:
+            return .MobileInviteFriends
         }
     }
 }

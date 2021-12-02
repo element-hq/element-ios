@@ -68,6 +68,8 @@
     selectedSection = -1;
     selectedRoomId = nil;
     selectedCollectionViewContentOffset = -1;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenHome];
 }
 
 - (void)viewDidLoad
@@ -99,9 +101,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking
-    [Analytics.shared trackScreen:AnalyticsScreenHome];
     
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleHome];
 
