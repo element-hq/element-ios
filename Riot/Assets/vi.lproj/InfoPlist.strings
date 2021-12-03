@@ -1,5 +1,7 @@
 // Permissions usage explanations
-"NSCameraUsageDescription" = "Máy ảnh được sử dụng để chụp ảnh và quay phim, thực hiện các cuộc gọi video thoại.";
+"NSCameraUsageDescription" = "Máy ảnh được sử dụng để chụp ảnh và quay phim, thực hiện các cuộc gọi video.";
 "NSPhotoLibraryUsageDescription" = "Thư viện ảnh được dùng để gửi hình ảnh và videos.";
-"NSMicrophoneUsageDescription" = "Microphone được dùng để thực hiện quay video, thực hiện các cuộc gọi.";
-"NSContactsUsageDescription" = "Danh bạ được sử dụng để tìm kiếm người dùng bởi email hoặc số điện thoại trên Element.";
+"NSMicrophoneUsageDescription" = "Element cần quyền truy cập vào mi-crô của bạn để nhận và thực hiện cuộc gọi, quay video, và ghi âm các tin nhắn thoại.";
+"NSContactsUsageDescription" = "Element sẽ hiển thị danh bạ của bạn để bạn có thể mời họ trò chuyện.";
+"NSFaceIDUsageDescription" = "Face ID được sử dụng để truy cập vào ứng dụng của bạn.";
+"NSCalendarsUsageDescription" = "Xem các cuộc họp đã lên lịch trong ứng dụng.";
