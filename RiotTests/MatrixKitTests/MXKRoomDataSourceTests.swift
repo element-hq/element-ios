@@ -17,7 +17,7 @@
 import Foundation
 import XCTest
 
-@testable import MatrixKit
+@testable import Riot
 
 class MXKRoomDataSourceTests: XCTestCase {
 

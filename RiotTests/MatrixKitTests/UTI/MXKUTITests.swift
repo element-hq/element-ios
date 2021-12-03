@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import MatrixKit
+@testable import Riot
 
 import MobileCoreServices
 
