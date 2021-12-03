@@ -1,0 +1,1 @@
+Only run Build CI on develop, as it is already covered by Tests and Alpha.

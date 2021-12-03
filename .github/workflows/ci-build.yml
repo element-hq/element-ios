@@ -4,7 +4,6 @@ on:
   # Triggers the workflow on any pull request and push to develop
   push:
     branches: [ develop ]
-  pull_request:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,11 +17,7 @@ jobs:
     name: Build
     runs-on: macos-11
     
-    concurrency:
-      # When running on develop, use the sha to allow all runs of this workflow to run concurrently.
-      # Otherwise only allow a single run of this workflow on each branch, automatically cancelling older runs.
-      group: ${{ github.ref == 'refs/heads/develop' && format('build-develop-{0}', github.sha) || format('build-{0}', github.ref) }}
-      cancel-in-progress: true
+    # Concurrency group not needed as this workflow only runs on develop which we always want to test.
 
     steps:
       - uses: actions/checkout@v2
