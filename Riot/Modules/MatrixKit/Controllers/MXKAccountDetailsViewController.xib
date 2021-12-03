@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MXKAccountDetailsViewController">
+            <connections>
+                <outlet property="profileActivityIndicator" destination="VAZ-Vd-dbs" id="Qia-8H-Opz"/>
+                <outlet property="profileActivityIndicatorBgView" destination="XNZ-KA-wLa" id="Ibb-Ru-b9S"/>
+                <outlet property="saveUserInfoButton" destination="Fcd-TW-6EN" id="iZF-7q-edr"/>
+                <outlet property="userDisplayName" destination="wTJ-d6-8LB" id="ney-e0-v1E"/>
+                <outlet property="userPictureButton" destination="Q5C-z0-PFC" id="inA-dL-Svu"/>
+                <outlet property="view" destination="ju7-p5-cp4" id="1a8-31-bad"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ju7-p5-cp4">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <view key="tableHeaderView" contentMode="scaleToFill" id="gTa-z3-gJI" userLabel="TableHeader">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="115"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q5C-z0-PFC" userLabel="PicturePickerButton">
+                        <rect key="frame" x="10" y="10" width="75" height="75"/>
+                        <color key="backgroundColor" red="0.89720267057418823" green="0.89720267057418823" blue="0.89720267057418823" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="75" id="h4a-sn-FGX"/>
+                            <constraint firstAttribute="height" constant="75" id="u5z-VM-exL"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="ISw-2O-K3S"/>
+                        </connections>
+                    </button>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Display name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wTJ-d6-8LB">
+                        <rect key="frame" x="95" y="23" width="270" height="30"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        <connections>
+                            <action selector="textFieldEditingChanged:" destination="-1" eventType="editingChanged" id="ZaU-yY-z8l"/>
+                            <outlet property="delegate" destination="-1" id="sGO-pB-sxI"/>
+                        </connections>
+                    </textField>
+                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fcd-TW-6EN">
+                        <rect key="frame" x="95" y="73" width="270" height="30"/>
+                        <state key="normal" title="Save changes">
+                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="onButtonPressed:" destination="-1" eventType="touchUpInside" id="Krj-sL-BbO"/>
+                        </connections>
+                    </button>
+                    <view hidden="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XNZ-KA-wLa" userLabel="Spinner background view">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="115"/>
+                        <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="VAZ-Vd-dbs">
+                        <rect key="frame" x="169" y="39" width="37" height="37"/>
+                    </activityIndicatorView>
+                </subviews>
+                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="wTJ-d6-8LB" firstAttribute="top" secondItem="gTa-z3-gJI" secondAttribute="top" constant="23" id="4Nx-Aq-DGZ"/>
+                    <constraint firstItem="wTJ-d6-8LB" firstAttribute="trailing" secondItem="Fcd-TW-6EN" secondAttribute="trailing" id="9NO-pb-D26"/>
+                    <constraint firstAttribute="centerY" secondItem="VAZ-Vd-dbs" secondAttribute="centerY" id="DnG-yj-mD2"/>
+                    <constraint firstAttribute="trailing" secondItem="wTJ-d6-8LB" secondAttribute="trailing" constant="10" id="Ecb-G3-SzG"/>
+                    <constraint firstItem="XNZ-KA-wLa" firstAttribute="top" secondItem="gTa-z3-gJI" secondAttribute="top" id="QMw-Un-h4D"/>
+                    <constraint firstItem="Q5C-z0-PFC" firstAttribute="leading" secondItem="gTa-z3-gJI" secondAttribute="leading" constant="10" id="SBo-aU-k5D"/>
+                    <constraint firstItem="Fcd-TW-6EN" firstAttribute="top" secondItem="wTJ-d6-8LB" secondAttribute="bottom" constant="20" id="SuW-K1-Ccy"/>
+                    <constraint firstAttribute="centerX" secondItem="VAZ-Vd-dbs" secondAttribute="centerX" id="U9b-BV-8np"/>
+                    <constraint firstItem="wTJ-d6-8LB" firstAttribute="leading" secondItem="Q5C-z0-PFC" secondAttribute="trailing" constant="10" id="hb2-WV-ygv"/>
+                    <constraint firstItem="Q5C-z0-PFC" firstAttribute="top" secondItem="gTa-z3-gJI" secondAttribute="top" constant="10" id="mdK-nI-1Z6"/>
+                    <constraint firstAttribute="trailing" secondItem="XNZ-KA-wLa" secondAttribute="trailing" id="pGA-4n-1Sl"/>
+                    <constraint firstItem="XNZ-KA-wLa" firstAttribute="leading" secondItem="gTa-z3-gJI" secondAttribute="leading" id="sSy-en-QUN"/>
+                    <constraint firstAttribute="bottom" secondItem="XNZ-KA-wLa" secondAttribute="bottom" id="ttc-fP-z4n"/>
+                    <constraint firstItem="wTJ-d6-8LB" firstAttribute="leading" secondItem="Q5C-z0-PFC" secondAttribute="trailing" constant="10" id="tvA-Uj-PSe"/>
+                    <constraint firstItem="wTJ-d6-8LB" firstAttribute="leading" secondItem="Fcd-TW-6EN" secondAttribute="leading" id="xag-mS-lrx"/>
+                </constraints>
+            </view>
+            <connections>
+                <outlet property="dataSource" destination="-1" id="KAH-DP-g22"/>
+                <outlet property="delegate" destination="-1" id="Uz1-g8-Ykk"/>
+            </connections>
+        </tableView>
+    </objects>
+</document>

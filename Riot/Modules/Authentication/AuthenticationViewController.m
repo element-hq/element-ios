@@ -18,12 +18,13 @@
 
 #import "AuthenticationViewController.h"
 
-#import "GeneratedInterface-Swift.h"
 #import "MXSession+Riot.h"
 
 #import "AuthInputsView.h"
 #import "ForgotPasswordInputsView.h"
 #import "AuthFallBackViewController.h"
+
+#import "GeneratedInterface-Swift.h"
 
 static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 

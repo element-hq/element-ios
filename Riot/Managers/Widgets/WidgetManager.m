@@ -21,8 +21,6 @@
 #import "JitsiWidgetData.h"
 #import "MXSession+Riot.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #pragma mark - Contants
 
 NSString *const kWidgetManagerDidUpdateWidgetNotification = @"kWidgetManagerDidUpdateWidgetNotification";

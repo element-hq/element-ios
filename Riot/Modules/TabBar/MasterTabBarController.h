@@ -15,8 +15,6 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "AuthenticationViewController.h"
 
 #import "RoomPreviewData.h"

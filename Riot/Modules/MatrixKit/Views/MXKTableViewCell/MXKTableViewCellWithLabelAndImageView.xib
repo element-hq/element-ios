@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="aCf-VI-ocb" customClass="MXKTableViewCellWithLabelAndImageView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aCf-VI-ocb" id="Eg5-vl-rni">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xx4-AP-OQs">
+                        <rect key="frame" x="8" y="11" width="543" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="F9Q-h1-mTt">
+                        <rect key="frame" x="559" y="5" width="33" height="33"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="33" id="Mbb-3z-EJx"/>
+                            <constraint firstAttribute="height" constant="33" id="SN2-B2-NSE"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="F9Q-h1-mTt" firstAttribute="centerY" secondItem="Eg5-vl-rni" secondAttribute="centerY" id="2I6-r3-K1d"/>
+                    <constraint firstItem="Xx4-AP-OQs" firstAttribute="leading" secondItem="Eg5-vl-rni" secondAttribute="leading" constant="8" id="Wih-ke-1dd"/>
+                    <constraint firstItem="F9Q-h1-mTt" firstAttribute="leading" secondItem="Xx4-AP-OQs" secondAttribute="trailing" priority="750" constant="8" id="mXu-V2-6Sm"/>
+                    <constraint firstAttribute="trailing" secondItem="F9Q-h1-mTt" secondAttribute="trailing" constant="8" id="v4T-uD-LAm"/>
+                    <constraint firstAttribute="centerY" secondItem="Xx4-AP-OQs" secondAttribute="centerY" id="v6O-QC-moW"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="mxkImageView" destination="F9Q-h1-mTt" id="4Lx-au-5RN"/>
+                <outlet property="mxkImageViewHeightConstraint" destination="SN2-B2-NSE" id="Zql-LZ-nsj"/>
+                <outlet property="mxkImageViewLeadingConstraint" destination="mXu-V2-6Sm" id="Ecf-aj-MJv"/>
+                <outlet property="mxkImageViewTrailingConstraint" destination="v4T-uD-LAm" id="HLK-AJ-Gj9"/>
+                <outlet property="mxkImageViewWidthConstraint" destination="Mbb-3z-EJx" id="10m-q5-Yok"/>
+                <outlet property="mxkLabel" destination="Xx4-AP-OQs" id="PHz-Lv-lrf"/>
+                <outlet property="mxkLabelLeadingConstraint" destination="Wih-ke-1dd" id="tyK-6D-jiQ"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import MatrixKit
 
 struct RoomInfoBasicViewData {
     let avatarUrl: String?

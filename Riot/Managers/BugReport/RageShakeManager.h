@@ -17,7 +17,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
-#import <MatrixKit/MXKResponderRageShaking.h>
+#import "MatrixKit.h"
 
 @interface RageShakeManager : NSObject <MXKResponderRageShaking>
 

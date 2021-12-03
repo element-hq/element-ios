@@ -15,7 +15,6 @@
  */
 
 import UserNotifications
-import MatrixKit
 import MatrixSDK
 
 /// The number of milliseconds in one second.
