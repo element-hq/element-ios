@@ -895,3 +895,71 @@
 "key_verification_manually_verify_device_validate_action" = "Звірити";
 "room_participants_action_security_status_verify" = "Звірити";
 "room_participants_action_security_status_verified" = "Звірений";
+"version_check_banner_title_deprecated" = "Ми більше не підтримуємо iOS %@";
+"version_check_modal_title_supported" = "Ми завершуємо підтримку iOS %@";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Ми завершуємо підтримку iOS %@";
+"space_public_join_rule" = "Загальнодоступний простір";
+"space_private_join_rule" = "Приватний простір";
+"space_home_show_all_rooms" = "Показати усі кімнати";
+"spaces_add_rooms_coming_soon_title" = "Скоро можна буде додавати кімнати";
+"spaces_coming_soon_title" = "Уже незабаром";
+"spaces_no_result_found_title" = "Результатів не знайдено";
+"spaces_empty_space_title" = "У просторі відсутні кімнати (поки що)";
+"space_tag" = "простір";
+"leave_space_title" = "Вийти з %@";
+"spaces_left_panel_title" = "Простори";
+"spaces_home_space_title" = "Домівка";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Простори ще не додано";
+"room_info_list_section_other" = "Інше";
+"biometrics_cant_unlocked_alert_title" = "Не вдалося розблокувати застосунок";
+"pin_protection_settings_section_header_with_biometrics" = "PIN-код і %@";
+"pin_protection_settings_section_header" = "PIN-код";
+"major_update_learn_more_action" = "Докладніше";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot тепер %@";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Підтвердити фразу";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Підтвердити фразу";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Підтвердити";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "Підтвердити";
+"key_backup_setup_passphrase_passphrase_invalid" = "Спробуйте додати слово";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "фраза не збігається";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Чудово!";
+"key_backup_setup_passphrase_passphrase_valid" = "Чудово!";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Ввести фразу";
+"secrets_recovery_with_key_recovery_key_title" = "Ввід";
+"key_backup_recover_from_passphrase_recover_action" = "Розблокувати історію";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Ввести фразу";
+"key_backup_recover_from_passphrase_passphrase_title" = "Ввід";
+"secrets_recovery_with_passphrase_passphrase_title" = "Ввід";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Ввід";
+"key_backup_setup_passphrase_passphrase_title" = "Ввід";
+"key_backup_setup_skip_alert_title" = "Ви впевнені?";
+"room_event_action_reaction_history" = "Історія реакцій";
+"room_event_action_reaction_show_less" = "Згорнути";
+"room_event_action_reaction_show_all" = "Показати все";
+"room_action_reply" = "Відповідь";
+"room_event_action_reply" = "Відповідь";
+"room_event_action_delete_confirmation_title" = "Видалити не надіслане повідомлення";
+"room_event_action_report_prompt_ignore_user" = "Бажаєте сховати усі повідомлення від цього користувача?";
+"room_event_action_kick_prompt_reason" = "Причина викидання користувача";
+"room_participants_action_mention" = "Згадати";
+"room_participants_action_unignore" = "Показати усі повідомлення від цього користувача";
+"room_participants_action_ignore" = "Сховати усі повідомлення від цього користувача";
+"room_participants_unknown" = "Невідомо";
+"room_participants_offline" = "Не в мережі";
+"room_participants_online" = "У мережі";
+"find_your_contacts_identity_service_error" = "Не вдалося під'єднатися до сервера ідентифікації.";
+"find_your_contacts_footer" = "Це будь-коли можна вимкнути у налаштуваннях.";
+"settings_contacts_phonebook_country" = "Країна телефонної книги";
+"settings_contacts_enable_sync" = "Пошук контактів";
+"find_your_contacts_button_title" = "Пошук контактів";
+"contacts_address_book_permission_denied_alert_message" = "Увімкніть контакти з налаштувань пристрою.";
+"contacts_address_book_permission_denied_alert_title" = "Контакти вимкнено";

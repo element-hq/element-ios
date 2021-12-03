@@ -1467,3 +1467,5 @@
 "find_your_contacts_title" = "Alusta kontaktide looendist";
 "contacts_address_book_permission_denied_alert_message" = "Palun luba seadistustest aadressiraamatu lugemine.";
 "contacts_address_book_permission_denied_alert_title" = "Kontaktid pole kasutusel";
+"space_home_show_all_rooms" = "Näita kõiki jututubasid";
+"room_event_action_forward" = "Edasta";
