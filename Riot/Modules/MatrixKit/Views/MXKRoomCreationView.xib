@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="pWR-M4-k2c" customClass="MXKRoomCreationView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="164"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. lunchGroup)" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="IVl-ZW-gpm">
+                    <rect key="frame" x="109" y="8" width="483" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                    <connections>
+                        <action selector="textFieldEditingChanged:" destination="pWR-M4-k2c" eventType="editingChanged" id="s8S-yT-1Me"/>
+                        <outlet property="delegate" destination="pWR-M4-k2c" id="xKT-ld-5W2"/>
+                    </connections>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VgY-Xe-EWu">
+                    <rect key="frame" x="8" y="12" width="91" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. #foo:homeserver)" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="cQR-iw-qK7">
+                    <rect key="frame" x="109" y="46" width="483" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                    <connections>
+                        <action selector="textFieldEditingChanged:" destination="pWR-M4-k2c" eventType="editingChanged" id="wug-Ut-Gbb"/>
+                        <outlet property="delegate" destination="pWR-M4-k2c" id="NLj-fO-7S1"/>
+                    </connections>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room alias:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxi-SY-9AS">
+                    <rect key="frame" x="8" y="50" width="83" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="(e.g. @bob:homeserver1; @john:homeserver2...)" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="ntR-iR-LWI">
+                    <rect key="frame" x="108" y="84" width="484" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                    <connections>
+                        <action selector="textFieldEditingChanged:" destination="pWR-M4-k2c" eventType="editingChanged" id="yLf-bu-2oI"/>
+                        <outlet property="delegate" destination="pWR-M4-k2c" id="YMU-bj-YZf"/>
+                    </connections>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participants:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXJ-7h-Su1">
+                    <rect key="frame" x="8" y="87" width="91" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="8rs-if-WjB">
+                    <rect key="frame" x="94" y="125" width="113" height="29"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="113" id="586-hY-v29"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="113" id="7dM-UM-eNl"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="113" id="Bjv-y7-dA7"/>
+                    </constraints>
+                    <segments>
+                        <segment title="Public"/>
+                        <segment title="Private"/>
+                    </segments>
+                    <connections>
+                        <action selector="textFieldEditingChanged:" destination="pWR-M4-k2c" eventType="valueChanged" id="47w-qB-srf"/>
+                    </connections>
+                </segmentedControl>
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ega-pA-bej">
+                    <rect key="frame" x="411" y="125" width="89" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="Create Room">
+                        <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="onButtonPressed:" destination="pWR-M4-k2c" eventType="touchUpInside" id="gXl-ZF-r1N"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="cQR-iw-qK7" secondAttribute="trailing" constant="8" id="0cB-U1-VZA"/>
+                <constraint firstItem="IVl-ZW-gpm" firstAttribute="top" secondItem="pWR-M4-k2c" secondAttribute="top" constant="8" id="32v-lV-s4o"/>
+                <constraint firstAttribute="centerX" secondItem="8rs-if-WjB" secondAttribute="centerX" multiplier="2" id="7ZV-PE-7jb"/>
+                <constraint firstAttribute="trailing" secondItem="ntR-iR-LWI" secondAttribute="trailing" constant="8" id="8nG-wm-5IR"/>
+                <constraint firstItem="VgY-Xe-EWu" firstAttribute="leading" secondItem="pWR-M4-k2c" secondAttribute="leading" constant="8" id="DdS-cu-Y25"/>
+                <constraint firstItem="IVl-ZW-gpm" firstAttribute="leading" secondItem="pWR-M4-k2c" secondAttribute="leading" constant="109" id="J5j-Fw-qqc"/>
+                <constraint firstItem="ega-pA-bej" firstAttribute="centerY" secondItem="8rs-if-WjB" secondAttribute="centerY" constant="1" id="Kbc-Bj-YBf"/>
+                <constraint firstItem="cQR-iw-qK7" firstAttribute="centerX" secondItem="IVl-ZW-gpm" secondAttribute="centerX" id="Lai-pI-DCS"/>
+                <constraint firstItem="VgY-Xe-EWu" firstAttribute="centerY" secondItem="IVl-ZW-gpm" secondAttribute="centerY" constant="-1" id="Mls-23-azV"/>
+                <constraint firstAttribute="centerX" secondItem="ega-pA-bej" secondAttribute="centerX" multiplier="0.66" id="Nu0-mz-Cvz"/>
+                <constraint firstItem="ntR-iR-LWI" firstAttribute="centerX" secondItem="IVl-ZW-gpm" secondAttribute="centerX" constant="-0.5" id="OPT-zM-9ST"/>
+                <constraint firstItem="ega-pA-bej" firstAttribute="top" secondItem="pWR-M4-k2c" secondAttribute="top" constant="125" id="SYc-Ge-iWE"/>
+                <constraint firstAttribute="trailing" secondItem="IVl-ZW-gpm" secondAttribute="trailing" constant="8" id="Scw-Nj-Uef"/>
+                <constraint firstItem="ntR-iR-LWI" firstAttribute="top" secondItem="pWR-M4-k2c" secondAttribute="top" constant="84" id="ZK5-Z1-Fgq"/>
+                <constraint firstItem="Yxi-SY-9AS" firstAttribute="leading" secondItem="pWR-M4-k2c" secondAttribute="leading" constant="8" id="cax-9B-Qgo"/>
+                <constraint firstItem="cQR-iw-qK7" firstAttribute="centerY" secondItem="Yxi-SY-9AS" secondAttribute="centerY" constant="1" id="g3m-Mp-LHU"/>
+                <constraint firstItem="ntR-iR-LWI" firstAttribute="centerY" secondItem="AXJ-7h-Su1" secondAttribute="centerY" constant="2" id="suf-qu-Xzx"/>
+                <constraint firstItem="AXJ-7h-Su1" firstAttribute="leading" secondItem="pWR-M4-k2c" secondAttribute="leading" constant="8" id="wwP-0Z-cCe"/>
+                <constraint firstItem="cQR-iw-qK7" firstAttribute="top" secondItem="pWR-M4-k2c" secondAttribute="top" constant="46" id="xMf-E2-suf"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="createRoomBtn" destination="ega-pA-bej" id="psO-nt-6EI"/>
+                <outlet property="createRoomBtnTopConstraint" destination="SYc-Ge-iWE" id="iqw-pV-pK5"/>
+                <outlet property="participantsFieldTopConstraint" destination="ZK5-Z1-Fgq" id="FKM-Yu-PZ0"/>
+                <outlet property="participantsLabel" destination="AXJ-7h-Su1" id="Obs-td-uG8"/>
+                <outlet property="participantsTextField" destination="ntR-iR-LWI" id="vfZ-AE-sPH"/>
+                <outlet property="roomAliasFieldTopConstraint" destination="xMf-E2-suf" id="bgv-5X-sAL"/>
+                <outlet property="roomAliasLabel" destination="Yxi-SY-9AS" id="y2a-fF-YO7"/>
+                <outlet property="roomAliasTextField" destination="cQR-iw-qK7" id="Xmy-Gb-A8S"/>
+                <outlet property="roomNameFieldTopConstraint" destination="32v-lV-s4o" id="Uee-1k-lhQ"/>
+                <outlet property="roomNameLabel" destination="VgY-Xe-EWu" id="36a-Vw-KBs"/>
+                <outlet property="roomNameTextField" destination="IVl-ZW-gpm" id="Q0R-2X-NPw"/>
+                <outlet property="roomVisibilityControl" destination="8rs-if-WjB" id="0bS-Xd-YKE"/>
+                <outlet property="textFieldLeftConstraint" destination="J5j-Fw-qqc" id="5lB-MS-5G6"/>
+            </connections>
+            <point key="canvasLocation" x="215" y="464"/>
+        </view>
+    </objects>
+</document>
