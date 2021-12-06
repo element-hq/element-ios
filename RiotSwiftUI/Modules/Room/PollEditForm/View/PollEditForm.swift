@@ -79,7 +79,7 @@ struct PollEditForm: View {
                         Button(VectorL10n.pollEditFormCreatePoll) {
                             viewModel.send(viewAction: .create)
                         }
-                        .buttonStyle(PrimaryActionButtonStyle(enabled: viewModel.viewState.confirmationButtonEnabled))
+                        .buttonStyle(PrimaryActionButtonStyle())
                         .disabled(!viewModel.viewState.confirmationButtonEnabled)
                     }
                     .padding()

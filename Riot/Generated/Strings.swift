@@ -31,17 +31,93 @@ public class VectorL10n: NSObject {
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
   }
-  /// Would you like to help improve %@ by automatically reporting crash reports and usage data?\n\nWe don't record or profile any personal data, and we don't share anything with any third parties.
-  public static func analyticsPromptNewUser(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "analytics_prompt_new_user", p1)
+  /// Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static var analyticsPromptDescriptionNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_description_new_user") 
   }
-  /// To allow us to understand how people use multiple devices, we've enhanced our analytics data to include a randomly generated identifier associated with your account that will be shared across your devices.\n\nWe don't record or profile any personal data, and we don't share anything with any third parties.\n\nYou previously agreed to send anonymous usage data to %@ - is this still okay?
-  public static func analyticsPromptPosthogUpgrade(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "analytics_prompt_posthog_upgrade", p1)
+  /// You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static var analyticsPromptDescriptionUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_description_upgrade") 
   }
-  /// Help us improve %@
+  /// We <b>don't</b> record or profile any account data
+  public static var analyticsPromptPoint1: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_1") 
+  }
+  /// don't
+  public static var analyticsPromptPoint1BoldedDont: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_1_bolded_dont") 
+  }
+  ///  record or profile any account data
+  public static var analyticsPromptPoint1End: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_1_end") 
+  }
+  /// We 
+  public static var analyticsPromptPoint1Start: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_1_start") 
+  }
+  /// We <b>don't</b> share information with third parties
+  public static var analyticsPromptPoint2: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_2") 
+  }
+  /// don't
+  public static var analyticsPromptPoint2BoldedDont: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_2_bolded_dont") 
+  }
+  ///  share information with third parties
+  public static var analyticsPromptPoint2End: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_2_end") 
+  }
+  /// We 
+  public static var analyticsPromptPoint2Start: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_2_start") 
+  }
+  /// You can turn this off anytime in settings
+  public static var analyticsPromptPoint3: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_3") 
+  }
+  /// Stop sharing
+  public static var analyticsPromptStop: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_stop") 
+  }
+  /// .
+  public static var analyticsPromptTermsEndNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_end_new_user") 
+  }
+  /// . Is that OK?
+  public static var analyticsPromptTermsEndUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_end_upgrade") 
+  }
+  /// here
+  public static var analyticsPromptTermsLinkNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_link_new_user") 
+  }
+  /// here
+  public static var analyticsPromptTermsLinkUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_link_upgrade") 
+  }
+  /// You can read all our terms <link>here</link>.
+  public static var analyticsPromptTermsNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_new_user") 
+  }
+  /// You can read all our terms 
+  public static var analyticsPromptTermsStartNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_start_new_user") 
+  }
+  /// Read all our terms 
+  public static var analyticsPromptTermsStartUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_start_upgrade") 
+  }
+  /// Read all our terms <link>here</link>. Is that OK?
+  public static var analyticsPromptTermsUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_upgrade") 
+  }
+  /// Help improve %@
   public static func analyticsPromptTitle(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "analytics_prompt_title", p1)
+  }
+  /// Yes, that's fine
+  public static var analyticsPromptYes: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_yes") 
   }
   /// Please review and accept the policies of this homeserver:
   public static var authAcceptPolicies: String { 
@@ -1246,6 +1322,10 @@ public class VectorL10n: NSObject {
   /// Reactions
   public static var emojiPickerTitle: String { 
     return VectorL10n.tr("Vector", "emoji_picker_title") 
+  }
+  /// Enable
+  public static var enable: String { 
+    return VectorL10n.tr("Vector", "enable") 
   }
   /// Send an encrypted message…
   public static var encryptedRoomMessagePlaceholder: String { 

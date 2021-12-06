@@ -14,19 +14,29 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-/// The static list of mocked screens in RiotSwiftUI
 @available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockAnalyticsPromptScreenState.self,
-        MockUserSuggestionScreenState.self,
-        MockPollEditFormScreenState.self,
-        MockPollTimelineScreenState.self,
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
+/// The last line of text in the description with highlighting on the link string.
+struct AnalyticsPromptTermsText: View {
+    
+    // MARK: - Properties
+    
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme
+    
+    // MARK: Public
+    
+    let promptType: AnalyticsPromptType
+    
+    // MARK: Views
+    
+    var body: some View {
+        let (start, link, end) = promptType.termsStrings
+        
+        Text(start)
+            + Text(link).foregroundColor(theme.colors.accent)
+            + Text(end)
+    }
 }
-

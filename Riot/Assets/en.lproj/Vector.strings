@@ -41,6 +41,7 @@
 "retry" = "Retry";
 "on" = "On";
 "off" = "Off";
+"enable" = "Enable";
 "cancel" = "Cancel";
 "save" = "Save";
 "join" = "Join";
@@ -946,9 +947,32 @@ Tap the + to start adding people.";
 "no_voip" = "%@ is calling you but %@ does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
 
 // Analytics
-"analytics_prompt_title" = "Help us improve %@";
-"analytics_prompt_new_user" = "Would you like to help improve %@ by automatically reporting crash reports and usage data?\n\nWe don't record or profile any personal data, and we don't share anything with any third parties.";
-"analytics_prompt_posthog_upgrade" = "To allow us to understand how people use multiple devices, we've enhanced our analytics data to include a randomly generated identifier associated with your account that will be shared across your devices.\n\nWe don't record or profile any personal data, and we don't share anything with any third parties.\n\nYou previously agreed to send anonymous usage data to %@ - is this still okay?";
+"analytics_prompt_title" = "Help improve %@";
+"analytics_prompt_description_new_user" = "Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.";
+"analytics_prompt_description_upgrade" = "You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.";
+"analytics_prompt_terms_start_new_user" = "You can read all our terms ";
+"analytics_prompt_terms_link_new_user" = "here";
+"analytics_prompt_terms_end_new_user" = ".";
+"analytics_prompt_terms_start_upgrade" = "Read all our terms ";
+"analytics_prompt_terms_link_upgrade" = "here";
+"analytics_prompt_terms_end_upgrade" = ". Is that OK?";
+"analytics_prompt_point_1_start" = "We ";
+"analytics_prompt_point_1_bolded_dont" = "don't";
+"analytics_prompt_point_1_end" = " record or profile any account data";
+"analytics_prompt_point_2_start" = "We ";
+"analytics_prompt_point_2_bolded_dont" = "don't";
+"analytics_prompt_point_2_end" = " share information with third parties";
+"analytics_prompt_point_3" = "You can turn this off anytime in settings";
+"analytics_prompt_yes" = "Yes, that's fine";
+"analytics_prompt_stop" = "Stop sharing";
+
+// TODO: Get markdown formatting working.
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "We <b>don't</b> record or profile any account data";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "We <b>don't</b> share information with third parties";
+"analytics_prompt_terms_new_user" = "You can read all our terms <link>here</link>.";
+"analytics_prompt_terms_upgrade" = "Read all our terms <link>here</link>. Is that OK?";
 
 // Crypto
 "e2e_enabling_on_app_update" = "%@ now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";

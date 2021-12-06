@@ -487,6 +487,14 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         self.splitViewMasterPresentableDelegate?.splitViewMasterPresentableWantsToResetDetail(self)
     }
     
+    @available(iOS 14.0, *)
+    private func presentAnalyticsPrompt(promptType: AnalyticsPromptType, with session: MXSession) {
+        let parameters = AnalyticsPromptCoordinatorParameters(promptType: promptType, session: session, navigationRouter: navigationRouter)
+        let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
+        coordinator.start()
+        add(childCoordinator: coordinator)
+    }
+    
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -577,6 +585,12 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         sideMenuBarButtonItem.accessibilityLabel = VectorL10n.sideMenuRevealActionAccessibilityLabel
         
         self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
+    }
+    
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, shouldPresentAnalyticsPromptAsUpgrade isUpgradePrompt: Bool, forMatrixSession matrixSession: MXSession!) {
+        if #available(iOS 14.0, *) {
+            presentAnalyticsPrompt(promptType: isUpgradePrompt ? .upgrade : .newUser, with: matrixSession)
+        }
     }
 }
 

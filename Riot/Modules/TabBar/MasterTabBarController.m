@@ -70,6 +70,11 @@
 
 @property(nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
+/**
+ A flag to indicate that the analytics prompt should be shown during `-addMatrixSession:`.
+ */
+@property(nonatomic) BOOL presentAnalyticsPromptOnAddSession;
+
 @end
 
 @implementation MasterTabBarController
@@ -196,10 +201,24 @@
 
     if (!authIsShown)
     {
+#warning This is for debugging, Remove me!
+//        [RiotSettings.defaults setBool:YES forKey:@"enableCrashReport"];
+//        [RiotSettings.defaults setBool:NO forKey:@"enableCrashReport"];
+        [RiotSettings.defaults removeObjectForKey:@"enableCrashReport"];
+        [RiotSettings.defaults removeObjectForKey:@"enableAnalytics"];
+        
         // Check whether the user should be prompted to send analytics.
         if (Analytics.shared.shouldShowAnalyticsPrompt)
         {
-            [self promptUserBeforeUsingAnalytics];
+            MXSession *mxSession = self.mxSessions.firstObject;
+            if (mxSession)
+            {
+                [self promptUserBeforeUsingAnalyticsForSession:mxSession];
+            }
+            else
+            {
+                self.presentAnalyticsPromptOnAddSession = YES;
+            }
         }
         
         [self refreshTabBarBadges];
@@ -402,6 +421,12 @@
     {
         MXLogDebug(@"MasterTabBarController already has %@ in mxSessionArray", mxSession)
         return;
+    }
+    
+    if (self.presentAnalyticsPromptOnAddSession)
+    {
+        self.presentAnalyticsPromptOnAddSession = NO;
+        [self promptUserBeforeUsingAnalyticsForSession:mxSession];
     }
     
     // Check whether the controller's view is loaded into memory.
@@ -920,56 +945,12 @@
 
 #pragma mark -
 
-- (void)promptUserBeforeUsingAnalytics
+- (void)promptUserBeforeUsingAnalyticsForSession:(MXSession *)mxSession
 {
     MXLogDebug(@"[MasterTabBarController]: Invite the user to send analytics");
     
-    MXSession *mxSession = self.mxSessions.firstObject;
-    
-    if (!mxSession)
-    {
-        MXLogError(@"[MasterTabBarController]: Failed to prompt for Analytics due to missing MXSession.");
-        return;
-    }
-    
-    MXWeakify(self);
-    
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    NSString *title = [VectorL10n analyticsPromptTitle:AppInfo.current.displayName];
-    NSString *message;
-    if (Analytics.shared.promptShouldDisplayUpgradeMessage)
-    {
-        message = [VectorL10n analyticsPromptPosthogUpgrade:AppInfo.current.displayName];
-    }
-    else
-    {
-        message = [VectorL10n analyticsPromptNewUser:AppInfo.current.displayName];
-    }
-    
-    currentAlert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        [Analytics.shared optOut];
-        self->currentAlert = nil;
-        
-    }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-        
-        MXStrongifyAndReturnIfNil(self);
-        [Analytics.shared optInWith:mxSession];
-        self->currentAlert = nil;
-    }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseAnalyticsAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [self.masterTabBarDelegate masterTabBarController:self
+                shouldPresentAnalyticsPromptAsUpgrade:Analytics.shared.promptShouldDisplayUpgradeMessage forMatrixSession:mxSession];
 }
 
 #pragma mark - Review session
