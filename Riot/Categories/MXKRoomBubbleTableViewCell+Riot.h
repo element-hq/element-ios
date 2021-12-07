@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 @class CircleProgressView;
 
@@ -38,11 +38,6 @@ extern NSString *const kMXKRoomBubbleCellTapOnReceiptsContainer;
  The 'userInfo' dictionary contains a 'NSString' object under the 'kMXKRoomBubbleCellEventIdKey' key, representing the event id of the event associated with the reactions.
  */
 extern NSString *const kMXKRoomBubbleCellLongPressOnReactionView;
-
-/**
- 'userInfo' dictionary key 'kMXKRoomBubbleCellEventIdKey' is associated to a 'NSString' object representing an event id.
- */
-extern NSString *const kMXKRoomBubbleCellEventIdKey;
 
 /**
  Action identifier used when the user pressed accept button for an incoming key verification request.

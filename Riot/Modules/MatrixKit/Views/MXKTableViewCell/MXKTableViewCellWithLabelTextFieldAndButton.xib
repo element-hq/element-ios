@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="70" id="R1k-d9-UZq" customClass="MXKTableViewCellWithLabelTextFieldAndButton">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R1k-d9-UZq" id="TrF-Sd-htc">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="69"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HwF-3u-e5Q">
+                        <rect key="frame" x="8" y="33" width="527" height="30"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                        <connections>
+                            <action selector="textFieldEditingChanged:" destination="R1k-d9-UZq" eventType="editingChanged" id="LeA-rJ-pcV"/>
+                            <outlet property="delegate" destination="R1k-d9-UZq" id="X6b-0x-2HJ"/>
+                        </connections>
+                    </textField>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KoB-y6-MAj">
+                        <rect key="frame" x="543" y="33" width="49" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="8Yl-vg-asf"/>
+                        </constraints>
+                        <state key="normal" title="Submit">
+                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </state>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="9Ez-M7-s8I">
+                        <rect key="frame" x="8" y="8" width="584" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="KoB-y6-MAj" firstAttribute="centerY" secondItem="HwF-3u-e5Q" secondAttribute="centerY" id="0j3-Pg-l0f"/>
+                    <constraint firstAttribute="trailing" secondItem="KoB-y6-MAj" secondAttribute="trailing" constant="8" id="Bed-gz-IoV"/>
+                    <constraint firstItem="9Ez-M7-s8I" firstAttribute="top" secondItem="TrF-Sd-htc" secondAttribute="top" constant="8" id="UiT-hp-y64"/>
+                    <constraint firstAttribute="bottom" secondItem="HwF-3u-e5Q" secondAttribute="bottom" constant="6" id="VBI-N7-ubO"/>
+                    <constraint firstAttribute="trailing" secondItem="9Ez-M7-s8I" secondAttribute="trailing" constant="8" id="cKm-EC-j6C"/>
+                    <constraint firstItem="HwF-3u-e5Q" firstAttribute="top" secondItem="9Ez-M7-s8I" secondAttribute="bottom" constant="4" id="hsT-zv-aFU"/>
+                    <constraint firstItem="HwF-3u-e5Q" firstAttribute="leading" secondItem="TrF-Sd-htc" secondAttribute="leading" constant="8" id="uYR-ZY-FTK"/>
+                    <constraint firstItem="KoB-y6-MAj" firstAttribute="leading" secondItem="HwF-3u-e5Q" secondAttribute="trailing" constant="8" id="vZw-2I-IYg"/>
+                    <constraint firstItem="9Ez-M7-s8I" firstAttribute="leading" secondItem="TrF-Sd-htc" secondAttribute="leading" constant="8" id="z1S-ho-Niu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="mxkButton" destination="KoB-y6-MAj" id="HtV-Hu-sJB"/>
+                <outlet property="mxkButtonLeadingConstraint" destination="vZw-2I-IYg" id="tSD-e8-387"/>
+                <outlet property="mxkButtonMinWidthConstraint" destination="8Yl-vg-asf" id="Ysh-Vs-QYO"/>
+                <outlet property="mxkButtonTrailingConstraint" destination="Bed-gz-IoV" id="3KC-1v-buQ"/>
+                <outlet property="mxkLabel" destination="9Ez-M7-s8I" id="RAD-Qz-GHK"/>
+                <outlet property="mxkLabelLeadingConstraint" destination="z1S-ho-Niu" id="nPj-Hs-eA6"/>
+                <outlet property="mxkLabelTopConstraint" destination="UiT-hp-y64" id="Fq9-DJ-zQN"/>
+                <outlet property="mxkLabelTrailingConstraint" destination="cKm-EC-j6C" id="nA3-he-Wll"/>
+                <outlet property="mxkTextField" destination="HwF-3u-e5Q" id="aTc-9G-9BE"/>
+                <outlet property="mxkTextFieldBottomConstraint" destination="VBI-N7-ubO" id="iwS-Hp-9EQ"/>
+                <outlet property="mxkTextFieldLeadingConstraint" destination="uYR-ZY-FTK" id="kOH-F3-xGk"/>
+                <outlet property="mxkTextFieldTopConstraint" destination="hsT-zv-aFU" id="n5u-Lo-TOd"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

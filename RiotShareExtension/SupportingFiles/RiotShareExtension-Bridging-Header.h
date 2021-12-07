@@ -5,3 +5,7 @@
 #import "ThemeService.h"
 #import "AvatarGenerator.h"
 #import "BuildInfo.h"
+#import "ShareItemSender.h"
+
+// MatrixKit imports
+#import "MatrixKit-Bridging-Header.h"

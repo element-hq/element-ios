@@ -15,12 +15,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
-#import "Riot-Swift.h"
+@class TermsView;
 
-@interface AuthInputsView : MXKAuthInputsView <MXKCountryPickerViewControllerDelegate>
-
+@interface AuthInputsView : MXKAuthInputsView
 @property (weak, nonatomic) IBOutlet UITextField *userLoginTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passWordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *repeatPasswordTextField;

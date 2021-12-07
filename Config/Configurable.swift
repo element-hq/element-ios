@@ -15,9 +15,7 @@
 //
 
 import Foundation
-
-import Foundation
-import MatrixKit
+import MatrixSDK
 
 /// Configurable expose settings app and its entensions must use.
 @objc protocol Configurable {

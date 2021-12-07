@@ -29,13 +29,15 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     private let spaceName: String?
 
     private var currentOperation: MXHTTPOperation?
+    private var nextBatch: String?
+    private var rootSpaceChildInfo: MXSpaceChildInfo?
     
     private var itemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
             self.updateFilteredItemList()
         }
     }
-    private var searchKeyword: String? = nil {
+    private var searchKeyword: String? {
         didSet {
             self.updateFilteredItemList()
         }
@@ -49,7 +51,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                     self.update(viewState: .emptyFilterResult)
                 }
             } else {
-                self.update(viewState: .loaded(self.filteredItemDataList))
+                self.update(viewState: .loaded(self.filteredItemDataList, self.nextBatch != nil && (self.searchKeyword ?? "").isEmpty))
             }
         }
     }
@@ -90,32 +92,51 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
     // MARK: - Private
     
     private func loadData() {
+        guard self.currentOperation == nil else {
+            return
+        }
+        
         if let spaceName = self.spaceName {
             self.update(viewState: .spaceNameFound(spaceName))
         }
 
-        self.update(viewState: .loading)
+        if self.nextBatch == nil {
+            self.update(viewState: .loading)
+        }
         
-        self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, completion: { [weak self] response in
+        self.currentOperation = self.session.spaceService.getSpaceChildrenForSpace(withId: self.spaceId, suggestedOnly: false, limit: nil, maxDepth: 1, paginationToken: self.nextBatch, completion: { [weak self] response in
             guard let self = self else {
                 return
             }
             
             switch response {
             case .success(let spaceSummary):
-                self.itemDataList = spaceSummary.childInfos.compactMap({ childInfo in
-                    guard childInfo.parentIds.contains(self.spaceId) else {
+                self.nextBatch = spaceSummary.nextBatch
+                // The MXSpaceChildInfo of the root space is available only in the first batch
+                if let rootSpaceInfo = spaceSummary.spaceInfo {
+                    self.rootSpaceChildInfo = rootSpaceInfo
+                }
+                
+                let batchedItemDataList: [SpaceExploreRoomListItemViewData] = spaceSummary.childInfos.compactMap({ childInfo in
+                    guard let rootSpaceInfo = self.rootSpaceChildInfo, rootSpaceInfo.childrenIds.contains(childInfo.childRoomId) else {
                         return nil
                     }
                     
-                    let avatarViewData = AvatarViewData(matrixItemId: childInfo.childRoomId, displayName: childInfo.displayName, avatarUrl: childInfo.avatarUrl, mediaManager: self.session.mediaManager, fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
+                    let avatarViewData = AvatarViewData(matrixItemId: childInfo.childRoomId,
+                                                        displayName: childInfo.displayName,
+                                                        avatarUrl: childInfo.avatarUrl,
+                                                        mediaManager: self.session.mediaManager,
+                                                        fallbackImage: .matrixItem(childInfo.childRoomId, childInfo.name))
                     return SpaceExploreRoomListItemViewData(childInfo: childInfo, avatarViewData: avatarViewData)
                 }).sorted(by: { item1, item2 in
                     return !item2.childInfo.suggested || item1.childInfo.suggested
                 })
+                self.itemDataList.append(contentsOf: batchedItemDataList)
             case .failure(let error):
                 self.update(viewState: .error(error))
             }
+            
+            self.currentOperation = nil
         })
     }
     

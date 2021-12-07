@@ -15,7 +15,6 @@
  */
 
 import UserNotifications
-import MatrixKit
 import MatrixSDK
 
 /// The number of milliseconds in one second.
@@ -53,6 +52,12 @@ class NotificationService: UNNotificationServiceExtension {
     private lazy var configuration: Configurable = {
         return CommonConfiguration()
     }()
+    private lazy var mxRestClient: MXRestClient? = {
+        guard let userAccount = userAccount else {
+            return nil
+        }
+        return MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil)
+    }()
     private static var isLoggerInitialized: Bool = false
     private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
         let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!
@@ -60,7 +65,7 @@ class NotificationService: UNNotificationServiceExtension {
     }()
     private var pushNotificationStore: PushNotificationStore = PushNotificationStore()
     private let localAuthenticationService = LocalAuthenticationService(pinCodePreferences: .shared)
-    
+    private static let backgroundServiceInitQueue = DispatchQueue(label: "io.element.NotificationService.backgroundServiceInitQueue")
     //  MARK: - Method Overrides
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
@@ -163,14 +168,16 @@ class NotificationService: UNNotificationServiceExtension {
         MXKAccountManager.shared()?.forceReloadAccounts()
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
-            if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
-                MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
-                self.logMemory()
-                NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
-                MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
-                self.logMemory()
+            Self.backgroundServiceInitQueue.sync {
+                if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
+                    MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
+                    self.logMemory()
+                    NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
+                    MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
+                    self.logMemory()
+                }
+                completion()
             }
-            completion()
         } else {
             MXLog.debug("[NotificationService] setup: No active accounts")
             fallbackToBestAttemptContent(forEventId: eventId)
@@ -222,7 +229,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
-        self.notificationContent(forEvent: event, forAccount: userAccount) { (notificationContent) in
+        self.notificationContent(forEvent: event, forAccount: userAccount) { (notificationContent, ignoreBadgeUpdate) in
             var isUnwantedNotification = false
             
             // Modify the notification content here...
@@ -238,6 +245,10 @@ class NotificationService: UNNotificationServiceExtension {
                 //  this is an unwanted notification, mark as to be deleted when app is foregrounded again OR a new push came
                 content.categoryIdentifier = Constants.toBeRemovedNotificationCategoryIdentifier
                 isUnwantedNotification = true
+            }
+            
+            if ignoreBadgeUpdate {
+                content.badge = nil
             }
             
             if self.ongoingVoIPPushRequests[event.eventId] == true {
@@ -279,10 +290,10 @@ class NotificationService: UNNotificationServiceExtension {
         MXLog.debug("--------------------------------------------------------------------------------")
     }
     
-    private func notificationContent(forEvent event: MXEvent, forAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?) -> Void) {
+    private func notificationContent(forEvent event: MXEvent, forAccount account: MXKAccount, onComplete: @escaping (UNNotificationContent?, Bool) -> Void) {
         guard let content = event.content, content.count > 0 else {
             MXLog.debug("[NotificationService] notificationContentForEvent: empty event content")
-            onComplete(nil)
+            onComplete(nil, false)
             return
         }
         
@@ -298,7 +309,7 @@ class NotificationService: UNNotificationServiceExtension {
                     var notificationTitle: String?
                     var notificationBody: String?
                     var additionalUserInfo: [AnyHashable: Any]?
-                    
+                    var ignoreBadgeUpdate = false
                     var threadIdentifier: String? = roomId
                     let currentUserId = account.mxCredentials.userId
                     let roomDisplayName = roomSummary?.displayname
@@ -322,7 +333,25 @@ class NotificationService: UNNotificationServiceExtension {
                             if let callInviteContent = MXCallInviteEventContent(fromJSON: event.content),
                                callInviteContent.lifetime > event.age,
                                (callInviteContent.lifetime - event.age) > UInt(NSE.Constants.timeNeededToSendVoIPPushes * MSEC_PER_SEC) {
+                                NotificationService.backgroundSyncService.roomAccountData(forRoomId: roomId) { response in
+                                    if let accountData = response.value, accountData.virtualRoomInfo.isVirtual {
+                                        self.sendReadReceipt(forEvent: event)
+                                        ignoreBadgeUpdate = true
+                                    }
+                                    self.validateNotificationContentAndComplete(
+                                        notificationTitle: notificationTitle,
+                                        notificationBody: notificationBody,
+                                        additionalUserInfo: additionalUserInfo,
+                                        ignoreBadgeUpdate: ignoreBadgeUpdate,
+                                        threadIdentifier: threadIdentifier,
+                                        currentUserId: currentUserId,
+                                        event: event,
+                                        pushRule: pushRule,
+                                        onComplete: onComplete
+                                    )
+                                }
                                 self.sendVoipPush(forEvent: event)
+                                return
                             } else {
                                 MXLog.debug("[NotificationService] notificationContent: Do not attempt to send a VoIP push, there is not enough time to process it.")
                             }
@@ -351,7 +380,7 @@ class NotificationService: UNNotificationServiceExtension {
                                     #warning("In practice, this only hides the notification's content. An empty notification may be less useful in this instance?")
                                     // Ignore this notif.
                                     MXLog.debug("[NotificationService] notificationContentForEvent: Ignore non highlighted notif in mentions only room")
-                                    onComplete(nil)
+                                    onComplete(nil, false)
                                     return
                                 }
                             }
@@ -475,33 +504,61 @@ class NotificationService: UNNotificationServiceExtension {
                             break
                     }
                     
-                    if self.localAuthenticationService.isProtectionSet {
-                        MXLog.debug("[NotificationService] notificationContentForEvent: Resetting title and body because app protection is set")
-                        notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
-                        notificationTitle = nil
-                    }
                     
-                    guard notificationBody != nil else {
-                        MXLog.debug("[NotificationService] notificationContentForEvent: notificationBody is nil")
-                        onComplete(nil)
-                        return
-                    }
-                    
-                    let notificationContent = self.notificationContent(withTitle: notificationTitle,
-                                                                       body: notificationBody,
-                                                                       threadIdentifier: threadIdentifier,
-                                                                       userId: currentUserId,
-                                                                       event: event,
-                                                                       pushRule: pushRule,
-                                                                       additionalInfo: additionalUserInfo)
-                    
-                    MXLog.debug("[NotificationService] notificationContentForEvent: Calling onComplete.")
-                    onComplete(notificationContent)
+                    self.validateNotificationContentAndComplete(
+                        notificationTitle: notificationTitle,
+                        notificationBody: notificationBody,
+                        additionalUserInfo: additionalUserInfo,
+                        ignoreBadgeUpdate: ignoreBadgeUpdate,
+                        threadIdentifier: threadIdentifier,
+                        currentUserId: currentUserId,
+                        event: event,
+                        pushRule: pushRule,
+                        onComplete: onComplete
+                    )
                 case .failure(let error):
                     MXLog.debug("[NotificationService] notificationContentForEvent: error: \(error)")
-                    onComplete(nil)
+                    onComplete(nil, false)
             }
         })
+    }
+    
+    private func validateNotificationContentAndComplete(
+        notificationTitle: String?,
+        notificationBody: String?,
+        additionalUserInfo: [AnyHashable: Any]?,
+        ignoreBadgeUpdate: Bool,
+        threadIdentifier: String?,
+        currentUserId: String?,
+        event: MXEvent,
+        pushRule: MXPushRule?,
+        onComplete: @escaping (UNNotificationContent?, Bool) -> Void
+    ) {
+        
+        var validatedNotificationBody: String? = notificationBody
+        var validatedNotificationTitle: String? = notificationTitle
+        if self.localAuthenticationService.isProtectionSet {
+            MXLog.debug("[NotificationService] validateNotificationContentAndComplete: Resetting title and body because app protection is set")
+            validatedNotificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE_PROTECTED", arguments: [])
+            validatedNotificationTitle = nil
+        }
+        
+        guard validatedNotificationBody != nil else {
+            MXLog.debug("[NotificationService] validateNotificationContentAndComplete: notificationBody is nil")
+            onComplete(nil, false)
+            return
+        }
+        
+        let notificationContent = self.notificationContent(withTitle: validatedNotificationTitle,
+                                                           body: validatedNotificationBody,
+                                                           threadIdentifier: threadIdentifier,
+                                                           userId: currentUserId,
+                                                           event: event,
+                                                           pushRule: pushRule,
+                                                           additionalInfo: additionalUserInfo)
+        
+        MXLog.debug("[NotificationService] validateNotificationContentAndComplete: Calling onComplete.")
+        onComplete(notificationContent, ignoreBadgeUpdate)
     }
     
     /// Returns the default title for message notifications.
@@ -710,4 +767,23 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
+    private func sendReadReceipt(forEvent event: MXEvent) {
+        guard let mxRestClient = mxRestClient else {
+            MXLog.error("[NotificationService] sendReadReceipt: Missing mxRestClient for read receipt request.")
+            return
+        }
+        guard let eventId = event.eventId,
+              let roomId = event.roomId else {
+            MXLog.error("[NotificationService] sendReadReceipt: Event information missing for read receipt request.")
+            return
+        }
+        
+        mxRestClient.sendReadReceipt(toRoom: roomId, forEvent: eventId) { response in
+            if response.isSuccess {
+                MXLog.debug("[NotificationService] sendReadReceipt: Read receipt send successfully.")
+            } else if let error = response.error {
+                MXLog.error("[NotificationService] sendReadReceipt: Read receipt send failed with error \(error).")
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@
 
 #import "HomeMessagesSearchViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "HomeViewController.h"
 

@@ -22,6 +22,9 @@ import SwiftUI
  */
 @available(iOS 14.0, *)
 public struct FontSwiftUI: Fonts {
+    
+    public let uiFonts: ElementFonts
+    
     public var largeTitle: Font
     
     public var largeTitleB: Font
@@ -63,6 +66,8 @@ public struct FontSwiftUI: Fonts {
     public var caption2SB: Font
     
     public init(values: ElementFonts) {
+        self.uiFonts = values
+        
         self.largeTitle = Font(values.largeTitle)
         self.largeTitleB = Font(values.largeTitleB)
         self.title1 = Font(values.title1)
@@ -85,4 +90,3 @@ public struct FontSwiftUI: Fonts {
         self.caption2SB = Font(values.caption2SB)
     }
 }
-

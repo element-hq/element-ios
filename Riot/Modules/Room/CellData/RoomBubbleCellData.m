@@ -23,8 +23,7 @@
 #import "Tools.h"
 #import "BubbleReactionsViewSizer.h"
 
-#import "Riot-Swift.h"
-#import <MatrixKit/MXKSwiftHeader.h>
+#import "GeneratedInterface-Swift.h"
 
 static NSAttributedString *timestampVerticalWhitespace = nil;
 

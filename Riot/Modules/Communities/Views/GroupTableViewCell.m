@@ -17,7 +17,7 @@
 #import "GroupTableViewCell.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "MXGroup+Riot.h"
 

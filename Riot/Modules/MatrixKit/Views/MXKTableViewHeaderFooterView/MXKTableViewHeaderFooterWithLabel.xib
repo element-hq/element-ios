@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="rhl-fS-u8R" customClass="MXKTableViewHeaderFooterWithLabel">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j90-ws-D6K">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="35"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rK-Dm-IG7">
+                            <rect key="frame" x="20" y="5" width="43.5" height="25"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="7rK-Dm-IG7" secondAttribute="bottom" constant="5" id="Ctq-V4-4zl"/>
+                        <constraint firstItem="7rK-Dm-IG7" firstAttribute="leading" secondItem="j90-ws-D6K" secondAttribute="leading" constant="20" id="ca1-y3-mIH"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7rK-Dm-IG7" secondAttribute="trailing" constant="20" id="rCq-5g-qb7"/>
+                        <constraint firstItem="7rK-Dm-IG7" firstAttribute="top" secondItem="j90-ws-D6K" secondAttribute="top" constant="5" id="whi-qQ-5Ip"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="j90-ws-D6K" firstAttribute="leading" secondItem="rhl-fS-u8R" secondAttribute="leading" id="4nU-II-QuY"/>
+                <constraint firstAttribute="trailing" secondItem="j90-ws-D6K" secondAttribute="trailing" id="7X5-zE-KV1"/>
+                <constraint firstItem="j90-ws-D6K" firstAttribute="top" secondItem="rhl-fS-u8R" secondAttribute="top" id="KUH-sL-8rz"/>
+                <constraint firstAttribute="bottom" secondItem="j90-ws-D6K" secondAttribute="bottom" id="kAv-oI-Jqg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="mxkContentView" destination="j90-ws-D6K" id="kf6-b6-hyN"/>
+                <outlet property="mxkLabel" destination="7rK-Dm-IG7" id="qhW-tx-LDx"/>
+                <outlet property="mxkLabelBottomConstraint" destination="Ctq-V4-4zl" id="g3z-6r-3cf"/>
+                <outlet property="mxkLabelLeadingConstraint" destination="ca1-y3-mIH" id="bPn-cL-yI4"/>
+                <outlet property="mxkLabelTopConstraint" destination="whi-qQ-5Ip" id="Qqw-7f-02n"/>
+                <outlet property="mxkLabelTrailingConstraint" destination="rCq-5g-qb7" id="gza-94-zui"/>
+            </connections>
+        </view>
+    </objects>
+</document>

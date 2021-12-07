@@ -16,15 +16,13 @@
 
 #import "ManageSessionViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import <OLMKit/OLMKit.h>
 
 #import "AvatarGenerator.h"
 
 #import "ThemeService.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 
 enum

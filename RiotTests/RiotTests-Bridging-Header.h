@@ -3,3 +3,4 @@
 //
 
 #import "Riot-Bridging-Header.h"
+#import "MatrixKitTests-Bridging-Header.h"

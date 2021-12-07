@@ -1518,3 +1518,4 @@
 "find_your_contacts_title" = "Fillojani duke shfaqur kontaktet tuaja";
 "contacts_address_book_permission_denied_alert_message" = "Që të aktivizoni kontakte, kaloni te rregullimet e pajisjes tua.";
 "contacts_address_book_permission_denied_alert_title" = "Kontaktet u çaktivizuan";
+"space_home_show_all_rooms" = "Shfaqi krejt dhomat";

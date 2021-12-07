@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  'GroupRoomsViewController' instance is used to list the rooms of the group defined by the property 'mxGroup'.

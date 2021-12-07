@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
-@protocol ShareItemProviderProtocol;
+@protocol ShareItemSenderProtocol;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,8 +35,8 @@ typedef NS_ENUM(NSUInteger, ShareManagerResult) {
 
 @property (nonatomic, copy) void (^completionCallback)(ShareManagerResult);
 
-- (instancetype)initWithShareItemProvider:(id<ShareItemProviderProtocol>)shareItemProvider
-                                     type:(ShareManagerType)type;
+- (instancetype)initWithShareItemSender:(id<ShareItemSenderProtocol>)itemSender
+                                   type:(ShareManagerType)type;
 
 - (UIViewController *)mainViewController;
 

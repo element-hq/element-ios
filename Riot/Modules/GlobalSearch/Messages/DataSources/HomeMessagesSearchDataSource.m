@@ -16,14 +16,14 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "HomeMessagesSearchDataSource.h"
 
 #import "RoomBubbleCellData.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "MXKRoomBubbleTableViewCell+Riot.h"
 

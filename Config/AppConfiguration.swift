@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import MatrixKit
 
 /// AppConfiguration is CommonConfiguration plus configurations dedicated to the app
 class AppConfiguration: CommonConfiguration {
