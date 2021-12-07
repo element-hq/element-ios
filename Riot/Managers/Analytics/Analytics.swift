@@ -161,8 +161,15 @@ extension Analytics {
     
     /// Track whether the user accepted or declined the terms to an identity server.
     /// **Note** This method isn't currently implemented.
-    /// - Parameter granted: Pass `true` for accepted and `false` for declined.
-    func trackIdentityServerAccepted(granted: Bool) {
+    /// - Parameter accepted: Whether the terms were accepted.
+    func trackIdentityServerAccepted(_ accepted: Bool) {
+        // Do we still want to track this?
+    }
+    
+    /// Track whether the user granted or rejected access to the device contacts.
+    /// **Note** This method isn't currently implemented.
+    /// - Parameter granted: Whether access was granted.
+    func trackContactsAccessGranted(_ granted: Bool) {
         // Do we still want to track this?
     }
 }
@@ -194,11 +201,6 @@ extension Analytics: MXAnalyticsDelegate {
         let event = AnalyticsEvent.Error(context: nil, domain: .VOIP, name: reason.errorName)
         capture(event: callEvent)
         capture(event: event)
-    }
-    
-    /// **Note** This method isn't currently implemented.
-    func trackContactsAccessGranted(_ granted: Bool) {
-        // Do we still want to track this?
     }
     
     func trackCreatedRoom(asDM isDM: Bool) {

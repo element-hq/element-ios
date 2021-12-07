@@ -63,4 +63,3 @@
 #import "MXKRoomDataSourceManager.h"
 #import "MXRoom+Sync.h"
 #import "UIAlertController+MatrixKit.h"
-#import "MXKAnalyticsConstants.h"
