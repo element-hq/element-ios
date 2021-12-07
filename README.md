@@ -34,7 +34,7 @@ $ pod install               # Create the xcworkspace with all project dependenci
 $ open Riot.xcworkspace     # Open Xcode
 ```
 
-Else, you can visit our [installation guide](./INSTALL.md). This guide also offers more details and advanced usage like using [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk) in his development version.
+Else, you can visit our [installation guide](./INSTALL.md). This guide also offers more details and advanced usage like using [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk) in its development version.
 
 ## Contributing
 
