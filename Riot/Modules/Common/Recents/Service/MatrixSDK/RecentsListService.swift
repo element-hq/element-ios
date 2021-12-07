@@ -430,15 +430,18 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func updateDirectFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
-        switch mode {
-        case .home:
-            fetcher.fetchOptions.filterOptions.notDataTypes = [.invited, .favorited, .lowPriority]
-        case .people:
-            fetcher.fetchOptions.filterOptions.notDataTypes = [.lowPriority]
-        default:
-            break
+            var notDataTypes: MXRoomSummaryDataTypes = [.hidden, .conferenceUser, .space]
+            switch mode {
+            case .home:
+                notDataTypes.insert([.invited, .favorited, .lowPriority])
+                fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
+            case .people:
+                notDataTypes.insert([.lowPriority])
+                fetcher.fetchOptions.filterOptions.notDataTypes = notDataTypes
+            default:
+                break
+            }
         }
-    }
     
     private func updateFavoritedFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
         switch mode {

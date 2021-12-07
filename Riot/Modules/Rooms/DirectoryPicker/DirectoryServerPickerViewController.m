@@ -18,7 +18,7 @@
 #import "DirectoryServerTableViewCell.h"
 #import "DirectoryServerDetailTableViewCell.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface DirectoryServerPickerViewController ()
 {

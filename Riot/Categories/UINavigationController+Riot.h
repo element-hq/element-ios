@@ -15,11 +15,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
 /**
  The `UINavigationController` category overrides the default auto rotation handling.
  */
+
+#import <UIKit/UIKit.h>
 
 @interface UINavigationController (Riot)
 

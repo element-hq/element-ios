@@ -17,7 +17,7 @@
 
 #import "GroupHomeViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "ThemeService.h"
 #import "Tools.h"
@@ -40,11 +40,14 @@
     
     // The options used to load long description html content.
     NSDictionary *options;
-    NSString *sanitisedGroupLongDescription;
+    NSString *groupLongDescription;
     
     // The current pushed view controller
     UIViewController *pushedViewController;
 }
+
+@property (nonatomic, readonly) DTHTMLAttributedStringBuilderWillFlushCallback longDescriptionSanitizationCallback;
+
 @end
 
 @implementation GroupHomeViewController
@@ -75,6 +78,23 @@
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
+    
+    // Set up sanitization for the long description
+    NSArray<NSString *> *allowedHTMLTags = @[
+        @"font", // custom to matrix for IRC-style font coloring
+        @"del", // for markdown
+        @"body", // added internally by DTCoreText
+        @"h1", @"h2", @"h3", @"h4", @"h5", @"h6", @"blockquote", @"p", @"a", @"ul", @"ol",
+        @"nl", @"li", @"b", @"i", @"u", @"strong", @"em", @"strike", @"code", @"hr", @"br", @"div",
+        @"table", @"thead", @"caption", @"tbody", @"tr", @"th", @"td", @"pre",
+        @"img"
+    ];
+    
+    MXWeakify(self);
+    _longDescriptionSanitizationCallback = ^(DTHTMLElement *element) {
+        MXStrongifyAndReturnIfNil(self);
+        [element sanitizeWith:allowedHTMLTags bodyFont:self->_groupLongDescription.font imageHandler:[self groupLongDescriptionImageHandler]];
+    };
 }
 
 - (void)viewDidLoad
@@ -154,7 +174,7 @@
                       font-size: small; \
                       }", (unsigned long)bgColor];
         
-        // Apply the css style
+        // Apply the css style with some sanitisation.
         options = @{
                     DTUseiOS6Attributes: @(YES),              // Enable it to be able to display the attributed string in a UITextView
                     DTDefaultFontFamily: _groupLongDescription.font.familyName,
@@ -162,7 +182,8 @@
                     DTDefaultFontSize: @(_groupLongDescription.font.pointSize),
                     DTDefaultTextColor: _groupLongDescription.textColor,
                     DTDefaultLinkDecoration: @(NO),
-                    DTDefaultStyleSheet: [[DTCSSStylesheet alloc] initWithStyleBlock:defaultCSS]
+                    DTDefaultStyleSheet: [[DTCSSStylesheet alloc] initWithStyleBlock:defaultCSS],
+                    DTWillFlushBlockCallBack: self.longDescriptionSanitizationCallback
                     };
     }
 
@@ -489,94 +510,11 @@
 {
     if (_group.summary.profile.longDescription.length)
     {
-        // Render this html content in a text view.
-        NSArray <NSString*>* allowedHTMLTags = @[
-                                                 @"font", // custom to matrix for IRC-style font coloring
-                                                 @"del", // for markdown
-                                                 @"h1", @"h2", @"h3", @"h4", @"h5", @"h6", @"blockquote", @"p", @"a", @"ul", @"ol",
-                                                 @"nl", @"li", @"b", @"i", @"u", @"strong", @"em", @"strike", @"code", @"hr", @"br", @"div",
-                                                 @"table", @"thead", @"caption", @"tbody", @"tr", @"th", @"td", @"pre",
-                                                 @"img"
-                                                 ];
-        
-        // Do some sanitisation by handling the potential image
-        MXWeakify(self);
-        sanitisedGroupLongDescription = [MXKTools sanitiseHTML:_group.summary.profile.longDescription withAllowedHTMLTags:allowedHTMLTags imageHandler:^NSString *(NSString *sourceURL, CGFloat width, CGFloat height) {
-            
-            MXStrongifyAndReturnValueIfNil(self, nil);
-            NSString *localSourcePath;
-            
-            if (width != -1 && height != -1)
-            {
-                CGSize size = CGSizeMake(width, height);
-                // Build the cache path for the a thumbnail of this image.
-                NSString *cacheFilePath = [MXMediaManager thumbnailCachePathForMatrixContentURI:sourceURL
-                                                                              andType:nil
-                                                                             inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                        toFitViewSize:size
-                                                                           withMethod:MXThumbnailingMethodScale];
-                // Check whether the provided URL is a valid Matrix Content URI.
-                if (cacheFilePath)
-                {
-                    // Download the thumbnail if it is not already stored in the cache.
-                    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
-                    {
-                        MXWeakify(self);
-                        [self.mxSession.mediaManager downloadThumbnailFromMatrixContentURI:sourceURL
-                                                                                  withType:nil
-                                                                                  inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                             toFitViewSize:size
-                                                                                withMethod:MXThumbnailingMethodScale
-                                                                                   success:^(NSString *outputFilePath) {
-                                                                                       MXStrongifyAndReturnIfNil(self);
-                                                                                       [self refreshGroupLongDescription];
-                                                                                   }
-                                                                                   failure:nil];
-                    }
-                    else
-                    {
-                        // Update the local path
-                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
-                    }
-                }
-            }
-            else
-            {
-                // Build the cache path for this image.
-                NSString* cacheFilePath = [MXMediaManager cachePathForMatrixContentURI:sourceURL
-                                                                 andType:nil
-                                                                inFolder:kMXMediaManagerDefaultCacheFolder];
-                
-                // Check whether the provided URL is a valid Matrix Content URI.
-                if (cacheFilePath)
-                {
-                    // Download the image if it is not already stored in the cache.
-                    if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
-                    {
-                        MXWeakify(self);
-                        [self.mxSession.mediaManager downloadMediaFromMatrixContentURI:sourceURL
-                                                                              withType:nil
-                                                                              inFolder:kMXMediaManagerDefaultCacheFolder
-                                                                               success:^(NSString *outputFilePath) {
-                                                                                   MXStrongifyAndReturnIfNil(self);
-                                                                                   [self refreshGroupLongDescription];
-                                                                               }
-                                                                               failure:nil];
-                    }
-                    else
-                    {
-                        // Update the local path
-                        localSourcePath = [NSString stringWithFormat:@"file://%@", cacheFilePath];
-                    }
-                }
-            }
-            return localSourcePath;
-            
-        }];
+        groupLongDescription = _group.summary.profile.longDescription;
     }
     else
     {
-        sanitisedGroupLongDescription = nil;
+        groupLongDescription = nil;
     }
     
     [self renderGroupLongDescription];
@@ -584,12 +522,13 @@
 
 - (void)renderGroupLongDescription
 {
-    if (sanitisedGroupLongDescription)
+    if (groupLongDescription)
     {
         // Using DTCoreText, which renders static string, helps to avoid code injection attacks
         // that could happen with the default HTML renderer of NSAttributedString which is a
         // webview.
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:[sanitisedGroupLongDescription dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
+        // The supplied options include a callback to sanitize html tags and load image data.
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:[groupLongDescription dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
         
         // Apply additional treatments
         NSInteger mxIdsBitMask = (MXKTOOLS_USER_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_IDENTIFIER_BITWISE | MXKTOOLS_ROOM_ALIAS_BITWISE | MXKTOOLS_EVENT_IDENTIFIER_BITWISE | MXKTOOLS_GROUP_IDENTIFIER_BITWISE);
@@ -603,6 +542,83 @@
     {
         _groupLongDescription.text = nil;
     }
+}
+
+- (NSURL *(^)(NSString *sourceURL, CGFloat width, CGFloat height))groupLongDescriptionImageHandler
+{
+    MXWeakify(self);
+    return ^NSURL *(NSString *sourceURL, CGFloat width, CGFloat height) {
+        
+        MXStrongifyAndReturnValueIfNil(self, nil);
+        NSURL *localSourceURL;
+        
+        if (width != -1 && height != -1)
+        {
+            CGSize size = CGSizeMake(width, height);
+            // Build the cache path for the a thumbnail of this image.
+            NSString *cacheFilePath = [MXMediaManager thumbnailCachePathForMatrixContentURI:sourceURL
+                                                                          andType:nil
+                                                                         inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                    toFitViewSize:size
+                                                                       withMethod:MXThumbnailingMethodScale];
+            // Check whether the provided URL is a valid Matrix Content URI.
+            if (cacheFilePath)
+            {
+                // Download the thumbnail if it is not already stored in the cache.
+                if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
+                {
+                    MXWeakify(self);
+                    [self.mxSession.mediaManager downloadThumbnailFromMatrixContentURI:sourceURL
+                                                                              withType:nil
+                                                                              inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                         toFitViewSize:size
+                                                                            withMethod:MXThumbnailingMethodScale
+                                                                               success:^(NSString *outputFilePath) {
+                                                                                   MXStrongifyAndReturnIfNil(self);
+                                                                                   [self refreshGroupLongDescription];
+                                                                               }
+                                                                               failure:nil];
+                }
+                else
+                {
+                    // Update the local url
+                    localSourceURL = [NSURL fileURLWithPath:cacheFilePath];
+                }
+            }
+        }
+        else
+        {
+            // Build the cache path for this image.
+            NSString* cacheFilePath = [MXMediaManager cachePathForMatrixContentURI:sourceURL
+                                                             andType:nil
+                                                            inFolder:kMXMediaManagerDefaultCacheFolder];
+            
+            // Check whether the provided URL is a valid Matrix Content URI.
+            if (cacheFilePath)
+            {
+                // Download the image if it is not already stored in the cache.
+                if (![[NSFileManager defaultManager] fileExistsAtPath:cacheFilePath])
+                {
+                    MXWeakify(self);
+                    [self.mxSession.mediaManager downloadMediaFromMatrixContentURI:sourceURL
+                                                                          withType:nil
+                                                                          inFolder:kMXMediaManagerDefaultCacheFolder
+                                                                           success:^(NSString *outputFilePath) {
+                                                                               MXStrongifyAndReturnIfNil(self);
+                                                                               [self refreshGroupLongDescription];
+                                                                           }
+                                                                           failure:nil];
+                }
+                else
+                {
+                    // Update the local path
+                    localSourceURL = [NSURL fileURLWithPath:cacheFilePath];
+                }
+            }
+        }
+        return localSourceURL;
+        
+    };
 }
 
 - (void)didSelectRoomId:(NSString*)roomId

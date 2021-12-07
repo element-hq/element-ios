@@ -18,7 +18,7 @@
 #import "WidgetViewController.h"
 
 #import "IntegrationManagerViewController.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 NSString *const kJavascriptSendResponseToPostMessageAPI = @"riotIOS.sendResponse('%@', %@);";
 

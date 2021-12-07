@@ -15,9 +15,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "UserEncryptionTrustLevel.h"
+#import <MatrixSDK/MatrixSDK.h>
 
 /**
  Define a `MXRoom` category at Riot level.

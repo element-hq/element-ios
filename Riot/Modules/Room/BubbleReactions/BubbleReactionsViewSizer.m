@@ -17,7 +17,7 @@ limitations under the License.
 #import "BubbleReactionsViewSizer.h"
 #import <MatrixSDK/MatrixSDK.h>
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation BubbleReactionsViewSizer
 

@@ -19,7 +19,7 @@
 #import "RoomActivitiesView.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import <objc/runtime.h>
 

@@ -17,7 +17,8 @@
 
 #import "RoomInputToolbarView.h"
 
-#import "Riot-Swift.h"
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
 #import "GBDeviceInfo_iOS.h"
 
 static const CGFloat kContextBarHeight = 24;

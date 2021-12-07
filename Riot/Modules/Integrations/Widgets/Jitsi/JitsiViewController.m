@@ -16,7 +16,7 @@
 
 #import "JitsiViewController.h"
 #import "JitsiWidgetData.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #if __has_include(<MatrixSDK/MXJingleCallStack.h>)
 @import JitsiMeetSDK;

@@ -15,7 +15,7 @@
  */
 
 #import "GroupsDataSource.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface GroupsDataSource() <BetaAnnounceCellDelegate>
 

@@ -1,0 +1,549 @@
+
+
+"e2e_import_prompt" = "این فرآیند به شما امکان می دهد کلیدهای رمزگذاری را که قبلاً از کلاینت دیگری صادر کرده اید، وارد کنید. سپس می توانید هر پیامی را که کلاینت دیگر رمزگشایی می کند رمزگشایی کنید.\nپرونده با عبارت عبور محافظت می شود. برای رمزگشایی پرونده باید عبارت عبور را در اینجا وارد کنید.";
+"room_member_power_level_prompt" = "شما نمی توانید این تغییر را لغو کنید زیرا در حال ارتقا سطح کاربر به همان سطح خودتان هستید.\nآیا مطمئن هستید؟";
+"notification_settings_per_word_info" = "کلمات به صورت غیر حساس(case insensitive)تطابق می‌کنند و ممکن است شامل یک wildcard * باشد. بنابراین:\nfoo با رشته foo که توسط جداکننده‌های کلمه احاطه شده تطابق می‌کند (به عنوان مثال علائم نگارشی و فضای خالی یا شروع و پایان خط).\nfoo* با هر کلمه ای که با foo شروع شود مطابقت دارد.\n*foo* با هر کلمه‌ای که حداقل سه حرف foo را داشته باشد تطابق می‌کند.";
+"ssl_only_accept" = "فقط در صورتی که ادمین سرور اثر انگشت متناسب با مورد بالا را منتشر کرده باشد، گواهی را بپذیرید.";
+"ssl_expected_existing_expl" = "این گواهی از یک گواهینامه مورد اعتماد قبلی به یک گواهینامه مورد اعتماد دیگر تبدیل شده است. سرور ممکن است گواهینامه خود را تمدید کرده باشد. برای اطمینان از اثر انگشت با ادمین سرور تماس بگیرید.";
+"ssl_unexpected_existing_expl" = "این گواهینامه از گواهی مورد اعتماد تلفن شما تغییر کرده است. این بسیار غیر معمول است. توصیه می شود این گواهینامه جدید را قبول نکنید.";
+"ssl_cert_new_account_expl" = "درصورتی که ادمین سرور بگوید مشکلی وجود ندارد، اطمینان حاصل کنید که اثر انگشت زیر با اثر انگشت ارائه شده توسط او مطابقت دارد.";
+"ssl_cert_not_trust" = "این می تواند به این معنی باشد که شخصی ثالثی ترافیک شما را رهگیری می کند یا اینکه تلفن شما به گواهی ارائه شده توسط سرور اعتماد ندارد.";
+"ssl_could_not_verify" = "هویت سرور تأیید نشد.";
+"ssl_fingerprint_hash" = "اثر انگشت (%@):";
+"ssl_remain_offline" = "نادیده‌گیری";
+"ssl_logout_account" = "خروج";
+
+// unrecognized SSL certificate
+"ssl_trust" = "اعتماد کردن";
+"call_more_actions_dialpad" = "پد شماره گیری";
+"call_more_actions_transfer" = "انتقال";
+"call_more_actions_audio_use_device" = "بلندگوی دستگاه";
+"call_more_actions_audio_use_headset" = "استفاده از هدست صوتی";
+"call_more_actions_change_audio_device" = "تغییر خروجی صدا";
+"call_more_actions_unhold" = "از سرگیری";
+"call_more_actions_hold" = "قرار دادن در حالت انتظار";
+"call_holded" = "شما تماس را در حالت انتظار قرار داده‌اید";
+"call_remote_holded" = "%@ تماس را در حالت انتظار قرار داده است";
+"call_invite_expired" = "تماس منقضی شده است";
+"incoming_video_call" = "تماس ویدیویی ورودی";
+"incoming_voice_call" = "تماس صوتی ورودی";
+"call_ring" = "در حال تماس...";
+"call_ended" = "مکالمه تلفنی تمام شد";
+"call_connecting" = "در حال اتصال …";
+
+// Settings keys 
+
+// call string
+"call_waiting" = "در انتظار...";
+"settings_config_user_id" = "شناسه کاربری: %@";
+"settings_config_identity_server" = "سرور هویت‌سنجی: %@";
+
+// gcm section 
+"settings_config_home_server" = "سرور: %@";
+"notification_settings_notify_all_other" = "برای سایر پیام ها / اتاق ها اطلاع بده";
+"notification_settings_by_default" = "به صورت پیش فرض...";
+"notification_settings_suppress_from_bots" = "اعلان‌های ربات‌ها را سرکوب کن";
+"notification_settings_receive_a_call" = "هنگام دریافت تماس به من اطلاع بده";
+"notification_settings_people_join_leave_rooms" = "وقتی افراد به اتاق می‌پیوندند یا از اتاق خارج می شوند، به من اطلاع بده";
+"notification_settings_invite_to_a_new_room" = "وقتی به اتاق جدیدی دعوت شدم به من اطلاع بده";
+"notification_settings_just_sent_to_me" = "در مورد پیام‌هایی که فقط برای من ارسال شده است با صوت به من اطلاع بده";
+"notification_settings_contain_my_display_name" = "در مورد پیام‌هایی که حاوی نام من هستند با صدا به من اطلاع بده";
+"notification_settings_contain_my_user_name" = "در مورد پیام هایی که حاوی نام کاربری من است با صوت به من اطلاع بده";
+"notification_settings_other_alerts" = "هشدارهای دیگر";
+"notification_settings_select_room" = "اتاقی را انتخاب کنید";
+"notification_settings_sender_hint" = "@user:domain.com";
+"notification_settings_per_sender_notifications" = "اعلان‌های ارسال کننده محور";
+"notification_settings_per_room_notifications" = "اعلان‌های اتاق‌محور";
+"notification_settings_custom_sound" = "صدای سفارشی";
+"notification_settings_highlight" = "هایلایت";
+"notification_settings_word_to_match" = "کلمه مطابقت";
+"notification_settings_never_notify" = "هرگز اطلاع نده";
+"notification_settings_always_notify" = "همیشه اطلاع بده";
+"notification_settings_per_word_notifications" = "اعلان‌های کلمه‌محور";
+"notification_settings_global_info" = "تنظیمات اعلان در حساب کاربری شما ذخیره می شود و بین همه کلاینت‌هایی که از آنها پشتیبانی می کنند به اشتراک گذاشته می شود (از جمله اعلان های دسکتاپ).\n\nقوانین به ترتیب اعمال می شود. اولین قانونی که مطابقت دارد نتیجه پیام را مشخص می کند.\nبنابراین: اعلان‌های کلمه‌محور از اعلان‌های اتاق‌محور مهم‌تر و اعلان‌های اتاق‌محور از اعلان‌های ارسال‌کننده‌محور مهم‌تر هستند.\nبرای چندین قانون از یک نوع، اولین قانونی که در لیست مطابقت دارد در اولویت است.";
+"notification_settings_enable_notifications_warning" = "همه اعلان‌ها در حال حاضر برای همه دستگاه‌ها غیرفعال هستند.";
+
+// room display name
+"room_displayname_empty_room" = "اتاق خالی";
+"notice_in_reply_to" = "در پاسخ به";
+"notice_sticker" = "استیکر";
+"notice_crypto_error_unknown_inbound_session_id" = "نشست فرستنده کلیدهای این پیام را برای ما ارسال نکرده است.";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ تاریخچه آینده‌ی اتاق را از همان زمانی که افراد به اتاق پیوستند برای آنان قابل مشاهده کرد.";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ تاریخچه آینده‌ی اتاق را از همان زمانی که افراد دعوت شده اند برای آنان قابل مشاهده کرد.";
+"login_email_info" = "یک ایمیل مشخص کنید تا سایر کاربران بتوانند شما را در ماتریکس با سهولت بیشتری پیدا کنند و به شما راهی برای تنظیم مجدد رمز عبور خود در آینده بدهد.";
+"login_identity_server_info" = "ماتریکس سرورهای هویت‌سنجی را برای ردیابی اینکه کدام ایمیل‌ها و غیره متعلق به کدام شناسه‌های ماتریکس هستند فراهم می کند. در حال حاضر فقط https://matrix.org وجود دارد.";
+"notice_video_attachment" = "پیوست ویدیویی";
+"notice_audio_attachment" = "پیوست صوتی";
+"notice_image_attachment" = "پیوست تصویر";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ رمزگذاری سرتاسری را فعال کرد (الگوریتم ناشناخته %2$@).";
+"notice_encryption_enabled_ok" = "%@ رمزگذاری سرتاسری را فعال کرد.";
+"notice_encrypted_message" = "پیام رمزگذاری شده";
+"notice_room_related_groups" = "گروه های مرتبط با این اتاق عبارتند از: %@";
+"notice_room_aliases_for_dm" = "نام های مستعار عبارتند از: %@";
+"notice_room_aliases" = "نام مستعار اتاق: %@";
+"notice_room_power_level_event_requirement" = "حداقل سطح قدرت مربوط به رویدادها عبارت است از:";
+"notice_room_power_level_acting_requirement" = "حداقل سطح قدرت که کاربر باید قبل از اقدام داشته باشد:";
+"notice_room_power_level_intro_for_dm" = "سطح قدرت اعضا عبارت است از:";
+"notice_room_power_level_intro" = "سطح قدرت اعضای اتاق عبارت است از:";
+"notice_room_join_rule_public_by_you_for_dm" = "شما اینجا را عمومی کردید.";
+"notice_room_join_rule_public_by_you" = "شما اتاق را عمومی کردید.";
+"notice_room_join_rule_public_for_dm" = "%@ اینجا را عمومی کرد.";
+"notice_room_join_rule_public" = "%@ اتاق را عمومی کرد.";
+"notice_room_join_rule_invite_by_you_for_dm" = "شما گفتگو را به حالت \"فقط با دعوت\" تنظیم کردید.";
+"notice_room_join_rule_invite_by_you" = "شما اتاق را به حالت \"فقط با دعوت\" تنظیم کردید.";
+"notice_room_join_rule_invite_for_dm" = "%@ گفتگو را به حالت \"فقط با دعوت\" تنظیم کرد.";
+//  New
+"notice_room_join_rule_invite" = "%@ اتاق را به حالت \"فقط با دعوت\" تنظیم کرد.";
+//  Old
+"notice_room_join_rule" = "قانون پیوستن: %@";
+"notice_room_created_for_dm" = "%@ پیوست.";
+"notice_room_created" = "%@ اتاق را ایجاد و پیکربندی کرد.";
+"notice_profile_change_redacted" = "%@ پروفایل خود را بروز کرد %@";
+"notice_event_redacted_reason" = " [علت: %@]";
+"notice_event_redacted_by" = " توسط %@";
+"notice_event_redacted" = "<%@ واکنش نشان داد>";
+"notice_room_topic_removed" = "%@ موضوع را حذف کرد";
+"notice_room_name_removed_for_dm" = "%@ نام را حذف کرد";
+"notice_room_name_removed" = "%@ نام اتاق را حذف کرد";
+
+// Events formatter
+"notice_avatar_changed_too" = "(آواتار هم تغییر کرد)";
+"unignore" = "عدم نادیده‌گیری";
+"ignore" = "چشم پوشی";
+"resume_call" = "از سرگیری";
+"end_call" = "پایان تماس";
+"reject_call" = "رد تماس";
+"answer_call" = "پاسخ دادن به تماس";
+"show_details" = "نمایش جزئیات";
+"cancel_download" = "لغو بارگیری";
+"cancel_upload" = "لغو بارگذاری";
+"select_all" = "انتخاب همه";
+"resend_message" = "ارسال مجدد پیام";
+"reset_to_default" = "تنظیم به حالت پیش فرض";
+"invite_user" = "دعوت کاربر ماتریکس";
+"capture_media" = "گرفتن عکس/فیلم";
+"attach_media" = "پیوست رسانه از کتابخانه";
+"select_account" = "یک حساب انتخاب کنید";
+"mention" = "اشاره";
+"start_video_call" = "شروع تماس ویدیویی";
+"start_voice_call" = "شروع تماس صوتی";
+"start_chat" = "شروع گفتگو";
+"set_admin" = "تنظیم مدیر";
+"set_moderator" = "تنظیم معاون";
+"set_default_power_level" = "تنظیم مجدد سطح قدرت";
+"set_power_level" = "تنظیم سطح قدرت";
+"submit_code" = "ارسال کد";
+"submit" = "ارسال";
+"sign_up" = "ثبت نام";
+"retry" = "تلاش مجدد";
+"dismiss" = "رد";
+"discard" = "رها کردن";
+"continue" = "ادامه";
+"close" = "بستن";
+"back" = "بازگشت";
+"abort" = "لغو";
+"yes" = "بله";
+
+// Action
+"no" = "خیر";
+"login_error_resource_limit_exceeded_contact_button" = "تماس با ادمین";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nلطفاً برای ادامه استفاده از این سرویس با سرپرست سرویس خود تماس بگیرید.";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "این سرور به محدودیت کاربر فعال ماهانه خود رسیده است.";
+"login_error_resource_limit_exceeded_message_default" = "این سرور از یکی از محدودیت های منابع خود فراتر رفته است.";
+"login_error_resource_limit_exceeded_title" = "از محدودیت منابع فراتر رفت";
+"login_desktop_device" = "دسکتاپ";
+"login_tablet_device" = "تبلت";
+"login_mobile_device" = "تلفن همراه";
+"login_error_forgot_password_is_not_supported" = "گذرواژه فراموش شده در حال حاضر پشتیبانی نمی شود";
+"register_error_title" = "ثبت نام انجام نشد";
+"login_invalid_param" = "پارامتر نامعتبر است";
+"login_leave_fallback" = "لغو";
+"login_use_fallback" = "استفاده از صفحه بازگشت";
+"login_error_login_email_not_yet" = "لینک ایمیل هنوز کلیک نشده است";
+"login_error_user_in_use" = "این نام کاربری قبلاً استفاده شده است";
+"login_error_limit_exceeded" = "درخواست‌های زیادی ارسال شده است";
+"login_error_not_json" = "حاوی JSON معتبر نبود";
+"login_error_bad_json" = "JSON بد شکل";
+"login_error_unknown_token" = "توکن دسترسی وارد شده معتبر نیست";
+"login_error_forbidden" = "نام کاربری / گذرواژه نامعتبر است";
+"login_error_registration_is_not_supported" = "ثبت نام در حال حاضر پشتیبانی نمی شود";
+"login_error_do_not_support_login_flows" = "در حال حاضر ما از روش ورود به سیستم تعریف شده توسط سرور پشتیبانی نمی کنیم";
+"login_error_no_login_flow" = "ما موفق به بازیابی اطلاعات احراز هویت از این سرور نشدیم";
+"login_error_title" = "ورود ناموفق بود";
+"login_prompt_email_token" = "لطفا کد اعتبارسنجی ایمیل خود را وارد کنید:";
+"login_email_placeholder" = "آدرس ایمیل";
+"login_display_name_placeholder" = "نام (به عنوان مثال محمد حسینی)";
+"login_optional_field" = "اختیاری";
+"login_password_placeholder" = "گذرواژه";
+"login_user_id_placeholder" = "شناسه ماترکیس (به عنوان مثال @bob:matrix.org یا Bob)";
+"login_identity_server_title" = "آدرس سرور هویت‌سنجی:";
+"login_home_server_info" = "سرور تمام مکالمات و داده‌های حساب شما را ذخیره می کند";
+"login_home_server_title" = "آدرس سرور:";
+"login_server_url_placeholder" = "URL (به عنوان مثال https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "ایجاد حساب:";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "ماتریکس";
+"notification_settings_enable_notifications" = "فعال سازی اعلان‌ها";
+
+// Notification settings screen 
+"notification_settings_disable_all" = "همه اعلان‌ها را غیرفعال کنید";
+"settings_title_notifications" = "اعلان‌ها";
+
+// Settings screen 
+"settings_title_config" = "پیکربندی";
+
+// contacts list screen 
+"invitation_message" = "من دوست دارم با شما با ماتریس گپ بزنم. لطفاً برای کسب اطلاعات بیشتر به وب سایت http://matrix.org مراجعه کنید.";
+
+// members list Screen 
+
+// accounts list Screen 
+
+// image size selection 
+
+// invitation members list Screen 
+
+// room creation dialog Screen 
+
+// room info dialog Screen
+
+// room details dialog screen
+"room_details_title" = "جزئیات اتاق";
+"login_error_must_start_http" = "آدرس باید با http[s]:// شروع شود";
+
+// Login Screen 
+"login_error_already_logged_in" = "قبلاً وارد سیستم شده‌اید";
+"message_unsaved_changes" = "تغییرات ذخیره نشده‌ای وجود دارد. ترک کردن موجب از بین رفتن این تغییرات می‌شود.";
+"unban" = "لغو تحریم";
+"ban" = "تحریم";
+"kick" = "اخراج";
+"invite" = "دعوت";
+"num_members_other" = "%@ کاربر";
+"num_members_one" = "%@ کاربر";
+"membership_ban" = "تحریم";
+"membership_leave" = "ترک کرد";
+"membership_invite" = "دعوت کرد";
+"create_account" = "ایجاد حساب";
+"login" = "ورود";
+"create_room" = "ایجاد اتاق";
+
+// actions 
+"action_logout" = "خروج";
+"view" = "مشاهده";
+"delete" = "حذف";
+"share" = "اشتراک گذاری";
+"redact" = "حذف";
+"resend" = "ارسال مجدد";
+"copy_button_name" = "کپی";
+"send" = "ارسال";
+"leave" = "ترک";
+"save" = "ذخیره";
+"cancel" = "لغو";
+
+// Room Screen 
+
+// general errors 
+
+// Home Screen 
+
+// Last seen time 
+
+// call events 
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles 
+
+// button names 
+"ok" = "خب";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "پیام‌های آینده را از زمان ملحق شدن افراد برای همه قابل مشاهده کردید.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "شما تاریخچه آینده اتاق را از همان زمانی که به آن ملحق شده‌اند، برای همه اعضای اتاق قابل مشاهده کردید.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "شما پیام‌های آینده را از زمان دعوت شدن برای همه قابل مشاهده کردید.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "شما تاریخچه آینده اتاق را از همان زمانی که دعوت شده‌اند ، برای همه اعضای اتاق قابل مشاهده کردید.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "شما پیام‌های آینده را برای همه اعضای اتاق قابل مشاهده کردید.";
+"notice_room_history_visible_to_anyone_by_you" = "شما تاریخچه آینده اتاق را برای همه قابل مشاهده کردید.";
+"notice_room_history_visible_to_members_by_you" = "شما تاریخچه آینده اتاق را برای همه اعضای اتاق قابل مشاهده کردید.";
+"notice_redaction_by_you" = "شما یک رویداد را مجدداً ویرایش کردید (شناسه: %@)";
+"notice_encryption_enabled_unknown_algorithm_by_you" = "رمزگذاری سرتاسری را فعال کردید (الگوریتم ناشناخته %@).";
+"notice_encryption_enabled_ok_by_you" = "رمزگذاری سرتاسری را فعال کردید.";
+"notice_room_created_by_you" = "شما اتاق را ایجاد و پیکربندی کردید.";
+"notice_profile_change_redacted_by_you" = "شما نمایه خود را به روز کردید %@";
+"notice_event_redacted_by_you" = " توسط شما";
+"notice_room_topic_removed_by_you" = "موضوع را حذف کردید";
+"notice_room_name_removed_by_you_for_dm" = "نام را حذف کردید";
+"notice_room_name_removed_by_you" = "نام اتاق را حذف کردید";
+"notice_conference_call_request_by_you" = "شما درخواست جلسه دادید";
+"notice_declined_video_call_by_you" = "شما تماس را رد کردید";
+"notice_ended_video_call_by_you" = "تماس را تمام کردید";
+"notice_answered_video_call_by_you" = "شما به تماس پاسخ دادید";
+"notice_placed_video_call_by_you" = "شما یک تماس ویدیویی برقرار کردید";
+"notice_placed_voice_call_by_you" = "شما یک تماس صوتی برقرار کردید";
+"notice_room_name_changed_by_you_for_dm" = "نام را به %@ تغییر دادید.";
+"notice_room_name_changed_by_you" = "نام اتاق را به %@ تغییر دادید.";
+"notice_topic_changed_by_you" = "شما موضوع را به \"%@\" تغییر دادید.";
+"notice_display_name_removed_by_you" = "نام خود را حذف کردید";
+"notice_display_name_changed_from_by_you" = "نام خود را از %@ به %@ تغییر دادید";
+"notice_display_name_set_by_you" = "نام خود را به %@ تنظیم کردید";
+"notice_avatar_url_changed_by_you" = "آواتار خود را تغییر دادید";
+"notice_room_withdraw_by_you" = "شما دعوت %@ را پس گرفتید";
+"notice_room_ban_by_you" = "شما %@ را تحریم کردید";
+"notice_room_unban_by_you" = "شما %@ را از تحریم خارج کردید";
+"notice_room_kick_by_you" = "شما %@ را اخراج کردید";
+"notice_room_reject_by_you" = "شما دعوت را رد کردید";
+"notice_room_leave_by_you" = "خارج شدید";
+"notice_room_join_by_you" = "شما پیوستید";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "شما دعوت %@ را لغو کردید";
+"notice_room_third_party_revoked_invite_by_you" = "شما دعوت از %@ برای پیوستن به اتاق را لغو کردید";
+"notice_room_third_party_registered_invite_by_you" = "شما دعوت %@ را پذیرفتید";
+"notice_room_third_party_invite_by_you_for_dm" = "شما %@ را دعوت کردید";
+"notice_room_third_party_invite_by_you" = "شما دعوت‌نامه‌ای به %@ برای پیوستن به اتاق ارسال کرده‌اید";
+"notice_room_invite_you" = "%@ شما را دعوت کرد";
+
+// Notice Events with "You"
+"notice_room_invite_by_you" = "شما %@ را دعوت کردید";
+"notice_conference_call_finished" = "جلسه به پایان رسید";
+"notice_conference_call_started" = "جلسه آغاز شد";
+"notice_conference_call_request" = "%@ درخواست جلسه مجازی کرد";
+"notice_declined_video_call" = "%@ تماس را رد کرد";
+"notice_ended_video_call" = "%@ به تماس پایان داد";
+"notice_answered_video_call" = "%@ به تماس پاسخ داد";
+"notice_placed_video_call" = "%@ تماس تصویری برقرار کرد";
+"notice_placed_voice_call" = "%@ تماس صوتی برقرار کرد";
+"notice_room_name_changed_for_dm" = "%@ نام را به %@ تغییر داد.";
+"notice_room_name_changed" = "%@ نام اتاق را به %@ تغییر داد.";
+"notice_topic_changed" = "%@ موضوع را به \"%@\" تغییر داد.";
+"notice_display_name_removed" = "%@ نام خود را حذف کرد";
+"notice_display_name_changed_from" = "%@ نام خود را از %@ به %@ تغییر داد";
+"notice_display_name_set" = "%@ نام خود را به %@ تنظیم کرد";
+"notice_avatar_url_changed" = "%@ آواتار خود را تغییر داد";
+"notice_room_reason" = ". دلیل: %@";
+"notice_room_withdraw" = "%@ دعوت %@ را پس گرفت";
+"notice_room_ban" = "%@ %@ را تحریم کرد";
+"notice_room_unban" = "%@ %@ را از تحریم خارج کرد";
+"notice_room_kick" = "%@ %@ را اخراج کرد";
+"notice_room_reject" = "%@ دعوت را رد کرد";
+"notice_room_leave" = "%@ ترک کرد";
+"notice_room_join" = "%@ پیوست";
+"notice_room_third_party_revoked_invite_for_dm" = "%@ دعوت %@ را لغو کرد";
+"notice_room_third_party_revoked_invite" = "%@ دعوت از %@ برای پیوستن به اتاق را لغو کرد";
+"notice_room_third_party_registered_invite" = "%@ دعوت %@ را پذیرفت";
+"notice_room_third_party_invite_for_dm" = "%@ %@ را دعوت کرد";
+"notice_room_third_party_invite" = "%@ برای پیوستن به اتاق به %@ دعوتنامه ارسال کرد";
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /matrix-sdk/src/main/res/values/strings.xml.
+*/
+
+"notice_room_invite" = "%@ %@ را دعوت کرد";
+"language_picker_default_language" = "پیش فرض (%@)";
+
+// Language picker
+"language_picker_title" = "انتخاب زبان";
+
+// Country picker
+"country_picker_title" = "یک کشور را انتخاب کنید";
+"local_contacts_access_not_granted" = "کشف کاربران از دفترچه مخاطبین نیاز به دسترسی به مخاطبین شما دارد اما %@ اجازه استفاده از آنها را ندارد";
+"local_contacts_access_discovery_warning" = "برای کشف مخاطبی که در حال حاظر از ماتریکس استفاده می‌کند، %@ می تواند آدرس‌های ایمیل و شماره تلفن‌های موجود در دفترچه آدرس خود را به سرور هویت‌سنجی انتخابی شما ارسال کند. در صورت پشتیبانی، داده های شخصی قبل از ارسال هش می شوند - لطفا برای اطلاعات بیشتر سیاست حفظ حریم خصوصی سرور هویت‌سنجی خود را بررسی کنید.";
+"local_contacts_access_discovery_warning_title" = "کشف کاربران";
+"microphone_access_not_granted_for_call" = "تماس ها نیاز به دسترسی به میکروفن دارند اما %@ اجازه استفاده از آن را ندارد";
+
+// Permissions
+"camera_access_not_granted_for_call" = "تماس های ویدئویی نیاز به دسترسی به دوربین دارند اما %@ اجازه استفاده از آن را ندارد";
+"ssl_homeserver_url" = "آدرس سرور: %@";
+"user_id_placeholder" = "مثال: @akbar:homeserver";
+"network_error_not_reachable" = "لطفاً اتصال شبکه خود را بررسی کنید";
+"power_level" = "سطح قدرت";
+"public" = "عمومی";
+"private" = "خصوصی";
+"not_supported_yet" = "در حال حاظر پشتیبانی نمی‌شود";
+"error_common_message" = "خطایی رخ داد لطفاً بعداً دوباره امتحان کنید.";
+"error" = "خطا";
+"unsent" = "ارسال نشده";
+
+// Others
+"user_id_title" = "شناسه کاربری:";
+"e2e_passphrase_create" = "ایجاد عبارت عبور";
+"e2e_passphrase_not_match" = "عبارات عبور باید مطابقت داشته باشند";
+"e2e_passphrase_empty" = "عبارت عبور نباید خالی باشد";
+"e2e_passphrase_confirm" = "عبارت عبور را تأیید کنید";
+"e2e_export" = "ذخیره";
+"e2e_export_prompt" = "این فرآیند به شما امکان می دهد کلیدهای پیام هایی را که در اتاق های رمزگذاری شده دریافت کرده‌اید در یک فایل ذخیره کنید. سپس می توانید فایل را در آینده به یک کلاینت دیگر وارد کنید، بنابراین کلاینت همچنین می تواند این پیام ها را رمزگشایی کند.\nفایل ذخیره شده به هر کسی که می تواند آن را بخواند اجازه می دهد تا پیام‌های رمزگذاری شده‌ای را که می بینید رمزگشایی کند، بنابراین باید مراقب امنیت آن باشید.";
+
+// E2E export
+"e2e_export_room_keys" = "کلیدهای اتاق را صادر کنید";
+"e2e_passphrase_enter" = "عبارت عبور را وارد کنید";
+"e2e_import" = "وارد كردن";
+"notice_room_created_by_you_for_dm" = "شما پیوستید.";
+"default" = "پیش‌فرض";
+"offline" = "آفلاین";
+
+// E2E import
+"e2e_import_room_keys" = "ورود کلیدهای اتاق";
+"format_time_d" = "d";
+"format_time_h" = "h";
+"format_time_m" = "m";
+
+// Time
+"format_time_s" = "s";
+"search_searching" = "در حال جستجو ...";
+
+// Search
+"search_no_results" = "بدون نتیجه";
+"group_section" = "گروه‌ها";
+
+// Groups
+"group_invite_section" = "دعوت‌ها";
+"contact_local_contacts" = "مخاطبین محلی";
+
+// Contacts
+"contact_mx_users" = "کاربران ماتریکس";
+"attachment_e2e_keys_import" = "وارد كردن...";
+"attachment_e2e_keys_file_prompt" = "این پرونده شامل کلیدهای رمزگذاری کلاینت ماتریکس است.\nآیا می خواهید محتوای پرونده را مشاهده کنید یا کلیدهای موجود در آن را وارد کنید؟";
+"attachment_multiselection_original" = "اندازه واقعی";
+"attachment_multiselection_size_prompt" = "تصاویر به چه صورت ارسال شود:";
+
+// Attachment
+"attachment_size_prompt" = "می‌خواهید به چه صورت ارسال کنید:";
+"attachment_cancel_upload" = "بارگذاری لغو شود؟";
+"attachment_cancel_download" = "بارگیری لغو شود؟";
+"attachment_large" = "بزرگ: %@";
+"attachment_medium" = "متوسط: %@";
+"attachment_small" = "کوچک: %@";
+"attachment_original" = "اندازه واقعی: %@";
+
+// Room members
+"room_member_ignore_prompt" = "آیا مطمئن هستید که می خواهید همه پیام های این کاربر را پنهان کنید؟";
+"message_reply_to_message_to_reply_to_prefix" = "در پاسخ به";
+"message_reply_to_sender_sent_a_file" = "پرونده‌ای ارسال شد.";
+"message_reply_to_sender_sent_an_audio_file" = "یک فایل صوتی ارسال شد.";
+
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "یک تصویر ارسال شد.";
+"message_reply_to_sender_sent_a_video" = "یک ویدیو ارسال شد.";
+"room_no_conference_call_in_encrypted_rooms" = "جلسات در اتاق های رمزگذاری شده پشتیبانی نمی شوند";
+"room_no_power_to_create_conference_call" = "برای شروع جلسه در این اتاق نیاز به دسترسی دعوت دارید";
+"room_left_for_dm" = "خارج شدید";
+"room_left" = "شما از اتاق خارج شدید";
+"room_error_timeline_event_not_found" = "برنامه سعی داشت نقطه خاصی را در پیام‌های این اتاق بارگیری کند اما نتوانست آن را پیدا کند";
+"room_error_timeline_event_not_found_title" = "خطا در بارگیری موقعیت پیام‌ها";
+"room_error_cannot_load_timeline" = "خطا در بارگیری پیام‌ها";
+"room_error_topic_edition_not_authorized" = "شما مجاز به ویرایش موضوع در اتاق نیستید";
+"room_error_name_edition_not_authorized" = "شما مجاز به ویرایش این نام اتاق نیستید";
+"room_error_join_failed_empty_room" = "در حال حاضر امکان عضویت مجدد در یک اتاق خالی وجود ندارد.";
+"room_error_join_failed_title" = "پیوستن به اتاق با خطا مواجه شد";
+
+// Room
+"room_please_select" = "لطفا یک اتاق انتخاب کنید";
+"room_creation_participants_placeholder" = "(به عنوان مثال، @ali:homeserver1; @akbar:homeserver1; ...)";
+"room_creation_participants_title" = "شركت كنندگان:";
+"room_creation_alias_placeholder_with_homeserver" = "(به عنوان مثال، #foo%@)";
+"room_creation_alias_placeholder" = "(به عنوان مثال #foo:example.org)";
+"room_creation_alias_title" = "نام مستعار اتاق:";
+"room_creation_name_placeholder" = "به عنوان مثال(گروه ناهار)";
+
+// Room creation
+"room_creation_name_title" = "نام اتاق:";
+"account_error_push_not_allowed" = "اعلان مجاز نیست";
+"account_error_msisdn_wrong_description" = "به نظر نمی رسد این شماره تلفن معتبری باشد";
+"account_error_msisdn_wrong_title" = "شماره تلفن نامعتبر";
+"account_error_email_wrong_description" = "به نظر نمی رسد این یک آدرس ایمیل معتبر باشد";
+"account_error_email_wrong_title" = "آدرس ایمیل نامعتبر است";
+"account_error_matrix_session_is_not_opened" = "نشست ماتریس باز نیست";
+"account_error_picture_change_failed" = "تغییر تصویر انجام نشد";
+"account_error_display_name_change_failed" = "تغییر نام ناموفق بود";
+"account_msisdn_validation_error" = "تأیید شماره تلفن امکان پذیر نیست.";
+"account_msisdn_validation_message" = "ما یک پیامک با کد فعال‌سازی ارسال کرده‌ایم. لطفاً این کد را در زیر وارد کنید.";
+"account_msisdn_validation_title" = "در انتظار تأیید";
+"room_event_encryption_verify_message" = "برای تأیید اینکه این نشست قابل اعتماد است، لطفاً با استفاده از روشهای دیگر (مثلاً به صورت حضوری یا تماس تلفنی) با مالک آن تماس بگیرید و از آنها سوال کنید که آیا کلیدی که در تنظیمات کاربر خود برای این نشست می بینند با کلید زیر مطابقت دارد:\n\n نام نشست: %@\nشناسه نشست: %@\nکلید نشست: %@\n\nدر صورت مطابقت ، دکمه تأیید را در زیر فشار دهید. در صورت عدم تطابق، شخص ثالثی این نشست را رهگیری می کند و شما قاعدتا باید دکمه لیست سیاه را فشار دهید.\n\nدر آینده این روند تأیید پیچیده تر خواهد بود.";
+"account_email_validation_error" = "تأیید آدرس ایمیل انجام نشد. لطفاً ایمیل خود را بررسی کرده و روی پیوند حاوی آن کلیک کنید. پس از انجام این کار ، روی ادامه کلیک کنید";
+"account_email_validation_message" = "لطفاً ایمیل خود را بررسی کرده و روی پیوند حاوی آن کلیک کنید. پس از انجام این کار ، روی ادامه کلیک کنید.";
+"account_email_validation_title" = "در انتظار تایید";
+"account_linked_emails" = "ایمیل های متصل شده";
+"account_link_email" = "اتصال به ایمیل";
+
+// Account
+"account_save_changes" = "ذخیره تغییرات";
+"room_event_encryption_verify_ok" = "تأیید";
+"room_event_encryption_verify_title" = "تایید نشست\n\n";
+"room_event_encryption_info_unblock" = "خروج از لیست سیاه";
+"room_event_encryption_info_block" = "لیست سیاه";
+"room_event_encryption_info_unverify" = "تأیید نکردن";
+"room_event_encryption_info_verify" = "تأیید کنید ...";
+"room_event_encryption_info_device_blocked" = "در لیست سیاه قرار گرفت";
+"room_event_encryption_info_device_not_verified" = "تأیید نشده است";
+"room_event_encryption_info_device_verified" = "تأیید شده";
+"room_event_encryption_info_device_fingerprint" = "اثر انگشت Ed25519\n";
+"room_event_encryption_info_device_verification" = "تأیید هویت\n";
+"room_event_encryption_info_device_id" = "شناسه\n";
+"room_event_encryption_info_device_name" = "نام عمومی\n";
+"room_event_encryption_info_device_unknown" = "نشست ناشناخته\n";
+"room_event_encryption_info_device" = "\nاطلاعات نشست ارسال کننده\n";
+"room_event_encryption_info_event_none" = "هیچ یک";
+"room_event_encryption_info_event_unencrypted" = "رمزگذاری نشده";
+"room_event_encryption_info_event_decryption_error" = "خطای رمزگشایی\n";
+"room_event_encryption_info_event_session_id" = "شناسه جلسه\n";
+"room_event_encryption_info_event_algorithm" = "الگوریتم\n";
+"room_event_encryption_info_event_fingerprint_key" = "کلید اثر انگشت Ed25519 ادعا شده\n";
+"room_event_encryption_info_event_identity_key" = "کلید Curve25519\n";
+"room_event_encryption_info_event_user_id" = "شناسه کاربر\n";
+"room_event_encryption_info_event" = "اطلاعات رویداد\n";
+
+// Encryption information
+"room_event_encryption_info_title" = "اطلاعات رمزنگاری سرتاسری\n\n";
+"device_details_delete_prompt_message" = "این عملیات نیاز به احراز هویت مجدد دارد.\nبرای ادامه ، لطفاً گذرواژه خود را وارد کنید.";
+"device_details_delete_prompt_title" = "احراز هویت";
+"device_details_rename_prompt_message" = "نام عمومی یک نشست برای افرادی که با آنها ارتباط برقرار می کنید قابل مشاهده است";
+"device_details_rename_prompt_title" = "نام نشست";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"device_details_last_seen" = "آخرین بازدید\n";
+"device_details_identifier" = "شناسه\n";
+"device_details_name" = "نام عمومی\n";
+
+// Devices
+"device_details_title" = "اطلاعات نشست\n";
+"notification_settings_room_rule_title" = "اتاق: %@";
+"settings_enter_validation_token_for" = "توکن فعال‌سازی را برای %@ وارد کنید:";
+"settings_enable_push_notifications" = "فعال‌سازی اعلان";
+"settings_enable_inapp_notifications" = "فعال‌سازی اعلان درون برنامه ای";
+
+// Settings
+"settings" = "تنظیمات";
+"room_displayname_more_than_two_members" = "%@ و %@ نفر دیگر";
+"room_displayname_two_members" = "%@ و %@";
+"notice_crypto_unable_to_decrypt" = "** رمزگشایی امکان پذیر نیست: %@ **";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ پیام های آینده را از زمان پیوستن افراد قابل مشاهده کرد.";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ پیام های آینده را از زمان دعوت شدن برای همه قابل مشاهده کرد.";
+"notice_room_history_visible_to_members_for_dm" = "%@ پیام‌های آینده را برای همه اعضای اتاق قابل مشاهده کرد.";
+"notice_room_history_visible_to_members" = "%@ تاریخچه آینده اتاق را برای همه اعضای اتاق قابل مشاهده کرد.";
+"notice_room_history_visible_to_anyone" = "%@ تاریخچه آینده اتاق را برای همه قابل مشاهده کرد.";
+"notice_error_unknown_event_type" = "نوع رویداد ناشناخته";
+"notice_error_unexpected_event" = "رویداد غیرمنتظره";
+"notice_error_unsupported_event" = "رویداد پشتیبانی نشده";
+"notice_redaction" = "%@ یک رویداد را تغییر داد (شناسه: %@)";
+"notice_feedback" = "بازخورد (شناسه: %@): %@";
+"notice_unsupported_attachment" = "پیوست پشتیبانی نشده: %@";
+"notice_invalid_attachment" = "پیوست نامعتبر";
+"notice_file_attachment" = "پیوست پرونده";
+"notice_location_attachment" = "پیوست مکان";
+"call_transfer_to_user" = "انتقال به %@";
+"call_consulting_with_user" = "تماس با %@";
+"call_video_with_user" = "تماس تصویری با %@";
+"call_voice_with_user" = "تماس صوتی با %@";
+"call_ringing" = "در حال زنگ خوردن…";
+"microphone_access_not_granted_for_voice_message" = "جهت ارسال پیام صوتی نیاز به دسترسی به میکروفون وجود دارد اما %@ دسترسی استفاده از آن را ندارد";
+"e2e_passphrase_too_short" = "کلمه عبور بیش از حد کوتاه است (حداقل می‌بایست %d کاراکتر باشد)";
+"message_reply_to_sender_sent_a_voice_message" = "یک پیام صوتی ارسال کنید.";

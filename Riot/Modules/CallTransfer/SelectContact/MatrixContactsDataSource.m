@@ -16,7 +16,7 @@
 
 #import "MatrixContactsDataSource.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation MatrixContactsDataSource
 

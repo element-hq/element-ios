@@ -1,0 +1,25 @@
+
+
+"invite" = "ආරාධනා";
+"settings_title_notifications" = "දැනුම්දීම්";
+"notification_settings_sender_hint" = "@පරිශීලක:වසම.ලංකා";
+"login_password_placeholder" = "මුරපදය";
+"login_leave_fallback" = "අවලංගු කරන්න";
+"login_email_placeholder" = "වි-තැපැල් ලිපිනය";
+"login_identity_server_title" = "අනන්‍යතා සේවාදායකයේ ඒ.ස.නි.:";
+"login_home_server_info" = "ඔබගේ මූලික සේවාදායකය ඔබගේ සියලු සංවාද සහ ගිණුමේ දත්ත ගබඩා කරයි";
+"login_home_server_title" = "මූලික සේවාදායකයේ ඒ.ස.නි.:";
+"login_server_url_placeholder" = "ඒ.ස.නි.(URL) (උදා. https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "ගිණුම සාදන්න:";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "මැට්‍රික්ස්";
+"save" = "සුරකින්න";
+"cancel" = "අවලංගු කරන්න";
+"leave" = "හැරයන්න";
+"continue" = "ඉදිරියට";
+"back" = "ආපසු";

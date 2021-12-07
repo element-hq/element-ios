@@ -16,7 +16,7 @@
 
 #import "Analytics.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 
 NSString *const AnalyticsNoficationsCategory = @"notifications";

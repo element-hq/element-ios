@@ -18,15 +18,13 @@
 
 #import "ManageSessionViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import <OLMKit/OLMKit.h>
 
 #import "AvatarGenerator.h"
 
 #import "ThemeService.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 // Dev flag to have more options
 //#define CROSS_SIGNING_AND_BACKUP_DEV
@@ -169,9 +167,8 @@ TableViewSectionsDelegate>
 
     if (self.mainSession.crypto.backup)
     {
-        MXDeviceInfo *deviceInfo = [self.mainSession.crypto.deviceList storedDevice:self.mainSession.matrixRestClient.credentials.userId
-                                                                           deviceId:self.mainSession.matrixRestClient.credentials.deviceId];
-
+        MXDeviceInfo *deviceInfo = [self.mainSession.crypto deviceWithDeviceId:self.mainSession.myDeviceId ofUser:self.mainSession.myUserId];
+        
         if (deviceInfo)
         {
             secureBackupSection = [[SettingsSecureBackupTableViewSection alloc] initWithRecoveryService:self.mainSession.crypto.recoveryService keyBackup:self.mainSession.crypto.backup userDevice:deviceInfo];

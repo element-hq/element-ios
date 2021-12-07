@@ -18,8 +18,6 @@
 
 #import "SettingsViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import <OLMKit/OLMKit.h>
 
 #import "AvatarGenerator.h"
@@ -43,7 +41,9 @@
 
 #import "GBDeviceInfo_iOS.h"
 
-#import "Riot-Swift.h"
+#import "MediaPickerViewController.h"
+
+#import "GeneratedInterface-Swift.h"
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
@@ -167,7 +167,7 @@ typedef void (^blockSettingsViewController_onReadyToDestroy)(void);
 
 #pragma mark - SettingsViewController
 
-@interface SettingsViewController () <DeactivateAccountViewControllerDelegate,
+@interface SettingsViewController () <UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate, DeactivateAccountViewControllerDelegate,
 NotificationSettingsCoordinatorBridgePresenterDelegate,
 SecureBackupSetupCoordinatorBridgePresenterDelegate,
 SignOutAlertPresenterDelegate,

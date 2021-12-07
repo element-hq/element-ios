@@ -18,7 +18,7 @@
 
 #import "IntegrationManagerViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface StickerPickerViewController ()
 

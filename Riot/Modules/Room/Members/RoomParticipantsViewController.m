@@ -19,7 +19,7 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 
@@ -29,7 +29,7 @@
 
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController ()
+@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
 {
     // Search result
     NSString *currentSearchText;
