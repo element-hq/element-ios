@@ -19,7 +19,7 @@ strings:
 strings:
   inputs: Modules/MatrixKit/Assets/MatrixKitAssets.bundle/en.lproj/MatrixKit.strings
   outputs:
-    templatePath: Templates/Strings/flat-swift4-vector.stencil
+    templatePath: Templates/Strings/matrixkit-flat-swift4-vector.stencil
     output: MatrixKitStrings.swift
     params:
       className: MatrixKitL10n
