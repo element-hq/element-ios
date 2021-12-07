@@ -16,7 +16,42 @@
 
 import Foundation
 
+// MARK: - Coordinator
+
+struct TemplateRoomListRoom: Identifiable, Equatable {
+    let id: String
+    let avatar: AvatarInput
+    let displayName: String?
+}
+
+/// Actions returned by the coordinator callback
+enum TemplateRoomListCoordinatorAction {
+    case didSelectRoom(String)
+    case done
+}
+
+// MARK: - View model
+
+/// Actions to be performed on the `ViewModel` State
+enum TemplateRoomListStateAction {
+    case updateRooms([TemplateRoomListRoom])
+}
+
+/// Actions sent by the`ViewModel` to the `Coordinator`.
+enum TemplateRoomListViewModelAction {
+    case didSelectRoom(String)
+    case done
+}
+
+// MARK: - View
+
 /// State managed by the `ViewModel` delivered to the `View`.
 struct TemplateRoomListViewState: BindableState {
     var rooms: [TemplateRoomListRoom]
+}
+
+/// Actions send from the `View` to the `ViewModel`.
+enum TemplateRoomListViewAction {
+    case done
+    case didSelectRoom(String)
 }

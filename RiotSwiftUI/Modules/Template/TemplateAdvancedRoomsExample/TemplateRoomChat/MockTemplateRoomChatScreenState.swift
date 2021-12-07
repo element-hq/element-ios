@@ -17,7 +17,6 @@
 import Foundation
 import SwiftUI
 
-
 /// Using an enum for the screen allows you define the different state cases with
 /// the relevant associated data for each case.
 @available(iOS 14.0, *)

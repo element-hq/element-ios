@@ -16,13 +16,17 @@
 
 import Foundation
 
+// MARK: - Coordinator
+
 enum TemplateUserProfilePresence {
     case online
     case idle
     case offline
 }
 
-extension TemplateUserProfilePresence {
+extension TemplateUserProfilePresence: Identifiable, CaseIterable {
+    var id: Self { self }
+    
     var title: String {
         switch self {
         case .online:
@@ -35,8 +39,30 @@ extension TemplateUserProfilePresence {
     }
 }
 
-extension TemplateUserProfilePresence: CaseIterable { }
+// MARK: View model
 
-extension TemplateUserProfilePresence: Identifiable {
-    var id: Self { self }
+enum TemplateUserProfileStateAction {
+    case viewAction(TemplateUserProfileViewAction)
+    case updatePresence(TemplateUserProfilePresence)
+}
+
+enum TemplateUserProfileViewModelResult {
+    case cancel
+    case done
+}
+
+// MARK: View
+
+struct TemplateUserProfileViewState: BindableState {
+    let avatar: AvatarInputProtocol?
+    let displayName: String?
+    var presence: TemplateUserProfilePresence
+    var count: Int
+}
+
+enum TemplateUserProfileViewAction {
+    case incrementCount
+    case decrementCount
+    case cancel
+    case done
 }
