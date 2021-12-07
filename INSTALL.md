@@ -66,7 +66,7 @@ If you want to build a specific branch for the MatrixSDK you have to indicate it
 
 If you want to modify MatrixSDK locally and see the result in Element project you have to uncommment `$matrixSDKVersion = :local` in the `Podfile`.
 But before you have to checkout [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk) in `../matrix-ios-sdk` locally relatively to your Element iOS project folder.
-Be sure to use compatible branches for Element iOS and MatrixSDK. For example, if you want to modify Element iOS from develop branch, use MatrixSDK develop branche and then make your modifications.
+Be sure to use compatible branches for Element iOS and MatrixSDK. For example, if you want to modify Element iOS from develop branch, use MatrixSDK develop branch and then make your modifications.
 
 **Important**: By working with [XcodeGen](https://github.com/yonaskolb/XcodeGen) you will need to use the _New Build System_ in Xcode, to have your some of the xcconfig variables taken into account. It should be enabled by default on the latest Xcode versions, but if you need to enable it go to Xcode menu and select `File > Workspace Settings… > Build System` and then choose `New Build System`.
 
