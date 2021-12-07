@@ -43,33 +43,9 @@ public class VectorL10n: NSObject {
   public static var analyticsPromptPoint1: String { 
     return VectorL10n.tr("Vector", "analytics_prompt_point_1") 
   }
-  /// don't
-  public static var analyticsPromptPoint1BoldedDont: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_point_1_bolded_dont") 
-  }
-  ///  record or profile any account data
-  public static var analyticsPromptPoint1End: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_point_1_end") 
-  }
-  /// We 
-  public static var analyticsPromptPoint1Start: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_point_1_start") 
-  }
   /// We <b>don't</b> share information with third parties
   public static var analyticsPromptPoint2: String { 
     return VectorL10n.tr("Vector", "analytics_prompt_point_2") 
-  }
-  /// don't
-  public static var analyticsPromptPoint2BoldedDont: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_point_2_bolded_dont") 
-  }
-  ///  share information with third parties
-  public static var analyticsPromptPoint2End: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_point_2_end") 
-  }
-  /// We 
-  public static var analyticsPromptPoint2Start: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_point_2_start") 
   }
   /// You can turn this off anytime in settings
   public static var analyticsPromptPoint3: String { 
@@ -79,14 +55,6 @@ public class VectorL10n: NSObject {
   public static var analyticsPromptStop: String { 
     return VectorL10n.tr("Vector", "analytics_prompt_stop") 
   }
-  /// .
-  public static var analyticsPromptTermsEndNewUser: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_terms_end_new_user") 
-  }
-  /// . Is that OK?
-  public static var analyticsPromptTermsEndUpgrade: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_terms_end_upgrade") 
-  }
   /// here
   public static var analyticsPromptTermsLinkNewUser: String { 
     return VectorL10n.tr("Vector", "analytics_prompt_terms_link_new_user") 
@@ -95,21 +63,13 @@ public class VectorL10n: NSObject {
   public static var analyticsPromptTermsLinkUpgrade: String { 
     return VectorL10n.tr("Vector", "analytics_prompt_terms_link_upgrade") 
   }
-  /// You can read all our terms <link>here</link>.
-  public static var analyticsPromptTermsNewUser: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_terms_new_user") 
+  /// You can read all our terms %@.
+  public static func analyticsPromptTermsNewUser(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_new_user", p1)
   }
-  /// You can read all our terms 
-  public static var analyticsPromptTermsStartNewUser: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_terms_start_new_user") 
-  }
-  /// Read all our terms 
-  public static var analyticsPromptTermsStartUpgrade: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_terms_start_upgrade") 
-  }
-  /// Read all our terms <link>here</link>. Is that OK?
-  public static var analyticsPromptTermsUpgrade: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_terms_upgrade") 
+  /// Read all our terms %@. Is that OK?
+  public static func analyticsPromptTermsUpgrade(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_upgrade", p1)
   }
   /// Help improve %@
   public static func analyticsPromptTitle(_ p1: String) -> String {

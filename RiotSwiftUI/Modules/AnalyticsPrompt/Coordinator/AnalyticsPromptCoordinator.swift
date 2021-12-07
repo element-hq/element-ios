@@ -19,8 +19,6 @@
 import SwiftUI
 
 struct AnalyticsPromptCoordinatorParameters {
-    /// The type of prompt to display.
-    let promptType: AnalyticsPromptType
     /// The session to use if analytics are enabled.
     let session: MXSession
     /// The navigation router used to display the prompt.
@@ -53,7 +51,17 @@ final class AnalyticsPromptCoordinator: Coordinator {
     @available(iOS 14.0, *)
     init(parameters: AnalyticsPromptCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = AnalyticsPromptViewModel(promptType: parameters.promptType, appDisplayName: AppInfo.current.displayName)
+        
+        let strings = AnalyticsPromptStrings()
+        let promptType: AnalyticsPromptType
+        
+        if Analytics.shared.promptShouldDisplayUpgradeMessage {
+            promptType = .upgrade(termsString: strings.termsUpgrade)
+        } else {
+            promptType = .newUser(termsString: strings.termsNewUser)
+        }
+        
+        let viewModel = AnalyticsPromptViewModel(promptType: promptType, strings: strings)
         
         let view = AnalyticsPrompt(viewModel: viewModel.context)
         _analyticsPromptViewModel = viewModel

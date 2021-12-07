@@ -201,12 +201,6 @@
 
     if (!authIsShown)
     {
-#warning This is for debugging, Remove me!
-//        [RiotSettings.defaults setBool:YES forKey:@"enableCrashReport"];
-//        [RiotSettings.defaults setBool:NO forKey:@"enableCrashReport"];
-        [RiotSettings.defaults removeObjectForKey:@"enableCrashReport"];
-        [RiotSettings.defaults removeObjectForKey:@"enableAnalytics"];
-        
         // Check whether the user should be prompted to send analytics.
         if (Analytics.shared.shouldShowAnalyticsPrompt)
         {
@@ -947,10 +941,12 @@
 
 - (void)promptUserBeforeUsingAnalyticsForSession:(MXSession *)mxSession
 {
-    MXLogDebug(@"[MasterTabBarController]: Invite the user to send analytics");
-    
-    [self.masterTabBarDelegate masterTabBarController:self
-                shouldPresentAnalyticsPromptAsUpgrade:Analytics.shared.promptShouldDisplayUpgradeMessage forMatrixSession:mxSession];
+    // Analytics aren't collected on iOS 12 & 13.
+    if (@available(iOS 14.0, *))
+    {
+        MXLogDebug(@"[MasterTabBarController]: Invite the user to send analytics");
+        [self.masterTabBarDelegate masterTabBarController:self shouldPresentAnalyticsPromptForMatrixSession:mxSession];
+    }
 }
 
 #pragma mark - Review session

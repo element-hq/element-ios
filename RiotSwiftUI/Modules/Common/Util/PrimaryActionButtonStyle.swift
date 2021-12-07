@@ -37,9 +37,9 @@ struct PrimaryActionButtonStyle: ButtonStyle {
     func backgroundColor(_ isPressed: Bool) -> Color {
         if let customColor = customColor {
             return customColor
-        } else {
-            return isPressed ? theme.colors.accent.opacity(0.6) : theme.colors.accent
         }
+        
+        return isPressed ? theme.colors.accent.opacity(0.6) : theme.colors.accent
     }
 }
 

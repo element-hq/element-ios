@@ -648,7 +648,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
-#warning Is this technically analytics or is it mixing the two up?
     if (Analytics.shared.isRunning)
     {
         [self checkExceptionToReport];

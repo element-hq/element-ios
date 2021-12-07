@@ -40,16 +40,29 @@ enum AnalyticsPromptViewModelResult {
 struct AnalyticsPromptViewState: BindableState {
     /// The type of prompt to display.
     let promptType: AnalyticsPromptType
-    /// The app's bundle display name.
-    let appDisplayName: String
+    /// Localized attributed strings created in the coordinator.
+    let strings: AnalyticsPromptStringsProtocol
+}
+
+/// A collection of strings for the UI that need to be created in
+/// the coordinator or mocked in the RiotSwiftUI target.
+protocol AnalyticsPromptStringsProtocol {
+    var appDisplayName: String { get }
+    
+    var point1: NSAttributedString { get }
+    var point2: NSAttributedString { get }
+    
+    var termsNewUser: NSAttributedString { get }
+    var termsUpgrade: NSAttributedString { get }
 }
 
 enum AnalyticsPromptType {
-    case newUser
-    case upgrade
+    case newUser(termsString: NSAttributedString)
+    case upgrade(termsString: NSAttributedString)
 }
 
 extension AnalyticsPromptType {
+    /// The main description string that should be displayed.
     var description: String {
         switch self {
         case .newUser:
@@ -59,19 +72,15 @@ extension AnalyticsPromptType {
         }
     }
     
-    var termsStrings: (String, String, String) {
+    /// The terms string that should be displayed.
+    var termsStrings: NSAttributedString {
         switch self {
-        case .newUser:
-            return (VectorL10n.analyticsPromptTermsStartNewUser,
-                    VectorL10n.analyticsPromptTermsLinkNewUser,
-                    VectorL10n.analyticsPromptTermsEndNewUser)
-        case .upgrade:
-            return (VectorL10n.analyticsPromptTermsStartUpgrade,
-                    VectorL10n.analyticsPromptTermsLinkUpgrade,
-                    VectorL10n.analyticsPromptTermsEndUpgrade)
+        case .newUser(let termsString), .upgrade(let termsString):
+            return termsString
         }
     }
     
+    /// The title for the enable button.
     var enableButtonTitle: String {
         switch self {
         case .newUser:
@@ -81,6 +90,7 @@ extension AnalyticsPromptType {
         }
     }
     
+    /// The title for the disable button.
     var disableButtonTitle: String {
         switch self {
         case .newUser:
@@ -91,8 +101,27 @@ extension AnalyticsPromptType {
     }
 }
 
-extension AnalyticsPromptType: CaseIterable { }
+extension AnalyticsPromptType: CaseIterable {
+    static var allCases: [AnalyticsPromptType] {
+        let strings = MockAnalyticsPromptStrings()
+        return [
+            .newUser(termsString: strings.termsNewUser),
+            .upgrade(termsString: strings.termsUpgrade)
+        ]
+    }
+}
 
 extension AnalyticsPromptType: Identifiable {
-    var id: Self { self }
+    var id: String {
+        switch self {
+        case .newUser:
+            return "newUser"
+        case .upgrade:
+            return "upgrade"
+        }
+    }
+}
+
+extension NSAttributedString.Key {
+    static let analyticsPromptTermsTextLink = NSAttributedString.Key("TermsTextLink")
 }

@@ -39,7 +39,7 @@ struct AnalyticsPrompt: View {
         VStack {
             Text("\(viewModel.viewState.promptType.description)\n")
             
-            AnalyticsPromptTermsText(promptType: viewModel.viewState.promptType)
+            AnalyticsPromptTermsText(attributedString: viewModel.viewState.promptType.termsStrings)
                 .onTapGesture {
                     viewModel.send(viewAction: .openTermsURL)
                 }
@@ -49,27 +49,9 @@ struct AnalyticsPrompt: View {
     /// The list of re-assurances about analytics.
     private var checkmarkList: some View {
         VStack(alignment: .leading) {
-            Label {
-                Text(VectorL10n.analyticsPromptPoint1Start)
-                    + Text(VectorL10n.analyticsPromptPoint1BoldedDont).font(theme.fonts.bodySB)
-                    + Text(VectorL10n.analyticsPromptPoint1End)
-            } icon: {
-                Image(uiImage: Asset.Images.analyticsCheckmark.image)
-            }
-            
-            Label {
-                Text(VectorL10n.analyticsPromptPoint2Start)
-                    + Text(VectorL10n.analyticsPromptPoint2BoldedDont).font(theme.fonts.bodySB)
-                    + Text(VectorL10n.analyticsPromptPoint2End)
-            } icon: {
-                Image(uiImage: Asset.Images.analyticsCheckmark.image)
-            }
-            
-            Label {
-                Text(VectorL10n.analyticsPromptPoint3)
-            } icon: {
-                Image(uiImage: Asset.Images.analyticsCheckmark.image)
-            }
+            AnalyticsPromptCheckmarkItem(attributedString: viewModel.viewState.strings.point1)
+            AnalyticsPromptCheckmarkItem(attributedString: viewModel.viewState.strings.point2)
+            AnalyticsPromptCheckmarkItem(string: VectorL10n.analyticsPromptPoint3)
         }
         .font(theme.fonts.body)
     }
@@ -101,7 +83,7 @@ struct AnalyticsPrompt: View {
                     Image(uiImage: Asset.Images.analyticsLogo.image)
                         .padding(.bottom, 25)
                     
-                    Text(VectorL10n.analyticsPromptTitle(viewModel.viewState.appDisplayName))
+                    Text(VectorL10n.analyticsPromptTitle(viewModel.viewState.strings.appDisplayName))
                         .font(theme.fonts.title2B)
                         .foregroundColor(theme.colors.primaryContent)
                         .padding(.bottom, 2)
@@ -116,6 +98,7 @@ struct AnalyticsPrompt: View {
                     
                     checkmarkList
                         .foregroundColor(theme.colors.secondaryContent)
+                        .padding(.bottom, 16)
                 }
                 .padding(.top, 50)
                 .padding(.horizontal, 16)

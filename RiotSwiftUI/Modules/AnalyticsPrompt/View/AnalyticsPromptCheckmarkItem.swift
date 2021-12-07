@@ -17,8 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-/// The last line of text in the description with highlighting on the link string.
-struct AnalyticsPromptTermsText: View {
+struct AnalyticsPromptCheckmarkItem: View {
     
     // MARK: - Properties
     
@@ -26,10 +25,10 @@ struct AnalyticsPromptTermsText: View {
     
     @Environment(\.theme) private var theme
     
-    /// A string with a link attribute.
+    /// A string with a bold property.
     private struct StringComponent {
         let string: String
-        let isLink: Bool
+        let isBold: Bool
     }
     
     /// Internal representation of the string as composable parts.
@@ -43,32 +42,51 @@ struct AnalyticsPromptTermsText: View {
         let string = attributedString.string as NSString
         
         attributedString.enumerateAttributes(in: range, options: []) { attributes, range, stop in
-            let isLink = attributes.keys.contains(.analyticsPromptTermsTextLink)
-            components.append(StringComponent(string: string.substring(with: range), isLink: isLink))
+            var isBold = false
+            
+            if let font = attributes[.font] as? UIFont {
+                isBold = font.fontDescriptor.symbolicTraits.contains(.traitBold)
+            }
+            
+            components.append(StringComponent(string: string.substring(with: range), isBold: isBold))
         }
         
         self.components = components
     }
     
+    init(string: String) {
+        self.components = [StringComponent(string: string, isBold: false)]
+    }
+    
     // MARK: - Views
     
-    var body: some View {
+    var label: Text {
         components.reduce(Text("")) {
-            $0 + Text($1.string).foregroundColor($1.isLink ? theme.colors.accent : nil)
+            $0 + Text($1.string).font($1.isBold ? theme.fonts.bodySB : theme.fonts.body)
+        }
+    }
+    
+    var body: some View {
+        Label { label } icon: {
+            Image(uiImage: Asset.Images.analyticsCheckmark.image)
         }
     }
 }
 
 // MARK: - Previews
+
 @available(iOS 14.0, *)
-struct AnalyticsPromptTermsText_Previews: PreviewProvider {
+struct AnalyticsPromptCheckmarkItem_Previews: PreviewProvider {
     
     static let strings = MockAnalyticsPromptStrings()
     
     static var previews: some View {
-        VStack(spacing: 8) {
-            AnalyticsPromptTermsText(attributedString: strings.termsNewUser)
-            AnalyticsPromptTermsText(attributedString: strings.termsUpgrade)
+        VStack(alignment:.leading) {
+            AnalyticsPromptCheckmarkItem(attributedString: strings.point1)
+            AnalyticsPromptCheckmarkItem(attributedString: strings.point2)
+            AnalyticsPromptCheckmarkItem(attributedString: strings.longString)
+            AnalyticsPromptCheckmarkItem(attributedString: strings.shortString)
         }
+        .padding()
     }
 }

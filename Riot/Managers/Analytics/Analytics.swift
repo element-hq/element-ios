@@ -17,29 +17,36 @@
 import PostHog
 import AnalyticsEvents
 
+/// A class responsible for managing an analytics client
+/// and sending events through this client.
 @objcMembers class Analytics: NSObject {
     
     // MARK: - Properties
     
+    /// The singleton instance to be used within the Riot target.
     static let shared = Analytics()
     
+    /// The analytics client to send events with.
     private var client = PostHogAnalyticsClient()
     
+    /// Whether or not the object is enabled and sending events to the server.
     var isRunning: Bool { client.isRunning }
     
+    /// Whether the user has yet to opt in or out of analytics collection.
     var shouldShowAnalyticsPrompt: Bool {
-        // Show an analytics prompt when the user hasn't seen the PostHog prompt before
-        // so long as they haven't previously declined the Matomo analytics prompt.
-        !RiotSettings.shared.hasSeenAnalyticsPrompt && !RiotSettings.shared.hasDeclinedMatomoAnalytics
+        // Show an analytics prompt when the user hasn't seen the PostHog prompt before.
+        !RiotSettings.shared.hasSeenAnalyticsPrompt
     }
     
+    /// Indicates whether the user previously accepted Matomo analytics and should be shown the upgrade prompt.
     var promptShouldDisplayUpgradeMessage: Bool {
-        // Only show an upgrade prompt if the user previously accepted Matomo analytics.
         RiotSettings.shared.hasAcceptedMatomoAnalytics
     }
     
     // MARK: - Public
     
+    /// Opts in to analytics tracking with the supplied session.
+    /// - Parameter session: The session to use to when reading/generating the analytics ID.
     func optIn(with session: MXSession?) {
         guard let session = session else { return }
         RiotSettings.shared.enableAnalytics = true
@@ -63,11 +70,13 @@ import AnalyticsEvents
         }
     }
     
+    /// Opts out of analytics tracking and calls `reset` to clear any IDs and event queues.
     func optOut() {
         RiotSettings.shared.enableAnalytics = false
         reset()
     }
     
+    /// Starts the analytics client if the user has opted in, otherwise does nothing.
     func startIfEnabled() {
         guard RiotSettings.shared.enableAnalytics, !isRunning else { return }
         
@@ -83,17 +92,9 @@ import AnalyticsEvents
         MXLogger.setBuildVersion(AppDelegate.theDelegate().build)
     }
     
-    private func identify(with settings: AnalyticsSettings) {
-        guard let id = settings.id else {
-            MXLog.warning("[Analytics] identify(with:) called before an ID has been generated.")
-            return
-        }
-        
-        client.identify(id: id)
-        MXLog.debug("[Analytics] Identified.")
-        RiotSettings.shared.isIdentifiedForAnalytics = true
-    }
-    
+    /// Resets the any IDs and event queues in the analytics client. This method
+    /// can be called on sign-out to remember opt-in status, but ensure the next
+    /// account used isn't associated with the previous one.
     func reset() {
         guard isRunning else { return }
         
@@ -105,19 +106,52 @@ import AnalyticsEvents
         MXLogger.logCrashes(false)
     }
     
+    /// Flushes the event queue in the analytics client, uploading all pending events.
+    /// Normally events are sent in batches. Call this method when you need an event
+    /// to be sent immediately.
     func forceUpload() {
         client.flush()
     }
     
+    // MARK: - Private
+    
+    /// Identify (pseudonymously) any future events with the ID from the analytics account data settings.
+    /// - Parameter settings: The settings to use for identification. The ID must be set *before* calling this method.
+    private func identify(with settings: AnalyticsSettings) {
+        guard let id = settings.id else {
+            MXLog.warning("[Analytics] identify(with:) called before an ID has been generated.")
+            return
+        }
+        
+        client.identify(id: id)
+        MXLog.debug("[Analytics] Identified.")
+        RiotSettings.shared.isIdentifiedForAnalytics = true
+    }
+    
+    /// Capture an event in the `client`.
+    /// - Parameter event: The event to capture.
     private func capture(event: AnalyticsEventProtocol) {
         client.capture(event)
     }
-    
+}
+
+// MARK: - Public tracking methods
+// The following methods are exposed for compatibility with Objective-C as
+// the `capture` method and the generated events cannot be bridged from Swift.
+extension Analytics {
+    /// Track the presentation of a screen
+    /// - Parameters:
+    ///   - screen: The screen that was shown.
+    ///   - milliseconds: An optional value representing how long the screen was shown for in milliseconds.
     func trackScreen(_ screen: AnalyticsScreen, duration milliseconds: Int?) {
         let event = AnalyticsEvent.Screen(durationMs: milliseconds, screenName: screen.screenName)
         client.screen(event)
     }
     
+    /// Track an E2EE error that occurred
+    /// - Parameters:
+    ///   - reason: The error that occurred.
+    ///   - count: The number of times that error occurred.
     func trackE2EEError(_ reason: DecryptionFailureReason, count: Int) {
         for _ in 0..<count {
             let event = AnalyticsEvent.Error(context: nil, domain: .E2EE, name: reason.errorName)
@@ -125,6 +159,9 @@ import AnalyticsEvents
         }
     }
     
+    /// Track whether the user accepted or declined the terms to an identity server.
+    /// **Note** This method isn't currently implemented.
+    /// - Parameter granted: Pass `true` for accepted and `false` for declined.
     func trackIdentityServerAccepted(granted: Bool) {
         // Do we still want to track this?
     }
@@ -159,6 +196,7 @@ extension Analytics: MXAnalyticsDelegate {
         capture(event: event)
     }
     
+    /// **Note** This method isn't currently implemented.
     func trackContactsAccessGranted(_ granted: Bool) {
         // Do we still want to track this?
     }

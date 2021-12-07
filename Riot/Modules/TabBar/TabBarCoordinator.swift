@@ -488,8 +488,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     }
     
     @available(iOS 14.0, *)
-    private func presentAnalyticsPrompt(promptType: AnalyticsPromptType, with session: MXSession) {
-        let parameters = AnalyticsPromptCoordinatorParameters(promptType: promptType, session: session, navigationRouter: navigationRouter)
+    private func presentAnalyticsPrompt(with session: MXSession) {
+        let parameters = AnalyticsPromptCoordinatorParameters(session: session, navigationRouter: navigationRouter)
         let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
         coordinator.start()
         add(childCoordinator: coordinator)
@@ -587,9 +587,9 @@ extension TabBarCoordinator: MasterTabBarControllerDelegate {
         self.masterTabBarController.navigationItem.leftBarButtonItem = sideMenuBarButtonItem
     }
     
-    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, shouldPresentAnalyticsPromptAsUpgrade isUpgradePrompt: Bool, forMatrixSession matrixSession: MXSession!) {
+    func masterTabBarController(_ masterTabBarController: MasterTabBarController!, shouldPresentAnalyticsPromptForMatrixSession matrixSession: MXSession!) {
         if #available(iOS 14.0, *) {
-            presentAnalyticsPrompt(promptType: isUpgradePrompt ? .upgrade : .newUser, with: matrixSession)
+            presentAnalyticsPrompt(with: matrixSession)
         }
     }
 }

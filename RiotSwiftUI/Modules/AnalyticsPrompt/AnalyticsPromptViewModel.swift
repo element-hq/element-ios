@@ -37,8 +37,8 @@ class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
     // MARK: - Setup
     
     /// Initialize a view model with the specified prompt type and app display name.
-    init(promptType: AnalyticsPromptType, appDisplayName: String) {
-        super.init(initialViewState: AnalyticsPromptViewState(promptType: promptType, appDisplayName: appDisplayName))
+    init(promptType: AnalyticsPromptType, strings: AnalyticsPromptStringsProtocol) {
+        super.init(initialViewState: AnalyticsPromptViewState(promptType: promptType, strings: strings))
     }
 
     // MARK: - Public

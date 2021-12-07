@@ -43,7 +43,8 @@ enum MockAnalyticsPromptScreenState: MockScreenState, CaseIterable {
         case .promptType(let analyticsPromptType):
             promptType = analyticsPromptType
         }
-        let viewModel = AnalyticsPromptViewModel(promptType: promptType, appDisplayName: "Element")
+        let viewModel = AnalyticsPromptViewModel(promptType: promptType,
+                                                 strings: MockAnalyticsPromptStrings())
         
         return (
             [promptType, viewModel],
