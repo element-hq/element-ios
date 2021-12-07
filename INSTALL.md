@@ -56,7 +56,7 @@ To build the last published App Store code you just need to checkout master bran
 
 - **Build last development code and modify Element project only**
 
-If you want to build last development code you have to checkout the `develop` branch and use `$matrixSDKVersion = {:branch => 'develop'}` in the `Podfile`. This will also use MatrixSDK develop branche.
+If you want to build last development code you have to checkout the `develop` branch and use `$matrixSDKVersion = {:branch => 'develop'}` in the `Podfile`. This will also use MatrixSDK develop branch.
 
 - **Build specific branch of SDK and modify Element project only**
 
