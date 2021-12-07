@@ -17,8 +17,6 @@
 import SwiftUI
 import Combine
 
-
-
 @available(iOS 14, *)
 typealias TemplateUserProfileViewModelType = StateStoreViewModel<TemplateUserProfileViewState,
                                                                  TemplateUserProfileStateAction,
