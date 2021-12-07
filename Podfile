@@ -16,6 +16,7 @@ use_frameworks!
 $matrixSDKVersion = '= 0.20.10'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
+# $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
 
 ########################################
 
