@@ -165,13 +165,6 @@ extension Analytics {
     func trackIdentityServerAccepted(_ accepted: Bool) {
         // Do we still want to track this?
     }
-    
-    /// Track whether the user granted or rejected access to the device contacts.
-    /// **Note** This method isn't currently implemented.
-    /// - Parameter granted: Whether access was granted.
-    func trackContactsAccessGranted(_ granted: Bool) {
-        // Do we still want to track this?
-    }
 }
 
 // MARK: - MXAnalyticsDelegate
@@ -216,5 +209,10 @@ extension Analytics: MXAnalyticsDelegate {
         
         let event = AnalyticsEvent.JoinedRoom(isDM: isDM, roomSize: roomSize)
         capture(event: event)
+    }
+    
+    /// **Note** This method isn't currently implemented.
+    func trackContactsAccessGranted(_ granted: Bool) {
+        // Do we still want to track this?
     }
 }

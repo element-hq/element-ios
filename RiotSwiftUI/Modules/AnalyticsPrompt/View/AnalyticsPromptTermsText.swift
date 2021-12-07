@@ -43,7 +43,7 @@ struct AnalyticsPromptTermsText: View {
         let string = attributedString.string as NSString
         
         attributedString.enumerateAttributes(in: range, options: []) { attributes, range, stop in
-            let isLink = attributes.keys.contains(.analyticsPromptTermsTextLink)
+            let isLink = attributes.keys.contains(.link)
             components.append(StringComponent(string: string.substring(with: range), isLink: isLink))
         }
         

@@ -648,7 +648,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
-    if (Analytics.shared.isRunning)
+    if (RiotSettings.shared.enableAnalytics)
     {
         [self checkExceptionToReport];
     }

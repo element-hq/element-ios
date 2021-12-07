@@ -61,7 +61,7 @@ final class AnalyticsPromptCoordinator: Coordinator {
             promptType = .newUser(termsString: strings.termsNewUser)
         }
         
-        let viewModel = AnalyticsPromptViewModel(promptType: promptType, strings: strings)
+        let viewModel = AnalyticsPromptViewModel(promptType: promptType, strings: strings, termsURL: BuildSettings.analyticsTermsURL)
         
         let view = AnalyticsPrompt(viewModel: viewModel.context)
         _analyticsPromptViewModel = viewModel

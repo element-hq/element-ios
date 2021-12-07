@@ -40,12 +40,12 @@ struct MockAnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
         self.point2 = point2
         
         let termsNewUser = NSMutableAttributedString(string: "You can read all our terms ")
-        termsNewUser.append(NSAttributedString(string: "here", attributes: [.analyticsPromptTermsTextLink: true]))
+        termsNewUser.append(NSAttributedString(string: "here", attributes: [.link: URL(string: "https://element.io/cookie-policy")!]))
         termsNewUser.append(NSAttributedString(string: "."))
         self.termsNewUser = termsNewUser
         
         let termsUpgrade = NSMutableAttributedString(string: "Read all our terms ")
-        termsUpgrade.append(NSAttributedString(string: "here", attributes: [.analyticsPromptTermsTextLink: true]))
+        termsUpgrade.append(NSAttributedString(string: "here", attributes: [.link: URL(string: "https://element.io/cookie-policy")!]))
         termsUpgrade.append(NSAttributedString(string: ". Is that OK?"))
         self.termsUpgrade = termsUpgrade
     }

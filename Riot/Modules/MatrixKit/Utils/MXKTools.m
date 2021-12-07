@@ -883,7 +883,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
         // Request address book access
         [[CNContactStore new] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
             
-            [Analytics.shared trackContactsAccessGranted:granted];
+            [MXSDKOptions.sharedInstance.analyticsDelegate trackContactsAccessGranted:granted];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 

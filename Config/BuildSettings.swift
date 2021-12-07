@@ -166,10 +166,12 @@ final class BuildSettings: NSObject {
     
     // MARK: - Analytics
     #warning("Testing environment.")
-    // Optional host for PostHog analytics. Set to nil to disable analytics.
+    /// Host to use for PostHog analytics. Set to nil to disable analytics.
     static let analyticsHost: String? = "https://posthog-poc.lab.element.dev"
-    // Public key for submitting analytics. Set to nil to disable analytics.
+    /// Public key for submitting analytics. Set to nil to disable analytics.
     static let analyticsKey: String? = "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8"
+    /// The URL to open with more information about analytics terms.
+    static let analyticsTermsURL = URL(string: "https://element.io/cookie-policy")!
     
     
     // MARK: - Bug report

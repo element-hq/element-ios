@@ -59,5 +59,4 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
         postHog?.screen(event.screenName.rawValue, properties: event.properties)
     }
     
-    
 }

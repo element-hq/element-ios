@@ -138,4 +138,41 @@
     return string;
 }
 
++ (NSAttributedString *)attributedStringFromHTML:(NSString *)htmlString withAllowedTags:(NSArray<NSString *> *)allowedTags
+{
+    UIFont *font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    
+    // Do some sanitisation before finalizing the string
+    DTHTMLAttributedStringBuilderWillFlushCallback sanitizeCallback = ^(DTHTMLElement *element) {
+        [element sanitizeWith:allowedTags bodyFont:font imageHandler:nil];
+    };
+
+    NSDictionary *options = @{
+                              DTUseiOS6Attributes: @(YES),              // Enable it to be able to display the attributed string in a UITextView
+                              DTDefaultFontFamily: font.familyName,
+                              DTDefaultFontName: font.fontName,
+                              DTDefaultFontSize: @(font.pointSize),
+                              DTDefaultLinkDecoration: @(NO),
+                              DTWillFlushBlockCallBack: sanitizeCallback
+                              };
+
+    // Do not use the default HTML renderer of NSAttributedString because this method
+    // runs on the UI thread which we want to avoid because renderHTMLString is called
+    // most of the time from a background thread.
+    // Use DTCoreText HTML renderer instead.
+    // Using DTCoreText, which renders static string, helps to avoid code injection attacks
+    // that could happen with the default HTML renderer of NSAttributedString which is a
+    // webview.
+    NSAttributedString *string = [[NSAttributedString alloc] initWithHTMLData:[htmlString dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
+        
+    // Apply additional treatments
+    string = [MXKTools removeDTCoreTextArtifacts:string];
+    
+    if (!string) {
+        return [[NSAttributedString alloc] initWithString:htmlString];
+    }
+    
+    return string;
+}
+
 @end

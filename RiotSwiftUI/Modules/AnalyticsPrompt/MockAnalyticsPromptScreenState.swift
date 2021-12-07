@@ -44,7 +44,8 @@ enum MockAnalyticsPromptScreenState: MockScreenState, CaseIterable {
             promptType = analyticsPromptType
         }
         let viewModel = AnalyticsPromptViewModel(promptType: promptType,
-                                                 strings: MockAnalyticsPromptStrings())
+                                                 strings: MockAnalyticsPromptStrings(),
+                                                 termsURL: URL(string: "https://element.io/cookie-policy")!)
         
         return (
             [promptType, viewModel],

@@ -20,52 +20,14 @@ import DTCoreText
 struct AnalyticsPromptStrings: AnalyticsPromptStringsProtocol {
     let appDisplayName = AppInfo.current.displayName
     
-    let point1: NSAttributedString
-    let point2: NSAttributedString
+    let point1 = Tools.attributedString(fromHTML: VectorL10n.analyticsPromptPoint1, withAllowedTags: ["b", "p"])
+    let point2 = Tools.attributedString(fromHTML: VectorL10n.analyticsPromptPoint2, withAllowedTags: ["b", "p"])
     
-    let termsNewUser: NSAttributedString
-    let termsUpgrade: NSAttributedString
-    
-    init() {
-        self.point1 = Self.parse(VectorL10n.analyticsPromptPoint1)
-        self.point2 = Self.parse(VectorL10n.analyticsPromptPoint2)
-        
-        self.termsNewUser = Self.attach(VectorL10n.analyticsPromptTermsLinkNewUser,
-                                        to: VectorL10n.analyticsPromptTermsNewUser("%@"))
-        self.termsUpgrade = Self.attach(VectorL10n.analyticsPromptTermsLinkUpgrade,
-                                        to: VectorL10n.analyticsPromptTermsUpgrade("%@"))
-    }
-    
-    static func parse(_ htmlString: String) -> NSAttributedString {
-        // Do some sanitisation before finalizing the string
-//        let sanitizeCallback: DTHTMLAttributedStringBuilderWillFlushCallback = { element in
-//            element?.sanitize(with: ["b"], bodyFont: .systemFont(ofSize: UIFont.systemFontSize), imageHandler: nil)
-//            print("Hello")
-//        }
-
-        let options: [String: Any] = [
-            DTUseiOS6Attributes: true,              // Enable it to be able to display the attributed string in a UITextView
-            DTDefaultLinkDecoration: false,
-//            DTWillFlushBlockCallBack: sanitizeCallback
-        ]
-        
-        guard let attributedString = NSAttributedString(htmlData: htmlString.data(using: .utf8),
-                                                        options: options,
-                                                        documentAttributes: nil) else {
-            return NSAttributedString(string: htmlString)
-        }
-        
-        return MXKTools.removeDTCoreTextArtifacts(attributedString)
-    }
-    
-    static func attach(_ link: String, to terms: String) -> NSAttributedString {
-        let baseString = NSMutableAttributedString(string: terms)
-        let linkRange = (baseString.string as NSString).range(of: "%@")
-        let formattedLink = NSAttributedString(string: VectorL10n.analyticsPromptTermsLinkNewUser,
-                                               attributes: [.analyticsPromptTermsTextLink: true])
-        baseString.replaceCharacters(in: linkRange, with: formattedLink)
-        
-        return baseString
-    }
+    let termsNewUser = Tools.format(VectorL10n.analyticsPromptTermsNewUser("%@"),
+                                   with: VectorL10n.analyticsPromptTermsLinkNewUser,
+                                   using: BuildSettings.analyticsTermsURL)
+    let termsUpgrade = Tools.format(VectorL10n.analyticsPromptTermsUpgrade("%@"),
+                                   with: VectorL10n.analyticsPromptTermsLinkUpgrade,
+                                   using: BuildSettings.analyticsTermsURL)
 }
 

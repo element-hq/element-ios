@@ -29,6 +29,8 @@ class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
     // MARK: - Properties
 
     // MARK: Private
+    
+    let termsURL: URL
 
     // MARK: Public
 
@@ -37,7 +39,8 @@ class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
     // MARK: - Setup
     
     /// Initialize a view model with the specified prompt type and app display name.
-    init(promptType: AnalyticsPromptType, strings: AnalyticsPromptStringsProtocol) {
+    init(promptType: AnalyticsPromptType, strings: AnalyticsPromptStringsProtocol, termsURL: URL) {
+        self.termsURL = termsURL
         super.init(initialViewState: AnalyticsPromptViewState(promptType: promptType, strings: strings))
     }
 
@@ -70,7 +73,6 @@ class AnalyticsPromptViewModel: AnalyticsPromptViewModelType {
     
     /// Open the service terms link.
     private func openTermsURL() {
-        guard let url = URL(string: "https://element.io/cookie-policy") else { return }
-        UIApplication.shared.open(url)
+        UIApplication.shared.open(termsURL)
     }
 }

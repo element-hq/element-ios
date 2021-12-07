@@ -59,4 +59,14 @@
  */
 + (NSAttributedString *)setTextColorAlpha:(CGFloat)alpha inAttributedString:(NSAttributedString*)attributedString;
 
+/** Builds an attributed string from a string containing html.
+ @param htmlString The html string to use.
+ @param allowedTags The html tags that should be allowed.
+ 
+ Note: It is recommended to include "p" and "body" tags in
+ `allowedTags` as these are often added when parsing.
+ */
++ (NSAttributedString * _Nonnull)attributedStringFromHTML:(NSString * _Nonnull)htmlString
+                                          withAllowedTags:(NSArray<NSString *> * _Nonnull)allowedTags;
+
 @end

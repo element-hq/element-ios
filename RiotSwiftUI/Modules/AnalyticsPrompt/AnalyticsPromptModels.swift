@@ -121,7 +121,3 @@ extension AnalyticsPromptType: Identifiable {
         }
     }
 }
-
-extension NSAttributedString.Key {
-    static let analyticsPromptTermsTextLink = NSAttributedString.Key("TermsTextLink")
-}

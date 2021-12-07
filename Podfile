@@ -69,8 +69,8 @@ abstract_target 'RiotPods' do
 
   # PostHog for analytics
   pod 'PostHog', '~> 1.4.4'
-  # pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
-  pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
+  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
@@ -128,6 +128,7 @@ abstract_target 'RiotPods' do
   end
 
 end
+
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|

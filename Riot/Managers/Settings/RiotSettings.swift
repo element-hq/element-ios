@@ -101,14 +101,12 @@ final class RiotSettings: NSObject {
     
     // MARK: Other
     
-    /// Whether the user has both seen the Matomo analytics prompt and declined it.
-    /// This is used to prevent users who previously opted out from being asked again.
+    /// Whether the user was previously shown the Matomo analytics prompt.
     var hasSeenAnalyticsPrompt: Bool {
         RiotSettings.defaults.object(forKey: UserDefaultsKeys.enableAnalytics) != nil
     }
     
     /// Whether the user has both seen the Matomo analytics prompt and declined it.
-    /// This is used to prevent users who previously opted out from being asked again.
     var hasDeclinedMatomoAnalytics: Bool {
         RiotSettings.defaults.object(forKey: UserDefaultsKeys.matomoAnalytics) != nil && !RiotSettings.defaults.bool(forKey: UserDefaultsKeys.matomoAnalytics)
     }
@@ -119,11 +117,13 @@ final class RiotSettings: NSObject {
         RiotSettings.defaults.bool(forKey: UserDefaultsKeys.matomoAnalytics)
     }
     
-    /// Indicates if the device has already called identify for this session to PostHog.
+    /// `true` when the user has opted in to send analytics.
     @UserDefault(key: UserDefaultsKeys.enableAnalytics, defaultValue: false, storage: defaults)
     var enableAnalytics
     
     /// Indicates if the device has already called identify for this session to PostHog.
+    /// This is separate to `enableAnalytics` as logging out will leave analytics
+    /// enabled but reset identification.
     @UserDefault(key: "isIdentifiedForAnalytics", defaultValue: false, storage: defaults)
     var isIdentifiedForAnalytics
     
