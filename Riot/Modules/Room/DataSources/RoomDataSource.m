@@ -269,7 +269,7 @@ const CGFloat kTypingCellHeight = 24;
     else
     {
         //  if not in a thread, ignore all threaded events
-        if (event.threadId)
+        if (event.isInThread)
         {
             //  ignore the event
             return NO;
@@ -279,7 +279,7 @@ const CGFloat kTypingCellHeight = 24;
         {
             MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
                                                                     inRoom:event.roomId];
-            if (relatedEvent.threadId)
+            if (relatedEvent.isInThread)
             {
                 //  ignore the event
                 return NO;
