@@ -148,6 +148,15 @@ extension Analytics {
         client.screen(event)
     }
     
+    /// Track an element that has been tapped
+    /// - Parameters:
+    ///   - tap: The element that was tapped
+    ///   - index: The index of the element, if it's in a list of elements
+    func trackTap(_ tap: AnalyticsElement, index: Int?) {
+        let event = AnalyticsEvent.Click(index: index, name: tap.elementName)
+        client.capture(event)
+    }
+    
     /// Track an E2EE error that occurred
     /// - Parameters:
     ///   - reason: The error that occurred.

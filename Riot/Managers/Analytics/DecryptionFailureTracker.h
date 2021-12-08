@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "DecryptionFailure.h"
+@class DecryptionFailureTracker;
 
 @class Analytics;
 @import MatrixSDK;

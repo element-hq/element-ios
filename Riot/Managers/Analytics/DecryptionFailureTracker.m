@@ -91,31 +91,32 @@ NSString *const kDecryptionFailureTrackerAnalyticsCategory = @"e2e.failure";
         return;
     }
 
-    DecryptionFailure *decryptionFailure = [[DecryptionFailure alloc] init];
-    decryptionFailure.failedEventId = event.eventId;
+    NSString *failedEventId = event.eventId;
+    DecryptionFailureReason reason;
 
     // Categorise the error
     switch (event.decryptionError.code)
     {
         case MXDecryptingErrorUnknownInboundSessionIdCode:
-            decryptionFailure.reason = DecryptionFailureReasonOlmKeysNotSent;
+            reason = DecryptionFailureReasonOlmKeysNotSent;
             break;
 
         case MXDecryptingErrorOlmCode:
-            decryptionFailure.reason = DecryptionFailureReasonOlmIndexError;
+            reason = DecryptionFailureReasonOlmIndexError;
             break;
 
         case MXDecryptingErrorEncryptionNotEnabledCode:
         case MXDecryptingErrorUnableToDecryptCode:
-            decryptionFailure.reason = DecryptionFailureReasonUnexpected;
+            reason = DecryptionFailureReasonUnexpected;
             break;
 
         default:
-            decryptionFailure.reason = DecryptionFailureReasonUnspecified;
+            reason = DecryptionFailureReasonUnspecified;
             break;
     }
 
-    reportedFailures[event.eventId] = decryptionFailure;
+    reportedFailures[event.eventId] = [[DecryptionFailure alloc] initWithFailedEventId:failedEventId
+                                                                                reason:reason];
 }
 
 - (void)dispatch

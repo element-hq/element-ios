@@ -76,8 +76,6 @@ extension DecryptionFailureReason {
             return .OlmIndexError
         case .unexpected:
             return .UnknownError
-        default:
-            return .UnknownError
         }
     }
 }

@@ -48,6 +48,7 @@ import AnalyticsEvents
     case myGroups
     case inviteFriends
     
+    /// The screen name reported to the AnalyticsEvent.
     var screenName: AnalyticsEvent.Screen.ScreenName {
         switch self {
         case .sidebar:
