@@ -394,7 +394,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                   session: roomNavigationParameters.mxSession,
-                                                                  roomId: roomNavigationParameters.roomId,
+                                                                  parentSpaceId: self.currentSpaceId, roomId: roomNavigationParameters.roomId,
                                                                   eventId: roomNavigationParameters.eventId)
         
         self.showRoom(with: roomCoordinatorParameters,
@@ -407,7 +407,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         // RoomCoordinator will be presented by the split view.
         // As we don't know which navigation controller instance will be used,
         // give the NavigationRouterStore instance and let it find the associated navigation controller
-        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, roomId: roomId, eventId: eventId)
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, parentSpaceId: self.currentSpaceId, roomId: roomId, eventId: eventId)
         
         self.showRoom(with: roomCoordinatorParameters, completion: completion)
     }
@@ -417,7 +417,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         // RoomCoordinator will be presented by the split view
         // We don't which navigation controller instance will be used
         // Give the NavigationRouterStore instance and let it find the associated navigation controller if needed
-        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, previewData: previewData)
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, parentSpaceId: self.currentSpaceId, previewData: previewData)
         
         self.showRoom(with: roomCoordinatorParameters)
     }
@@ -425,7 +425,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     private func showRoomPreview(withNavigationParameters roomPreviewNavigationParameters: RoomPreviewNavigationParameters, completion: (() -> Void)?) {
         
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
-                                                                  previewData: roomPreviewNavigationParameters.previewData)
+                                                                  parentSpaceId: self.currentSpaceId, previewData: roomPreviewNavigationParameters.previewData)
         
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: roomPreviewNavigationParameters.presentationParameters.stackAboveVisibleViews,

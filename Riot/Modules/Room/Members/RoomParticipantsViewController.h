@@ -80,6 +80,11 @@
 @property (nonatomic) MXRoom *mxRoom;
 
 /**
+ The ID of the parent space. `nil` for home space
+ */
+@property (nonatomic) NSString *parentSpaceId;
+
+/**
  Enable mention option in member details view. NO by default
  */
 @property (nonatomic) BOOL enableMention;

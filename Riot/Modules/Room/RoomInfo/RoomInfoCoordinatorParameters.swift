@@ -29,16 +29,18 @@ class RoomInfoCoordinatorParameters: NSObject {
     
     let session: MXSession
     let room: MXRoom
+    let parentSpaceId: String?
     let initialSection: RoomInfoSection
     
-    init(session: MXSession, room: MXRoom, initialSection: RoomInfoSection) {
+    init(session: MXSession, room: MXRoom, parentSpaceId: String?, initialSection: RoomInfoSection) {
         self.session = session
         self.room = room
+        self.parentSpaceId = parentSpaceId
         self.initialSection = initialSection
         super.init()
     }
     
-    convenience init(session: MXSession, room: MXRoom) {
-        self.init(session: session, room: room, initialSection: .none)
+    convenience init(session: MXSession, room: MXRoom, parentSpaceId: String?) {
+        self.init(session: session, room: room, parentSpaceId: parentSpaceId, initialSection: .none)
     }
 }

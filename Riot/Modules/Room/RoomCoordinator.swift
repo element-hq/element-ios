@@ -77,6 +77,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.roomViewController = RoomViewController.instantiate()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
+        self.roomViewController.parentSpaceId = parameters.parentSpaceId
+        
         super.init()
     }
     

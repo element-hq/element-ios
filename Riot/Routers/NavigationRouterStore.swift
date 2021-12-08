@@ -49,11 +49,11 @@ class NavigationRouterStore: NavigationRouterStoreProtocol {
         return navigationRouter
     }
     
-    // MARK: - Private
-    
-    private func findNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType? {
+    func findNavigationRouter(for navigationController: UINavigationController) -> NavigationRouterType? {
         return self.navigationRouters[navigationController]
     }
+    
+    // MARK: - Private
     
     private func removeNavigationRouter(for navigationController: UINavigationController) {
         self.navigationRouters[navigationController] = nil
