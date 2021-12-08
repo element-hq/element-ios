@@ -418,7 +418,8 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                                                                         session: roomNavigationParameters.mxSession,
                                                                         roomId: roomNavigationParameters.roomId,
                                                                         eventId: roomNavigationParameters.eventId,
-                                                                        threadId: roomNavigationParameters.threadParameters?.threadId)
+                                                                        threadId: roomNavigationParameters.threadParameters?.threadId,
+                                                                        displayConfiguration: .forThreads)
             
             dispatchGroup.enter()
             let threadCoordinator = RoomCoordinator(parameters: threadCoordinatorParameters)
@@ -447,11 +448,13 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             }
         } else {
+            let isThread = roomNavigationParameters.threadParameters != nil
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                       session: roomNavigationParameters.mxSession,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
-                                                                      threadId: roomNavigationParameters.threadParameters?.threadId)
+                                                                      threadId: roomNavigationParameters.threadParameters?.threadId,
+                                                                      displayConfiguration: isThread ? .forThreads : .default)
             
             self.showRoom(with: roomCoordinatorParameters,
                           stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,
