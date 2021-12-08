@@ -1,1 +1,9 @@
 
+
+"NSFaceIDUsageDescription" = "Face ID sa používa na prístup k aplikácii.";
+"NSCalendarsUsageDescription" = "Zobrazte svoje naplánované stretnutia v aplikácii.";
+"NSContactsUsageDescription" = "Element zobrazí vaše kontakty, aby ste ich mohli pozvať do chatu.";
+"NSMicrophoneUsageDescription" = "Element potrebuje prístup k mikrofónu, aby mohol uskutočňovať a prijímať hovory, nahrávať videá a hlasové správy.";
+"NSPhotoLibraryUsageDescription" = "Knižnica fotografií sa používa na odosielanie fotografií a videí.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Fotoaparát sa používa na snímanie fotografií a videí, uskutočňovanie videohovorov.";
