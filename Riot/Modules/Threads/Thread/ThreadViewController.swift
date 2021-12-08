@@ -70,6 +70,10 @@ class ThreadViewController: RoomViewController {
         super.onButtonPressed(sender)
     }
     
+    override func handleTypingNotification(_ typing: Bool) {
+        //  no-op
+    }
+    
     private func showThreadActions() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
