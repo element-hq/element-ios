@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 import UIKit
-import MatrixKit
 
 @objc protocol BaseBubbleCellType: Themable {
     var bubbleCellContentView: BubbleCellContentView? { get }

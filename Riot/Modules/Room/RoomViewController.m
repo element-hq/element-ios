@@ -122,7 +122,6 @@
 #import "StickerPickerViewController.h"
 
 #import "EventFormatter.h"
-#import <MatrixKit/MXKSlashCommands.h>
 
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"
@@ -2690,7 +2689,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             cellViewClass = RoomGroupCallStatusBubbleCell.class;
         }
-        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage)
+        else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
         {
             if (bubbleData.isPaginationFirstBubble)
             {

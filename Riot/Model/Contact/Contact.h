@@ -14,7 +14,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
+#import <MatrixSDK/MatrixSDK.h>
 
 @interface Contact : MXKContact
 

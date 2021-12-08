@@ -24,8 +24,6 @@
 
 #import "MXRoom+Riot.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "RoomViewController.h"
 
 #import "InviteRecentTableViewCell.h"

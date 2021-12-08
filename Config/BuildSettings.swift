@@ -16,8 +16,6 @@
 
 import Foundation
 
-import MatrixKit
-
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
 @objcMembers

@@ -29,7 +29,7 @@
 
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController ()
+@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
 {
     // Search result
     NSString *currentSearchText;

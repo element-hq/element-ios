@@ -14,7 +14,8 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import <MatrixSDK/MatrixSDK.h>
+#import "MatrixKit.h"
 
 /**
  Define a `MXGroup` category at Riot level.

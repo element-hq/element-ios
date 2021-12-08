@@ -30,4 +30,6 @@ CODE_SIGN_ENTITLEMENTS = SiriIntents/SiriIntents.entitlements
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks    
 SKIP_INSTALL = YES
 
+SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/SiriIntents-Bridging-Header.h
+
 SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h
