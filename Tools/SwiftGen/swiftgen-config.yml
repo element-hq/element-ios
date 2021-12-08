@@ -9,21 +9,20 @@ ib:
     templateName: scenes-swift4
     output: Storyboards.swift
 strings:
-  inputs: Assets/en.lproj/Vector.strings
-  outputs:
-    templatePath: Templates/Strings/flat-swift4-vector.stencil
-    output: Strings.swift
-    params:
-      className: VectorL10n
-      publicAccess: true
-strings:
-  inputs: Modules/MatrixKit/Assets/MatrixKitAssets.bundle/en.lproj/MatrixKit.strings
-  outputs:
-    templatePath: Templates/Strings/matrixkit-flat-swift4-vector.stencil
-    output: MatrixKitStrings.swift
-    params:
-      className: MatrixKitL10n
-      publicAccess: true
+  - inputs: Assets/en.lproj/Vector.strings
+    outputs:
+      templatePath: Templates/Strings/flat-swift4-vector.stencil
+      output: Strings.swift
+      params:
+        className: VectorL10n
+        publicAccess: true
+  - inputs: Modules/MatrixKit/Assets/MatrixKitAssets.bundle/en.lproj/MatrixKit.strings
+    outputs:
+      templatePath: Templates/Strings/matrixkit-flat-swift4-vector.stencil
+      output: MatrixKitStrings.swift
+      params:
+        className: MatrixKitL10n
+        publicAccess: true
 xcassets:  
   inputs:
     - Assets/Images.xcassets
