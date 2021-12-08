@@ -19,6 +19,10 @@ import Foundation
 @objcMembers
 public class ThreadDataSource: RoomDataSource {
     
-    
+    public override func finalizeInitialization() {
+        super.finalizeInitialization()
+        showReadMarker = false
+        showBubbleReceipts = false
+    }
     
 }
