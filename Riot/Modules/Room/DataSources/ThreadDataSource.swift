@@ -26,4 +26,20 @@ public class ThreadDataSource: RoomDataSource {
         showTypingRow = false
     }
     
+    public override var showReadMarker: Bool {
+        get {
+            return false
+        } set {
+            _ = newValue
+        }
+    }
+    
+    public override var showBubbleReceipts: Bool {
+        get {
+            return false
+        } set {
+            _ = newValue
+        }
+    }
+    
 }

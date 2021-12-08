@@ -4510,7 +4510,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self checkReadMarkerVisibility];
     
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
-    if (!self.roomDataSource.isLive && ![self isRoomPreview])
+    if (!self.roomDataSource.isLive && !self.roomDataSource.threadId && ![self isRoomPreview])
     {
         CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
@@ -5080,7 +5080,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     // Retrieve the unread messages count
                     NSUInteger unreadCount = self.roomDataSource.room.summary.localUnreadEventCount;
                     
-                    self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    if (!self.roomDataSource.threadId)
+                    {
+                        self.scrollToBottomBadgeLabel.text = unreadCount ? [NSString stringWithFormat:@"%lu", unreadCount] : nil;
+                    }
+                    else
+                    {
+                        self.scrollToBottomBadgeLabel.text = nil;
+                    }
                     self.scrollToBottomHidden = NO;
                 }
                 else
