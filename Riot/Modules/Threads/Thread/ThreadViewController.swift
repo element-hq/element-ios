@@ -39,6 +39,12 @@ class ThreadViewController: RoomViewController {
         return UINib(nibName: String(describing: RoomViewController.self), bundle: .main)
     }
     
+    override func finalizeInit() {
+        super.finalizeInit()
+        
+        self.saveProgressTextInput = false
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
