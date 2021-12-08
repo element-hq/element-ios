@@ -46,6 +46,11 @@
 @property(nonatomic) BOOL showBubbleDateTimeOnSelection;
 
 /**
+ Flag to decide displaying typing row in the data source. Default is YES.
+ */
+@property (nonatomic, assign) BOOL showTypingRow;
+
+/**
  Current room members trust level for an encrypted room.
  */
 @property(nonatomic, readonly) RoomEncryptionTrustLevel encryptionTrustLevel;

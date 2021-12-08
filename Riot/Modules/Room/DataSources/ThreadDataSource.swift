@@ -23,6 +23,7 @@ public class ThreadDataSource: RoomDataSource {
         super.finalizeInitialization()
         showReadMarker = false
         showBubbleReceipts = false
+        showTypingRow = false
     }
     
 }

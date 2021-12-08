@@ -132,6 +132,8 @@ const CGFloat kTypingCellHeight = 24;
         [self.room.summary enableTrustTracking:YES];
         [self fetchEncryptionTrustedLevel];
     }
+    
+    self.showTypingRow = YES;
 }
 
 - (id<RoomDataSourceDelegate>)roomDataSourceDelegate
@@ -325,28 +327,30 @@ const CGFloat kTypingCellHeight = 24;
             [self updateStatusInfo];
         }
         
-        if (!self.currentTypingUsers)
+        if (self.showTypingRow && self.currentTypingUsers)
+        {
+            self.typingCellIndex = bubbles.count;
+            return bubbles.count + 1;
+        }
+        else
         {
             self.typingCellIndex = -1;
-            
-            //  we may have changed the number of bubbles in this block, consider that change
             return bubbles.count;
         }
-        
-        self.typingCellIndex = bubbles.count;
-        return bubbles.count + 1;
     }
     
-    if (!self.currentTypingUsers)
+    if (self.showTypingRow && self.currentTypingUsers)
+    {
+        self.typingCellIndex = count;
+        return count + 1;
+    }
+    else
     {
         self.typingCellIndex = -1;
-
+        
         //  leave it as is, if coming as 0 from super
         return count;
     }
-    
-    self.typingCellIndex = count;
-    return count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
