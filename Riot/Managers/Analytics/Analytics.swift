@@ -32,10 +32,10 @@ import AnalyticsEvents
     /// Whether or not the object is enabled and sending events to the server.
     var isRunning: Bool { client.isRunning }
     
-    /// Whether the user has yet to opt in or out of analytics collection.
+    /// Whether to show the user the analytics opt in prompt.
     var shouldShowAnalyticsPrompt: Bool {
-        // Show an analytics prompt when the user hasn't seen the PostHog prompt before.
-        !RiotSettings.shared.hasSeenAnalyticsPrompt
+        // Only show the prompt once, and when analytics are configured in BuildSettings.
+        !RiotSettings.shared.hasSeenAnalyticsPrompt && PHGPostHogConfiguration.standard != nil
     }
     
     /// Indicates whether the user previously accepted Matomo analytics and should be shown the upgrade prompt.

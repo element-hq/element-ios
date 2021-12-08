@@ -28,8 +28,8 @@ class AnalyticsTests: XCTestCase {
         let displayUpgradeMessage = Analytics.shared.promptShouldDisplayUpgradeMessage
         
         // Then the regular prompt should be shown.
-        XCTAssertTrue(showPrompt, "A prompt should be shown when for a new user")
-        XCTAssertFalse(displayUpgradeMessage, "The prompt should not ask about upgrading from Matomo")
+        XCTAssertTrue(showPrompt, "A prompt should be shown for a new user.")
+        XCTAssertFalse(displayUpgradeMessage, "The prompt should not ask about upgrading from Matomo.")
     }
     
     func testAnalyticsPromptUpgradeFromMatomo() {
@@ -42,8 +42,8 @@ class AnalyticsTests: XCTestCase {
         let displayUpgradeMessage = Analytics.shared.promptShouldDisplayUpgradeMessage
         
         // Then an upgrade prompt should be shown.
-        XCTAssertTrue(showPrompt, "A prompt should be shown when for a new user")
-        XCTAssertTrue(displayUpgradeMessage, "The prompt should not ask about upgrading from Matomo")
+        XCTAssertTrue(showPrompt, "A prompt should be shown to the user.")
+        XCTAssertTrue(displayUpgradeMessage, "The prompt should ask about upgrading from Matomo.")
     }
     
     func testAnalyticsPromptUserDeclinedMatomo() {
@@ -53,9 +53,11 @@ class AnalyticsTests: XCTestCase {
         
         // When the user is prompted for analytics
         let showPrompt = Analytics.shared.shouldShowAnalyticsPrompt
+        let displayUpgradeMessage = Analytics.shared.promptShouldDisplayUpgradeMessage
         
-        // Then no prompt should be shown.
-        XCTAssertFalse(showPrompt, "A prompt should be shown when for a new user")
+        // Then the regular prompt should be shown.
+        XCTAssertTrue(showPrompt, "A prompt should be shown to the user.")
+        XCTAssertFalse(displayUpgradeMessage, "The prompt should not ask about upgrading from Matomo.")
     }
     
     func testAnalyticsPromptUserAcceptedPostHog() {
@@ -66,6 +68,6 @@ class AnalyticsTests: XCTestCase {
         let showPrompt = Analytics.shared.shouldShowAnalyticsPrompt
         
         // Then no prompt should be shown.
-        XCTAssertFalse(showPrompt, "A prompt should be shown when for a new user")
+        XCTAssertFalse(showPrompt, "A prompt should not be shown any more.")
     }
 }

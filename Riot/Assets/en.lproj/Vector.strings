@@ -78,6 +78,7 @@
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
+"accessibility_button_label" = "button";
 
 // Authentication
 "auth_login" = "Log in";

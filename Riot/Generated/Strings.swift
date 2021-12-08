@@ -15,6 +15,10 @@ public class VectorL10n: NSObject {
   public static var accept: String { 
     return VectorL10n.tr("Vector", "accept") 
   }
+  /// button
+  public static var accessibilityButtonLabel: String {
+    return VectorL10n.tr("Vector", "accessibility_button_label")
+  }
   /// checkbox
   public static var accessibilityCheckboxLabel: String { 
     return VectorL10n.tr("Vector", "accessibility_checkbox_label") 

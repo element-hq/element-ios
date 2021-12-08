@@ -40,6 +40,8 @@ struct AnalyticsPrompt: View {
             Text("\(viewModel.viewState.promptType.description)\n")
             
             AnalyticsPromptTermsText(attributedString: viewModel.viewState.promptType.termsStrings)
+                .accessibilityLabel(Text(viewModel.viewState.promptType.termsStrings.string))
+                .accessibilityValue(Text(VectorL10n.accessibilityButtonLabel))
                 .onTapGesture {
                     viewModel.send(viewAction: .openTermsURL)
                 }
@@ -50,10 +52,15 @@ struct AnalyticsPrompt: View {
     private var checkmarkList: some View {
         VStack(alignment: .leading) {
             AnalyticsPromptCheckmarkItem(attributedString: viewModel.viewState.strings.point1)
+                .accessibilityLabel(Text(viewModel.viewState.strings.point1.string))
+            
             AnalyticsPromptCheckmarkItem(attributedString: viewModel.viewState.strings.point2)
+                .accessibilityLabel(Text(viewModel.viewState.strings.point2.string))
+            
             AnalyticsPromptCheckmarkItem(string: VectorL10n.analyticsPromptPoint3)
         }
         .font(theme.fonts.body)
+        .frame(maxWidth: .infinity)
     }
     
     /// The stack of enable/disable buttons.
@@ -89,6 +96,7 @@ struct AnalyticsPrompt: View {
                         .padding(.bottom, 2)
                     
                     descriptionText
+                        .font(theme.fonts.body)
                         .foregroundColor(theme.colors.secondaryContent)
                         .multilineTextAlignment(.center)
                     
