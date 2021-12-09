@@ -57,7 +57,6 @@ struct ThemableNavigationBar: View {
                     .foregroundColor(theme.colors.secondaryContent)
             }
         }
-        .padding(.top, 25)
         .padding(.horizontal)
         .frame(height: 44)
         .background(theme.colors.background)

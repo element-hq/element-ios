@@ -83,7 +83,7 @@ struct SpaceCreationRooms: View {
                 viewModel.send(viewAction: .done)
             }
         }
-        .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
     }
 }
 

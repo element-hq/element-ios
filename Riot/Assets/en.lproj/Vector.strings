@@ -67,6 +67,7 @@
 "done" = "Done";
 "private" = "Private";
 "public" = "Public";
+"stop" = "Stop";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -1761,8 +1762,8 @@ Tap the + to start adding people.";
 "spaces_creation_address_already_exists" = "%@\nalready exists";
 "spaces_creation_public_space_title" = "Your public space";
 "spaces_creation_private_space_title" = "Your private space";
-"spaces_creation_cancel_title" = "Please confirm";
-"spaces_creation_cancel_message" = "You will need to start from scratch next time.";
+"spaces_creation_cancel_title" = "Stop creating a space?";
+"spaces_creation_cancel_message" = "Your progress will be lost.";
 
 "spaces_creation_new_rooms_title" = "What are some discussions you’ll have?";
 "spaces_creation_new_rooms_message" = "We’ll create a room for each one.";

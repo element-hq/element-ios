@@ -29,13 +29,13 @@ class SpaceCreationPostProcessViewModelTests: XCTestCase {
     var context: SpaceCreationPostProcessViewModelType.Context!
 
     override func setUpWithError() throws {
-        service = MockSpaceCreationPostProcessService(tasks: Constant.defaultTasks)
+        service = MockSpaceCreationPostProcessService(tasks: MockSpaceCreationPostProcessService.defaultTasks)
         viewModel = SpaceCreationPostProcessViewModel.makeSpaceCreationPostProcessViewModel(spaceCreationPostProcessService: service)
         context = viewModel.context
     }
 
     func testInitialState() {
-        XCTAssertEqual(context.viewState.tasks, Constant.defaultTasks)
+        XCTAssertEqual(context.viewState.tasks, MockSpaceCreationPostProcessService.defaultTasks)
         XCTAssertEqual(context.viewState.errorCount, 1)
         XCTAssertEqual(context.viewState.isFinished, false)
     }
@@ -43,8 +43,8 @@ class SpaceCreationPostProcessViewModelTests: XCTestCase {
     func testUpateToNextTask() {
         let tasksPublisher = context.$viewState.map(\.tasks).removeDuplicates()
         let awaitDeferred = xcAwaitDeferred(tasksPublisher)
-        service.simulateUpdate(tasks: Constant.nextStepTasks)
-        XCTAssertEqual(try awaitDeferred(), Constant.nextStepTasks)
+        service.simulateUpdate(tasks: MockSpaceCreationPostProcessService.nextStepTasks)
+        XCTAssertEqual(try awaitDeferred(), MockSpaceCreationPostProcessService.nextStepTasks)
         XCTAssertEqual(context.viewState.errorCount, 2)
         XCTAssertEqual(context.viewState.isFinished, false)
     }
@@ -52,8 +52,8 @@ class SpaceCreationPostProcessViewModelTests: XCTestCase {
     func testLastTaskDone() {
         let tasksPublisher = context.$viewState.map(\.tasks).removeDuplicates()
         let awaitDeferred = xcAwaitDeferred(tasksPublisher)
-        service.simulateUpdate(tasks: Constant.lastTaskDone)
-        XCTAssertEqual(try awaitDeferred(), Constant.lastTaskDone)
+        service.simulateUpdate(tasks: MockSpaceCreationPostProcessService.lastTaskDoneWithError)
+        XCTAssertEqual(try awaitDeferred(), MockSpaceCreationPostProcessService.lastTaskDoneWithError)
         XCTAssertEqual(context.viewState.errorCount, 2)
         XCTAssertEqual(context.viewState.isFinished, true)
     }

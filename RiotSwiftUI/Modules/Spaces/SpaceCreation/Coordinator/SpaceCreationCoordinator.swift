@@ -257,10 +257,10 @@ final class SpaceCreationCoordinator: Coordinator {
     private func cancel() {
         if parameters.creationParameters.isModified {
             let alert = UIAlertController(title: VectorL10n.spacesCreationCancelTitle, message: VectorL10n.spacesCreationCancelMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .destructive, handler: { action in
+            alert.addAction(UIAlertAction(title: VectorL10n.stop, style: .destructive, handler: { action in
                 self.callback?(.cancel)
             }))
-            alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: VectorL10n.continue, style: .cancel, handler: nil))
             navigationRouter.present(alert, animated: true)
         } else {
             self.callback?(.cancel)

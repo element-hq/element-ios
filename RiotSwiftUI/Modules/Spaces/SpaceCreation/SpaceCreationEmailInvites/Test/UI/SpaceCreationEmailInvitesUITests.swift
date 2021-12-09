@@ -39,6 +39,8 @@ class SpaceCreationEmailInvitesUITests: MockScreenTest {
             verifyEmailValues()
         case .emailValidationFailed:
             verifyEmailValues()
+        case .loading:
+            verifyEmailValues()
         }
     }
     

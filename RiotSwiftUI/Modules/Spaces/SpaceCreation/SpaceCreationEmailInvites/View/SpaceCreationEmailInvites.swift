@@ -40,7 +40,6 @@ struct SpaceCreationEmailInvites: View {
                 viewModel.send(viewAction: .cancel)
             }
             mainView
-                .frame(width: .infinity, height: .infinity)
                 .animation(.easeInOut(duration: 0.2), value: viewModel.viewState.loading)
                 .modifier(WaitOverlay(isLoading: .constant(viewModel.viewState.loading)))
         }
@@ -65,7 +64,7 @@ struct SpaceCreationEmailInvites: View {
             }
             footerView
         }
-        .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
     }
 
     @ViewBuilder

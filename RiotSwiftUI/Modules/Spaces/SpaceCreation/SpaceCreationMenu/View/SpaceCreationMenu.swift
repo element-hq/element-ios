@@ -57,7 +57,7 @@ struct SpaceCreationMenu: View {
                     .frame(minHeight: reader.size.height - 2)
                 }
             }
-            .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
         }
         .background(theme.colors.background)
     }

@@ -69,7 +69,7 @@ struct RoundedBorderTextField: View {
                 .frame(height: 30)
                 .modifier(ClearViewModifier(alignment: .center, text: $text))
             }
-            .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 0))
+            .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: text.isEmpty ? 8 : 0))
             .overlay(RoundedRectangle(cornerRadius: 8)
                         .stroke(editing ? theme.colors.accent : (footerText != nil && isError ? theme.colors.alert : theme.colors.quinaryContent), lineWidth: editing || (footerText != nil && isError) ? 2 : 1))
 

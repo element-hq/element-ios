@@ -41,7 +41,7 @@ struct SpaceCreationPostProcess: View {
             buttonsPanel
         }
         .animation(.easeIn(duration: 0.2), value: viewModel.viewState.errorCount)
-        .padding(EdgeInsets(top: 24, leading: 16, bottom: 24, trailing: 16))
+        .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
         .navigationBarHidden(true)
         .background(theme.colors.background)
         .frame(maxHeight: .infinity)

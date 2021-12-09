@@ -5039,11 +5039,11 @@ public class VectorL10n: NSObject {
   public static func spacesCreationAddressInvalidCharacters(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "spaces_creation_address_invalid_characters", p1)
   }
-  /// You will need to start from scratch next time.
+  /// Your progress will be lost.
   public static var spacesCreationCancelMessage: String { 
     return VectorL10n.tr("Vector", "spaces_creation_cancel_message") 
   }
-  /// Please confirm
+  /// Stop creating a space?
   public static var spacesCreationCancelTitle: String { 
     return VectorL10n.tr("Vector", "spaces_creation_cancel_title") 
   }
@@ -5238,6 +5238,10 @@ public class VectorL10n: NSObject {
   /// Start
   public static var start: String { 
     return VectorL10n.tr("Vector", "start") 
+  }
+  /// Stop
+  public static var stop: String { 
+    return VectorL10n.tr("Vector", "stop") 
   }
   /// Element is a new type of messenger and collaboration app that:\n\n1. Puts you in control to preserve your privacy\n2. Lets you communicate with anyone in the Matrix network, and even beyond by integrating with apps such as Slack\n3. Protects you from advertising, datamining, backdoors and walled gardens\n4. Secures you through end-to-end encryption, with cross-signing to verify others\n\nElement is completely different from other messaging and collaboration apps because it is decentralised and open source.\n\nElement lets you self-host - or choose a host - so that you have privacy, ownership and control of your data and conversations. It gives you access to an open network; so you’re not just stuck speaking to other Element users only. And it is very secure.\n\nElement is able to do all this because it operates on Matrix - the standard for open, decentralised communication. \n\nElement puts you in control by letting you choose who hosts your conversations. From the Element app, you can choose to host in different ways:\n\n1. Get a free account on the matrix.org public server\n2. Self-host your account by running a server on your own hardware\n3. Sign up for an account on a custom server by simply subscribing to the Element Matrix Services hosting platform\n\nWhy choose Element?\n\nOWN YOUR DATA: You decide where to keep your data and messages. You own it and control it, not some MEGACORP that mines your data or gives access to third parties.\n\nOPEN MESSAGING AND COLLABORATION: You can chat with anyone else in the Matrix network, whether they’re using Element or another Matrix app, and even if they are using a different messaging system of the likes of Slack, IRC or XMPP.\n\nSUPER-SECURE: Real end-to-end encryption (only those in the conversation can decrypt messages), and cross-signing to verify the devices of conversation participants.\n\nCOMPLETE COMMUNICATION: Messaging, voice and video calls, file sharing, screen sharing and a whole bunch of integrations, bots and widgets. Build rooms, communities, stay in touch and get things done.\n\nEVERYWHERE YOU ARE: Stay in touch wherever you are with fully synchronised message history across all your devices and on the web at https://element.io/app.
   public static var storeFullDescription: String { 

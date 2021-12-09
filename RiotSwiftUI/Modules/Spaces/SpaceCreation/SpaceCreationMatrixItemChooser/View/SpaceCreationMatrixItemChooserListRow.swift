@@ -55,7 +55,7 @@ struct SpaceCreationMatrixItemChooserListRow: View {
                 Image(systemName: "circle").renderingMode(.template).foregroundColor(theme.colors.tertiaryContent)
             }
         }
-        //add to a style
+        .contentShape(Rectangle())
         .padding(.horizontal)
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
