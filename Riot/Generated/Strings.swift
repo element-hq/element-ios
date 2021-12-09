@@ -16,8 +16,8 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "accept") 
   }
   /// button
-  public static var accessibilityButtonLabel: String {
-    return VectorL10n.tr("Vector", "accessibility_button_label")
+  public static var accessibilityButtonLabel: String { 
+    return VectorL10n.tr("Vector", "accessibility_button_label") 
   }
   /// checkbox
   public static var accessibilityCheckboxLabel: String { 
@@ -36,12 +36,16 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "active_call_details", p1)
   }
   /// Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
-  public static var analyticsPromptDescriptionNewUser: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_description_new_user") 
+  public static var analyticsPromptMessageNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_message_new_user") 
   }
   /// You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
-  public static var analyticsPromptDescriptionUpgrade: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_description_upgrade") 
+  public static var analyticsPromptMessageUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_message_upgrade") 
+  }
+  /// Not now
+  public static var analyticsPromptNotNow: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_not_now") 
   }
   /// We <b>don't</b> record or profile any account data
   public static var analyticsPromptPoint1: String { 

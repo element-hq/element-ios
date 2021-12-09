@@ -165,11 +165,18 @@ final class BuildSettings: NSObject {
     static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    #warning("Testing environment.")
-    /// Host to use for PostHog analytics. Set to nil to disable analytics.
+    #if DEBUG
+    /// Host to use for PostHog analytics during development. Set to nil to disable analytics in debug builds.
     static let analyticsHost: String? = "https://posthog-poc.lab.element.dev"
-    /// Public key for submitting analytics. Set to nil to disable analytics.
+    /// Public key for submitting analytics during development. Set to nil to disable analytics in debug builds.
     static let analyticsKey: String? = "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8"
+    #else
+    /// Host to use for PostHog analytics. Set to nil to disable analytics.
+    static let analyticsHost: String? = "https://posthog.hss.element.io"
+    /// Public key for submitting analytics. Set to nil to disable analytics.
+    static let analyticsKey: String? = "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO"
+    #endif
+    
     /// The URL to open with more information about analytics terms.
     static let analyticsTermsURL = URL(string: "https://element.io/cookie-policy")!
     

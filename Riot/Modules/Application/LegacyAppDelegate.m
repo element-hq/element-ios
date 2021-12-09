@@ -650,7 +650,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Check if there is crash log to send
     if (RiotSettings.shared.enableAnalytics)
     {
+        #if DEBUG
+        // Don't show alerts for crashes during development.
+        #else
         [self checkExceptionToReport];
+        #endif
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.

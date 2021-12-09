@@ -63,12 +63,12 @@ enum AnalyticsPromptType {
 
 extension AnalyticsPromptType {
     /// The main description string that should be displayed.
-    var description: String {
+    var message: String {
         switch self {
         case .newUser:
-            return VectorL10n.analyticsPromptDescriptionNewUser
+            return VectorL10n.analyticsPromptMessageNewUser
         case .upgrade:
-            return VectorL10n.analyticsPromptDescriptionUpgrade
+            return VectorL10n.analyticsPromptMessageUpgrade
         }
     }
     
@@ -94,7 +94,7 @@ extension AnalyticsPromptType {
     var disableButtonTitle: String {
         switch self {
         case .newUser:
-            return VectorL10n.cancel
+            return VectorL10n.analyticsPromptNotNow
         case .upgrade:
             return VectorL10n.analyticsPromptStop
         }
@@ -120,4 +120,9 @@ extension AnalyticsPromptType: Identifiable {
             return "upgrade"
         }
     }
+}
+
+// For the RiotSwiftUI target presentation.
+extension AnalyticsPromptType: CustomStringConvertible {
+    var description: String { id }
 }

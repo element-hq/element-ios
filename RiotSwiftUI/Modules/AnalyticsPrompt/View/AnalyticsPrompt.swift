@@ -27,6 +27,11 @@ struct AnalyticsPrompt: View {
     // MARK: Private
     
     @Environment(\.theme) private var theme
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    private var horizontalPadding: CGFloat {
+        horizontalSizeClass == .regular ? 50 : 16
+    }
     
     // MARK: Public
     
@@ -35,9 +40,9 @@ struct AnalyticsPrompt: View {
     // MARK: Views
     
     /// The text that explains what analytics will do.
-    private var descriptionText: some View {
+    private var messageText: some View {
         VStack {
-            Text("\(viewModel.viewState.promptType.description)\n")
+            Text("\(viewModel.viewState.promptType.message)\n")
             
             AnalyticsPromptTermsText(attributedString: viewModel.viewState.promptType.termsStrings)
                 .accessibilityLabel(Text(viewModel.viewState.promptType.termsStrings.string))
@@ -63,6 +68,31 @@ struct AnalyticsPrompt: View {
         .frame(maxWidth: .infinity)
     }
     
+    private var mainContent: some View {
+        VStack {
+            Image(uiImage: Asset.Images.analyticsLogo.image)
+                .padding(.bottom, 25)
+            
+            Text(VectorL10n.analyticsPromptTitle(viewModel.viewState.strings.appDisplayName))
+                .font(theme.fonts.title2B)
+                .foregroundColor(theme.colors.primaryContent)
+                .padding(.bottom, 2)
+            
+            messageText
+                .font(theme.fonts.body)
+                .foregroundColor(theme.colors.secondaryContent)
+                .multilineTextAlignment(.center)
+            
+            Divider()
+                .background(theme.colors.quinaryContent)
+                .padding(.vertical, 28)
+            
+            checkmarkList
+                .foregroundColor(theme.colors.secondaryContent)
+                .padding(.bottom, 16)
+        }
+    }
+    
     /// The stack of enable/disable buttons.
     private var buttons: some View {
         VStack {
@@ -77,45 +107,27 @@ struct AnalyticsPrompt: View {
                 Text(viewModel.viewState.promptType.disableButtonTitle)
                     .font(theme.fonts.bodySB)
                     .foregroundColor(theme.colors.accent)
+                    .padding(12)
             }
-            .buttonStyle(PrimaryActionButtonStyle(customColor: .clear))
             .accessibilityIdentifier("disableButton")
         }
     }
     
     var body: some View {
-        VStack {
-            ScrollView(showsIndicators: false) {
-                VStack {
-                    Image(uiImage: Asset.Images.analyticsLogo.image)
-                        .padding(.bottom, 25)
-                    
-                    Text(VectorL10n.analyticsPromptTitle(viewModel.viewState.strings.appDisplayName))
-                        .font(theme.fonts.title2B)
-                        .foregroundColor(theme.colors.primaryContent)
-                        .padding(.bottom, 2)
-                    
-                    descriptionText
-                        .font(theme.fonts.body)
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .multilineTextAlignment(.center)
-                    
-                    Divider()
-                        .background(theme.colors.quinaryContent)
-                        .padding(.vertical, 28)
-                    
-                    checkmarkList
-                        .foregroundColor(theme.colors.secondaryContent)
-                        .padding(.bottom, 16)
+        GeometryReader { geometry in
+            VStack {
+                ScrollView(showsIndicators: false) {
+                    mainContent
+                        .padding(.top, 50)
+                        .padding(.horizontal, horizontalPadding)
                 }
-                .padding(.top, 50)
-                .padding(.horizontal, 16)
+                
+                buttons
+                    .padding(.horizontal, horizontalPadding)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
             }
-            
-            buttons
-                .padding(.horizontal, 16)
+            .background(theme.colors.background.ignoresSafeArea())
         }
-        .background(theme.colors.background.ignoresSafeArea())
     }
 }
 
