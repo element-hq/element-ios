@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -77,30 +79,36 @@
                                         </label>
                                     </subviews>
                                 </stackView>
-                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwY-F8-8nJ">
-                                    <rect key="frame" x="477" y="14" width="24" height="24"/>
-                                    <state key="normal" image="room_context_menu_delete"/>
-                                    <connections>
-                                        <action selector="onCancelSendingPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="nCu-h1-Hek"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d0g-ev-lDj">
-                                    <rect key="frame" x="513" y="12" width="75" height="28"/>
-                                    <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="28" id="LhJ-4D-OZI"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="8" maxY="0.0"/>
-                                    <inset key="imageEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" title="Retry" image="room_activities_retry">
-                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="onResendMessagesPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="Aj1-oT-c0C"/>
-                                    </connections>
-                                </button>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="On5-Jm-Wta">
+                                    <rect key="frame" x="477" y="12" width="111" height="28"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwY-F8-8nJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                                            <state key="normal" image="room_context_menu_delete"/>
+                                            <connections>
+                                                <action selector="onCancelSendingPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="nCu-h1-Hek"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d0g-ev-lDj">
+                                            <rect key="frame" x="36" y="0.0" width="75" height="28"/>
+                                            <color key="backgroundColor" red="0.028153735480000001" green="0.82494870580000002" blue="0.051896891280000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="LeftButton"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="28" id="LhJ-4D-OZI"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="8" maxY="0.0"/>
+                                            <inset key="imageEdgeInsets" minX="-10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            <state key="normal" title="Retry" image="room_activities_retry">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onResendMessagesPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="Aj1-oT-c0C"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zjD-Fx-vf4">
                                     <rect key="frame" x="41" y="0.0" width="559" height="52"/>
                                     <subviews>
@@ -124,17 +132,15 @@
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstItem="UwY-F8-8nJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r9x-FY-81W" secondAttribute="trailing" constant="12" id="35n-1A-eft"/>
                                 <constraint firstItem="r9x-FY-81W" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="78t-B3-vOc"/>
                                 <constraint firstAttribute="trailing" secondItem="zjD-Fx-vf4" secondAttribute="trailing" id="7nf-3l-B6X"/>
-                                <constraint firstItem="d0g-ev-lDj" firstAttribute="leading" secondItem="UwY-F8-8nJ" secondAttribute="trailing" constant="12" id="IZZ-du-a29"/>
                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="r9x-FY-81W" secondAttribute="bottom" constant="4" id="Lv7-ND-WLh"/>
                                 <constraint firstItem="r9x-FY-81W" firstAttribute="top" relation="greaterThanOrEqual" secondItem="l7B-JK-ZKf" secondAttribute="top" constant="4" id="Oa4-m2-vp7"/>
-                                <constraint firstItem="d0g-ev-lDj" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="Uos-j3-ARf"/>
-                                <constraint firstItem="UwY-F8-8nJ" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="YRY-fg-2qs"/>
+                                <constraint firstItem="On5-Jm-Wta" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="r9x-FY-81W" secondAttribute="trailing" constant="12" id="RDF-cj-wqQ"/>
                                 <constraint firstAttribute="bottom" secondItem="zjD-Fx-vf4" secondAttribute="bottom" id="ZfQ-aj-CUE"/>
+                                <constraint firstAttribute="trailing" secondItem="On5-Jm-Wta" secondAttribute="trailing" constant="12" id="Zjf-Z7-rq3"/>
                                 <constraint firstItem="f50-cK-AVb" firstAttribute="leading" secondItem="l7B-JK-ZKf" secondAttribute="leading" constant="13" id="da5-bp-l7B"/>
-                                <constraint firstAttribute="trailing" secondItem="d0g-ev-lDj" secondAttribute="trailing" constant="12" id="foj-YD-tjx"/>
+                                <constraint firstItem="On5-Jm-Wta" firstAttribute="centerY" secondItem="l7B-JK-ZKf" secondAttribute="centerY" id="rZb-z3-JEe"/>
                                 <constraint firstItem="zjD-Fx-vf4" firstAttribute="top" secondItem="l7B-JK-ZKf" secondAttribute="top" id="rq6-eX-lbk"/>
                                 <constraint firstItem="zjD-Fx-vf4" firstAttribute="leading" secondItem="f50-cK-AVb" secondAttribute="trailing" constant="12" id="stz-cu-qU1"/>
                                 <constraint firstItem="r9x-FY-81W" firstAttribute="leading" secondItem="f50-cK-AVb" secondAttribute="trailing" constant="12" id="uxg-mZ-W7I"/>

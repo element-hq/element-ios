@@ -3651,14 +3651,6 @@ public class VectorL10n: NSObject {
   public static func roomTwoUsersAreTyping(_ p1: String, _ p2: String) -> String {
     return VectorL10n.tr("Vector", "room_two_users_are_typing", p1, p2)
   }
-  /// Encoder: %@
-  public static func roomUnsentMessageErrorEncoding(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "room_unsent_message_error_encoding", p1)
-  }
-  /// Upload: %@
-  public static func roomUnsentMessageErrorNetwork(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "room_unsent_message_error_network", p1)
-  }
   /// Are you sure you want to delete all unsent messages in this room?
   public static var roomUnsentMessagesCancelMessage: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_cancel_message") 
@@ -3667,17 +3659,41 @@ public class VectorL10n: NSObject {
   public static var roomUnsentMessagesCancelTitle: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_cancel_title") 
   }
-  /// Couldn't send
-  public static var roomUnsentMessagesNotification: String { 
-    return VectorL10n.tr("Vector", "room_unsent_messages_notification") 
+  /// Your device was unable to convert the file
+  public static var roomUnsentMessagesErrorConvertDevice: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_error_convert_device") 
   }
-  /// Tap each message for info.
+  /// Your phone was unable to convert the file
+  public static var roomUnsentMessagesErrorConvertPhone: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_error_convert_phone") 
+  }
+  /// The file is too large to be sent
+  public static var roomUnsentMessagesErrorFileSize: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_error_file_size") 
+  }
+  /// There was a network error
+  public static var roomUnsentMessagesErrorNetwork: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_error_network") 
+  }
+  /// An unknown error occurred
+  public static var roomUnsentMessagesErrorUnknown: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_error_unknown") 
+  }
+  /// Unknown sessions are present
+  public static var roomUnsentMessagesErrorUnknownDevices: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_error_unknown_devices") 
+  }
+  /// Tap each message for info
   public static var roomUnsentMessagesTapMessage: String { 
     return VectorL10n.tr("Vector", "room_unsent_messages_tap_message") 
   }
-  /// Message failed to send due to unknown sessions being present.
-  public static var roomUnsentMessagesUnknownDevicesNotification: String { 
-    return VectorL10n.tr("Vector", "room_unsent_messages_unknown_devices_notification") 
+  /// Couldn’t send messages
+  public static var roomUnsentMessagesTitlePlural: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_title_plural") 
+  }
+  /// Couldn’t send message
+  public static var roomUnsentMessagesTitleSingle: String { 
+    return VectorL10n.tr("Vector", "room_unsent_messages_title_single") 
   }
   /// End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.
   public static var roomWarningAboutEncryption: String { 

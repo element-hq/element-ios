@@ -157,7 +157,7 @@
     void (^onCancelLinkPressed)(void) = objc_getAssociatedObject(self.deleteButton, "onCancelLinkPressed");
     if (onCancelLinkPressed)
     {
-        onCancelLinkPressed ();
+        onCancelLinkPressed();
     }
 }
 
@@ -170,15 +170,20 @@
     }
 }
 
-- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture
+- (void)displayUnsentMessageFailures:(MXUnsentMessageFailures *)unsentMessageFailures
+                      withResendLink:(void (^)(void))onResendLinkPressed
+                       andCancelLink:(void (^)(void))onCancelLinkPressed
+                   andIconTapGesture:(void (^)(void))onIconTapGesture
 {
     [self reset];
     
     if (onResendLinkPressed && onCancelLinkPressed)
     {
         self.unsentMessagesContentView.hidden = NO;
-        self.unsentMessagesTitleLabel.text = notification;
-        self.unsentMessagesInfoLabel.text = VectorL10n.roomUnsentMessagesTapMessage;
+        self.unsentMessagesTitleLabel.text = unsentMessageFailures.count > 1 ? VectorL10n.roomUnsentMessagesTitlePlural : VectorL10n.roomUnsentMessagesTitleSingle;
+        self.unsentMessagesInfoLabel.text = unsentMessageFailures.localizedFailureSummary;
+        
+        self.resendButton.hidden = !unsentMessageFailures.canRetrySending;
         
         objc_setAssociatedObject(self.resendButton, "onResendLinkPressed", [onResendLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         objc_setAssociatedObject(self.deleteButton, "onCancelLinkPressed", [onCancelLinkPressed copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -194,30 +199,7 @@
         return;
     }
     
-    if ([MXError isMXError:error])
-    {
-        MXError *mxError = [[MXError alloc] initWithNSError:error];
-        self.unsentErrorLabel.text = mxError.error;
-    }
-    else
-    {
-        NSHTTPURLResponse *response = [MXHTTPOperation urlResponseFromError:error];
-        if (response)
-        {
-            // This provides a more friendly message than using the localizedDescription directly.
-            NSString *localizedDescription = [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode];
-            self.unsentErrorLabel.text = [VectorL10n roomUnsentMessageErrorNetwork:localizedDescription];
-        }
-        else if ([error.domain isEqualToString:AVFoundationErrorDomain])
-        {
-            self.unsentErrorLabel.text = [VectorL10n roomUnsentMessageErrorEncoding:error.localizedDescription];
-        }
-        else
-        {
-            self.unsentErrorLabel.text = error.localizedDescription;
-        }
-    }
-    
+    self.unsentErrorLabel.text = [MXUnsentMessageFailures localizedDescriptionOf:error];
     self.unsentErrorContainer.hidden = NO;
     
     [self checkHeight:YES];

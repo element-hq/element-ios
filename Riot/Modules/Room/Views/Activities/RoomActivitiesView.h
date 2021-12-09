@@ -43,12 +43,15 @@
  Notify that some messages are not sent.
  Replace the current notification if any.
  
- @param notification the notification message to display.
+ @param unsentMessageFailures information about the failures that occurred.
  @param onResendLinkPressed block called when user selects the resend link.
  @param onCancelLinkPressed block called when user selects the cancel link.
  @param onIconTapGesture block called when user taps on notification icon.
  */
-- (void)displayUnsentMessagesNotification:(NSString*)notification withResendLink:(void (^)(void))onResendLinkPressed andCancelLink:(void (^)(void))onCancelLinkPressed andIconTapGesture:(void (^)(void))onIconTapGesture;
+- (void)displayUnsentMessageFailures:(MXUnsentMessageFailures *)unsentMessageFailures
+                      withResendLink:(void (^)(void))onResendLinkPressed
+                       andCancelLink:(void (^)(void))onCancelLinkPressed
+                   andIconTapGesture:(void (^)(void))onIconTapGesture;
 
 /**
  Show the a reason that a message failed to send using the error passed in.

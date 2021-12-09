@@ -5128,14 +5128,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (sentStatus != MXRoomSummarySentStatusOk)
         {
-            NSString *notification = sentStatus == MXRoomSummarySentStatusSentFailedDueToUnknownDevices ?
-            [VectorL10n roomUnsentMessagesUnknownDevicesNotification] :
-            [VectorL10n roomUnsentMessagesNotification];
+            MXUnsentMessageFailures *failures = self.roomDataSource.room.summary.unsentMessageFailures;
             
             MXWeakify(self);
             RoomActivitiesView *roomActivitiesView = (RoomActivitiesView*) self.activitiesView;
             self.activitiesViewExpanded = YES;
-            [roomActivitiesView displayUnsentMessagesNotification:notification withResendLink:^{
+            [roomActivitiesView displayUnsentMessageFailures:failures withResendLink:^{
                 
                 [self resendAllUnsentMessages];
                 
