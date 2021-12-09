@@ -2,6 +2,6 @@
 "NSCameraUsageDescription" = "Die Kamera wird verwendet, um Fotos und Videos aufzunehmen sowie Videoanrufe durchzuführen.";
 "NSPhotoLibraryUsageDescription" = "Die Fotobibliothek wird verwendet, um Fotos und Videos zu versenden.";
 "NSMicrophoneUsageDescription" = "Element benötigt Zugriff auf das Mikrofon um Anrufe zu tätigen und Videos oder Sprachnachrichten aufzunehmen.";
-"NSContactsUsageDescription" = "Element kann E-Mail-Adressen und Telefonnummern aus deinem Adressbuch zu deinem Matrix-Identitätsserver schicken, um Kontakte zu finden, die bereits Matrix verwenden. Wenn verfügbar, werden persönliche Daten vor dem Versand gehasht. Für weitere Informationen schaue bitte in die Datenschutzerklärung deines Identitätsservers.";
+"NSContactsUsageDescription" = "Element zeigt deine Kontakte an, damit du sie zum chatten einladen kannst.";
 "NSCalendarsUsageDescription" = "Sieh dir deine geplanten Meetings in der App an.";
 "NSFaceIDUsageDescription" = "Face-ID wird zum Zugriff auf deine App verwendet.";

@@ -12,7 +12,7 @@
 ![GitHub](https://img.shields.io/github/license/vector-im/element-ios)
 [![Twitter URL](https://img.shields.io/twitter/url?label=Element&url=https%3A%2F%2Ftwitter.com%2Felement_hq)](https://twitter.com/element_hq)
 
-Element iOS is an iOS [Matrix](https://matrix.org/) client provided by [Element](https://element.io/). It is based on [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) and [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
+Element iOS is an iOS [Matrix](https://matrix.org/) client provided by [Element](https://element.io/). It is based on [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
 
 <p align="center">  
   <a href=https://itunes.apple.com/us/app/element/id1083446067?mt=8>
@@ -34,7 +34,7 @@ $ pod install               # Create the xcworkspace with all project dependenci
 $ open Riot.xcworkspace     # Open Xcode
 ```
 
-Else, you can visit our [installation guide](./INSTALL.md). This guide also offers more details and advanced usage like using [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk) and [MatrixKit](https://github.com/matrix-org/matrix-ios-kit) in their development versions.
+Else, you can visit our [installation guide](./INSTALL.md). This guide also offers more details and advanced usage like using [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk) in its development version.
 
 ## Contributing
 

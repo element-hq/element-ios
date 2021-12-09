@@ -24,7 +24,8 @@ enum MockAppScreens {
         MockTemplateRoomListScreenState.self,
         MockTemplateRoomChatScreenState.self,
         MockUserSuggestionScreenState.self,
-        MockPollEditFormScreenState.self
+        MockPollEditFormScreenState.self,
+        MockPollTimelineScreenState.self
     ]
 }
 

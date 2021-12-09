@@ -48,3 +48,9 @@ targets:
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../Riot/Managers/Locale/LocaleProviderType.swift
+    - path: ../Riot/Managers/Locale/LocaleProvider.swift
+    - path: ../Riot/Modules/MatrixKit
+      excludes:
+        - "**/*.md" # excludes all files with the .md extension
+    - path: ../Riot/Generated/MatrixKitStrings.swift

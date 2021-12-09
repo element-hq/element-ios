@@ -16,8 +16,6 @@
 
 import Foundation
 
-import MatrixKit
-
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
 @objcMembers
@@ -287,14 +285,7 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowMediaLibraryAction: Bool = true
     static let roomScreenAllowStickerAction: Bool = true
     static let roomScreenAllowFilesAction: Bool = true
-    static var roomScreenAllowPollsAction: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false
-    }
-    
+
     /// Allow split view detail view stacking    
     static let allowSplitViewDetailsScreenStacking: Bool = true
     
@@ -351,4 +342,14 @@ final class BuildSettings: NSObject {
     
     // MARK: - Secrets Recovery
     static let secretsRecoveryAllowReset = true
+    
+    // MARK: - Polls
+    
+    static var pollsEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return true
+    }
 }

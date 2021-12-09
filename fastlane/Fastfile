@@ -97,7 +97,7 @@ platform :ios do
   end
 
 
-  desc "Point MatrixKit and MatrixSDK to the related branches if such ones exist"
+  desc "Point MatrixSDK to the related branches if such ones exist"
   lane :point_dependencies_to_related_branches do
     current_branch = mx_git_branch
     UI.message("Current branch: #{current_branch}")
@@ -108,12 +108,12 @@ platform :ios do
     end
   end
 
-  desc "Point MatrixKit and MatrixSDK to their respective release/*/release branch if they exist, master otherwise"
+  desc "Point MatrixSDK to release/*/release branch if it exists, master otherwise"
   lane :point_dependencies_to_pending_releases do
     edit_podfile(branch_pattern: "release/*/release", default_branch: "master")
   end
 
-  desc "Point MatrixKit and MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
+  desc "Point MatrixSDK to the branch with the same name as the current branch if such one exist, develop otherwise"
   lane :point_dependencies_to_same_feature do
     edit_podfile(branch_pattern: mx_git_branch) unless mx_git_branch.to_s.empty?
   end
@@ -153,11 +153,23 @@ platform :ios do
 
     run_tests(
       workspace: "Riot.xcworkspace",
+      scheme: "RiotSwiftUI",
+      code_coverage: true,
+      # Test result configuration
+      result_bundle: true,
+      output_directory: "./build/test",
+      output_files: "riot.swiftui.unit.test.html,riot.swiftui.unit.test.report.junit.xml",
+      open_report: !is_ci?
+    )
+
+    run_tests(
+      workspace: "Riot.xcworkspace",
       scheme: "Riot",
       code_coverage: true,
       # Test result configuration
       result_bundle: true,
       output_directory: "./build/test",
+      output_files: "riot.unit.test.html,riot.unit.test.report.junit.xml",
       open_report: !is_ci?
     )
   end
@@ -383,34 +395,21 @@ platform :ios do
     preprocessor_definitions
   end
 
-  desc "Edit the Podfile in order to point MatrixKit and MatrixSDK to the appropriate branches."
+  desc "Edit the Podfile in order to point MatrixSDK to the appropriate branches."
   private_lane :edit_podfile do |options|
     require 'net/http'
 
     branch_pattern = options[:branch_pattern]
-    kit_slug = "matrix-org/matrix-ios-kit"
     sdk_slug = "matrix-org/matrix-ios-sdk"
 
-    default_branch = options[:default_branch] || 'develop'
-    kit_branch = find_branch(kit_slug, branch_pattern) || default_branch
+    default_branch = options[:default_branch] || 'develop'    
     sdk_branch = find_branch(sdk_slug, branch_pattern) || default_branch
+    
+    sdk_spec = { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch }    
 
-    kit_spec = { git: 'https://github.com/matrix-org/matrix-ios-kit.git', branch: kit_branch }
-    kit_podspec = { podspec: 'MatrixKit.edited.podspec' }
-    sdk_spec = { git: 'https://github.com/matrix-org/matrix-ios-sdk.git', branch: sdk_branch }
-
-    UI.message("✏️ Making a local copy of MatrixKit.podspec from the \`#{kit_branch}\` branch...")
-    podspec_content = Net::HTTP.get(URI("https://raw.githubusercontent.com/#{kit_slug}/#{kit_branch}/MatrixKit.podspec"))
-
-    UI.message "✏️ Editing local MatrixKit podspec to remove version constaint on 'MatrixSDK*' dependencies..."
-    podspec_content.gsub!(%r{(\.dependency\s+(['"])MatrixSDK(\/[^'"]+)?\2).*$}, '\1')
-    podspec_content.gsub!(%r{(\.source\s*=\s*).*$}, "\\1#{kit_spec}")
-    File.write('../MatrixKit.edited.podspec', podspec_content) # current dir is 'fastlane/' hence the '../'
-    UI.command_output("Content of MatrixKit.edited.podspec:\n" + podspec_content)
-
-    UI.message "✏️ Modify Podfile to point MatrixKit to local podspec and `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
+    UI.message "✏️ Modify Podfile to point `MatrixSDK/*` to \`#{sdk_branch}\` branch..."
     podfile_content = File.read('../Podfile') # current dir is 'fastlane/' hence the '../'
-    podfile_content.gsub!(%r{^\$matrixKitVersion\s*=\s*.*$}, "$matrixKitVersion = { #{kit_podspec} => #{sdk_spec} }")
+    podfile_content.gsub!(%r{^\$matrixSDKVersion\s*=\s*.*$}, "$matrixSDKVersion = { :specHash => #{sdk_spec} }")
     File.write('../Podfile', podfile_content)
     UI.command_output("Content of modified Podfile:\n" + podfile_content)
   end

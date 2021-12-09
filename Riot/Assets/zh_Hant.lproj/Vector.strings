@@ -181,7 +181,7 @@
 "room_creation_keep_private" = "維持私人";
 "room_creation_make_private" = "設成私人";
 "room_creation_wait_for_creation" = "聊天室正在建立，請稍後。";
-"room_creation_invite_another_user" = "透過使用者ID、名稱、電子郵件地址來搜尋/邀請";
+"room_creation_invite_another_user" = "使用者 ID、名稱、或電子郵件地址";
 // Room recents
 "room_recents_directory_section" = "聊天室目錄";
 "room_recents_favourites_section" = "收藏夾";
@@ -258,7 +258,7 @@
 "room_participants_action_start_video_call" = "開始視訊通話";
 "room_event_action_view_encryption" = "加密資訊";
 // Chat
-"room_jump_to_first_unread" = "跳到第一條未讀訊息";
+"room_jump_to_first_unread" = "跳到未讀訊息";
 "room_new_message_notification" = "%d 條未讀訊息";
 "room_new_messages_notification" = "%d 條未讀訊息";
 "room_one_user_is_typing" = "%@ 正在輸入…";
@@ -318,7 +318,7 @@
 "settings_calls_settings" = "通話";
 "settings_user_interface" = "使用者介面";
 "settings_ignored_users" = "已忽略使用者";
-"settings_contacts" = "本地聯絡人";
+"settings_contacts" = "裝置聯絡人";
 "settings_advanced" = "進階";
 "settings_other" = "其他";
 "settings_labs" = "實驗室";
@@ -383,7 +383,7 @@
 "settings_deactivate_my_account" = "註銷我的帳號";
 // Room Details
 "room_details_title" = "聊天室詳細資料";
-"room_details_files" = "文件";
+"room_details_files" = "上傳";
 "room_details_settings" = "設定";
 "room_details_photo" = "聊天室圖片";
 "room_details_room_name" = "聊天室名稱";
@@ -615,7 +615,7 @@
 "auth_add_email_phone_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
 "auth_add_email_message_2" = "設置一個電子郵件以便日後恢復帳戶和使以後可以由認識您的人發現你。";
 "auth_add_phone_message_2" = "設置一個電話號碼，以後可以由認識您的人發現你。";
-"auth_login_single_sign_on" = "以單一登入方式登入";
+"auth_login_single_sign_on" = "登入";
 
 // Accessibility
 "accessibility_checkbox_label" = "複選框";
@@ -661,3 +661,249 @@
 "rooms_empty_view_title" = "聊天室";
 "people_empty_view_information" = "和任何人安全地通話。按 + 添加聯絡人。";
 "people_empty_view_title" = "聯絡人";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 位成員";
+"biometrics_mode_face_id" = "Face ID";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "歡迎回來。";
+"major_update_done_action" = "了解了";
+"major_update_learn_more_action" = "了解詳情";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "就快完成了！";
+
+// MARK: File upload
+"file_upload_error_title" = "上傳檔案";
+"device_verification_emoji_light bulb" = "燈泡";
+"device_verification_emoji_thumbs up" = "讚";
+"device_verification_verified_got_it_button" = "了解了";
+"side_menu_action_feedback" = "反饋";
+"side_menu_action_help" = "協助";
+"side_menu_action_settings" = "設定";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"call_transfer_error_title" = "錯誤";
+"call_transfer_contacts_all" = "全部";
+"call_transfer_contacts_recent" = "最近";
+"call_transfer_users" = "使用者";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "傳輸";
+"room_info_list_section_other" = "其他";
+"create_room_placeholder_topic" = "主題";
+"create_room_placeholder_name" = "名稱";
+"biometrics_cant_unlocked_alert_message_retry" = "重試";
+"pin_protection_reset_alert_action_reset" = "重設";
+"pin_protection_choose_pin_welcome_after_register" = "歡迎。";
+"secrets_reset_reset_action" = "重設";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "確認";
+"secrets_setup_recovery_passphrase_validate_action" = "完成";
+"room_message_editing" = "正在編輯";
+"secrets_setup_recovery_key_done_action" = "完成";
+"secrets_setup_recovery_key_export_action" = "儲存";
+"secrets_setup_recovery_key_loading" = "正在載入…";
+"secrets_recovery_with_key_recovery_key_title" = "輸入";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_passphrase_title" = "輸入";
+"user_verification_sessions_list_table_title" = "工作階段";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "未知";
+"user_verification_sessions_list_user_trust_level_warning_title" = "警告";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "錯誤";
+"key_verification_tile_request_incoming_approval_decline" = "拒絕";
+"key_verification_tile_request_incoming_approval_accept" = "接受";
+
+// MARK: Reaction history
+"reaction_history_title" = "反應";
+"emoji_picker_objects_category" = "物件";
+"emoji_picker_activity_category" = "活動";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "反應";
+"device_verification_emoji_pin" = "釘選";
+"device_verification_emoji_folder" = "資料夾";
+"device_verification_emoji_headphones" = "耳機";
+"device_verification_emoji_anchor" = "錨";
+"device_verification_emoji_bell" = "鐘";
+"device_verification_emoji_trumpet" = "喇叭";
+"device_verification_emoji_guitar" = "吉他";
+"device_verification_emoji_ball" = "球";
+"device_verification_emoji_trophy" = "獎盃";
+"device_verification_emoji_rocket" = "火箭";
+"device_verification_emoji_aeroplane" = "飛機";
+"device_verification_emoji_bicycle" = "腳踏車";
+"device_verification_emoji_train" = "火車";
+"device_verification_emoji_flag" = "旗幟";
+"device_verification_emoji_telephone" = "電話";
+"device_verification_emoji_hammer" = "槌子";
+"device_verification_emoji_key" = "鑰匙";
+"device_verification_emoji_scissors" = "剪刀";
+"device_verification_emoji_paperclip" = "迴紋針";
+"device_verification_emoji_pencil" = "鉛筆";
+"device_verification_emoji_book" = "書";
+"device_verification_emoji_gift" = "禮物";
+"device_verification_emoji_clock" = "時鐘";
+"device_verification_emoji_hourglass" = "沙漏";
+"device_verification_emoji_umbrella" = "雨傘";
+"device_verification_emoji_santa" = "聖誕老人";
+"device_verification_emoji_glasses" = "眼鏡";
+"device_verification_emoji_hat" = "帽子";
+"device_verification_emoji_robot" = "機器人";
+"device_verification_emoji_smiley" = "笑臉";
+"device_verification_emoji_cloud" = "雲朵";
+"device_verification_emoji_apple" = "蘋果";
+"device_verification_emoji_heart" = "愛心";
+"device_verification_emoji_cake" = "蛋糕";
+"device_verification_emoji_pizza" = "披薩";
+"device_verification_emoji_corn" = "玉米";
+"device_verification_emoji_strawberry" = "草莓";
+"device_verification_emoji_banana" = "香蕉";
+"device_verification_emoji_fire" = "火";
+"device_verification_emoji_moon" = "月亮";
+"device_verification_emoji_mushroom" = "蘑菇";
+"device_verification_emoji_cactus" = "仙人掌";
+"device_verification_emoji_tree" = "樹";
+"device_verification_emoji_flower" = "花";
+"device_verification_emoji_butterfly" = "蝴蝶";
+"device_verification_emoji_octopus" = "章魚";
+"device_verification_emoji_fish" = "魚";
+"device_verification_emoji_turtle" = "烏龜";
+"device_verification_emoji_penguin" = "企鵝";
+"device_verification_emoji_rooster" = "公雞";
+"device_verification_emoji_panda" = "熊貓";
+"device_verification_emoji_rabbit" = "兔子";
+"device_verification_emoji_elephant" = "大象";
+"device_verification_emoji_pig" = "豬";
+"device_verification_emoji_unicorn" = "獨角獸";
+"device_verification_emoji_horse" = "馬";
+"device_verification_emoji_lion" = "獅子";
+"device_verification_emoji_cat" = "貓";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "狗";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "備份";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "登出";
+"sign_out_existing_key_backup_alert_sign_out_action" = "登出";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "您確定要登出嗎？";
+"key_backup_recover_done_action" = "完成";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "輸入";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_passphrase_title" = "輸入";
+"key_backup_setup_success_from_passphrase_done_action" = "完成";
+
+// Success
+
+"key_backup_setup_success_title" = "成功！";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "確認";
+"key_backup_setup_passphrase_passphrase_title" = "輸入";
+"key_backup_setup_intro_manual_export_action" = "手動匯出金鑰";
+"key_backup_setup_intro_manual_export_info" = "(進階)";
+"key_backup_setup_skip_alert_skip_action" = "略過";
+"key_backup_setup_skip_alert_title" = "您確定嗎？";
+"service_terms_modal_decline_button" = "拒絕";
+"service_terms_modal_accept_button" = "接受";
+"room_widget_permission_room_id_permission" = "房間 ID";
+"room_widget_permission_widget_id_permission" = "小工具 ID";
+"room_widget_permission_theme_permission" = "您的主題";
+"room_widget_permission_user_id_permission" = "您的使用者 ID";
+"room_widget_permission_display_name_permission" = "您的顯示名稱";
+
+// Room widget permissions
+"room_widget_permission_title" = "載入小工具";
+"widget_menu_open_outside" = "在瀏覽器開啟";
+"widget_menu_refresh" = "重新整理";
+"bug_report_background_mode" = "在背景繼續";
+"e2e_key_backup_wrong_version_button_settings" = "設定";
+"call_actions_unhold" = "繼續";
+"room_does_not_exist" = "%@ 不存在";
+"event_formatter_group_call_leave" = "離開";
+"event_formatter_group_call_join" = "加入";
+"event_formatter_group_call" = "群組通話";
+"event_formatter_call_end_call" = "結束通話";
+"event_formatter_call_retry" = "重試";
+"event_formatter_call_answer" = "接聽";
+"event_formatter_call_back" = "回撥";
+"event_formatter_call_has_ended" = "通話結束";
+"event_formatter_call_connecting" = "正在連接…";
+"event_formatter_message_edited_mention" = "(已編輯)";
+"image_picker_action_library" = "從媒體庫挑選";
+
+// Image picker
+"image_picker_action_camera" = "拍照";
+
+// Media picker
+"media_picker_title" = "媒體庫";
+"room_notifs_settings_account_settings" = "帳號設定";
+"room_notifs_settings_cancel_action" = "取消";
+"room_notifs_settings_done_action" = "完成";
+"room_notifs_settings_none" = "無";
+"room_notifs_settings_all_messages" = "所有訊息";
+"room_details_notifs" = "通知";
+"room_details_room_name_for_dm" = "名稱";
+"room_details_photo_for_dm" = "照片";
+"room_details_title_for_dm" = "詳細資訊";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "仍要斷開連接";
+"identity_server_settings_alert_disconnect_button" = "斷開連接";
+"identity_server_settings_disconnect" = "斷開連接";
+"identity_server_settings_change" = "修改";
+"identity_server_settings_add" = "新增";
+"manage_session_name" = "工作階段名稱";
+"manage_session_info" = "工作階段資訊";
+
+// Manage session
+"manage_session_title" = "管理工作階段";
+"security_settings_advanced" = "進階";
+"security_settings_crosssigning_reset" = "重設";
+"security_settings_secure_backup_delete" = "刪除備份";
+"security_settings_secure_backup_reset" = "重設";
+"security_settings_secure_backup_info_checking" = "正在檢查…";
+"security_settings_crypto_sessions_loading" = "正在載入工作階段…";
+
+// Security settings
+"security_settings_title" = "安全性";
+"settings_discovery_three_pid_details_share_action" = "分享";
+"settings_discovery_three_pid_details_title_phone_number" = "管理電話號碼";
+"settings_discovery_three_pid_details_title_email" = "管理電子郵件";
+"settings_discovery_error_message" = "發生錯誤。請重試。";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_three_pids_management_information_part2" = "使用者設定";
+"settings_key_backup_delete_confirmation_prompt_title" = "刪除備份";
+"settings_key_backup_button_delete" = "刪除備份";
+"settings_key_backup_info_algorithm" = "演算法：%@";
+"settings_key_backup_info_checking" = "正在檢查…";
+"settings_add_3pid_password_title_msidsn" = "新增電話號碼";
+"settings_add_3pid_password_title_email" = "新增電子郵件地址";
+"settings_new_keyword" = "新增關鍵字";
+"settings_your_keywords" = "您的關鍵字";
+"settings_messages_by_a_bot" = "機器人傳送的訊息";
+"settings_messages_containing_keywords" = "關鍵字";
+"settings_messages_containing_user_name" = "我的使用者名稱";
+"settings_messages_containing_display_name" = "我的顯示名稱";
+"settings_encrypted_group_messages" = "加密群組訊息";
+"settings_group_messages" = "群組訊息";
+"settings_encrypted_direct_messages" = "加密私人訊息";
+"settings_direct_messages" = "私人訊息";
+"settings_default" = "預設通知";
+"settings_notifications_disabled_alert_title" = "已停用通知";
+"settings_device_notifications" = "裝置通知";
+"settings_three_pids_management_information_part3" = ".";
+"room_join_group_call" = "加入";
+"room_place_voice_call" = "語音通話";
+"room_accessibility_video_call" = "視訊通話";
+"social_login_button_title_sign_up" = "以 %@ 身分註冊";
+"social_login_button_title_sign_in" = "以 %@ 身分登入";
+"social_login_button_title_continue" = "以 %@ 身分繼續";
+"social_login_list_title_sign_up" = "或";
+"social_login_list_title_sign_in" = "或";
+"callbar_return" = "返回";
+"done" = "完成";
+"open" = "開啟";

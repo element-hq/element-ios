@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  The `RoomIdOrAliasTableViewCell` cell displays a room identifier or a room alias.

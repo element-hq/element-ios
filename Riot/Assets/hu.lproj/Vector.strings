@@ -1530,3 +1530,5 @@
 "find_your_contacts_footer" = "Bármikor letiltható a beállításokban.";
 "contacts_address_book_permission_denied_alert_message" = "A névjegyzék engedélyezéséhez lépj be az eszköz beállításokba.";
 "contacts_address_book_permission_denied_alert_title" = "Névjegyzék letiltva";
+"space_home_show_all_rooms" = "Minden szoba megjelenítése";
+"room_event_action_forward" = "Továbbítás";

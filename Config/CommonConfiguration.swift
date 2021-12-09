@@ -15,7 +15,7 @@
 //
 
 import Foundation
-import MatrixKit
+import MatrixSDK
 
 /// CommonConfiguration is the central point to setup settings for MatrixSDK, MatrixKit and common configurations for all targets.
 class CommonConfiguration: NSObject, Configurable {

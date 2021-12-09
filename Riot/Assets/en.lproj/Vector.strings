@@ -358,6 +358,8 @@ Tap the + to start adding people.";
 "room_delete_unsent_messages" = "Delete unsent messages";
 "room_event_action_copy" = "Copy";
 "room_event_action_quote" = "Quote";
+"room_event_action_remove_poll" = "Remove poll";
+"room_event_action_end_poll" = "End poll";
 "room_event_action_redact" = "Remove";
 "room_event_action_more" = "More";
 "room_event_action_share" = "Share";
@@ -573,7 +575,7 @@ Tap the + to start adding people.";
 "settings_labs_create_conference_with_jitsi" = "Create conference calls with jitsi";
 "settings_labs_message_reaction" = "React to messages with emoji";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
-"settings_labs_voice_messages" = "Voice messages";
+"settings_labs_enabled_polls" = "Polls";
 "settings_labs_enable_threads" = "Threaded messaging";
 
 "settings_version" = "Version %@";
@@ -1800,6 +1802,42 @@ Tap the + to start adding people.";
 
 "poll_edit_form_create_options" = "Create options";
 
-"poll_edit_form_option_number" = "Option %d";
+"poll_edit_form_option_number" = "Option %lu";
 
 "poll_edit_form_add_option" = "Add option";
+
+"poll_edit_form_post_failure_title" = "Failed to post poll";
+
+"poll_edit_form_post_failure_subtitle" = "Please try again";
+
+"poll_edit_form_post_failure_action" = "OK";
+
+"poll_timeline_one_vote" = "1 vote";
+
+"poll_timeline_votes_count" = "%lu votes";
+
+"poll_timeline_total_no_votes" = "No votes cast";
+
+"poll_timeline_total_one_vote" = "1 vote cast";
+
+"poll_timeline_total_votes" = "%lu votes cast";
+
+"poll_timeline_total_one_vote_not_voted" = "1 vote cast. Vote to the see the results";
+
+"poll_timeline_total_votes_not_voted" = "%lu votes cast. Vote to the see the results";
+
+"poll_timeline_total_final_results_one_vote" = "Final results based on 1 vote";
+
+"poll_timeline_total_final_results" = "Final results based on %lu votes";
+
+"poll_timeline_vote_not_registered_title" = "Vote not registered";
+
+"poll_timeline_vote_not_registered_subtitle" = "Sorry, your vote was not registered, please try again";
+
+"poll_timeline_vote_not_registered_action" = "OK";
+
+"poll_timeline_not_closed_title" = "Failed to end poll";
+
+"poll_timeline_not_closed_subtitle" = "Please try again";
+
+"poll_timeline_not_closed_action" = "OK";
