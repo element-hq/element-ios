@@ -2,7 +2,11 @@
 
 🙌 Improvements
 
-- Upgrade MatrixSDK version ([v0.20.14](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.14)).
+- Upgrade MatrixSDK version ([v0.20.14](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.14))
+
+🧱 Build
+
+- BuildRelease.sh: Add an option to build the ipa from local source code copy
 
 
 ## Changes in 1.6.9 (2021-12-07)
