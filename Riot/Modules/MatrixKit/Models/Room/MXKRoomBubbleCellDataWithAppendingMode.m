@@ -36,11 +36,6 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
 {
-    // Never merge polls
-    if (self.events.firstObject.eventType == MXEventTypePollStart) {
-        return NO;
-    }
-    
     // We group together text messages from the same user (attachments are not merged).
     if ([event.sender isEqualToString:self.senderId] && (self.attachment == nil) && (self.bubbleComponents.count < self.maxComponentCount))
     {
@@ -90,11 +85,6 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)mergeWithBubbleCellData:(id<MXKRoomBubbleCellDataStoring>)bubbleCellData
 {
-    // Never merge polls
-    if (self.events.firstObject.eventType == MXEventTypePollStart) {
-        return NO;
-    }
-    
     if ([self hasSameSenderAsBubbleCellData:bubbleCellData])
     {
         MXKRoomBubbleCellData *cellData = (MXKRoomBubbleCellData*)bubbleCellData;

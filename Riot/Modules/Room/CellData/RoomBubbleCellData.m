@@ -842,10 +842,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagRoomCreationIntro:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagPoll:
+            shouldAddEvent = NO;
+            break;
         default:
             break;
     }
     
+    // If the current bubbleData supports adding events then check
+    // if the incoming event can be added in
     if (shouldAddEvent)
     {
         switch (event.eventType)
