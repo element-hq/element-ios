@@ -56,8 +56,23 @@ class NotificationService: UNNotificationServiceExtension {
         guard let userAccount = userAccount else {
             return nil
         }
-        return MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil)
+        let restClient = MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil)
+        restClient.refreshTokensFailedHandler = { mxError in
+            MXLog.debug("[NotificationService] mxRestClient: The rest client is no longer authenticated.")
+            if let mxError = mxError,
+               mxError.httpResponse.statusCode == 401,
+               let softLogout = mxError.userInfo[kMXErrorSoftLogoutKey] as? Bool,
+               softLogout {
+                MXLog.debug("[NotificationService] mxRestClient: soft logout");
+                userAccount.softLogout()
+            } else {
+                MXLog.debug("[NotificationService] mxRestClient: full logout");
+                MXKAccountManager.shared().removeAccount(userAccount, completion: nil)
+            }
+        }
+        return restClient
     }()
+    
     private static var isLoggerInitialized: Bool = false
     private lazy var pushGatewayRestClient: MXPushGatewayRestClient = {
         let url = URL(string: BuildSettings.serverConfigSygnalAPIUrlString)!

@@ -344,6 +344,9 @@ final class BuildSettings: NSObject {
     static let authScreenShowForgotPassword = true
     static let authScreenShowCustomServerOptions = true
     
+    // MARK: - Authentication Options
+    static let authEnableRefreshTokens = true
+    
     // MARK: - Unified Search
     static let unifiedSearchScreenShowPublicDirectory = true
     

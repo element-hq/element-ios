@@ -1771,7 +1771,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     {
         isPauseRequested = NO;
     }
-    else if (mxSession.state == MXSessionStateUnknownToken)
+    else if (mxSession.state == MXSessionStateUnauthenticated)
     {
         // Logout this account
         [[MXKAccountManager sharedManager] removeAccount:self completion:nil];
@@ -2224,5 +2224,30 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         [[MXKAccountManager sharedManager] saveAccounts];
     }
 }
+
+#pragma mark - Homeserver Access/Refresh Token updates
+
+- (void)registerRestClientDidRefreshTokensNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRestClientDidRefreshTokensNotification:) name:MXRestClientDidRefreshTokensNotification object:nil];
+}
+
+- (void)handleRestClientDidRefreshTokensNotification:(NSNotification*)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    
+    NSString *userId = userInfo[MXIdentityServiceNotificationUserIdKey];
+    NSString *identityServer = userInfo[MXIdentityServiceNotificationIdentityServerKey];
+    NSString *accessToken = userInfo[MXIdentityServiceNotificationAccessTokenKey];
+    
+    if (userId && identityServer && accessToken && [mxCredentials.identityServer isEqualToString:identityServer])
+    {
+        mxCredentials.identityServerAccessToken = accessToken;
+
+        // Archive updated field
+        [[MXKAccountManager sharedManager] saveAccounts];
+    }
+}
+
 
 @end
