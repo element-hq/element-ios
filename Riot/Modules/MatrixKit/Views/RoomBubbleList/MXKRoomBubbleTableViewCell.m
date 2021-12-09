@@ -121,6 +121,7 @@ static BOOL _disableLongPressGestureOnEvent;
     self.readReceiptsAlignment = ReadReceiptAlignmentLeft;
     _allTextHighlighted = NO;
     _isAutoAnimatedGif = NO;
+    _tmpSubviews = [NSMutableArray array];
 }
 
 - (void)awakeFromNib
@@ -1005,14 +1006,11 @@ static BOOL _disableLongPressGestureOnEvent;
     self.bubbleInfoContainer.hidden = YES;
     
     // Remove temporary subviews
-    if (self.tmpSubviews)
+    for (UIView *view in self.tmpSubviews)
     {
-        for (UIView *view in self.tmpSubviews)
-        {
-            [view removeFromSuperview];
-        }
-        self.tmpSubviews = nil;
+        [view removeFromSuperview];
     }
+    [self.tmpSubviews removeAllObjects];
     
     // Remove potential overlay subviews
     if (self.bubbleOverlayContainer)

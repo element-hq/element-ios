@@ -4627,13 +4627,13 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
   }
-    /// Polls
-    public static var settingsLabsEnabledPolls: String {
-        return VectorL10n.tr("Vector", "settings_labs_enabled_polls")
-    }
   /// Threaded messaging
   public static var settingsLabsEnableThreads: String { 
-    return VectorL10n.tr("Vector", "settings_labs_enable_threads")
+    return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
+  }
+  /// Polls
+  public static var settingsLabsEnabledPolls: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enabled_polls") 
   }
   /// React to messages with emoji
   public static var settingsLabsMessageReaction: String { 

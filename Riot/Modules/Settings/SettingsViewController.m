@@ -2426,6 +2426,8 @@ TableViewSectionsDelegate>
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
         }
     }
     else if (section == SECTION_TAG_FLAIR)
