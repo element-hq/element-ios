@@ -353,10 +353,10 @@
 
 // Others
 "or" = "або";
-"event_formatter_widget_removed_by_you" = "Ви вилучили розширення: %@";
+"event_formatter_widget_removed_by_you" = "Ви вилучили віджет: %@";
 
 // Events formatter with you
-"event_formatter_widget_added_by_you" = "Ви додали розширення: %@";
+"event_formatter_widget_added_by_you" = "Ви додали віджет: %@";
 "event_formatter_group_call_incoming" = "%@ у %@";
 "event_formatter_group_call_leave" = "Вийти";
 "room_join_group_call" = "Приєднатися";
@@ -429,15 +429,15 @@
 "room_multiple_typing_notification" = "%@ та інші";
 "room_place_voice_call" = "Голосовий виклик";
 "room_widget_permission_room_id_permission" = "ID кімнати";
-"room_widget_permission_widget_id_permission" = "ID розширення";
+"room_widget_permission_widget_id_permission" = "ID віджету";
 "room_widget_permission_theme_permission" = "Ваша тема";
 "room_widget_permission_user_id_permission" = "Ваш ID користувача";
 "room_widget_permission_avatar_url_permission" = "URL-адреса вашого аватара";
 "room_widget_permission_display_name_permission" = "Ваше показуване ім'я";
-"room_widget_permission_creator_info_title" = "Це розширення додано:";
+"room_widget_permission_creator_info_title" = "Цей віджет додано:";
 
 // Room widget permissions
-"room_widget_permission_title" = "Завантажити розширення";
+"room_widget_permission_title" = "Завантажити віджет";
 "widget_picker_manage_integrations" = "Керувати інтеграціями…";
 "room_accessibility_video_call" = "Відеовиклик";
 "room_accessibility_call" = "Виклик";
@@ -949,7 +949,7 @@
 "room_event_action_reply" = "Відповідь";
 "room_event_action_delete_confirmation_title" = "Видалити не надіслане повідомлення";
 "room_event_action_report_prompt_ignore_user" = "Бажаєте сховати усі повідомлення від цього користувача?";
-"room_event_action_kick_prompt_reason" = "Причина викидання користувача";
+"room_event_action_kick_prompt_reason" = "Причина вилучення користувача";
 "room_participants_action_mention" = "Згадати";
 "room_participants_action_unignore" = "Показати усі повідомлення від цього користувача";
 "room_participants_action_ignore" = "Сховати усі повідомлення від цього користувача";
@@ -963,3 +963,29 @@
 "find_your_contacts_button_title" = "Пошук контактів";
 "contacts_address_book_permission_denied_alert_message" = "Увімкніть контакти з налаштувань пристрою.";
 "contacts_address_book_permission_denied_alert_title" = "Контакти вимкнено";
+"network_offline_prompt" = "Відсутнє зʼєднання з інтернетом.";
+"room_no_privileges_to_create_group_call" = "Щоб розпочати виклик ви повинні бути адміністратором або модератором.";
+"room_event_action_delete_confirmation_message" = "Ви впевнені, що хочете видалити це не надіслане повідомлення?";
+"room_event_action_report_prompt_reason" = "Причина скарги на цей вміст";
+"room_event_action_report" = "Поскаржитися на вміст";
+"room_event_action_view_decrypted_source" = "Переглянути розшифроване джерело";
+"room_event_action_view_source" = "Переглянути джерело";
+"room_event_action_permalink" = "Постійне посилання";
+"room_event_action_forward" = "Переслати";
+"room_resend_unsent_messages" = "Повторно надіслати не надіслані повідомлення";
+"room_prompt_cancel" = "скасувати всі";
+"room_prompt_resend" = "Надіслати всі";
+"room_unsent_messages_cancel_message" = "Ви впевнені, що хочете видалити не надіслані повідомлення у цій кімнаті?";
+"room_delete_unsent_messages" = "Видалити не надіслані повідомлення";
+"room_unsent_messages_cancel_title" = "Видалити не надіслані повідомлення";
+"encrypted_room_message_reply_to_placeholder" = "Надіслати зашифровану відповідь…";
+"encrypted_room_message_placeholder" = "Надіслати зашифроване повідомлення…";
+"room_do_not_have_permission_to_post" = "Вам не дозволено дописувати у цій кімнаті";
+"room_accessiblity_scroll_to_bottom" = "Униз";
+"room_jump_to_first_unread" = "До непрочитаних";
+
+// Chat
+"room_slide_to_end_group_call" = "Проведіть пальцем, щоб завершити виклик для всіх";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Повідомлення тут не захищено наскрізним шифруванням.";
+"room_participants_security_information_room_not_encrypted" = "Повідомлення у цій кімнаті не захищено наскрізним шифруванням.";
+"room_participants_action_set_default_power_level" = "Скинути до звичайного користувача";
