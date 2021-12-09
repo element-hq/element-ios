@@ -84,14 +84,11 @@ class ContactsPickerCoordinator: ContactsPickerCoordinatorType {
     
     private func startWithParticipants() {
         // Push the contacts picker.
-        let contactsViewController = ContactsTableViewController()
+        let contactsViewController = RoomInviteViewController()
         viewModel?.prepare(contactsViewController: contactsViewController, currentSearchText: currentSearchText)
         self.navigationRouter.push(contactsViewController, animated: true) { [weak self] in
             guard let self = self else { return }
             self.delegate?.contactsPickerCoordinatorDidClose(self)
-        }
-        if let navigationController = self.navigationRouter.toPresentable() as? UINavigationController {
-            navigationController.pushViewController(contactsViewController, animated: true)
         }
         contactsPickerViewController = contactsViewController
     }

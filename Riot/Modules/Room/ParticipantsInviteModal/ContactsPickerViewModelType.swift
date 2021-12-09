@@ -29,5 +29,5 @@ protocol ContactsPickerViewModelType {
     var areParticipantsLoaded: Bool { get }
     
     func loadParticipants()
-    @discardableResult func prepare(contactsViewController: ContactsTableViewController, currentSearchText: String?) -> Bool
+    @discardableResult func prepare(contactsViewController: RoomInviteViewController, currentSearchText: String?) -> Bool
 }

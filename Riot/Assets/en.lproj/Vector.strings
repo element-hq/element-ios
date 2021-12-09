@@ -1680,6 +1680,12 @@ Tap the + to start adding people.";
 "invite_friends_action" = "Invite friends to %@";
 "invite_friends_share_text" = "Hey, talk to me on %@: %@";
 
+// MARK: - Share invite link
+
+"share_invite_link_action" = "Share invite link";
+"share_invite_link_room_text" = "Hey, join this room on %@";
+"share_invite_link_space_text" = "Hey, join this space on %@";
+
 // Mark: - Room avatar view
 
 "room_avatar_view_accessibility_label" = "avatar";

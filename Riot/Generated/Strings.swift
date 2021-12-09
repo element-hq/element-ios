@@ -4815,6 +4815,18 @@ public class VectorL10n: NSObject {
   public static var shareExtensionSendNow: String { 
     return VectorL10n.tr("Vector", "share_extension_send_now") 
   }
+  /// Share invite link
+  public static var shareInviteLinkAction: String { 
+    return VectorL10n.tr("Vector", "share_invite_link_action") 
+  }
+  /// Hey, join this room on %@
+  public static func shareInviteLinkRoomText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_invite_link_room_text", p1)
+  }
+  /// Hey, join this space on %@
+  public static func shareInviteLinkSpaceText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_invite_link_space_text", p1)
+  }
   /// Feedback
   public static var sideMenuActionFeedback: String { 
     return VectorL10n.tr("Vector", "side_menu_action_feedback") 

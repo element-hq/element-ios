@@ -64,7 +64,6 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelType {
             
             guard let roomState = roomState, let members = roomState.members.membersWithoutConferenceUser(), let session = self.room.mxSession, let myUserId = session.myUserId, let roomThirdPartyInvites = roomState.thirdPartyInvites else {
                 self.finalize(participants: roomMembers)
-                self.coordinatorDelegate?.contactsPickerViewModelDidEndLoading(self)
                 return
             }
 
@@ -90,7 +89,9 @@ class ContactsPickerViewModel: NSObject, ContactsPickerViewModelType {
         }
     }
     
-    func prepare(contactsViewController: ContactsTableViewController, currentSearchText: String?) -> Bool {
+    func prepare(contactsViewController: RoomInviteViewController, currentSearchText: String?) -> Bool {
+        contactsViewController.room = self.room
+
         // Set delegate to handle action on member (start chat, mention)
         contactsViewController.contactsTableViewControllerDelegate = self
         
