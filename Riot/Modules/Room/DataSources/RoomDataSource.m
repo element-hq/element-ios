@@ -270,22 +270,29 @@ const CGFloat kTypingCellHeight = 24;
     }
     else
     {
-        //  if not in a thread, ignore all threaded events
-        if (event.isInThread)
+        if (RiotSettings.shared.enableThreads)
         {
-            //  ignore the event
-            return NO;
-        }
-        //  also ignore events related to threaded events
-        if (event.relatesTo.eventId)
-        {
-            MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
-                                                                    inRoom:event.roomId];
-            if (relatedEvent.isInThread)
+            //  if not in a thread, ignore all threaded events
+            if (event.isInThread)
             {
                 //  ignore the event
                 return NO;
             }
+            //  also ignore events related to threaded events
+            if (event.relatesTo.eventId)
+            {
+                MXEvent *relatedEvent = [self.mxSession.store eventWithEventId:event.relatesTo.eventId
+                                                                        inRoom:event.roomId];
+                if (relatedEvent.isInThread)
+                {
+                    //  ignore the event
+                    return NO;
+                }
+            }
+        }
+        else
+        {
+            return YES;
         }
     }
     
