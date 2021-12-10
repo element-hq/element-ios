@@ -1,1 +1,46 @@
 
+
+"done" = "Hotovo";
+"open" = "Otvoriť";
+"less" = "Menej";
+"more" = "Viac";
+"skip" = "Preskočiť";
+"close" = "Zavrieť";
+"collapse" = "zbaliť";
+"rename" = "Premenovať";
+"later" = "Neskôr";
+"active_call_details" = "Prebiehajúci hovor (%s)";
+"active_call" = "Aktívny hovor";
+"video" = "Video";
+"voice" = "Hlas";
+"camera" = "Kamera";
+"preview" = "Zobraziť náhľad";
+"accept" = "Prijať";
+"decline" = "Odmietnuť";
+"join" = "Vstúpiť";
+"save" = "Uložiť";
+"cancel" = "Zrušiť";
+"off" = "Vypnuté";
+"on" = "Povolené";
+"retry" = "Skúsiť znovu";
+"invite" = "Pozvať";
+"remove" = "Odstrániť";
+"leave" = "Opustiť";
+"start" = "Začať";
+"store_promotional_text" = "Aplikácia na chatovanie a spoluprácu s ochranou súkromia v otvorenej sieti. Decentralizovaná, aby ste ju mali pod kontrolou. Žiadne dolovanie údajov, žiadne zadné vrátka ani prístup tretích strán.";
+"store_full_description" = "Element je nový typ aplikácie na posielanie správ a spoluprácu, ktorá:\n\n1. vám dáva kontrolu nad zachovaním vášho súkromia\n2. Umožňuje vám komunikovať s kýmkoľvek v sieti Matrix, a dokonca aj mimo nej vďaka integrácii s aplikáciami, ako je Slack\n3. Chráni vás pred reklamou, získavaním údajov, zadnými vrátkami a uzavretým ekosystémom.\n4. Zabezpečuje vás prostredníctvom end-to-end šifrovania s krížovým podpisovaním na overenie ostatných\n\nElement sa úplne líši od ostatných aplikácií na zasielanie správ a spoluprácu, pretože je decentralizovaný a má otvorený zdrojový kód.\n\nElement vám umožňuje, aby ste sa sami hosťovali - alebo si vybrali hosting - takže máte súkromie, vlastníctvo a kontrolu nad svojimi údajmi a konverzáciami. Poskytuje vám prístup k otvorenej sieti; takže nie ste odkázaní len na rozhovory s inými používateľmi aplikácie Element. A je veľmi bezpečný.\n\nElement toto všetko dokáže, pretože funguje na Matrixe - štandarde pre otvorenú, decentralizovanú komunikáciu. \n\nElement vám dáva kontrolu tým, že vám umožňuje vybrať si, kto bude hostiť vaše konverzácie. V aplikácii Element si môžete vybrať, či chcete hosťovať rôznymi spôsobmi:\n\n1. Získajte bezplatný účet na verejnom serveri matrix.org\n2. Vlastný hosting účtu spustením servera na vlastnom hardvéri.\n3. Zaregistrujte si účet na vlastnom serveri jednoduchým predplatením hostingovej platformy Element Matrix Services.\n\nPrečo si vybrať práve Element?\n\nVLASTNÍTE SVOJE DÁTA: Vy rozhodujete o tom, kde budú vaše dáta a správy uložené. Vlastníte ich a máte nad nimi kontrolu, nie nejaká MEGAKORPORÁCIA, ktorá vaše údaje doluje alebo poskytuje prístup tretím stranám.\n\nOTVORENÁ KONVERZÁCIA A SPOLUPRÁCA: Môžete chatovať s kýmkoľvek iným v sieti Matrix, či už používa aplikáciu Element alebo inú aplikáciu Matrix, a dokonca aj vtedy, ak používa iný systém správ typu Slack, IRC alebo XMPP.\n\nSUPER-BEZPEČNÉ: Skutočné end-to-end šifrovanie (správy môžu dešifrovať len účastníci konverzácie) a krížové podpisovanie na overenie zariadení účastníkov konverzácie.\n\nKOMPLETNÁ KOMUNIKÁCIA: Správy, hlasové a videohovory, zdieľanie súborov, zdieľanie obrazovky a celý rad integrácií, botov a widgetov. Vytvárajte miestnosti, komunity, zostaňte v kontakte a vybavujte veci.\n\nKDEKOĽVEK STE: Zostaňte v kontakte, nech ste kdekoľvek, s plne synchronizovanou históriou správ vo všetkých zariadeniach a na webe na https://element.io/app.";
+"create" = "Vytvoriť";
+"continue" = "Pokračovať";
+"back" = "Späť";
+"next" = "Ďalej";
+
+// Actions
+"view" = "Zobraziť";
+"warning" = "Upozornenie";
+"title_groups" = "Komunity";
+"title_rooms" = "Miestnosti";
+"title_people" = "Ľudia";
+"title_favourites" = "Obľúbené";
+
+// Titles
+"title_home" = "Domov";
