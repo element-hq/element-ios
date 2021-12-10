@@ -70,4 +70,8 @@ extension SpaceMemberListCoordinator: SpaceMemberListViewModelCoordinatorDelegat
     func spaceMemberListViewModelDidCancel(_ viewModel: SpaceMemberListViewModelType) {
         self.delegate?.spaceMemberListCoordinatorDidCancel(self)
     }
+    
+    func spaceMemberListViewModelShowInvite(_ viewModel: SpaceMemberListViewModelType) {
+        self.delegate?.spaceMemberListCoordinatorShowInvite(self)
+    }
 }

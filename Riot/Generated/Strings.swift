@@ -3327,6 +3327,10 @@ public class VectorL10n: NSObject {
   public static var roomParticipantsInvitePromptTitle: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_prompt_title") 
   }
+  /// Are you sure you want to invite %@ to %@?
+  public static func roomParticipantsInvitePromptToMsg(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_participants_invite_prompt_to_msg", p1, p2)
+  }
   /// INVITED
   public static var roomParticipantsInvitedSection: String { 
     return VectorL10n.tr("Vector", "room_participants_invited_section") 
@@ -4987,6 +4991,10 @@ public class VectorL10n: NSObject {
   public static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 
   }
+  /// Add room
+  public static var spacesAddRoom: String { 
+    return VectorL10n.tr("Vector", "spaces_add_room") 
+  }
   /// Adding rooms coming soon
   public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
@@ -5014,6 +5022,10 @@ public class VectorL10n: NSObject {
   /// Home
   public static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 
+  }
+  /// Invite people
+  public static var spacesInvitePeople: String { 
+    return VectorL10n.tr("Vector", "spaces_invite_people") 
   }
   /// Invites coming soon
   public static var spacesInvitesComingSoonTitle: String { 

@@ -86,6 +86,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     self.showParticipantCustomAccessoryView = YES;
+    self.showInviteUserFab = YES;
 }
 
 - (void)viewDidLoad
@@ -141,11 +142,13 @@
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
     
     
-    
-    // Add invite members button programmatically
-    [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
-                      target:self
-                      action:@selector(onAddParticipantButtonPressed)];
+    if (_showInviteUserFab)
+    {
+        // Add invite members button programmatically
+        [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
+                          target:self
+                          action:@selector(onAddParticipantButtonPressed)];
+    }
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {

@@ -268,6 +268,7 @@ Tap the + to start adding people.";
 "room_participants_remove_third_party_invite_prompt_msg" = "Are you sure you want to revoke this invite?";
 "room_participants_invite_prompt_title" = "Confirmation";
 "room_participants_invite_prompt_msg" = "Are you sure you want to invite %@ to this chat?";
+"room_participants_invite_prompt_to_msg" = "Are you sure you want to invite %@ to %@?";
 "room_participants_filter_room_members" = "Filter room members";
 "room_participants_filter_room_members_for_dm" = "Filter members";
 "room_participants_invite_another_user" = "Search / invite by User ID, Name or email";
@@ -1744,6 +1745,8 @@ Tap the + to start adding people.";
 
 "space_private_join_rule" = "Private space";
 "space_public_join_rule" = "Public space";
+"spaces_invite_people" = "Invite people";
+"spaces_add_room" = "Add room";
 
 // Mark: Avatar
 

@@ -42,7 +42,7 @@
  'RoomParticipantsViewController' instance is used to edit members of the room defined by the property 'mxRoom'.
  When this property is nil, the view controller is empty.
  */
-@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
+@interface RoomParticipantsViewController : MXKViewController <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate>
 {
 @protected
     /**
@@ -91,6 +91,7 @@
 
 @property (nonatomic) BOOL showCancelBarButtonItem;
 @property (nonatomic) BOOL showParticipantCustomAccessoryView;
+@property (nonatomic) BOOL showInviteUserFab;
 
 /**
  The delegate for the view controller.

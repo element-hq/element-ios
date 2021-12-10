@@ -200,7 +200,8 @@ extension ContactsPickerViewModel: ContactsTableViewControllerDelegate {
             return
         }
         
-        let message = VectorL10n.roomParticipantsInvitePromptMsg(contact.displayName)
+        let roomName = room.displayName ?? VectorL10n.spaceTag
+        let message = VectorL10n.roomParticipantsInvitePromptToMsg(contact.displayName, roomName)
         
         coordinatorDelegate?.contactsPickerViewModel(self, display: message, title: VectorL10n.roomParticipantsInvitePromptTitle, actions: [
             UIAlertAction(title: MatrixKitL10n.cancel, style: .cancel, handler: nil),

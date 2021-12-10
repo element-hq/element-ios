@@ -40,9 +40,9 @@ final class SpaceExploreRoomViewController: UIViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
     private var titleView: MainTitleView!
     private var emptyView: RootTabEmptyView!
-    private var plusButtonImageView: UIImageView!
     private var hasMore: Bool = false
-    
+    private let addRoomHeaderView = AddItemHeaderView.instantiate(title: VectorL10n.spacesAddRoom, icon: Asset.Images.spaceAddRoom.image)
+
     private var itemDataList: [SpaceExploreRoomListItemViewData] = [] {
         didSet {
             self.tableView.reloadData()
@@ -124,6 +124,8 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.tableView.reloadData()
         self.emptyView.update(theme: theme)
         theme.applyStyle(onSearchBar: self.tableSearchBar)
+        
+        self.addRoomHeaderView.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -152,9 +154,9 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.tableView.keyboardDismissMode = .interactive
         self.setupTableView()
         
-        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.roomsEmptyViewTitle, informationText: VectorL10n.roomsEmptyViewInformation)
+        self.setupTableViewHeader()
         
-        self.plusButtonImageView = self.vc_addFAB(withImage: Asset.Images.roomsFloatingAction.image, target: self, action: #selector(addRoomAction(semder:)))
+        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.roomsEmptyViewTitle, informationText: VectorL10n.roomsEmptyViewInformation)
         
         self.emptyView.frame = CGRect(x: 0, y: self.tableSearchBar.frame.maxY, width: self.view.bounds.width, height: self.view.bounds.height - self.tableSearchBar.frame.maxY)
         self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -162,6 +164,11 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.view.insertSubview(self.emptyView, at: 0)
     }
     
+    private func setupTableViewHeader() {
+        addRoomHeaderView.delegate = self
+        tableView.tableHeaderView = addRoomHeaderView
+    }
+
     private func setupTableView() {
         self.tableView.separatorStyle = .none
         self.tableView.rowHeight = UITableView.automaticDimension
@@ -224,10 +231,6 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.viewModel.process(viewAction: .cancel)
     }
     
-    @objc private func addRoomAction(semder: UIView) {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesAddRoomsComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
-    }
-
     // MARK: - UISearchBarDelegate
     
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -285,4 +288,13 @@ extension SpaceExploreRoomViewController: SpaceExploreRoomViewModelViewDelegate 
     func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, didUpdateViewState viewSate: SpaceExploreRoomViewState) {
         self.render(viewState: viewSate)
     }
+}
+
+// MARK: - SpaceMemberListViewModelViewDelegate
+extension SpaceExploreRoomViewController: AddItemHeaderViewDelegate {
+    
+    func addItemHeaderView(_ headerView: AddItemHeaderView, didTapButton button: UIButton) {
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesAddRoomsComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+    }
+    
 }
