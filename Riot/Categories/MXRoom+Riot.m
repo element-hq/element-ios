@@ -19,6 +19,7 @@
 #import "MXRoom+Riot.h"
 
 #import "AvatarGenerator.h"
+#import "MatrixKit.h"
 
 #import <objc/runtime.h>
 

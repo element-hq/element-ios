@@ -2379,7 +2379,7 @@ public class VectorL10n: NSObject {
   public static var pollEditFormInputPlaceholder: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_input_placeholder") 
   }
-  /// Option %d
+  /// Option %lu
   public static func pollEditFormOptionNumber(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "poll_edit_form_option_number", p1)
   }
@@ -2387,9 +2387,81 @@ public class VectorL10n: NSObject {
   public static var pollEditFormPollQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
   }
+  /// OK
+  public static var pollEditFormPostFailureAction: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_action") 
+  }
+  /// Please try again
+  public static var pollEditFormPostFailureSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_subtitle") 
+  }
+  /// Failed to post poll
+  public static var pollEditFormPostFailureTitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_title") 
+  }
   /// Question or topic
   public static var pollEditFormQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
+  }
+  /// OK
+  public static var pollTimelineNotClosedAction: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_not_closed_action") 
+  }
+  /// Please try again
+  public static var pollTimelineNotClosedSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 
+  }
+  /// Failed to end poll
+  public static var pollTimelineNotClosedTitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_not_closed_title") 
+  }
+  /// 1 vote
+  public static var pollTimelineOneVote: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_one_vote") 
+  }
+  /// Final results based on %lu votes
+  public static func pollTimelineTotalFinalResults(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_total_final_results", p1)
+  }
+  /// Final results based on 1 vote
+  public static var pollTimelineTotalFinalResultsOneVote: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_final_results_one_vote") 
+  }
+  /// No votes cast
+  public static var pollTimelineTotalNoVotes: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_no_votes") 
+  }
+  /// 1 vote cast
+  public static var pollTimelineTotalOneVote: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_one_vote") 
+  }
+  /// 1 vote cast. Vote to the see the results
+  public static var pollTimelineTotalOneVoteNotVoted: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_one_vote_not_voted") 
+  }
+  /// %lu votes cast
+  public static func pollTimelineTotalVotes(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_total_votes", p1)
+  }
+  /// %lu votes cast. Vote to the see the results
+  public static func pollTimelineTotalVotesNotVoted(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_total_votes_not_voted", p1)
+  }
+  /// OK
+  public static var pollTimelineVoteNotRegisteredAction: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_action") 
+  }
+  /// Sorry, your vote was not registered, please try again
+  public static var pollTimelineVoteNotRegisteredSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_subtitle") 
+  }
+  /// Vote not registered
+  public static var pollTimelineVoteNotRegisteredTitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_title") 
+  }
+  /// %lu votes
+  public static func pollTimelineVotesCount(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_votes_count", p1)
   }
   /// Preview
   public static var preview: String { 
@@ -2919,6 +2991,10 @@ public class VectorL10n: NSObject {
   public static var roomEventActionEdit: String { 
     return VectorL10n.tr("Vector", "room_event_action_edit") 
   }
+  /// End poll
+  public static var roomEventActionEndPoll: String { 
+    return VectorL10n.tr("Vector", "room_event_action_end_poll") 
+  }
   /// Forward
   public static var roomEventActionForward: String { 
     return VectorL10n.tr("Vector", "room_event_action_forward") 
@@ -2954,6 +3030,10 @@ public class VectorL10n: NSObject {
   /// Remove
   public static var roomEventActionRedact: String { 
     return VectorL10n.tr("Vector", "room_event_action_redact") 
+  }
+  /// Remove poll
+  public static var roomEventActionRemovePoll: String { 
+    return VectorL10n.tr("Vector", "room_event_action_remove_poll") 
   }
   /// Reply
   public static var roomEventActionReply: String { 
@@ -4555,13 +4635,13 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableThreads: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_threads") 
   }
+  /// Polls
+  public static var settingsLabsEnabledPolls: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enabled_polls") 
+  }
   /// React to messages with emoji
   public static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
-  }
-  /// Voice messages
-  public static var settingsLabsVoiceMessages: String { 
-    return VectorL10n.tr("Vector", "settings_labs_voice_messages") 
   }
   /// LINKS
   public static var settingsLinks: String { 

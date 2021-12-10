@@ -29,8 +29,6 @@
 
 #import "MediaAlbumTableCell.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 @interface MediaPickerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MediaAlbumContentViewControllerDelegate>
 
 {

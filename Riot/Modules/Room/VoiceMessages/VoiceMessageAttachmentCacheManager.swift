@@ -85,7 +85,7 @@ class VoiceMessageAttachmentCacheManager {
     }
     
     func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
-        guard attachment.type == MXKAttachmentTypeVoiceMessage else {
+        guard attachment.type == MXKAttachmentTypeVoiceMessage || attachment.type == MXKAttachmentTypeAudio else {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidAttachmentType))
             MXLog.error("[VoiceMessageAttachmentCacheManager] Invalid attachment type, ignoring request.")
             return
@@ -208,9 +208,9 @@ class VoiceMessageAttachmentCacheManager {
             return
         }
         
-        let newURL = temporaryFilesFolderURL.appendingPathComponent(ProcessInfo().globallyUniqueString).appendingPathExtension("m4a")
+        let newURL = temporaryFilesFolderURL.appendingPathComponent(identifier).appendingPathExtension("m4a")
         
-        VoiceMessageAudioConverter.convertToMPEG4AAC(sourceURL: URL(fileURLWithPath: filePath), destinationURL: newURL) { result in
+        let conversionCompletion: (Result<Void, VoiceMessageAudioConverterError>) -> Void = { result in
             self.workQueue.async {
                 switch result {
                 case .success:
@@ -244,6 +244,12 @@ class VoiceMessageAttachmentCacheManager {
                     semaphore.signal()
                 }
             }
+        }
+        
+        if FileManager.default.fileExists(atPath: newURL.path) {
+            conversionCompletion(Result.success(()))
+        } else {
+            VoiceMessageAudioConverter.convertToMPEG4AAC(sourceURL: URL(fileURLWithPath: filePath), destinationURL: newURL, completion: conversionCompletion)
         }
     }
     

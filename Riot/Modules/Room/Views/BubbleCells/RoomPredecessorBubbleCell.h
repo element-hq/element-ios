@@ -16,7 +16,8 @@
 
 
 @import UIKit;
-@import MatrixKit;
+
+#import "MatrixKit.h"
 
 @interface RoomPredecessorBubbleCell : MXKRoomBubbleTableViewCell
 

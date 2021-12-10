@@ -18,8 +18,6 @@
 
 #import <mach/mach.h>
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "ShareManager.h"
 #import "ShareViewController.h"
 #import "ShareDataSource.h"

@@ -286,7 +286,7 @@
 "auth_reset_password_success_message" = "Dein Passwort wurde zurückgesetzt.\n\nDu wurdest aus allen Sitzungen abgemeldet, diese bekommen jetzt keine Push-Benachrichtigungen mehr. Um diese wieder einzuschalten, melde dich auf den Geräten erneut an.";
 "auth_add_email_and_phone_warning" = "Registrierung mit E-Mail und Telefonnummer zugleich ist noch nicht unterstützt. Nur die Telefonnummer wird berücksichtigt. Du kannst deine E-Mail-Adresse in deinem Profil ergänzen.";
 "room_creation_make_public_prompt_msg" = "Sicher, dass du diesen Raum öffentlich machen willst? Jeder kann deine Nachrichten lesen und dem Raum beitreten.";
-"room_creation_invite_another_user" = "Suchen/Einladen mittels Benutzer-ID, Name oder E-Mail-Adresse";
+"room_creation_invite_another_user" = "Benutzer-ID, Name oder E-Mail";
 "room_recents_join_room_prompt" = "Gib eine Raum-ID oder einem Raum-Alias an";
 "directory_cell_description" = "%tu Räume";
 "directory_search_results" = "%tu Treffer gefunden für %@";
@@ -835,7 +835,7 @@
 "settings_calls_stun_server_fallback_button" = "Ausweich-Anruf-Assistenz-Server zulassen";
 "settings_devices_description" = "Der öffentliche Name der Sitzung ist für Personen sichtbar, mit denen du kommunizierst";
 "settings_discovery_no_identity_server" = "Du verwendest derzeit keinen Identitätsserver. Füge einen hinzu, um für vorhandene, dir bekannte Kontakte sichtbar zu sein.";
-"settings_discovery_terms_not_signed" = "Stimme den Nutzungsbedingungen des Identitätsservers (%@) zu, um zu erlauben per E-Mail oder Telefonnummer gefunden zu werden.";
+"settings_discovery_terms_not_signed" = "Stimme den Nutzungsbedingungen des Identitätsservers (%@) zu, um per E-Mail oder Telefonnummer gefunden zu werden.";
 "settings_discovery_three_pids_management_information_part1" = "Verwalte, welche E-Mail-Adressen oder Telefonnummern andere Benutzer verwenden können, um dich zu entdecken und dich in Räume einzuladen. Füge in dieser Liste E-Mail-Adressen oder Telefonnummern hinzu oder entferne sie ";
 "settings_discovery_three_pids_management_information_part2" = "Nutzereinstellungen";
 "settings_discovery_three_pids_management_information_part3" = ".";
@@ -910,7 +910,7 @@
 "room_participants_security_loading" = "Lade…";
 "room_participants_security_information_room_not_encrypted" = "Nachrichten in diesem Raum sind nicht Ende-zu-Ende verschlüsselt.";
 "settings_security" = "SICHERHEIT";
-"settings_integrations_allow_description" = "Benutze einen Integrationsverwalter (%@), um Bots, Bridges, Widgets und Aufkleberpakete zu verwalten.\n\nIntegrationsverwalter erhalten Konfigurationsdaten und können Widgets verändern, Raum-Einladungen versenden sowie Berechtigungen in deinem Namen einstellen.";
+"settings_integrations_allow_description" = "Benutze einen Integrationsmanager (%@), um Bots, Bridges, Widgets und Aufkleberpakete zu verwalten.\n\nIntegrationsmanager erhalten Konfigurationsdaten und können Widgets verändern, Raum-Einladungen versenden sowie Berechtigungen in deinem Namen einstellen.";
 "settings_labs_enable_cross_signing" = "Aktiviere Cross-Signing, um deinen Gesprächspartner anstatt dessen Gerät zu verifizieren (in Entwicklung)";
 // Security settings
 "security_settings_title" = "Sicherheit";
@@ -1484,3 +1484,26 @@
 "open" = "Öffnen";
 "settings_links" = "LINKS";
 "find_your_contacts_footer" = "Dies kann jederzeit in den Einstellungen deaktiviert werden.";
+"settings_contacts_enable_sync" = "Finde deine Kontakte";
+"space_home_show_all_rooms" = "Alle Räume anzeigen";
+"service_terms_modal_information_description_integration_manager" = "Ein Integrationsmanager erlaubt dir, externe Funktionen hinzuzufügen.";
+"service_terms_modal_information_description_identity_server" = "Der Identitätsserver sucht anhand der Telefonnummern und E-Mails in deinen Kontakten, ob diese einen Matrix-Account haben.";
+"service_terms_modal_information_title_integration_manager" = "Integrationsmanager";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Indentitätsserver";
+"service_terms_modal_description_integration_manager" = "Das erlaubt dir Bots, Bridges und Stickerpacks zu verwenden.";
+"service_terms_modal_description_identity_server" = "Dies erlaubt Personen, die deine Telefonnummer oder E-Mail in ihren Kontakten hat, dich zu finden.";
+"service_terms_modal_table_header_identity_server" = "NUTZUNGSBEDINGUNGEN IDENTITÄTSSERVER";
+"service_terms_modal_table_header_integration_manager" = "NUTZUNGSBEDINGUNGEN INTEGRATIONSMANAGER";
+"service_terms_modal_footer" = "Dies kann jederzeit in den Einstellungen deaktiviert werden.";
+
+// Service terms
+"service_terms_modal_title_message" = "Zum Fortfahren musst du die Nutzungsbedingungen akzeptieren";
+"settings_contacts_enable_sync_description" = "Dies verwendet deinen Identitätsserver um dich mit deinen Kontakten zu verbinden.";
+"settings_phone_contacts" = "KONTAKTE AM HANDY";
+"room_event_action_forward" = "Weiter";
+"find_your_contacts_identity_service_error" = "Konnte keine Verbindung zum Identitätsserver aufbauen.";
+"find_your_contacts_button_title" = "Finde deine Kontakte";
+"contacts_address_book_permission_denied_alert_message" = "Um Kontakte zu aktivieren, öffne die Einstellungen deines Gerätes.";
+"contacts_address_book_permission_denied_alert_title" = "Kontakte deaktiviert";

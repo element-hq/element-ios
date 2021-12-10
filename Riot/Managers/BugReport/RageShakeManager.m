@@ -21,8 +21,6 @@
 
 #import "BugReportViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "GeneratedInterface-Swift.h"
 
 static RageShakeManager* sharedInstance = nil;

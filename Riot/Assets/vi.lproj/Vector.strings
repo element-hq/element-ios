@@ -67,7 +67,7 @@
 "auth_missing_email_or_phone" = "Thiếu địa chỉ email hoặc số điện thoại";
 "auth_email_in_use" = "Địa chỉ email này đã được sử dụng";
 "auth_phone_in_use" = "Số điện thoại này đã được sử dụng";
-"auth_untrusted_id_server" = "Máy chủ nhận dạng không được tin cậy";
+"auth_untrusted_id_server" = "Máy chủ xác thực không được tin cậy";
 "auth_password_dont_match" = "Mật khẩu không trùng khớp";
 "auth_username_in_use" = "Tên đăng nhập đang được sử dụng";
 "auth_forgot_password" = "Quên mật khẩu?";
@@ -153,12 +153,12 @@
 "room_participants_one_participant" = "1 người tham gia";
 "room_participants_multi_participants" = "%d người tham gia";
 "room_participants_leave_prompt_title" = "Rời phòng";
-"room_participants_leave_prompt_msg" = "Bạn có muốn rời phòng này?";
+"room_participants_leave_prompt_msg" = "Bạn có chắc muốn rời phòng này?";
 "room_participants_remove_prompt_title" = "Xác nhận";
 "room_participants_remove_prompt_msg" = "Bạn có muốn gỡ bỏ %@ ra khỏi cuộc trò chuyện?";
 "room_participants_remove_third_party_invite_msg" = "Gỡ bỏ lời mời của bên thứ ba chưa được hỗ trợ cho tới khi api được thực hiện";
 "room_participants_invite_prompt_title" = "Xác nhận";
-"room_participants_invite_prompt_msg" = "Bạn có muốn mời %@ vào cuộc trò chuyện này?";
+"room_participants_invite_prompt_msg" = "Bạn có chắc muốn mời %@ vào cuộc trò chuyện này?";
 "room_participants_filter_room_members" = "Lọc thành viên trong phòng";
 "room_participants_invite_another_user" = "Tìm / mời bằng ID Người dùng, Tên hoặc Email";
 "room_participants_invite_malformed_id_title" = "Lỗi mời";
@@ -199,7 +199,7 @@
 "encrypted_room_message_placeholder" = "Gửi tin nhắn đã mã hoá…";
 "room_message_short_placeholder" = "Gửi tin nhắn…";
 "room_offline_notification" = "Kết nối tới máy chủ thất bại.";
-"room_unsent_messages_notification" = "Các tin nhắn chưa được gửi.";
+"room_unsent_messages_notification" = "Các tin nhắn gửi thất bại.";
 "room_unsent_messages_unknown_devices_notification" = "Các tin nhắn chưa được gửi tới các thiết bị không xác định hiện hành.";
 "room_ongoing_conference_call" = "Cuộc gọi hội nghị đang diễn ra. Tham gia như %@ hoặc %@.";
 "room_ongoing_conference_call_with_close" = "Cuộc gọi hội nghị đang diễn ra. Tham gia như %@ hoặc %@. %@ nó.";
@@ -217,7 +217,7 @@
 "room_event_action_permalink" = "Liên kết";
 "room_event_action_view_source" = "Xem nguồn";
 "room_event_action_report" = "Báo cáo nội dung";
-"room_event_action_report_prompt_reason" = "Lí do báo cáo nội dung";
+"room_event_action_report_prompt_reason" = "Lí do báo cáo nội dung này";
 "room_event_action_report_prompt_ignore_user" = "Bạn có muốn ẩn tất cả tin nhắn từ người dùng này?";
 "room_event_action_save" = "Lưu";
 "room_event_action_resend" = "Gửi lại";
@@ -288,8 +288,8 @@
 "settings_enable_push_notif" = "Thông báo trên thiết bị";
 "settings_show_decrypted_content" = "Hiện nội dung đã giải mã";
 "settings_global_settings_info" = "Cài đặt thông báo toàn cầu khả dụng trên %@ trình duyệt khách của bạn";
-"settings_pin_rooms_with_missed_notif" = "Neo phòng có thông báo bỏ lỡ";
-"settings_pin_rooms_with_unread" = "Neo phòng có tin nhắn chưa đọc";
+"settings_pin_rooms_with_missed_notif" = "Ghim các phòng có thông báo bị bỏ lỡ";
+"settings_pin_rooms_with_unread" = "Ghim các phòng có các tin nhắn chưa đọc";
 "settings_enable_callkit" = "Cuộc gọi tích hợp";
 "settings_callkit_info" = "Nhận cuộc gọi tới trên màn hình khóa. Xem lịch sử cuộc gọi trong lịch sử cuộc gọi của hệ thống. Nếu iCloud được kích hoạt, lịch sử cuộc gọi sẽ được chia sẻ với Apple.";
 "settings_ui_language" = "Ngôn ngữ";
@@ -302,9 +302,9 @@
 "settings_unignore_user" = "Xem tất cả tin nhắn từ %@?";
 "settings_contacts_discover_matrix_users" = "Sử dụng email và số điện thoại để tìm người dùng khác";
 "settings_contacts_phonebook_country" = "Quốc gia trong danh bạ";
-"settings_labs_e2e_encryption" = "End-to-End Mã Hóa";
+"settings_labs_e2e_encryption" = "Mã hóa đầu-cuối";
 "settings_labs_e2e_encryption_prompt_message" = "Để hoàn thành cài đặt mã hóa, bạn phải đăng nhập lại.";
-"settings_labs_create_conference_with_jitsi" = "Tạo cuộc gọi hội họp bằng jitsi";
+"settings_labs_create_conference_with_jitsi" = "Tạo cuộc gọi hội thoại bằng jitsi";
 "settings_version" = "Phiên bản %@";
 "settings_olm_version" = "Phiên bản Olm %@";
 "settings_copyright" = "Bản quyền";
@@ -362,8 +362,8 @@
 "room_details_advanced_section" = "Nâng cao";
 "room_details_advanced_room_id" = "ID Phòng:";
 "room_details_advanced_enable_e2e_encryption" = "Bật mã hóa (cảnh báo: không thể tắt trở lại!)";
-"room_details_advanced_e2e_encryption_enabled" = "Mã hóa được bật cho phòng này";
-"room_details_advanced_e2e_encryption_disabled" = "Mã hóa chưa được bật cho phòng này.";
+"room_details_advanced_e2e_encryption_enabled" = "Mã hóa được kích hoạt cho phòng này";
+"room_details_advanced_e2e_encryption_disabled" = "Mã hóa chưa được kích hoạt cho phòng này.";
 "room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Chỉ mã hóa cho các thiết bị đã được xác thực";
 "room_details_advanced_e2e_encryption_prompt_message" = "End-to-end, mã hoá đang trong giai đoạn thử nghiệm và có thể không đáng tin cậy.\n\nBạn không nên tin tưởng tuyệt đối vào nó về việc bảo mật dữ liệu hoàn toàn.\n\nThiết bị sẽ không thể giải mã lịch sử từ trước khi họ tham gia vào phòng.\n\nMột khi mã hóa được kích hoạt cho một căn phòng nó không thể tắt (cho đến bây giờ).\n\nTin nhắn được mã hóa sẽ không hiển thị trên các máy khách khi chúng chưa được tích hợp mã hoá.";
 "room_details_fail_to_update_avatar" = "Cập nhật ảnh phòng thất bại";
@@ -459,3 +459,1172 @@
 "share_extension_auth_prompt" = "Đăng nhập vào ứng dụng chính để chia sẻ nội dung";
 "share_extension_failed_to_encrypt" = "Gửi thất bại. Kiểm tra cài đặt bảo mật phòng trong ứng dụng chính";
 "title_groups" = "Cộng đồng";
+"version_check_modal_action_title_deprecated" = "Tìm hiểu cách";
+"version_check_modal_subtitle_deprecated" = "Chúng tôi đã làm việc để nâng cao %@ để có trải nghiệm nhanh hơn và bóng bẩy hơn. Thật không may, phiên bản iOS hiện tại của bạn không tương thích với một số bản sửa lỗi và sẽ không còn được hỗ trợ.\nChúng tôi khuyến nghị bạn nên nâng cấp hệ điều hành của bạn để sử dụng %@ với tất cả tiềm năng của nó.";
+"version_check_modal_title_deprecated" = "Chúng tôi không còn hỗ trợ iOS%@";
+"version_check_modal_action_title_supported" = "Đã nhận";
+"version_check_modal_subtitle_supported" = "Chúng tôi đã làm việc để nâng cao %@ để có trải nghiệm nhanh hơn và bóng bẩy hơn. Thật không may, phiên bản iOS hiện tại của bạn không tương thích với một số bản sửa lỗi và sẽ không còn được hỗ trợ.\nChúng tôi khuyến nghị bạn nên nâng cấp hệ điều hành của bạn để sử dụng %@ với tất cả tiềm năng của nó.";
+"version_check_modal_title_supported" = "Chúng tôi đang chấm dứt hỗ trợ iOS %@";
+"version_check_banner_subtitle_deprecated" = "Chúng tôi không còn hỗ trợ %@ trên iOS %@. Để tiếp tục sử dụng %@ với đầy đủ tiềm năng của nó, chúng tôi khuyến nghị bạn nên nâng cấp phiên bản iOS của bạn.";
+"version_check_banner_title_deprecated" = "Chúng tôi không còn hỗ trợ iOS%@";
+"version_check_banner_subtitle_supported" = "Chúng tôi sẽ sớm chấm dứt hỗ trợ %@ trên iOS %@. Để tiếp tục sử dụng %@ với đầy đủ tiềm năng của nó, chúng tôi khuyến nghị bạn nên nâng cấp phiên bản iOS của bạn.";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Chúng tôi đang chấm dứt hỗ trợ iOS %@";
+"voice_message_lock_screen_placeholder" = "Tin nhắn thoại";
+"voice_message_stop_locked_mode_recording" = "Nhấn vào bản ghi âm của bạn để dừng hoặc nghe";
+"voice_message_remaining_recording_time" = "%@s còn lại";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Giữ để ghi âm, bỏ ra để gửi";
+"side_menu_app_version" = "Phiên bản %@";
+"side_menu_action_feedback" = "Phản hồi";
+"side_menu_action_help" = "Trợ giúp";
+"side_menu_action_settings" = "Cài đặt";
+"side_menu_action_invite_friends" = "Mời bạn bè";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Bảng điều khiển trái";
+"user_avatar_view_accessibility_hint" = "Thay đổi avatar người dùng";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "avatar";
+"space_avatar_view_accessibility_hint" = "Thay đổi avatar space";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "avatar";
+"space_public_join_rule" = "Space công cộng";
+"space_private_join_rule" = "Space riêng tư";
+"space_participants_action_ban" = "Cấm từ space này";
+"space_participants_action_remove" = "Loại bỏ khỏi space này";
+"spaces_coming_soon_detail" = "Tính năng này chưa được triển khai ở đây, nhưng nó đang được tiến hành. Bây giờ, bạn có thể làm với Element trên máy tính của bạn.";
+"spaces_invites_coming_soon_title" = "Mời sắp có";
+"spaces_add_rooms_coming_soon_title" = "Thêm phòng sắp có";
+"spaces_coming_soon_title" = "Sắp có";
+"spaces_no_member_found_detail" = "Tìm kiếm ai đó không có trong %@? Bây giờ, bạn có thể mời họ trên Web hoặc Desktop.";
+"spaces_no_room_found_detail" = "Vài kết quả có thể bị ẩn vì chúng riêng tư và bạn cần một lời mời để tham gia vào chúng.";
+"spaces_no_result_found_title" = "Không tìm thấy kết quả";
+"spaces_empty_space_detail" = "Vài phòng có thể bị ẩn vì chúng là phòng riêng và bạn cần một lời mời.";
+"spaces_empty_space_title" = "Space này chưa có phòng";
+"space_tag" = "space";
+"spaces_suggested_room" = "Đề nghị";
+"spaces_explore_rooms" = "Khám phá phòng";
+"leave_space_and_all_rooms_action" = "Rời tất cả phòng và spaces";
+"leave_space_only_action" = "Không rời phòng nào";
+"leave_space_message_admin_warning" = "Bạn là quản trị viên của space này, chắc chắn là bạn vừa chuyển quyền quản trị cho thành viên khác trước khi rời khỏi.";
+"leave_space_message" = "Bạn có chắc muốn rời khỏi %@? Bạn có muốn rời tất cả phòng và spaces của space này?";
+"leave_space_title" = "Rời khỏi %@";
+"spaces_left_panel_title" = "Spaces";
+"spaces_home_space_title" = "Nhà";
+"space_beta_announce_information" = "Spaces là cách mới để nhóm các phòng và người. Chúng chưa có trên iOS, nhưng bạn có thể sử dụng chúng bây giờ trên Web và Desktop.";
+"space_beta_announce_subtitle" = "Phiên bản mới của cộng đồng";
+"space_beta_announce_title" = "Spaces sắp có ở đây";
+"space_beta_announce_badge" = "BETA";
+"space_feature_unavailable_information" = "Spaces là cách mới để nhóm các phòng và người.\n\nChúng sẽ sớm có mặt. Bây giờ, nếu bạn tham gia vào một nền tảng khác, bạn sẽ có thể truy cập bất cứ phòng nào bạn tham gia ở đây.";
+"space_feature_unavailable_subtitle" = "Spaces chưa có trên iOS, nhưng bạn có thể sử dụng nó bây giờ trên Web và Desktop";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Spaces chưa có ở đây";
+"room_intro_cell_information_multiple_dm_sentence2" = "Chỉ có bạn ở trong cuộc trò chuyện này, nếu bạn không mời ai khác tham gia.";
+"room_intro_cell_information_dm_sentence2" = "Chỉ có hai người trong cuộc trò chuyện này, không ai khác có thể tham gia.";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_dm_sentence1_part1" = "Đây là khởi đầu của tin nhắn trực tiếp của bạn với ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " để mọi người biết phòng này là gì.";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Thêm chủ đề";
+"room_intro_cell_information_room_with_topic_sentence2" = "Chủ đề: %@";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part1" = "Đây là khởi đầu của ";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Thêm người";
+"room_avatar_view_accessibility_hint" = "Thay đổi avatar phòng";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "avatar";
+"invite_friends_share_text" = "Này, nói với tôi ở %@: %@";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Mời bạn bè vào %@";
+"favourites_empty_view_information" = "Bạn có thể yêu thích một số cách - nhanh nhất là nhấn và giữ. Nhấn vào dấu sao và chúng sẽ xuất hiện tự động ở đây để giữ an toàn.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Các phòng và danh bạ yêu thích";
+"home_empty_view_information" = "Ứng dụng trò chuyển bảo mật tất cả trong một cho các nhóm, bạn và tổ chức. Nhấn nút + bên dưới để thêm người và phòng.";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Chào mừng đến %@,\n%@";
+"call_transfer_error_message" = "Chuyển tiếp cuộc gọi thất bại";
+"call_transfer_error_title" = "Lỗi";
+"call_transfer_contacts_all" = "Tất cả";
+"call_transfer_contacts_recent" = "Gần đây";
+"call_transfer_dialpad" = "Bàn phím số";
+"call_transfer_users" = "Các người dùng";
+
+// MARK: - Call Transfer
+"call_transfer_title" = "Chuyển tiếp";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Bàn phím số";
+"room_info_list_section_other" = "Khác";
+"room_info_list_several_members" = "%@ thành viên";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 thành viên";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_section_header_address" = "Địa chỉ phòng";
+"create_room_show_in_directory" = "Hiển thị phòng trong thư mục";
+"create_room_section_footer_type" = "Mọi người chỉ tham gia vào phòng riêng bằng lời mời";
+"create_room_type_public" = "Phòng công cộng";
+"create_room_type_private" = "Phòng riêng";
+"create_room_section_header_type" = "Loại phòng";
+"create_room_section_footer_encryption" = "Mã hóa không thể tắt sau này.";
+"create_room_enable_encryption" = "Bật mã hóa";
+"create_room_section_header_encryption" = "Mã hóa phòng";
+"create_room_placeholder_topic" = "Chủ đề";
+"create_room_section_header_topic" = "Chủ đề phòng (tùy chọn)";
+"create_room_placeholder_name" = "Tên";
+"create_room_section_header_name" = "Tên phòng";
+
+// MARK: - Create Room
+
+"create_room_title" = "Phòng mới";
+"searchable_directory_search_placeholder" = "Tên hoặc ID";
+"searchable_directory_x_network" = "%@ Mạng";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Tạo một phòng mới";
+"biometrics_cant_unlocked_alert_message_retry" = "Thử lại";
+"biometrics_cant_unlocked_alert_message_login" = "Đăng nhập lại";
+"biometrics_cant_unlocked_alert_message_x" = "Để mở, sử dụng %@ hoặc đăng nhập lại và bật lại %@";
+"biometrics_cant_unlocked_alert_title" = "Không thể mở ứng dụng";
+"biometrics_usage_reason" = "Việc xác thực là cần thiết để truy cập vào ứng dụng của bạn";
+"biometrics_desetup_disable_button_title_x" = "Tắt %@";
+"biometrics_desetup_title_x" = "Tắt %@";
+"biometrics_setup_subtitle" = "Tiết kiệm thời gian của bạn";
+"biometrics_setup_enable_button_title_x" = "Bật %@";
+"biometrics_setup_title_x" = "Bật %@";
+"biometrics_settings_enable_x" = "Bật %@";
+"biometrics_mode_face_id" = "Face ID";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"pin_protection_kick_user_alert_message" = "Quá nhiều lỗi, bạn vừa bị đăng xuất";
+"pin_protection_explanatory" = "Thiết lập một PIN cho phép bạn bảo vệ dữ liệu, như các tin nhắn và danh bạ, vì vậy chỉ có bạn có thể truy cập vào chúng bằng cách nhập PIN khi ứng dụng bắt đầu.";
+"pin_protection_not_allowed_pin" = "Vì các lý do an toàn, PIN này không tồn tại. Vui lòng thử PIN khác";
+"pin_protection_settings_change_pin" = "Thay đổi PIN";
+"pin_protection_settings_enable_pin" = "Kích hoạt PIN";
+"pin_protection_settings_enabled_forced" = "PIN được kích hoạt";
+"pin_protection_settings_section_footer" = "Để đặt lại PIN của bạn, bạn sẽ cần đăng nhập lại và tạo một cái mới";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_mismatch_too_many_times_error_message" = "Nếu bạn không thể nhớ PIN của bạn, nhấn vào nút quên PIN";
+"pin_protection_mismatch_error_message" = "Vui lòng thử lại";
+"pin_protection_mismatch_error_title" = "Các PIN không khớp";
+"pin_protection_reset_alert_action_reset" = "Đặt lại";
+"pin_protection_reset_alert_message" = "Để đặt lại PIN của bạn, bạn sẽ cần đăng nhập lại và tạo một cái mới";
+"pin_protection_reset_alert_title" = "Đặt lại PIN";
+"pin_protection_forgot_pin" = "Quên PIN";
+"pin_protection_enter_pin" = "Nhập PIN của bạn";
+"pin_protection_confirm_pin_to_change" = "Xác nhận PIN để thay đổi PIN";
+"pin_protection_confirm_pin_to_disable" = "Xác nhận PIN để vô hiệu hóa PIN";
+"pin_protection_confirm_pin" = "Xác nhận PIN của bạn";
+"pin_protection_choose_pin" = "Tạo một PIN để bảo mật";
+"pin_protection_choose_pin_welcome_after_register" = "Chào mừng.";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Chào mừng trở lại.";
+"major_update_done_action" = "Đã nhận";
+"major_update_learn_more_action" = "Tìm hiểu thêm";
+"major_update_information" = "Chúng tôi vui mừng thông báo rằng chúng tôi vừa thay đổi tên! Ứng dụng của bạn đã được cập nhật và bạn đã đăng nhập vào tài khoản của bạn.";
+
+// MARK: - Major update
+
+"major_update_title" = "Bạo loạn bây giờ là %@";
+"cross_signing_setup_banner_subtitle" = "Xác minh các thiết bị khác của bạn dễ dàng hơn";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Thiết lập mã hóa";
+"secrets_reset_authentication_message" = "Nhập mật khẩu tài khoản của bạn để xác nhận";
+"secrets_reset_reset_action" = "Đặt lại";
+"secrets_reset_warning_message" = "Bạn sẽ khởi động lại mà không có lịch sử, tin nhắn, các thiết bị tin cậy hoặc người dùng tin cậy.";
+"secrets_reset_warning_title" = "Nếu bạn đặt lại mọi thứ";
+"secrets_reset_information" = "Chỉ làm điều này nếu bạn không có thiết bị khác mà bạn có thể xác minh thiết bị này.";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Đặt lại mọi thứ";
+"secrets_setup_recovery_passphrase_summary_information" = "Nhớ Chuỗi Bảo mật của bạn. Nó có thể được dùng để mở các tin nhắn và dữ liệu mã hóa của bạn.";
+"secrets_setup_recovery_passphrase_summary_title" = "Lưu Chuỗi Bảo mật của bạn";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Xác nhận chuỗi";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Xác nhận";
+"secrets_setup_recovery_passphrase_confirm_information" = "Nhập lại Chuỗi Bảo mật của bạn để xác nhận nó.";
+"secrets_setup_recovery_passphrase_validate_action" = "Hoàn tất";
+"secrets_setup_recovery_passphrase_additional_information" = "Không sử dụng mật khẩu tài khoản của bạn.";
+"secrets_setup_recovery_passphrase_information" = "Nhập một chuỗi bảo mật chỉ bạn biết, được sử dụng để bảo mật các bí mật trên máy chủ của bạn.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Đặt một Chuỗi Bảo mật";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ In nó và lưu trữ nó ở nơi nào đó an toàn\n✓ Lưu nó trong một USB hoặc ổ cứng dự phòng\n✓ Sao chép nó lên kho lưu trữ đám mây cá nhân của bạn";
+"secrets_setup_recovery_key_storage_alert_title" = "Giữ nó an toàn";
+"secrets_setup_recovery_key_done_action" = "Hoàn tất";
+"secrets_setup_recovery_key_export_action" = "Lưu";
+"secrets_setup_recovery_key_loading" = "Đang tải…";
+"secrets_setup_recovery_key_information" = "Lưu Khóa Bảo mật của bạn ở nơi an toàn. Nó có thể được sử dụng để mở các tin nhắn và dữ liệu bảo mật của bạn.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Lưu Khóa Bảo mật của bạn";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Vui lòng xác minh rằng bạn đã nhập đúng Khóa Bảo mật.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Không thể truy cập kho lưu bí mật";
+"secrets_recovery_with_key_recover_action" = "Sử dụng Khóa";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Nhập Khóa Bảo mật";
+"user_verification_session_details_information_untrusted_other_user" = " đã đăng ký sử dụng một thiết bị mới:";
+"user_verification_session_details_information_untrusted_current_user" = "Xác minh thiết bị này để đánh dấu nó là tin tưởng & cấp cho nó quyền truy cập vào các tin nhắn mã hóa:";
+"user_verification_session_details_information_trusted_other_user_part2" = " đã xác minh nó:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Thiết bị này được tin tưởng cho việc nhắn tin bảo mật bởi vì ";
+"user_verification_session_details_information_trusted_current_user" = "Thiết bị này được tin tưởng cho việc nhắn tin bảo mật bởi vì bạn đã xác minh nó:";
+"user_verification_session_details_untrusted_title" = "Không tin tưởng";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Tin tưởng";
+"user_verification_sessions_list_session_untrusted" = "Không tin tưởng";
+"user_verification_sessions_list_session_trusted" = "Tin tưởng";
+"user_verification_sessions_list_table_title" = "Các thiết bị";
+"user_verification_sessions_list_information" = "Các tin nhắn với người dùng này trong phòng này được mã hóa đầu-cuối và không thể được đọc bởi các bên thứ ba.";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Không biết";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Cảnh báo";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Tin tưởng";
+"user_verification_start_additional_information" = "Để bảo mật, hãy tự làm hoặc dùng một cách khác để giao tiếp.";
+"user_verification_start_waiting_partner" = "Đang chờ %@…";
+"user_verification_start_information_part2" = " bằng việc kiểm tra mã một-lần trên cả 2 thiết bị của bạn.";
+"user_verification_start_information_part1" = "Để bảo bật thêm, xác minh ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Bắt đầu xác minh";
+"key_verification_scan_confirmation_scanned_device_information" = "Thiết bị khác có đang hiển thị cùng một lá chắn?";
+"key_verification_scan_confirmation_scanned_user_information" = "%@ có đang hiển thị cùng một lá chắn?";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Sắp xong!";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Đang chờ thiết bị khác…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Đang chờ %@…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Sắp xong! Đang chờ xác nhận…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Mã QR vừa được xác minh thành công.";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Mã được xác minh!";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Người dùng khác đã quét mã QR thành công không?";
+"key_verification_verify_qr_code_start_emoji_action" = "Xác minh bằng emoji";
+"key_verification_verify_qr_code_cannot_scan_action" = "Không thể quét?";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Quét mã bằng thiết bị này";
+"key_verification_verify_qr_code_scan_code_action" = "Quét mã của họ";
+"key_verification_verify_qr_code_emoji_information" = "Xác minh bằng việc so sánh emoji duy nhất.";
+"key_verification_verify_qr_code_information_other_device" = "Quét mã bên dưới để xác minh:";
+"key_verification_verify_qr_code_information" = "Quét mã để xác minh một cách bảo mật lẫn nhau.";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Xác minh bằng cách quét";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ muốn xác minh";
+"key_verification_tile_conclusion_warning_title" = "Đăng nhập không tin tưởng";
+"key_verification_tile_conclusion_done_title" = "Đã xác minh";
+"key_verification_tile_request_incoming_approval_decline" = "Từ chối";
+"key_verification_tile_request_incoming_approval_accept" = "Chấp nhận";
+"key_verification_tile_request_status_accepted" = "Bạn đã chấp nhận";
+"key_verification_tile_request_status_cancelled" = "%@ đã hủy";
+"key_verification_tile_request_status_cancelled_by_me" = "Bạn đã hủy";
+"key_verification_tile_request_status_expired" = "Hết hạn";
+"key_verification_tile_request_status_waiting" = "Đang chờ…";
+"key_verification_tile_request_status_data_loading" = "Đang tải dữ liệu…";
+"key_verification_tile_request_outgoing_title" = "Xác minh được gửi";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Yêu cầu xác minh";
+"key_verification_bootstrap_not_setup_message" = "Bạn cần phải khởi động xác thực chéo trước.";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Lỗi mời";
+"error_not_supported_on_mobile" = "Bạn không thể làm điều này từ di động %@.";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Thêm một máy chủ xác thực trong cài đặt của bạn để mời bằng email.";
+
+// MARK: Reaction history
+"reaction_history_title" = "Các phản ứng";
+"emoji_picker_flags_category" = "Cờ";
+"emoji_picker_symbols_category" = "Biểu tượng";
+"emoji_picker_objects_category" = "Đối tượng";
+"emoji_picker_places_category" = "Du lịch & các địa điểm";
+"emoji_picker_activity_category" = "Các hoạt động";
+"emoji_picker_foods_category" = "Đồ ăn và đồ uống";
+"emoji_picker_nature_category" = "Các động vật & thiên nhiên";
+"emoji_picker_people_category" = "Các mặt cười & con người";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Các phản ứng";
+"file_upload_error_unsupported_file_type_message" = "Loại tệp không được hỗ trợ.";
+
+// MARK: File upload
+"file_upload_error_title" = "Tải lên tệp";
+"device_verification_emoji_pin" = "Ghim";
+"device_verification_emoji_folder" = "Thư mục";
+"device_verification_emoji_headphones" = "Tai nghe";
+"device_verification_emoji_anchor" = "Mỏ neo";
+"device_verification_emoji_bell" = "Chuông";
+"device_verification_emoji_trumpet" = "Kèn";
+"device_verification_emoji_guitar" = "Ghi-ta";
+"device_verification_emoji_ball" = "Banh";
+"device_verification_emoji_trophy" = "Cúp";
+"device_verification_emoji_rocket" = "Tên lửa";
+"device_verification_emoji_aeroplane" = "Máy bay";
+"device_verification_emoji_bicycle" = "Xe đạp";
+"device_verification_emoji_train" = "Tàu hỏa";
+"device_verification_emoji_flag" = "Cờ";
+"device_verification_emoji_telephone" = "Điện thoại";
+"device_verification_emoji_hammer" = "Búa";
+"device_verification_emoji_key" = "Chìa khóa";
+"device_verification_emoji_lock" = "Khóa";
+"device_verification_emoji_scissors" = "Kéo";
+"device_verification_emoji_paperclip" = "Kẹp giấy";
+"device_verification_emoji_pencil" = "Bút chì";
+"device_verification_emoji_book" = "Sách";
+"device_verification_emoji_light bulb" = "Bòng đèn tròn";
+"device_verification_emoji_gift" = "Quà";
+"device_verification_emoji_clock" = "Đồng hồ";
+"device_verification_emoji_hourglass" = "Đồng hồ cát";
+"device_verification_emoji_umbrella" = "Cây dù";
+"device_verification_emoji_thumbs up" = "Thích";
+"device_verification_emoji_santa" = "Santa";
+"device_verification_emoji_spanner" = "Spanner";
+"device_verification_emoji_glasses" = "Mắt kiếng";
+"device_verification_emoji_hat" = "Nón";
+"device_verification_emoji_robot" = "Rô-bô";
+"device_verification_emoji_smiley" = "Cười";
+"device_verification_emoji_heart" = "Tim";
+"device_verification_emoji_cake" = "Bánh";
+"device_verification_emoji_pizza" = "Pizza";
+"device_verification_emoji_corn" = "Bắp";
+"device_verification_emoji_strawberry" = "Dâu tây";
+"device_verification_emoji_apple" = "Táo";
+"device_verification_emoji_banana" = "Chuối";
+"device_verification_emoji_fire" = "Lửa";
+"device_verification_emoji_cloud" = "Mây";
+"device_verification_emoji_moon" = "Mặt trăng";
+"device_verification_emoji_globe" = "Địa cầu";
+"device_verification_emoji_mushroom" = "Nấm";
+"device_verification_emoji_cactus" = "Xương rồng";
+"device_verification_emoji_tree" = "Cây";
+"device_verification_emoji_flower" = "Hoa";
+"device_verification_emoji_butterfly" = "Bướm";
+"device_verification_emoji_octopus" = "Bạch tuộc";
+"device_verification_emoji_fish" = "Cá";
+"device_verification_emoji_turtle" = "Rùa";
+"device_verification_emoji_penguin" = "Chim cánh cụt";
+"device_verification_emoji_rooster" = "Gà trống";
+"device_verification_emoji_panda" = "Gấu trúc";
+"device_verification_emoji_rabbit" = "Thỏ";
+"device_verification_emoji_elephant" = "Voi";
+"device_verification_emoji_pig" = "Heo";
+"device_verification_emoji_unicorn" = "Kỳ lân";
+"device_verification_emoji_horse" = "Ngựa";
+"device_verification_emoji_lion" = "Sư tử";
+"device_verification_emoji_cat" = "Mèo";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Chó";
+
+// User
+
+"key_verification_verified_user_information" = "Các tin nhắn với người dùng này được mã hóa đầu-cuối và không thể được đọc bởi các bên thứ ba.";
+"key_verification_verified_this_session_information" = "Bạn có thể đọc các tin nhắn bảo mật trên thiết bị này bây giờ, và các người dùng khác sẽ biết họ có thể tin tưởng nó.";
+"key_verification_verified_new_session_information" = "Bạn có thể đọc các tin nhắn bảo mật trên thiết bị mới của bạn bây giờ, và các người dùng khác sẽ biết họ có thể tin tưởng nó.";
+"key_verification_verified_other_session_information" = "Bạn có thể đọc các tin nhắn bảo mật trên thiết bị khác của bạn bây giờ, và các người dùng khác sẽ biết họ có thể tin tưởng nó.";
+"key_verification_verified_new_session_title" = "Thiết bị mới được xác minh!";
+"device_verification_verified_got_it_button" = "Đã nhận được";
+
+// MARK: Verified
+
+// Device
+
+"device_verification_verified_title" = "Đã xác minh!";
+
+// Device
+
+"device_verification_verify_wait_partner" = "Chờ đối tác chấp nhận…";
+"key_verification_manually_verify_device_validate_action" = "Xác minh";
+"key_verification_manually_verify_device_additional_information" = "Nếu chúng không khớp, sự bảo mật của giao tiếp của bạn có thể bị tổn hại.";
+"key_verification_manually_verify_device_key_title" = "Khóa thiết bị";
+"key_verification_manually_verify_device_id_title" = "ID thiết bị";
+"key_verification_manually_verify_device_name_title" = "Tên thiết bị";
+"key_verification_manually_verify_device_instruction" = "Xác nhận bằng việc so sánh điều sau đây với Cài đặt Người dùng trong thiết bị khác của bạn:";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Xác minh thủ công bằng văn bản";
+"key_verification_verify_sas_additional_information" = "Để bảo mật tối đa, sử dụng các phương tiện liên lạc tin cậy khác hoặc tự làm điều này.";
+"key_verification_verify_sas_validate_action" = "Chúng khớp";
+"key_verification_verify_sas_cancel_action" = "Chúng không khớp";
+"key_verification_verify_sas_title_number" = "So sánh các số";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "So sánh emoji";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Kiểm tra các khả năng xác minh khác…";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Nếu bạn không thể truy cập vào các thiệt bị hiện có";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Sử dụng Chuỗi hoặc Khóa Bảo mật";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Sử dụng Khóa Bảo mật";
+"device_verification_self_verify_wait_additional_information" = "Điều này hoạt động với %@ và các thiết bị Matrix đầu cuối khác có khả năng xác thực chéo";
+"device_verification_self_verify_wait_information" = "Xác minh thiết bị này từ một trong các thiết bị của bạn, cấp cho nó quyền truy cập vào các tin nhắn mã hóa.\n\nSử dụng cái %@ mới nhất trên các thiết bị của bạn:";
+"device_verification_self_verify_wait_new_sign_in_title" = "Xác minh đăng nhập này";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "Hoàn tất bảo mật";
+"key_verification_self_verify_unverified_sessions_alert_validate_action" = "Xem lại";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Xác minh tất cả các thiết bị của bạn để chắc chắn các tin nhắn và tài khoản của bạn an toàn.";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Xem lại nơi bạn được đăng nhập vào";
+"key_verification_self_verify_current_session_alert_validate_action" = "Xác minh";
+"key_verification_self_verify_current_session_alert_message" = "Các người dùng khác có thể không tin tưởng nó.";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "Xác minh thiết bị này";
+"device_verification_self_verify_start_waiting" = "Đang đợi…";
+"device_verification_self_verify_start_information" = "Sử dụng thiết bị này để xác minh thiết bị mới của bạn, cấp cho nó quyền truy cập vào các tin nhắn mã hóa.";
+"device_verification_self_verify_start_verify_action" = "Bắt đầu xác minh";
+"device_verification_self_verify_alert_validate_action" = "Xác minh";
+"device_verification_self_verify_alert_message" = "Xác minh thông tin đăng nhập mới truy cập vào tài khoản của bạn: %@";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "Đăng nhập mới. Đây có phải là bạn?";
+"device_verification_start_use_legacy_action" = "Sử dụng xác minh kế thừa";
+"device_verification_start_verify_button" = "Bắt đầu xác minh";
+"device_verification_start_use_legacy" = "Không có gì xuất hiện? Không phải tất cả thiết bị đầu cuối đều hỗ trợ xác minh tương tác. Sử dụng xác minh kế thừa.";
+"device_verification_start_wait_partner" = "Chờ đối tác chấp nhận…";
+
+// MARK: Start
+"device_verification_start_title" = "Xác minh bằng việc so sánh một chuỗi văn bản ngắn";
+"device_verification_incoming_description_2" = "Xác minh thiết bị này sẽ đánh dấu nó là tin cậy, và cũng đánh dấu thiết bị của bạn là tin cậy đối với đối tác.";
+"device_verification_incoming_description_1" = "Xác minh thiết bị này để đánh dấu nó là tin cậy. Các thiết bị tin cậy của các đối tác giúp bạn yên tâm thêm khi sử dụng các tin nhắn mã hóa đầu-cuối.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Yêu cầu xác minh đến";
+"device_verification_error_cannot_load_device" = "Không thể tải thông tin thiết bị.";
+"device_verification_cancelled_by_me" = "Việc xác minh vừa bị hủy. Lý do: %@";
+"device_verification_cancelled" = "Bên kia đã hủy việc xác minh.";
+"device_verification_security_advice_number" = "So sánh các số, đảm báo chúng xuất hiện theo cùng thứ tự.";
+"device_verification_security_advice_emoji" = "So sánh emoji duy nhất, đảm bảo chúng xuất hiện theo cùng thứ tự.";
+"key_verification_user_title" = "Xác minh chúng";
+"key_verification_this_session_title" = "Xác minh thiết bị này";
+"key_verification_new_session_title" = "Xác minh thiết bị mới của bạn";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Xác minh thiết bị";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Tôi sẽ đợi";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Tôi không muốn các tin nhắn mã hóa của tôi";
+"sign_out_key_backup_in_progress_alert_title" = "Sao luu khóa đang tiến hành. Nếu bạn đang xuất bây giờ bạn sẽ mất quyền truy cập vào các tin nhắn mã hóa của bạn.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Sao lưu";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Đăng xuất";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Bạn sẽ mất quyền truy cập vào các tin nhắn mã hóa nếu bạn không sao lưu các khóa trước khi đăng xuất";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Bạn sẽ mất các tin nhắn mã hóa của bạn";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Tôi không muốn các tin nhắn mã hóa của tôi";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Bắt đầu sử dụng Sao lưu Bảo mật";
+"sign_out_non_existing_key_backup_alert_title" = "Bạn sẽ mất quyền truy cập vào các tin nhắn bảo mật của bạn nếu bạn đăng xuất bây giờ";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Đăng xuất";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Bạn có chắc bạn muốn đăng xuất?";
+"key_backup_recover_done_action" = "Hoàn tất";
+
+// Success
+
+"key_backup_recover_success_info" = "Sao lưu đã khôi phục!";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Mất Khóa Bảo mật, bạn có thể thiết lập một cái mới trong cài đặt.";
+"key_backup_recover_from_recovery_key_recover_action" = "Mở lịch sử";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Nhập Khóa Bảo mật";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Nhập";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Sử dụng Khóa Bảo mật để mở lịch sử tin nhắn bảo mật của bạn";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "dùng Khóa Bảo mật của bạn";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Không biết Chuỗi Bảo mật của bạn? Bạn có thể ";
+"key_backup_recover_from_passphrase_recover_action" = "Mở lịch sử";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Nhập chuỗi";
+"key_backup_recover_from_passphrase_passphrase_title" = "Nhập";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "Sử dụng Chuỗi Bảo mật để mở lịch sử tin nhắn bảo mật của bạn";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Đang khôi phục sao lưu…";
+"key_backup_recover_invalid_recovery_key" = "Sao lưu không thể được giải mã bằng khóa này: vui lòng kiểm tra rằng bạn đã nhập Chuỗi Bảo mật chính xác.";
+"key_backup_recover_invalid_recovery_key_title" = "Khóa bảo mật không khớp";
+"key_backup_recover_invalid_passphrase" = "Sao lưu không thể được giải mã bằng chuỗi này: vui lòng kiểm tra rằng bạn đã nhập Chuỗi Bảo mật chính xác.";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "Tạo bản sao";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Khóa bảo mật";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Các khóa của bạn đang được sao lưu.\n\nLàm một bản sao của khóa bảo mật này và giữ nó an toàn.";
+"key_backup_setup_success_from_passphrase_done_action" = "Hoàn tất";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Lưu khóa bảo mật";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Các khóa của bạn đang được sao lưu.\n\nKhóa bảo mật của bạn là một mạng lưới an toàn - bạn có thể dùng nó để khôi phục quyền truy cập các tin nhắn mã hóa của bạn nếu bạn quên chuỗi mật khẩu của bạn.\n\nGiữ khóa bảo mật của bạn ở đâu đó thật an toàn, như một trình quản lý mật khẩu (hoặc một két sắt).";
+
+// Success
+
+"key_backup_setup_success_title" = "Thành công!";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Nâng cao) Thiết lập với khóa bảo mật";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Hoặc, bảo mật sao lưu của bạn bằng một khóa bảo mật, lưu nó ở đâu đó an toàn.";
+"key_backup_setup_passphrase_set_passphrase_action" = "Đặt chuỗi";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "Chuỗi không khớp";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Tuyệt!";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Xác nhận chuỗi";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "Xác nhận";
+"key_backup_setup_passphrase_passphrase_invalid" = "Thử thêm một từ";
+"key_backup_setup_passphrase_passphrase_valid" = "Tuyệt!";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Nhập chuỗi";
+"key_backup_setup_passphrase_passphrase_title" = "Nhập";
+"key_backup_setup_passphrase_info" = "Chúng tôi sẽ lưu một bản sao được mã hóa của các khóa của bạn trên máy chủ của chúng tôi. Bảo vệ sao lưu của bạn bằng một chuỗi để giữ nó an toàn.\n\nĐể bảo mật tối đa, chuỗi này nên khác với mật khẩu tài khoản của bạn.";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "Bảo mật sao lưu của bạn bằng một chuỗi bảo mật";
+"key_backup_setup_intro_manual_export_action" = "Xuất các khóa thủ công";
+"key_backup_setup_intro_manual_export_info" = "(Nâng cao)";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Kết nối thiết bị này đến khóa sao lưu";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Bắt đầu sử dụng bản sao khóa";
+"key_backup_setup_intro_info" = "Các tin nhắn trong các phòng mã hóa được bảo mật bằng mã hóa đầu-cuối. Chỉ có bạn và (các) người nhận có các khóa để đọc các tin nhắn này.\n\nSao lưu một cách bảo mật các khóa của bạn để tránh mất chúng.";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Không bao giờ mất các tin nhắn mã hóa";
+"key_backup_setup_skip_alert_skip_action" = "Bỏ qua";
+"key_backup_setup_skip_alert_message" = "Bạn có thể mất bảo mật các tin nhắn nếu bạn đăng xuất hoặc mất thiết bị của bạn.";
+"key_backup_setup_skip_alert_title" = "Bạn có chắc?";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Sao lưu khóa";
+"secure_backup_setup_banner_subtitle" = "Bảo vệ chống lại việc mất truy cập vào các tin nhắn và dữ liệu mã hóa";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Sao lưu bảo mật";
+"secure_key_backup_setup_cancel_alert_message" = "Nếu bạn hủy bây giờ, bạn có thể mất các tin nhắn và dữ liệu mã hóa nếu bạn mất quyền truy cập vào thông tin đăng nhập của bạn.\n\nBạn vẫn có thể thiết lập Sao lưu Bảo mật và quản lý các khóa trong Cài đặt.";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Bạn có chắc?";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Xóa nó";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Mở khóa nó";
+"secure_key_backup_setup_existing_backup_error_info" = "Mở khóa nó để tái sử dụng nó trong bản sao bảo mật hoặc xóa nó để tao một bản sao mới các tin nhắn trong bản sao bảo mật.";
+"secure_key_backup_setup_existing_backup_error_title" = "Một bản sao cho các tin nhắn đã tồn tại";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Nhập một chuỗi bí mật chỉ bạn biết, và tạo một khóa để sao lưu.";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Sử dụng một chuỗi bảo mật";
+"secure_key_backup_setup_intro_use_security_key_info" = "Tạo một khóa bảo mật để lưu trữ ở đâu đó an toàn như trình quản lý mật khẩu hoặc một két sắt.";
+"secure_key_backup_setup_intro_use_security_key_title" = "Sử dụng khóa bảo mật";
+"secure_key_backup_setup_intro_info" = "Bảo vệ chống lại việc mất truy cập vào các tin nhắn và dữ liệu mã hóa bằng việc sao lưu các khóa mã hóa trên máy chủ của bạn.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Sao lưu bảo mật";
+"rerequest_keys_alert_message" = "Vui lòng khởi chạy %@ trên một thiết bị khác mà có thể giải mã tin nhắn vì vậy nó có thể gửi các khóa đến thiết bị này.";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Yêu cầu đã gửi";
+"deactivate_account_password_alert_message" = "Để tiếp tục, vui lòng nhập mật khẩu của bạn";
+"deactivate_account_password_alert_title" = "Hủy kích hoạt tài khoản";
+"deactivate_account_validate_action" = "Hủy kích hoạt tài khoản";
+"deactivate_account_forget_messages_information_part3" = ": điều này sẽ làm cho các người dùng trong tương lai thấy một khung cảnh không đầy đủ của các cuộc hội thoại)";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Cảnh báo";
+"deactivate_account_forget_messages_information_part1" = "Vui lòng quên tất cả tin nhắn tôi vừa gửi khi tài khoản của tôi bị hủy kích hoạt (";
+"deactivate_account_informations_part5" = "Nếu bạn muốn chúng tôi quên các tin nhắn của bạn, vui lòng đánh dấu vào ô bên dưới\n\nKhả năng hiển thị tin nhắn trong Matrix là tương tự như email. Việc quên các tin nhắn của bạn  nghĩa là các tin nhắn bạn vừa gửi sẽ không được chia sẻ với các người dùng mới hoặc chưa được đăng ký, nhưng các người dùng đã đăng ký, người đã có quyền truy cập vào các tin nhắn này, vẫn sẽ truy cập được vào bản sao của họ.";
+"deactivate_account_informations_part4_emphasize" = "Không phải do mặc định làm cho chúng tôi quên các tin nhắn bạn vừa gửi. ";
+"deactivate_account_informations_part3" = "\n\nĐang hủy kích hoạt tài khoản của bạn. ";
+"deactivate_account_informations_part2_emphasize" = "Hành động này là không thể đảo ngược";
+"deactivate_account_informations_part1" = "Điều này sẽ làm cho tài khoản của bạn sẽ không sử dụng được vĩnh viễn. Bạn sẽ không thể đăng nhập, và không ai sẽ có thể đăng ký cùng ID người dùng. Điều này sẽ làm cho tài khoản của bạn rời khỏi tất cả phòng nó đang tham gia, và sẽ xóa chi tiết tài khoản của bạn khỏi máy chủ xác thực. ";
+
+// Deactivate account
+
+"deactivate_account_title" = "Hủy kích hoạt tài khoản";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Kiểm tra để chấp nhận %@";
+"service_terms_modal_information_description_integration_manager" = "Trình quản lý tích hợp cho phép bạn thêm các tính năng từ các bên thứ ba.";
+"service_terms_modal_information_description_identity_server" = "Một máy chủ xác thực giúp bạn tìm thấy các danh bạ của bạn, bằng cách tra cứu các số điện thoại hoặc email của họ, để thấy nếu họ đã có một tài khoản chưa.";
+"service_terms_modal_information_title_integration_manager" = "Trình quản lý tích hợp";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Máy chủ xác thực";
+"service_terms_modal_description_integration_manager" = "Điều này sẽ cho phép bạn dùng các bot, bridge, widget và gói sticker.";
+"service_terms_modal_description_identity_server" = "Điều này sẽ cho phép ai đó tìm thấy bạn nếu họ có số điện thoại hoặc email của bạn được lưu trong danh bạ điện thoại của họ.";
+"service_terms_modal_table_header_integration_manager" = "ĐIỀU KHOẢN TRÌNH QUẢN LÝ TÍCH HỢP";
+"service_terms_modal_table_header_identity_server" = "ĐIỀU KHOẢN MÁY CHỦ XÁC THỰC";
+"service_terms_modal_footer" = "Điều này có thể bị vô hiệu hóa bất cứ lúc nào từ cài đặt.";
+"service_terms_modal_decline_button" = "Từ chối";
+"service_terms_modal_accept_button" = "Đồng ý";
+
+// Service terms
+"service_terms_modal_title_message" = "Để tiếp tục, đồng ý các điều khoản và điều kiện bên dưới";
+"gdpr_consent_not_given_alert_review_now_action" = "Xem lại ngay";
+
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Để tiếp tục dùng homeserver %@ bạn phải xem lại và đồng ý các điều khoản và điều kiện.";
+"e2e_room_key_request_ignore_request" = "Bỏ qua yêu cầu";
+"e2e_room_key_request_share_without_verifying" = "Chia sẻ không cần xác minh";
+"e2e_room_key_request_start_verification" = "Bắt đầu xác minh…";
+"e2e_room_key_request_message" = "Thiết bị chưa được xác minh của bạn '%@' đang yêu cầu các khóa mã hóa.";
+"e2e_room_key_request_message_new_device" = "Bạn đã thêm một thiết bị mới '%@', thứ đang yêu cầu các khóa mã hóa.";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Yêu cầu khóa mã hóa";
+"room_widget_permission_room_id_permission" = "ID Phòng";
+"room_widget_permission_widget_id_permission" = "ID Widget";
+"room_widget_permission_theme_permission" = "Chủ đề của bạn";
+"room_widget_permission_user_id_permission" = "User ID của bạn";
+"room_widget_permission_avatar_url_permission" = "URL avatar của bạn";
+"room_widget_permission_display_name_permission" = "Tên hiển thị của bạn";
+"room_widget_permission_information_title" = "Sử dụng nó có thể chia sẻ dữ liệu với %@:\n";
+"room_widget_permission_webview_information_title" = "Sử dụng nó có thể đặt cookie và chia sẻ dữ liệu với %@:\n";
+"room_widget_permission_creator_info_title" = "Widget này được thêm bởi:";
+
+// Room widget permissions
+"room_widget_permission_title" = "Tải Widget";
+"widget_picker_manage_integrations" = "Quản lý tích hợp…";
+
+// Widget Picker
+"widget_picker_title" = "Tích hợp";
+"widget_integration_manager_disabled" = "Bạn cần kích hoạt trình quản lý tích hợp trong cài đặt";
+"widget_menu_remove" = "Loại bỏ cho tất cả mọi người";
+"widget_menu_revoke_permission" = "Thu hồi quyền truy cập cho tôi";
+"widget_menu_open_outside" = "Mở trong trình duyệt";
+"widget_menu_refresh" = "Làm mới";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Thêm một số bây giờ?";
+"widget_sticker_picker_no_stickerpacks_alert" = "Bạn không có stickerpack nào được kích hoạt.";
+"widget_integrations_server_failed_to_connect" = "Bạn cần quyền để quản lý các widget trong phòng này";
+
+// Widget
+"widget_no_integrations_server_configured" = "Không có máy chủ tích hợp được cấu hình";
+"bug_report_background_mode" = "Tiếp tục trong nền";
+"e2e_key_backup_wrong_version_button_wasme" = "Đó là tôi";
+"e2e_key_backup_wrong_version_button_settings" = "Cài đặt";
+"e2e_key_backup_wrong_version" = "Một bản sao khóa tin nhắn bảo mật mới được phát hiện.\n\nNếu đây không phải là bạn, đặt một Chuỗi Bảo mật mới trong Cài đặt.";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Sao lưu khóa mới";
+"call_actions_unhold" = "Tiếp tục";
+"call_no_stun_server_error_use_fallback_button" = "Thử dùng %@";
+"call_no_stun_server_error_message_2" = "Ngoài ra, bạn có thể thử dùng máy chủ công cộng ở %@, nhưng điều này không tin cậy, và nó sẽ chia sẻ địa chỉ IP của bạn với máy chủ đó. Bạn cũng có thể quản lý việc này trong Cài đặt";
+"call_no_stun_server_error_message_1" = "Vui lòng yêu cầu quản trị viên của homeserver %@ của bạn cấu hình máy chủ TURN để cuộc gọi hoạt động tin cậy.";
+"call_no_stun_server_error_title" = "Cuộc gọi thất bại do cấu hình máy chủ sai";
+"room_does_not_exist" = "%@ không tồn tại";
+"photo_library_access_not_granted" = "%@ không có quyền để truy cập thư viện ảnh, vui lòng thay đổi cài đặt quyền riêng tư";
+"camera_unavailable" = "Camera không có trên thiết bị của bạn";
+"homeserver_connection_lost" = "Không thể kết nối đến homeserver.";
+"event_formatter_jitsi_widget_removed_by_you" = "Bạn đã xóa hội nghị VoIP";
+"event_formatter_jitsi_widget_added_by_you" = "Bạn đã thêm hội nghị VoIP";
+"event_formatter_widget_removed_by_you" = "Bạn đã xóa widget: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Bạn đã thêm widget: %@";
+"event_formatter_group_call_incoming" = "%@ trong %@";
+"event_formatter_group_call_leave" = "Rời khỏi";
+"event_formatter_group_call_join" = "Tham gia";
+"event_formatter_group_call" = "Gọi nhóm";
+"event_formatter_call_end_call" = "Kết thúc cuộc gọi";
+"event_formatter_call_retry" = "Thử lại";
+"event_formatter_call_answer" = "Trả lời";
+"event_formatter_call_decline" = "Từ chối";
+"event_formatter_call_back" = "Gọi lại";
+"event_formatter_call_connection_failed" = "Kết nối thất bại";
+"event_formatter_call_missed_video" = "Cuộc gọi video bị nhỡ";
+"event_formatter_call_missed_voice" = "Cuộc gọi thoại bị nhỡ";
+"event_formatter_call_you_declined" = "Cuộc gọi đã từ chối";
+"event_formatter_call_active_video" = "Cuộc gọi video đang hoạt động";
+"event_formatter_call_active_voice" = "Cuộc gọi thoại đang hoạt động";
+"event_formatter_call_incoming_video" = "Cuộc gọi video đến";
+"event_formatter_call_incoming_voice" = "Cuộc gọi thoại đến";
+"event_formatter_call_has_ended_with_time" = "Cuộc gọi đã kết thúc • %@";
+"event_formatter_call_has_ended" = "Cuộc gọi đã kết thúc";
+"event_formatter_call_ringing" = "Đang đổ chuông…";
+"event_formatter_call_connecting" = "Đang kết nối…";
+"event_formatter_message_edited_mention" = "(đã sửa)";
+"event_formatter_rerequest_keys_part2" = " từ các thiết bị khác của bạn.";
+"event_formatter_rerequest_keys_part1_link" = "Yêu cầu lại các khóa mã hóa";
+"image_picker_action_library" = "Chọn từ thư viện";
+
+// Image picker
+"image_picker_action_camera" = "Chụp ảnh";
+
+// Media picker
+"media_picker_title" = "Thư viện phương tiện";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Lọc các phòng cộng đồng";
+"group_participants_invited_section" = "ĐÃ MỜI";
+"group_participants_invite_malformed_id" = "ID lạ. Nên là Matrix ID giống như '@localpart:domain'";
+"group_participants_invite_malformed_id_title" = "Lỗi mời";
+"group_participants_invite_another_user" = "Tìm / mời bằng ID người dùng hoặc tên";
+"group_participants_filter_members" = "Lọc thành viên cộng đồng";
+"group_participants_invite_prompt_msg" = "Bạn có chắc muốn mời %@ vào nhóm này?";
+"group_participants_invite_prompt_title" = "Xác nhận";
+"group_participants_remove_prompt_msg" = "Bạn có chắc muốn loại bỏ %@ khỏi nhóm này?";
+"group_participants_remove_prompt_title" = "Xác nhận";
+"group_participants_leave_prompt_msg" = "Bạn có chắc muốn rời khỏi nhóm?";
+"group_participants_leave_prompt_title" = "Rời nhóm";
+
+// Group participants
+"group_participants_add_participant" = "Thêm người tham gia";
+"group_invitation_format" = "%@ đã mời bạn tham gia vào cộng đồng này";
+"group_home_multi_rooms_format" = "%tu phòng";
+"group_home_one_room_format" = "1 phòng";
+"group_home_multi_members_format" = "%tu thành viên";
+
+// Group Home
+"group_home_one_member_format" = "1 thành viên";
+"group_details_rooms" = "Phòng";
+"group_details_people" = "Danh bạ";
+"group_details_home" = "Nhà";
+
+// Group Details
+"group_details_title" = "Chi tiết cộng đồng";
+"room_notifs_settings_encrypted_room_notice" = "Vui lòng lưu ý rằng các thông báo đề cập và từ khóa không có trong các phòng mã hóa trên di động.";
+"room_notifs_settings_account_settings" = "Cài đặt tài khoản";
+"room_notifs_settings_manage_notifications" = "Bạn có thể quản lý thông báo trong %@";
+"room_notifs_settings_cancel_action" = "Hủy";
+"room_notifs_settings_done_action" = "Xong";
+"room_notifs_settings_none" = "Không";
+"room_notifs_settings_mentions_and_keywords" = "Chỉ đề cập và từ khóa";
+"room_notifs_settings_all_messages" = "Tất cả tin nhắn";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Thông báo tôi để";
+"room_details_fail_to_update_room_communities" = "Cập nhật các cộng đồng liên quan thất bại";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "Mã hóa chưa được kích hoạt ở đây.";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "Mã hóa được kích hoạt ở đây";
+"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_flair_invalid_id_prompt_msg" = "%@ không phải là định danh hợp lệ cho cộng đồng";
+"room_details_flair_invalid_id_prompt_title" = "Định dạng không hợp lệ";
+"room_details_new_flair_placeholder" = "Thêm ID cộng đồng mới (ví dụ: +foo%@)";
+"room_details_flair_section" = "Hiển thị sự tinh tế cho cộng đồng";
+"room_details_no_local_addresses_for_dm" = "Phòng này không có địa chỉ nội bộ";
+"room_details_access_section_directory_toggle_for_dm" = "Liệt kê trong danh mục phòng";
+"room_details_access_section_anyone_for_dm" = "Bất cứ ai biết đường dẫn, kể cả khách";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "Bất cứ ai biết đường dẫn, ngoài khách";
+"secrets_recovery_with_key_recovery_key_title" = "Nhập";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Nhập Khóa Bảo mật của bạn để tiếp tục.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Nhập Chuỗi Bảo mật của bạn để tiếp tục.";
+"secrets_recovery_with_key_information_verify_device" = "Sử dụng Khóa Bảo mật của bạn để xác minh thiết bị này.";
+"secrets_recovery_with_key_information_default" = "Truy cập vào lịch sử tin nhắn bảo mật và danh tính xác thực chéo của bạn để xác minh các thiết bị khác bằng cách nhập Khóa Bảo mật của bạn.";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Khóa Bảo mật";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Vui lòng xác minh rằng bạn đã nhập đúng Chuỗi Bảo mật.";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Không thể truy cập kho lưu bí mật";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "sử dụng Khóa Bảo mật của bạn";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Không biết Chuỗi Bảo mật của bạn? Bạn có thể ";
+"secrets_recovery_with_passphrase_recover_action" = "Sử dụng Chuỗi";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Nhập Chuỗi Bảo mật";
+"secrets_recovery_with_passphrase_passphrase_title" = "Nhập";
+"secrets_recovery_with_passphrase_information_verify_device" = "Sử dụng Chuỗi Bảo mật của bạn để xác minh thiết bị này.";
+"secrets_recovery_with_passphrase_information_default" = "Truy cập vào lịch sử tin nhắn bảo mật và danh tính xác thực chéo của bạn để xác minh các thiết bị khác bằng cách nhập Chuỗi Bảo mật của bạn.";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Chuỗi bảo mật";
+"secrets_recovery_reset_action_part_2" = "Đặt lại mọi thứ";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Quên hoặc mất các tùy chọn khôi phục? ";
+"user_verification_session_details_verify_action_other_user" = "Xác minh thủ công";
+"user_verification_session_details_verify_action_current_user_manually" = "Xác minh thủ công bằng văn bản";
+"user_verification_session_details_verify_action_current_user" = "Xác minh tương tác";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Nếu bạn không đăng nhập vào thiết bị này, tài khoản của bạn có thể bị xâm phạm.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Cho đến khi người dùng này tin tưởng thiết bị này, các tin nhắn được gửi đến và đi từ nó được gán nhãn cảnh báo. Ngoài ra, bạn có thể xác minh nó một cách thủ công.";
+"room_details_access_section_for_dm" = "Ai có thể truy cập vào đây?";
+"room_details_notifs" = "Thông báo";
+"room_details_room_name_for_dm" = "Tên";
+"room_details_photo_for_dm" = "Hình ảnh";
+"room_details_integrations" = "Tích hợp";
+"room_details_search" = "Tìm phòng";
+"room_details_title_for_dm" = "Chi tiết";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ không phải là máy chủ xác thực hợp lệ.";
+"identity_server_settings_alert_error_terms_not_accepted" = "Bạn phải chấp nhận các điều khoản của %@ để thiết lập nó là máy chủ xác thực.";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Vẫn ngắt kết nối";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Bạn vẫn đang chia sẻ dữ liệu cá nhân của bạn trên máy chủ xác thực %@.\n\nChúng tôi đề nghị bạn xóa các địa chỉ email và số điện thoại khỏi máy chủ xác thực trước khi ngắt kết nối.";
+"identity_server_settings_alert_disconnect_button" = "Ngắt kết nối";
+"identity_server_settings_alert_disconnect" = "Ngắt kết nối từ máy chủ xác thực %@?";
+"identity_server_settings_alert_disconnect_title" = "Ngắt kết nối máy chủ xác thực";
+"identity_server_settings_alert_change" = "Ngắt kết nối từ máy chủ xác thực %1$@ và kết nối đến %2$@?";
+"identity_server_settings_alert_change_title" = "Thay đổi máy chủ xác thực";
+"identity_server_settings_alert_no_terms" = "Máy chủ xác thực bạn vừa chọn không có điều khoản dịch vụ. Chỉ tiếp tục khi bạn tin tưởng chủ sở hữu của máy chủ này.";
+"identity_server_settings_alert_no_terms_title" = "Máy chủ xác thực không có điều khoản dịch vụ";
+"identity_server_settings_disconnect" = "Ngắt kết nối";
+"identity_server_settings_disconnect_info" = "Ngắt kết nối đến máy chủ xác thực của bạn sẽ có nghĩa là bạn không thể được tìm thấy bởi những người dùng khác và không thể mời những người khác bằng email hoặc điện thoại.";
+"identity_server_settings_change" = "Thay đổi";
+"identity_server_settings_add" = "Thêm";
+"identity_server_settings_place_holder" = "Nhập một máy chủ xác thực";
+"identity_server_settings_no_is_description" = "Bạn đang không dùng máy chủ xác thực. Để tìm và được tìm bởi những liên hệ đang có, hãy thêm một vào bên trên";
+"identity_server_settings_description" = "Bạn đang dùng %@ để tìm kiếm và được tìm bởi những liên hệ bạn biết.";
+
+// Identity server settings
+"identity_server_settings_title" = "Máy chủ xác thực";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Ứng dụng này không hỗ trợ cơ chế xác thực trên homeserver của bạn.";
+"manage_session_sign_out" = "Đăng xuất khỏi thiết bị này";
+"manage_session_not_trusted" = "Không tin tưởng";
+"manage_session_trusted" = "Được bạn tin tưởng";
+"manage_session_name" = "Tên thiết bị";
+"manage_session_info" = "THÔNG TIN THIẾT BỊ";
+
+// Manage session
+"manage_session_title" = "Quản lý thiết bị";
+"security_settings_user_password_description" = "Xác nhận danh tính của bạn bằng cách nhập mật khẩu tài khoản của bạn";
+"security_settings_coming_soon" = "Xin lỗi. Hành động này vẫn chưa có trên %@ iOS. Vui lòng sử dụng client Matrix khác để thiết lập nó. %@ iOS sẽ sử dụng nó.";
+"security_settings_complete_security_alert_message" = "Bạn nên hoàn thành bảo mật trên thiết bị hiện tại của bạn trước.";
+"security_settings_complete_security_alert_title" = "Hoàn thành bảo mật";
+"security_settings_blacklist_unverified_devices_description" = "Xác minh tất cả các thiết bị người dùng để đánh dấu chúng là tin cậy và gửi tin nhắn đến chúng";
+"security_settings_blacklist_unverified_devices" = "Không bao giờ gửi tin nhắn đến các thiết bị không tin cậy";
+"security_settings_advanced" = "Nâng cao";
+"security_settings_export_keys_manually" = "Xuất các khóa thủ công";
+"security_settings_cryptography" = "MẬT MÃ HỌC";
+"security_settings_crosssigning_complete_security" = "Hoàn thành bảo mật";
+"security_settings_crosssigning_reset" = "Đặt lại";
+"security_settings_crosssigning_bootstrap" = "Thiết lập";
+"security_settings_crosssigning_info_ok" = "Xác thực chéo sẵn sàng để sử dụng.";
+"security_settings_crosssigning_info_trusted" = "Xác thực chéo được kích hoạt. Bạn có thể tin tưởng các người dùng khác và các thiết bị khác của bạn dựa theo xác thực chéo nhưng bạn không thể xác thực chéo từ thiết bị này vì nó không có các khóa riêng của xác thực chéo. Hoàn thành bảo mật của thiết bị này.";
+"security_settings_crosssigning_info_exists" = "Tài khoản của bạn có một danh tính xác thực chéo, nhưng nó chưa được thiết bị này tin tưởng. Hoàn thành bảo mật thiết bị này.";
+"security_settings_crosssigning_info_not_bootstrapped" = "Xác thực chéo chưa được thiết lập.";
+"security_settings_crosssigning" = "XÁC THỰC CHÉO";
+"security_settings_backup" = "SAO LƯU TIN NHẮN";
+"security_settings_secure_backup_delete" = "Xóa sao lưu";
+"security_settings_secure_backup_restore" = "Khôi phục từ sao lưu";
+"security_settings_secure_backup_reset" = "Đặt lại";
+"security_settings_secure_backup_setup" = "Thiết lập";
+"security_settings_secure_backup_info_valid" = "Thiết bị này đang sao lưu các khóa của bạn.";
+"security_settings_secure_backup_info_checking" = "Đang kiểm tra…";
+"security_settings_secure_backup_description" = "Sao lưu các khóa mã hóa với thông tin tài khoản của bạn trong trường hợp bạn mất quyền truy cập vào các thiệt bị của bạn. Các khóa của bạn sẽ được bảo mật bằng một Khóa Bảo mật duy nhất.";
+"security_settings_secure_backup" = "SAO LƯU BẢO MẬT";
+"security_settings_crypto_sessions_description_2" = "Nếu bạn không nhận ra một lượt đăng nhập, hãy thay đổi mật khẩu của bạn và đặt lại sao lưu bảo mật.";
+"security_settings_crypto_sessions_loading" = "Đang tải các thiết bị…";
+"security_settings_crypto_sessions" = "CÁC THIẾT BỊ CỦA TÔI";
+
+// Security settings
+"security_settings_title" = "Bảo mật";
+"settings_show_NSFW_public_rooms" = "Hiện các phòng công cộng NSFW";
+"settings_identity_server_no_is_description" = "Bạn đang không dùng máy chủ xác thực. Để tìm thấy hoặc được tìm thấy bời các liên hệ bạn biết, hãy thêm vào một";
+"settings_identity_server_no_is" = "Không có máy chủ xác thực được cấu hình";
+"settings_identity_server_description" = "Sử dụng máy chủ xác thực được cài đặt bên trên, bạn có thể tìm thấy và được tìm thấy bởi các liên hệ bạn biết.";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Nhập mã kích hoạt SMS";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Hủy xác thực email";
+"settings_discovery_three_pid_details_revoke_action" = "Thu hồi";
+"settings_discovery_three_pid_details_share_action" = "Chia sẻ";
+"settings_discovery_three_pid_details_information_phone_number" = "Quản lý tùy chọn cho số điện thoại này, mà người dùng khác có thể dùng để tìm thấy bạn và sử dụng để mời bạn vào phòng. Thêm hoặc xóa các số điện thoại trong các tài khoản.";
+"settings_discovery_three_pid_details_title_phone_number" = "Quản lý số điện thoại";
+"settings_discovery_three_pid_details_information_email" = "Quản lý tùy chọn cho địa chỉ email này, mà các người dùng khác có thể dùng để tìm thấy bạn và sử dụng để mời bạn vào phòng. Thêm hoặc xóa các địa chỉ email trong các tài khoản.";
+"settings_discovery_three_pid_details_title_email" = "Quản lý email";
+"settings_discovery_error_message" = "Có lỗi xảy ra. Vui lòng thử lại.";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_discovery_three_pids_management_information_part2" = "Cài đặt người dùng";
+"settings_discovery_three_pids_management_information_part1" = "Quản lý các địa chỉ email hoặc số điện thoại mà người dùng khác có thể sử dụng để tìm thấy bạn và sử dụng để mời bạn vào phòng. Thêm hoặc xóa các địa chỉ email hoặc số điện thoại từ danh sách này trong ";
+"settings_discovery_terms_not_signed" = "Chấp nhận Điều khoản dịch vụ của máy chủ xác thực (%@) để cho phép bạn có thể được tìm thấy bằng địa chỉ email hoặc số điện thoại.";
+"settings_discovery_no_identity_server" = "Bạn đang không xài máy chủ xác thực. Để các liên hệ bạn biết tìm thấy bạn, hãy thêm một.";
+"settings_devices_description" = "Tên công khai của một thiết bị hiển thị cho mọi người mà bạn đang giao tiếp";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Bạn có chắc không? Bạn sẽ mất các tin nhắn mã hóa nếu các khóa của bạn không được sao lưu đúng.";
+"settings_key_backup_delete_confirmation_prompt_title" = "Xóa sao lưu";
+"settings_key_backup_button_connect" = "Kết nối thiết bị này đến khóa sao lưu";
+"settings_key_backup_button_delete" = "Xóa sao lưu";
+"settings_key_backup_button_restore" = "Khôi phục từ sao lưu";
+"settings_key_backup_button_create" = "Bắt đầu sử dụng sao lưu khóa";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Sao lưu có một chữ ký không hợp lệ từ %@";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Sao lưu có một chữ ký không hợp lệ từ %@";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Sao lưu có một chữ ký từ %@";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Sao lưu có một chữ ký hợp lệ từ %@";
+"settings_key_backup_info_trust_signature_valid" = "Sao lưu có một chữ ký hợp lệ từ thiết bị này";
+"settings_key_backup_info_trust_signature_unknown" = "Sao lưu có một chữ ký từ thiết bị với ID: %@";
+"settings_key_backup_info_progress_done" = "Tất cả khóa được sao lưu";
+"settings_key_backup_info_progress" = "Đang sao lưu %@ khóa…";
+"settings_key_backup_info_not_valid" = "Thiết bị này không sao lưu các khóa của bạn, nhưng bạn có một bản sao hiện tại mà bạn có thể khôi phục và thêm vào";
+"settings_key_backup_info_valid" = "Thiết bị này đang sao lưu các khóa của bạn.";
+"settings_key_backup_info_algorithm" = "Thuật toán: %@";
+"settings_key_backup_info_version" = "Phiên bản sao lưu khóa: %@";
+"settings_key_backup_info_signout_warning" = "Sao lưu các khóa của bạn trước khi đăng xuất để tránh làm mất chúng.";
+"settings_key_backup_info_none" = "Các khóa của bạn không được sao lưu từ thiết bị này.";
+"settings_key_backup_info_checking" = "Đang kiểm tra…";
+"settings_key_backup_info" = "Các tin nhắn mã hóa được bảo mật bằng mã hóa đầu-cuối. Chỉ có bạn và (các) người nhận có các khóa để đọc những tin nhắn này.";
+"settings_deactivate_my_account" = "Hủy kích hoạt tài khoản của tôi";
+"settings_add_3pid_invalid_password_message" = "Thông tin xác thực không hợp lệ";
+"settings_add_3pid_password_message" = "Để tiếp tục, vui lòng nhập mật khẩu của bạn";
+"settings_add_3pid_password_title_msidsn" = "Thêm số điện thoại";
+"settings_add_3pid_password_title_email" = "Thêm địa chỉ email";
+"settings_labs_voice_messages" = "Các tin nhắn thoại";
+"settings_labs_enable_ringing_for_group_calls" = "Đổ chuông cho các cuộc gọi nhóm";
+"settings_labs_message_reaction" = "Phản ứng với các tin nhắn bằng emoji";
+"settings_contacts_enable_sync_description" = "Điều này sẽ dùng máy chủ xác thực của bạn để kết nối bạn với các liên hệ của bạn, và hỗ trợ họ tìm thấy bạn.";
+"settings_contacts_enable_sync" = "Tìm các liên hệ của bạn";
+"settings_show_url_previews_description" = "Các bản xem trước chỉ được hiển thị trong các phòng không mã hóa.";
+"settings_show_url_previews" = "Hiện bản xem trước trang web";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Tự động\" khớp chủ đề hệ thống của thiết bị của bạn";
+"settings_ui_theme_picker_message_invert_colours" = "\"Tự động\" sử dụng cài đặt \"Các màu đảo ngược\" của thiết bị của bạn";
+"settings_ui_theme_black" = "Đen";
+"settings_integrations_allow_description" = "Sử dụng một trình quản lý tích hợp (%@) để quản lý bot, cầu nối, widget và các gói sticker.\n\nCác trình quản lý tích hợp nhận dữ liệu cấu hình, và có thể sửa đổi các widget, gửi các lời mời phòng và đặt cấp độ quản lý thay cho bạn";
+"settings_integrations_allow_button" = "Quản lý tích hợp";
+"settings_calls_stun_server_fallback_description" = "Cho phép máy chủ hỗ trợ cuộc gọi dự phòng %@ khi homeserver của bạn không cung cấp (địa chỉ IP của bạn sẽ được chia sẻ trong cuộc gọi).";
+"settings_calls_stun_server_fallback_button" = "Cho phép máy chủ hỗ trợ cuộc gọi dự phòng";
+"settings_mentions_and_keywords_encryption_notice" = "Bạn sẽ không nhận được thông báo cho các đề cập và từ khóa trong các phòng được mã hóa trên di động";
+"settings_new_keyword" = "Thêm từ khóa mới";
+"settings_your_keywords" = "Các từ khóa của bạn";
+"settings_room_upgrades" = "Các nâng cấp phòng";
+"settings_messages_by_a_bot" = "Các tin nhắn của bot";
+"settings_call_invitations" = "Các lời mời cuộc gọi";
+"settings_room_invitations" = "Các lời mời phòng";
+"settings_messages_containing_keywords" = "Các từ khóa";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "Tên người dùng của tôi";
+"settings_messages_containing_display_name" = "Tên hiển thị của tôi";
+"settings_encrypted_group_messages" = "Các tin nhắn nhóm được mã hóa";
+"settings_group_messages" = "Các tin nhắn nhóm";
+"settings_encrypted_direct_messages" = "Các tin nhắn trực tiếp được mã hóa";
+"settings_direct_messages" = "Các tin nhắn trực tiếp";
+"settings_notify_me_for" = "Thông báo cho tôi biết";
+"settings_mentions_and_keywords" = "Các đề cập và từ khóa";
+"settings_default" = "Các thông báo mặc định";
+"settings_notifications_disabled_alert_message" = "Để bật thông báo, đi đến cài đặt thiết bị của bạn";
+"settings_notifications_disabled_alert_title" = "Thông báo bị vô hiệu hóa";
+"settings_device_notifications" = "Các thông báo thiết bị";
+"settings_security" = "BẢO MẬT";
+"settings_confirm_media_size_description" = "Khi điều này xảy ra, bạn sẽ được yêu cầu xác nhận kích thước hình ảnh và video nào sẽ được gửi";
+"settings_confirm_media_size" = "Xác nhận kích thước khi gửi";
+"settings_three_pids_management_information_part3" = ".";
+"settings_three_pids_management_information_part2" = "Tìm kiếm";
+"settings_three_pids_management_information_part1" = "Quản lý các địa chỉ email hoặc số điện thoại bạn có thể sử dụng để đăng nhập hoặc khôi phục tài khoản của bạn ở đây. Điều khiển ai có thể tìm thấy bạn ";
+"settings_deactivate_account" = "HỦY KÍCH HOẠT TÀI KHOẢN";
+"settings_key_backup" = "KHÓA DỰ PHÒNG";
+"settings_flair" = "Thể hiện sự tinh tế khi được phép";
+"settings_phone_contacts" = "DANH BẠ ĐIỆN THOẠI";
+"settings_integrations" = "TÍCH HỢP";
+"settings_identity_server_settings" = "MÁY CHỦ XÁC THỰC";
+"settings_discovery_settings" = "TÌM KIẾM";
+"settings_notifications" = "THÔNG BÁO";
+"settings_links" = "LIÊN KẾT";
+"settings_sending_media" = "GỬI HÌNH ẢNH VÀ VIDEO";
+"room_multiple_typing_notification" = "%@ và những người khác";
+"external_link_confirmation_message" = "Liên kết %@ đang đưa bạn đến mốt trang khác: %@\n\nBạn có chắc muốn tiếp tục?";
+"external_link_confirmation_title" = "Kiểm tra lại liên kết này";
+"media_type_accessibility_sticker" = "Sticker";
+"media_type_accessibility_file" = "Tệp";
+"media_type_accessibility_location" = "Địa điểm";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_audio" = "Âm thanh";
+"media_type_accessibility_image" = "Hình ảnh";
+"room_no_privileges_to_create_group_call" = "Bạn cần phải là một quản trị viên hoặc điều hành viên để bắt đầu cuộc gọi.";
+"room_join_group_call" = "Tham gia";
+"room_open_dialpad" = "Bàn phím quay số";
+"room_place_voice_call" = "Cuộc gọi thoại";
+"room_accessibility_hangup" = "Cúp máy";
+"room_accessibility_video_call" = "Gọi video";
+"room_accessibility_call" = "Gọi";
+"room_accessibility_upload" = "Tải lên";
+"room_accessibility_integrations" = "Tích hợp";
+"room_accessibility_search" = "Tìm kiếm";
+"room_message_edits_history_title" = "Sửa tin nhắn";
+"room_resource_usage_limit_reached_message_contact_3" = " để tăng giới hạn này.";
+"room_resource_usage_limit_reached_message_2" = "một số người dùng sẽ không thể đăng nhập.";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Homeserver này đạt giới hạn người dùng hoạt động hàng tháng của nó do đó ";
+"room_resource_usage_limit_reached_message_1_default" = "Homeserver này đã vượt quá một trong các giới hạn tài nguyên của nó do đó ";
+"room_resource_limit_exceeded_message_contact_3" = " để tiếp tục sử dụng dịch vụ này.";
+"room_resource_limit_exceeded_message_contact_2_link" = "Liên hệ quản trị viên dịch vụ của bạn";
+"room_resource_limit_exceeded_message_contact_1" = " Vui lòng ";
+"room_predecessor_link" = "Nhấn vào đây để xem các tin nhắn cũ.";
+"room_predecessor_information" = "Phòng này là sự tiếp nối của cuộc trò chuyện khác.";
+"room_replacement_link" = "Cuộc trò chuyện tiếp tục ở đây";
+"room_replacement_information" = "Phòng này đã được thay thế và không còn hoạt động nữa";
+"room_action_reply" = "Trả lời";
+"room_action_send_file" = "Gửi tệp";
+"room_action_send_sticker" = "Gửi sticker";
+"room_action_send_photo_or_video" = "Gửi ảnh hoặc video";
+"room_action_camera" = "Chụp ảnh hoặc quay video";
+"room_event_action_reaction_history" = "Lịch sử phản ứng";
+"room_event_action_reaction_show_less" = "Hiện ít hơn";
+"room_event_action_reaction_show_all" = "Hiện tất cả";
+"room_event_action_edit" = "Chỉnh sửa";
+"room_event_action_reply" = "Trả lời";
+"room_event_action_delete_confirmation_message" = "Bạn có chắc muốn xóa tin nhắn chưa được gửi này?";
+"room_event_action_delete_confirmation_title" = "Xóa tin nhắn chưa được gửi";
+"room_event_action_ban_prompt_reason" = "Lí do cấm người dùng này";
+"room_event_action_kick_prompt_reason" = "Lí do đá người dùng này";
+"room_event_action_view_decrypted_source" = "Xem nguồn được giải mã";
+"room_unsent_messages_cancel_message" = "Bạn có chắc muốn xóa tất cả các tin nhắn chưa được gửi trong phòng này?";
+"room_unsent_messages_cancel_title" = "Xóa các tin nhắn chưa được gửi";
+"room_message_reply_to_short_placeholder" = "Gửi trả lời…";
+"encrypted_room_message_reply_to_placeholder" = "Gửi trả lời đã mã hóa…";
+"key_backup_recover_invalid_passphrase_title" = "Chuỗi bảo mật không chính xác";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Các tin nhắn bảo mật";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Các khóa của bạn đang được sao lưu.";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "Tôi vừa tạo một bản sao";
+"room_do_not_have_permission_to_post" = "Bạn không có quyền đăng bài vào phòng này";
+"room_message_replying_to" = "Đang trả lời %@";
+"room_message_editing" = "Chỉnh sửa";
+"room_message_unable_open_link_error_message" = "Không thể mở liên kết";
+"room_message_reply_to_placeholder" = "Gửi trả lời (không được mã hóa)…";
+"room_accessiblity_scroll_to_bottom" = "Cuộn đến cuối";
+
+// Chat
+"room_slide_to_end_group_call" = "Trượt để kết thúc cuộc gọi cho tất cả mọi người";
+"room_member_power_level_short_custom" = "Tùy chỉnh";
+"room_member_power_level_short_moderator" = "Điều hành viên";
+"room_member_power_level_short_admin" = "Quản trị viên";
+"room_member_power_level_custom_in" = "Tùy chỉnh (%@) trong %@";
+"room_member_power_level_moderator_in" = "Điều hành viên trong %@";
+"room_member_power_level_admin_in" = "Quản trị viên trong %@";
+"room_participants_security_information_room_encrypted_for_dm" = "Các tin nhắn ở đây được mã hóa đầu-cuối.\n\nCác tin nhắn của bạn được mã hóa bằng các khóa và chỉ có bạn và người nhận có những khóa duy nhất để mở chúng.";
+"room_participants_security_information_room_encrypted" = "Các tin nhắn trong phòng này được mã hóa đầu-cuối.\n\nCác tin nhắn của bạn được bảo mật bằng các khóa và chỉ có bạn và người nhận có các khóa duy nhất để mở chúng.";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Các tin nhắn ở đây không được mã hóa đầu-cuối";
+"room_participants_security_information_room_not_encrypted" = "Các tin nhắn trong phòng này không được mã hóa đầu-cuối";
+"room_participants_security_loading" = "Đang tải…";
+"room_participants_action_security_status_loading" = "Đang tải…";
+"room_participants_action_security_status_warning" = "Cảnh báo";
+"room_participants_action_security_status_complete_security" = "Hoàn thành bảo mật";
+"room_participants_action_security_status_verify" = "Xác minh";
+"room_participants_action_security_status_verified" = "Đã xác minh";
+"room_participants_action_section_security" = "An ninh";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Không có máy chủ xác thực nào được cài đặt do đó bạn không thể bắt đầu trò chuyện với một liên hệ bằng email";
+"room_participants_filter_room_members_for_dm" = "Lọc thành viên";
+"room_participants_remove_third_party_invite_prompt_msg" = "Ban có chắc muốn thu hồi lời mời này?";
+"room_participants_leave_prompt_msg_for_dm" = "Bạn có chắc muốn rời?";
+"room_participants_leave_prompt_title_for_dm" = "Rời";
+"find_your_contacts_identity_service_error" = "Không thể kết nối với máy chủ xác thực";
+"find_your_contacts_footer" = "Điều này có thể bị vô hiệu hóa bất cứ lúc nào từ cài đặt";
+"find_your_contacts_button_title" = "Tìm liên hệ của bạn";
+"find_your_contacts_message" = "Hãy để %@ hiển thị danh bạ của bạn để bạn có thể nhanh chóng bắt đầu trò chuyện với những người bạn biết rõ nhất";
+"find_your_contacts_title" = "Bắt đầu bằng cách liệt kê danh bạ của bạn";
+"contacts_address_book_permission_denied_alert_message" = "Để bật danh bạ, hãy đi tới cài đặt thiết bị của bạn";
+"contacts_address_book_permission_denied_alert_title" = "Danh bạ bị vô hiệu hóa";
+"contacts_address_book_no_identity_server" = "Không có máy chủ xác thực nào được cấu hình";
+"group_section" = "CỘNG ĐỒNG";
+
+// Groups tab
+"group_invite_section" = "MỜI";
+"rooms_empty_view_information" = "Phòng là tuyệt vời cho bất kỳ trò chuyện nhóm, riêng tư hoặc công cộng. Nhấn vào + để tìm các phòng hiện có hoặc tạo phòng mới.";
+"rooms_empty_view_title" = "Phòng";
+"people_empty_view_information" = "Trò chuyện bảo mật với bất cứ ai. Nhấn vào + để bắt đầu thêm người";
+"people_empty_view_title" = "Danh bạ";
+"room_recents_unknown_room_error_message" = "Không thể tìm thấy phòng này. Hãy chắc chắn rằng nó tồn tại";
+"room_recents_suggested_rooms_section" = "PHÒNG GỢI Ý";
+"room_recents_server_notice_section" = "CẢNH BẢO HỆ THỐNG";
+"room_creation_dm_error" = "Chúng tôi không thể tạo DM của bạn. Vui lòng kiểm tra người dùng bạn muốn mời và thử lại.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Không có máy chủ xác thực nào được cấu hình vì vậy bạn không thể thêm người dự bằng email.";
+
+// Errors
+"error_user_already_logged_in" = "Có vẻ như bạn đang cố gắng kết nối với một homeserver khác. Bạn có muốn đăng xuất không?";
+"social_login_button_title_sign_up" = "Đăng ký với %@";
+"social_login_button_title_sign_in" = "Đăng nhập với %@";
+"social_login_button_title_continue" = "Tiếp tục với %@";
+"social_login_list_title_sign_up" = "Hoặc";
+"social_login_list_title_sign_in" = "Hoặc";
+
+// Social login
+
+"social_login_list_title_continue" = "Tiếp tục với";
+"auth_softlogout_clear_data_sign_out" = "Đăng xuất";
+"auth_softlogout_clear_data_sign_out_msg" = "Bạn có chắc chắn muốn xóa tất cả dữ liệu hiện đang được lưu trữ trên thiết bị này không? Đăng nhập lại để truy cập dữ liệu tài khoản và tin nhắn của bạn.";
+"auth_softlogout_clear_data_sign_out_title" = "Bạn có chắc không?";
+"auth_softlogout_clear_data_button" = "Xóa tất cả dữ liệu";
+"auth_softlogout_clear_data_message_2" = "Xóa nó nếu bạn đã hoàn tất việc sử dụng thiết bị này hoặc muốn đăng nhập vào tài khoản khác.";
+"auth_softlogout_clear_data_message_1" = "Cảnh báo: Dữ liệu cá nhân của bạn (bao gồm cả khóa mã hóa) vẫn được lưu trữ trên thiết bị này.";
+"auth_softlogout_clear_data" = "Xóa dữ liệu cá nhân";
+"auth_softlogout_recover_encryption_keys" = "Đăng nhập để khôi phục các khóa mã hóa được lưu trữ duy nhất trên thiết bị này. Bạn cần chúng để đọc tất cả các tin nhắn an toàn của bạn trên bất kỳ thiết bị nào.";
+"auth_softlogout_reason" = "Người quản trị homeserver (%1$@) của bạn đã đăng xuất bạn ra khỏi account %2$@ (%3$@).";
+"auth_softlogout_sign_in" = "Đăng nhập";
+"auth_softlogout_signed_out" = "Bạn đã đăng xuất";
+"auth_autodiscover_invalid_response" = "Phản hồi tìm kiếm homeserver không hợp lệ";
+"auth_accept_policies" = "Vui lòng xem xét và chấp nhận các chính sách của homeserver này:";
+"auth_reset_password_error_is_required" = "Không có máy chủ xác thực nào được cấu hình: thêm một trong các tùy chọn máy chủ để đặt lại mật khẩu của bạn.";
+"auth_forgot_password_error_no_configured_identity_server" = "Không có máy chủ xác thực nào được cấu hình: thêm một để đặt lại mật khẩu của bạn.";
+"auth_phone_is_required" = "Không có máy chủ xác thực nào được cấu hình để bạn không thể thêm số điện thoại để đặt lại mật khẩu của mình trong tương lai.";
+"auth_email_is_required" = "Không có máy chủ xác thực nào được cấu hình để bạn không thể thêm địa chỉ email để đặt lại mật khẩu của mình trong tương lai.";
+"auth_add_email_phone_message_2" = "Đặt email để khôi phục tài khoản. Sử dụng email hoặc điện thoại sau này để được tùy chọn phát hiện bởi những người biết bạn.";
+"auth_add_phone_message_2" = "Đặt điện thoại và sau đó có thể tùy chọn được tìm kiếm bởi những người biết bạn.";
+"auth_add_email_message_2" = "Đặt email để khôi phục tài khoản và sau đó có thể tùy chọn được tìm kiếm bởi những người biết bạn.";
+"auth_login_single_sign_on" = "Đăng nhập";
+
+// Accessibility
+"accessibility_checkbox_label" = "checkbox";
+"callbar_only_single_active_group" = "Nhấn để tham gia vào cuộc gọi nhóm (%@)";
+"callbar_return" = "Trở về";
+"callbar_only_multiple_paused" = "%@ cuộc gọi bị tạm dừng";
+"callbar_only_single_paused" = "Cuộc gọi bị tạm dừng";
+"callbar_active_and_multiple_paused" = "1 cuộc gọi đang hoạt động (%@) · %@ cuộc gọi bị tạm dừng";
+"callbar_active_and_single_paused" = "1 cuộc gọi đang hoạt động (%@) · 1 cuộc gọi đang tạm dừng";
+
+// Call Bar
+"callbar_only_single_active" = "Nhấn để quay lại cuộc gọi (%@)";
+"done" = "Hoàn thành";
+"open" = "Mở";
+"less" = "Ít hơn";
+"more" = "Nhiều hơn";
+"switch" = "Chuyển";
+"joined" = "Đã tham gia";
+"skip" = "Bỏ qua";
+"close" = "Đóng";
+"store_promotional_text" = "Ứng dụng trò chuyện và cộng tác bảo vệ quyền riêng tư, trên mạng mở. Phi tập trung để đưa bạn vào tầm kiểm soát. Không có datamining, không có backdoors và không có quyền truy cập của bên thứ ba.";
+"store_full_description" = "Element là một loại ứng dụng cộng tác và nhắn tin mới:\n\n1. Đặt bạn kiểm soát để giữ quyền riêng tư của bạn\n2. Cho phép bạn giao tiếp với bất kỳ ai trong mạng Matrix, và thậm chí hơn thế nữa bằng cách tích hợp với các ứng dụng như Slack\n3. Bảo vệ bạn khỏi quảng cáo, datamining, cửa hậu và khu vườn có tường bao quanh\n4. Bảo mật bạn thông qua mã hóa đầu cuối, với việc ký chéo để xác minh người khác\n\nElement hoàn toàn khác với các ứng dụng nhắn tin và cộng tác khác vì nó được phân cấp và nguồn mở.\n\nElement cho phép bạn tự lưu trữ - hoặc chọn máy chủ - để bạn có quyền riêng tư, quyền sở hữu và kiểm soát dữ liệu và cuộc trò chuyện của mình. Nó cho phép bạn truy cập vào một mạng mở; vì vậy, bạn không chỉ bị mắc kẹt khi nói chuyện với những người dùng Element khác. Và nó rất an toàn.\n\nElement có thể làm tất cả điều này bởi vì nó hoạt động trên Matrix - tiêu chuẩn cho giao tiếp mở, phi tập trung. \n\nElement giúp bạn kiểm soát bằng cách cho phép bạn chọn người tổ chức các cuộc trò chuyện của bạn. Từ ứng dụng Element, bạn có thể chọn lưu trữ theo nhiều cách khác nhau:\n\n1. Nhận tài khoản miễn phí trên máy chủ công cộng matrix.org\n2. Tự lưu trữ tài khoản của bạn bằng cách chạy máy chủ trên phần cứng của riêng bạn\n3. Đăng ký tài khoản trên máy chủ tùy chỉnh bằng cách đăng ký vào nền tảng lưu trữ Dịch vụ Element Matrix\n\nTại sao chọn Element?\n\nSở hữu dữ liệu của bạn: Bạn quyết định nơi để giữ dữ liệu và tin nhắn của bạn. Bạn sở hữu nó và kiểm soát nó, không phải một số MEGACORP khai thác dữ liệu của bạn hoặc cho phép truy cập vào bên thứ ba.\n\nTIN NHẮN MỞ VÀ CỘNG TÁC: Bạn có thể trò chuyện với bất kỳ ai khác trong mạng Matrix, cho dù họ đang sử dụng Element hay ứng dụng Matrix khác và ngay cả khi họ đang sử dụng một hệ thống nhắn tin khác như Slack, IRC hoặc XMPP.\n\nSUPER-SECURE: Mã hóa đầu cuối thực sự (chỉ những người trong cuộc trò chuyện mới có thể giải mã tin nhắn) và ký chéo để xác minh các thiết bị của người tham gia hội thoại.\n\nGIAO TIẾP ĐẦY ĐỦ: Nhắn tin, cuộc gọi thoại và video, chia sẻ tệp, chia sẻ màn hình và một loạt các tích hợp, bot và tiện ích. Xây dựng phòng, cộng đồng, giữ liên lạc và hoàn thành công việc.\n\nỞ mọi nơi bạn đang có: Giữ liên lạc bất cứ nơi nào bạn đang có với lịch sử tin nhắn được đồng bộ hóa hoàn toàn trên tất cả các thiết bị của bạn và trên web tại https://element.io/app.";
+// String for App Store
+"store_short_description" = "Chat/VoIP bảo mật phi tập trung";

@@ -18,6 +18,7 @@ limitations under the License.
 #import <MatrixSDK/MatrixSDK.h>
 
 #import "UIViewController+RiotSearch.h"
+#import "MatrixKit.h"
 
 /**
  This view controller manages several uiviewcontrollers like UISegmentedController manages uiTableView
