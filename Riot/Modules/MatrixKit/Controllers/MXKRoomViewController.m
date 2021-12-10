@@ -3668,9 +3668,6 @@
                     MXLogDebug(@"[MXKRoomVC] showAttachmentInCell on an unsent media");
                 }
             }
-            else if (selectedAttachment.type == MXKAttachmentTypeLocation)
-            {
-            }
             else if (selectedAttachment.type == MXKAttachmentTypeFile || selectedAttachment.type == MXKAttachmentTypeAudio)
             {
                 // Start activity indicator as feedback on file selection.
