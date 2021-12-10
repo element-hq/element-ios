@@ -342,6 +342,12 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
                 self.showExploreRooms(spaceId: spaceId, session: session)
             case .exploreMembers:
                 self.showMembers(spaceId: spaceId, session: session)
+            case .addRoom:
+                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddRoom, message: VectorL10n.spacesComingSoonDetail)
+            case .addSpace:
+                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesComingSoonDetail)
+            case .settings:
+                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.sideMenuActionSettings, message: VectorL10n.spacesComingSoonDetail)
             }
         }
     }

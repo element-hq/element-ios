@@ -1747,6 +1747,7 @@ Tap the + to start adding people.";
 "space_public_join_rule" = "Public space";
 "spaces_invite_people" = "Invite people";
 "spaces_add_room" = "Add room";
+"spaces_add_space" = "Add space";
 
 // Mark: Avatar
 

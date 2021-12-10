@@ -4999,6 +4999,10 @@ public class VectorL10n: NSObject {
   public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
   }
+  /// Add space
+  public static var spacesAddSpace: String { 
+    return VectorL10n.tr("Vector", "spaces_add_space") 
+  }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
   public static var spacesComingSoonDetail: String { 
     return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
