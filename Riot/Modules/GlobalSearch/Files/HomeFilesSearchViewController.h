@@ -15,7 +15,7 @@
  */
 
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  `HomeFilesSearchViewController` displays the files search in user's rooms under a `HomeViewController` segment.

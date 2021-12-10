@@ -17,7 +17,6 @@
 #import <UIKit/UIKit.h>
 
 #import <MatrixSDK/MatrixSDK.h>
-#import <MatrixKit/MatrixKit.h>
 
 /**
  The `RoomKeyRequestViewController` display a modal dialog at the top of the

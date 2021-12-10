@@ -268,7 +268,7 @@ const CGFloat kTypingCellHeight = 24;
             }
         }
     }
-    else
+    else if (RiotSettings.shared.enableThreads)
     {
         if (RiotSettings.shared.enableThreads)
         {

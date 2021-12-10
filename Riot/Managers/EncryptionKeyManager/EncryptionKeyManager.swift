@@ -16,8 +16,8 @@
 
 import UIKit
 import KeychainAccess
-import MatrixKit
 import CommonCrypto
+import MatrixSDK
 
 @objcMembers
 class EncryptionKeyManager: NSObject, MXKeyProviderDelegate {

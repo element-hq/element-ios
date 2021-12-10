@@ -17,7 +17,7 @@
 
 #import "IncomingCallView.h"
 
-#import <MatrixKit/MXKImageView.h>
+#import "MatrixKit.h"
 #import <MatrixSDK/MXMediaManager.h>
 
 #import "CircleButton.h"

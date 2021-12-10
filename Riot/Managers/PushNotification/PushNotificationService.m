@@ -17,8 +17,6 @@
 
 #import "PushNotificationService.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import <PushKit/PushKit.h>
 #import "GeneratedInterface-Swift.h"
 

@@ -16,7 +16,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import <UIKit/UIKit.h>
 
 @protocol Theme;
 

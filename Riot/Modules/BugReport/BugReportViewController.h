@@ -16,7 +16,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 @interface BugReportViewController : MXKViewController <UITextViewDelegate>
 

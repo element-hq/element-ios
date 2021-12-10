@@ -15,7 +15,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "RoomTitleView.h"
 
@@ -200,6 +200,12 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
  @param roomViewController the `RoomViewController` instance.
  */
 - (void)roomViewControllerDidRequestPollCreationFormPresentation:(RoomViewController *)roomViewController;
+
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
+canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
+
+- (void)roomViewController:(RoomViewController *)roomViewController
+endPollWithEventIdentifier:(NSString *)eventIdentifier;
 
 @end
 

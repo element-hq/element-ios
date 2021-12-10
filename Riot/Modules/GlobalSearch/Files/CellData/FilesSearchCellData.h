@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  `FilesSearchCellData` prepares the data for the Vector cell used to display the files search result.

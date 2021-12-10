@@ -14,7 +14,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import <MatrixSDK/MatrixSDK.h>
+
+#import "MatrixKit.h"
 
 /**
  The `DeviceTableViewCell` cell displays the information on a device.
