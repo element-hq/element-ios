@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  The `GroupsViewController` screen is the view controller displayed when `Groups` tab is selected.

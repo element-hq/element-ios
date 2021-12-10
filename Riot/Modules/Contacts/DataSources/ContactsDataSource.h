@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  The state of the users search from the homeserver user directory.

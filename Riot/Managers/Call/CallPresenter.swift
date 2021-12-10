@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import MatrixKit
 
 // swiftlint:disable file_length
 

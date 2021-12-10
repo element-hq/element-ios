@@ -1545,3 +1545,5 @@
 "find_your_contacts_title" = "从列出你的联系人开始";
 "contacts_address_book_permission_denied_alert_message" = "要启用联系人，请转到设备设置。";
 "contacts_address_book_permission_denied_alert_title" = "联系人被禁用";
+"space_home_show_all_rooms" = "显示所有聊天室";
+"room_event_action_forward" = "转发";

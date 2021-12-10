@@ -15,8 +15,7 @@
  */
 
 #import <Foundation/Foundation.h>
-
-#import "MatrixKit/MatrixKit.h"
+#import <MatrixSDK/MatrixSDK.h>
 
 @interface Tools : NSObject
 

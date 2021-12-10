@@ -67,6 +67,9 @@ targets:
         - "Modules/Room/EmojiPicker/Data/EmojiMart/EmojiJSONStore.swift"
         - "**/*.strings" # Exclude all strings files
     - path: ../RiotShareExtension/Shared
+    - path: Modules/MatrixKit
+      excludes:
+        - "**/*.md" # excludes all files with the .md extension
 
     # Add separately localizable files
     # Once a language has enough translations (>80%), it must be declared here

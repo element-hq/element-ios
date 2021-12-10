@@ -1,0 +1,549 @@
+
+
+"show_details" = "إظهَارُ التَّفاصيل";
+"cancel_download" = "إلغَاءُ التَّنزيل";
+"cancel_upload" = "إلغَاءُ الرَّفع";
+"select_all" = "تَحدِيدُ الكُل";
+"resend_message" = "إعادَةُ إرسَالِ الرِّسالَة";
+"reset_to_default" = "إعادَةُ الضَّبط إلى الاِفتِراضي";
+"invite_user" = "دَعوَة مُستَخدِمِ matrix";
+"capture_media" = "اِلتِقَاطُ صُّورة/مَقطَعَ مَرئيّ";
+"attach_media" = "إرفاقُ وسائطٍ مِنَ المَكتَبَة";
+"select_account" = "حَدِّد حِسَابًا";
+"mention" = "الذِّكْر";
+"start_video_call" = "بَدءُ مُكالَمَةٍ مَرئيَّة";
+"start_voice_call" = "بَدءُ مُكالَمَةٍ صَوتيَّة";
+"start_chat" = "بَدءُ مُحادَثَة";
+"login_error_resource_limit_exceeded_contact_button" = "التَّواصُل مع المُدير";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nيُرجَى التَّواصُل مَعَ مُدير خِدمَتك لِمُواصَلَة اِستِخدام هَذِهِ الخِدمَة.";
+"set_admin" = "تَعيِينُ مُدير";
+"set_moderator" = "تَعيِينُ مُشرِف";
+"set_default_power_level" = "إعادَة ضَبط مُستَوى القُوَّة";
+"set_power_level" = "ضَبط مُستَوى القُوَّة";
+"submit_code" = "تَسلِيم الرَّمز";
+"submit" = "التَّسلِيم";
+"sign_up" = "الاِشتِراك";
+"retry" = "إعادَةُ المُحاوَلة";
+"dismiss" = "إبعَاد";
+"discard" = "اِستِبعاد";
+"continue" = "الاِستِمرار";
+"close" = "إغلاق";
+"back" = "الرُّجُوع";
+"abort" = "إِجهَاض";
+"yes" = "نَعَم";
+
+// Action
+"no" = "لَا";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "هَذَا الخادِم الرَّئيس قَد وَصَلَ إلى حَدّه الشَّهري للمُستخدِم النَّشِط.";
+"login_error_resource_limit_exceeded_message_default" = "هَذَا الخادِم الرَّئيس قَد تَجاوزَ أحَد حُدُود مَوارِده.";
+"login_error_resource_limit_exceeded_title" = "تَمَّ تَجاوُز حَدّ المَورِد";
+"login_email_placeholder" = "عُنوان بَريد إلِكتُرونيّ";
+"login_email_info" = "إنَّ تَعيِين عُنوان بَريد إلِكتُرونيّ يُتيحُ لِلمُستَخدِمين الآخَرين العُثُور عَلَيك في Matrix بِشَكل أسهَل، وَيَمنَحُكَ طَريقَة لِإعادَة تَعيِين كَلِمة المُرُور الخاصَّة بِك في المُستَقبَل.";
+"login_desktop_device" = "سَطح مَكتَب";
+"login_tablet_device" = "لَوحي";
+"login_mobile_device" = "هَاتِف";
+"login_error_forgot_password_is_not_supported" = "نِسيان كَلِمَة المُرُور غَير مَدعُوم حاليًا";
+"register_error_title" = "فَشَلَ التَّسجِيل";
+"login_invalid_param" = "مُعامِل غَير صَالِح";
+"login_leave_fallback" = "إلغَاء";
+"login_use_fallback" = "اِستِخدام صَفحَة اِحتياطيَّة بَديلَة";
+"login_error_user_in_use" = "إنَّ اِسم المُستَخدِم هَذَا مُستخدَمٌ بِالفِعل";
+"login_error_limit_exceeded" = "لَقَد أُرسِلَت العَديد مِنَ الطَّلَبات";
+"login_error_not_json" = "لَم يَحتَوي عَلَى JSON صالِح";
+"login_error_bad_json" = "إنَّ JSON مُشَوَّه";
+"login_error_unknown_token" = "لَم يَتِمّ التَّعرُّف عَلَى رَمز الوُصُول المَذكُور";
+"login_error_forbidden" = "اِسم مُستَخدِم/كَلِمَةُ مُرُور غَير صالِحَة";
+"login_error_registration_is_not_supported" = "إنَّ التَّسجِيل غَير مَدعوم حاليًا";
+"login_error_do_not_support_login_flows" = "حاليًا، نَحنُ لا نَدعَم أيًا مِن تَدَفُقات تَسجيل الدُّخُول المُعَرَّفة بِواسِطَة هَذَا الخادِم الرَّئيس";
+"login_error_no_login_flow" = "لَقَد فَشلنَا في اِستِرداد بَيَانات المُصادَقَة مِن هَذَا الخادِم الرَّئيس";
+"login_error_title" = "فَشَلَ تَسجيلُ الدُّخُول";
+"login_prompt_email_token" = "يُرجى إدخال رَمز التَّحقُّق مِنَ البَريد الإلِكتُرونيّ الخاص بِك:";
+"login_user_id_placeholder" = "مُعَرِّف Matrix (مِثل bob:matrix.org@ أو bob)";
+"login_display_name_placeholder" = "الاِسم الظّاهِر (مِثل. محمد عبدالله)";
+"login_optional_field" = "اِختياري";
+"login_password_placeholder" = "كَلِمَةُ المُرُور";
+"login_identity_server_info" = "تُوَفِّرُ Matrix خَوادِم هُويَّة لتَتَبُع عَناوين البَريد الإلِكتُرونيّ وَما إلى ذَلِكَ مِنَ الَّتي تَنتَمي إلى مُعَرِّفات Matrix. فَقَط https://matrix.org مُتَوَفِّر حاليًا.";
+"login_identity_server_title" = "عُنوان URL لِخادِم الهُويَّة:";
+"login_home_server_info" = "الخادِم الرَّئيس الخاصّ بِك يُخَزِّنُ جَميع مُحادَثاتك وَمَعلُومات حِسابك";
+"login_home_server_title" = "عُنوان URL لِلخادِم الرَّئيس:";
+"login_server_url_placeholder" = "عُنوان URL (مِثل https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "إنشاءُ حِساب:";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "Matrix";
+"notice_encrypted_message" = "رِسَالَةٌ مُعمّاة";
+"notice_room_related_groups" = "المَجمُوعاتُ المُرتَبِطَةُ بِهَذِهِ الغُرفَةِ هِيَ: %@";
+"notice_room_aliases_for_dm" = "الاَسماءُ البَديلَة هِيَ: %@";
+"notice_room_aliases" = "الاَسماءُ البَديلَة لِلغُرفَة هِيَ: %@";
+"notice_room_power_level_event_requirement" = "مُستَوى القُوَّة الأدنَى المُتَعلِّقُ بِالأحداث هُوَ:";
+"notice_room_power_level_acting_requirement" = "مُستَوى القُوَّة الأدنَى الَّذي يَجِبُ عَلَى المُستَخدِم اِمتِلاكُه قَبلَ التَّفاعُل هُوَ:";
+"notice_room_power_level_intro_for_dm" = "مُستَوى القُوَّة لِلأعضاءِ هُوَ:";
+"notice_room_power_level_intro" = "مُستَوى القُوَّة لِأعضاءِ الغُرفَة هُوَ:";
+"notice_room_join_rule_public_by_you_for_dm" = "أنتَ قَد جَعلتَ هَذِهِ عَامَّة.";
+"notice_room_join_rule_public_by_you" = "أنتَ قَد جَعلتَ الغُرفَةَ عَامَّة.";
+"notice_room_join_rule_public_for_dm" = "لَقَد جَعَلَ %@ هَذِهِ عَامَّة.";
+"notice_room_join_rule_public" = "لَقَد جَعَلَ %@ الغُرفَةَ عَامَّة.";
+"notice_room_join_rule_invite_by_you_for_dm" = "أنتَ قَد جَعلتَ هَذِهِ بالدَّعوَةِ فَقَط.";
+"notice_room_join_rule_invite_by_you" = "أنتَ قَد جَعلتَ الغُرفَةَ بالدَّعوَةِ فَقَط.";
+"notice_room_join_rule_invite_for_dm" = "لَقَد جَعَلَ %@ هَذِهِ بِالدَّعوَةِ فَقَط.";
+//  New
+"notice_room_join_rule_invite" = "لَقَد جَعَلَ %@ الغُرفَةَ بِالدَّعوَةِ فَقَط.";
+//  Old
+"notice_room_join_rule" = "قاعِدَة الاِنضِمام هِيَ: %@";
+"notice_room_created_for_dm" = "لَقَد اِنضَمَّ %@.";
+"notice_room_created" = "لَقَد أنشأ %@ الغُرفَة وَهَيَّأَها.";
+"notice_profile_change_redacted" = "لَقَد حدَّثَ %@ مَلفَّهُ الشَّخصي %@";
+"notice_event_redacted_reason" = " [السَّبَب: %@]";
+"notice_event_redacted_by" = " بِواسِطَة %@";
+"notice_event_redacted" = "<مُنَقَّح%@>";
+"notice_room_topic_removed" = "لَقَد أزالَ %@ المَوضُوع";
+"notice_room_name_removed_for_dm" = "لَقَد أزالَ %@ الاِسم";
+"notice_room_name_removed" = "لَقَد أزالَ %@ اِسمَ الغُرفَة";
+
+// Events formatter
+"notice_avatar_changed_too" = "(غُيِّرَت الصُّورَة الرَّمزية أيضًا)";
+"unignore" = "إلغَاءُ التَّجاهُل";
+"ignore" = "تَجاهُل";
+"end_call" = "إنهَاءُ المُكالَمَة";
+"reject_call" = "رَفضُ المُكالَمَة";
+"answer_call" = "الإجابَةُ عَلَى المُكالَمَة";
+"attachment_multiselection_original" = "الحَجمُ الفِعلي";
+"attachment_multiselection_size_prompt" = "هَل تُريدُ إِرسَالَ الصُّوَرِ كَـ :";
+"attachment_cancel_upload" = "إلغَاء الرَّفع؟";
+"attachment_cancel_download" = "إلغَاء التَّنزيل؟";
+"attachment_large" = "كَبير: %@";
+"attachment_medium" = "مُتَوَسِّط: %@";
+"attachment_small" = "صَغير: %@";
+"attachment_original" = "الحَجمُ الفِعلي: %@";
+
+// Attachment
+"attachment_size_prompt" = "هَل تُريدُ الإِرسَالَ كَـ :";
+"room_member_power_level_prompt" = "لَن تَكُونَ قَادِرًا عَلَى التَّراجُع عَن هَذا التَّغيِير فَأنتَ تُرَقِّي المُستَخدِم لِيَكُونَ لَهُ نَفس مُستَوى القُوَّة الَّذِي لدَيك.\nهَل أَنتَ مُتَأكِّد؟";
+
+// Room members
+"room_member_ignore_prompt" = "هَل أنتَ مُتَأكِّدٌ مِن رَغبَتِكَ فِي إخفَاءِ جَميعِ الرَّسَائِل عَن هَذَا المُستَخدِم؟";
+"message_reply_to_message_to_reply_to_prefix" = "رَدًّا عَلَى";
+"message_reply_to_sender_sent_a_file" = "أرسَلَ مَلَفّ.";
+"message_reply_to_sender_sent_a_video" = "أرسَلَ مَقطَعًا مَرئيًا.";
+"message_reply_to_sender_sent_an_audio_file" = "أرسَلَ مَلَفًّا صَوتيًا.";
+
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "أرسَلَ صُورَةَ.";
+"room_no_conference_call_in_encrypted_rooms" = "إنَّ مُكالَمَاتُ الاِجتِمَاع غَيرُ مَدعُومَةٍ فِي الغُرَفِ المُعمّاة";
+"room_no_power_to_create_conference_call" = "أنتَ بِحاجَةٍ إلَى إذن لِلدَّعوَة حَتَّى تَبدَأَ اِجتِمَاع فِي هَذِهِ الغُرفَة";
+"room_left_for_dm" = "أنتَ قَد غادَرت";
+"room_left" = "أنتَ قَد غادَرتَ الغُرفَة";
+"room_error_timeline_event_not_found" = "التَّطبيقُ كَانَ يُحاوِلُ تَحميلَ نُقطَةٍ مُعَيَّنَةٍ مِنَ الخَطِّ الزَّمَنيِ لِهَذِهِ الغُرفَة لَكِن تَعَذَّرَ عَليهِ العُثُور عَلَيهَا";
+"room_error_cannot_load_timeline" = "فَشَلَ تَحمِيلُ الخَطِّ الزَّمَنِي";
+"room_error_timeline_event_not_found_title" = "فَشَلَ تَحمِيلُ مَوضِعِ الخَطِّ الزَّمَنِي";
+"room_error_topic_edition_not_authorized" = "أنتَ غَيرُ مُخَوَّلٍ لِتَحرِيرِ مَوضُوعِ هَذِهِ الغُرفَة";
+"room_error_name_edition_not_authorized" = "أنتَ غَيرُ مُخَوَّلٍ لِتَحرِيرِ اِسمِ هَذِهِ الغُرفَة";
+"room_error_join_failed_empty_room" = "حاليًّا مِن غَيرِ المُمكِنِ إعادَةُ الاِنضِمامِ إلى غُرفَةٍ فارِغَة.";
+"room_error_join_failed_title" = "فَشَلَ الاِنضِمام إلى الغُرفَة";
+
+// Room
+"room_please_select" = "يُرجَى تَحديدُ غُرفَة";
+"room_creation_participants_placeholder" = "(مِثل. ‭(@bob:homeserver1; @john:homeserver2...";
+"room_creation_participants_title" = "المُشَارِكُون:";
+"room_creation_alias_placeholder_with_homeserver" = "(مِثل. %@foo#)";
+"room_creation_alias_placeholder" = "(مِثل. foo:example.org#)";
+"room_creation_alias_title" = "اِسمُ الغُرفَةِ البَديل:";
+"room_creation_name_placeholder" = "(مِثل. مجموعة الغداء)";
+
+// Room creation
+"room_creation_name_title" = "اِسمُ الغُرفَة:";
+"account_error_push_not_allowed" = "الإِشعَاراتُ غَيرُ مَسمُوحَة";
+"account_error_msisdn_wrong_description" = "يَبدو أنَّ هَذَا لَيسَ رَقمُ هَاتِفٍ صَالِح";
+"account_error_msisdn_wrong_title" = "رَقمُ هَاتِفٍ غَيرُ صَالِح";
+"account_error_email_wrong_description" = "يَبدو أنَّ هَذَا لَيسَ عُنوان بَريد إلِكتُرونيّ صَالِح";
+"account_error_email_wrong_title" = "عُنوانُ بَريدٍ إلِكتُرونيّ غَيرَ صَالِح";
+"account_error_matrix_session_is_not_opened" = "جَلسَةُ Matrix غَيرَ مَفتُوحَة";
+"account_error_display_name_change_failed" = "فَشَلَ تَغيِيرُ الاِسم الظّاهِر";
+"account_error_picture_change_failed" = "فَشَلَ تَغيِيرُ الصُّورَة";
+"account_msisdn_validation_error" = "يَتَعَذَّرُ التَّحَقُّق مِن رَقمِ الهَاتِف.";
+"account_msisdn_validation_message" = "لَقَد أرسَلنا رِسَالَة SMS تَحوِي رَمزًا لِلتَفعِيل. يُرجَى إدخَالُ هَذَا الرَّمز أَدناه.";
+"account_msisdn_validation_title" = "قَيدُ التَّحَقُّق";
+"account_email_validation_title" = "قَيدُ التَّحَقُّق";
+"account_email_validation_error" = "يَتَعَذَّر التَّحَقُّق مِن عُنوان البَريد إلِكتُرونيّ. يُرجَى الاِطِّلاع عَلَى البَريد إلِكتُرونيّ الخاصّ بِك ثُمَّ النَّقر عَلَى الرَّابِط الّذي يَحوِيه. بِمُجَرَّد الاِنتِهاء مِن ذَلِك، اُنقُر عَلَى الاِستِمرار";
+"account_email_validation_message" = "يُرجَى الاِطِّلاعُ عَلَى البَريدِ إلِكتُرونيّ الخاصِّ بِك ثُمَّ النَّقرَ عَلَى الرَّابِط الَّذي يَحوِيه. بِمُجَرَّدِ الاِنتِهاءُ مِن ذَلِك، اُنقُر عَلَى الاِستِمرار.";
+"account_linked_emails" = "عَناوينُ البَريدِ الإلِكتُرونيّ المُرتَبِطَة";
+"account_link_email" = "رَبطُ بَريدٍ إلِكتُرونيّ";
+
+// Account
+"account_save_changes" = "حِفظُ التَّغَيُّرات";
+"room_event_encryption_verify_ok" = "تَأكِيدُ التَّحَقُّق";
+"room_event_encryption_verify_message" = "لِلتَحَقُّق مِن إِمكانيَّة الوُثُوق بِهَذِه الجَلسَة، يُرجَى التَّوَاصُل مَعَ المَالِك بِاِستِخدام بَعض الوَسَائِل الأُخرَى (عَلَى سَبِيلِ المِثَال شَخصيًّا أَو عَن طَرِيق مُكَالَمَة هَاتِفيَّة) وَاِسأَلهُ عَمَّا إِذَا كَانَ المِفتَاح الَّذِي يَرَاه فِي إعدادَات المُستَخدِم لِهَذِهِ الجَلسَة يَتَطَابَقُ مَعَ المِفتَاح أَدناه:\n\nاِسم الجَلسَة: %@\nمُعَرِّف الجَلسَة: %@\nمِفتَاح الجَلسَة: %@\n\nإِذَا تَطَابق، اِضغَط عَلَى زِرِّ التَّحَقُّق أَدناه. إِذَا لَم يَحدُث ذَلِك، فَهَذَا يَعنِي أَنَّ شَخصًا آخَر يَعتَرَضُ هَذِهِ الجَلسَة وَرُبَّما تُوَدُّ الضَّغطَ عَلَى زِرُّ الإضافَةِ لِلقَائِمَة السَّوداء بَدَلَا مِن ذَلِك.\n\n سَوفَ تَكُونُ عَمَلِيَّةُ التَّحَقُّقِ هَذِهِ أَكثَرُ تَطَوُّرًا في المُستَقبَل.";
+"room_event_encryption_verify_title" = "التَّحَقُّقُ مِنَ الجَلسَة\n\n";
+"room_event_encryption_info_unblock" = "الإزالَة مِنَ القائِمَةِ السَّوداء";
+"room_event_encryption_info_block" = "الإضافَةُ إلى القائِمَةِ السَّوداء";
+"room_event_encryption_info_unverify" = "إلغَاءُ التَّحَقُّق";
+"room_event_encryption_info_verify" = "يَجري التَّحَقُّق...";
+"room_event_encryption_info_device_blocked" = "ضِمنُ القائِمَةِ السَّوداء";
+"room_event_encryption_info_device_not_verified" = "غَيرُ مُتَحَقَّقٍ مِنه";
+"room_event_encryption_info_device_verified" = "مُتَحَقَّقٌ مِنه";
+"room_event_encryption_info_device_fingerprint" = "بَصمَة Ed25519\n";
+"room_event_encryption_info_device_verification" = "التَّحَقُّق\n";
+"room_event_encryption_info_device_id" = "المُعَرِّف\n";
+"room_event_encryption_info_device_name" = "الاِسمُ العَامّ\n";
+"room_event_encryption_info_device_unknown" = "جَلسَةٌ غَيرَ مَعرُوفة\n";
+"room_event_encryption_info_device" = "\nمَعلُومَاتُ جَلسَةِ المُرسِل\n";
+"room_event_encryption_info_event_none" = "لَا شَيء";
+"room_event_encryption_info_event_unencrypted" = "غَيرُ مُعَمَى";
+"room_event_encryption_info_event_decryption_error" = "خَطَأٌ فِي فَكِّ التَّعميَة\n";
+"room_event_encryption_info_event_session_id" = "مُعَرِّفُ الجَلسَة\n";
+"room_event_encryption_info_event_algorithm" = "خَوارِزميَّة\n";
+"room_event_encryption_info_event_fingerprint_key" = "مُطَالَبَةُ مِفتَاحِ بَصمَة Ed25519\n";
+"room_event_encryption_info_event_identity_key" = "مِفتَاحُ هُويَّة Curve25519\n";
+"room_event_encryption_info_event_user_id" = "مُعَرِّفُ المُستَخدِم\n";
+"room_event_encryption_info_event" = "مَعلُومَاتُ الحَدَث\n";
+
+// Encryption information
+"room_event_encryption_info_title" = "مَعلُومَاتُ تَعمِيَةِ النِّهايَة-إلى-النِّهايَة\n\n";
+"device_details_delete_prompt_message" = "هَذِهِ العَمَلِيَّة تَتَطَلَّبُ مُصادَقةً إضافيَة.\nللاِستِمرار، يُرجَى إدخَالُ كَلِمَةُ المُرُورِ الخاصَّةِ بِك.";
+"device_details_delete_prompt_title" = "المُصادَقَة";
+"device_details_rename_prompt_message" = "إنَّ اِسمَ الجَلسَةِ العَامّ مَرئيٌّ لِلأشخَاصِ الَّذِينَ تَتَواصَلُ مَعَهُم";
+"device_details_rename_prompt_title" = "اِسمُ الجَلسَة";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"device_details_last_seen" = "آخِرُ ظُهور\n";
+"device_details_identifier" = "المُعَرِّف\n";
+"device_details_name" = "الاِسمُ العَامّ\n";
+
+// Devices
+"device_details_title" = "مَعلُومَاتُ الجَلسَة\n";
+"notification_settings_room_rule_title" = "الغُرفَة: '%@'";
+"settings_enter_validation_token_for" = "أدخِل رَمزَ المُصادَقَة لِـ %@:";
+"settings_enable_push_notifications" = "تَفعِيلُ دَفعِ الإِشعَارات";
+"settings_enable_inapp_notifications" = "تَفعِيلُ الإِشعَاراتِ دَاخِلَ التَّطبِيق";
+
+// Settings
+"settings" = "الإعدَادَات";
+"room_displayname_more_than_two_members" = "العُضو %@ وَعَدَد %@ آخَرُون";
+"room_displayname_two_members" = "العُضو %@ وَ %@";
+
+// room display name
+"room_displayname_empty_room" = "غُرفَةٌ فَارِغَة";
+"notice_in_reply_to" = "رَدًّا عَلَى";
+"notice_sticker" = "مُلصَق";
+"notice_crypto_error_unknown_inbound_session_id" = "إنَّ جَلسَةَ المُرسِل لَم تُرسِل إلَينا المَفاتيح لِهَذِهِ الرِّسَالَة.";
+"notice_crypto_unable_to_decrypt" = "** يَتَعَذَّرُ فَكَّ التَّعميَة: %@ **";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "لَقَد جَعَلَ %@ الرَّسائِلَ المُستَقبَليَّة مَرئيَّةٌ لِلجَميع، مُنذُ أنِ اِنضَمُّوا.";
+"notice_room_history_visible_to_members_from_joined_point" = "لَقَد جَعَلَ %@ تَأريخَ الغُرفَةِ المُستَقبَليّ مَرئيٌّ لِجَميعِ أعضاءِ الغُرفَة، مِنَ النُّقطَةِ الَّتي اِنضَمُّوا فِيهَا.";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "لَقَد جَعَلَ %@ الرَّسائِلَ المُستَقبَليَّة مَرئيَّةٌ لِلجَميع، مُنذُ أن تَمَّت دَعوَتُهُم.";
+"notice_room_history_visible_to_members_from_invited_point" = "لَقَد جَعَلَ %@ تَأريخَ الغُرفَةِ المُستَقبَليّ مَرئيٌّ لِجَميعِ أعضاءِ الغُرفَة، مِنَ النُّقطَةِ الَّتي تَمَّت دَعوَتُهُم فِيهَا.";
+"notice_room_history_visible_to_members_for_dm" = "لَقَد جَعَلَ %@ الرَّسائِلَ المُستَقبَليَّة مَرئيَّةٌ لِجَميعِ أعضاءِ الغُرفَة.";
+"notice_room_history_visible_to_members" = "لَقَد جَعَلَ %@ تَأريخَ الغُرفَةِ المُستَقبَليّ مَرئيٌّ لِجَميعِ أعضاءِ الغُرفَة.";
+"notice_room_history_visible_to_anyone" = "لَقَد جَعَلَ %@ تَأريخَ الغُرفَةِ المُستَقبَليّ مَرئيٌّ لِأَيّ شَخص.";
+"notice_error_unknown_event_type" = "حَدثٌ غَيرُ مَعرُوفِ النَّوع";
+"notice_error_unexpected_event" = "حَدَثٌ غَيرُ مُتَوَقَّع";
+"notice_error_unsupported_event" = "حَدَثٌ غَيرُ مَدعُوم";
+"notice_redaction" = "لَقَد نَقَّحَ %@ حَدَث (المُعَرِّف: %@)";
+"notice_feedback" = "حَدَثُ اِنطِباع (المُعَرِّف: %@): %@";
+"notice_unsupported_attachment" = "مُرفَقٌ غَيرُ مَدعُوم: %@";
+"notice_invalid_attachment" = "مُرفَقٌ غَيرُ صَالِح";
+"notice_file_attachment" = "مُرفَقُ مَلَفّ";
+"notice_location_attachment" = "مُرفَقُ مَوقِعٍ جُغرَافِيّ";
+"notice_video_attachment" = "مُرفَق مَقطَع مَرئي";
+"notice_audio_attachment" = "مُرفَق صَوت";
+"notice_image_attachment" = "مُرفَق صُّورَة";
+"notice_encryption_enabled_unknown_algorithm" = "لَقَد شَغَّلَ %1$@ تَعميَة النِّهايَة-إلى-النِّهايَة (خَوارِزميَّة غَير مُتَعَرَّف عَليها %2$@).";
+"notice_encryption_enabled_ok" = "لَقَد شَغَّلَ %@ تَعميَة النِّهايَة-إلى-النِّهايَة.";
+"power_level" = "مُستَوى القُوَّة";
+"public" = "عَامّ";
+"private" = "خاصّ";
+"default" = "الاِفتراضي";
+"not_supported_yet" = "غَيرُ مَدعُومَةٍ حَتَّى الآن";
+"error_common_message" = "لَقَد حَدَثَ خَطَأ. يُرجَى المُحاوَلَة مَرَّةً أُخرَى.";
+"error" = "خَطَأ";
+"unsent" = "غَيرُ مُرسَلَة";
+"offline" = "غَيرُ مُتَّصِل";
+
+// Others
+"user_id_title" = "مُعَرِّف المُستَخدِم:";
+"e2e_passphrase_not_match" = "عِبارَاتُ المُرُورِ يَجِبُ أن تَكُونَ مُتَطابَقة";
+"e2e_passphrase_create" = "إنشاءُ عِبارَةِ مُرُور";
+"e2e_passphrase_empty" = "عِبارَةُ المُرُورِ يَجِبُ ألَا تَكونَ خَالِيَة";
+"e2e_passphrase_confirm" = "تَأكيدُ عِبارَةِ المُرُور";
+"e2e_export_prompt" = "تُتيحُ لَكَ هَذِهِ العَمَلِيَّة تَصدير مَفاتيح الرَّسائِل الَّتي قَد تَلَقَّيتَها فِي الغُرَف المُعَمّاة إلى مَلَفّ مَحَلِّيّ. يُمكِنُكَ بَعدَ ذَلِكَ أن تَستَورِدَ المَلَفّ إلى عَميل Matrix آخر في المُستَقبَل، لِكَي يَتَمَكَّن هَذَا العَميل أيضًا مِن فَكّ تَعمِيَة هَذِهِ الرَّسائِل.\nالمَلَفّ الَّذِي قَد تَمَّ تَصديرُه سَيَسمَحُ لِأيّ شَخص يُمكِنَهُ قِرَاءته أن يَفُكّ تَعمِيَة أيّ رَسائِل مُعمّاة يُمكِنُكَ رُؤيَتها، لِذَلِك يَجِبُ أن تَكُونَ حَريصًا عَلَى إبقائه آمِن.";
+"e2e_export" = "تَصدير";
+
+// E2E export
+"e2e_export_room_keys" = "تَصديرُ مَفاتيحِ الغُرفَة";
+"e2e_passphrase_enter" = "أدخِل عِبارَةَ المُرُور";
+"e2e_import" = "اِستيراد";
+"e2e_import_prompt" = "تُتِيحُ لَكَ هَذِهِ العَمَلِيَّة اِستيراد المَفاتيح الَّتي قَد صَدَّرتَهَا مُسبقًا مِن عَميل Matrix آخر. أنتَ سَتَتَمَكَّن بَعدَ ذَلِك مِن فَكّ تَّعميَة جَميع رَسائِل الَّتي يُمكِن لِلعَميل الآخر فَكّ تَعمِيَتها.\nإنَّ المَلَفّ الْمُصَدَّر مَحميّ بِعِبارَة مُرُور. يَجِبُ إدخال عِبارَة المُرُور هُنا لِفَكّ تَعمِيَة المَلَفّ.";
+
+// E2E import
+"e2e_import_room_keys" = "اِستيرادُ مَفاتيحِ الغُرفَة";
+"format_time_d" = "ي";
+"format_time_h" = "س";
+"format_time_m" = "د";
+
+// Time
+"format_time_s" = "ث";
+"search_searching" = "يَجري البَحث...";
+
+// Search
+"search_no_results" = "لَا تُوجَدُ نَتائِج";
+"group_section" = "المَجمُوعات";
+
+// Groups
+"group_invite_section" = "الدَّعَوات";
+"contact_local_contacts" = "جِهاتُ الاِتِّصالِ المَحَلِّيَّة";
+
+// Contacts
+"contact_mx_users" = "مُستَخدِمُو Matrix";
+"attachment_e2e_keys_import" = "يَجري الاِستيراد...";
+"attachment_e2e_keys_file_prompt" = "يَحتَوي هَذَا المَلَفّ عَلَى مَفاتيح تَعمِيَة قَد تمَّ تَصديرُها مِن عَميلِ Matrix.\nهَل تُريدُ عَرضَ مُحتَوى المَلفّ أمِ اِستيرادُ المَفاتيحِ الَّتي يَحويها؟";
+
+// Settings screen 
+"settings_title_config" = "الإعداد";
+"notice_room_third_party_registered_invite_by_you" = "أنتَ قَد قَبلتَ دَعوَة %@";
+"notice_room_third_party_revoked_invite" = "لَقَد ألغَى %@ دَعوَة %@ لِلاِنضِمام إلى الغُرفَة";
+"notice_room_third_party_registered_invite" = "لَقَد قَبَلَ %@ دَعوَةَ %@‏";
+"ssl_only_accept" = "فَقَطّ اِقبَل الشَّهادَة إذا نَشَرَ مُدير الخادِم بَصمَة تُطابِق البَصمَة أعلَاه.";
+"ssl_expected_existing_expl" = "لَقَد تَغَيَّرَت الشَّهادَة الَّتي قَد كانَت مَوثُوقَة مُسبَقًا إلى أُخرَى غَير مَوثُوقَة. مِنَ المُمكِن أنَّ الخادِم قَد جَدَّدَ شَهادَته. تَواصَل مَعَ المُدير لِلحُصُول عَلَى البَصمَة المُتَوَقَّعَة.";
+"ssl_unexpected_existing_expl" = "تَمَّ تَغيِير الشَّهادَة الَّتي قَد كانَت مَوثُوقة مِن قِبَل هاتِفك. هَذَا غَيرُ طَبِيعِيّ لِلغَايَة. يُوصَى بِعَدَم قُبُول هَذِهِ الشَّهادَة الجَديدَة.";
+"ssl_cert_new_account_expl" = "إذَا قَالَ مُديرُ الخادِم أنَّ هَذَا مُتَوَقَّع، فَتَأكَّد مِن تَطابُق البَصمَة أدناه مَعَ البَصمَة الَّتي قَد قَدَّمَها.";
+"ssl_cert_not_trust" = "هَذَا قَد يَعني أنَّ شَخصًا ما يَعتَرِضُ حَرَكَة المُرُور الخَاصَّةِ بِك بِخُبث، أو أنَّ هَاتِفَكَ لا يَثِقُ في الشَّهادَة المُقَدَّمَة مِنَ الخادِمِ البَعيد.";
+"notification_settings_per_word_info" = "تُطابَق الكَلِمات مَعَ حالَة الأحرُف بِشَكل غَير حَساس، وَقَد تَتَضَمَّن حَرف البَدَل *. وَبِالتَّالي:\nإنَّ foo تَتَطابَق مَعَ السِّلسِلَة foo المُحاطَة بِمُحَدِّدِات الكَلِمَة (مِثل عَلامات التَّرقيم وَالمَسافَة البَيضاء أو بِدايَة/نِهايَة السَّطر).\nإنَّ *foo تَتَطابَق مَعَ أي كَلِمَة تَبدَأُ بِـ foo.\nإنَّ *foo* تَتَطابَق مع أي كَلِمَة مِن هَذَا القَبيل وَتَتَضَمَّن الثَّلاث أحرُف foo.";
+"notification_settings_global_info" = "تَُحفَظُ إعدادات الإشعَارات في حِسابِ المُستَخدِم الخاصِّ بِك وَتَتِمُّ مُشارَكَتَها بَينَ جَمِيعِ العُمَلاء الَّذينَ يَدعَمُونَها (بِما في ذَلِكَ إشعَاراتُ سَطحِ المَكتَب).\n\nيَتِمُّ تَطبيق القَواعِد بِالتَرتيب؛ أوَّل قاعِدَة تَتَطَابَق تُحَدِّد النَّتيجَة لِلرِسالَة.\nإذًا: الإِشعَارات وَفقًا لِلكَلِمَة أكثَرُ أولَويَّة مِنَ الإِشعَارات وَفقًا لِلغُرفَة الَّتِي أيضًا أكثَرُ أولَويَّة مِنَ الإِشعَارات وَفقًا لِلمُرسِل.\nبِالنِّسبَةِ لِلقَواعِد المُتَعَدِّدَة مِن نَفسِ النَّوع، تَكُونُ الأَولَويَّة لِأوَّل قاعِدَة تَتَطابَق في القائِمَة.";
+"login_error_login_email_not_yet" = "لَم يُنقَر عَلَى الرَّابِط الَّذي في البَريد الإلِكتُرونيّ حَتَّى الآن";
+"ssl_could_not_verify" = "تَعَذَّرَ التَّحَقُّق مِن هُوِيَّة الخَادِم البَعيد.";
+"ssl_fingerprint_hash" = "بَصمَة (%@):";
+"ssl_remain_offline" = "تَجاهُل";
+"ssl_logout_account" = "تَسجِيلُ الخُرُوج";
+
+// unrecognized SSL certificate
+"ssl_trust" = "الوُثُوق";
+"call_invite_expired" = "لَقَد اِنتَهَت صَلاحيَّةُ دَعوَة المُكالَمَة";
+"incoming_voice_call" = "مُكالَمَةٌ صَوتيَّةٌ وَارِدَة";
+"incoming_video_call" = "مُكالَمَةٌ مَرئيَّةٌ وَارِدَة";
+"call_ring" = "تَجري المُكالَمَة…";
+"call_ended" = "اِنتَهَت المُكالَمَة";
+"call_connecting" = "الاِتِّصالُ جارٍ…";
+
+// Settings keys 
+
+// call string
+"call_waiting" = "يَجري الاِنتِظار…";
+"settings_config_user_id" = "مُعَرِّفُ المُستَخدِم: %@";
+"settings_config_identity_server" = "خادِم الهُويَّة: %@";
+
+// gcm section 
+"settings_config_home_server" = "الخادِم الرَّئيس: %@";
+"notification_settings_notify_all_other" = "أخطِرني لِكَافَّةِ الرَّسائِل/الغُرَف الأُخرَى";
+"notification_settings_by_default" = "بِشَكلٍ اِفتِراضي...";
+"notification_settings_suppress_from_bots" = "كَتْمُ الإشعَارات مِنَ الرُّوبُوتَات";
+"notification_settings_receive_a_call" = "أخطِرني عِندَما أَتَلَقَّى مُكالَمَة";
+"notification_settings_people_join_leave_rooms" = "أخطِرني عِندَما يَنضَمّ الأشخاص أو يُغادِرُوا الغُرَف";
+"notification_settings_invite_to_a_new_room" = "أخطِرني عِندَما أُدعَى إلى غُرفَة جَديدَة";
+"notification_settings_just_sent_to_me" = "أخطِرني بِالصَّوت حَولَ الرَّسَائِل الَّتي أُرسِلَت إليَّ فَقَط";
+"notification_settings_contain_my_display_name" = "أخطِرني بِالصَّوت حَولَ الرَّسَائِل الَّتي تَحتَوي عَلَى الاِسم الظّاهِر الخاصّ بِي";
+"notification_settings_contain_my_user_name" = "أخطِرني بِالصَّوت حَولَ الرَّسَائِل الَّتي تَحتَوي عَلَى اِسم المُستَخدِم الخاصّ بِي";
+"notification_settings_other_alerts" = "تَنبيهاتٌ أُخرَى";
+"notification_settings_select_room" = "حَّدِد غُرفَة";
+"notification_settings_sender_hint" = "user:domain.com@";
+"notification_settings_per_sender_notifications" = "الإِشعَاراتٌ وَفقًا لِلمُرسِل";
+"notification_settings_per_room_notifications" = "الإِشعَاراتُ وَفقًا لِلغُرفَة";
+"notification_settings_custom_sound" = "صَوتٌ مُخَصَّص";
+"notification_settings_highlight" = "إبرَاز";
+"notification_settings_word_to_match" = "كَلِمَةٌ لِلمُطابَقَة";
+"notification_settings_never_notify" = "لا تُخطِرني أبَدًا";
+"notification_settings_always_notify" = "أخطِرني دَومًا";
+"notification_settings_per_word_notifications" = "الإِشعَاراتُ وَفقًا لِلكَلِمَة";
+"notification_settings_enable_notifications_warning" = "جَميعُ الإِشعَاراتِ مُعَطَّلَةٌ حالِيًّا لِكُلِ الأجهِزَة.";
+"notification_settings_enable_notifications" = "تَفعِيلُ الإِشعَارات";
+
+// Notification settings screen 
+"notification_settings_disable_all" = "تَعطيلُ كَافَّةِ الإِشعَارات";
+"settings_title_notifications" = "الإِشعَارات";
+
+// contacts list screen 
+"invitation_message" = "أوَدُّ أن أتَحَدَّثَ مَعكَ بِاستِخدامِ matrix. يرُجَى زيارَةُ المَوقِع https://matrix.org لِلحُصُولِ عَلَى مَزيدٍ مِنَ المَعلُومات.";
+
+// members list Screen 
+
+// accounts list Screen 
+
+// image size selection 
+
+// invitation members list Screen 
+
+// room creation dialog Screen 
+
+// room info dialog Screen
+
+// room details dialog screen
+"room_details_title" = "تَفاصيلُ الغُرفَة";
+"login_error_must_start_http" = "عُنوانُ URL يَجِبُ أن يَبدَأ بِـ //:[s]http";
+
+// Login Screen 
+"login_error_already_logged_in" = "مُسَجِّل الدُّخُولِ بِالفِعل";
+"message_unsaved_changes" = "تُوجَدُ تَغيِيرات غَير مَحفُوظَة. المُغادَرَة سَوفَ تَستَبعِدَها.";
+"unban" = "رَفع-الحَظْر";
+"ban" = "حَظْر";
+"kick" = "طَرد";
+"invite" = "اُدعُ";
+"num_members_other" = "عَدَد %@ مُستَخدِم";
+"num_members_one" = "عَدَد %@ مُستَخدِم";
+"membership_ban" = "حَظْر";
+"membership_leave" = "غادَر";
+"membership_invite" = "مَدعُوّ";
+"create_account" = "إنشاءُ حِساب";
+"login" = "تَسجيلُ الدُّخُول";
+"create_room" = "إنشاءُ غُرفَة";
+
+// actions 
+"action_logout" = "تَسجِيلُ الخُرُوج";
+"view" = "الاِطِّلاع";
+"delete" = "حَذف";
+"share" = "مُشارَكَة";
+"redact" = "إزالَة";
+"resend" = "إعادَة الإرسَال";
+"copy_button_name" = "نَسخ";
+"send" = "إرسَال";
+"leave" = "المُغادَرَة";
+"save" = "حِفظ";
+"cancel" = "إلغَاء";
+
+// Room Screen 
+
+// general errors 
+
+// Home Screen 
+
+// Last seen time 
+
+// call events 
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles 
+
+// button names 
+"ok" = "حَسَنًا";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "أنتَ قَد جَعَلتَ الرَّسائِلَ المُستَقبَليَّة مَرئيَّة لِلجَميع، مُنذُ أنِ اِنضَمُّوا.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "أنتَ قَد جَعَلتَ تَأريخَ الغُرفَةِ المُستَقبَليّ مَرئيٌّ لِجَميعِ أعضاءِ الغُرفَة، مِن النُّقطَة الَّتي اِنضَمُّوا فِيهَا.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "أنتَ قَد جَعَلتَ الرَّسائِلَ المُستَقبَليَّة مَرئيَّة لِلجَميع، مُنذُ أن تَمَّت دَعوَتُهُم.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "أنتَ قَد جَعَلتَ تَأريخ الغُرفَة المُستَقبَليّ مَرئيٌّ لِجَميعِ أعضاءِ الغُرفَة، مِنَ النُّقطَةِ الَّتي تَمَّت دَعوَتُهُم فِيهَا.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "أنتَ قَد جَعَلتَ الرَّسائِل المُستَقبَليَّة مَرئيَّة لِجَميع أعضاء الغُرفَة.";
+"notice_room_history_visible_to_members_by_you" = "أنتَ قَد جَعَلتَ تَأريخَ الغُرفَةِ المُستَقبَليّ مَرئيٌّ لِجَميعِ أعضاءِ الغُرفَة.";
+"notice_room_history_visible_to_anyone_by_you" = "أنتَ قَد جَعَلتَ تَأريخ الغُرفَة المُستَقبَليّ مَرئي لِأَيّ شَخص.";
+"notice_redaction_by_you" = "أنتَ قَد نَقَّحتَ حَدَث (المُعَرِّف: %@))";
+"notice_encryption_enabled_unknown_algorithm_by_you" = "أنتَ قَد شَغَّلتَ تَعمِيَة النِّهايَة-إلى-النِّهايَة. (خَوارِزميَّة غَير مُتَعَرَّف عَليها %@).";
+"notice_encryption_enabled_ok_by_you" = "أنتَ قَد فعَّلتَ تَعمِيَة النِّهايَة-إلى-النِّهايَة.";
+"notice_room_created_by_you_for_dm" = "أنتَ قَد اِنضَمَمت.";
+"notice_room_created_by_you" = "أنتَ قَد أنشأتَ الغُرفَة وَهَيَّأَتَها.";
+"notice_profile_change_redacted_by_you" = "أنتَ قَد حدَّثتَ مَلفَّكَ الشَّخصي %@";
+"notice_event_redacted_by_you" = " بِواسِطَتِك";
+"notice_room_topic_removed_by_you" = "أنتَ قَد أزلتَ المَوضُوع";
+"notice_room_name_removed_by_you_for_dm" = "أنتَ قَد أزَلتَ الاِسم";
+"notice_room_name_removed_by_you" = "أنتَ قَد أزَلتَ اِسم الغُرفَة";
+"notice_conference_call_request_by_you" = "أنتَ قَد طَلبتَ عَقد اِجتِمَاع VoIP";
+"notice_ended_video_call_by_you" = "أنتَ قَد أنهيتَ المُكالَمَة";
+"notice_answered_video_call_by_you" = "أنتَ قَد أجَبتَ عَلَى المُكالَمَة";
+"notice_placed_video_call_by_you" = "أنتَ قَد أجرَيتَ مُكالَمَةً مَرئيَّة";
+"notice_placed_voice_call_by_you" = "أنتَ قَد أجرَيتَ مُكالَمَةً صَوتيَّة";
+"notice_room_name_changed_by_you_for_dm" = "أنتَ قَد غيَّرتَ الاِسم إلى %@.";
+"notice_room_name_changed_by_you" = "أنتَ قَد غيَّرتَ اِسمَ الغُرفَةِ إلى %@.";
+"notice_topic_changed_by_you" = "أنتَ قَد غيَّرتَ المَوضُوع إلى \"%@\".";
+"notice_display_name_removed_by_you" = "أنتَ قَد أزَلتَ اِسمكَ الظّاهِر";
+"notice_display_name_changed_from_by_you" = "أنتَ قَد غيَّرتَ اِسمكَ الظّاهِر مِن %@ إلى %@";
+"notice_display_name_set_by_you" = "أنتَ قَد عيَّنتَ اِسمكَ الظّاهِر إلى %@";
+"notice_avatar_url_changed_by_you" = "أنتَ قَد غيَّرتَ صُّورَتكَ الرَّمزية";
+"notice_room_withdraw_by_you" = "أنتَ قَد سَحبتَ دَعوَة %@";
+"notice_room_ban_by_you" = "أنتَ قَد حَظرتَ %@";
+"notice_room_unban_by_you" = "أنتَ قَد رَفعتَ الحَظرَ عَن %@";
+"notice_room_kick_by_you" = "أنتَ قَد طَردتَ %@";
+"notice_room_reject_by_you" = "أنتَ قَد رَفضتَ الدَعوَة";
+"notice_room_join_by_you" = "أنتَ قَد اِنضَمَمت";
+"notice_room_leave_by_you" = "أنتَ قَد غادَرت";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "أنتَ قد ألغيتَ دَعوَة %@";
+"notice_room_third_party_revoked_invite_by_you" = "أنتَ قَد ألغيتَ دَعوَة %@ لِلاِنضِمام إلى الغُرفَة";
+"notice_room_third_party_invite_by_you_for_dm" = "أنتَ قَد دَعوتَ %@";
+"notice_room_third_party_invite_by_you" = "أنتَ قَد أرسَلتَ دَعوَةً إلى %@ لِلاِنضِمامِ إلى الغُرفَة";
+"notice_room_invite_you" = "لَقَد دَعاكَ %@";
+
+// Notice Events with "You"
+"notice_room_invite_by_you" = "أنتَ قد دَعوتَ %@";
+"notice_conference_call_finished" = "لَقَد اِنتَهَى اِجتِمَاع VoIP";
+"notice_conference_call_started" = "لَقَد بَدأ اِجتِمَاع VoIP";
+"notice_conference_call_request" = "لَقَد طَلَبَ %@ عَقد اِجتِمَاع VoIP";
+"notice_ended_video_call" = "لَقَد أنهَى %@ المُكالَمَة";
+"notice_answered_video_call" = "لَقَد أجابَ %@ عَلَى المُكالَمَة";
+"notice_placed_video_call" = "لَقَد أجرَى %@ مُكالَمَة مَرئيَّة";
+"notice_placed_voice_call" = "لَقَد أجرَى %@ مُكالَمَة صَوتيَّة";
+"notice_room_name_changed_for_dm" = "لَقَد غيَّرَ %@ الاِسم إلى %@.";
+"notice_room_name_changed" = "لَقَد غيَّرَ %@ اِسم الغُرفَة إلى %@.";
+"notice_topic_changed" = "لَقَد غيَّرَ %@ المَوضُوع إلى \"%@\".";
+"notice_display_name_removed" = "لَقَد أزالَ %@ اِسمهُ الظّاهِر";
+"notice_display_name_changed_from" = "لَقَد غيَّرَ %@ اِسمُهُ الظّاهِر مِن %@ إلى %@";
+"notice_display_name_set" = "لَقَد عيَّنَ %@ اِسمُهُ الظّاهِر إلى %@";
+"notice_avatar_url_changed" = "لَقَد غيَّرَ %@ صُّورَتَهُ الرَّمزية";
+"notice_room_reason" = ". السَّبَب: %@";
+"notice_room_withdraw" = "لَقَد سَحَبَ %@ دَعوَة %@";
+"notice_room_ban" = "إنَّ %@ قَد حَظَرَ %@";
+"notice_room_unban" = "لَقَد رَفَعَ %@ الحَظرَ عَن %@";
+"notice_room_kick" = "إنَّ %@ قَد طَرَدَ %@";
+"notice_room_reject" = "لَقَد رَفَضَ %@ الدَّعوَة";
+"notice_room_leave" = "لَقَد غَادَرَ %@";
+"notice_room_third_party_invite" = "لَقَد أرسَلَ %@ دَعوَةً إلى %@ لِلاِنضِمامِ إلى الغُرفَة";
+"notice_room_join" = "لَقَد اِنضَمَّ %@";
+"notice_room_third_party_revoked_invite_for_dm" = "لَقَد ألغَى %@ دَعوَة %@";
+"notice_room_third_party_invite_for_dm" = "إنَّ %@ قَد أضافَ %@";
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /matrix-sdk/src/main/res/values/strings.xml.
+*/
+
+"notice_room_invite" = "إنَّ %@ قَد أضافَ %@";
+"language_picker_default_language" = "الاِفتراضي (%@)";
+
+// Language picker
+"language_picker_title" = "اِختَر لُغَةً";
+
+// Country picker
+"country_picker_title" = "اِختَر بَلَدًا";
+"local_contacts_access_discovery_warning" = "لاِكتِشاف جِهات الاِتِّصال الَّتي تَستَخدِمُ Matrix بِالفِعل، يُمكِنُ لِـ%@ إرسَال عَناوين البَريد الإلِكتُرونيّ وأرقام الهَواتِف الَّتي في دَفتَرِ العَناوين الخاصِّ بِك إلى خادِمِ هُويَّة Matrix المُختار. يَتِّمُ تَجزِئة البَياناتِ الشَّخصيَّة قَبلَ إرسالِها حَيثُما كانَت مَدعُومَة - يُرجى مُراجَعَة سياسَة الخُصُوصيَّة الخاصَّة بِخادِم الهُويَّة لِلحُصُولِ عَلَى المَزيدِ مِنَ التَّفاصيل.";
+"local_contacts_access_discovery_warning_title" = "اِكتِشافُ المُستَخدِمين";
+"local_contacts_access_not_granted" = "اِكتِشافُ المُستَخدِمين مِن جِهاتِ الاِتِّصالِ المَحَلِّيَّة يَتَطَلَّب الوُصُول إلَى جِهاتِ الاِتِّصالِ الخاصّةِ بِك لَكِنّ %@ لَيسَ لَدَيهِ الاِذن لاِستِخدامَها";
+"microphone_access_not_granted_for_call" = "المُكالَمَاتُ المَرئيَّة تَتَطَلَّب الوُصُول إلَى المِيكرُوفُون لَكِنّ %@ لَيسَ لَدَيهِ الاِذن لاِستِخدامه";
+
+// Permissions
+"camera_access_not_granted_for_call" = "المُكالَمَاتُ المَرئيَّة تَتَطَلَّب الوُصُول إلَى الكاميرة لَكِنّ %@ لَيسَ لَدَيهِ الاِذن لاِستِخدامها";
+"ssl_homeserver_url" = "عُنوانُ URL لِلخادِم الرَّئيس: %@";
+"user_id_placeholder" = "مِثال: bob:homeserver@";
+"network_error_not_reachable" = "يُرجَى التَّحَقُّق مِن اِتِّصالَكَ بِالشَبَكَة";
+"call_more_actions_dialpad" = "لَوحَةُ الاِتِّصَال";
+"call_more_actions_transfer" = "النَّقل";
+"call_more_actions_audio_use_device" = "مُكَبِّر صَوت الجِّهَاز";
+"call_more_actions_audio_use_headset" = "اِستِخدامُ صَوتَ سمَّاعَةِ الرَّأس";
+"call_more_actions_change_audio_device" = "تَغيِيرُ جِهَازِ الصَوت";
+"call_more_actions_unhold" = "الاِستِئنَاف";
+"call_more_actions_hold" = "التَّمَسُّك";
+"call_remote_holded" = "لقد عَلَّقَ %@ المكالمة";
+"call_holded" = "أنتَ قَد عَلَّقتَ المُكالَمَة";
+"notice_declined_video_call_by_you" = "أنتَ قَد رَفَضتَ المُكالَمَة";
+"notice_declined_video_call" = "لَقَد رَفضَ %@ المُكالَمَة";
+"resume_call" = "اِستِئنَاف";
+"call_transfer_to_user" = "التَّحويلُ إلَى %@";
+"call_consulting_with_user" = "اِستِشارَة مَعَ %@";
+"call_video_with_user" = "مُكالَمَةٌ مَرئيَّةٌ مَع %@";
+"call_voice_with_user" = "مُكالَمَةٌ صَوتيَّةٌ مَع %@";
+"call_ringing" = "الرَّنِينُ جَارٍ…";
+"e2e_passphrase_too_short" = "عِبارَة المُرُور قَصِيرَةٌ جِدًا (يَجِبُ ألَّا يَقِلَّ طُولهَا عَن %d أحرف)";
+"microphone_access_not_granted_for_voice_message" = "الرَسائِلُ الصَوتيَّةُ تتطَلَبُ الوصُولَ إلَى المِيكرُوفُون لَكِنَ %@ ليسَ لَديهِ إذنٌ لِاستِخدَامِه";
+"message_reply_to_sender_sent_a_voice_message" = "أرسَلَ رِسَالَةً صَوتيَّة.";

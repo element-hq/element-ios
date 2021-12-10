@@ -16,7 +16,6 @@
 
 import Foundation
 import MobileCoreServices
-import MatrixKit
 
 private class ShareExtensionItem: ShareItemProtocol {
     let itemProvider: NSItemProvider
