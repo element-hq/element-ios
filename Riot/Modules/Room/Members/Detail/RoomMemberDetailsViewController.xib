@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -32,7 +33,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YXr-As-Mqh">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="364"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="343"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ouj-VM-zdT">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="117"/>
@@ -43,19 +44,19 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MAS-3M-3cg">
-                            <rect key="frame" x="137.5" y="0.0" width="100" height="125"/>
+                            <rect key="frame" x="135.5" y="0.0" width="104" height="104"/>
                             <subviews>
                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GQ1-rP-ckr" customClass="MXKImageView">
-                                    <rect key="frame" x="8" y="31" width="84" height="84"/>
+                                    <rect key="frame" x="10" y="10" width="84" height="84"/>
                                     <color key="backgroundColor" red="0.6886889638" green="1" blue="0.74383144840000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="MemberAvatar"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="84" id="HfP-Pj-zLa"/>
                                         <constraint firstAttribute="width" secondItem="GQ1-rP-ckr" secondAttribute="height" multiplier="1:1" id="a1T-Y0-Iic"/>
+                                        <constraint firstAttribute="width" constant="84" id="kqX-QV-pvk"/>
                                     </constraints>
                                 </view>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jHh-A3-In3">
-                                    <rect key="frame" x="68" y="91" width="24" height="24"/>
+                                    <rect key="frame" x="70" y="70" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="jHh-A3-In3" secondAttribute="height" multiplier="1:1" id="fvP-Hk-apc"/>
                                         <constraint firstAttribute="width" constant="24" id="xga-bi-rLY"/>
@@ -67,14 +68,14 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="GQ1-rP-ckr" secondAttribute="bottom" constant="10" id="3pC-So-WvO"/>
                                 <constraint firstItem="jHh-A3-In3" firstAttribute="bottom" secondItem="GQ1-rP-ckr" secondAttribute="bottom" id="6Gg-lp-pJw"/>
-                                <constraint firstAttribute="height" constant="125" id="Fh0-7B-EnY"/>
+                                <constraint firstAttribute="trailing" secondItem="GQ1-rP-ckr" secondAttribute="trailing" constant="10" id="89D-wS-nJA"/>
+                                <constraint firstItem="GQ1-rP-ckr" firstAttribute="top" secondItem="MAS-3M-3cg" secondAttribute="top" constant="10" id="Mcw-V3-4fA"/>
                                 <constraint firstItem="jHh-A3-In3" firstAttribute="trailing" secondItem="GQ1-rP-ckr" secondAttribute="trailing" id="TbA-vY-3Ef"/>
-                                <constraint firstItem="GQ1-rP-ckr" firstAttribute="centerX" secondItem="MAS-3M-3cg" secondAttribute="centerX" id="ZGI-nR-gGx"/>
-                                <constraint firstAttribute="width" constant="100" id="fwv-qE-IV1"/>
+                                <constraint firstItem="GQ1-rP-ckr" firstAttribute="leading" secondItem="MAS-3M-3cg" secondAttribute="leading" constant="10" id="eSa-mP-j83"/>
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="hSH-1t-jnC">
-                            <rect key="frame" x="0.0" y="133" width="375" height="221"/>
+                            <rect key="frame" x="0.0" y="112" width="375" height="221"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QHN-zr-wtC">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
@@ -166,11 +167,9 @@
                         <constraint firstAttribute="trailing" secondItem="ouj-VM-zdT" secondAttribute="trailing" id="FRy-TL-gS2"/>
                         <constraint firstItem="hSH-1t-jnC" firstAttribute="leading" secondItem="YXr-As-Mqh" secondAttribute="leading" id="Z0t-iC-uTc"/>
                         <constraint firstAttribute="bottom" secondItem="hSH-1t-jnC" secondAttribute="bottom" constant="10" id="Z9m-Up-f4r"/>
-                        <constraint firstItem="MAS-3M-3cg" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="top" id="jJp-cP-Vgp"/>
                         <constraint firstAttribute="trailing" secondItem="hSH-1t-jnC" secondAttribute="trailing" id="nJW-bQ-zVq"/>
                         <constraint firstItem="ouj-VM-zdT" firstAttribute="leading" secondItem="YXr-As-Mqh" secondAttribute="leading" id="rWQ-Ru-7Ej"/>
                         <constraint firstItem="hSH-1t-jnC" firstAttribute="width" secondItem="YXr-As-Mqh" secondAttribute="width" id="srS-ma-V2U"/>
-                        <constraint firstItem="ouj-VM-zdT" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="top" id="srY-tD-AhJ"/>
                         <constraint firstItem="MAS-3M-3cg" firstAttribute="centerX" secondItem="YXr-As-Mqh" secondAttribute="centerX" id="vNM-7Z-K2b"/>
                     </constraints>
                 </view>
@@ -189,7 +188,7 @@
                     </constraints>
                 </imageView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" style="grouped" separatorStyle="default" rowHeight="46" sectionHeaderHeight="28" sectionFooterHeight="8" translatesAutoresizingMaskIntoConstraints="NO" id="R6u-PR-DcU">
-                    <rect key="frame" x="0.0" y="364" width="375" height="303"/>
+                    <rect key="frame" x="0.0" y="343" width="375" height="324"/>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="RoomMemberDetailsVCTableView"/>
@@ -200,6 +199,7 @@
                     </connections>
                 </tableView>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="wdI-9L-Ozp"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="RoomMemberDetailsVC"/>
             <constraints>
@@ -210,11 +210,13 @@
                 <constraint firstItem="RBF-EK-dhz" firstAttribute="trailing" secondItem="7Dc-jk-9sT" secondAttribute="trailing" id="RTr-1M-aeU"/>
                 <constraint firstItem="R6u-PR-DcU" firstAttribute="top" secondItem="YXr-As-Mqh" secondAttribute="bottom" id="VW4-0P-ALX"/>
                 <constraint firstAttribute="bottom" secondItem="R6u-PR-DcU" secondAttribute="bottom" id="X1a-xq-1Aa"/>
+                <constraint firstItem="MAS-3M-3cg" firstAttribute="top" secondItem="wdI-9L-Ozp" secondAttribute="top" id="a9L-QI-eJb"/>
                 <constraint firstAttribute="trailing" secondItem="R6u-PR-DcU" secondAttribute="trailing" id="aMA-vf-GrY"/>
                 <constraint firstItem="RBF-EK-dhz" firstAttribute="leading" secondItem="7Dc-jk-9sT" secondAttribute="leading" id="dHb-9z-eww"/>
                 <constraint firstItem="YXr-As-Mqh" firstAttribute="top" secondItem="gX8-mM-6Ig" secondAttribute="top" id="l7z-od-LJm"/>
                 <constraint firstItem="7Dc-jk-9sT" firstAttribute="leading" secondItem="gX8-mM-6Ig" secondAttribute="leading" id="rNt-rC-Pxv"/>
                 <constraint firstItem="R6u-PR-DcU" firstAttribute="leading" secondItem="gX8-mM-6Ig" secondAttribute="leading" id="rbT-O1-m3d"/>
+                <constraint firstItem="ouj-VM-zdT" firstAttribute="top" secondItem="wdI-9L-Ozp" secondAttribute="top" id="v9S-Vu-m6M"/>
                 <constraint firstAttribute="bottom" secondItem="7Dc-jk-9sT" secondAttribute="bottom" id="yKK-K2-ebi"/>
             </constraints>
             <point key="canvasLocation" x="53.600000000000001" y="26.53673163418291"/>
