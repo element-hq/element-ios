@@ -89,7 +89,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *roomMemberAvatarBadgeImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *roomMemberNameLabelMask;
+@property (weak, nonatomic) IBOutlet UIView *roomMemberNameContainerView;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberUserIdLabel;
 
@@ -344,7 +344,7 @@
 {
     if (self.mxRoomMember)
     {        
-        self.roomMemberNameLabelMask.hidden = !self.mxRoomMember.displayname;
+        self.roomMemberNameContainerView.hidden = !self.mxRoomMember.displayname;
         
         self.roomMemberNameLabel.text = self.mxRoomMember.displayname; 
         

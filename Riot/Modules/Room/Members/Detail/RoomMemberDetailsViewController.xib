@@ -16,8 +16,8 @@
                 <outlet property="roomMemberAvatarHeaderBackground" destination="ouj-VM-zdT" id="YeD-zt-8y5"/>
                 <outlet property="roomMemberAvatarHeaderBackgroundHeightConstraint" destination="dBL-G6-Yec" id="QXZ-ZP-0Rn"/>
                 <outlet property="roomMemberAvatarMask" destination="MAS-3M-3cg" id="nLI-7d-5Hu"/>
+                <outlet property="roomMemberNameContainerView" destination="QHN-zr-wtC" id="T3p-iz-nIk"/>
                 <outlet property="roomMemberNameLabel" destination="i1p-3D-PhB" id="NRi-dr-RPt"/>
-                <outlet property="roomMemberNameLabelMask" destination="QHN-zr-wtC" id="T3p-iz-nIk"/>
                 <outlet property="roomMemberPowerLevelContainerView" destination="Flu-1i-oqi" id="mdj-h2-evz"/>
                 <outlet property="roomMemberPowerLevelLabel" destination="lbh-ZN-XUO" id="DXV-T0-yKs"/>
                 <outlet property="roomMemberStatusLabel" destination="aBz-2v-ij6" id="eLJ-zY-ZEp"/>
