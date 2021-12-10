@@ -422,6 +422,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.bubblesTableView registerClass:PollBubbleCell.class forCellReuseIdentifier:PollBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:PollWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:PollWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:PollWithPaginationTitleBubbleCell.class forCellReuseIdentifier:PollWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+
+    [self.bubblesTableView registerClass:LocationBubbleCell.class forCellReuseIdentifier:LocationBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:LocationWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:LocationWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:LocationWithPaginationTitleBubbleCell.class forCellReuseIdentifier:LocationWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
     
@@ -2729,6 +2733,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         else
         {
             cellViewClass = PollBubbleCell.class;
+        }
+    }
+    else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellViewClass = LocationWithPaginationTitleBubbleCell.class;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellViewClass = LocationWithoutSenderInfoBubbleCell.class;
+        }
+        else
+        {
+            cellViewClass = LocationBubbleCell.class;
         }
     }
     else if (bubbleData.isIncoming)

@@ -142,10 +142,6 @@
     {
        return [UIImage imageNamed:@"file_video_icon"];
     }
-    else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-    {
-        // Not supported yet
-    }
     else if ([msgtype isEqualToString:kMXMessageTypeFile])
     {
         return [UIImage imageNamed:@"file_doc_icon"];

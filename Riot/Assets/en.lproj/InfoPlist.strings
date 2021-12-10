@@ -21,3 +21,4 @@
 "NSContactsUsageDescription" = "Element will show your contacts so you can invite them to chat.";
 "NSCalendarsUsageDescription" = "See your scheduled meetings in the app.";
 "NSFaceIDUsageDescription" = "Face ID is used to access your app.";
+"NSLocationWhenInUseUsageDescription" = "Element needs access to your location before being able to share it.";

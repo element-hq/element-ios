@@ -109,12 +109,6 @@ NSString *const kMXKAttachmentFileNameBase = @"attatchment";
                 _type = MXKAttachmentTypeVideo;
                 MXJSONModelSetDictionary(_thumbnailInfo, eventContent[@"info"][@"thumbnail_info"]);
             }
-            else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-            {
-                // Not supported yet
-                // _type = MXKAttachmentTypeLocation;
-                return nil;
-            }
             else if ([msgtype isEqualToString:kMXMessageTypeFile])
             {
                 _type = MXKAttachmentTypeFile;

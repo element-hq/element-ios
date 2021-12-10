@@ -33,7 +33,6 @@ typedef enum : NSUInteger {
     MXKAttachmentTypeAudio,
     MXKAttachmentTypeVoiceMessage,
     MXKAttachmentTypeVideo,
-    MXKAttachmentTypeLocation,
     MXKAttachmentTypeFile,
     MXKAttachmentTypeSticker
     

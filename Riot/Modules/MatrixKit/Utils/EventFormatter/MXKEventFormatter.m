@@ -175,10 +175,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         {
             isSupportedAttachment = hasUrl || hasFile;
         }
-        else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-        {
-            // Not supported yet
-        }
         else if ([msgtype isEqualToString:kMXMessageTypeFile])
         {
             isSupportedAttachment = hasUrl || hasFile;
@@ -1319,23 +1315,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     else if ([msgtype isEqualToString:kMXMessageTypeVideo])
                     {
                         body = body? body : [MatrixKitL10n noticeVideoAttachment];
-                        if (![self isSupportedAttachment:event])
-                        {
-                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
-                            if (_isForSubtitle || !_settings.showUnsupportedEventsInRoomHistory)
-                            {
-                                body = [MatrixKitL10n noticeInvalidAttachment];
-                            }
-                            else
-                            {
-                                body = [MatrixKitL10n noticeUnsupportedAttachment:event.description];
-                            }
-                            *error = MXKEventFormatterErrorUnsupported;
-                        }
-                    }
-                    else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-                    {
-                        body = body? body : [MatrixKitL10n noticeLocationAttachment];
                         if (![self isSupportedAttachment:event])
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);

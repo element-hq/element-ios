@@ -1,5 +1,11 @@
 name: Riot
 
+packages:
+  Mapbox:
+    url: https://github.com/maplibre/maplibre-gl-native-distribution
+    minVersion: 5.12.2
+    maxVersion: 5.13.0
+
 schemes:
   Riot:
     analyze:
