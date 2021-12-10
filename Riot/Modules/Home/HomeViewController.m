@@ -274,21 +274,7 @@
     
     currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n spacesExploreRooms]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-
-                                                           [self showRoomDirectory];
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsPeople]
+    [currentAlert addAction:[UIAlertAction actionWithTitle:VectorL10n.roomRecentsStartChatWith
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
                                                        
@@ -303,6 +289,35 @@
                                                        }
                                                        
                                                    }]];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:VectorL10n.roomRecentsCreateEmptyRoom
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+                                                           
+                                                           [self createNewRoom];
+                                                       }
+                                                       
+                                                   }]];
+
+    [currentAlert addAction:[UIAlertAction actionWithTitle:VectorL10n.roomRecentsJoinRoom
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       if (weakSelf)
+                                                       {
+                                                           typeof(self) self = weakSelf;
+                                                           self->currentAlert = nil;
+
+                                                           [self showRoomDirectory];
+                                                       }
+                                                       
+                                                   }]];
+    
     
     
     [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
@@ -357,6 +372,18 @@
     [super onMatrixSessionChange];
     
     [self updateEmptyView];
+}
+
+- (void)createNewRoom
+{
+    if (recentsDataSource.currentSpace)
+    {
+        [[AppDelegate theDelegate] showAlertWithTitle:VectorL10n.spacesAddRoomsComingSoonTitle message:VectorL10n.spacesComingSoonDetail];
+    }
+    else
+    {
+        [super createNewRoom];
+    }
 }
 
 #pragma mark - UITableViewDataSource
