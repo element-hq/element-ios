@@ -53,9 +53,3 @@ do
     mv ${file} ${file/TemplateRoomChat/$DETAIL_SCREEN_NAME}
   fi
 done
-
-for file in $(find * -type f -print)
-do
-  echo "// $ createSwiftUITwoScreen.sh $@" | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
-  echo '// File created from TemplateAdvancedRoomsExample' | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
-done

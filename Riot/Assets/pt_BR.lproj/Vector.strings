@@ -1498,3 +1498,5 @@
 "find_your_contacts_title" = "Comece por listar seus contatos";
 "contacts_address_book_permission_denied_alert_message" = "Para habilitar contatos, vá para as configurações de seu dispositivo.";
 "contacts_address_book_permission_denied_alert_title" = "Contatos desabilitados";
+"space_home_show_all_rooms" = "Mostrar todas as salas";
+"room_event_action_forward" = "Encaminhar";

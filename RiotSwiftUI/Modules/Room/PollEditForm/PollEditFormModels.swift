@@ -21,6 +21,8 @@ import SwiftUI
 
 enum PollEditFormStateAction {
     case viewAction(PollEditFormViewAction)
+    case startLoading
+    case stopLoading(Error?)
 }
 
 enum PollEditFormViewAction {
@@ -58,7 +60,7 @@ struct PollEditFormAnswerOption: Identifiable, Equatable {
 }
 
 struct PollEditFormViewState: BindableState {
-    let maxAnswerOptionsCount: Int
+    var maxAnswerOptionsCount: Int
     var bindings: PollEditFormViewStateBindings
     
     var confirmationButtonEnabled: Bool {
@@ -69,9 +71,13 @@ struct PollEditFormViewState: BindableState {
     var addAnswerOptionButtonEnabled: Bool {
         bindings.answerOptions.count < maxAnswerOptionsCount
     }
+    
+    var showLoadingIndicator: Bool = false
 }
 
 struct PollEditFormViewStateBindings {
     var question: PollEditFormQuestion
     var answerOptions: [PollEditFormAnswerOption]
+    
+    var showsFailureAlert: Bool = false
 }

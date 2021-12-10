@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  `RoomIncomingTextMsgBubbleCell` displays incoming message bubbles with sender's information.

@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import MatrixKit
 import Reusable
 
 enum ThreadRoomTitleViewMode {

@@ -266,7 +266,7 @@ const CGFloat kTypingCellHeight = 24;
             }
         }
     }
-    else
+    else if (RiotSettings.shared.enableThreads)
     {
         //  if not in a thread, ignore all threaded events
         if (event.threadId)

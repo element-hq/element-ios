@@ -1,0 +1,533 @@
+"notice_crypto_unable_to_decrypt" = "** Ne eblas malĉifri: %@ **";
+"notice_crypto_error_unknown_inbound_session_id" = "La salutaĵo de la sendanto ne sendis al ni la ŝlosilojn por tiu mesaĝo.";
+"notice_in_reply_to" = "Respondanta al";
+// room display name
+"room_displayname_empty_room" = "Malplena babilejo";
+"room_displayname_two_members" = "%@ kaj %@";
+"room_displayname_more_than_two_members" = "%@ kaj %@ aliaj";
+// Settings
+"settings" = "Agordoj";
+"message_reply_to_message_to_reply_to_prefix" = "Respondanta al";
+"room_event_encryption_verify_title" = "Kontroli salutaĵon\n\n";
+"back" = "Reiri";
+"close" = "Fermi";
+"continue" = "Daŭrigi";
+"retry" = "Reprovi";
+"cancel" = "Nuligi";
+"save" = "Konservi";
+"leave" = "Forlasi";
+"view" = "Vidi";
+"invite" = "Inviti";
+
+// members list Screen 
+
+// accounts list Screen 
+
+// image size selection 
+
+// invitation members list Screen 
+
+// room creation dialog Screen 
+
+// room info dialog Screen
+
+// room details dialog screen
+"room_details_title" = "Detaloj pri ĉambro";
+"register_error_title" = "Registriĝo malsukcesis";
+"login_invalid_param" = "Nevalida parametro";
+"login_leave_fallback" = "Nuligi";
+"login_error_login_email_not_yet" = "La retpoŝta ligilo, kiun vi ankoraŭ ne klakis";
+"login_error_user_in_use" = "Tiu ĉi uzantonomo jam estas uzata";
+"login_error_limit_exceeded" = "Tro multaj petoj sendiĝis";
+"login_error_not_json" = "Ne enhavis validajn JSON-datumojn";
+"login_error_bad_json" = "Misformitaj JSON-datumoj";
+"login_error_unknown_token" = "La donita ĵetono de aliro ne rekoniĝis";
+"login_error_forbidden" = "Nevalidaj uzantonomo aŭ pasvorto";
+"login_error_registration_is_not_supported" = "Registriĝo ne estas nun subtenata";
+"login_error_do_not_support_login_flows" = "Nuntempe ni subtenas neniujn manierojn de salutado difinitajn de tiu ĉi hejmservilo";
+"login_error_no_login_flow" = "Ni malsukcesis akiri informojn pri aŭtentikigo de ĉi tiu hejmservilo";
+"login_error_title" = "Malsukcesis saluto";
+"login_prompt_email_token" = "Bonvolu enigi vian ĵetonon de retpoŝta validigo:";
+"login_email_placeholder" = "Retpoŝtadreso";
+"login_email_info" = "Specifu retpoŝtadresojn por ebligi vian pli facilan troviĝon de aliaj uzantoj, kaj ankaŭ por restarigi vian pasvorton okaze de perdo.";
+"login_display_name_placeholder" = "Prezenta nomo (ekz. Ivano Ĥlestakov)";
+"login_optional_field" = "malnepra";
+"login_password_placeholder" = "Pasvorto";
+"login_user_id_placeholder" = "Identigilo de Matrix (ekz. @ivano:matrix.org aŭ ivano)";
+"login_identity_server_info" = "Matrix havas identigajn servilojn por scii, kiuj retleteroj ktp. bezonas al kiuj identigiloj de Matrix. Nur https://matrix.org ekzistas nuntempe.";
+"login_identity_server_title" = "URL de identiga servilo:";
+"login_home_server_info" = "Via hejmservilo konservas ĉiujn viajn interparolojn kaj datumojn de konto";
+"login_home_server_title" = "URL de hejmservilo:";
+"login_server_url_placeholder" = "URL (ekz. https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "Krei konton:";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "Matrix";
+"login_desktop_device" = "Tabla komputilo";
+"login_tablet_device" = "Tabulkomputilo";
+"login_mobile_device" = "Telefono";
+"room_event_encryption_verify_message" = "Por certigi, ke ĉi tiu salutaĵo povas esti fidata, bonvolu kontakti ĝian posedanton per alia maniero (ekz. persone aŭ per telefona voko) kaj demandu, ĉu la ŝlosilo, kiun ĝi vidas en siaj agordoj de uzanto por ĉi tiu salutaĵo, akordas kun la ĉi-suba:\n\n\tNomo de salutaĵo: %@\n\tIdentigilo de salutaĵo: %@\n\tŜlosilo de salutaĵo: %@\n\nSe la ŝlosilo akordas, premu la kontrolan butonon ĉi-sube. Se ne, iu alia subaŭskultas la salutaĵon, kaj vi probable volas anstataŭe malpermesi ĝin.\n\nĈi tiu kontrola procedo plifaciliĝos estontece.";
+"room_event_encryption_info_device_fingerprint" = "Fingrospuro je Ed25519\n";
+"room_event_encryption_info_event_fingerprint_key" = "Asertita ŝlosilo de fingrospuro je Ed25519\n";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"notice_feedback" = "Responda okazo (identigilo: %@): %@";
+"discard" = "Forĵeti";
+"abort" = "Ĉesigi";
+"login_use_fallback" = "Uzi repaŝan paĝon";
+"ssl_only_accept" = "Akceptu la atestilon NUR SE administranto de la servilo publikigis fingrospuron, kiu akordas kun la ĉi-supra.";
+"ssl_expected_existing_expl" = "La atestilo ŝanĝiĝis de atestilo antaŭe fidata al alia, kiu ne estas fidata. Eble la servilo renovigis sian atestilon. Kontaktu la administranton de la servilo por ricevi la atendindan fingrospuron.";
+"ssl_unexpected_existing_expl" = "La atestilo ŝanĝiĝis de tiu, kiun fidis via telefono. Tio estas TRE STRANGA. Oni rekomendas, ke vi NE AKCEPTU ĉi tiun novan atestilon.";
+"ssl_cert_new_account_expl" = "Se la administranto de la servilo diris, ke tio atendindas, certigu, ke la ĉi-suba fingrospuro akordas kun la fingrospuro donita de la administranto.";
+"ssl_cert_not_trust" = "Tio povus signifi, ke iu malice subaŭskultas vian rettrafikon, aŭ ke via telefono ne fidas la atestilon donitan de la fora servilo.";
+"ssl_could_not_verify" = "Ne povis kontroli identecon de fora servilo.";
+"ssl_fingerprint_hash" = "Fingrospuro (%@):";
+"ssl_remain_offline" = "Malatenti";
+"ssl_logout_account" = "Adiaŭi";
+
+// unrecognized SSL certificate
+"ssl_trust" = "Fidi";
+"call_transfer_to_user" = "Transdoni al %@";
+"call_consulting_with_user" = "Konsultante kun %@";
+"call_video_with_user" = "Vidvoko kun %@";
+"call_voice_with_user" = "Voĉvoko kun %@";
+"call_more_actions_dialpad" = "Ciferplato";
+"call_more_actions_transfer" = "Transdoni";
+"call_more_actions_audio_use_device" = "Soni aparate";
+"call_more_actions_audio_use_headset" = "Soni kapaŭskultile";
+"call_more_actions_change_audio_device" = "Ŝanĝi sonaparaton";
+"call_more_actions_unhold" = "Daŭrigi";
+"call_more_actions_hold" = "Paŭzigi";
+"call_holded" = "Vi paŭzigis la vokon";
+"call_remote_holded" = "%@ paŭzigis la vokon";
+"call_invite_expired" = "Inviti al voko atingis tempolimon";
+"incoming_voice_call" = "Envena voĉvoko";
+"incoming_video_call" = "Envena vidvoko";
+"call_ended" = "Voko finiĝis";
+"call_ringing" = "Sonorante…";
+
+// Settings keys 
+
+// call string
+"call_connecting" = "Konektante…";
+"settings_config_user_id" = "Identigilo de uzanto: %@";
+"settings_config_identity_server" = "Identiga servilo: %@";
+
+// gcm section 
+"settings_config_home_server" = "Hejmservilo: %@";
+"notification_settings_notify_all_other" = "Sciigi por ĉiuj aliaj mesaĝoj/ĉambroj";
+"notification_settings_by_default" = "Implicite…";
+"notification_settings_suppress_from_bots" = "Forteni sciigojn de robotoj";
+"notification_settings_receive_a_call" = "Sciigu min pri ricevitaj vokoj";
+"notification_settings_people_join_leave_rooms" = "Sciigu min pri aliĝoj al aŭ foriroj de ĉambroj";
+"notification_settings_invite_to_a_new_room" = "Sciigu min pri invitoj al novaj ĉambroj";
+"notification_settings_just_sent_to_me" = "Sciigu min per sono pri mesaĝoj, kiuj sendiĝis al mi individue";
+"notification_settings_contain_my_display_name" = "Sciigu min per sono pri mesaĝoj, kiuj enhavas mian prezentan nomon";
+"notification_settings_contain_my_user_name" = "Sciigu min per sono pri mesaĝoj, kiuj enhavas mian uzantonomon";
+"notification_settings_other_alerts" = "Aliaj atentigoj";
+"notification_settings_select_room" = "Elekti ĉambron";
+"notification_settings_sender_hint" = "@uzanto:retnomo.net";
+"notification_settings_per_sender_notifications" = "Sendintulaj sciigoj";
+"notification_settings_per_room_notifications" = "Ĉambraj sciigoj";
+"notification_settings_custom_sound" = "Propra sono";
+"notification_settings_highlight" = "Emfazo";
+"notification_settings_word_to_match" = "akordaj vortoj";
+"notification_settings_never_notify" = "Neniam sciigi";
+"notification_settings_always_notify" = "Ĉiam sciigi";
+"notification_settings_per_word_info" = "Vortoj akordas sendepende de grandeco, kaj povas enhavi la ĵokeron *. Sekve:\nekzemplo akordas kun la tekstoĉeno «ekzemplo» ĉirkaŭita de vortlimiloj (ekz. interpunkcio kaj spaco aŭ komenco/fino de linio).\nekzemplo* akordas kun ĉiu tia vorto, kiu komenciĝas per «ekzemplo».\n*ekzemplo* akordas kun ĉiu tia vorto, kiu enhavas la sinsekvon de literoj «ekzemplo».";
+"notification_settings_per_word_notifications" = "Vortaj sciigoj";
+"notification_settings_global_info" = "Agordoj pri sciigoj estas konservitaj en via konto de uzanto kaj havigitaj al ĉiuj klientoj, kiuj ilin subtenas (inkluzive sciigojn labortablajn).\n\nReguloj aplikiĝas laŭorde; la unua regulo, kiu akordas, difinas la rezulton por la mesaĝo.\nSekve: vortaj sciigoj estas pli gravaj ol ĉambraj sciigoj, kiuj estas pli gravaj ol sendintulaj sciigoj.\nPor pluraj reguloj samspecaj, la unua akorda en la listo estas prioritata.";
+"notification_settings_enable_notifications_warning" = "Ĉiuj sciigoj nun estas malŝaltitaj por ĉiuj aparatoj.";
+"notification_settings_enable_notifications" = "Ŝalti sciigojn";
+
+// Notification settings screen 
+"notification_settings_disable_all" = "Malŝalti ĉiujn sciigojn";
+"settings_title_notifications" = "Sciigoj";
+
+// Settings screen 
+"settings_title_config" = "Agordaro";
+
+// contacts list screen 
+"invitation_message" = "Mi volus babili kun vi per Matrix. Bonvolu viziti la retpaĝon http://matrix.org por pliaj informoj.";
+"login_error_must_start_http" = "URL devas komenciĝi per http[s]://";
+
+// Login Screen 
+"login_error_already_logged_in" = "Jam salutinta";
+"message_unsaved_changes" = "Restas nekonservitaj ŝanĝoj. Forlaso ilin forĵetos.";
+"unban" = "Malforbari";
+"ban" = "Forbari";
+"kick" = "Forpeli";
+"num_members_other" = "%@ uzantoj";
+"num_members_one" = "%@ uzanto";
+"membership_ban" = "Forbarita";
+"membership_leave" = "Foririnta";
+"membership_invite" = "Invitita";
+"create_account" = "Krei konton";
+"login" = "Saluti";
+"create_room" = "Krei ĉambron";
+
+// actions 
+"action_logout" = "Adiaŭi";
+"delete" = "Forigi";
+"share" = "Havigi";
+"redact" = "Forigi";
+"resend" = "Resendi";
+"copy_button_name" = "Kopii";
+"send" = "Sendi";
+
+// Room Screen 
+
+// general errors 
+
+// Home Screen 
+
+// Last seen time 
+
+// call events 
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles 
+
+// button names 
+"ok" = "Bone";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "Vi videbligis estontan historion de la ĉambro al ĉiuj ĉambranoj, ekde ties aliĝo.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "Vi videbligis estontajn mesaĝojn al ĉiuj ĉambranoj, ekde ties invito.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "Vi videbligis estontan historion de la ĉambro al ĉiuj ĉambranoj, ekde ties invito.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "Vi videbligis estontajn mesaĝojn al ĉiuj ĉambranoj.";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Vi videbligis estontajn mesaĝojn al ĉiuj ĉambranoj, ekde ties aliĝo.";
+"notice_room_history_visible_to_members_by_you" = "Vi videbligis estontan historion de ĉambro al ĉiuj ĉambranoj.";
+"notice_room_history_visible_to_anyone_by_you" = "Vi videbligis estontan historion de ĉambro al ĉiu ajn.";
+"notice_encryption_enabled_unknown_algorithm_by_you" = "Vi ŝaltis tutvojan ĉifradon (nerekonita algoritmo %@).";
+"notice_encryption_enabled_ok_by_you" = "Vi ŝaltis tutvojan ĉifradon.";
+"notice_room_created_by_you_for_dm" = "Vi aliĝis.";
+"notice_room_created_by_you" = "Vi kreis kaj agordis la ĉambron.";
+"notice_profile_change_redacted_by_you" = "Vi ĝisdatigis vian profilon %@";
+"notice_event_redacted_by_you" = " de vi";
+"notice_room_topic_removed_by_you" = "Vi forigis la temon";
+"notice_room_name_removed_by_you_for_dm" = "Vi forigis la nomon";
+"notice_room_name_removed_by_you" = "Vi forigis nomon de la ĉambro";
+"notice_conference_call_request_by_you" = "Vi petis grupan vokon";
+"notice_declined_video_call_by_you" = "Vi rifuzis la vokon";
+"notice_ended_video_call_by_you" = "Vi finis la vokon";
+"notice_answered_video_call_by_you" = "Vi respondis la vokon";
+"notice_placed_video_call_by_you" = "Vi ekigis vidvokon";
+"notice_placed_voice_call_by_you" = "Vi ekigis voĉvokon";
+"notice_room_name_changed_by_you_for_dm" = "Vi ŝanĝis la nomon al %@.";
+"notice_room_name_changed_by_you" = "Vi ŝanĝis nomon de la ĉambro al %@.";
+"notice_topic_changed_by_you" = "Vi ŝanĝis la temon al «%@».";
+"notice_display_name_removed_by_you" = "Vi forigis vian prezentan nomon";
+"notice_display_name_changed_from_by_you" = "Vi ŝanĝis vian prezentan nomon de %@ al %@";
+"notice_display_name_set_by_you" = "Vi agordis vian prezentan nomon al %@";
+"notice_avatar_url_changed_by_you" = "Vi ŝanĝis vian profilbildon";
+"notice_room_withdraw_by_you" = "Vi nuligis la inviton por %@";
+"notice_room_ban_by_you" = "Vi forbaris uzanton %@";
+"notice_room_unban_by_you" = "Vi malforbaris uzanton %@";
+"notice_room_kick_by_you" = "Vi forpelis uzanton %@";
+"notice_room_reject_by_you" = "Vi rifuzis la inviton";
+"notice_room_leave_by_you" = "Vi foriris";
+"notice_room_join_by_you" = "Vi aliĝis";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "Vi nuligis la inviton por %@";
+"notice_room_third_party_revoked_invite_by_you" = "Vi nuligis la inviton al la ĉambro por %@";
+"notice_room_third_party_registered_invite_by_you" = "Vi akceptis la inviton por %@";
+"notice_room_third_party_invite_by_you_for_dm" = "Vi invitis uzanton %@";
+"notice_room_third_party_invite_by_you" = "Vi sendis inviton al la ĉambro al %@";
+"notice_room_invite_you" = "%@ invitis vin";
+
+// Notice Events with "You"
+"notice_room_invite_by_you" = "Vi invitis uzanton %@";
+"notice_conference_call_finished" = "Grupa voko finiĝis";
+"notice_conference_call_started" = "Grupa voko komenciĝis";
+"notice_conference_call_request" = "%@ petis grupan vokon";
+"notice_declined_video_call" = "%@ rifuzis la vokon";
+"notice_ended_video_call" = "%@ finis la vokon";
+"notice_answered_video_call" = "%@ respondis la vokon";
+"notice_placed_video_call" = "%@ ekigis vidvokon";
+"notice_placed_voice_call" = "%@ ekigis voĉvokon";
+"notice_room_name_changed_for_dm" = "%@ ŝanĝis la nomon al %@.";
+"notice_room_name_changed" = "%@ ŝanĝis nomon de la ĉambro al %@.";
+"notice_topic_changed" = "%@ ŝanĝis la temon al «%@».";
+"notice_display_name_removed" = "%@ forigis sian prezentan nomon";
+"notice_display_name_changed_from" = "%@ ŝanĝis sian prezentan nomon de %@ al %@";
+"notice_display_name_set" = "%@ ŝanĝis sian prezentan nomon al %@";
+"notice_avatar_url_changed" = "%@ ŝanĝis sian profilbildon";
+"notice_room_reason" = ". Kialo: %@";
+"notice_room_withdraw" = "%@ nuligis inviton por %@";
+"notice_room_ban" = "%@ forbaris uzanton %@";
+"notice_room_unban" = "%@ malforbaris uzanton %@";
+"notice_room_kick" = "%@ forpelis uzanton %@";
+"notice_room_reject" = "%@ rifuzis la inviton";
+"notice_room_leave" = "%@ foriris";
+"notice_room_join" = "%@ aliĝis";
+"notice_room_third_party_revoked_invite_for_dm" = "%@ nuligis la inviton por %@";
+"notice_room_third_party_revoked_invite" = "%@ nuligis la inviton al la ĉambro por %@";
+"notice_room_third_party_registered_invite" = "%@ akceptis la inviton por %@";
+"notice_room_third_party_invite_for_dm" = "%@ invitis uzanton %@";
+"notice_room_third_party_invite" = "%@ sendis inviton al la ĉambro al %@";
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /matrix-sdk/src/main/res/values/strings.xml.
+*/
+
+"notice_room_invite" = "%@ invitis uzanton %@";
+"language_picker_default_language" = "Implicita (%@)";
+
+// Language picker
+"language_picker_title" = "Elektu lingvon";
+
+// Country picker
+"country_picker_title" = "Elektu landon";
+"local_contacts_access_discovery_warning" = "Por trovi kontaktojn, kiuj jam uzas Matrix-on, %@ povas sendi retpoŝtadresojn kaj telefonnumerojn de via adresaro al via elektita identiga servilo de Matrix. Kiam eblas, personaj datumoj estas haketitaj antaŭ sendo – bonvolu kontroli la privatecan politikon de via identiga servilo por pliaj detaloj.";
+"local_contacts_access_discovery_warning_title" = "Trovado de uzantoj";
+"local_contacts_access_not_granted" = "Trovado de uzantoj per lokaj kontaktoj postulas aliron al viaj kontaktoj, sed %@ nun ne rajtas ilin uzi";
+"microphone_access_not_granted_for_call" = "Vokoj postulas aliron al la mikrofono, sed %@ nun ne rajtas ĝin uzi";
+
+// Permissions
+"camera_access_not_granted_for_call" = "Vidvokoj postulas aliron al la filmilo, sed %@ nun ne rajtas ĝin uzi";
+"ssl_homeserver_url" = "URL de hejmservilo: %@";
+"user_id_placeholder" = "ekz. @kjara:hejmservilo";
+"network_error_not_reachable" = "Bonvolu kontroli vian retkonekton";
+"power_level" = "Povnivelo";
+"public" = "Publika";
+"private" = "Privata";
+"default" = "implicita";
+"not_supported_yet" = "Ankoraŭ ne subtenata";
+"error_common_message" = "Io eraris. Bonvolu reprovi poste.";
+"error" = "Eraro";
+"unsent" = "Nesendita";
+"offline" = "eksterrete";
+
+// Others
+"user_id_title" = "Identigilo de uzanto:";
+"e2e_passphrase_create" = "Krei pasfrazon";
+"e2e_passphrase_not_match" = "Pasfrazoj devas akordi";
+"e2e_passphrase_empty" = "Pasfrazo maldevas esti malplena";
+"e2e_passphrase_confirm" = "Konfirmi pasfrazon";
+"e2e_export" = "Elporti";
+"e2e_export_prompt" = "Ĉi tiu procedo ebligas elporton de ŝlosiloj por mesaĝoj, kiujn vi ricevis en ĉifritaj ĉambroj, al loka dosiero. Poste vi povos enporti tiun dosieron en alian klienton de Matrix, por ke ankaŭ tiu kliento povu malĉifri la mesaĝojn.\nLa elportita dosiero ebligos legadon de videblaj ĉifritaj mesaĝoj al ĉiu, kiu povos ĝin legi; vi do provu ĝin teni en sekura loko.";
+
+// E2E export
+"e2e_export_room_keys" = "Elporti ĉambrajn ŝlosilojn";
+"e2e_passphrase_enter" = "Enigi pasfrazon";
+"e2e_import" = "Enporti";
+"e2e_import_prompt" = "Ĉi tiu procedo ebligas enporti ĉifrajn ŝlosilojn, kiujn vi antaŭe elportis el alia kliento de Matrix. Poste vi povos malĉifri ĉiujn mesaĝojn, kiujn ankaŭ la alia kliento povis malĉifri.\nLa elportitan dosieron protektas pasfrazo. Vi enigu la pasfrazon ĉi tien, por malĉifri la dosieron.";
+
+// E2E import
+"e2e_import_room_keys" = "Enporti ŝlosilojn de ĉambro";
+"format_time_d" = "j";
+"format_time_h" = "h";
+"format_time_m" = "m";
+
+// Time
+"format_time_s" = "s";
+"search_searching" = "Serĉo progresas…";
+
+// Search
+"search_no_results" = "Neniuj rezultoj";
+"group_section" = "Grupoj";
+
+// Groups
+"group_invite_section" = "Invitoj";
+"contact_local_contacts" = "Lokaj kontaktoj";
+
+// Contacts
+"contact_mx_users" = "Uzantoj de Matrix";
+"attachment_e2e_keys_import" = "Enporti…";
+"attachment_e2e_keys_file_prompt" = "Ĉi tiu dosiero enhavas ĉifrajn ŝlosilojn elportitajn el kliento de Matrix.\nĈu vi volas vidi enhavojn de la dosiero aŭ enporti la enhavatajn ŝlosilojn?";
+"attachment_multiselection_original" = "Originala grando";
+"attachment_multiselection_size_prompt" = "Ĉu vi volas sendi bildojn kiel:";
+"attachment_cancel_upload" = "Ĉu nuligi la alŝuton?";
+"attachment_cancel_download" = "Ĉu nuligi la elŝuton?";
+"attachment_large" = "Granda: %@";
+"attachment_medium" = "Meza: %@";
+"attachment_small" = "Malgranda: %@";
+"attachment_original" = "Originala: %@";
+
+// Attachment
+"attachment_size_prompt" = "Ĉu vi volas sendi en grando:";
+"room_member_power_level_prompt" = "Vi ne povos malfari ĉi tiun ŝanĝon, ĉar vi povigas la uzanton al la sama nivelo, kiun vi havas.\nĈu vi certas?";
+
+// Room members
+"room_member_ignore_prompt" = "Ĉu vi certe volas kaŝi ĉiujn mesaĝojn de tiu ĉi uzanto?";
+"message_reply_to_sender_sent_a_file" = "sendis dosieron.";
+"message_reply_to_sender_sent_an_audio_file" = "sendis sondosieron.";
+"message_reply_to_sender_sent_a_video" = "sendis filmon.";
+
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "sendis bildon.";
+"room_no_conference_call_in_encrypted_rooms" = "Grupaj vokoj ne estas subtenataj en ĉifritaj ĉambroj";
+"room_no_power_to_create_conference_call" = "Vi bezonas permeson komenci grupan vokon en ĉi tiu ĉambro";
+"room_left_for_dm" = "Vi foriris";
+"room_left" = "Vi foriris de la ĉambro";
+"room_error_timeline_event_not_found" = "La aplikaĵo provis enlegi precizan punkton en la historio de ĉi tiu ĉambro, sed ne povis ĝin trovi";
+"room_error_timeline_event_not_found_title" = "Malsukcesis enlegi pozicion en historio";
+"room_error_cannot_load_timeline" = "Malsukcesis enlegi historion";
+"room_error_topic_edition_not_authorized" = "Vi ne rajtas redakti temon de ĉi tiu ĉambro";
+"room_error_name_edition_not_authorized" = "Vi ne rajtas redakti nomon de ĉi tiu ĉambro";
+"room_error_join_failed_empty_room" = "ANkoraŭ ne eblas ree aliĝi al malplena ĉambro.";
+"room_error_join_failed_title" = "Malsukcesis aliĝi al ĉambro";
+
+// Room
+"room_please_select" = "Bonvolu elekti ĉambron";
+"room_creation_participants_placeholder" = "(ekz. @kjara:hejmservilo1; @megumi:hejmservilo2…)";
+"room_creation_participants_title" = "Anoj:";
+"room_creation_alias_placeholder_with_homeserver" = "(ekz. #io%@)";
+"room_creation_alias_placeholder" = "(ekz. #io:ekzemplo.net)";
+"room_creation_alias_title" = "Kromnomo de ĉambro:";
+"room_creation_name_placeholder" = "(ekz. tagmanghGrupo)";
+
+// Room creation
+"room_creation_name_title" = "Nomo de ĉambro:";
+"account_error_push_not_allowed" = "Sciigoj ne estas permesitaj";
+"account_error_msisdn_wrong_description" = "Ĉi tio ne ŝajnas esti valida telefonnumero";
+"account_error_msisdn_wrong_title" = "Nevalida telefonnumero";
+"account_error_email_wrong_description" = "Ĉi tio ne ŝajnas esti valida retpoŝtadreso";
+"account_error_email_wrong_title" = "Nevalida retpoŝtadreso";
+"account_error_matrix_session_is_not_opened" = "Salutaĵo de Matrix ne estas malfermita";
+"account_error_picture_change_failed" = "Malsukcesis ŝanĝo de bildo";
+"account_error_display_name_change_failed" = "Malsukcesis ŝanĝo de prezenta nomo";
+"account_msisdn_validation_error" = "Ne povas kontroli vian telefonnumeron.";
+"account_msisdn_validation_message" = "Ni sendis telefonan mesaĝon kun aktiviga kodo. Bonvolu enigi la kodon ĉi-suben.";
+"account_msisdn_validation_title" = "Atendanta kontrolo";
+"account_email_validation_error" = "Ne povas kontroli retpoŝtadreson. Bonvolu kontroli vian retpoŝton kaj klaki al la enhavata ligilo. Tion farinte, klaku al «daŭrigi»";
+"account_email_validation_message" = "Bonvolu kontroli vian retpoŝton kaj trovi la enhavatan ligilon. Farinte tion, klaku al «daŭrigi».";
+"account_email_validation_title" = "Atendanta kontrolo";
+"account_linked_emails" = "Alligitaj retpoŝtadresoj";
+"account_link_email" = "Ligi al retpoŝtadreso";
+
+// Account
+"account_save_changes" = "Konservi ŝanĝojn";
+"room_event_encryption_verify_ok" = "Kontroli";
+"room_event_encryption_info_unverify" = "Malkontroli";
+"room_event_encryption_info_verify" = "Kontroli…";
+"room_event_encryption_info_device_not_verified" = "NE kontrolita";
+"room_event_encryption_info_device_verified" = "Kontrolita";
+"room_event_encryption_info_device_verification" = "Kontrolo\n";
+"room_event_encryption_info_device_id" = "Identigilo\n";
+"room_event_encryption_info_device_name" = "Publika nomo\n";
+"room_event_encryption_info_device_unknown" = "nekonata salutaĵo\n";
+"room_event_encryption_info_device" = "\nInformoj pri salutaĵo de sendinto\n";
+"room_event_encryption_info_event_none" = "neniu";
+"room_event_encryption_info_event_unencrypted" = "neĉifrita";
+"room_event_encryption_info_event_decryption_error" = "Malĉifra eraro\n";
+"room_event_encryption_info_event_session_id" = "Identigilo de salutaĵo\n";
+"room_event_encryption_info_event_algorithm" = "Algoritmo\n";
+"room_event_encryption_info_event_identity_key" = "Identiga ŝlosilo je Curve25519\n";
+"room_event_encryption_info_event_user_id" = "Identigilo de uzanto\n";
+"room_event_encryption_info_event" = "Informoj pri okazo\n";
+
+// Encryption information
+"room_event_encryption_info_title" = "Informoj pri tutvoja ĉifrado\n\n";
+"device_details_delete_prompt_message" = "Ĉi tio postulas plian aŭtentikigon.\nPor daŭrigi, bonvolu enigi vian pasvorton.";
+"device_details_delete_prompt_title" = "Aŭtentikigo";
+"device_details_rename_prompt_message" = "Publika nomo de salutaĵo estas videbla al ĉiu, kun kiu vi komunikas";
+"device_details_rename_prompt_title" = "Nomo de salutaĵo";
+"device_details_last_seen" = "Lastafoje vidita\n";
+"device_details_identifier" = "Identigilo\n";
+"device_details_name" = "Publika nomo\n";
+
+// Devices
+"device_details_title" = "Informoj pri salutaĵo\n";
+"notification_settings_room_rule_title" = "Ĉambro: «%@»";
+"settings_enter_validation_token_for" = "Enigi validigan pecon por %@:";
+"settings_enable_push_notifications" = "Ŝalti pasivajn sciigojn";
+"settings_enable_inapp_notifications" = "Ŝalti sciigojn en la aplikaĵo";
+"notice_sticker" = "glumarko";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ videbligis estontajn mesaĝojn al ĉiuj, ekde ties aliĝo.";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ videbligis estontan historion de ĉambro al ĉiuj ĉambranoj, ekde ties aliĝo.";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ videbligis estontajn mesaĝojn al ĉiuj, ekde ties invito.";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ videbligis estontan historion de ĉambro al ĉiuj ĉambranoj, ekde ties invito.";
+"notice_room_history_visible_to_members_for_dm" = "%@ videbligis estontajn mesaĝojn al ĉiuj ĉambranoj.";
+"notice_room_history_visible_to_members" = "%@ videbligis estontan historion de ĉambro al ĉiuj ĉambranoj.";
+"notice_room_history_visible_to_anyone" = "%@ videbligis estontan historion de la ĉambro al ĉiu ajn.";
+"notice_error_unknown_event_type" = "Nekonata speco de okazo";
+"notice_error_unexpected_event" = "Neatendita okazo";
+"notice_error_unsupported_event" = "Nesubtenata okazo";
+"notice_unsupported_attachment" = "Nesubtenata kunsendaĵo: %@";
+"notice_invalid_attachment" = "nevalida kunsendaĵo";
+"notice_file_attachment" = "dosiero kunsendita";
+"notice_location_attachment" = "loko kunsendita";
+"notice_video_attachment" = "filmo kunsendita";
+"notice_audio_attachment" = "sono kunsendita";
+"notice_image_attachment" = "bildo kunsendita";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ ŝaltis tutvojan ĉifradon (nerekonita algoritmo %2$@).";
+"notice_encryption_enabled_ok" = "%@ ŝaltis tutvojan ĉifradon.";
+"notice_encrypted_message" = "Ĉifrita mesaĝo";
+"notice_room_related_groups" = "Grupoj rilataj al ĉi tiu ĉambro estas: %@";
+"notice_room_aliases_for_dm" = "La kromnomoj estas: %@";
+"notice_room_aliases" = "Kromnomoj de la ĉamrbo estas: %@";
+"notice_room_power_level_event_requirement" = "La minimumaj povniveloj rilataj al okazoj estas:";
+"notice_room_power_level_acting_requirement" = "La minimuma povnivelo, kiun uzanto bezonas antaŭ agi, estas:";
+"notice_room_power_level_intro_for_dm" = "La povniveloj de ĉambranoj estas:";
+"notice_room_power_level_intro" = "La povniveloj de ĉambranoj estas:";
+"notice_room_join_rule_public_by_you_for_dm" = "Vi publikigis la individuan ĉambron.";
+"notice_room_join_rule_public_by_you" = "Vi publikigis la ĉambron.";
+"notice_room_join_rule_public_for_dm" = "%@ publikigis la individuan ĉambron.";
+"notice_room_join_rule_public" = "%@ publikigis la ĉambron.";
+"notice_room_join_rule_invite_by_you_for_dm" = "Vi ekpostulis inviton por aliĝoj.";
+"notice_room_join_rule_invite_by_you" = "Vi ekpostulis inviton por aliĝoj.";
+"notice_room_join_rule_invite_for_dm" = "%@ ekpostulis inviton por aliĝoj.";
+//  New
+"notice_room_join_rule_invite" = "%@ ekpostulis inviton por aliĝoj.";
+//  Old
+"notice_room_join_rule" = "La regulo de aliĝo estas: %@";
+"notice_room_created_for_dm" = "%@ aliĝis.";
+"notice_room_created" = "%@ kreis kaj agordis la ĉambron.";
+"notice_profile_change_redacted" = "%@ ĝisdatigis sian profilon %@";
+"notice_event_redacted_reason" = " [kialo: %@]";
+"notice_event_redacted_by" = " de %@";
+"notice_room_topic_removed" = "%@ forigis la temon";
+"notice_room_name_removed_for_dm" = "%@ forigis la nomon";
+"notice_room_name_removed" = "%@ forigis nomon de la ĉambro";
+
+// Events formatter
+"notice_avatar_changed_too" = "(ankaŭ profilbildo ŝanĝiĝis)";
+"unignore" = "Reatenti";
+"ignore" = "Malatenti";
+"resume_call" = "Daŭrigi";
+"end_call" = "Fini vokon";
+"reject_call" = "Rifuzi vokon";
+"answer_call" = "Respondi vokon";
+"show_details" = "Montri detalojn";
+"cancel_download" = "Nuligi elŝuton";
+"cancel_upload" = "Nuligi alŝuton";
+"select_all" = "Elekti ĉion";
+"resend_message" = "Resendi la mesaĝon";
+"reset_to_default" = "Restarigi implicitan";
+"invite_user" = "Inviton uzanton de Matrix";
+"capture_media" = "Foti/Filmi";
+"attach_media" = "Kunsendi vidaŭdaĵon el vidaŭdaĵujo";
+"select_account" = "Elekti konton";
+"mention" = "Mencii";
+"start_video_call" = "Komenci vidvokon";
+"start_voice_call" = "Komenci voĉvokon";
+"start_chat" = "Komenci babilon";
+"set_admin" = "Igi administranto";
+"set_moderator" = "Igi reguligisto";
+"set_default_power_level" = "Restarigi povnivelon";
+"set_power_level" = "Agordi povnivelon";
+"submit_code" = "Sendi kodon";
+"submit" = "Sendi";
+"sign_up" = "Registriĝi";
+"yes" = "Jes";
+
+// Action
+"no" = "Ne";
+"login_error_resource_limit_exceeded_contact_button" = "Kontakti administranton";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nBonvolu kontakti la administranton de via servo por plu ĝin uzi.";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "Ĉi tiu hejmservilo atingis sian monatan limon de aktivaj uzantoj.";
+"login_error_resource_limit_exceeded_message_default" = "Ĉi tiu hejmservilo atingis unu el siaj rimedaj limoj.";
+"login_error_resource_limit_exceeded_title" = "Rimeda limo estas atingita";
+"login_error_forgot_password_is_not_supported" = "Forgesado de pasvorto nun ne estas subtenata";

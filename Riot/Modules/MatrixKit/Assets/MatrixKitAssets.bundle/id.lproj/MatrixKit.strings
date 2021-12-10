@@ -1,0 +1,557 @@
+
+
+"auth_username_in_use" = "Nama pengguna telah dipakai";
+"invite" = "Undang";
+"rename" = "Ubah Nama";
+"view" = "Tampilkan";
+"cancel" = "Batalkan";
+"leave" = "Tinggalkan";
+"save" = "Simpan";
+"notice_room_power_level_intro_for_dm" = "Level kekuatan anggota pesan langsung adalah:";
+"notice_room_power_level_intro" = "Level kekuatan anggota ruangan adalah:";
+"notice_room_join_rule_public_by_you_for_dm" = "Anda membuat pesan langsung ini publik.";
+"notice_room_join_rule_public_by_you" = "Anda membuat ruangan ini publik.";
+"notice_room_join_rule_public_for_dm" = "%@ membuat pesan langsung ini publik.";
+"notice_room_join_rule_public" = "%@ membuat ruangan ini publik.";
+"notice_room_join_rule_invite_by_you_for_dm" = "Anda membuat pesan langsung ini undangan saja.";
+"notice_room_join_rule_invite_by_you" = "Anda membuat ruangan ini undangan saja.";
+"notice_room_join_rule_invite_for_dm" = "%@ membuat pesan langsung ini undangan saja.";
+//  New
+"notice_room_join_rule_invite" = "%@ membuat ruangan ini undangan saja.";
+//  Old
+"notice_room_join_rule" = "Peraturan bergabung adalah: %@";
+"notice_room_created_for_dm" = "%@ bergabung.";
+"notice_room_created" = "%@ membuat dan mengatur ruangan ini.";
+"notice_profile_change_redacted" = "%@ memperbarui profilnya %@";
+"notice_event_redacted_reason" = " [alasan: %@]";
+"notice_event_redacted_by" = " dari %@";
+"notice_event_redacted" = "<redacted%@>";
+"notice_room_topic_removed" = "%@ menghapus topik ruangan";
+"notice_room_name_removed_for_dm" = "%@ menghapus nama pesan langsung";
+"notice_room_name_removed" = "%@ menghapus nama ruangan";
+
+// Events formatter
+"notice_avatar_changed_too" = "(avatar juga diganti)";
+"unignore" = "Hapus Pengabaian";
+"ignore" = "Abaikan";
+"resume_call" = "Lanjutkan";
+"end_call" = "Akhiri Panggilan";
+"reject_call" = "Tolak Panggilan";
+"answer_call" = "Jawab Panggilan";
+"show_details" = "Tampilkan Detail";
+"cancel_upload" = "Batal Mengunggah";
+"cancel_download" = "Batal Mengunduh";
+"select_all" = "Pilih Semua";
+"resend_message" = "Kirim ulang pesan";
+"reset_to_default" = "Atur ulang ke bawaan";
+"invite_user" = "Undang pengguna Matrix";
+"capture_media" = "Ambil Foto/Video";
+"attach_media" = "Lampirkan Media dari Library";
+"select_account" = "Pilih sebuah akun";
+"mention" = "Sebutan";
+"start_video_call" = "Mulai Panggilan Video";
+"start_voice_call" = "Mulai Panggilan Suara";
+"start_chat" = "Mulai Mengobrol";
+"set_moderator" = "Tetapkan Moderator";
+"set_admin" = "Tetapkan Admin";
+"set_power_level" = "Atur Level Kekuatan";
+"set_default_power_level" = "Atur Ulang Level Kekuatan";
+"submit_code" = "Kirim kode";
+"submit" = "Kirim";
+"sign_up" = "Daftar";
+"retry" = "Coba Lagi";
+"dismiss" = "Lupakan";
+"discard" = "Buang";
+"continue" = "Lanjutkan";
+"close" = "Tutup";
+"back" = "Kembali";
+"abort" = "Batalkan";
+"yes" = "Ya";
+
+// Action
+"no" = "Tidak";
+"login_error_resource_limit_exceeded_contact_button" = "Hubungi Administrator";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nSilakan hubungi service homeserver Anda untuk melanjutkan menggunakan perangkat ini.";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "Homeserver ini telah mencapai batas Pengguna Aktif Bulanan.";
+"login_error_resource_limit_exceeded_message_default" = "Homeserver ini telah melebihi batas sumbernya.";
+"login_error_resource_limit_exceeded_title" = "Melebihi Batas Sumber";
+"login_desktop_device" = "Desktop";
+"login_tablet_device" = "Tablet";
+"login_mobile_device" = "Mobile";
+"login_error_forgot_password_is_not_supported" = "Lupa kata sandi saat ini belum didukung";
+"register_error_title" = "Pendaftaran Gagal";
+"login_invalid_param" = "Parameter tidak valid";
+"login_leave_fallback" = "Batalkan";
+"login_use_fallback" = "Gunakan halaman fallback";
+"login_error_login_email_not_yet" = "Tautan email yang belum diklik";
+"login_error_user_in_use" = "Nama pengguna ini sudah dipakai";
+"login_error_limit_exceeded" = "Terlalu banyak permintaan yang dikirim";
+"login_error_not_json" = "Tidak mengandung JSON yang valid";
+"login_error_unknown_token" = "Token akses yang ditentukan tidak diketahui";
+"login_error_bad_json" = "JSON cacat";
+"login_error_forbidden" = "Nama pengguna/kata sandi tidak valid";
+"login_error_registration_is_not_supported" = "Pendaftaran saat ini tidak didukung";
+"login_error_do_not_support_login_flows" = "Saat ini kami tidak mendukung salah satu atau semua alur masuk yang ditentukan oleh homeserver ini";
+"login_error_no_login_flow" = "Kami gagal untuk menerima informasi otentikasi dari homeserver ini";
+"login_error_title" = "Login Gagal";
+"login_prompt_email_token" = "Harap masukkan token validasi email Anda:";
+"login_email_placeholder" = "Alamat email";
+"login_email_info" = "Menentukan alamat email memungkinkan pengguna lain untuk menemukan Anda di Matrix dengan lebih mudah, dan akan memberi Anda cara untuk menyetel ulang sandi di masa mendatang.";
+"login_display_name_placeholder" = "Nama tampilan (mis. Bob Obson)";
+"login_optional_field" = "opsional";
+"login_password_placeholder" = "Kata sandi";
+"login_user_id_placeholder" = "ID Matrix (mis. @bob:matrix.org atau bob)";
+"login_identity_server_info" = "Matrix menyediakan server identitas untuk melacak email mana, dll., milik ID Matrix mana. Hanya https://matrix.org yang saat ini ada.";
+"login_identity_server_title" = "URL server identitas:";
+"login_home_server_info" = "Homeserver Anda menyimpan semua pesan Anda dan data akun";
+"login_home_server_title" = "URL Homeserver:";
+"login_server_url_placeholder" = "URL (mis. https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "Buat akun:";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "Matrix";
+"auth_reset_password_error_not_found" = "Tidak ditemukan";
+"auth_reset_password_error_unauthorized" = "Tidak diotorisasi";
+"auth_invalid_user_name" = "Nama pengguna tidak valid";
+"ssl_only_accept" = "HANYA terima sertifikat jika administrator server telah mempublikasikan sidik jari yang cocok dengan sidik jari di atas.";
+"ssl_expected_existing_expl" = "Sertifikat ini telah berubah dari yang sebelumnya tepercaya menjadi yang tidak tepercaya. Servernya mungkin telah memperbarui sertifikatnya. Hubungi administrator server untuk sidik jari yang diharapkan.";
+"ssl_unexpected_existing_expl" = "Sertifikat ini telah berubah dari yang dipercaya oleh ponsel Anda. Ini SANGAT TIDAK BIASA. Anda disarankan untuk TIDAK MENERIMA sertifikat baru ini.";
+"ssl_cert_new_account_expl" = "Jika administrator server mengatakan bahwa ini diharapkan, pastikan bahwa sidik jari di bawah ini cocok dengan sidik jari yang disediakannya.";
+"ssl_cert_not_trust" = "Ini bisa berarti bahwa seseorang mencegat lalu lintas Anda, atau bahwa ponsel Anda tidak mempercayai sertifikat yang disediakan oleh server jarak jauh.";
+"ssl_could_not_verify" = "Tidak dapat memverifikasi identitas server jarak jauh.";
+"ssl_fingerprint_hash" = "Sidik Jari (%@):";
+"ssl_remain_offline" = "Abaikan";
+"ssl_logout_account" = "Keluar";
+
+// unrecognized SSL certificate
+"ssl_trust" = "Percayai";
+"call_transfer_to_user" = "Pindahkan ke %@";
+"call_consulting_with_user" = "Mengkonsultasi dengan %@";
+"call_video_with_user" = "Panggilan video dengan %@";
+"call_voice_with_user" = "Panggilan suara dengan %@";
+"call_more_actions_dialpad" = "Tombol penyetel";
+"call_more_actions_transfer" = "Pindahkan";
+"call_more_actions_audio_use_device" = "Speaker Perangkat";
+"call_more_actions_change_audio_device" = "Ubah Perangkat Audio";
+"call_more_actions_unhold" = "Lanjutkan";
+"call_more_actions_hold" = "Jeda";
+"call_holded" = "Anda menjeda panggilan ini";
+"call_remote_holded" = "%@ menjeda panggilan ini";
+"call_invite_expired" = "Undangan Panggilan Kedaluwarsa";
+"incoming_voice_call" = "Masuk Panggilan Suara";
+"incoming_video_call" = "Masuk Panggilan Video";
+"call_ended" = "Panggilan diakhiri";
+"call_ringing" = "Berdering…";
+
+// Settings keys 
+
+// call string
+"call_connecting" = "Menghubungkan…";
+"settings_config_user_id" = "ID Pengguna: %@";
+"settings_config_identity_server" = "Server identitas: %@";
+
+// gcm section 
+"settings_config_home_server" = "Homeserver: %@";
+"notification_settings_notify_all_other" = "Beritahu untuk semua pesan/ruangan lainnya";
+"notification_settings_by_default" = "Secara default...";
+"notification_settings_suppress_from_bots" = "Jangan beritahu saya tentang notifikasi dari bot";
+"notification_settings_receive_a_call" = "Beritahu saya ketika saya menerima panggilan";
+"notification_settings_people_join_leave_rooms" = "Beritahu saya ketika ada orang bergabung atau meninggalkan ruangan";
+"notification_settings_invite_to_a_new_room" = "Beritahu saya ketika saya diundang ke ruangan baru";
+"notification_settings_just_sent_to_me" = "Beritahu saya dengan suara tentang pesan yang baru saja dikirim ke saya";
+"notification_settings_contain_my_display_name" = "Beritahu saya dengan suara tentang pesan yang berisi nama tampilan saya";
+"notification_settings_contain_my_user_name" = "Beritahu saya dengan suara tentang pesan yang berisi nama pengguna saya";
+"notification_settings_other_alerts" = "Pemberitahuan Lainnya";
+"notification_settings_select_room" = "Pilih sebuah ruangan";
+"notification_settings_sender_hint" = "@pengguna:domain.com";
+"notification_settings_per_sender_notifications" = "Notifikasi per pengirim";
+"notification_settings_per_room_notifications" = "Notifikasi per ruangan";
+"notification_settings_custom_sound" = "Suara kustom";
+"notification_settings_highlight" = "Highlight";
+"notification_settings_word_to_match" = "kata untuk dicocokkan";
+"notification_settings_never_notify" = "Jangan diberitahu";
+"notification_settings_always_notify" = "Selalu diberitahu";
+"notification_settings_per_word_info" = "Kata-kata tidak cocok dengan huruf besar-kecil, dan mungkin menyertakan karakter pengganti *. Jadi:\nfoo cocok dengan string foo yang dikelilingi oleh pembatas kata (misalnya tanda baca dan spasi atau awal/akhir baris).\nfoo* cocok dengan kata apa pun yang dimulai foo.\n*foo* cocok dengan kata apa pun yang menyertakan 3 huruf foo.";
+"notification_settings_per_word_notifications" = "Notifikasi per kata";
+"notification_settings_global_info" = "Pengaturan notifikasi disimpan ke akun pengguna Anda dan dibagikan di antara semua client yang mendukungnya (termasuk pemberitahuan desktop).\n\nAturan diterapkan secara berurutan; aturan pertama yang cocok menentukan hasil untuk pesan.\nJadi: Notifikasi per kata lebih penting daripada notifikasi per ruangan yang lebih penting daripada notifikasi per pengirim.\nUntuk beberapa aturan dengan jenis yang sama, yang pertama dalam daftar yang cocok akan diprioritaskan.";
+"notification_settings_enable_notifications_warning" = "Semua notifikasi saat ini dinonaktifkan untuk semua perangkat.";
+"notification_settings_enable_notifications" = "Aktifkan notifikasi";
+
+// Notification settings screen 
+"notification_settings_disable_all" = "Nonaktifkan semua notifikasi";
+"settings_title_notifications" = "Notifikasi";
+
+// Settings screen 
+"settings_title_config" = "Konfigurasi";
+
+// members list Screen 
+
+// accounts list Screen 
+
+// image size selection 
+
+// invitation members list Screen 
+
+// room creation dialog Screen 
+
+// room info dialog Screen
+
+// room details dialog screen
+"room_details_title" = "Detail Ruangan";
+"login_error_must_start_http" = "URL harus dimulai dengan http[s]://";
+
+// Login Screen 
+"login_error_already_logged_in" = "Sudah masuk";
+"message_unsaved_changes" = "Ada perubahan yang belum disimpan. Meninggalkannya akan membuang mereka.";
+"unban" = "Hilangkan Cekalan";
+"ban" = "Cekal";
+"kick" = "Keluarkan";
+"num_members_other" = "%@ pengguna";
+"num_members_one" = "%@ pengguna";
+"membership_ban" = "Dicekal";
+"membership_leave" = "Keluar";
+"membership_invite" = "Diundang";
+"create_account" = "Buat Akun";
+"create_room" = "Buat Ruangan";
+"login" = "Masuk";
+
+// actions 
+"action_logout" = "Keluar";
+"delete" = "Hapus";
+"share" = "Bagikan";
+"redact" = "Hapus";
+"resend" = "Kirim Ulang";
+"copy_button_name" = "Salin";
+"send" = "Kirim";
+
+// Room Screen 
+
+// general errors 
+
+// Home Screen 
+
+// Last seen time 
+
+// call events 
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles 
+
+// button names 
+"ok" = "OK";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Anda membuat sejarah pesan di masa mendatang dapat dilihat oleh semuanya, sejak mereka bergabung.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "Anda membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruang, sejak mereka bergabung.";
+"notice_encryption_enabled_unknown_algorithm_by_you" = "Anda mengaktifkan enkripsi ujung-ke-ujung (algoritma %@ tidak dikenal).";
+"notice_room_third_party_revoked_invite" = "%@ menghilangkan undangannya %@ untuk bergabung ke ruangan ini";
+"notice_room_third_party_revoked_invite_by_you" = "Anda menghilangkan undangannya %@ untuk bergabung ke ruangan ini";
+"account_email_validation_error" = "Tidak dapat memverifikasi alamat email. Silakan cek email Anda dan tekan tautannya yang ada. Setelah selesai, tekan lanjut";
+
+// contacts list screen 
+"invitation_message" = "Saya ingin berkomunikasi dengan Anda dengan Matrix. Silakan kunjungi ke websitenya di https://matrix.org untuk informasi selanjutnya.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "Anda membuat sejarah pesan di masa mendatang dapat dilihat oleh semuanya, sejak mereka diundang.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "Anda membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruangan, sejak mereka diundang.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "Anda membuat pesan di masa depan dapat dilihat oleh semua anggota ruangan.";
+"notice_room_history_visible_to_members_by_you" = "Anda membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruangan.";
+"notice_room_history_visible_to_anyone_by_you" = "Anda membuat sejarah ruangan di masa mendatang dapat dilihat oleh siapa saja.";
+"notice_redaction_by_you" = "Anda menghapus sebuah peristiwa (id: %@)";
+"notice_encryption_enabled_ok_by_you" = "Anda mengaktifkan enkripsi ujung-ke-ujung.";
+"notice_room_created_by_you_for_dm" = "Anda bergabung.";
+"notice_room_created_by_you" = "Anda membuat dan mengatur ruangan ini.";
+"notice_profile_change_redacted_by_you" = "Anda memperbarui profil Anda %@";
+"notice_event_redacted_by_you" = " oleh Anda";
+"notice_room_topic_removed_by_you" = "Anda menghilangkan topik ruangan ini";
+"notice_room_name_removed_by_you_for_dm" = "Anda menghilangkan nama ruangan ini";
+"notice_room_name_removed_by_you" = "Anda menghilangkan nama ruangan ini";
+"notice_conference_call_request_by_you" = "Anda telah meminta konferensi VoIP";
+"notice_declined_video_call_by_you" = "Anda menolak anggilannya";
+"notice_ended_video_call_by_you" = "Anda mengakhiri pangilannya";
+"notice_answered_video_call_by_you" = "Anda menjawab panggilannya";
+"notice_placed_video_call_by_you" = "Anda melakukan panggilan video";
+"notice_placed_voice_call_by_you" = "Anda melakukan panggilan suara";
+"notice_room_name_changed_by_you_for_dm" = "Anda mengubah nama ruangan ini ke%@.";
+"notice_room_name_changed_by_you" = "Anda mengubah nama ruangan ini ke %@.";
+"notice_topic_changed_by_you" = "Anda mengubah topik ruangan nini ke \"%@\".";
+"notice_display_name_removed_by_you" = "Anda menghilangkan nama tampilan Anda";
+"notice_display_name_changed_from_by_you" = "Anda mengubah nama tampilan Anda dari %@ ke %@";
+"notice_display_name_set_by_you" = "Anda mengubah nama tampilan Anda ke %@";
+"notice_avatar_url_changed_by_you" = "Anda mengubah avatar Anda";
+"notice_room_withdraw_by_you" = "Anda menghilangkan undangannya %@";
+"notice_room_ban_by_you" = "Anda mencekal %@";
+"notice_room_unban_by_you" = "Anda menghilangkan cekalan %@";
+"notice_room_kick_by_you" = "Anda mengeluarkan %@";
+"notice_room_reject_by_you" = "Anda menolak undangannya";
+"notice_room_leave_by_you" = "Anda keluar";
+"notice_room_join_by_you" = "Anda bergabung";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "Anda menghilangkan undangannya %@";
+"notice_room_third_party_registered_invite_by_you" = "Anda menerima undangan untuk %@";
+"notice_room_third_party_invite_by_you_for_dm" = "Anda mengundang %@";
+"notice_room_third_party_invite_by_you" = "Anda mengirim sebuah undangan ke @% untuk bergabung ke ruangan ini";
+"notice_room_invite_you" = "%@ mengundang Anda";
+
+// Notice Events with "You"
+"notice_room_invite_by_you" = "Anda mengundang %@";
+"notice_conference_call_finished" = "Konferensi VoIP diakhiri";
+"notice_conference_call_started" = "Konferensi VoIP dimulai";
+"notice_conference_call_request" = "%@ telah meminta konferensi VoIP";
+"notice_declined_video_call" = "%@ menolak panggilannya";
+"notice_ended_video_call" = "%@ mengakhiri panggilannya";
+"notice_answered_video_call" = "%@ menjawab panggilannya";
+"notice_placed_video_call" = "%@ melakukan panggilan video";
+"notice_placed_voice_call" = "%@ melakukan panggilan suara";
+"notice_room_name_changed_for_dm" = "%@ mengubah nama ruangan ini ke %@.";
+"notice_room_name_changed" = "%@ mengubah nama ruangan ini ke %@.";
+"notice_topic_changed" = "%@ mengubah topik ruangan ini ke \"%@\".";
+"notice_display_name_removed" = "%@ menghilangkan nama tampilannya";
+"notice_display_name_changed_from" = "%@ mengubah nama tampilannya dari %@ ke %@";
+"notice_display_name_set" = "%@ mengubah nama tampilannya ke %@";
+"notice_avatar_url_changed" = "%@ mengubah avatarnya";
+"notice_room_reason" = ". Alasan: %@";
+"notice_room_withdraw" = "%@ menghilangkan undangannya %@";
+"notice_room_ban" = "%@ mencekal %@";
+"notice_room_unban" = "%@ menghilangkan cekalan %@";
+"notice_room_kick" = "%@ mengeluarkan %@";
+"notice_room_reject" = "%@ menolak undangannya";
+"notice_room_leave" = "%@ keluar";
+"notice_room_join" = "%@ bergabung";
+"notice_room_third_party_revoked_invite_for_dm" = "%@ menghilangkan undangannya %@";
+"notice_room_third_party_registered_invite" = "%@ menerima undangan untuk %@";
+"notice_room_third_party_invite_for_dm" = "%@ mengundang %@";
+"notice_room_third_party_invite" = "%@ mengirim sebuah undangan ke %@ untuk bergabung ke ruangan ini";
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /matrix-sdk/src/main/res/values/strings.xml.
+*/
+
+"notice_room_invite" = "%@ mengundang %@";
+"language_picker_default_language" = "Bawaan (%@)";
+
+// Language picker
+"language_picker_title" = "Pilih sebuah bahasa";
+
+// Country picker
+"country_picker_title" = "Pilih sebuah negara";
+"microphone_access_not_granted_for_voice_message" = "Pesan suara membutuhkan akses ke Mikrofon tetapi %@ tidak memiliki izin untuk menggunakannya";
+"local_contacts_access_discovery_warning" = "Untuk menemukan kontak Anda yang sudah menggunakan Matrix, %@ dapat mengirim alamat email dan nomor telepon di kontak Anda ke server identitas Matrix yang Anda pilih. Di mana saja yang didukung, data personal akan di-hash sebelum dikirim - mohon cek kebijakan privasi identitas server Anda untuk detail lainnya.";
+"local_contacts_access_discovery_warning_title" = "Penemuan pengguna";
+"local_contacts_access_not_granted" = "Penemuan pengguna dari kontak lokal membutuhkan akses ke kontak Anda tetapi %@ tidak memiliki izin untuk menggunakannya";
+"microphone_access_not_granted_for_call" = "Panggilan membutuhkan akses ke Mikrofon tetapi %@ tidak memiliki izin untuk menggunakannya";
+
+// Permissions
+"camera_access_not_granted_for_call" = "Panggilan video membutuhkan akses ke Kamera tetapi %@ tidak memiliki izin untuk menggunakannya";
+"ssl_homeserver_url" = "URL Homeserver: %@";
+"user_id_placeholder" = "misal: @bob:homeserver";
+"network_error_not_reachable" = "Mohon cek koneksi jaringan Anda";
+"power_level" = "Level Kekuatan";
+"public" = "Publik";
+"private" = "Privat";
+"default" = "bawaan";
+"not_supported_yet" = "Belum didukung";
+"error_common_message" = "Sebuah kesalahan terjadi. Coba lagi nanti.";
+"error" = "Gagal";
+"unsent" = "Belum Terkirim";
+"offline" = "offline";
+
+// Others
+"user_id_title" = "ID Pangguna:";
+"e2e_passphrase_create" = "Buat frasa sandi";
+"e2e_passphrase_not_match" = "Frasa sandi harus cocok";
+"e2e_passphrase_too_short" = "Frasa sandi terlalu pendek (Harus minimal %d karakter panjangnya)";
+"e2e_passphrase_empty" = "Frasa sandi tidak boleh kosong";
+"e2e_passphrase_confirm" = "Konfirmasi frasa sandi";
+"e2e_export" = "Ekspor";
+"e2e_export_prompt" = "Proses ini memungkinkan Anda untuk mengekspor kunci untuk pesan yang Anda telah terima di ruangan terenkripsi ke file lokal. Anda nanti akan dapat mengimpor filenya ke client Matrix lainnya di masa mendatang, supaya client itu juga bisa mendekripsi pesan yang terenkripsi.\nFile yang diekspor akan memungkinan siapa saja yang dapat membaca untuk mendekripsikan pesan terenkripsi apa saja yang Anda bisa lihat, jadi Anda harus berhati-hati untuk menyimpannya secara aman.";
+
+// E2E export
+"e2e_export_room_keys" = "Ekspor kunci ruangan";
+"e2e_passphrase_enter" = "Masukkan frasa sandi";
+"e2e_import" = "Impor";
+"e2e_import_prompt" = "Proses ini memungkinkan Anda untuk mengimpor kunci enkripsi yang Anda punya sebelumnya yang diekspor dari client Matrix lain. Anda nanti akan dapat mendekripsi pesan apa saja yang client lain dapat mendekripsinya.\nFile yang diekspor dilindungi dengan frasa sandi. Anda seharusnya masukkan frasa sandinya di sini, untuk mendekripsi filenya.";
+
+// E2E import
+"e2e_import_room_keys" = "Impor kunci ruangan";
+"format_time_d" = "h";
+"format_time_h" = "j";
+"format_time_m" = "m";
+
+// Time
+"format_time_s" = "d";
+"search_searching" = "Pencarian sedang dilakukan...";
+
+// Search
+"search_no_results" = "Tidak Ada Hasil";
+"group_section" = "Grup";
+
+// Groups
+"group_invite_section" = "Undangan";
+"contact_local_contacts" = "Kontak Local";
+
+// Contacts
+"contact_mx_users" = "Pengguna Matrix";
+"attachment_e2e_keys_import" = "Impor...";
+"attachment_e2e_keys_file_prompt" = "File ini berisi kunci enkripsi yang diimpor dari client Matrix lain.\nApakah Anda ingin menampilkan konten file atau impor kunci yang berisi?";
+"attachment_multiselection_original" = "Ukuran Sebenarnya";
+"attachment_multiselection_size_prompt" = "Apakah Anda ingin mengirim gambarnya sebagai:";
+"attachment_cancel_upload" = "Batalkan unggahannya?";
+"attachment_cancel_download" = "Batalkan unduhannya?";
+"attachment_large_with_resolution" = "Besar %@ (~%@)";
+"attachment_medium_with_resolution" = "Sedang %@ (~%@)";
+"attachment_small_with_resolution" = "Kecil %@ (~%@)";
+"attachment_large" = "Besar (~%@)";
+"attachment_medium" = "Sedang (~%@)";
+"attachment_small" = "Kecil (~%@)";
+"attachment_original" = "Ukuran Sebenarnya (%@)";
+"attachment_size_prompt_message" = "Anda dapat menonaktifkannya di pengaturan.";
+"attachment_size_prompt_title" = "Konfirmasi ukuran untuk dikirim";
+
+// Attachment
+"attachment_size_prompt" = "Apakah Anda ingin mengirimnya sebagai:";
+"room_member_power_level_prompt" = "Anda tidak akan lagi membatalkan perubahan ini ketika Anda mempromosikan penggunanya untuk memiliki level kekuatan yang sama dengan Anda sendiri.\nApakah Anda yakin?";
+
+// Room members
+"room_member_ignore_prompt" = "Apakah Anda yakin untuk menyembunyikan semua pesan dari pengguna ini?";
+"message_reply_to_message_to_reply_to_prefix" = "Membalas ke";
+"message_reply_to_sender_sent_a_file" = "mengirim sebuah file.";
+"message_reply_to_sender_sent_a_voice_message" = "mengirim sebuah pesan suara.";
+"message_reply_to_sender_sent_an_audio_file" = "mengirim sebuah file audio.";
+"message_reply_to_sender_sent_a_video" = "mengirim sebuah video.";
+
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "mengirim sebuah gambar.";
+"room_no_conference_call_in_encrypted_rooms" = "Panggilan konferensi tidak didukung di ruangan terenkripsi";
+"room_no_power_to_create_conference_call" = "Anda membutuhkan izin untuk mengundang untuk memulai konferensi di ruangan ini";
+"room_left_for_dm" = "Anda keluar";
+"room_left" = "Anda meninggalkan ruangan ini";
+"room_error_timeline_event_not_found" = "Aplikasi ini sedang mencoba untuk memuat titik tertenu di linimasa ruangan ini tetapi tidak dapat menemukannya";
+"room_error_timeline_event_not_found_title" = "Gagal untuk memuat posisi linimasa";
+"room_error_cannot_load_timeline" = "Gagal untuk memuat linimasa";
+"room_error_topic_edition_not_authorized" = "Anda tidak diizinkan untuk mengubah topik ruangan ini";
+"room_error_name_edition_not_authorized" = "Anda tidak diizinkan untuk mengubah nama ruangan ini";
+"room_error_join_failed_empty_room" = "Saat ini tidak mungkin untuk bergabung ke ruangan yang kosong.";
+"room_error_join_failed_title" = "Gagal untuk bergabung ke ruangan";
+
+// Room
+"room_please_select" = "Silakan pilih sebuah ruangan";
+"room_creation_participants_placeholder" = "(mis. @bob:homeserver1; @john:homeserver2...)";
+"room_creation_participants_title" = "Anggota:";
+"room_creation_alias_placeholder_with_homeserver" = "(mis. #foo%@)";
+"room_creation_alias_placeholder" = "(mis. #foo:example.org)";
+"room_creation_alias_title" = "Alias ruangan:";
+"room_creation_name_placeholder" = "(mis. grupMakanSiang)";
+
+// Room creation
+"room_creation_name_title" = "Nama ruangan:";
+"account_error_push_not_allowed" = "Notifikasi tidak diizinkan";
+"account_error_msisdn_wrong_description" = "Ini sepertinya bukan nomor telepon yang valid";
+"account_error_msisdn_wrong_title" = "Nomor Telepon Tidak Valid";
+"account_error_email_wrong_description" = "Ini sepertinya bukan alamat email yang valid";
+"account_error_email_wrong_title" = "Alamat Email Tidak Valid";
+"account_error_matrix_session_is_not_opened" = "Sesi Matrix tidak dibuka";
+"account_error_picture_change_failed" = "Penggantian gambar gagal";
+"account_error_display_name_change_failed" = "Penggantian nama tampilan gagal";
+"account_msisdn_validation_error" = "Tidak dapat memverifikasi nomor telepon.";
+"account_msisdn_validation_message" = "Kami telah mengirim sebuah SMS dengan kode aktivasi. Silakan masukkan kodenya di bawah.";
+"account_msisdn_validation_title" = "Menunggu Verifikasi";
+"account_email_validation_message" = "Silakan cek email Anda dan tekan tautannya yang ada. Setelah selesai, tekan lanjut.";
+"account_email_validation_title" = "Menunggu Verifikasi";
+"account_linked_emails" = "Email yang tertaut";
+"account_link_email" = "Tautkan Email";
+
+// Account
+"account_save_changes" = "Simpan perubahan";
+"room_event_encryption_verify_ok" = "Verifikasi";
+"room_event_encryption_verify_message" = "Untuk memverifikasi bahwa sesi ini dapat dipercaya, harap hubungi pemiliknya menggunakan cara lain (misalnya secara langsung atau melalui panggilan telepon) dan tanyakan apakah kunci yang mereka lihat di Pengaturan Pengguna untuk sesi ini cocok dengan kunci di bawah ini:\n\n\tNama sesi: %@\n\tID sesi: %@\n\tKunci sesi: %@\n\nJika cocok, tekan tombol verifikasi di bawah. Jika tidak, maka orang lain mencegat sesi ini dan Anda mungkin ingin menekan tombol daftar hitam sebagai gantinya.\n\nDi masa yang mendatang proses verifikasi ini akan semakin canggih.";
+"room_event_encryption_verify_title" = "Verifikasi sesi\n\n";
+"room_event_encryption_info_unblock" = "Hilangkan dari daftar hitam";
+"room_event_encryption_info_block" = "Tambahkan ke daftar hitam";
+"room_event_encryption_info_unverify" = "Hilangkan verifikasi";
+"room_event_encryption_info_verify" = "Verifikasi...";
+"room_event_encryption_info_device_blocked" = "Di dalam daftar hitam";
+"room_event_encryption_info_device_not_verified" = "TIDAK terverifikasi";
+"room_event_encryption_info_device_verified" = "Terverifikasi";
+"room_event_encryption_info_device_fingerprint" = "Sidik jari Ed25519\n";
+"room_event_encryption_info_device_verification" = "Verifikasi\n";
+"room_event_encryption_info_device_id" = "ID\n";
+"room_event_encryption_info_device_name" = "Nama Publik\n";
+"room_event_encryption_info_device_unknown" = "sesi tidak dikenal\n";
+"room_event_encryption_info_device" = "\nInformasi sesi pengirim\n";
+"room_event_encryption_info_event_none" = "tidak ada";
+"room_event_encryption_info_event_unencrypted" = "tidak terenkripsi";
+"room_event_encryption_info_event_decryption_error" = "Kesalahan saat mendekripsi\n";
+"room_event_encryption_info_event_session_id" = "ID Sesi\n";
+"room_event_encryption_info_event_algorithm" = "Algoritma\n";
+"room_event_encryption_info_event_fingerprint_key" = "Mendapatkan kunci sidik jari Ed25519\n";
+"room_event_encryption_info_event_identity_key" = "Kunci identitas Curve25519\n";
+"room_event_encryption_info_event_user_id" = "ID Pengguna\n";
+"room_event_encryption_info_event" = "Informasi peristiwa\n";
+
+// Encryption information
+"room_event_encryption_info_title" = "Informasi enkripsi ujung-ke-ujung\n\n";
+"device_details_delete_prompt_message" = "Operasi ini membutuhkan otentikasi tambahan.\nUntuk melanjutkan, silakan masukkan kata sandi Anda.";
+"device_details_delete_prompt_title" = "Otentikasi";
+"device_details_rename_prompt_message" = "Nama publik sesi dapat dilihat oleh orang yang berkomunikasi dengan Anda";
+"device_details_rename_prompt_title" = "Nama Sesi";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"device_details_last_seen" = "Terakhir dilihat\n";
+"device_details_identifier" = "ID\n";
+"device_details_name" = "Nama Publik\n";
+
+// Devices
+"device_details_title" = "Informasi sesi\n";
+"notification_settings_room_rule_title" = "Ruangan: '%@'";
+"settings_enter_validation_token_for" = "Masukkan token validasi untuk %@:";
+"settings_enable_push_notifications" = "Aktifkan notifikasi push";
+"settings_enable_inapp_notifications" = "Aktifkan notifikasi di dalam aplikasi";
+
+// Settings
+"settings" = "Pengaturan";
+"room_displayname_all_other_members_left" = "%@ (Keluar)";
+"room_displayname_more_than_two_members" = "%@ dan %@ lainnya";
+"room_displayname_two_members" = "%@ dan %@";
+
+// room display name
+"room_displayname_empty_room" = "Ruangan kosong";
+"notice_in_reply_to" = "Membalas ke";
+"notice_sticker" = "stiker";
+"notice_crypto_error_unknown_inbound_session_id" = "Sesi pengirim belum mengirim kami kunci untuk pesan ini.";
+"notice_crypto_unable_to_decrypt" = "** Tidak dapat mendekripsi: %@ **";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ membuat pesan di masa mendatang dapat dilihat oleh semuanya, sejak mereka bergabung.";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ membuat sejarah pesan di masa mendatang dapat dilihat oleh semuanya, sejak mereka diundang.";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruangan, sejak mereka bergabung.";
+"notice_room_history_visible_to_anyone" = "%@ membuat sejarah ruangan di masa mendatang dapat dilihat oleh siapa saja.";
+"notice_room_history_visible_to_members" = "%@ membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruangan.";
+"notice_room_history_visible_to_members_for_dm" = "%@ membuat semua pesan di masa mendatang dapat dilihat oleh semua anggota ruangan.";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ membuat sejarah ruangan di masa mendatang dapat dilihat oleh semua anggota ruang, sejak mereka diundang.";
+"notice_error_unknown_event_type" = "Tipe peristiwa yang tidak dikenal";
+"notice_error_unexpected_event" = "Peristiwa yang tidak terduga";
+"notice_error_unsupported_event" = "Peristiwa yang tidak didukung";
+"notice_redaction" = "%@ menghapus sebuah peristiwa (id: %@)";
+"notice_feedback" = "Peristiwa umpan balik (id: %@): %@";
+"notice_unsupported_attachment" = "Lampiran yang tidak didukung: %@";
+"notice_invalid_attachment" = "lampiran tidak valid";
+"notice_file_attachment" = "lampiran file";
+"notice_location_attachment" = "lampiran lokasi";
+"notice_video_attachment" = "lampiran video";
+"notice_audio_attachment" = "lampiran audio";
+"notice_image_attachment" = "lampiran gambar";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ mengaktifkan enkripsi ujung-ke-ujung (algoritma %2$@ tidak dikenal).";
+"notice_encryption_enabled_ok" = "%@ mengaktifkan enkripsi ujung-ke-ujung.";
+"notice_encrypted_message" = "Pesan terenkripsi";
+"notice_room_related_groups" = "Grup yang terkait dengan ruangan ini adalah: %@";
+"notice_room_aliases_for_dm" = "Aliasnya adalah: %@";
+"notice_room_aliases" = "Alias ruangannya adalah: %@";
+"notice_room_power_level_event_requirement" = "Tingkat daya minimum yang terkait dengan peristiwa adalah:";
+"notice_room_power_level_acting_requirement" = "Tingkat daya minimum yang harus dimiliki pengguna sebelum bertindak adalah:";

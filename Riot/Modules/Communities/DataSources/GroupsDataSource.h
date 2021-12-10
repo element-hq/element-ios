@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  'GroupsDataSource' class inherits from 'MXKSessionGroupsDataSource' to define the Riot groups source.
