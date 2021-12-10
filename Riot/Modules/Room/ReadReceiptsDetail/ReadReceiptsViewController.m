@@ -16,7 +16,6 @@
  */
 
 #import "ReadReceiptsViewController.h"
-#import <MatrixKit/MatrixKit.h>
 
 #import "RageShakeManager.h"
 #import "ThemeService.h"

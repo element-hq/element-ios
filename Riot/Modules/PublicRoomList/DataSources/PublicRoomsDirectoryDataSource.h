@@ -17,7 +17,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "MatrixKit/MatrixKit.h"
+#import "MatrixKit.h"
 
 /**
  `PublicRoomsDirectoryDataSource` is a base class to display public rooms directory.

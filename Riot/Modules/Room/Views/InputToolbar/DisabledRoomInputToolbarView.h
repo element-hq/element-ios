@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 /**
  `DisabledRoomInputToolbarView` instance is an input toolbar to show to the end user

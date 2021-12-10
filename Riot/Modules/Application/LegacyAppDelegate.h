@@ -16,7 +16,7 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"

@@ -15,11 +15,11 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
-
 /**
  The `RiotSearch` category adds the management of the search bar in Riot screens.
  */
+
+#import <UIKit/UIKit.h>
 
 @interface UIViewController (RiotSearch) <UISearchBarDelegate>
 

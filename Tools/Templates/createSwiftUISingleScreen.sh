@@ -27,8 +27,5 @@ do
   perl -p -i -e "s/TemplateUserProfile/"$SCREEN_NAME"/g" $file
   perl -p -i -e "s/templateUserProfile/"$SCREEN_VAR_NAME"/g" $file
 
-  echo "// $ createScreen.sh $@" | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
-  echo '// File created from SimpleUserProfileExample' | cat - ${file} > /tmp/$$ && mv /tmp/$$ ${file}
-
   mv ${file} ${file/TemplateUserProfile/$SCREEN_NAME}
 done

@@ -24,8 +24,6 @@
 
 #import "MXRoom+Riot.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "RoomViewController.h"
 
 #import "InviteRecentTableViewCell.h"
@@ -2052,6 +2050,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
 {
+    if (section < 0)
+    {
+        return;
+    }
+    
     UITableViewCell *firstVisibleCell;
     NSIndexPath *firstVisibleCellIndexPath;
     

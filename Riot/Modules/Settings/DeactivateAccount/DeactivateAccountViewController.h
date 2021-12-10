@@ -15,7 +15,8 @@
  */
 
 @import UIKit;
-@import MatrixKit;
+
+#import "MatrixKit.h"
 
 #pragma mark - Types
 
