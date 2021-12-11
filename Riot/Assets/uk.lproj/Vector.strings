@@ -989,3 +989,36 @@
 "room_participants_security_information_room_not_encrypted_for_dm" = "Повідомлення тут не захищено наскрізним шифруванням.";
 "room_participants_security_information_room_not_encrypted" = "Повідомлення у цій кімнаті не захищено наскрізним шифруванням.";
 "room_participants_action_set_default_power_level" = "Скинути до звичайного користувача";
+"share_extension_low_quality_video_title" = "Відео буде надіслано у низькій якості";
+"deactivate_account_informations_part3" = "\n\nДеактивація вашого облікового запису ";
+"service_terms_modal_footer" = "Потім це можна вимкнути у налаштуваннях.";
+"service_terms_modal_table_header_identity_server" = "УМОВИ СЕРВЕРА ІДЕНТИФІКАЦІЇ";
+"service_terms_modal_table_header_integration_manager" = "УМОВИ МЕНЕДЖЕРА ІНТЕГРАЦІЙ";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Сервер ідентифікації";
+"service_terms_modal_information_title_integration_manager" = "Менеджер інтеграцій";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Запит ключів шифрування";
+"share_extension_send_now" = "Надіслати зараз";
+"service_terms_modal_accept_button" = "Прийняти";
+"room_details_flair_invalid_id_prompt_msg" = "%@ — неправильний ідентифікатор спільноти";
+"room_details_flair_invalid_id_prompt_title" = "Неправильний формат";
+"room_details_new_flair_placeholder" = "Додати новий ID спільноти (напр., +foo%@)";
+"room_details_access_section_invited_only" = "Лише запрошені люди";
+"room_details_access_section_directory_toggle_for_dm" = "Показувати у каталозі кімнат";
+"room_details_access_section_directory_toggle" = "Додати кімнату в каталог кімнат";
+"room_details_addresses_disable_main_address_prompt_title" = "Попередження про основну адресу";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ — неправильний формат псевдоніма";
+"room_details_addresses_invalid_address_prompt_title" = "Неправильний формат псевдоніма";
+"room_details_no_local_addresses_for_dm" = "Ще немає локальних адрес";
+"room_details_no_local_addresses" = "У цієї кімнати немає локальних адрес";
+"room_details_addresses_section" = "Адреси";
+"room_details_history_section_prompt_msg" = "Змінює, хто може читати історію. Застосовуватиметься лише до майбутніх повідомлень у цій кімнаті. Видимість наявної історії не зміниться.";
+"room_details_history_section_prompt_title" = "Попередження приватності";
+"room_details_history_section_members_only_since_joined" = "Лише учасники (від часу приєднання)";
+"room_details_history_section_members_only_since_invited" = "Лише учасники (від часу запрошення)";
+"room_details_history_section_members_only" = "Лише учасники (від часу вибору цієї опції)";
+"room_details_history_section_anyone" = "Будь-хто";
+"room_details_history_section" = "Хто може переглядати історію?";
