@@ -96,7 +96,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
         return events
             .filter({ event in
                 event.type == kMXEventTypeStringRoomMessage
-                    && event.content["msgtype"] as? String == kMXMessageTypeText
+                    && event.content[kMXMessageTypeKey] as? String == kMXMessageTypeText
                 
                 // TODO: New to our SwiftUI Template? Why not implement another message type like image?
                 

@@ -128,7 +128,7 @@
 {
     MXEvent *event = searchResult.result;
     NSString *msgtype;
-    MXJSONModelSetString(msgtype, event.content[@"msgtype"]);
+    MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
     
     if ([msgtype isEqualToString:kMXMessageTypeImage])
     {

@@ -91,7 +91,7 @@ NSString *const kMXKAttachmentFileNameBase = @"attatchment";
         else
         {
             // Note: mxEvent.eventType is supposed to be MXEventTypeRoomMessage here.
-            NSString *msgtype = eventContent[@"msgtype"];
+            NSString *msgtype = eventContent[kMXMessageTypeKey];
             if ([msgtype isEqualToString:kMXMessageTypeImage])
             {
                 _type = MXKAttachmentTypeImage;
