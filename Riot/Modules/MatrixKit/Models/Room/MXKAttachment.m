@@ -119,7 +119,7 @@ NSString *const kMXKAttachmentFileNameBase = @"attatchment";
             }
         }
         
-        MXJSONModelSetString(_originalFileName, eventContent[@"body"]);
+        MXJSONModelSetString(_originalFileName, eventContent[kMXMessageBodyKey]);
         MXJSONModelSetDictionary(_contentInfo, eventContent[@"info"]);
         MXJSONModelSetMXJSONModel(contentFile, MXEncryptedContentFile, eventContent[@"file"]);
         

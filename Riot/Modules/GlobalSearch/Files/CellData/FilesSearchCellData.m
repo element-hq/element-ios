@@ -37,7 +37,7 @@
         roomId = event.roomId;
         
         // Title is here the file name stored in event body
-        title = [event.content[@"body"] isKindOfClass:[NSString class]] ? event.content[@"body"] : nil;
+        title = [event.content[kMXMessageBodyKey] isKindOfClass:[NSString class]] ? event.content[kMXMessageBodyKey] : nil;
         
         // Check attachment if any
         if ([searchDataSource.eventFormatter isSupportedAttachment:event])

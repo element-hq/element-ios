@@ -52,7 +52,7 @@
     anEvent.wireType = kMXEventTypeStringRoomMessage;
     anEvent.originServerTs = (uint64_t) ([[NSDate date] timeIntervalSince1970] * 1000);
     anEvent.wireContent = @{ kMXMessageTypeKey: kMXMessageTypeText,
-                             @"body": @"deded" };
+                             kMXMessageBodyKey: @"deded" };
     
     maxHeaderSize = ceil(eventFormatter.defaultTextFont.pointSize * 1.2);
 }
