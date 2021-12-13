@@ -37,10 +37,13 @@ final class RoomParticipantsInviteCoordinatorBridgePresenter: NSObject {
     private var actualParticipants: [Contact]?
     private var invitedParticipants: [Contact]?
     private var userParticipant: Contact?
+    private var roomOptions: [RoomOptionListItemViewData] = []
 
     private weak var contactsPickerViewController: ContactsTableViewController?
     private weak var currentAlert: UIAlertController?
     private var contactPickerCoordinator: ContactsPickerCoordinator?
+    private var optionListCoordinator: OptionListCoordinator?
+    private var navigationRouter: NavigationRouterType?
 
     // MARK: Public
     
@@ -78,42 +81,64 @@ final class RoomParticipantsInviteCoordinatorBridgePresenter: NSObject {
             return
         }
         
-        if let spaceId = self.parentSpaceId, let spaceRoom = session?.spaceService.getSpace(withId: spaceId)?.room {
-            presentRoomSelector(between: room, and: spaceRoom, from: viewController)
-            return
-        }
-        
-        pushContactsPicker(for: room, from: viewController)
-    }
-    
-    // MARK: - Private
-    
-    private func presentRoomSelector(between room: MXRoom, and spaceRoom: MXRoom, from viewController: UIViewController) {
-        let alert = UIAlertController(title: VectorL10n.roomIntroCellAddParticipantsAction, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "To \(spaceRoom.displayName ?? "space")", style: .default) { [weak self] action in
-            self?.pushContactsPicker(for: spaceRoom, from: viewController)
-        })
-        alert.addAction(UIAlertAction(title: "To just this room", style: .destructive) { [weak self] (action) in
-            self?.pushContactsPicker(for: room, from: viewController)
-        })
-        alert.addAction(UIAlertAction(title: VectorL10n.cancel, style: .cancel, handler: nil))
-        viewController.present(alert, animated: true, completion: nil)
-    }
-    
-    private func pushContactsPicker(for room: MXRoom, from viewController: UIViewController) {
-        guard let session = self.session else {
-            MXLog.error("[RoomParticipantsInviteCoordinatorBridgePresenter] pushContactsPicker: nil session found")
-            return
-        }
-        
-        let navigationRouter: NavigationRouterType?
         if let navigationController = viewController.navigationController {
             navigationRouter = NavigationRouterStore.shared.findNavigationRouter(for: navigationController) ?? NavigationRouter(navigationController: navigationController)
         } else {
             navigationRouter = nil
         }
+
+        if let spaceId = self.parentSpaceId, let spaceRoom = session?.spaceService.getSpace(withId: spaceId)?.room {
+            presentRoomSelector(between: room, and: spaceRoom)
+            return
+        }
         
-        let coordinator = ContactsPickerCoordinator(session: session, room: room, currentSearchText: currentSearchText, actualParticipants: actualParticipants, invitedParticipants: invitedParticipants, userParticipant: userParticipant, navigationRouter: navigationRouter)
+        pushContactsPicker(for: room)
+    }
+    
+    // MARK: - Private
+    
+    private class RoomOptionListItemViewData: OptionListItemViewData {
+        let room: MXRoom
+        
+        init(title: String? = nil,
+             detail: String? = nil,
+             image: UIImage? = nil,
+             room: MXRoom,
+             accessoryImage: UIImage? = Asset.Images.chevron.image) {
+            self.room = room
+            super.init(title: title, detail: detail, image: image, accessoryImage: accessoryImage)
+        }
+    }
+    
+    private func presentRoomSelector(between room: MXRoom, and spaceRoom: MXRoom) {
+        let roomName = room.displayName ?? ""
+        let spaceName = spaceRoom.displayName ?? ""
+        roomOptions = [
+            RoomOptionListItemViewData(title: VectorL10n.roomInviteToSpaceOptionTitle(spaceName),
+                                       detail: VectorL10n.roomInviteToSpaceOptionDetail(spaceName, roomName),
+                                       image: Asset.Images.addParticipants.image, room: spaceRoom),
+            RoomOptionListItemViewData(title: VectorL10n.roomInviteToRoomOptionTitle,
+                                       detail: VectorL10n.roomInviteToRoomOptionDetail(spaceName),
+                                       image: Asset.Images.addParticipants.image, room: room)
+        ]
+        optionListCoordinator = OptionListCoordinator(parameters: OptionListCoordinatorParameters(title: VectorL10n.roomIntroCellAddParticipantsAction, options: roomOptions, navigationRouter: navigationRouter))
+        optionListCoordinator?.delegate = self
+        optionListCoordinator?.start()
+    }
+    
+    private func pushContactsPicker(for room: MXRoom) {
+        guard let session = self.session else {
+            MXLog.error("[RoomParticipantsInviteCoordinatorBridgePresenter] pushContactsPicker: nil session found")
+            return
+        }
+        
+        let coordinator = ContactsPickerCoordinator(session: session,
+                                                    room: room,
+                                                    currentSearchText: currentSearchText,
+                                                    actualParticipants: actualParticipants,
+                                                    invitedParticipants: invitedParticipants,
+                                                    userParticipant: userParticipant,
+                                                    navigationRouter: navigationRouter)
         coordinator.delegate = self
         coordinator.start()
         
@@ -132,5 +157,20 @@ extension RoomParticipantsInviteCoordinatorBridgePresenter: ContactsPickerCoordi
     
     func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
         delegate?.roomParticipantsInviteCoordinatorBridgePresenterDidComplete(self)
+    }
+}
+
+extension RoomParticipantsInviteCoordinatorBridgePresenter: OptionListCoordinatorDelegate {
+    func optionListCoordinator(_ coordinator: OptionListCoordinatorProtocol, didSelectOptionAt index: Int) {
+        optionListCoordinator = nil
+        self.pushContactsPicker(for: roomOptions[index].room)
+    }
+    
+    func optionListCoordinator(_ coordinator: OptionListCoordinatorProtocol, didCompleteWithUserDisplayName userDisplayName: String?) {
+        optionListCoordinator = nil
+    }
+    
+    func optionListCoordinatorDidCancel(_ coordinator: OptionListCoordinatorProtocol) {
+        optionListCoordinator = nil
     }
 }

@@ -3127,6 +3127,22 @@ public class VectorL10n: NSObject {
   public static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }
+  /// They won’t be a part of %@.
+  public static func roomInviteToRoomOptionDetail(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_room_option_detail", p1)
+  }
+  /// To just this room
+  public static var roomInviteToRoomOptionTitle: String { 
+    return VectorL10n.tr("Vector", "room_invite_to_room_option_title") 
+  }
+  /// They can explore %@, but won’t be a member of %@.
+  public static func roomInviteToSpaceOptionDetail(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_space_option_detail", p1, p2)
+  }
+  /// To %@
+  public static func roomInviteToSpaceOptionTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_space_option_title", p1)
+  }
   /// Join
   public static var roomJoinGroupCall: String { 
     return VectorL10n.tr("Vector", "room_join_group_call") 
