@@ -6120,7 +6120,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         switch (event.eventType) {
             case MXEventTypeRoomMessage:
             {
-                NSString *messageType = event.content[@"msgtype"];
+                NSString *messageType = event.content[kMXMessageTypeKey];
                 
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {

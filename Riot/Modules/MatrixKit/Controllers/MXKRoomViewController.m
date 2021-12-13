@@ -2179,7 +2179,7 @@
     
     if (event && event.eventType == MXEventTypeRoomMessage)
     {
-        NSString *msgtype = event.content[@"msgtype"];
+        NSString *msgtype = event.content[kMXMessageTypeKey];
         
         NSString* textMessage;
         if ([msgtype isEqualToString:kMXMessageTypeText])

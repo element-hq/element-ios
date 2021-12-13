@@ -139,7 +139,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     if (event.eventType == MXEventTypeRoomMessage)
     {
         NSString *msgtype;
-        MXJSONModelSetString(msgtype, event.content[@"msgtype"]);
+        MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
         
         NSString *urlField;
         NSDictionary *fileField;
@@ -1248,7 +1248,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             else
             {
                 NSString *msgtype;
-                MXJSONModelSetString(msgtype, event.content[@"msgtype"]);
+                MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
 
                 NSString *body;
                 BOOL isHTML = NO;
@@ -1979,7 +1979,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
             if (event.eventType == MXEventTypeRoomMessage)
             {
-                NSString *msgtype = event.content[@"msgtype"];
+                NSString *msgtype = event.content[kMXMessageTypeKey];
                 if ([msgtype isEqualToString:kMXMessageTypeEmote] == NO)
                 {
                     NSString *senderDisplayName = [self senderDisplayNameForEvent:event withRoomState:roomState];

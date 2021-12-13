@@ -1951,7 +1951,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     else if ([event.type isEqualToString:kMXEventTypeStringRoomMessage])
     {
         // And retry the send the message according to its type
-        NSString *msgType = event.content[@"msgtype"];
+        NSString *msgType = event.content[kMXMessageTypeKey];
         if ([msgType isEqualToString:kMXMessageTypeText] || [msgType isEqualToString:kMXMessageTypeEmote])
         {
             // Resend the Matrix event by reusing the existing echo
@@ -2712,7 +2712,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         return NO;
     }
     
-    NSString *messageType = event.content[@"msgtype"];
+    NSString *messageType = event.content[kMXMessageTypeKey];
     if (messageType == nil || [messageType isEqualToString:@"m.bad.encrypted"]) {
         return NO;
     }
@@ -3928,7 +3928,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     if ([self canPerformActionOnEvent:event])
     {
-        NSString *messageType = event.content[@"msgtype"];
+        NSString *messageType = event.content[kMXMessageTypeKey];
         
         if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
         {
@@ -3971,7 +3971,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     MXEvent *event = [self eventWithEventId:eventId];
     BOOL isRoomMessage = event.eventType == MXEventTypeRoomMessage;
-    NSString *messageType = event.content[@"msgtype"];
+    NSString *messageType = event.content[kMXMessageTypeKey];
     
     return isRoomMessage
     && ([messageType isEqualToString:kMXMessageTypeText] || [messageType isEqualToString:kMXMessageTypeEmote])
