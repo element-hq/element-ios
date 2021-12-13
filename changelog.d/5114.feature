@@ -1,0 +1,1 @@
+Added support for creating, displaying and interacting with polls in the timeline.

@@ -1596,7 +1596,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             }
             break;
         }
-
+        case MXEventTypePollStart:
+        {
+            displayText = [MXEventContentPollStart modelFromJSON:event.content].question;
+            break;
+        }
         default:
             *error = MXKEventFormatterErrorUnknownEventType;
             break;
