@@ -187,6 +187,8 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                                                            userId:userId
                                                       accessToken:accessToken];
 
+        mxCredentials.accessTokenExpiresAt = [coder decodeInt64ForKey:@"accessTokenExpiresAt"];
+        mxCredentials.refreshToken = [coder decodeObjectForKey:@"refreshToken"];
         mxCredentials.identityServer = _identityServerURL;
         mxCredentials.identityServerAccessToken = identityServerAccessToken;
         mxCredentials.deviceId = [coder decodeObjectForKey:@"deviceId"];  
@@ -242,6 +244,12 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     [coder encodeObject:mxCredentials.homeServer forKey:@"homeserverurl"];
     [coder encodeObject:mxCredentials.userId forKey:@"userid"];
     [coder encodeObject:mxCredentials.accessToken forKey:@"accesstoken"];
+    if (mxCredentials.accessTokenExpiresAt) {
+        [coder encodeInt64:mxCredentials.accessTokenExpiresAt forKey:@"accessTokenExpiresAt"];
+    }
+    if (mxCredentials.refreshToken) {
+        [coder encodeObject:mxCredentials.refreshToken forKey:@"refreshToken"];
+    }
     [coder encodeObject:mxCredentials.identityServerAccessToken forKey:@"identityserveraccesstoken"];
 
     if (mxCredentials.deviceId)
@@ -2224,30 +2232,5 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         [[MXKAccountManager sharedManager] saveAccounts];
     }
 }
-
-#pragma mark - Homeserver Access/Refresh Token updates
-
-- (void)registerRestClientDidRefreshTokensNotification
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRestClientDidRefreshTokensNotification:) name:MXRestClientDidRefreshTokensNotification object:nil];
-}
-
-- (void)handleRestClientDidRefreshTokensNotification:(NSNotification*)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    
-    NSString *userId = userInfo[MXIdentityServiceNotificationUserIdKey];
-    NSString *identityServer = userInfo[MXIdentityServiceNotificationIdentityServerKey];
-    NSString *accessToken = userInfo[MXIdentityServiceNotificationAccessTokenKey];
-    
-    if (userId && identityServer && accessToken && [mxCredentials.identityServer isEqualToString:identityServer])
-    {
-        mxCredentials.identityServerAccessToken = accessToken;
-
-        // Archive updated field
-        [[MXKAccountManager sharedManager] saveAccounts];
-    }
-}
-
 
 @end

@@ -66,6 +66,8 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
         
         // Load existing accounts from local storage
         [self loadAccounts];
+        
+        [self registerRestClientDidRefreshTokensNotification];
     }
     return self;
 }
@@ -722,5 +724,18 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
         [fileManager removeItemAtPath:pathOld error:nil];
     }
 }
+
+#pragma mark - Homeserver Access/Refresh Token updates
+
+- (void)registerRestClientDidRefreshTokensNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRestClientDidRefreshTokensNotification:) name:MXRestClientDidRefreshTokensNotification object:nil];
+}
+
+- (void)handleRestClientDidRefreshTokensNotification:(NSNotification*)notification
+{
+    [self saveAccounts];
+}
+
 
 @end
