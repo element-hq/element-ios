@@ -44,3 +44,124 @@
 
 // Titles
 "title_home" = "Domov";
+"room_creation_make_private" = "Zmeniť na súkromnú";
+"room_creation_keep_private" = "Ponechať ako súkromnú";
+"room_creation_make_public_prompt_title" = "Zverejniť túto konverzáciu?";
+"room_creation_make_public" = "Zverejniť";
+"room_creation_appearance_name" = "Názov";
+
+// Errors
+"error_user_already_logged_in" = "Zdá sa, že sa pokúšate pripojiť k inému domovskému serveru. Chcete sa odhlásiť?";
+"social_login_button_title_sign_up" = "Prihlásiť sa s %@";
+"social_login_list_title_sign_up" = "alebo";
+"social_login_list_title_sign_in" = "alebo";
+"auth_softlogout_clear_data_sign_out" = "Odhlásiť sa";
+"auth_softlogout_clear_data_sign_out_title" = "Ste si istí?";
+"room_creation_invite_another_user" = "Používateľské ID, meno alebo emailová adresa";
+"auth_reset_password_error_not_found" = "Zdá sa, že vaša emailová adresa nie je priradená k žiadnemu Matrix ID na tomto domovskom serveri.";
+"auth_email_validation_message" = "Prosím, skontrolujte si email, aby ste mohli pokračovať v registrácii";
+"rooms_empty_view_title" = "Miestnosti";
+
+// Rooms tab
+"room_directory_no_public_room" = "Nie sú dostupné žiadne verejné miestnosti";
+"room_recents_join_room_prompt" = "Zadajte ID miestnosti alebo alias";
+"room_recents_join_room_title" = "Vstúpiť do miestnosti";
+"room_recents_join_room" = "Vstúpiť do miestnosti";
+"room_recents_create_empty_room" = "Vytvoriť miestnosť";
+"room_recents_start_chat_with" = "Začať konverzáciu";
+"room_recents_suggested_rooms_section" = "NAVRHOVANÉ MIESTNOSTI";
+"room_recents_invites_section" = "POZVANIA";
+"room_recents_server_notice_section" = "UPOZORNENIA SYSTÉMU";
+"room_recents_low_priority_section" = "NÍZKA PRIORITA";
+"room_recents_no_conversation" = "Žiadne miestnosti";
+"room_recents_conversations_section" = "MIESTNOSTI";
+"room_recents_people_section" = "ĽUDIA";
+"room_recents_favourites_section" = "OBĽÚBENÉ";
+"room_creation_public_room" = "Táto konverzácia je verejná";
+"room_creation_private_room" = "Táto konverzácia je súkromná";
+"room_creation_privacy" = "Súkromie";
+"room_creation_appearance" = "Vzhľad";
+"room_creation_account" = "Účet";
+
+// Chat creation
+"room_creation_title" = "Nová konverzácia";
+"room_participants_now" = "teraz";
+"room_participants_idle" = "Nečinný";
+"room_participants_unknown" = "Neznámy";
+"room_participants_offline" = "Nedostupný";
+"room_participants_online" = "Prítomný";
+"room_participants_invited_section" = "POZVANÍ";
+"room_participants_invite_prompt_title" = "Potvrdenie";
+"room_participants_remove_prompt_title" = "Potvrdenie";
+"room_participants_leave_prompt_title_for_dm" = "Opustiť";
+
+// Chat participants
+"room_participants_title" = "Účastníci";
+"search_default_placeholder" = "Hľadať";
+"search_files" = "Súbory";
+"search_people" = "Ľudia";
+"auth_softlogout_sign_in" = "Prihlásiť sa";
+"people_empty_view_title" = "Ľudia";
+"people_no_conversation" = "Žiadne konverzácie";
+"people_conversation_section" = "KONVERZÁCIE";
+
+// People tab
+"people_invites_section" = "POZVANIA";
+"auth_reset_password_error_unauthorized" = "Nepodarilo sa overiť emailovú adresu: Uistite sa, že ste správne klikli na odkaz v emailovej správe";
+"auth_reset_password_next_step_button" = "Overil som svoju emailovú adresu";
+"auth_reset_password_email_validation_message" = "Na adresu %s bola odoslaná správa. Po kliknutí na odkaz, ktorý obsahuje, kliknite nižšie.";
+"auth_reset_password_missing_password" = "Musíte zadať nové heslo.";
+"auth_reset_password_missing_email" = "Musíte zadať emailovú adresu prepojenú s vašim účtom.";
+"auth_reset_password_message" = "Ak chcete obnoviť vaše heslo, zadajte emailovú adresu prepojenú s vašim účtom:";
+"auth_recaptcha_message" = "Tento domovský server by sa rád uistil, že nie ste robot";
+"auth_msisdn_validation_error" = "Nie je možné overiť telefónne číslo.";
+"auth_msisdn_validation_message" = "Odoslali sme vám SMS správu, ktorá obsahuje overovací kód. Prosím, zadajte ho nižšie.";
+"auth_msisdn_validation_title" = "Čaká sa na overenie";
+"auth_use_server_options" = "Použiť vlastné možnosti servera (pre pokročilých)";
+"auth_email_not_found" = "Nepodarilo sa odoslať e-mail: Táto e-mailová adresa nebola nájdená";
+"auth_forgot_password_error_no_configured_identity_server" = "Nie je nastavený žiadny server identity: pridajte ho na obnovenie hesla.";
+"auth_forgot_password" = "Zabudli ste heslo?";
+"auth_username_in_use" = "Používateľské meno sa už používa";
+"auth_password_dont_match" = "Heslá sa nezhodujú";
+"auth_phone_in_use" = "Toto telefónne číslo sa už používa";
+"auth_email_in_use" = "Táto emailová adresa sa už používa";
+"auth_missing_email_or_phone" = "Chýba emailová adresa alebo telefónne číslo";
+"auth_missing_phone" = "Chýba telefónne číslo";
+"auth_missing_email" = "Chýba emailová adresa";
+"auth_add_phone_message_2" = "Nastavte si telefónne číslo, aby bolo neskôr možné voliteľné vyhľadanie ľuďmi, ktorí vás poznajú.";
+"auth_add_email_message_2" = "Nastavte e-mail na obnovenie účtu a neskôr na voliteľné vyhľadanie ľuďmi, ktorí vás poznajú.";
+"auth_missing_password" = "Chýba heslo";
+"auth_invalid_phone" = "Toto nevyzerá ako platné telefónne číslo";
+"auth_invalid_email" = "Toto nevyzerá ako platná e-mailová adresa";
+"auth_invalid_password" = "Heslo je veľmi krátke (minimálne 6 znakov)";
+"auth_invalid_user_name" = "Používateľské meno môže obsahovať len písmená, číslice, bodky, pomlčky a podčiarkovníky";
+"auth_invalid_login_param" = "Nesprávne používateľské meno a/alebo heslo";
+"auth_identity_server_placeholder" = "URL (napr. https://vector.im)";
+"auth_home_server_placeholder" = "URL (napr. https://matrix.org)";
+"auth_repeat_new_password_placeholder" = "Potvrďte svoje nové heslo";
+"auth_repeat_password_placeholder" = "Zopakovať heslo";
+"auth_phone_placeholder" = "Telefónne číslo";
+"auth_optional_phone_placeholder" = "Telefónne číslo (nepovinné)";
+"auth_email_placeholder" = "Emailová adresa";
+"auth_optional_email_placeholder" = "Emailová adresa (nepovinné)";
+"auth_user_name_placeholder" = "Meno používateľa";
+"auth_new_password_placeholder" = "Nové heslo";
+"auth_password_placeholder" = "Heslo";
+"auth_user_id_placeholder" = "Emailová adresa alebo používateľské meno";
+"auth_return_to_login" = "Vrátiť sa na prihlasovaciu obrazovku";
+"auth_send_reset_email" = "Poslať obnovovací email";
+"auth_login_single_sign_on" = "Prihlásiť sa";
+"auth_skip" = "Preskočiť";
+"auth_submit" = "Odoslať";
+"auth_register" = "Zaregistrovať";
+
+// Authentication
+"auth_login" = "Prihlásiť sa";
+"callbar_only_single_paused" = "Pozastavený hovor";
+"callbar_active_and_multiple_paused" = "1 aktívny hovor (%@) - %@ pozastavených hovorov";
+"callbar_active_and_single_paused" = "1 aktívny hovor (%@) - 1 pozastavený hovor";
+
+// Call Bar
+"callbar_only_single_active" = "Ťuknutím sa vrátite k hovoru (%@)";
+"switch" = "Prepnúť";
+"sending" = "Odosielanie";
