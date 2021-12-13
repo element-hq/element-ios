@@ -20,21 +20,36 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct ThemableTextEditor: UIViewRepresentable {
     
-    @Environment(\.theme) private var theme: ThemeSwiftUI
-
+    // MARK: Properties
+    
     @Binding var text: String
     @State var configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration()
     var onEditingChanged: ((_ edit: Bool) -> Void)?
 
-    private let textView: UITextView = UITextView()
-    private let nextButton: UIButton = UIButton(type: .custom)
-    private let internalParams = InternalParams()
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
 
+    private let textView: UITextView = UITextView()
+    private let internalParams = InternalParams()
+    
+    // MARK: Setup
+    
+    init(text: Binding<String>,
+         configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(),
+         onEditingChanged: ((_ edit: Bool) -> Void)? = nil) {
+        self._text = text
+        self._configuration = State(initialValue: configuration)
+        self.onEditingChanged = onEditingChanged
+        
+        ResponderManager.register(view: textView)
+    }
+
+    // MARK: UIViewRepresentable
+    
     func makeUIView(context: Context) -> UITextView {
         textView.delegate = context.coordinator
         textView.text = text
-        
-        ResponderManager.register(view: textView)
         
         if internalParams.isFirstResponder {
             textView.becomeFirstResponder()

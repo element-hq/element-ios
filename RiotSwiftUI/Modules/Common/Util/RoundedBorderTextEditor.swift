@@ -36,6 +36,24 @@ struct RoundedBorderTextEditor: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    // MARK: Setup
+    
+    init(title: String? = nil,
+         placeHolder: String,
+         text: Binding<String>,
+         textMaxHeight: CGFloat? = nil,
+         error: Binding<String?> = .constant(nil),
+         onTextChanged: ((String) -> Void)? = nil,
+         onEditingChanged: ((Bool) -> Void)? = nil) {
+        self.title = title
+        self.placeHolder = placeHolder
+        self._text = text
+        self.textMaxHeight = textMaxHeight
+        self._error = error
+        self.onTextChanged = onTextChanged
+        self.onEditingChanged = onEditingChanged
+    }
+    
     // MARK: Public
     
     var body: some View {

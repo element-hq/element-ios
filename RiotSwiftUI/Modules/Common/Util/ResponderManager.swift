@@ -41,8 +41,10 @@ class ResponderManager {
     }
     
     static func register(view: UIView) {
-        view.tag = nextIndex
-        registeredResponders.setObject(view, forKey: NSNumber(value: view.tag))
+        if registeredResponders.object(forKey: NSNumber(value: view.tag)) == nil {
+            view.tag = nextIndex
+            registeredResponders.setObject(view, forKey: NSNumber(value: view.tag))
+        }
     }
     
     static func unregister(view: UIView) {

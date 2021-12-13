@@ -27,16 +27,38 @@ struct UIKitTextInputConfiguration {
 @available(iOS 14.0, *)
 struct ThemableTextField: UIViewRepresentable {
     
-    @Environment(\.theme) private var theme: ThemeSwiftUI
-
+    // MARK: Properties
+    
     @State var placeholder: String?
     @Binding var text: String
     @State var configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration()
     var onEditingChanged: ((_ edit: Bool) -> Void)?
     var onCommit: (() -> Void)?
 
+    // MARK: Private
+    
+    @Environment(\.theme) private var theme: ThemeSwiftUI
+
     private let textField: UITextField = UITextField()
     private let internalParams = InternalParams()
+    
+    // MARK: Setup
+    
+    init(placeholder: String? = nil,
+         text: Binding<String>,
+         configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(),
+         onEditingChanged: ((_ edit: Bool) -> Void)? = nil,
+         onCommit: (() -> Void)? = nil) {
+        self._text = text
+        self._placeholder = State(initialValue: placeholder)
+        self._configuration = State(initialValue: configuration)
+        self.onEditingChanged = onEditingChanged
+        self.onCommit = onCommit
+
+        ResponderManager.register(view: textField)
+    }
+    
+    // MARK: UIViewRepresentable
     
     func makeUIView(context: Context) -> UITextField {
         textField.delegate = context.coordinator
@@ -46,8 +68,6 @@ struct ThemableTextField: UIViewRepresentable {
         textField.text = text
         
         textField.addTarget(context.coordinator, action: #selector(Coordinator.textFieldEditingChanged(sender:)), for: .editingChanged)
-
-        ResponderManager.register(view: textField)
                 
         if internalParams.isFirstResponder {
             textField.becomeFirstResponder()
@@ -107,7 +127,7 @@ struct ThemableTextField: UIViewRepresentable {
         }
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            if !ResponderManager.makeActiveNextResponder(of: textField) {
+            if parent.configuration.returnKeyType != .next || !ResponderManager.makeActiveNextResponder(of: textField) {
                 textField.resignFirstResponder()
             }
             
@@ -132,9 +152,9 @@ struct ThemableTextField: UIViewRepresentable {
 @available(iOS 14.0, *)
 extension ThemableTextField {
     func makeFirstResponder() -> ThemableTextField {
-        makeFirstResponder(true)
-        return self
+        return makeFirstResponder(true)
     }
+    
     func makeFirstResponder(_ isFirstResponder: Bool) -> ThemableTextField {
         internalParams.isFirstResponder = isFirstResponder
         return self

@@ -40,6 +40,20 @@ struct RoundedBorderTextField: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    // MARK: Setup
+    
+    init(title: String? = nil, placeHolder: String, text: Binding<String>, footerText: Binding<String?> = .constant(nil), isError: Binding<Bool> = .constant(false), isFirstResponder: Bool = false, configuration: UIKitTextInputConfiguration = UIKitTextInputConfiguration(), onTextChanged: ((String) -> Void)? = nil, onEditingChanged: ((Bool) -> Void)? = nil) {
+        self.title = title
+        self.placeHolder = placeHolder
+        self._text = text
+        self._footerText = footerText
+        self._isError = isError
+        self.isFirstResponder = isFirstResponder
+        self.configuration = configuration
+        self.onTextChanged = onTextChanged
+        self.onEditingChanged = onEditingChanged
+    }
+    
     // MARK: Public
     
     var body: some View {

@@ -256,6 +256,8 @@ final class SpaceCreationCoordinator: Coordinator {
     
     private func cancel() {
         if parameters.creationParameters.isModified {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            
             let alert = UIAlertController(title: VectorL10n.spacesCreationCancelTitle, message: VectorL10n.spacesCreationCancelMessage, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: VectorL10n.stop, style: .destructive, handler: { action in
                 self.callback?(.cancel)

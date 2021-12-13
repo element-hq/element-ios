@@ -63,13 +63,8 @@ struct SpaceCreationRooms: View {
                                 .foregroundColor(theme.colors.secondaryContent)
                             Spacer()
                             ForEach(viewModel.rooms.indices) { index in
-                                RoundedBorderTextField(title: VectorL10n.spacesCreationNewRoomsRoomNameTitle, placeHolder: viewModel.rooms[index].defaultName, text: $viewModel.rooms[index].name, footerText: .constant(nil), isError: .constant(false), configuration: UIKitTextInputConfiguration( returnKeyType: index < viewModel.rooms.endIndex - 1 ? .next : .done), onEditingChanged: { editing in
-                                    if editing {
-//                                        scrollViewReader.scrollTo("roomTextField\(viewModel.rooms.count-1)", anchor: .bottom)
-                                    }
-                                })
+                                RoundedBorderTextField(title: VectorL10n.spacesCreationNewRoomsRoomNameTitle, placeHolder: viewModel.rooms[index].defaultName, text: $viewModel.rooms[index].name,  configuration: UIKitTextInputConfiguration( returnKeyType: index < viewModel.rooms.endIndex - 1 ? .next : .done))
                                     .accessibility(identifier: "roomTextField")
-                                    .id("roomTextField\(index)")
                             }
                         }
                         .padding(.horizontal, 2)
