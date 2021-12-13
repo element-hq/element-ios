@@ -27,7 +27,7 @@ import AnalyticsEvents
     static let shared = Analytics()
     
     /// The analytics client to send events with.
-    private var client = PostHogAnalyticsClient()
+    private var client: AnalyticsClientProtocol = PostHogAnalyticsClient()
     
     /// Whether or not the object is enabled and sending events to the server.
     var isRunning: Bool { client.isRunning }
@@ -46,34 +46,25 @@ import AnalyticsEvents
     // MARK: - Public
     
     /// Opts in to analytics tracking with the supplied session.
-    /// - Parameter session: The session to use to when reading/generating the analytics ID.
+    /// - Parameter session: An optional session to use to when reading/generating the analytics ID.
+    ///  The session will be ignored if not running.
     func optIn(with session: MXSession?) {
-        guard let session = session else { return }
         RiotSettings.shared.enableAnalytics = true
-        
-        var settings = AnalyticsSettings(session: session)
-        
-        if settings.id == nil {
-            settings.generateID()
-            
-            session.setAccountData(settings.dictionary, forType: AnalyticsSettings.eventType) {
-                MXLog.debug("[Analytics] Successfully updated analytics settings in account data.")
-            } failure: { error in
-                MXLog.error("[Analytics] Failed to update analytics settings.")
-            }
-        }
-        
         startIfEnabled()
         
-        if !RiotSettings.shared.isIdentifiedForAnalytics {
-            identify(with: settings)
-        }
+        guard let session = session else { return }
+        useAnalyticsSettings(from: session)
     }
     
-    /// Opts out of analytics tracking and calls `reset` to clear any IDs and event queues.
+    /// Stops analytics tracking and calls `reset` to clear any IDs and event queues.
     func optOut() {
         RiotSettings.shared.enableAnalytics = false
+        
+        // The order is important here. PostHog ignores the reset if stopped.
         reset()
+        client.stop()
+        
+        MXLog.debug("[Analytics] Stopped.")
     }
     
     /// Starts the analytics client if the user has opted in, otherwise does nothing.
@@ -92,14 +83,39 @@ import AnalyticsEvents
         MXLogger.setBuildVersion(AppDelegate.theDelegate().build)
     }
     
-    /// Resets the any IDs and event queues in the analytics client. This method
-    /// can be called on sign-out to remember opt-in status, but ensure the next
-    /// account used isn't associated with the previous one.
-    func reset() {
-        guard isRunning else { return }
+    /// Use the analytics settings from the supplied session to configure analytics.
+    /// For now this is only used for (pseudonymous) identification.
+    /// - Parameter session: The session to read analytics settings from.
+    func useAnalyticsSettings(from session: MXSession) {
+        guard
+            RiotSettings.shared.enableAnalytics,
+            !RiotSettings.shared.isIdentifiedForAnalytics,
+            session.state == .running   // Only use the session if it is running otherwise we could wipe out an existing analytics ID.
+        else { return }
         
+        var settings = AnalyticsSettings(session: session)
+        
+        if settings.id == nil {
+            settings.generateID()
+            
+            session.setAccountData(settings.dictionary, forType: AnalyticsSettings.eventType) {
+                MXLog.debug("[Analytics] Successfully updated analytics settings in account data.")
+                self.identify(with: settings)
+            } failure: { error in
+                MXLog.error("[Analytics] Failed to update analytics settings.")
+            }
+        } else {
+            self.identify(with: settings)
+        }
+    }
+    
+    /// Resets the any IDs and event queues in the analytics client. This method should
+    /// be called on sign-out to maintain opt-in status, whilst ensuring the next
+    /// account used isn't associated with the previous one.
+    /// Note: **MUST** be called before stopping PostHog or the reset is ignored.
+    func reset() {
         client.reset()
-        MXLog.debug("[Analytics] Stopped and reset.")
+        MXLog.debug("[Analytics] Reset.")
         RiotSettings.shared.isIdentifiedForAnalytics = false
         
         // Stop collecting crash logs

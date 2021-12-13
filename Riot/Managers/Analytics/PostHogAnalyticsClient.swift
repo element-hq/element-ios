@@ -40,8 +40,11 @@ class PostHogAnalyticsClient: AnalyticsClientProtocol {
     }
     
     func reset() {
-        postHog?.disable()
         postHog?.reset()
+    }
+    
+    func stop() {
+        postHog?.disable()
         
         // As of PostHog 1.4.4, setting the client to nil here doesn't release
         // it. Keep it around to avoid having multiple instances if the user re-enables

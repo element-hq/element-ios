@@ -28,8 +28,12 @@ protocol AnalyticsClientProtocol {
     /// - Parameter id: The ID to associate with the user.
     func identify(id: String)
     
-    /// Stop the analytics client reporting data and reset all stored properties and events.
+    /// Reset all stored properties and any event queues on the client. Note that
+    /// the client will remain active, but in a fresh unidentified state.
     func reset()
+    
+    /// Stop the analytics client reporting data.
+    func stop()
     
     /// Send any queued events immediately.
     func flush()

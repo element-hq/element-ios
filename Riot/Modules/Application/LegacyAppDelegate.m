@@ -1884,6 +1884,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             [self.pushNotificationService checkPushKitPushersInSession:mxSession];
         }
+        else if (mxSession.state == MXSessionStateRunning)
+        {
+            // Configure analytics from the session if necessary
+            [Analytics.shared useAnalyticsSettingsFrom:mxSession];
+        }
         else if (mxSession.state == MXSessionStateClosed)
         {
             [self removeMatrixSession:mxSession];
