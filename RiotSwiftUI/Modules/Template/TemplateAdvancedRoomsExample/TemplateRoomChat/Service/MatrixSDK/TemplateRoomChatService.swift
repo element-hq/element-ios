@@ -103,7 +103,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
             })
             .compactMap({ event -> TemplateRoomChatMessage?  in
                 guard let eventId = event.eventId,
-                      let body = event.content["body"] as? String,
+                      let body = event.content[kMXMessageBodyKey] as? String,
                       let sender = senderForMessage(event: event)
                 else { return nil }
                 

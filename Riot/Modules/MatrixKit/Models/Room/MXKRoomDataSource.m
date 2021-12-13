@@ -3992,7 +3992,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
     else
     {
-        editableTextMessage = event.content[@"body"];
+        editableTextMessage = event.content[kMXMessageBodyKey];
     }
     
     return editableTextMessage;
@@ -4109,7 +4109,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     NSString *sanitizedText = [self sanitizedMessageText:text];
     NSString *formattedText = [self htmlMessageFromSanitizedText:sanitizedText];
     
-    NSString *eventBody = event.content[@"body"];
+    NSString *eventBody = event.content[kMXMessageBodyKey];
     NSString *eventFormattedBody = event.content[@"formatted_body"];
     
     if (![sanitizedText isEqualToString:eventBody] && (!eventFormattedBody || ![formattedText isEqualToString:eventFormattedBody]))

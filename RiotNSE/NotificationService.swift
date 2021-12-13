@@ -386,7 +386,7 @@ class NotificationService: UNNotificationServiceExtension {
                             }
                             
                             let msgType = event.content[kMXMessageTypeKey] as? String
-                            let messageContent = event.content["body"] as? String
+                            let messageContent = event.content[kMXMessageBodyKey] as? String
                             let isReply = event.isReply()
                             
                             if isReply {

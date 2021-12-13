@@ -1066,7 +1066,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     {
         NSString *mediaName = [self accessibilityLabelForAttachmentType:self.attachment.type];
 
-        MXJSONModelSetString(accessibilityLabel, self.events.firstObject.content[@"body"]);
+        MXJSONModelSetString(accessibilityLabel, self.events.firstObject.content[kMXMessageBodyKey]);
         if (accessibilityLabel)
         {
             accessibilityLabel = [NSString stringWithFormat:@"%@ %@", mediaName, accessibilityLabel];

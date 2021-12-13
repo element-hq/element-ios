@@ -139,7 +139,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     if (event.eventType == MXEventTypeRoomMessage)
     {
         NSString *msgtype;
-        MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
+        MXJSONModelSetString(msgtype, event.content[@"msgtype"]);
         
         NSString *urlField;
         NSDictionary *fileField;
@@ -1263,12 +1263,12 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 else if (eventThreadIdentifier)
                 {
                     isHTML = YES;
-                    MXJSONModelSetString(body, event.content[@"body"]);
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                     MXEvent *threadRootEvent = [mxSession.store eventWithEventId:eventThreadIdentifier
                                                                           inRoom:event.roomId];
                     
                     NSString *threadRootEventContent;
-                    MXJSONModelSetString(threadRootEventContent, threadRootEvent.content[@"body"]);
+                    MXJSONModelSetString(threadRootEventContent, threadRootEvent.content[kMXMessageBodyKey]);
                     body = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
                             [MXTools permalinkToEvent:eventThreadIdentifier inRoom:event.roomId],
                             [MXTools permalinkToUserWithUserId:threadRootEvent.sender],
@@ -1279,7 +1279,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 }
                 else
                 {
-                    MXJSONModelSetString(body, event.content[@"body"]);
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                 }
 
                 if (body)
@@ -1561,7 +1561,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             else
             {
                 NSString *body;
-                MXJSONModelSetString(body, event.content[@"body"]);
+                MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                 
                 // Check sticker validity
                 if (![self isSupportedAttachment:event])
@@ -2100,7 +2100,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     else if (!_isForSubtitle && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
     {
         NSString *message;
-        MXJSONModelSetString(message, event.content[@"body"]);
+        MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
 
         if (_emojiOnlyTextFont && [MXKTools isEmojiOnlyString:message])
         {
