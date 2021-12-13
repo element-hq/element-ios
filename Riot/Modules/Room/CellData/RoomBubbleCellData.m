@@ -149,6 +149,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                 
                 // Show timestamps always on right
                 self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
+                break;
+            }
+            case MXEventTypePollStart:
+            {
+                self.tag = RoomBubbleCellDataTagPoll;
+                self.collapsable = NO;
+                self.collapsed = NO;
+                
+                break;
             }
             case MXEventTypeCustom:
             {
@@ -255,6 +264,11 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }
     
     if (self.tag == RoomBubbleCellDataTagRoomCreationIntro)
+    {
+        return NO;
+    }
+    
+    if (self.tag == RoomBubbleCellDataTagPoll)
     {
         return NO;
     }
@@ -417,7 +431,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 {
     __block NSInteger firstVisibleComponentIndex = NSNotFound;
     
-    if (self.attachment && self.bubbleComponents.count)
+    BOOL isPoll = (self.events.firstObject.eventType == MXEventTypePollStart);
+    
+    if ((isPoll || self.attachment) && self.bubbleComponents.count)
     {
         firstVisibleComponentIndex = 0;
     }
@@ -826,10 +842,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagRoomCreationIntro:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagPoll:
+            shouldAddEvent = NO;
+            break;
         default:
             break;
     }
     
+    // If the current bubbleData supports adding events then check
+    // if the incoming event can be added in
     if (shouldAddEvent)
     {
         switch (event.eventType)
@@ -871,6 +892,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             case MXEventTypeCallAnswer:
             case MXEventTypeCallHangup:
             case MXEventTypeCallReject:
+                shouldAddEvent = NO;
+                break;
+            case MXEventTypePollStart:
                 shouldAddEvent = NO;
                 break;
             case MXEventTypeCustom:
