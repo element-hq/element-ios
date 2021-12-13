@@ -122,7 +122,7 @@
 "room_creation_keep_private" = "개인으로 유지";
 "room_creation_make_private" = "개인으로 하기";
 "room_creation_wait_for_creation" = "방을 이미 만드는 중입니다. 기다려주세요.";
-"room_creation_invite_another_user" = "검색 / 사용자 ID, 이름 또는 이메일로 초대";
+"room_creation_invite_another_user" = "사용자 ID, 이름 또는 이메일";
 "room_creation_error_invite_user_by_email_without_identity_server" = "ID 서버가 설정되지 않아 이메일로 참가자를 추가할 수 없습니다.";
 // Room recents
 "room_recents_directory_section" = "방 목록";
@@ -397,7 +397,7 @@
 "settings_key_backup_info" = "암호화된 메시지는 종단간 암호화로 보호됩니다. 오직 당신과 참가자만 키를 갖고 있어서 이 메시지를 읽을 수 있습니다.";
 "settings_key_backup_info_checking" = "확인 중…";
 "settings_key_backup_info_none" = "키가 이 세션에서 백업되지 않았습니다.";
-"settings_key_backup_info_signout_warning" = "이 기기에만 있을 수 있는 키를 잃지 않도록, 로그아웃하기 전에 이 기기를 키 백업에 연결하세요.";
+"settings_key_backup_info_signout_warning" = "키를 잃어버리지 않도록 로그아웃을 하기 전에 키를 백업하세요.";
 "settings_key_backup_info_version" = "키 백업 버전: %@";
 "settings_key_backup_info_algorithm" = "알고리즘: %@";
 "settings_key_backup_info_valid" = "이 세션은 키를 백업하고 있습니다.";
@@ -564,7 +564,7 @@
 "e2e_need_log_in_again" = "이 세션에 종단간 암호화 키를 생성하고 공개 키를 홈서버에 제출하려면 다시 로그인해야 함니다.\n한 번만 하면 됩니다. 불편을 드려 죄송합니다.";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "새 키 백업";
-"e2e_key_backup_wrong_version" = "새 보안 메시지 키 백업이 감지되었습니다.\n\n당신이 한 것이 아니라면 설정에서 새 암호를 설정하세요.";
+"e2e_key_backup_wrong_version" = "새 보안 메시지 키 백업이 감지되었습니다.\n\n스스로 진행한 것이 아니라면 설정에서 새 암호를 설정하세요.";
 "e2e_key_backup_wrong_version_button_settings" = "설정";
 "e2e_key_backup_wrong_version_button_wasme" = "접니다";
 // Bug report
@@ -641,7 +641,7 @@
 "key_backup_setup_intro_manual_export_info" = "(고급)";
 "key_backup_setup_intro_manual_export_action" = "수동으로 키 내보내기";
 "key_backup_setup_passphrase_title" = "백업을 암호로 보호하기";
-"key_backup_setup_passphrase_info" = "암호화된 키의 사본을 서버에 보관합니다. 암호로된 백업을 보호하며 안전하게 유지해줍니다.\n\n보안을 최대화하려면, 암호는 계정 비밀번호와 달라야 합니다.";
+"key_backup_setup_passphrase_info" = "암호화된 키의 사본을 서버에 보관합니다. 암호로 된 백업을 보호하며 안전하게 유지해줍니다.\n\n보안을 최대화하려면, 암호는 계정 비밀번호와 달라야 합니다.";
 "key_backup_setup_passphrase_passphrase_title" = "입력";
 "key_backup_setup_passphrase_passphrase_placeholder" = "암호 입력";
 "key_backup_setup_passphrase_passphrase_valid" = "좋아요!";
@@ -649,7 +649,7 @@
 "key_backup_setup_passphrase_confirm_passphrase_title" = "확인";
 "key_backup_setup_passphrase_confirm_passphrase_placeholder" = "암호 확인";
 "key_backup_setup_passphrase_confirm_passphrase_valid" = "좋아요!";
-"key_backup_setup_passphrase_confirm_passphrase_invalid" = "암호가 맞지 않습니다";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "암호가 틀렸습니다";
 "key_backup_setup_passphrase_set_passphrase_action" = "암호 설정";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "또는, 안전한 곳에 저장해 둘 복구 키로 백업을 보호합니다.";
 "key_backup_setup_passphrase_setup_recovery_key_action" = "(고급) 복구 키로 설정";
@@ -896,7 +896,7 @@
 "widget_menu_open_outside" = "브라우저에서 열기";
 "widget_menu_revoke_permission" = "액세스 취소";
 "widget_menu_remove" = "모두를 위해 제거";
-"widget_integration_manager_disabled" = "설정에서 통합 관리자를 켜야 합니다";
+"widget_integration_manager_disabled" = "설정에서 통합 관리자를 활성화 해야 합니다";
 "people_empty_view_information" = "누구든지 안전하게 대화하세요. 사람을 추가하려면 + 버튼을 누르세요.";
 "people_empty_view_title" = "사람들";
 "room_recents_unknown_room_error_message" = "이 방을 찾을 수 없습니다. 방이 존재하는지 확인하세요";
@@ -974,3 +974,97 @@
 "room_member_power_level_custom_in" = "사용자 정의 (%@) in %@";
 "room_participants_action_security_status_complete_security" = "완벽한 보안";
 "room_participants_filter_room_members_for_dm" = "구성원 필터";
+"key_verification_tile_request_incoming_approval_accept" = "수락";
+"key_verification_tile_request_status_accepted" = "수락됨";
+"key_verification_tile_request_status_cancelled" = "%@ 취소됨";
+"key_verification_tile_request_status_cancelled_by_me" = "취소됨";
+"key_verification_tile_request_status_expired" = "만료됨";
+"key_verification_tile_request_status_waiting" = "기다려주세요…";
+"key_verification_tile_request_status_data_loading" = "데이터 로딩…";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "검증 요청";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "오류";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@가 검증을 요청함";
+"key_verification_tile_conclusion_warning_title" = "신뢰할 수 없는 로그인";
+"key_verification_tile_conclusion_done_title" = "검증됨";
+"key_verification_tile_request_incoming_approval_decline" = "끊기";
+"settings_mentions_and_keywords_encryption_notice" = "암호화된 방에서는 멘션과 키워드에 대한 알림을 받을 수 없습니다.";
+"settings_new_keyword" = "키워드 추가";
+"settings_your_keywords" = "키워드 설정";
+"settings_room_upgrades" = "방 설정 변경";
+"settings_messages_by_a_bot" = "봇으로부터 받은 메시지";
+"settings_call_invitations" = "통화 초대";
+"settings_room_invitations" = "방 초대";
+"settings_messages_containing_keywords" = "키워드";
+"settings_messages_containing_at_room" = "@방";
+"settings_messages_containing_user_name" = "아이디";
+"settings_messages_containing_display_name" = "프로필 이름";
+"settings_direct_messages" = "다이렉트 메시지";
+"settings_notify_me_for" = "해당 메시지를 받으면 알림 받기";
+"settings_encrypted_group_messages" = "암호화된 그룹 메시지";
+"settings_group_messages" = "그룹 메시지";
+"settings_encrypted_direct_messages" = "암호화된 다이렉트 메시지";
+"settings_mentions_and_keywords" = "멘션과 키워드";
+"settings_default" = "기본 알림";
+"settings_notifications_disabled_alert_title" = "알림 비활성화";
+"settings_security" = "보안";
+"settings_confirm_media_size" = "전송 시 크기 확인";
+"settings_confirm_media_size_description" = "이 기능을 켜면 보낼 이미지나 동영상의 크기를 확인하는 메시지가 표시됩니다.";
+"settings_about" = "정보";
+"settings_phone_contacts" = "연락처";
+"settings_notifications" = "알림";
+"settings_links" = "링크";
+"settings_sending_media" = "사진 및 영상 전송";
+"external_link_confirmation_title" = "링크 확인";
+"room_no_privileges_to_create_group_call" = "통화를 시작하려면 관리자나 중재자의 권한이 필요합니다.";
+"room_join_group_call" = "입장";
+"room_open_dialpad" = "키패드";
+"room_place_voice_call" = "음성 통화";
+"room_accessibility_video_call" = "영상 통화";
+"room_event_action_delete_confirmation_message" = "전송되지 않은 메시지를 삭제하시겠습니까?";
+"room_event_action_delete_confirmation_title" = "전송되지 않은 메시지 삭제";
+"room_event_action_forward" = "전달";
+"room_unsent_messages_cancel_message" = "이 방에서 전송되지 않은 모든 메시지를 삭제하시겠습니까?";
+"room_unsent_messages_cancel_title" = "전송되지 않은 메시지 삭제";
+"room_message_replying_to" = "%@에게 답장";
+"room_message_editing" = "편집";
+
+// Chat
+"room_slide_to_end_group_call" = "모든 구성원의 통화를 종료하려면 슬라이드";
+"room_member_power_level_short_custom" = "맞춤 설정";
+"room_member_power_level_short_moderator" = "중재자";
+"room_member_power_level_short_admin" = "관리자";
+"room_member_power_level_moderator_in" = "%@ 중재자";
+"room_member_power_level_admin_in" = "%@ 관리자";
+"room_participants_security_information_room_encrypted_for_dm" = "이 메시지는 종단간 암호화가 적용되어 있습니다.\n\n메시지는 암호화되어 보호되며, 메시지를 복호화할 수 있는 고유 키는 사용자와 수신자만 가지고 있습니다.";
+"room_participants_security_information_room_encrypted" = "이 방의 메시지는 종단간 암호화가 적용됩니다.\n\n메시지는 암호화되어 보호되며, 메시지를 복호화할 수 있는 고유 키는 사용자와 수신자만 가지고 있습니다.";
+"room_participants_security_information_room_not_encrypted_for_dm" = "이 메시지는 종단간 암호화가 적용되지 않습니다.";
+"room_participants_security_information_room_not_encrypted" = "이 방에서 보내는 메시지는 종단간 암호화가 적용되지 않습니다.";
+"room_participants_security_loading" = "로딩 중…";
+"room_participants_action_security_status_loading" = "로딩 중…";
+"room_participants_action_security_status_warning" = "주의";
+"room_participants_action_security_status_verify" = "검증";
+"room_participants_action_security_status_verified" = "검증됨";
+"room_participants_action_section_security" = "보안";
+"room_participants_leave_prompt_msg_for_dm" = "정말 떠나시겠습니까?";
+"room_participants_leave_prompt_title_for_dm" = "떠나기";
+"find_your_contacts_identity_service_error" = "ID 서버에 연결할 수 없습니다.";
+"find_your_contacts_button_title" = "연락처에서 찾기";
+"find_your_contacts_message" = "%@에서 연락처를 표시하여 잘 아는 사람과 빠르게 대화할 수 있습니다.";
+"find_your_contacts_title" = "연락처에서 시작하기";
+"poll_edit_form_add_option" = "옵션 추가";
+"settings_notifications_disabled_alert_message" = "알림을 허용하려면, 설정으로 이동하십시오.";
+"settings_device_notifications" = "장치 알림";
+"find_your_contacts_footer" = "설정에서 언제든지 비활성화 할 수 있습니다.";
+"side_menu_action_invite_friends" = "친구 초대";
+"contacts_address_book_permission_denied_alert_message" = "연락처를 사용하려면, 설정으로 이동하십시오.";
+"contacts_address_book_permission_denied_alert_title" = "연락처 사용 안 함";
+"rooms_empty_view_title" = "방";
