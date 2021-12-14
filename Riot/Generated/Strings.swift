@@ -5106,6 +5106,7 @@ public class VectorL10n: NSObject {
   /// description
   public static var spaceTopic: String { 
     return VectorL10n.tr("Vector", "space_topic") 
+  }
   /// Add room
   public static var spacesAddRoom: String { 
     return VectorL10n.tr("Vector", "spaces_add_room") 
@@ -5114,12 +5115,13 @@ public class VectorL10n: NSObject {
   public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
   }
-  /// Create space
-  public static var spacesAddSpaceTitle: String { 
-    return VectorL10n.tr("Vector", "spaces_add_space_title") 
   /// Add space
   public static var spacesAddSpace: String { 
     return VectorL10n.tr("Vector", "spaces_add_space") 
+  }
+  /// Create space
+  public static var spacesAddSpaceTitle: String { 
+    return VectorL10n.tr("Vector", "spaces_add_space_title") 
   }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
   public static var spacesComingSoonDetail: String { 
