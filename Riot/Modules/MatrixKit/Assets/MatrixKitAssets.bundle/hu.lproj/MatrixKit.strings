@@ -477,3 +477,5 @@
 "auth_invalid_user_name" = "Érvénytelen felhasználónév";
 "rename" = "Átnevez";
 "room_displayname_all_other_members_left" = "%@ (Bal)";
+"attachment_unsupported_preview_message" = "Ez a fájl típus nem támogatott.";
+"attachment_unsupported_preview_title" = "Az előnézetet nem lehet megjeleníteni";

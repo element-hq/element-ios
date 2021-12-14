@@ -1,0 +1,167 @@
+
+
+"done" = "Hotovo";
+"open" = "Otvoriť";
+"less" = "Menej";
+"more" = "Viac";
+"skip" = "Preskočiť";
+"close" = "Zavrieť";
+"collapse" = "zbaliť";
+"rename" = "Premenovať";
+"later" = "Neskôr";
+"active_call_details" = "Prebiehajúci hovor (%s)";
+"active_call" = "Aktívny hovor";
+"video" = "Video";
+"voice" = "Hlas";
+"camera" = "Kamera";
+"preview" = "Zobraziť náhľad";
+"accept" = "Prijať";
+"decline" = "Odmietnuť";
+"join" = "Vstúpiť";
+"save" = "Uložiť";
+"cancel" = "Zrušiť";
+"off" = "Vypnuté";
+"on" = "Povolené";
+"retry" = "Skúsiť znovu";
+"invite" = "Pozvať";
+"remove" = "Odstrániť";
+"leave" = "Opustiť";
+"start" = "Začať";
+"store_promotional_text" = "Aplikácia na chatovanie a spoluprácu s ochranou súkromia v otvorenej sieti. Decentralizovaná, aby ste ju mali pod kontrolou. Žiadne dolovanie údajov, žiadne zadné vrátka ani prístup tretích strán.";
+"store_full_description" = "Element je nový typ aplikácie na posielanie správ a spoluprácu, ktorá:\n\n1. vám dáva kontrolu nad zachovaním vášho súkromia\n2. Umožňuje vám komunikovať s kýmkoľvek v sieti Matrix, a dokonca aj mimo nej vďaka integrácii s aplikáciami, ako je Slack\n3. Chráni vás pred reklamou, získavaním údajov, zadnými vrátkami a uzavretým ekosystémom.\n4. Zabezpečuje vás prostredníctvom end-to-end šifrovania s krížovým podpisovaním na overenie ostatných\n\nElement sa úplne líši od ostatných aplikácií na zasielanie správ a spoluprácu, pretože je decentralizovaný a má otvorený zdrojový kód.\n\nElement vám umožňuje, aby ste sa sami hosťovali - alebo si vybrali hosting - takže máte súkromie, vlastníctvo a kontrolu nad svojimi údajmi a konverzáciami. Poskytuje vám prístup k otvorenej sieti; takže nie ste odkázaní len na rozhovory s inými používateľmi aplikácie Element. A je veľmi bezpečný.\n\nElement toto všetko dokáže, pretože funguje na Matrixe - štandarde pre otvorenú, decentralizovanú komunikáciu. \n\nElement vám dáva kontrolu tým, že vám umožňuje vybrať si, kto bude hostiť vaše konverzácie. V aplikácii Element si môžete vybrať, či chcete hosťovať rôznymi spôsobmi:\n\n1. Získajte bezplatný účet na verejnom serveri matrix.org\n2. Vlastný hosting účtu spustením servera na vlastnom hardvéri.\n3. Zaregistrujte si účet na vlastnom serveri jednoduchým predplatením hostingovej platformy Element Matrix Services.\n\nPrečo si vybrať práve Element?\n\nVLASTNÍTE SVOJE DÁTA: Vy rozhodujete o tom, kde budú vaše dáta a správy uložené. Vlastníte ich a máte nad nimi kontrolu, nie nejaká MEGAKORPORÁCIA, ktorá vaše údaje doluje alebo poskytuje prístup tretím stranám.\n\nOTVORENÁ KONVERZÁCIA A SPOLUPRÁCA: Môžete chatovať s kýmkoľvek iným v sieti Matrix, či už používa aplikáciu Element alebo inú aplikáciu Matrix, a dokonca aj vtedy, ak používa iný systém správ typu Slack, IRC alebo XMPP.\n\nSUPER-BEZPEČNÉ: Skutočné end-to-end šifrovanie (správy môžu dešifrovať len účastníci konverzácie) a krížové podpisovanie na overenie zariadení účastníkov konverzácie.\n\nKOMPLETNÁ KOMUNIKÁCIA: Správy, hlasové a videohovory, zdieľanie súborov, zdieľanie obrazovky a celý rad integrácií, botov a widgetov. Vytvárajte miestnosti, komunity, zostaňte v kontakte a vybavujte veci.\n\nKDEKOĽVEK STE: Zostaňte v kontakte, nech ste kdekoľvek, s plne synchronizovanou históriou správ vo všetkých zariadeniach a na webe na https://element.io/app.";
+"create" = "Vytvoriť";
+"continue" = "Pokračovať";
+"back" = "Späť";
+"next" = "Ďalej";
+
+// Actions
+"view" = "Zobraziť";
+"warning" = "Upozornenie";
+"title_groups" = "Komunity";
+"title_rooms" = "Miestnosti";
+"title_people" = "Ľudia";
+"title_favourites" = "Obľúbené";
+
+// Titles
+"title_home" = "Domov";
+"room_creation_make_private" = "Zmeniť na súkromnú";
+"room_creation_keep_private" = "Ponechať ako súkromnú";
+"room_creation_make_public_prompt_title" = "Zverejniť túto konverzáciu?";
+"room_creation_make_public" = "Zverejniť";
+"room_creation_appearance_name" = "Názov";
+
+// Errors
+"error_user_already_logged_in" = "Zdá sa, že sa pokúšate pripojiť k inému domovskému serveru. Chcete sa odhlásiť?";
+"social_login_button_title_sign_up" = "Prihlásiť sa s %@";
+"social_login_list_title_sign_up" = "alebo";
+"social_login_list_title_sign_in" = "alebo";
+"auth_softlogout_clear_data_sign_out" = "Odhlásiť sa";
+"auth_softlogout_clear_data_sign_out_title" = "Ste si istí?";
+"room_creation_invite_another_user" = "Používateľské ID, meno alebo emailová adresa";
+"auth_reset_password_error_not_found" = "Zdá sa, že vaša emailová adresa nie je priradená k žiadnemu Matrix ID na tomto domovskom serveri.";
+"auth_email_validation_message" = "Prosím, skontrolujte si email, aby ste mohli pokračovať v registrácii";
+"rooms_empty_view_title" = "Miestnosti";
+
+// Rooms tab
+"room_directory_no_public_room" = "Nie sú dostupné žiadne verejné miestnosti";
+"room_recents_join_room_prompt" = "Zadajte ID miestnosti alebo alias";
+"room_recents_join_room_title" = "Vstúpiť do miestnosti";
+"room_recents_join_room" = "Vstúpiť do miestnosti";
+"room_recents_create_empty_room" = "Vytvoriť miestnosť";
+"room_recents_start_chat_with" = "Začať konverzáciu";
+"room_recents_suggested_rooms_section" = "NAVRHOVANÉ MIESTNOSTI";
+"room_recents_invites_section" = "POZVANIA";
+"room_recents_server_notice_section" = "UPOZORNENIA SYSTÉMU";
+"room_recents_low_priority_section" = "NÍZKA PRIORITA";
+"room_recents_no_conversation" = "Žiadne miestnosti";
+"room_recents_conversations_section" = "MIESTNOSTI";
+"room_recents_people_section" = "ĽUDIA";
+"room_recents_favourites_section" = "OBĽÚBENÉ";
+"room_creation_public_room" = "Táto konverzácia je verejná";
+"room_creation_private_room" = "Táto konverzácia je súkromná";
+"room_creation_privacy" = "Súkromie";
+"room_creation_appearance" = "Vzhľad";
+"room_creation_account" = "Účet";
+
+// Chat creation
+"room_creation_title" = "Nová konverzácia";
+"room_participants_now" = "teraz";
+"room_participants_idle" = "Nečinný";
+"room_participants_unknown" = "Neznámy";
+"room_participants_offline" = "Nedostupný";
+"room_participants_online" = "Prítomný";
+"room_participants_invited_section" = "POZVANÍ";
+"room_participants_invite_prompt_title" = "Potvrdenie";
+"room_participants_remove_prompt_title" = "Potvrdenie";
+"room_participants_leave_prompt_title_for_dm" = "Opustiť";
+
+// Chat participants
+"room_participants_title" = "Účastníci";
+"search_default_placeholder" = "Hľadať";
+"search_files" = "Súbory";
+"search_people" = "Ľudia";
+"auth_softlogout_sign_in" = "Prihlásiť sa";
+"people_empty_view_title" = "Ľudia";
+"people_no_conversation" = "Žiadne konverzácie";
+"people_conversation_section" = "KONVERZÁCIE";
+
+// People tab
+"people_invites_section" = "POZVANIA";
+"auth_reset_password_error_unauthorized" = "Nepodarilo sa overiť emailovú adresu: Uistite sa, že ste správne klikli na odkaz v emailovej správe";
+"auth_reset_password_next_step_button" = "Overil som svoju emailovú adresu";
+"auth_reset_password_email_validation_message" = "Na adresu %s bola odoslaná správa. Po kliknutí na odkaz, ktorý obsahuje, kliknite nižšie.";
+"auth_reset_password_missing_password" = "Musíte zadať nové heslo.";
+"auth_reset_password_missing_email" = "Musíte zadať emailovú adresu prepojenú s vašim účtom.";
+"auth_reset_password_message" = "Ak chcete obnoviť vaše heslo, zadajte emailovú adresu prepojenú s vašim účtom:";
+"auth_recaptcha_message" = "Tento domovský server by sa rád uistil, že nie ste robot";
+"auth_msisdn_validation_error" = "Nie je možné overiť telefónne číslo.";
+"auth_msisdn_validation_message" = "Odoslali sme vám SMS správu, ktorá obsahuje overovací kód. Prosím, zadajte ho nižšie.";
+"auth_msisdn_validation_title" = "Čaká sa na overenie";
+"auth_use_server_options" = "Použiť vlastné možnosti servera (pre pokročilých)";
+"auth_email_not_found" = "Nepodarilo sa odoslať e-mail: Táto e-mailová adresa nebola nájdená";
+"auth_forgot_password_error_no_configured_identity_server" = "Nie je nastavený žiadny server identity: pridajte ho na obnovenie hesla.";
+"auth_forgot_password" = "Zabudli ste heslo?";
+"auth_username_in_use" = "Používateľské meno sa už používa";
+"auth_password_dont_match" = "Heslá sa nezhodujú";
+"auth_phone_in_use" = "Toto telefónne číslo sa už používa";
+"auth_email_in_use" = "Táto emailová adresa sa už používa";
+"auth_missing_email_or_phone" = "Chýba emailová adresa alebo telefónne číslo";
+"auth_missing_phone" = "Chýba telefónne číslo";
+"auth_missing_email" = "Chýba emailová adresa";
+"auth_add_phone_message_2" = "Nastavte si telefónne číslo, aby bolo neskôr možné voliteľné vyhľadanie ľuďmi, ktorí vás poznajú.";
+"auth_add_email_message_2" = "Nastavte e-mail na obnovenie účtu a neskôr na voliteľné vyhľadanie ľuďmi, ktorí vás poznajú.";
+"auth_missing_password" = "Chýba heslo";
+"auth_invalid_phone" = "Toto nevyzerá ako platné telefónne číslo";
+"auth_invalid_email" = "Toto nevyzerá ako platná e-mailová adresa";
+"auth_invalid_password" = "Heslo je veľmi krátke (minimálne 6 znakov)";
+"auth_invalid_user_name" = "Používateľské meno môže obsahovať len písmená, číslice, bodky, pomlčky a podčiarkovníky";
+"auth_invalid_login_param" = "Nesprávne používateľské meno a/alebo heslo";
+"auth_identity_server_placeholder" = "URL (napr. https://vector.im)";
+"auth_home_server_placeholder" = "URL (napr. https://matrix.org)";
+"auth_repeat_new_password_placeholder" = "Potvrďte svoje nové heslo";
+"auth_repeat_password_placeholder" = "Zopakovať heslo";
+"auth_phone_placeholder" = "Telefónne číslo";
+"auth_optional_phone_placeholder" = "Telefónne číslo (nepovinné)";
+"auth_email_placeholder" = "Emailová adresa";
+"auth_optional_email_placeholder" = "Emailová adresa (nepovinné)";
+"auth_user_name_placeholder" = "Meno používateľa";
+"auth_new_password_placeholder" = "Nové heslo";
+"auth_password_placeholder" = "Heslo";
+"auth_user_id_placeholder" = "Emailová adresa alebo používateľské meno";
+"auth_return_to_login" = "Vrátiť sa na prihlasovaciu obrazovku";
+"auth_send_reset_email" = "Poslať obnovovací email";
+"auth_login_single_sign_on" = "Prihlásiť sa";
+"auth_skip" = "Preskočiť";
+"auth_submit" = "Odoslať";
+"auth_register" = "Zaregistrovať";
+
+// Authentication
+"auth_login" = "Prihlásiť sa";
+"callbar_only_single_paused" = "Pozastavený hovor";
+"callbar_active_and_multiple_paused" = "1 aktívny hovor (%@) - %@ pozastavených hovorov";
+"callbar_active_and_single_paused" = "1 aktívny hovor (%@) - 1 pozastavený hovor";
+
+// Call Bar
+"callbar_only_single_active" = "Ťuknutím sa vrátite k hovoru (%@)";
+"switch" = "Prepnúť";
+"sending" = "Odosielanie";

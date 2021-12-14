@@ -183,6 +183,12 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
  */
 - (void)roomViewControllerDidRequestPollCreationFormPresentation:(RoomViewController *)roomViewController;
 
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
+canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
+
+- (void)roomViewController:(RoomViewController *)roomViewController
+endPollWithEventIdentifier:(NSString *)eventIdentifier;
+
 @end
 
 NS_ASSUME_NONNULL_END
