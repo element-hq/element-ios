@@ -59,14 +59,18 @@ struct PollEditForm: View {
                             ForEach(0..<viewModel.answerOptions.count, id: \.self) { index in
                                 SafeBindingCollectionEnumerator($viewModel.answerOptions, index: index) { binding in
                                     AnswerOptionGroup(text: binding.text, index: index) {
-                                        viewModel.send(viewAction: .deleteAnswerOption(viewModel.answerOptions[index]))
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            viewModel.send(viewAction: .deleteAnswerOption(viewModel.answerOptions[index]))
+                                        }
                                     }
                                 }
                             }
                         }
                         
                         Button(VectorL10n.pollEditFormAddOption) {
-                            viewModel.send(viewAction: .addAnswerOption)
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                viewModel.send(viewAction: .addAnswerOption)
+                            }
                         }
                         .disabled(!viewModel.viewState.addAnswerOptionButtonEnabled)
                         
@@ -78,8 +82,13 @@ struct PollEditForm: View {
                         .buttonStyle(PrimaryActionButtonStyle(enabled: viewModel.viewState.confirmationButtonEnabled))
                         .disabled(!viewModel.viewState.confirmationButtonEnabled)
                     }
-                    .animation(.easeInOut(duration: 0.2))
                     .padding()
+                    .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
+                    .alert(isPresented: $viewModel.showsFailureAlert) {
+                        Alert(title: Text(VectorL10n.pollEditFormPostFailureTitle),
+                              message: Text(VectorL10n.pollEditFormPostFailureSubtitle),
+                              dismissButton: .default(Text(VectorL10n.pollEditFormPostFailureAction)))
+                    }
                     .frame(minHeight: proxy.size.height) // Make the VStack fill the ScrollView's parent
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
@@ -98,6 +107,7 @@ struct PollEditForm: View {
             }
         }
         .accentColor(theme.colors.accent)
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

@@ -290,7 +290,7 @@
 "settings_ignored_users" = "USUÁRIAS(OS) IGNORADAS(OS)";
 "settings_contacts" = "CONTATOS DE DISPOSITIVO";
 "settings_advanced" = "AVANÇADAS";
-"settings_other" = "OUTRAS";
+"settings_other" = "Outras";
 "settings_labs" = "LABS";
 "settings_flair" = "Mostrar flair onde permitido";
 "settings_devices" = "SESSÕES";
@@ -1500,3 +1500,18 @@
 "contacts_address_book_permission_denied_alert_title" = "Contatos desabilitados";
 "space_home_show_all_rooms" = "Mostrar todas as salas";
 "room_event_action_forward" = "Encaminhar";
+"poll_edit_form_add_option" = "Adicionar opção";
+"poll_edit_form_option_number" = "Opção %d";
+"poll_edit_form_create_options" = "Criar opções";
+"poll_edit_form_input_placeholder" = "Escreva algo";
+"poll_edit_form_question_or_topic" = "Pergunta ou tópico";
+"poll_edit_form_poll_question_or_topic" = "Sondar pergunta ou tópico";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Criar sondagem";
+"share_extension_send_now" = "Enviar agora";
+"share_extension_low_quality_video_message" = "Enviar em %@ para melhor qualidade, ou enviar em baixa qualidade abaixo.";
+"share_extension_low_quality_video_title" = "Vídeo vai ser enviado em baixa qualidade";
+"settings_discovery_accept_terms" = "Aceitar Termos de Servidor de Identidade";
+"settings_about" = "SOBRE";

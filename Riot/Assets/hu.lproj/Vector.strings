@@ -283,7 +283,7 @@
 "settings_ignored_users" = "FIGYELMEN KÍVÜL HAGYOTT FELHASZNÁLÓK";
 "settings_contacts" = "ESZKÖZ NÉVJEGYZÉK";
 "settings_advanced" = "HALADÓ";
-"settings_other" = "MÁS";
+"settings_other" = "Más";
 "settings_labs" = "LABOR";
 "settings_flair" = "Kitűző mutatása ahol lehet";
 "settings_devices" = "MUNKAMENETEK";
@@ -1532,3 +1532,18 @@
 "contacts_address_book_permission_denied_alert_title" = "Névjegyzék letiltva";
 "space_home_show_all_rooms" = "Minden szoba megjelenítése";
 "room_event_action_forward" = "Továbbítás";
+"poll_edit_form_add_option" = "Lehetőség hozzáadása";
+"poll_edit_form_option_number" = "%d lehetőség";
+"poll_edit_form_create_options" = "Lehetőségek hozzáadása";
+"poll_edit_form_input_placeholder" = "Írjon valamit";
+"poll_edit_form_question_or_topic" = "Kérdés vagy téma";
+"poll_edit_form_poll_question_or_topic" = "Szavazás kérdés vagy téma";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Szavazás létrehozása";
+"share_extension_send_now" = "Küldés most";
+"share_extension_low_quality_video_message" = "Jobb minőségért küld így: %@ vagy gyengébb minőségben alább.";
+"share_extension_low_quality_video_title" = "Alacsony minőségű videó lesz elküldve";
+"settings_discovery_accept_terms" = "Azonosítási Szolgáltatás felhasználási feltételeinek elfogadása";
+"settings_about" = "NÉVJEGY";

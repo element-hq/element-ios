@@ -477,3 +477,5 @@
 "auth_invalid_user_name" = "Nome de usuária(o) inválido";
 "rename" = "Renomear";
 "room_displayname_all_other_members_left" = "%@ (Saiu)";
+"attachment_unsupported_preview_message" = "Este tipo de arquivo não é suportado.";
+"attachment_unsupported_preview_title" = "Incapaz de previsualizar";
