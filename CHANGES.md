@@ -1,8 +1,3 @@
-## Changes in 1.6.10 (2021-12-14)
-
-No significant changes.
-
-
 ## Changes in 1.6.10 (2021-12-09)
 
 🙌 Improvements
