@@ -89,7 +89,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *roomMemberAvatarBadgeImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *roomMemberNameLabelMask;
+@property (weak, nonatomic) IBOutlet UIView *roomMemberNameContainerView;
+
+@property (weak, nonatomic) IBOutlet UILabel *roomMemberUserIdLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberStatusLabel;
 
@@ -148,17 +150,10 @@
     memberTitleView.delegate = self;
         
     // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
-    self.navigationItem.titleView = memberTitleView;
-    
-    // Add tap gesture on member's name
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.roomMemberNameLabelMask addGestureRecognizer:tap];
-    self.roomMemberNameLabelMask.userInteractionEnabled = YES;
+    self.navigationItem.titleView = memberTitleView;    
     
     // Add tap to show the room member avatar in fullscreen
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
@@ -348,8 +343,12 @@
 - (void)updateMemberInfo
 {
     if (self.mxRoomMember)
-    {
-        self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
+    {        
+        self.roomMemberNameContainerView.hidden = !self.mxRoomMember.displayname;
+        
+        self.roomMemberNameLabel.text = self.mxRoomMember.displayname; 
+        
+        self.roomMemberUserIdLabel.text = self.mxRoomMember.userId;    
         
         // Update member power level
         MXWeakify(self);
@@ -1257,20 +1256,7 @@
 {
     UIView *view = tapGestureRecognizer.view;
     
-    if (view == self.roomMemberNameLabelMask && self.mxRoomMember.displayname)
-    {
-        if ([self.roomMemberNameLabel.text isEqualToString:self.mxRoomMember.displayname])
-        {
-            // Display room member matrix id
-            self.roomMemberNameLabel.text = self.mxRoomMember.userId;
-        }
-        else
-        {
-            // Restore display name
-            self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
-        }
-    }
-    else if (view == memberTitleView.memberAvatarMask || view == self.roomMemberAvatarMask)
+    if (view == memberTitleView.memberAvatarMask || view == self.roomMemberAvatarMask)
     {
         MXWeakify(self);
         
