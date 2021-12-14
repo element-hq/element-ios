@@ -117,8 +117,8 @@ DEPENDENCIES:
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
   - MatomoTracker (~> 7.4.1)
-  - "MatrixSDK (from `git@github.com:matrix-org/matrix-ios-sdk-ghsa-fxvm-7vhj-wj98.git`, branch `advisory-fix-1`)"
-  - "MatrixSDK/JingleCallStack (from `git@github.com:matrix-org/matrix-ios-sdk-ghsa-fxvm-7vhj-wj98.git`, branch `advisory-fix-1`)"
+  - MatrixSDK (= 0.20.14)
+  - MatrixSDK/JingleCallStack (= 0.20.14)
   - OLMKit
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
@@ -158,6 +158,7 @@ SPEC REPOS:
     - LoggerAPI
     - Logging
     - MatomoTracker
+    - MatrixSDK
     - OLMKit
     - ReadMoreTextView
     - Realm
@@ -171,16 +172,6 @@ SPEC REPOS:
     - WeakDictionary
     - zxcvbn-ios
     - ZXingObjC
-
-EXTERNAL SOURCES:
-  MatrixSDK:
-    :branch: advisory-fix-1
-    :git: "git@github.com:matrix-org/matrix-ios-sdk-ghsa-fxvm-7vhj-wj98.git"
-
-CHECKOUT OPTIONS:
-  MatrixSDK:
-    :commit: 19b13702bd4791d520d7e29de8985fcd7131d3ab
-    :git: "git@github.com:matrix-org/matrix-ios-sdk-ghsa-fxvm-7vhj-wj98.git"
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -223,6 +214,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: a52cde8eec97b8e5ea377f86721bf9155e35abad
+PODFILE CHECKSUM: 12f459fece6a213a48e425c1839aad493f331c80
 
 COCOAPODS: 1.11.2
