@@ -1031,13 +1031,15 @@
     roomDataSource = nil;
     
     // Add reason label
-    _leftRoomReasonLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width - 20, 70)];
-    _leftRoomReasonLabel.numberOfLines = 0;
-    _leftRoomReasonLabel.text = reason;
-    _leftRoomReasonLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    UILabel *leftRoomReasonLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width - 20, 70)];
+    leftRoomReasonLabel.numberOfLines = 0;
+    leftRoomReasonLabel.text = reason;
+    leftRoomReasonLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _bubblesTableView.tableHeaderView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
-    [_bubblesTableView.tableHeaderView addSubview:_leftRoomReasonLabel];
+    [_bubblesTableView.tableHeaderView addSubview:leftRoomReasonLabel];
     [_bubblesTableView reloadData];
+    
+    _leftRoomReasonLabel = leftRoomReasonLabel;
     
     [self updateViewControllerAppearanceOnRoomDataSourceState];
 }
