@@ -29,7 +29,7 @@
 
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
+@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
 {
     // Search result
     NSString *currentSearchText;
@@ -49,12 +49,13 @@
     id roomDidFlushDataNotificationObserver;
     
     RoomMemberDetailsViewController *memberDetailsViewController;
-    ContactsTableViewController     *contactsPickerViewController;
     
     UIAlertController *currentAlert;
     
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
+    
+    RoomParticipantsInviteCoordinatorBridgePresenter *invitePresenter;
 }
 
 @end
@@ -85,6 +86,7 @@
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     self.showParticipantCustomAccessoryView = YES;
+    self.showInviteUserFab = YES;
 }
 
 - (void)viewDidLoad
@@ -140,11 +142,13 @@
     [self.tableView registerClass:ContactTableViewCell.class forCellReuseIdentifier:@"ParticipantTableViewCellId"];
     
     
-    
-    // Add invite members button programmatically
-    [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
-                      target:self
-                      action:@selector(onAddParticipantButtonPressed)];
+    if (_showInviteUserFab)
+    {
+        // Add invite members button programmatically
+        [self vc_addFABWithImage:[UIImage imageNamed:@"add_member_floating_action"]
+                          target:self
+                          action:@selector(onAddParticipantButtonPressed)];
+    }
     
     // Observe user interface theme change.
     kThemeServiceDidChangeThemeNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kThemeServiceDidChangeThemeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -261,12 +265,6 @@
     {
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
-    }
-
-    if (contactsPickerViewController)
-    {
-        [contactsPickerViewController destroy];
-        contactsPickerViewController = nil;
     }
 }
 
@@ -542,50 +540,9 @@
 
 - (void)onAddParticipantButtonPressed
 {
-    // Push the contacts picker.
-    contactsPickerViewController = [ContactsTableViewController contactsTableViewController];
-    
-    // Set delegate to handle action on member (start chat, mention)
-    contactsPickerViewController.contactsTableViewControllerDelegate = self;
-    
-    // Prepare its data source
-    ContactsDataSource *contactsDataSource = [[ContactsDataSource alloc] initWithMatrixSession:self.mxRoom.mxSession];
-    contactsDataSource.areSectionsShrinkable = YES;
-    contactsDataSource.displaySearchInputInContactsList = YES;
-    contactsDataSource.forceMatrixIdInDisplayName = YES;
-    // Add a plus icon to the contact cell in the contacts picker, in order to make it more understandable for the end user.
-    contactsDataSource.contactCellAccessoryImage = [[UIImage imageNamed:@"plus_icon"] vc_tintedImageUsingColor:ThemeService.shared.theme.textPrimaryColor];
-    
-    // List all the participants matrix user id to ignore them during the contacts search.
-    for (Contact *contact in actualParticipants)
-    {
-        contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
-    }
-    for (Contact *contact in invitedParticipants)
-    {
-        if (contact.mxMember)
-        {
-            contactsDataSource.ignoredContactsByMatrixId[contact.mxMember.userId] = contact;
-        }
-    }
-    if (userParticipant)
-    {
-        contactsDataSource.ignoredContactsByMatrixId[userParticipant.mxMember.userId] = userParticipant;
-    }
-    
-    [contactsPickerViewController showSearch:YES];
-    contactsPickerViewController.searchBar.placeholder = [VectorL10n roomParticipantsInviteAnotherUser];
-    
-    // Apply the search pattern if any
-    if (currentSearchText)
-    {
-        contactsPickerViewController.searchBar.text = currentSearchText;
-        [contactsDataSource searchWithPattern:currentSearchText forceReset:YES];
-    }
-    
-    [contactsPickerViewController displayList:contactsDataSource];
-    
-    [self pushViewController:contactsPickerViewController];
+    self->invitePresenter = [[RoomParticipantsInviteCoordinatorBridgePresenter alloc] initWithSession:self.mxRoom.mxSession room:self.mxRoom parentSpaceId:self.parentSpaceId currentSearchText:currentSearchText actualParticipants:actualParticipants invitedParticipants:invitedParticipants userParticipant:userParticipant];
+    self->invitePresenter.delegate = self;
+    [self->invitePresenter presentFrom:self animated:true];
 }
 
 - (void)refreshParticipantsFromRoomMembers
@@ -1260,13 +1217,6 @@
     }
 }
 
-#pragma mark - ContactsTableViewControllerDelegate
-
-- (void)contactsTableViewController:(ContactsTableViewController *)contactsTableViewController didSelectContact:(MXKContact*)contact
-{
-    [self didSelectInvitableContact:contact];
-}
-
 #pragma mark - Actions
 
 - (void)onDeleteAt:(NSIndexPath*)path
@@ -1491,149 +1441,6 @@
     [self withdrawViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark -
-
-- (void)didSelectInvitableContact:(MXKContact*)contact
-{
-    __weak typeof(self) weakSelf = self;
-    
-    if (currentAlert)
-    {
-        [currentAlert dismissViewControllerAnimated:NO completion:nil];
-        currentAlert = nil;
-    }
-    
-    // Invite ?
-    NSString *promptMsg = [VectorL10n roomParticipantsInvitePromptMsg:contact.displayName];
-    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n roomParticipantsInvitePromptTitle]
-                                                       message:promptMsg
-                                                preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n invite]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                           
-                                                           NSArray *identifiers = contact.matrixIdentifiers;
-                                                           NSString *participantId;
-                                                           
-                                                           if (identifiers.count)
-                                                           {
-                                                               participantId = identifiers.firstObject;
-                                                               
-                                                               // Invite this user if a room is defined
-                                                               [self addPendingActionMask];
-                                                               [self.mxRoom inviteUser:participantId success:^{
-                                                                   
-                                                                   __strong __typeof(weakSelf)self = weakSelf;
-                                                                   [self removePendingActionMask];
-                                                                   
-                                                                   // Refresh display by removing the contacts picker
-                                                                   [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
-                                                                   
-                                                               } failure:^(NSError *error) {
-                                                                   
-                                                                   __strong __typeof(weakSelf)self = weakSelf;
-                                                                   [self removePendingActionMask];
-                                                                   
-                                                                   MXLogDebug(@"[RoomParticipantsVC] Invite %@ failed", participantId);
-                                                                   // Alert user
-                                                                   [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                               }];
-                                                           }
-                                                           else
-                                                           {
-                                                               if (contact.emailAddresses.count)
-                                                               {
-                                                                   // This is a local contact, consider the first email by default.
-                                                                   // TODO: Prompt the user to select the right email.
-                                                                   MXKEmail *email = contact.emailAddresses.firstObject;
-                                                                   participantId = email.emailAddress;
-                                                               }
-                                                               else
-                                                               {
-                                                                   // This is the text filled by the user.
-                                                                   participantId = contact.displayName;
-                                                               }
-                                                               
-                                                               // Is it an email or a Matrix user ID?
-                                                               if ([MXTools isEmailAddress:participantId])
-                                                               {
-                                                                   [self addPendingActionMask];
-                                                                   [self.mxRoom inviteUserByEmail:participantId success:^{
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self removePendingActionMask];
-                                                                       
-                                                                       // Refresh display by removing the contacts picker
-                                                                       [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self removePendingActionMask];
-                                                                       
-                                                                       MXLogDebug(@"[RoomParticipantsVC] Invite be email %@ failed", participantId);
-
-                                                                       // Alert user
-                                                                       if ([error.domain isEqualToString:kMXRestClientErrorDomain]
-                                                                           && error.code == MXRestClientErrorMissingIdentityServer)
-                                                                       {
-                                                                           NSString *message = [VectorL10n errorInvite3pidWithNoIdentityServer];
-                                                                           [[AppDelegate theDelegate] showAlertWithTitle:message message:nil];
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                       }
-                                                                   }];
-                                                               }
-                                                               else //if ([MXTools isMatrixUserIdentifier:participantId])
-                                                               {
-                                                                   [self addPendingActionMask];
-                                                                   [self.mxRoom inviteUser:participantId success:^{
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self removePendingActionMask];
-                                                                       
-                                                                       // Refresh display by removing the contacts picker
-                                                                       [self->contactsPickerViewController withdrawViewControllerAnimated:YES completion:nil];
-                                                                       
-                                                                   } failure:^(NSError *error) {
-                                                                       
-                                                                       __strong __typeof(weakSelf)self = weakSelf;
-                                                                       [self removePendingActionMask];
-                                                                       
-                                                                       MXLogDebug(@"[RoomParticipantsVC] Invite %@ failed", participantId);
-                                                                       // Alert user
-                                                                       [[AppDelegate theDelegate] showErrorAsAlert:error];
-                                                                   }];
-                                                               }
-                                                           }
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RoomParticipantsVCInviteAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
-}
-
 #pragma mark - UISearchBar delegate
 
 - (void)refreshSearchBarItemsColor:(UISearchBar *)searchBar
@@ -1761,6 +1568,23 @@
     searchBar.text = nil;
     // Leave search
     [searchBar resignFirstResponder];
+}
+
+#pragma mark - RoomParticipantsInviteCoordinatorBridgePresenterDelegate
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidComplete:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self->invitePresenter = nil;
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidStartLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self addPendingActionMask];
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self removePendingActionMask];
 }
 
 @end

@@ -131,8 +131,34 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
     func spaceMemberListCoordinatorDidCancel(_ coordinator: SpaceMemberListCoordinatorType) {
         self.delegate?.spaceMembersCoordinatorDidCancel(self)
     }
+    
+    func spaceMemberListCoordinatorShowInvite(_ coordinator: SpaceMemberListCoordinatorType) {
+        guard let space = parameters.session.spaceService.getSpace(withId: parameters.spaceId), let spaceRoom = space.room else {
+            MXLog.error("[SpaceMembersCoordinator] spaceMemberListCoordinatorShowInvite: failed to find space with id \(parameters.spaceId)")
+            return
+        }
+        
+        let coordinator = ContactsPickerCoordinator(session: parameters.session, room: spaceRoom, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
+        coordinator.delegate = self
+        coordinator.start()
+        childCoordinators.append(coordinator)
+    }
 }
 
+// MARK: - ContactsPickerCoordinatorDelegate
+extension SpaceMembersCoordinator: ContactsPickerCoordinatorDelegate {
+    func contactsPickerCoordinatorDidStartLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    }
+    
+    func contactsPickerCoordinatorDidEndLoading(_ coordinator: ContactsPickerCoordinatorType) {
+    }
+    
+    func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
+        childCoordinators.removeLast()
+    }
+}
+
+// MARK: - SpaceMemberDetailCoordinatorDelegate
 extension SpaceMembersCoordinator: SpaceMemberDetailCoordinatorDelegate {
     func spaceMemberDetailCoordinator(_ coordinator: SpaceMemberDetailCoordinatorType, showRoomWithId roomId: String) {
         if !UIDevice.current.isPhone, let memberDetailCoordinator = self.memberDetailCoordinator {

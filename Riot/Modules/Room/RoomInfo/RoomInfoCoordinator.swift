@@ -28,6 +28,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     private let navigationRouter: NavigationRouterType
     private let session: MXSession
     private let room: MXRoom
+    private let parentSpaceId: String?
     private let initialSection: RoomInfoSection
     private weak var roomSettingsViewController: RoomSettingsViewController?
     
@@ -38,6 +39,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         participants.finalizeInit()
         participants.enableMention = true
         participants.mxRoom = self.room
+        participants.parentSpaceId = self.parentSpaceId
         participants.delegate = self
         
         let files = RoomFilesViewController()
@@ -95,6 +97,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
 
         self.session = parameters.session
         self.room = parameters.room
+        self.parentSpaceId = parameters.parentSpaceId
         self.initialSection = parameters.initialSection
     }    
     

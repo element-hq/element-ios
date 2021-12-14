@@ -31,6 +31,9 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
     /// The room identifier
     let roomId: String
     
+    /// The identifier of the parent space. `nil` for home space
+    let parentSpaceId: String?
+    
     /// If not nil, the room will be opened on this event.
     let eventId: String?
     
@@ -39,10 +42,12 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
     
     init(session: MXSession,
          roomId: String,
+         parentSpaceId: String?,
          eventId: String?,
          previewData: RoomPreviewData?) {
         self.session = session
         self.roomId = roomId
+        self.parentSpaceId = parentSpaceId
         self.eventId = eventId
         self.previewData = previewData
     }
@@ -76,7 +81,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
     
     func present(from viewController: UIViewController, animated: Bool) {
         
-        let coordinator = self.createRoomCoordinator()
+        let coordinator = self.createRoomCoordinator(parentSpaceId: bridgeParameters.parentSpaceId)
         coordinator.delegate = self
         let presentable = coordinator.toPresentable()
         presentable.modalPresentationStyle = .formSheet
@@ -90,7 +95,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         
         let navigationRouter = NavigationRouterStore.shared.navigationRouter(for: navigationController)
         
-        let coordinator = self.createRoomCoordinator(with: navigationRouter)
+        let coordinator = self.createRoomCoordinator(with: navigationRouter, parentSpaceId: bridgeParameters.parentSpaceId)
         coordinator.delegate = self
         coordinator.start() // Will trigger view controller push
         
@@ -110,14 +115,14 @@ final class RoomCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Private
     
-    private func createRoomCoordinator(with navigationRouter: NavigationRouterType = NavigationRouter(navigationController: RiotNavigationController())) -> RoomCoordinator {
+    private func createRoomCoordinator(with navigationRouter: NavigationRouterType = NavigationRouter(navigationController: RiotNavigationController()), parentSpaceId: String?) -> RoomCoordinator {
         
         let coordinatorParameters: RoomCoordinatorParameters
         
         if let previewData = self.bridgeParameters.previewData {
-            coordinatorParameters = RoomCoordinatorParameters(navigationRouter: navigationRouter, previewData: previewData)
+            coordinatorParameters = RoomCoordinatorParameters(navigationRouter: navigationRouter, parentSpaceId: parentSpaceId, previewData: previewData)
         } else {
-            coordinatorParameters =  RoomCoordinatorParameters(navigationRouter: navigationRouter, session: self.bridgeParameters.session, roomId: self.bridgeParameters.roomId, eventId: self.bridgeParameters.eventId)
+            coordinatorParameters =  RoomCoordinatorParameters(navigationRouter: navigationRouter, session: self.bridgeParameters.session, parentSpaceId: parentSpaceId, roomId: self.bridgeParameters.roomId, eventId: self.bridgeParameters.eventId)
         }
         
         return RoomCoordinator(parameters: coordinatorParameters)

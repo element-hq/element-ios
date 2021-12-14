@@ -36,6 +36,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     private var activityPresenter: ActivityIndicatorPresenter!
     private var titleView: MainTitleView!
     private var emptyView: SearchEmptyView!
+    private let inviteHeaderView = AddItemHeaderView.instantiate(title: VectorL10n.spacesInvitePeople, icon: Asset.Images.spaceInviteUser.image)
 
     private var emptyViewArtwork: UIImage {
         return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
@@ -47,6 +48,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         let viewController = SpaceMemberListViewController()
         viewController.viewModel = viewModel
         viewController.showParticipantCustomAccessoryView = false
+        viewController.showInviteUserFab = false
         viewController.theme = ThemeService.shared().theme
         viewController.emptyView = SearchEmptyView()
         return viewController
@@ -71,14 +73,21 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.viewModel.process(viewAction: .loadData)
         
         self.title = ""
+        
+        self.setupTableViewHeader()
     }
-
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.theme.statusBarStyle
     }
     
     // MARK: - Private
-    
+
+    private func setupTableViewHeader() {
+        inviteHeaderView.delegate = self
+        tableView.tableHeaderView = inviteHeaderView
+    }
+
     private func update(theme: Theme) {
         self.theme = theme
         
@@ -91,6 +100,8 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         theme.applyStyle(onSearchBar: self.searchBarView)
         self.titleView.update(theme: theme)
         self.emptyView.update(theme: theme)
+        
+        self.inviteHeaderView.update(theme: theme)
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -154,7 +165,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     // MARK: - Actions
 
     @objc private func onAddParticipantButtonPressed() {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesInvitesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+        self.viewModel.process(viewAction: .invite)
     }
     
     private func cancelButtonAction() {
@@ -198,5 +209,12 @@ extension SpaceMemberListViewController: SpaceMemberListViewModelViewDelegate {
 
     func spaceMemberListViewModel(_ viewModel: SpaceMemberListViewModelType, didUpdateViewState viewSate: SpaceMemberListViewState) {
         self.render(viewState: viewSate)
+    }
+}
+
+// MARK: - SpaceMemberListViewModelViewDelegate
+extension SpaceMemberListViewController: AddItemHeaderViewDelegate {
+    func addItemHeaderView(_ headerView: AddItemHeaderView, didTapButton button: UIButton) {
+        self.viewModel.process(viewAction: .invite)
     }
 }

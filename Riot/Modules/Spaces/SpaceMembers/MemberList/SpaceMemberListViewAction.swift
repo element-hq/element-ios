@@ -23,4 +23,5 @@ enum SpaceMemberListViewAction {
     case loadData
     case complete(_ selectedMember: MXRoomMember, _ sourceView: UIView?)
     case cancel
+    case invite
 }

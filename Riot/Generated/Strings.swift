@@ -3135,6 +3135,22 @@ public class VectorL10n: NSObject {
   public static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }
+  /// They won’t be a part of %@.
+  public static func roomInviteToRoomOptionDetail(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_room_option_detail", p1)
+  }
+  /// To just this room
+  public static var roomInviteToRoomOptionTitle: String { 
+    return VectorL10n.tr("Vector", "room_invite_to_room_option_title") 
+  }
+  /// They can explore %@, but won’t be a member of %@.
+  public static func roomInviteToSpaceOptionDetail(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_space_option_detail", p1, p2)
+  }
+  /// To %@
+  public static func roomInviteToSpaceOptionTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_invite_to_space_option_title", p1)
+  }
   /// Join
   public static var roomJoinGroupCall: String { 
     return VectorL10n.tr("Vector", "room_join_group_call") 
@@ -3414,6 +3430,10 @@ public class VectorL10n: NSObject {
   /// Confirmation
   public static var roomParticipantsInvitePromptTitle: String { 
     return VectorL10n.tr("Vector", "room_participants_invite_prompt_title") 
+  }
+  /// Are you sure you want to invite %@ to %@?
+  public static func roomParticipantsInvitePromptToMsg(_ p1: String, _ p2: String) -> String {
+    return VectorL10n.tr("Vector", "room_participants_invite_prompt_to_msg", p1, p2)
   }
   /// INVITED
   public static var roomParticipantsInvitedSection: String { 
@@ -4903,6 +4923,18 @@ public class VectorL10n: NSObject {
   public static var shareExtensionSendNow: String { 
     return VectorL10n.tr("Vector", "share_extension_send_now") 
   }
+  /// Share invite link
+  public static var shareInviteLinkAction: String { 
+    return VectorL10n.tr("Vector", "share_invite_link_action") 
+  }
+  /// Hey, join this room on %@
+  public static func shareInviteLinkRoomText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_invite_link_room_text", p1)
+  }
+  /// Hey, join this space on %@
+  public static func shareInviteLinkSpaceText(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "share_invite_link_space_text", p1)
+  }
   /// Feedback
   public static var sideMenuActionFeedback: String { 
     return VectorL10n.tr("Vector", "side_menu_action_feedback") 
@@ -5074,6 +5106,9 @@ public class VectorL10n: NSObject {
   /// description
   public static var spaceTopic: String { 
     return VectorL10n.tr("Vector", "space_topic") 
+  /// Add room
+  public static var spacesAddRoom: String { 
+    return VectorL10n.tr("Vector", "spaces_add_room") 
   }
   /// Adding rooms coming soon
   public static var spacesAddRoomsComingSoonTitle: String { 
@@ -5082,6 +5117,9 @@ public class VectorL10n: NSObject {
   /// Create space
   public static var spacesAddSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_space_title") 
+  /// Add space
+  public static var spacesAddSpace: String { 
+    return VectorL10n.tr("Vector", "spaces_add_space") 
   }
   /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
   public static var spacesComingSoonDetail: String { 
@@ -5290,6 +5328,10 @@ public class VectorL10n: NSObject {
   /// Home
   public static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 
+  }
+  /// Invite people
+  public static var spacesInvitePeople: String { 
+    return VectorL10n.tr("Vector", "spaces_invite_people") 
   }
   /// Invites coming soon
   public static var spacesInvitesComingSoonTitle: String { 

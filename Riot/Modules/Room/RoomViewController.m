@@ -139,7 +139,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomParticipantsInviteCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -244,6 +244,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+@property (nonatomic, strong) RoomParticipantsInviteCoordinatorBridgePresenter *participantsInvitePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -1956,7 +1957,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showAddParticipants
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionAddParticipants];
+    self.participantsInvitePresenter = [[RoomParticipantsInviteCoordinatorBridgePresenter alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room parentSpaceId:self.parentSpaceId];
+    self.participantsInvitePresenter.delegate = self;
+    [self.participantsInvitePresenter presentFrom:self animated:YES];
 }
 
 - (void)showRoomTopicChange
@@ -1971,7 +1974,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection
 {
-    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room initialSection:roomInfoSection];
+    RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room parentSpaceId:self.parentSpaceId initialSection:roomInfoSection];
     
     self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     
@@ -6616,4 +6619,22 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self mention:member];
 }
 
+#pragma mark - RoomParticipantsInviteCoordinatorBridgePresenterDelegate
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidComplete:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.participantsInvitePresenter = nil;
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidStartLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self startActivityIndicator];
+}
+
+- (void)roomParticipantsInviteCoordinatorBridgePresenterDidEndLoading:(RoomParticipantsInviteCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    [self stopActivityIndicator];
+}
+
 @end
+
