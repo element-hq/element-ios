@@ -203,7 +203,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 @property (nonatomic, readwrite) MXRoom *room;
 
 @property (nonatomic, readwrite) MXRoom *secondaryRoom;
-@property (nonatomic, strong) MXEventTimeline *secondaryTimeline;
+@property (nonatomic, strong) id<MXEventTimeline> secondaryTimeline;
 @property (nonatomic, readwrite) NSString *threadId;
 
 @end
@@ -258,7 +258,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
         // Asynchronously preload data here so that the data will be ready later
         // to synchronously respond to that request
-        [roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             onComplete(roomDataSource);
         }];
     }
@@ -642,7 +642,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                 {
                     // LIVE
                     MXWeakify(self);
-                    [_room liveTimeline:^(MXEventTimeline *liveTimeline) {
+                    [_room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                         MXStrongifyAndReturnIfNil(self);
 
                         self->_timeline = liveTimeline;
@@ -704,7 +704,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
                         if (_secondaryRoom)
                         {
                             MXWeakify(self);
-                            [_secondaryRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                            [_secondaryRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                                 MXStrongifyAndReturnIfNil(self);
 
                                 self->_secondaryTimeline = liveTimeline;
@@ -1458,7 +1458,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     paginationRequest = [_timeline paginate:numItems
                                   direction:direction
                               onlyFromStore:onlyFromStore
-                                   threadId:_threadId
                                    complete:^{
         
         MXStrongifyAndReturnIfNil(self);
@@ -1526,7 +1525,6 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         secondaryPaginationRequest = [_secondaryTimeline paginate:numItems
                                                         direction:direction
                                                     onlyFromStore:onlyFromStore
-                                                         threadId:_threadId
                                                          complete:^{
             
             MXStrongifyAndReturnIfNil(self);

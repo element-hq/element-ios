@@ -214,7 +214,7 @@
     if (membersListener)
     {
         MXWeakify(self);
-        [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->membersListener];
@@ -328,7 +328,7 @@
             if (self->membersListener)
             {
                 MXWeakify(self);
-                [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+                [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                     MXStrongifyAndReturnIfNil(self);
 
                     [liveTimeline removeListener:self->membersListener];
@@ -394,7 +394,7 @@
             NSArray *mxMembersEvents = @[kMXEventTypeStringRoomMember, kMXEventTypeStringRoomThirdPartyInvite, kMXEventTypeStringRoomPowerLevels];
 
             MXWeakify(self);
-            [self.mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+            [self.mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
 
                 self->membersListener = [liveTimeline listenToEventsOfTypes:mxMembersEvents onEvent:^(MXEvent *event, MXTimelineDirection direction, id customObject) {

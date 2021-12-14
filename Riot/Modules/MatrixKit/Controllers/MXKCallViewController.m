@@ -1197,7 +1197,7 @@ static const CGFloat kLocalPreviewMargin = 20;
     if (roomListener && mxCall.room)
     {
         MXWeakify(self);
-        [mxCall.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxCall.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->roomListener];

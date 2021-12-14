@@ -138,7 +138,7 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  The timeline being managed. It can be the live timeline of the room
  or a timeline from a past event, initialEventId.
  */
-@property (nonatomic, readonly) MXEventTimeline *timeline;
+@property (nonatomic, readonly) id<MXEventTimeline> timeline;
 
 /**
  Flag indicating if the data source manages, or will manage, a live timeline.

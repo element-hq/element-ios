@@ -4779,7 +4779,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (typingNotifListener)
         {
             MXWeakify(self);
-            [self.roomDataSource.room liveTimeline:^(MXEventTimeline *liveTimeline) {
+            [self.roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
                 MXStrongifyAndReturnIfNil(self);
                 
                 [liveTimeline removeListener:self->typingNotifListener];

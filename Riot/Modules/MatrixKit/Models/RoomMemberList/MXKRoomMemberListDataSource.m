@@ -85,7 +85,7 @@ NSString *const kMXKRoomMemberCellIdentifier = @"kMXKRoomMemberCellIdentifier";
     if (typingNotifListener)
     {
         MXWeakify(self);
-        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->typingNotifListener];

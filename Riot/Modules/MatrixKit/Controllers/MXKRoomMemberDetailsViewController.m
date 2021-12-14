@@ -44,7 +44,7 @@
     id roomDidFlushDataNotificationObserver;
 
     // Cache for the room live timeline
-    MXEventTimeline *mxRoomLiveTimeline;
+    id<MXEventTimeline> mxRoomLiveTimeline;
 }
 
 @end
@@ -134,7 +134,7 @@
     mxRoom = room;
 
     MXWeakify(self);
-    [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+    [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
         MXStrongifyAndReturnIfNil(self);
 
         self->mxRoomLiveTimeline = liveTimeline;
@@ -152,7 +152,7 @@
     }];
 }
 
-- (MXEventTimeline *)mxRoomLiveTimeline
+- (id<MXEventTimeline> )mxRoomLiveTimeline
 {
     // @TODO(async-state): Just here for dev
     NSAssert(mxRoomLiveTimeline, @"[MXKRoomMemberDetailsViewController] Room live timeline must be preloaded before accessing to MXKRoomMemberDetailsViewController.mxRoomLiveTimeline");
@@ -569,7 +569,7 @@
     if (membersListener && mxRoom)
     {
         MXWeakify(self);
-        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->membersListener];

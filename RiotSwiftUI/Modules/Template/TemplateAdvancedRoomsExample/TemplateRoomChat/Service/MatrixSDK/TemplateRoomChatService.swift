@@ -80,7 +80,7 @@ class TemplateRoomChatService: TemplateRoomChatServiceProtocol {
                 }
                 
             })
-            timeline.paginate(200, direction: .backwards, onlyFromStore: false, threadId: nil) { result in
+            timeline.paginate(200, direction: .backwards, onlyFromStore: false) { result in
                 guard result.isSuccess else {
                     self.roomInitializationStatus.value = .failedToInitialize
                     return

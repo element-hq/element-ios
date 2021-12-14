@@ -424,7 +424,7 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     if (extraEventsListener)
     {
         MXWeakify(self);
-        [mxRoom liveTimeline:^(MXEventTimeline *liveTimeline) {
+        [mxRoom liveTimeline:^(id<MXEventTimeline> liveTimeline) {
             MXStrongifyAndReturnIfNil(self);
 
             [liveTimeline removeListener:self->extraEventsListener];
