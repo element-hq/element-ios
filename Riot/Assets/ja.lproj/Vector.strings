@@ -873,7 +873,7 @@
 "settings_key_backup_info" = "暗号化されたメッセージはエンドツーエンドで暗号化されています。送信者と受信者だけがこのメッセージを読むための鍵を持っています。";
 "settings_labs_message_reaction" = "絵文字でメッセージに反応する";
 "settings_calls_stun_server_fallback_description" = "ホームサーバーがフォールバックコールアシストサーバーを提供していない場合は％@を許可します（IPアドレスは通話中に共有されます）。";
-"settings_security" = "セキュリティー";
+"settings_security" = "セキュリティ";
 "settings_three_pids_management_information_part3" = "";
 "settings_three_pids_management_information_part2" = "ディスカバリー";
 "store_full_description" = "Elementはまったく新しいメッセンジャーアプリです。\n\n1. あなた自身がプライバシーをコントロールすることを可能にします。\n2. Matrixネットワークにいる誰とでも通信できることはもちろん、Slackなどのアプリとの連携によって他のネットワークとも通信ができます。\n3. 広告、データ収集、バックドア、ユーザーの囲い込みから逃れることができます。\n4. エンドツーエンド暗号化とクロス署名によってあなたを保護します。\n\nElementは分散型（非中央集権型）でオープンソースであるため、他のメッセンジャーアプリと完全に異なっています。\n\nElementはあなた自身でサーバーをホストすることも、サーバーを選ぶこともできます。これによってあなたのデータと会話に関するプライバシーや所有権はあなた自身で管理できるようになります。さらに、あなたは他のElementユーザーと話せるだけでなくオープンネットワークへのアクセスも可能です。\n\nElementは、オープンな分散型通信の標準規格であるMatrixで動作するため、これらすべてを実現することができています。\n\nどのサーバーがホストするか決めることができます。さまざまな方法で選択できます。\n\n1. 開発者がホストするmatrix.orgの公開サーバーで無料のアカウントを取得します。\n2. あなた自身がサーバーを動かし、アカウントを管理します。\n3. Element Matrix Servicesのホスティングプラットフォームに登録することで、カスタムサーバー上のアカウントを取得できます。\n\nなぜElementを選ぶべきなのか？\n\nデータを所有する: 自分でデータやメッセージを保管する場所を決めることができます。あなたが所有権を持ってコントロールすることで、第三者にあなたのデータを渡したり、ビッグデータを収集する巨大テック企業に依存する必要がなくなります。\n\n開かれたネットワークと共同作業: Matrixネットワーク内の他の誰とでも、あるいはElementや他のMatrixアプリを使っているかどうかに関わらず、またSlack、IRC、XMPPのような他のメッセージングシステムを使っているかどうかに関わらず、チャットすることができます。\n\nとても安全: 本物のエンドツーエンド暗号化（会話に参加している者のみがメッセージを読める）と会話参加者の真正性を確認するためクロス署名によって。\n\n完全なるコミュニケーションの訪れ: テキスト、音声通話、ビデオ通話、ファイル共有、画面共有、連携機能、ボット、ウィジェットなどのコミュニケーションに必要な機能の全てが実装されています。ルームやコミュニティを立ち上げて連絡を取り合い、物事をスムーズに成し遂げることができます。\n\nいつでもどこにいても: すべてのデバイスとウェブでメッセージの履歴が同期されるため、どこにいても連絡を取ることができます。https://app.element.io";
@@ -1038,3 +1038,39 @@
 
 // New login
 "device_verification_self_verify_alert_title" = "ログインしましたか？";
+"room_recents_suggested_rooms_section" = "おすすめの部屋";
+"settings_show_url_previews_description" = "プレビューは暗号化されていない部屋でのみ表示されます。";
+"settings_show_url_previews" = "ウェブサイトプレビューを表示";
+"biometrics_setup_enable_button_title_x" = "%@ を有効にする";
+"biometrics_setup_title_x" = "%@ を有効にする";
+"biometrics_settings_enable_x" = "%@ を有効にする";
+"biometrics_mode_face_id" = "Face ID";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"pin_protection_settings_enable_pin" = "PIN を有効にする";
+"pin_protection_settings_section_header_with_biometrics" = "PIN と %@";
+"pin_protection_settings_section_header" = "PIN";
+"settings_mentions_and_keywords_encryption_notice" = "モバイルでは、暗号化された部屋でのメンションとキーワードの通知は受信できません。";
+"settings_new_keyword" = "キーワードを追加";
+"settings_your_keywords" = "以下でキーワードを指定できます";
+"settings_mentions_and_keywords" = "メンションとキーワード";
+"settings_messages_containing_keywords" = "キーワード";
+"settings_messages_containing_at_room" = "@room";
+"settings_messages_containing_user_name" = "あなたのユーザー名";
+"settings_messages_containing_display_name" = "あなたの表示名";
+"settings_encrypted_group_messages" = "暗号化されたグループメッセージ";
+"settings_group_messages" = "グループメッセージ";
+"settings_encrypted_direct_messages" = "暗号化されたダイレクトメッセージ";
+"settings_direct_messages" = "ダイレクトメッセージ";
+"settings_notify_me_for" = "以下がメッセージ含まれる場合通知します";
+"settings_phone_contacts" = "端末の連絡先";
+"settings_notifications" = "通知";
+"settings_links" = "リンク";
+"side_menu_action_feedback" = "フィードバック";
+"side_menu_action_help" = "ヘルプ";
+"side_menu_action_settings" = "設定";
+"spaces_home_space_title" = "ホーム";
+"spaces_left_panel_title" = "スペース";
+"spaces_suggested_room" = "おすすめ";

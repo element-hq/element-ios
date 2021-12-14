@@ -1547,3 +1547,18 @@
 "contacts_address_book_permission_denied_alert_title" = "联系人被禁用";
 "space_home_show_all_rooms" = "显示所有聊天室";
 "room_event_action_forward" = "转发";
+"poll_edit_form_add_option" = "添加选项";
+"poll_edit_form_option_number" = "选项 %d";
+"poll_edit_form_create_options" = "创建选项";
+"poll_edit_form_input_placeholder" = "写些东西";
+"poll_edit_form_question_or_topic" = "问题或话题";
+"poll_edit_form_poll_question_or_topic" = "投票问题或话题";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "创建投票";
+"share_extension_send_now" = "立即发送";
+"share_extension_low_quality_video_message" = "以 %@ 发送画质更好，或者用下方的低画质发送。";
+"share_extension_low_quality_video_title" = "将以低画质发送视频";
+"settings_discovery_accept_terms" = "接受身份服务器条款";
+"settings_about" = "关于";
