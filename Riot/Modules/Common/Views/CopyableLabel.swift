@@ -56,13 +56,9 @@ class CopyableLabel: UILabel {
     override func copy(_ sender: Any?) {
         let board = UIPasteboard.general
 
-        board.string = text
-
-        let menu = UIMenuController.shared
-
-        if #available(iOS 13.0, *) {
-            menu.showMenu(from: self, rect: self.bounds)
-        }
+        board.string = self.text
+        
+        // Note that the UIMenuController will be dismissed by itself after copying the text
     }
 
     override var canBecomeFirstResponder: Bool {
