@@ -206,6 +206,7 @@
     
     self.memberHeaderView.backgroundColor = ThemeService.shared.theme.baseColor;
     self.roomMemberNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomMemberUserIdLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
     self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.tintColor;
     self.roomMemberPowerLevelLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
