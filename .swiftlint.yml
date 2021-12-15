@@ -56,9 +56,6 @@ function_body_length:
   warning: 100
   error: 150
 
-nesting:
-  type_level: 2
-
 # naming rules can set warnings/errors for min_length and max_length
 # additionally they can set excluded names
 type_name:

@@ -16,15 +16,23 @@
 
 import AnalyticsEvents
 
-/// A tappable UI element that can be track in Analytics.
-@objc enum AnalyticsElement: Int {
-    case sendMessageButton
-    
-    /// The element name reported to the AnalyticsEvent.
-    var elementName: AnalyticsEvent.Click.Name {
+extension __MXCallHangupReason {
+    var errorName: AnalyticsEvent.Error.Name {
         switch self {
-        case .sendMessageButton:
-            return .SendMessageButton
+        case .userHangup:
+            return .VoipUserHangup
+        case .inviteTimeout:
+            return .VoipInviteTimeout
+        case .iceFailed:
+            return .VoipIceFailed
+        case .iceTimeout:
+            return .VoipIceTimeout
+        case .userMediaFailed:
+            return .VoipUserMediaFailed
+        case .unknownError:
+            return .UnknownError
+        default:
+            return .UnknownError
         }
     }
 }

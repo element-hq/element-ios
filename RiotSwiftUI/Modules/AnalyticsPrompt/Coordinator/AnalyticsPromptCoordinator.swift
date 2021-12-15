@@ -89,9 +89,11 @@ final class AnalyticsPromptCoordinator: Coordinator {
             case .enable:
                 Analytics.shared.optIn(with: self.parameters.session)
                 self.parameters.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.completion?()
             case .disable:
                 Analytics.shared.optOut()
                 self.parameters.navigationRouter.dismissModule(animated: true, completion: nil)
+                self.completion?()
             }
         }
     }

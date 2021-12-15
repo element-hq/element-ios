@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-import Foundation
+import AnalyticsEvents
 
 /// Failure reasons as defined in https://docs.google.com/document/d/1es7cTCeJEXXfRCTRgZerAM2Wg5ZerHjvlpfTW-gsOfI.
 @objc enum DecryptionFailureReason: Int {
@@ -22,6 +22,19 @@ import Foundation
     case olmKeysNotSent
     case olmIndexError
     case unexpected
+    
+    var errorName: AnalyticsEvent.Error.Name {
+        switch self {
+        case .unspecified:
+            return .OlmUnspecifiedError
+        case .olmKeysNotSent:
+            return .OlmKeysNotSentError
+        case .olmIndexError:
+            return .OlmIndexError
+        case .unexpected:
+            return .UnknownError
+        }
+    }
 }
 
 /// `DecryptionFailure` represents a decryption failure.

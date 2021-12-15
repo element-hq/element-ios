@@ -180,7 +180,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   AnalyticsEvents:
-    :commit: aac06956d45cb86ea2bbd7a21b20b14ba8899fcf
+    :commit: f1805ad7c3fafa7fd9c6e2eaa9e0165f8142ecd2
     :git: https://github.com/matrix-org/matrix-analytics-events.git
 
 SPEC CHECKSUMS:

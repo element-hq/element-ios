@@ -164,13 +164,26 @@ extension Analytics {
         client.screen(event)
     }
     
+    /// The the presentation of a screen without including a duration
+    /// - Parameter screen: The screen that was shown
+    func trackScreen(_ screen: AnalyticsScreen) {
+        trackScreen(screen, duration: nil)
+    }
+    
     /// Track an element that has been tapped
     /// - Parameters:
     ///   - tap: The element that was tapped
     ///   - index: The index of the element, if it's in a list of elements
-    func trackTap(_ tap: AnalyticsElement, index: Int?) {
+    func trackTap(_ tap: AnalyticsUIElement, index: Int?) {
         let event = AnalyticsEvent.Click(index: index, name: tap.elementName)
         client.capture(event)
+    }
+    
+    /// Track an element that has been tapped without including an index
+    /// - Parameters:
+    ///   - tap: The element that was tapped
+    func trackTap(_ tap: AnalyticsUIElement) {
+        trackTap(tap, index: nil)
     }
     
     /// Track an E2EE error that occurred

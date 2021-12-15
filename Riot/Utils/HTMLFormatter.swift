@@ -16,14 +16,14 @@
 
 import Foundation
 
-extension Tools {
+extension HTMLFormatter {
     /// Builds an attributed string by replacing a `%@` placeholder with the supplied link text and URL.
     /// - Parameters:
     ///   - string: The string to be formatted.
     ///   - link: The link text to be inserted.
     ///   - url: The URL to be linked to.
     /// - Returns: An attributed string.
-    static func format(_ string: String, with link: String, using url: URL) -> NSAttributedString {
+    func format(_ string: String, with link: String, using url: URL) -> NSAttributedString {
         let baseString = NSMutableAttributedString(string: string)
         let attributedLink = NSAttributedString(string: link, attributes: [.link: url])
         

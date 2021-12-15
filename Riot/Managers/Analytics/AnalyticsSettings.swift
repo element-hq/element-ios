@@ -28,8 +28,11 @@ struct AnalyticsSettings {
     /// This is suggested to be a 128-bit hex encoded string.
     var id: String?
     
-    /// Unused on iOS but necessary to load the value in case opt in was declined on web,
-    /// but accepted on iOS. Otherwise generating an ID would wipe out the existing value.
+    /// Whether the user has opted in on web or not. This is unused on iOS but necessary
+    /// to store here so that it's value is preserved when updating the account data if we
+    /// generated an ID on iOS.
+    ///
+    /// `true` if opted in on web, `false` if opted out on web and `nil` if the web prompt is not yet seen.
     private var webOptIn: Bool?
     
     /// Generate a new random analytics ID. This method has no effect if an ID already exists.
@@ -40,7 +43,8 @@ struct AnalyticsSettings {
 }
 
 extension AnalyticsSettings {
-    init(dictionary: Dictionary<AnyHashable, Any>?) {
+    // Private as AnalyticsSettings should only be created from an MXSession
+    private init(dictionary: Dictionary<AnyHashable, Any>?) {
         self.id = dictionary?[Constants.idKey] as? String
         self.webOptIn = dictionary?[Constants.webOptInKey] as? Bool
     }
@@ -53,6 +57,8 @@ extension AnalyticsSettings {
         return dictionary
     }
 }
+
+// MARK: - Public initializer
 
 extension AnalyticsSettings {
     init(session: MXSession) {
