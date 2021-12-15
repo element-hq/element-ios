@@ -89,6 +89,7 @@ class SpaceCreationEmailInvitesViewModel: SpaceCreationEmailInvitesViewModelType
 
     private func done() {
         self.creationParameters.emailInvites = self.context.emailInvites
+        self.creationParameters.inviteType = .email
         let emailAddressesValidity = service.validate(self.context.emailInvites)
         
         dispatch(action: .updateEmailValidity(emailAddressesValidity))

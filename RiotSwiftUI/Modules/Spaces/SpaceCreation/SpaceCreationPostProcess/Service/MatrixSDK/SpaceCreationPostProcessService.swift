@@ -114,7 +114,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             }))
         }
         
-        if creationParams.userIdInvites.isEmpty {
+        if creationParams.inviteType == .email {
             let emailInviteCount = creationParams.userDefinedEmailInvites.count
             if emailInviteCount > 0 {
                 let subTasks = creationParams.userDefinedEmailInvites.map { emailAddress in
@@ -170,7 +170,8 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
         if let userDefinedAlias = creationParams.userDefinedAddress, !userDefinedAlias.isEmpty {
             alias = userDefinedAlias
         }
-        session.spaceService.createSpace(withName: creationParams.name, topic: creationParams.topic, isPublic: creationParams.isPublic, aliasLocalPart: alias, inviteArray: creationParams.userIdInvites) { [weak self] response in
+        let userIdInvites = creationParams.inviteType == .userId ? creationParams.userIdInvites : []
+        session.spaceService.createSpace(withName: creationParams.name, topic: creationParams.topic, isPublic: creationParams.isPublic, aliasLocalPart: alias, inviteArray: userIdInvites) { [weak self] response in
             guard let self = self else { return }
             if response.isFailure {
                 self.updateCurrentTask(with: .failure)
