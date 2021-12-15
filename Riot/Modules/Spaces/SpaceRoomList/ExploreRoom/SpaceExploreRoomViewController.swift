@@ -39,7 +39,6 @@ final class SpaceExploreRoomViewController: UIViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var titleView: MainTitleView!
-    private var emptyView: RootTabEmptyView!
     private var hasMore: Bool = false
     private let addRoomHeaderView = AddItemHeaderView.instantiate(title: VectorL10n.spacesAddRoom, icon: Asset.Images.spaceAddRoom.image)
 
@@ -53,22 +52,12 @@ final class SpaceExploreRoomViewController: UIViewController {
         return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.roomsEmptyScreenArtworkDark.image : Asset.Images.roomsEmptyScreenArtwork.image
     }
     
-    private var scrollViewHidden = true {
-        didSet {
-            UIView.animate(withDuration: 0.2) {
-                self.tableView.alpha = self.scrollViewHidden ? 0 : 1
-                self.emptyView.alpha = self.scrollViewHidden ? 1 : 0
-            }
-        }
-    }
-
     // MARK: - Setup
     
     class func instantiate(with viewModel: SpaceExploreRoomViewModelType) -> SpaceExploreRoomViewController {
         let viewController = StoryboardScene.SpaceExploreRoomViewController.initialScene.instantiate()
         viewController.viewModel = viewModel
         viewController.theme = ThemeService.shared().theme
-        viewController.emptyView = RootTabEmptyView.instantiate()
         return viewController
     }
     
@@ -122,7 +111,6 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.titleView.update(theme: theme)
         self.tableView.backgroundColor = theme.colors.background
         self.tableView.reloadData()
-        self.emptyView.update(theme: theme)
         theme.applyStyle(onSearchBar: self.tableSearchBar)
         
         self.addRoomHeaderView.update(theme: theme)
@@ -155,13 +143,6 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.setupTableView()
         
         self.setupTableViewHeader()
-        
-        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.roomsEmptyViewTitle, informationText: VectorL10n.roomsEmptyViewInformation)
-        
-        self.emptyView.frame = CGRect(x: 0, y: self.tableSearchBar.frame.maxY, width: self.view.bounds.width, height: self.view.bounds.height - self.tableSearchBar.frame.maxY)
-        self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        self.emptyView.alpha = 0
-        self.view.insertSubview(self.emptyView, at: 0)
     }
     
     private func setupTableViewHeader() {
@@ -205,7 +186,6 @@ final class SpaceExploreRoomViewController: UIViewController {
     private func renderLoaded(children: [SpaceExploreRoomListItemViewData]) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.itemDataList = children
-        self.scrollViewHidden = false
     }
     
     private func render(error: Error) {
@@ -214,15 +194,11 @@ final class SpaceExploreRoomViewController: UIViewController {
     }
 
     private func renderEmptySpace() {
-        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesEmptySpaceTitle, informationText: VectorL10n.spacesEmptySpaceDetail)
-        self.scrollViewHidden = true
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        self.renderLoaded(children: [])
     }
 
     private func renderEmptyFilterResult() {
-        self.emptyView.fill(with: self.emptyViewArtwork, title: VectorL10n.spacesNoResultFoundTitle, informationText: VectorL10n.spacesNoRoomFoundDetail)
-        self.scrollViewHidden = true
-        self.activityPresenter.removeCurrentActivityIndicator(animated: true)
+        self.renderLoaded(children: [])
     }
     
     // MARK: - Actions
