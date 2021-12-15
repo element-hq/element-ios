@@ -26,14 +26,14 @@ struct AnalyticsSettings {
     
     /// A randomly generated analytics token for this user.
     /// This is suggested to be a 128-bit hex encoded string.
-    var id: String?
+    private(set) var id: String?
     
     /// Whether the user has opted in on web or not. This is unused on iOS but necessary
     /// to store here so that it's value is preserved when updating the account data if we
     /// generated an ID on iOS.
     ///
     /// `true` if opted in on web, `false` if opted out on web and `nil` if the web prompt is not yet seen.
-    private var webOptIn: Bool?
+    private let webOptIn: Bool?
     
     /// Generate a new random analytics ID. This method has no effect if an ID already exists.
     mutating func generateID() {
