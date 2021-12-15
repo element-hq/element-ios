@@ -4915,6 +4915,10 @@ public class VectorL10n: NSObject {
   public static func sideMenuAppVersion(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "side_menu_app_version", p1)
   }
+  /// Swipe right or tap to see all rooms
+  public static var sideMenuCoachMessage: String { 
+    return VectorL10n.tr("Vector", "side_menu_coach_message") 
+  }
   /// Left panel
   public static var sideMenuRevealActionAccessibilityLabel: String { 
     return VectorL10n.tr("Vector", "side_menu_reveal_action_accessibility_label") 

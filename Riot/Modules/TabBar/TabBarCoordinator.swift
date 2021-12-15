@@ -539,6 +539,29 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         if self.currentMatrixSession?.groups().isEmpty ?? true {
             self.masterTabBarController.removeTab(at: .groups)
         }
+        
+        if let session = notification.object as? MXSession {
+            showCoachMessageIfNeeded(with: session)
+        }
+    }
+    
+    // MARK: Coach Message
+    
+    private var windowOverlay: WindowOverlayPresenter?
+
+    func showCoachMessageIfNeeded(with session: MXSession) {
+        if !RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed {
+            let isAuthenticated = MXKAccountManager.shared().activeAccounts.first != nil || MXKAccountManager.shared().accounts.first?.isSoftLogout == false
+
+            if isAuthenticated, let spaceService = session.spaceService {
+                if spaceService.isInitialised && !spaceService.rootSpaceSummaries.isEmpty {
+                    RiotSettings.shared.slideMenuRoomsCoachMessageHasBeenDisplayed = true
+                    windowOverlay = WindowOverlayPresenter()
+                    let coachMarkView = CoachMarkView.instantiate(text: VectorL10n.sideMenuCoachMessage, position: .topLeft)
+                    windowOverlay?.show(coachMarkView, duration: 4.0)
+                }
+            }
+        }
     }
 }
 

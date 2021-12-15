@@ -56,6 +56,7 @@ internal enum Asset {
     internal static let checkmark = ImageAsset(name: "checkmark")
     internal static let chevron = ImageAsset(name: "chevron")
     internal static let closeButton = ImageAsset(name: "close_button")
+    internal static let coachMark = ImageAsset(name: "coach_mark")
     internal static let disclosureIcon = ImageAsset(name: "disclosure_icon")
     internal static let errorIcon = ImageAsset(name: "error_icon")
     internal static let faceidIcon = ImageAsset(name: "faceid_icon")

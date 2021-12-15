@@ -1759,6 +1759,7 @@ Tap the + to start adding people.";
 "side_menu_action_help" = "Help";
 "side_menu_action_feedback" = "Feedback";
 "side_menu_app_version" = "Version %@";
+"side_menu_coach_message" = "Swipe right or tap to see all rooms";
 
 // Mark: - Voice Messages
 
