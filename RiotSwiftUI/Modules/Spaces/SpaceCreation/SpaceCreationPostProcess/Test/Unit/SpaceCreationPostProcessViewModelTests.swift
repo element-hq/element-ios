@@ -41,19 +41,15 @@ class SpaceCreationPostProcessViewModelTests: XCTestCase {
     }
     
     func testUpateToNextTask() {
-        let tasksPublisher = context.$viewState.map(\.tasks).removeDuplicates()
-        let awaitDeferred = xcAwaitDeferred(tasksPublisher)
         service.simulateUpdate(tasks: MockSpaceCreationPostProcessService.nextStepTasks)
-        XCTAssertEqual(try awaitDeferred(), MockSpaceCreationPostProcessService.nextStepTasks)
+        XCTAssertEqual(context.viewState.tasks, MockSpaceCreationPostProcessService.nextStepTasks)
         XCTAssertEqual(context.viewState.errorCount, 2)
         XCTAssertEqual(context.viewState.isFinished, false)
     }
 
     func testLastTaskDone() {
-        let tasksPublisher = context.$viewState.map(\.tasks).removeDuplicates()
-        let awaitDeferred = xcAwaitDeferred(tasksPublisher)
         service.simulateUpdate(tasks: MockSpaceCreationPostProcessService.lastTaskDoneWithError)
-        XCTAssertEqual(try awaitDeferred(), MockSpaceCreationPostProcessService.lastTaskDoneWithError)
+        XCTAssertEqual(context.viewState.tasks, MockSpaceCreationPostProcessService.lastTaskDoneWithError)
         XCTAssertEqual(context.viewState.errorCount, 2)
         XCTAssertEqual(context.viewState.isFinished, true)
     }

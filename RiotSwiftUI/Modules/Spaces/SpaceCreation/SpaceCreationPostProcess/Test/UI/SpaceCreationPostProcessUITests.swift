@@ -32,10 +32,6 @@ class SpaceCreationPostProcessUITests: MockScreenTest {
 
     func verifySpaceCreationPostProcessScreen() throws {
         guard let screenState = screenState as? MockSpaceCreationPostProcessScreenState else { fatalError("no screen") }
-        switch screenState {
-        case .tasks:
-            verifyTasksList()
-        }
     }
 
     func verifyTasksList() {
