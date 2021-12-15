@@ -35,13 +35,8 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     private var errorPresenter: MXKErrorPresentation!
     private var activityPresenter: ActivityIndicatorPresenter!
     private var titleView: MainTitleView!
-    private var emptyView: SearchEmptyView!
     private let inviteHeaderView = AddItemHeaderView.instantiate(title: VectorL10n.spacesInvitePeople, icon: Asset.Images.spaceInviteUser.image)
 
-    private var emptyViewArtwork: UIImage {
-        return ThemeService.shared().isCurrentThemeDark() ? Asset.Images.peopleEmptyScreenArtworkDark.image : Asset.Images.peopleEmptyScreenArtwork.image
-    }
-    
     // MARK: - Setup
     
     class func instantiate(with viewModel: SpaceMemberListViewModelType) -> SpaceMemberListViewController {
@@ -50,7 +45,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         viewController.showParticipantCustomAccessoryView = false
         viewController.showInviteUserFab = false
         viewController.theme = ThemeService.shared().theme
-        viewController.emptyView = SearchEmptyView()
         return viewController
     }
     
@@ -99,7 +93,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         
         theme.applyStyle(onSearchBar: self.searchBarView)
         self.titleView.update(theme: theme)
-        self.emptyView.update(theme: theme)
         
         self.inviteHeaderView.update(theme: theme)
     }
@@ -122,11 +115,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.titleView = MainTitleView()
         self.titleView.titleLabel.text = VectorL10n.roomDetailsPeople
         self.navigationItem.titleView = self.titleView
-        
-        self.emptyView.frame = CGRect(x: Constants.emptySearchViewMargin, y: self.searchBarView.frame.maxY + 2 * Constants.emptySearchViewMargin, width: self.view.bounds.width - 2 * Constants.emptySearchViewMargin, height: 0)
-        self.emptyView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        self.emptyView.alpha = 0
-        self.view.insertSubview(self.emptyView, at: 0)
     }
 
     private func render(viewState: SpaceMemberListViewState) {
@@ -148,9 +136,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.mxRoom = space.room
         self.titleView.subtitleLabel.text = space.summary?.displayname
-        self.emptyView.titleLabel.text = VectorL10n.spacesNoResultFoundTitle
-        self.emptyView.detailLabel.text = VectorL10n.spacesNoMemberFoundDetail(space.summary?.displayname ?? "")
-        self.emptyView.layoutIfNeeded()
     }
     
     private func render(error: Error) {
@@ -184,11 +169,6 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         super.searchBar(searchBar, textDidChange: searchText)
-        
-        UIView.animate(withDuration: 0.2) {
-            self.emptyView.alpha = self.tableView.numberOfSections == 0 ? 1 : 0
-            self.tableView.alpha = self.tableView.numberOfSections == 0 ? 0 : 1
-        }
     }
     
     // MARK: - MXKRoomMemberDetailsViewControllerDelegate
