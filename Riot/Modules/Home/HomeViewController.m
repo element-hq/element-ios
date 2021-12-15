@@ -256,87 +256,7 @@
         [self cancelEditionMode:YES];
     }
     
-    if (recentsDataSource.currentSpace != nil)
-    {
-        [self showPlusMenuForSpace];
-    }
-    else
-    {
-        [super onPlusButtonPressed];
-    }
-}
-
-- (void)showPlusMenuForSpace
-{
-    __weak typeof(self) weakSelf = self;
-    
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:VectorL10n.roomRecentsStartChatWith
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                           
-                                                           self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
-                                                           self.spaceMembersCoordinatorBridgePresenter.delegate = self;
-                                                           [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
-                                                       }
-                                                       
-                                                   }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:VectorL10n.roomRecentsCreateEmptyRoom
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                           
-                                                           [self createNewRoom];
-                                                       }
-                                                       
-                                                   }]];
-
-    [currentAlert addAction:[UIAlertAction actionWithTitle:VectorL10n.roomRecentsJoinRoom
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-
-                                                           [self showRoomDirectory];
-                                                       }
-                                                       
-                                                   }]];
-    
-    
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert popoverPresentationController].sourceView = plusButtonImageView;
-    [currentAlert popoverPresentationController].sourceRect = plusButtonImageView.bounds;
-    
-    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [super onPlusButtonPressed];
 }
 
 - (void)cancelEditionMode:(BOOL)forceRefresh
@@ -383,6 +303,19 @@
     else
     {
         [super createNewRoom];
+    }
+}
+
+- (void)startChat {
+    if (recentsDataSource.currentSpace)
+    {
+        self.spaceMembersCoordinatorBridgePresenter = [[SpaceMembersCoordinatorBridgePresenter alloc] initWithUserSessionsService:[UserSessionsService shared] session:self.mainSession spaceId:self.dataSource.currentSpace.spaceId];
+        self.spaceMembersCoordinatorBridgePresenter.delegate = self;
+        [self.spaceMembersCoordinatorBridgePresenter presentFrom:self animated:YES];
+    }
+    else
+    {
+        [super startChat];
     }
 }
 

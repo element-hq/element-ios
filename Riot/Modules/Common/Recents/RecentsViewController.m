@@ -1849,7 +1849,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                            typeof(self) self = weakSelf;
                                                            self->currentAlert = nil;
                                                            
-                                                           [self performSegueWithIdentifier:@"presentStartChat" sender:self];
+                                                           [self startChat];
                                                        }
                                                        
                                                    }]];
@@ -1957,6 +1957,10 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [viewController dismissViewControllerAnimated:YES completion:nil];
     self.customSizedPresentationController = nil;
+}
+
+- (void)startChat {
+    [self performSegueWithIdentifier:@"presentStartChat" sender:self];
 }
 
 - (void)createNewRoom

@@ -141,6 +141,11 @@ FOUNDATION_EXPORT NSString *const RecentsViewControllerDataReadyNotification;
 - (void)onPlusButtonPressed;
 
 /**
+ Open screen to create a new chat room.
+ */
+- (void)startChat;
+
+/**
  Open screen to create a new room.
  */
 - (void)createNewRoom;
