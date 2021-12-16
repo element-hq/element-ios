@@ -411,6 +411,7 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_video_call" = "Video Call";
+"room_accessibility_threads" = "Threads";
 "room_accessibility_hangup" = "Hang up";
 "room_accessibility_thread_more" = "More";
 "room_place_voice_call" = "Voice call";
@@ -420,6 +421,15 @@ Tap the + to start adding people.";
 
 //  MARK: Threads
 "room_thread_title" = "Thread";
+"thread_copy_link_to_thread" = "Copy link to thread";
+"threads_title" = "Threads";
+"threads_action_all_threads" = "All threads";
+"threads_action_my_threads" = "My threads";
+"threads_empty_title" = "Keep discussions organised with threads";
+"threads_empty_info_all" = "Threads help keep your conversations on-topic and easy to track.";
+"threads_empty_info_my" = "Reply to an ongoing thread or use “Thread” when selecting a message to start a new one.";
+"threads_empty_tip" = "Tip: Use “Thread” option when selecting a message.";
+"threads_empty_show_all_threads" = "Show all threads";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -910,6 +920,7 @@ Tap the + to start adding people.";
 "event_formatter_group_call_join" = "Join";
 "event_formatter_group_call_leave" = "Leave";
 "event_formatter_group_call_incoming" = "%@ in %@";
+"event_formatter_message_deleted" = "Message deleted";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";

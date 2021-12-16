@@ -139,7 +139,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate, ThreadsCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -245,6 +245,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomCoordinatorBridgePresenter *threadBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
+@property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsCoordinatorBridgePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -1522,9 +1523,19 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"]
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
-                                                            action:@selector(onThreadMoreTapped:)];
+                                                            action:@selector(onButtonPressed:)];
     item.accessibilityLabel = [VectorL10n roomAccessibilityThreadMore];
     
+    return item;
+}
+
+- (UIBarButtonItem *)threadListBarButtonItem
+{
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_reply_in_thread"]
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(onThreadListTapped:)];
+    item.accessibilityLabel = [VectorL10n roomAccessibilityThreads];
     return item;
 }
 
@@ -1744,11 +1755,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }
                 [rightBarButtonItems addObject:item];
             }
-            
-            // Do not change title view class here if the expanded header is visible.
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         }
+        
+        // Do not change title view class here if the expanded header is visible.
+        [self setRoomTitleViewClass:RoomTitleView.class];
+        ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         
         MXKImageView *userPictureView = ((RoomTitleView*)self.titleView).pictureView;
         
@@ -1764,8 +1775,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         {
             if (self.roomDataSource.threadId)
             {
+                //  in a thread
                 UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
                 [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
+            }
+            else
+            {
+                //  in a regular timeline
+                UIBarButtonItem *itemThreadList = [self threadListBarButtonItem];
+                [rightBarButtonItems insertObject:itemThreadList atIndex:0];
             }
         }
     }
@@ -4393,9 +4411,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self placeCallWithVideo:YES];
 }
 
-- (IBAction)onThreadMoreTapped:(id)sender
+- (IBAction)onThreadListTapped:(id)sender
 {
-    //  TODO: Implement when design ready
+    self.threadsCoordinatorBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
+                                                                                                 roomId:self.roomDataSource.roomId];
+    self.threadsCoordinatorBridgePresenter.delegate = self;
+    [self.threadsCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
 - (IBAction)onIntegrationsPressed:(id)sender
@@ -6403,6 +6424,53 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.threadBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
+- (void)highlightEvent:(NSString *)eventId completion:(void (^)(void))completion
+{
+    NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
+    if (row == NSNotFound)
+    {
+        //  event with eventId is not loaded into data source yet, load another data source and display it
+        [self startActivityIndicator];
+        MXWeakify(self);
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                      initialEventId:eventId
+                                            threadId:nil
+                                    andMatrixSession:self.roomDataSource.mxSession
+                                          onComplete:^(RoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+            roomDataSource.markTimelineInitialEvent = YES;
+            [self displayRoom:roomDataSource];
+            // Give the data source ownership to the room view controller.
+            self.hasRoomDataSourceOwnership = YES;
+            if (completion)
+            {
+                completion();
+            }
+        }];
+        return;
+    }
+    
+    self->customizedRoomDataSource.highlightedEventId = eventId;
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+    if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
+    {
+        [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
+                                     withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
+    {
+        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
+                                     atScrollPosition:UITableViewScrollPositionMiddle
+                                             animated:YES];
+    }
+    if (completion)
+    {
+        completion();
+    }
+}
+
 #pragma mark - RoomContextualMenuViewControllerDelegate
 
 - (void)roomContextualMenuViewControllerDidTapBackgroundOverlay:(RoomContextualMenuViewController *)viewController
@@ -6826,26 +6894,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.threadBridgePresenter dismissWithAnimated:YES completion:^{
             MXStrongifyAndReturnIfNil(self);
             
-            NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
-            if (row == NSNotFound)
-            {
-                return;
-            }
-            
-            self->customizedRoomDataSource.highlightedEventId = eventId;
-            
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-            if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
-            {
-                [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
-                                             withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
-            else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
-            {
-                [self.bubblesTableView scrollToRowAtIndexPath:indexPath
-                                             atScrollPosition:UITableViewScrollPositionMiddle
-                                                     animated:YES];
-            }
+            [self highlightEvent:eventId completion:nil];
         }];
     }
 }
@@ -6856,6 +6905,31 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     {
         self.threadBridgePresenter = nil;
     }
+}
+
+#pragma mark - ThreadsCoordinatorBridgePresenterDelegate
+
+- (void)threadsCoordinatorBridgePresenterDelegateDidComplete:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsCoordinatorBridgePresenter = nil;
+}
+
+- (void)threadsCoordinatorBridgePresenterDelegateDidSelect:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter roomId:(NSString *)roomId eventId:(NSString *)eventId
+{
+    MXWeakify(self);
+    [self.threadsCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        
+        if (eventId)
+        {
+            [self highlightEvent:eventId completion:nil];
+        }
+    }];
+}
+
+- (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
+{
+    self.threadsCoordinatorBridgePresenter = nil;
 }
 
 @end

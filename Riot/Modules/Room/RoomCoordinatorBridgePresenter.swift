@@ -128,7 +128,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
                 completion?()
             }
         case .push:
-            guard let navigationController = coordinator.toPresentable() as? UINavigationController else {
+            guard let navigationController = coordinator.toPresentable().navigationController else {
                 return
             }
             navigationController.popViewController(animated: animated)

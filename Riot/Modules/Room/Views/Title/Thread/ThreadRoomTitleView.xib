@@ -15,22 +15,6 @@
             <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p54-De-nkd">
-                    <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thread" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mO3-2G-Gl3">
-                            <rect key="frame" x="12" y="22.5" width="51.5" height="19.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="mO3-2G-Gl3" firstAttribute="leading" secondItem="p54-De-nkd" secondAttribute="leading" constant="12" id="Ntr-3O-lQk"/>
-                        <constraint firstItem="mO3-2G-Gl3" firstAttribute="centerY" secondItem="p54-De-nkd" secondAttribute="centerY" id="XTC-hf-K0V"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ami-Cg-fcA">
                     <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
                     <subviews>
@@ -79,25 +63,18 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="p54-De-nkd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="CTf-kS-H79"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Ami-Cg-fcA" secondAttribute="trailing" id="a9m-d6-0go"/>
                 <constraint firstAttribute="bottom" secondItem="Ami-Cg-fcA" secondAttribute="bottom" id="fEm-nj-yVF"/>
-                <constraint firstAttribute="bottom" secondItem="p54-De-nkd" secondAttribute="bottom" id="gn1-Jv-snP"/>
                 <constraint firstItem="Ami-Cg-fcA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="h0M-ab-EGv"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="p54-De-nkd" secondAttribute="trailing" id="nB5-Kt-Sx9"/>
-                <constraint firstItem="p54-De-nkd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="tHf-Gk-RFp"/>
                 <constraint firstItem="Ami-Cg-fcA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="zAN-VI-ZYk"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="fullContainerView" destination="Ami-Cg-fcA" id="Fo9-bp-DMP"/>
-                <outlet property="fullRoomAvatarView" destination="FJB-2F-rrQ" id="iok-M1-un0"/>
-                <outlet property="fullRoomEncryptionBadgeView" destination="Mli-PC-WUh" id="Ipu-zu-qBB"/>
-                <outlet property="fullRoomNameLabel" destination="8lk-sN-3IP" id="bDF-fD-KmE"/>
-                <outlet property="fullTitleLabel" destination="BnG-NU-7Mg" id="zhJ-om-6HM"/>
-                <outlet property="partialContainerView" destination="p54-De-nkd" id="huG-Db-CIU"/>
-                <outlet property="partialTitleLabel" destination="mO3-2G-Gl3" id="X0E-ry-7zp"/>
-                <outlet property="titleLabelLeadingConstraint" destination="ES6-mL-Y9F" id="YCu-B7-fQD"/>
+                <outlet property="roomAvatarView" destination="FJB-2F-rrQ" id="SUd-p8-VCH"/>
+                <outlet property="roomEncryptionBadgeView" destination="Mli-PC-WUh" id="MuX-Qw-DfQ"/>
+                <outlet property="roomNameLabel" destination="8lk-sN-3IP" id="wFm-R4-fBo"/>
+                <outlet property="titleLabel" destination="BnG-NU-7Mg" id="gDw-Pr-oR8"/>
+                <outlet property="titleLabelLeadingConstraint" destination="ES6-mL-Y9F" id="MpE-vt-KKC"/>
             </connections>
             <point key="canvasLocation" x="0.7246376811594204" y="-152.00892857142856"/>
         </view>
