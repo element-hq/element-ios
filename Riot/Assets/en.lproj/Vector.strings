@@ -421,6 +421,7 @@ Tap the + to start adding people.";
 
 //  MARK: Threads
 "room_thread_title" = "Thread";
+"thread_copy_link_to_thread" = "Copy link to thread";
 "threads_title" = "Threads";
 "threads_action_all_threads" = "All threads";
 "threads_action_my_threads" = "My threads";
@@ -919,6 +920,7 @@ Tap the + to start adding people.";
 "event_formatter_group_call_join" = "Join";
 "event_formatter_group_call_leave" = "Leave";
 "event_formatter_group_call_incoming" = "%@ in %@";
+"event_formatter_message_deleted" = "Message deleted";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";

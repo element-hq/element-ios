@@ -16,10 +16,21 @@
 
 import Foundation
 
-/// `RoomIdentifiable` describes an object tied to a specific room id.
-/// Useful to identify existing objects that should be removed when the user leaves a room for example.
-protocol RoomIdentifiable {
-    var roomId: String? { get }
-    var threadId: String? { get }
-    var mxSession: MXSession? { get }
+/// Structure used to pass modules to routers with pop completion blocks.
+struct PresentableModule {
+    /// Actual presentable of the module
+    let presentable: Presentable
+    
+    /// Block to be called when the module is popped
+    let popCompletion: (() -> Void)?
+}
+
+//  MARK: - CustomStringConvertible
+
+extension PresentableModule: CustomStringConvertible {
+    
+    var description: String {
+        return "PresentableModule: \(presentable), pop completion: \(String(describing: popCompletion))"
+    }
+    
 }

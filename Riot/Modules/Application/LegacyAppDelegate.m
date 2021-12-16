@@ -1277,6 +1277,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     NSString *roomIdOrAlias;
+    ThreadParameters *threadParameters;
     NSString *eventId;
     NSString *userId;
     NSString *groupId;
@@ -1358,7 +1359,25 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 else
                 {
                     // Open the room page
-                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:eventId mxSession:account.mxSession presentationParameters: screenPresentationParameters];
+                    if (eventId)
+                    {
+                        MXEvent *event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
+                        if (event.threadId)
+                        {
+                            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                                          stackRoomScreen:YES];
+                        }
+                        else if ([account.mxSession.threadingService isEventThreadRoot:event])
+                        {
+                            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
+                                                                          stackRoomScreen:YES];
+                        }
+                    }
+                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                                                  eventId:eventId
+                                                                                                                mxSession:account.mxSession
+                                                                                               threadParameters:threadParameters
+                                                                                                   presentationParameters:screenPresentationParameters];
                     
                     [self showRoomWithParameters:roomNavigationParameters];
                 }
@@ -2880,7 +2899,10 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES];
     
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                        eventId:eventId mxSession:mxSession presentationParameters:presentationParameters];
+                                                                                    eventId:eventId
+                                                                                  mxSession:mxSession
+                                                                 threadParameters:nil
+                                                                     presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];
 }

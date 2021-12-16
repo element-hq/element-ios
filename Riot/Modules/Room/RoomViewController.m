@@ -1523,7 +1523,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_more"]
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
-                                                            action:@selector(onThreadMoreTapped:)];
+                                                            action:@selector(onButtonPressed:)];
     item.accessibilityLabel = [VectorL10n roomAccessibilityThreadMore];
     
     return item;
@@ -1755,11 +1755,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }
                 [rightBarButtonItems addObject:item];
             }
-            
-            // Do not change title view class here if the expanded header is visible.
-            [self setRoomTitleViewClass:RoomTitleView.class];
-            ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         }
+        
+        // Do not change title view class here if the expanded header is visible.
+        [self setRoomTitleViewClass:RoomTitleView.class];
+        ((RoomTitleView*)self.titleView).tapGestureDelegate = self;
         
         MXKImageView *userPictureView = ((RoomTitleView*)self.titleView).pictureView;
         
@@ -4411,11 +4411,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self placeCallWithVideo:YES];
 }
 
-- (IBAction)onThreadMoreTapped:(id)sender
-{
-    //  TODO: Implement when design ready
-}
-
 - (IBAction)onThreadListTapped:(id)sender
 {
     self.threadsCoordinatorBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
@@ -6429,11 +6424,30 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.threadBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
-- (void)highlightEvent:(NSString *)eventId
+- (void)highlightEvent:(NSString *)eventId completion:(void (^)(void))completion
 {
     NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
     if (row == NSNotFound)
     {
+        //  event with eventId is not loaded into data source yet, load another data source and display it
+        [self startActivityIndicator];
+        MXWeakify(self);
+        [RoomDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                      initialEventId:eventId
+                                            threadId:nil
+                                    andMatrixSession:self.roomDataSource.mxSession
+                                          onComplete:^(RoomDataSource *roomDataSource) {
+            MXStrongifyAndReturnIfNil(self);
+            [self stopActivityIndicator];
+            roomDataSource.markTimelineInitialEvent = YES;
+            [self displayRoom:roomDataSource];
+            // Give the data source ownership to the room view controller.
+            self.hasRoomDataSourceOwnership = YES;
+            if (completion)
+            {
+                completion();
+            }
+        }];
         return;
     }
     
@@ -6450,6 +6464,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.bubblesTableView scrollToRowAtIndexPath:indexPath
                                      atScrollPosition:UITableViewScrollPositionMiddle
                                              animated:YES];
+    }
+    if (completion)
+    {
+        completion();
     }
 }
 
@@ -6876,7 +6894,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.threadBridgePresenter dismissWithAnimated:YES completion:^{
             MXStrongifyAndReturnIfNil(self);
             
-            [self highlightEvent:eventId];
+            [self highlightEvent:eventId completion:nil];
         }];
     }
 }
@@ -6904,7 +6922,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (eventId)
         {
-            [self highlightEvent:eventId];
+            [self highlightEvent:eventId completion:nil];
         }
     }];
 }
