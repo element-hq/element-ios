@@ -84,6 +84,7 @@ class SpaceCreationMatrixItemChooserViewModel: SpaceCreationMatrixItemChooserVie
             let selectedItemIds = Array(spaceCreationMatrixItemChooserService.selectedItemIdsSubject.value)
             switch spaceCreationMatrixItemChooserService.type {
             case .people:
+                creationParams.inviteType = .userId
                 creationParams.userIdInvites = selectedItemIds
             default:
                 creationParams.addedRoomIds = selectedItemIds

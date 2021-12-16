@@ -45,8 +45,8 @@ class SpaceCreationSettingsViewModelTests: XCTestCase {
     func testInitialState() {
         XCTAssertEqual(context.viewState.title, creationParameters.isPublic ? VectorL10n.spacesCreationPublicSpaceTitle : VectorL10n.spacesCreationPrivateSpaceTitle)
         XCTAssertEqual(context.viewState.isAddressValid, true)
-        XCTAssertEqual(context.viewState.defaultAddress, "#fake:matrix.org")
-        XCTAssertEqual(context.viewState.addressMessage, VectorL10n.spacesCreationAddressDefaultMessage("#fake:matrix.org"))
+        XCTAssertEqual(context.viewState.defaultAddress, "fake-uri")
+        XCTAssertEqual(context.viewState.addressMessage, VectorL10n.spacesCreationAddressDefaultMessage("#fake-uri:fake-domain.org"))
         XCTAssertEqual(context.viewState.avatarImage, Asset.Images.appSymbol.image)
         XCTAssertEqual(context.roomName, creationParameters.name)
         XCTAssertEqual(context.topic, creationParameters.topic)

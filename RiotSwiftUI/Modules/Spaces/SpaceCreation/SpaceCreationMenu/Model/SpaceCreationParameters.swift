@@ -17,6 +17,11 @@
 import Foundation
 import UIKit
 
+enum SpaceCreationInviteType {
+    case email
+    case userId
+}
+
 class SpaceCreationParameters {
     var name: String? {
         didSet {
@@ -85,6 +90,11 @@ class SpaceCreationParameters {
         }
     }
     var userIdInvites: [String] = [] {
+        didSet {
+            isModified = true
+        }
+    }
+    var inviteType: SpaceCreationInviteType = .email {
         didSet {
             isModified = true
         }
