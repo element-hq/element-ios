@@ -32,7 +32,7 @@ class PollTimelineUITests: XCTestCase {
     }
     
     func testOpenPoll() {
-        app.buttons[MockPollTimelineScreenState.screenStateKeys.first!].tap()
+        app.goToScreenWithIdentifier(MockPollTimelineScreenState.open.title)
         
         XCTAssert(app.staticTexts["Question"].exists)
         XCTAssert(app.staticTexts["20 votes cast"].exists)
@@ -70,7 +70,7 @@ class PollTimelineUITests: XCTestCase {
     }
     
     func testClosedPoll() {
-        app.buttons[MockPollTimelineScreenState.screenStateKeys.last!].tap()
+        app.goToScreenWithIdentifier(MockPollTimelineScreenState.closed.title)
         
         XCTAssert(app.staticTexts["Question"].exists)
         XCTAssert(app.staticTexts["Final results based on 20 votes"].exists)
