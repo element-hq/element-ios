@@ -1505,3 +1505,25 @@
 "settings_labs_enabled_polls" = "Küsitlused";
 "room_event_action_end_poll" = "Lõpeta küsitlus";
 "room_event_action_remove_poll" = "Kustuta küsitlus";
+"analytics_prompt_stop" = "Lõpeta andmete jagamine";
+"analytics_prompt_yes" = "Jah, see on sobilik";
+"analytics_prompt_not_now" = "Mitte praegu";
+"analytics_prompt_point_3" = "Seadistustest saad alati määrata, et see funktsionaalsus pole kasutusel";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Meie <b>ei</b> jaga teavet kolmandate osapooltega";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Meie <b>ei</b> salvesta ega profileeri sinu kasutajakonto andmeid";
+"analytics_prompt_terms_link_upgrade" = "siit";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Kõik meie tingimused leiad %@. Kas sa oled nõus?";
+"analytics_prompt_terms_link_new_user" = "siit";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Meie kasutustingimused leiad %@.";
+"analytics_prompt_message_upgrade" = "Sa oled varem nõustunud meiega anonüümsete andmete jagamisega. Selleks, et mõistaksime, kuidas kasutajad erinevaid seadmeid pruugivad, me loome sinu seadmetele ühise juhusliku tunnuse.";
+"analytics_prompt_message_new_user" = "Võimalike vigade leidmiseks ja Element'i arendamiseks jaga meiega anonüümseid andmeid. Selleks, et mõistaksime, kuidas kasutajad erinevaid seadmeid pruugivad me loome sinu seadmetele ühise juhusliku tunnuse.";
+
+// Analytics
+"analytics_prompt_title" = "Aita arendada %@ rakendust";
+"settings_analytics_and_crash_data" = "Saada rakenduse vigade ja analüütika andmeid";
+"accessibility_button_label" = "nupp";
+"enable" = "Võta kasutusele";
