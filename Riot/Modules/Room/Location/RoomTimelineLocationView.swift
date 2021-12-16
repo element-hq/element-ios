@@ -17,12 +17,13 @@
 import UIKit
 import Reusable
 import Mapbox
+import Keys
 
 class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
 
     private struct Constants {
         static let mapHeight: CGFloat = 300.0
-        static let mapTilerKey = "bDAfUcrMPWTAB1KB38r6"
+        static let mapTilerKey = RiotKeys().mapTilerAPIKey
         static let mapZoomLevel = 15.0
         static let mapStyleURLString = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=\(Constants.mapTilerKey)")
         static let cellBorderRadius: CGFloat = 1.0

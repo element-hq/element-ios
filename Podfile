@@ -129,6 +129,10 @@ abstract_target 'RiotPods' do
 
 end
 
+plugin 'cocoapods-keys', {
+  :project => "Riot",
+  :keys => ["MapTilerAPIKey"]
+}
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
