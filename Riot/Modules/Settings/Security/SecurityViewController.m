@@ -119,6 +119,8 @@ TableViewSectionsDelegate>
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation SecurityViewController
@@ -142,6 +144,8 @@ TableViewSectionsDelegate>
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSettingsSecurity];
 }
 
 - (void)viewDidLoad
@@ -250,9 +254,6 @@ TableViewSectionsDelegate>
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Security"];
-
     // Release the potential pushed view controller
     [self releasePushedViewController];
 
@@ -268,6 +269,12 @@ TableViewSectionsDelegate>
     [self loadCrossSigning];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -277,6 +284,12 @@ TableViewSectionsDelegate>
         [currentAlert dismissViewControllerAnimated:NO completion:nil];
         currentAlert = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 #pragma mark - Internal methods

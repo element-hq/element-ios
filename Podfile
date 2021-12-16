@@ -3,7 +3,7 @@ source 'https://cdn.cocoapods.org/'
 # Uncomment this line to define a global platform for your project
 platform :ios, '12.1'
 
-# Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
+# Use frameworks to allow usage of pods written in Swift
 use_frameworks!
 
 # Different flavours of pods to MatrixSDK. Can be one of:
@@ -67,8 +67,10 @@ abstract_target 'RiotPods' do
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
 
-  # Piwik for analytics
-  pod 'MatomoTracker', '~> 7.4.1'
+  # PostHog for analytics
+  pod 'PostHog', '~> 1.4.4'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
+  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true

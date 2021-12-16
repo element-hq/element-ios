@@ -73,5 +73,7 @@ final class InviteFriendsPresenter: NSObject {
         }
         
         self.presentingViewController?.present(viewController, animated: animated, completion: nil)
+        
+        Analytics.shared.trackScreen(.inviteFriends, duration: nil)
     }
 }

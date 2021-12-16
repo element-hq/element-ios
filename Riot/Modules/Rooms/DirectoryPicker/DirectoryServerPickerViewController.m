@@ -38,6 +38,9 @@
     // Observe kThemeServiceDidChangeThemeNotification to handle user interface theme change.
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
+
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation DirectoryServerPickerViewController
@@ -49,6 +52,8 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenSwitchDirectory];
 }
 
 - (void)destroy
@@ -145,9 +150,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"DirectoryServerPicker"];
-
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
 
@@ -156,6 +158,12 @@
     }];
 
     [dataSource loadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -167,6 +175,12 @@
     }
 
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)displayWithDataSource:(MXKDirectoryServersDataSource*)theDataSource
