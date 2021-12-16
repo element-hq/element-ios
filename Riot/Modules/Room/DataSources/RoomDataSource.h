@@ -56,6 +56,12 @@
 @property(nonatomic, nullable) NSArray<TypingUserInfo *> *currentTypingUsers;
 
 /**
+ Identifier of the event to be highlighted. Default is nil.
+ Data source owner should reload the view itself to reflect changes, and nullify the parameter afterwards when it doesn't highlight the event anymore.
+ */
+@property (nonatomic, nullable) NSString *highlightedEventId;
+
+/**
  Check if there is an active jitsi widget in the room and return it.
 
  @return a widget representating the active jitsi conference in the room. Else, nil.

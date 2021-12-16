@@ -514,7 +514,7 @@ const CGFloat kTypingCellHeight = 24;
                     //  display thread summary view if the component has a thread in the room timeline
                     if (RiotSettings.shared.enableThreads && component.thread && !self.threadId)
                     {
-                        threadSummaryView = [ThreadSummaryView instantiateWithThread:component.thread];
+                        threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread];
                         threadSummaryView.delegate = self;
                         
                         [temporaryViews addObject:threadSummaryView];
@@ -774,14 +774,15 @@ const CGFloat kTypingCellHeight = 24;
         }
 
         // Manage initial event (case of permalink or search result)
-        if (self.timeline.initialEventId && self.markTimelineInitialEvent)
+        if ((self.timeline.initialEventId && self.markTimelineInitialEvent) || self.highlightedEventId)
         {
             // Check if the cell contains this initial event
             for (NSUInteger index = 0; index < bubbleComponents.count; index++)
             {
                 MXKRoomBubbleComponent *component = bubbleComponents[index];
 
-                if ([component.event.eventId isEqualToString:self.timeline.initialEventId])
+                if ([component.event.eventId isEqualToString:self.timeline.initialEventId]
+                    || [component.event.eventId isEqualToString:self.highlightedEventId])
                 {
                     // If yes, mark the event
                     [bubbleCell markComponent:index];

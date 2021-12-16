@@ -18,7 +18,9 @@ import Foundation
 @objc protocol RoomCoordinatorBridgePresenterDelegate {
     func roomCoordinatorBridgePresenterDidLeaveRoom(_ bridgePresenter: RoomCoordinatorBridgePresenter)
     func roomCoordinatorBridgePresenterDidCancelRoomPreview(_ bridgePresenter: RoomCoordinatorBridgePresenter)
-    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, didSelectRoomWithId roomId: String)
+    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter,
+                                        didSelectRoomWithId roomId: String,
+                                        eventId: String?)
     func roomCoordinatorBridgePresenterDidDismissInteractively(_ bridgePresenter: RoomCoordinatorBridgePresenter)
 }
 
@@ -70,6 +72,12 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         
     private let bridgeParameters: RoomCoordinatorBridgePresenterParameters
     private var coordinator: RoomCoordinator?
+    private var navigationType: NavigationType = .present
+    
+    private enum NavigationType {
+        case present
+        case push
+    }
     
     // MARK: Public
     
@@ -93,6 +101,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         coordinator.start()
         
         self.coordinator = coordinator
+        self.navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
@@ -104,13 +113,25 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         coordinator.start() // Will trigger view controller push
         
         self.coordinator = coordinator
+        self.navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
         }
-        coordinator.toPresentable().dismiss(animated: animated) {
+        switch navigationType {
+        case .present:
+            coordinator.toPresentable().dismiss(animated: animated) {
+                self.coordinator = nil
+
+                completion?()
+            }
+        case .push:
+            guard let navigationController = coordinator.toPresentable().navigationController else {
+                return
+            }
+            navigationController.popViewController(animated: animated)
             self.coordinator = nil
 
             completion?()
@@ -141,8 +162,8 @@ final class RoomCoordinatorBridgePresenter: NSObject {
 // MARK: - RoomNotificationSettingsCoordinatorDelegate
 extension RoomCoordinatorBridgePresenter: RoomCoordinatorDelegate {
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
-        self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId)
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId, eventId: eventId)
     }
     
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {

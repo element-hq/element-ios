@@ -1359,6 +1359,10 @@ public class VectorL10n: NSObject {
   public static func eventFormatterMemberUpdates(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "event_formatter_member_updates", p1)
   }
+  /// Message deleted
+  public static var eventFormatterMessageDeleted: String { 
+    return VectorL10n.tr("Vector", "event_formatter_message_deleted") 
+  }
   /// (edited)
   public static var eventFormatterMessageEditedMention: String { 
     return VectorL10n.tr("Vector", "event_formatter_message_edited_mention") 
@@ -2527,6 +2531,10 @@ public class VectorL10n: NSObject {
   public static var roomAccessibilityThreadMore: String { 
     return VectorL10n.tr("Vector", "room_accessibility_thread_more") 
   }
+  /// Threads
+  public static var roomAccessibilityThreads: String { 
+    return VectorL10n.tr("Vector", "room_accessibility_threads") 
+  }
   /// Upload
   public static var roomAccessibilityUpload: String { 
     return VectorL10n.tr("Vector", "room_accessibility_upload") 
@@ -3007,7 +3015,7 @@ public class VectorL10n: NSObject {
   public static var roomEventActionMore: String { 
     return VectorL10n.tr("Vector", "room_event_action_more") 
   }
-  /// Permalink
+  /// Copy link to message
   public static var roomEventActionPermalink: String { 
     return VectorL10n.tr("Vector", "room_event_action_permalink") 
   }
@@ -3074,6 +3082,10 @@ public class VectorL10n: NSObject {
   /// Encryption Information
   public static var roomEventActionViewEncryption: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_encryption") 
+  }
+  /// View in room
+  public static var roomEventActionViewInRoom: String { 
+    return VectorL10n.tr("Vector", "room_event_action_view_in_room") 
   }
   /// View Source
   public static var roomEventActionViewSource: String { 
@@ -5142,6 +5154,42 @@ public class VectorL10n: NSObject {
   /// Switch
   public static var `switch`: String { 
     return VectorL10n.tr("Vector", "switch") 
+  }
+  /// Copy link to thread
+  public static var threadCopyLinkToThread: String { 
+    return VectorL10n.tr("Vector", "thread_copy_link_to_thread") 
+  }
+  /// All threads
+  public static var threadsActionAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_all_threads") 
+  }
+  /// My threads
+  public static var threadsActionMyThreads: String { 
+    return VectorL10n.tr("Vector", "threads_action_my_threads") 
+  }
+  /// Threads help keep your conversations on-topic and easy to track.
+  public static var threadsEmptyInfoAll: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_all") 
+  }
+  /// Reply to an ongoing thread or use “Thread” when selecting a message to start a new one.
+  public static var threadsEmptyInfoMy: String { 
+    return VectorL10n.tr("Vector", "threads_empty_info_my") 
+  }
+  /// Show all threads
+  public static var threadsEmptyShowAllThreads: String { 
+    return VectorL10n.tr("Vector", "threads_empty_show_all_threads") 
+  }
+  /// Tip: Use “Thread” option when selecting a message.
+  public static var threadsEmptyTip: String { 
+    return VectorL10n.tr("Vector", "threads_empty_tip") 
+  }
+  /// Keep discussions organised with threads
+  public static var threadsEmptyTitle: String { 
+    return VectorL10n.tr("Vector", "threads_empty_title") 
+  }
+  /// Threads
+  public static var threadsTitle: String { 
+    return VectorL10n.tr("Vector", "threads_title") 
   }
   /// Favourites
   public static var titleFavourites: String { 

@@ -101,6 +101,14 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (IBAction)scrollToBottomAction:(id)sender;
 
 /**
+ Highlights an event in the timeline. Does not reload room data source if the event is already loaded. Otherwise, loads a new data source around the given event.
+ 
+ @param eventId Identifier of the event to be highlighted.
+ @param completion Completion block to be called at the end of process. Optional.
+ */
+- (void)highlightEvent:(NSString *)eventId completion:(nullable void (^)(void))completion;
+
+/**
  Creates and returns a new `RoomViewController` object.
  
  @param configuration display configuration for the room view controller.
@@ -137,9 +145,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  
  @param roomViewController the `RoomViewController` instance.
  @param roomID the selected roomId
+ @param eventID the selected eventId
  */
 - (void)roomViewController:(RoomViewController *)roomViewController
-            showRoomWithId:(NSString *)roomID;
+            showRoomWithId:(NSString *)roomID
+                   eventId:(nullable NSString *)eventID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.

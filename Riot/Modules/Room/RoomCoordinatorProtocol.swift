@@ -21,7 +21,7 @@ import Foundation
 protocol RoomCoordinatorDelegate: AnyObject {
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol)
     func roomCoordinatorDidCancelRoomPreview(_ coordinator: RoomCoordinatorProtocol)
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String)
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?)
     func roomCoordinatorDidDismissInteractively(_ coordinator: RoomCoordinatorProtocol)
 }
 
