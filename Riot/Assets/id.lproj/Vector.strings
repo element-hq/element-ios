@@ -48,8 +48,8 @@
 "join" = "Bergabung";
 "save" = "Simpan";
 "cancel" = "Batalkan";
-"off" = "Nonaktif";
-"on" = "Aktif";
+"off" = "Mati";
+"on" = "Nyala";
 "retry" = "Coba Lagi";
 "invite" = "Undang";
 "remove" = "Hapus";
@@ -63,9 +63,9 @@
 // Actions
 "view" = "Tampilkan";
 "warning" = "Peringatan";
-"title_groups" = "Komunitas-komunitas";
-"title_rooms" = "Ruangan-ruangan";
-"title_people" = "Orang-orang";
+"title_groups" = "Komunitas";
+"title_rooms" = "Ruangan";
+"title_people" = "Orang";
 "title_favourites" = "Favorit";
 
 // Titles
@@ -101,8 +101,8 @@
 "callbar_only_single_active_group" = "Ketuk untuk Bergabung panggilan grup (%@)";
 "joined" = "Bergabung";
 "collapse" = "tutup";
-"store_promotional_text" = "Aplikasi perpesanan dan kolaborasi yang menjaga privasi, pada jaringan terbuka. Terdesentralisasi untuk Anda kendali. Tidak ada penambangan data, tidak ada backdoor dan tidak ada akses pihak ketiga.";
-"store_full_description" = "Element adalah aplikasi messenger dan kolaborasi tipe baru yang:\n\n1. Menempatkan Anda dalam kendali untuk mempertahankan privasi Anda\n2. Memungkinkan Anda berkomunikasi dengan siapa pun di jaringan Matrix, dan bahkan di luar dengan mengintegrasikan dengan aplikasi seperti Slack\n3. Melindungi Anda dari iklan, menambangan data, backdoor, dan taman berdinding\n4. Mengamankan Anda melalui enkripsi ujung-ke-ujung, dengan penandatanganan-silang untuk memverifikasi orang lain\n\nElement benar-benar berbeda dari aplikasi perpesanan dan kolaborasi lain karena terdesentralisasi dan sumber terbuka.\n\nElement memungkinkan Anda host sendiri - atau memilih host - sehingga Anda memiliki privasi, kepemilikan, dan kontrol data dan percakapan Anda. Ini memberi Anda akses ke jaringan terbuka; jadi Anda tidak hanya terjebak berbicara dengan pengguna Element. Itu sangat aman.\n\nElement dapat melakukan semua ini karena beroperasi pada Matrix - standar untuk komunikasi terdesentralisasi terbuka.\n\nElement menempatkan Anda dalam kendali dengan membiarkan Anda memilih siapa yang meng-host percakapan Anda. Dari aplikasi Element, Anda dapat memilih untuk meng-host dengan cara yang berbeda:\n\n1. Dapatkan akun gratis pada server publik matrix.org\n2. Host sendiri akun Anda dengan menjalankan server pada perangkat keras Anda sendiri\n3. Mendaftar untuk akun di server khusus dengan hanya berlangganan platform hosting Element Matrix Services\n\nMengapa memilih Element?\n\nMILIKI DATA ANDA: Anda memutuskan di mana harus menyimpan data dan pesan Anda. Anda memilikinya dan mengendalikannya, bukan perusahaan besar yang menambang data Anda atau memberikan akses ke pihak ketiga.\n\nPESAN DAN KOLABORASI TERBUKA: Anda dapat mengobrol dengan orang lain di jaringan Matrix, jika mereka menggunakan Element atau aplikasi Matrix lain, dan bahkan jika mereka menggunakan sistem perpesanan seperti Slack, IRC atau XMPP.\n\nSUPER-AMAN: Enkripsi ujung-ke-ujung (hanya mereka yang dalam percakapan dapat mendekripsi pesan), dan penandatanganan-silang untuk memverifikasi perangkat peserta percakapan.\n\nKOMUNIKASI LENGKAP: Pesan, panggilan suara dan video, berbagi file, berbagi layar dan banyak integrasi, bot dan widget. Buat ruangan, komunitas, tetap terhubung dan selesaikan hal-hal.\n\nDI MANA PUN ANDA BERADA: Tetap berkomunikasi di mana pun Anda berada dengan riwayat pesan yang sepenuhnya disinkronkan di semua perangkat Anda dan di web di https://app.element.io/.";
+"store_promotional_text" = "Aplikasi perpesanan dan kolaborasi yang menjaga privasi, pada jaringan terbuka. Terdesentralisasi untuk Anda kendali. Tidak ada penambangan data, tidak ada pintu belakang dan tidak ada akses pihak ketiga.";
+"store_full_description" = "Element adalah aplikasi messenger dan kolaborasi tipe baru yang:\n\n1. Menempatkan Anda dalam kendali untuk mempertahankan privasi Anda\n2. Memungkinkan Anda berkomunikasi dengan siapa pun di jaringan Matrix, dan bahkan di luar dengan mengintegrasikan dengan aplikasi seperti Slack\n3. Melindungi Anda dari iklan, menambangan data, pintu belakang, dan taman berdinding\n4. Mengamankan Anda melalui enkripsi ujung-ke-ujung, dengan penandatanganan silang untuk memverifikasi orang lain\n\nElement benar-benar berbeda dari aplikasi perpesanan dan kolaborasi lain karena Element terdesentralisasi dan sumber terbuka.\n\nElement memungkinkan Anda host sendiri - atau memilih host - sehingga Anda memiliki privasi, kepemilikan, dan kontrol data dan obrolan Anda. Ini memberi Anda akses ke jaringan terbuka, jadi Anda tidak hanya terjebak berbicara dengan pengguna Element. Itu sangat aman.\n\nElement dapat melakukan semua ini karena beroperasi pada Matrix - standar untuk komunikasi terdesentralisasi terbuka.\n\nElement menempatkan Anda dalam kendali dengan membiarkan Anda memilih siapa yang menghost percakapan Anda. Dari aplikasi Element, Anda dapat memilih untuk menghost dengan cara yang berbeda:\n\n1. Dapatkan akun gratis pada server publik matrix.org\n2. Host sendiri akun Anda dengan menjalankan server pada perangkat keras Anda sendiri\n3. Mendaftar untuk akun di server khusus dengan hanya berlangganan platform hosting Element Matrix Services\n\nMengapa memilih Element?\n\nMILIKI DATA ANDA: Anda memutuskan di mana untuk menyimpan data dan pesan Anda. Anda memilikinya dan mengendalikannya, bukan perusahaan besar yang menambang data Anda atau memberikan akses ke pihak ketiga.\n\nPESAN DAN KOLABORASI TERBUKA: Anda dapat mengobrol dengan orang lain di jaringan Matrix, jika mereka menggunakan Element atau aplikasi Matrix lain, dan bahkan jika mereka menggunakan sistem perpesanan seperti Slack, IRC atau XMPP.\n\nSANGAT AMAN: Enkripsi ujung-ke-ujung yang nyata (hanya mereka yang dalam percakapan dapat mendekripsi pesan), dan penandatanganan silang untuk memverifikasi perangkat anggota obrolan.\n\nKOMUNIKASI LENGKAP: Perpesanan, panggilan suara dan video, pembagian file, pembagian layar dan banyak integrasi, bot dan widget. Buat ruangan, komunitas, tetap terhubung dan selesaikan hal-hal.\n\nDI MANA PUN ANDA BERADA: Tetap berkomunikasi di mana pun Anda berada dengan riwayat pesan yang sepenuhnya disinkronkan di semua perangkat Anda dan di web di https://app.element.io/.";
 // String for App Store
 "store_short_description" = "Obrolan/VoIP terdesentralisasi aman";
 
@@ -166,7 +166,7 @@
 "room_message_edits_history_title" = "Editan pesan";
 "room_action_send_file" = "Kirim file";
 "room_action_send_sticker" = "Kirim stiker";
-"room_event_action_reaction_history" = "Sejarah reaksi";
+"room_event_action_reaction_history" = "Riwayat reaksi";
 "room_event_action_reaction_show_less" = "Tampilkan lebih sedikit";
 "room_event_action_reaction_show_all" = "Tampilkan semua";
 "room_event_action_view_encryption" = "Informasi enkripsi";
@@ -472,7 +472,7 @@
 "settings_cryptography" = "KRIPTOGRAFI";
 "settings_devices" = "SESI";
 "settings_labs" = "UJI COBA";
-"settings_other" = "LAINNYA";
+"settings_other" = "Lainnya";
 "settings_advanced" = "LANJUTAN";
 "settings_integrations" = "INTEGRASI";
 "settings_discovery_settings" = "PENEMUAN";
@@ -621,10 +621,10 @@
 "home_empty_view_information" = "Aplikasi obrolan aman semua-dalam-satu untuk tim, teman, dan organisasi. Ketuk tombol + di bawah untuk menambahkan orang dan ruangan.";
 "pin_protection_explanatory" = "Menyiapkan PIN memungkinkan Anda melindungi data seperti pesan dan kontak, jadi hanya Anda yang dapat mengaksesnya dengan memasukkan PIN di awal aplikasi.";
 "major_update_information" = "Kami senang mengumumkan bahwa kami telah mengubah nama kami! Aplikasi Anda telah diperbarui dan Anda masuk ke akun Anda.";
-"secrets_reset_warning_message" = "Anda akan memulai ulang tanpa sejarah, tanpa pesan, perangkat tepercaya, atau pengguna tepercaya.";
+"secrets_reset_warning_message" = "Anda akan memulai ulang tanpa riwayat, tanpa pesan, perangkat tepercaya, atau pengguna tepercaya.";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Cetak dan simpan di tempat yang aman\n✓ Simpan di flashdisk USB atau drive cadangan\n✓ Salin ke penyimpanan awan pribadi Anda";
-"secrets_recovery_with_key_information_default" = "Akses sejarah pesan terenkripsi Anda dan identitas penandatanganan silang Anda untuk memverifikasi sesi lain dengan memasukkan Kunci Keamanan Anda.";
-"secrets_recovery_with_passphrase_information_default" = "Akses sejarah pesan terenkripsi Anda dan identitas penandatanganan silang Anda untuk memverifikasi sesi lain dengan memasukkan Frasa Keamanan Anda.";
+"secrets_recovery_with_key_information_default" = "Akses riwayat pesan terenkripsi Anda dan identitas penandatanganan silang Anda untuk memverifikasi sesi lain dengan memasukkan Kunci Keamanan Anda.";
+"secrets_recovery_with_passphrase_information_default" = "Akses riwayat pesan terenkripsi Anda dan identitas penandatanganan silang Anda untuk memverifikasi sesi lain dengan memasukkan Frasa Keamanan Anda.";
 "user_verification_session_details_additional_information_untrusted_other_user" = "Hingga pengguna ini memercayai sesi ini, pesan yang dikirim ke dan dari sesi ini akan diberi label peringatan. Atau, Anda dapat memverifikasinya secara manual.";
 "user_verification_session_details_information_untrusted_current_user" = "Verifikasi sesi ini untuk menandainya sebagai tepercaya & memberikan akses ke pesan terenkripsi:";
 "user_verification_sessions_list_information" = "Pesan dengan pengguna ini di ruangan ini dienkripsi secara ujung-ke-ujung dan tidak dapat dibaca oleh pihak ketiga.";
@@ -682,7 +682,7 @@
 "bug_report_prompt" = "Aplikasi telah crash terakhir kali. Apakah Anda ingin mengirimkan laporan crash?";
 "room_notifs_settings_encrypted_room_notice" = "Harap dicatat bahwa notifikasi sebutan & keyword tidak tersedia di ruang terenkripsi di ponsel.";
 "room_details_addresses_disable_main_address_prompt_msg" = "Anda tidak akan memiliki alamat utama yang ditentukan. Alamat utama default untuk ruangan ini akan dipilih secara acak";
-"room_details_history_section_prompt_msg" = "Perubahan siapa yang dapat membaca sejarah hanya akan berlaku untuk pesan berikutnya di ruang ini. Visibilitas sejarah yang ada tidak akan berubah.";
+"room_details_history_section_prompt_msg" = "Perubahan siapa yang dapat membaca riwayat hanya akan berlaku untuk pesan berikutnya di ruang ini. Visibilitas riwayat yang ada tidak akan berubah.";
 "identity_server_settings_alert_error_terms_not_accepted" = "Anda harus menerima syaratnya %@ untuk menyetelnya sebagai server identitas.";
 "identity_server_settings_alert_change" = "Lepaskan hubungan dari server identitas %1$@ dan hubungkan ke %2$@?";
 "identity_server_settings_alert_no_terms" = "Server identitas ini yang Anda pilih tidak memiliki syarat layanan. Hanya lanjutkan jika Anda mempercayai pemilik server itu.";
@@ -735,11 +735,11 @@
 
 // Recover from recovery key
 
-"key_backup_recover_from_recovery_key_info" = "Gunakan Frasa Keamanan Anda untuk mengakses sejarah pesan secara aman";
+"key_backup_recover_from_recovery_key_info" = "Gunakan Frasa Keamanan Anda untuk mengakses riwayat pesan secara aman";
 
 // Recover from passphrase
 
-"key_backup_recover_from_passphrase_info" = "Gunakan Frasa Keamanan Anda untuk mengakses sejarah pesan secara aman";
+"key_backup_recover_from_passphrase_info" = "Gunakan Frasa Keamanan Anda untuk mengakses riwayat pesan secara aman";
 "key_backup_setup_passphrase_setup_recovery_key_info" = "Atau, amankan cadangan Anda dengan sebuah Kunci Keamanan, menyimpannya di tempat yang aman.";
 "secure_backup_setup_banner_subtitle" = "Amankan dari kehilangan akses ke pesan & data terenkripsi";
 "deactivate_account_informations_part4_emphasize" = "tidak secara default menyebabkan kami melupakan pesan yang telah Anda kirim. ";
@@ -977,7 +977,7 @@
 "room_details_set_main_address" = "Atur sebagai Alamat Utama";
 "room_details_advanced_e2e_encryption_enabled_for_dm" = "Enkripsi diaktifkan di sini";
 "room_details_flair_section" = "Tampilkan bakat untuk komunitas";
-"room_details_history_section" = "Siapa saja yang dapat membaca sejarah?";
+"room_details_history_section" = "Siapa saja yang dapat membaca riwayat?";
 "room_details_access_section_directory_toggle_for_dm" = "Daftarkan di direktori ruangan";
 "room_details_access_section_for_dm" = "Siapa saja yang dapat mengakses?";
 "identity_server_settings_place_holder" = "Masukkan sebuah server identitas";
@@ -1508,7 +1508,7 @@
 "room_details_fail_to_update_room_canonical_alias" = "Gagal untuk memperbarui alamat utama";
 "room_details_fail_to_update_room_communities" = "Gagal untuk memperbarui komunitas terkait";
 "room_details_fail_to_remove_room_aliases" = "Gagal untuk menghapus alamat-alamat ruangan";
-"room_details_fail_to_update_history_visibility" = "Gagal untuk memperbarui visibilitas sejarah";
+"room_details_fail_to_update_history_visibility" = "Gagal untuk memperbarui visibilitas riwayat";
 "room_details_fail_to_update_room_join_rule" = "Gagal untuk memperbarui aturan bergabung";
 "room_details_fail_to_update_room_name" = "Gagal untuk memperbarui nama ruangannya";
 "room_details_fail_to_update_avatar" = "Gagal untuk memperbarui foto ruangannya";
@@ -1550,7 +1550,7 @@
 "settings_discovery_three_pids_management_information_part1" = "Kelola alamat email atau nomor telepon apa saja yang pengguna lain dapat menggunakan untuk menemukan Anda dan menggunakannya untuk mengundang Anda ke ruangan. Tambahkan atau hapus alamat email atau nomor telepon dari daftar ini di ";
 "room_preview_unlinked_email_warning" = "Undangan ini telah dikirim ke %@, yang tidak diasosiasikan dengan akun ini. Anda mungkin ingin masuk ke akun yang lain, atau tambahkan email ini ke akun Anda.";
 "unknown_devices_alert" = "Ruangan ini berisi sesi tidak dikenal yang belum diverifikasi.\nIni berarti tidak ada jaminan bahwa sesi tersebut adalah milik pengguna yang mereka klaim.\nKami menyarankan Anda memverifikasinya untuk setiap sesi sebelum melanjutkan, tetapi Anda dapat mengirim ulang pesan tanpa memverifikasi jika Anda mau.";
-"room_warning_about_encryption" = "Enkripsi ujung-ke-ujung masih dalam beta dan mungkin tidak dapat dihandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi sejarah sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di client yang belum mengimplementasikan enkripsi.";
+"room_warning_about_encryption" = "Enkripsi ujung-ke-ujung masih dalam beta dan mungkin tidak dapat dihandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di client yang belum mengimplementasikan enkripsi.";
 "auth_add_email_and_phone_warning" = "Pendaftaran dengan email dan nomor telepon sekaligus belum didukung sampai API-nya sudah ada. Hanya nomor telepon yang akan diperhitungkan. Anda dapat menambahkan email Anda di profil Anda di pengaturan.";
 "auth_reset_password_success_message" = "Kata sandi Anda telah diatur ulang.\n\nAnda telah dikeluarkan dari semua sesi dan tidak akan menerima lagi notifikasi push. Untuk mengaktifkan ulang notifikasi, masuk ulang di setiap perangkat.";
 "spaces_add_rooms_coming_soon_title" = "Penambahan ruangan akan segera datang";
@@ -1648,3 +1648,18 @@
 // Group Details
 "group_details_title" = "Detail Komunitas";
 "room_event_action_forward" = "Teruskan";
+"poll_edit_form_add_option" = "Tambahkan opsi";
+"poll_edit_form_option_number" = "Opsi %d";
+"poll_edit_form_create_options" = "Buat opsi";
+"poll_edit_form_input_placeholder" = "Tulis sesuatu";
+"poll_edit_form_question_or_topic" = "Pertanyaan atau topik";
+"poll_edit_form_poll_question_or_topic" = "Pertanyaan atau topik poll";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Buat poll";
+"share_extension_send_now" = "Kirim sekarang";
+"share_extension_low_quality_video_message" = "Kirim dalam %@ untuk kualitas yang lebih baik, atau kirim dengan kualitas rendah di bawah.";
+"share_extension_low_quality_video_title" = "Video akan dikirim dalam kualitas rendah";
+"settings_discovery_accept_terms" = "Terima Persyaratan Server Identitas";
+"settings_about" = "TENTANG";

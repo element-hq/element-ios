@@ -419,7 +419,7 @@
 
 // Attachment
 "attachment_size_prompt" = "Apakah Anda ingin mengirimnya sebagai:";
-"room_member_power_level_prompt" = "Anda tidak akan lagi membatalkan perubahan ini ketika Anda mempromosikan penggunanya untuk memiliki level kekuatan yang sama dengan Anda sendiri.\nApakah Anda yakin?";
+"room_member_power_level_prompt" = "Anda tidak akan lagi membatalkan perubahan ini ketika Anda mempromosikan penggunanya untuk memiliki tingkat daya yang sama dengan Anda sendiri.\nApakah Anda yakin?";
 
 // Room members
 "room_member_ignore_prompt" = "Apakah Anda yakin untuk menyembunyikan semua pesan dari pengguna ini?";
@@ -555,3 +555,5 @@
 "notice_room_aliases" = "Alias ruangannya adalah: %@";
 "notice_room_power_level_event_requirement" = "Tingkat daya minimum yang terkait dengan peristiwa adalah:";
 "notice_room_power_level_acting_requirement" = "Tingkat daya minimum yang harus dimiliki pengguna sebelum bertindak adalah:";
+"attachment_unsupported_preview_title" = "Tidak dapat ditampilkan";
+"attachment_unsupported_preview_message" = "Tipe file ini tidak didukung.";
