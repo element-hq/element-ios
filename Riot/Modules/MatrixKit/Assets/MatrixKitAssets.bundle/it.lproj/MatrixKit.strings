@@ -476,3 +476,5 @@
 "room_displayname_all_other_members_left" = "%@ (Uscito)";
 "auth_username_in_use" = "Nome utente in uso";
 "rename" = "Rinomina";
+"attachment_unsupported_preview_message" = "Questo tipo di file non è supportato.";
+"attachment_unsupported_preview_title" = "Anteprima non disponibile";

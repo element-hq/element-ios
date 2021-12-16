@@ -1,0 +1,77 @@
+
+
+
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ nových správ od %@, %@ a %@";
+
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ nových správ od %@ a %@";
+
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nových správ v %@";
+
+/** Coalesced messages **/
+
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ nové správy v %@";
+
+/* New message with hidden content due to PIN enabled */
+"MESSAGE_PROTECTED" = "Nová správa";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Správa v %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Správa od %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Správa";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "Dostali ste správu";
+
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Dostali ste správu v %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ odoslal/a video";
+
+/* New image message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ zverejnil/a obrázok %@ v %@";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ odoslal/a obrázok";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ v %@: %@";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ odoslal/a správu";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ odpovedal/a";
+
+/** Titles **/
+
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ v %@";
+/** General **/
+
+"NOTIFICATION" = "Oznámenia";

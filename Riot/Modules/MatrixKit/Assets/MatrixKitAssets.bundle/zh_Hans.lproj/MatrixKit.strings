@@ -478,3 +478,5 @@
 "room_displayname_all_other_members_left" = "%@ (离开)";
 "auth_username_in_use" = "用户名被占用";
 "rename" = "重命名";
+"attachment_unsupported_preview_message" = "文件类型不受支持。";
+"attachment_unsupported_preview_title" = "无法预览";
