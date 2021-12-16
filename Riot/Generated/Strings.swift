@@ -2191,6 +2191,42 @@ public class VectorL10n: NSObject {
   public static var less: String { 
     return VectorL10n.tr("Vector", "less") 
   }
+  /// Close
+  public static var locationSharingCloseAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_close_action") 
+  }
+  /// Please update your system settings
+  public static var locationSharingInvalidAuthorizationErrorMessage: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_error_message") 
+  }
+  /// Failed getting authorization
+  public static var locationSharingInvalidAuthorizationErrorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_error_title") 
+  }
+  /// Please try again
+  public static var locationSharingLoadingMapErrorMessage: String { 
+    return VectorL10n.tr("Vector", "location_sharing_loading_map_error_message") 
+  }
+  /// Failed to load map
+  public static var locationSharingLoadingMapErrorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_loading_map_error_title") 
+  }
+  /// Please try again
+  public static var locationSharingLocatingUserErrorMessage: String { 
+    return VectorL10n.tr("Vector", "location_sharing_locating_user_error_message") 
+  }
+  /// Failed locating user
+  public static var locationSharingLocatingUserErrorTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title") 
+  }
+  /// Share
+  public static var locationSharingShareAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_share_action") 
+  }
+  /// Location
+  public static var locationSharingTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_title") 
+  }
   /// Got it
   public static var majorUpdateDoneAction: String { 
     return VectorL10n.tr("Vector", "major_update_done_action") 

@@ -15,19 +15,21 @@
 //
 
 import Foundation
+import SwiftUI
 
-/// The static list of mocked screens in RiotSwiftUI
 @available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockLocationSharingScreenState.self,
-        MockAnalyticsPromptScreenState.self,
-        MockUserSuggestionScreenState.self,
-        MockPollEditFormScreenState.self,
-        MockPollTimelineScreenState.self,
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
+enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
+    case standard
+    
+    var screenType: Any.Type {
+        MockLocationSharingScreenState.self
+    }
+    
+    var screenView: ([Any], AnyView)  {
+        let viewModel = LocationSharingViewModel(accessToken: "bDAfUcrMPWTAB1KB38r6",
+                                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Alice"))
+        return ([viewModel],
+                AnyView(LocationSharingView(context: viewModel.context)
+                            .addDependency(MockAvatarService.example)))
+    }
 }
-

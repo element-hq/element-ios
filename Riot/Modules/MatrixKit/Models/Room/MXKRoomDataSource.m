@@ -1914,6 +1914,29 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
+- (void)sendLocationWithLatitude:(double)latitude
+                       longitude:(double)longitude
+                     description:(NSString *)description
+                         success:(void (^)(NSString *))success
+                         failure:(void (^)(NSError *))failure
+{
+    __block MXEvent *localEchoEvent = nil;
+    
+    // Make the request to the homeserver
+    [_room sendLocationWithLatitude:latitude
+                          longitude:longitude
+                        description:description
+                          localEcho:&localEchoEvent
+                            success:success failure:failure];
+    
+    if (localEchoEvent)
+    {
+        // Make the data source digest this fake local echo message
+        [self queueEventForProcessing:localEchoEvent withRoomState:self.roomState direction:MXTimelineDirectionForwards];
+        [self processQueuedEvents:nil];
+    }
+}
+
 - (void)sendEventOfType:(MXEventTypeString)eventTypeString content:(NSDictionary<NSString*, id>*)msgContent success:(void (^)(NSString *eventId))success failure:(void (^)(NSError *error))failure
 {
     __block MXEvent *localEchoEvent = nil;

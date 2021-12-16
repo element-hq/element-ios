@@ -1852,3 +1852,23 @@ Tap the + to start adding people.";
 "poll_timeline_not_closed_subtitle" = "Please try again";
 
 "poll_timeline_not_closed_action" = "OK";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Location";
+
+"location_sharing_close_action" = "Close";
+
+"location_sharing_share_action" = "Share";
+
+"location_sharing_loading_map_error_title" = "Failed to load map";
+
+"location_sharing_loading_map_error_message" = "Please try again";
+
+"location_sharing_locating_user_error_title" = "Failed locating user";
+
+"location_sharing_locating_user_error_message" = "Please try again";
+
+"location_sharing_invalid_authorization_error_title" = "Failed getting authorization";
+
+"location_sharing_invalid_authorization_error_message" = "Please update your system settings";

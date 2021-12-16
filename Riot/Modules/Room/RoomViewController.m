@@ -2036,6 +2036,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
+    if (RiotSettings.shared.roomScreenAllowLocationAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_location"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self.delegate roomViewControllerDidRequestLocationSharingFormPresentation:self];
+        }]];
+    }
     if (RiotSettings.shared.roomScreenAllowCameraAction)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{

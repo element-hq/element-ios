@@ -183,6 +183,13 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
  */
 - (void)roomViewControllerDidRequestPollCreationFormPresentation:(RoomViewController *)roomViewController;
 
+/**
+ Ask the coordinator to invoke the location sharing form coordinator.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ */
+- (void)roomViewControllerDidRequestLocationSharingFormPresentation:(RoomViewController *)roomViewController;
+
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
 canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
 

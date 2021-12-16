@@ -57,6 +57,7 @@
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="descriptionContainerView" destination="oVd-gS-Rmb" id="Npu-jp-oYo"/>
                 <outlet property="descriptionLabel" destination="c68-l7-McA" id="HiH-8Q-yTp"/>
             </connections>
             <point key="canvasLocation" x="165.94202898550725" y="-100.78125"/>
