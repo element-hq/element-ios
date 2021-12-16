@@ -501,7 +501,7 @@
     
     authenticationViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     
-    [self presentViewController:authenticationViewController animated:YES completion:nil];
+    [self presentViewController:authenticationViewController animated:NO completion:nil];
     
     // Keep ref on the authentification view controller while it is displayed
     // ie until we get the notification about a new account

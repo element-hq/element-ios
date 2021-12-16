@@ -14,21 +14,22 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-/// The static list of mocked screens in RiotSwiftUI
 @available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockOnboardingSplashScreenScreenState.self,
-        MockLocationSharingScreenState.self,
-        MockAnalyticsPromptScreenState.self,
-        MockUserSuggestionScreenState.self,
-        MockPollEditFormScreenState.self,
-        MockTimelinePollScreenState.self,
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
+struct OnboardingSplashScreenPageIndicator: View {
+    @Environment(\.theme) private var theme
+    
+    let pageCount: Int
+    let pageIndex: Int
+    
+    var body: some View {
+        HStack {
+            ForEach(0..<pageCount) { index in
+                Circle()
+                    .frame(width: 8, height: 8)
+                    .foregroundColor(index == pageIndex ? .accentColor : theme.colors.quarterlyContent)
+            }
+        }
+    }
 }
-

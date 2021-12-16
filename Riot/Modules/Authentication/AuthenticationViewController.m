@@ -63,6 +63,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 }
 
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
+@property (nonatomic, strong) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
@@ -311,6 +312,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [super viewWillAppear:animated];
     
     [_keyboardAvoider startAvoiding];
+    
+    // Add the onboarding flow to the view before it is visible.
+    [self presentInitialOnboardingFlow];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -554,6 +558,25 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             // The right bar button is used to return to login.
             self.rightBarButtonItem.title = [VectorL10n cancel];
         }
+    }
+}
+
+- (void)presentInitialOnboardingFlow
+{
+    if (@available(iOS 14.0, *))
+    {
+        MXWeakify(self);
+        OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
+        onboardingCoordinatorBridgePresenter.completion = ^(BOOL(newUser)) {
+            MXStrongifyAndReturnIfNil(self);
+            [self setAuthType:newUser ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin];
+            [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+            self.onboardingCoordinatorBridgePresenter = nil;
+        };
+        
+        [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
+        
+        self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
     }
 }
 
