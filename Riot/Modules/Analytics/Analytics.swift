@@ -29,6 +29,9 @@ import AnalyticsEvents
     /// The analytics client to send events with.
     private var client: AnalyticsClientProtocol = PostHogAnalyticsClient()
     
+    /// The service used to interact with account data settings.
+    private var service: AnalyticsService?
+    
     /// Whether or not the object is enabled and sending events to the server.
     var isRunning: Bool { client.isRunning }
     
@@ -93,12 +96,18 @@ import AnalyticsEvents
         else { return }
         
         let service = AnalyticsService(session: session)
-        service.settings { result in
+        self.service = service
+        
+        service.settings { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let settings):
                 self.identify(with: settings)
+                self.service = nil
             case .failure:
                 MXLog.error("[Analytics] Failed to use analytics settings. Will continue to run without analytics ID.")
+                self.service = nil
             }
         }
     }

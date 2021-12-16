@@ -60,7 +60,12 @@ class AnalyticsService {
         var eventDictionary = settings.dictionary
         eventDictionary[AnalyticsSettings.Constants.idKey] = id
         
-        session.setAccountData(eventDictionary, forType: AnalyticsSettings.eventType) {
+        session.setAccountData(eventDictionary, forType: AnalyticsSettings.eventType) { [weak self] in
+            guard let self = self else {
+                completion(.failure(AnalyticsServiceError.unknown))
+                return
+            }
+            
             MXLog.debug("[AnalyticsService] Successfully updated analytics settings in account data.")
             let settings = AnalyticsSettings(accountData: self.session.accountData)
             completion(.success(settings))
