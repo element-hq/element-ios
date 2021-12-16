@@ -50,26 +50,41 @@ struct SpaceCreationSettings: View {
     
     @ViewBuilder
     private var mainView: some View {
-        ZStack(alignment: .center) {
-            GeometryReader { geometryReader in
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(alignment: .center) {
-                        VStack(alignment: .center) {
-                            headerView
-                            Spacer()
-                            avatarView
-                            Spacer()
-                        }
-                        .background(theme.colors.background)
-                        Spacer().frame(height:370)
+        GeometryReader { geometryReader in
+            ZStack(alignment: .center) {
+                VStack(alignment: .center) {
+                    if geometryReader.size.height > 650 {
+                        Spacer().frame(height: 10)
                     }
-                    .frame(minWidth: geometryReader.size.width, minHeight: geometryReader.size.height - 2)
+                    headerView
+                    if !viewModel.viewState.showRoomAddress {
+                        Spacer().frame(height: geometryReader.size.height / 20)
+                    } else {
+                        Spacer().frame(height: geometryReader.size.height / 30)
+                    }
+                    avatarView
+                    Spacer()
                 }
-            }
-            VStack(alignment: .center) {
-                Spacer()
-                formView
-                footerView
+                .background(theme.colors.background)
+                VStack(alignment: .center) {
+                    if viewModel.viewState.showRoomAddress && geometryReader.size.height > 650 {
+                        Spacer()
+                    }
+                    Spacer()
+                    formView
+                    if !viewModel.viewState.showRoomAddress {
+                        if geometryReader.size.height > 650 {
+                            Spacer().frame(height:geometryReader.size.height / 4)
+                        } else {
+                            Spacer().frame(height:geometryReader.size.height / 4)
+                        }
+                    } else {
+                        if geometryReader.size.height > 650 {
+                            Spacer().frame(height:geometryReader.size.height / 10)
+                        }
+                    }
+                    footerView
+                }
             }
         }
         .padding(EdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16))
@@ -98,6 +113,7 @@ struct SpaceCreationSettings: View {
                     }
                 }.padding(10)
                 .gesture(TapGesture().onEnded { _ in
+                    ResponderManager.resignFirstResponder()
                     viewModel.send(viewAction: .pickImage(reader.frame(in: .global)))
                 })
             }
