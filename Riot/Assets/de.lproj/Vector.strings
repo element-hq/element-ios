@@ -208,7 +208,7 @@
 "settings_ignored_users" = "IGNORIERTE NUTZER";
 "settings_contacts" = "LOKALE KONTAKTE";
 "settings_advanced" = "ERWEITERT";
-"settings_other" = "WEITERES";
+"settings_other" = "Weiteres";
 "settings_devices" = "SITZUNGEN";
 "settings_cryptography" = "VERSCHLÜSSELUNG";
 "settings_sign_out" = "Abmelden";
@@ -1404,7 +1404,7 @@
 "event_formatter_call_incoming_video" = "Eingehender Videoanruf";
 "event_formatter_call_has_ended_with_time" = "Anruf beendet • %@";
 "voice_message_stop_locked_mode_recording" = "Klicke, um die Aufnahme zu starten oder stoppen";
-"settings_device_notifications" = "Gerätbenachrichtigungen";
+"settings_device_notifications" = "Gerätebenachrichtigungen";
 "voice_message_lock_screen_placeholder" = "Sprachnachricht";
 "voice_message_remaining_recording_time" = "%@s übrig";
 
@@ -1439,7 +1439,7 @@
 "settings_notify_me_for" = "Benachrichtige mich bei";
 "settings_mentions_and_keywords" = "Erwähnungen und Schlüsselwörter";
 "settings_confirm_media_size_description" = "Wenn dies aktiviert ist, wirst du beim Senden von Bildern und Videos gefragt, in welcher Größe sie gesendet werden sollen.";
-"settings_confirm_media_size" = "Größe beim Senden bestätigen";
+"settings_confirm_media_size" = "Größe beim Senden auswählen";
 "settings_notifications" = "BENACHRICHTIGUNGEN";
 "settings_mentions_and_keywords_encryption_notice" = "Auf deinem Mobilgerät wirst du keine Benachrichtigungen für Erwähnungen und Schlüsselwörter in verschlüsselten Räumen erhalten.";
 "version_check_modal_subtitle_supported" = "Wir haben daran gearbeitet %@ zu verbessern um ein schnelleres und bereinigteres Erlebnis zu schaffen. Leider ist deine aktuelle iOS-Version mit einigen dieser Verbesserungen nicht kompatibel und wird daher nicht mehr unterstützt werden.\nWir empfehlen dir die Aktualisierung deines Betriebssystems um %@ weiterhin vollumfänglich zu nutzen.";
@@ -1507,3 +1507,18 @@
 "find_your_contacts_button_title" = "Finde deine Kontakte";
 "contacts_address_book_permission_denied_alert_message" = "Um Kontakte zu aktivieren, öffne die Einstellungen deines Gerätes.";
 "contacts_address_book_permission_denied_alert_title" = "Kontakte deaktiviert";
+"poll_edit_form_create_options" = "Erstelle Optionen";
+"settings_discovery_accept_terms" = "Bedingungen des Identitätsservers akzeptieren";
+"find_your_contacts_message" = "Lass dir von %@ deine Kontakte anzeigen um schnell mit denen zu chatten, die du am besten kennst.";
+"poll_timeline_votes_count" = "%lu Stimmen";
+"poll_timeline_one_vote" = "1 Stimme";
+"poll_edit_form_add_option" = "Option hinzufügen";
+"poll_edit_form_option_number" = "Option %lu";
+"poll_edit_form_question_or_topic" = "Frage oder Thematik";
+"room_event_action_end_poll" = "Umfrage beenden";
+"room_event_action_remove_poll" = "Umfrage entfernen";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Umfrage erstellen";
+"settings_labs_enabled_polls" = "Umfragen";

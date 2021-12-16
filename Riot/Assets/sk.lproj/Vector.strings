@@ -165,3 +165,420 @@
 "callbar_only_single_active" = "Ťuknutím sa vrátite k hovoru (%@)";
 "switch" = "Prepnúť";
 "sending" = "Odosielanie";
+"settings_discovery_three_pids_management_information_part2" = "Používateľské nastavenia";
+"settings_key_backup_delete_confirmation_prompt_title" = "Vymazať zálohu";
+"settings_key_backup_button_delete" = "Vymazať zálohu";
+"settings_key_backup_info_algorithm" = "Algoritmus: %@";
+"settings_crypto_export" = "Exportovať kľúče";
+"settings_crypto_device_key" = "\nKľúč relácie:\n";
+"settings_crypto_device_id" = "\nID relácie: ";
+"settings_crypto_device_name" = "Názov relácie: ";
+"settings_confirm_password" = "Potvrdiť heslo";
+"settings_new_password" = "nové heslo";
+"settings_old_password" = "staré heslo";
+"settings_third_party_notices" = "Poznámky tretích strán";
+"settings_privacy_policy" = "Zásady ochrany súkromia";
+"settings_version" = "Verzia %s";
+"settings_labs_e2e_encryption" = "End-to-End šifrovanie";
+"settings_integrations_allow_button" = "Spravovať integrácie";
+"settings_room_upgrades" = "Aktualizácia miestnosti";
+"settings_messages_containing_user_name" = "My používateľské meno";
+"settings_group_messages" = "Skupinové správy";
+"settings_direct_messages" = "Priame správy";
+"settings_default" = "Predvolené oznámenia";
+"settings_notifications_disabled_alert_title" = "Oznámenia vypnuté";
+"settings_device_notifications" = "Oznámenia zariadenia";
+"settings_night_mode" = "Nočný režim";
+"settings_change_password" = "Zmeniť heslo";
+"settings_first_name" = "Krstné meno";
+"settings_display_name" = "Zobrazované meno";
+"settings_profile_picture" = "Profilový obrázok";
+"settings_sign_out" = "Odhlásiť sa";
+"settings_deactivate_account" = "DEAKTIVOVAŤ ÚČET";
+"settings_key_backup" = "ZÁLOHA KĽÚČA";
+"settings_phone_contacts" = "KONTAKTY TELEFÓNU";
+"settings_contacts" = "KONTAKTY ZARIADENIA";
+"settings_ignored_users" = "IGNOROVANÍ POUŽÍVATELIA";
+"settings_user_interface" = "POUŽÍVATEĽSKÉ ROZHRANIE";
+"settings_identity_server_settings" = "SERVER TOTOŽNOSTÍ";
+"settings_user_settings" = "POUŽÍVATEĽSKÉ NASTAVENIA";
+"settings_clear_cache" = "Vyprázdniť vyrovnávaciu pamäť";
+"settings_report_bug" = "Nahlásiť chybu";
+"room_preview_try_join_an_unknown_room_default" = "miestnosť";
+"room_title_one_member" = "1 člen";
+"room_title_members" = "%@ členovia";
+"room_title_invite_members" = "Pozvať členov";
+
+// Room Title
+"room_title_new_room" = "Nová miestnosť";
+"unknown_devices_title" = "Neznáme relácie";
+"unknown_devices_call_anyway" = "Napriek tomu zavolať";
+"unknown_devices_send_anyway" = "Napriek tomu odoslať";
+"room_place_voice_call" = "Audio hovor";
+"room_accessibility_hangup" = "Zavesiť";
+"room_accessibility_video_call" = "Video hovor";
+"room_action_send_file" = "Poslať súbor";
+"room_action_send_sticker" = "Odoslať nálepku";
+"room_event_action_reaction_show_less" = "Zobraziť menej";
+"room_event_action_reaction_show_all" = "Zobraziť všetko";
+"room_event_action_cancel_download" = "Zrušiť sťahovanie";
+"room_event_action_cancel_send" = "Zrušiť odosielanie";
+"room_event_action_report" = "Nahlásiť obsah";
+"room_event_action_view_source" = "Zobraziť zdroj";
+"room_prompt_cancel" = "Zrušiť všetky";
+"room_prompt_resend" = "Znovu odoslať všetky";
+"directory_cell_description" = "%tu miestnosti";
+"search_no_result" = "Žiadne výsledky";
+
+// Room recents
+"room_recents_directory_section" = "PRIEČINOK MIESTNOSTI";
+
+// Social login
+
+"social_login_list_title_continue" = "Pokračovať s";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_edit_form_post_failure_action" = "OK";
+"settings_labs_enabled_polls" = "Ankety";
+"side_menu_action_feedback" = "Spätná väzba";
+"side_menu_action_help" = "Pomocník";
+"side_menu_action_settings" = "Nastavenia";
+
+// Mark: - User avatar view
+
+"user_avatar_view_accessibility_label" = "obrázok";
+
+// Mark: Avatar
+
+"space_avatar_view_accessibility_label" = "obrázok";
+"spaces_suggested_room" = "Navrhované";
+"spaces_left_panel_title" = "Priestory";
+"spaces_home_space_title" = "Domov";
+"space_beta_announce_badge" = "BETA";
+"room_intro_cell_information_dm_sentence1_part3" = ". ";
+"room_intro_cell_information_room_sentence1_part3" = ". ";
+
+// Mark: - Room avatar view
+
+"room_avatar_view_accessibility_label" = "obrázok";
+"call_transfer_error_title" = "Chyba";
+"call_transfer_contacts_all" = "Všetky";
+"call_transfer_contacts_recent" = "Nedávne";
+"call_transfer_users" = "Používatelia";
+"room_info_list_section_other" = "Ostatné";
+"create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_placeholder_topic" = "Téma";
+"create_room_placeholder_name" = "Názov";
+"biometrics_cant_unlocked_alert_message_retry" = "Skúsiť znovu";
+"pin_protection_settings_section_header" = "PIN";
+"pin_protection_reset_alert_action_reset" = "Obnoviť predvolené";
+"pin_protection_choose_pin_welcome_after_register" = "Vitajte.";
+"secrets_reset_reset_action" = "Obnoviť predvolené";
+"secrets_setup_recovery_passphrase_confirm_passphrase_title" = "Potvrdiť";
+"secrets_setup_recovery_passphrase_validate_action" = "Hotovo";
+"secrets_setup_recovery_key_done_action" = "Hotovo";
+"secrets_setup_recovery_key_export_action" = "Uložiť";
+"secrets_setup_recovery_key_loading" = "Načítavanie…";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part3" = ".";
+
+// Session details
+
+"user_verification_session_details_trusted_title" = "Dôveryhodné";
+"user_verification_sessions_list_session_trusted" = "Dôveryhodné";
+"user_verification_sessions_list_table_title" = "Relácie";
+"user_verification_sessions_list_user_trust_level_unknown_title" = "Neznámy";
+"user_verification_sessions_list_user_trust_level_warning_title" = "Upozornenie";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Dôveryhodné";
+"key_verification_tile_conclusion_done_title" = "Overené";
+"key_verification_tile_request_incoming_approval_decline" = "Odmietnuť";
+"key_verification_tile_request_incoming_approval_accept" = "Prijať";
+"key_verification_tile_request_status_waiting" = "Čakanie…";
+
+// MARK: - Key Verification
+
+"key_verification_bootstrap_not_setup_title" = "Chyba";
+
+// MARK: Reaction history
+"reaction_history_title" = "Reakcie";
+"emoji_picker_symbols_category" = "Symboly";
+"emoji_picker_objects_category" = "Objekty";
+"emoji_picker_activity_category" = "Aktivity";
+"device_verification_emoji_headphones" = "Slúchadlá";
+"device_verification_emoji_anchor" = "Kotva";
+"device_verification_emoji_trumpet" = "Trúbka";
+"device_verification_emoji_guitar" = "Gitara";
+"device_verification_emoji_ball" = "Lopta";
+"device_verification_emoji_trophy" = "Trofej";
+"device_verification_emoji_rocket" = "Raketa";
+"device_verification_emoji_aeroplane" = "Lietadlo";
+"device_verification_emoji_bicycle" = "Bicykel";
+"device_verification_emoji_flag" = "Zástava";
+"device_verification_emoji_telephone" = "Telefón";
+"device_verification_emoji_hammer" = "Kladivo";
+"device_verification_emoji_key" = "Kľúč";
+"device_verification_emoji_lock" = "Zámka";
+"device_verification_emoji_scissors" = "Nožnice";
+"device_verification_emoji_paperclip" = "Kancelárska spinka";
+"device_verification_emoji_pencil" = "Ceruzka";
+"device_verification_emoji_book" = "Kniha";
+"device_verification_emoji_gift" = "Darček";
+"device_verification_emoji_clock" = "Budík";
+"device_verification_emoji_hourglass" = "Presýpacie hodiny";
+"device_verification_emoji_umbrella" = "Dáždnik";
+"device_verification_emoji_santa" = "Mikuláš";
+"device_verification_emoji_glasses" = "Okuliare";
+"device_verification_emoji_hat" = "Klobúk";
+"device_verification_emoji_robot" = "Robot";
+"device_verification_emoji_smiley" = "Úsmev";
+"device_verification_emoji_heart" = "Srdce";
+"device_verification_emoji_cake" = "Koláč";
+"device_verification_emoji_pizza" = "Pizza";
+"device_verification_emoji_corn" = "Kukurica";
+"device_verification_emoji_strawberry" = "Jahoda";
+"device_verification_emoji_apple" = "Jablko";
+"device_verification_emoji_banana" = "Banán";
+"device_verification_emoji_fire" = "Oheň";
+"device_verification_emoji_cloud" = "Oblak";
+"device_verification_emoji_moon" = "Mesiac";
+"device_verification_emoji_globe" = "Zemeguľa";
+"device_verification_emoji_mushroom" = "Huba";
+"device_verification_emoji_cactus" = "Kaktus";
+"device_verification_emoji_tree" = "Strom";
+"device_verification_emoji_flower" = "Kvet";
+"device_verification_emoji_butterfly" = "Motýľ";
+"device_verification_emoji_octopus" = "Chobotnica";
+"device_verification_emoji_fish" = "Ryba";
+"device_verification_emoji_turtle" = "Korytnačka";
+"device_verification_emoji_penguin" = "Tučniak";
+"device_verification_emoji_rooster" = "Kohút";
+"device_verification_emoji_panda" = "Panda";
+"device_verification_emoji_rabbit" = "Zajac";
+"device_verification_emoji_elephant" = "Slon";
+"device_verification_emoji_pig" = "Prasa";
+"device_verification_emoji_unicorn" = "Jednorožec";
+"device_verification_emoji_horse" = "Kôň";
+"device_verification_emoji_lion" = "Lev";
+"device_verification_emoji_cat" = "Mačka";
+
+// MARK: Emoji
+"device_verification_emoji_dog" = "Pes";
+
+// MARK: Verified
+
+// Device
+
+"device_verification_verified_title" = "Overený!";
+"key_verification_manually_verify_device_validate_action" = "Overiť";
+"key_verification_self_verify_current_session_alert_validate_action" = "Overiť";
+"device_verification_self_verify_start_waiting" = "Čakanie…";
+"device_verification_self_verify_alert_validate_action" = "Overiť";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Zálohovať";
+"key_backup_recover_done_action" = "Hotovo";
+"key_backup_recover_from_recovery_key_recovery_key_title" = "Enter";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part3" = ".";
+"key_backup_recover_from_passphrase_passphrase_title" = "Enter";
+"key_backup_setup_success_from_passphrase_done_action" = "Hotovo";
+
+// Success
+
+"key_backup_setup_success_title" = "Úspech!";
+"key_backup_setup_passphrase_confirm_passphrase_valid" = "Super!";
+"key_backup_setup_passphrase_confirm_passphrase_title" = "Potvrdiť";
+"key_backup_setup_passphrase_passphrase_valid" = "Super!";
+"key_backup_setup_passphrase_passphrase_title" = "Enter";
+"key_backup_setup_intro_manual_export_info" = "(Pokročilé)";
+"key_backup_setup_skip_alert_skip_action" = "Preskočiť";
+"deactivate_account_forget_messages_information_part2_emphasize" = "Upozornenie";
+"service_terms_modal_decline_button" = "Odmietnuť";
+"service_terms_modal_accept_button" = "Prijať";
+
+// Widget Picker
+"widget_picker_title" = "Integrácie";
+"widget_menu_refresh" = "Obnoviť";
+"bug_report_send" = "Odoslať";
+"e2e_key_backup_wrong_version_button_settings" = "Nastavenia";
+"large_badge_value_k_format" = "%.1fK";
+"yesterday" = "Včera";
+"today" = "Dnes";
+
+// Others
+"or" = "alebo";
+"event_formatter_group_call_leave" = "Opustiť";
+"event_formatter_group_call_join" = "Vstúpiť";
+"event_formatter_call_retry" = "Skúsiť znovu";
+"event_formatter_call_answer" = "Odpovedať";
+"event_formatter_call_decline" = "Odmietnuť";
+"event_formatter_call_ringing" = "Vyzváňanie…";
+"event_formatter_call_connecting" = "Pripájanie…";
+"event_formatter_message_edited_mention" = "(upravené)";
+"directory_server_placeholder" = "matrix.org";
+
+// Directory
+"directory_title" = "Priečinok";
+"media_picker_select" = "Vybrať";
+"media_picker_library" = "Knižnica";
+"group_participants_invited_section" = "POZVANÍ";
+"group_participants_invite_prompt_title" = "Potvrdenie";
+"group_participants_remove_prompt_title" = "Potvrdenie";
+"group_details_rooms" = "Miestnosti";
+"group_details_people" = "Ľudia";
+"group_details_home" = "Domov";
+"room_notifs_settings_cancel_action" = "Zrušiť";
+"room_notifs_settings_done_action" = "Hotovo";
+"room_notifs_settings_none" = "Žiadne";
+"room_details_advanced_room_id_for_dm" = "ID:";
+"room_details_advanced_section" = "Pokročilé";
+"room_details_addresses_section" = "Adresy";
+"room_details_history_section_anyone" = "Ktokoľvek";
+"room_details_notifs" = "Oznámenia";
+"room_details_favourite_tag" = "Obľúbiť";
+"room_details_topic" = "Téma";
+"room_details_room_name_for_dm" = "Názov";
+"room_details_photo_for_dm" = "Fotka";
+"room_details_settings" = "Nastavenia";
+"room_details_integrations" = "Integrácie";
+"room_details_people" = "Členovia";
+"room_details_title_for_dm" = "Podrobnosti";
+"identity_server_settings_alert_disconnect_button" = "Odpojiť";
+"identity_server_settings_disconnect" = "Odpojiť";
+"identity_server_settings_change" = "Zmeniť";
+"identity_server_settings_add" = "Pridať";
+"security_settings_advanced" = "POKROČILÉ";
+"security_settings_cryptography" = "KRYPTOGRAFIA";
+"security_settings_crosssigning_reset" = "Obnoviť predvolené";
+"security_settings_crosssigning" = "KRÍŽOVÉ PODPISOVANIE";
+"security_settings_secure_backup_reset" = "Obnoviť predvolené";
+"security_settings_secure_backup_info_checking" = "Kontrolovanie…";
+
+// Security settings
+"security_settings_title" = "Zabezpečenie";
+"settings_discovery_three_pid_details_revoke_action" = "Odvolať";
+"settings_discovery_three_pid_details_share_action" = "Zdieľať";
+"settings_discovery_three_pids_management_information_part3" = ".";
+"settings_key_backup_info_checking" = "Kontrolovanie…";
+"settings_copyright" = "Autorské práva";
+"settings_ui_theme_black" = "Čierny";
+"settings_ui_theme_dark" = "Tmavý";
+"settings_ui_theme_light" = "Svetlý";
+"settings_ui_theme" = "Vzhľad";
+"settings_ui_language" = "Jazyk";
+"settings_messages_containing_keywords" = "Kľúčové slová";
+"settings_messages_containing_at_room" = "@miestnosť";
+"settings_other" = "Ostatné";
+"settings_security" = "BEZPEČNOSŤ";
+"settings_three_pids_management_information_part3" = ".";
+"settings_three_pids_management_information_part2" = "Objavovanie";
+"settings_phone_number" = "Telefón";
+"settings_email_address" = "Email";
+"settings_remove_prompt_title" = "Potvrdenie";
+"settings_surname" = "Priezvisko";
+"settings_cryptography" = "KRYPTOGRAFIA";
+"settings_devices" = "RELÁCIE";
+"settings_about" = "O APLIKÁCII";
+"settings_advanced" = "POKROČILÉ";
+"settings_integrations" = "INTEGRÁCIE";
+"settings_discovery_settings" = "OBJAVOVANIE";
+"settings_calls_settings" = "HOVORY";
+"settings_notifications" = "OZNÁMENIA";
+"settings_links" = "ODKAZY";
+
+// Settings
+"settings_title" = "Nastavenia";
+"unknown_devices_verify" = "Overiť…";
+"media_type_accessibility_sticker" = "Nálepka";
+"media_type_accessibility_file" = "Súbor";
+"media_type_accessibility_location" = "Miesto";
+"media_type_accessibility_video" = "Video";
+"media_type_accessibility_audio" = "Audio";
+"media_type_accessibility_image" = "Obrázok";
+"room_join_group_call" = "Vstúpiť";
+"room_accessibility_call" = "Hovor";
+"room_accessibility_upload" = "Nahrať";
+"room_accessibility_integrations" = "Integrácie";
+"room_accessibility_search" = "Hľadať";
+"room_resource_limit_exceeded_message_contact_1" = " Prosím ";
+"room_action_reply" = "Odpovedať";
+"room_event_action_edit" = "Upraviť";
+"room_event_action_reply" = "Odpovedať";
+"room_event_action_delete" = "Vymazať";
+"room_event_action_resend" = "Znovu odoslať";
+"room_event_action_save" = "Uložiť";
+"room_event_action_permalink" = "Trvalý odkaz";
+"room_event_action_forward" = "Preposlať";
+"room_event_action_share" = "Zdieľať";
+"room_event_action_more" = "Viac";
+"room_event_action_redact" = "Odstrániť";
+"room_event_action_quote" = "Citovať";
+"room_event_action_copy" = "Kopírovať";
+"room_ongoing_conference_call_close" = "Zavrieť";
+"search_in_progress" = "Prehľadávanie…";
+"search_messages" = "Správy";
+
+// Search
+"search_rooms" = "Miestnosti";
+"group_section" = "KOMUNITY";
+
+// Groups tab
+"group_invite_section" = "POZVANIA";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Vitajte v %@,\n%@";
+"room_member_power_level_short_custom" = "Vlastná úroveň";
+"room_member_power_level_short_moderator" = "Moderátor";
+"room_member_power_level_short_admin" = "Správca";
+"room_member_power_level_custom_in" = "Vlastné (%@) v %@";
+"room_member_power_level_moderator_in" = "Moderátor v %@";
+"room_member_power_level_admin_in" = "Správca v %@";
+"room_participants_security_information_room_encrypted_for_dm" = "Správy sú tu šifrované end-to-end.\n\nVaše správy sú zabezpečené zámkami a jedinečné kľúče na ich odomknutie máte len vy a príjemca.";
+"room_participants_security_information_room_encrypted" = "Správy v tejto miestnosti sú šifrované end-to-end.\n\nVaše správy sú zabezpečené zámkami a jedinečné kľúče na ich odomknutie máte len vy a príjemca.";
+"room_participants_security_information_room_not_encrypted" = "Správy v tejto miestnosti nie sú šifrované end-to-end (od vás až k príjemcovi).";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Správy tu nie sú šifrované end-to-end (od vás až k príjemcovi).";
+"room_participants_security_loading" = "Načítavanie…";
+"room_participants_action_security_status_loading" = "Načítavanie…";
+"room_participants_action_security_status_warning" = "Upozornenie";
+"room_participants_action_security_status_verify" = "Overiť";
+"room_participants_action_security_status_verified" = "Overený";
+"room_participants_action_mention" = "Zmieniť sa";
+"room_participants_action_start_video_call" = "Uskutočniť video hovor";
+"room_participants_action_start_voice_call" = "Uskutočniť hlasový hovor";
+"room_participants_action_start_new_chat" = "Začať novú konverzáciu";
+"room_participants_action_set_admin" = "Zmeniť na správcu";
+"room_participants_action_set_moderator" = "Udeliť stav moderátora";
+"room_participants_action_unignore" = "Zobraziť všetky správy od tohoto používateľa";
+"room_participants_action_ignore" = "Skryť všetky správy od tohoto používateľa";
+"room_participants_action_unban" = "Zrušiť zákaz";
+"room_participants_action_ban" = "Vylúčiť z tejto miestnosti";
+"room_participants_action_remove" = "Odstrániť z tejto miestnosti";
+"room_participants_action_leave" = "Opustiť túto miestnosť";
+"room_participants_action_invite" = "Pozvať";
+"room_participants_action_section_security" = "Zabezpečenie";
+"room_participants_action_section_other" = "Možnosti";
+"room_participants_action_section_devices" = "Relácie";
+"room_participants_action_section_direct_chats" = "Priame konverzácie";
+"room_participants_action_section_admin_tools" = "Nástroje správcu";
+"room_participants_filter_room_members_for_dm" = "Filtrovať členov";
+"room_participants_filter_room_members" = "Filtrovať členov v miestnosti";
+"room_participants_invite_prompt_msg" = "Ste si istí, že chcete pozvať používateľa %s do tejto konverzácie?";
+"room_participants_remove_third_party_invite_prompt_msg" = "Ste si istí, že chcete odvolať toto pozvanie?";
+"room_participants_remove_prompt_msg" = "Ste si istí, že chcete používateľa %s odstrániť z tejto konverzácie?";
+"room_participants_leave_prompt_msg_for_dm" = "Ste si istí, že chcete odísť?";
+"room_participants_leave_prompt_msg" = "Ste si istí, že chcete opustiť miestnosť?";
+"room_participants_leave_prompt_title" = "Opustiť miestnosť";
+"room_participants_multi_participants" = "%d účastníkov";
+"room_participants_one_participant" = "1 účastník";
+"room_participants_add_participant" = "Pridať účastníka";
+"contacts_address_book_permission_denied" = "Aplikácii %@ ste nepovolili prístup k svojim lokálnym kontaktom";
+
+// Contacts
+"contacts_address_book_section" = "LOKÁLNE KONTAKTY";
+"contacts_address_book_no_contact" = "Žiadne lokálne kontakty";
+"contacts_address_book_no_identity_server" = "Nebol nastavený server totožností";
+"contacts_address_book_matrix_users_toggle" = "Len používatelia Matrix";
+"directory_searching_title" = "Vyhľadávanie v priečinku…";
+
+// Directory
+"directory_cell_title" = "Prezrieť priečinok";

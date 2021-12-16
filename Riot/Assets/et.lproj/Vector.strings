@@ -1474,7 +1474,7 @@
 "share_extension_low_quality_video_title" = "Saadame video madalama kvalitediga";
 "settings_about" = "TEAVE MEIST";
 "poll_edit_form_add_option" = "Lisa valik";
-"poll_edit_form_option_number" = "Valik %d";
+"poll_edit_form_option_number" = "Valik %lu";
 "poll_edit_form_create_options" = "Koosta valikud";
 "poll_edit_form_input_placeholder" = "Kirjuta midagi";
 "poll_edit_form_question_or_topic" = "Küsimus või teema";
@@ -1484,3 +1484,24 @@
 
 "poll_edit_form_create_poll" = "Koosta üks küsitlus";
 "settings_discovery_accept_terms" = "Nõustu isikutuvastusserveri tingimustega";
+"poll_timeline_not_closed_action" = "Sobib";
+"poll_timeline_not_closed_subtitle" = "Palun proovi uuesti";
+"poll_timeline_not_closed_title" = "Küsitluse lõpetamine ei õnnestunud";
+"poll_timeline_vote_not_registered_action" = "Sobib";
+"poll_timeline_vote_not_registered_subtitle" = "Vabandust, aga sinu valik jäi salvestamata. Palun proovi uuesti";
+"poll_timeline_vote_not_registered_title" = "Hääl ei salvestunud";
+"poll_timeline_total_final_results" = "%lu'l häälel põhinev lõpptulemus";
+"poll_timeline_total_final_results_one_vote" = "Ühel häälel põhinev lõpptulemus";
+"poll_timeline_total_votes_not_voted" = "%lu hääletanut. Tulemuste nägemiseks osale ise ka küsitluses";
+"poll_timeline_total_one_vote_not_voted" = "1 hääletanu. Tulemuste nägemiseks osale ise ka küsitluses";
+"poll_timeline_total_votes" = "%lu hääletanut";
+"poll_timeline_total_one_vote" = "1 hääletanu";
+"poll_timeline_total_no_votes" = "Hääletanuid ei ole";
+"poll_timeline_votes_count" = "%lu häält";
+"poll_timeline_one_vote" = "1 hääl";
+"poll_edit_form_post_failure_action" = "Sobib";
+"poll_edit_form_post_failure_subtitle" = "Palun proovi uuesti";
+"poll_edit_form_post_failure_title" = "Küsitluse üleslaadimine ei õnnestunud";
+"settings_labs_enabled_polls" = "Küsitlused";
+"room_event_action_end_poll" = "Lõpeta küsitlus";
+"room_event_action_remove_poll" = "Kustuta küsitlus";
