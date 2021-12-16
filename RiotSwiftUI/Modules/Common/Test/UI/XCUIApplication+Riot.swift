@@ -15,11 +15,16 @@
 //
 
 import Foundation
-import SwiftUI
+import XCTest
 
-@available(iOS 14.0, *)
-struct ScreenStateInfo {
-    var dependencies: [Any]
-    var view: AnyView
-    var screenTitle: String
+extension XCUIApplication {
+    func goToScreenWithIdentifier(_ identifier: String) {
+        let button = self.buttons[identifier]
+        
+        while !button.isHittable {
+            self.tables.firstMatch.swipeUp()
+        }
+        
+        button.tap()
+    }
 }
