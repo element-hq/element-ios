@@ -89,23 +89,17 @@ import AnalyticsEvents
     func useAnalyticsSettings(from session: MXSession) {
         guard
             RiotSettings.shared.enableAnalytics,
-            !RiotSettings.shared.isIdentifiedForAnalytics,
-            session.state == .running   // Only use the session if it is running otherwise we could wipe out an existing analytics ID.
+            !RiotSettings.shared.isIdentifiedForAnalytics
         else { return }
         
-        var settings = AnalyticsSettings(session: session)
-        
-        if settings.id == nil {
-            settings.generateID()
-            
-            session.setAccountData(settings.dictionary, forType: AnalyticsSettings.eventType) {
-                MXLog.debug("[Analytics] Successfully updated analytics settings in account data.")
+        let service = AnalyticsService(session: session)
+        service.settings { result in
+            switch result {
+            case .success(let settings):
                 self.identify(with: settings)
-            } failure: { error in
-                MXLog.error("[Analytics] Failed to update analytics settings.")
+            case .failure:
+                MXLog.error("[Analytics] Failed to use analytics settings. Will continue to run without analytics ID.")
             }
-        } else {
-            self.identify(with: settings)
         }
     }
     
@@ -135,7 +129,7 @@ import AnalyticsEvents
     /// - Parameter settings: The settings to use for identification. The ID must be set *before* calling this method.
     private func identify(with settings: AnalyticsSettings) {
         guard let id = settings.id else {
-            MXLog.warning("[Analytics] identify(with:) called before an ID has been generated.")
+            MXLog.error("[Analytics] identify(with:) called before an ID has been generated.")
             return
         }
         

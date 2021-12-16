@@ -16,17 +16,18 @@
 
 import Foundation
 
+/// An analytics settings event from the user's account data.
 struct AnalyticsSettings {
     static let eventType = "im.vector.analytics"
     
-    private enum Constants {
+    enum Constants {
         static let idKey = "id"
         static let webOptInKey = "pseudonymousAnalyticsOptIn"
     }
     
     /// A randomly generated analytics token for this user.
-    /// This is suggested to be a 128-bit hex encoded string.
-    private(set) var id: String?
+    /// This is suggested to be a UUID string.
+    let id: String?
     
     /// Whether the user has opted in on web or not. This is unused on iOS but necessary
     /// to store here so that it's value is preserved when updating the account data if we
@@ -34,12 +35,6 @@ struct AnalyticsSettings {
     ///
     /// `true` if opted in on web, `false` if opted out on web and `nil` if the web prompt is not yet seen.
     private let webOptIn: Bool?
-    
-    /// Generate a new random analytics ID. This method has no effect if an ID already exists.
-    mutating func generateID() {
-        guard id == nil else { return }
-        id = UUID().uuidString
-    }
 }
 
 extension AnalyticsSettings {
@@ -49,6 +44,7 @@ extension AnalyticsSettings {
         self.webOptIn = dictionary?[Constants.webOptInKey] as? Bool
     }
     
+    /// A dictionary representation of the settings.
     var dictionary: Dictionary<AnyHashable, Any> {
         var dictionary = [AnyHashable: Any]()
         dictionary[Constants.idKey] = id
@@ -61,7 +57,9 @@ extension AnalyticsSettings {
 // MARK: - Public initializer
 
 extension AnalyticsSettings {
-    init(session: MXSession) {
-        self.init(dictionary: session.accountData.accountData(forEventType: AnalyticsSettings.eventType))
+    /// Create the analytics settings from account data.
+    /// - Parameter accountData: The account data to read the event from.
+    init(accountData: MXAccountData) {
+        self.init(dictionary: accountData.accountData(forEventType: AnalyticsSettings.eventType))
     }
 }
