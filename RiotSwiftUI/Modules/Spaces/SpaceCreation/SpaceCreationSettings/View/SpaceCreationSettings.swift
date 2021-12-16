@@ -44,6 +44,9 @@ struct SpaceCreationSettings: View {
         }
         .background(theme.colors.background)
         .navigationBarHidden(true)
+        .onTapGesture {
+            ResponderManager.resignFirstResponder()
+        }
     }
     
     // MARK: - Private
