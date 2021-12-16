@@ -32,6 +32,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
     // MARK: Properties
     // MARK: - Private
     
+    @IBOutlet private var descriptionContainerView: UIView!
     @IBOutlet private var descriptionLabel: UILabel!
     
     private var mapView: MGLMapView!
@@ -39,21 +40,13 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
     
     // MARK: - Public
     
-    var showUserLocation: Bool {
-        get {
-            mapView.showsUserLocation
-        }
-        set {
-            mapView.showsUserLocation = newValue
-        }
-    }
-    
     var locationDescription: String? {
         get {
             descriptionLabel.text
         }
         set {
             descriptionLabel.text = newValue
+            descriptionContainerView.isHidden = (newValue?.count ?? 0 == 0)
         }
     }
         
@@ -70,31 +63,22 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
         vc_addSubViewMatchingParent(mapView)
         sendSubviewToBack(mapView)
         
-        descriptionLabel.textColor = ThemeService.shared().theme.colors.primaryContent
-        descriptionLabel.font = ThemeService.shared().theme.fonts.footnote
-        
         clipsToBounds = true
-        layer.borderColor = ThemeService.shared().theme.colors.quinaryContent.cgColor
         layer.borderWidth = Constants.cellBorderRadius
         layer.cornerRadius = Constants.cellCornerRadius
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeServiceDidChangeTheme, object: nil)
+        updateTheme()
     }
     
     // MARK: - Public
     
-    public func displayGeoURI(_ geoURI: String,
+    public func displayLocation(_ location: CLLocationCoordinate2D,
                               userIdentifier: String,
                               userDisplayName: String,
                               userAvatarURL: String,
                               mediaManager: MXMediaManager) {
-        let locationString = geoURI.components(separatedBy: ":").last?.components(separatedBy: ";").first
-        
-        guard let locationComponents = locationString?.components(separatedBy: ","),
-              let latitude = locationComponents.first?.double,
-              let longitude = locationComponents.last?.double
-        else {
-            return
-        }
-        
+
         annotationView = LocationUserMarkerView.loadFromNib()
         
         annotationView?.setAvatarData(AvatarViewData(matrixItemId: userIdentifier,
@@ -102,8 +86,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
                                                      avatarUrl: userAvatarURL,
                                                      mediaManager: mediaManager,
                                                      fallbackImage: .matrixItem(userIdentifier, userDisplayName)))
-        
-        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         if let annotations = mapView.annotations {
             mapView.removeAnnotations(annotations)
@@ -120,5 +102,13 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         return annotationView
+    }
+    
+    // MARK: - Private
+    
+    @objc private func updateTheme() {
+        descriptionLabel.textColor = ThemeService.shared().theme.colors.primaryContent
+        descriptionLabel.font = ThemeService.shared().theme.fonts.footnote
+        layer.borderColor = ThemeService.shared().theme.colors.quinaryContent.cgColor
     }
 }

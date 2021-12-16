@@ -31,6 +31,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private var selectedEventId: String?
     
     private var pollEditFormCoordinator: PollEditFormCoordinator?
+    private var locationSharingCoordinator: LocationSharingCoordinator?
 
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -265,6 +266,26 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
         
         pollEditFormCoordinator?.start()
+    }
+    
+    func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        guard let navigationRouter = self.navigationRouter, let mediaManager = mxSession?.mediaManager, let user = mxSession?.myUser else {
+            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
+            return
+        }
+        
+        let parameters = LocationSharingCoordinatorParameters(navigationRouter: navigationRouter,
+                                                              roomDataSource: roomViewController.roomDataSource,
+                                                              mediaManager: mediaManager,
+                                                              user: user)
+        
+        locationSharingCoordinator = LocationSharingCoordinator(parameters: parameters)
+        
+        locationSharingCoordinator?.start()
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {

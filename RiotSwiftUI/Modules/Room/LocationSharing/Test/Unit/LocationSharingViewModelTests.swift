@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,20 +14,22 @@
 // limitations under the License.
 //
 
-import Foundation
+import XCTest
+import Combine
 
-/// The static list of mocked screens in RiotSwiftUI
+@testable import RiotSwiftUI
+
 @available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockLocationSharingScreenState.self,
-        MockAnalyticsPromptScreenState.self,
-        MockUserSuggestionScreenState.self,
-        MockPollEditFormScreenState.self,
-        MockPollTimelineScreenState.self,
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
-}
+class LocationSharingViewModelTests: XCTestCase {
+    var viewModel: LocationSharingViewModel!
+    var context: LocationSharingViewModelType.Context!
+    var cancellables = Set<AnyCancellable>()
+    
+    override func setUpWithError() throws {
+        context = viewModel.context
+    }
+    
+    func testInitialState() {
 
+    }
+}

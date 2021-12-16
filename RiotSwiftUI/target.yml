@@ -31,6 +31,7 @@ targets:
     platform: iOS
     dependencies:
     - target: DesignKit
+    - package: Mapbox
     sources:
     - path: .
       excludes:

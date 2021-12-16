@@ -34,13 +34,24 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
             return
         }
         
+        let locationString = geoURI.components(separatedBy: ":").last?.components(separatedBy: ";").first
+        
+        guard let locationComponents = locationString?.components(separatedBy: ","),
+              let latitude = locationComponents.first?.double,
+              let longitude = locationComponents.last?.double
+        else {
+            return
+        }
+        
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
         locationView.locationDescription = content[kMXMessageContentKeyExtensibleLocationDescription]
         
-        locationView.displayGeoURI(geoURI,
-                                   userIdentifier: bubbleData.senderId,
-                                   userDisplayName: bubbleData.senderDisplayName,
-                                   userAvatarURL: bubbleData.senderAvatarUrl,
-                                   mediaManager: bubbleData.mxSession.mediaManager)
+        locationView.displayLocation(location,
+                                     userIdentifier: bubbleData.senderId,
+                                     userDisplayName: bubbleData.senderDisplayName,
+                                     userAvatarURL: bubbleData.senderAvatarUrl,
+                                     mediaManager: bubbleData.mxSession.mediaManager)
     }
     
     override func setupViews() {

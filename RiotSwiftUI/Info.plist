@@ -20,5 +20,7 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Element needs access to your location before being able to share it.</string>
 </dict>
 </plist>
