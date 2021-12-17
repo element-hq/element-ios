@@ -3277,7 +3277,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
+        if (selectedEvent.sentState == MXEventSentStateSent &&
+            selectedEvent.eventType != MXEventTypePollStart &&
+            !selectedEvent.hasLocation)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                             style:UIAlertActionStyleDefault
