@@ -32,7 +32,7 @@ struct LocationSharingView: View {
     
     var body: some View {
         NavigationView {
-            LocationSharingMapView(accessToken: context.viewState.accessToken,
+            LocationSharingMapView(tileServerMapURL: context.viewState.tileServerMapURL,
                                    avatarData: context.viewState.avatarData,
                                    errorSubject: context.viewState.errorSubject,
                                    userLocation: $context.userLocation)
@@ -57,10 +57,20 @@ struct LocationSharingView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .ignoresSafeArea()
                 .alert(item: $context.alertInfo) { info in
-                    Alert(title: Text(info.title), message: Text(info.message), dismissButton:
-                            .default(Text(VectorL10n.pollTimelineVoteNotRegisteredAction)) {
-                                info.callback?()
-                            })
+                    if let secondaryButton = info.secondaryButton {
+                        return Alert(title: Text(info.title),
+                                     primaryButton: .default(Text(info.primaryButton.0)) {
+                                        info.primaryButton.1?()
+                                     },
+                                     secondaryButton: .default(Text(secondaryButton.0)) {
+                                        secondaryButton.1?()
+                                     })
+                    } else {
+                        return Alert(title: Text(info.title),
+                                     dismissButton: .default(Text(info.primaryButton.0)) {
+                                        info.primaryButton.1?()
+                                     })
+                    }
                 }
         }
         .accentColor(theme.colors.accent)

@@ -26,7 +26,7 @@ class LocationSharingViewModelTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
     
     override func setUpWithError() throws {
-        context = viewModel.context
+        
     }
     
     func testInitialState() {

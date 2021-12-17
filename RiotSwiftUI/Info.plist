@@ -21,6 +21,6 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Element needs access to your location before being able to share it.</string>
+	<string>When you share your location to people, Element needs access to show them a map.</string>
 </dict>
 </plist>

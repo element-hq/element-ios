@@ -66,6 +66,7 @@
 "less" = "Less";
 "open" = "Open";
 "done" = "Done";
+"ok" = "OK";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -1821,8 +1822,6 @@ Tap the + to start adding people.";
 
 "poll_edit_form_post_failure_subtitle" = "Please try again";
 
-"poll_edit_form_post_failure_action" = "OK";
-
 "poll_timeline_one_vote" = "1 vote";
 
 "poll_timeline_votes_count" = "%lu votes";
@@ -1845,13 +1844,9 @@ Tap the + to start adding people.";
 
 "poll_timeline_vote_not_registered_subtitle" = "Sorry, your vote was not registered, please try again";
 
-"poll_timeline_vote_not_registered_action" = "OK";
-
 "poll_timeline_not_closed_title" = "Failed to end poll";
 
 "poll_timeline_not_closed_subtitle" = "Please try again";
-
-"poll_timeline_not_closed_action" = "OK";
 
 // MARK: - Location sharing
 
@@ -1861,14 +1856,12 @@ Tap the + to start adding people.";
 
 "location_sharing_share_action" = "Share";
 
-"location_sharing_loading_map_error_title" = "Failed to load map";
+"location_sharing_loading_map_error_title" = "Element could not load the map. Please try again later.";
 
-"location_sharing_loading_map_error_message" = "Please try again";
+"location_sharing_locating_user_error_title" = "Element could not access your location. Please try again later.";
 
-"location_sharing_locating_user_error_title" = "Failed locating user";
+"location_sharing_invalid_authorization_error_title" = "Element does not have permission to access your location. You can enable access in Settings > Location";
 
-"location_sharing_locating_user_error_message" = "Please try again";
+"location_sharing_invalid_authorization_not_now" = "Not now";
 
-"location_sharing_invalid_authorization_error_title" = "Failed getting authorization";
-
-"location_sharing_invalid_authorization_error_message" = "Please update your system settings";
+"location_sharing_invalid_authorization_settings" = "Settings";

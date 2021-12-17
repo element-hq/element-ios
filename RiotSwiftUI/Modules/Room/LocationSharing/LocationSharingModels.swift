@@ -46,7 +46,7 @@ enum LocationSharingViewModelResult {
 
 @available(iOS 14, *)
 struct LocationSharingViewState: BindableState {
-    let accessToken: String
+    let tileServerMapURL: URL
     let avatarData: AvatarInputProtocol
     var shareButtonEnabled: Bool = true
     var showLoadingIndicator: Bool = false
@@ -71,6 +71,6 @@ struct ErrorAlertInfo: Identifiable {
     
     let id: AlertType
     let title: String
-    let message: String
-    let callback: (() -> Void)?
+    let primaryButton: (String, (() -> Void)?)
+    let secondaryButton: (String, (() -> Void)?)?
 }

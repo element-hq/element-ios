@@ -2195,27 +2195,23 @@ public class VectorL10n: NSObject {
   public static var locationSharingCloseAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_close_action") 
   }
-  /// Please update your system settings
-  public static var locationSharingInvalidAuthorizationErrorMessage: String { 
-    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_error_message") 
-  }
-  /// Failed getting authorization
+  /// Element does not have permission to access your location. You can enable access in Settings > Location
   public static var locationSharingInvalidAuthorizationErrorTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_error_title") 
   }
-  /// Please try again
-  public static var locationSharingLoadingMapErrorMessage: String { 
-    return VectorL10n.tr("Vector", "location_sharing_loading_map_error_message") 
+  /// Not now
+  public static var locationSharingInvalidAuthorizationNotNow: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_not_now") 
   }
-  /// Failed to load map
+  /// Settings
+  public static var locationSharingInvalidAuthorizationSettings: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
+  }
+  /// Element could not load the map. Please try again later.
   public static var locationSharingLoadingMapErrorTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_loading_map_error_title") 
   }
-  /// Please try again
-  public static var locationSharingLocatingUserErrorMessage: String { 
-    return VectorL10n.tr("Vector", "location_sharing_locating_user_error_message") 
-  }
-  /// Failed locating user
+  /// Element could not access your location. Please try again later.
   public static var locationSharingLocatingUserErrorTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title") 
   }
@@ -2326,6 +2322,10 @@ public class VectorL10n: NSObject {
   /// Off
   public static var off: String { 
     return VectorL10n.tr("Vector", "off") 
+  }
+  /// OK
+  public static var ok: String { 
+    return VectorL10n.tr("Vector", "ok") 
   }
   /// On
   public static var on: String { 
@@ -2479,10 +2479,6 @@ public class VectorL10n: NSObject {
   public static var pollEditFormPollQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
   }
-  /// OK
-  public static var pollEditFormPostFailureAction: String { 
-    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_action") 
-  }
   /// Please try again
   public static var pollEditFormPostFailureSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_post_failure_subtitle") 
@@ -2494,10 +2490,6 @@ public class VectorL10n: NSObject {
   /// Question or topic
   public static var pollEditFormQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
-  }
-  /// OK
-  public static var pollTimelineNotClosedAction: String { 
-    return VectorL10n.tr("Vector", "poll_timeline_not_closed_action") 
   }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
@@ -2538,10 +2530,6 @@ public class VectorL10n: NSObject {
   /// %lu votes cast. Vote to the see the results
   public static func pollTimelineTotalVotesNotVoted(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "poll_timeline_total_votes_not_voted", p1)
-  }
-  /// OK
-  public static var pollTimelineVoteNotRegisteredAction: String { 
-    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_action") 
   }
   /// Sorry, your vote was not registered, please try again
   public static var pollTimelineVoteNotRegisteredSubtitle: String { 

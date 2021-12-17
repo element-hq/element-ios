@@ -30,18 +30,18 @@ class LocationSharingViewModel: LocationSharingViewModelType {
     
     // MARK: Public
     
-    let accessToken: String
+    let tileServerMapURL: URL
     let avatarData: AvatarInputProtocol
     
     var completion: ((LocationSharingViewModelResult) -> Void)?
     
     // MARK: - Setup
     
-    init(accessToken: String, avatarData: AvatarInputProtocol) {
-        self.accessToken = accessToken
+    init(tileServerMapURL: URL, avatarData: AvatarInputProtocol) {
+        self.tileServerMapURL = tileServerMapURL
         self.avatarData = avatarData
         
-        super.init(initialViewState: LocationSharingViewState(accessToken: accessToken, avatarData: avatarData))
+        super.init(initialViewState: LocationSharingViewState(tileServerMapURL: tileServerMapURL, avatarData: avatarData))
         
         state.errorSubject.sink { [weak self] error in
             guard let self = self else { return }
@@ -69,26 +69,26 @@ class LocationSharingViewModel: LocationSharingViewModelType {
         switch action {
         case .error(let error, let completion):
             
-            let alertCallback: () -> Void = {
-                completion?(.cancel)
-            }
-            
             switch error {
             case .failedLoadingMap:
                 state.bindings.alertInfo = ErrorAlertInfo(id: .mapLoadingError,
                                                           title: VectorL10n.locationSharingLoadingMapErrorTitle,
-                                                          message: VectorL10n.locationSharingLoadingMapErrorMessage,
-                                                          callback: alertCallback)
+                                                          primaryButton: (VectorL10n.ok, { completion?(.cancel) }),
+                                                          secondaryButton: nil)
             case .failedLocatingUser:
                 state.bindings.alertInfo = ErrorAlertInfo(id: .userLocatingError,
                                                           title: VectorL10n.locationSharingLocatingUserErrorTitle,
-                                                          message: VectorL10n.locationSharingLocatingUserErrorMessage,
-                                                          callback: alertCallback)
+                                                          primaryButton: (VectorL10n.ok, { completion?(.cancel) }),
+                                                          secondaryButton: nil)
             case .invalidLocationAuthorization:
                 state.bindings.alertInfo = ErrorAlertInfo(id: .authorizationError,
                                                           title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle,
-                                                          message: VectorL10n.locationSharingInvalidAuthorizationErrorMessage,
-                                                          callback: alertCallback)
+                                                          primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, { completion?(.cancel) }),
+                                                          secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, {
+                                                            if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
+                                                                UIApplication.shared.open(applicationSettingsURL)
+                                                            }
+                                                          }))
             default:
                 break
             }
@@ -103,8 +103,8 @@ class LocationSharingViewModel: LocationSharingViewModelType {
             if error != nil {
                 state.bindings.alertInfo = ErrorAlertInfo(id: .locationSharingError,
                                                           title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle,
-                                                          message: VectorL10n.locationSharingInvalidAuthorizationErrorMessage,
-                                                          callback: nil)
+                                                          primaryButton: (VectorL10n.ok, nil),
+                                                          secondaryButton: nil)
             }
         }
     }

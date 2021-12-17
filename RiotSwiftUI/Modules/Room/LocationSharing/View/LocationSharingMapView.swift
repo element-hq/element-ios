@@ -22,18 +22,15 @@ import Mapbox
 struct LocationSharingMapView: UIViewRepresentable {
     private struct Constants {
         static let mapZoomLevel = 15.0
-        static let mapStyleURLString = "https://api.maptiler.com/maps/streets/style.json?key="
     }
     
-    let accessToken: String
+    let tileServerMapURL: URL
     let avatarData: AvatarInputProtocol
     let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
     @Binding var userLocation: CLLocationCoordinate2D?
         
     func makeUIView(context: Context) -> some UIView {
-        let url = URL(string: Constants.mapStyleURLString + accessToken)
-        
-        let mapView = MGLMapView(frame: .zero, styleURL: url)
+        let mapView = MGLMapView(frame: .zero, styleURL: tileServerMapURL)
         mapView.delegate = context.coordinator
         
         mapView.logoView.isHidden = true
