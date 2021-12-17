@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import Keys
 
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
@@ -364,4 +365,8 @@ final class BuildSettings: NSObject {
         
         return true
     }
+    
+    // MARK: - Location Sharing
+    
+    static let tileServerMapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=" + RiotKeys().mapTilerAPIKey)!
 }

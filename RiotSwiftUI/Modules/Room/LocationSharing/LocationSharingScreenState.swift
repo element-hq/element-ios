@@ -16,6 +16,7 @@
 
 import Foundation
 import SwiftUI
+import Keys
 
 @available(iOS 14.0, *)
 enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
@@ -26,7 +27,8 @@ enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView)  {
-        let viewModel = LocationSharingViewModel(accessToken: "bDAfUcrMPWTAB1KB38r6",
+        let mapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=" + RiotKeys().mapTilerAPIKey)!
+        let viewModel = LocationSharingViewModel(tileServerMapURL: mapURL,
                                                  avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Alice"))
         return ([viewModel],
                 AnyView(LocationSharingView(context: viewModel.context)

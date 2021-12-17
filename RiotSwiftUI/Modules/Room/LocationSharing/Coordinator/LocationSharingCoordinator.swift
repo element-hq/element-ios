@@ -56,7 +56,7 @@ final class LocationSharingCoordinator: Coordinator {
                                      matrixItemId: parameters.user.userId,
                                      displayName: parameters.user.displayname)
         
-        let viewModel = LocationSharingViewModel(accessToken: RiotKeys().mapTilerAPIKey, avatarData: avatarData)
+        let viewModel = LocationSharingViewModel(tileServerMapURL: BuildSettings.tileServerMapURL, avatarData: avatarData)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         

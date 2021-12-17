@@ -25,7 +25,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
         static let mapHeight: CGFloat = 300.0
         static let mapTilerKey = RiotKeys().mapTilerAPIKey
         static let mapZoomLevel = 15.0
-        static let mapStyleURLString = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=\(Constants.mapTilerKey)")
         static let cellBorderRadius: CGFloat = 1.0
         static let cellCornerRadius: CGFloat = 8.0
     }
@@ -54,7 +53,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        mapView = MGLMapView(frame: .zero, styleURL: Constants.mapStyleURLString)
+        mapView = MGLMapView(frame: .zero, styleURL: BuildSettings.tileServerMapURL)
         mapView.delegate = self
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
