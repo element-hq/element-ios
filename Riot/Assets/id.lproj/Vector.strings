@@ -1684,3 +1684,25 @@
 "settings_labs_enabled_polls" = "Poll";
 "room_event_action_end_poll" = "Akhiri poll";
 "room_event_action_remove_poll" = "Hapus poll";
+"analytics_prompt_stop" = "Berhenti membagikan";
+"analytics_prompt_yes" = "Iya, saya tidak keberatan";
+"analytics_prompt_not_now" = "Jangan sekarang";
+"analytics_prompt_point_3" = "Anda dapat mematikannya kapan saja di pengaturan";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Kami <b>tidak</b> membagikan informasi ini dengan pihak ketiga";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Kami <b>tidak</b> merekam atau memprofil data akun apapun";
+"analytics_prompt_terms_link_upgrade" = "di sini";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Baca semua kebijakan kami %@. Apakah Anda tidak keberatan?";
+"analytics_prompt_terms_link_new_user" = "di sini";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Anda dapat membaca semua kebijakan kami %@.";
+"analytics_prompt_message_upgrade" = "Anda sebelumnya setuju untuk mengirimkan data penggunaan anonim dengan kami. Sekarang, supaya kami dapat memahami bagaimana orang-orang menggunakan beberapa perangkat-perangkat, kami akan membuat pengenal acak, yang dibagikan oleh perangkat Anda.";
+"analytics_prompt_message_new_user" = "Bantu kami mengidentifikasi masalah-masalah dan membuat Element lebih baik dengan membagikan data penggunaan anonim. Untuk memahami bagaimana orang-orang menggunakan beberapa perangkat-perangkat, kami akan membuat pengenal acak, yang dibagikan oleh perangkat Anda.";
+
+// Analytics
+"analytics_prompt_title" = "Bantu membuat %@ lebih baik";
+"settings_analytics_and_crash_data" = "Kirim data crash dan analitik";
+"accessibility_button_label" = "tombol";
+"enable" = "Aktifkan";
