@@ -1583,3 +1583,25 @@
 "settings_labs_enabled_polls" = "投票";
 "room_event_action_end_poll" = "结束投票";
 "room_event_action_remove_poll" = "删除投票";
+"analytics_prompt_stop" = "停止共享";
+"analytics_prompt_yes" = "是的，没关系";
+"analytics_prompt_not_now" = "不是现在";
+"analytics_prompt_point_3" = "您可以随时在设置中关闭此功能";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "我们<b>不</b>与第三方共享信息";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "我们 <b>不</b>记录任何账户数据或绘制任何账户数据的画像";
+"analytics_prompt_terms_link_upgrade" = "此处";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "阅读我们所有的条款 %@。 那样行吗？";
+"analytics_prompt_terms_link_new_user" = "此处";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "你可以阅读我们所有的条款 %@。";
+"analytics_prompt_message_upgrade" = "您之前同意与我们共享匿名使用数据。 现在，为了帮助了解人们如何使用多个设备，我们将生成一个随机标识符，由您的设备共享。";
+"analytics_prompt_message_new_user" = "通过共享匿名使用数据帮助我们发现问题并改进 Element。 为了了解人们如何使用多个设备，我们将生成一个随机标识符，由您的设备共享。";
+
+// Analytics
+"analytics_prompt_title" = "帮助改进 %@";
+"settings_analytics_and_crash_data" = "发送崩溃和分析数据";
+"accessibility_button_label" = "按钮";
+"enable" = "启用";
