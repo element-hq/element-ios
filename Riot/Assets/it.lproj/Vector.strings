@@ -1539,3 +1539,25 @@
 "settings_labs_enabled_polls" = "Sondaggi";
 "room_event_action_end_poll" = "Termina sondaggio";
 "room_event_action_remove_poll" = "Rimuovi sondaggio";
+"analytics_prompt_stop" = "Non condividere più";
+"analytics_prompt_yes" = "Sì, va bene";
+"analytics_prompt_not_now" = "Non ora";
+"analytics_prompt_point_3" = "Puoi disattivarlo in qualsiasi momento nelle impostazioni";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "<b>Non</b> condividiamo informazioni con terze parti";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "<b>Non</b> registriamo o profiliamo alcun dato dell'account";
+"analytics_prompt_terms_link_upgrade" = "qui";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Leggi i nostri termini di servizio %@. Accetti?";
+"analytics_prompt_terms_link_new_user" = "qui";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Puoi leggere i nostri termini di servizio %@.";
+"analytics_prompt_message_upgrade" = "Hai acconsentito precedentemente a condividere con noi dati di utilizzo anonimi. Ora, per capire come le persone usano diversi dispositivi, genereremo un identificativo casuale, condiviso dai tuoi dispositivi.";
+"analytics_prompt_message_new_user" = "Aiutaci a identificare problemi e a migliorare Element condividendo dati di utilizzo anonimi. Per capire come le persone usano diversi dispositivi, genereremo un identificativo casuale, condiviso dai tuoi dispositivi.";
+
+// Analytics
+"analytics_prompt_title" = "Aiuta a migliorare %@";
+"settings_analytics_and_crash_data" = "Invia crash e dati analitici";
+"accessibility_button_label" = "pulsante";
+"enable" = "Attiva";
