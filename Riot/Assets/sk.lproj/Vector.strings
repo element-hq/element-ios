@@ -582,3 +582,539 @@
 
 // Directory
 "directory_cell_title" = "Prezrieť priečinok";
+"receipt_status_read" = "Prečítané: ";
+"room_details_files" = "Nahrané súbory";
+"settings_ui_theme_auto" = "Automaticky";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Vaše kľúče sa zálohujú.\n\nVáš bezpečnostný kľúč je bezpečnostná sieť - môžete ho použiť na obnovenie prístupu k zašifrovaným správam, ak zabudnete svoju prístupovú frázu.\n\nBezpečnostný kľúč uchovávajte na veľmi bezpečnom mieste, napríklad v správcovi hesiel (alebo v trezore).";
+"poll_timeline_not_closed_subtitle" = "Prosím, skúste to znova";
+"settings_unignore_user" = "Zobraziť všetky správy od %@?";
+"accessibility_button_label" = "tlačidlo";
+"settings_add_3pid_invalid_password_message" = "Neplatné poverovacie údaje";
+"security_settings_crypto_sessions" = "MOJE RELÁCIE";
+
+// Deactivate account
+
+"deactivate_account_title" = "Deaktivovať účet";
+"service_terms_modal_information_title_integration_manager" = "Správca integrácie";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Server totožností";
+"e2e_room_key_request_ignore_request" = "Ignorovať žiadosť";
+"e2e_room_key_request_start_verification" = "Spustiť overovanie…";
+"share_extension_send_now" = "Odoslať teraz";
+"room_widget_permission_room_id_permission" = "ID miestnosti";
+"room_widget_permission_widget_id_permission" = "ID widgetu";
+"room_widget_permission_theme_permission" = "Váš vzhľad";
+
+// Room widget permissions
+"room_widget_permission_title" = "Načítať Widget";
+"widget_picker_manage_integrations" = "Spravovať integrácie…";
+"bug_report_send_screenshot" = "Odoslať snímku obrazovky";
+"event_formatter_group_call" = "Skupinový hovor";
+"event_formatter_call_end_call" = "Ukončiť hovor";
+"event_formatter_call_connection_failed" = "Pripojenie zlyhalo";
+"event_formatter_call_you_declined" = "Hovor odmietnutý";
+"event_formatter_call_has_ended" = "Hovor ukončený";
+
+// Image picker
+"image_picker_action_camera" = "Urobiť fotografiu";
+"group_participants_invite_malformed_id_title" = "Chyba pozvania";
+"group_participants_leave_prompt_title" = "Opustiť skupinu";
+
+// Group participants
+"group_participants_add_participant" = "Pridať účastníka";
+"group_home_multi_rooms_format" = "%tu miestnosti";
+"group_home_one_room_format" = "1 miestnosť";
+"group_home_multi_members_format" = "%@ členovia";
+
+// Group Home
+"group_home_one_member_format" = "1 člen";
+
+// Group Details
+"group_details_title" = "Podrobnosti o komunite";
+"room_notifs_settings_account_settings" = "Nastavenia účtu";
+"room_notifs_settings_all_messages" = "Všetky správy";
+"room_details_advanced_room_id" = "ID miestnosti:";
+"room_details_banned_users_section" = "Zakázaní používatelia";
+"room_details_flair_invalid_id_prompt_title" = "Neplatný formát";
+"room_details_direct_chat" = "Priama konverzácia";
+"room_details_mute_notifs" = "Stlmiť oznámenia";
+"room_details_low_priority_tag" = "Nízka priorita";
+"room_details_room_name" = "Názov miestnosti";
+"room_details_photo" = "Obrázok miestnosti";
+"room_details_search" = "Hľadať miestnosť";
+"identity_server_settings_alert_disconnect_still_sharing_3pid_button" = "Napriek tomu sa odpojiť";
+
+// Identity server settings
+"identity_server_settings_title" = "Server totožností";
+"manage_session_not_trusted" = "Nedôveryhodné";
+"manage_session_name" = "Názov relácie";
+"manage_session_info" = "INFORMÁCIE O RELÁCII";
+
+// Manage session
+"manage_session_title" = "Spravovať reláciu";
+"security_settings_secure_backup_setup" = "Nastaviť";
+"security_settings_secure_backup" = "BEZPEČNÉ ZÁLOHOVANIE";
+"security_settings_crypto_sessions_loading" = "Načítavanie relácií…";
+"security_settings_blacklist_unverified_devices" = "Nikdy neodosielať správy do nedôveryhodných relácií";
+"security_settings_crosssigning_bootstrap" = "Nastaviť";
+"security_settings_crosssigning_info_not_bootstrapped" = "Krížové podpisovanie ešte nie je nastavené.";
+"security_settings_backup" = "ZÁLOHOVANIE SPRÁVY";
+"security_settings_secure_backup_delete" = "Vymazať zálohu";
+"bug_report_description" = "Popíšte prosím chybu. Čo ste urobili? Čo ste očakávali, že sa stane? Čo sa skutočne stalo?";
+
+// Bug report
+"bug_report_title" = "Hlásenie o chybe";
+"e2e_need_log_in_again" = "Musíte sa znova prihlásiť, aby ste vygenerovali end-to-end šifrovacie kľúče pre túto reláciu a odoslali verejný kľúč na váš domovský server.\nToto je jednorazové; ospravedlňujeme sa za nepríjemnosti.";
+
+// No VoIP support
+"no_voip_title" = "Prichádzajúci hovor";
+"call_no_stun_server_error_message_2" = "Prípadne môžete skúsiť použiť verejný server na adrese %@, ale nebude to tak spoľahlivé a vaša IP adresa bude zdieľaná s týmto serverom. Môžete to spravovať aj v nastaveniach";
+"call_incoming_voice" = "Prichádzajúci hovor…";
+
+// Call
+"call_incoming_voice_prompt" = "Prichádzajúci hlasový hovor od %@";
+"call_incoming_video_prompt" = "Prichádzajúci videohovor od %@";
+"room_does_not_exist" = "%@ neexistuje";
+"camera_unavailable" = "Fotoaparát nie je k dispozícii na vašom zariadení";
+"camera_access_not_granted" = "%@ nemá povolenie používať fotoaparát, zmeňte to prosím nastaveniach ochrany súkromia";
+"do_not_ask_again" = "Viac sa nepýtať";
+"bug_report_prompt" = "Posledné spustenie aplikácie skončilo pádom. Chcete odoslať správu o páde?";
+"public_room_section_title" = "Verejné miestnosti (na %@):";
+"homeserver_connection_lost" = "Nepodarilo sa pripojiť k domovskému serveru.";
+"key_backup_recover_invalid_passphrase_title" = "Nesprávna bezpečnostná fráza";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Zabezpečené správy";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Vaše kľúče sa zálohujú.";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "Vytvoril som si kópiu";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "Vytvorte si kópiu";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Bezpečnostný kľúč";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Uložte svoj bezpečnostný kľúč";
+"key_backup_setup_passphrase_set_passphrase_action" = "Nastaviť frázu";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Potvrdiť frázu";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Zadajte frázu";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "Zabezpečte si svoju zálohu pomocou bezpečnostnej frázy";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Pripojenie tohto zariadenia k službe Zálohovanie kľúčov";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Začať používať zálohovanie kľúčov";
+"key_backup_setup_skip_alert_message" = "Ak sa odhlásite alebo stratíte svoje zariadenie, môžete prísť o zabezpečené správy.";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Zálohovanie kľúčov";
+"secure_backup_setup_banner_subtitle" = "Zabezpečte sa proti strate šifrovaných správ a údajov";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Bezpečné zálohovanie";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Použiť bezpečnostnú frázu";
+"secure_key_backup_setup_intro_use_security_key_title" = "Použiť bezpečnostný kľúč";
+"secure_key_backup_setup_intro_info" = "Zabezpečte sa pred stratou šifrovaných správ a údajov zálohovaním šifrovacích kľúčov na domovskom serveri.";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Bezpečné zálohovanie";
+"rerequest_keys_alert_message" = "Spustite prosím %@ na inom zariadení, ktoré dokáže dešifrovať správu, aby mohlo poslať kľúče do tejto relácie.";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Žiadosť odoslaná";
+"deactivate_account_password_alert_message" = "Aby ste mohli pokračovať, prosím zadajte svoje heslo";
+"deactivate_account_password_alert_title" = "Deaktivovať účet";
+"deactivate_account_validate_action" = "Deaktivovať účet";
+"deactivate_account_informations_part2_emphasize" = "Táto akcia je nezvratná.";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Nastaviť bezpečnostnú frázu";
+"secrets_setup_recovery_key_storage_alert_title" = "Udržujte ho v bezpečí";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Vytlačte ho a uložte na bezpečné miesto\n✓ Uložte ho na USB kľúč alebo záložný disk\n✓ Skopírujte si ho do osobného cloudového úložiska";
+"secrets_setup_recovery_key_information" = "Bezpečnostný kľúč uložte na bezpečné miesto. Môžete ho použiť na odomknutie zašifrovaných správ a údajov.";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Uložte svoj bezpečnostný kľúč";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Skontrolujte, či ste zadali správny bezpečnostný kľúč.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Nie je možné získať prístup k tajnému úložisku";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Zadajte bezpečnostný kľúč";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Skontrolujte prosím, či ste zadali správnu bezpečnostnú frázu.";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Nie je možné získať prístup k tajnému úložisku";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "použiť váš bezpečnostný kľúč";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Neviete svoju bezpečnostnú frázu? Môžete ";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Vložiť bezpečnostnú frázu";
+"secrets_recovery_with_passphrase_information_verify_device" = "Na overenie tohto zariadenia použite bezpečnostnú frázu.";
+"user_verification_session_details_information_untrusted_current_user" = "Overte túto reláciu, aby ste ju označili za dôveryhodnú a udelili jej prístup k zašifrovaným správam:";
+"user_verification_session_details_information_trusted_other_user_part2" = " ste ju overili:";
+"user_verification_session_details_information_trusted_other_user_part1" = "Táto relácia je dôveryhodná pre bezpečné zasielanie správ, pretože ";
+"user_verification_session_details_information_trusted_current_user" = "Táto relácia je dôveryhodná pre bezpečné zasielanie správ, pretože ste ju overili:";
+"user_verification_sessions_list_information" = "Správy s týmto používateľom v tejto miestnosti sú end-to-end šifrované a tretie strany ich nemôžu čítať.";
+"user_verification_start_additional_information" = "Aby ste si boli istý, urobte to osobne alebo použite iný dôveryhodný spôsob komunikácie.";
+"user_verification_start_waiting_partner" = "Čaká sa na %@…";
+"user_verification_start_information_part2" = " skontrolovaním jednorazového kódu na oboch zariadeniach.";
+"user_verification_start_information_part1" = "Pre väčšiu bezpečnosť overte ";
+"key_verification_scan_confirmation_scanned_device_information" = "Zobrazuje druhé zariadenie rovnaký štít?";
+"key_verification_scan_confirmation_scanned_user_information" = "Zobrazuje %@ rovnaký štít?";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Čakanie na druhé zariadenie…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Čaká sa na %@…";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Už je to takmer hotové! Čaká sa na potvrdenie…";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "QR kód bol úspešne overený.";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Naskenoval druhý používateľ QR kód úspešne?";
+"key_verification_verify_qr_code_start_emoji_action" = "Overte pomocou emoji";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Skenovať pomocou tohto zariadenia";
+"key_verification_verify_qr_code_scan_code_action" = "Naskenujte ich kód";
+"key_verification_verify_qr_code_emoji_information" = "Overenie porovnaním jedinečnej kombinácie emotikonov.";
+"key_verification_verify_qr_code_information_other_device" = "Naskenujte nižšie uvedený kód na overenie:";
+"key_verification_verify_qr_code_information" = "Naskenujte kód, aby ste sa navzájom bezpečne overili.";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Overte naskenovaním";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ žiada o overenie";
+"key_verification_tile_conclusion_warning_title" = "Nedôveryhodné prihlásenie";
+"error_not_supported_on_mobile" = "Toto nemôžete urobiť z mobilného telefónu %@.";
+"emoji_picker_flags_category" = "Vlajky";
+"emoji_picker_places_category" = "Cestovanie a miesta";
+"emoji_picker_foods_category" = "Jedlo a nápoje";
+"emoji_picker_nature_category" = "Zvieratá a príroda";
+
+// MARK: Emoji picker
+"emoji_picker_title" = "Reakcie";
+"device_verification_emoji_bell" = "Zvonec";
+"device_verification_emoji_train" = "Vlak";
+"device_verification_emoji_spanner" = "Vidlicový kľúč";
+
+// User
+
+"key_verification_verified_user_information" = "Správy s týmto používateľom sú end-to-end šifrované a tretie strany ich nemôžu čítať.";
+"key_verification_verified_this_session_information" = "Na tomto zariadení teraz môžete čítať zabezpečené správy a ostatní používatelia budú vedieť, že mu môžu dôverovať.";
+"key_verification_verified_new_session_information" = "Na novom zariadení teraz môžete čítať zabezpečené správy a ostatní používatelia budú vedieť, že mu môžu dôverovať.";
+"key_verification_verified_other_session_information" = "Teraz môžete čítať zabezpečené správy vo vašej druhej relácii a ostatní používatelia budú vedieť, že jej môžu dôverovať.";
+"key_verification_verified_new_session_title" = "Nová relácia overená!";
+"room_recents_unknown_room_error_message" = "Túto miestnosť nemôžeme nájsť. Uistite sa, že existuje";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Nie je nakonfigurovaný žiadny server totožnosti, takže nemôžete pridať účastníka s e-mailom.";
+"room_creation_appearance_picture" = "Obrázok konverzácie (nepovinné)";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Môžete si prečítať všetky naše podmienky %@.";
+"analytics_prompt_terms_link_new_user" = "tu";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Prečítajte si všetky naše podmienky %@. Je to v poriadku?";
+"analytics_prompt_terms_link_upgrade" = "tu";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "<b>Nezaznamenávame ani neprofilujeme</b> žiadne údaje o účte";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "<b>Nezdieľame</b> informácie s tretími stranami";
+"analytics_prompt_point_3" = "Túto funkciu môžete kedykoľvek vypnúť v nastaveniach";
+"analytics_prompt_not_now" = "Teraz nie";
+"room_message_reply_to_placeholder" = "Odoslať odpoveď (nešifrovanú)…";
+
+
+// Room Details
+"room_details_title" = "Podrobnosti o miestnosti";
+"settings_sending_media" = "ODOSIELANIE OBRÁZKOV A VIDEÍ";
+"settings_config_user_id" = "Prihlásený ako %@";
+"settings_mark_all_as_read" = "Označiť všetky správy ako prečítané";
+"settings_config_no_build_info" = "Žiadne informácie o zostavení";
+"room_preview_try_join_an_unknown_room" = "Pokúšate sa zobraziť %s. Chcete vstúpiť a pridať sa k diskusii?";
+"room_preview_unlinked_email_warning" = "Toto pozvanie bolo odoslané na emailovú adresu %s, ktorá nie je priradená k tomuto účtu. Môžete sa prihlásiť k inému účtu, alebo pridať túto emailovú adresu do vášho účtu.";
+"room_preview_subtitle" = "Toto je náhľad do miestnosti. Všetky akcie pre túto miestnosť sú zakázané.";
+
+// Room Preview
+"room_preview_invitation_format" = "Do tejto miestnosti vás pozval používateľ %@";
+"unknown_devices_answer_anyway" = "Odpovedať aj tak";
+"unknown_devices_alert" = "Táto miestnosť obsahuje neznáme relácie, ktoré neboli overené.\nTo znamená, že nie je zaručené, že relácie patria naozaj tým používateľom, o ktorých to tvrdia.\nPred pokračovaním odporúčame prejsť procesom overenia každej relácie, ale ak chcete, môžete správu poslať znova bez overenia.";
+
+// Unknown devices
+"unknown_devices_alert_title" = "V miestnosti sú neznáme relácie";
+"external_link_confirmation_message" = "Odkaz %@ vás presmeruje na inú stránku: %@\n\nSte si istí, že chcete pokračovať?";
+"room_no_privileges_to_create_group_call" = "Ak chcete začať hovor, musíte byť administrátorom alebo moderátorom.";
+"room_open_dialpad" = "Číselník";
+"room_message_edits_history_title" = "Úpravy správy";
+"room_resource_usage_limit_reached_message_2" = "niektorí používatelia sa nebudú môcť prihlásiť.";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Tento domovský server dosiahol svoj mesačný limit aktívnych používateľov, takže ";
+"room_resource_usage_limit_reached_message_1_default" = "Bol prekročený limit využitia prostriedkov pre tento domovský server, takže ";
+"room_resource_limit_exceeded_message_contact_2_link" = "kontaktovať vášho správcu služieb";
+"room_predecessor_link" = "Kliknutím sem zobrazíte staršie správy.";
+"room_predecessor_information" = "Táto miestnosť je pokračovaním inej konverzácie.";
+"room_replacement_link" = "Konverzácia pokračuje tu.";
+"room_replacement_information" = "Táto miestnosť bola nahradená a nie je viac aktívna.";
+"room_action_send_photo_or_video" = "Odoslať fotografiu alebo video";
+"room_action_camera" = "Spraviť fotografiu alebo video";
+"room_warning_about_encryption" = "End-to-end šifrovanie je vo fáze beta a nemusí byť spoľahlivé.\n\nNa zabezpečenie údajov by ste mu zatiaľ nemali dôverovať.\n\nZariadenia zatiaľ nebudú schopné dešifrovať históriu z obdobia pred ich pripojením do miestnosti.\n\nŠifrované správy nebudú viditeľné v klientoch, ktoré ešte nemajú zavedené šifrovanie.";
+"room_event_action_reaction_history" = "História reakcií";
+"room_event_action_view_encryption" = "Informácie o šifrovaní";
+"room_event_action_delete_confirmation_message" = "Určite chcete túto neodoslanú správu vymazať?";
+"room_event_action_report_prompt_ignore_user" = "Chcete skryť všetky správy od tohto používateľa?";
+"room_event_action_ban_prompt_reason" = "Dôvod zákazu tohto používateľa";
+"room_event_action_kick_prompt_reason" = "Dôvod vylúčenia tohto používateľa";
+"room_event_action_report_prompt_reason" = "Dôvod nahlásenia tohto obsahu";
+"room_conference_call_no_power" = "Potrebujete povolenie na správu konferenčného hovoru v tejto miestnosti";
+"room_unsent_messages_cancel_message" = "Určite chcete vymazať všetky neodoslané správy v tejto miestnosti?";
+"room_unsent_messages_notification" = "Správy sa nepodarilo odoslať.";
+"room_offline_notification" = "Spojenie so serverom bolo prerušené.";
+"encrypted_room_message_reply_to_placeholder" = "Odoslať šifrovanú odpoveď…";
+"encrypted_room_message_placeholder" = "Odoslať šifrovanú správu…";
+"room_do_not_have_permission_to_post" = "Nemáte povolenie písať do tejto miestnosti";
+"room_message_replying_to" = "Odpoveď na %@";
+"room_message_unable_open_link_error_message" = "Nie je možné otvoriť odkaz.";
+"room_message_placeholder" = "Odoslať správu (nešifrovane)…";
+"room_many_users_are_typing" = "%@, %@ a ďalší píšu…";
+"room_two_users_are_typing" = "%@ a %@ píšu…";
+"room_accessiblity_scroll_to_bottom" = "Prejsť na koniec";
+
+// Chat
+"room_slide_to_end_group_call" = "Posuňte na ukončenie výzvy pre všetkých";
+"room_participants_action_set_default_power_level" = "Obnoviť na normálnu úroveň používateľa";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Nie je nastavený žiadny server totožností, takže nemôžete začať konverzáciu s kontaktom pomocou e-mailu.";
+"room_participants_invite_malformed_id_title" = "Chyba pozvania";
+"room_participants_invite_another_user" = "Vyhľadať / pozvať podľa ID používateľa, mena alebo e-mailu";
+"find_your_contacts_identity_service_error" = "Nie je možné sa pripojiť k serveru totožností.";
+"find_your_contacts_footer" = "Túto funkciu môžete kedykoľvek vypnúť v nastaveniach.";
+"contacts_user_directory_section" = "POUŽÍVATEĽSKÝ ADRESÁR";
+"contacts_user_directory_offline_section" = "POUŽÍVATEĽSKÝ ADRESÁR (offline)";
+"contacts_address_book_permission_denied_alert_message" = "Ak chcete povoliť kontakty, prejdite do nastavení zariadenia.";
+"contacts_address_book_permission_denied_alert_title" = "Kontakty sú vypnuté";
+"contacts_address_book_permission_required" = "Povolenie potrebné na prístup k lokálnym kontaktom";
+"directory_search_results_more_than" = ">%tu nájdených výsledkov pre %@";
+"directory_search_results" = "%tu nájdených výsledkov pre %@";
+"search_people_placeholder" = "Vyhľadať podľa ID používateľa, mena alebo e-mailu";
+"rooms_empty_view_information" = "Miestnosti sú skvelé na akýkoľvek skupinový rozhovor, súkromný alebo verejný. Ťuknutím na tlačidlo + vyhľadajte existujúce miestnosti alebo vytvorte nové.";
+"people_empty_view_information" = "Bezpečne komunikujte s kýmkoľvek.Ťuknutím na tlačidlo + začnite pridávať ľudí.";
+"room_creation_wait_for_creation" = "Miestnosť sa už vytvára. Počkajte, prosím.";
+"room_creation_make_public_prompt_msg" = "Ste si istí, že chcete túto konverzáciu zverejniť? Ktokoľvek si môže prečítať vaše správy a pripojiť sa ku konverzácii.";
+"social_login_button_title_sign_in" = "Prihlásiť sa s %@";
+"auth_reset_password_error_is_required" = "Nie je nastavený žiadny server identity: pridajte ho v možnostiach servera a obnovte heslo.";
+"security_settings_crosssigning_info_trusted" = "Krížové podpisovanie je povolené. Na základe krížového podpisovania môžete dôverovať iným používateľom a ostatným reláciám, ale nemôžete krížovo podpisovať z tejto relácie, pretože nemá súkromné kľúče na krížové podpisovanie. Dokončite zabezpečenie tejto relácie.";
+"manage_session_sign_out" = "Odhlásiť sa z tejto relácie";
+"security_settings_crosssigning_info_ok" = "Krížové podpisovanie je pripravené na použitie.";
+"settings_discovery_error_message" = "Vyskytla sa chyba. Prosím, skúste to znova.";
+"settings_crypto_blacklist_unverified_devices" = "Šifrovať len overeným reláciám";
+"settings_password_updated" = "Vaše heslo bolo aktualizované";
+"settings_notifications_disabled_alert_message" = "Ak chcete povoliť upozornenia, prejdite do nastavení zariadenia.";
+"settings_enable_push_notif" = "Oznámenia na tomto zariadení";
+"auth_autodiscover_invalid_response" = "Neplatná odpoveď pri zisťovaní domovského servera";
+"auth_accept_policies" = "Prosím prečítajte si a odsúhlaste zmluvné podmienky tohoto domovského servera:";
+"enable" = "Povoliť";
+// String for App Store
+"store_short_description" = "Bezpečné decentralizované konverzácie/VoIP";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "fráza sa nezhoduje";
+"key_backup_setup_intro_manual_export_action" = "Exportovať kľúče manuálne";
+"key_backup_setup_skip_alert_title" = "Ste si istí?";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Ste si istí?";
+"deactivate_account_informations_part3" = "\n\nDeaktivácia vášho konta ";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Žiadosť o šifrovací kľúč";
+"room_widget_permission_user_id_permission" = "Vaše ID používateľa";
+"room_widget_permission_avatar_url_permission" = "URL adresa vášho obrázku";
+"room_widget_permission_display_name_permission" = "Vaše zobrazované meno";
+"widget_menu_open_outside" = "Otvoriť v prehliadači";
+"bug_report_background_mode" = "Pokračovať v pozadí";
+"e2e_key_backup_wrong_version_button_wasme" = "Bol(a) som to ja";
+"call_no_stun_server_error_use_fallback_button" = "Skúste použiť %s";
+"call_incoming_video" = "Prichádzajúci video hovor…";
+"event_formatter_group_call_incoming" = "%@ v %@";
+"event_formatter_call_active_video" = "Aktívny video hovor";
+"event_formatter_call_active_voice" = "Aktívny hovor";
+"event_formatter_call_incoming_video" = "Prichádzajúci video hovor";
+"event_formatter_call_incoming_voice" = "Prichádzajúci hovor";
+"image_picker_action_library" = "Vybrať z knižnice";
+
+// Read Receipts
+"read_receipts_list" = "Zoznam potvrdení o prečítaní";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Filtrovať komunitné miestnosti";
+"group_participants_filter_members" = "Filtrovať členov komunity";
+"room_details_copy_room_url" = "Kopírovať URL adresu miestnosti";
+"room_details_copy_room_address" = "Kopírovať adresu miestnosti";
+"room_details_copy_room_id" = "Kopírovať ID miestnosti";
+"room_details_addresses_invalid_address_prompt_title" = "Nesprávny formát aliasu";
+"room_details_new_address" = "Pridať novú adresu";
+"identity_server_settings_alert_disconnect_title" = "Odpojiť server totožností";
+"identity_server_settings_alert_change_title" = "Zmeniť server totožností";
+"security_settings_export_keys_manually" = "Exportovať kľúče manuálne";
+"security_settings_secure_backup_restore" = "Obnoviť zo zálohy";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Zrušiť overenie e-mailu";
+"settings_discovery_three_pid_details_title_phone_number" = "Spravovať telefónne číslo";
+"settings_key_backup_button_restore" = "Obnoviť zo zálohy";
+"settings_deactivate_my_account" = "Deaktivovať účet";
+"settings_add_3pid_password_title_msidsn" = "Pridať telefónne číslo";
+"settings_add_3pid_password_title_email" = "Pridať emailovú adresu";
+"settings_term_conditions" = "Podmienky používania";
+"settings_olm_version" = "Olm verzia %@";
+"settings_contacts_enable_sync" = "Nájdite svoje kontakty";
+"settings_show_url_previews" = "Zobraziť náhľad webovej stránky";
+"settings_ui_theme_picker_title" = "Vybrať vzhľad";
+"settings_new_keyword" = "Pridať nové kľúčové slovo";
+"settings_messages_containing_display_name" = "Moje zobrazované meno";
+"settings_encrypted_group_messages" = "Šifrované skupinové správy";
+"settings_encrypted_direct_messages" = "Šifrované priame správy";
+"settings_mentions_and_keywords" = "Zmienky a kľúčové slová";
+"settings_show_decrypted_content" = "Zobraziť dešifrovaný obsah";
+"settings_add_phone_number" = "Pridať telefónne číslo";
+"settings_add_email_address" = "Pridať emailovú adresu";
+"settings_sign_out_confirmation" = "Ste si istí?";
+"settings_config_home_server" = "Domovský server je %@";
+"account_logout_all" = "Odhlásiť sa zo všetkých účtov";
+"room_title_one_active_member" = "%@/%@ aktívny člen";
+"room_title_multiple_active_members" = "%@/%@ aktívnych členov";
+"room_multiple_typing_notification" = "%@ a ďalší";
+"room_event_failed_to_send" = "Nepodarilo sa odoslať";
+"room_event_action_delete_confirmation_title" = "Vymazať neodoslanú správu";
+"room_event_action_view_decrypted_source" = "Zobraziť dešifrovaný zdroj";
+"room_delete_unsent_messages" = "Vymazať neodoslané správy";
+"room_resend_unsent_messages" = "Znovu odoslať neodoslané správy";
+"room_unsent_messages_cancel_title" = "Vymazať neodoslané správy";
+"room_message_reply_to_short_placeholder" = "Odoslať odpoveď…";
+"room_message_short_placeholder" = "Odoslať správu…";
+"room_one_user_is_typing" = "%s píše…";
+"room_new_messages_notification" = "%d nových správ";
+"room_new_message_notification" = "%d nová správa";
+"room_jump_to_first_unread" = "Preskočiť na neprečítanú";
+"find_your_contacts_button_title" = "Nájdite svoje kontakty";
+"social_login_button_title_continue" = "Pokračovať s %@";
+"auth_softlogout_clear_data_button" = "Vymazať všetky údaje";
+"auth_softlogout_clear_data" = "Vymazať osobné údaje";
+"auth_softlogout_signed_out" = "Ste odhlásený";
+"send_to" = "Odoslať do %@";
+"poll_timeline_one_vote" = "1 hlas";
+"room_event_action_end_poll" = "Ukončiť anketu";
+"room_event_action_remove_poll" = "Odstrániť anketu";
+"poll_edit_form_add_option" = "Pridať možnosť";
+"poll_edit_form_option_number" = "Možnosť %lu";
+"poll_edit_form_create_options" = "Vytvoriť možnosti";
+"poll_edit_form_input_placeholder" = "Napíšte niečo";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Vytvoriť anketu";
+"version_check_modal_action_title_supported" = "Rozumiem";
+"voice_message_lock_screen_placeholder" = "Hlasová správa";
+"voice_message_remaining_recording_time" = "%1$s ostáva";
+"side_menu_app_version" = "Verzia %s";
+"side_menu_action_invite_friends" = "Pozvať priateľov";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Ľavý panel";
+"space_public_join_rule" = "Verejný priestor";
+"space_private_join_rule" = "Súkromný priestor";
+"spaces_coming_soon_title" = "Už čoskoro";
+"spaces_explore_rooms" = "Preskúmať miestnosti";
+"leave_space_title" = "Opustiť %@";
+"room_intro_cell_information_room_with_topic_sentence2" = "Téma: %@";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Pridať ľudí";
+"call_transfer_dialpad" = "Číselník";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Číselník";
+"room_info_list_several_members" = "%@ členovia";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 člen";
+"create_room_section_header_address" = "Adresa miestnosti";
+"create_room_type_public" = "Verejná miestnosť";
+"create_room_type_private" = "Súkromná miestnosť";
+"create_room_section_header_type" = "Typ miestnosti";
+"create_room_enable_encryption" = "Povoliť šifrovanie";
+"create_room_section_header_encryption" = "Šifrovanie miestnosti";
+"create_room_section_header_name" = "Názov miestnosti";
+
+// MARK: - Create Room
+
+"create_room_title" = "Nová miestnosť";
+"searchable_directory_x_network" = "%@ Sieť";
+"biometrics_desetup_disable_button_title_x" = "Vypnúť %@";
+"biometrics_desetup_title_x" = "Vypnúť %@";
+"biometrics_setup_enable_button_title_x" = "Povoliť %@";
+"biometrics_setup_title_x" = "Povoliť %@";
+"biometrics_settings_enable_x" = "Povoliť %@";
+"pin_protection_settings_change_pin" = "Zmeniť PIN";
+"pin_protection_settings_enable_pin" = "Zapnúť PIN";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Vitajte späť.";
+"major_update_done_action" = "Rozumiem";
+"major_update_learn_more_action" = "Zistiť viac";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Obnoviť všetko";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Potvrdiť frázu";
+"secrets_recovery_with_key_recover_action" = "Použiť kľúč";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Bezpečnostný kľúč";
+"secrets_recovery_with_passphrase_recover_action" = "Použiť frázu";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Bezpečnostná fráza";
+"secrets_recovery_reset_action_part_2" = "Obnoviť všetko";
+"user_verification_session_details_verify_action_other_user" = "Manuálne overiť";
+"user_verification_session_details_verify_action_current_user" = "Interaktívne overiť";
+"user_verification_session_details_untrusted_title" = "Nedôveryhodné";
+"user_verification_sessions_list_session_untrusted" = "Nedôveryhodné";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Spustiť overenie";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Už to skoro bude!";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kód overený!";
+"key_verification_verify_qr_code_cannot_scan_action" = "Nemôžete naskenovať?";
+"key_verification_tile_request_status_accepted" = "Prijali ste";
+"key_verification_tile_request_status_cancelled" = "%@ bolo zrušené";
+"key_verification_tile_request_status_cancelled_by_me" = "Zrušili ste overenie";
+"key_verification_tile_request_status_data_loading" = "Načítavanie údajov…";
+"key_verification_tile_request_outgoing_title" = "Overenie odoslané";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Žiadosť o overenie";
+
+// MARK: File upload
+"file_upload_error_title" = "Nahrávanie súboru";
+"device_verification_emoji_light bulb" = "Žiarovka";
+"device_verification_verified_got_it_button" = "Rozumiem";
+"key_verification_manually_verify_device_key_title" = "Kľúč relácie";
+"key_verification_manually_verify_device_id_title" = "ID relácie";
+"key_verification_manually_verify_device_name_title" = "Názov relácie";
+"key_verification_verify_sas_validate_action" = "Zhodujú sa";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "Porovnať emoji";
+"device_verification_self_verify_start_verify_action" = "Spustiť overovanie";
