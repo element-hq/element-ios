@@ -397,7 +397,7 @@
 "bug_report_send_screenshot" = "Sende Bildschirmfoto";
 "bug_report_progress_zipping" = "Sammele Protokolle";
 "bug_report_progress_uploading" = "Bericht hochladen";
-"bug_report_send" = "Gesendet";
+"bug_report_send" = "Senden";
 "collapse" = "zusammenklappen";
 "auth_email_in_use" = "Diese E-Mail-Adresse wird bereits verwendet";
 "auth_phone_in_use" = "Diese Telefonnummer wird bereits verwendet";
@@ -1522,3 +1522,12 @@
 
 "poll_edit_form_create_poll" = "Umfrage erstellen";
 "settings_labs_enabled_polls" = "Umfragen";
+"share_extension_send_now" = "Jetzt senden";
+"accessibility_button_label" = "Knopf";
+"settings_analytics_and_crash_data" = "Sende Absturz- und Analysedaten";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Wir senden <b>keine</b> Informationen an Dritte";
+"analytics_prompt_terms_link_new_user" = "hier";
+
+// Analytics
+"analytics_prompt_title" = "Hilf dabei %@ zu verbessern";
