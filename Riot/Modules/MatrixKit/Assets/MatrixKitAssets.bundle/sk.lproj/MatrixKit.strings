@@ -1,1 +1,240 @@
 
+
+"login_error_login_email_not_yet" = "Zatiaľ ste neklikli na odkaz zaslaný emailom";
+"login_error_user_in_use" = "Toto používateľské meno sa už používa";
+"login_error_limit_exceeded" = "Bol prekročený maximálny počet požiadaviek";
+"room_left_for_dm" = "Odišli ste";
+
+// Room creation
+"room_creation_name_title" = "Názov miestnosti:";
+"account_msisdn_validation_title" = "Čaká sa na overenie";
+"account_email_validation_title" = "Čaká sa na overenie";
+
+// Account
+"account_save_changes" = "Uložiť zmeny";
+"room_event_encryption_verify_title" = "Overiť reláciu\n\n";
+"room_event_encryption_info_device_not_verified" = "Neoverené";
+"room_event_encryption_info_device_fingerprint" = "Ed25519 odtlačok prsta\n";
+"room_event_encryption_info_device_name" = "Verejný názov\n";
+"room_event_encryption_info_device_unknown" = "neznáma relácia\n";
+"room_event_encryption_info_event_decryption_error" = "Chyba dešifrovania\n";
+"room_event_encryption_info_event_session_id" = "ID relácie\n";
+"room_event_encryption_info_event_user_id" = "ID používateľa:\n";
+"room_event_encryption_info_event" = "Informácie o udalosti\n";
+"device_details_rename_prompt_title" = "Názov relácie";
+"device_details_last_seen" = "Naposledy videné\n";
+"device_details_name" = "Verejný názov\n";
+
+// Devices
+"device_details_title" = "Informácie o relácii\n";
+"room_displayname_all_other_members_left" = "%@ (Odišiel)";
+
+// room display name
+"room_displayname_empty_room" = "Prázdna miestnosť";
+"notice_invalid_attachment" = "neplatná príloha";
+"notice_file_attachment" = "súborová attachment";
+"notice_video_attachment" = "video príloha";
+"notice_audio_attachment" = "zvuková príloha";
+"notice_image_attachment" = "obrázková príloha";
+"notice_encrypted_message" = "Šifrovaná správa";
+"notice_room_created_for_dm" = "%@ sa pripojil/a.";
+"end_call" = "Ukončiť hovor";
+"reject_call" = "Odmietnuť hovor";
+"show_details" = "Zobraziť podrobnosti";
+"cancel_download" = "Zrušiť sťahovanie";
+"cancel_upload" = "Zrušiť nahrávanie";
+"select_all" = "Vybrať všetko";
+"start_chat" = "Začať konverzáciu";
+"sign_up" = "Zaregistrovať sa";
+"login_error_resource_limit_exceeded_contact_button" = "Kontaktovať správcu";
+"register_error_title" = "Registrácia zlyhala";
+"login_invalid_param" = "Neplatný parameter";
+"login_error_bad_json" = "Chybné údaje vo formáte JSON";
+"login_error_forbidden" = "Neplatné používateľské meno/heslo";
+
+// Room Screen 
+
+// general errors 
+
+// Home Screen 
+
+// Last seen time 
+
+// call events 
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles 
+
+// button names 
+"ok" = "OK";
+"login_error_title" = "Prihlásenie zlyhalo";
+"login_prompt_email_token" = "Zadajte svoj e-mailový overovací token:";
+"login_email_info" = "Zadanie e-mailovej adresy umožní ostatným používateľom ľahšie vás nájsť v službe Matrix a umožní vám v budúcnosti obnoviť heslo.";
+"login_display_name_placeholder" = "Zobrazované meno (napr. Fero Novák)";
+"login_user_id_placeholder" = "Matrix ID (napr. @fero:matrix.org alebo fero)";
+"login_identity_server_info" = "Matrix poskytuje servery totožnosti na sledovanie, ktoré e-maily atď. patria k jednotlivým Matrix ID. V súčasnosti existuje iba stránka https://matrix.org.";
+"login_home_server_info" = "Váš domovský server ukladá všetky vaše konverzácie a údaje o účte";
+"ssl_fingerprint_hash" = "Odtlačok (%s):";
+"call_more_actions_dialpad" = "Číselník";
+"call_ended" = "Hovor ukončený";
+
+// gcm section 
+"settings_config_home_server" = "Domovský server: %@";
+"notification_settings_custom_sound" = "Vlastný zvuk";
+"notification_settings_always_notify" = "Vždy oznamovať";
+"notification_settings_never_notify" = "Nikdy neoznamovať";
+
+// members list Screen 
+
+// accounts list Screen 
+
+// image size selection 
+
+// invitation members list Screen 
+
+// room creation dialog Screen 
+
+// room info dialog Screen
+
+// room details dialog screen
+"room_details_title" = "Podrobnosti o miestnosti";
+"num_members_other" = "%@ používatelia";
+"num_members_one" = "%@ používateľ";
+"create_account" = "Vytvoriť účet";
+"create_room" = "Vytvoriť miestnosť";
+"notice_room_leave_by_you" = "Odišli ste";
+"notice_room_join_by_you" = "Vstúpili ste";
+"notice_room_leave" = "%@ odišiel/a";
+"notice_room_join" = "%@ sa pripojil/a";
+"language_picker_default_language" = "Predvolené (%@)";
+"user_id_placeholder" = "napr.: @fero:domovskyserver";
+"power_level" = "Úroveň právomoci";
+
+// Others
+"user_id_title" = "ID používateľa:";
+"e2e_passphrase_create" = "Vytvoriť heslo";
+"e2e_passphrase_confirm" = "Potvrďte heslo";
+"e2e_passphrase_enter" = "Zadajte heslo";
+
+// Search
+"search_no_results" = "Žiadne výsledky";
+"contact_local_contacts" = "Lokálne kontakty";
+
+// Contacts
+"contact_mx_users" = "Používatelia Matrix";
+"attachment_multiselection_original" = "Aktuálna veľkosť";
+"login_optional_field" = "voliteľné";
+"ssl_remain_offline" = "Ignorovať";
+"ssl_logout_account" = "Odhlásiť sa";
+"call_ringing" = "Vyzváňanie…";
+
+// Settings keys 
+
+// call string
+"call_connecting" = "Pripájanie…";
+"notification_settings_sender_hint" = "@pouzivatel:domena.sk";
+
+// Settings screen 
+"settings_title_config" = "Nastavenie";
+"unban" = "Zrušiť zákaz";
+"ban" = "Zakázať";
+"kick" = "Vylúčiť";
+"invite" = "Pozvať";
+"membership_ban" = "Vylúčený";
+"membership_invite" = "Pozvaní";
+"login" = "Prihlásiť sa";
+
+// actions 
+"action_logout" = "Odhlásiť sa";
+"rename" = "Premenovať";
+"view" = "Zobraziť";
+"delete" = "Vymazať";
+"share" = "Zdieľať";
+"redact" = "Odstrániť";
+"resend" = "Odoslať znovu";
+"copy_button_name" = "Kopírovať";
+"send" = "Odoslať";
+"leave" = "Opustiť";
+"save" = "Uložiť";
+"cancel" = "Zrušiť";
+"private" = "Súkromné";
+"public" = "Verejné";
+"default" = "predvolené";
+"error" = "Chyba";
+"unsent" = "Neodoslané";
+"offline" = "nedostupný";
+"e2e_export" = "Exportovať";
+"e2e_import" = "Importovať";
+"format_time_d" = "d";
+"format_time_h" = "h";
+"format_time_m" = "m";
+
+// Time
+"format_time_s" = "s";
+"group_section" = "Skupiny";
+
+// Groups
+"group_invite_section" = "Pozvánky";
+"attachment_e2e_keys_import" = "Importovať...";
+"room_creation_participants_title" = "Účastníci:";
+"room_event_encryption_verify_ok" = "Overiť";
+"room_event_encryption_info_unverify" = "Zrušiť overenie";
+"room_event_encryption_info_verify" = "Overiť...";
+"room_event_encryption_info_device_blocked" = "Na čiernej listine";
+"room_event_encryption_info_device_verified" = "Overené";
+"room_event_encryption_info_device_verification" = "Overenie\n";
+"room_event_encryption_info_device_id" = "ID\n";
+"room_event_encryption_info_event_none" = "žiadne";
+"room_event_encryption_info_event_unencrypted" = "nezašifrované";
+"room_event_encryption_info_event_algorithm" = "Algoritmus\n";
+"device_details_delete_prompt_title" = "Overenie";
+"device_details_identifier" = "ID\n";
+
+// Settings
+"settings" = "Nastavenia";
+"notice_sticker" = "nálepka";
+"unignore" = "Prestať ignorovať";
+"ignore" = "Ignorovať";
+"mention" = "Zmieniť sa";
+"submit" = "Odoslať";
+"retry" = "Skúsiť znovu";
+"continue" = "Pokračovať";
+"close" = "Zavrieť";
+"back" = "Späť";
+"abort" = "Prerušiť";
+"yes" = "Áno";
+
+// Action
+"no" = "Nie";
+"login_desktop_device" = "Desktop";
+"login_tablet_device" = "Tablet";
+"login_mobile_device" = "Mobil";
+"login_leave_fallback" = "Zrušiť";
+"login_home_server_title" = "URL domovského servera:";
+"login_email_placeholder" = "Emailová adresa";
+"login_password_placeholder" = "Heslo";
+"login_identity_server_title" = "URL adresa servera totožností:";
+"login_server_url_placeholder" = "URL (napr. https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "Vytvoriť účet:";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "Matrix";
+"notification_settings_select_room" = "Vybrať miestnosť";
+"notification_settings_enable_notifications_warning" = "Všetky oznámenia sú v súčasnosti vypnuté pre všetky zariadenia.";
+"notification_settings_enable_notifications" = "Povoliť oznámenia";
+
+// Notification settings screen 
+"notification_settings_disable_all" = "Zakázať všetky oznámenia";
+"settings_title_notifications" = "Oznámenia";
+"notification_settings_room_rule_title" = "Miestnosť: '%@'";
