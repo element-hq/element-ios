@@ -401,6 +401,11 @@ class NotificationService: UNNotificationServiceExtension {
                                 break
                             }
                             
+                            if event.location != nil {
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "LOCATION_FROM_USER", arguments: [eventSenderName])
+                                break
+                            }
+                            
                             switch msgType {
                             case kMXMessageTypeEmote:
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "ACTION_FROM_USER", arguments: [eventSenderName, messageContent as Any])
