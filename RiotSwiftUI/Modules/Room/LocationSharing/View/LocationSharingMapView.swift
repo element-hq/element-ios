@@ -26,6 +26,8 @@ struct LocationSharingMapView: UIViewRepresentable {
     
     let tileServerMapURL: URL
     let avatarData: AvatarInputProtocol
+    let location: CLLocationCoordinate2D?
+    
     let errorSubject: PassthroughSubject<LocationSharingViewError, Never>
     @Binding var userLocation: CLLocationCoordinate2D?
         
@@ -35,8 +37,17 @@ struct LocationSharingMapView: UIViewRepresentable {
         
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
-        mapView.showsUserLocation = true
-        mapView.userTrackingMode = .follow
+        
+        if let location = location {
+            mapView.setCenter(location, zoomLevel: Constants.mapZoomLevel, animated: false)
+            
+            let pointAnnotation = MGLPointAnnotation()
+            pointAnnotation.coordinate = location
+            mapView.addAnnotation(pointAnnotation)
+        } else {
+            mapView.showsUserLocation = true
+            mapView.userTrackingMode = .follow
+        }
         
         return mapView
     }
@@ -70,10 +81,6 @@ class LocationSharingMapViewCoordinator: NSObject, MGLMapViewDelegate {
     // MARK: - MGLMapViewDelegate
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        guard let _ = annotation as? MGLUserLocation else {
-            return nil
-        }
-        
         return UserLocationAnnotatonView(avatarData: avatarData)
     }
     

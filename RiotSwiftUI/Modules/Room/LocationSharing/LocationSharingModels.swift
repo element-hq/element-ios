@@ -48,8 +48,17 @@ enum LocationSharingViewModelResult {
 struct LocationSharingViewState: BindableState {
     let tileServerMapURL: URL
     let avatarData: AvatarInputProtocol
-    var shareButtonEnabled: Bool = true
+    let location: CLLocationCoordinate2D?
+    
     var showLoadingIndicator: Bool = false
+    
+    var shareButtonVisible: Bool {
+        (location == nil)
+    }
+    
+    var shareButtonEnabled: Bool {
+        !showLoadingIndicator
+    }
 
     let errorSubject = PassthroughSubject<LocationSharingViewError, Never>()
     

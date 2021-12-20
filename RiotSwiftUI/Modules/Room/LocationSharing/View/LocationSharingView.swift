@@ -34,6 +34,7 @@ struct LocationSharingView: View {
         NavigationView {
             LocationSharingMapView(tileServerMapURL: context.viewState.tileServerMapURL,
                                    avatarData: context.viewState.avatarData,
+                                   location: context.viewState.location,
                                    errorSubject: context.viewState.errorSubject,
                                    userLocation: $context.userLocation)
                 .toolbar {
@@ -48,10 +49,12 @@ struct LocationSharingView: View {
                             .foregroundColor(theme.colors.primaryContent)
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(VectorL10n.locationSharingShareAction, action: {
-                            context.send(viewAction: .share)
-                        })
-                        .disabled(!context.viewState.shareButtonEnabled)
+                        if context.viewState.shareButtonVisible {
+                            Button(VectorL10n.locationSharingShareAction, action: {
+                                context.send(viewAction: .share)
+                            })
+                            .disabled(!context.viewState.shareButtonEnabled)
+                        }
                     }
                 }
                 .navigationBarTitleDisplayMode(.inline)

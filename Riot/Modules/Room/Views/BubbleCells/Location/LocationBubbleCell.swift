@@ -27,30 +27,19 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,
               event.eventType == __MXEventType.roomMessage,
-              event.hasLocation(),
-              let content = event.content[kMXMessageContentKeyExtensibleLocation] as? [String: String],
-              let geoURI = content[kMXMessageContentKeyExtensibleLocationURI]
+              let locationContent = event.location
         else {
             return
         }
         
-        let locationString = geoURI.components(separatedBy: ":").last?.components(separatedBy: ";").first
+        locationView.locationDescription = locationContent.locationDescription
         
-        guard let locationComponents = locationString?.components(separatedBy: ","),
-              let latitude = locationComponents.first?.double,
-              let longitude = locationComponents.last?.double
-        else {
-            return
-        }
-        
-        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        
-        locationView.locationDescription = content[kMXMessageContentKeyExtensibleLocationDescription]
+        let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
         
         locationView.displayLocation(location,
                                      userIdentifier: bubbleData.senderId,
                                      userDisplayName: bubbleData.senderDisplayName,
-                                     userAvatarURL: bubbleData.senderAvatarUrl,
+                                     userAvatarURLString: bubbleData.senderAvatarUrl,
                                      mediaManager: bubbleData.mxSession.mediaManager)
     }
     

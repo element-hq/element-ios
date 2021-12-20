@@ -57,6 +57,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
         mapView.delegate = self
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
+        mapView.isUserInteractionEnabled = false
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.addConstraint(mapView.heightAnchor.constraint(equalToConstant: Constants.mapHeight))
@@ -76,14 +77,14 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
     public func displayLocation(_ location: CLLocationCoordinate2D,
                               userIdentifier: String,
                               userDisplayName: String,
-                              userAvatarURL: String,
+                              userAvatarURLString: String?,
                               mediaManager: MXMediaManager) {
 
         annotationView = LocationUserMarkerView.loadFromNib()
         
         annotationView?.setAvatarData(AvatarViewData(matrixItemId: userIdentifier,
                                                      displayName: userDisplayName,
-                                                     avatarUrl: userAvatarURL,
+                                                     avatarUrl: userAvatarURLString,
                                                      mediaManager: mediaManager,
                                                      fallbackImage: .matrixItem(userIdentifier, userDisplayName)))
         

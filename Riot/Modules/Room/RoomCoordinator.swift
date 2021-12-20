@@ -269,23 +269,11 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
-        guard let navigationRouter = self.navigationRouter, let mediaManager = mxSession?.mediaManager, let user = mxSession?.myUser else {
-            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
-            return
-        }
-        
-        let parameters = LocationSharingCoordinatorParameters(navigationRouter: navigationRouter,
-                                                              roomDataSource: roomViewController.roomDataSource,
-                                                              mediaManager: mediaManager,
-                                                              user: user)
-        
-        locationSharingCoordinator = LocationSharingCoordinator(parameters: parameters)
-        
-        locationSharingCoordinator?.start()
+        startLocationCoordinatorWithEvent()
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        startLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
@@ -302,5 +290,46 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         }
         
         PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+    }
+    
+    // MARK: - Private
+    
+    private func startLocationCoordinatorWithEvent(_ event: MXEvent? = nil, bubbleData: MXKRoomBubbleCellDataStoring? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        guard let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession?.mediaManager,
+              let user = mxSession?.myUser else {
+            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
+            return
+        }
+        
+        var avatarData: AvatarInputProtocol
+        if event != nil, let bubbleData = bubbleData {
+            avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
+                                     matrixItemId: bubbleData.senderId,
+                                     displayName: bubbleData.senderDisplayName)
+        } else {
+            avatarData = AvatarInput(mxContentUri: user.avatarUrl,
+                                     matrixItemId: user.userId,
+                                     displayName: user.displayname)
+        }
+        
+        var location: CLLocationCoordinate2D?
+        if let locationContent = event?.location {
+            location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+        }
+        
+        let parameters = LocationSharingCoordinatorParameters(navigationRouter: navigationRouter,
+                                                              roomDataSource: roomViewController.roomDataSource,
+                                                              mediaManager: mediaManager,
+                                                              avatarData: avatarData,
+                                                              location: location)
+        
+        locationSharingCoordinator = LocationSharingCoordinator(parameters: parameters)
+        
+        locationSharingCoordinator?.start()
     }
 }
