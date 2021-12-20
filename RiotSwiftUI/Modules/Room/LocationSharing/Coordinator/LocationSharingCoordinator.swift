@@ -23,7 +23,8 @@ struct LocationSharingCoordinatorParameters {
     let navigationRouter: NavigationRouterType
     let roomDataSource: MXKRoomDataSource
     let mediaManager: MXMediaManager
-    let user: MXUser
+    let avatarData: AvatarInputProtocol
+    let location: CLLocationCoordinate2D?
 }
 
 final class LocationSharingCoordinator: Coordinator {
@@ -51,12 +52,10 @@ final class LocationSharingCoordinator: Coordinator {
     @available(iOS 14.0, *)
     init(parameters: LocationSharingCoordinatorParameters) {
         self.parameters = parameters
-
-        let avatarData = AvatarInput(mxContentUri: parameters.user.avatarUrl,
-                                     matrixItemId: parameters.user.userId,
-                                     displayName: parameters.user.displayname)
         
-        let viewModel = LocationSharingViewModel(tileServerMapURL: BuildSettings.tileServerMapURL, avatarData: avatarData)
+        let viewModel = LocationSharingViewModel(tileServerMapURL: BuildSettings.tileServerMapURL,
+                                                 avatarData: parameters.avatarData,
+                                                 location: parameters.location)
         let view = LocationSharingView(context: viewModel.context)
             .addDependency(AvatarService.instantiate(mediaManager: parameters.mediaManager))
         

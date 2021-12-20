@@ -2960,7 +2960,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     }
                     else
                     {
-                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+                        if (tappedEvent.location) {
+                            [_delegate roomViewController:self didRequestLocationPresentationForEvent:tappedEvent bubbleData:bubbleData];
+                        } else {
+                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+                        }
                     }
                 }
             }
@@ -3279,7 +3283,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         
         if (selectedEvent.sentState == MXEventSentStateSent &&
             selectedEvent.eventType != MXEventTypePollStart &&
-            !selectedEvent.hasLocation)
+            !selectedEvent.location)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                             style:UIAlertActionStyleDefault

@@ -179,7 +179,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             }
             case MXEventTypeRoomMessage:
             {
-                if (event.hasLocation) {
+                if (event.location) {
                     self.tag = RoomBubbleCellDataTagLocation;
                     self.collapsable = NO;
                     self.collapsed = NO;
@@ -874,7 +874,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         {
             case MXEventTypeRoomMessage:
             {
-                if (event.hasLocation) {
+                if (event.location) {
                     shouldAddEvent = NO;
                     break;
                 }

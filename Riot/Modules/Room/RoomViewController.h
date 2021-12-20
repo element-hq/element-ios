@@ -190,6 +190,17 @@ handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
  */
 - (void)roomViewControllerDidRequestLocationSharingFormPresentation:(RoomViewController *)roomViewController;
 
+/**
+ Ask the coordinator to invoke the location sharing form coordinator.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param event the event containing location information
+ @param bubbleData the bubble data containing sender details
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController
+didRequestLocationPresentationForEvent:(MXEvent *)event
+                bubbleData:(id<MXKRoomBubbleCellDataStoring>)bubbleData;
+
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
 canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
 

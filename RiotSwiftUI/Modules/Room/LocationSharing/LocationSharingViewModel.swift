@@ -30,18 +30,13 @@ class LocationSharingViewModel: LocationSharingViewModelType {
     
     // MARK: Public
     
-    let tileServerMapURL: URL
-    let avatarData: AvatarInputProtocol
-    
     var completion: ((LocationSharingViewModelResult) -> Void)?
     
     // MARK: - Setup
     
-    init(tileServerMapURL: URL, avatarData: AvatarInputProtocol) {
-        self.tileServerMapURL = tileServerMapURL
-        self.avatarData = avatarData
-        
-        super.init(initialViewState: LocationSharingViewState(tileServerMapURL: tileServerMapURL, avatarData: avatarData))
+    init(tileServerMapURL: URL, avatarData: AvatarInputProtocol, location: CLLocationCoordinate2D? = nil) {
+        let viewState = LocationSharingViewState(tileServerMapURL: tileServerMapURL, avatarData: avatarData, location: location)
+        super.init(initialViewState: viewState)
         
         state.errorSubject.sink { [weak self] error in
             guard let self = self else { return }
@@ -95,10 +90,8 @@ class LocationSharingViewModel: LocationSharingViewModelType {
             
         case .startLoading:
             state.showLoadingIndicator = true
-            state.shareButtonEnabled = false
         case .stopLoading(let error):
             state.showLoadingIndicator = false
-            state.shareButtonEnabled = true
             
             if error != nil {
                 state.bindings.alertInfo = ErrorAlertInfo(id: .locationSharingError,
