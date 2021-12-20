@@ -1686,8 +1686,19 @@
 
 // Sessions list
 
-"user_verification_sessions_list_user_trust_level_trusted_title" = "Довіряєте";
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Довірений";
 "user_verification_sessions_list_information" = "Листування з цим користувачем у цій кімнаті наскрізно зашифроване й непрочитне для сторонніх.";
 "user_verification_session_details_information_untrusted_current_user" = "Звірте цей сеанс, щоб позначити його довіреним і надати йому доступ до зашифрованих повідомлень:";
 "secrets_setup_recovery_key_storage_alert_message" = "✓ Надрукуйте його й зберігайте в надійному місці\n✓ Збережіть його на USB-ключ або носій резервного копіювання\n✓ Скопіюйте його до вашого особистого хмарного сховища";
 "call_transfer_error_message" = "Не вдалося переадресувати виклик";
+"favourites_empty_view_information" = "Ви можете додати до улюблених кількома способами, найшвидший — це просто натиснути й утримувати. Торкніться зірки, і вони автоматично зʼявляться тут для безпечного зберігання.";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Улюблені кімнати й люди";
+"group_participants_filter_members" = "Фільтр учасників спільноти";
+"group_participants_invite_prompt_msg" = "Ви впевнені, що хочете запросити %@ до цієї групи?";
+"room_details_fail_to_update_room_direct" = "Не вдалося оновити прямий прапор цієї кімнати";
+"room_details_flair_section" = "Показувати значки для спільнот";
+"settings_flair" = "Показувати значок, де це дозволено";
+"room_warning_about_encryption" = "Наскрізне шифрування ще на етапі бета-тестування й може бути ненадійним.\n\nПоки що не варто довіряти йому захист даних.\n\nПристрої ще не зможуть розшифрувати історію до того, як з них приєдналися до кімнати.\n\nЗашифровані повідомлення не буде показано у клієнтах, які ще не використовують шифрування.";
