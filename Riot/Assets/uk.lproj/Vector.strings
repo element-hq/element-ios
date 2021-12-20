@@ -1263,7 +1263,7 @@
 
 // Scanning
 "key_verification_scan_confirmation_scanning_title" = "Майже все! Чекаємо на підтвердження…";
-"key_verification_scan_confirmation_scanning_user_waiting_other" = "Очікування на %s…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Очікування на %@…";
 "key_verification_scan_confirmation_scanning_device_waiting_other" = "Очікування іншого пристрою…";
 
 // Scanned
@@ -1572,3 +1572,122 @@
 
 // Widget
 "widget_no_integrations_server_configured" = "Сервер інтеграцій не налаштовано";
+"bug_report_description" = "Опишіть ваду. Що ви робили? Виконання якої дії очікували? Що сталося натомість?";
+"bug_crash_report_title" = "Звіт про збій";
+"bug_crash_report_description" = "Будь ласка, опишіть свої дії перед збоєм:";
+"bug_report_logs_description" = "Задля діагностики, журнали клієнта будуть надіслані разом зі звітом про ваду. Якщо бажаєте надіслати лише текст угорі, зніміть галочку:";
+"bug_report_send_logs" = "Надіслати журнали";
+"group_participants_invite_another_user" = "Знайти чи запросити за ID користувача чи іменем";
+"group_participants_invite_malformed_id" = "Хибний ID. Треба Matrix ID вигляду «@localpart:domain»";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Резервне копіювання ключів";
+"key_backup_setup_skip_alert_message" = "Ви втратите захищені повідомлення, якщо вийдете чи загубите пристрій.";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Ніколи не втрачайте зашифровані повідомлення";
+"key_backup_setup_intro_info" = "Повідомлення в зашифрованих кімнатах захищені наскрізним шифруванням. Тільки ви та одержувачі маєте ключі для читання цих повідомлень.\n\nСтворіть захищену резервну копію ключів, щоб їх не втратити.";
+"key_backup_setup_passphrase_info" = "Ми збережемо зашифровану копію ваших ключів на нашому сервері. Захистіть свою резервну копію парольною фразою.\n\nДля максимальної безпеки фраза повинна відрізнятися від пароля вашого облікового запису.";
+"key_backup_setup_passphrase_set_passphrase_action" = "Встановити фразу";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Захищені повідомлення";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "Використайте фразу безпеки, щоб розблокувати історію зашифрованих повідомлень";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Використайте ключ безпеки, щоб розблокувати історію зашифрованих повідомлень";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Забули свою фразу безпеки? Можете ";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "використати ключ безпеки";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Введіть ключ безпеки";
+"key_backup_recover_from_recovery_key_recover_action" = "Розблокувати історію";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Втратили ключ безпеки? Встановіть новий у налаштуваннях.";
+
+// Success
+
+"key_backup_recover_success_info" = "Резервну копію відновлено!";
+"key_backup_recover_done_action" = "Готово";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Налаштувати резервне копіювання ключів";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "Захистіть резервну копію фразою безпеки";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Або захистіть резервну копію ключем безпеки, який зберігатимете в надійному місці.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Додатково) Налаштувати ключ безпеки";
+
+// Success
+
+"key_backup_setup_success_title" = "Успіх!";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Триває резервне копіювання ваших ключів.\n\nКлюч безпеки підстраховує вас: можете використати його для відновлення доступу до ваших зашифрованих повідомлень, якщо забудете парольну фразу.\n\nТримайте відновлювальний ключ у якомусь дуже надійному місці, наприклад у менеджері паролів (або сейфі).";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Зберегти ключ безпеки";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Триває резервне копіювання ваших ключів.\n\nСкопіюйте цей ключ безпеки й надійно його зберігайте.";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Ключ безпеки";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "Зробити копію";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "Вже маю копію";
+"key_backup_recover_invalid_passphrase_title" = "Хибна фраза безпеки";
+"key_backup_recover_invalid_passphrase" = "Не вдається розшифрувати резервну копію цією фразою: переконайтеся, що вводите правильну фразу безпеки.";
+"key_backup_recover_invalid_recovery_key_title" = "Хибний ключ безпеки";
+"key_backup_recover_invalid_recovery_key" = "Не вдалося розшифрувати резервну копію цим ключем: переконайтеся, що вводите правильний ключ безпеки.";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Точно вийти?";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Вийти";
+"sign_out_non_existing_key_backup_alert_title" = "Якщо вийти зараз, ви втратите свої зашифровані повідомлення";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Мені не потрібні мої зашифровані повідомлення";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Ви втратите доступ до ваших зашифрованих повідомлень";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Ви втратите доступ до своїх зашифрованих повідомлень, якщо не зробите резервну копію ключів перед виходом з системи.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Вийти";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Резервна копія";
+"sign_out_key_backup_in_progress_alert_title" = "Триває резервне копіювання ключів. Якщо вийти зараз, ви втратите доступ до своїх зашифрованих повідомлень.";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Мені не потрібні мої зашифровані повідомлення";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Почекаю";
+"key_backup_setup_intro_manual_export_info" = "(Розширені)";
+"key_backup_setup_intro_manual_export_action" = "Експорт ключів вручну";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Налаштувати цьому пристрою резервне копіювання ключів";
+"device_verification_cancelled" = "Інша сторона скасувала звірку.";
+"device_verification_cancelled_by_me" = "Звірку скасовано. Причина: %@";
+"device_verification_error_cannot_load_device" = "Не вдалося отримати дані сеансу.";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Надійшов запит на звірку";
+"device_verification_incoming_description_1" = "Звірте цей сеанс, щоб позначити його довіреним. Довірені сеанси партнерів дають змогу впевненіше користуватися наскрізним шифруванням повідомлень.";
+"device_verification_incoming_description_2" = "Звірка цього сеансу позначить його довіреним для вас, а ваш довіреним для партнера.";
+
+// MARK: Start
+"device_verification_start_title" = "Звірити, порівнявши короткий текстовий рядок";
+"device_verification_start_wait_partner" = "Очікування підтвердження партнером…";
+"device_verification_start_use_legacy" = "Нічого не з'являється? Ще не всі клієнти підтримують інтерактивну звірку. Звірте по-старому.";
+"device_verification_start_verify_button" = "Почати звірку";
+"device_verification_start_use_legacy_action" = "Звірити по-старому";
+"key_verification_tile_request_status_expired" = "Термін сплив";
+"key_verification_user_title" = "Звірте їх";
+"user_verification_start_information_part2" = " порівнявши одноразовий код на обох ваших пристроях.";
+"user_verification_start_information_part1" = "Звірте безпечніше, ";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Почати звірку";
+"user_verification_start_waiting_partner" = "Очікування на %@…";
+"user_verification_start_additional_information" = "Для безпеки зробіть це особисто або скористайтеся іншим способом зв'язку.";
+
+// Sessions list
+
+"user_verification_sessions_list_user_trust_level_trusted_title" = "Довіряєте";
+"user_verification_sessions_list_information" = "Листування з цим користувачем у цій кімнаті наскрізно зашифроване й непрочитне для сторонніх.";
+"user_verification_session_details_information_untrusted_current_user" = "Звірте цей сеанс, щоб позначити його довіреним і надати йому доступ до зашифрованих повідомлень:";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Надрукуйте його й зберігайте в надійному місці\n✓ Збережіть його на USB-ключ або носій резервного копіювання\n✓ Скопіюйте його до вашого особистого хмарного сховища";
+"call_transfer_error_message" = "Не вдалося переадресувати виклик";
