@@ -2215,6 +2215,14 @@ public class VectorL10n: NSObject {
   public static var locationSharingLocatingUserErrorTitle: String { 
     return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title") 
   }
+  /// Open in Apple Maps
+  public static var locationSharingOpenAppleMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_apple_maps") 
+  }
+  /// Open in Google Maps
+  public static var locationSharingOpenGoogleMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
+  }
   /// Share
   public static var locationSharingShareAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_share_action") 

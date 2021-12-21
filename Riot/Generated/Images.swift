@@ -147,6 +147,7 @@ internal enum Asset {
     internal static let voiceCallHangonIcon = ImageAsset(name: "voice_call_hangon_icon")
     internal static let voiceCallHangupIcon = ImageAsset(name: "voice_call_hangup_icon")
     internal static let locationMarkerIcon = ImageAsset(name: "location_marker_icon")
+    internal static let locationShareIcon = ImageAsset(name: "location_share_icon")
     internal static let locationUserMarker = ImageAsset(name: "location_user_marker")
     internal static let pollCheckboxDefault = ImageAsset(name: "poll_checkbox_default")
     internal static let pollCheckboxSelected = ImageAsset(name: "poll_checkbox_selected")
