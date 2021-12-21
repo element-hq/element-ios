@@ -79,6 +79,11 @@ final class LocationSharingCoordinator: Coordinator {
             case .cancel:
                 self.parameters.navigationRouter.dismissModule(animated: true, completion: nil)
             case .share(let latitude, let longitude):
+                if let location = self.parameters.location {
+                    self.showActivityControllerForLocation(location)
+                    return
+                }
+                
                 self.locationSharingViewModel.dispatch(action: .startLoading)
                 
                 self.parameters.roomDataSource.sendLocation(withLatitude: latitude,
@@ -96,6 +101,88 @@ final class LocationSharingCoordinator: Coordinator {
                 }
             }
             
+        }
+    }
+    
+    func showActivityControllerForLocation(_ location: CLLocationCoordinate2D) {
+        let vc = UIActivityViewController(activityItems: activityItems(location: location),
+                                          applicationActivities: [ShareToMapsAppActivity(type: .apple, location: location),
+                                                                  ShareToMapsAppActivity(type: .google, location: location)])
+        locationSharingHostingController.present(vc, animated: true)
+    }
+    
+    func activityItems(location: CLLocationCoordinate2D) -> [Any] {
+        var items = [Any]()
+        
+        // Make the share sheet show a pretty location thumbnail
+        if let url = NSURL(string: "https://maps.apple.com?ll=\(location.latitude),\(location.longitude)") {
+            items.append(url)
+        }
+        
+        return items
+    }
+}
+
+extension UIActivity.ActivityType {
+    static let shareToMapsApp = UIActivity.ActivityType("Element.ShareToMapsApp")
+}
+
+class ShareToMapsAppActivity: UIActivity {
+    
+    enum MapsAppType {
+        case apple
+        case google
+    }
+    
+    let type: MapsAppType
+    let location: CLLocationCoordinate2D
+    
+    private override init() {
+        fatalError()
+    }
+    
+    init(type: MapsAppType, location: CLLocationCoordinate2D) {
+        self.type = type
+        self.location = location
+    }
+    
+    override var activityTitle: String? {
+        switch type {
+        case .apple:
+            return VectorL10n.locationSharingOpenAppleMaps
+        case .google:
+            return VectorL10n.locationSharingOpenGoogleMaps
+        }
+    }
+    
+    var activityCategory: UIActivity.Category {
+        return .action
+    }
+    
+    override var activityType: UIActivity.ActivityType {
+        return .shareToMapsApp
+    }
+    
+    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+        return true
+    }
+    
+    override func prepare(withActivityItems activityItems: [Any]) {
+        var url: URL?
+        switch type {
+        case .apple:
+            url = URL(string: "https://maps.apple.com?ll=\(location.latitude),\(location.longitude)&q=Pin")
+        case .google:
+            url = URL(string: "https://www.google.com/maps/search/?api=1&query=\(location.latitude),\(location.longitude)")
+        }
+        
+        guard let url = url else {
+            activityDidFinish(false)
+            return
+        }
+        
+        UIApplication.shared.open(url, options: [:]) { [weak self] result in
+            self?.activityDidFinish(result)
         }
     }
 }

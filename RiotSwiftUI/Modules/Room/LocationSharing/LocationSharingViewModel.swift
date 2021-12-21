@@ -16,6 +16,7 @@
 
 import SwiftUI
 import Combine
+import CoreLocation
 
 @available(iOS 14, *)
 typealias LocationSharingViewModelType = StateStoreViewModel< LocationSharingViewState,
@@ -51,12 +52,17 @@ class LocationSharingViewModel: LocationSharingViewModelType {
         case .cancel:
             completion?(.cancel)
         case .share:
+            if let location = state.location {
+                completion?(.share(latitude: location.latitude, longitude: location.longitude))
+                return
+            }
+            
             guard let location = state.bindings.userLocation else {
                 dispatch(action: .error(.failedLocatingUser, completion))
                 return
             }
             
-            completion?(.share(location.latitude, location.longitude))
+            completion?(.share(latitude: location.latitude, longitude: location.longitude))
         }
     }
     

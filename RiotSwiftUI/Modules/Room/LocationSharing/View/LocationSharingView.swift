@@ -49,7 +49,14 @@ struct LocationSharingView: View {
                             .foregroundColor(theme.colors.primaryContent)
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        if context.viewState.shareButtonVisible {
+                        if context.viewState.location != nil {
+                            Button {
+                                context.send(viewAction: .share)
+                            } label: {
+                                Image(uiImage: Asset.Images.locationShareIcon.image)
+                            }
+                            .disabled(!context.viewState.shareButtonEnabled)
+                        } else {
                             Button(VectorL10n.locationSharingShareAction, action: {
                                 context.send(viewAction: .share)
                             })
@@ -62,16 +69,16 @@ struct LocationSharingView: View {
                 .alert(item: $context.alertInfo) { info in
                     if let secondaryButton = info.secondaryButton {
                         return Alert(title: Text(info.title),
-                                     primaryButton: .default(Text(info.primaryButton.0)) {
-                                        info.primaryButton.1?()
+                                     primaryButton: .default(Text(info.primaryButton.title)) {
+                                        info.primaryButton.action?()
                                      },
-                                     secondaryButton: .default(Text(secondaryButton.0)) {
-                                        secondaryButton.1?()
+                                     secondaryButton: .default(Text(secondaryButton.title)) {
+                                        secondaryButton.action?()
                                      })
                     } else {
                         return Alert(title: Text(info.title),
-                                     dismissButton: .default(Text(info.primaryButton.0)) {
-                                        info.primaryButton.1?()
+                                     dismissButton: .default(Text(info.primaryButton.title)) {
+                                        info.primaryButton.action?()
                                      })
                     }
                 }

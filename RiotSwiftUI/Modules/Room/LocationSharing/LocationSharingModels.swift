@@ -41,7 +41,7 @@ typealias LocationSharingViewModelCallback = ((LocationSharingViewModelResult) -
 
 enum LocationSharingViewModelResult {
     case cancel
-    case share(Double, Double)
+    case share(latitude: Double, longitude: Double)
 }
 
 @available(iOS 14, *)
@@ -80,6 +80,6 @@ struct ErrorAlertInfo: Identifiable {
     
     let id: AlertType
     let title: String
-    let primaryButton: (String, (() -> Void)?)
-    let secondaryButton: (String, (() -> Void)?)?
+    let primaryButton: (title: String, action: (() -> Void)?)
+    let secondaryButton: (title: String, action: (() -> Void)?)?
 }
