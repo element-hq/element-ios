@@ -3419,6 +3419,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else // Add action for attachment
     {
+        if (self.roomDataSource.threadId && [selectedEvent.eventId isEqualToString:self.roomDataSource.threadId])
+        {
+            //  if in the thread and selected event is the root event
+            //  add "View in room" action
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                [self.delegate roomViewController:self
+                                   showRoomWithId:self.roomDataSource.roomId
+                                          eventId:selectedEvent.eventId];
+            }]];
+        }
+        
         // Forwarding for already sent attachments
         if (selectedEvent.sentState == MXEventSentStateSent && (attachment.type == MXKAttachmentTypeFile ||
                                                                 attachment.type == MXKAttachmentTypeImage ||
