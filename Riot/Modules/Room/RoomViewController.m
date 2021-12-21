@@ -3602,7 +3602,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
             
             [actionsMenu addAction:[UIAlertAction actionWithTitle:title
-                                                            style:UIAlertActionStyleDefault
+                                                            style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
@@ -3718,7 +3718,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (![selectedEvent.sender isEqualToString:self.mainSession.myUserId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReport]
-                                                            style:UIAlertActionStyleDefault
+                                                            style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
