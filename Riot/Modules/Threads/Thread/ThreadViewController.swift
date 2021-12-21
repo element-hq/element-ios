@@ -49,7 +49,7 @@ class ThreadViewController: RoomViewController {
         super.viewDidAppear(animated)
         
         guard let threadId = threadId else { return }
-        mainSession.threadingService.markThreadAsRead(threadId)
+        mainSession?.threadingService.markThreadAsRead(threadId)
     }
     
     override func setRoomTitleViewClass(_ roomTitleViewClass: AnyClass!) {
