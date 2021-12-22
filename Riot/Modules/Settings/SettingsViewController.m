@@ -381,10 +381,13 @@ TableViewSectionsDelegate>
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
     
-    Section *sectionLocationSharing = [Section sectionWithTag:SECTION_TAG_LOCATION_SHARING];
-    [sectionLocationSharing addRowWithTag:LOCATION_SHARING_ENABLED];
-    sectionLocationSharing.headerTitle = VectorL10n.locationSharingSettingsHeader.uppercaseString;
-    [tmpSections addObject:sectionLocationSharing];
+    if (BuildSettings.locationSharingEnabled)
+    {
+        Section *sectionLocationSharing = [Section sectionWithTag:SECTION_TAG_LOCATION_SHARING];
+        [sectionLocationSharing addRowWithTag:LOCATION_SHARING_ENABLED];
+        sectionLocationSharing.headerTitle = VectorL10n.locationSharingSettingsHeader.uppercaseString;
+        [tmpSections addObject:sectionLocationSharing];
+    }
     
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {

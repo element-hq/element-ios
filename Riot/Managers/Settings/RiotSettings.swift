@@ -188,7 +188,7 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenAllowPollsAction", defaultValue: false, storage: defaults)
     var roomScreenAllowPollsAction
     
-    @UserDefault(key: "roomScreenAllowLocationAction", defaultValue: true, storage: defaults)
+    @UserDefault(key: "roomScreenAllowLocationAction", defaultValue: false, storage: defaults)
     var roomScreenAllowLocationAction
         
     @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)

@@ -53,7 +53,7 @@ struct LocationSharingViewState: BindableState {
     var showLoadingIndicator: Bool = false
     
     var shareButtonVisible: Bool {
-        (location == nil)
+        return location == nil
     }
     
     var shareButtonEnabled: Bool {

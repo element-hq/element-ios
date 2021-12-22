@@ -369,4 +369,12 @@ final class BuildSettings: NSObject {
     // MARK: - Location Sharing
     
     static let tileServerMapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=" + RiotKeys().mapTilerAPIKey)!
+    
+    static var locationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return false
+    }
 }
