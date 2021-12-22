@@ -50,7 +50,8 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
         bubbleCellContentView?.showSenderInfo = true
         bubbleCellContentView?.showPaginationTitle = false
         
-        guard let contentView = bubbleCellContentView?.innerContentView else {
+        guard #available(iOS 14.0, *),
+              let contentView = bubbleCellContentView?.innerContentView else {
             return
         }
         

@@ -17,19 +17,28 @@
 import Foundation
 import SwiftUI
 import Keys
+import CoreLocation
 
 @available(iOS 14.0, *)
 enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
-    case standard
+    case shareUserLocation
+    case displayExistingLocation
     
     var screenType: Any.Type {
         MockLocationSharingScreenState.self
     }
     
     var screenView: ([Any], AnyView)  {
+        
+        var location: CLLocationCoordinate2D?
+        if self == .displayExistingLocation {
+            location = CLLocationCoordinate2D(latitude: 51.4932641, longitude: -0.257096)
+        }
+        
         let mapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=" + RiotKeys().mapTilerAPIKey)!
         let viewModel = LocationSharingViewModel(tileServerMapURL: mapURL,
-                                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Alice"))
+                                                 avatarData: AvatarInput(mxContentUri: "", matrixItemId: "", displayName: "Alice"),
+                                                 location: location)
         return ([viewModel],
                 AnyView(LocationSharingView(context: viewModel.context)
                             .addDependency(MockAvatarService.example)))

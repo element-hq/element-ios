@@ -24,13 +24,30 @@ class LocationSharingUITests: XCTestCase {
     
     override func setUp() {
         continueAfterFailure = false
-        
+                
         app = XCUIApplication()
         app.launch()
-        app.buttons[MockLocationSharingScreenState.screenStateKeys.first!].tap()
     }
     
-    func testInitialStateComponents() {
+    func testInitialUserLocation() {
+        goToScreenWithIdentifier(MockLocationSharingScreenState.shareUserLocation.title)
         
+        XCTAssertTrue(app.buttons["Cancel"].exists)
+        XCTAssertTrue(app.buttons["Share"].exists)
+        XCTAssertTrue(app.otherElements["Map"].exists)
+    }
+    
+    func testInitialExistingLocation() {
+        goToScreenWithIdentifier(MockLocationSharingScreenState.displayExistingLocation.title)
+        
+        XCTAssertTrue(app.buttons["Cancel"].exists)
+        XCTAssertTrue(app.buttons["location share icon"].exists)
+        XCTAssertTrue(app.otherElements["Map"].exists)
+    }
+    
+    // Need a delay when showing the map otherwise the simulator breaks
+    private func goToScreenWithIdentifier(_ identifier: String) {
+        app.goToScreenWithIdentifier(identifier)
+        sleep(2)
     }
 }
