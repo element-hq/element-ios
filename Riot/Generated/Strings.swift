@@ -2223,6 +2223,14 @@ public class VectorL10n: NSObject {
   public static var locationSharingOpenGoogleMaps: String { 
     return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
   }
+  /// Location sharing
+  public static var locationSharingSettingsHeader: String { 
+    return VectorL10n.tr("Vector", "location_sharing_settings_header") 
+  }
+  /// Enable location sharing
+  public static var locationSharingSettingsToggleTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_settings_toggle_title") 
+  }
   /// Share
   public static var locationSharingShareAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_share_action") 
