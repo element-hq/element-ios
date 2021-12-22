@@ -238,3 +238,6 @@
 "notification_settings_disable_all" = "Zakázať všetky oznámenia";
 "settings_title_notifications" = "Oznámenia";
 "notification_settings_room_rule_title" = "Miestnosť: '%@'";
+"auth_username_in_use" = "Používateľské meno sa už používa";
+"login_error_must_start_http" = "URL adresa musí začínať http[s]://";
+"auth_reset_password_error_not_found" = "Nenájdené";
