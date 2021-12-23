@@ -476,3 +476,5 @@
 "auth_invalid_user_name" = "Vigane kasutajanimi";
 "rename" = "Muuda nime";
 "room_displayname_all_other_members_left" = "%@ (lahkus(id))";
+"attachment_unsupported_preview_message" = "See failitüüp ei ole toetatud.";
+"attachment_unsupported_preview_title" = "Eelvaate kuvamine ei õnnestu";

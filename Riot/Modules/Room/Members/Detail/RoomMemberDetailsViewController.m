@@ -89,7 +89,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *roomMemberAvatarBadgeImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberNameLabel;
-@property (weak, nonatomic) IBOutlet UIView *roomMemberNameLabelMask;
+@property (weak, nonatomic) IBOutlet UIView *roomMemberNameContainerView;
+
+@property (weak, nonatomic) IBOutlet UILabel *roomMemberUserIdLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *roomMemberStatusLabel;
 
@@ -101,6 +103,8 @@
 @property(nonatomic) UserEncryptionTrustLevel encryptionTrustLevel;
 
 @property(nonatomic, strong) UserVerificationCoordinatorBridgePresenter *userVerificationCoordinatorBridgePresenter;
+
+@property(nonatomic) AnalyticsScreenTimer *screenTimer;
 
 @end
 
@@ -137,6 +141,8 @@
     
     // Keep visible the status bar by default.
     isStatusBarHidden = NO;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenUser];
 }
 
 - (void)viewDidLoad
@@ -148,17 +154,10 @@
     memberTitleView.delegate = self;
         
     // Define directly the navigation titleView with the custom title view instance. Do not use anymore a container.
-    self.navigationItem.titleView = memberTitleView;
-    
-    // Add tap gesture on member's name
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    [tap setNumberOfTouchesRequired:1];
-    [tap setNumberOfTapsRequired:1];
-    [tap setDelegate:self];
-    [self.roomMemberNameLabelMask addGestureRecognizer:tap];
-    self.roomMemberNameLabelMask.userInteractionEnabled = YES;
+    self.navigationItem.titleView = memberTitleView;    
     
     // Add tap to show the room member avatar in fullscreen
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tap setNumberOfTouchesRequired:1];
     [tap setNumberOfTapsRequired:1];
@@ -211,6 +210,7 @@
     
     self.memberHeaderView.backgroundColor = ThemeService.shared.theme.baseColor;
     self.roomMemberNameLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
+    self.roomMemberUserIdLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
 
     self.roomMemberStatusLabel.textColor = ThemeService.shared.theme.tintColor;
     self.roomMemberPowerLevelLabel.textColor = ThemeService.shared.theme.textPrimaryColor;
@@ -243,9 +243,6 @@
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomMemberDetails"];
-
     [self userInterfaceThemeDidChange];
 
     // Hide the bottom border of the navigation bar to display the expander header
@@ -266,6 +263,18 @@
     [self hideNavigationBarBorder:NO];
     
     self.bottomImageView.hidden = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
@@ -348,8 +357,12 @@
 - (void)updateMemberInfo
 {
     if (self.mxRoomMember)
-    {
-        self.roomMemberNameLabel.text = self.mxRoomMember.displayname ? self.mxRoomMember.displayname : self.mxRoomMember.userId;
+    {        
+        self.roomMemberNameContainerView.hidden = !self.mxRoomMember.displayname;
+        
+        self.roomMemberNameLabel.text = self.mxRoomMember.displayname; 
+        
+        self.roomMemberUserIdLabel.text = self.mxRoomMember.userId;    
         
         // Update member power level
         MXWeakify(self);
@@ -1257,20 +1270,7 @@
 {
     UIView *view = tapGestureRecognizer.view;
     
-    if (view == self.roomMemberNameLabelMask && self.mxRoomMember.displayname)
-    {
-        if ([self.roomMemberNameLabel.text isEqualToString:self.mxRoomMember.displayname])
-        {
-            // Display room member matrix id
-            self.roomMemberNameLabel.text = self.mxRoomMember.userId;
-        }
-        else
-        {
-            // Restore display name
-            self.roomMemberNameLabel.text = self.mxRoomMember.displayname;
-        }
-    }
-    else if (view == memberTitleView.memberAvatarMask || view == self.roomMemberAvatarMask)
+    if (view == memberTitleView.memberAvatarMask || view == self.roomMemberAvatarMask)
     {
         MXWeakify(self);
         

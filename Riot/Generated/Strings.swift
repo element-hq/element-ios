@@ -15,6 +15,10 @@ public class VectorL10n: NSObject {
   public static var accept: String { 
     return VectorL10n.tr("Vector", "accept") 
   }
+  /// button
+  public static var accessibilityButtonLabel: String { 
+    return VectorL10n.tr("Vector", "accessibility_button_label") 
+  }
   /// checkbox
   public static var accessibilityCheckboxLabel: String { 
     return VectorL10n.tr("Vector", "accessibility_checkbox_label") 
@@ -30,6 +34,58 @@ public class VectorL10n: NSObject {
   /// Active Call (%@)
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
+  }
+  /// Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static var analyticsPromptMessageNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_message_new_user") 
+  }
+  /// You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static var analyticsPromptMessageUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_message_upgrade") 
+  }
+  /// Not now
+  public static var analyticsPromptNotNow: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_not_now") 
+  }
+  /// We <b>don't</b> record or profile any account data
+  public static var analyticsPromptPoint1: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_1") 
+  }
+  /// We <b>don't</b> share information with third parties
+  public static var analyticsPromptPoint2: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_2") 
+  }
+  /// You can turn this off anytime in settings
+  public static var analyticsPromptPoint3: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_3") 
+  }
+  /// Stop sharing
+  public static var analyticsPromptStop: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_stop") 
+  }
+  /// here
+  public static var analyticsPromptTermsLinkNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_link_new_user") 
+  }
+  /// here
+  public static var analyticsPromptTermsLinkUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_link_upgrade") 
+  }
+  /// You can read all our terms %@.
+  public static func analyticsPromptTermsNewUser(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_new_user", p1)
+  }
+  /// Read all our terms %@. Is that OK?
+  public static func analyticsPromptTermsUpgrade(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_upgrade", p1)
+  }
+  /// Help improve %@
+  public static func analyticsPromptTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_title", p1)
+  }
+  /// Yes, that's fine
+  public static var analyticsPromptYes: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_yes") 
   }
   /// Please review and accept the policies of this homeserver:
   public static var authAcceptPolicies: String { 
@@ -1235,6 +1291,10 @@ public class VectorL10n: NSObject {
   public static var emojiPickerTitle: String { 
     return VectorL10n.tr("Vector", "emoji_picker_title") 
   }
+  /// Enable
+  public static var enable: String { 
+    return VectorL10n.tr("Vector", "enable") 
+  }
   /// Send an encrypted message…
   public static var encryptedRoomMessagePlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_placeholder") 
@@ -1438,10 +1498,6 @@ public class VectorL10n: NSObject {
   /// Review now
   public static var gdprConsentNotGivenAlertReviewNowAction: String { 
     return VectorL10n.tr("Vector", "gdpr_consent_not_given_alert_review_now_action") 
-  }
-  /// Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?
-  public static func googleAnalyticsUsePrompt(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "google_analytics_use_prompt", p1)
   }
   /// Home
   public static var groupDetailsHome: String { 
@@ -4235,6 +4291,10 @@ public class VectorL10n: NSObject {
   public static var settingsAdvanced: String { 
     return VectorL10n.tr("Vector", "settings_advanced") 
   }
+  /// Send crash and analytics data
+  public static var settingsAnalyticsAndCrashData: String { 
+    return VectorL10n.tr("Vector", "settings_analytics_and_crash_data") 
+  }
   /// Call invitations
   public static var settingsCallInvitations: String { 
     return VectorL10n.tr("Vector", "settings_call_invitations") 
@@ -4762,10 +4822,6 @@ public class VectorL10n: NSObject {
   /// SECURITY
   public static var settingsSecurity: String { 
     return VectorL10n.tr("Vector", "settings_security") 
-  }
-  /// Send anon crash & usage data
-  public static var settingsSendCrashReport: String { 
-    return VectorL10n.tr("Vector", "settings_send_crash_report") 
   }
   /// SENDING IMAGES AND VIDEOS
   public static var settingsSendingMedia: String { 
