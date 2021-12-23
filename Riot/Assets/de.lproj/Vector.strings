@@ -114,10 +114,10 @@
 "contacts_address_book_no_contact" = "Keine lokalen Kontakte";
 "contacts_address_book_permission_required" = "Berechtigungen benötigt um auf lokale Kontakte zuzugreifen";
 // Chat participants
-"room_participants_title" = "Teilnehmer";
+"room_participants_title" = "Teilnehmende";
 "room_participants_add_participant" = "Teilnehmer hinzufügen";
 "room_participants_one_participant" = "1 Teilnehmer";
-"room_participants_multi_participants" = "%d Teilnehmer";
+"room_participants_multi_participants" = "%d Teilnehmende";
 "room_participants_leave_prompt_title" = "Raum verlassen";
 "room_participants_leave_prompt_msg" = "Bist du sicher, dass du den Raum verlassen willst?";
 "room_participants_remove_prompt_title" = "Bestätigung";
@@ -140,7 +140,7 @@
 "room_participants_action_ban" = "Aus diesem Raum bannen";
 "room_participants_action_ignore" = "Alle Nachrichten von diesem Nutzer verbergen";
 "room_participants_action_unignore" = "Zeige alle Nachrichten von diesem Nutzer";
-"room_participants_action_set_moderator" = "Mache zu Moderator";
+"room_participants_action_set_moderator" = "Gib Moderationsrechte";
 "room_participants_action_set_admin" = "Mache zum Administrator";
 "room_participants_action_start_new_chat" = "Starte neuen Chat";
 "room_participants_action_start_video_call" = "Starte Video-Anruf";
@@ -547,8 +547,8 @@
 "room_resource_limit_exceeded_message_contact_2_link" = "kontaktiere deinen Dienst-Administrator";
 "room_resource_limit_exceeded_message_contact_3" = " um diesen Dienst weiter zu nutzen.";
 "homeserver_connection_lost" = "Konnte keine Verbindung zum Heimserver herstellen.";
-"room_resource_usage_limit_reached_message_1_default" = "Dieser Heimserver hat einer seiner Ressourcengrenzen überschritten, sodass ";
-"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Dieser Heimserver hat seine Begrenzung an monatlich aktiven Benutzer überschritten, sodass ";
+"room_resource_usage_limit_reached_message_1_default" = "Dieser Heimserver hat eine seiner Ressourcengrenzen überschritten, sodass ";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Dieser Heimserver hat seine Begrenzung an monatlich aktiven Benutzern überschritten, sodass ";
 "room_resource_usage_limit_reached_message_2" = "einige Benutzer nicht in der Lage sein werden, sich anzumelden.";
 "room_resource_usage_limit_reached_message_contact_3" = " um diese Obergrenze erhöhen zu lassen.";
 "auth_accept_policies" = "Bitte Regeln dieses Heimservers ansehen und akzeptieren:";
@@ -1001,10 +1001,10 @@
 "skip" = "Überspringen";
 "security_settings_crosssigning_info_not_bootstrapped" = "Quersignierung ist bisher nicht konfiguriert.";
 "room_member_power_level_admin_in" = "Admin in %@";
-"room_member_power_level_moderator_in" = "Moderator in %@";
+"room_member_power_level_moderator_in" = "Moderationsrechte in %@";
 "room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
 "room_member_power_level_short_admin" = "Admin";
-"room_member_power_level_short_moderator" = "Moderator";
+"room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Benutzerdefiniert";
 "security_settings_secure_backup" = "SICHERE SICHERHEITSKOPIE";
 "security_settings_secure_backup_synchronise" = "Synchronisiere";
@@ -1019,7 +1019,7 @@
 "store_promotional_text" = "Privatsphäre-wahrende Kollaborations-App in einem offenen Netzwerk. Dezentral, um dir die Kontrolle zu geben. Keine Datenerfassung, keine Hintertüren und kein Zugriff durch Dritte.";
 "room_participants_action_security_status_complete_security" = "Vollständige Sicherheit";
 "external_link_confirmation_title" = "Überprüfe diesen Link genau";
-"external_link_confirmation_message" = "Der Link %@ braucht zu lange auf der anderen Seite: %@\n\nSicher, dass du fortfahren möchtest?";
+"external_link_confirmation_message" = "Der Link %@ bringt dich auf eine andere Seite: %@\n\nSicher, dass du fortfahren möchtest?";
 "security_settings_crypto_sessions_description_2" = "Wenn du dich nicht angemeldet hast, ändere dein Passwort und setze die Sichere Sicherheitskopie zurück.";
 "security_settings_secure_backup_description" = "Sichere die Schlüssel, um Datenverlust zu verhindern. Sie werden mit einem Sicherungsschlüssel gesichert.";
 "security_settings_crosssigning_info_exists" = "Dein Konto hat eine Quersignatur-Identität, aber dieser Sitzung wird noch nicht vertraut. Vervollständige die Sicherheit auf diese Sitzung.";
@@ -1349,7 +1349,7 @@
 "event_formatter_call_ringing" = "Läuten…";
 "event_formatter_call_connecting" = "Verbinden…";
 "settings_labs_enable_ringing_for_group_calls" = "Bei Gruppenanrufen klingeln";
-"room_no_privileges_to_create_group_call" = "Du musst Admin oder Moderator sein, um einen Anruf zu starten.";
+"room_no_privileges_to_create_group_call" = "Du musst Admin oder Mod sein, um einen Anruf zu starten.";
 "room_join_group_call" = "Beitreten";
 
 // Chat
@@ -1502,7 +1502,7 @@
 "service_terms_modal_title_message" = "Zum Fortfahren musst du die Nutzungsbedingungen akzeptieren";
 "settings_contacts_enable_sync_description" = "Dies verwendet deinen Identitätsserver um dich mit deinen Kontakten zu verbinden.";
 "settings_phone_contacts" = "KONTAKTE AM HANDY";
-"room_event_action_forward" = "Weiter";
+"room_event_action_forward" = "Weiterleiten";
 "find_your_contacts_identity_service_error" = "Konnte keine Verbindung zum Identitätsserver aufbauen.";
 "find_your_contacts_button_title" = "Finde deine Kontakte";
 "contacts_address_book_permission_denied_alert_message" = "Um Kontakte zu aktivieren, öffne die Einstellungen deines Gerätes.";
@@ -1533,3 +1533,16 @@
 "analytics_prompt_title" = "Hilf dabei %@ zu verbessern";
 "settings_about" = "ÜBER";
 "enable" = "Aktivieren";
+"analytics_prompt_message_upgrade" = "Du hast in der Vergangenheit bereits zugestimmt anonyme Nutzungsdaten mit uns zu teilen. Jetzt werden wir als Hilfe, um zu verstehen, wie Personen mehrere Geräte benutzen, eine zufällige Kennung generieren, die zwischen deinen Geräten geteilt wird.";
+"analytics_prompt_message_new_user" = "Hilf uns dabei Probleme zu identifizieren und Element zu verbessern, indem du anonyme Nutzungsdaten teilst. Um zu verstehen, wie Personen mehrere Geräte benutzen, werden wir eine zufällige Kennung generieren, die zwischen deinen Geräten geteilt wird.";
+"find_your_contacts_title" = "Starte mit der Auflistung deiner Kontakte";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Du kannst unsere gesamten Bedingungen %@ nachlesen.";
+"poll_timeline_total_votes" = "%lu Stimmen abgegeben";
+"poll_timeline_total_one_vote" = "1 Stimme abgegeben";
+"poll_timeline_total_no_votes" = "Keine Stimmen abgegeben";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_poll_question_or_topic" = "Frage oder Thema der Umfrage";
+"poll_edit_form_input_placeholder" = "Schreib etwas";
