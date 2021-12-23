@@ -176,6 +176,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             if response.isFailure {
                 self.updateCurrentTask(with: .failure)
             } else {
+                self.creationParams.isModified = false
                 self.createdSpace = response.value
                 self.updateCurrentTask(with: .success)
                 self.runNextTask()
