@@ -17,56 +17,52 @@
 import Foundation
 import Combine
 
+protocol MatrixItemChooserProcessorProtocol {
+    var dataType: MatrixItemChooserType { get }
+    func computeSelection(withIds itemsIds:[String], completion: @escaping (Result<Void, Error>) -> Void)
+    func isItemIncluded(_ item: (MatrixListItemData)) -> Bool
+}
+
 @available(iOS 14.0, *)
-class SpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServiceProtocol {
+class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
 
     // MARK: - Properties
     
     // MARK: Private
     
-    private let processingQueue = DispatchQueue(label: "org.matrix.element.SpaceCreationMatrixItemChooserService.processingQueue")
+    private let processingQueue = DispatchQueue(label: "org.matrix.element.MatrixItemChooserService.processingQueue")
     private let completionQueue = DispatchQueue.main
 
     private let session: MXSession
-    private let items: [SpaceCreationMatrixItem]
-    private var filteredItems: [SpaceCreationMatrixItem] {
+    private let items: [MatrixListItemData]
+    private var filteredItems: [MatrixListItemData] {
         didSet {
             itemsSubject.send(filteredItems)
         }
     }
     private var selectedItemIds: Set<String>
+    private let itemsProcessor: MatrixItemChooserProcessorProtocol?
     
     // MARK: Public
     
-    private(set) var type: SpaceCreationMatrixItemType
-    private(set) var itemsSubject: CurrentValueSubject<[SpaceCreationMatrixItem], Never>
+    private(set) var type: MatrixItemChooserType
+    private(set) var itemsSubject: CurrentValueSubject<[MatrixListItemData], Never>
     private(set) var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never>
     var searchText: String = "" {
         didSet {
-            if searchText.isEmpty {
-                filteredItems = items
-            } else {
-                self.processingQueue.async {
-                    let lowercasedSearchText = self.searchText.lowercased()
-                    let filteredItems = self.items.filter { $0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText) }
-                    
-                    self.completionQueue.async {
-                        self.filteredItems = filteredItems
-                    }
-                }
-            }
+            refresh()
         }
     }
     
     // MARK: - Setup
     
-    init(session: MXSession, type: SpaceCreationMatrixItemType, selectedItemIds: [String]) {
+    init(session: MXSession, selectedItemIds: [String], itemsProcessor: MatrixItemChooserProcessorProtocol?) {
         self.session = session
-        self.type = type
+        self.type = itemsProcessor?.dataType ?? .room
         switch type {
         case .people:
             self.items = session.users().map { user in
-                SpaceCreationMatrixItem(mxUser: user)
+                MatrixListItemData(mxUser: user)
             }
         case .room:
             self.items = session.rooms.compactMap { room in
@@ -74,14 +70,17 @@ class SpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServi
                     return nil
                 }
                 
-                return SpaceCreationMatrixItem(mxRoom: room, spaceService: session.spaceService)
+                return MatrixListItemData(mxRoom: room, spaceService: session.spaceService)
             }
         }
         self.itemsSubject = CurrentValueSubject(self.items)
-        self.filteredItems = self.items
+        self.filteredItems = []
         
         self.selectedItemIds = Set(selectedItemIds)
         self.selectedItemIdsSubject = CurrentValueSubject(self.selectedItemIds)
+        self.itemsProcessor = itemsProcessor
+        
+        refresh()
     }
     
     // MARK: - Public
@@ -94,10 +93,54 @@ class SpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServi
         }
         selectedItemIdsSubject.send(selectedItemIds)
     }
+    
+    func processSelection(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let selectionProcessor = self.itemsProcessor else {
+            completion(Result.success(()))
+            return
+        }
+        
+        selectionProcessor.computeSelection(withIds: Array(selectedItemIds), completion: completion)
+    }
+    
+    func refresh() {
+        self.processingQueue.async { [weak self] in
+            guard let self = self else { return }
+            let filteredItems = self.filter(items: self.items)
+            
+            self.completionQueue.async {
+                self.filteredItems = filteredItems
+            }
+        }
+    }
 
+    // MARK: - Private
+    
+    private func filter(items: [MatrixListItemData]) -> [MatrixListItemData] {
+        if searchText.isEmpty {
+            if let selectionProcessor = self.itemsProcessor {
+                return items.filter {
+                    selectionProcessor.isItemIncluded($0)
+                }
+            } else {
+                return items
+            }
+        } else {
+            let lowercasedSearchText = self.searchText.lowercased()
+            if let selectionProcessor = self.itemsProcessor {
+                return items.filter {
+                    selectionProcessor.isItemIncluded($0) && ($0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText))
+                }
+            } else {
+                return items.filter {
+                    $0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText)
+                }
+            }
+        }
+    }
 }
 
-fileprivate extension SpaceCreationMatrixItem {
+fileprivate extension MatrixListItemData {
     
     init(mxUser: MXUser) {
         self.init(id: mxUser.userId, avatar: mxUser.avatarData, displayName: mxUser.displayname, detailText: mxUser.userId)

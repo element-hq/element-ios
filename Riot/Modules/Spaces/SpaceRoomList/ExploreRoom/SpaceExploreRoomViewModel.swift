@@ -79,6 +79,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         switch viewAction {
         case .loadData:
             self.loadData()
+        case .reloadData:
+            self.nextBatch = nil
+            self.loadData()
         case .complete(let selectedItem, let sourceView):
             self.coordinatorDelegate?.spaceExploreRoomViewModel(self, didSelect: selectedItem, from: sourceView)
         case .cancel:
@@ -86,6 +89,8 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             self.coordinatorDelegate?.spaceExploreRoomViewModelDidCancel(self)
         case .searchChanged(let newText):
             self.searchKeyword = newText
+        case .addRoom:
+            self.coordinatorDelegate?.spaceExploreRoomViewModelDidAddRoom(self)
         }
     }
     
@@ -111,7 +116,9 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
             
             switch response {
             case .success(let spaceSummary):
+                let appendData = self.nextBatch != nil
                 self.nextBatch = spaceSummary.nextBatch
+                
                 // The MXSpaceChildInfo of the root space is available only in the first batch
                 if let rootSpaceInfo = spaceSummary.spaceInfo {
                     self.rootSpaceChildInfo = rootSpaceInfo
@@ -131,7 +138,12 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
                 }).sorted(by: { item1, item2 in
                     return !item2.childInfo.suggested || item1.childInfo.suggested
                 })
-                self.itemDataList.append(contentsOf: batchedItemDataList)
+                
+                if appendData {
+                    self.itemDataList.append(contentsOf: batchedItemDataList)
+                } else {
+                    self.itemDataList = batchedItemDataList
+                }
             case .failure(let error):
                 self.update(viewState: .error(error))
             }

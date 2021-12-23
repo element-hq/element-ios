@@ -26,6 +26,7 @@ final class EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsCoordinatorType {
     // MARK: Private
     
     private let session: MXSession
+    private let parentSpace: MXSpace?
     private var enterNewRoomDetailsViewModel: EnterNewRoomDetailsViewModelType
     private let enterNewRoomDetailsViewController: EnterNewRoomDetailsViewController
     
@@ -44,10 +45,11 @@ final class EnterNewRoomDetailsCoordinator: EnterNewRoomDetailsCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession) {
+    init(session: MXSession, parentSpace: MXSpace?) {
         self.session = session
+        self.parentSpace = parentSpace
         
-        let enterNewRoomDetailsViewModel = EnterNewRoomDetailsViewModel(session: self.session)
+        let enterNewRoomDetailsViewModel = EnterNewRoomDetailsViewModel(session: self.session, parentSpace: self.parentSpace)
         let enterNewRoomDetailsViewController = EnterNewRoomDetailsViewController.instantiate(with: enterNewRoomDetailsViewModel)
         self.enterNewRoomDetailsViewModel = enterNewRoomDetailsViewModel
         self.enterNewRoomDetailsViewController = enterNewRoomDetailsViewController

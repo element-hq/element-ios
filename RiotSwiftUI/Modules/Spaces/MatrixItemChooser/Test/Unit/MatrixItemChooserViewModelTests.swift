@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationMatrixItemChooser SpaceCreationMatrixItemChooser
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -22,16 +20,15 @@ import Combine
 @testable import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class SpaceCreationMatrixItemChooserViewModelTests: XCTestCase {
-
+class MatrixItemChooserViewModelTests: XCTestCase {
     var creationParameters = SpaceCreationParameters()
-    var service: MockSpaceCreationMatrixItemChooserService!
-    var viewModel: SpaceCreationMatrixItemChooserViewModelProtocol!
-    var context: SpaceCreationMatrixItemChooserViewModel.Context!
+    var service: MockMatrixItemChooserService!
+    var viewModel: MatrixItemChooserViewModelProtocol!
+    var context: MatrixItemChooserViewModel.Context!
     
     override func setUpWithError() throws {
-        service = MockSpaceCreationMatrixItemChooserService(type: .room)
-        viewModel = SpaceCreationMatrixItemChooserViewModel.makeSpaceCreationMatrixItemChooserViewModel(spaceCreationMatrixItemChooserService: service, creationParams: creationParameters)
+        service = MockMatrixItemChooserService(type: .room)
+        viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, creationParams: creationParameters)
         context = viewModel.context
     }
     

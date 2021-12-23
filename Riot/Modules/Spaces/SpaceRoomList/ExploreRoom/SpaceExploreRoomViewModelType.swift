@@ -25,6 +25,7 @@ protocol SpaceExploreRoomViewModelViewDelegate: AnyObject {
 protocol SpaceExploreRoomViewModelCoordinatorDelegate: AnyObject {
     func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?)
     func spaceExploreRoomViewModelDidCancel(_ viewModel: SpaceExploreRoomViewModelType)
+    func spaceExploreRoomViewModelDidAddRoom(_ viewModel: SpaceExploreRoomViewModelType)
 }
 
 /// Protocol describing the view model used by `SpaceExploreRoomViewController`

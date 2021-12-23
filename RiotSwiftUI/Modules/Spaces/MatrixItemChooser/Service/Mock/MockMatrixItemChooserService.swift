@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationMatrixItemChooser SpaceCreationMatrixItemChooser
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -20,20 +18,20 @@ import Foundation
 import Combine
 
 @available(iOS 14.0, *)
-class MockSpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServiceProtocol {
+class MockMatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     static let mockItems = [
-        SpaceCreationMatrixItem(id: "!aaabaa:matrix.org", avatar: MockAvatarInput.example, displayName: "Matrix Discussion", detailText: "Descripton of this room"),
-        SpaceCreationMatrixItem(id: "!zzasds:matrix.org", avatar: MockAvatarInput.example, displayName: "Element Mobile", detailText: "Descripton of this room"),
-        SpaceCreationMatrixItem(id: "!scthve:matrix.org", avatar: MockAvatarInput.example, displayName: "Alice Personal", detailText: "Descripton of this room")
+        MatrixListItemData(id: "!aaabaa:matrix.org", avatar: MockAvatarInput.example, displayName: "Matrix Discussion", detailText: "Descripton of this room"),
+        MatrixListItemData(id: "!zzasds:matrix.org", avatar: MockAvatarInput.example, displayName: "Element Mobile", detailText: "Descripton of this room"),
+        MatrixListItemData(id: "!scthve:matrix.org", avatar: MockAvatarInput.example, displayName: "Alice Personal", detailText: "Descripton of this room")
     ]
-    var itemsSubject: CurrentValueSubject<[SpaceCreationMatrixItem], Never>
+    var itemsSubject: CurrentValueSubject<[MatrixListItemData], Never>
     var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never>
     var searchText: String = ""
-    var type: SpaceCreationMatrixItemType = .room
+    var type: MatrixItemChooserType = .room
     var selectedItemIds: Set<String> = Set()
 
-    init(type: SpaceCreationMatrixItemType = .room, items: [SpaceCreationMatrixItem] = mockItems, selectedItemIndexes: [Int] = []) {
+    init(type: MatrixItemChooserType = .room, items: [MatrixListItemData] = mockItems, selectedItemIndexes: [Int] = []) {
         itemsSubject = CurrentValueSubject(items)
         var selectedItemIds = Set<String>()
         for index in selectedItemIndexes {
@@ -62,5 +60,13 @@ class MockSpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserS
             selectedItemIds.insert(itemId)
         }
         selectedItemIdsSubject.send(selectedItemIds)
+    }
+    
+    func processSelection(completion: @escaping (Result<Void, Error>) -> Void) {
+        completion(Result.success(()))
+    }
+    
+    func refresh() {
+        
     }
 }

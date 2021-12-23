@@ -19,7 +19,7 @@
 import UIKit
 
 @objcMembers
-final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
+final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     // MARK: - Properties
     
@@ -30,6 +30,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
     private let spaceId: String
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
+    private weak var currentExploreRoomCoordiantor: SpaceExploreRoomCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
@@ -60,6 +61,7 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
+        self.currentExploreRoomCoordiantor = rootCoordinator
 
         self.navigationRouter.setRootModule(rootCoordinator)
     }
@@ -73,8 +75,12 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
     private func pushSpace(with item: SpaceExploreRoomListItemViewData) {
         let coordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: item.childInfo.childRoomId, spaceName: item.childInfo.name)
         coordinator.start()
+        
         self.add(childCoordinator: coordinator)
+        self.currentExploreRoomCoordiantor = coordinator
+
         self.spaceIdStack.append(item.childInfo.childRoomId)
+        
         self.navigationRouter.push(coordinator.toPresentable(), animated: true) {
             self.remove(childCoordinator: coordinator)
             self.spaceIdStack.removeLast()
@@ -144,6 +150,17 @@ final class ExploreRoomCoordinator: ExploreRoomCoordinatorType {
             roomViewController.showMissedDiscussionsBadge = false
         })
     }
+    
+    private func presentRoomCreation() {
+        let space = session.spaceService.getSpace(withId: spaceIdStack.last ?? "")
+        let createRoomCoordinator = CreateRoomCoordinator(session: self.session, parentSpace: space)
+        createRoomCoordinator.delegate = self
+        let presentable = createRoomCoordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        toPresentable().present(presentable, animated: true, completion: nil)
+        createRoomCoordinator.start()
+        self.add(childCoordinator: createRoomCoordinator)
+    }
 }
 
 // MARK: - ShowSpaceExploreRoomCoordinatorDelegate
@@ -158,6 +175,10 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
 
     func spaceExploreRoomCoordinatorDidCancel(_ coordinator: SpaceExploreRoomCoordinatorType) {
         self.delegate?.exploreRoomCoordinatorDidComplete(self)
+    }
+    
+    func spaceExploreRoomCoordinatorDidAddRoom(_ coordinator: SpaceExploreRoomCoordinatorType) {
+        self.presentRoomCreation()
     }
 }
 
@@ -187,4 +208,42 @@ extension ExploreRoomCoordinator: SpaceChildRoomDetailCoordinatorDelegate {
             })
         }
     }
+}
+
+// MARK: - CreateRoomCoordinatorDelegate
+extension ExploreRoomCoordinator: CreateRoomCoordinatorDelegate {
+    
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
+        self.currentExploreRoomCoordiantor?.reloadRooms()
+        coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+            self.navigateTo(roomWith: room.roomId)
+        }
+    }
+    
+    func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
+        self.currentExploreRoomCoordiantor?.reloadRooms()
+        coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+
+    func createRoomCoordinatorDidCancel(_ coordinator: CreateRoomCoordinatorType) {
+        coordinator.toPresentable().dismiss(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+    
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension ExploreRoomCoordinator: UIAdaptivePresentationControllerDelegate {
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard let lastCoordinator = childCoordinators.last else {
+            return
+        }
+        self.remove(childCoordinator: lastCoordinator)
+    }
+    
 }

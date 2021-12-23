@@ -294,18 +294,6 @@
     [self updateEmptyView];
 }
 
-- (void)createNewRoom
-{
-    if (recentsDataSource.currentSpace)
-    {
-        [[AppDelegate theDelegate] showAlertWithTitle:VectorL10n.spacesAddRoomsComingSoonTitle message:VectorL10n.spacesComingSoonDetail];
-    }
-    else
-    {
-        [super createNewRoom];
-    }
-}
-
 - (void)startChat {
     if (recentsDataSource.currentSpace)
     {

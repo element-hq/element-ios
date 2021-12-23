@@ -20,8 +20,10 @@ import Foundation
 
 /// SpaceExploreRoomViewController view actions exposed to view model
 enum SpaceExploreRoomViewAction {
+    case reloadData
     case loadData
     case complete(_ selectedItem: SpaceExploreRoomListItemViewData, _ sourceView: UIView?)
     case searchChanged(_ text: String?)
     case cancel
+    case addRoom
 }

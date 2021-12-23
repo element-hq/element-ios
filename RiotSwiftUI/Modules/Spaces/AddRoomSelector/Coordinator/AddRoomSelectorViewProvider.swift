@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Spaces/SpaceCreation/SpaceCreationMatrixItemChooser SpaceCreationMatrixItemChooser
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -16,10 +14,11 @@
 // limitations under the License.
 //
 
-import Foundation
+import SwiftUI
 
-struct SpaceCreationMatrixItemChooserCoordinatorParameters {
-    let session: MXSession
-    let type: SpaceCreationMatrixItemType
-    let creationParams: SpaceCreationParameters
+class AddRoomSelectorViewProvider: MatrixItemChooserCoordinatorViewProvider {
+    @available(iOS 14, *)
+    func view(with viewModel: MatrixItemChooserViewModelType.Context) -> AnyView {
+        return AnyView(AddRoomSelector(viewModel: viewModel))
+    }
 }

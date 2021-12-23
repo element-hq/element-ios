@@ -68,6 +68,9 @@
 "private" = "Private";
 "public" = "Public";
 "stop" = "Stop";
+"new_word" = "New";
+"existing" = "Existing";
+"add" = "Add";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -1638,20 +1641,27 @@ Tap the + to start adding people.";
 // MARK: - Create Room
 
 "create_room_title" = "New Room";
-"create_room_section_header_name" = "Room name";
+"create_room_section_header_name" = "NAME";
 "create_room_placeholder_name" = "Name";
-"create_room_section_header_topic" = "Room topic (optional)";
-"create_room_placeholder_topic" = "Topic";
-"create_room_section_header_encryption" = "Room encryption";
+"create_room_section_header_topic" = "TOPIC (OPTIONAL)";
+"create_room_placeholder_topic" = "What is this room about?";
+"create_room_section_header_encryption" = "ENCRYPTION";
 "create_room_enable_encryption" = "Enable Encryption";
 "create_room_section_footer_encryption" = "Encryption can’t be disabled afterwards.";
-"create_room_section_header_type" = "Room type";
-"create_room_type_private" = "Private Room";
-"create_room_type_public" = "Public Room";
-"create_room_section_footer_type" = "People join a private room only with the room invitation.";
-"create_room_show_in_directory" = "Show the room in the directory";
-"create_room_section_header_address" = "Room address";
+"create_room_section_header_type" = "WHO CAN ACCESS";
+"create_room_type_private" = "Private Room (invite only)";
+"create_room_type_restricted" = "Space members";
+"create_room_type_public" = "Public Room (anyone)";
+"create_room_section_footer_type_private" = "Only people invited can find and join.";
+"create_room_section_footer_type_restricted" = "Anyone in Space name can find and join.";
+"create_room_section_footer_type_public" = "Only people invited can find and join, not just people in Space name.";
+"create_room_promotion_header" = "PROMOTION";
+"create_room_show_in_directory" = "Show in room directory";
+"create_room_show_in_directory_footer" = "This will help people find and join.";
+"create_room_section_header_address" = "ADDRESS";
 "create_room_placeholder_address" = "#testroom:matrix.org";
+"create_room_suggest_room" = "Suggest to space members";
+"create_room_suggest_room_footer" = "Suggested rooms are promoted to space members as good to join.";
 
 // MARK: - Room Info
 

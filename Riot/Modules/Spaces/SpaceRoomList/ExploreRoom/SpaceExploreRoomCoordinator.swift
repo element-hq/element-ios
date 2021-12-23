@@ -53,6 +53,10 @@ final class SpaceExploreRoomCoordinator: SpaceExploreRoomCoordinatorType {
     func toPresentable() -> UIViewController {
         return self.spaceExploreRoomViewController
     }
+    
+    func reloadRooms() {
+        spaceExploreRoomViewModel.process(viewAction: .reloadData)
+    }
 }
 
 // MARK: - SpaceExploreRoomViewModelCoordinatorDelegate
@@ -63,5 +67,9 @@ extension SpaceExploreRoomCoordinator: SpaceExploreRoomViewModelCoordinatorDeleg
     
     func spaceExploreRoomViewModelDidCancel(_ viewModel: SpaceExploreRoomViewModelType) {
         self.delegate?.spaceExploreRoomCoordinatorDidCancel(self)
+    }
+    
+    func spaceExploreRoomViewModelDidAddRoom(_ viewModel: SpaceExploreRoomViewModelType) {
+        self.delegate?.spaceExploreRoomCoordinatorDidAddRoom(self)
     }
 }

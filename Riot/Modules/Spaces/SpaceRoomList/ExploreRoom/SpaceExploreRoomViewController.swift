@@ -270,7 +270,7 @@ extension SpaceExploreRoomViewController: SpaceExploreRoomViewModelViewDelegate 
 extension SpaceExploreRoomViewController: AddItemHeaderViewDelegate {
     
     func addItemHeaderView(_ headerView: AddItemHeaderView, didTapButton button: UIButton) {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesAddRoomsComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+        self.viewModel.process(viewAction: .addRoom)
     }
     
 }

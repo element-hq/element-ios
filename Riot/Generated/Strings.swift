@@ -31,6 +31,10 @@ public class VectorL10n: NSObject {
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
   }
+  /// Add
+  public static var add: String { 
+    return VectorL10n.tr("Vector", "add") 
+  }
   /// Please review and accept the policies of this homeserver:
   public static var authAcceptPolicies: String { 
     return VectorL10n.tr("Vector", "auth_accept_policies") 
@@ -603,53 +607,81 @@ public class VectorL10n: NSObject {
   public static var createRoomPlaceholderName: String { 
     return VectorL10n.tr("Vector", "create_room_placeholder_name") 
   }
-  /// Topic
+  /// What is this room about?
   public static var createRoomPlaceholderTopic: String { 
     return VectorL10n.tr("Vector", "create_room_placeholder_topic") 
+  }
+  /// PROMOTION
+  public static var createRoomPromotionHeader: String { 
+    return VectorL10n.tr("Vector", "create_room_promotion_header") 
   }
   /// Encryption can’t be disabled afterwards.
   public static var createRoomSectionFooterEncryption: String { 
     return VectorL10n.tr("Vector", "create_room_section_footer_encryption") 
   }
-  /// People join a private room only with the room invitation.
-  public static var createRoomSectionFooterType: String { 
-    return VectorL10n.tr("Vector", "create_room_section_footer_type") 
+  /// Only people invited can find and join.
+  public static var createRoomSectionFooterTypePrivate: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type_private") 
   }
-  /// Room address
+  /// Only people invited can find and join, not just people in Space name.
+  public static var createRoomSectionFooterTypePublic: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type_public") 
+  }
+  /// Anyone in Space name can find and join.
+  public static var createRoomSectionFooterTypeRestricted: String { 
+    return VectorL10n.tr("Vector", "create_room_section_footer_type_restricted") 
+  }
+  /// ADDRESS
   public static var createRoomSectionHeaderAddress: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_address") 
   }
-  /// Room encryption
+  /// ENCRYPTION
   public static var createRoomSectionHeaderEncryption: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_encryption") 
   }
-  /// Room name
+  /// NAME
   public static var createRoomSectionHeaderName: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_name") 
   }
-  /// Room topic (optional)
+  /// TOPIC (OPTIONAL)
   public static var createRoomSectionHeaderTopic: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_topic") 
   }
-  /// Room type
+  /// WHO CAN ACCESS
   public static var createRoomSectionHeaderType: String { 
     return VectorL10n.tr("Vector", "create_room_section_header_type") 
   }
-  /// Show the room in the directory
+  /// Show in room directory
   public static var createRoomShowInDirectory: String { 
     return VectorL10n.tr("Vector", "create_room_show_in_directory") 
+  }
+  /// This will help people find and join.
+  public static var createRoomShowInDirectoryFooter: String { 
+    return VectorL10n.tr("Vector", "create_room_show_in_directory_footer") 
+  }
+  /// Suggest to space members
+  public static var createRoomSuggestRoom: String { 
+    return VectorL10n.tr("Vector", "create_room_suggest_room") 
+  }
+  /// Suggested rooms are promoted to space members as good to join.
+  public static var createRoomSuggestRoomFooter: String { 
+    return VectorL10n.tr("Vector", "create_room_suggest_room_footer") 
   }
   /// New Room
   public static var createRoomTitle: String { 
     return VectorL10n.tr("Vector", "create_room_title") 
   }
-  /// Private Room
+  /// Private Room (invite only)
   public static var createRoomTypePrivate: String { 
     return VectorL10n.tr("Vector", "create_room_type_private") 
   }
-  /// Public Room
+  /// Public Room (anyone)
   public static var createRoomTypePublic: String { 
     return VectorL10n.tr("Vector", "create_room_type_public") 
+  }
+  /// Space members
+  public static var createRoomTypeRestricted: String { 
+    return VectorL10n.tr("Vector", "create_room_type_restricted") 
   }
   /// Verify your other devices easier
   public static var crossSigningSetupBannerSubtitle: String { 
@@ -1386,6 +1418,10 @@ public class VectorL10n: NSObject {
   /// You removed the widget: %@
   public static func eventFormatterWidgetRemovedByYou(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "event_formatter_widget_removed_by_you", p1)
+  }
+  /// Existing
+  public static var existing: String { 
+    return VectorL10n.tr("Vector", "existing") 
   }
   /// The link %@ is taking you to another site: %@\n\nAre you sure you want to continue?
   public static func externalLinkConfirmationMessage(_ p1: String, _ p2: String) -> String {
@@ -2218,6 +2254,10 @@ public class VectorL10n: NSObject {
   /// The Internet connection appears to be offline.
   public static var networkOfflinePrompt: String { 
     return VectorL10n.tr("Vector", "network_offline_prompt") 
+  }
+  /// New
+  public static var newWord: String { 
+    return VectorL10n.tr("Vector", "new_word") 
   }
   /// Next
   public static var next: String { 
