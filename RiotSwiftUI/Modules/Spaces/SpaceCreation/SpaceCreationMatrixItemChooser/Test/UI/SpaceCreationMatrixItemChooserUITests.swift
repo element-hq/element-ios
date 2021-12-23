@@ -45,7 +45,6 @@ class SpaceCreationMatrixItemChooserUITests: MockScreenTest {
     func verifyEmptyScreen() {
         XCTAssertEqual(app.staticTexts["titleText"].label, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(app.staticTexts["messageText"].label, VectorL10n.spacesCreationAddRoomsMessage)
-        XCTAssertEqual(app.collectionViews["itemsList"].exists, false)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].exists, true)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].label, VectorL10n.spacesNoResultFoundTitle)
         XCTAssertEqual(app.buttons["doneButton"].label, VectorL10n.skip)
@@ -54,7 +53,6 @@ class SpaceCreationMatrixItemChooserUITests: MockScreenTest {
     func verifyPopulatedScreen() {
         XCTAssertEqual(app.staticTexts["titleText"].label, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(app.staticTexts["messageText"].label, VectorL10n.spacesCreationAddRoomsMessage)
-        XCTAssertEqual(app.collectionViews["itemsList"].exists, true)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].exists, false)
         XCTAssertEqual(app.buttons["doneButton"].label, VectorL10n.skip)
     }
@@ -62,7 +60,6 @@ class SpaceCreationMatrixItemChooserUITests: MockScreenTest {
     func verifyPopulatedWithSelectionScreen() {
         XCTAssertEqual(app.staticTexts["titleText"].label, VectorL10n.spacesCreationAddRoomsTitle)
         XCTAssertEqual(app.staticTexts["messageText"].label, VectorL10n.spacesCreationAddRoomsMessage)
-        XCTAssertEqual(app.collectionViews["itemsList"].exists, true)
         XCTAssertEqual(app.staticTexts["emptyListMessage"].exists, false)
         XCTAssertEqual(app.buttons["doneButton"].label, VectorL10n.next)
     }

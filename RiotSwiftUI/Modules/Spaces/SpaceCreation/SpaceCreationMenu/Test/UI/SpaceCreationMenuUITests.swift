@@ -48,7 +48,7 @@ class SpaceCreationMenuUITests: MockScreenTest {
 
         let detailText = app.staticTexts["detailText"]
         XCTAssert(detailText.exists)
-        XCTAssert(detailText.label == "Some title")
+        XCTAssertEqual(detailText.label, "Some detail text")
     }
 
 }
