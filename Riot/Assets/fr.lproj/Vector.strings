@@ -62,7 +62,7 @@
 "auth_missing_phone" = "Numéro de téléphone manquant";
 "auth_missing_email_or_phone" = "Adresse e-mail ou numéro de téléphone manquant";
 "auth_password_dont_match" = "Les mots de passe ne correspondent pas";
-"auth_username_in_use" = "";
+"auth_username_in_use" = "Nom d’utilisateur déjà pris";
 "auth_forgot_password" = "Mot de passe oublié ?";
 "auth_use_server_options" = "Utiliser un serveur personnalisé (avancé)";
 "auth_email_validation_message" = "Merci de vérifier vos e-mails pour continuer l’inscription";
@@ -1600,3 +1600,7 @@
 "contacts_address_book_permission_denied_alert_title" = "Contacts désactivés";
 "accessibility_button_label" = "bouton";
 "enable" = "Activer";
+"find_your_contacts_footer" = "Cette fonctionnalité peut être désactivé à tout moment à partir des paramètres.";
+"find_your_contacts_title" = "Commencez par lister vos contacts";
+"settings_contacts_enable_sync_description" = "Cette fonctionnalité utilisera votre serveur d'identité pour vous connecter avec vos contacts, ainsi que pour les aider à vous trouver.";
+"settings_contacts_enable_sync" = "Trouvez vos contacts";
