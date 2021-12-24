@@ -208,9 +208,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         // Present activity indicator when retrieving roomDataSource for given room ID
         self.activityIndicatorPresenter.presentActivityIndicator(on: roomViewController.view, animated: false)
         
-        // Open the room on the requested event
+        // Open the thread on the requested event
         ThreadDataSource.load(withRoomId: roomId,
-                              initialEventId: nil,
+                              initialEventId: eventId,
                               threadId: threadId,
                               andMatrixSession: self.parameters.session) { [weak self] (dataSource) in
             

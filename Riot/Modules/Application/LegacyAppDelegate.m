@@ -1248,8 +1248,8 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 {
     NSString *fragment = universalLinkParameters.fragment;
     NSURL *universalLinkURL = universalLinkParameters.universalLinkURL;
-    ScreenPresentationParameters *screenPresentationParameters = universalLinkParameters.presentationParameters;
-    BOOL restoreInitialDisplay = screenPresentationParameters.restoreInitialDisplay;
+    ScreenPresentationParameters *presentationParameters = universalLinkParameters.presentationParameters;
+    BOOL restoreInitialDisplay = presentationParameters.restoreInitialDisplay;
     
     BOOL continueUserActivity = NO;
     MXKAccountManager *accountManager = [MXKAccountManager sharedManager];
@@ -1277,7 +1277,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     
     NSString *roomIdOrAlias;
-    ThreadParameters *threadParameters;
     NSString *eventId;
     NSString *userId;
     NSString *groupId;
@@ -1352,7 +1351,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 
                 if (room.summary.roomType == MXRoomTypeSpace)
                 {
-                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:screenPresentationParameters];
+                    SpaceNavigationParameters *spaceNavigationParameters = [[SpaceNavigationParameters alloc] initWithRoomId:room.roomId mxSession:account.mxSession presentationParameters:presentationParameters];
                     
                     [self showSpaceWithParameters:spaceNavigationParameters];
                 }
@@ -1361,25 +1360,60 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     // Open the room page
                     if (eventId)
                     {
-                        MXEvent *event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
-                        if (event.threadId)
+                        __block MXEvent *event = [account.mxSession.store eventWithEventId:eventId inRoom:roomId];
+                        dispatch_group_t eventDispatchGroup = dispatch_group_create();
+                        
+                        if (event == nil)
                         {
-                            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
-                                                                          stackRoomScreen:YES];
+                            dispatch_group_enter(eventDispatchGroup);
+                            //  event doesn't exist in the store
+                            [account.mxSession eventWithEventId:eventId
+                                                         inRoom:roomId
+                                                        success:^(MXEvent *eventFromServer) {
+                                event = eventFromServer;
+                                dispatch_group_leave(eventDispatchGroup);
+                            } failure:^(NSError *error) {
+                                dispatch_group_leave(eventDispatchGroup);
+                            }];
                         }
-                        else if ([account.mxSession.threadingService isEventThreadRoot:event])
-                        {
-                            threadParameters = [[ThreadParameters alloc] initWithThreadId:event.eventId
-                                                                          stackRoomScreen:YES];
-                        }
+                        
+                        dispatch_group_notify(eventDispatchGroup, dispatch_get_main_queue(), ^{
+                            if (event == nil)
+                            {
+                                return;
+                            }
+                            
+                            ThreadParameters *threadParameters = nil;
+                            if (event.threadId)
+                            {
+                                threadParameters = [[ThreadParameters alloc] initWithThreadId:event.threadId
+                                                                              stackRoomScreen:YES];
+                            }
+                            else if ([account.mxSession.threadingService threadWithId:eventId])
+                            {
+                                threadParameters = [[ThreadParameters alloc] initWithThreadId:eventId
+                                                                              stackRoomScreen:YES];
+                            }
+                            
+                            RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                                            eventId:eventId
+                                                                                                          mxSession:account.mxSession
+                                                                                                   threadParameters:threadParameters
+                                                                                             presentationParameters:presentationParameters];
+                            [self showRoomWithParameters:parameters];
+                        });
                     }
-                    RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
-                                                                                                                  eventId:eventId
-                                                                                                                mxSession:account.mxSession
-                                                                                               threadParameters:threadParameters
-                                                                                                   presentationParameters:screenPresentationParameters];
-                    
-                    [self showRoomWithParameters:roomNavigationParameters];
+                    else
+                    {
+                        //  open the regular room timeline
+                        RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
+                                                                                                        eventId:eventId
+                                                                                                      mxSession:account.mxSession
+                                                                                               threadParameters:nil
+                                                                                         presentationParameters:presentationParameters];
+                        
+                        [self showRoomWithParameters:parameters];
+                    }
                 }
                 
                 continueUserActivity = YES;
@@ -1427,7 +1461,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                     {
                                         universalLinkFragmentPendingRoomAlias = @{roomId: roomIdOrAlias};
                                         
-                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:screenPresentationParameters];
+                                        UniversalLinkParameters *newParameters = [[UniversalLinkParameters alloc] initWithFragment:newUniversalLinkFragment universalLinkURL:universalLinkURL presentationParameters:presentationParameters];
                                         
                                         [self handleUniversalLinkWithParameters:newParameters];
                                     }
@@ -1486,14 +1520,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                                 roomPreviewData.viaServers = queryParams[@"via"];
                             }
                             
-                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:screenPresentationParameters];
+                            RoomPreviewNavigationParameters *roomPreviewNavigationParameters = [[RoomPreviewNavigationParameters alloc] initWithPreviewData:roomPreviewData presentationParameters:presentationParameters];
                             
                             [account.mxSession.matrixRestClient roomSummaryWith:roomIdOrAlias via:roomPreviewData.viaServers success:^(MXPublicRoom *room) {
                                 if ([room.roomTypeString isEqualToString:MXRoomTypeStringSpace])
                                 {
                                     [homeViewController stopActivityIndicator];
                                     
-                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:screenPresentationParameters];
+                                    SpacePreviewNavigationParameters *spacePreviewNavigationParameters = [[SpacePreviewNavigationParameters alloc] initWithPublicRoom:room mxSession:account.mxSession presentationParameters:presentationParameters];
                                     
                                     [self showSpacePreviewWithParameters:spacePreviewNavigationParameters];  
                                 }
@@ -1571,7 +1605,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
         // Create the contact related to this member
         MXKContact *contact = [[MXKContact alloc] initMatrixContactWithDisplayName:displayName andMatrixID:userId];
-        [self showContact:contact presentationParameters:screenPresentationParameters];
+        [self showContact:contact presentationParameters:presentationParameters];
 
         continueUserActivity = YES;
     }
@@ -1590,7 +1624,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             }
             
             // Display the group details
-            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:screenPresentationParameters];
+            [self showGroup:group withMatrixSession:account.mxSession presentationParamters:presentationParameters];
             
             continueUserActivity = YES;
         }
