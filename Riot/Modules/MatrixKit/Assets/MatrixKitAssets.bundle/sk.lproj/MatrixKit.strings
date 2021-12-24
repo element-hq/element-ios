@@ -241,3 +241,14 @@
 "auth_username_in_use" = "Používateľské meno sa už používa";
 "login_error_must_start_http" = "URL adresa musí začínať http[s]://";
 "auth_reset_password_error_not_found" = "Nenájdené";
+"notice_unsupported_attachment" = "Nepodporovaná príloha: %@";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ zapol end-to-end šifrovanie (nerozpoznaný algoritmus %2$@).";
+"notice_encryption_enabled_ok" = "%@ zapol end-to-end šifrovanie.";
+"notice_room_related_groups" = "Skupiny pridružené k tejto miestnosti sú: %@";
+"notice_room_aliases_for_dm" = "Aliasy sú: %@";
+"notice_room_aliases" = "Aliasy miestnosti sú: %@";
+"notice_room_power_level_acting_requirement" = "Minimálne úrovne oprávnenia, ktoré musí mať používateľ pred konaním, sú:";
+"notice_room_power_level_intro" = "Úrovne oprávnenia členov miestnosti sú:";
+"notice_room_power_level_intro_for_dm" = "Úrovne oprávnenia členov sú:";
+"notice_room_join_rule_public_by_you_for_dm" = "Zverejnili ste ju.";
+"notice_room_join_rule_public_by_you" = "Túto miestnosť ste zverejnili.";
