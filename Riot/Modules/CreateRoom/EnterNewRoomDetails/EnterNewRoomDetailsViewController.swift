@@ -60,6 +60,7 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         item.isEnabled = false
         return item
     }()
+    private var screenTimer = AnalyticsScreenTimer(screen: .createRoom)
     
     private enum RowType {
         case `default`
@@ -276,10 +277,17 @@ final class EnterNewRoomDetailsViewController: UIViewController {
         self.keyboardAvoider?.startAvoiding()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        screenTimer.start()
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         self.keyboardAvoider?.stopAvoiding()
+        
+        screenTimer.stop()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

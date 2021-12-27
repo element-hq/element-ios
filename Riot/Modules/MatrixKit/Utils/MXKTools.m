@@ -27,7 +27,6 @@
 #import "MXKAppSettings.h"
 #import <MatrixSDK/MXTools.h>
 #import "MXKSwiftHeader.h"
-#import "MXKAnalyticsConstants.h"
 
 #pragma mark - Constants definitions
 
@@ -884,9 +883,7 @@ manualChangeMessageForVideo:(NSString*)manualChangeMessageForVideo
         // Request address book access
         [[CNContactStore new] requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError * _Nullable error) {
             
-            [MXSDKOptions.sharedInstance.analyticsDelegate trackValue:[NSNumber numberWithBool:granted]
-                                                             category:MXKAnalyticsCategoryContacts
-                                                                 name:MXKAnalyticsNameContactsAccessGranted];
+            [MXSDKOptions.sharedInstance.analyticsDelegate trackContactsAccessGranted:granted];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 

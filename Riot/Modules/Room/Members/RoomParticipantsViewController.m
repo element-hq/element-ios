@@ -249,9 +249,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
     
     // Refresh display
     [self refreshTableView];
@@ -266,6 +263,14 @@
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
     }
+
+    if (contactsPickerViewController)
+    {
+        [contactsPickerViewController destroy];
+        contactsPickerViewController = nil;
+    }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -280,6 +285,12 @@
     
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion

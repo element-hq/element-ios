@@ -46,6 +46,7 @@
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
 #import "Contact.h"
+#import "HTMLFormatter.h"
 
 // MatrixKit common imports, shared with all targets
 #import "MatrixKit-Bridging-Header.h"
@@ -63,4 +64,3 @@
 #import "MXKRoomDataSourceManager.h"
 #import "MXRoom+Sync.h"
 #import "UIAlertController+MatrixKit.h"
-#import "MXKAnalyticsConstants.h"
