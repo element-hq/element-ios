@@ -1840,7 +1840,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                         summary.lastMessage.others = [NSMutableDictionary dictionary];
                     }
                     summary.lastMessage.others[@"lastEventDate"] = [eventFormatter dateStringFromEvent:event withTime:YES];
-                    [self->mxSession.store storeSummaryForRoom:summary.roomId summary:summary];
+                    [self->mxSession.store.summariesModule storeSummary:summary];
                 }
                 
                 dispatch_group_leave(dispatchGroup);
