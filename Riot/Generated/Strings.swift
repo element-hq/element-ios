@@ -38,6 +38,7 @@ public class VectorL10n: NSObject {
   /// Add
   public static var add: String { 
     return VectorL10n.tr("Vector", "add") 
+  }
   /// Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
   public static var analyticsPromptMessageNewUser: String { 
     return VectorL10n.tr("Vector", "analytics_prompt_message_new_user") 
@@ -89,7 +90,6 @@ public class VectorL10n: NSObject {
   /// Yes, that's fine
   public static var analyticsPromptYes: String { 
     return VectorL10n.tr("Vector", "analytics_prompt_yes") 
->>>>>>> develop
   }
   /// Please review and accept the policies of this homeserver:
   public static var authAcceptPolicies: String { 
