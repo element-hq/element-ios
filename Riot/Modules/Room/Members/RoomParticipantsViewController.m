@@ -263,12 +263,6 @@
         [memberDetailsViewController destroy];
         memberDetailsViewController = nil;
     }
-
-    if (contactsPickerViewController)
-    {
-        [contactsPickerViewController destroy];
-        contactsPickerViewController = nil;
-    }
     
     [self.screenTimer start];
 }
