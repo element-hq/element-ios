@@ -48,8 +48,8 @@
 "join" = "Bergabung";
 "save" = "Simpan";
 "cancel" = "Batalkan";
-"off" = "Nonaktif";
-"on" = "Aktif";
+"off" = "Mati";
+"on" = "Nyala";
 "retry" = "Coba Lagi";
 "invite" = "Undang";
 "remove" = "Hapus";
@@ -63,9 +63,9 @@
 // Actions
 "view" = "Tampilkan";
 "warning" = "Peringatan";
-"title_groups" = "Komunitas-komunitas";
-"title_rooms" = "Ruangan-ruangan";
-"title_people" = "Orang-orang";
+"title_groups" = "Komunitas";
+"title_rooms" = "Ruangan";
+"title_people" = "Orang";
 "title_favourites" = "Favorit";
 
 // Titles
@@ -101,8 +101,8 @@
 "callbar_only_single_active_group" = "Ketuk untuk Bergabung panggilan grup (%@)";
 "joined" = "Bergabung";
 "collapse" = "tutup";
-"store_promotional_text" = "Aplikasi perpesanan dan kolaborasi yang menjaga privasi, pada jaringan terbuka. Terdesentralisasi untuk Anda kendali. Tidak ada penambangan data, tidak ada backdoor dan tidak ada akses pihak ketiga.";
-"store_full_description" = "Element adalah aplikasi messenger dan kolaborasi tipe baru yang:\n\n1. Menempatkan Anda dalam kendali untuk mempertahankan privasi Anda\n2. Memungkinkan Anda berkomunikasi dengan siapa pun di jaringan Matrix, dan bahkan di luar dengan mengintegrasikan dengan aplikasi seperti Slack\n3. Melindungi Anda dari iklan, menambangan data, backdoor, dan taman berdinding\n4. Mengamankan Anda melalui enkripsi ujung-ke-ujung, dengan penandatanganan-silang untuk memverifikasi orang lain\n\nElement benar-benar berbeda dari aplikasi perpesanan dan kolaborasi lain karena terdesentralisasi dan sumber terbuka.\n\nElement memungkinkan Anda host sendiri - atau memilih host - sehingga Anda memiliki privasi, kepemilikan, dan kontrol data dan percakapan Anda. Ini memberi Anda akses ke jaringan terbuka; jadi Anda tidak hanya terjebak berbicara dengan pengguna Element. Itu sangat aman.\n\nElement dapat melakukan semua ini karena beroperasi pada Matrix - standar untuk komunikasi terdesentralisasi terbuka.\n\nElement menempatkan Anda dalam kendali dengan membiarkan Anda memilih siapa yang meng-host percakapan Anda. Dari aplikasi Element, Anda dapat memilih untuk meng-host dengan cara yang berbeda:\n\n1. Dapatkan akun gratis pada server publik matrix.org\n2. Host sendiri akun Anda dengan menjalankan server pada perangkat keras Anda sendiri\n3. Mendaftar untuk akun di server khusus dengan hanya berlangganan platform hosting Element Matrix Services\n\nMengapa memilih Element?\n\nMILIKI DATA ANDA: Anda memutuskan di mana harus menyimpan data dan pesan Anda. Anda memilikinya dan mengendalikannya, bukan perusahaan besar yang menambang data Anda atau memberikan akses ke pihak ketiga.\n\nPESAN DAN KOLABORASI TERBUKA: Anda dapat mengobrol dengan orang lain di jaringan Matrix, jika mereka menggunakan Element atau aplikasi Matrix lain, dan bahkan jika mereka menggunakan sistem perpesanan seperti Slack, IRC atau XMPP.\n\nSUPER-AMAN: Enkripsi ujung-ke-ujung (hanya mereka yang dalam percakapan dapat mendekripsi pesan), dan penandatanganan-silang untuk memverifikasi perangkat peserta percakapan.\n\nKOMUNIKASI LENGKAP: Pesan, panggilan suara dan video, berbagi file, berbagi layar dan banyak integrasi, bot dan widget. Buat ruangan, komunitas, tetap terhubung dan selesaikan hal-hal.\n\nDI MANA PUN ANDA BERADA: Tetap berkomunikasi di mana pun Anda berada dengan riwayat pesan yang sepenuhnya disinkronkan di semua perangkat Anda dan di web di https://app.element.io/.";
+"store_promotional_text" = "Aplikasi perpesanan dan kolaborasi yang menjaga privasi, pada jaringan terbuka. Terdesentralisasi untuk Anda kendali. Tidak ada penambangan data, tidak ada pintu belakang dan tidak ada akses pihak ketiga.";
+"store_full_description" = "Element adalah aplikasi messenger dan kolaborasi tipe baru yang:\n\n1. Menempatkan Anda dalam kendali untuk mempertahankan privasi Anda\n2. Memungkinkan Anda berkomunikasi dengan siapa pun di jaringan Matrix, dan bahkan di luar dengan mengintegrasikan dengan aplikasi seperti Slack\n3. Melindungi Anda dari iklan, menambangan data, pintu belakang, dan taman berdinding\n4. Mengamankan Anda melalui enkripsi ujung-ke-ujung, dengan penandatanganan silang untuk memverifikasi orang lain\n\nElement benar-benar berbeda dari aplikasi perpesanan dan kolaborasi lain karena Element terdesentralisasi dan sumber terbuka.\n\nElement memungkinkan Anda host sendiri - atau memilih host - sehingga Anda memiliki privasi, kepemilikan, dan kontrol data dan obrolan Anda. Ini memberi Anda akses ke jaringan terbuka, jadi Anda tidak hanya terjebak berbicara dengan pengguna Element. Itu sangat aman.\n\nElement dapat melakukan semua ini karena beroperasi pada Matrix - standar untuk komunikasi terdesentralisasi terbuka.\n\nElement menempatkan Anda dalam kendali dengan membiarkan Anda memilih siapa yang menghost percakapan Anda. Dari aplikasi Element, Anda dapat memilih untuk menghost dengan cara yang berbeda:\n\n1. Dapatkan akun gratis pada server publik matrix.org\n2. Host sendiri akun Anda dengan menjalankan server pada perangkat keras Anda sendiri\n3. Mendaftar untuk akun di server khusus dengan hanya berlangganan platform hosting Element Matrix Services\n\nMengapa memilih Element?\n\nMILIKI DATA ANDA: Anda memutuskan di mana untuk menyimpan data dan pesan Anda. Anda memilikinya dan mengendalikannya, bukan perusahaan besar yang menambang data Anda atau memberikan akses ke pihak ketiga.\n\nPESAN DAN KOLABORASI TERBUKA: Anda dapat mengobrol dengan orang lain di jaringan Matrix, jika mereka menggunakan Element atau aplikasi Matrix lain, dan bahkan jika mereka menggunakan sistem perpesanan seperti Slack, IRC atau XMPP.\n\nSANGAT AMAN: Enkripsi ujung-ke-ujung yang nyata (hanya mereka yang dalam percakapan dapat mendekripsi pesan), dan penandatanganan silang untuk memverifikasi perangkat anggota obrolan.\n\nKOMUNIKASI LENGKAP: Perpesanan, panggilan suara dan video, pembagian file, pembagian layar dan banyak integrasi, bot dan widget. Buat ruangan, komunitas, tetap terhubung dan selesaikan hal-hal.\n\nDI MANA PUN ANDA BERADA: Tetap berkomunikasi di mana pun Anda berada dengan riwayat pesan yang sepenuhnya disinkronkan di semua perangkat Anda dan di web di https://app.element.io/.";
 // String for App Store
 "store_short_description" = "Obrolan/VoIP terdesentralisasi aman";
 
@@ -166,7 +166,7 @@
 "room_message_edits_history_title" = "Editan pesan";
 "room_action_send_file" = "Kirim file";
 "room_action_send_sticker" = "Kirim stiker";
-"room_event_action_reaction_history" = "Sejarah reaksi";
+"room_event_action_reaction_history" = "Riwayat reaksi";
 "room_event_action_reaction_show_less" = "Tampilkan lebih sedikit";
 "room_event_action_reaction_show_all" = "Tampilkan semua";
 "room_event_action_view_encryption" = "Informasi enkripsi";
@@ -472,7 +472,7 @@
 "settings_cryptography" = "KRIPTOGRAFI";
 "settings_devices" = "SESI";
 "settings_labs" = "UJI COBA";
-"settings_other" = "LAINNYA";
+"settings_other" = "Lainnya";
 "settings_advanced" = "LANJUTAN";
 "settings_integrations" = "INTEGRASI";
 "settings_discovery_settings" = "PENEMUAN";
@@ -609,3 +609,1057 @@
 "auth_msisdn_validation_title" = "Menunggu Verifikasi";
 "done" = "Selesai";
 "open" = "Buka";
+"version_check_banner_subtitle_deprecated" = "Kami tidak mendukung %@ di iOS %@ lagi. Untuk terus menggunakan %@ secara maksimal, kami menyarankan Anda untuk meningkatkan versi iOS Anda.";
+"version_check_banner_subtitle_supported" = "Kami akan segera mengakhiri dukungan untuk %@ di iOS %@. Untuk terus menggunakan %@ secara maksimal, kami menyarankan Anda untuk meningkatkan versi iOS Anda.";
+"spaces_coming_soon_detail" = "Fitur ini belum ada di sini, tetapi sedang dalam proses. Untuk saat ini, Anda dapat melakukannya dengan Element di komputer Anda.";
+"spaces_no_member_found_detail" = "Mencari seseorang yang tidak ada di %@? Untuk saat ini, Anda dapat mengundangnya di web atau desktop.";
+"spaces_no_room_found_detail" = "Beberapa hasil mungkin disembunyikan karena ruangannya pribadi dan Anda memerlukan sebuah undangan untuk bergabung.";
+"spaces_empty_space_detail" = "Beberapa ruangan mungkin disembunyikan karena ruangannya pribadi dan Anda memerlukan sebuah undangan.";
+"leave_space_message" = "Apakah anda Anda yakin ingin keluar dari %@? Apakah Anda juga ingin meninggalkan semua ruangan dan space lainnya di space ini?";
+"space_beta_announce_information" = "Space adalah cara baru untuk mengelompokkan ruangan dan orang. Mereka belum ada di iOS, tetapi Anda dapat menggunakannya sekarang di Web dan Desktop.";
+"favourites_empty_view_information" = "Anda dapat memfavoritkan dengan beberapa cara - yang tercepat adalah dengan menekan dan menahan. Ketuk ikon bintang dan mereka akan secara otomatis muncul di sini.";
+"home_empty_view_information" = "Aplikasi obrolan aman semua-dalam-satu untuk tim, teman, dan organisasi. Ketuk tombol + di bawah untuk menambahkan orang dan ruangan.";
+"pin_protection_explanatory" = "Menyiapkan PIN memungkinkan Anda melindungi data seperti pesan dan kontak, jadi hanya Anda yang dapat mengaksesnya dengan memasukkan PIN di awal aplikasi.";
+"major_update_information" = "Kami senang mengumumkan bahwa kami telah mengubah nama kami! Aplikasi Anda telah diperbarui dan Anda masuk ke akun Anda.";
+"secrets_reset_warning_message" = "Anda akan memulai ulang tanpa riwayat, tanpa pesan, perangkat tepercaya, atau pengguna tepercaya.";
+"secrets_setup_recovery_key_storage_alert_message" = "✓ Cetak dan simpan di tempat yang aman\n✓ Simpan di flashdisk USB atau drive cadangan\n✓ Salin ke penyimpanan awan pribadi Anda";
+"secrets_recovery_with_key_information_default" = "Akses riwayat pesan terenkripsi Anda dan identitas penandatanganan silang Anda untuk memverifikasi sesi lain dengan memasukkan Kunci Keamanan Anda.";
+"secrets_recovery_with_passphrase_information_default" = "Akses riwayat pesan terenkripsi Anda dan identitas penandatanganan silang Anda untuk memverifikasi sesi lain dengan memasukkan Frasa Keamanan Anda.";
+"user_verification_session_details_additional_information_untrusted_other_user" = "Hingga pengguna ini memercayai sesi ini, pesan yang dikirim ke dan dari sesi ini akan diberi label peringatan. Atau, Anda dapat memverifikasinya secara manual.";
+"user_verification_session_details_information_untrusted_current_user" = "Verifikasi sesi ini untuk menandainya sebagai tepercaya & memberikan akses ke pesan terenkripsi:";
+"user_verification_sessions_list_information" = "Pesan dengan pengguna ini di ruangan ini dienkripsi secara ujung-ke-ujung dan tidak dapat dibaca oleh pihak ketiga.";
+
+// User
+
+"key_verification_verified_user_information" = "Pesan dengan pengguna ini dienkripsi secara ujung-ke-ujung dan tidak dapat dibaca oleh pihak ketiga.";
+"key_verification_verified_this_session_information" = "Anda sekarang dapat membaca pesan aman di perangkat ini, dan pengguna lain akan tahu bahwa mereka dapat mempercayainya.";
+"key_verification_verified_new_session_information" = "Anda sekarang dapat membaca pesan aman di perangkat baru Anda, dan pengguna lain akan tahu bahwa mereka dapat mempercayainya.";
+"key_verification_verified_other_session_information" = "Anda sekarang dapat membaca pesan terenkripsi di sesi Anda yang lain, dan pengguna lain akan tahu bahwa mereka dapat mempercayainya.";
+"key_verification_manually_verify_device_additional_information" = "Jika tidak cocok, keamanan komunikasi Anda mungkin dikompromikan.";
+"key_verification_manually_verify_device_instruction" = "Konfirmasi dengan membandingkan berikut ini dengan Pengaturan Pengguna di sesi Anda yang lain:";
+"key_verification_verify_sas_additional_information" = "Untuk keamanan yang maksimal, gunakan sarana komunikasi tepercaya lainnya atau lakukan ini secara langsung.";
+"device_verification_self_verify_wait_information" = "Verifikasi sesi ini dari salah satu sesi Anda yang lain, memberikan akses ke pesan terenkripsi.\n\nGunakan %@ yang terbaru di perangkat Anda yang lain:";
+"key_verification_self_verify_unverified_sessions_alert_message" = "Verifikasi semua sesi Anda untuk memastikan akun & pesan Anda aman.";
+"device_verification_self_verify_start_information" = "Gunakan sesi ini untuk memverifikasi sesi Anda yang baru, memberikan akses ke pesan terenkripsi.";
+"device_verification_start_use_legacy" = "Tidak ada yang muncul? Belum semua klien mendukung verifikasi interaktif. Gunakan verifikasi warisan.";
+"device_verification_incoming_description_2" = "Memverifikasi sesi ini akan menandainya sebagai tepercaya, dan juga menandai sesi Anda sebagai terpercaya kepada pengguna yang lain.";
+"device_verification_incoming_description_1" = "Verifikasi sesi ini untuk menandainya sebagai tepercaya. Mempercayai sesi pengguna memberi Anda ketenangan pikiran ekstra saat menggunakan enkripsi ujung-ke-ujung.";
+"sign_out_key_backup_in_progress_alert_title" = "Pencadangan kunci sedang berlangsung. Jika Anda keluar sekarang, Anda akan kehilangan akses ke pesan terenkripsi Anda.";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Anda akan kehilangan akses ke pesan terenkripsi Anda kecuali jika Anda mencadangkan kunci Anda sebelum keluar.";
+"key_backup_recover_from_recovery_key_lost_recovery_key_action" = "Kehilangan Kunci Keamanan Anda dapat menyiapkan yang baru di pengaturan.";
+"key_backup_recover_invalid_recovery_key" = "Cadangan tidak dapat didekripsi dengan kunci ini: harap verifikasi bahwa Anda memasukkan Kunci Keamanan yang benar.";
+"key_backup_recover_invalid_passphrase" = "Cadangan tidak dapat didekripsi dengan frasa ini: harap verifikasi bahwa Anda memasukkan Frasa Keamanan yang benar.";
+
+// Success from recovery key
+"key_backup_setup_success_from_recovery_key_info" = "Kunci Anda sedang dicadangkan.\n\nBuat sebuah salinan dari Kunci Keamanan ini dan simpan di tempat yang aman.";
+"key_backup_setup_skip_alert_message" = "Anda mungkin kehilangan akses ke pesan terenkripsi jika Anda keluar atau menghilangkan perangkat Anda.";
+"secure_key_backup_setup_existing_backup_error_info" = "Buka kunci untuk menggunakannya kembali di cadangan aman atau hapus untuk membuat cadangan pesan baru di cadangan aman.";
+"secure_key_backup_setup_intro_use_security_passphrase_info" = "Masukkan frasa rahasia yang hanya Anda yang tahu, dan buat kunci untuk cadangan.";
+"secure_key_backup_setup_intro_use_security_key_info" = "Buat sebuah kunci keamanan untuk disimpan di tempat yang aman seperti pengelola kata sandi atau brankas.";
+"secure_key_backup_setup_intro_info" = "Lindungi dari kehilangan akses ke pesan & data terenkripsi dengan mencadangkan kunci enkripsi di server Anda.";
+"rerequest_keys_alert_message" = "Mohon buka %@ pada perangkat yang lain yang dapat mendekripsi pesan sehingga dapat mengirim kunci ke sesi ini.";
+"deactivate_account_forget_messages_information_part3" = ": ini akan menyebabkan pengguna di masa mendatang melihat tampilan percakapan yang tidak lengkap)";
+"deactivate_account_forget_messages_information_part1" = "Mohon lupakan semua pesan yang saya telah kirim ketika akun saya dinonaktifkan (";
+"service_terms_modal_information_description_identity_server" = "Sebuah server identitas membantu Anda menemukan kontak Anda, dengan mencari nomor telepon atau alamat email mereka, untuk melihat apakah mereka sudah memiliki akun.";
+"service_terms_modal_description_identity_server" = "Ini akan mengizinkan seseorang untuk menemukan Anda jika mereka menyimpan nomor telepon atau email Anda di kontak telepon mereka.";
+"service_terms_modal_description_integration_manager" = "Ini akan mengizinkan Anda untuk menggunakan bot, jembatan, widget, dan paket stiker.";
+
+// GDPR
+"gdpr_consent_not_given_alert_message" = "Untuk terus menggunakan homeserver %@, Anda harus menyetujui syarat dan ketentuannya.";
+"share_extension_failed_to_encrypt" = "Gagal untuk mengirim. Periksa di aplikasi utama pengaturan enkripsi untuk ruangan ini";
+"bug_report_logs_description" = "Untuk mendiagnosis masalah, log dari klien ini akan dikirim dengan laporan bug ini. Jika Anda lebih memilih untuk hanya mengirim teks di atas, harap hapus centang:";
+"bug_report_description" = "Harap jelaskan bugnya. Apa yang Anda lakukan? Apa yang Anda harapkan terjadi? Apa yang sebenarnya terjadi?";
+"e2e_key_backup_wrong_version" = "Cadangan kunci pesan aman baru telah terdeteksi.\n\nJika ini bukan Anda, atur Frasa Keamanan baru di Pengaturan.";
+
+// Crypto
+"e2e_enabling_on_app_update" = "%@ sekarang mendukung enkripsi ujung-ke-ujung tetapi Anda harus masuk lagi untuk mengaktifkannya.\n\nAnda dapat melakukannya sekarang atau nanti di pengaturan aplikasi.";
+
+// Crash report
+"google_analytics_use_prompt" = "Apakah Anda ingin membantu meningkatkan %@ dengan secara otomatis melaporkan laporan kerusakan dan data penggunaan secara anonim?";
+"no_voip" = "%@ sedang memanggil Anda tetapi %@ belum mendukung panggilan.\nAnda dapat mengabaikan notifikasi ini dan jawab panggilannya di perangkat yang lain atau menolak panggilannya.";
+"call_no_stun_server_error_message_1" = "Mohon hubungi administrator homeserver %@ Anda untuk mengatur sebuah server TURN supaya panggilan dapat bekerja dengan handal.";
+"rage_shake_prompt" = "Anda tampaknya menggoyangkan telepon dengan frustrasi. Apakah Anda ingin mengirimkan laporan bug?";
+"bug_report_prompt" = "Aplikasi telah crash terakhir kali. Apakah Anda ingin mengirimkan laporan crash?";
+"room_notifs_settings_encrypted_room_notice" = "Harap dicatat bahwa notifikasi sebutan & keyword tidak tersedia di ruang terenkripsi di ponsel.";
+"room_details_addresses_disable_main_address_prompt_msg" = "Anda tidak akan memiliki alamat utama yang ditentukan. Alamat utama default untuk ruangan ini akan dipilih secara acak";
+"room_details_history_section_prompt_msg" = "Perubahan siapa yang dapat membaca riwayat hanya akan berlaku untuk pesan berikutnya di ruang ini. Visibilitas riwayat yang ada tidak akan berubah.";
+"identity_server_settings_alert_error_terms_not_accepted" = "Anda harus menerima syaratnya %@ untuk menyetelnya sebagai server identitas.";
+"identity_server_settings_alert_change" = "Lepaskan hubungan dari server identitas %1$@ dan hubungkan ke %2$@?";
+"identity_server_settings_alert_no_terms" = "Server identitas ini yang Anda pilih tidak memiliki syarat layanan. Hanya lanjutkan jika Anda mempercayai pemilik server itu.";
+"identity_server_settings_disconnect_info" = "Melepas hubungan dari server identitas Anda akan berarti Anda tidak akan dapat ditemukan oleh pengguna lain dan tidak akan dapat mengundang orang lain menggunakan email atau telepon.";
+"identity_server_settings_no_is_description" = "Anda saat ini tidak menggunakan sebuah server identitas. Untuk menemukan dan dapat ditemukan oleh kontak yang sudah ada, tambahkan satu di atas.";
+"identity_server_settings_description" = "Anda saat ini menggunakan %@ untuk menemukan dan dapat ditemukan oleh kontak yang Anda tahu.";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "Aplikasi ini tidak mendukung mekanisme otentikasi di homeserver Anda.";
+"security_settings_coming_soon" = "Maaf. Aksi ini belum tersedia di %@ iOS. Mohon gunakan klien Matrix yang lain untuk menyiapkannya. %@ iOS akan menggunakannya.";
+"security_settings_blacklist_unverified_devices_description" = "Verifikasi semua sesi pengguna untuk menandainya sebagai terpercaya dan kirim pesan ke mereka.";
+"security_settings_crosssigning_info_exists" = "Akun Anda memiliki identitas penandatanganan silang, tetapi belum dipercayai oleh sesi ini. Selesaikan keamanan sesi ini.";
+"security_settings_secure_backup_description" = "Cadangkan kunci enkripsi Anda dengan data akun Anda untuk berjaga-jaga jika Anda kehilangan akses ke sesi Anda. Kunci Anda akan diamankan dengan Kunci Keamanan yang unik.";
+"security_settings_crypto_sessions_description_2" = "Jika Anda tidak tahu sebuah login, ubah kata sandi Anda dan atur ulang Cadangan Aman.";
+"settings_identity_server_no_is_description" = "Anda saat ini tidak menggunakan sebuah server identitas. Untuk menemukan dan dapat ditemukan oleh kontak yang Anda tahu, tambahkan satu di atas.";
+"settings_identity_server_description" = "Dengan menggunakan set server identitas di atas, Anda dapat menemukan dan dapat ditemukan oleh kontak yang ada yang Anda kenal.";
+"settings_discovery_three_pid_details_information_phone_number" = "Kelola preferensi untuk nomor telepon ini, yang dapat digunakan pengguna lain untuk menemukan Anda dan digunakan untuk mengundang Anda ke ruangan. Tambahkan atau hapus nomor telepon di Akun.";
+"settings_discovery_three_pid_details_information_email" = "Kelola preferensi untuk alamat email ini, yang dapat digunakan pengguna lain untuk menemukan Anda dan digunakan untuk mengundang Anda ke ruangan. Tambahkan atau hapus alamat email di Akun.";
+"settings_discovery_terms_not_signed" = "Setujui server identitas (%@) Persyaratan Layanan agar Anda dapat ditemukan dengan alamat email atau nomor telepon.";
+"settings_discovery_no_identity_server" = "Saat ini Anda tidak menggunakan sebuah server identitas. Supaya Anda dapat ditemukan oleh kontak yang sudah ada yang Anda kenal, tambahkan satu.";
+"pin_protection_reset_alert_message" = "Untuk mengatur ulang PIN, Anda harus masuk kembali dan buat yang baru lagi";
+"device_verification_security_advice_emoji" = "Bandingkan emoji yang unik, memastikannya muncul dengan urutan yang sama.";
+"secrets_reset_information" = "Lakukan ini hanya jika Anda tidak memiliki perangkat lain yang dapat digunakan untuk memverifikasi perangkat ini.";
+"secrets_setup_recovery_passphrase_summary_information" = "Ingat Frasa Keamanan Anda. Itu dapat digunakan untuk mengakses pesan & data terenkripsi Anda.";
+"secrets_setup_recovery_passphrase_information" = "Masukkan frasa keamanan yang hanya Anda tahu, akan digunakan untuk mengamankan rahasia di server Anda.";
+"secrets_setup_recovery_key_information" = "Simpan Kunci Keamanan Anda di tempat yang aman. Itu bisa digunakan untuk mengakses pesan % data terenkripsi Anda.";
+"leave_space_message_admin_warning" = "Anda adalah admin space ini, pastikan Anda telah mentransfer hak admin ke anggota lain sebelum keluar.";
+"space_feature_unavailable_subtitle" = "Space belum ada di iOS, tetapi Anda bisa menggunakannya di Web dan Desktop";
+"room_intro_cell_information_multiple_dm_sentence2" = "Hanya Anda yang ada dalam obrolan ini, kecuali jika Anda mengundang seseorang untuk bergabung.";
+"room_intro_cell_information_dm_sentence2" = "Hanya Anda berdua yang ada dalam obrolan ini, tidak ada orang lain yang bisa bergabung.";
+"create_room_section_footer_type" = "Orang-orang bergabung ke ruang pribadi hanya dengan undangan ruangan.";
+"biometrics_cant_unlocked_alert_message_x" = "Untuk mengakses, gunakan %@ atau masuk kembali dan aktifkan %@ lagi";
+"pin_protection_not_allowed_pin" = "Untuk keamanan, PIN ini tidak tersedia. Coba PIN yang lain";
+"pin_protection_settings_section_footer" = "Untuk mengatur ulang PIN, Anda harus masuk lagi dan buat yang baru.";
+"pin_protection_mismatch_too_many_times_error_message" = "JIka Anda lupa PIN Anda, ketuk tombol lupa PIN.";
+"secrets_recovery_with_key_invalid_recovery_key_message" = "Mohon verifikasi jika Anda telah masukkan Kunci Keamanan yang benar.";
+"secrets_recovery_with_passphrase_invalid_passphrase_message" = "Mohon verifikasi jika Anda telah masukkan Frasa Keamanan yang benar.";
+"user_verification_session_details_additional_information_untrusted_current_user" = "Jika Anda tidak masuk ke sesi ini, akun Anda mungkin dikompromikan.";
+"user_verification_session_details_information_trusted_current_user" = "Sesi ini dipercayai untuk perpesanan aman karena Anda memverifikasinya:";
+"user_verification_start_additional_information" = "Supaya aman, lakukan ini secara langsung atau gunakan cara yang lain untuk berkomunikasi.";
+"user_verification_start_information_part2" = " dengan memeriksa sebuah kode sekali-pakai di kedua perangkat Anda.";
+"key_verification_verify_qr_code_other_scan_my_code_title" = "Apakah pengguna yang lain berhasil memindai kode QR-nya?";
+
+
+// Generic errors
+"error_invite_3pid_with_no_identity_server" = "Tambahkan sebuah server identitas di pengaturan Anda untuk mengundang dengan email.";
+"device_verification_self_verify_wait_additional_information" = "Ini bekerja dengan %@ dan klien Matrix lainnya yang mampu melakukan penandatanganan silang.";
+"device_verification_security_advice_number" = "Bandingkan nomornya, memastikannya muncul dengan urutan yang sama.";
+"sign_out_non_existing_key_backup_alert_title" = "Anda akan kehilangan akses ke pesan terenkripsi jika Anda keluar";
+
+// Recover from recovery key
+
+"key_backup_recover_from_recovery_key_info" = "Gunakan Frasa Keamanan Anda untuk mengakses riwayat pesan secara aman";
+
+// Recover from passphrase
+
+"key_backup_recover_from_passphrase_info" = "Gunakan Frasa Keamanan Anda untuk mengakses riwayat pesan secara aman";
+"key_backup_setup_passphrase_setup_recovery_key_info" = "Atau, amankan cadangan Anda dengan sebuah Kunci Keamanan, menyimpannya di tempat yang aman.";
+"secure_backup_setup_banner_subtitle" = "Amankan dari kehilangan akses ke pesan & data terenkripsi";
+"deactivate_account_informations_part4_emphasize" = "tidak secara default menyebabkan kami melupakan pesan yang telah Anda kirim. ";
+"service_terms_modal_information_description_integration_manager" = "Sebuah pengelola integrasi mengizinkan Anda untuk menambahkan fitur dari pihak ketiga.";
+"e2e_room_key_request_message_new_device" = "Anda menambahkan sebuah sesi baru '%@', yang meminta kunci enkripsi.";
+"room_widget_permission_webview_information_title" = "Menggunakannya mungkin mengatur cookie dan membagikan data dengan %@:\n";
+"widget_integration_no_permission_in_room" = "Anda tidak memiliki izin untuk melakukannya di ruangan ini.";
+
+// Widget Integration Manager
+"widget_integration_need_to_be_able_to_invite" = "Anda harus dapat mengundang pengguna untuk melakukannya.";
+"widget_no_power_to_manage" = "Anda perlu izin untuk mengelola widget di ruangan ini";
+"photo_library_access_not_granted" = "%@ tidak memiliki izin untuk mengakses perpustakaan foto, mohon ubah pengaturan privasi";
+"camera_access_not_granted" = "%@ tidak memiliki izin untuk menggunakan Kamera, mohon ubah pengaturan privasi";
+"group_participants_invite_malformed_id" = "ID yang cacat. Seharusnya sebuah ID Matrix seperti '@pengguna:domain'";
+"group_participants_invite_prompt_msg" = "Apakah Anda yakin untuk mengundang %@ ke grup ini?";
+"group_participants_remove_prompt_msg" = "Apakah Anda yakin untuk mengeluarkan %@ dari grup ini?";
+"group_participants_leave_prompt_msg" = "Apakah Anda yakin untuk meninggalkan grup ini?";
+"room_details_fail_to_update_room_direct" = "Gagal untuk memperbarui detail ruangan ini";
+"room_details_flair_invalid_id_prompt_msg" = "%@ bukan pengenal yang valid untuk sebuah komunitas";
+"room_details_addresses_invalid_address_prompt_msg" = "%@ bukan format yang valid untuk sebuah alias";
+"room_details_history_section_members_only" = "Anggota saha (sejak opsi ini dipilih)";
+"room_details_access_section_no_address_warning" = "Untuk menautkan ke ruangan itu harus memiliki alamat";
+"voice_message_stop_locked_mode_recording" = "Ketuk pada rekaman Anda untuk berhenti atau dengarkan";
+"room_intro_cell_information_dm_sentence1_part1" = "Ini adalah awal dari pesan langsung Anda dengan ";
+"room_intro_cell_information_room_without_topic_sentence2_part2" = " supaya orang tahu tentang ruangan ini.";
+"invite_friends_share_text" = "Hai, bicara kepada saya di %@: %@";
+"biometrics_usage_reason" = "Otentikasi diperlukan untuk mengakses aplikasi ini";
+"pin_protection_kick_user_alert_message" = "Terlalu banyak kesalahan, Anda telah dikeluarkan";
+"secrets_setup_recovery_passphrase_confirm_information" = "Masukkan Frasa Keamanan Anda untuk mengkonfirmasi.";
+"secrets_recovery_with_key_information_verify_device" = "Gunakan Kunci Keamanan Anda untuk memverifikasi perangkat ini.";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Tidak tahu Frasa Keamanan Anda? Anda dapat ";
+"secrets_recovery_with_passphrase_information_verify_device" = "Gunakan Frasa Keamanan Anda untuk memverifikasi perangkat ini.";
+"user_verification_session_details_information_trusted_other_user_part1" = "Sesi ini dipercayai untuk perpesanan Aman karena ";
+"device_verification_self_verify_alert_message" = "Verifikasi login baru yang mengakses akun Anda: %@";
+
+// MARK: Sign out warning
+
+"sign_out_existing_key_backup_alert_title" = "Apakah Anda yakin untuk keluar?";
+
+// Passphrase
+
+"key_backup_setup_passphrase_title" = "Amankan cadangan Anda dengan sebuah Frasa Sandi";
+
+// Service terms
+"service_terms_modal_title_message" = "Untuk melanjutkan, setujui syarat dan ketentuan di bawah";
+"e2e_room_key_request_message" = "Sesi '%@' yang belum diverifikasi meminta kunci enkripsi.";
+
+// Share extension
+"share_extension_auth_prompt" = "Masuk di aplikasi utama untuk membagikan konten";
+"widget_integration_manager_disabled" = "Anda perlu mengaktifkan pengelola integrasi di pengaturan";
+"bug_crash_report_description" = "Jelaskan apa yang Anda lakukan sebelum crashnya:";
+"directory_server_type_homeserver" = "Ketik sebuah homeserver untuk menampilkan daftar ruangan publik";
+"room_details_access_section_anyone_apart_from_guest" = "Siapa saja yang tahu tautan ruangan, selain dari tamu";
+"security_settings_complete_security_alert_message" = "Anda seharusnya menyelesaikan keamanan di sesi Anda saat ini dulu.";
+"key_verification_scan_confirmation_scanned_device_information" = "Apakah perangkat yang lain menampilkan perisai yang sama?";
+"key_verification_verify_qr_code_information" = "Pindai kodenya untuk memverifikasi dengan sesama dengan aman.";
+"error_not_supported_on_mobile" = "Anda tidak melakukannya dari %@ mobile.";
+"device_verification_self_verify_wait_recover_secrets_additional_information" = "Jika Anda tidak dapat mengakses sesi yang sudah ada";
+
+// MARK: Start
+"device_verification_start_title" = "Verifikasi dengan membandingkan string teks pendek";
+"device_verification_cancelled_by_me" = "Verifikasi telah dibatalkan. Alasan: %@";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part1" = "Tidak tahu Frasa Keamanan Anda? Anda dapat ";
+"service_terms_modal_footer" = "Ini dapat dinonaktifkan di pengaturan.";
+"room_widget_permission_information_title" = "Menggunakannya mungkin membagikan data dengan %@:\n";
+"widget_sticker_picker_no_stickerpacks_alert" = "Saat ini Anda tidak mengaktifkan paket stiker apapun.";
+"call_already_displayed" = "Sudah ada panggilan yang sedang berlangsung.";
+"camera_unavailable" = "Kamera tidak tersedia di perangkat Anda";
+"network_offline_prompt" = "Koneksi internetnya terlihat offline.";
+"group_participants_invite_another_user" = "Cari/undang dengan ID Pengguna atau Nama";
+"group_invitation_format" = "%@ telah mengundang Anda untuk bergabung ke komunitas ini";
+"room_notifs_settings_manage_notifications" = "Anda dapat mengelola notifikasi di %@";
+"room_details_fail_to_enable_encryption" = "Gagal untuk mengaktifkan enkripsi di ruangan ini";
+"room_details_fail_to_add_room_aliases" = "Gagal untuk menambahkan alamat ruangan baru";
+"room_details_fail_to_update_room_guest_access" = "Gagal untuk memperbarui akses tamu";
+"room_details_fail_to_update_room_directory_visibility" = "Gagal untuk memperbarui visibilitas direktori ruangan";
+"room_details_advanced_e2e_encryption_disabled" = "Enkripsi tidak diaktifkan di ruangan ini.";
+"room_details_advanced_enable_e2e_encryption" = "Aktifkan enkripsi (peringatan: tidak dapat dinonaktifkan lagi!)";
+"room_details_access_section_anyone_for_dm" = "Siapa saja yang tahu tautannya, termasuk tamu";
+"room_details_access_section_anyone" = "Siapa saja yang tahu tautannya ruangan, termasuk tamu";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "Siapa saja yang tahu linknya, selain dari tamu";
+"identity_server_settings_alert_error_invalid_identity_server" = "%@ bukan server identitas yang valid.";
+"identity_server_settings_alert_no_terms_title" = "Server identitas tidak mempunyai kebijakan layanan";
+"security_settings_user_password_description" = "Konfirmasi identitas Anda dengan memasukkan kata sandi akun Anda";
+"security_settings_secure_backup_info_valid" = "Sesi ini mencadangkan kunci Anda.";
+"version_check_modal_title_deprecated" = "Kami tidak mendukung iOS %@ lagi";
+"version_check_modal_title_supported" = "Kami mengakhiri dukungan untuk iOS %@";
+"version_check_banner_title_deprecated" = "Kami tidak mendukung iOS %@ lagi";
+
+// Mark: - Version check
+
+"version_check_banner_title_supported" = "Kami mengakhiri dukungan untuk iOS %@";
+
+// Mark: - Voice Messages
+
+"voice_message_release_to_send" = "Tahan untuk merekam, lepaskan untuk mengirim";
+"spaces_empty_space_title" = "Space ini belum ada ruangan";
+"create_room_show_in_directory" = "Tampilkan ruangan di direktori";
+"secrets_reset_authentication_message" = "Masukkan kata sandi akun Anda untuk mengkonfirmasi";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_key" = "Masukkan Kunci Keamanan Anda untuk melanjutkan.";
+"secrets_recovery_with_key_information_unlock_secure_backup_with_phrase" = "Masukkan Frasa Keamanan Anda untuk melanjutkan.";
+
+// MARK: - Secrets recovery
+
+"secrets_recovery_reset_action_part_1" = "Lupa atau kehilangan semua opsi pemulihan? ";
+"user_verification_session_details_information_untrusted_other_user" = " masuk dengan sesi baru:";
+"key_verification_scan_confirmation_scanned_user_information" = "Apakah %@ menampilkan perisai yang sama?";
+"key_verification_verify_qr_code_scan_other_code_success_message" = "Kode QR berhasil divalidasi.";
+"key_verification_verify_qr_code_information_other_device" = "Pindai kode di bawah untuk memverifikasi:";
+"key_verification_bootstrap_not_setup_message" = "Anda harus mem-bootstrap penandatanganan-silang dulu.";
+"device_verification_self_verify_wait_recover_secrets_checking_availability" = "Memeriksa untuk kemampuan verifikasi lain ...";
+"key_verification_self_verify_current_session_alert_message" = "Pengguna yang lain mungkin tidak mempercayainya.";
+"device_verification_cancelled" = "Pengguna yang lain membatalkan verifikasinya.";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Saya tidak ingin pesan terenkripsi saya";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Anda akan kehilangan pesan terenkripsi Anda";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Saya tidak ingin pesan terenkripsi saya";
+
+// Success from secure backup
+"key_backup_setup_success_from_secure_backup_info" = "Kunci Anda sedang dicadangkan.";
+"key_backup_setup_passphrase_setup_recovery_key_action" = "(Lanjutan) Siapkan dengan Kunci Keamanan";
+"key_backup_setup_intro_setup_connect_action_with_existing_backup" = "Hubungkan perangkat ini ke Cadangan Kunci";
+"secure_key_backup_setup_existing_backup_error_title" = "Sudah ada cadangan untuk pesan";
+"room_predecessor_link" = "Ketuk di sini untuk melihat pesan lama.";
+"room_many_users_are_typing" = "%@, %@ & lainnya sedang mengetik…";
+"room_two_users_are_typing" = "%@ & %@ sedang mengetik…";
+"room_participants_security_information_room_not_encrypted_for_dm" = "Pesan di sini tidak terenkripsi secara ujung-ke-ujung.";
+"room_participants_action_unignore" = "Tampilkan semua pesan dari penguna ini";
+"room_participants_action_ignore" = "Sembunyikan semua pesan dari pengguna ini";
+"find_your_contacts_title" = "Mulai dengan mendaftar kontak Anda";
+"contacts_address_book_permission_required" = "Izin diperlukan untuk mengakses kontak lokal";
+"settings_labs_message_reaction" = "Bereaksi ke pesan dengan emoji";
+"settings_labs_create_conference_with_jitsi" = "Buat panggilan konferensi dengan jitsi";
+"settings_unignore_user" = "Tampilkan semua pesan dari %@?";
+"settings_calls_stun_server_fallback_button" = "Izinkan cadangan server untuk panggilan";
+"settings_messages_by_a_bot" = "Pesan dari sebuah bot";
+"settings_pin_rooms_with_unread" = "Pin ruangan dengan pesan yang belum dibaca";
+"settings_pin_rooms_with_missed_notif" = "Pin ruangan dengan notifikasi yang terlewat";
+"settings_confirm_media_size" = "Konfirmasi ukuran saat mengirim";
+"settings_sending_media" = "MENGIRIM GAMBAR DAN VIDEO";
+"settings_mark_all_as_read" = "Tandai semua pesan sebagai terbaca";
+"room_resource_usage_limit_reached_message_contact_3" = " untuk menambahkan batas ini.";
+"room_resource_limit_exceeded_message_contact_3" = " untuk melanjutkan menggunakan perangkat ini.";
+"room_event_action_ban_prompt_reason" = "Alasan untuk mencekal pengguna ini";
+"room_event_action_kick_prompt_reason" = "Alasan untuk mengeluarkan pengguna ini";
+"room_event_action_report_prompt_reason" = "Alasan untuk melaporkan konten ini";
+"room_message_unable_open_link_error_message" = "Tidak dapat membuka tautan ini.";
+"directory_search_results_more_than" = ">%tu hasil ditemukan untuk %@";
+"directory_search_results" = "%tu hasil ditemukan untuk %@";
+"room_creation_invite_another_user" = "ID Pengguna, nama atau email";
+"space_participants_action_ban" = "Cekal dari space ini";
+"space_participants_action_remove" = "Keluarkan dari space ini";
+"leave_space_only_action" = "Jangan tinggalkan ruangan apapun";
+"space_beta_announce_title" = "Space akan segera datang";
+
+// Mark: - Spaces
+
+"space_feature_unavailable_title" = "Space belum ada disini";
+
+// MARK: - Invite friends
+
+"invite_friends_action" = "Undang teman-teman ke %@";
+
+// MARK: - Favourites
+
+"favourites_empty_view_title" = "Ruangan dan orang favorit";
+
+// MARK: - Home
+
+"home_empty_view_title" = "Selamat datang di %@,\n%@";
+
+// MARK: - Searchable Directory View Controller
+
+"searchable_directory_create_new_room" = "Buat sebuah ruangan baru";
+
+// MARK: - Major update
+
+"major_update_title" = "Riot sekarang adalah %@";
+"secrets_reset_warning_title" = "Jika Anda mengatur ulang semua";
+"secrets_setup_recovery_passphrase_summary_title" = "Simpan Frasa Sandi Anda";
+
+// Recovery passphrase
+
+"secrets_setup_recovery_passphrase_title" = "Atur sebuah Frasa Sandi";
+
+// MARK: - Secrets set up
+
+// Recovery Key
+
+"secrets_setup_recovery_key_title" = "Simpan Kunci Keamanan Anda";
+"secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "gunakan Kunci Kemanan anda";
+"user_verification_session_details_verify_action_current_user_manually" = "Verifikasi dengan Teks Secara Manual";
+"user_verification_start_information_part1" = "Untuk keamanan lebih, verifikasi ";
+"key_verification_scan_confirmation_scanning_device_waiting_other" = "Menunggu untuk perangkat lainnya…";
+
+// Incoming key verification request
+
+"key_verification_incoming_request_incoming_alert_message" = "%@ ingin memverifikasi";
+"file_upload_error_unsupported_file_type_message" = "Tipe file tidak didukung.";
+
+// MARK: Manually Verify Device
+
+"key_verification_manually_verify_device_title" = "Verifikasi dengan Teks Secara Manual";
+"device_verification_error_cannot_load_device" = "Tidak dapat memuat informasi sesi.";
+"key_verification_new_session_title" = "Verifikasi sesi baru Anda";
+"sign_out_non_existing_key_backup_alert_setup_secure_backup_action" = "Mulai menggunakan Cadangan Aman";
+"secure_key_backup_setup_intro_use_security_passphrase_title" = "Gunakan sebuah Frasa Keamanan";
+"key_backup_recover_from_passphrase_lost_passphrase_action_part2" = "gunakan Kunci Kemanan Anda";
+"key_backup_setup_success_from_recovery_key_made_copy_action" = "Saya telah membuat sebuah salinan";
+"key_backup_setup_passphrase_passphrase_invalid" = "Coba menambahkan sebuah kata";
+"key_backup_setup_intro_setup_action_without_existing_backup" = "Mulai menggunakan Cadangan Kunci";
+
+// Intro
+
+"key_backup_setup_intro_title" = "Jangan kehilangan pesan terenkripsi";
+"secure_key_backup_setup_intro_use_security_key_title" = "Gunakan sebuah Kunci Keamanan";
+"deactivate_account_informations_part2_emphasize" = "Aksi ini tidak dapat diurungkan.";
+"service_terms_modal_policy_checkbox_accessibility_hint" = "Periksa untuk menerima %@";
+"widget_integration_missing_user_id" = "Tidak ada user_id di permintaan.";
+"widget_integration_missing_room_id" = "Tidak ada room_id di permintaan.";
+"widget_integration_failed_to_send_request" = "Gagal untuk mengirim permintaan.";
+"widget_integration_unable_to_create" = "Tidak dapat membuat widget.";
+"widget_menu_revoke_permission" = "Hilangkan akses ke saya";
+"widget_creation_failure" = "Pembuatan widget gagal";
+
+// Widget
+"widget_no_integrations_server_configured" = "Tidak ada server integrasi yang diatur";
+"room_does_not_exist" = "%@ tidak ada";
+"do_not_ask_again" = "Jangan tanya lagi";
+"public_room_section_title" = "Ruangan Publik (di %@):";
+"event_formatter_jitsi_widget_removed_by_you" = "Anda menghilangkan konferensi VoIP";
+"event_formatter_jitsi_widget_added_by_you" = "Anda menambahkan konferensi VoIP";
+"event_formatter_rerequest_keys_part2" = " dari sesi Anda lainnya.";
+"directory_server_all_native_rooms" = "Semua ruangan Matrix asli";
+"room_details_unset_main_address" = "Atur Ulang sebagai Alamat Utama";
+"room_details_set_main_address" = "Atur sebagai Alamat Utama";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "Enkripsi diaktifkan di sini";
+"room_details_flair_section" = "Tampilkan bakat untuk komunitas";
+"room_details_history_section" = "Siapa saja yang dapat membaca riwayat?";
+"room_details_access_section_directory_toggle_for_dm" = "Daftarkan di direktori ruangan";
+"room_details_access_section_for_dm" = "Siapa saja yang dapat mengakses?";
+"identity_server_settings_place_holder" = "Masukkan sebuah server identitas";
+"settings_show_NSFW_public_rooms" = "Tampilkan ruangan publik NSFW";
+"settings_identity_server_no_is" = "Tidak ada server identitas yang diatur";
+"settings_discovery_three_pid_details_enter_sms_code_action" = "Masukkan kode aktivasi SMS";
+"settings_key_backup_button_create" = "Mulai menggunakan Cadangan Kunci";
+"settings_key_backup_info_progress_done" = "Semua kunci telah dicadangkan";
+"settings_key_backup_info_progress" = "Mencadangkan %@ kunci…";
+"settings_key_backup_info_version" = "Versi Cadangan Kunci: %@";
+"settings_fail_to_update_password" = "Gagal untuk memperbarui kata sandi";
+"settings_labs_enable_ringing_for_group_calls" = "Dering untuk panggilan grup";
+"settings_enable_push_notif" = "Notifikasi di perangkat ini";
+"settings_fail_to_update_profile" = "Gagal untuk memperbarui profil";
+"settings_email_address_placeholder" = "Masukkan alamat email Anda";
+"settings_flair" = "Tampilkan bakat dimana yang diizinkan";
+"settings_config_user_id" = "Masuk sebagai %@";
+"settings_config_identity_server" = "Server identitas adalah %@";
+
+// Unknown devices
+"unknown_devices_alert_title" = "Ruangan berisi sesi yang tidak dikenal";
+"room_resource_limit_exceeded_message_contact_2_link" = "hubungi administrator anda";
+"room_replacement_link" = "Obrolan ini berlanjut di sini.";
+"room_action_send_photo_or_video" = "Kirim foto atau video";
+"room_action_camera" = "Ambil foto atau video";
+"room_unsent_messages_notification" = "Pesan gagal untuk dikirim.";
+"encrypted_room_message_reply_to_placeholder" = "Kirim sebuah balasan terenkripsi…";
+"encrypted_room_message_placeholder" = "Kirim sebuah pesan terenkripsi…";
+"room_message_reply_to_placeholder" = "Kirim sebuah balasan (tidak terenkripsi)…";
+"room_message_placeholder" = "Kirim sebuah pesan (tidak terenkripsi)…";
+"room_member_power_level_custom_in" = "Kustom (%@) di %@";
+"room_participants_action_set_default_power_level" = "Atur ulang ke pengguna normal";
+"room_participants_action_ban" = "Cekal dari ruangan ini";
+"room_participants_action_remove" = "Keluarkan dari ruangan ini";
+"contacts_address_book_no_identity_server" = "Tidak ada server identitas yang diatur";
+"directory_search_fail" = "Gagal untuk mendapatkan data";
+
+// Rooms tab
+"room_directory_no_public_room" = "Tidak ada ruangan publik yang tersedia";
+"room_creation_make_public_prompt_title" = "Buat obrolan ini publik?";
+"room_creation_public_room" = "Obrolan ini publik";
+"room_creation_private_room" = "Obrolan ini privat";
+"social_login_button_title_sign_up" = "Daftar dengan %@";
+"social_login_button_title_sign_in" = "Masuk dengan %@";
+"auth_autodiscover_invalid_response" = "Respons penemuan homeserver tidak valid";
+"pin_protection_settings_section_header_with_biometrics" = "PIN & %@";
+"service_terms_modal_table_header_integration_manager" = "SYARAT PENGELOLA INTEGRASI";
+"service_terms_modal_table_header_identity_server" = "SYARAT SERVER IDENTITAS";
+"event_formatter_call_missed_video" = "Panggilan video tidak dijawab";
+"event_formatter_call_missed_voice" = "Panggilan video tidak dijawab";
+"event_formatter_call_active_video" = "Panggilan video aktif";
+"event_formatter_call_active_voice" = "Panggilan suara aktif";
+"event_formatter_call_incoming_video" = "Panggilan video masuk";
+"event_formatter_call_incoming_voice" = "Panggilan suara masuk";
+
+// Room Notification Settings
+"room_notifs_settings_notify_me_for" = "Beritahu saya untuk";
+"security_settings_secure_backup_restore" = "Pulihkan dari Cadangan";
+"settings_contacts_enable_sync" = "Cari kontak Anda";
+"settings_show_url_previews" = "Tampilkan tampilan website";
+"settings_new_keyword" = "Tambahkan Keyword baru";
+"settings_messages_containing_display_name" = "Nama tampilan saya";
+"settings_encrypted_group_messages" = "Pesan grup terenkripsi";
+"settings_encrypted_direct_messages" = "Pesan langsung terenkripsi";
+"settings_notify_me_for" = "Beritahu saya untuk";
+"settings_mentions_and_keywords" = "Sebutan dan Keyword";
+"find_your_contacts_button_title" = "Cari kontak Anda";
+"call_incoming_voice" = "Panggilan masuk…";
+"widget_picker_manage_integrations" = "Kelola integrasi…";
+"e2e_room_key_request_start_verification" = "Mulai verifikasi…";
+
+// Recover from private key
+"key_backup_recover_from_private_key_info" = "Memulihkan cadangan…";
+"version_check_modal_action_title_deprecated" = "Pelajari lebih lanjut";
+"user_avatar_view_accessibility_hint" = "Ubah avatar pengguna";
+"space_avatar_view_accessibility_hint" = "Ubah avatar space";
+"space_public_join_rule" = "Space publik";
+"space_private_join_rule" = "Space privat";
+"space_home_show_all_rooms" = "Tampilkan semua ruangan";
+"spaces_invites_coming_soon_title" = "Undangan segera datang";
+"spaces_coming_soon_title" = "Segera datang";
+"spaces_no_result_found_title" = "Tidak ada hasil";
+"spaces_explore_rooms" = "Jelajahi ruangan";
+"leave_space_title" = "Tinggalkan %@";
+"room_intro_cell_information_room_without_topic_sentence2_part1" = "Tambahkan sebuah topik";
+"room_avatar_view_accessibility_hint" = "Ubah avatar ruangan";
+"call_transfer_error_message" = "Gagal memindahkan panggilan";
+"create_room_section_header_topic" = "Topik ruangan (opsional)";
+"searchable_directory_search_placeholder" = "Nama atau ID";
+"biometrics_cant_unlocked_alert_message_login" = "Masuk kembali";
+"biometrics_cant_unlocked_alert_title" = "Tidak dapat membuka kunci aplikasi";
+"biometrics_setup_subtitle" = "Hemat waktu Anda";
+"pin_protection_mismatch_error_message" = "Mohon coba lagi";
+"pin_protection_mismatch_error_title" = "PIN tidak cocok";
+"pin_protection_forgot_pin" = "Lupa PIN";
+"pin_protection_enter_pin" = "Masukkan PIN Anda";
+"pin_protection_confirm_pin" = "Konfirmasi PIN Anda";
+
+// MARK: - Cross-signing
+
+// Banner
+
+"cross_signing_setup_banner_title" = "Siapkan enkripsi";
+"secrets_setup_recovery_key_storage_alert_title" = "Simpan dengan aman";
+"secrets_recovery_with_key_recovery_key_placeholder" = "Masukkan Kunci Keamanan";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Masukkan Frasa Keamanan";
+"user_verification_start_waiting_partner" = "Menunggu untuk %@…";
+"key_verification_scan_confirmation_scanning_user_waiting_other" = "Menunggu untuk %@…";
+"key_verification_verify_qr_code_start_emoji_action" = "Verifikasi dengan emoji";
+"key_verification_verify_qr_code_scan_code_action" = "Pindai kodenya";
+
+// MARK: QR code
+
+"key_verification_verify_qr_code_title" = "Verifikasi dengan memindai";
+"key_verification_tile_conclusion_warning_title" = "Sign in tidak dipercayai";
+"emoji_picker_places_category" = "Tempat Wisata";
+"emoji_picker_people_category" = "Smiley & Orang";
+"emoji_picker_foods_category" = "Makanan & Minuman";
+"emoji_picker_nature_category" = "Hewan & Alam";
+"key_verification_verified_new_session_title" = "Sesi baru telah verifikasi!";
+"key_verification_verify_sas_cancel_action" = "Mereka tidak cocok";
+"device_verification_self_verify_wait_recover_secrets_without_passphrase" = "Gunakan Kunci Keamanan";
+"device_verification_self_verify_wait_new_sign_in_title" = "Verifikasi login ini";
+
+// Current session
+
+"key_verification_self_verify_current_session_alert_title" = "Verifikasi sesi ini";
+"device_verification_start_use_legacy_action" = "Gunakan Verifikasi Warisan";
+
+// Mark: Incoming
+"device_verification_incoming_title" = "Permintaan Verifikasi Masuk";
+"key_verification_this_session_title" = "Verifikasi sesi ini";
+"key_backup_recover_from_recovery_key_recovery_key_placeholder" = "Masukkan Kunci Keamanan";
+"key_backup_recover_invalid_recovery_key_title" = "Kunci Keamanan Tidak Cocok";
+"key_backup_recover_invalid_passphrase_title" = "Frasa Sandi Tidak Benar";
+"key_backup_setup_success_from_recovery_key_make_copy_action" = "Buat sebuah Salinan";
+"key_backup_setup_success_from_passphrase_save_recovery_key_action" = "Simpan Kunci Keamanan";
+"key_backup_setup_passphrase_confirm_passphrase_invalid" = "frasa tidak cocok";
+"key_backup_setup_intro_manual_export_action" = "Ekspor kunci secara manual";
+"key_backup_setup_skip_alert_title" = "Apakah Anda yakin?";
+
+
+// Cancel
+
+"secure_key_backup_setup_cancel_alert_title" = "Apakah Anda yakin?";
+"deactivate_account_informations_part3" = "\n\nMenonaktifkan akun Anda: ";
+"service_terms_modal_information_title_integration_manager" = "Pengelola Integrasi";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Server Identitas";
+"e2e_room_key_request_share_without_verifying" = "Bagikan tanpa memverifikasi";
+
+// Room key request dialog
+"e2e_room_key_request_title" = "Permintaan kunci enkripsi";
+"room_widget_permission_user_id_permission" = "ID pengguna Anda";
+"room_widget_permission_avatar_url_permission" = "URL avatar Anda";
+"room_widget_permission_display_name_permission" = "Nama tampilan Anda";
+"widget_menu_remove" = "Hapus untuk semuanya";
+"widget_menu_open_outside" = "Buka di browser";
+"widget_sticker_picker_no_stickerpacks_alert_add_now" = "Tambahkan satu sekarang?";
+"bug_report_background_mode" = "Lanjutkan di latar belakang";
+"e2e_key_backup_wrong_version_button_wasme" = "Itu adalah saya";
+
+// Key backup wrong version
+"e2e_key_backup_wrong_version_title" = "Cadangan Kunci Baru";
+"call_no_stun_server_error_use_fallback_button" = "Coba menggunakan %@";
+"call_incoming_video" = "Panggilan video masuk…";
+"event_formatter_group_call_incoming" = "%@ di %@";
+"event_formatter_rerequest_keys_part1_link" = "Minta ulang kunci enkripsi";
+
+// Events formatter
+"event_formatter_member_updates" = "%tu perubahan keanggotaan";
+"directory_server_picker_title" = "Pilih sebuah direktori";
+"image_picker_action_library" = "Pilih dari perpustakaan";
+
+// Read Receipts
+"read_receipts_list" = "Daftar Laporan Dibaca";
+
+// Group rooms
+"group_rooms_filter_rooms" = "Filter ruangan komunitas";
+"group_participants_filter_members" = "Filter anggota komunitas";
+"room_notifs_settings_account_settings" = "Pengaturan akun";
+"room_notifs_settings_all_messages" = "Semua Pesan";
+"room_details_copy_room_url" = "Salid URL Ruangan";
+"room_details_copy_room_address" = "Salin Alamat Ruangan";
+"room_details_copy_room_id" = "Salin ID Ruangan";
+"room_details_addresses_disable_main_address_prompt_title" = "Peringatan alamat utama";
+"room_details_addresses_invalid_address_prompt_title" = "Format alias tidak valid";
+"room_details_new_address" = "Tambahkan alamat baru";
+"identity_server_settings_alert_disconnect_title" = "Putuskan server identitas";
+"identity_server_settings_alert_change_title" = "Ubah server identitas";
+"manage_session_trusted" = "Dipercayai oleh Anda";
+"security_settings_export_keys_manually" = "Ekspor kunci secara manual";
+"settings_discovery_three_pid_details_cancel_email_validation_action" = "Batalkan validasi email";
+"settings_discovery_three_pid_details_title_phone_number" = "Kelola nomor telepon";
+"settings_key_backup_button_restore" = "Pulihkan dari Cadangan";
+"settings_deactivate_my_account" = "Nonaktifkan akun saya";
+"settings_add_3pid_password_title_msidsn" = "Tambahkan nomor telepon";
+"settings_add_3pid_password_title_email" = "Tambahkan alamat email";
+"settings_term_conditions" = "Syarat & Ketentuan";
+"settings_olm_version" = "Versi Olm %@";
+"settings_labs_voice_messages" = "Pesan suara";
+"settings_ui_theme_picker_title" = "Pilih sebuah tema";
+"settings_your_keywords" = "Pesan suara";
+"settings_room_upgrades" = "Tingkatan ruangan";
+"settings_call_invitations" = "Undangan panggilan";
+"settings_room_invitations" = "Undangan ruangan";
+"settings_messages_containing_user_name" = "Nama pengguna saya";
+"settings_group_messages" = "Pesan grup";
+"settings_direct_messages" = "Pesan langsung";
+"settings_default" = "Notifikasi Default";
+"settings_notifications_disabled_alert_title" = "Notifikasi dinonaktifkan";
+"settings_show_decrypted_content" = "Tampilkan konten terdekripsi";
+"settings_device_notifications" = "Notifikasi perangkat";
+"settings_add_phone_number" = "Tambahkan nomor telepon";
+"settings_add_email_address" = "Tambahkan alamat email";
+"settings_sign_out_confirmation" = "Apakah Anda yakin?";
+"settings_phone_contacts" = "KONTAK PONSEL";
+"settings_config_home_server" = "Homeserver adalah %@";
+"settings_config_no_build_info" = "Tidak ada info build";
+"account_logout_all" = "Keluar dari semua akun";
+"room_title_one_active_member" = "%@/%@ anggota aktif";
+"room_title_multiple_active_members" = "%@/%@ anggota aktif";
+"room_multiple_typing_notification" = "%@ dan lainnya";
+"external_link_confirmation_title" = "Cek ulang tautan ini";
+"room_event_failed_to_send" = "Gagal untuk mengirim";
+"room_event_action_delete_confirmation_title" = "Hapus pesan yang belum terkirim";
+"room_event_action_view_decrypted_source" = "Tampilkan Sumber Yang Terdekripsi";
+"room_delete_unsent_messages" = "Hapus pesan yang belum terkirim";
+"room_resend_unsent_messages" = "Kirim ulang pesan yang belum terkirim";
+"room_unsent_messages_cancel_title" = "Hapus pesan yang belum terkirim";
+"room_message_reply_to_short_placeholder" = "Kirim sebuah balasan…";
+"room_message_short_placeholder" = "Kirim sebuah pesan…";
+"room_message_replying_to" = "Membalas ke %@";
+"room_one_user_is_typing" = "%@ sedang mengetik…";
+"room_new_messages_notification" = "%d pesan baru";
+"room_new_message_notification" = "%d pesan baru";
+"room_accessiblity_scroll_to_bottom" = "Scroll ke bawah";
+"room_jump_to_first_unread" = "Arahkan ke belum dibaca";
+"room_member_power_level_moderator_in" = "Moderator di %@";
+"room_member_power_level_admin_in" = "Admin di %@";
+"room_participants_action_start_video_call" = "Mulai panggilan video";
+"room_participants_action_start_voice_call" = "Mulai panggilan suara";
+"room_participants_action_start_new_chat" = "Mulai obrolan baru";
+"room_participants_action_leave" = "Tinggalkan ruangan ini";
+"room_participants_filter_room_members" = "Filter anggota ruangan";
+"contacts_user_directory_offline_section" = "DIREKTORI PENGGUNA (offline)";
+"contacts_address_book_permission_denied_alert_title" = "Kontak dinonaktifkan";
+"contacts_address_book_no_contact" = "Tidak ada kontak lokal";
+"contacts_address_book_matrix_users_toggle" = "Hanya pengguna Matrix";
+"directory_search_results_title" = "Jelajahi hasil direktori";
+"room_recents_join_room_title" = "Bergabung ke sebuah ruangan";
+"room_recents_suggested_rooms_section" = "RUANGAN YANG DISARANKAN";
+"room_creation_appearance_picture" = "Gambar obrolan (opsional)";
+"social_login_button_title_continue" = "Lanjut dengan %@";
+"auth_softlogout_clear_data_sign_out_title" = "Apakah Anda yakin?";
+"auth_softlogout_clear_data_button" = "Bersihkan semua data";
+"auth_softlogout_clear_data" = "Bersihkan data personal";
+"auth_softlogout_signed_out" = "Anda telah keluar";
+"version_check_modal_action_title_supported" = "Mengerti";
+"voice_message_lock_screen_placeholder" = "Pesan suara";
+"voice_message_remaining_recording_time" = "%@s keluar";
+"side_menu_app_version" = "Versi %@";
+"side_menu_action_invite_friends" = "Undang teman";
+
+// Mark: - Side menu
+
+"side_menu_reveal_action_accessibility_label" = "Panel kiri";
+"room_intro_cell_information_room_with_topic_sentence2" = "Topik: %@";
+
+// Mark: - Room creation introduction cell
+
+"room_intro_cell_add_participants_action" = "Tambahkan orang";
+"call_transfer_dialpad" = "Tombol penyetel";
+
+// MARK: - Dial Pad
+"dialpad_title" = "Tombol penyetel";
+"room_info_list_several_members" = "%@ anggota";
+
+// MARK: - Room Info
+
+"room_info_list_one_member" = "1 anggota";
+"create_room_section_header_address" = "Alamat ruangan";
+"create_room_type_public" = "Ruangan Publik";
+"create_room_type_private" = "Ruangan Privat";
+"create_room_section_header_type" = "Tipe ruangan";
+"create_room_enable_encryption" = "Aktifkan Enkripsi";
+"create_room_section_header_encryption" = "Enkripsi ruangan";
+"create_room_section_header_name" = "Nama ruangan";
+
+// MARK: - Create Room
+
+"create_room_title" = "Ruangan Baru";
+"searchable_directory_x_network" = "Jaringan %@";
+"biometrics_desetup_disable_button_title_x" = "Nonaktifkan %@";
+"biometrics_desetup_title_x" = "Nonaktifkan %@";
+"biometrics_setup_enable_button_title_x" = "Aktifkan %@";
+"biometrics_setup_title_x" = "Aktifkan %@";
+"biometrics_settings_enable_x" = "Aktifkan %@";
+"biometrics_mode_face_id" = "Face ID";
+
+// MARK: - Biometrics Protection
+
+"biometrics_mode_touch_id" = "Touch ID";
+"pin_protection_settings_change_pin" = "Ubah PIN";
+"pin_protection_settings_enable_pin" = "Aktifkan PIN";
+"pin_protection_settings_enabled_forced" = "PIN diaktifkan";
+"pin_protection_reset_alert_title" = "Atur Ulang PIN";
+
+// MARK: - PIN Protection
+
+"pin_protection_choose_pin_welcome_after_login" = "Selamat datang kembali.";
+"major_update_done_action" = "Mengerti";
+"major_update_learn_more_action" = "Pelajari lebih lanjut";
+
+// MARK: - Secrets reset
+
+"secrets_reset_title" = "Atur ulang semuanya";
+"secrets_setup_recovery_passphrase_confirm_passphrase_placeholder" = "Konfirmasi frasa";
+"secrets_recovery_with_key_recover_action" = "Gunakan Kunci";
+
+// Recover with key
+
+"secrets_recovery_with_key_title" = "Kunci Keamanan";
+"secrets_recovery_with_passphrase_recover_action" = "Gunakan Frasa";
+
+// Recover with passphrase
+
+"secrets_recovery_with_passphrase_title" = "Frasa Keamanan";
+"secrets_recovery_reset_action_part_2" = "Atur ulang semuanya";
+"user_verification_session_details_verify_action_other_user" = "Verifikasi secara manual";
+"user_verification_session_details_verify_action_current_user" = "Verifikasi Secara Interaktif";
+"user_verification_session_details_information_trusted_other_user_part2" = " memverifikasinya:";
+"user_verification_session_details_untrusted_title" = "Tidak Dipercayai";
+"user_verification_sessions_list_session_untrusted" = "Tidak dipercayai";
+
+// MARK: - User verification
+
+// Start
+
+"user_verification_start_verify_action" = "Mulai verifikasi";
+
+// Scanned
+"key_verification_scan_confirmation_scanned_title" = "Hampir selesai!";
+"key_verification_verify_qr_code_scan_other_code_success_title" = "Kode tervalidasi!";
+"key_verification_verify_qr_code_cannot_scan_action" = "Tidak dapat memindai?";
+"key_verification_tile_request_status_accepted" = "Anda menerimanya";
+"key_verification_tile_request_status_cancelled" = "%@ membatalkannya";
+"key_verification_tile_request_status_cancelled_by_me" = "Anda membatalkannya";
+"key_verification_tile_request_status_data_loading" = "Memuat data…";
+"key_verification_tile_request_outgoing_title" = "Verifikasi terkirim";
+
+// Tiles
+
+"key_verification_tile_request_incoming_title" = "Permintaan verifikasi";
+
+// MARK: File upload
+"file_upload_error_title" = "Unggahan file";
+"device_verification_emoji_light bulb" = "Bolham Lampu";
+"device_verification_emoji_thumbs up" = "Jempol";
+"device_verification_verified_got_it_button" = "Mengerti";
+"key_verification_manually_verify_device_key_title" = "Kunci sesi";
+"key_verification_manually_verify_device_id_title" = "ID Sesi";
+"key_verification_manually_verify_device_name_title" = "Nama sesi";
+"key_verification_verify_sas_validate_action" = "Mereka cocok";
+"key_verification_verify_sas_title_number" = "Bandingkan nomor";
+
+// MARK: Verify
+
+"key_verification_verify_sas_title_emoji" = "Bandingkan emoji";
+
+// MARK: Self verification wait
+
+"device_verification_self_verify_wait_title" = "Keamanan lengkap";
+"device_verification_self_verify_start_verify_action" = "Mulai verifikasi";
+"device_verification_start_verify_button" = "Mulai Memverifikasi";
+"key_verification_user_title" = "Verifikasi mereka";
+
+// MARK: - Device Verification
+"key_verification_other_session_title" = "Verifikasi sesi";
+"sign_out_key_backup_in_progress_alert_cancel_action" = "Saya akan tunggu";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Keluar";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Keluar";
+
+// Success
+
+"key_backup_recover_success_info" = "Cadangan Terpulihkan!";
+"key_backup_recover_from_passphrase_recover_action" = "Buka Kunci Riwayat";
+"key_backup_recover_from_recovery_key_recover_action" = "Buka Kunci Riwayat";
+"key_backup_recover_from_passphrase_passphrase_placeholder" = "Masukkan Frasa";
+
+// MARK: Key backup recover
+
+"key_backup_recover_title" = "Pesan Aman";
+"key_backup_setup_success_from_recovery_key_recovery_key_title" = "Kunci Keamanan";
+"key_backup_setup_passphrase_set_passphrase_action" = "Atur Frasa";
+"key_backup_setup_passphrase_confirm_passphrase_placeholder" = "Konfirmasi frasa";
+"key_backup_setup_passphrase_passphrase_placeholder" = "Masukkan frasa";
+
+
+// MARK: Key backup setup
+
+"key_backup_setup_title" = "Cadangan Kunci";
+
+// Banner
+
+"secure_backup_setup_banner_title" = "Cadangan Aman";
+"secure_key_backup_setup_existing_backup_error_delete_it" = "Hapus";
+"secure_key_backup_setup_existing_backup_error_unlock_it" = "Buka kuncinya";
+
+// MARK: Secure backup setup
+
+// Intro
+
+"secure_key_backup_setup_intro_title" = "Cadangan Aman";
+
+// Re-request confirmation dialog
+"rerequest_keys_alert_title" = "Permintaan Terkirim";
+"deactivate_account_password_alert_title" = "Nonaktifkan Akun";
+"deactivate_account_validate_action" = "Nonaktifkan akun";
+
+// Deactivate account
+
+"deactivate_account_title" = "Nonaktifkan Akun";
+"gdpr_consent_not_given_alert_review_now_action" = "Lihat sekarang";
+"e2e_room_key_request_ignore_request" = "Tolak permintaan";
+"room_widget_permission_room_id_permission" = "ID Ruangan";
+"room_widget_permission_widget_id_permission" = "ID Widget";
+"room_widget_permission_theme_permission" = "Tema Anda";
+
+// Room widget permissions
+"room_widget_permission_title" = "Muat Widget";
+"bug_report_progress_uploading" = "Mengunggah laporan";
+"bug_report_progress_zipping" = "Mengumpulkan log";
+"bug_report_send_screenshot" = "Kirim tangkapan layar";
+"bug_report_send_logs" = "Kirim log";
+"bug_crash_report_title" = "Laporan Crash";
+
+// Bug report
+"bug_report_title" = "Laporan Bug";
+"deactivate_account_password_alert_message" = "Untuk melanjutkan, mohon masukkan kata sandi Anda";
+"widget_integration_must_be_in_room" = "Anda tidak berada di ruangan ini.";
+"settings_devices_description" = "Nama publik sesi dapat dilihat oleh orang yang berkomunikasi dengan Anda";
+"settings_key_backup_delete_confirmation_prompt_msg" = "Apakah Anda yakin? Anda akan kehilangan pesan terenkripsi jika kunci Anda tidak dicadangkan secara benar.";
+"settings_key_backup_info_trust_signature_invalid_device_unverified" = "Cadangan memiliki tanda tangan yang tidak valid dari %@";
+"settings_key_backup_info_trust_signature_invalid_device_verified" = "Cadangan mempunyai tanda tangan yang tidak valid dari %@";
+"settings_key_backup_info_trust_signature_valid_device_verified" = "Cadangan mempunyai tanda tangan yang valid dari %@";
+"settings_key_backup_info_trust_signature_valid" = "Cadangan mempunyai tanda tangan yang valid dari sesi ini";
+"settings_key_backup_info_trust_signature_unknown" = "Cadangan mempunyai tanda tangan dari sesi dengan ID: %@";
+"settings_key_backup_info_not_valid" = "Sesi ini tidak mencadangkan kunci Anda, tetapi Anda memiliki cadangan yang ada yang dapat Anda pulihkan dan tambahkan untuk selanjutnya.";
+"settings_key_backup_info_valid" = "Sesi ini mencadangkan kunci Anda.";
+"settings_key_backup_info_signout_warning" = "Cadangkan kunci Anda sebelum keluar untuk mencegah kehilangannya.";
+"settings_key_backup_info_none" = "Kunci Anda tidak dicadangkan dari sesi ini.";
+"settings_key_backup_info" = "Pesan terenkripsi diamankan dengan enkripsi ujung-ke-ujung. Hanya Anda dan penerima punya kuncinya untuk membaca pesannya.";
+"settings_labs_e2e_encryption_prompt_message" = "Untuk menyelesaikan enkripsi Anda harus masuk lagi.";
+"settings_contacts_enable_sync_description" = "Ini akan menggunakan server identitas Anda untuk menghubung Anda dengan kontak Anda, dan membantunya untuk menemukan Anda.";
+"settings_show_url_previews_description" = "Pratinjau akan ditampilkan di ruangan yang tidak dienkripsi.";
+"settings_ui_theme_picker_message_invert_colours" = "\"Otomatis\" menggunakan pengaturan \"Balikkan Warna\" perangkat Anda";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Otomatis\" mencocokkan dengan tema sistem perangkat Anda";
+"settings_calls_stun_server_fallback_description" = "Izinkan server panggilan %@ cadangan saat server homeserver Anda tidak menawarkannya (alamat IP Anda akan dibagikan selama panggilan).";
+"settings_mentions_and_keywords_encryption_notice" = "Anda tidak akan dapat notifikasi untuk sebutan & keyword di ruangan terenkripsi di ponsel.";
+"settings_notifications_disabled_alert_message" = "Untuk mengaktifkan notifikasi, pergi ke pengaturan perangkat Anda.";
+"settings_global_settings_info" = "Pengaturan notifikasi global tersedia di klien web %@ Anda";
+"settings_confirm_media_size_description" = "Saat ini aktif, Anda akan diminta untuk mengkonfirmasi ukuran gambar dan video yang akan dikirim.";
+"settings_remove_phone_prompt_msg" = "Apakah Anda yakin untuk menghapus nomor telepon %@?";
+"settings_remove_email_prompt_msg" = "Apakah Anda yakin untuk menghapus alamat email %@?";
+"room_preview_try_join_an_unknown_room" = "Anda mencoba untuk mengakses %@. Apakah Anda ingin bergabung untuk ikut dengan obrolannya?";
+"room_preview_subtitle" = "Ini adalah pratinjau dari ruangan ini. Interaksi ruangan telah dinonaktifkan.";
+
+// Room Preview
+"room_preview_invitation_format" = "Anda telah diundang untuk bergabung ke ruangan ini oleh %@";
+"external_link_confirmation_message" = "Tautan %@ akan membawa Anda ke situs yang lain: %@\n\nApakah Anda yakin untuk melanjutkan?";
+"room_no_privileges_to_create_group_call" = "Anda harus menjadi sebuah admin atau moderator untuk memulai sebuah panggilan.";
+"room_resource_usage_limit_reached_message_2" = "beberapa pengguna tidak dapat masuk.";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Server rumah ini telah melampaui batas Pengguna Aktif Bulanannya, jadi ";
+"room_resource_usage_limit_reached_message_1_default" = "Homeserver ini telah melampaui salah satu batas sumber dayanya, jadi ";
+"room_predecessor_information" = "Ruangan ini adalah lanjutan dari obrolan lain.";
+"room_replacement_information" = "Ruangan ini telah diganti dan tidak aktif lagi.";
+"room_event_action_delete_confirmation_message" = "Apakah Anda yakin untuk menghapus pesan yang tidak terkirim ini?";
+"room_event_action_report_prompt_ignore_user" = "Apakah Anda ingin menyembunyikan semua pesan dari pengguna ini?";
+"room_conference_call_no_power" = "Anda membutuhkan izin untuk mengelola panggilan konferensi di ruangan ini";
+"room_ongoing_conference_call_with_close" = "Panggilan konferensi berjalan. Bergabung sebagai %@ atau %@. %@ dia.";
+"room_ongoing_conference_call" = "Panggilan konferensi berjalan. Bergabung sebagai %@ atau %@.";
+"room_unsent_messages_cancel_message" = "Apakah Anda yakin untuk menghapus semua pesan yang tidak terkirim di ruangan ini?";
+"room_unsent_messages_unknown_devices_notification" = "Pesan gagal dikirim karena sesi yang tidak dikenal yang ada.";
+"room_offline_notification" = "Koneksi ke server telah hilang.";
+"room_do_not_have_permission_to_post" = "Anda tidak memiliki izin untuk mengirim ke ruangan ini";
+
+// Chat
+"room_slide_to_end_group_call" = "Geser untuk mengakhiri panggilan untuk semuanya";
+"room_participants_security_information_room_not_encrypted" = "Pesan di ruangan ini tidak dienkripsi secara ujung-ke-ujung.";
+"room_participants_start_new_chat_error_using_user_email_without_identity_server" = "Tidak ada server identitas yang diatur, jadi Anda tidak dapat mengobrol dengan sebuah kontak menggunakan email.";
+"room_participants_invite_malformed_id" = "ID cacat. Seharusnya sebuah alamat email atau ID Matrix seperti '@pengguna:domain'";
+"room_participants_invite_another_user" = "Cari/Undang dengan ID Pengguna, Nama atau email";
+"room_participants_invite_prompt_msg" = "Apakah Anda yakin untuk mengundang %@ ke obrolan ini?";
+"room_participants_remove_third_party_invite_prompt_msg" = "Apakah Anda yakin untuk menghapus undangan ini?";
+"room_participants_remove_prompt_msg" = "Apakah Anda yakin untuk mengeluarkan %@ dari obrolan ini?";
+"room_participants_leave_prompt_msg_for_dm" = "Apakah Anda yakin Anda ingin keluar?";
+"room_participants_leave_prompt_msg" = "Apakah Anda yakin untuk meninggalkan ruangan ini?";
+"find_your_contacts_identity_service_error" = "Tidak dapat menghubung ke server identitasnya.";
+"find_your_contacts_footer" = "Ini dapat dinonaktifkan di pengaturan kapan saja.";
+"find_your_contacts_message" = "Izinkan %@ untuk menampilkan kontak Anda supaya Anda dapat mengobrol dengan orang yang Anda tahu dengan cepat.";
+"contacts_address_book_permission_denied_alert_message" = "Untuk mengaktifkan kontak, pergi ke pengaturan perangkat Anda.";
+"contacts_address_book_permission_denied" = "Anda tidak mengizinkan %@ untuk mengakses kontak lokal Anda";
+"search_people_placeholder" = "Cari dengan ID Pengguna, Nama atau email";
+"rooms_empty_view_information" = "Ruangan baik untuk obrolan grup apa saja, privat atau publik. Ketuk + untuk menambahkan ruangan yang sudah ada, atau buat yang baru.";
+"people_empty_view_information" = "Obrol dengan aman dengan siapa saja. Ketuk + untuk mulai menambahkan orang.";
+"room_recents_unknown_room_error_message" = "Tidak dapat menemukan ruangan ini. Pastikan ruangannya sudah ada";
+"room_recents_join_room_prompt" = "Masukkan ID ruangan atau alias ruangan";
+"room_creation_dm_error" = "Kami tidak dapat membuat DM Anda. Mohon cek ulang pengguna yang Anda ingin undang dan coba lagi.";
+"room_creation_error_invite_user_by_email_without_identity_server" = "Tidak ada server identitas yang diatur, jadi Anda tidak dapat menambahkan anggota dengan email.";
+"room_creation_wait_for_creation" = "Sebuah ruangan telah dibuat. Mohon tunggu.";
+"room_creation_make_public_prompt_msg" = "Apakah Anda ingin membuat obrolan ini publik? Siapa saja dapat membaca pesan Anda dan bergabung ke obrolan ini.";
+
+// Errors
+"error_user_already_logged_in" = "Sepertinya Anda mencoba untuk menghubungkan ke homeserver yang lain. Apakah Anda ingin keluar?";
+"auth_softlogout_clear_data_message_2" = "Hapuslah jika Anda selesai menggunakan perangkat ini, atau ingin masuk ke akun yang lain.";
+"auth_softlogout_clear_data_message_1" = "Peringatan: Data personal Anda (termasuk kunci enkripsi) masih disimpan di perangkat ini.";
+"auth_softlogout_reason" = "Admin homeserver (%1$@) telah mengeluarkan Anda dari akun %2$@ Anda (%3$@).";
+"auth_accept_policies" = "Harap tinjau dan setujui kebijakan homeserver ini:";
+"widget_integration_positive_power_level" = "Tingkat daya harus bilangan bulat yang positif.";
+"settings_integrations_allow_description" = "Gunakan sebuah pengelola integrasi (%@) untuk mengelola bot, jembatan, widget, dan paket stiker.\n\nPengelola integrasi mendapatkan data pengaturan, dan dapat mengubah widget, mengirim undangan ruangan dan mengatur tingkat daya dengan pengetahuan Anda.";
+"widget_integrations_server_failed_to_connect" = "Gagal untuk menghubungkan ke server integrasi";
+"call_no_stun_server_error_title" = "Panggilan gagal karena server yang salah konfigurasinya";
+"call_jitsi_error" = "Gagal untuk bergabung ke panggilan konferensi.";
+"homeserver_connection_lost" = "Tidak dapat menghubungkan ke homeservernya.";
+"room_details_save_changes_prompt" = "Apakah Anda ingin menyimpan perubahannya?";
+"room_details_fail_to_update_room_canonical_alias" = "Gagal untuk memperbarui alamat utama";
+"room_details_fail_to_update_room_communities" = "Gagal untuk memperbarui komunitas terkait";
+"room_details_fail_to_remove_room_aliases" = "Gagal untuk menghapus alamat-alamat ruangan";
+"room_details_fail_to_update_history_visibility" = "Gagal untuk memperbarui visibilitas riwayat";
+"room_details_fail_to_update_room_join_rule" = "Gagal untuk memperbarui aturan bergabung";
+"room_details_fail_to_update_room_name" = "Gagal untuk memperbarui nama ruangannya";
+"room_details_fail_to_update_avatar" = "Gagal untuk memperbarui foto ruangannya";
+"room_details_advanced_e2e_encryption_enabled" = "Enkripsi diaktifkan di ruangan ini";
+"room_details_new_flair_placeholder" = "Tambahkan ID komunitas baru (mis. +foo%@)";
+"room_details_no_local_addresses" = "Ruangan ini tidak memiliki alamat lokal";
+"room_details_history_section_members_only_since_invited" = "Anggota saja (sejak mereka diundang)";
+"room_details_access_section_directory_toggle" = "Daftarkan ruangan ini ke direkori ruangan";
+"room_details_access_section_invited_only" = "Hanya orang yang diundang";
+"identity_server_settings_alert_disconnect" = "Lepaskan hubungan dari server identitas %@?";
+"security_settings_blacklist_unverified_devices" = "Jangan kirimkan pesan ke sesi yang tidak dipercayai";
+"security_settings_crosssigning_info_not_bootstrapped" = "Penandatanganan silang belum disiapkan.";
+"settings_key_backup_button_connect" = "Hubungkan sesi ini ke Cadangan Kunci";
+"settings_key_backup_info_trust_signature_valid_device_unverified" = "Cadangan memiliki tanda tangan dari %@";
+"settings_add_3pid_password_message" = "Untuk melanjutkan, mohon masukkan kata sandi Anda";
+"settings_send_crash_report" = "Kirim crash & data penggunaan anonim";
+"secure_key_backup_setup_cancel_alert_message" = "Jika Anda membatalkan sekarang, Anda mungkin kehilangan pesan & data terenkripsi jika Anda kehilangan akses ke login Anda.\n\nAnda juga dapat mengatur Cadangan Aman & kelola kunci Anda di Pengaturan.";
+"room_participants_security_information_room_encrypted" = "Pesan di ruangan ini dienkripsi secara ujung-ke-ujung.\n\nPesan Anda diamankan dengan kunci dan hanya Anda dan penerima punya kunci uniknya untuk membukanya.";
+"settings_callkit_info" = "Terima panggilan masuk di layar kunci Anda. Lihat panggilan %@ Anda di riwayat panggilan sistem. Jika iCloud diaktifkan, riwayat panggilannya akan dibagikan dengan Apple.";
+"settings_three_pids_management_information_part1" = "Kelola alamat email dan nomor telepon apa saja Anda dapat gunakan untuk masuk atau memulihkan akun Anda di sini. Atur siapa saja yang dapat menemukan Anda di ";
+"settings_sign_out_e2e_warn" = "Anda akan kehilangan kunci enkripsi ujung-ke-ujung Anda. Ini berarti Anda tidak akan lagi dapat membaca pesan lama di ruangan terenkripsi di perangkat ini.";
+"room_participants_security_information_room_encrypted_for_dm" = "Pesan di pesan langsung ini dienkripsi secara ujung-ke-ujung.\n\nPesan Anda diamankan dengan kunci dan hanya Anda dan penerima punya kunci uniknya untuk membukanya.";
+"auth_softlogout_clear_data_sign_out_msg" = "Apakah Anda yakin ingin menghapus semua data yang saat ini tersimpan di perangkat ini? Masuk lagi untuk mengakses data dan pesan akun Anda.";
+"auth_softlogout_recover_encryption_keys" = "Masuk untuk memulihkan kunci enkripsi yang disimpan secara eksklusif di perangkat ini. Anda membutuhkannya untuk membaca semua pesan aman Anda di perangkat apa saja.";
+"version_check_modal_subtitle_deprecated" = "Kami telah berupaya meningkatkan %@ untuk pengalaman yang lebih cepat dan lebih halus. Sayangnya versi iOS Anda saat ini tidak  kompatibel dengan beberapa perbaikan tersebut dan tidak akan didukung lagi.\nKami menyarankan Anda untuk meningkatkan sistem operasi Anda untuk menggunakan %@ secara maksimal.";
+"version_check_modal_subtitle_supported" = "Kami telah berupaya meningkatkan %@ untuk pengalaman yang lebih cepat dan lebih halus. Sayangnya versi iOS Anda saat ini tidak kompatibel dengan beberapa perbaikan tersebut dan tidak akan didukung lagi.\nKami menyarankan Anda untuk meningkatkan sistem operasi Anda untuk menggunakan %@ secara maksimal.";
+"space_feature_unavailable_information" = "Space adalah cara baru untuk mengelompokkan ruangan dan pengguna.\n\nMereka akan segera datang. Untuk saat ini, jika Anda bergabung sebuah space di platform lain, Anda akan dapat mengakses ruang mana saja yang Anda ikuti di sini.";
+
+// Success from passphrase
+"key_backup_setup_success_from_passphrase_info" = "Kunci Anda sedang dicadangkan.\n\nKunci Keamanan Anda adalah jaring pengaman - Anda dapat menggunakannya untuk memulihkan akses ke pesan terenkripsi jika Anda lupa frasa sandi.\n\nSimpan Kunci Keamanan Anda di suatu tempat yang sangat aman, seperti pengelola kata sandi (atau brankas).";
+"key_backup_setup_passphrase_info" = "Kami akan menyimpan salinan terenkripsi dari kunci Anda di server kami. Lindungi cadangan Anda dengan frasa agar tetap aman.\n\nUntuk keamanan maksimum, ini harus berbeda dari kata sandi akun Anda.";
+"key_backup_setup_intro_info" = "Pesan di ruang terenkripsi diamankan dengan enkripsi ujung-ke-ujung. Hanya Anda dan penerima yang memiliki kunci untuk membaca pesan ini.\n\nCadangkan kunci Anda dengan aman untuk menghindari kehilangannya.";
+"deactivate_account_informations_part5" = "Jika Anda ingin kami melupakan pesan Anda, silakan centang kotak di bawah ini\n\nVisibilitas pesan di Matrix mirip dengan email. Kami melupakan pesan Anda berarti bahwa pesan yang telah Anda kirim tidak akan dibagikan dengan pengguna baru atau tidak terdaftar, tetapi pengguna terdaftar yang sudah memiliki akses ke pesan ini akan tetap memiliki akses ke salinannya.";
+"deactivate_account_informations_part1" = "Ini akan membuat akun Anda tidak dapat digunakan secara permanen. Anda tidak akan dapat masuk, dan tidak seorang pun dapat mendaftarkan ulang ID pengguna yang sama. Ini akan menyebabkan akun Anda meninggalkan semua ruangan yang diikutinya, dan akan menghapus detail akun Anda dari server identitas Anda. ";
+"e2e_need_log_in_again" = "Anda harus masuk kembali untuk membuat kunci enkripsi ujung-ke-ujung untuk sesi ini dan mengirimkan kunci publik ke homeserver Anda.\nIni hanya dilakukan sekali saja; maaf untuk ketidaknyamanannya.";
+"call_no_stun_server_error_message_2" = "Atau, Anda dapat mencoba menggunakan server publik di %@, tetapi ini tidak akan dapat diandalkan, dan alamat IP Anda akan dibagikan dengan server tersebut. Anda juga dapat mengelola ini di Pengaturan";
+"identity_server_settings_alert_disconnect_still_sharing_3pid" = "Anda masih membagikan data personal Anda di server identitas %@.\n\nKami mensarankan Anda untuk menghapus alamat email dan nomor telepon Anda dari server identitasnya sebelum memutuskan hubungannya.";
+"security_settings_crosssigning_info_trusted" = "Penandatanganan silang diaktifkan. Anda dapat mempercayai pengguna lain dan sesi lain Anda berbasis penandatanganan silang tetapi Anda tidak dapat menandatangani sesi ini karena tidak memiliki kunci privat penandatanganan silang. Keamanan lengkap sesi ini.";
+"settings_discovery_three_pids_management_information_part1" = "Kelola alamat email atau nomor telepon apa saja yang pengguna lain dapat menggunakan untuk menemukan Anda dan menggunakannya untuk mengundang Anda ke ruangan. Tambahkan atau hapus alamat email atau nomor telepon dari daftar ini di ";
+"room_preview_unlinked_email_warning" = "Undangan ini telah dikirim ke %@, yang tidak diasosiasikan dengan akun ini. Anda mungkin ingin masuk ke akun yang lain, atau tambahkan email ini ke akun Anda.";
+"unknown_devices_alert" = "Ruangan ini berisi sesi tidak dikenal yang belum diverifikasi.\nIni berarti tidak ada jaminan bahwa sesi tersebut adalah milik pengguna yang mereka klaim.\nKami menyarankan Anda memverifikasinya untuk setiap sesi sebelum melanjutkan, tetapi Anda dapat mengirim ulang pesan tanpa memverifikasi jika Anda mau.";
+"room_warning_about_encryption" = "Enkripsi ujung-ke-ujung masih dalam beta dan mungkin tidak dapat dihandalkan.\n\nAnda seharusnya tidak mempercayainya dulu untuk mengamankan data.\n\nPerangkat masih belum dapat mendekripsi riwayat sebelum mereka bergabung ke ruangannya.\n\nPesan terenkripsi masih belum terlihat di client yang belum mengimplementasikan enkripsi.";
+"auth_add_email_and_phone_warning" = "Pendaftaran dengan email dan nomor telepon sekaligus belum didukung sampai API-nya sudah ada. Hanya nomor telepon yang akan diperhitungkan. Anda dapat menambahkan email Anda di profil Anda di pengaturan.";
+"auth_reset_password_success_message" = "Kata sandi Anda telah diatur ulang.\n\nAnda telah dikeluarkan dari semua sesi dan tidak akan menerima lagi notifikasi push. Untuk mengaktifkan ulang notifikasi, masuk ulang di setiap perangkat.";
+"spaces_add_rooms_coming_soon_title" = "Penambahan ruangan akan segera datang";
+"leave_space_and_all_rooms_action" = "Tinggalkan semua ruangan dan space";
+"space_beta_announce_subtitle" = "Versi baru dari komunitas";
+"room_intro_cell_information_room_sentence1_part1" = "Ini adalah awal dari ";
+"create_room_section_footer_encryption" = "Enkripsi tidak dapat dinonaktifkan setelah ini.";
+"pin_protection_confirm_pin_to_change" = "Konfirmasi PIN untuk mengubah PIN";
+"pin_protection_confirm_pin_to_disable" = "Konfirmasi PIN untuk menonaktifkan PIN";
+"pin_protection_choose_pin" = "Buat sebuah PIN untuk keamanan";
+"cross_signing_setup_banner_subtitle" = "Verifikasi perangkat Anda yang lain dengan mudah";
+"secrets_setup_recovery_passphrase_additional_information" = "Jangan menggunakan kata sandi akun Anda.";
+"secrets_recovery_with_key_invalid_recovery_key_title" = "Tidak dapat mengakses penyimpanan rahasia";
+"secrets_recovery_with_passphrase_invalid_passphrase_title" = "Tidak dapat mengakses penyimpanan rahasia";
+
+// MARK: Scan confirmation
+
+// Scanning
+"key_verification_scan_confirmation_scanning_title" = "Hampir selesai! Menunggu untuk konfirmasi…";
+"key_verification_verify_qr_code_scan_code_other_device_action" = "Pindai dengan perangkat ini";
+"key_verification_verify_qr_code_emoji_information" = "Verifikasi dengan membandingkan emoji unik.";
+
+// Device
+
+"device_verification_verify_wait_partner" = "Menunggu lainnya untuk menerima…";
+"device_verification_self_verify_wait_recover_secrets_with_passphrase" = "Gunakan Frasa Sandi atau Kunci";
+
+// Unverified sessions
+
+"key_verification_self_verify_unverified_sessions_alert_title" = "Lihat dimana Anda masuk";
+
+// MARK: Self verification start
+
+// New login
+"device_verification_self_verify_alert_title" = "Pemasukan baru. Apakah ini Anda?";
+"device_verification_start_wait_partner" = "Menunggu untuk lainnya untuk menerima…";
+"room_widget_permission_creator_info_title" = "Widget ini ditambahkan oleh:";
+"widget_integration_room_not_visible" = "Ruangan %@ tidak terlihat.";
+"widget_integration_room_not_recognised" = "Ruangan ini tidak diketahui.";
+"call_incoming_video_prompt" = "Panggilan video masuk dari %@";
+
+// Call
+"call_incoming_voice_prompt" = "Panggilan suara masuk dari %@";
+"event_formatter_widget_removed_by_you" = "Anda menghapus widget ini: %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "Anda menambahkan widget ini: %@";
+"event_formatter_call_has_ended_with_time" = "Panggilan berakhir • %@";
+"event_formatter_jitsi_widget_removed" = "Konferensi VoIP dihapus oleh %@";
+"event_formatter_jitsi_widget_added" = "Konferensi VoIP ditambahkan oleh %@";
+"event_formatter_widget_removed" = "Widget %@ dihapus oleh %@";
+"event_formatter_widget_added" = "Widget %@ ditambahkan oleh %@";
+"directory_server_all_rooms" = "Semua ruangan di server %@";
+"room_notifs_settings_mentions_and_keywords" = "Sebutan dan Keyword saja";
+"room_details_fail_to_update_topic" = "Gagal untuk memperbarui topiknya";
+"room_details_advanced_e2e_encryption_blacklist_unverified_devices" = "Enkripsi ke sesi terverifikasi saja";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "Enkripsi tidak diaktifkan di sini.";
+"room_details_new_address_placeholder" = "Tambahkan alamat baru (mis. #foo%@)";
+"room_details_no_local_addresses_for_dm" = "Ini tidak ada alamat lokal";
+"room_details_history_section_members_only_since_joined" = "Anggota saja (sejak mereka bergabung)";
+"room_details_access_section" = "Siapa saja yang dapat mengakses ruangan ini?";
+"manage_session_sign_out" = "Keluar dari sesi ini";
+"security_settings_crosssigning_info_ok" = "Penandatanganan silang siap dipakai.";
+"settings_discovery_error_message" = "Sebuah kesalahan terjadi. Mohon coba lagi.";
+"settings_crypto_blacklist_unverified_devices" = "Enkripsi ke sesi terverifikasi saja";
+"settings_password_updated" = "Kata sandi Anda telah diperbarui";
+"settings_enable_rageshake" = "Rage shake untuk melaporkan bug";
+
+// No VoIP support
+"no_voip_title" = "Panggilan masuk";
+"event_formatter_group_call" = "Panggilan grup";
+"event_formatter_call_end_call" = "Akhiri panggilan";
+"event_formatter_call_back" = "Panggil balik";
+"event_formatter_call_connection_failed" = "Koneksi gagal";
+"event_formatter_call_you_declined" = "Panggilan ditolak";
+"event_formatter_call_has_ended" = "Panggilan berakhir";
+
+// Image picker
+"image_picker_action_camera" = "Ambil foto";
+
+// Media picker
+"media_picker_title" = "Perpustakaan media";
+"group_participants_invite_malformed_id_title" = "Kesalahan Undangan";
+"group_participants_leave_prompt_title" = "Tinggalkan grup";
+
+// Group participants
+"group_participants_add_participant" = "Tambahkan peserta";
+"group_home_multi_rooms_format" = "%tu ruangan";
+"group_home_one_room_format" = "1 ruangan";
+"group_home_multi_members_format" = "%tu anggota";
+
+// Group Home
+"group_home_one_member_format" = "1 anggota";
+
+// Group Details
+"group_details_title" = "Detail Komunitas";
+"room_event_action_forward" = "Teruskan";
+"poll_edit_form_add_option" = "Tambahkan opsi";
+"poll_edit_form_option_number" = "Opsi %d";
+"poll_edit_form_create_options" = "Buat opsi";
+"poll_edit_form_input_placeholder" = "Tulis sesuatu";
+"poll_edit_form_question_or_topic" = "Pertanyaan atau topik";
+"poll_edit_form_poll_question_or_topic" = "Pertanyaan atau topik poll";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Buat poll";
+"share_extension_send_now" = "Kirim sekarang";
+"share_extension_low_quality_video_message" = "Kirim dalam %@ untuk kualitas yang lebih baik, atau kirim dengan kualitas rendah di bawah.";
+"share_extension_low_quality_video_title" = "Video akan dikirim dalam kualitas rendah";
+"settings_discovery_accept_terms" = "Terima Persyaratan Server Identitas";
+"settings_about" = "TENTANG";

@@ -36,8 +36,6 @@
 #import "RoomKeyRequestViewController.h"
 #import "DecryptionFailureTracker.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "Tools.h"
 #import "WidgetManager.h"
 
@@ -55,7 +53,7 @@
 #import "MXSession+Riot.h"
 #import "MXRoom+Riot.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 #import "PushNotificationService.h"
 
 //#define MX_CALL_STACK_OPENWEBRTC
@@ -393,7 +391,6 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"------------------------------");
     MXLogDebug(@"Application info:");
     MXLogDebug(@"%@ version: %@", appDisplayName, appVersion);
-    MXLogDebug(@"MatrixKit version: %@", MatrixKitVersion);
     MXLogDebug(@"MatrixSDK version: %@", MatrixSDKVersion);
     MXLogDebug(@"Build: %@\n", build);
     MXLogDebug(@"------------------------------\n");
@@ -436,16 +433,16 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     _isAppForeground = NO;
     _handleSelfVerificationRequest = YES;
     
-    // Configure our analytics. It will indeed start if the option is enabled
-    Analytics *analytics = [Analytics sharedInstance];
+    // Configure our analytics. It will start if the option is enabled
+    Analytics *analytics = Analytics.shared;
     [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
-    [DecryptionFailureTracker sharedInstance].delegate = [Analytics sharedInstance];
+    [DecryptionFailureTracker sharedInstance].delegate = analytics;
     
     MXBaseProfiler *profiler = [MXBaseProfiler new];
     profiler.analytics = analytics;
     [MXSDKOptions sharedInstance].profiler = profiler;
     
-    [analytics start];
+    [analytics startIfEnabled];
 
     self.localAuthenticationService = [[LocalAuthenticationService alloc] initWithPinCodePreferences:[PinCodePreferences shared]];
     
@@ -590,7 +587,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     
     // Analytics: Force to send the pending actions
     [[DecryptionFailureTracker sharedInstance] dispatch];
-    [[Analytics sharedInstance] dispatch];
+    [Analytics.shared forceUpload];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -651,9 +648,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     MXLogDebug(@"[AppDelegate] afterAppUnlockedByPin");
     
     // Check if there is crash log to send
-    if (RiotSettings.shared.enableCrashReport)
+    if (RiotSettings.shared.enableAnalytics)
     {
+        #if DEBUG
+        // Don't show alerts for crashes during development.
+        #else
         [self checkExceptionToReport];
+        #endif
     }
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -1883,6 +1884,11 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             
             [self.pushNotificationService checkPushKitPushersInSession:mxSession];
         }
+        else if (mxSession.state == MXSessionStateRunning)
+        {
+            // Configure analytics from the session if necessary
+            [Analytics.shared useAnalyticsSettingsFrom:mxSession];
+        }
         else if (mxSession.state == MXSessionStateClosed)
         {
             [self removeMatrixSession:mxSession];
@@ -2228,6 +2234,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     //  Reset push notification store
     [self.pushNotificationStore reset];
     
+    // Reset analytics
+    [Analytics.shared reset];
+    
 #ifdef MX_CALL_STACK_ENDPOINT
     // Erase all created certificates and private keys by MXEndpointCallStack
     for (MXKAccount *account in MXKAccountManager.sharedManager.accounts)
@@ -2393,8 +2402,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         
         launchAnimationContainerView = launchLoadingView;
         
-        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:kMXAnalyticsStartupLaunchScreen
-                                                        category:kMXAnalyticsStartupCategory];
+        [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameStartupLaunchScreen];
     }
 }
 
@@ -2403,7 +2411,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     if (launchAnimationContainerView)
     {
         id<MXProfiler> profiler = MXSDKOptions.sharedInstance.profiler;
-        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:kMXAnalyticsStartupLaunchScreen category:kMXAnalyticsStartupCategory];
+        MXTaskProfile *launchTaskProfile = [profiler taskProfileWithName:MXTaskProfileNameStartupLaunchScreen];
         if (launchTaskProfile)
         {
             [profiler stopMeasuringTaskWithProfile:launchTaskProfile];
@@ -2500,17 +2508,17 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (void)checkLocalPrivateKeysInSession:(MXSession*)mxSession
 {
-    id<MXCryptoStore> cryptoStore = mxSession.crypto.store;
+    MXRecoveryService *recoveryService = mxSession.crypto.recoveryService;
     NSUInteger keysCount = 0;
-    if ([cryptoStore secretWithSecretId:MXSecretId.keyBackup])
+    if ([recoveryService hasSecretWithSecretId:MXSecretId.keyBackup])
     {
         keysCount++;
     }
-    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningUserSigning])
+    if ([recoveryService hasSecretWithSecretId:MXSecretId.crossSigningUserSigning])
     {
         keysCount++;
     }
-    if ([cryptoStore secretWithSecretId:MXSecretId.crossSigningSelfSigning])
+    if ([recoveryService hasSecretWithSecretId:MXSecretId.crossSigningSelfSigning])
     {
         keysCount++;
     }

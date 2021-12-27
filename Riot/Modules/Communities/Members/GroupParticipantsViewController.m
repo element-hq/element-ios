@@ -16,7 +16,7 @@
 
 #import "GroupParticipantsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 #import "ContactTableViewCell.h"
@@ -218,9 +218,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"GroupDetailsPeople"];
     
     // Release the potential pushed view controller
     [self releasePushedViewController];

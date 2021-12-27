@@ -18,7 +18,7 @@
 #import "EventFormatter.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "WidgetManager.h"
 
@@ -342,6 +342,9 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
                            white-space: pre; \
                            -coretext-fontname: Menlo-Regular; \
                            font-size: small; \
+                           } \
+                           h1,h2 { \
+                           font-size: 1.2em; \
                            }", (unsigned long)bgColor];
         
         self.defaultTextColor = ThemeService.shared.theme.textPrimaryColor;

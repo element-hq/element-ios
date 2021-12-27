@@ -27,7 +27,7 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
             return
         }
         
-        guard data.attachment.type == MXKAttachmentTypeVoiceMessage else {
+        guard data.attachment.type == MXKAttachmentTypeVoiceMessage || data.attachment.type == MXKAttachmentTypeAudio else {
             fatalError("Invalid attachment type passed to a voice message cell.")
         }
         

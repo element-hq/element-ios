@@ -15,6 +15,7 @@
  */
 
 #import "ContactsTableViewController.h"
+#import "MatrixKit.h"
 
 @class Contact;
 

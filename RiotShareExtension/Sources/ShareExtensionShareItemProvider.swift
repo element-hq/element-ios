@@ -16,7 +16,6 @@
 
 import Foundation
 import MobileCoreServices
-import MatrixKit
 
 private class ShareExtensionItem: ShareItemProtocol {
     let itemProvider: NSItemProvider
@@ -47,7 +46,7 @@ private class ShareExtensionItem: ShareItemProtocol {
 }
 
 @objcMembers
-class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
+public class ShareExtensionShareItemProvider: NSObject	 {
     
     public let items: [ShareItemProtocol]
     
@@ -66,7 +65,7 @@ class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
         self.items = items
     }
     
-    func areAllItemsLoaded() -> Bool {
+    public func areAllItemsLoaded() -> Bool {
         for case let item as ShareExtensionItem in self.items {
             if !item.loaded {
                 return false
@@ -121,8 +120,6 @@ class ShareExtensionShareItemProvider: NSObject, ShareItemProviderProtocol	 {
             return MXKUTI.video.rawValue
         case .movie:
             return MXKUTI.movie.rawValue
-        case .voiceMessage:
-            return MXKUTI.fileUrl.rawValue
         default:
             return ""
         }

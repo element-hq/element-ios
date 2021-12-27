@@ -17,7 +17,7 @@
 
 #import "UsersDevicesViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface UsersDevicesViewController () <KeyVerificationCoordinatorBridgePresenterDelegate>
 {
@@ -119,9 +119,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"UnknowDevices"];
 
     [self.tableView reloadData];
 }

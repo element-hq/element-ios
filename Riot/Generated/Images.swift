@@ -20,6 +20,8 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal enum Images {
+    internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
+    internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
     internal static let socialLoginButtonFacebook = ImageAsset(name: "social_login_button_facebook")
     internal static let socialLoginButtonGithub = ImageAsset(name: "social_login_button_github")
@@ -114,6 +116,7 @@ internal enum Asset {
     internal static let actionCamera = ImageAsset(name: "action_camera")
     internal static let actionFile = ImageAsset(name: "action_file")
     internal static let actionMediaLibrary = ImageAsset(name: "action_media_library")
+    internal static let actionPoll = ImageAsset(name: "action_poll")
     internal static let actionSticker = ImageAsset(name: "action_sticker")
     internal static let error = ImageAsset(name: "error")
     internal static let errorMessageTick = ImageAsset(name: "error_message_tick")
@@ -142,6 +145,13 @@ internal enum Asset {
     internal static let videoCall = ImageAsset(name: "video_call")
     internal static let voiceCallHangonIcon = ImageAsset(name: "voice_call_hangon_icon")
     internal static let voiceCallHangupIcon = ImageAsset(name: "voice_call_hangup_icon")
+    internal static let pollCheckboxDefault = ImageAsset(name: "poll_checkbox_default")
+    internal static let pollCheckboxSelected = ImageAsset(name: "poll_checkbox_selected")
+    internal static let pollDeleteIcon = ImageAsset(name: "poll_delete_icon")
+    internal static let pollDeleteOptionIcon = ImageAsset(name: "poll_delete_option_icon")
+    internal static let pollEditIcon = ImageAsset(name: "poll_edit_icon")
+    internal static let pollEndIcon = ImageAsset(name: "poll_end_icon")
+    internal static let pollWinnerIcon = ImageAsset(name: "poll_winner_icon")
     internal static let urlPreviewClose = ImageAsset(name: "url_preview_close")
     internal static let urlPreviewCloseDark = ImageAsset(name: "url_preview_close_dark")
     internal static let voiceMessageCancelGradient = ImageAsset(name: "voice_message_cancel_gradient")

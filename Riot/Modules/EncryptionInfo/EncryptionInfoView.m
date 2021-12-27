@@ -18,7 +18,7 @@
 #import "EncryptionInfoView.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface EncryptionInfoView() <KeyVerificationCoordinatorBridgePresenterDelegate>
 {

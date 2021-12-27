@@ -17,7 +17,7 @@
 
 #import "MediaPickerViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import <Photos/Photos.h>
 
@@ -28,8 +28,6 @@
 #import "MediaAlbumContentViewController.h"
 
 #import "MediaAlbumTableCell.h"
-
-#import <MatrixKit/MatrixKit.h>
 
 @interface MediaPickerViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, MediaAlbumContentViewControllerDelegate>
 
@@ -214,9 +212,6 @@
     [super viewWillAppear:animated];
     
     [self userInterfaceThemeDidChange];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"MediaPicker"];
     
     if (!userAlbumsQueue)
     {

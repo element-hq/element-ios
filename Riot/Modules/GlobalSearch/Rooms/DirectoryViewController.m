@@ -19,7 +19,7 @@
 
 #import "PublicRoomsDirectoryDataSource.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface DirectoryViewController ()
 {
@@ -35,6 +35,8 @@
     id kThemeServiceDidChangeThemeNotificationObserver;
 }
 
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
 @end
 
 @implementation DirectoryViewController
@@ -46,6 +48,8 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoomDirectory];
 }
 
 - (void)viewDidLoad
@@ -106,9 +110,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Directory"];
     
     // Observe kAppDelegateDidTapStatusBarNotificationObserver.
     kAppDelegateDidTapStatusBarNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kAppDelegateDidTapStatusBarNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -135,6 +136,8 @@
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -146,6 +149,12 @@
     }
     
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)displayWitDataSource:(PublicRoomsDirectoryDataSource *)dataSource2
@@ -190,7 +199,7 @@
     MXPublicRoom *publicRoom = [dataSource roomAtIndexPath:indexPath];
 
     // Check whether the user has already joined the selected public room
-    if ([dataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    if ([dataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
     {
         // Open the public room.
         [self showRoomWithId:publicRoom.roomId inMatrixSession:dataSource.mxSession];

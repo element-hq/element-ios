@@ -14,10 +14,12 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "MediaPickerViewController.h"
 #import "TableViewCellWithCheckBoxes.h"
+
+@class AnalyticsScreenTimer;
 
 /**
  List the settings fields. Used to preselect/edit a field
@@ -51,6 +53,11 @@ typedef enum : NSUInteger {
  Select a settings field in order to edit it ('RoomSettingsViewControllerFieldNone' by default).
  */
 @property (nonatomic) RoomSettingsViewControllerField selectedRoomSettingsField;
+
+/**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 @end
 

@@ -16,15 +16,13 @@
 
 #import "ManageSessionViewController.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import <OLMKit/OLMKit.h>
 
 #import "AvatarGenerator.h"
 
 #import "ThemeService.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 
 enum
@@ -162,9 +160,6 @@ enum {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"ManageSession"];
 
     // Release the potential pushed view controller
     [self releasePushedViewController];

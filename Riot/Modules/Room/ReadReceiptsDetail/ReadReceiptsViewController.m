@@ -16,11 +16,10 @@
  */
 
 #import "ReadReceiptsViewController.h"
-#import <MatrixKit/MatrixKit.h>
 
 #import "RageShakeManager.h"
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface ReadReceiptsViewController () <UITableViewDataSource, UITableViewDelegate>
 {

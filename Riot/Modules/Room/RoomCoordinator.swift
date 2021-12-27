@@ -29,6 +29,8 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let roomViewController: RoomViewController
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private var selectedEventId: String?
+    
+    private var pollEditFormCoordinator: PollEditFormCoordinator?
 
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
@@ -75,6 +77,10 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.roomViewController = RoomViewController.instantiate()
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
+        if #available(iOS 14, *) {
+            PollTimelineProvider.shared.session = parameters.session
+        }
+        
         super.init()
     }
     
@@ -97,7 +103,9 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         // FIXME: Find a better way to manage modal dismiss. This makes the `roomViewController` to never be released
         // self.roomViewController.presentationController?.delegate = self
         
-        if let eventId = self.selectedEventId {
+        if let previewData = self.parameters.previewData {
+            self.loadRoomPreview(withData: previewData, completion: completion)
+        } else if let eventId = self.selectedEventId {
             self.loadRoom(withId: self.parameters.roomId, and: eventId, completion: completion)
         } else {
             self.loadRoom(withId: self.parameters.roomId, completion: completion)
@@ -183,6 +191,13 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
             completion?()
         }
     }
+    
+    private func loadRoomPreview(withData previewData: RoomPreviewData, completion: (() -> Void)?) {
+        
+        self.roomViewController.displayRoomPreview(previewData)
+        
+        completion?()
+    }
 }
 
 // MARK: - RoomIdentifiable
@@ -239,5 +254,32 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     
     func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
         return AppDelegate.theDelegate().handleUniversalLink(with: parameters)
+    }
+    
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter, room: roomViewController.roomDataSource.room)
+        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        pollEditFormCoordinator?.start()
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
     }
 }

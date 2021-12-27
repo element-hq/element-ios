@@ -24,15 +24,13 @@
 
 #import "MXRoom+Riot.h"
 
-#import <MatrixKit/MatrixKit.h>
-
 #import "RoomViewController.h"
 
 #import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewControllerDataReadyNotification";
 
@@ -107,9 +105,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    // Set default screen name
-    _screenName = @"RecentsScreen";
     
     // Enable the search bar in the recents table, and remove the search option from the navigation bar.
     _enableSearchBar = YES;
@@ -261,9 +256,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
-
     // Reset back user interactions
     self.userInteractionEnabled = YES;
     
@@ -331,11 +323,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -539,11 +534,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     [self->currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    self->currentAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle] message:msg preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *errorAlert = [UIAlertController alertControllerWithTitle:[MatrixKitL10n roomErrorJoinFailedTitle]
+                                                                        message:msg
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    [self->currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
-                                                     style:UIAlertActionStyleDefault
-                                                         handler:^(UIAlertAction * action) {
+    [errorAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n ok]
+                                                   style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * action) {
         MXStrongifyAndReturnIfNil(self);
         self->currentAlert = nil;
         
@@ -553,7 +550,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
     }]];
     
-    [self presentViewController:self->currentAlert animated:YES completion:nil];
+    [self presentViewController:errorAlert animated:YES completion:nil];
+    currentAlert = errorAlert;
 }
 
 #pragma mark - Sticky Headers
@@ -1202,13 +1200,13 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         }
         
         // confirm leave
-        currentAlert = [UIAlertController alertControllerWithTitle:title
-                                                           message:message
-                                                    preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *leavePrompt = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
-                                                         style:UIAlertActionStyleCancel
-                                                       handler:^(UIAlertAction * action) {
+        [leavePrompt addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
                                                            
                                                            if (weakSelf)
                                                            {
@@ -1218,8 +1216,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                            
                                                        }]];
         
-        [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
-                                                         style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        [leavePrompt addAction:[UIAlertAction actionWithTitle:[VectorL10n leave]
+                                                        style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                              
                                                              if (weakSelf)
                                                              {
@@ -1280,8 +1278,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                              
                                                          }]];
         
-        [currentAlert mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
-        [self presentViewController:currentAlert animated:YES completion:nil];
+        [leavePrompt mxk_setAccessibilityIdentifier:@"LeaveEditedRoomAlert"];
+        [self presentViewController:leavePrompt animated:YES completion:nil];
+        currentAlert = leavePrompt;
     }
 }
 
@@ -1836,11 +1835,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     [currentAlert dismissViewControllerAnimated:NO completion:nil];
     
-    currentAlert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsStartChatWith]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsStartChatWith]
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
                                                        {
@@ -1852,9 +1851,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsCreateEmptyRoom]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsCreateEmptyRoom]
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
                                                        {
@@ -1866,9 +1865,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                        
                                                    }]];
     
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsJoinRoom]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomRecentsJoinRoom]
+                                                    style:UIAlertActionStyleDefault
+                                                  handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
                                                        {
@@ -1882,10 +1881,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     
     if (self.mainSession.callManager.supportsPSTN)
     {
-        [currentAlert addAction:[UIAlertAction
-            actionWithTitle:[VectorL10n roomOpenDialpad]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
+        [actionSheet addAction:[UIAlertAction actionWithTitle:[VectorL10n roomOpenDialpad]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
         
                                                        if (weakSelf)
                                                        {
@@ -1898,9 +1896,9 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                    }]];
     }
 
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
-                                                     style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction * action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n cancel]
+                                                    style:UIAlertActionStyleCancel
+                                                  handler:^(UIAlertAction * action) {
                                                        
                                                        if (weakSelf)
                                                        {
@@ -1910,11 +1908,12 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
                                                        
                                                    }]];
     
-    [currentAlert popoverPresentationController].sourceView = plusButtonImageView;
-    [currentAlert popoverPresentationController].sourceRect = plusButtonImageView.bounds;
+    [actionSheet popoverPresentationController].sourceView = plusButtonImageView;
+    [actionSheet popoverPresentationController].sourceRect = plusButtonImageView.bounds;
     
-    [currentAlert mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    [actionSheet mxk_setAccessibilityIdentifier:@"RecentsVCCreateRoomAlert"];
+    [self presentViewController:actionSheet animated:YES completion:nil];
+    currentAlert = actionSheet;
 }
 
 - (void)openDialpad
@@ -2008,7 +2007,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     }
     
     // Check whether the user has already joined the selected public room
-    if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession roomWithRoomId:publicRoom.roomId])
+    if ([self.recentsDataSource.publicRoomsDirectoryDataSource.mxSession isJoinedOnRoom:publicRoom.roomId])
     {
         // Open the public room
         [self showRoomWithRoomId:publicRoom.roomId
@@ -2048,6 +2047,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
 {
+    if (section < 0)
+    {
+        return;
+    }
+    
     UITableViewCell *firstVisibleCell;
     NSIndexPath *firstVisibleCellIndexPath;
     

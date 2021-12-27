@@ -1,0 +1,544 @@
+
+
+"room_event_encryption_info_device_verification" = "Verifisering\n";
+"notice_display_name_set" = "%@ satte visningsnavnet sitt til %@";
+"room_no_power_to_create_conference_call" = "Du trenger tillatelse til å invitere for å starte en konferanse i dette rommet";
+"room_error_join_failed_empty_room" = "Det er for øyeblikket ikke mulig å bli med i et tomt rom igjen.";
+"room_event_encryption_verify_message" = "For å verifisere at denne økten er til å stole på, vennligst kontakt eieren på andre måter (f.eks. personlig eller en telefonsamtale) og spør dem om nøkkelen de ser i brukerinnstillingene for denne økten samsvarer med nøkkelen nedenfor:\n\n\tØkt-navn: %@\n\tØkt-ID: %@\n\tØkt-nøkkel: %@\n\nHvis den stemmer overens, trykk på verifiserings-knappen nedenfor. Hvis den ikke gjør det, er det noen andre som overvåker denne økten, og du vil sannsynligvis trykke på svartelisteknappen i stedet.\n\nI fremtiden vil denne verifiseringsprosessen bli mer sofistikert.";
+"room_event_encryption_info_block" = "Svarteliste";
+"device_details_delete_prompt_title" = "Autentisering";
+"notice_room_power_level_acting_requirement" = "Minimum tilgangsnivå en bruker må ha før utførelse av handling er:";
+"login_prompt_email_token" = "Vennligst skriv inn valideringstokenet ditt for e-post:";
+"login_server_url_placeholder" = "URL (f.eks. https://matrix.org)";
+
+// Login Screen
+"login_create_account" = "Opprett konto:";
+/* *********************** */
+/*      iOS specific       */
+/* *********************** */
+
+"matrix" = "Matrix";
+"ssl_cert_not_trust" = "Dette kan bety at noen overvåker trafikken din, eller at telefonen ikke stoler på sertifikatet fra den eksterne serveren.";
+"resend" = "Send på nytt";
+"login_identity_server_title" = "URL til identitetsserver:";
+"login_home_server_info" = "Hjemmeserveren lagrer alle samtalene og kontodataene dine";
+"login_home_server_title" = "Hjemmeserver-URL:";
+"login_identity_server_info" = "Matrix tilbyr identitetsservere for å spore hvilke e-postadresser etc. som tilhører hvilke Matrix-IDer. Bare https://matrix.org eksisterer for øyeblikket.";
+"login_user_id_placeholder" = "Matrix-ID (f.eks. @Bob: matrix.org eller bob)";
+"login_email_info" = "Angi en e-postadresse slik at andre brukere lettere kan finne deg, og samtidig gi deg en måte å tilbakestille passordet ditt senere.";
+"login_display_name_placeholder" = "Visningsnavn (f.eks. Bob Obson)";
+"login_optional_field" = "valgfri";
+"login_password_placeholder" = "Passord";
+"login_error_do_not_support_login_flows" = "Foreløpig støtter vi ikke påloggingsflytene som er definert for denne hjemmeserveren";
+"login_error_no_login_flow" = "Vi kunne ikke hente autentiseringsinformasjon fra denne hjemmeserveren";
+"login_error_title" = "Innlogging feilet";
+"login_email_placeholder" = "E-postadresse";
+"login_error_unknown_token" = "Angitt tilgangstoken ble ikke gjenkjent";
+"login_error_forbidden" = "Ugyldig brukernavn/passord";
+"login_error_registration_is_not_supported" = "Registrering støttes ikke for øyeblikket";
+"login_error_resource_limit_exceeded_message_monthly_active_user" = "Denne hjemmeserveren har nådd grensen for aktive månedlige brukere.";
+"login_error_resource_limit_exceeded_message_default" = "Denne hjemmeserveren har overskredet en av ressursgrensene.";
+"login_error_resource_limit_exceeded_title" = "Ressursgrensen er overskredet";
+"login_desktop_device" = "PC";
+"login_tablet_device" = "Nettbrett";
+"login_mobile_device" = "Mobil";
+"login_error_forgot_password_is_not_supported" = "Glemt passord støttes for øyeblikket ikke";
+"register_error_title" = "Registrering feilet";
+"login_invalid_param" = "Ugyldig parameter";
+"login_leave_fallback" = "Avbryt";
+"login_use_fallback" = "Bruk reserveside";
+"login_error_login_email_not_yet" = "E-postlinken som ikke er klikket på ennå";
+"login_error_user_in_use" = "Dette brukernavnet er allerede brukt";
+"login_error_limit_exceeded" = "Det er sendt for mange forespørsler";
+"login_error_not_json" = "Inneholdt ikke gyldig JSON";
+"login_error_bad_json" = "Feilformatert JSON";
+"set_power_level" = "Bestem tilgangsnivå";
+"submit_code" = "Send inn kode";
+"submit" = "Send inn";
+"sign_up" = "Meld deg på";
+"retry" = "Prøv på nytt";
+"dismiss" = "Ignorer";
+"discard" = "Forkast";
+"continue" = "Fortsett";
+"close" = "Lukk";
+"back" = "Tilbake";
+"abort" = "Avbryt";
+"yes" = "Ja";
+
+// Action
+"no" = "Nei";
+"login_error_resource_limit_exceeded_contact_button" = "Kontakt administrator";
+"login_error_resource_limit_exceeded_message_contact" = "\n\nKontakt tjenesteadministratoren din for å fortsette å bruke denne tjenesten.";
+"set_default_power_level" = "Tilbakestill tilgangsnivå";
+"start_chat" = "Start samtale";
+"set_admin" = "Velg admin";
+"set_moderator" = "Velg moderator";
+"invite_user" = "Inviter bruker";
+"capture_media" = "Ta bilde/video";
+"attach_media" = "Legg ved media fra biblioteket";
+"select_account" = "Velg en konto";
+"mention" = "Nevn";
+"start_video_call" = "Start videoanrop";
+"start_voice_call" = "Start taleanrop";
+"answer_call" = "Svar på anrop";
+"show_details" = "Vis detaljer";
+"cancel_download" = "Avbryt nedlasting";
+"cancel_upload" = "Avbryt opplasting";
+"select_all" = "Velg alle";
+"resend_message" = "Send meldingen på nytt";
+"reset_to_default" = "Tilbakestill til standard";
+"reject_call" = "Avvis anrop";
+"end_call" = "Avslutt samtale";
+//  Old
+"notice_room_join_rule" = "Bli-med regelen er: %@";
+"notice_room_created_for_dm" = "%@ ble med.";
+"notice_room_created" = "%@ opprettet og konfigurerte rommet.";
+"notice_profile_change_redacted" = "%@ oppdaterte profilen sin %@";
+"notice_event_redacted_reason" = " [årsak: %@]";
+"notice_event_redacted_by" = " av %@";
+"notice_event_redacted" = "<slettet%@>";
+"notice_room_topic_removed" = "%@ fjernet emnet";
+"notice_room_name_removed_for_dm" = "%@ fjernet navnet";
+"notice_room_name_removed" = "%@ fjernet romnavnet";
+
+// Events formatter
+"notice_avatar_changed_too" = "(avatar ble også endret)";
+"unignore" = "Opphev ignorering";
+"ignore" = "Ignorer";
+"resume_call" = "Gjenoppta";
+"notice_room_power_level_intro" = "Medlemmenes tilgangsnivå i rommet er:";
+"notice_room_join_rule_public_by_you_for_dm" = "Du gjorde dette offentlig.";
+"notice_room_join_rule_public_by_you" = "Du gjorde rommet offentlig.";
+"notice_room_join_rule_public_for_dm" = "%@ gjorde dette offentlig.";
+"notice_room_join_rule_public" = "%@ gjorde rommet offentlig.";
+"notice_room_join_rule_invite_by_you_for_dm" = "Du endret til kun inviterte.";
+"notice_room_join_rule_invite_by_you" = "Du endret rommet til kun inviterte.";
+"notice_room_join_rule_invite_for_dm" = "%@ endret til kun inviterte.";
+//  New
+"notice_room_join_rule_invite" = "%@ endret rommet til kun inviterte.";
+"notice_room_power_level_intro_for_dm" = "Medlemmenes tilgangsnivå er:";
+"notice_room_power_level_event_requirement" = "Minimum tilgangsnivå relatert til events er:";
+"notice_unsupported_attachment" = "Ikke støttet vedlegg: %@";
+"notice_invalid_attachment" = "ugyldig vedlegg";
+"notice_file_attachment" = "filvedlegg";
+"notice_location_attachment" = "lokasjonsvedlegg";
+"notice_video_attachment" = "videovedlegg";
+"notice_audio_attachment" = "lydvedlegg";
+"notice_image_attachment" = "bildevedlegg";
+"notice_encryption_enabled_unknown_algorithm" = "%1$@ slo på ende-til-ende-kryptering (ukjent algoritme %2$@).";
+"notice_encryption_enabled_ok" = "%@ slo på ende-til-ende-kryptering.";
+"notice_encrypted_message" = "Kryptert melding";
+"notice_room_related_groups" = "Gruppene som er tilknyttet dette rommet er: %@";
+"notice_room_aliases_for_dm" = "Aliasene er: %@";
+"notice_room_aliases" = "Rom-aliasene er: %@";
+"room_event_encryption_info_event" = "Hendelseinformasjon\n";
+
+// Encryption information
+"room_event_encryption_info_title" = "Ende-til-ende-krypteringsinformasjon\n\n";
+"device_details_delete_prompt_message" = "Denne operasjonen krever ekstra godkjenning.\nFor å fortsette, vennligst skriv inn passordet ditt.";
+"device_details_rename_prompt_message" = "En økts offentlige navn er synlig for folk du kommuniserer med";
+"device_details_rename_prompt_title" = "Øktnavn";
+"device_details_last_seen_format" = "%@ @ %@\n";
+"device_details_last_seen" = "Sist sett\n";
+"device_details_identifier" = "ID\n";
+"device_details_name" = "Offentlig navn\n";
+
+// Devices
+"device_details_title" = "Øktinformasjon\n";
+"notification_settings_room_rule_title" = "Rom: '%@'";
+"settings_enter_validation_token_for" = "Angi valideringstoken for %@:";
+"settings_enable_push_notifications" = "Aktiver push-varsler";
+"settings_enable_inapp_notifications" = "Aktiver varsler i appen";
+
+// Settings
+"settings" = "Innstillinger";
+"room_displayname_more_than_two_members" = "%@ og %@ andre";
+"room_displayname_two_members" = "%@ og %@";
+
+// room display name
+"room_displayname_empty_room" = "Tomt rom";
+"notice_in_reply_to" = "Som svar på";
+"notice_sticker" = "klistremerke";
+"notice_crypto_error_unknown_inbound_session_id" = "Avsenderøkten har ikke sendt oss nøklene til denne meldingen.";
+"notice_crypto_unable_to_decrypt" = "** Kan ikke dekryptere: %@ **";
+"notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ gjorde fremtidige meldinger synlige for alle, fra de ble med.";
+"notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ gjorde fremtidige meldinger synlige for alle, fra de blir invitert.";
+"notice_room_history_visible_to_anyone" = "%@ gjorde fremtidig romhistorie synlig for alle.";
+"notice_error_unknown_event_type" = "Ukjent hendelsestype";
+"notice_error_unexpected_event" = "Uventet hendelse";
+"notice_error_unsupported_event" = "Ikke støttet hendelse";
+"notice_feedback" = "Tilbakemeldingshendelse (id: %@): %@";
+"notice_room_history_visible_to_members_from_joined_point" = "%@ synliggjorde fremtidig romhistorie for alle medlemmer i rommet, fra det tidspunktet de ble med.";
+"notice_room_history_visible_to_members_from_invited_point" = "%@ synliggjorde fremtidig romhistorie for alle medlemmer i rommet, fra det punktet de er invitert.";
+"notice_room_history_visible_to_members_for_dm" = "%@ gjorde fremtidige meldinger synlige for alle medlemmer i rommet.";
+"notice_room_history_visible_to_members" = "%@ synliggjorde fremtidig romhistorie for alle medlemmer i rommet.";
+"notice_redaction" = "%@ holdt igjen en hendelse (id: %@)";
+"room_event_encryption_info_event_fingerprint_key" = "Benyttet Ed25519 fingeravtrykknøkkel\n";
+"room_event_encryption_info_event_identity_key" = "Curve25519 identitetsnøkkel\n";
+"room_event_encryption_info_event_user_id" = "Bruker-ID\n";
+"room_event_encryption_info_event_session_id" = "Økt-ID\n";
+"room_event_encryption_info_event_algorithm" = "Algoritme\n";
+"account_email_validation_message" = "Sjekk e-posten din og klikk på linken den inneholder. Når dette er gjort, klikker du på fortsett.";
+"account_linked_emails" = "Linkede e-poster";
+"account_link_email" = "Link e-post";
+
+// Account
+"account_save_changes" = "Lagre endringer";
+"room_event_encryption_verify_ok" = "Verifiser";
+"room_event_encryption_verify_title" = "Verifiser økt\n\n";
+"room_event_encryption_info_unblock" = "Fjern svartelisting";
+"room_event_encryption_info_unverify" = "Fjern verifisering";
+"room_event_encryption_info_verify" = "Verifiser...";
+"room_event_encryption_info_device_blocked" = "Svartelistet";
+"room_event_encryption_info_device_not_verified" = "IKKE verifisert";
+"room_event_encryption_info_device_verified" = "Verifisert";
+"room_event_encryption_info_device_fingerprint" = "Ed25519 fingeravtrykk\n";
+"room_event_encryption_info_device_id" = "ID\n";
+"room_event_encryption_info_device_name" = "Offentlig navn\n";
+"room_event_encryption_info_device_unknown" = "ukjent økt\n";
+"room_event_encryption_info_device" = "\nInformasjon om avsenderøkt\n";
+"room_event_encryption_info_event_none" = "ingen";
+"room_event_encryption_info_event_unencrypted" = "ukryptert";
+"room_event_encryption_info_event_decryption_error" = "Dekrypteringsfeil\n";
+"account_email_validation_title" = "Venter på verifisering";
+"room_creation_alias_placeholder" = "(f.eks. #foo:example.org)";
+"room_creation_alias_title" = "Romalias:";
+"room_creation_name_placeholder" = "(f.eks. lunsjgruppe)";
+
+// Room creation
+"room_creation_name_title" = "Romnavn:";
+"account_error_push_not_allowed" = "Varsler ikke tillatt";
+"account_error_msisdn_wrong_description" = "Dette ser ikke ut til å være et gyldig telefonnummer";
+"account_error_msisdn_wrong_title" = "Ugyldig telefonnummer";
+"account_error_email_wrong_description" = "Dette ser ikke ut til å være en gyldig e-postadresse";
+"account_error_email_wrong_title" = "Ugyldig e-postadresse";
+"account_error_matrix_session_is_not_opened" = "Matrix-økt er ikke åpnet";
+"account_error_picture_change_failed" = "Endring av bildet feilet";
+"account_error_display_name_change_failed" = "Endring av visningsnavn feilet";
+"account_msisdn_validation_error" = "Kan ikke bekrefte telefonnummeret.";
+"account_msisdn_validation_message" = "Vi har sendt en SMS med en aktiveringskode. Vennligst skriv inn denne koden nedenfor.";
+"account_email_validation_error" = "Kan ikke bekrefte e-postadressen. Sjekk e-posten din og klikk på lenken den inneholder. Når dette er gjort, klikker du på fortsett";
+"account_msisdn_validation_title" = "Venter på verifisering";
+"room_error_join_failed_title" = "Deltakelse i rommet feilet";
+
+// Room
+"room_please_select" = "Vennligst velg et rom";
+"room_creation_participants_placeholder" = "(f.eks. @bob:hjemmeserver1; @john:hjemmeserver2 ...)";
+"room_creation_participants_title" = "Deltakere:";
+"room_creation_alias_placeholder_with_homeserver" = "(f.eks. #foo%@)";
+"room_member_power_level_prompt" = "Du vil ikke kunne angre denne endringen ettersom du gir brukeren samme tilgangsnivå som deg selv.\nEr du sikker?";
+
+// Room members
+"room_member_ignore_prompt" = "Er du sikker på at du vil skjule alle meldinger fra denne brukeren?";
+"message_reply_to_message_to_reply_to_prefix" = "Som svar på";
+"message_reply_to_sender_sent_a_file" = "sendte en fil.";
+"message_reply_to_sender_sent_an_audio_file" = "sendte en lydfil.";
+"message_reply_to_sender_sent_a_video" = "sendte en video.";
+
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "sendte et bilde.";
+"room_no_conference_call_in_encrypted_rooms" = "Konferansesamtaler støttes ikke i krypterte rom";
+"room_left_for_dm" = "Du forlot";
+"room_left" = "Du forlot rommet";
+"room_error_timeline_event_not_found" = "Applikasjonen prøvde å laste inn et bestemt punkt i tidslinjen til dette rommet, men kunne ikke finne det";
+"room_error_timeline_event_not_found_title" = "Kunne ikke laste tidslinjeposisjonen";
+"room_error_cannot_load_timeline" = "Kunne ikke laste tidslinjen";
+"room_error_topic_edition_not_authorized" = "Du har ikke autorisasjon til å redigere dette romemnet";
+"room_error_name_edition_not_authorized" = "Du har ikke autorisasjon til å redigere dette romnavnet";
+
+// Groups
+"group_invite_section" = "Invitasjoner";
+"contact_local_contacts" = "Lokale kontakter";
+
+// Contacts
+"contact_mx_users" = "Matrix-brukere";
+"attachment_e2e_keys_import" = "Importer...";
+"attachment_e2e_keys_file_prompt" = "Denne filen inneholder krypteringsnøkler eksportert fra en Matrix-klient.\nVil du se filinnholdet eller importere nøklene den inneholder?";
+"attachment_multiselection_original" = "Faktisk størrelse";
+"attachment_multiselection_size_prompt" = "Vil du sende bilder som:";
+"attachment_cancel_upload" = "Avbryte opplastingen?";
+"attachment_cancel_download" = "Avbryte nedlastingen?";
+"attachment_large" = "Stor: %@";
+"attachment_medium" = "Medium: %@";
+"attachment_small" = "Liten: %@";
+"attachment_original" = "Faktisk størrelse: %@";
+
+// Attachment
+"attachment_size_prompt" = "Vil du sende som:";
+"search_searching" = "Søk pågår...";
+
+// Search
+"search_no_results" = "Ingen resultater";
+"group_section" = "Grupper";
+"format_time_h" = "t";
+"format_time_m" = "m";
+
+// Time
+"format_time_s" = "s";
+"e2e_import_prompt" = "Denne prosessen lar deg importere krypteringsnøkler som du tidligere hadde eksportert fra en annen app. Du vil da kunne dekryptere alle meldinger som den andre klienten kan dekryptere.\nEksportfilen er beskyttet med en passordfrase. Du bør angi passordet her for å dekryptere filen.";
+
+// E2E import
+"e2e_import_room_keys" = "Importer romnøkler";
+"format_time_d" = "d";
+"e2e_import" = "Importer";
+"e2e_export_prompt" = "Denne prosessen lar deg eksportere nøklene for meldinger du har mottatt i krypterte rom til en lokal fil. Du vil da kunne importere filen til en annen app i fremtiden, slik at den også kan dekryptere disse meldingene.\nDen eksporterte filen lar alle som kan lese den dekryptere alle krypterte meldinger du kan se, så du bør passe på å lagre den sikkert.";
+
+// E2E export
+"e2e_export_room_keys" = "Eksporter romnøkler";
+"e2e_passphrase_enter" = "Skriv inn passordfrase";
+"e2e_export" = "Eksporter";
+"e2e_passphrase_empty" = "Passordfrase kan ikke være tom";
+"e2e_passphrase_confirm" = "Bekreft passordfrase";
+"power_level" = "Tilgangsnivå";
+"public" = "Offentlig";
+"private" = "Privat";
+"default" = "standard";
+"not_supported_yet" = "Støttes ikke ennå";
+"error_common_message" = "En feil oppstod. Prøv igjen senere.";
+"error" = "Feil";
+"unsent" = "Ikke sendt";
+"offline" = "offline";
+
+// Others
+"user_id_title" = "Bruker-ID:";
+"e2e_passphrase_create" = "Opprett passordfrase";
+"e2e_passphrase_not_match" = "Passordfrase må stemme overens";
+"user_id_placeholder" = "eks: @bob:hjemmeserver";
+"network_error_not_reachable" = "Vennligst kontroller nettverkstilkoblingen";
+"local_contacts_access_discovery_warning" = "For å finne kontakter som allerede bruker løsningen, kan %@ sende e-postadresser og telefonnumre i adresseboken til den valgte identitetsserveren. Der det støttes, blir personlige data indeksert før sending - vennligst sjekk identitetsserverens personvernregler for mer informasjon.";
+"local_contacts_access_discovery_warning_title" = "Finne brukere";
+"local_contacts_access_not_granted" = "Å finne brukere fra lokale kontakter krever tilgang til dine kontakter, men %@ har ikke tillatelse til å bruke dem";
+"microphone_access_not_granted_for_call" = "Samtaler krever tilgang til mikrofonen, men %@ har ikke tillatelse til å bruke den";
+
+// Permissions
+"camera_access_not_granted_for_call" = "Videosamtaler krever tilgang til kameraet, men %@ har ikke tillatelse til å bruke det";
+"ssl_homeserver_url" = "Hjemmeserver-URL:% @";
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /matrix-sdk/src/main/res/values/strings.xml.
+*/
+
+"notice_room_invite" = "%@ inviterte %@";
+"language_picker_default_language" = "Standard (%@)";
+
+// Language picker
+"language_picker_title" = "Velg språk";
+
+// Country picker
+"country_picker_title" = "Velg et land";
+"notice_room_kick" = "%@ utviste %@";
+"notice_room_reject" = "%@ avviste invitasjonen";
+"notice_room_leave" = "%@ forlot";
+"notice_room_join" = "%@ ble med";
+"notice_room_third_party_registered_invite" = "%@ godtok invitasjonen til %@";
+"notice_room_third_party_invite_for_dm" = "%@ inviterte %@";
+"notice_room_third_party_invite" = "%@ sendte en invitasjon til %@ om å bli med i rommet";
+"notice_room_third_party_revoked_invite_for_dm" = "%@ tilbakekalte invitasjonen til %@ om å bli med i rommet";
+"notice_room_third_party_revoked_invite" = "%@ tilbakekalte invitasjonen til %@ om å bli med i rommet";
+"notice_answered_video_call" = "%@ svarte på anropet";
+"notice_placed_video_call" = "%@ startet et videoanrop";
+"notice_placed_voice_call" = "%@ startet et taleanrop";
+"notice_room_name_changed_for_dm" = "%@ endret navnet til %@.";
+"notice_room_name_changed" = "%@ endret romnavnet til %@.";
+"notice_topic_changed" = "%@ endret emnet til \"%@\".";
+"notice_display_name_removed" = "%@ fjernet visningsnavnet";
+"notice_display_name_changed_from" = "%@ endret visningsnavnet fra %@ til %@";
+"notice_avatar_url_changed" = "%@ byttet avatar";
+"notice_room_reason" = ". Grunnen til: %@";
+"notice_room_withdraw" = "%@ trakk tilbake invitasjonen til %@";
+"notice_room_ban" = "%@ utestengte %@";
+"notice_room_unban" = "%@ omgjorde utestenging %@";
+"notice_declined_video_call" = "%@ avviste anropet";
+"notice_ended_video_call" = "%@ avsluttet samtalen";
+"notice_room_third_party_invite_by_you" = "Du sendte en invitasjon til %@ om å bli med i rommet";
+"notice_room_invite_you" = "%@ inviterte deg";
+
+// Notice Events with "You"
+"notice_room_invite_by_you" = "Du inviterte %@";
+"notice_conference_call_finished" = "VoIP-konferansen avsluttet";
+"notice_conference_call_started" = "VoIP-konferansen startet";
+"notice_conference_call_request" = "%@ ba om en VoIP-konferanse";
+"notice_room_kick_by_you" = "Du utviste %@";
+"notice_room_reject_by_you" = "Du avviste invitasjonen";
+"notice_room_leave_by_you" = "Du forlot";
+"notice_room_join_by_you" = "Du ble med";
+"notice_room_third_party_revoked_invite_by_you_for_dm" = "Du tilbakekalte invitasjonen til %@";
+"notice_room_third_party_revoked_invite_by_you" = "Du tilbakekalte invitasjonen til %@ om å bli med i rommet";
+"notice_room_third_party_registered_invite_by_you" = "Du godtok invitasjonen til %@";
+"notice_room_third_party_invite_by_you_for_dm" = "Du inviterte %@";
+"notice_room_unban_by_you" = "Du omgjorde utestenging av %@";
+"notice_room_ban_by_you" = "Du utestengte %@";
+"notice_answered_video_call_by_you" = "Du svarte på anropet";
+"notice_placed_video_call_by_you" = "Du startet et videoanrop";
+"notice_placed_voice_call_by_you" = "Du startet et taleanrop";
+"notice_room_name_changed_by_you_for_dm" = "Du endret navnet til %@.";
+"notice_room_name_changed_by_you" = "Du endret romnavnet til %@.";
+"notice_topic_changed_by_you" = "Du endret emnet til \"%@\".";
+"notice_display_name_removed_by_you" = "Du fjernet visningsnavnet ditt";
+"notice_display_name_changed_from_by_you" = "Du endret visningsnavnet ditt fra %@ til %@";
+"notice_display_name_set_by_you" = "Du satte visningsnavnet ditt til %@";
+"notice_room_withdraw_by_you" = "Du trakk tilbake invitasjonen til %@";
+"notice_avatar_url_changed_by_you" = "Du byttet avatar";
+"notice_declined_video_call_by_you" = "Du avviste anropet";
+"notice_ended_video_call_by_you" = "Du avsluttet samtalen";
+"login" = "Innlogging";
+"create_room" = "Opprett rom";
+
+// actions 
+"action_logout" = "Logg ut";
+"view" = "Visning";
+"delete" = "Slett";
+"share" = "Del";
+"redact" = "Fjern";
+"copy_button_name" = "Kopier";
+"send" = "Send";
+"leave" = "Forlat";
+"save" = "Lagre";
+"cancel" = "Avbryt";
+
+// Room Screen 
+
+// general errors 
+
+// Home Screen 
+
+// Last seen time 
+
+// call events 
+
+/* -*- 
+   Automatic localization for en
+
+   The following key/value pairs were extracted from the android i18n file:
+    /console/src/main/res/values/strings.xml.
+*/
+
+
+// titles 
+
+// button names 
+"ok" = "OK";
+"notice_room_history_visible_to_members_from_joined_point_by_you_for_dm" = "Du gjorde fremtidige meldinger synlige for alle, fra de ble med.";
+"notice_room_history_visible_to_members_from_joined_point_by_you" = "Du gjorde fremtidig romhistorie synlig for alle medlemmer i rommet, fra det tidspunktet de ble med.";
+"notice_room_history_visible_to_members_from_invited_point_by_you_for_dm" = "Du gjorde fremtidige meldinger synlige for alle, fra de blir invitert.";
+"notice_room_history_visible_to_members_from_invited_point_by_you" = "Du gjorde fremtidig romhistorie synlig for alle medlemmer i rommet, fra det tidspunktet de er invitert.";
+"notice_room_history_visible_to_members_by_you_for_dm" = "Du gjorde fremtidige meldinger synlige for alle medlemmer i rommet.";
+"notice_room_history_visible_to_members_by_you" = "Du gjorde fremtidig romhistorie synlig for alle medlemmer i rommet.";
+"notice_room_history_visible_to_anyone_by_you" = "Du gjorde fremtidig romhistorie synlig for alle.";
+"notice_redaction_by_you" = "Du fjernet en hendelse (id: %@)";
+"notice_encryption_enabled_unknown_algorithm_by_you" = "Du slo på ende-til-ende-kryptering (ukjent algoritme %@).";
+"notice_encryption_enabled_ok_by_you" = "Du slo på ende-til-ende-kryptering.";
+"notice_room_created_by_you_for_dm" = "Du ble med.";
+"notice_room_created_by_you" = "Du opprettet og konfigurerte rommet.";
+"notice_profile_change_redacted_by_you" = "Du oppdaterte profilen din %@";
+"notice_event_redacted_by_you" = " av deg";
+"notice_room_topic_removed_by_you" = "Du fjernet emnet";
+"notice_room_name_removed_by_you_for_dm" = "Du fjernet navnet";
+"notice_room_name_removed_by_you" = "Du fjernet romnavnet";
+"notice_conference_call_request_by_you" = "Du ba om en VoIP-konferanse";
+"kick" = "Utvis";
+"invite" = "Inviter";
+"num_members_other" = "%@ brukere";
+"num_members_one" = "%@ bruker";
+"membership_ban" = "Utestengt";
+"membership_leave" = "Forlot";
+"membership_invite" = "Invitert";
+"create_account" = "Opprett konto";
+"notification_settings_global_info" = "Varslingsinnstillinger lagres i brukerkontoen din og deles mellom alle klienter som støtter dem (inkludert skrivebordsvarsler).\n\nRegler brukes i rekkefølge; den første regelen som samsvarer definerer resultatet for meldingen.\nSå: Varsler per ord er viktigere enn varsler per rom som er viktigere enn varsler per avsender.\nVed flere regler av samme type benyttes den første i listen som samsvarer.";
+"notification_settings_enable_notifications_warning" = "Alle varsler er for øyeblikket deaktivert for alle enheter.";
+"notification_settings_enable_notifications" = "Aktiver varsler";
+
+// Notification settings screen 
+"notification_settings_disable_all" = "Deaktiver alle varsler";
+"settings_title_notifications" = "Varsler";
+
+// Settings screen 
+"settings_title_config" = "Konfigurasjon";
+
+// contacts list screen 
+"invitation_message" = "Jeg vil gjerne chatte med deg med Matrix. Besøk nettstedet https://matrix.org for å få mer informasjon.";
+
+// members list Screen 
+
+// accounts list Screen 
+
+// image size selection 
+
+// invitation members list Screen 
+
+// room creation dialog Screen 
+
+// room info dialog Screen
+
+// room details dialog screen
+"room_details_title" = "Romdetaljer";
+"login_error_must_start_http" = "URL må starte med http[s]://";
+
+// Login Screen 
+"login_error_already_logged_in" = "Allerede logget inn";
+"message_unsaved_changes" = "Endringer er ikke lagret. Hvis du avslutter, forkastes de.";
+"unban" = "Omgjør utestenging";
+"ban" = "Utesteng";
+"notification_settings_receive_a_call" = "Varsle meg når jeg mottar et anrop";
+"notification_settings_people_join_leave_rooms" = "Varsle meg når folk blir med eller forlater rom";
+"notification_settings_invite_to_a_new_room" = "Varsle meg når jeg blir invitert til et nytt rom";
+"notification_settings_just_sent_to_me" = "Varsle meg med lyd om meldinger sendt bare til meg";
+"notification_settings_contain_my_display_name" = "Varsle meg med lyd om meldinger som inneholder visningsnavnet mitt";
+"notification_settings_contain_my_user_name" = "Varsle meg med lyd om meldinger som inneholder brukernavnet mitt";
+"notification_settings_other_alerts" = "Andre varsler";
+"notification_settings_select_room" = "Velg et rom";
+"notification_settings_sender_hint" = "@bruker:domene.com";
+"notification_settings_per_sender_notifications" = "Varsler per avsender";
+"notification_settings_per_room_notifications" = "Varsler per rom";
+"notification_settings_custom_sound" = "Egendefinert lyd";
+"notification_settings_highlight" = "Fremhev";
+"notification_settings_word_to_match" = "ord som skal samsvare";
+"notification_settings_never_notify" = "Aldri varsle";
+"notification_settings_always_notify" = "Alltid varsle";
+"notification_settings_per_word_info" = "Ord samsvarer uten å ta hensyn til store eller små bokstaver, og kan inneholde et * jokertegn. Så:\nfoo samsvarer med strengen foo omgitt av ordavgrensere (f.eks. tegnsetting og mellomrom eller start/slutt på linjen).\nfoo* samsvarer med et slikt ord som begynner foo.\n*foo* samsvarer med et hvilket som helst ord som inkluderer de tre bokstavene foo.";
+"notification_settings_per_word_notifications" = "Varsler per ord";
+"notification_settings_suppress_from_bots" = "Blokker meldinger fra roboter";
+"notification_settings_notify_all_other" = "Varsle for alle andre meldinger/rom";
+"notification_settings_by_default" = "Som standard ...";
+"incoming_video_call" = "Innkommende videoanrop";
+"call_ended" = "Samtale avsluttet";
+"call_ringing" = "Ringer…";
+
+// Settings keys 
+
+// call string
+"call_connecting" = "Kobler til…";
+"settings_config_user_id" = "Bruker-ID: %@";
+"settings_config_identity_server" = "Identitetsserver: %@";
+
+// gcm section 
+"settings_config_home_server" = "Hjemmeserver: %@";
+"incoming_voice_call" = "Innkommende taleanrop";
+"call_invite_expired" = "Anropsinvitasjon utløpt";
+
+// unrecognized SSL certificate
+"ssl_trust" = "Tillit";
+"call_transfer_to_user" = "Overfør til %@";
+"call_consulting_with_user" = "Rådfører seg med %@";
+"call_video_with_user" = "Videosamtale med %@";
+"call_voice_with_user" = "Taleanrop med %@";
+"call_more_actions_dialpad" = "Tastaturet";
+"call_more_actions_transfer" = "Overfør";
+"call_more_actions_audio_use_device" = "Bruk enhetslyd";
+"call_more_actions_audio_use_headset" = "Bruk hodetelefonlyd";
+"call_more_actions_change_audio_device" = "Bytt lydenhet";
+"call_more_actions_unhold" = "Gjenoppta";
+"call_more_actions_hold" = "Hold";
+"call_holded" = "Du holdt samtalen";
+"call_remote_holded" = "%@ satte samtalen på vent";
+"ssl_unexpected_existing_expl" = "Sertifikatet har endret seg fra et som telefonen din klarerte. Dette er VELDIG UVANLIG. Det anbefales derfor at du IKKE godtar dette nye sertifikatet.";
+"ssl_cert_new_account_expl" = "Hvis serveradministratoren har sagt at dette forventes, må du forsikre deg om at fingeravtrykket nedenfor samsvarer med fingeravtrykket du har fått.";
+"ssl_could_not_verify" = "Kunne ikke bekrefte identiteten til den eksterne serveren.";
+"ssl_fingerprint_hash" = "Fingeravtrykk (%@):";
+"ssl_remain_offline" = "Ignorer";
+"ssl_logout_account" = "Logg ut";
+"ssl_expected_existing_expl" = "Sertifikatet er endret fra et tidligere klarert til et som ikke er klarert. Serveren kan ha fornyet sertifikatet. Kontakt serveradministratoren for forventet fingeravtrykk.";
+"ssl_only_accept" = "Godta KUN sertifikatet hvis serveradministratoren har publisert et fingeravtrykk som samsvarer med det over.";

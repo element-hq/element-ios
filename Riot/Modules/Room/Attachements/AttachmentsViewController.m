@@ -17,7 +17,7 @@
 
 #import "AttachmentsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface AttachmentsViewController ()
 {
@@ -71,14 +71,6 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ThemeService.shared.theme.statusBarStyle;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"AttachmentsViewer"];
 }
 
 - (void)destroy

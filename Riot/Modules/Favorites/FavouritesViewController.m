@@ -17,7 +17,7 @@
 #import "FavouritesViewController.h"
 
 #import "RecentsDataSource.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface FavouritesViewController ()
 {    
@@ -39,9 +39,9 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"Favourites";
-    
     self.enableDragging = YES;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenFavourites];
 }
 
 - (void)viewDidLoad

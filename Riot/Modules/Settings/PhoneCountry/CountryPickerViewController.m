@@ -16,7 +16,7 @@
 
 #import "CountryPickerViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface CountryPickerViewController ()
 {
@@ -93,14 +93,6 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return ThemeService.shared.theme.statusBarStyle;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"CountryPicker"];
 }
 
 - (void)destroy

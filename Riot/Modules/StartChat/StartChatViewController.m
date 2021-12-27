@@ -17,7 +17,7 @@
 
 #import "StartChatViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 #import "MXSession+Riot.h"
 
 @interface StartChatViewController () <UITableViewDataSource, UISearchBarDelegate, ContactsTableViewControllerDelegate, InviteFriendsHeaderViewDelegate>
@@ -73,8 +73,6 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"StartChat";
-    
     _isAddParticipantSearchBarEditing = NO;
     
     // Prepare room participants
@@ -82,6 +80,8 @@
     
     // Assign itself as delegate
     self.contactsTableViewControllerDelegate = self;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenStartChat];
 }
 
 - (void)viewDidLoad

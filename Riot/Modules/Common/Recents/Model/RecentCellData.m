@@ -18,13 +18,8 @@
 #import "RecentCellData.h"
 
 #import "MXRoom+Riot.h"
-#import "MatrixSDK-Swift.h"
 
-#ifdef IS_SHARE_EXTENSION
-#import "RiotShareExtension-Swift.h"
-#else
-#import "Riot-Swift.h"
-#endif
+#import "GeneratedInterface-Swift.h"
 
 @implementation RecentCellData
 

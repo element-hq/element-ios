@@ -18,7 +18,7 @@
 
 #import "RecentsDataSource.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface RoomsViewController ()
 {
@@ -40,7 +40,7 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"Rooms";
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRooms];
 }
 
 - (void)viewDidLoad

@@ -18,7 +18,7 @@
 #import "TableViewCellWithCheckBoxAndLabel.h"
 
 #import "ThemeService.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation TableViewCellWithCheckBoxAndLabel
 

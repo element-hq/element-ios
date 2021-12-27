@@ -26,7 +26,9 @@
 
 #import "RiotNavigationController.h"
 
-@interface AuthInputsView ()
+#import "GeneratedInterface-Swift.h"
+
+@interface AuthInputsView () <MXKCountryPickerViewControllerDelegate>
 {
     /**
      The current email validation

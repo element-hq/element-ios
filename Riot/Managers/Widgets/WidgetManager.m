@@ -17,11 +17,9 @@
 
 #import "WidgetManager.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 #import "JitsiWidgetData.h"
 #import "MXSession+Riot.h"
-
-#import <MatrixKit/MatrixKit.h>
 
 #pragma mark - Contants
 

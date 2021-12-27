@@ -16,7 +16,7 @@
 
 #import "Tools.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation Tools
 
@@ -66,11 +66,11 @@
 {
     BOOL isUniversalLink = NO;
     
-    for (NSString *matrixPermalinkHost in BuildSettings.matrixPermalinkPaths)
+    for (NSString *matrixPermalinkHost in BuildSettings.permalinkSupportedHosts)
     {
         if ([url.host isEqualToString:matrixPermalinkHost])
         {
-            NSArray<NSString*> *hostPaths = BuildSettings.matrixPermalinkPaths[matrixPermalinkHost];
+            NSArray<NSString*> *hostPaths = BuildSettings.permalinkSupportedHosts[matrixPermalinkHost];
             if (hostPaths.count)
             {
                 // iOS Patch: fix urls before using it

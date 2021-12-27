@@ -1,5 +1,5 @@
 /* New message from a specific person, not referencing a room */
-"MSG_FROM_USER" = "Tin nhắn từ %@";
+"MSG_FROM_USER" = "%@ đã gửi một tin nhắn";
 /* New message from a specific person in a named room */
 "MSG_FROM_USER_IN_ROOM" = "%@ đã đăng trong %@";
 /* New message from a specific person, not referencing a room. Content included. */
@@ -13,36 +13,122 @@
 /* New action message from a specific person, not referencing a room. */
 "IMAGE_FROM_USER" = "%@ đã gửi bạn một hình ảnh %@";
 /* New action message from a specific person in a named room. */
-"IMAGE_FROM_USER_IN_ROOM" = "%@ đã đăng một hình ảnh %@ trong %@";
+"IMAGE_FROM_USER_IN_ROOM" = "%@ đã đăng một ảnh %@ trong %@";
 /* Multiple unread messages in a room */
-"UNREAD_IN_ROOM" = "%@ có tin nhắn mới trong %@";
+"UNREAD_IN_ROOM" = "%@ tin nhắn mới trong %@";
 /* Multiple unread messages from a specific person, not referencing a room */
-"MSGS_FROM_USER" = "%@ có tin nhắn mới trong %@";
+"MSGS_FROM_USER" = "%@ tin nhắn mới trong %@";
 /* Multiple unread messages from two people */
-"MSGS_FROM_TWO_USERS" = "%@ có tin nhắn mới từ %@ và %@";
+"MSGS_FROM_TWO_USERS" = "%@ tin nhắn mới từ %@ và %@";
 /* Multiple unread messages from three people */
-"MSGS_FROM_THREE_USERS" = "%@ có tin nhắn mới từ %@, %@ và %@";
+"MSGS_FROM_THREE_USERS" = "%@ tin nhắn mới từ %@, %@ và %@";
 /* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
-"MSGS_FROM_TWO_PLUS_USERS" = "%@ có tin nhắn mới từ %@, %@ và những người khác";
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ tin nhắn mới từ %@, %@ và những người khác";
 /* Multiple messages in two rooms */
-"MSGS_IN_TWO_ROOMS" = "%@ có tin nhắn mới trong %@ và %@";
+"MSGS_IN_TWO_ROOMS" = "%@ tin nhắn mới trong %@ và %@";
 /* Look, stuff's happened, alright? Just open the app. */
-"MSGS_IN_TWO_PLUS_ROOMS" = "%@ có tin nhắn mới từ %@, %@ và nhiều hơn nữa";
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ tin nhắn mới từ %@, %@ và nhiều hơn nữa";
 /* A user has invited you to a chat */
-"USER_INVITE_TO_CHAT" = "%@ đã mời bạn tham gia trò chuyện";
+"USER_INVITE_TO_CHAT" = "%@ vừa mời bạn trò chuyện";
 /* A user has invited you to an (unamed) group chat */
-"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ đã mời bạn tham gia vào một cuộc trò chuyện nhóm";
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ vừa mời bạn trò chuyện nhóm";
 /* A user has invited you to a named room */
-"USER_INVITE_TO_NAMED_ROOM" = "%@ đã mời bạn tham gia vào %@";
+"USER_INVITE_TO_NAMED_ROOM" = "%@ vừa mời bạn vào %@";
 /* Incoming one-to-one voice call */
-"VOICE_CALL_FROM_USER" = "Gọi thoại từ %@";
+"VOICE_CALL_FROM_USER" = "Gọi từ %@";
 /* Incoming one-to-one video call */
 "VIDEO_CALL_FROM_USER" = "Gọi video từ %@";
 /* Incoming unnamed voice conference invite from a specific person */
-"VOICE_CONF_FROM_USER" = "Gọi thoại nhóm từ %@";
+"VOICE_CONF_FROM_USER" = "Gọi nhóm từ %@";
 /* Incoming unnamed video conference invite from a specific person */
 "VIDEO_CONF_FROM_USER" = "Gọi video nhóm từ %@";
 /* Incoming named voice conference invite from a specific person */
-"VOICE_CONF_NAMED_FROM_USER" = "Gọi thoại nhóm từ %@: '%@'";
+"VOICE_CONF_NAMED_FROM_USER" = "Gọi nhóm từ %@: '%@'";
 /* Incoming named video conference invite from a specific person */
 "VIDEO_CONF_NAMED_FROM_USER" = "Gọi video nhóm từ %@: '%@'";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ muốn xác minh";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (cuộc gọi nhóm)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Cuộc gọi nhóm đã bắt đầu";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ đã cập nhật hồ sơ";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ đã đổi avatar";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ đã đổi tên";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ đã đổi tên sang %@";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ đã gửi một tương tác";
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ đã tương tác %@";
+
+/* New message with hidden content due to PIN enabled */
+"MESSAGE_PROTECTED" = "Tin nhắn mới";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Tin nhắn trong %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Tin nhắn từ %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Tin nhắn";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ đã gửi một sticker";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "Bạn đã nhận một tin nhắn";
+
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "Bạn đã nhận một tin nhắn trong %@";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ đã gửi một tệp %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ đã gửi một tin nhắn thoại";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ đã gửi một tệp âm thanh %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ đã gửi video";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ đã gửi ảnh";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ đã trả lời trong %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ đã trả lời";
+
+/** Titles **/
+
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ trong %@";
+/** General **/
+
+"NOTIFICATION" = "Thông báo";

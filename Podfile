@@ -3,45 +3,62 @@ source 'https://cdn.cocoapods.org/'
 # Uncomment this line to define a global platform for your project
 platform :ios, '12.1'
 
-# Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
+# Use frameworks to allow usage of pods written in Swift
 use_frameworks!
 
-# Different flavours of pods to MatrixKit. Can be one of:
-# - a String indicating an official MatrixKit released version number
+# Different flavours of pods to MatrixSDK. Can be one of:
+# - a String indicating an official MatrixSDK released version number
 # - `:local` (to use Development Pods)
-# - `{'kit branch name' => 'sdk branch name'}` to depend on specific branches of each repo
-# - `{ {kit spec hash} => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for each repo. Used by Fastfile during CI
+# - `{ :branch => 'sdk branch name'}` to depend on specific branch of MatrixSDK repo
+# - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixKitVersion = '= 0.16.9'
-# $matrixKitVersion = :local
-# $matrixKitVersion = {'develop' => 'develop'}
+$matrixSDKVersion = '0.20.15'
+# $matrixSDKVersion = :local
+# $matrixSDKVersion = { :branch => 'develop'}
+# $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
 
 ########################################
 
-case $matrixKitVersion
+case $matrixSDKVersion
 when :local
-$matrixKitVersionSpec = { :path => '../matrix-ios-kit/MatrixKit.podspec' }
 $matrixSDKVersionSpec = { :path => '../matrix-ios-sdk/MatrixSDK.podspec' }
-when Hash # kit branch name => sdk branch name – or {kit spec Hash} => {sdk spec Hash}
-kit_spec, sdk_spec = $matrixKitVersion.first # extract first and only key/value pair; key is kit_spec, value is sdk_spec
-kit_spec = { :git => 'https://github.com/matrix-org/matrix-ios-kit.git', :branch => kit_spec.to_s } unless kit_spec.is_a?(Hash)
-sdk_spec = { :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => sdk_spec.to_s } unless sdk_spec.is_a?(Hash)
-$matrixKitVersionSpec = kit_spec
+when Hash
+spec_mode, sdk_spec = $matrixSDKVersion.first # extract first and only key/value pair; key is spec_mode, value is sdk_spec
+
+  case spec_mode
+  when :branch
+  # :branch => sdk branch name
+  sdk_spec = { :git => 'https://github.com/matrix-org/matrix-ios-sdk.git', :branch => sdk_spec.to_s } unless sdk_spec.is_a?(Hash)
+  when :specHash
+  # :specHash => {sdk spec Hash}
+  sdk_spec = sdk_spec
+  end
+
 $matrixSDKVersionSpec = sdk_spec
-when String # specific MatrixKit released version
-$matrixKitVersionSpec = $matrixKitVersion
-$matrixSDKVersionSpec = {}
+when String # specific MatrixSDK released version
+$matrixSDKVersionSpec = $matrixSDKVersion
 end
 
-# Method to import the MatrixKit
-def import_MatrixKit
+# Method to import the MatrixSDK
+def import_MatrixSDK
   pod 'MatrixSDK', $matrixSDKVersionSpec
   pod 'MatrixSDK/JingleCallStack', $matrixSDKVersionSpec
-  pod 'MatrixKit', $matrixKitVersionSpec
 end
 
 ########################################
+
+def import_MatrixKit_pods
+  pod 'HPGrowingTextView', '~> 1.1'  
+  pod 'libPhoneNumber-iOS', '~> 0.9.13'  
+  pod 'DTCoreText', '~> 1.6.25'
+  #pod 'DTCoreText/Extension', '~> 1.6.25'
+  pod 'Down', '~> 0.11.0'
+end
+
+def import_SwiftUI_pods
+    pod 'Introspect', '~> 0.1'
+end
 
 abstract_target 'RiotPods' do
 
@@ -50,8 +67,10 @@ abstract_target 'RiotPods' do
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
 
-  # Piwik for analytics
-  pod 'MatomoTracker', '~> 7.4.1'
+  # PostHog for analytics
+  pod 'PostHog', '~> 1.4.4'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
+  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
@@ -62,7 +81,11 @@ abstract_target 'RiotPods' do
   pod 'SwiftLint', '~> 0.44.0'
 
   target "Riot" do
-    import_MatrixKit
+    import_MatrixSDK
+    import_MatrixKit_pods
+
+    import_SwiftUI_pods
+
     pod 'DGCollectionViewLeftAlignFlowLayout', '~> 1.0.4'
     pod 'KTCenterFlowLayout', '~> 1.3.1'
     pod 'ZXingObjC', '~> 3.6.5'
@@ -73,7 +96,7 @@ abstract_target 'RiotPods' do
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
     pod 'ffmpeg-kit-ios-audio', '~> 4.5'
-
+    
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 
     target 'RiotTests' do
@@ -82,15 +105,26 @@ abstract_target 'RiotPods' do
   end
 
   target "RiotShareExtension" do
-    import_MatrixKit
+    import_MatrixSDK
+    import_MatrixKit_pods
   end
 
+  target "RiotSwiftUI" do
+    import_SwiftUI_pods
+  end 
+
+  target "RiotSwiftUITests" do
+    import_SwiftUI_pods
+  end 
+
   target "SiriIntents" do
-    import_MatrixKit
+    import_MatrixSDK
+    import_MatrixKit_pods
   end
 
   target "RiotNSE" do
-    import_MatrixKit
+    import_MatrixSDK
+    import_MatrixKit_pods
   end
 
 end

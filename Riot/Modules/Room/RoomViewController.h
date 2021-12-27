@@ -15,7 +15,7 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "RoomTitleView.h"
 
@@ -175,6 +175,19 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  */
 - (BOOL)roomViewController:(RoomViewController *)roomViewController
 handleUniversalLinkWithParameters:(UniversalLinkParameters*)parameters;
+
+/**
+ Ask the coordinator to invoke the poll creation form coordinator.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ */
+- (void)roomViewControllerDidRequestPollCreationFormPresentation:(RoomViewController *)roomViewController;
+
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
+canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
+
+- (void)roomViewController:(RoomViewController *)roomViewController
+endPollWithEventIdentifier:(NSString *)eventIdentifier;
 
 @end
 

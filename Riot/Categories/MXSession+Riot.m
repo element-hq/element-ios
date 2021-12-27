@@ -17,7 +17,7 @@
 #import "MXSession+Riot.h"
 
 #import "MXRoom+Riot.h"
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @implementation MXSession (Riot)
 
@@ -65,6 +65,7 @@
     }
     else
     {
+        MXLogWarning(@"[MXSession] E2EE is disabled by default on this homeserver.\nWellknown content: %@", self.homeserverWellknown.JSONDictionary);
         success(NO);
         return [MXHTTPOperation new];
     }

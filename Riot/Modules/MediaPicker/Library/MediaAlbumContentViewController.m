@@ -19,7 +19,7 @@
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface MediaAlbumContentViewController ()
 {
@@ -163,9 +163,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"MediaAlbumContent"];
     
     self.navigationItem.title = _assetsCollection.localizedTitle;
     

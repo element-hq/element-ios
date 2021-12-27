@@ -18,6 +18,8 @@
 
 #import "FilesSearchCellData.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation FilesSearchCellData
 @synthesize roomId, senderDisplayName;
 @synthesize searchResult, title, message, date, shouldShowRoomDisplayName, roomDisplayName, attachment, isAttachmentWithThumbnail, attachmentIcon;

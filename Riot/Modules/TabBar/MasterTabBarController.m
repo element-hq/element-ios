@@ -27,7 +27,7 @@
 #import "SettingsViewController.h"
 #import "SecurityViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 @interface MasterTabBarController () <AuthenticationViewControllerDelegate, UITabBarControllerDelegate>
 {
@@ -69,6 +69,11 @@
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
 @property(nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
+
+/**
+ A flag to indicate that the analytics prompt should be shown during `-addMatrixSession:`.
+ */
+@property(nonatomic) BOOL presentAnalyticsPromptOnAddSession;
 
 @end
 
@@ -196,11 +201,18 @@
 
     if (!authIsShown)
     {
-        // Check whether the user has been already prompted to send crash reports.
-        // (Check whether 'enableCrashReport' flag has been set once)        
-        if (!RiotSettings.shared.isEnableCrashReportHasBeenSetOnce)
+        // Check whether the user should be prompted to send analytics.
+        if (Analytics.shared.shouldShowAnalyticsPrompt)
         {
-            [self promptUserBeforeUsingAnalytics];
+            MXSession *mxSession = self.mxSessions.firstObject;
+            if (mxSession)
+            {
+                [self promptUserBeforeUsingAnalyticsForSession:mxSession];
+            }
+            else
+            {
+                self.presentAnalyticsPromptOnAddSession = YES;
+            }
         }
         
         [self refreshTabBarBadges];
@@ -403,6 +415,12 @@
     {
         MXLogDebug(@"MasterTabBarController already has %@ in mxSessionArray", mxSession)
         return;
+    }
+    
+    if (self.presentAnalyticsPromptOnAddSession)
+    {
+        self.presentAnalyticsPromptOnAddSession = NO;
+        [self promptUserBeforeUsingAnalyticsForSession:mxSession];
     }
     
     // Check whether the controller's view is loaded into memory.
@@ -921,50 +939,14 @@
 
 #pragma mark -
 
-- (void)promptUserBeforeUsingAnalytics
+- (void)promptUserBeforeUsingAnalyticsForSession:(MXSession *)mxSession
 {
-    MXLogDebug(@"[MasterTabBarController]: Invite the user to send crash reports");
-    
-    __weak typeof(self) weakSelf = self;
-    
-    [currentAlert dismissViewControllerAnimated:NO completion:nil];
-    
-    NSString *appDisplayName = [[NSBundle mainBundle] infoDictionary][@"CFBundleDisplayName"];
-    
-    currentAlert = [UIAlertController alertControllerWithTitle:[VectorL10n googleAnalyticsUsePrompt:appDisplayName] message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n no]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                       
-                                                       RiotSettings.shared.enableCrashReport = NO;
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-                                                       
-                                                   }]];
-    
-    [currentAlert addAction:[UIAlertAction actionWithTitle:[MatrixKitL10n yes]
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction * action) {
-                                                                                                              
-                                                       RiotSettings.shared.enableCrashReport = YES;
-                                                       
-                                                       if (weakSelf)
-                                                       {
-                                                           typeof(self) self = weakSelf;
-                                                           self->currentAlert = nil;
-                                                       }
-
-                                                       [[Analytics sharedInstance] start];
-                                                       
-                                                   }]];
-    
-    [currentAlert mxk_setAccessibilityIdentifier: @"HomeVCUseAnalyticsAlert"];
-    [self presentViewController:currentAlert animated:YES completion:nil];
+    // Analytics aren't collected on iOS 12 & 13.
+    if (@available(iOS 14.0, *))
+    {
+        MXLogDebug(@"[MasterTabBarController]: Invite the user to send analytics");
+        [self.masterTabBarDelegate masterTabBarController:self shouldPresentAnalyticsPromptForMatrixSession:mxSession];
+    }
 }
 
 #pragma mark - Review session
@@ -1021,7 +1003,7 @@
         return;
     }
     
-    NSArray<MXDeviceInfo*> *devices = [session.crypto.store devicesForUser:session.myUserId].allValues;
+    NSArray<MXDeviceInfo*> *devices = [session.crypto devicesForUser:session.myUserId].allValues;
     
     BOOL isUserHasOneUnverifiedDevice = NO;
     

@@ -64,7 +64,7 @@
 "auth_repeat_password_placeholder" = "Wachtwoord herhalen";
 "auth_repeat_new_password_placeholder" = "Bevestig uw nieuwe wachtwoord";
 "auth_invalid_login_param" = "Onjuiste gebruikersnaam en/of wachtwoord";
-"auth_invalid_user_name" = "Gebruikersnamen mogen alleen letters, cijfers, punten, koppeltekens en underscores bevatten";
+"auth_invalid_user_name" = "Inlognamen mogen alleen letters, cijfers, punten, koppeltekens en onderstrepingstekens bevatten";
 "auth_invalid_password" = "Het wachtwoord is te kort (min 6)";
 "auth_invalid_email" = "Dit ziet er niet uit als een geldig e-mailadres";
 "auth_invalid_phone" = "Dit ziet er niet uit als een geldig telefoonnummer";
@@ -77,7 +77,7 @@
 "auth_missing_phone" = "Telefoonnummer ontbreekt";
 "auth_missing_email_or_phone" = "E-mailadres of telefoonnummer ontbreekt";
 "auth_password_dont_match" = "De wachtwoorden komen niet overeen";
-"auth_username_in_use" = "De gebruikersnaam is al in gebruik";
+"auth_username_in_use" = "Inlognaam al in gebruik";
 "auth_forgot_password" = "Wachtwoord vergeten?";
 "auth_use_server_options" = "Aangepaste serverinstellingen gebruiken (geavanceerd)";
 "auth_email_validation_message" = "Bekijk uw e-mail om verder te gaan met de registratie";
@@ -109,7 +109,7 @@
 "room_creation_keep_private" = "Privé houden";
 "room_creation_make_private" = "Privé maken";
 "room_creation_wait_for_creation" = "Er wordt al een kamer aangemaakt. Even geduld.";
-"room_creation_invite_another_user" = "Zoeken/uitnodigen met gebruikers-ID, naam of e-mailadres";
+"room_creation_invite_another_user" = "Persoon-ID, naam of e-mail";
 // Room recents
 "room_recents_directory_section" = "KAMERGIDS";
 "room_recents_favourites_section" = "FAVORIETEN";
@@ -261,13 +261,13 @@
 "settings_user_settings" = "GEBRUIKERSINSTELLINGEN";
 "settings_notifications_settings" = "MELDINGSINSTELLINGEN";
 "settings_ignored_users" = "GENEGEERDE GEBRUIKERS";
-"settings_contacts" = "LOKALE CONTACTEN";
+"settings_contacts" = "APPARAAT CONTACTEN";
 "settings_advanced" = "GEAVANCEERD";
-"settings_other" = "OVERIGE";
+"settings_other" = "OVERIG";
 "settings_labs" = "EXPERIMENTEEL";
 "settings_devices" = "APPARATEN";
 "settings_cryptography" = "CRYPTOGRAFIE";
-"settings_sign_out" = "Afmelden";
+"settings_sign_out" = "Uitloggen";
 "settings_sign_out_confirmation" = "Weet u het zeker?";
 "settings_sign_out_e2e_warn" = "U zult uw sleutels voor eind-tot-eindversleuteling kwijtraken. Dat betekent dat u op dit apparaat geen oude berichten in versleutelde gesprekken meer zult kunnen lezen.";
 "settings_profile_picture" = "Profielfoto";
@@ -564,9 +564,9 @@
 "room_message_reply_to_short_placeholder" = "Stuur een antwoord…";
 // String for App Store
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
-"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, ruimtes, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
+"store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, Spaces, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
-"auth_accept_policies" = "Gelieve het beleid van deze server te lezen en aanvaarden:";
+"auth_accept_policies" = "Lees het beleid van deze homeserver en kies om te aanvaarden:";
 "auth_autodiscover_invalid_response" = "Ongeldig server-ontdekkings-antwoord";
 "room_recents_server_notice_section" = "SYSTEEMMELDINGEN";
 "room_message_unable_open_link_error_message" = "Kan de koppeling niet openen.";
@@ -667,13 +667,13 @@
 "key_backup_setup_banner_subtitle" = "Begin sleutelback-up te gebruiken";
 "key_backup_recover_banner_title" = "Verlies nooit uw versleutelde berichten";
 "sign_out_existing_key_backup_alert_title" = "Weet u zeker dat u zich wilt afmelden?";
-"sign_out_existing_key_backup_alert_sign_out_action" = "Afmelden";
+"sign_out_existing_key_backup_alert_sign_out_action" = "Uitloggen";
 "sign_out_non_existing_key_backup_alert_title" = "Als u zich nu afmeldt, zult u de toegang tot uw versleutelde berichten verliezen";
 "sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Begin sleutelback-up te gebruiken";
 "sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Ik wil mijn versleutelde berichten niet";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "U zult uw versleutelde berichten verliezen";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "U zult de toegang tot uw versleutelde berichten verliezen, tenzij u een back-up van uw sleutels maakt vooraleer u zich afmeldt.";
-"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Afmelden";
+"sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Uitloggen";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Back-up";
 "sign_out_key_backup_in_progress_alert_title" = "Sleutelback-up is bezig. Als u zich nu afmeldt zult u de toegang tot uw versleutelde berichten verliezen.";
 "sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ik wil mijn versleutelde berichten niet";
@@ -795,7 +795,7 @@
 "auth_softlogout_clear_data_button" = "Alle gegevens wissen";
 "auth_softlogout_clear_data_sign_out_title" = "Weet u het zeker?";
 "auth_softlogout_clear_data_sign_out_msg" = "Weet u zeker dat u alle gegevens die op dit moment op dit apparaat worden opgeslagen wilt wissen? Meld u opnieuw aan om toegang te verkrijgen tot uw accountgegevens en berichten.";
-"auth_softlogout_clear_data_sign_out" = "Afmelden";
+"auth_softlogout_clear_data_sign_out" = "Uitloggen";
 "room_event_action_reaction_show_all" = "Alles tonen";
 "room_event_action_reaction_show_less" = "Minder tonen";
 "room_event_action_reaction_history" = "Reactiegeschiedenis";
@@ -1371,7 +1371,7 @@
 "settings_discovery_three_pids_management_information_part3" = ".";
 "settings_discovery_three_pids_management_information_part2" = "Gebruikersinstellingen";
 "settings_discovery_three_pids_management_information_part1" = "Beheer e-mailadressen en telefoonnummers die andere personen kunnen gebruiken om u te vinden en u uit te nodigen voor kamers. E-mailadressen of telefoonnummers toevoegen of verwijderen van deze lijst kan in ";
-"settings_discovery_terms_not_signed" = "Aanvaard de gebruikersvoorwaarden van de identiteitsserver (%@) om vindbaar te zijn op e-mailadres of telefoonnummer.";
+"settings_discovery_terms_not_signed" = "Aanvaard de voorwaarden van de identiteitsserver (%@) om vindbaar te zijn op e-mailadres of telefoonnummer.";
 "settings_discovery_no_identity_server" = "U gebruikt momenteel geen identiteitsserver. Om door de u bekende contacten vindbaar te zijn, voeg er een toe.";
 "settings_devices_description" = "De publieke naam van een sessie is zichtbaar voor de personen waarmee u communiceert";
 "settings_add_3pid_invalid_password_message" = "Ongeldig wachtwoord";
@@ -1469,16 +1469,16 @@
 
 // Chat
 "room_slide_to_end_group_call" = "Schuif om voor iedereen de oproep te beëindigen";
-"space_beta_announce_information" = "Ruimtes zijn de nieuwe manier om kamers en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu al gebruiken op Web en Desktop.";
-"space_feature_unavailable_information" = "Ruimtes zijn de nieuwe manier om kamers en personen te groeperen. \n\nHet is binnenkort beschikbaar. U kan aan ruimtes deelnemen via andere platformen en die kamers worden dan hier beschikbaar.";
+"space_beta_announce_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. Dit is nog niet beschikbaar op iOS, maar u kunt ze nu al gebruiken op Web en Desktop.";
+"space_feature_unavailable_information" = "Spaces zijn de nieuwe manier om kamers en personen te groeperen. \n\nHet is binnenkort beschikbaar. U kan aan Spaces deelnemen via andere platformen en die kamers worden dan hier beschikbaar.";
 "space_beta_announce_subtitle" = "De nieuwe versie van gemeenschappen";
-"space_beta_announce_title" = "Ruimtes komen binnenkort";
+"space_beta_announce_title" = "Spaces komen binnenkort";
 "space_beta_announce_badge" = "BETA";
-"space_feature_unavailable_subtitle" = "Ruimtes zijn nog niet beschikbaar op iOS, maar u kunt het nu al testen op Web en Desktop";
+"space_feature_unavailable_subtitle" = "Spaces zijn nog niet beschikbaar op iOS, maar u kunt het nu al testen op Web en Desktop";
 
 // Mark: - Spaces
 
-"space_feature_unavailable_title" = "Ruimtes zijn nog niet klaar";
+"space_feature_unavailable_title" = "Spaces zijn nog niet klaar";
 "side_menu_app_version" = "Versie %@";
 "side_menu_action_feedback" = "Feedback";
 "side_menu_action_help" = "Help";
@@ -1574,14 +1574,14 @@
 "settings_confirm_media_size_description" = "Wanneer dit aan staat wordt u elke keer gevraagd welk formaat afbeeldingen en video's u wilt versturen.";
 "settings_confirm_media_size" = "Bevestig afmeting bij versturen";
 "settings_sending_media" = "AFBEELDINGEN EN VIDEO'S VERSTUREN";
-"space_avatar_view_accessibility_hint" = "Ruimte-afbeelding wijzigen";
+"space_avatar_view_accessibility_hint" = "Space-afbeelding wijzigen";
 
 // Mark: Avatar
 
 "space_avatar_view_accessibility_label" = "afbeelding";
-"space_public_join_rule" = "Publieke ruimte";
-"space_private_join_rule" = "Privéruimte";
-"space_participants_action_ban" = "Uit deze ruimte verbannen";
+"space_public_join_rule" = "Publieke Space";
+"space_private_join_rule" = "Privé Space";
+"space_participants_action_ban" = "Uit deze Space verbannen";
 "space_participants_action_remove" = "Uit deze kamer verwijderen";
 "spaces_coming_soon_detail" = "Deze functies is nog niet klaar, maar er wordt aan gewerkt. Voor nu kan u dit wel doen met Element via uw computer.";
 "spaces_invites_coming_soon_title" = "Uitnodigen komt binnenkort";
@@ -1591,18 +1591,59 @@
 "spaces_no_room_found_detail" = "Sommige resultaten kunnen verborgen zijn doordat ze privé zijn. U heeft dan een uitnodiging nodig om deel te nemen.";
 "spaces_empty_space_detail" = "Sommige kamers kunnen verborgen zijn doordat ze privé zijn. U heeft dan een uitnodiging nodig om deel te nemen.";
 "spaces_no_result_found_title" = "Geen resultaten gevonden";
-"spaces_empty_space_title" = "Deze ruimte heeft (nog) geen kamers";
-"space_tag" = "ruimte";
+"spaces_empty_space_title" = "Deze Space heeft (nog) geen kamers";
+"space_tag" = "space";
 "spaces_explore_rooms" = "Kamers ontdekken";
-"leave_space_and_all_rooms_action" = "Alle kamers en ruimtes verlaten";
+"leave_space_and_all_rooms_action" = "Alle kamers en Spaces verlaten";
 "leave_space_only_action" = "Geen kamers verlaten";
-"leave_space_message_admin_warning" = "U bent beheerder van deze ruimte, controleer of u de beheerrechten heeft overgedragen aan een andere deelnemer voordat u vertrekt.";
-"leave_space_message" = "Weet u zeker dat u %@ wilt verlaten? Wilt u ook alle kamers en ruimtes in deze ruimte verlaten?";
+"leave_space_message_admin_warning" = "U bent beheerder van deze Space, controleer of u de beheerrechten heeft overgedragen aan een andere deelnemer voordat u vertrekt.";
+"leave_space_message" = "Weet u zeker dat u %@ wilt verlaten? Wilt u ook alle kamers en Spaces in deze Space verlaten?";
 "leave_space_title" = "%@ verlaten";
-"spaces_left_panel_title" = "Ruimtes";
+"spaces_left_panel_title" = "Spaces";
 "spaces_home_space_title" = "Thuis";
 "settings_links" = "LINKS";
 "room_recents_suggested_rooms_section" = "AANBEVOLEN KAMERS";
 "spaces_suggested_room" = "Aanbevolen";
 "done" = "Klaar";
 "open" = "Openen";
+"space_home_show_all_rooms" = "Alle kamers tonen";
+"service_terms_modal_information_description_integration_manager" = "Met een integratiebeheerder kunt u functies van derden toevoegen.";
+"service_terms_modal_information_description_identity_server" = "Een identiteitsserver helpt u uw contactpersonen te vinden, door hun telefoonnummer of e-mail op te zoeken, om te zien of zij al een account hebben.";
+"service_terms_modal_information_title_integration_manager" = "Integratiebeheerder";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Indentiteitsserver";
+"service_terms_modal_description_integration_manager" = "Hiermee kunt u bots, bruggen, widgets en stickerpakketten gebruiken.";
+"service_terms_modal_description_identity_server" = "Zo kan iemand u vinden als hij uw telefoonnummer of e-mail in zijn telefooncontacten heeft opgeslagen.";
+"service_terms_modal_table_header_integration_manager" = "INTEGRATIEBEHEERDER VOORWAARDEN";
+"service_terms_modal_table_header_identity_server" = "IDENTITEITSSERVER VOORWAARDEN";
+"service_terms_modal_footer" = "Dit kan elk moment worden uitgeschakeld in uw instellingen.";
+
+// Service terms
+"service_terms_modal_title_message" = "Om door te gaan, aanvaard de onderstaande voorwaarden";
+"settings_contacts_enable_sync_description" = "Dit zal uw identiteitsserver gebruiken om u te verbinden met uw contacten, en hen helpen u te vinden.";
+"settings_contacts_enable_sync" = "Vind uw contacten";
+"settings_phone_contacts" = "TELEFOON CONTACTEN";
+"room_event_action_forward" = "Doorsturen";
+"find_your_contacts_identity_service_error" = "Kan geen verbinding maken met de identiteitsserver.";
+"find_your_contacts_footer" = "Dit kan op elk moment worden uitgeschakeld via de instellingen.";
+"find_your_contacts_button_title" = "Vind uw contacten";
+"find_your_contacts_message" = "Laat %@ uw contacten zien, zodat u snel kunt beginnen te chatten met degenen die u het beste kent.";
+"find_your_contacts_title" = "Begin met een lijst van uw contacten";
+"contacts_address_book_permission_denied_alert_message" = "Om contacten in te schakelen, ga naar uw apparaatinstellingen.";
+"contacts_address_book_permission_denied_alert_title" = "Contacten uitgeschakeld";
+"poll_edit_form_add_option" = "Optie toevoegen";
+"poll_edit_form_option_number" = "Optie %d";
+"poll_edit_form_create_options" = "Opties maken";
+"poll_edit_form_input_placeholder" = "Schrijf iets";
+"poll_edit_form_question_or_topic" = "Vraag of onderwerp";
+"poll_edit_form_poll_question_or_topic" = "Poll vraag of onderwerp";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Poll maken";
+"share_extension_send_now" = "Versturen";
+"share_extension_low_quality_video_message" = "Stuur in %@ voor een betere kwaliteit of stuur in lage kwaliteit hieronder.";
+"share_extension_low_quality_video_title" = "Video zal in lage kwaliteit worden verstuurd";
+"settings_discovery_accept_terms" = "Identiteitsserver-voorwaarden aanvaarden";
+"settings_about" = "OVER";

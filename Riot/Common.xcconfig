@@ -30,3 +30,5 @@ CODE_SIGN_ENTITLEMENTS = Riot/SupportingFiles/Riot.entitlements
 
 SWIFT_OBJC_BRIDGING_HEADER = $(SRCROOT)/$(PRODUCT_NAME)/SupportingFiles/Riot-Bridging-Header.h
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+
+SWIFT_OBJC_INTERFACE_HEADER_NAME = GeneratedInterface-Swift.h

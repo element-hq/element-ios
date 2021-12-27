@@ -1,0 +1,151 @@
+"matrix" = "Matrix";
+// Login Screen
+"login_create_account" = "Luo tili:";
+"login_server_url_placeholder" = "URL (esim. https://matrix.org)";
+"login_home_server_title" = "Kotipalvelin:";
+"login_identity_server_title" = "Identiteettipalvelin:";
+"view" = "Näytä";
+"back" = "Takaisin";
+"continue" = "Jatka";
+"leave" = "Poistu";
+"invite" = "Kutsu";
+"retry" = "Yritä uudelleen";
+"cancel" = "Peruuta";
+"save" = "Tallenna";
+"login_password_placeholder" = "Salasana";
+"login_optional_field" = "valinnainen";
+"login_home_server_info" = "Kotipalvelin tallentaa kaikki keskustelu- ja tilitietosi";
+"login_display_name_placeholder" = "Näyttönimi (esim. Matti Meikäläinen)";
+"login_email_placeholder" = "Sähköpostiosoite";
+"login_error_title" = "Kirjautuminen epäonnistui";
+"login_error_registration_is_not_supported" = "Rekisteröinti ei ole tuettu tällä hetkellä";
+"login_error_forbidden" = "Virheellinen käyttäjätunnus tai salasana";
+"login_error_limit_exceeded" = "Liian monta pyyntöä on lähetetty";
+"login_leave_fallback" = "Peruuta";
+"register_error_title" = "Rekisteröinti epäonnistui";
+"login_mobile_device" = "Mobiili";
+"login_tablet_device" = "Tabletti";
+"login_desktop_device" = "Työpöytä";
+"close" = "Sulje";
+"select_account" = "Valitse tili";
+"invite_user" = "Kutsu Matrix-käyttäjä";
+"select_all" = "Valitse kaikki";
+"cancel_upload" = "Peruuta lähetys";
+"cancel_download" = "Peruuta lataus";
+"show_details" = "Näytä tiedot";
+"answer_call" = "Vastaa puheluun";
+"reject_call" = "Hylkää puhelu";
+"end_call" = "Lopeta puhelu";
+"notice_event_redacted_reason" = " [syy: %@]";
+"notice_encrypted_message" = "Salattu viesti";
+"notice_image_attachment" = "kuvaliite";
+"notice_audio_attachment" = "ääniliite";
+"notice_video_attachment" = "videoliite";
+"notice_location_attachment" = "sijaintiliite";
+"notice_file_attachment" = "tiedostoliite";
+"notice_invalid_attachment" = "virheellinen liite";
+// room display name
+"room_displayname_empty_room" = "Tyhjä huone";
+"room_displayname_two_members" = "%@ ja %@";
+// Settings
+"settings" = "Asetukset";
+"notification_settings_room_rule_title" = "Huone: '%@'";
+"device_details_name" = "Julkinen nimi\n";
+"device_details_last_seen" = "Viimeksi nähty\n";
+"device_details_rename_prompt_message" = "Istunnon julkinen nimi näkyy henkilöille, joiden kanssa keskustelet";
+"room_event_encryption_info_event_algorithm" = "Algoritmi\n";
+"room_event_encryption_info_event_session_id" = "Istunnon tunnus\n";
+"room_event_encryption_info_device_unknown" = "tuntematon istunto\n";
+"room_event_encryption_info_device_name" = "Julkinen nimi\n";
+// Account
+"account_save_changes" = "Tallenna muutokset";
+"account_error_matrix_session_is_not_opened" = "Matrix-istunto ei ole avattuna";
+"account_error_email_wrong_title" = "Virheellinen sähköpostiosoite";
+"account_error_email_wrong_description" = "Tämä ei vaikuta kelvolliselta sähköpostiosoitteelta";
+"account_error_msisdn_wrong_title" = "Virheellinen puhelinnumero";
+"account_error_msisdn_wrong_description" = "Tämä ei vaikuta kelvolliselta puhelinnumerolta";
+// Room creation
+"room_creation_name_title" = "Huoneen nimi:";
+// Room
+"room_please_select" = "Valitse huone";
+"room_error_join_failed_title" = "Liittyminen huoneeseen epäonnistui";
+"room_left" = "Poistuit huoneesta";
+// Reply to message
+"message_reply_to_sender_sent_an_image" = "lähetti kuvan.";
+"message_reply_to_sender_sent_a_video" = "lähetti videon.";
+"message_reply_to_sender_sent_an_audio_file" = "lähetti äänitiedoston.";
+"message_reply_to_sender_sent_a_file" = "lähetti tiedoston.";
+"attachment_original" = "Todellinen koko: %@";
+"attachment_cancel_download" = "Perutaanko lataus?";
+"attachment_cancel_upload" = "Perutaanko lähetys?";
+"attachment_multiselection_original" = "Todellinen koko";
+"attachment_e2e_keys_import" = "Tuo...";
+// Contacts
+"contact_mx_users" = "Matrix-käyttäjät";
+"contact_local_contacts" = "Paikalliset yhteystiedot";
+"group_section" = "Ryhmät";
+// Search
+"search_no_results" = "Ei tuloksia";
+"search_searching" = "Haku käynnissä...";
+"e2e_import" = "Tuo";
+"e2e_export" = "Vie";
+"error" = "Virhe";
+"default" = "oletus";
+"private" = "Yksityinen";
+"public" = "Julkinen";
+"network_error_not_reachable" = "Tarkista verkkoyhteytesi";
+// Country picker
+"country_picker_title" = "Valitse maa";
+// Language picker
+"language_picker_title" = "Valitse kieli";
+"language_picker_default_language" = "Oletus (%@)";
+"notice_answered_video_call" = "%@ vastasi puheluun";
+"notice_ended_video_call" = "%@ lopetti puhelun";
+// button names 
+"ok" = "OK";
+"send" = "Lähetä";
+"copy_button_name" = "Kopioi";
+"redact" = "Poista";
+"share" = "Jaa";
+"delete" = "Poista";
+// actions 
+"action_logout" = "Kirjaudu ulos";
+"create_room" = "Luo huone";
+"login" = "Kirjaudu sisään";
+"create_account" = "Luo tili";
+// Login Screen 
+"login_error_already_logged_in" = "Jo sisäänkirjautuneena";
+// room details dialog screen
+"room_details_title" = "Huoneen tiedot";
+"settings_title_notifications" = "Ilmoitukset";
+// Notification settings screen 
+"notification_settings_disable_all" = "Poista käytöstä kaikki ilmoitukset";
+"notification_settings_enable_notifications" = "Käytä ilmoituksia";
+"notification_settings_always_notify" = "Ilmoita aina";
+"notification_settings_never_notify" = "Älä ilmoita koskaan";
+"notification_settings_select_room" = "Valitse huone";
+// gcm section 
+"settings_config_home_server" = "Kotipalvelin: %@";
+"settings_config_identity_server" = "Identiteettipalvelin: %@";
+// call string
+"call_waiting" = "Odottaa...";
+"call_connecting" = "Puhelu yhdistyy...";
+"call_ended" = "Puhelu loppui";
+"call_ring" = "Soitetaan...";
+"incoming_video_call" = "Saapuva videopuhelu";
+"incoming_voice_call" = "Saapuva äänipuhelu";
+"call_invite_expired" = "Puhelukutsu vanhentui";
+"ssl_logout_account" = "Kirjaudu ulos";
+"ssl_fingerprint_hash" = "Sormenjälki (%@):";
+"room_event_encryption_info_verify" = "Vahvista...";
+"room_event_encryption_info_unverify" = "Poista vahvistus";
+"room_event_encryption_verify_title" = "Varmenna istunto\n\n";
+"room_event_encryption_verify_ok" = "Vahvista";
+"account_email_validation_error" = "Sähköpostin vahvistaminen epäonnistui. Tarkistathan sähköpostisi ja seuraa linkkiä, joka on lähettämässämme viestissä. Sen jälkeen, täppää jatka";
+"account_msisdn_validation_title" = "Vahvistus meneillään";
+"account_msisdn_validation_error" = "Puhelinnumeron vahvistus epäonnistui.";
+"account_error_display_name_change_failed" = "Näyttönimen vaihtaminen epäonnistui";
+"account_error_picture_change_failed" = "Kuvan vaihtaminen epäonnistui";
+"ssl_could_not_verify" = "Etäpalvelimen identiteetin vahvistaminen epäonnistui.";
+"login_user_id_placeholder" = "Matrix ID (esim. @matti:matrix.org tai pelkästään matti)";
+"login_identity_server_info" = "Matrix tarjoaa identiteettipalvelimen joka osaa kertaa mikä sähköpostiosoite tai puhelinnumero vastaa mitäkin Matrix ID:tä. Vain https://matrix.org on tällä hetkellä käytettävissä.";

@@ -14,11 +14,9 @@
  limitations under the License.
  */
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
-#import "MediaPickerViewController.h"
-
-@interface SettingsViewController : MXKTableViewController<UITextFieldDelegate, MXKCountryPickerViewControllerDelegate, MXKLanguagePickerViewControllerDelegate, MXKDataSourceDelegate>
+@interface SettingsViewController : MXKTableViewController
 
 + (instancetype)instantiate;
 

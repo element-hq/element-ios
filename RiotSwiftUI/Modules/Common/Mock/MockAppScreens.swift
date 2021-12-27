@@ -20,10 +20,13 @@ import Foundation
 @available(iOS 14.0, *)
 enum MockAppScreens {
     static let appScreens: [MockScreenState.Type] = [
+        MockAnalyticsPromptScreenState.self,
+        MockUserSuggestionScreenState.self,
+        MockPollEditFormScreenState.self,
+        MockPollTimelineScreenState.self,
         MockTemplateUserProfileScreenState.self,
         MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self,
-        MockUserSuggestionScreenState.self
+        MockTemplateRoomChatScreenState.self
     ]
 }
 

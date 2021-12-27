@@ -15,6 +15,10 @@ public class VectorL10n: NSObject {
   public static var accept: String { 
     return VectorL10n.tr("Vector", "accept") 
   }
+  /// button
+  public static var accessibilityButtonLabel: String { 
+    return VectorL10n.tr("Vector", "accessibility_button_label") 
+  }
   /// checkbox
   public static var accessibilityCheckboxLabel: String { 
     return VectorL10n.tr("Vector", "accessibility_checkbox_label") 
@@ -30,6 +34,58 @@ public class VectorL10n: NSObject {
   /// Active Call (%@)
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
+  }
+  /// Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static var analyticsPromptMessageNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_message_new_user") 
+  }
+  /// You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static var analyticsPromptMessageUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_message_upgrade") 
+  }
+  /// Not now
+  public static var analyticsPromptNotNow: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_not_now") 
+  }
+  /// We <b>don't</b> record or profile any account data
+  public static var analyticsPromptPoint1: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_1") 
+  }
+  /// We <b>don't</b> share information with third parties
+  public static var analyticsPromptPoint2: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_2") 
+  }
+  /// You can turn this off anytime in settings
+  public static var analyticsPromptPoint3: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_point_3") 
+  }
+  /// Stop sharing
+  public static var analyticsPromptStop: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_stop") 
+  }
+  /// here
+  public static var analyticsPromptTermsLinkNewUser: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_link_new_user") 
+  }
+  /// here
+  public static var analyticsPromptTermsLinkUpgrade: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_link_upgrade") 
+  }
+  /// You can read all our terms %@.
+  public static func analyticsPromptTermsNewUser(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_new_user", p1)
+  }
+  /// Read all our terms %@. Is that OK?
+  public static func analyticsPromptTermsUpgrade(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_terms_upgrade", p1)
+  }
+  /// Help improve %@
+  public static func analyticsPromptTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_title", p1)
+  }
+  /// Yes, that's fine
+  public static var analyticsPromptYes: String { 
+    return VectorL10n.tr("Vector", "analytics_prompt_yes") 
   }
   /// Please review and accept the policies of this homeserver:
   public static var authAcceptPolicies: String { 
@@ -1235,6 +1291,10 @@ public class VectorL10n: NSObject {
   public static var emojiPickerTitle: String { 
     return VectorL10n.tr("Vector", "emoji_picker_title") 
   }
+  /// Enable
+  public static var enable: String { 
+    return VectorL10n.tr("Vector", "enable") 
+  }
   /// Send an encrypted message…
   public static var encryptedRoomMessagePlaceholder: String { 
     return VectorL10n.tr("Vector", "encrypted_room_message_placeholder") 
@@ -1438,10 +1498,6 @@ public class VectorL10n: NSObject {
   /// Review now
   public static var gdprConsentNotGivenAlertReviewNowAction: String { 
     return VectorL10n.tr("Vector", "gdpr_consent_not_given_alert_review_now_action") 
-  }
-  /// Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?
-  public static func googleAnalyticsUsePrompt(_ p1: String) -> String {
-    return VectorL10n.tr("Vector", "google_analytics_use_prompt", p1)
   }
   /// Home
   public static var groupDetailsHome: String { 
@@ -2363,6 +2419,106 @@ public class VectorL10n: NSObject {
   public static func pinProtectionSettingsSectionHeaderWithBiometrics(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "pin_protection_settings_section_header_with_biometrics", p1)
   }
+  /// Add option
+  public static var pollEditFormAddOption: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_add_option") 
+  }
+  /// Create options
+  public static var pollEditFormCreateOptions: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_create_options") 
+  }
+  /// Create poll
+  public static var pollEditFormCreatePoll: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_create_poll") 
+  }
+  /// Write something
+  public static var pollEditFormInputPlaceholder: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_input_placeholder") 
+  }
+  /// Option %lu
+  public static func pollEditFormOptionNumber(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_edit_form_option_number", p1)
+  }
+  /// Poll question or topic
+  public static var pollEditFormPollQuestionOrTopic: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
+  }
+  /// OK
+  public static var pollEditFormPostFailureAction: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_action") 
+  }
+  /// Please try again
+  public static var pollEditFormPostFailureSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_subtitle") 
+  }
+  /// Failed to post poll
+  public static var pollEditFormPostFailureTitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_title") 
+  }
+  /// Question or topic
+  public static var pollEditFormQuestionOrTopic: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
+  }
+  /// OK
+  public static var pollTimelineNotClosedAction: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_not_closed_action") 
+  }
+  /// Please try again
+  public static var pollTimelineNotClosedSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 
+  }
+  /// Failed to end poll
+  public static var pollTimelineNotClosedTitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_not_closed_title") 
+  }
+  /// 1 vote
+  public static var pollTimelineOneVote: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_one_vote") 
+  }
+  /// Final results based on %lu votes
+  public static func pollTimelineTotalFinalResults(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_total_final_results", p1)
+  }
+  /// Final results based on 1 vote
+  public static var pollTimelineTotalFinalResultsOneVote: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_final_results_one_vote") 
+  }
+  /// No votes cast
+  public static var pollTimelineTotalNoVotes: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_no_votes") 
+  }
+  /// 1 vote cast
+  public static var pollTimelineTotalOneVote: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_one_vote") 
+  }
+  /// 1 vote cast. Vote to the see the results
+  public static var pollTimelineTotalOneVoteNotVoted: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_total_one_vote_not_voted") 
+  }
+  /// %lu votes cast
+  public static func pollTimelineTotalVotes(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_total_votes", p1)
+  }
+  /// %lu votes cast. Vote to the see the results
+  public static func pollTimelineTotalVotesNotVoted(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_total_votes_not_voted", p1)
+  }
+  /// OK
+  public static var pollTimelineVoteNotRegisteredAction: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_action") 
+  }
+  /// Sorry, your vote was not registered, please try again
+  public static var pollTimelineVoteNotRegisteredSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_subtitle") 
+  }
+  /// Vote not registered
+  public static var pollTimelineVoteNotRegisteredTitle: String { 
+    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_title") 
+  }
+  /// %lu votes
+  public static func pollTimelineVotesCount(_ p1: Int) -> String {
+    return VectorL10n.tr("Vector", "poll_timeline_votes_count", p1)
+  }
   /// Preview
   public static var preview: String { 
     return VectorL10n.tr("Vector", "preview") 
@@ -2887,6 +3043,10 @@ public class VectorL10n: NSObject {
   public static var roomEventActionEdit: String { 
     return VectorL10n.tr("Vector", "room_event_action_edit") 
   }
+  /// End poll
+  public static var roomEventActionEndPoll: String { 
+    return VectorL10n.tr("Vector", "room_event_action_end_poll") 
+  }
   /// Forward
   public static var roomEventActionForward: String { 
     return VectorL10n.tr("Vector", "room_event_action_forward") 
@@ -2922,6 +3082,10 @@ public class VectorL10n: NSObject {
   /// Remove
   public static var roomEventActionRedact: String { 
     return VectorL10n.tr("Vector", "room_event_action_redact") 
+  }
+  /// Remove poll
+  public static var roomEventActionRemovePoll: String { 
+    return VectorL10n.tr("Vector", "room_event_action_remove_poll") 
   }
   /// Reply
   public static var roomEventActionReply: String { 
@@ -4119,6 +4283,10 @@ public class VectorL10n: NSObject {
   public static var settingsAdvanced: String { 
     return VectorL10n.tr("Vector", "settings_advanced") 
   }
+  /// Send crash and analytics data
+  public static var settingsAnalyticsAndCrashData: String { 
+    return VectorL10n.tr("Vector", "settings_analytics_and_crash_data") 
+  }
   /// Call invitations
   public static var settingsCallInvitations: String { 
     return VectorL10n.tr("Vector", "settings_call_invitations") 
@@ -4507,13 +4675,13 @@ public class VectorL10n: NSObject {
   public static var settingsLabsEnableRingingForGroupCalls: String { 
     return VectorL10n.tr("Vector", "settings_labs_enable_ringing_for_group_calls") 
   }
+  /// Polls
+  public static var settingsLabsEnabledPolls: String { 
+    return VectorL10n.tr("Vector", "settings_labs_enabled_polls") 
+  }
   /// React to messages with emoji
   public static var settingsLabsMessageReaction: String { 
     return VectorL10n.tr("Vector", "settings_labs_message_reaction") 
-  }
-  /// Voice messages
-  public static var settingsLabsVoiceMessages: String { 
-    return VectorL10n.tr("Vector", "settings_labs_voice_messages") 
   }
   /// LINKS
   public static var settingsLinks: String { 
@@ -4646,10 +4814,6 @@ public class VectorL10n: NSObject {
   /// SECURITY
   public static var settingsSecurity: String { 
     return VectorL10n.tr("Vector", "settings_security") 
-  }
-  /// Send anon crash & usage data
-  public static var settingsSendCrashReport: String { 
-    return VectorL10n.tr("Vector", "settings_send_crash_report") 
   }
   /// SENDING IMAGES AND VIDEOS
   public static var settingsSendingMedia: String { 

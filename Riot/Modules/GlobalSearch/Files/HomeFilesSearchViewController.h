@@ -15,7 +15,9 @@
  */
 
 
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
+
+@class AnalyticsScreenTimer;
 
 /**
  `HomeFilesSearchViewController` displays the files search in user's rooms under a `HomeViewController` segment.
@@ -26,5 +28,10 @@
  The event selected in the search results
  */
 @property (nonatomic, readonly) MXEvent *selectedEvent;
+
+/**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 @end

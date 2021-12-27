@@ -16,13 +16,12 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <MatrixKit/MatrixKit.h>
+#import "MatrixKit.h"
 
 #import "MasterTabBarController.h"
 #import "JitsiViewController.h"
 
 #import "RageShakeManager.h"
-#import "Analytics.h"
 
 #import "ThemeService.h"
 #import "UniversalLink.h"

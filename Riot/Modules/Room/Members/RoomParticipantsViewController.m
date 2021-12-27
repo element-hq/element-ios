@@ -19,7 +19,7 @@
 
 #import "RoomMemberDetailsViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "Contact.h"
 
@@ -29,7 +29,7 @@
 
 #import "RageShakeManager.h"
 
-@interface RoomParticipantsViewController ()
+@interface RoomParticipantsViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate>
 {
     // Search result
     NSString *currentSearchText;
@@ -245,9 +245,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomParticipants"];
     
     // Refresh display
     [self refreshTableView];
@@ -268,6 +265,8 @@
         [contactsPickerViewController destroy];
         contactsPickerViewController = nil;
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -282,6 +281,12 @@
     
     // cancel any pending search
     [self searchBarCancelButtonClicked:_searchBarView];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)withdrawViewControllerAnimated:(BOOL)animated completion:(void (^)(void))completion

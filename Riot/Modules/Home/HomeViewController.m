@@ -17,7 +17,7 @@
 
 #import "HomeViewController.h"
 
-#import "Riot-Swift.h"
+#import "GeneratedInterface-Swift.h"
 
 #import "RecentsDataSource.h"
 
@@ -69,7 +69,7 @@
     selectedRoomId = nil;
     selectedCollectionViewContentOffset = -1;
     
-    self.screenName = @"Home";
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenHome];
 }
 
 - (void)viewDidLoad

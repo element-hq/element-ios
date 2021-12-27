@@ -15,7 +15,7 @@
 //
 
 import Foundation
-import MatrixKit
+import MatrixSDK
 
 /// CommonConfiguration is the central point to setup settings for MatrixSDK, MatrixKit and common configurations for all targets.
 class CommonConfiguration: NSObject, Configurable {
@@ -75,6 +75,7 @@ class CommonConfiguration: NSObject, Configurable {
         // Disable key backup on common
         sdkOptions.enableKeyBackupWhenStartingMXCrypto = false
         
+        sdkOptions.clientPermalinkBaseUrl = BuildSettings.clientPermalinkBaseUrl
         // Configure key provider delegate
         MXKeyProvider.sharedInstance().delegate = EncryptionKeyManager.shared
     }

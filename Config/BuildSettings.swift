@@ -16,8 +16,6 @@
 
 import Foundation
 
-import MatrixKit
-
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
 @objcMembers
@@ -118,9 +116,9 @@ final class BuildSettings: NSObject {
     "https://element.io/help"
     
     
-    // MARk: - Matrix permalinks
-    // Paths for URLs that will considered as Matrix permalinks. Those permalinks are opened within the app
-    static let matrixPermalinkPaths: [String: [String]] = [
+    // MARK: - Permalinks
+    // Hosts/Paths for URLs that will considered as valid permalinks. Those permalinks are opened within the app.
+    static let permalinkSupportedHosts: [String: [String]] = [
         "app.element.io": [],
         "staging.element.io": [],
         "develop.element.io": [],
@@ -133,8 +131,16 @@ final class BuildSettings: NSObject {
         // Official Matrix ones
         "matrix.to": ["/"],
         "www.matrix.to": ["/"],
+        // Client Permalinks (for use with `BuildSettings.clientPermalinkBaseUrl`)
+//        "example.com": ["/"],
+//        "www.example.com": ["/"],
     ]
     
+    // For use in clients that use a custom base url for permalinks rather than matrix.to.
+    // This baseURL is used to generate permalinks within the app (E.g. timeline message permalinks).
+    // Optional String that when set is used as permalink base, when nil matrix.to format is used.
+    // Example value would be "https://www.example.com", note there is no trailing '/'.
+    static let clientPermalinkBaseUrl: String? = nil
     
     // MARK: - VoIP
     static var allowVoIPUsage: Bool {
@@ -145,7 +151,6 @@ final class BuildSettings: NSObject {
         #endif
     }
     static let stunServerFallbackUrlString: String? = "stun:turn.matrix.org"
-    
     
     // MARK: -  Public rooms Directory
     #warning("Unused build setting: should this be implemented in ShowDirectory?")
@@ -160,8 +165,20 @@ final class BuildSettings: NSObject {
     static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    static let analyticsServerUrl = URL(string: "https://piwik.riot.im/piwik.php")
-    static let analyticsAppId = "14"
+    #if DEBUG
+    /// Host to use for PostHog analytics during development. Set to nil to disable analytics in debug builds.
+    static let analyticsHost: String? = "https://posthog-poc.lab.element.dev"
+    /// Public key for submitting analytics during development. Set to nil to disable analytics in debug builds.
+    static let analyticsKey: String? = "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8"
+    #else
+    /// Host to use for PostHog analytics. Set to nil to disable analytics.
+    static let analyticsHost: String? = "https://posthog.hss.element.io"
+    /// Public key for submitting analytics. Set to nil to disable analytics.
+    static let analyticsKey: String? = "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO"
+    #endif
+    
+    /// The URL to open with more information about analytics terms.
+    static let analyticsTermsURL = URL(string: "https://element.io/cookie-policy")!
     
     
     // MARK: - Bug report
@@ -280,7 +297,7 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowMediaLibraryAction: Bool = true
     static let roomScreenAllowStickerAction: Bool = true
     static let roomScreenAllowFilesAction: Bool = true
-    
+
     /// Allow split view detail view stacking    
     static let allowSplitViewDetailsScreenStacking: Bool = true
     
@@ -337,4 +354,14 @@ final class BuildSettings: NSObject {
     
     // MARK: - Secrets Recovery
     static let secretsRecoveryAllowReset = true
+    
+    // MARK: - Polls
+    
+    static var pollsEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return true
+    }
 }
