@@ -77,18 +77,21 @@
      
 - (void)loadCellData
 {
-    [self.fileStore.summariesModule fetchAllSummaries:^(NSArray<MXRoomSummary *> *roomsSummaries) {
+    [self.fileStore.summariesModule fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> *roomsSummaries) {
         
         NSMutableArray *cellData = [NSMutableArray array];
         
         // Add a fake matrix session to each room summary to provide it a REST client (used to handle correctly the room avatar).
         MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.credentials andOnUnrecognizedCertificateBlock:nil]];
         
-        for (MXRoomSummary *roomSummary in roomsSummaries)
+        for (id<MXRoomSummaryProtocol> roomSummary in roomsSummaries)
         {
             if (!roomSummary.hiddenFromUser && roomSummary.roomType == MXRoomTypeRoom)
             {
-                [roomSummary setMatrixSession:session];
+                if ([roomSummary respondsToSelector:@selector(setMatrixSession:)])
+                {
+                    [roomSummary setMatrixSession:session];
+                }
                 
                 MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary dataSource:nil];
                 
