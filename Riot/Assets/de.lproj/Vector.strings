@@ -206,7 +206,7 @@
 "settings_user_settings" = "NUTZER-EINSTELLUNGEN";
 "settings_notifications_settings" = "BENACHRICHTIGUNGS-EINSTELLUNGEN";
 "settings_ignored_users" = "IGNORIERTE NUTZER";
-"settings_contacts" = "LOKALE KONTAKTE";
+"settings_contacts" = "GERÄTEKONTAKTE";
 "settings_advanced" = "ERWEITERT";
 "settings_other" = "Weiteres";
 "settings_devices" = "SITZUNGEN";
@@ -1001,7 +1001,7 @@
 "skip" = "Überspringen";
 "security_settings_crosssigning_info_not_bootstrapped" = "Quersignierung ist bisher nicht konfiguriert.";
 "room_member_power_level_admin_in" = "Admin in %@";
-"room_member_power_level_moderator_in" = "Moderationsrechte in %@";
+"room_member_power_level_moderator_in" = "Mod in %@";
 "room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
 "room_member_power_level_short_admin" = "Admin";
 "room_member_power_level_short_moderator" = "Mod";
@@ -1487,7 +1487,7 @@
 "settings_contacts_enable_sync" = "Finde deine Kontakte";
 "space_home_show_all_rooms" = "Alle Räume anzeigen";
 "service_terms_modal_information_description_integration_manager" = "Ein Integrationsmanager erlaubt dir, externe Funktionen hinzuzufügen.";
-"service_terms_modal_information_description_identity_server" = "Der Identitätsserver sucht anhand der Telefonnummern und E-Mails in deinen Kontakten, ob diese einen Matrix-Account haben.";
+"service_terms_modal_information_description_identity_server" = "Der Identitätsserver sucht anhand der Telefonnummern und E-Mails deiner Kontakte nach ihren Matrix-Accounts.";
 "service_terms_modal_information_title_integration_manager" = "Integrationsmanager";
 
 // Alert explaining what an identity server / integration manager is.
@@ -1561,3 +1561,9 @@
 "share_extension_low_quality_video_title" = "Das Video wird in niedriger Qualität gesendet werden";
 "analytics_prompt_stop" = "Teilen beenden";
 "analytics_prompt_not_now" = "Nicht jetzt";
+"analytics_prompt_yes" = "Das ist Okay";
+"analytics_prompt_point_3" = "Du kannst dies jederzeit in den Einstellungen deaktivieren";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Wir erfassen und analysieren <b>keine</b> Accountdaten";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Alle unsere Bedingungen lesen %@. Bist du damit einverstanden?";
