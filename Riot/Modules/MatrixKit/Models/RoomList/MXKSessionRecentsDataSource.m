@@ -311,16 +311,20 @@ static NSTimeInterval const roomSummaryChangeThrottlerDelay = .5;
 
     NSDate *startDate = [NSDate date];
     
-    for (MXRoomSummary *roomSummary in self.mxSession.roomsSummaries)
+    for (MXRoom *room in self.mxSession.rooms)
     {
-        // Filter out private rooms with conference users
-        if (!roomSummary.isConferenceUserRoom // @TODO Abstract this condition with roomSummary.hiddenFromUser
-            && !roomSummary.hiddenFromUser)
+        MXRoomSummary *summary = room.summary;
+        if (summary)
         {
-            id<MXKRecentCellDataStoring> cellData = [[class alloc] initWithRoomSummary:roomSummary dataSource:self];
-            if (cellData)
+            // Filter out private rooms with conference users
+            if (!summary.isConferenceUserRoom // @TODO Abstract this condition with roomSummary.hiddenFromUser
+                && !summary.hiddenFromUser)
             {
-                [internalCellDataArray addObject:cellData];
+                id<MXKRecentCellDataStoring> cellData = [[class alloc] initWithRoomSummary:summary dataSource:self];
+                if (cellData)
+                {
+                    [internalCellDataArray addObject:cellData];
+                }
             }
         }
     }
