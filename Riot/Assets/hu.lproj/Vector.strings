@@ -1589,3 +1589,4 @@
 "room_event_action_remove_poll" = "Szavazás törlése";
 "accessibility_button_label" = "gomb";
 "enable" = "Engedélyezés";
+"analytics_prompt_message_upgrade" = "Korábban beleegyeztél, hogy velünk anonimizált adatokat osztasz meg. Most, hogy jobban megértsük, hogyan használnak több eszközt az emberek, véletlenszerű azonosítót állítunk elő amit az eszközeid használni fognak.";
