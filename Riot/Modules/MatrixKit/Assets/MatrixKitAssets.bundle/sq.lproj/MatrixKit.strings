@@ -477,3 +477,4 @@
 "rename" = "Riemërtojeni";
 "attachment_unsupported_preview_message" = "Ky lloj kartele nuk mbulohet.";
 "attachment_unsupported_preview_title" = "S’arrihet të bëhet paraparje";
+"room_displayname_all_other_members_left" = "%@ (Iku)";
