@@ -627,7 +627,7 @@
 "group_participants_add_participant" = "Pridať účastníka";
 "group_home_multi_rooms_format" = "%tu miestnosti";
 "group_home_one_room_format" = "1 miestnosť";
-"group_home_multi_members_format" = "%@ členovia";
+"group_home_multi_members_format" = "%tu členovia";
 
 // Group Home
 "group_home_one_member_format" = "1 člen";
