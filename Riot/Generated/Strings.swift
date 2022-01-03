@@ -4499,6 +4499,10 @@ public class VectorL10n: NSObject {
   public static var settingsEnableRageshake: String { 
     return VectorL10n.tr("Vector", "settings_enable_rageshake") 
   }
+  /// Message bubbles
+  public static var settingsEnableRoomMessageBubbles: String { 
+    return VectorL10n.tr("Vector", "settings_enable_room_message_bubbles") 
+  }
   /// Encrypted direct messages
   public static var settingsEncryptedDirectMessages: String { 
     return VectorL10n.tr("Vector", "settings_encrypted_direct_messages") 
