@@ -27,7 +27,7 @@ protocol ThreadSummaryViewDelegate: AnyObject {
 class ThreadSummaryView: UIView {
     
     private enum Constants {
-        static let viewHeight: CGFloat = 32
+        static let viewHeight: CGFloat = 40
         static let viewDefaultWidth: CGFloat = 320
         static let cornerRadius: CGFloat = 4
     }
@@ -129,6 +129,7 @@ extension ThreadSummaryView: Themable {
     
     func update(theme: Theme) {
         backgroundColor = theme.colors.system
+        iconView.tintColor = theme.colors.secondaryContent
         numberOfRepliesLabel.textColor = theme.colors.secondaryContent
         lastMessageContentLabel.textColor = theme.colors.secondaryContent
     }

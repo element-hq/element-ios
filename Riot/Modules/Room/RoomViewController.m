@@ -1535,7 +1535,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (UIBarButtonItem *)threadListBarButtonItem
 {
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"room_context_menu_reply_in_thread"]
+    UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(24, 24)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:icon
                                                              style:UIBarButtonItemStylePlain
                                                             target:self
                                                             action:@selector(onThreadListTapped:)];

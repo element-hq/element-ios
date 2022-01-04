@@ -36,7 +36,7 @@
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TO4-Bz-2iH">
                             <rect key="frame" x="166.5" y="21" width="64" height="64"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="room_context_menu_reply_in_thread" translatesAutoresizingMaskIntoConstraints="NO" id="96m-sr-xQJ">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="threads_icon" translatesAutoresizingMaskIntoConstraints="NO" id="96m-sr-xQJ">
                                     <rect key="frame" x="16" y="16" width="32" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="K7U-U0-prN"/>
@@ -105,6 +105,6 @@
         </view>
     </objects>
     <resources>
-        <image name="room_context_menu_reply_in_thread" width="18" height="18"/>
+        <image name="threads_icon" width="18" height="18"/>
     </resources>
 </document>

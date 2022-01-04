@@ -117,14 +117,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     private var emptyViewModel: ThreadListEmptyViewModel {
         switch selectedFilterType {
         case .all:
-            return ThreadListEmptyViewModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+            return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
                                             title: VectorL10n.threadsEmptyTitle,
                                             info: VectorL10n.threadsEmptyInfoAll,
                                             tip: VectorL10n.threadsEmptyTip,
                                             showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
                                             showAllThreadsButtonHidden: true)
         case .myThreads:
-            return ThreadListEmptyViewModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+            return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
                                             title: VectorL10n.threadsEmptyTitle,
                                             info: VectorL10n.threadsEmptyInfoMy,
                                             tip: VectorL10n.threadsEmptyTip,
