@@ -88,6 +88,12 @@ static NSString *const kEventFormatterTimeFormat = @"HH:mm";
             
             NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithAttributedString:imageString];
             [result appendAttributedString:attrString];
+            
+            if (error)
+            {
+                *error = MXKEventFormatterErrorNone;
+            }
+            
             return result;
         }
     }

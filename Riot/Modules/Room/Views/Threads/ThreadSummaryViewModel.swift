@@ -19,5 +19,5 @@ import Foundation
 struct ThreadSummaryViewModel {
     var numberOfReplies: Int
     var lastMessageSenderAvatar: AvatarViewDataProtocol?
-    var lastMessageText: String?
+    var lastMessageText: NSAttributedString?
 }

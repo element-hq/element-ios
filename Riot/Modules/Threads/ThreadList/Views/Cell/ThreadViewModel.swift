@@ -20,7 +20,7 @@ struct ThreadViewModel {
     var rootMessageSenderUserId: String?
     var rootMessageSenderAvatar: AvatarViewDataProtocol?
     var rootMessageSenderDisplayName: String?
-    var rootMessageText: String?
+    var rootMessageText: NSAttributedString?
     var lastMessageTime: String?
     var summaryViewModel: ThreadSummaryViewModel?
 }

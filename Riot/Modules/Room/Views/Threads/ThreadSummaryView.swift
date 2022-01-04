@@ -30,6 +30,7 @@ class ThreadSummaryView: UIView {
         static let viewHeight: CGFloat = 40
         static let viewDefaultWidth: CGFloat = 320
         static let cornerRadius: CGFloat = 4
+        static let lastMessageFont: UIFont = .systemFont(ofSize: 13)
     }
     
     @IBOutlet private weak var iconView: UIImageView!
@@ -37,6 +38,7 @@ class ThreadSummaryView: UIView {
     @IBOutlet private weak var lastMessageAvatarView: UserAvatarView!
     @IBOutlet private weak var lastMessageContentLabel: UILabel!
     
+    private var theme: Theme = ThemeService.shared().theme
     private(set) var thread: MXThread!
     
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
@@ -73,7 +75,15 @@ class ThreadSummaryView: UIView {
         } else {
             lastMessageAvatarView.avatarImageView.image = nil
         }
-        lastMessageContentLabel.text = viewModel.lastMessageText
+        if let lastMessage = viewModel.lastMessageText {
+            let mutable = NSMutableAttributedString(attributedString: lastMessage)
+            mutable.setAttributes([
+                .font: Constants.lastMessageFont
+            ], range: NSRange(location: 0, length: mutable.length))
+            lastMessageContentLabel.attributedText = mutable
+        } else {
+            lastMessageContentLabel.attributedText = nil
+        }
     }
     
     private func configure() {
@@ -103,7 +113,9 @@ class ThreadSummaryView: UIView {
         room.state { [weak self] roomState in
             guard let self = self else { return }
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            let lastMessageText = eventFormatter.string(from: lastMessage, with: roomState, error: formatterError)
+            let lastMessageText = eventFormatter.attributedString(from: lastMessage,
+                                                                  with: roomState,
+                                                                  error: formatterError)
             
             let viewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
                                                    lastMessageSenderAvatar: avatarViewData,
@@ -128,6 +140,8 @@ extension ThreadSummaryView: NibOwnerLoadable {}
 extension ThreadSummaryView: Themable {
     
     func update(theme: Theme) {
+        self.theme = theme
+        
         backgroundColor = theme.colors.system
         iconView.tintColor = theme.colors.secondaryContent
         numberOfRepliesLabel.textColor = theme.colors.secondaryContent
