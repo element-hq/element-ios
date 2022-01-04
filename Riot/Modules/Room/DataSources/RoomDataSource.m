@@ -553,7 +553,7 @@ const CGFloat kTypingCellHeight = 24;
                                                                 constant:leftMargin],
                             topConstraint,
                             [threadSummaryView.heightAnchor constraintEqualToConstant:[ThreadSummaryView contentViewHeightForThread:component.thread fitting:cellData.maxTextViewWidth]],
-                            [threadSummaryView.trailingAnchor constraintEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
+                            [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
                         ]];
                     }
                     
