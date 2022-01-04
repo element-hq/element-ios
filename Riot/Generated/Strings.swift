@@ -35,9 +35,9 @@ public class VectorL10n: NSObject {
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
   }
-  /// Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
-  public static var analyticsPromptMessageNewUser: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_message_new_user") 
+  /// Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static func analyticsPromptMessageNewUser(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_message_new_user", p1)
   }
   /// You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
   public static var analyticsPromptMessageUpgrade: String { 
@@ -2195,9 +2195,9 @@ public class VectorL10n: NSObject {
   public static var locationSharingCloseAction: String { 
     return VectorL10n.tr("Vector", "location_sharing_close_action") 
   }
-  /// Element does not have permission to access your location. You can enable access in Settings > Location
-  public static var locationSharingInvalidAuthorizationErrorTitle: String { 
-    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_error_title") 
+  /// %@ does not have permission to access your location. You can enable access in Settings > Location
+  public static func locationSharingInvalidAuthorizationErrorTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_error_title", p1)
   }
   /// Not now
   public static var locationSharingInvalidAuthorizationNotNow: String { 
@@ -2207,13 +2207,13 @@ public class VectorL10n: NSObject {
   public static var locationSharingInvalidAuthorizationSettings: String { 
     return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
   }
-  /// Element could not load the map. Please try again later.
-  public static var locationSharingLoadingMapErrorTitle: String { 
-    return VectorL10n.tr("Vector", "location_sharing_loading_map_error_title") 
+  /// %@ could not load the map. Please try again later.
+  public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_loading_map_error_title", p1)
   }
-  /// Element could not access your location. Please try again later.
-  public static var locationSharingLocatingUserErrorTitle: String { 
-    return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title") 
+  /// %@ could not access your location. Please try again later.
+  public static func locationSharingLocatingUserErrorTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title", p1)
   }
   /// Open in Apple Maps
   public static var locationSharingOpenAppleMaps: String { 
@@ -5155,9 +5155,9 @@ public class VectorL10n: NSObject {
   public static var spacesAddRoomsComingSoonTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_rooms_coming_soon_title") 
   }
-  /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
-  public static var spacesComingSoonDetail: String { 
-    return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
+  /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with %@ on your computer.
+  public static func spacesComingSoonDetail(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_coming_soon_detail", p1)
   }
   /// Coming soon
   public static var spacesComingSoonTitle: String { 

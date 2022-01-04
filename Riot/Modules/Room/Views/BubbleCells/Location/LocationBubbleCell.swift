@@ -32,6 +32,7 @@ class LocationBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable 
             return
         }
         
+        locationView.update(theme: ThemeService.shared().theme)
         locationView.locationDescription = locationContent.locationDescription
         
         let location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)

@@ -19,8 +19,10 @@ import Reusable
 import Mapbox
 import Keys
 
-class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
+class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegate {
 
+    // MARK: - Constants
+    
     private struct Constants {
         static let mapHeight: CGFloat = 300.0
         static let mapTilerKey = RiotKeys().mapTilerAPIKey
@@ -29,8 +31,8 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
         static let cellCornerRadius: CGFloat = 8.0
     }
     
-    // MARK: Properties
-    // MARK: - Private
+    // MARK: - Properties
+    // MARK: Private
     
     @IBOutlet private var descriptionContainerView: UIView!
     @IBOutlet private var descriptionLabel: UILabel!
@@ -38,7 +40,7 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
     private var mapView: MGLMapView!
     private var annotationView: LocationUserMarkerView?
     
-    // MARK: - Public
+    // MARK: Public
     
     var locationDescription: String? {
         get {
@@ -67,9 +69,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
         clipsToBounds = true
         layer.borderWidth = Constants.cellBorderRadius
         layer.cornerRadius = Constants.cellCornerRadius
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeServiceDidChangeTheme, object: nil)
-        updateTheme()
     }
     
     // MARK: - Public
@@ -99,17 +98,17 @@ class RoomTimelineLocationView: UIView, NibLoadable, MGLMapViewDelegate {
         mapView.addAnnotation(pointAnnotation)
     }
     
+    // MARK: - Themable
+    
+    func update(theme: Theme) {
+        descriptionLabel.textColor = theme.colors.primaryContent
+        descriptionLabel.font = theme.fonts.footnote
+        layer.borderColor = theme.colors.quinaryContent.cgColor
+    }
+    
     // MARK: - MGLMapViewDelegate
     
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         return annotationView
-    }
-    
-    // MARK: - Private
-    
-    @objc private func updateTheme() {
-        descriptionLabel.textColor = ThemeService.shared().theme.colors.primaryContent
-        descriptionLabel.font = ThemeService.shared().theme.fonts.footnote
-        layer.borderColor = ThemeService.shared().theme.colors.quinaryContent.cgColor
     }
 }
