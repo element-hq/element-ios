@@ -1339,6 +1339,38 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     return nil;
 }
 
+- (void)paginateInSection:(NSInteger)section
+{
+    if (section == invitesSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionInvited];
+    }
+    else if (section == favoritesSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionFavorited];
+    }
+    else if (section == peopleSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionPeople];
+    }
+    else if (section == conversationSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionConversation];
+    }
+    else if (section == lowPrioritySection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionLowPriority];
+    }
+    else if (section == serverNoticeSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionServerNotice];
+    }
+    else if (section == suggestedRoomsSection)
+    {
+        [self.recentsListService paginateInSection:RecentsListServiceSectionSuggested];
+    }
+}
+
 - (void)moveRoomCell:(MXRoom*)room from:(NSIndexPath*)oldPath to:(NSIndexPath*)newPath success:(void (^)(void))moveSuccess failure:(void (^)(NSError *error))moveFailure;
 {
     MXLogDebug(@"[RecentsDataSource] moveCellFrom (%tu, %tu) to (%tu, %tu)", oldPath.section, oldPath.row, newPath.section, newPath.row);
@@ -1434,10 +1466,41 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
 
 #pragma mark - RecentsListServiceDelegate
 
-- (void)serviceDidChangeData:(id<RecentsListServiceProtocol>)service
+- (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
 {
-    // TODO: Update only updated sections
-    [self.delegate dataSource:self didCellChange:nil];
+    // no-op
+}
+
+- (void)recentsListServiceDidChangeData:(id<RecentsListServiceProtocol>)service
+                             forSection:(RecentsListServiceSection)section
+{
+    NSInteger sectionIndex = -1;
+    switch (section)
+    {
+        case RecentsListServiceSectionInvited:
+            sectionIndex = invitesSection;
+            break;
+        case RecentsListServiceSectionFavorited:
+            sectionIndex = favoritesSection;
+            break;
+        case RecentsListServiceSectionPeople:
+            sectionIndex = peopleSection;
+            break;
+        case RecentsListServiceSectionConversation:
+            sectionIndex = conversationSection;
+            break;
+        case RecentsListServiceSectionLowPriority:
+            sectionIndex = lowPrioritySection;
+            break;
+        case RecentsListServiceSectionServerNotice:
+            sectionIndex = serverNoticeSection;
+            break;
+        case RecentsListServiceSectionSuggested:
+            sectionIndex = suggestedRoomsSection;
+            break;
+    }
+    
+    [self.delegate dataSource:self didCellChange:@(sectionIndex)];
 }
 
 @end
