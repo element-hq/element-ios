@@ -17,6 +17,7 @@
 import Foundation
 
 struct ThreadViewModel {
+    var rootMessageSenderUserId: String?
     var rootMessageSenderAvatar: AvatarViewDataProtocol?
     var rootMessageSenderDisplayName: String?
     var rootMessageText: String?

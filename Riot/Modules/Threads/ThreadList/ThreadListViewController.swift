@@ -249,10 +249,10 @@ extension ThreadListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ThreadTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         
+        cell.update(theme: theme)
         if let threadVM = viewModel.threadViewModel(at: indexPath.row) {
             cell.configure(withViewModel: threadVM)
         }
-        cell.update(theme: theme)
         
         return cell
     }

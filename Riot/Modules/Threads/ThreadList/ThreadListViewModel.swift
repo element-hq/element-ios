@@ -179,7 +179,8 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                                       lastMessageSenderAvatar: lastAvatarViewData,
                                                       lastMessageText: lastMessageText)
         
-        return ThreadViewModel(rootMessageSenderAvatar: rootAvatarViewData,
+        return ThreadViewModel(rootMessageSenderUserId: rootMessageSender?.userId,
+                               rootMessageSenderAvatar: rootAvatarViewData,
                                rootMessageSenderDisplayName: rootMessageSender?.displayname,
                                rootMessageText: rootMessageText,
                                lastMessageTime: lastMessageTime,
