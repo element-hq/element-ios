@@ -73,17 +73,17 @@ class LocationSharingViewModel: LocationSharingViewModelType {
             switch error {
             case .failedLoadingMap:
                 state.bindings.alertInfo = ErrorAlertInfo(id: .mapLoadingError,
-                                                          title: VectorL10n.locationSharingLoadingMapErrorTitle,
+                                                          title: VectorL10n.locationSharingLoadingMapErrorTitle(AppInfo.current.displayName) ,
                                                           primaryButton: (VectorL10n.ok, { completion?(.cancel) }),
                                                           secondaryButton: nil)
             case .failedLocatingUser:
                 state.bindings.alertInfo = ErrorAlertInfo(id: .userLocatingError,
-                                                          title: VectorL10n.locationSharingLocatingUserErrorTitle,
+                                                          title: VectorL10n.locationSharingLocatingUserErrorTitle(AppInfo.current.displayName),
                                                           primaryButton: (VectorL10n.ok, { completion?(.cancel) }),
                                                           secondaryButton: nil)
             case .invalidLocationAuthorization:
                 state.bindings.alertInfo = ErrorAlertInfo(id: .authorizationError,
-                                                          title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle,
+                                                          title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
                                                           primaryButton: (VectorL10n.locationSharingInvalidAuthorizationNotNow, { completion?(.cancel) }),
                                                           secondaryButton: (VectorL10n.locationSharingInvalidAuthorizationSettings, {
                                                             if let applicationSettingsURL = URL(string:UIApplication.openSettingsURLString) {
@@ -101,7 +101,7 @@ class LocationSharingViewModel: LocationSharingViewModelType {
             
             if error != nil {
                 state.bindings.alertInfo = ErrorAlertInfo(id: .locationSharingError,
-                                                          title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle,
+                                                          title: VectorL10n.locationSharingInvalidAuthorizationErrorTitle(AppInfo.current.displayName),
                                                           primaryButton: (VectorL10n.ok, nil),
                                                           secondaryButton: nil)
             }

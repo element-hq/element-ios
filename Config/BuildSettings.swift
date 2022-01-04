@@ -23,13 +23,6 @@ import Keys
 final class BuildSettings: NSObject {
     
     // MARK: - Bundle Settings
-    static var bundleDisplayName: String {
-        guard let bundleDisplayName = Bundle.app.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String else {
-            fatalError("CFBundleDisplayName should be defined")
-        }
-        return bundleDisplayName
-    }
-    
     static var applicationGroupIdentifier: String {
         guard let applicationGroupIdentifier = Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as? String else {
             fatalError("applicationGroupIdentifier should be defined")

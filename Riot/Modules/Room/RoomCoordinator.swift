@@ -30,9 +30,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private var selectedEventId: String?
     
-    private var pollEditFormCoordinator: PollEditFormCoordinator?
-    private var locationSharingCoordinator: LocationSharingCoordinator?
-
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
     }
@@ -199,6 +196,56 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         completion?()
     }
+    
+    private func startLocationCoordinatorWithEvent(_ event: MXEvent? = nil, bubbleData: MXKRoomBubbleCellDataStoring? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        guard let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession?.mediaManager,
+              let user = mxSession?.myUser else {
+            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
+            return
+        }
+        
+        var avatarData: AvatarInputProtocol
+        if event != nil, let bubbleData = bubbleData {
+            avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
+                                     matrixItemId: bubbleData.senderId,
+                                     displayName: bubbleData.senderDisplayName)
+        } else {
+            avatarData = AvatarInput(mxContentUri: user.avatarUrl,
+                                     matrixItemId: user.userId,
+                                     displayName: user.displayname)
+        }
+        
+        var location: CLLocationCoordinate2D?
+        if let locationContent = event?.location {
+            location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+        }
+        
+        let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
+                                                              mediaManager: mediaManager,
+                                                              avatarData: avatarData,
+                                                              location: location)
+        
+        let coordinator = LocationSharingCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
 }
 
 // MARK: - RoomIdentifiable
@@ -262,10 +309,22 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return
         }
         
-        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter, room: roomViewController.roomDataSource.room)
-        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
+        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
         
-        pollEditFormCoordinator?.start()
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter?.present(coordinator, animated: true)
+        coordinator.start()
     }
     
     func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
@@ -290,46 +349,5 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         }
         
         PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
-    }
-    
-    // MARK: - Private
-    
-    private func startLocationCoordinatorWithEvent(_ event: MXEvent? = nil, bubbleData: MXKRoomBubbleCellDataStoring? = nil) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
-        guard let navigationRouter = self.navigationRouter,
-              let mediaManager = mxSession?.mediaManager,
-              let user = mxSession?.myUser else {
-            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
-            return
-        }
-        
-        var avatarData: AvatarInputProtocol
-        if event != nil, let bubbleData = bubbleData {
-            avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
-                                     matrixItemId: bubbleData.senderId,
-                                     displayName: bubbleData.senderDisplayName)
-        } else {
-            avatarData = AvatarInput(mxContentUri: user.avatarUrl,
-                                     matrixItemId: user.userId,
-                                     displayName: user.displayname)
-        }
-        
-        var location: CLLocationCoordinate2D?
-        if let locationContent = event?.location {
-            location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
-        }
-        
-        let parameters = LocationSharingCoordinatorParameters(navigationRouter: navigationRouter,
-                                                              roomDataSource: roomViewController.roomDataSource,
-                                                              mediaManager: mediaManager,
-                                                              avatarData: avatarData,
-                                                              location: location)
-        
-        locationSharingCoordinator = LocationSharingCoordinator(parameters: parameters)
-        
-        locationSharingCoordinator?.start()
     }
 }
