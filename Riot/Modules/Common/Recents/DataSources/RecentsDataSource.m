@@ -606,17 +606,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     
     if (section == favoritesSection)
     {
-        count = self.favoriteCellDataArray.count;
+        count = self.recentsListService.favoritedRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsFavouritesSection];
     }
     else if (section == peopleSection)
     {
-        count = self.peopleCellDataArray.count;
+        count = self.recentsListService.peopleRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsPeopleSection];
     }
     else if (section == conversationSection)
     {
-        count = self.conversationCellDataArray.count;
+        count = self.recentsListService.conversationRoomListData.counts.total.numberOfRooms;
         
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
@@ -633,17 +633,17 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (section == lowPrioritySection)
     {
-        count = self.lowPriorityCellDataArray.count;
+        count = self.recentsListService.lowPriorityRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsLowPrioritySection];
     }
     else if (section == serverNoticeSection)
     {
-        count = self.serverNoticeCellDataArray.count;
+        count = self.recentsListService.serverNoticeRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsServerNoticeSection];
     }
     else if (section == invitesSection)
     {
-        count = self.invitesCellDataArray.count;
+        count = self.recentsListService.invitedRoomListData.counts.total.numberOfRooms;
         
         if (_recentsDataSourceMode == RecentsDataSourceModePeople)
         {
@@ -656,7 +656,7 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
     }
     else if (section == suggestedRoomsSection)
     {
-        count = self.suggestedRoomCellDataArray.count;
+        count = self.recentsListService.suggestedRoomListData.counts.total.numberOfRooms;
         title = [VectorL10n roomRecentsSuggestedRoomsSection];
     }
     
@@ -714,26 +714,29 @@ NSString *const kRecentsDataSourceTapOnDirectoryServerChange = @"kRecentsDataSou
         counts = self.recentsListService.suggestedRoomListData.counts;
     }
 
-    if (counts.numberOfNotifications)
+    NSUInteger numberOfNotifications = counts.total.numberOfNotifications;
+    NSUInteger numberOfHighlights = counts.total.numberOfHighlights;
+    
+    if (numberOfNotifications)
     {
         UILabel *missedNotifAndUnreadBadgeLabel = [[UILabel alloc] init];
         missedNotifAndUnreadBadgeLabel.textColor = ThemeService.shared.theme.baseTextPrimaryColor;
         missedNotifAndUnreadBadgeLabel.font = [UIFont boldSystemFontOfSize:14];
-        if (counts.numberOfNotifications > 1000)
+        if (numberOfNotifications > 1000)
         {
-            CGFloat value = counts.numberOfNotifications / 1000.0;
+            CGFloat value = numberOfNotifications / 1000.0;
             missedNotifAndUnreadBadgeLabel.text = [VectorL10n largeBadgeValueKFormat:value];
         }
         else
         {
-            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", counts.numberOfNotifications];
+            missedNotifAndUnreadBadgeLabel.text = [NSString stringWithFormat:@"%tu", numberOfNotifications];
         }
         
         [missedNotifAndUnreadBadgeLabel sizeToFit];
         
         CGFloat bgViewWidth = missedNotifAndUnreadBadgeLabel.frame.size.width + 18;
         
-        BOOL highlight = counts.numberOfHighlights > 0;
+        BOOL highlight = numberOfHighlights > 0;
         missedNotifAndUnreadBadgeBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bgViewWidth, 20)];
         [missedNotifAndUnreadBadgeBgView.layer setCornerRadius:10];
         missedNotifAndUnreadBadgeBgView.backgroundColor = highlight ? ThemeService.shared.theme.noticeColor : ThemeService.shared.theme.noticeSecondaryColor;

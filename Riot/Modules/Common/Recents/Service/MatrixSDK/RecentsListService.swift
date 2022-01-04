@@ -199,24 +199,24 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     public var favoritedMissedDiscussionsCount: DiscussionsCount {
-        guard let data = favoritedRoomListDataFetcher?.data else {
+        guard let totalCounts = favoritedRoomListDataFetcher?.data?.counts.total else {
             return .zero
         }
-        return DiscussionsCount(withRoomListDataCounts: data.counts)
+        return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
     public var peopleMissedDiscussionsCount: DiscussionsCount {
-        guard let data = directRoomListDataFetcherForPeople?.data else {
+        guard let totalCounts = directRoomListDataFetcherForPeople?.data?.counts.total else {
             return .zero
         }
-        return DiscussionsCount(withRoomListDataCounts: data.counts)
+        return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
     public var conversationMissedDiscussionsCount: DiscussionsCount {
-        guard let data = conversationRoomListDataFetcherForRooms?.data else {
+        guard let totalCounts = conversationRoomListDataFetcherForRooms?.data?.counts.total else {
             return .zero
         }
-        return DiscussionsCount(withRoomListDataCounts: data.counts)
+        return DiscussionsCount(withRoomListDataCounts: totalCounts)
     }
     
     public var totalVisibleItemCount: Int {
