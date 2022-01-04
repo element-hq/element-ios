@@ -40,7 +40,7 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"Rooms";
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRooms];
 }
 
 - (void)viewDidLoad

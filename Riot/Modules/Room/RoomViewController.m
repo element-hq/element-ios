@@ -259,6 +259,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, weak) IBOutlet UIView *userSuggestionContainerView;
 
 @property (nonatomic, readwrite) RoomDisplayConfiguration *displayConfiguration;
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
 @end
 
@@ -357,6 +358,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     _voiceMessageController = [[VoiceMessageController alloc] initWithThemeService:ThemeService.shared mediaServiceProvider:VoiceMessageMediaServiceProvider.sharedProvider];
     self.voiceMessageController.delegate = self;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenRoom];
 }
 
 - (void)viewDidLoad
@@ -586,9 +589,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 {
     [super viewWillAppear:animated];
     
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"ChatRoom"];
-    
     // Refresh the room title view
     [self refreshRoomTitle];
     
@@ -629,8 +629,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [self.roomDataSource reload];
         [LegacyAppDelegate theDelegate].lastNavigatedRoomIdFromPush = nil;
         
-        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:AnalyticsNoficationsTimeToDisplayContent
-                                                                                          category:AnalyticsNoficationsCategory];
+        notificationTaskProfile = [MXSDKOptions.sharedInstance.profiler startMeasuringTaskWithName:MXTaskProfileNameNotificationsOpenEvent];
     }
 }
 
@@ -726,6 +725,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         hasJitsiCall = NO;
         [self reloadBubblesTable:YES];
     }
+    
+    // Screen tracking
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -761,6 +763,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         hasJitsiCall = YES;
         [self reloadBubblesTable:YES];
     }
+    
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews

@@ -16,8 +16,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "DecryptionFailure.h"
+@class DecryptionFailureTracker;
 
+@class Analytics;
 @import MatrixSDK;
 
 @interface DecryptionFailureTracker : NSObject
@@ -32,7 +33,7 @@
 /**
  The delegate object to receive analytics events.
  */
-@property (nonatomic, weak) id<MXAnalyticsDelegate> delegate;
+@property (nonatomic, weak) Analytics *delegate;
 
 /**
  Report an event unable to decrypt.
