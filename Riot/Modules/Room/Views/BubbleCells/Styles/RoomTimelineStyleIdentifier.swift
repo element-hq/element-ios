@@ -16,8 +16,8 @@
 
 import Foundation
 
-/// Represents the room timeline styles available
-enum RoomTimelineStyle {
+/// Represents the room timeline style identifiers available
+enum RoomTimelineStyleIdentifier {
     case plain
     case bubble
 }

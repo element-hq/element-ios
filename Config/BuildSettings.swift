@@ -300,9 +300,9 @@ final class BuildSettings: NSObject {
     
     // Timeline style
     static let roomScreenAllowTimelineStyleConfiguration: Bool = false
-    static let roomScreenTimelineDefaultStyle: RoomTimelineStyle = .plain
+    static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
     static var roomScreenEnableMessageBubblesByDefault: Bool {
-        return self.roomScreenTimelineDefaultStyle == .bubble
+        return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
     }
 
     /// Allow split view detail view stacking    
