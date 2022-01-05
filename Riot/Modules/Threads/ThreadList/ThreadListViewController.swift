@@ -147,15 +147,19 @@ final class ThreadListViewController: UIViewController {
         case .idle:
             break
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderLoaded()
+            renderLoaded()
         case .empty(let viewModel):
-            self.renderEmptyView(withViewModel: viewModel)
+            renderEmptyView(withViewModel: viewModel)
         case .showingFilterTypes:
-            self.renderShowingFilterTypes()
+            renderShowingFilterTypes()
+        case .showingLongPressActions:
+            renderShowingLongPressActions()
+        case .share(let string):
+            renderShare(string)
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
@@ -214,6 +218,44 @@ final class ThreadListViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    private func renderShowingLongPressActions() {
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionViewInRoom,
+                                           style: .default,
+                                           handler: { [weak self] action in
+                                            guard let self = self else { return }
+                                            self.viewModel.process(viewAction: .actionViewInRoom)
+                                           }))
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.threadCopyLinkToThread,
+                                           style: .default,
+                                           handler: { [weak self] action in
+                                            guard let self = self else { return }
+                                            self.viewModel.process(viewAction: .actionCopyLinkToThread)
+                                           }))
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionShare,
+                                           style: .default,
+                                           handler: { [weak self] action in
+                                            guard let self = self else { return }
+                                            self.viewModel.process(viewAction: .actionShare)
+                                           }))
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.cancel,
+                                           style: .cancel,
+                                           handler: nil))
+        
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func renderShare(_ string: String) {
+        let activityVC = UIActivityViewController(activityItems: [string],
+                                                  applicationActivities: nil)
+        activityVC.modalTransitionStyle = .coverVertical
+        present(activityVC, animated: true, completion: nil)
+    }
+    
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
@@ -224,6 +266,22 @@ final class ThreadListViewController: UIViewController {
     @objc
     private func filterButtonTapped(_ sender: UIBarButtonItem) {
         self.viewModel.process(viewAction: .showFilterTypes)
+    }
+    
+    @IBAction private func longPressed(_ sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else {
+            return
+        }
+        let point = sender.location(in: threadsTableView)
+        guard let indexPath = threadsTableView.indexPathForRow(at: point) else {
+            return
+        }
+        guard let cell = threadsTableView.cellForRow(at: indexPath) else {
+            return
+        }
+        if cell.isHighlighted {
+            viewModel.process(viewAction: .longPressThread(indexPath.row))
+        }
     }
 
 }

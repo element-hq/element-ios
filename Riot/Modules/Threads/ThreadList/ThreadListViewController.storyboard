@@ -20,9 +20,11 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X8K-NO-SQ3">
                                 <rect key="frame" x="0.0" y="44" width="414" height="852"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
                                 <connections>
                                     <outlet property="dataSource" destination="V8j-Lb-PgC" id="FCQ-5E-AuZ"/>
                                     <outlet property="delegate" destination="V8j-Lb-PgC" id="Kxs-vj-1RW"/>
+                                    <outletCollection property="gestureRecognizers" destination="OxP-Mp-c6Z" appends="YES" id="371-L6-Skg"/>
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="818" translatesAutoresizingMaskIntoConstraints="NO" id="7VY-m9-wCS" customClass="ThreadListEmptyView" customModule="Riot" customModuleProvider="target">
@@ -52,6 +54,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zK0-v6-7Wt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="OxP-Mp-c6Z">
+                    <connections>
+                        <action selector="longPressed:" destination="V8j-Lb-PgC" id="rvv-ml-CSq"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-3198.5507246376815" y="-647.54464285714278"/>
         </scene>

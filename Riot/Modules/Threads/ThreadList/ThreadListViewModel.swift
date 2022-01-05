@@ -31,6 +31,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     private var roomState: MXRoomState?
     
     private var currentOperation: MXHTTPOperation?
+    private var longPressedThread: MXThread?
     
     // MARK: Public
 
@@ -73,6 +74,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             loadData()
         case .selectThread(let index):
             selectThread(index)
+        case .longPressThread(let index):
+            longPressThread(index)
+        case .actionViewInRoom:
+            actionViewInRoom()
+        case .actionCopyLinkToThread:
+            actionCopyLinkToThread()
+        case .actionShare:
+            actionShare()
         case .cancel:
             cancelOperations()
             coordinatorDelegate?.threadListViewModelDidCancel(self)
@@ -262,6 +271,42 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         }
         let thread = threads[index]
         coordinatorDelegate?.threadListViewModelDidSelectThread(self, thread: thread)
+    }
+    
+    private func longPressThread(_ index: Int) {
+        guard index < threads.count else {
+            return
+        }
+        longPressedThread = threads[index]
+        viewState = .showingLongPressActions
+    }
+    
+    private func actionViewInRoom() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        coordinatorDelegate?.threadListViewModelDidSelectThreadViewInRoom(self, thread: thread)
+        longPressedThread = nil
+    }
+    
+    private func actionCopyLinkToThread() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
+            MXKPasteboardManager.shared.pasteboard.string = permalink
+        }
+        longPressedThread = nil
+    }
+    
+    private func actionShare() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
+            viewState = .share(permalink)
+        }
+        longPressedThread = nil
     }
     
     private func cancelOperations() {
