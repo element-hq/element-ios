@@ -389,6 +389,7 @@ Tap the + to start adding people.";
 "room_event_action_reaction_show_all" = "Show all";
 "room_event_action_reaction_show_less" = "Show less";
 "room_event_action_reaction_history" = "Reaction history";
+"room_event_copy_link_info" = "Link copied to clipboard.";
 "room_warning_about_encryption" = "End-to-end encryption is in beta and may not be reliable.\n\nYou should not yet trust it to secure data.\n\nDevices will not yet be able to decrypt history from before they joined the room.\n\nEncrypted messages will not be visible on clients that do not yet implement encryption.";
 "room_event_failed_to_send" = "Failed to send";
 "room_action_camera" = "Take photo or video";

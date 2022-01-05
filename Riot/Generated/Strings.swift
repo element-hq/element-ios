@@ -3147,6 +3147,10 @@ public class VectorL10n: NSObject {
   public static var roomEventActionViewSource: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_source") 
   }
+  /// Link copied to clipboard.
+  public static var roomEventCopyLinkInfo: String { 
+    return VectorL10n.tr("Vector", "room_event_copy_link_info") 
+  }
   /// Failed to send
   public static var roomEventFailedToSend: String { 
     return VectorL10n.tr("Vector", "room_event_failed_to_send") 
