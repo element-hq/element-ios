@@ -81,7 +81,7 @@ class ThreadRoomTitleView: RoomTitleView {
                                                                                           room.displayName))
         
         let encrpytionBadge: UIImage?
-        if let summary = room.summary, room.mxSession.crypto != nil {
+        if let summary = room.summary, summary.isEncrypted, room.mxSession.crypto != nil {
             encrpytionBadge = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
         } else {
             encrpytionBadge = nil

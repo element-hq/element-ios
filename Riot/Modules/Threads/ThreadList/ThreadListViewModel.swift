@@ -112,7 +112,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                                                                           room.displayName))
         
         let encrpytionBadge: UIImage?
-        if let summary = room.summary, session.crypto != nil {
+        if let summary = room.summary, summary.isEncrypted, session.crypto != nil {
             encrpytionBadge = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
         } else {
             encrpytionBadge = nil
