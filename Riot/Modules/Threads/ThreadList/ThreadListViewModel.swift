@@ -295,6 +295,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         }
         if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
             MXKPasteboardManager.shared.pasteboard.string = permalink
+            viewState = .toastForCopyLink
         }
         longPressedThread = nil
     }

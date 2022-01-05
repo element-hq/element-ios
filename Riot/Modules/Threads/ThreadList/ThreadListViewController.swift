@@ -158,6 +158,8 @@ final class ThreadListViewController: UIViewController {
             renderShowingLongPressActions()
         case .share(let string):
             renderShare(string)
+        case .toastForCopyLink:
+            toastForCopyLink()
         case .error(let error):
             render(error: error)
         }
@@ -254,6 +256,11 @@ final class ThreadListViewController: UIViewController {
                                                   applicationActivities: nil)
         activityVC.modalTransitionStyle = .coverVertical
         present(activityVC, animated: true, completion: nil)
+    }
+    
+    private func toastForCopyLink() {
+        view.vc_toast(message: VectorL10n.roomEventCopyLinkInfo,
+                      image: Asset.Images.linkIcon.image)
     }
     
     private func render(error: Error) {

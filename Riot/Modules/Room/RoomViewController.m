@@ -3625,6 +3625,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 if (permalink)
                 {
                     MXKPasteboardManager.shared.pasteboard.string = permalink;
+                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
+                                             image:[UIImage imageNamed:@"link_icon"]
+                                          duration:2.0
+                                          position:ToastPositionBottom
+                                  additionalMargin:self.roomInputToolbarContainerHeightConstraint.constant];
                 }
                 else
                 {
