@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +17,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="595" height="97"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5GX-gn-bK1">
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="5GX-gn-bK1">
                     <rect key="frame" x="0.0" y="0.0" width="595" height="97"/>
                     <subviews>
                         <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u1e-Q2-PhY">
@@ -74,11 +74,11 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ohU-Sc-mgb">
-                                    <rect key="frame" x="46" y="4" width="484" height="30"/>
+                                    <rect key="frame" x="46" y="4" width="534" height="30"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="meG-P8-61b">
-                                    <rect key="frame" x="56" y="10" width="474" height="18"/>
+                                    <rect key="frame" x="56" y="10" width="524" height="18"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                     <accessibility key="accessibilityConfiguration" identifier="UserNameLabel"/>
                                     <constraints>
@@ -105,10 +105,10 @@
                             <rect key="frame" x="0.0" y="0.0" width="595" height="97"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4d4-XQ-ido">
-                                    <rect key="frame" x="41" y="0.0" width="0.0" height="97"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="97"/>
                                     <subviews>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uHE-o7-sCe">
-                                            <rect key="frame" x="0.0" y="0.0" width="16" height="97"/>
+                                            <rect key="frame" x="0.0" y="16" width="16" height="97"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encryption_warning" translatesAutoresizingMaskIntoConstraints="NO" id="Ujc-3c-e5B">
                                                     <rect key="frame" x="0.0" y="3" width="16" height="16"/>
@@ -125,37 +125,35 @@
                                                 <constraint firstItem="Ujc-3c-e5B" firstAttribute="centerX" secondItem="uHE-o7-sCe" secondAttribute="centerX" id="z4k-EX-K17"/>
                                             </constraints>
                                         </view>
+                                        <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Y6-Py-paB">
+                                            <rect key="frame" x="0.0" y="16" width="50" height="97"/>
+                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="50" id="LtA-zk-OCc"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="uHE-o7-sCe" firstAttribute="height" secondItem="4d4-XQ-ido" secondAttribute="height" id="DhB-EC-rCE"/>
+                                        <constraint firstItem="7Y6-Py-paB" firstAttribute="top" secondItem="4d4-XQ-ido" secondAttribute="top" constant="16" id="Wx9-0o-vzm"/>
                                     </constraints>
                                 </stackView>
                                 <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="oeI-eO-mFK">
-                                    <rect key="frame" x="56" y="3" width="474" height="91"/>
+                                    <rect key="frame" x="56" y="3" width="524" height="91"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </view>
-                                <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Y6-Py-paB">
-                                    <rect key="frame" x="530" y="3" width="50" height="91"/>
-                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <accessibility key="accessibilityConfiguration" identifier="BubbleInfoContainer"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="50" id="LtA-zk-OCc"/>
-                                    </constraints>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="oeI-eO-mFK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vcq-cR-uBc" secondAttribute="leading" constant="56" id="0Fr-0L-9tU"/>
-                                <constraint firstItem="7Y6-Py-paB" firstAttribute="top" secondItem="vcq-cR-uBc" secondAttribute="top" constant="3" id="16j-F9-tL8"/>
                                 <constraint firstAttribute="bottom" secondItem="oeI-eO-mFK" secondAttribute="bottom" constant="3" id="8M5-uW-82s"/>
                                 <constraint firstItem="oeI-eO-mFK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4d4-XQ-ido" secondAttribute="trailing" constant="6" id="9By-U1-wTY"/>
-                                <constraint firstItem="7Y6-Py-paB" firstAttribute="leading" secondItem="oeI-eO-mFK" secondAttribute="trailing" id="9V6-A8-9i0"/>
+                                <constraint firstAttribute="trailing" secondItem="oeI-eO-mFK" secondAttribute="trailing" constant="15" id="Pbe-4d-q6Y"/>
                                 <constraint firstAttribute="bottom" secondItem="4d4-XQ-ido" secondAttribute="bottom" id="Tkw-p1-CYF"/>
-                                <constraint firstItem="4d4-XQ-ido" firstAttribute="leading" secondItem="vcq-cR-uBc" secondAttribute="leading" constant="41" id="cbh-iX-gKz"/>
+                                <constraint firstItem="4d4-XQ-ido" firstAttribute="leading" secondItem="vcq-cR-uBc" secondAttribute="leading" id="cbh-iX-gKz"/>
                                 <constraint firstItem="4d4-XQ-ido" firstAttribute="top" secondItem="vcq-cR-uBc" secondAttribute="top" id="hOM-gq-1au"/>
                                 <constraint firstAttribute="height" priority="250" id="lRu-Kd-3JZ"/>
-                                <constraint firstAttribute="bottom" secondItem="7Y6-Py-paB" secondAttribute="bottom" constant="3" id="lee-yN-381"/>
-                                <constraint firstAttribute="trailing" secondItem="7Y6-Py-paB" secondAttribute="trailing" constant="15" id="rG0-0L-I4O"/>
                                 <constraint firstItem="oeI-eO-mFK" firstAttribute="top" secondItem="vcq-cR-uBc" secondAttribute="top" constant="3" id="uZZ-I6-Xtq"/>
                                 <constraint firstItem="oeI-eO-mFK" firstAttribute="leading" secondItem="vcq-cR-uBc" secondAttribute="leading" priority="750" id="vsh-pW-S46"/>
                             </constraints>
@@ -227,7 +225,7 @@
             <connections>
                 <outlet property="avatarImageView" destination="yXz-Za-4yR" id="f56-93-gxa"/>
                 <outlet property="bubbleInfoContainer" destination="7Y6-Py-paB" id="uLv-MM-HIL"/>
-                <outlet property="bubbleInfoContainerTopConstraint" destination="16j-F9-tL8" id="zxd-pd-SSx"/>
+                <outlet property="bubbleInfoContainerTopConstraint" destination="Wx9-0o-vzm" id="nLG-nC-lwV"/>
                 <outlet property="bubbleOverlayContainer" destination="XQw-Mj-NZY" id="6d1-EN-LPY"/>
                 <outlet property="encryptionImageView" destination="Ujc-3c-e5B" id="7zc-Y7-1jT"/>
                 <outlet property="encryptionStatusContainerView" destination="uHE-o7-sCe" id="Dl7-QS-WKl"/>
@@ -247,6 +245,6 @@
         </view>
     </objects>
     <resources>
-        <image name="encryption_warning" width="16" height="16"/>
+        <image name="encryption_warning" width="12" height="12"/>
     </resources>
 </document>

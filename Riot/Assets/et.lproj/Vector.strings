@@ -759,7 +759,7 @@
 "settings_ignored_users" = "EIRATUD KASUTAJAD";
 "settings_contacts" = "KONTAKTID SEADMES";
 "settings_advanced" = "KEERUKAMAD SEADISTUSED";
-"settings_other" = "MUUD SEADISTUSED";
+"settings_other" = "Muud seadistused";
 "settings_labs" = "KATSED";
 "settings_discovery_no_identity_server" = "Sa hetkel ei kasuta isikutuvastusserverit. Et olla leitav ja ise leida sinule teadaolevaid inimesi seadista ta alljärgnevalt.";
 "settings_discovery_terms_not_signed" = "Selleks, et sind võiks leida e-posti aadressi või telefoninumbri alusel, nõustu isikutuvastusserveri (%@) kasutustingimustega.";
@@ -1469,3 +1469,18 @@
 "contacts_address_book_permission_denied_alert_title" = "Kontaktid pole kasutusel";
 "space_home_show_all_rooms" = "Näita kõiki jututubasid";
 "room_event_action_forward" = "Edasta";
+"share_extension_send_now" = "Saada nüüd";
+"share_extension_low_quality_video_message" = "Parema kvaliteedi jaoks saada %@ vormingus või alljärgnevaga madalama kvaliteediga.";
+"share_extension_low_quality_video_title" = "Saadame video madalama kvalitediga";
+"settings_about" = "TEAVE MEIST";
+"poll_edit_form_add_option" = "Lisa valik";
+"poll_edit_form_option_number" = "Valik %d";
+"poll_edit_form_create_options" = "Koosta valikud";
+"poll_edit_form_input_placeholder" = "Kirjuta midagi";
+"poll_edit_form_question_or_topic" = "Küsimus või teema";
+"poll_edit_form_poll_question_or_topic" = "Küsitluse küsimus või teema";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Koosta üks küsitlus";
+"settings_discovery_accept_terms" = "Nõustu isikutuvastusserveri tingimustega";

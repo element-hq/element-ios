@@ -106,9 +106,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
     
-    // Set default screen name
-    _screenName = @"RecentsScreen";
-    
     // Enable the search bar in the recents table, and remove the search option from the navigation bar.
     _enableSearchBar = YES;
     self.enableBarButtonSearch = NO;
@@ -259,9 +256,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 {
     [super viewWillAppear:animated];
 
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
-
     // Reset back user interactions
     self.userInteractionEnabled = YES;
     
@@ -329,11 +323,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -2050,6 +2047,11 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)scrollToTheTopTheNextRoomWithMissedNotificationsInSection:(NSInteger)section
 {
+    if (section < 0)
+    {
+        return;
+    }
+    
     UITableViewCell *firstVisibleCell;
     NSIndexPath *firstVisibleCellIndexPath;
     

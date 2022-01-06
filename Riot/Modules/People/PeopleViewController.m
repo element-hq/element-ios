@@ -51,7 +51,7 @@
     
     directRoomsSectionNumber = 0;
     
-    self.screenName = @"People";
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenPeople];
 }
 
 - (void)viewDidLoad
@@ -140,7 +140,7 @@
     // Check whether the recents data source is correctly configured.
     if (recentsDataSource.recentsDataSourceMode == RecentsDataSourceModePeople)
     {
-        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.conversationSection];
+        [self scrollToTheTopTheNextRoomWithMissedNotificationsInSection:recentsDataSource.peopleSection];
     }
 }
 

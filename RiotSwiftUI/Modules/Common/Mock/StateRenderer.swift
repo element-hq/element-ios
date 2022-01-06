@@ -39,7 +39,7 @@ class StateRenderer {
             ForEach(0..<states.count) { i in
                 let state = self.states[i]
                 Self.wrapWithNavigation(addNavigation, view: state.view)
-                    .previewDisplayName(state.stateTitle)
+                    .previewDisplayName(state.screenTitle)
             }
         }
     }

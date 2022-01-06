@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import Keys
 
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
@@ -22,13 +23,6 @@ import Foundation
 final class BuildSettings: NSObject {
     
     // MARK: - Bundle Settings
-    static var bundleDisplayName: String {
-        guard let bundleDisplayName = Bundle.app.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String else {
-            fatalError("CFBundleDisplayName should be defined")
-        }
-        return bundleDisplayName
-    }
-    
     static var applicationGroupIdentifier: String {
         guard let applicationGroupIdentifier = Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as? String else {
             fatalError("applicationGroupIdentifier should be defined")
@@ -165,8 +159,20 @@ final class BuildSettings: NSObject {
     static let roomsAllowToJoinPublicRooms: Bool = true
     
     // MARK: - Analytics
-    static let analyticsServerUrl = URL(string: "https://piwik.riot.im/piwik.php")
-    static let analyticsAppId = "14"
+    #if DEBUG
+    /// Host to use for PostHog analytics during development. Set to nil to disable analytics in debug builds.
+    static let analyticsHost: String? = "https://posthog-poc.lab.element.dev"
+    /// Public key for submitting analytics during development. Set to nil to disable analytics in debug builds.
+    static let analyticsKey: String? = "rs-pJjsYJTuAkXJfhaMmPUNBhWliDyTKLOOxike6ck8"
+    #else
+    /// Host to use for PostHog analytics. Set to nil to disable analytics.
+    static let analyticsHost: String? = "https://posthog.hss.element.io"
+    /// Public key for submitting analytics. Set to nil to disable analytics.
+    static let analyticsKey: String? = "phc_Jzsm6DTm6V2705zeU5dcNvQDlonOR68XvX2sh1sEOHO"
+    #endif
+    
+    /// The URL to open with more information about analytics terms.
+    static let analyticsTermsURL = URL(string: "https://element.io/cookie-policy")!
     
     
     // MARK: - Bug report
@@ -285,14 +291,7 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowMediaLibraryAction: Bool = true
     static let roomScreenAllowStickerAction: Bool = true
     static let roomScreenAllowFilesAction: Bool = true
-    static var roomScreenAllowPollsAction: Bool {
-        guard #available(iOS 14, *) else {
-            return false
-        }
-        
-        return false
-    }
-    
+
     /// Allow split view detail view stacking    
     static let allowSplitViewDetailsScreenStacking: Bool = true
     
@@ -352,4 +351,26 @@ final class BuildSettings: NSObject {
     
     // MARK: - Secrets Recovery
     static let secretsRecoveryAllowReset = true
+    
+    // MARK: - Polls
+    
+    static var pollsEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return true
+    }
+    
+    // MARK: - Location Sharing
+    
+    static let tileServerMapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=" + RiotKeys().mapTilerAPIKey)!
+    
+    static var locationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return false
+    }
 }

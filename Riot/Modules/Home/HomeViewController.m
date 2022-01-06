@@ -69,7 +69,7 @@
     selectedRoomId = nil;
     selectedCollectionViewContentOffset = -1;
     
-    self.screenName = @"Home";
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenHome];
 }
 
 - (void)viewDidLoad

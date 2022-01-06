@@ -1,3 +1,76 @@
+## Changes in 1.6.11 (2021-12-14)
+
+✨ Features
+
+- Added support for creating, displaying and interacting with polls in the timeline. ([#5114](https://github.com/vector-im/element-ios/issues/5114))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.20.15](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.15)).
+- Room member details: Display user Matrix ID and make it copyable. ([#4568](https://github.com/vector-im/element-ios/issues/4568))
+
+🐛 Bugfixes
+
+- Fix crash when trying to scroll the people's tab to the top. ([#5190](https://github.com/vector-im/element-ios/issues/5190))
+
+🧱 Build
+
+- Fix SwiftGen only generating strings for MatrixKit. ([#5280](https://github.com/vector-im/element-ios/issues/5280))
+
+Others
+
+- Update issue workflow automation for the Delight team ([#5285](https://github.com/vector-im/element-ios/issues/5285))
+- Update workflow to add automation for the new Message Bubbles board ([#5289](https://github.com/vector-im/element-ios/issues/5289))
+
+
+## Changes in 1.6.10 (2021-12-09)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.20.14](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.14))
+
+🧱 Build
+
+- BuildRelease.sh: Add an option to build the ipa from local source code copy
+
+
+## Changes in 1.6.9 (2021-12-07)
+
+✨ Features
+
+- Allow audio file attachments to be played back inline by reusing the existing voice message UI. Prevent unnecessary conversions if final file already exists on disk. ([#4753](https://github.com/vector-im/element-ios/issues/4753))
+- SpaceExploreRoomViewModel: Support pagination in the Space Summary API ([#4893](https://github.com/vector-im/element-ios/issues/4893))
+- Adds clientPermalinkBaseUrl for a custom permalink base url. ([#4981](https://github.com/vector-im/element-ios/issues/4981))
+- Remember keyboard layout per room and restore it when opening the room again. ([#5067](https://github.com/vector-im/element-ios/issues/5067))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.20.13](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.13)).
+- Forward original message content and remove the need to re-upload media. ([#5014](https://github.com/vector-im/element-ios/issues/5014))
+- Use DTCoreText's callback option to sanitise formatted messages ([#5165](https://github.com/vector-im/element-ios/issues/5165))
+
+🐛 Bugfixes
+
+- Remove duplicate sources for some strings files in Riot/target.yml. ([#3908](https://github.com/vector-im/element-ios/issues/3908))
+- Invalid default value set for clientPermalinkBaseUrl. ([#5098](https://github.com/vector-im/element-ios/issues/5098))
+- Ignore badge updates from virtual rooms. ([#5155](https://github.com/vector-im/element-ios/issues/5155))
+- Fix rooms that should be hidden(such as virtual rooms) from showing. ([#5185](https://github.com/vector-im/element-ios/issues/5185))
+- Improve generated Swift header imports. ([#5194](https://github.com/vector-im/element-ios/issues/5194))
+- Fix bug where VoIP calls would not connect reliably after signout/signin. ([#5199](https://github.com/vector-im/element-ios/issues/5199))
+
+🧱 Build
+
+- Only run Build CI on develop, as it is already covered by Tests and Alpha. ([#5112](https://github.com/vector-im/element-ios/pull/5112))
+- Add concurrency to the GitHub workflows to auto-cancel older runs of each action for PRs. ([#5039](https://github.com/vector-im/element-ios/issues/5039))
+
+Others
+
+- Improve the Obj-C Generated Interface Header Name definition ([#4722](https://github.com/vector-im/element-ios/issues/4722))
+- Fix redundancy in heading in the bug report issue form ([#4984](https://github.com/vector-im/element-ios/issues/4984))
+- Update automation for issue triage ([#5153](https://github.com/vector-im/element-ios/issues/5153))
+- Improve issue automation workflows ([#5235](https://github.com/vector-im/element-ios/issues/5235))
+
+
 ## Changes in 1.6.8 (2021-11-17)
 
 🙌 Improvements

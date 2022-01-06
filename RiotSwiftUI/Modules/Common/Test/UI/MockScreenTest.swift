@@ -45,9 +45,10 @@ class MockScreenTest: XCTestCase {
         guard let screenType = screenType else {
             return testSuite
         }
+        
         // Create a test case for each screen state
         screenType.screenStates.enumerated().forEach { index, screenState in
-            let key = screenType.screenStateKeys[index]
+            let key = screenType.screenNames[index]
             addTestFor(screenState: screenState, screenStateKey: key, toTestSuite: testSuite)
         }
         return testSuite
@@ -64,12 +65,8 @@ class MockScreenTest: XCTestCase {
         // For every test case launch the app and go to the relevant screen
         continueAfterFailure = false
         app.launch()
-        goToScreen()
-    }
-    
-    private func goToScreen() {
+        
         guard let screenKey = screenStateKey else { fatalError("no screen") }
-        let link = app.buttons[screenKey]
-        link.tap()
+        app.goToScreenWithIdentifier(screenKey)
     }
 }

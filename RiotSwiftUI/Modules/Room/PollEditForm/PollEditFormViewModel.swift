@@ -28,8 +28,8 @@ class PollEditFormViewModel: PollEditFormViewModelType {
     
     private struct Constants {
         static let maxAnswerOptionsCount = 20
-        static let maxQuestionLength = 200
-        static let maxAnswerOptionLength = 200
+        static let maxQuestionLength = 340
+        static let maxAnswerOptionLength = 340
     }
 
     // MARK: - Properties
@@ -86,6 +86,16 @@ class PollEditFormViewModel: PollEditFormViewModelType {
             default:
                 break
             }
+        case .startLoading:
+            state.showLoadingIndicator = true
+            break
+        case .stopLoading(let error):
+            state.showLoadingIndicator = false
+            
+            if error != nil {
+                state.bindings.showsFailureAlert = true
+            }
+            break
         }
     }
 }
