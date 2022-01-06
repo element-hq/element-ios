@@ -3293,6 +3293,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         }]];
     }
     
+    // View in room action
+    if (self.roomDataSource.threadId && [selectedEvent.eventId isEqualToString:self.roomDataSource.threadId])
+    {
+        //  if in the thread and selected event is the root event
+        //  add "View in room" action
+        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            [self.delegate roomViewController:self
+                               showRoomWithId:self.roomDataSource.roomId
+                                      eventId:selectedEvent.eventId];
+        }]];
+    }
+    
     // Add actions for text message
     if (!attachment)
     {
@@ -3329,30 +3344,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (self.roomDataSource.threadId && [selectedEvent.eventId isEqualToString:self.roomDataSource.threadId])
-        {
-            //  if in the thread and selected event is the root event
-            //  add "View in room" action
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewInRoom]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                [self.delegate roomViewController:self
-                                   showRoomWithId:self.roomDataSource.roomId
-                                          eventId:selectedEvent.eventId];
-            }]];
-        }
-        
-        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
-        {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
-            }]];
-        }
-        
         if (!isJitsiCallEvent && selectedEvent.eventType != MXEventTypePollStart)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionQuote]
@@ -3367,6 +3358,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 // And display the keyboard
                 [self.inputToolbarView becomeFirstResponder];
+            }]];
+        }
+        
+        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
+        {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
         }
         
@@ -3549,12 +3550,71 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 }]];
             }
         }
+        
+        if (BuildSettings.messageDetailsAllowPermalink)
+        {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self cancelEventSelection];
+                
+                // Create a matrix.to permalink that is common to all matrix clients
+                NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
+                
+                if (permalink)
+                {
+                    MXKPasteboardManager.shared.pasteboard.string = permalink;
+                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
+                                             image:[UIImage imageNamed:@"link_icon"]
+                                          duration:2.0
+                                          position:ToastPositionBottom
+                                  additionalMargin:self.roomInputToolbarContainerHeightConstraint.constant];
+                }
+                else
+                {
+                    MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
+                }
+            }]];
+        }
+        
+        if (BuildSettings.messageDetailsAllowViewSource)
+        {
+            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewSource]
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                MXStrongifyAndReturnIfNil(self);
+                
+                [self cancelEventSelection];
+                
+                // Display event details
+                [self showEventDetails:selectedEvent];
+            }]];
+            
+            
+            // Add "View Decrypted Source" for e2ee event we can decrypt
+            if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
+            {
+                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewDecryptedSource]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    [self cancelEventSelection];
+                    
+                    // Display clear event details
+                    [self showEventDetails:selectedEvent.clearEvent];
+                }]];
+            }
+        }
        
         // Do not allow to redact the event that enabled encryption (m.room.encryption)
         // because it breaks everything
         if (selectedEvent.eventType != MXEventTypeRoomEncryption)
         {
             NSString *title;
+            UIAlertActionStyle style = UIAlertActionStyleDefault;
             if (selectedEvent.eventType == MXEventTypePollStart)
             {
                 title = [VectorL10n roomEventActionRemovePoll];
@@ -3562,10 +3622,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             else
             {
                 title = [VectorL10n roomEventActionRedact];
+                style = UIAlertActionStyleDestructive;
             }
             
             [actionsMenu addAction:[UIAlertAction actionWithTitle:title
-                                                            style:UIAlertActionStyleDefault
+                                                            style:style
                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
@@ -3602,42 +3663,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }
         }
         
-        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
-                                                        style:UIAlertActionStyleCancel
-                                                      handler:^(UIAlertAction * action) {
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self hideContextualMenuAnimated:YES];
-        }]];
-        
-        if (BuildSettings.messageDetailsAllowPermalink)
-        {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionPermalink]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self cancelEventSelection];
-                
-                // Create a matrix.to permalink that is common to all matrix clients
-                NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
-                
-                if (permalink)
-                {
-                    MXKPasteboardManager.shared.pasteboard.string = permalink;
-                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
-                                             image:[UIImage imageNamed:@"link_icon"]
-                                          duration:2.0
-                                          position:ToastPositionBottom
-                                  additionalMargin:self.roomInputToolbarContainerHeightConstraint.constant];
-                }
-                else
-                {
-                    MXLogDebug(@"[RoomViewController] Contextual menu permalink action failed. Permalink is nil room id/event id: %@/%@", selectedEvent.roomId, selectedEvent.eventId);
-                }
-            }]];
-        }
-        
         // Add reaction history if event contains reactions
         if (roomBubbleTableViewCell.bubbleData.reactions[selectedEvent.eventId].aggregatedReactionsWithNonZeroCount)
         {
@@ -3653,40 +3678,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (BuildSettings.messageDetailsAllowViewSource)
-        {
-            [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewSource]
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {
-                MXStrongifyAndReturnIfNil(self);
-                
-                [self cancelEventSelection];
-                
-                // Display event details
-                [self showEventDetails:selectedEvent];
-            }]];
-            
-            
-            // Add "View Decrypted Source" for e2ee event we can decrypt
-            if (selectedEvent.isEncrypted && selectedEvent.clearEvent)
-            {
-                [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionViewDecryptedSource]
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * action) {
-                    MXStrongifyAndReturnIfNil(self);
-                    
-                    [self cancelEventSelection];
-                    
-                    // Display clear event details
-                    [self showEventDetails:selectedEvent.clearEvent];
-                }]];
-            }
-        }
-        
         if (![selectedEvent.sender isEqualToString:self.mainSession.myUserId] && RiotSettings.shared.roomContextualMenuShowReportContentOption)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionReport]
-                                                            style:UIAlertActionStyleDefault
+                                                            style:UIAlertActionStyleDestructive
                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
@@ -3788,6 +3783,14 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 [self showEncryptionInformation:selectedEvent];
             }]];
         }
+        
+        [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n cancel]
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            [self hideContextualMenuAnimated:YES];
+        }]];
         
     }
     
@@ -6052,10 +6055,6 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     NSMutableArray<RoomContextualMenuItem*> *items = [NSMutableArray arrayWithCapacity:5];
     
-    if (!showThreadOption)
-    {
-        [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
-    }
     [items addObject:[self replyMenuItemWithEvent:event]];
     if (showThreadOption)
     {
@@ -6063,6 +6062,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [items addObject:[self replyInThreadMenuItemWithEvent:event]];
     }
     [items addObject:[self editMenuItemWithEvent:event]];
+    if (!showThreadOption)
+    {
+        [items addObject:[self copyMenuItemWithEvent:event andCell:cell]];
+    }
     if (showMoreOption)
     {
         [items addObject:[self moreMenuItemWithEvent:event andCell:cell]];

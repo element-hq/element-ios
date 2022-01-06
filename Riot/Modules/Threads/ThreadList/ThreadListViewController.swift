@@ -184,6 +184,9 @@ final class ThreadListViewController: UIViewController {
         threadsTableView.isHidden = true
         emptyView.isHidden = false
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectedFilterType == .myThreads
+        if viewModel.selectedFilterType == .all {
+            navigationItem.rightBarButtonItem = nil
+        }
     }
     
     private func renderShowingFilterTypes() {
