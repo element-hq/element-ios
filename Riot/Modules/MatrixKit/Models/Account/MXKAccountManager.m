@@ -21,6 +21,8 @@
 #import "MXKAppSettings.h"
 
 #import "MXKTools.h"
+#import "MXKAccountData.h"
+#import "MXRefreshTokenData.h"
 
 static NSString *const kMXKAccountsKeyOld = @"accounts";
 static NSString *const kMXKAccountsKey = @"accountsV2";
@@ -44,12 +46,22 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
 
 + (MXKAccountManager *)sharedManager
 {
+    return [MXKAccountManager sharedManagerWithReload:NO];
+}
+
++ (MXKAccountManager *)sharedManagerWithReload:(BOOL)reload
+{
     static MXKAccountManager *sharedAccountManager = nil;
     static dispatch_once_t onceToken;
+    __block BOOL didLoad = false;
     dispatch_once(&onceToken, ^{
+        didLoad = true;
         sharedAccountManager = [[super allocWithZone:NULL] init];
     });
     
+    if (reload && !didLoad) {
+        [sharedAccountManager loadAccounts];
+    }
     return sharedAccountManager;
 }
 
@@ -66,8 +78,6 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
         
         // Load existing accounts from local storage
         [self loadAccounts];
-        
-        [self registerRestClientDidRefreshTokensNotification];
     }
     return self;
 }
@@ -601,7 +611,6 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
 - (void)loadAccounts
 {
     MXLogDebug(@"[MXKAccountManager] loadAccounts");
-
     NSString *accountFile = [self accountFile];
     if ([[NSFileManager defaultManager] fileExistsAtPath:accountFile])
     {
@@ -667,12 +676,6 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     }
 }
 
-- (void)forceReloadAccounts
-{
-    MXLogDebug(@"[MXKAccountManager] Force reload existing accounts from local storage");
-    [self loadAccounts];
-}
-
 - (NSData*)encryptData:(NSData*)data
 {
     // Exceptions are not caught as the key is always needed if the KeyProviderDelegate
@@ -725,17 +728,69 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     }
 }
 
-#pragma mark - Homeserver Access/Refresh Token updates
-
-- (void)registerRestClientDidRefreshTokensNotification
+- (void)readAndWriteCredentials:(void (^)(NSArray<MXCredentials*> * _Nullable readData,  void (^completion)(BOOL didUpdateCredentials)))readAnWriteHandler
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRestClientDidRefreshTokensNotification:) name:MXRestClientDidRefreshTokensNotification object:nil];
+    NSError *error;
+    NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] init];
+    __block BOOL coordinatorSuccess = NO;
+    NSLog(@"[MXKAccountManager] readAndWriteCredentials: purposeIdentifier = %@", fileCoordinator.purposeIdentifier);
+    NSDate *coordinateStartTime = [NSDate date];
+    [fileCoordinator coordinateReadingItemAtURL:[self accountFileUrl]
+                                        options:0
+                               writingItemAtURL:[self accountFileUrl]
+                                        options:NSFileCoordinatorWritingForMerging
+                                          error:&error
+                                     byAccessor:^(NSURL * _Nonnull newReadingURL, NSURL * _Nonnull newWritingURL) {
+
+        NSDate *accessorStartTime = [NSDate date];
+        NSTimeInterval acquireInterval = [accessorStartTime timeIntervalSinceDate:coordinateStartTime];
+        NSLog(@"[MXKAccountManager] readAndWriteCredentials: acquireInterval = %f", acquireInterval);
+        NSError *error = nil;
+        NSData* data = [NSData dataWithContentsOfURL:newReadingURL options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:&error];
+        
+        // Decrypt data if encryption method is provided
+        NSData *unciphered = [self decryptData:data];
+        NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingFromData:unciphered error:&error];
+        decoder.requiresSecureCoding = false;
+        [decoder setClass:[MXKAccountData class] forClassName:@"MXKAccount"];
+        NSMutableArray<MXKAccountData*>* mxAccountsData = [decoder decodeObjectForKey:@"mxAccounts"];
+        NSMutableArray<MXCredentials*>* mxAccountCredentials = [NSMutableArray arrayWithCapacity:mxAccounts.count];
+        for(MXKAccountData *account in mxAccountsData){
+            [mxAccountCredentials addObject:account.mxCredentials];
+        }
+        
+        dispatch_group_t dispatchGroup = dispatch_group_create();
+        dispatch_group_enter(dispatchGroup);
+        
+        __block BOOL didUpdate = NO;
+        readAnWriteHandler(mxAccountCredentials, ^(BOOL didUpdateCredentials) {
+            didUpdate = didUpdateCredentials;
+            dispatch_group_leave(dispatchGroup);
+        });
+        
+        dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
+        
+        if (didUpdate) {
+            NSLog(@"[MXKAccountManager] readAndWriteCredentials: did update saving credential data");
+            NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initRequiringSecureCoding: NO];
+            [encoder setClassName:@"MXKAccount" forClass:[MXKAccountData class]];
+            [encoder encodeObject:mxAccountsData forKey:@"mxAccounts"];
+            NSData *writeData = [self encryptData:[encoder encodedData]];
+            coordinatorSuccess = [writeData writeToURL:newWritingURL atomically:YES];
+        } else {
+            NSLog(@"[MXKAccountManager] readAndWriteCredentials: did not update not saving credential data");
+            coordinatorSuccess = YES;
+        }
+        NSDate *accessorEndTime = [NSDate date];
+        NSTimeInterval lockedTime = [accessorEndTime timeIntervalSinceDate:accessorStartTime];
+        NSLog(@"[MXKAccountManager] readAndWriteCredentials: lockedTime = %f", lockedTime);
+    }];
+    NSLog(@"[MXKAccountManager] readAndWriteCredentials:exit");
 }
 
-- (void)handleRestClientDidRefreshTokensNotification:(NSNotification*)notification
+- (NSURL *)accountFileUrl
 {
-    [self saveAccounts];
+    return [NSURL fileURLWithPath: [self accountFile]];
 }
-
 
 @end

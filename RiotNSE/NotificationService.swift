@@ -56,7 +56,9 @@ class NotificationService: UNNotificationServiceExtension {
         guard let userAccount = userAccount else {
             return nil
         }
-        let restClient = MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil)
+        let restClient = MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil) { persistTokenDataHandler in
+            MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
+        }
         restClient.refreshTokensFailedHandler = { mxError in
             MXLog.debug("[NotificationService] mxRestClient: The rest client is no longer authenticated.")
             if let mxError = mxError,
@@ -180,14 +182,16 @@ class NotificationService: UNNotificationServiceExtension {
     }
     
     private func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
-        MXKAccountManager.shared()?.forceReloadAccounts()
+        MXKAccountManager.sharedManager(withReload: true)
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
         if let userAccount = userAccount {
             Self.backgroundServiceInitQueue.sync {
                 if NotificationService.backgroundSyncService?.credentials != userAccount.mxCredentials {
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: BEFORE")
                     self.logMemory()
-                    NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials)
+                    NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials, persistTokenDataHandler: { persistTokenDataHandler in
+                        MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
+                    })
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
                     self.logMemory()
                 }

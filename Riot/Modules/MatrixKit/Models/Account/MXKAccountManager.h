@@ -110,6 +110,8 @@ extern NSString *const MXKAccountManagerDataType;
  */
 + (MXKAccountManager *)sharedManager;
 
++ (MXKAccountManager *)sharedManagerWithReload:(BOOL)reload;
+
 /**
  Check for each enabled account if a matrix session is already opened.
  Open a matrix session for each enabled account which doesn't have a session.
@@ -208,11 +210,6 @@ extern NSString *const MXKAccountManagerDataType;
  */
 - (MXKAccount *)accountKnowingUserWithUserId:(NSString *)userId;
 
-/**
- Force the account manager to reload existing accounts from the local storage.
- The account manager is supposed to handle itself the list of the accounts.
- Call this method only when an account has been changed from an other application from the same group.
- */
-- (void)forceReloadAccounts;
+- (void)readAndWriteCredentials:(void (^)(NSArray<MXCredentials*> * _Nullable readData,  void (^completion)(BOOL didUpdateCredentials)))readAnWriteHandler;
 
 @end

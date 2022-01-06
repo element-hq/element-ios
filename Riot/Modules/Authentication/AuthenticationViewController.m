@@ -340,7 +340,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         didCheckFalseAuthScreenDisplay = YES;
         
         MXLogDebug(@"[AuthenticationVC] viewDidAppear: Checking false logout");
-        [[MXKAccountManager sharedManager] forceReloadAccounts];
+        [MXKAccountManager sharedManagerWithReload: YES];
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
             // For now, we do not have better solution than forcing the user to restart the app
