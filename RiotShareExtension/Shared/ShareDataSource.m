@@ -77,7 +77,7 @@
      
 - (void)loadCellData
 {
-    [self.fileStore.summariesModule fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> *summaries) {
+    [self.fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> *summaries) {
         
         NSMutableArray *cellData = [NSMutableArray array];
         

@@ -1843,7 +1843,7 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
                             summary.lastMessage.others = [NSMutableDictionary dictionary];
                         }
                         summary.lastMessage.others[@"lastEventDate"] = [eventFormatter dateStringFromEvent:event withTime:YES];
-                        [self->mxSession.store.summariesModule storeSummary:summary];
+                        [self->mxSession.store.roomSummaryStore storeSummary:summary];
                     }
                     
                     dispatch_group_leave(dispatchGroup);

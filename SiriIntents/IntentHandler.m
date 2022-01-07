@@ -215,7 +215,7 @@
     {
         MXKAccount *account = [MXKAccountManager sharedManager].activeAccounts.firstObject;
         MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-        [fileStore.summariesModule fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
+        [fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
             NSString *roomID = person.customIdentifier;
             
             BOOL isEncrypted = NO;
@@ -315,7 +315,7 @@
         if (account)
         {
             MXFileStore *fileStore = [[MXFileStore alloc] initWithCredentials:account.mxCredentials];
-            [fileStore.summariesModule fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
+            [fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> * _Nonnull summaries) {
                 
                 // Contains userIds of all users with whom the current user has direct chats
                 // Use set to avoid duplicates
