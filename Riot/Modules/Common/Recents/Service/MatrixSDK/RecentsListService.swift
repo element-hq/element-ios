@@ -28,6 +28,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     
     public private(set) var query: String?
     public private(set) var space: MXSpace?
+    private var fetchersCreated: Bool = false
     
     //  MARK: - Fetchers
     
@@ -165,6 +166,7 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         super.init()
         createFetchers()
         addRiotSettingsObserver()
+        addSessionStateObserver()
     }
     
     //  MARK: - View Data
@@ -262,9 +264,20 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     public func stop() {
+        removeSessionStateObserver()
         removeRiotSettingsObserver()
         removeAllDelegates()
         allFetchers.forEach({ $0.stop() })
+        
+        invitedRoomListDataFetcher = nil
+        favoritedRoomListDataFetcher = nil
+        directRoomListDataFetcherForHome = nil
+        directRoomListDataFetcherForPeople = nil
+        conversationRoomListDataFetcherForHome = nil
+        conversationRoomListDataFetcherForRooms = nil
+        lowPriorityRoomListDataFetcher = nil
+        serverNoticeRoomListDataFetcher = nil
+        suggestedRoomListDataFetcher = nil
     }
     
     //  MARK: - Delegate
@@ -310,6 +323,32 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         default:
             break
         }
+    }
+    
+    //  MARK: - Session State Observers
+    
+    private func addSessionStateObserver() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionStateUpdated(_:)),
+                                               name: .mxSessionStateDidChange,
+                                               object: nil)
+    }
+    
+    private func removeSessionStateObserver() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: .mxSessionStateDidChange,
+                                                  object: nil)
+    }
+    
+    @objc
+    private func sessionStateUpdated(_ notification: Notification) {
+        guard let session = notification.object as? MXSession else {
+            return
+        }
+        guard session == self.session else {
+            return
+        }
+        createFetchers()
     }
     
     //  MARK: - Private
@@ -450,6 +489,16 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
     }
     
     private func createFetchers() {
+        guard fetchersCreated == false else {
+            removeSessionStateObserver()
+            return
+        }
+        guard let session = session else {
+            return
+        }
+        guard session.isEventStreamInitialised else {
+            return
+        }
         if !hideInvitedSection {
             invitedRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.invited])
         }
@@ -461,6 +510,9 @@ public class RecentsListService: NSObject, RecentsListServiceProtocol {
         lowPriorityRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.lowPriority])
         serverNoticeRoomListDataFetcher = createCommonRoomListDataFetcher(withDataTypes: [.serverNotice])
         suggestedRoomListDataFetcher = createCommonRoomListDataFetcher(onlySuggested: true)
+        
+        fetchersCreated = true
+        removeSessionStateObserver()
     }
     
     private func updateDirectFetcher(_ fetcher: MXRoomListDataFetcher, for mode: RecentsDataSourceMode) {
