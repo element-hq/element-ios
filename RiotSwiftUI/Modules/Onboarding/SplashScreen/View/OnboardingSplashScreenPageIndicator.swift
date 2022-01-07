@@ -18,10 +18,21 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct OnboardingSplashScreenPageIndicator: View {
+    
     @Environment(\.theme) private var theme
     
     let pageCount: Int
     let pageIndex: Int
+    
+    internal init(pageCount: Int, pageIndex: Int) {
+        self.pageCount = pageCount
+        
+        if pageIndex == -1 {
+            self.pageIndex = pageCount - 1
+        } else {
+            self.pageIndex = pageIndex % pageCount
+        }
+    }
     
     var body: some View {
         HStack {

@@ -38,6 +38,7 @@ struct OnboardingSplashScreenPage: View {
     
     var backgroundGradient: some View {
         LinearGradient(gradient: content.gradient, startPoint: .leading, endPoint: .trailing)
+            .flipsForRightToLeftLayoutDirection(true)
             .opacity(0.2)
     }
     

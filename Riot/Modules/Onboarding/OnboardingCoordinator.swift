@@ -54,7 +54,7 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
     
     init(parameters: OnboardingCoordinatorParameters) {
         self.parameters = parameters
-    }    
+    }
     
     // MARK: - Public
     

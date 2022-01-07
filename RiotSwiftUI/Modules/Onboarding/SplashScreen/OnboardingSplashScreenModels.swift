@@ -87,5 +87,6 @@ enum OnboardingSplashScreenViewAction {
     case register
     case login
     case nextPage
+    case previousPage
     case hiddenPage
 }

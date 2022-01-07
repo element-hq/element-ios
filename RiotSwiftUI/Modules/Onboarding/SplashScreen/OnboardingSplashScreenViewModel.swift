@@ -54,7 +54,7 @@ class OnboardingSplashScreenViewModel: OnboardingSplashScreenViewModelType, Onbo
             register()
         case .login:
             login()
-        case .nextPage, .hiddenPage:
+        case .nextPage, .previousPage, .hiddenPage:
             dispatch(action: .viewAction(viewAction))
         }
     }
@@ -65,6 +65,8 @@ class OnboardingSplashScreenViewModel: OnboardingSplashScreenViewModelType, Onbo
             switch viewAction {
             case .nextPage:
                 state.bindings.pageIndex = (state.bindings.pageIndex + 1) % state.content.count
+            case .previousPage:
+                state.bindings.pageIndex = max(0, (state.bindings.pageIndex - 1))
             case .hiddenPage:
                 state.bindings.pageIndex = -1
             case .login, .register:
