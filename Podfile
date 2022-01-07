@@ -95,7 +95,7 @@ abstract_target 'RiotPods' do
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '~> 4.5'
+    pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 
@@ -129,6 +129,10 @@ abstract_target 'RiotPods' do
 
 end
 
+plugin 'cocoapods-keys', {
+  :project => "Riot",
+  :keys => ["MapTilerAPIKey"]
+}
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|

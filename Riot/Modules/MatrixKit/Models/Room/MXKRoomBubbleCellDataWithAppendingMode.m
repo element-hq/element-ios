@@ -102,7 +102,7 @@ static NSAttributedString *messageSeparator = nil;
                     return NO;
                 }
             }
-        
+            
             // Add all components of the provided message
             for (MXKRoomBubbleComponent* component in cellData.bubbleComponents)
             {

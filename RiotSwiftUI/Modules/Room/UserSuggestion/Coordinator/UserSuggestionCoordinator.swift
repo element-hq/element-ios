@@ -26,7 +26,7 @@ protocol UserSuggestionCoordinatorDelegate: AnyObject {
 }
 
 @available(iOS 14.0, *)
-final class UserSuggestionCoordinator: Coordinator {
+final class UserSuggestionCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
