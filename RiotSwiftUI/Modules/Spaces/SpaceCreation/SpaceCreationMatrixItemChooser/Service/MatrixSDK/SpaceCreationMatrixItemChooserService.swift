@@ -24,7 +24,7 @@ class SpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServi
     
     // MARK: Private
     
-    private let processingQueue = DispatchQueue(label: "org.matrix.element.SpaceCreationMatrixItemChooserService.processingQueue")
+    private let processingQueue = DispatchQueue(label: "io.element.SpaceCreationMatrixItemChooserService.processingQueue")
     private let completionQueue = DispatchQueue.main
 
     private let session: MXSession
