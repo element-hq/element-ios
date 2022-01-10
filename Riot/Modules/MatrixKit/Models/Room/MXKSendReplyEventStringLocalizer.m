@@ -45,6 +45,11 @@
     return [MatrixKitL10n messageReplyToSenderSentAFile];
 }
 
+- (NSString *)senderSentTheirLocation
+{
+    return [MatrixKitL10n messageReplyToSenderSentTheirLocation];
+}
+
 - (NSString *)messageToReplyToPrefix
 {
     return [MatrixKitL10n messageReplyToMessageToReplyToPrefix];

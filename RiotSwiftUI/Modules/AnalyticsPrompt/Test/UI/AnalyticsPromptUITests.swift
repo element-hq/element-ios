@@ -49,7 +49,7 @@ class AnalyticsPromptUITests: MockScreenTest {
         switch promptType {
         case .newUser:
             XCTAssertEqual(enableButton.label, VectorL10n.enable)
-            XCTAssertEqual(disableButton.label, VectorL10n.cancel)
+            XCTAssertEqual(disableButton.label, VectorL10n.locationSharingInvalidAuthorizationNotNow)
         case .upgrade:
             XCTAssertEqual(enableButton.label, VectorL10n.analyticsPromptYes)
             XCTAssertEqual(disableButton.label, VectorL10n.analyticsPromptStop)

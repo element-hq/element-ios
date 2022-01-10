@@ -35,9 +35,9 @@ public class VectorL10n: NSObject {
   public static func activeCallDetails(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "active_call_details", p1)
   }
-  /// Help us identify issues and improve Element by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
-  public static var analyticsPromptMessageNewUser: String { 
-    return VectorL10n.tr("Vector", "analytics_prompt_message_new_user") 
+  /// Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
+  public static func analyticsPromptMessageNewUser(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "analytics_prompt_message_new_user", p1)
   }
   /// You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.
   public static var analyticsPromptMessageUpgrade: String { 
@@ -2191,6 +2191,54 @@ public class VectorL10n: NSObject {
   public static var less: String { 
     return VectorL10n.tr("Vector", "less") 
   }
+  /// Close
+  public static var locationSharingCloseAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_close_action") 
+  }
+  /// %@ does not have permission to access your location. You can enable access in Settings > Location
+  public static func locationSharingInvalidAuthorizationErrorTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_error_title", p1)
+  }
+  /// Not now
+  public static var locationSharingInvalidAuthorizationNotNow: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_not_now") 
+  }
+  /// Settings
+  public static var locationSharingInvalidAuthorizationSettings: String { 
+    return VectorL10n.tr("Vector", "location_sharing_invalid_authorization_settings") 
+  }
+  /// %@ could not load the map. Please try again later.
+  public static func locationSharingLoadingMapErrorTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_loading_map_error_title", p1)
+  }
+  /// %@ could not access your location. Please try again later.
+  public static func locationSharingLocatingUserErrorTitle(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "location_sharing_locating_user_error_title", p1)
+  }
+  /// Open in Apple Maps
+  public static var locationSharingOpenAppleMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_apple_maps") 
+  }
+  /// Open in Google Maps
+  public static var locationSharingOpenGoogleMaps: String { 
+    return VectorL10n.tr("Vector", "location_sharing_open_google_maps") 
+  }
+  /// Location sharing
+  public static var locationSharingSettingsHeader: String { 
+    return VectorL10n.tr("Vector", "location_sharing_settings_header") 
+  }
+  /// Enable location sharing
+  public static var locationSharingSettingsToggleTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_settings_toggle_title") 
+  }
+  /// Share
+  public static var locationSharingShareAction: String { 
+    return VectorL10n.tr("Vector", "location_sharing_share_action") 
+  }
+  /// Location
+  public static var locationSharingTitle: String { 
+    return VectorL10n.tr("Vector", "location_sharing_title") 
+  }
   /// Got it
   public static var majorUpdateDoneAction: String { 
     return VectorL10n.tr("Vector", "major_update_done_action") 
@@ -2290,6 +2338,10 @@ public class VectorL10n: NSObject {
   /// Off
   public static var off: String { 
     return VectorL10n.tr("Vector", "off") 
+  }
+  /// OK
+  public static var ok: String { 
+    return VectorL10n.tr("Vector", "ok") 
   }
   /// On
   public static var on: String { 
@@ -2443,10 +2495,6 @@ public class VectorL10n: NSObject {
   public static var pollEditFormPollQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
   }
-  /// OK
-  public static var pollEditFormPostFailureAction: String { 
-    return VectorL10n.tr("Vector", "poll_edit_form_post_failure_action") 
-  }
   /// Please try again
   public static var pollEditFormPostFailureSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_post_failure_subtitle") 
@@ -2458,10 +2506,6 @@ public class VectorL10n: NSObject {
   /// Question or topic
   public static var pollEditFormQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
-  }
-  /// OK
-  public static var pollTimelineNotClosedAction: String { 
-    return VectorL10n.tr("Vector", "poll_timeline_not_closed_action") 
   }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
@@ -2502,10 +2546,6 @@ public class VectorL10n: NSObject {
   /// %lu votes cast. Vote to the see the results
   public static func pollTimelineTotalVotesNotVoted(_ p1: Int) -> String {
     return VectorL10n.tr("Vector", "poll_timeline_total_votes_not_voted", p1)
-  }
-  /// OK
-  public static var pollTimelineVoteNotRegisteredAction: String { 
-    return VectorL10n.tr("Vector", "poll_timeline_vote_not_registered_action") 
   }
   /// Sorry, your vote was not registered, please try again
   public static var pollTimelineVoteNotRegisteredSubtitle: String { 
@@ -5139,9 +5179,9 @@ public class VectorL10n: NSObject {
   public static var spacesAddSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_add_space_title") 
   }
-  /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.
-  public static var spacesComingSoonDetail: String { 
-    return VectorL10n.tr("Vector", "spaces_coming_soon_detail") 
+  /// This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with %@ on your computer.
+  public static func spacesComingSoonDetail(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_coming_soon_detail", p1)
   }
   /// Coming soon
   public static var spacesComingSoonTitle: String { 

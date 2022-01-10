@@ -140,14 +140,14 @@
                                     </constraints>
                                 </stackView>
                                 <view clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="oeI-eO-mFK">
-                                    <rect key="frame" x="56" y="3" width="524" height="91"/>
+                                    <rect key="frame" x="56" y="3" width="524" height="78"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="oeI-eO-mFK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vcq-cR-uBc" secondAttribute="leading" constant="56" id="0Fr-0L-9tU"/>
-                                <constraint firstAttribute="bottom" secondItem="oeI-eO-mFK" secondAttribute="bottom" constant="3" id="8M5-uW-82s"/>
+                                <constraint firstAttribute="bottom" secondItem="oeI-eO-mFK" secondAttribute="bottom" constant="16" id="8M5-uW-82s"/>
                                 <constraint firstItem="oeI-eO-mFK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4d4-XQ-ido" secondAttribute="trailing" constant="6" id="9By-U1-wTY"/>
                                 <constraint firstAttribute="trailing" secondItem="oeI-eO-mFK" secondAttribute="trailing" constant="15" id="Pbe-4d-q6Y"/>
                                 <constraint firstAttribute="bottom" secondItem="4d4-XQ-ido" secondAttribute="bottom" id="Tkw-p1-CYF"/>

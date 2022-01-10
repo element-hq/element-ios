@@ -19,7 +19,7 @@
 import UIKit
 
 @objcMembers
-final class TemplateRoomsCoordinator: Coordinator {
+final class TemplateRoomsCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     

@@ -21,14 +21,17 @@ import SwiftUI
 /// A modifier for showing the activity indicator centered over a view.
 struct ActivityIndicatorModifier: ViewModifier {
     var show: Bool
-
+    
     @ViewBuilder
     func body(content: Content) -> some View {
+        content
+            .overlay(activityIndicator, alignment: .center)
+    }
+    
+    @ViewBuilder
+    private var activityIndicator: some View {
         if show {
-            content
-                .overlay(ActivityIndicator(), alignment: .center)
-        } else {
-            content
+            ActivityIndicator()
         }
     }
 }

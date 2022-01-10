@@ -66,7 +66,7 @@ extension AnalyticsPromptType {
     var message: String {
         switch self {
         case .newUser:
-            return VectorL10n.analyticsPromptMessageNewUser
+            return VectorL10n.analyticsPromptMessageNewUser(AppInfo.current.displayName)
         case .upgrade:
             return VectorL10n.analyticsPromptMessageUpgrade
         }
