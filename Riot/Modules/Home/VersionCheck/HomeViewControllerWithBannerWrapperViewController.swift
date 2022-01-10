@@ -16,8 +16,8 @@
 
 import Foundation
 
-class HomeViewControllerWithBannerWrapperViewController: MXKActivityHandlingViewController, BannerPresentationProtocol {
-    
+class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKViewControllerActivityHandling, BannerPresentationProtocol {
+
     @objc let homeViewController: HomeViewController
     private var bannerContainerView: UIView!
     private var stackView: UIStackView!
@@ -84,5 +84,23 @@ class HomeViewControllerWithBannerWrapperViewController: MXKActivityHandlingView
         } completion: { _ in
             bannerView.removeFromSuperview()
         }
+    }
+    
+    // MARK: - MXKViewControllerActivityHandling
+    var activityIndicator: UIActivityIndicatorView! {
+        get {
+            return homeViewController.activityIndicator
+        }
+        set {
+            homeViewController.activityIndicator = newValue
+        }
+    }
+    
+    func startActivityIndicator() {
+        homeViewController.startActivityIndicator()
+    }
+    
+    func stopActivityIndicator() {
+        homeViewController.stopActivityIndicator()
     }
 }

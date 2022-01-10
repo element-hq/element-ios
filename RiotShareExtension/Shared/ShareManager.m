@@ -78,9 +78,14 @@
 
 - (void)shareViewController:(ShareViewController *)shareViewController didRequestShareForRoomIdentifiers:(NSSet<NSString *> *)roomIdentifiers
 {
-    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
+    MXWeakify(self);
+    MXRestClient *restClient = [[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
         [[MXKAccountManager sharedManager] readAndWriteCredentials:handler];
-    }]];
+    } andUnauthenticatedHandler:^(MXError *error, void (^completion)(void)) {
+        MXStrongifyAndReturnIfNil(self);
+        [self.userAccount handleUnauthenticated:error andCompletion:completion];
+    }];
+    MXSession *session = [[MXSession alloc] initWithMatrixRestClient:restClient];
     [MXFileStore setPreloadOptions:0];
     
     MXWeakify(session);

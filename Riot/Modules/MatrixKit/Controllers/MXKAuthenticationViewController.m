@@ -1453,7 +1453,7 @@
         return NO;
     } andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
         [[MXKAccountManager sharedManager] readAndWriteCredentials:handler];
-    }];
+    } andUnauthenticatedHandler: nil];
     
     MXWeakify(self);
     [[MXKAccountManager sharedManager].dehydrationService rehydrateDeviceWithMatrixRestClient:mxRestClient dehydrationKey:keyData success:^(NSString * deviceId) {

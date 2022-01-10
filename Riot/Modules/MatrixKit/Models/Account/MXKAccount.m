@@ -959,9 +959,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     }
 }
 
-
-
-
 - (void)deletePusher
 {
     if (self.pushNotificationServiceIsActive)
@@ -1670,16 +1667,6 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     {
         isPauseRequested = NO;
     }
-    else if (mxSession.state == MXSessionStateUnauthenticated)
-    {
-        // Logout this account
-        [[MXKAccountManager sharedManager] removeAccount:self sendLogoutRequest:NO completion:nil];
-    }
-    else if (mxSession.state == MXSessionStateSoftLogout)
-    {
-        // Soft logout this account
-        [[MXKAccountManager sharedManager] softLogout:self];
-    }
 }
 
 - (void)prepareRESTClient
@@ -1688,9 +1675,9 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     {
         return;
     }
-    
+    MXWeakify(self);
     mxRestClient = [[MXRestClient alloc] initWithCredentials:self.mxCredentials andOnUnrecognizedCertificateBlock:^BOOL(NSData *certificate) {
-        
+        MXStrongifyAndReturnValueIfNil(self, NO);
         if (_onCertificateChangeBlock)
         {
             if (_onCertificateChangeBlock (self, certificate))
@@ -1713,7 +1700,27 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     } andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
         [MXKAccountManager.sharedManager readAndWriteCredentials:handler];
+    } andUnauthenticatedHandler:^(MXError *error, void (^completion)(void)) {
+        MXStrongifyAndReturnIfNil(self);
+        [self handleUnauthenticated:error andCompletion:completion];
     }];
+}
+
+
+- (void)handleUnauthenticated:(MXError *)error andCompletion:(void (^)(void))completion
+{
+    if (error.httpResponse.statusCode == 401
+        && [error.userInfo[kMXErrorSoftLogoutKey] isEqual:@(YES)])
+    {
+        MXLogDebug(@"[MXKAccountManager] handleUnauthenticated: soft logout.");
+        [[MXKAccountManager sharedManager] softLogout:self];
+        completion();
+    }
+    else
+    {
+        MXLogDebug(@"[MXKAccountManager] handleUnauthenticated: hard logout.");
+        [[MXKAccountManager sharedManager] removeAccount:self sendLogoutRequest:NO completion:completion];
+    }
 }
 
 - (void)onDateTimeFormatUpdate

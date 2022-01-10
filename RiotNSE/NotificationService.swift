@@ -56,22 +56,11 @@ class NotificationService: UNNotificationServiceExtension {
         guard let userAccount = userAccount else {
             return nil
         }
-        let restClient = MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil) { persistTokenDataHandler in
+        let restClient = MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil, persistentTokenDataHandler: { persistTokenDataHandler in
             MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
-        }
-        restClient.refreshTokensFailedHandler = { mxError in
-            MXLog.debug("[NotificationService] mxRestClient: The rest client is no longer authenticated.")
-            if let mxError = mxError,
-               mxError.httpResponse.statusCode == 401,
-               let softLogout = mxError.userInfo[kMXErrorSoftLogoutKey] as? Bool,
-               softLogout {
-                MXLog.debug("[NotificationService] mxRestClient: soft logout");
-                userAccount.softLogout()
-            } else {
-                MXLog.debug("[NotificationService] mxRestClient: full logout");
-                MXKAccountManager.shared().removeAccount(userAccount, completion: nil)
-            }
-        }
+        }, unauthenticatedHandler: { error, completion in
+            userAccount.handleUnauthenticated(error, andCompletion: completion)
+        })
         return restClient
     }()
     
@@ -191,6 +180,8 @@ class NotificationService: UNNotificationServiceExtension {
                     self.logMemory()
                     NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials, persistTokenDataHandler: { persistTokenDataHandler in
                         MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
+                    }, unauthenticatedHandler: { error, completion in
+                        userAccount.handleUnauthenticated(error, andCompletion: completion)
                     })
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
                     self.logMemory()
