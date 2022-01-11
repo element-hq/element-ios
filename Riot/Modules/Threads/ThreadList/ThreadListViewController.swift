@@ -176,6 +176,12 @@ final class ThreadListViewController: UIViewController {
         threadsTableView.isHidden = false
         self.threadsTableView.reloadData()
         navigationItem.rightBarButtonItem?.isEnabled = true
+        switch viewModel.selectedFilterType {
+        case .all:
+            navigationItem.rightBarButtonItem?.image = Asset.Images.threadsFilter.image
+        case .myThreads:
+            navigationItem.rightBarButtonItem?.image = Asset.Images.threadsFilterApplied.image
+        }
     }
     
     private func renderEmptyView(withViewModel emptyViewModel: ThreadListEmptyViewModel) {
@@ -184,8 +190,11 @@ final class ThreadListViewController: UIViewController {
         threadsTableView.isHidden = true
         emptyView.isHidden = false
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectedFilterType == .myThreads
-        if viewModel.selectedFilterType == .all {
+        switch viewModel.selectedFilterType {
+        case .all:
             navigationItem.rightBarButtonItem = nil
+        case .myThreads:
+            navigationItem.rightBarButtonItem?.image = Asset.Images.threadsFilterApplied.image
         }
     }
     
