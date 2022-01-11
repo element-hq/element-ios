@@ -430,8 +430,8 @@ Tap the + to start adding people.";
 "threads_action_my_threads" = "My threads";
 "threads_empty_title" = "Keep discussions organised with threads";
 "threads_empty_info_all" = "Threads help keep your conversations on-topic and easy to track.";
-"threads_empty_info_my" = "Reply to an ongoing thread or use “Thread” when selecting a message to start a new one.";
-"threads_empty_tip" = "Tip: Use “Thread” option when selecting a message.";
+"threads_empty_info_my" = "Reply to an ongoing thread or tap a message and use “Thread” to start a new one.";
+"threads_empty_tip" = "Tip: Tap a message and use “Thread” to start one.";
 "threads_empty_show_all_threads" = "Show all threads";
 
 "media_type_accessibility_image" = "Image";

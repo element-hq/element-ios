@@ -5231,7 +5231,7 @@ public class VectorL10n: NSObject {
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 
   }
-  /// Reply to an ongoing thread or use “Thread” when selecting a message to start a new one.
+  /// Reply to an ongoing thread or tap a message and use “Thread” to start a new one.
   public static var threadsEmptyInfoMy: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_my") 
   }
@@ -5239,7 +5239,7 @@ public class VectorL10n: NSObject {
   public static var threadsEmptyShowAllThreads: String { 
     return VectorL10n.tr("Vector", "threads_empty_show_all_threads") 
   }
-  /// Tip: Use “Thread” option when selecting a message.
+  /// Tip: Tap a message and use “Thread” to start one.
   public static var threadsEmptyTip: String { 
     return VectorL10n.tr("Vector", "threads_empty_tip") 
   }
