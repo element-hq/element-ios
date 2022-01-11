@@ -753,7 +753,7 @@
 "secrets_recovery_with_passphrase_invalid_passphrase_title" = "Nie je možné získať prístup k tajnému úložisku";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part2" = "použiť váš bezpečnostný kľúč";
 "secrets_recovery_with_passphrase_lost_passphrase_action_part1" = "Neviete svoju bezpečnostnú frázu? Môžete ";
-"secrets_recovery_with_passphrase_passphrase_placeholder" = "Vložiť bezpečnostnú frázu";
+"secrets_recovery_with_passphrase_passphrase_placeholder" = "Zadajte bezpečnostnú frázu";
 "secrets_recovery_with_passphrase_information_verify_device" = "Na overenie tohto zariadenia použite bezpečnostnú frázu.";
 "user_verification_session_details_information_untrusted_current_user" = "Overte túto reláciu, aby ste ju označili za dôveryhodnú a udelili jej prístup k zašifrovaným správam:";
 "user_verification_session_details_information_trusted_other_user_part2" = " ste ju overili:";
@@ -1186,7 +1186,7 @@
 "space_home_show_all_rooms" = "Zobraziť všetky miestnosti";
 "space_participants_action_ban" = "Vylúčiť z tohto priestoru";
 "space_participants_action_remove" = "Odstrániť z tohto priestoru";
-"spaces_coming_soon_detail" = "Táto funkcia tu ešte nebola zapracovaná, ale je na ceste k jej zapracovaniu. Zatiaľ to môžete urobiť pomocou aplikácie Element v počítači.";
+"spaces_coming_soon_detail" = "Táto funkcia tu ešte nebola zapracovaná, ale je na ceste k jej zapracovaniu. Zatiaľ to môžete urobiť pomocou %@ na vašom počítači.";
 "spaces_invites_coming_soon_title" = "Pozvánky už čoskoro";
 "spaces_add_rooms_coming_soon_title" = "Pridávanie miestností už čoskoro";
 "spaces_no_member_found_detail" = "Hľadáte niekoho, kto nie je v %@? Zatiaľ ich môžete pozvať na webe alebo na počítači.";
@@ -1502,7 +1502,7 @@
 "analytics_prompt_stop" = "Zastaviť zdieľanie";
 "analytics_prompt_yes" = "Áno, je to v poriadku";
 "analytics_prompt_message_upgrade" = "Predtým ste nám udelili súhlas so zdieľaním anonymných údajov o používaní. Teraz, aby sme pomohli pochopiť, ako ľudia používajú viacero zariadení, vygenerujeme náhodný identifikátor zdieľaný vašimi zariadeniami.";
-"analytics_prompt_message_new_user" = "Pomôžte nám identifikovať problémy a zlepšiť Element zdieľaním anonymných údajov o používaní. Aby sme pochopili, ako ľudia používajú viacero zariadení, vygenerujeme náhodný identifikátor, ktorý zdieľajú vaše zariadenia.";
+"analytics_prompt_message_new_user" = "Pomôžte nám identifikovať problémy a zlepšiť %@ zdieľaním anonymných údajov o používaní. Aby sme pochopili, ako ľudia používajú viacero zariadení, vygenerujeme náhodný identifikátor zdieľaný vašimi zariadeniami.";
 
 // Analytics
 "analytics_prompt_title" = "Pomôžte zlepšiť %@";
@@ -1619,3 +1619,16 @@
 // Recover from recovery key
 
 "key_backup_recover_from_recovery_key_info" = "Použite svoju bezpečnostný kľúč na odomknutie histórie zabezpečených správ";
+"widget_sticker_picker_no_stickerpacks_alert" = "Momentálne nemáte aktívne žiadne balíčky s nálepkami.";
+"widget_integrations_server_failed_to_connect" = "Nepodarilo sa pripojiť k integračnému serveru";
+"no_voip" = "%@ vám volá, ale %@ zatiaľ nepodporuje hovory.\nToto oznámenie môžete ignorovať a prijať hovor z iného zariadenia alebo ho môžete odmietnuť.";
+"call_actions_unhold" = "Pokračovať";
+"call_jitsi_error" = "Nepodarilo sa pripojiť ku konferenčnému hovoru.";
+"rage_shake_prompt" = "Zdá sa, že rozčúlene trasiete telefónom. Chceli by ste odoslať hlásenie o chybe?";
+"room_details_addresses_disable_main_address_prompt_msg" = "Nebudete mať zadanú žiadnu hlavnú adresu. Predvolená hlavná adresa pre túto miestnosť sa vyberie náhodne";
+"settings_enable_rageshake" = "Zúrivo potraste pre nahlásenie chyby";
+"settings_ui_theme_picker_message_match_system_theme" = "\"Auto\" zodpovedá systémovej téme vášho zariadenia";
+"settings_pin_rooms_with_unread" = "Pripnúť miestnosti s neprečítanými správami";
+"settings_pin_rooms_with_missed_notif" = "Pripnúť miestnosti so zmeškanými oznámeniami";
+"settings_confirm_media_size" = "Potvrdiť veľkosť pri odosielaní";
+"ok" = "OK";
