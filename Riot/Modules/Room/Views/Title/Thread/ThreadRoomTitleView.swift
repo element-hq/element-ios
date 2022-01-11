@@ -25,11 +25,6 @@ enum ThreadRoomTitleViewMode {
 @objcMembers
 class ThreadRoomTitleView: RoomTitleView {
     
-    private enum Constants {
-        static let titleLeadingConstraintOnPortrait: CGFloat = 6
-        static let titleLeadingConstraintOnLandscape: CGFloat = 18
-    }
-    
     var mode: ThreadRoomTitleViewMode = .allThreads {
         didSet {
             update()
@@ -37,7 +32,6 @@ class ThreadRoomTitleView: RoomTitleView {
     }
     
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var titleLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var roomAvatarView: RoomAvatarView!
     @IBOutlet private weak var roomEncryptionBadgeView: UIImageView!
     @IBOutlet private weak var roomNameLabel: UILabel!
@@ -98,16 +92,6 @@ class ThreadRoomTitleView: RoomTitleView {
         
         update(theme: ThemeService.shared().theme)
         registerThemeServiceDidChangeThemeNotification()
-    }
-    
-    override func updateLayout(for orientation: UIInterfaceOrientation) {
-        super.updateLayout(for: orientation)
-
-        if orientation.isPortrait {
-            titleLabelLeadingConstraint.constant = Constants.titleLeadingConstraintOnPortrait
-        } else {
-            titleLabelLeadingConstraint.constant = Constants.titleLeadingConstraintOnLandscape
-        }
     }
     
     //  MARK: - Private
