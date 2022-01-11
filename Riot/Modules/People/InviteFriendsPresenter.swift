@@ -61,7 +61,7 @@ final class InviteFriendsPresenter: NSObject {
     
     private func buildShareText(with userId: String) -> String {
         let userMatrixToLink: String = MXTools.permalinkToUser(withUserId: userId)
-        return VectorL10n.inviteFriendsShareText(BuildSettings.bundleDisplayName, userMatrixToLink)
+        return VectorL10n.inviteFriendsShareText(AppInfo.current.displayName, userMatrixToLink)
     }
     
     private func present(_ viewController: UIViewController, animated: Bool) {
@@ -73,5 +73,7 @@ final class InviteFriendsPresenter: NSObject {
         }
         
         self.presentingViewController?.present(viewController, animated: animated, completion: nil)
+        
+        Analytics.shared.trackScreen(.inviteFriends, duration: nil)
     }
 }

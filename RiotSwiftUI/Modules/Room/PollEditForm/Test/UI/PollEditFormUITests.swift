@@ -29,7 +29,7 @@ class PollEditFormUITests: XCTestCase {
                 
         app = XCUIApplication()
         app.launch()
-        app.buttons[MockPollEditFormScreenState.screenStateKeys.first!].tap()
+        app.goToScreenWithIdentifier(MockPollEditFormScreenState.standard.title)
     }
     
     func testInitialStateComponents() {

@@ -76,8 +76,6 @@
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    _screenName = @"ContactsTable";
 }
 
 - (void)viewDidLoad
@@ -159,9 +157,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
     
     MXWeakify(self);
 
@@ -180,6 +175,12 @@
     
     // Show the contacts access footer if necessary.
     [self updateFooterViewVisibility];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.screenTimer start];
 }
 
 - (void)viewDidLayoutSubviews
@@ -204,6 +205,12 @@
         [self.navigationController.view setNeedsLayout]; // force update layout
         [self.navigationController.view layoutIfNeeded]; // to fix height of the navigation bar
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 #pragma mark -

@@ -1,5 +1,5 @@
 // 
-// Copyright 2020 The Matrix.org Foundation C.I.C
+// Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,20 +14,17 @@
 // limitations under the License.
 //
 
-#import <Foundation/Foundation.h>
+import Foundation
+import XCTest
 
-
-typedef NSString *const MXKAnalyticsCategory NS_TYPED_EXTENSIBLE_ENUM;
-
-/**
- The analytics category for local contacts.
- */
-static MXKAnalyticsCategory const MXKAnalyticsCategoryContacts = @"localContacts";
-
-
-typedef NSString *const MXKAnalyticsName NS_TYPED_EXTENSIBLE_ENUM;
-
-/**
- The analytics value for accept/decline of local contacts access.
- */
-static MXKAnalyticsName const MXKAnalyticsNameContactsAccessGranted = @"accessGranted";
+extension XCUIApplication {
+    func goToScreenWithIdentifier(_ identifier: String) {
+        let button = self.buttons[identifier]
+        
+        while !button.isHittable {
+            self.tables.firstMatch.swipeUp()
+        }
+        
+        button.tap()
+    }
+}
