@@ -39,9 +39,9 @@
 {
     [super finalizeInit];
     
-    self.screenName = @"Favourites";
-    
     self.enableDragging = YES;
+    
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenFavourites];
 }
 
 - (void)viewDidLoad

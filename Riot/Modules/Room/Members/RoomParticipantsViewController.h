@@ -93,6 +93,11 @@
 @property (nonatomic, weak) id<RoomParticipantsViewControllerDelegate> delegate;
 
 /**
+ The screen timer used for analytics if they've been enabled. The default value is nil.
+ */
+@property (nonatomic) AnalyticsScreenTimer *screenTimer;
+
+/**
  Returns the `UINib` object initialized for a `RoomParticipantsViewController`.
  
  @return The initialized `UINib` object or `nil` if there were errors during initialization

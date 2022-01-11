@@ -1031,13 +1031,15 @@
     roomDataSource = nil;
     
     // Add reason label
-    _leftRoomReasonLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width - 20, 70)];
-    _leftRoomReasonLabel.numberOfLines = 0;
-    _leftRoomReasonLabel.text = reason;
-    _leftRoomReasonLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    UILabel *leftRoomReasonLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width - 20, 70)];
+    leftRoomReasonLabel.numberOfLines = 0;
+    leftRoomReasonLabel.text = reason;
+    leftRoomReasonLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _bubblesTableView.tableHeaderView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
-    [_bubblesTableView.tableHeaderView addSubview:_leftRoomReasonLabel];
+    [_bubblesTableView.tableHeaderView addSubview:leftRoomReasonLabel];
     [_bubblesTableView reloadData];
+    
+    _leftRoomReasonLabel = leftRoomReasonLabel;
     
     [self updateViewControllerAppearanceOnRoomDataSourceState];
 }
@@ -2177,12 +2179,12 @@
     
     if (event && event.eventType == MXEventTypeRoomMessage)
     {
-        NSString *msgtype = event.content[@"msgtype"];
+        NSString *msgtype = event.content[kMXMessageTypeKey];
         
         NSString* textMessage;
         if ([msgtype isEqualToString:kMXMessageTypeText])
         {
-            textMessage = event.content[@"body"];
+            textMessage = event.content[kMXMessageBodyKey];
         }
         
         // Show a confirmation popup to the end user
@@ -3665,9 +3667,6 @@
                     // Let's the application do something
                     MXLogDebug(@"[MXKRoomVC] showAttachmentInCell on an unsent media");
                 }
-            }
-            else if (selectedAttachment.type == MXKAttachmentTypeLocation)
-            {
             }
             else if (selectedAttachment.type == MXKAttachmentTypeFile || selectedAttachment.type == MXKAttachmentTypeAudio)
             {

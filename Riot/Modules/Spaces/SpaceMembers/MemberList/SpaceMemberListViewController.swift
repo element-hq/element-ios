@@ -154,7 +154,7 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
     // MARK: - Actions
 
     @objc private func onAddParticipantButtonPressed() {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesInvitesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesInvitesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
     }
     
     private func cancelButtonAction() {
@@ -184,11 +184,11 @@ final class SpaceMemberListViewController: RoomParticipantsViewController {
 
     override func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, startChatWithMemberId matrixId: String!, completion: (() -> Void)!) {
         completion()
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
     }
 
     override func roomMemberDetailsViewController(_ roomMemberDetailsViewController: MXKRoomMemberDetailsViewController!, placeVoipCallWithMemberId matrixId: String!, andVideo isVideoCall: Bool) {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
     }
 }
 
