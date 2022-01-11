@@ -222,7 +222,7 @@
 "settings_ignored_users" = "PËRDORUES TË SHPËRFILLUR";
 "settings_contacts" = "KONTAKTE PAJISJEJE";
 "settings_advanced" = "TË MËTEJSHME";
-"settings_other" = "TË TJERA";
+"settings_other" = "Tjetër";
 "settings_devices" = "SESIONE";
 "settings_cryptography" = "KRIPTOGRAFI";
 "settings_sign_out" = "Dilni";
@@ -1519,3 +1519,63 @@
 "contacts_address_book_permission_denied_alert_message" = "Që të aktivizoni kontakte, kaloni te rregullimet e pajisjes tua.";
 "contacts_address_book_permission_denied_alert_title" = "Kontaktet u çaktivizuan";
 "space_home_show_all_rooms" = "Shfaqi krejt dhomat";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Ju lutemi, riprovoni";
+"poll_timeline_not_closed_title" = "S’u arrit të përfundohej pyetësori";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Na ndjeni, vota juaj s’u regjistrua, ju lutemi, riprovoni";
+"poll_timeline_vote_not_registered_title" = "Votë e paregjistruar";
+"poll_timeline_total_final_results" = "Rezultati përfundimtar, bazua në %lu votë";
+"poll_timeline_total_final_results_one_vote" = "Rezultati përfundimtar, bazua në 1 votë";
+"poll_timeline_total_votes_not_voted" = "%lu vota të hedhura. Që të shihni përfundimet, votoni";
+"poll_timeline_total_one_vote_not_voted" = "1 votë e hedhur. Që të shihni përfundimet, votoni";
+"poll_timeline_total_votes" = "%lu vota të hedhura";
+"poll_timeline_total_one_vote" = "1 votë e hedhur";
+"poll_timeline_total_no_votes" = "S’u votua gjë";
+"poll_timeline_votes_count" = "%lu vota";
+"poll_timeline_one_vote" = "1 votë";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Ju lutemi, riprovoni";
+"poll_edit_form_post_failure_title" = "S’u arrit të postohej anketimi";
+"poll_edit_form_add_option" = "Shtoni mundësi";
+"poll_edit_form_option_number" = "Mundësia %lu";
+"poll_edit_form_create_options" = "Krijo mundësi";
+"poll_edit_form_input_placeholder" = "Shkruani diçka!";
+"poll_edit_form_question_or_topic" = "Pyetje ose temë";
+"poll_edit_form_poll_question_or_topic" = "Pyetje ose temë pyetësori";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Krijoni anketim";
+"share_extension_send_now" = "Dërgoje tani";
+"share_extension_low_quality_video_message" = "Dërgojeni në %@. për cilësi më të mirë, ose dërgojeni në cilësi të ulët si më poshtë.";
+"share_extension_low_quality_video_title" = "Videoja do të dërgohet në cilësi të ulët";
+"analytics_prompt_stop" = "Resht së ndari";
+"analytics_prompt_yes" = "Po, s’ka problem";
+"analytics_prompt_not_now" = "Jo tani";
+"analytics_prompt_point_3" = "Këtë mund të çaktivizoni në çfarëdo kohe, që nga rregullimet";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "<b>Nuk</b> u japin hollësi palëve të treta";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "<b>Nuk</b> regjistrojmë ose profilizojmë ndonjë të dhënë llogarie";
+"analytics_prompt_terms_link_upgrade" = "këtu";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Lexoni krejt kushtet tona %@. Në rregull?";
+"analytics_prompt_terms_link_new_user" = "këtu";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Mund të lexoni krejt kushtet tona %@.";
+"analytics_prompt_message_upgrade" = "Keni pranuar më herët të ndani me ne të dhëna anonime përdorimi. Tani, që të na ndihmoni të kuptojmë se si njerëzit përdorin pajisje të shumta, do të prodhojmë një identifikues kuturu, të përbashkët për pajisjet tuaja.";
+"analytics_prompt_message_new_user" = "Ndihmonani të identifikojmë probleme dhe të përmirësojmë Element-in, duke ndarë me ne të dhëna anonime përdorimi. Për të kuptuar se si i përdorin njerëzit disa pajisje njëherësh, do të prodhojmë një identifikues kuturu, të përbashkët për pajisjet tuaja.";
+
+// Analytics
+"analytics_prompt_title" = "Ndihmoni të përmirësohet %@";
+"settings_discovery_accept_terms" = "Pranoni Kushte Shërbyesi Identitetesh";
+"settings_analytics_and_crash_data" = "Dërgoni të dhëna vithisjesh dhe analitike";
+"settings_labs_enabled_polls" = "Pyetësorë";
+"settings_about" = "MBI";
+"room_event_action_forward" = "Përpara";
+"room_event_action_end_poll" = "Përfundoje pyetësorin";
+"room_event_action_remove_poll" = "Hiqe pyetësorin";
+"accessibility_button_label" = "kopsë";
+"open" = "Hapur";
+"enable" = "Aktivizoje";
