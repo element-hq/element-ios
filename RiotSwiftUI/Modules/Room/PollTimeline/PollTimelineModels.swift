@@ -64,14 +64,20 @@ class TimelinePoll {
     var totalAnswerCount: UInt
     var type: TimelinePollType
     var maxAllowedSelections: UInt
+    var hasBeenEdited: Bool = true
     
-    init(question: String, answerOptions: [TimelineAnswerOption], closed: Bool, totalAnswerCount: UInt, type: TimelinePollType, maxAllowedSelections: UInt) {
+    init(question: String, answerOptions: [TimelineAnswerOption],
+         closed: Bool,
+         totalAnswerCount: UInt,
+         type: TimelinePollType,
+         maxAllowedSelections: UInt, hasBeenEdited: Bool) {
         self.question = question
         self.answerOptions = answerOptions
         self.closed = closed
         self.totalAnswerCount = totalAnswerCount
         self.type = type
         self.maxAllowedSelections = maxAllowedSelections
+        self.hasBeenEdited = hasBeenEdited
     }
     
     var hasCurrentUserVoted: Bool {
