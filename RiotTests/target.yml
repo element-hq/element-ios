@@ -64,3 +64,5 @@ targets:
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../Riot/Modules/Room/EventMenu/EventMenuBuilder.swift
+    - path: ../Riot/Modules/Room/EventMenu/EventMenuItemType.swift

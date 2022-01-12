@@ -20,6 +20,8 @@ internal typealias AssetImageTypeAlias = ImageAsset.Image
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
   internal enum Images {
+    internal static let analyticsCheckmark = ImageAsset(name: "AnalyticsCheckmark")
+    internal static let analyticsLogo = ImageAsset(name: "AnalyticsLogo")
     internal static let socialLoginButtonApple = ImageAsset(name: "social_login_button_apple")
     internal static let socialLoginButtonFacebook = ImageAsset(name: "social_login_button_facebook")
     internal static let socialLoginButtonGithub = ImageAsset(name: "social_login_button_github")
@@ -131,8 +133,8 @@ internal enum Asset {
     internal static let roomContextMenuEdit = ImageAsset(name: "room_context_menu_edit")
     internal static let roomContextMenuMore = ImageAsset(name: "room_context_menu_more")
     internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
-    internal static let roomContextMenuReplyInThread = ImageAsset(name: "room_context_menu_reply_in_thread")
     internal static let roomContextMenuRetry = ImageAsset(name: "room_context_menu_retry")
+    internal static let roomContextMenuThread = ImageAsset(name: "room_context_menu_thread")
     internal static let inputCloseIcon = ImageAsset(name: "input_close_icon")
     internal static let inputEditIcon = ImageAsset(name: "input_edit_icon")
     internal static let inputReplyIcon = ImageAsset(name: "input_reply_icon")
@@ -152,6 +154,8 @@ internal enum Asset {
     internal static let pollEndIcon = ImageAsset(name: "poll_end_icon")
     internal static let pollWinnerIcon = ImageAsset(name: "poll_winner_icon")
     internal static let threadsFilter = ImageAsset(name: "threads_filter")
+    internal static let threadsFilterApplied = ImageAsset(name: "threads_filter_applied")
+    internal static let threadsIcon = ImageAsset(name: "threads_icon")
     internal static let urlPreviewClose = ImageAsset(name: "url_preview_close")
     internal static let urlPreviewCloseDark = ImageAsset(name: "url_preview_close_dark")
     internal static let voiceMessageCancelGradient = ImageAsset(name: "voice_message_cancel_gradient")
@@ -169,6 +173,7 @@ internal enum Asset {
     internal static let detailsIcon = ImageAsset(name: "details_icon")
     internal static let editIcon = ImageAsset(name: "edit_icon")
     internal static let integrationsIcon = ImageAsset(name: "integrations_icon")
+    internal static let linkIcon = ImageAsset(name: "link_icon")
     internal static let mainAliasIcon = ImageAsset(name: "main_alias_icon")
     internal static let membersListIcon = ImageAsset(name: "members_list_icon")
     internal static let modIcon = ImageAsset(name: "mod_icon")

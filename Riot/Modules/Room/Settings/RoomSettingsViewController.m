@@ -311,9 +311,6 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"RoomSettings"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateRules:) name:kMXNotificationCenterDidUpdateRules object:nil];
     
@@ -334,6 +331,8 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     {
         self.selectedRoomSettingsField = _selectedRoomSettingsField;
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -349,6 +348,12 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [[NSNotificationCenter defaultCenter] removeObserver:appDelegateDidTapStatusBarNotificationObserver];
         appDelegateDidTapStatusBarNotificationObserver = nil;
     }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 // Those methods are called when the viewcontroller is added or removed from a container view controller.
@@ -1027,27 +1032,32 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsCopyRoomUrl]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                               
-                                                               // Create a matrix.to permalink to the room
-                                                               
-                                                               NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
-                                                               
-                                                               if (permalink)
-                                                               {
-                                                                   MXKPasteboardManager.shared.pasteboard.string = permalink;
-                                                               }
-                                                               else
-                                                               {
-                                                                   MXLogDebug(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
-                                                               }
-                                                           }
-                                                           
-                                                       }]];
+            
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+                
+                // Create a matrix.to permalink to the room
+                
+                NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
+                
+                if (permalink)
+                {
+                    MXKPasteboardManager.shared.pasteboard.string = permalink;
+                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
+                                             image:[UIImage imageNamed:@"link_icon"]
+                                          duration:2.0
+                                          position:ToastPositionBottom
+                                  additionalMargin:0.0];
+                }
+                else
+                {
+                    MXLogDebug(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
+                }
+            }
+            
+        }]];
         
         // The user can only delete alias they has created, even if the Admin has set it as canonical.
         // So, let the server answer if it's possible to delete an alias.

@@ -25,5 +25,8 @@ enum ThreadListViewState {
     case loaded
     case empty(_ viewModel: ThreadListEmptyViewModel)
     case showingFilterTypes
+    case showingLongPressActions
+    case share(_ string: String)
+    case toastForCopyLink
     case error(Error)
 }

@@ -11,11 +11,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="104" id="KGk-i7-Jjw" customClass="ThreadTableViewCell" customModule="Riot" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="100" id="KGk-i7-Jjw" customClass="ThreadTableViewCell" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I32-A5-WWw" customClass="UserAvatarView" customModule="Riot" customModuleProvider="target">
@@ -26,14 +26,14 @@
                             <constraint firstAttribute="height" constant="32" id="uWM-eP-XnP"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="108-Xh-aZf">
-                        <rect key="frame" x="56" y="12" width="200" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="108-Xh-aZf">
+                        <rect key="frame" x="56" y="12" width="201" height="17"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C2U-Ih-4Oh">
-                        <rect key="frame" x="264" y="13" width="28" height="15"/>
+                        <rect key="frame" x="265" y="14" width="28" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -52,14 +52,17 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xzR-f9-3qV">
-                        <rect key="frame" x="56" y="33" width="236" height="17"/>
+                        <rect key="frame" x="56" y="33" width="236" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Md3-uq-cSB" customClass="ThreadSummaryView" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="47" y="58" width="245" height="34"/>
+                        <rect key="frame" x="47" y="56" width="245" height="32"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="Pnm-yi-36O"/>
+                        </constraints>
                     </view>
                 </subviews>
                 <constraints>
@@ -76,9 +79,9 @@
                     <constraint firstItem="aUq-D2-1KM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="17" id="rvj-qg-S3J"/>
                     <constraint firstItem="108-Xh-aZf" firstAttribute="leading" secondItem="I32-A5-WWw" secondAttribute="trailing" constant="12" id="sXf-FI-gD3"/>
                     <constraint firstItem="xzR-f9-3qV" firstAttribute="top" secondItem="108-Xh-aZf" secondAttribute="bottom" constant="4" id="tQN-Rr-MIS"/>
-                    <constraint firstItem="C2U-Ih-4Oh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="u3s-nr-avO"/>
+                    <constraint firstItem="C2U-Ih-4Oh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="u3s-nr-avO"/>
                     <constraint firstAttribute="trailing" secondItem="Md3-uq-cSB" secondAttribute="trailing" constant="28" id="vxt-vD-jy8"/>
-                    <constraint firstAttribute="trailing" secondItem="C2U-Ih-4Oh" secondAttribute="trailing" constant="28" id="wNc-xV-uIR"/>
+                    <constraint firstAttribute="trailing" secondItem="C2U-Ih-4Oh" secondAttribute="trailing" constant="27" id="wNc-xV-uIR"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -90,7 +93,7 @@
                 <outlet property="rootMessageSenderLabel" destination="108-Xh-aZf" id="nUc-qK-UCD"/>
                 <outlet property="summaryView" destination="Md3-uq-cSB" id="3ye-77-1m6"/>
             </connections>
-            <point key="canvasLocation" x="2.8985507246376816" y="129.91071428571428"/>
+            <point key="canvasLocation" x="2.8985507246376816" y="127.23214285714285"/>
         </tableViewCell>
     </objects>
     <resources>

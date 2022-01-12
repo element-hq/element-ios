@@ -31,6 +31,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     private var roomState: MXRoomState?
     
     private var currentOperation: MXHTTPOperation?
+    private var longPressedThread: MXThread?
     
     // MARK: Public
 
@@ -73,6 +74,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             loadData()
         case .selectThread(let index):
             selectThread(index)
+        case .longPressThread(let index):
+            longPressThread(index)
+        case .actionViewInRoom:
+            actionViewInRoom()
+        case .actionCopyLinkToThread:
+            actionCopyLinkToThread()
+        case .actionShare:
+            actionShare()
         case .cancel:
             cancelOperations()
             coordinatorDelegate?.threadListViewModelDidCancel(self)
@@ -103,7 +112,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                                                                           room.displayName))
         
         let encrpytionBadge: UIImage?
-        if let summary = room.summary, session.crypto != nil {
+        if let summary = room.summary, summary.isEncrypted, session.crypto != nil {
             encrpytionBadge = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
         } else {
             encrpytionBadge = nil
@@ -117,14 +126,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     private var emptyViewModel: ThreadListEmptyViewModel {
         switch selectedFilterType {
         case .all:
-            return ThreadListEmptyViewModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+            return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
                                             title: VectorL10n.threadsEmptyTitle,
                                             info: VectorL10n.threadsEmptyInfoAll,
                                             tip: VectorL10n.threadsEmptyTip,
                                             showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
                                             showAllThreadsButtonHidden: true)
         case .myThreads:
-            return ThreadListEmptyViewModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+            return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
                                             title: VectorL10n.threadsEmptyTitle,
                                             info: VectorL10n.threadsEmptyInfoMy,
                                             tip: VectorL10n.threadsEmptyTip,
@@ -180,7 +189,8 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                                       lastMessageSenderAvatar: lastAvatarViewData,
                                                       lastMessageText: lastMessageText)
         
-        return ThreadViewModel(rootMessageSenderAvatar: rootAvatarViewData,
+        return ThreadViewModel(rootMessageSenderUserId: rootMessageSender?.userId,
+                               rootMessageSenderAvatar: rootAvatarViewData,
                                rootMessageSenderDisplayName: rootMessageSender?.displayname,
                                rootMessageText: rootMessageText,
                                lastMessageTime: lastMessageTime,
@@ -263,6 +273,43 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         }
         let thread = threads[index]
         coordinatorDelegate?.threadListViewModelDidSelectThread(self, thread: thread)
+    }
+    
+    private func longPressThread(_ index: Int) {
+        guard index < threads.count else {
+            return
+        }
+        longPressedThread = threads[index]
+        viewState = .showingLongPressActions
+    }
+    
+    private func actionViewInRoom() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        coordinatorDelegate?.threadListViewModelDidSelectThreadViewInRoom(self, thread: thread)
+        longPressedThread = nil
+    }
+    
+    private func actionCopyLinkToThread() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
+            MXKPasteboardManager.shared.pasteboard.string = permalink
+            viewState = .toastForCopyLink
+        }
+        longPressedThread = nil
+    }
+    
+    private func actionShare() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
+            viewState = .share(permalink)
+        }
+        longPressedThread = nil
     }
     
     private func cancelOperations() {

@@ -309,9 +309,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:@"Authentication"];
     
     [_keyboardAvoider startAvoiding];
 }
@@ -330,7 +327,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         return;
     }        
 
-    // Verify that the app does not show the authentification screean whereas
+    // Verify that the app does not show the authentication screen whereas
     // the user has already logged in.
     // This bug rarely happens (https://github.com/vector-im/riot-ios/issues/1643)
     // but it invites the user to log in again. They will then lose all their

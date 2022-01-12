@@ -29,6 +29,11 @@ class ThreadTableViewCell: UITableViewCell {
     @IBOutlet private weak var lastMessageTimeLabel: UILabel!
     @IBOutlet private weak var summaryView: ThreadSummaryView!
     @IBOutlet private weak var notificationStatusView: ThreadNotificationStatusView!
+    
+    private static var usernameColorGenerator: UserNameColorGenerator = {
+        let generator = UserNameColorGenerator()
+        return generator
+    }()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,6 +46,11 @@ class ThreadTableViewCell: UITableViewCell {
             rootMessageAvatarView.fill(with: rootAvatar)
         } else {
             rootMessageAvatarView.avatarImageView.image = nil
+        }
+        if let senderUserId = viewModel.rootMessageSenderUserId {
+            rootMessageSenderLabel.textColor = Self.usernameColorGenerator.color(from: senderUserId)
+        } else {
+            rootMessageSenderLabel.textColor = Self.usernameColorGenerator.defaultColor
         }
         rootMessageSenderLabel.text = viewModel.rootMessageSenderDisplayName
         rootMessageContentLabel.attributedText = viewModel.rootMessageText
@@ -58,6 +68,8 @@ extension ThreadTableViewCell: NibReusable {}
 extension ThreadTableViewCell: Themable {
     
     func update(theme: Theme) {
+        Self.usernameColorGenerator.defaultColor = theme.colors.primaryContent
+        Self.usernameColorGenerator.userNameColors = theme.colors.namesAndAvatars
         rootMessageAvatarView.backgroundColor = .clear
         rootMessageContentLabel.textColor = theme.colors.primaryContent
         lastMessageTimeLabel.textColor = theme.colors.secondaryContent
