@@ -97,7 +97,6 @@ struct OnboardingSplashScreen: View {
                                 }
                                 
                                 dragOffset = 0
-                                startTimer()
                             }
                         }
                 )

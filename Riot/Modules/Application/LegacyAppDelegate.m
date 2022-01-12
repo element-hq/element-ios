@@ -1130,7 +1130,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [[NSNotificationCenter defaultCenter] postNotificationName:AppDelegateUniversalLinkDidChangeNotification object:nil];
     }
 
-    if ([self handleServerProvionningLink:webURL])
+    if ([self handleServerProvisioningLink:webURL])
     {
         return YES;
     }
@@ -1592,7 +1592,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                 // Check that 'fragment' has not been cancelled
                 if ([universalLinkFragmentPending isEqualToString:fragment])
                 {
-                    MXLogDebug(@"[AppDelegate] Universal link:  The user is now logged in. Retry the link");
+                    MXLogDebug(@"[AppDelegate] Universal link: The user is now logged in. Retry the link");
                     [self handleUniversalLinkWithParameters:universalLinkParameters];
                 }
             }];
@@ -1604,7 +1604,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         MXLogDebug(@"[AppDelegate] Universal link with registration parameters");
         continueUserActivity = YES;
         
-        [_masterTabBarController showAuthenticationScreenWithRegistrationParameters:queryParams];
+        [_masterTabBarController showOnboardingFlowWithRegistrationParameters:queryParams];
     }
     else
     {
@@ -1744,33 +1744,36 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     *outQueryParams = queryParams;
 }
 
-
-- (BOOL)handleServerProvionningLink:(NSURL*)link
+/**
+ Parse and handle a server provisioning link. Returns `YES` if a provisioning link was detected and handled.
+ @param link A link such as https://mobile.element.io/?hs_url=matrix.example.com&is_url=identity.example.com
+ */
+- (BOOL)handleServerProvisioningLink:(NSURL*)link
 {
-    MXLogDebug(@"[AppDelegate] handleServerProvionningLink: %@", link);
+    MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: %@", link);
 
     NSString *homeserver, *identityServer;
-    [self parseServerProvionningLink:link homeserver:&homeserver identityServer:&identityServer];
+    [self parseServerProvisioningLink:link homeserver:&homeserver identityServer:&identityServer];
 
     if (homeserver)
     {
         if ([MXKAccountManager sharedManager].activeAccounts.count)
         {
-            [self displayServerProvionningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
+            [self displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:^(BOOL logout) {
 
-                MXLogDebug(@"[AppDelegate] handleServerProvionningLink: logoutWithConfirmation: logout: %@", @(logout));
+                MXLogDebug(@"[AppDelegate] handleServerProvisioningLink: logoutWithConfirmation: logout: %@", @(logout));
                 if (logout)
                 {
                     [self logoutWithConfirmation:NO completion:^(BOOL isLoggedOut) {
-                        [self handleServerProvionningLink:link];
+                        [self handleServerProvisioningLink:link];
                     }];
                 }
             }];
         }
         else
         {
-            [_masterTabBarController showAuthenticationScreen];
-            [_masterTabBarController.authViewController showCustomHomeserver:homeserver andIdentityServer:identityServer];
+            [_masterTabBarController showOnboardingFlow];
+            [_masterTabBarController.onboardingCoordinatorBridgePresenter showCustomHomeserver:homeserver andIdentityServer:identityServer];
         }
 
         return YES;
@@ -1779,7 +1782,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     return NO;
 }
 
-- (void)parseServerProvionningLink:(NSURL*)link homeserver:(NSString**)homeserver identityServer:(NSString**)identityServer
+- (void)parseServerProvisioningLink:(NSURL*)link homeserver:(NSString**)homeserver identityServer:(NSString**)identityServer
 {
     if ([link.path isEqualToString:@"/"])
     {
@@ -1799,14 +1802,14 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     }
     else
     {
-        MXLogDebug(@"[AppDelegate] parseServerProvionningLink: Error: Unknown path: %@", link.path);
+        MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: Error: Unknown path: %@", link.path);
     }
 
 
-    MXLogDebug(@"[AppDelegate] parseServerProvionningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
+    MXLogDebug(@"[AppDelegate] parseServerProvisioningLink: homeserver: %@ - identityServer: %@", *homeserver, *identityServer);
 }
 
-- (void)displayServerProvionningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
+- (void)displayServerProvisioningLinkBuyAlreadyLoggedInAlertWithCompletion:(void (^)(BOOL logout))completion
 {
     // Ask confirmation
     self.logoutConfirmation = [UIAlertController alertControllerWithTitle:[VectorL10n errorUserAlreadyLoggedIn] message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -1965,7 +1968,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         [self removeMatrixSession:account.mxSession];
 
         // Return to authentication screen
-        [self.masterTabBarController showAuthenticationScreenAfterSoftLogout:account.mxCredentials];
+        [self.masterTabBarController showSoftLogoutOnboardingFlowWithCredentials:account.mxCredentials];
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionIgnoredUsersDidChangeNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull notif) {
@@ -2259,7 +2262,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         }
         
         // Return to authentication screen
-        [_masterTabBarController showAuthenticationScreen];
+        [_masterTabBarController showOnboardingFlow];
         
         // Note: Keep App settings
         // But enforce usage of member lazy loading
@@ -2298,7 +2301,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     {
         BOOL isLaunching = NO;
         
-        if (_masterTabBarController.authenticationInProgress)
+        if (_masterTabBarController.isOnboardingInProgress)
         {
             MXLogDebug(@"[AppDelegate] handleAppState: Authentication still in progress");
                   
@@ -3854,7 +3857,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         return;
     }
     
-    if (_masterTabBarController.authenticationInProgress)
+    if (_masterTabBarController.isOnboardingInProgress)
     {
         MXLogDebug(@"[AppDelegate][KeyVerification] keyVerificationNewRequestNotification: Postpone requests during the authentication process");
         
@@ -4496,15 +4499,15 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
 
 - (BOOL)continueSSOLoginWithToken:(NSString*)loginToken txnId:(NSString*)txnId
 {
-    AuthenticationViewController *authVC = self.masterTabBarController.authViewController;
+    OnboardingCoordinatorBridgePresenter *bridgePresenter = self.masterTabBarController.onboardingCoordinatorBridgePresenter;
     
-    if (!authVC)
+    if (!bridgePresenter)
     {
         MXLogDebug(@"[AppDelegate] Fail to continue SSO login");
         return NO;
     }
     
-    return [authVC continueSSOLoginWithToken:loginToken txnId:txnId];
+    return [bridgePresenter continueSSOLoginWithToken:loginToken transactionID:txnId];
 }
 
 #pragma mark - Private

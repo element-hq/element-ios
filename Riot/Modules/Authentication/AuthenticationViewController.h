@@ -32,6 +32,8 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
+/// Controls whether or not a bar button item is shown to navigate back in the flow
+@property (nonatomic) BOOL isPartOfFlow;
 
 @property (weak, nonatomic) IBOutlet UIView *optionsContainer;
 
@@ -66,6 +68,7 @@
 
 @protocol AuthenticationViewControllerDelegate <NSObject>
 
+- (void)authenticationViewControllerDidTapBackButton:(AuthenticationViewController *)authenticationViewController;
 - (void)authenticationViewControllerDidDismiss:(AuthenticationViewController *)authenticationViewController;
 
 @end;

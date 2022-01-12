@@ -23,9 +23,13 @@ struct OnboardingCoordinatorParameters {
                 
     /// The navigation router that manage physical navigation
     let router: NavigationRouterType
+    /// The credentials to use if a soft logout has taken place.
+    let softLogoutCredentials: MXCredentials?
     
-    init(router: NavigationRouterType? = nil) {
+    init(router: NavigationRouterType? = nil,
+         softLogoutCredentials: MXCredentials? = nil) {
         self.router = router ?? NavigationRouter(navigationController: RiotNavigationController())
+        self.softLogoutCredentials = softLogoutCredentials
     }
 }
 
@@ -37,71 +41,128 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
     // MARK: Private
         
     private let parameters: OnboardingCoordinatorParameters
+    /// The external registration parameters for AuthenticationViewController.
+    private var externalRegistrationParameters: [AnyHashable: Any]?
+    private var customHomeserver: String?
+    private var customIdentityServer: String?
     
 //    private var currentPresentable: Presentable?
     
     private var navigationRouter: NavigationRouterType {
         parameters.router
     }
+    private var splashScreenResult: OnboardingSplashScreenViewModelResult?
+    private weak var authenticationCoordinator: AuthenticationCoordinator?
     
     // MARK: Public
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((OnboardingSplashScreenViewModelResult) -> Void)?
+    var completion: (() -> Void)?
     
     // MARK: - Setup
     
     init(parameters: OnboardingCoordinatorParameters) {
         self.parameters = parameters
-    }
+        super.init()
+    }    
     
     // MARK: - Public
     
     func start() {
-        let rootCoordinator: Coordinator & Presentable
-        
-        if #available(iOS 14.0, *) {
-            rootCoordinator = self.createOnboardingSplashScreenCoordinator()
+        // TODO: Manage a separate flow for soft logout
+        if #available(iOS 14.0, *), parameters.softLogoutCredentials == nil {
+            showSplashScreen()
+            preloadAuthentication()
         } else {
-            #warning("Show the regular auth view here")
-            return
+            showAuthenticationScreen(isPartOfFlow: false)
         }
-        
-        rootCoordinator.start()
-
-        add(childCoordinator: rootCoordinator)
-        
-//        currentPresentable = rootCoordinator.toPresentable()
-//        parameters.router.setRootModule(rootCoordinator.toPresentable())
-
-        if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator, animated: true, popCompletion: { [weak self] in
-                self?.remove(childCoordinator: rootCoordinator)
-            })
-        } else {
-            self.navigationRouter.setRootModule(rootCoordinator) { [weak self] in
-                self?.remove(childCoordinator: rootCoordinator)
-            }
-        }
-      }
+    }
     
     func toPresentable() -> UIViewController {
-//        #warning("Forced unwrap")
-//        return currentPresentable!.toPresentable()
         navigationRouter.toPresentable()
     }
     
+    func update(externalRegistrationParameters: [AnyHashable: Any]) {
+        self.externalRegistrationParameters = externalRegistrationParameters
+        authenticationCoordinator?.update(externalRegistrationParameters: externalRegistrationParameters)
+    }
+    
+    func showCustomHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
+        self.customHomeserver = homeserver
+        self.customIdentityServer = identityServer
+        authenticationCoordinator?.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
+    }
+    
+    func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
+        guard let authenticationCoordinator = authenticationCoordinator else { return false }
+        return authenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
+    }
+    
     // MARK: - Private
-
+    
     @available(iOS 14.0, *)
-    private func createOnboardingSplashScreenCoordinator() -> OnboardingSplashScreenCoordinator {
+    private func showSplashScreen() {
         let coordinatorParameters = OnboardingSplashScreenCoordinatorParameters()
         let coordinator = OnboardingSplashScreenCoordinator(parameters: coordinatorParameters)
-        coordinator.completion = { [weak self] result in
-            guard let self = self else { return }
-            self.completion?(result)
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            self.splashScreenCoordinator(coordinator, didCompleteWith: result)
         }
-        return coordinator
+        
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        
+        self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
+    }
+    
+    private func splashScreenCoordinator(_ coordinator: OnboardingSplashScreenCoordinator, didCompleteWith result: OnboardingSplashScreenViewModelResult) {
+        splashScreenResult = result
+        showAuthenticationScreen(isPartOfFlow: true)
+    }
+    
+    private func preloadAuthentication() {
+        AuthenticationCoordinator.preload()
+    }
+    
+    private func showAuthenticationScreen(isPartOfFlow: Bool) {
+        guard authenticationCoordinator == nil else { return }
+        
+        MXLog.debug("[OnboardingCoordinator] showAuthenticationScreen")
+        
+        let parameters = AuthenticationCoordinatorParameters(authenticationType: splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin,
+                                                             externalRegistrationParameters: externalRegistrationParameters,
+                                                             softLogoutCredentials: parameters.softLogoutCredentials,
+                                                             isPartOfFlow: isPartOfFlow)
+        
+        let coordinator = AuthenticationCoordinator(parameters: parameters)
+        coordinator.completion = { [weak self, weak coordinator] result in
+            guard let self = self, let coordinator = coordinator else { return }
+            switch result {
+            case .navigateBack:
+                self.navigationRouter.popModule(animated: true)
+                self.remove(childCoordinator: coordinator)
+            case .success:
+                self.authenticationCoordinatorDidComplete(coordinator)
+            }
+        }
+        
+        coordinator.start()
+        add(childCoordinator: coordinator)
+        authenticationCoordinator = coordinator
+        
+        if customHomeserver != nil || customIdentityServer != nil {
+            coordinator.showCustomHomeserver(customHomeserver, andIdentityServer: customIdentityServer)
+        }
+        
+        if self.navigationRouter.modules.isEmpty {
+            self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
+        } else {
+            self.navigationRouter.push(coordinator, animated: true, popCompletion: nil)
+        }
+    }
+    
+    private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinator) {
+        completion?()
     }
 }

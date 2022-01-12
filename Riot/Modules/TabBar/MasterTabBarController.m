@@ -29,21 +29,10 @@
 
 #import "GeneratedInterface-Swift.h"
 
-@interface MasterTabBarController () <AuthenticationViewControllerDelegate, UITabBarControllerDelegate>
+@interface MasterTabBarController () <UITabBarControllerDelegate>
 {
     // Array of `MXSession` instances.
-    NSMutableArray<MXSession*> *mxSessionArray;    
-    
-    // Tell whether the authentication screen is preparing.
-    BOOL isAuthViewControllerPreparing;
-    
-    // Observer that checks when the Authentification view controller has gone.
-    id authViewControllerObserver;
-    id authViewRemovedAccountObserver;
-    
-    // The parameters to pass to the Authentification view controller.
-    NSDictionary *authViewControllerRegistrationParameters;
-    MXCredentials *softLogoutCredentials;
+    NSMutableArray<MXSession*> *mxSessionArray;
     
     // The recents data source shared between all the view controllers of the tab bar.
     RecentsDataSource *recentsDataSource;
@@ -68,7 +57,21 @@
 
 @property(nonatomic,getter=isHidden) BOOL hidden;
 
-@property(nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
+@property (nonatomic, readwrite) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
+
+// Tell whether the onboarding screen is preparing.
+@property (nonatomic, readwrite) BOOL isOnboardingCoordinatorPreparing;
+@property (nonatomic, readwrite) BOOL isOnboardingInProgress;
+
+// Observer that checks when the Authentication view controller has gone.
+@property (nonatomic, readwrite) id addAccountObserver;
+@property (nonatomic, readwrite) id removeAccountObserver;
+
+// The parameters to pass to the Authentication view controller.
+@property (nonatomic, readwrite) NSDictionary *authViewControllerRegistrationParameters;
+@property (nonatomic, readwrite) MXCredentials *softLogoutCredentials;
+
+@property (nonatomic) BOOL reviewSessionAlertHasBeenDisplayed;
 
 /**
  A flag to indicate that the analytics prompt should be shown during `-addMatrixSession:`.
@@ -116,7 +119,7 @@
     
     self.delegate = self;
     
-    _authenticationInProgress = NO;
+    _isOnboardingInProgress = NO;
     
     // Note: UITabBarViewController shoud not be embed in a UINavigationController (https://github.com/vector-im/riot-ios/issues/3086)
     [self vc_removeBackTitle];
@@ -184,7 +187,7 @@
     BOOL authIsShown = NO;
     if (![MXKAccountManager sharedManager].accounts.count)
     {
-        [self showAuthenticationScreen];
+        [self showOnboardingFlow];
         authIsShown = YES;
     }
     else if (![MXKAccountManager sharedManager].activeAccounts.count)
@@ -194,7 +197,7 @@
         MXKAccount *account = [MXKAccountManager sharedManager].accounts.firstObject;
         if (account.isSoftLogout)
         {
-            [self showAuthenticationScreenAfterSoftLogout:account.mxCredentials];
+            [self showSoftLogoutOnboardingFlowWithCredentials:account.mxCredentials];
             authIsShown = YES;
         }
     }
@@ -261,15 +264,15 @@
         currentAlert = nil;
     }
     
-    if (authViewControllerObserver)
+    if (self.addAccountObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
-        authViewControllerObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
+        self.addAccountObserver = nil;
     }
-    if (authViewRemovedAccountObserver)
+    if (self.removeAccountObserver)
     {
-        [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
-        authViewRemovedAccountObserver = nil;
+        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
+        self.removeAccountObserver = nil;
     }
     
     if (kThemeServiceDidChangeThemeNotificationObserver)
@@ -494,112 +497,122 @@
     [self refreshTabBarBadges];
 }
 
-// TODO: Move authentication presentation in an AuthenticationCoordinator managed at AppCoordinator level
-- (void)presentAuthenticationViewController
+// TODO: Manage the onboarding coordinator at the AppCoordinator level
+- (void)presentOnboardingFlow
 {
-    AuthenticationViewController *authenticationViewController = [AuthenticationViewController authenticationViewController];
-    
-    authenticationViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    
-    [self presentViewController:authenticationViewController animated:NO completion:nil];
-    
-    // Keep ref on the authentification view controller while it is displayed
-    // ie until we get the notification about a new account
-    _authViewController = authenticationViewController;
-    isAuthViewControllerPreparing = NO;
-    
-    // Listen to the end of the authentication flow
-    _authViewController.authVCDelegate = self;
-    
-    authViewControllerObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        _authViewController = nil;
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:authViewControllerObserver];
-        authViewControllerObserver = nil;
-    }];
-    
-    authViewRemovedAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
-        
-        // The user has cleared data for their soft logged out account
-        _authViewController = nil;
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:authViewRemovedAccountObserver];
-        authViewRemovedAccountObserver = nil;
-    }];
-    
+    OnboardingCoordinatorBridgePresenterParameters *parameters = [[OnboardingCoordinatorBridgePresenterParameters alloc] init];
     // Forward parameters if any
-    if (authViewControllerRegistrationParameters)
+    if (self.authViewControllerRegistrationParameters)
     {
-        _authViewController.externalRegistrationParameters = authViewControllerRegistrationParameters;
-        authViewControllerRegistrationParameters = nil;
+        parameters.externalRegistrationParameters = self.authViewControllerRegistrationParameters;
+        self.authViewControllerRegistrationParameters = nil;
     }
-    if (softLogoutCredentials)
+    if (self.softLogoutCredentials)
     {
-        _authViewController.softLogoutCredentials = softLogoutCredentials;
-        softLogoutCredentials = nil;
+        parameters.softLogoutCredentials = self.softLogoutCredentials;
+        self.softLogoutCredentials = nil;
     }
+    
+    MXWeakify(self);
+    OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] initWith:parameters];
+    onboardingCoordinatorBridgePresenter.completion = ^{
+        MXStrongifyAndReturnIfNil(self);
+        [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.onboardingCoordinatorBridgePresenter = nil;
+        
+        self.isOnboardingInProgress = NO;
+        [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
+    };
+    
+    [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
+    
+    self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
+    self.isOnboardingCoordinatorPreparing = NO;
+    
+    self.addAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidAddAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        MXStrongifyAndReturnIfNil(self);
+#warning What was this doing? This should probably happen elsewhere
+        // self.onboardingCoordinatorBridgePresenter = nil;
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self.addAccountObserver];
+        self.addAccountObserver = nil;
+    }];
+    
+    self.removeAccountObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXKAccountManagerDidRemoveAccountNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
+        MXStrongifyAndReturnIfNil(self);
+        // The user has cleared data for their soft logged out account
+#warning What was this doing? This should probably happen elsewhere
+        // self.onboardingCoordinatorBridgePresenter = nil;
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self.removeAccountObserver];
+        self.removeAccountObserver = nil;
+    }];
 }
 
-- (void)showAuthenticationScreen
+- (void)showOnboardingFlow
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreen");
     
     // Check whether an authentication screen is not already shown or preparing
-    if (!self.authViewController && !isAuthViewControllerPreparing)
+    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
     {
-        isAuthViewControllerPreparing = YES;
-        _authenticationInProgress = YES;
+        self.isOnboardingCoordinatorPreparing = YES;
+        self.isOnboardingInProgress = YES;
         
         [self resetReviewSessionsFlags];
         
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
                         
-            [self presentAuthenticationViewController];
+            [self presentOnboardingFlow];
         }];
     }
 }
 
-- (void)showAuthenticationScreenWithRegistrationParameters:(NSDictionary *)parameters
+/**
+ Sets up authentication with parameters detected in a universal link. For example
+ https://app.element.io/#/register/?hs_url=matrix.example.com&is_url=identity.example.com
+ */
+
+- (void)showOnboardingFlowWithRegistrationParameters:(NSDictionary *)parameters
 {
-    if (self.authViewController)
+    if (self.onboardingCoordinatorBridgePresenter)
     {
         MXLogDebug(@"[MasterTabBarController] Universal link: Forward registration parameter to the existing AuthViewController");
-        self.authViewController.externalRegistrationParameters = parameters;
+        [self.onboardingCoordinatorBridgePresenter updateWithExternalRegistrationParameters:parameters];
     }
     else
     {
         MXLogDebug(@"[MasterTabBarController] Universal link: Prompt to logout current sessions and open AuthViewController to complete the registration");
         
         // Keep a ref on the params
-        authViewControllerRegistrationParameters = parameters;
+        self.authViewControllerRegistrationParameters = parameters;
         
         // Prompt to logout. It will then display AuthViewController if the user is logged out.
         [[AppDelegate theDelegate] logoutWithConfirmation:YES completion:^(BOOL isLoggedOut) {
             if (!isLoggedOut)
             {
                 // Reset temporary params
-                authViewControllerRegistrationParameters = nil;
+                self.authViewControllerRegistrationParameters = nil;
             }
         }];
     }
 }
 
-- (void)showAuthenticationScreenAfterSoftLogout:(MXCredentials*)credentials;
+- (void)showSoftLogoutOnboardingFlowWithCredentials:(MXCredentials*)credentials;
 {
     MXLogDebug(@"[MasterTabBarController] showAuthenticationScreenAfterSoftLogout");
 
-    softLogoutCredentials = credentials;
+    self.softLogoutCredentials = credentials;
 
     // Check whether an authentication screen is not already shown or preparing
-    if (!self.authViewController && !isAuthViewControllerPreparing)
+    if (!self.onboardingCoordinatorBridgePresenter && !self.isOnboardingCoordinatorPreparing)
     {
-        isAuthViewControllerPreparing = YES;
-        _authenticationInProgress = YES;
+        self.isOnboardingCoordinatorPreparing = YES;
+        self.isOnboardingInProgress = YES;
 
         [[AppDelegate theDelegate] restoreInitialDisplay:^{
 
-            [self presentAuthenticationViewController];
+            [self presentOnboardingFlow];
         }];
     }
 }
@@ -955,7 +968,7 @@
 {
     if (RiotSettings.shared.hideVerifyThisSessionAlert
         || self.reviewSessionAlertHasBeenDisplayed
-        || self.authenticationInProgress)
+        || self.isOnboardingInProgress)
     {
         return;
     }
@@ -1094,14 +1107,6 @@
             [self.favouritesViewController scrollToNextRoomWithMissedNotifications];
         }
     }
-}
-
-#pragma mark - AuthenticationViewControllerDelegate
-
-- (void)authenticationViewControllerDidDismiss:(AuthenticationViewController *)authenticationViewController
-{
-    _authenticationInProgress = NO;
-    [self.masterTabBarDelegate masterTabBarControllerDidCompleteAuthentication:self];
 }
 
 #pragma mark - UITabBarControllerDelegate

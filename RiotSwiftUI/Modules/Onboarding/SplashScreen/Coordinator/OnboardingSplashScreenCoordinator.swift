@@ -44,7 +44,9 @@ final class OnboardingSplashScreenCoordinator: Coordinator, Presentable {
         let viewModel = OnboardingSplashScreenViewModel()
         let view = OnboardingSplashScreen(viewModel: viewModel.context)
         onboardingSplashScreenViewModel = viewModel
-        onboardingSplashScreenHostingController = VectorHostingController(rootView: view)
+        let hostingController = VectorHostingController(rootView: view)
+        hostingController.isLockedToPortraitOnPhone = true
+        onboardingSplashScreenHostingController = hostingController
     }
     
     // MARK: - Public

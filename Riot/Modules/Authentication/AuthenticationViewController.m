@@ -62,8 +62,9 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     BOOL didCheckFalseAuthScreenDisplay;
 }
 
+@property (nonatomic, strong) UIBarButtonItem *navigateBackInFlowButton;
+
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
-@property (nonatomic, strong) OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
 @property (nonatomic, strong) KeyboardAvoider *keyboardAvoider;
@@ -121,6 +122,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     self.crossSigningService = [CrossSigningService new];
     self.errorPresenter = [MXKErrorAlertPresentation new];
+    
+    self.navigateBackInFlowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"]
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(onButtonPressed:)];
 }
 
 - (void)viewDidLoad
@@ -312,9 +318,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [super viewWillAppear:animated];
     
     [_keyboardAvoider startAvoiding];
-    
-    // Add the onboarding flow to the view before it is visible.
-    [self presentInitialOnboardingFlow];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -388,6 +391,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     autoDiscovery = nil;
     _keyVerificationCoordinatorBridgePresenter = nil;
     _keyboardAvoider = nil;
+    
+    self.navigateBackInFlowButton = nil;
 }
 
 - (BOOL)isIdentityServerConfigured
@@ -561,40 +566,12 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
 }
 
-- (void)presentInitialOnboardingFlow
-{
-    if (@available(iOS 14.0, *))
-    {
-        MXWeakify(self);
-        OnboardingCoordinatorBridgePresenter *onboardingCoordinatorBridgePresenter = [[OnboardingCoordinatorBridgePresenter alloc] init];
-        onboardingCoordinatorBridgePresenter.completion = ^(BOOL(newUser)) {
-            MXStrongifyAndReturnIfNil(self);
-            [self setAuthType:newUser ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin];
-            [self.onboardingCoordinatorBridgePresenter dismissWithAnimated:YES completion:nil];
-            self.onboardingCoordinatorBridgePresenter = nil;
-        };
-        
-        [onboardingCoordinatorBridgePresenter presentFrom:self animated:NO];
-        
-        self.onboardingCoordinatorBridgePresenter = onboardingCoordinatorBridgePresenter;
-    }
-}
-
 - (void)presentCompleteSecurityWithSession:(MXSession*)session
 {
     KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter = [[KeyVerificationCoordinatorBridgePresenter alloc] initWithSession:session];
     keyVerificationCoordinatorBridgePresenter.delegate = self;
     
-    if (self.navigationController)
-    {
-        [keyVerificationCoordinatorBridgePresenter pushCompleteSecurityFrom:self.navigationController isNewSignIn:YES animated:YES];
-    }
-    else
-    {
-        [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
-    }
-    
-    self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
+    [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
 }
 
 - (void)dismiss
@@ -602,17 +579,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     self.userInteractionEnabled = YES;
     [self.authenticationActivityIndicator stopAnimating];
     
-    // Remove auth view controller on successful login
-    if (self.navigationController)
-    {
-        // Pop the view controller
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        // Dismiss on successful login
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    }
+    // Dismiss (key verification) on successful login
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     
     if (self.authVCDelegate)
     {
@@ -860,7 +828,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     [super handleAuthenticationSession:authSession];
     
-    self.currentLoginSSOFlow = [self logginSSOFlowWithProvidersFromFlows:authSession.flows];
+    self.currentLoginSSOFlow = [self loginSSOFlowWithProvidersFromFlows:authSession.flows];
     
     [self updateAuthInputViewVisibility];
     [self updateSocialLoginViewVisibility];
@@ -916,7 +884,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     return NO;
 }
 
-- (MXLoginSSOFlow*)logginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
+- (MXLoginSSOFlow*)loginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
 {
     MXLoginSSOFlow *ssoFlowWithProviders;
     
@@ -982,7 +950,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
     else if (sender == self.mainNavigationItem.leftBarButtonItem)
     {
-        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        if (sender == self.navigateBackInFlowButton)
+        {
+            [self.authVCDelegate authenticationViewControllerDidTapBackButton:self];
+        }
+        else if ([self.authInputsView isKindOfClass:AuthInputsView.class])
         {
             AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
             
@@ -1208,14 +1180,24 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateNormal];
         [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateHighlighted];
         
-        self.mainNavigationItem.leftBarButtonItem = nil;
+        if (self.isPartOfFlow)
+        {
+            self.mainNavigationItem.leftBarButtonItem = self.navigateBackInFlowButton;
+        }
+        else
+        {
+            self.mainNavigationItem.leftBarButtonItem = nil;
+        }
     }
     else
     {
         [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateNormal];
         [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateHighlighted];
         
-        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPressed:)];
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"]
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(onButtonPressed:)];
         self.mainNavigationItem.leftBarButtonItem = leftBarButtonItem;
     }
 }

@@ -19,7 +19,7 @@ import SwiftUI
 
 /**
  UIHostingController that applies some app-level specific configuration
- (E.g. `vectorContent` modifier and themeing to the NavigationController container.
+ (E.g. `vectorContent` modifier and theming to the NavigationController container.
  */
 @available(iOS 14.0, *)
 class VectorHostingController: UIHostingController<AnyView> {
@@ -27,6 +27,19 @@ class VectorHostingController: UIHostingController<AnyView> {
     // MARK: Private
     
     private var theme: Theme
+    
+    // MARK: Public
+    
+    /// When `true` the presented view will have its orientation fixed to portrait on iPhone.
+    var isLockedToPortraitOnPhone = false
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if isLockedToPortraitOnPhone && UIDevice.current.isPhone {
+            return .portrait
+        }
+        
+        return super.supportedInterfaceOrientations
+    }
     
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
