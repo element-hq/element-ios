@@ -35,8 +35,13 @@ struct PollTimelineView: View {
         let poll = viewModel.viewState.poll
         
         VStack(alignment: .leading, spacing: 16.0) {
+            
             Text(poll.question)
                 .font(theme.fonts.bodySB)
+                .foregroundColor(theme.colors.primaryContent) +
+            Text(editedText)
+                .font(theme.fonts.footnote)
+                .foregroundColor(theme.colors.secondaryContent)
             
             VStack(spacing: 24.0) {
                 ForEach(poll.answerOptions) { answerOption in
@@ -102,6 +107,10 @@ struct PollTimelineView: View {
         } else {
             return poll.type == .disclosed && poll.totalAnswerCount > 0 && poll.hasCurrentUserVoted
         }
+    }
+    
+    private var editedText: String {
+        viewModel.viewState.poll.hasBeenEdited ? " \(VectorL10n.eventFormatterMessageEditedMention)" : ""
     }
 }
 

@@ -142,6 +142,7 @@ final class PollTimelineCoordinator: Coordinator, Presentable, PollAggregatorDel
                             closed: poll.isClosed,
                             totalAnswerCount: poll.totalAnswerCount,
                             type: (poll.kind == .disclosed ? .disclosed : .undisclosed),
-                            maxAllowedSelections: poll.maxAllowedSelections)
+                            maxAllowedSelections: poll.maxAllowedSelections,
+                            hasBeenEdited: poll.hasBeenEdited)
     }
 }
