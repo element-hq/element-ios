@@ -478,3 +478,4 @@
 "room_displayname_all_other_members_left" = "%@ (lahkus(id))";
 "attachment_unsupported_preview_message" = "See failitüüp ei ole toetatud.";
 "attachment_unsupported_preview_title" = "Eelvaate kuvamine ei õnnestu";
+"message_reply_to_sender_sent_their_location" = "on jaganud oma asukohta.";
