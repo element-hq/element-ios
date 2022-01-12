@@ -19,10 +19,22 @@
 import Foundation
 import SwiftUI
 
+struct PollDetails {
+    let question: String
+    let answerOptions: [String]
+    let maxSelections: UInt = 1
+    let disclosed: Bool = true
+}
+
+enum PollEditFormMode {
+    case creation
+    case editing
+}
+
 enum PollEditFormStateAction {
     case viewAction(PollEditFormViewAction)
     case startLoading
-    case stopLoading(Error?)
+    case stopLoading(PollEditFormErrorAlertInfo.AlertType?)
 }
 
 enum PollEditFormViewAction {
@@ -30,11 +42,13 @@ enum PollEditFormViewAction {
     case deleteAnswerOption(PollEditFormAnswerOption)
     case cancel
     case create
+    case update
 }
 
 enum PollEditFormViewModelResult {
     case cancel
-    case create(String, [String])
+    case create(PollDetails)
+    case update(PollDetails)
 }
 
 struct PollEditFormQuestion {
@@ -61,6 +75,7 @@ struct PollEditFormAnswerOption: Identifiable, Equatable {
 
 struct PollEditFormViewState: BindableState {
     var maxAnswerOptionsCount: Int
+    var mode: PollEditFormMode
     var bindings: PollEditFormViewStateBindings
     
     var confirmationButtonEnabled: Bool {
@@ -79,5 +94,16 @@ struct PollEditFormViewStateBindings {
     var question: PollEditFormQuestion
     var answerOptions: [PollEditFormAnswerOption]
     
-    var showsFailureAlert: Bool = false
+    var alertInfo: PollEditFormErrorAlertInfo?
+}
+
+struct PollEditFormErrorAlertInfo: Identifiable {
+    enum AlertType {
+        case failedCreatingPoll
+        case failedUpdatingPoll
+    }
+    
+    let id: AlertType
+    let title: String
+    let subtitle: String
 }

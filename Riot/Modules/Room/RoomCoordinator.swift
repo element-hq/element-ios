@@ -246,6 +246,29 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         navigationRouter.present(coordinator, animated: true)
         coordinator.start()
     }
+    
+    private func startEditPollCoordinator(startEvent: MXEvent? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room, pollStartEvent: startEvent)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter?.present(coordinator, animated: true)
+        coordinator.start()
+    }
 }
 
 // MARK: - RoomIdentifiable
@@ -305,26 +328,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
-        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room)
-        let coordinator = PollEditFormCoordinator(parameters: parameters)
-        
-        coordinator.completion = { [weak self, weak coordinator] in
-            guard let self = self, let coordinator = coordinator else {
-                return
-            }
-            
-            self.navigationRouter?.dismissModule(animated: true, completion: nil)
-            self.remove(childCoordinator: coordinator)
-        }
-        
-        add(childCoordinator: coordinator)
-        
-        navigationRouter?.present(coordinator, animated: true)
-        coordinator.start()
+        startEditPollCoordinator()
     }
     
     func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
@@ -349,5 +353,17 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         }
         
         PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
+        startEditPollCoordinator(startEvent: startEvent)
     }
 }

@@ -1824,6 +1824,10 @@ Tap the + to start adding people.";
 
 "poll_edit_form_post_failure_subtitle" = "Please try again";
 
+"poll_edit_form_update_failure_title" = "Failed to update poll";
+
+"poll_edit_form_update_failure_subtitle" = "Please try again";
+
 "poll_timeline_one_vote" = "1 vote";
 
 "poll_timeline_votes_count" = "%lu votes";
