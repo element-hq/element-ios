@@ -1459,7 +1459,7 @@
 // Mark: Avatar
 
 "space_avatar_view_accessibility_label" = "Avatar";
-"spaces_coming_soon_detail" = "Diese Funktion wurde hier noch nicht eingebaut, kommt aber bald. So lange kannst du dafür Element am Computer nutzen.";
+"spaces_coming_soon_detail" = "Diese Funktion wurde hier noch nicht eingebaut, kommt aber bald. So lange kannst du dafür %@ am Computer nutzen.";
 "spaces_invites_coming_soon_title" = "Einladungen sind bald verfügbar";
 "spaces_add_rooms_coming_soon_title" = "Räume hinzufügen ist bald verfügbar";
 "spaces_no_result_found_title" = "Keine Ergebnisse gefunden";
@@ -1534,7 +1534,7 @@
 "settings_about" = "ÜBER";
 "enable" = "Aktivieren";
 "analytics_prompt_message_upgrade" = "Du hast in der Vergangenheit bereits zugestimmt anonyme Nutzungsdaten mit uns zu teilen. Jetzt werden wir als Hilfe, um zu verstehen, wie Personen mehrere Geräte benutzen, eine zufällige Kennung generieren, die zwischen deinen Geräten geteilt wird.";
-"analytics_prompt_message_new_user" = "Hilf uns dabei Probleme zu identifizieren und Element zu verbessern, indem du anonyme Nutzungsdaten teilst. Um zu verstehen, wie Personen mehrere Geräte benutzen, werden wir eine zufällige Kennung generieren, die zwischen deinen Geräten geteilt wird.";
+"analytics_prompt_message_new_user" = "Hilf uns dabei Probleme zu identifizieren und %@ zu verbessern, indem du anonyme Nutzungsdaten teilst. Um zu verstehen, wie Personen mehrere Geräte benutzen, werden wir eine zufällige Kennung generieren, die zwischen deinen Geräten geteilt wird.";
 "find_your_contacts_title" = "Starte mit der Auflistung deiner Kontakte";
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Du kannst unsere gesamten Bedingungen %@ nachlesen.";
