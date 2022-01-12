@@ -59,6 +59,7 @@ extension UIImage {
     
     // Based on https://stackoverflow.com/a/31314494
     @objc func vc_resized(with targetSize: CGSize) -> UIImage? {
+        let originalRenderingMode = self.renderingMode
         let size = self.size
 
         let widthRatio  = targetSize.width/size.width
@@ -79,7 +80,7 @@ extension UIImage {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return newImage
+        return newImage?.withRenderingMode(originalRenderingMode)
     }
     
     @objc func vc_notRenderedImage() -> UIImage {
