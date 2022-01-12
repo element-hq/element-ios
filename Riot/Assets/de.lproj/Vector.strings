@@ -140,8 +140,8 @@
 "room_participants_action_ban" = "Aus diesem Raum bannen";
 "room_participants_action_ignore" = "Alle Nachrichten von diesem Nutzer verbergen";
 "room_participants_action_unignore" = "Zeige alle Nachrichten von diesem Nutzer";
-"room_participants_action_set_moderator" = "Gib Moderationsrechte";
-"room_participants_action_set_admin" = "Mache zum Administrator";
+"room_participants_action_set_moderator" = "Moderationsrechte vergeben";
+"room_participants_action_set_admin" = "Administrationsrechte vergeben";
 "room_participants_action_start_new_chat" = "Starte neuen Chat";
 "room_participants_action_start_video_call" = "Starte Video-Anruf";
 "room_participants_action_mention" = "Erwähnen";
@@ -544,7 +544,7 @@
 "room_event_action_view_decrypted_source" = "Zeige entschlüsselten Quelltext";
 "room_recents_server_notice_section" = "SYSTEMBENACHRICHTIGUNGEN";
 "room_resource_limit_exceeded_message_contact_1" = " Bitte ";
-"room_resource_limit_exceeded_message_contact_2_link" = "kontaktiere deinen Dienst-Administrator";
+"room_resource_limit_exceeded_message_contact_2_link" = "kontaktiere deine Dienst-Administration";
 "room_resource_limit_exceeded_message_contact_3" = " um diesen Dienst weiter zu nutzen.";
 "homeserver_connection_lost" = "Konnte keine Verbindung zum Heimserver herstellen.";
 "room_resource_usage_limit_reached_message_1_default" = "Dieser Heimserver hat eine seiner Ressourcengrenzen überschritten, sodass ";
@@ -734,7 +734,7 @@
 "close" = "Schließen";
 "auth_softlogout_signed_out" = "Du bist abgemeldet";
 "auth_softlogout_sign_in" = "Anmelden";
-"auth_softlogout_reason" = "Deine Heimserver-Administrator (%1$@) hat dich von deinem Konto %2$@ (%3$@) abgemeldet.";
+"auth_softlogout_reason" = "Die Administration deines Heimservers (%1$@) hat dich von deinem Konto %2$@ (%3$@) abgemeldet.";
 "auth_softlogout_recover_encryption_keys" = "Melde dich an, um ausschließlich auf diesem Gerät gespeicherte Verschlüsselungsschlüssel wiederherzustellen. Du benötigst sie, um deine verschlüsselten Nachrichten auf jedem Gerät zu lesen.";
 "auth_softlogout_clear_data" = "Persönliche Daten löschen";
 "auth_softlogout_clear_data_message_1" = "Warnung: Deine persönlichen Daten (einschließlich Verschlüsselungsschlüssel) sind noch auf diesem Gerät gespeichert.";
@@ -1464,7 +1464,7 @@
 "spaces_add_rooms_coming_soon_title" = "Räume hinzufügen ist bald verfügbar";
 "spaces_no_result_found_title" = "Keine Ergebnisse gefunden";
 "spaces_suggested_room" = "Vorgeschlagen";
-"leave_space_message_admin_warning" = "Du bist Administrator in diesem Space, stelle vor dem Verlassen sicher, dass du die Administrator-Rechte auf ein anderes Mitglied übertragen hast.";
+"leave_space_message_admin_warning" = "Du besitzt in diesem Space Administrationsrechte, stelle vor dem Verlassen sicher, dass du die Administrationsrechte auf ein anderes Mitglied übertragen hast.";
 "leave_space_message" = "Bist du dir sicher, dass du %@ verlassen möchtest? Möchtest du außerdem alle Räume und Spaces in diesem Space verlassen?";
 "leave_space_title" = "%@ verlassen";
 "space_avatar_view_accessibility_hint" = "Space-Avatar ändern";
@@ -1567,3 +1567,19 @@
 "analytics_prompt_point_1" = "Wir erfassen und analysieren <b>keine</b> Accountdaten";
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
 "analytics_prompt_terms_upgrade" = "Alle unsere Bedingungen lesen %@. Bist du damit einverstanden?";
+"ok" = "OK";
+"location_sharing_settings_toggle_title" = "Standortfreigabe aktivieren";
+"location_sharing_settings_header" = "Standortfreigabe";
+"location_sharing_open_google_maps" = "In Google Maps öffnen";
+"location_sharing_open_apple_maps" = "In Apple Karten öffnen";
+"location_sharing_invalid_authorization_settings" = "Einstellungen";
+"location_sharing_invalid_authorization_not_now" = "Nicht jetzt";
+"location_sharing_invalid_authorization_error_title" = "%@ besitzt keine Berechtigung um auf deinen Standort zuzugreifen. Du kannst den Zugriff unter Einstellungen > Standort erlauben";
+"location_sharing_locating_user_error_title" = "%@ konnte nicht auf deinen Standort zugreifen. Bitte versuche es später noch einmal.";
+"location_sharing_loading_map_error_title" = "%@ konnte die Karte nicht laden. Bitte versuche es später noch einmal.";
+"location_sharing_share_action" = "Teilen";
+"location_sharing_close_action" = "Schließen";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Standort";
