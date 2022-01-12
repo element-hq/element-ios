@@ -19,6 +19,11 @@
 import SwiftUI
 import Combine
 
+struct PollEditFormViewModelParameters {
+    let mode: PollEditFormMode
+    let pollDetails: PollDetails
+}
+
 @available(iOS 14, *)
 typealias PollEditFormViewModelType = StateStoreViewModel< PollEditFormViewState,
                                                            PollEditFormStateAction,
@@ -42,20 +47,17 @@ class PollEditFormViewModel: PollEditFormViewModelType {
     
     // MARK: - Setup
     
-    init() {
-        super.init(initialViewState: Self.defaultState())
-    }
-    
-    private static func defaultState() -> PollEditFormViewState {
-        return PollEditFormViewState(
+    init(parameters: PollEditFormViewModelParameters) {
+        let state = PollEditFormViewState(
             maxAnswerOptionsCount: Constants.maxAnswerOptionsCount,
+            mode: parameters.mode,
             bindings: PollEditFormViewStateBindings(
-                question: PollEditFormQuestion(text: "", maxLength: Constants.maxQuestionLength),
-                answerOptions: [PollEditFormAnswerOption(text: "", maxLength: Constants.maxAnswerOptionLength),
-                                PollEditFormAnswerOption(text: "", maxLength: Constants.maxAnswerOptionLength)
-                ]
+                question: PollEditFormQuestion(text: parameters.pollDetails.question, maxLength: Constants.maxQuestionLength),
+                answerOptions: parameters.pollDetails.answerOptions.map { PollEditFormAnswerOption(text: $0, maxLength: Constants.maxAnswerOptionLength) }
             )
         )
+        
+        super.init(initialViewState: state)
     }
     
     // MARK: - Public
@@ -65,11 +67,9 @@ class PollEditFormViewModel: PollEditFormViewModelType {
         case .cancel:
             completion?(.cancel)
         case .create:
-            completion?(.create(state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
-                                state.bindings.answerOptions.compactMap({ answerOption in
-                                    let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
-                                    return text.isEmpty ? nil : text
-                                })))
+            completion?(.create(buildPollDetails()))
+        case .update:
+            completion?(.update(buildPollDetails()))
         default:
             dispatch(action: .viewAction(viewAction))
         }
@@ -92,10 +92,29 @@ class PollEditFormViewModel: PollEditFormViewModelType {
         case .stopLoading(let error):
             state.showLoadingIndicator = false
             
-            if error != nil {
-                state.bindings.showsFailureAlert = true
+            switch error {
+            case .failedCreatingPoll:
+                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedCreatingPoll,
+                                                                      title: VectorL10n.pollEditFormPostFailureTitle,
+                                                                      subtitle: VectorL10n.pollEditFormPostFailureSubtitle)
+            case .failedUpdatingPoll:
+                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedCreatingPoll,
+                                                                      title: VectorL10n.pollEditFormUpdateFailureTitle,
+                                                                      subtitle: VectorL10n.pollEditFormUpdateFailureSubtitle)
+            case .none:
+                break
             }
             break
         }
+    }
+    
+    // MARK: - Private
+    
+    private func buildPollDetails() -> PollDetails {
+        return PollDetails(question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
+                           answerOptions: state.bindings.answerOptions.compactMap({ answerOption in
+                            let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                            return text.isEmpty ? nil : text
+                           }))
     }
 }

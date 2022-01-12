@@ -28,7 +28,8 @@ enum MockPollEditFormScreenState: MockScreenState, CaseIterable {
     }
     
     var screenView: ([Any], AnyView)  {
-        let viewModel = PollEditFormViewModel()
+        let viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .editing,
+                                                                                          pollDetails: PollDetails(question: "", answerOptions: ["", ""])))
         return ([viewModel], AnyView(PollEditForm(viewModel: viewModel.context)))
     }
 }

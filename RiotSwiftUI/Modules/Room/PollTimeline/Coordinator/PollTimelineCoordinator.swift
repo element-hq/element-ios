@@ -51,7 +51,7 @@ final class PollTimelineCoordinator: Coordinator, Presentable, PollAggregatorDel
     init(parameters: PollTimelineCoordinatorParameters) throws {
         self.parameters = parameters
         
-        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollStartEvent: parameters.pollStartEvent)
+        try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollStartEventId: parameters.pollStartEvent.eventId)
         pollAggregator.delegate = self
         
         pollTimelineViewModel = PollTimelineViewModel(timelinePoll: buildTimelinePollFrom(pollAggregator.poll))
@@ -94,6 +94,10 @@ final class PollTimelineCoordinator: Coordinator, Presentable, PollAggregatorDel
     
     func canEndPoll() -> Bool {
         return pollAggregator.poll.isClosed == false
+    }
+    
+    func canEditPoll() -> Bool {
+        return (pollAggregator.poll.isClosed == false && pollAggregator.poll.totalAnswerCount == 0)
     }
     
     func endPoll() {

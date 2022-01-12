@@ -2548,6 +2548,14 @@ public class VectorL10n: NSObject {
     return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
   }
   /// Please try again
+  public static var pollEditFormUpdateFailureSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_subtitle") 
+  }
+  /// Failed to update poll
+  public static var pollEditFormUpdateFailureTitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
+  }
+  /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_timeline_not_closed_subtitle") 
   }

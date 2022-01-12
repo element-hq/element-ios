@@ -76,17 +76,19 @@ struct PollEditForm: View {
                         
                         Spacer()
                         
-                        Button(VectorL10n.pollEditFormCreatePoll) {
-                            viewModel.send(viewAction: .create)
+                        if viewModel.viewState.mode == .creation {
+                            Button(VectorL10n.pollEditFormCreatePoll) {
+                                viewModel.send(viewAction: .create)
+                            }
+                            .buttonStyle(PrimaryActionButtonStyle())
+                            .disabled(!viewModel.viewState.confirmationButtonEnabled)
                         }
-                        .buttonStyle(PrimaryActionButtonStyle())
-                        .disabled(!viewModel.viewState.confirmationButtonEnabled)
                     }
                     .padding()
                     .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
-                    .alert(isPresented: $viewModel.showsFailureAlert) {
-                        Alert(title: Text(VectorL10n.pollEditFormPostFailureTitle),
-                              message: Text(VectorL10n.pollEditFormPostFailureSubtitle),
+                    .alert(item: $viewModel.alertInfo) { info in
+                        Alert(title: Text(info.title),
+                              message: Text(info.subtitle),
                               dismissButton: .default(Text(VectorL10n.ok)))
                     }
                     .frame(minHeight: proxy.size.height) // Make the VStack fill the ScrollView's parent
@@ -100,6 +102,15 @@ struct PollEditForm: View {
                             Text(VectorL10n.pollEditFormCreatePoll)
                                 .font(.headline)
                                 .foregroundColor(theme.colors.primaryContent)
+                        }
+                        
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            if viewModel.viewState.mode == .editing {
+                                Button(VectorL10n.save, action: {
+                                    viewModel.send(viewAction: .update)
+                                })
+                                .disabled(!viewModel.viewState.confirmationButtonEnabled)
+                            }
                         }
                     }
                     .navigationBarTitleDisplayMode(.inline)
