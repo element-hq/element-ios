@@ -14,8 +14,20 @@
  limitations under the License.
  */
 
-#import "MXKRoomIncomingTextMsgBubbleCell.h"
+#import "MXKRoomOutgoingTextMsgBubbleCell.h"
 
-@implementation MXKRoomIncomingTextMsgBubbleCell
+#import "GeneratedInterface-Swift.h"
+
+@implementation MXKRoomOutgoingTextMsgBubbleCell
+
+- (void)setupViews
+{
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+
+    id <RoomTimelineStyle> currentStyle = timelineConfiguration.currentStyle;
+    
+    [currentStyle.cellLayoutUpdater setupLayoutForOutgoingMessageCell:self];
+}
+
 
 @end
