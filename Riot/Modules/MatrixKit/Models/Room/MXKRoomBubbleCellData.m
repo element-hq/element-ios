@@ -327,6 +327,26 @@
     return first;
 }
 
+- (MXKRoomBubbleComponent*)getLastBubbleComponentWithDisplay
+{
+    // Look for the first component which is actually displayed (some event are ignored in room history display).
+    MXKRoomBubbleComponent* lastVisibleComponent = nil;
+    
+    @synchronized(bubbleComponents)
+    {
+        for (NSInteger index = 0; index < bubbleComponents.count; index++)
+        {
+            MXKRoomBubbleComponent *component = bubbleComponents[index];
+            if (component.attributedTextMessage)
+            {
+                lastVisibleComponent = component;
+            }
+        }
+    }
+    
+    return lastVisibleComponent;
+}
+
 - (NSAttributedString*)attributedTextMessageWithHighlightedEvent:(NSString*)eventId tintColor:(UIColor*)tintColor
 {
     NSAttributedString *customAttributedTextMsg;
