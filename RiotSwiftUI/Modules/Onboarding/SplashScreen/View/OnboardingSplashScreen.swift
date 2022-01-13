@@ -40,12 +40,12 @@ struct OnboardingSplashScreen: View {
     var buttons: some View {
         VStack {
             Button { viewModel.send(viewAction: .register) } label: {
-                Text(VectorL10n.onboardingSplashLoginButtonTitle)
+                Text(VectorL10n.onboardingSplashRegisterButtonTitle)
             }
             .buttonStyle(PrimaryActionButtonStyle())
             
             Button { viewModel.send(viewAction: .login) } label: {
-                Text(VectorL10n.onboardingSplashRegisterButtonTitle)
+                Text(VectorL10n.onboardingSplashLoginButtonTitle)
                     .padding(12)
             }
         }

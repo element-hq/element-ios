@@ -621,41 +621,51 @@
     // Reset potential authentication fallback url
     authenticationFallback = nil;
     
-    if (mxRestClient)
+    if (mxRestClient && (self.authType == MXKAuthenticationTypeLogin || self.authType == MXKAuthenticationTypeRegister))
     {
-        if (_authType == MXKAuthenticationTypeLogin)
-        {
-            mxCurrentOperation = [mxRestClient getLoginSession:^(MXAuthenticationSession* authSession) {
-                
-                [self handleAuthenticationSession:authSession];
-                
-            } failure:^(NSError *error) {
-                
-                [self onFailureDuringMXOperation:error];
-                
-            }];
-        }
-        else if (_authType == MXKAuthenticationTypeRegister)
-        {
-            mxCurrentOperation = [mxRestClient getRegisterSession:^(MXAuthenticationSession* authSession){
-                
-                [self handleAuthenticationSession:authSession];
-                
-            } failure:^(NSError *error){
-                
-                [self onFailureDuringMXOperation:error];
-                
-            }];
-        }
-        else
-        {
-            // Not supported for other types
-            MXLogDebug(@"[MXKAuthenticationVC] refreshAuthenticationSession is ignored");
-        }
+        MXWeakify(self);
+        
+        // Get the login session to determine available SSO flows.
+        mxCurrentOperation = [mxRestClient getLoginSession:^(MXAuthenticationSession* loginAuthSession) {
+            MXStrongifyAndReturnIfNil(self);
+            
+            if (self.authType == MXKAuthenticationTypeRegister)
+            {
+                MXWeakify(self);
+                self->mxCurrentOperation = [self->mxRestClient getRegisterSession:^(MXAuthenticationSession* registerAuthSession) {
+                    MXStrongifyAndReturnIfNil(self);
+                    
+                    // Handle the register session along with any SSO flows from the login session
+                    MXLoginSSOFlow *loginSSOFlow = [self loginSSOFlowWithProvidersFromFlows:loginAuthSession.flows];
+                    [self handleAuthenticationSession:registerAuthSession withFallbackSSOFlow:loginSSOFlow];
+                    
+                } failure:^(NSError *error) {
+                    
+                    [self onFailureDuringMXOperation:error];
+                    
+                }];
+            }
+            else
+            {
+                // Handle the login session by itself
+                [self handleAuthenticationSession:loginAuthSession withFallbackSSOFlow:nil];
+            }
+            
+        } failure:^(NSError *error) {
+            
+            MXStrongifyAndReturnIfNil(self);
+            [self onFailureDuringMXOperation:error];
+            
+        }];
+    }
+    else
+    {
+        // Not supported for other types
+        MXLogDebug(@"[MXKAuthenticationVC] refreshAuthenticationSession is ignored");
     }
 }
 
-- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession withFallbackSSOFlow:(MXLoginSSOFlow *)fallbackSSOFlow
 {
     mxCurrentOperation = nil;
     
@@ -899,6 +909,27 @@
 - (void)testUserRegistration:(void (^)(MXError *mxError))callback
 {
     mxCurrentOperation = [mxRestClient testUserRegistration:self.authInputsView.userId callback:callback];
+}
+
+- (MXLoginSSOFlow*)loginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
+{
+    MXLoginSSOFlow *ssoFlowWithProviders;
+    
+    for (MXLoginFlow *loginFlow in loginFlows)
+    {
+        if ([loginFlow isKindOfClass:MXLoginSSOFlow.class])
+        {
+            MXLoginSSOFlow *ssoFlow = (MXLoginSSOFlow *)loginFlow;
+            
+            if (ssoFlow.identityProviders.count)
+            {
+                ssoFlowWithProviders = ssoFlow;
+                break;
+            }
+        }
+    }
+    
+    return ssoFlowWithProviders;
 }
 
 - (IBAction)onButtonPressed:(id)sender

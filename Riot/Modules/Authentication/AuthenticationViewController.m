@@ -157,6 +157,11 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
+    if (self.isPartOfFlow)
+    {
+        self.mainNavigationItem.leftBarButtonItem = self.navigateBackInFlowButton;
+    }
+    
     if (!BuildSettings.authScreenShowRegister)
     {
         self.rightBarButtonItem.enabled = NO;
@@ -488,14 +493,17 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 {
     BOOL hideAuthInputView = NO;
     
-    // Hide input view when there is only social login actions to present
-    if ((self.authType == MXKAuthenticationTypeLogin || self.authType == MXKAuthenticationTypeRegister)
+    // Hide input view when there is only social login actions to present at login
+    if ((self.authType == MXKAuthenticationTypeLogin)
         && self.currentLoginSSOFlow
         && !self.isAuthSessionContainsPasswordFlow
         && BuildSettings.authScreenShowSocialLoginSection)
     {
         hideAuthInputView = YES;
     }
+    
+    // Note: Registration will hide the input view in onFailureDuringMXOperation
+    // if registration has been disabled.
     
     self.authInputsView.hidden = hideAuthInputView;
 }
@@ -821,14 +829,21 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
 }
 
-- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession
+- (void)refreshAuthenticationSession
+{
+    // Hide the social login buttons while the session refreshes
+    [self hideSocialLoginView];
+    [super refreshAuthenticationSession];
+}
+
+- (void)handleAuthenticationSession:(MXAuthenticationSession *)authSession withFallbackSSOFlow:(MXLoginSSOFlow *)fallbackSSOFlow
 {
     // Make some cleaning from the server response according to what the app supports
     authSession = [self handleSupportedFlowsInAuthenticationSession:authSession];
     
-    [super handleAuthenticationSession:authSession];
+    [super handleAuthenticationSession:authSession withFallbackSSOFlow:fallbackSSOFlow];
     
-    self.currentLoginSSOFlow = [self loginSSOFlowWithProvidersFromFlows:authSession.flows];
+    self.currentLoginSSOFlow = [self loginSSOFlowWithProvidersFromFlows:authSession.flows] ?: fallbackSSOFlow;
     
     [self updateAuthInputViewVisibility];
     [self updateSocialLoginViewVisibility];
@@ -882,27 +897,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     }
     
     return NO;
-}
-
-- (MXLoginSSOFlow*)loginSSOFlowWithProvidersFromFlows:(NSArray<MXLoginFlow*>*)loginFlows
-{
-    MXLoginSSOFlow *ssoFlowWithProviders;
-    
-    for (MXLoginFlow *loginFlow in loginFlows)
-    {
-        if ([loginFlow isKindOfClass:MXLoginSSOFlow.class])
-        {
-            MXLoginSSOFlow *ssoFlow = (MXLoginSSOFlow *)loginFlow;
-            
-            if (ssoFlow.identityProviders.count)
-            {
-                ssoFlowWithProviders = ssoFlow;
-                break;
-            }
-        }
-    }
-    
-    return ssoFlowWithProviders;
 }
 
 - (IBAction)onButtonPressed:(id)sender

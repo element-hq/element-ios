@@ -30,12 +30,6 @@ struct OnboardingSplashScreenPage: View {
     
     // MARK: - Views
     
-    var title: some View {
-        Text(content.title)
-            + Text(".")
-            .foregroundColor(theme.colors.accent)
-    }
-    
     var backgroundGradient: some View {
         LinearGradient(gradient: content.gradient, startPoint: .leading, endPoint: .trailing)
             .flipsForRightToLeftLayoutDirection(true)
@@ -44,30 +38,33 @@ struct OnboardingSplashScreenPage: View {
     
     var body: some View {
         VStack {
-            Spacer()
+            Color.clear
+                .overlay(
+                    Image(content.image.name)
+                        .resizable()
+                        .scaledToFit()
+                )
             
-            Image(content.image.name)
-//                .resizable()
-//                .scaledToFit()
-//                .padding()
-            
-            Spacer()
-            
-            VStack(spacing: 8) {
-                title
-                    .font(theme.fonts.title2B)
-                    .foregroundColor(theme.colors.primaryContent)
-                Text(content.message)
-                    .font(theme.fonts.body)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .multilineTextAlignment(.center)
-            }
-            
-            Spacer()
+            Color.clear
+                .overlay(
+                    VStack(spacing: 8) {
+                        Spacer()
+                        OnboardingSplashScreenTitleText(content.title)
+                            .font(theme.fonts.title2B)
+                            .foregroundColor(theme.colors.primaryContent)
+                        Text(content.message)
+                            .font(theme.fonts.body)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                        Spacer()
+                    }
+                )
             
             Spacer()
                 .frame(height: overlayHeight)
         }
+        .padding(.top, 30)
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundGradient.ignoresSafeArea())

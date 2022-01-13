@@ -45,6 +45,10 @@ struct OnboardingSplashScreenViewState: BindableState {
     var bindings: OnboardingSplashScreenBindings
     
     init() {
+        #warning("Check why LocaleProvider.locale always returns en")
+        let locale = Locale.current
+        let page4Title = locale.identifier.hasPrefix("en") ? "Cut the slack from teams." : VectorL10n.onboardingSplashPage4TitleNoPun
+        
         self.content = [
             OnboardingSplashScreenPageContent(title: VectorL10n.onboardingSplashPage1Title,
                                               message: VectorL10n.onboardingSplashPage1Message,
@@ -67,7 +71,7 @@ struct OnboardingSplashScreenViewState: BindableState {
                                                 Color(red: 0.72, green: 0.45, blue: 0.85),
                                                 Color(red: 0.05, green: 0.74, blue: 0.55)
                                               ])),
-            OnboardingSplashScreenPageContent(title: VectorL10n.onboardingSplashPage4Title,
+            OnboardingSplashScreenPageContent(title: page4Title,
                                               message: VectorL10n.onboardingSplashPage4Message,
                                               image: Asset.Images.onboardingSplashScreenPage4,
                                               gradient: Gradient(colors: [
