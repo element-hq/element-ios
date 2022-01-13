@@ -34,6 +34,9 @@ class RoomNavigationParameters: NSObject {
     /// Screen presentation parameters.
     let presentationParameters: ScreenPresentationParameters
     
+    /// If `true`, the room settings screen will be initially displayed. Default `false`
+    let showSettingsInitially: Bool
+    
     // MARK: - Setup
     
     init(roomId: String,
@@ -44,6 +47,21 @@ class RoomNavigationParameters: NSObject {
         self.eventId = eventId
         self.mxSession = mxSession
         self.presentationParameters = presentationParameters
+        self.showSettingsInitially = false
+        
+        super.init()
+    }
+    
+    init(roomId: String,
+         eventId: String?,
+         mxSession: MXSession,
+         presentationParameters: ScreenPresentationParameters,
+         showSettingsInitially: Bool) {
+        self.roomId = roomId
+        self.eventId = eventId
+        self.mxSession = mxSession
+        self.presentationParameters = presentationParameters
+        self.showSettingsInitially = showSettingsInitially
         
         super.init()
     }

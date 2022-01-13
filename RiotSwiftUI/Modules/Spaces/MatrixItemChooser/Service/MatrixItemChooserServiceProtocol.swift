@@ -19,10 +19,10 @@ import Combine
 
 @available(iOS 14.0, *)
 protocol MatrixItemChooserServiceProtocol {
-    var type: MatrixItemChooserType { get }
-    var itemsSubject: CurrentValueSubject<[MatrixListItemData], Never> { get }
+    var sectionsSubject: CurrentValueSubject<[MatrixListItemSectionData], Never> { get }
     var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never> { get }
     var searchText: String { get set }
+    var loadingText: String? { get }
 
     func reverseSelectionForItem(withId itemId: String)
     func processSelection(completion: @escaping (Result<Void, Error>) -> Void)

@@ -26,3 +26,74 @@ extension View {
         }
     }
 }
+
+// MARK: - modal presentation mode
+
+fileprivate class PresentationControllerDelegate: NSObject, UIAdaptivePresentationControllerDelegate {
+    private let callback: (() -> Void)?
+    
+    init(callback: @escaping () -> Void) {
+        self.callback = callback
+    }
+    
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        callback?()
+    }
+}
+//fileprivate var currentPresentationControllerDelegate: PresentationControllerDelegate? = nil
+fileprivate var presentationControllerDelegates: [String: PresentationControllerDelegate] = [:]
+
+@available(iOS 13.0, *)
+//fileprivate var currentOverCurrentContextUIHost: UIHostingController<AnyView>? = nil
+@available(iOS 13.0, *)
+fileprivate var uiHosts: [String: UIHostingController<AnyView>] = [:]
+
+@available(iOS 13.0, *)
+extension View {
+
+    func modal<Content>(
+        withStyle modalPresentationStyle: UIModalPresentationStyle,
+        animated: Bool = true,
+        modalTransitionStyle: UIModalTransitionStyle? = nil,
+        id: String,
+        isPresented: Binding<Bool>,
+        content: () -> Content
+    ) -> some View where Content: View {
+        if isPresented.wrappedValue && uiHosts[id] == nil {
+            let uiHost = UIHostingController(rootView: AnyView(content()))
+            uiHosts[id] = uiHost
+
+            uiHost.modalPresentationStyle = modalPresentationStyle
+            if let modalTransitionStyle = modalTransitionStyle {
+                uiHost.modalTransitionStyle = modalTransitionStyle
+            }
+            uiHost.view.backgroundColor = UIColor.clear
+            presentationControllerDelegates[id] = PresentationControllerDelegate(callback: {
+                isPresented.wrappedValue = false
+            })
+            uiHost.presentationController?.delegate = presentationControllerDelegates[id]
+
+            if let rootVC = UIApplication.shared.windows.first?.rootViewController {
+                frontmostPresentedViewController(from: rootVC)?.present(uiHost, animated: animated, completion: nil)
+            }
+        } else {
+            if let uiHost = uiHosts[id] {
+                uiHost.dismiss(animated: animated, completion: {})
+                uiHosts.removeValue(forKey: id)
+                presentationControllerDelegates.removeValue(forKey: id)
+            }
+        }
+
+        return self
+    }
+
+    fileprivate func frontmostPresentedViewController(from viewController: UIViewController) -> UIViewController? {
+        var frontMostController = viewController
+        while let presentedViewController = frontMostController.presentedViewController {
+            frontMostController = presentedViewController
+        }
+        
+        return frontMostController
+    }
+    
+}

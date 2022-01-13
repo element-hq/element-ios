@@ -51,14 +51,14 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
         let message = detail
         let emptyListMessage = VectorL10n.spacesNoResultFoundTitle
 
-        return MatrixItemChooserViewState(title: title, message: message, emptyListMessage: emptyListMessage, items: matrixItemChooserService.itemsSubject.value, selectedItemIds: matrixItemChooserService.selectedItemIdsSubject.value, loading: false)
+        return MatrixItemChooserViewState(title: title, message: message, emptyListMessage: emptyListMessage, sections: matrixItemChooserService.sectionsSubject.value, selectedItemIds: matrixItemChooserService.selectedItemIdsSubject.value, loadingText: matrixItemChooserService.loadingText, loading: false)
     }
 
     private func startObservingItems() {
-        let itemsUpdatePublisher = matrixItemChooserService.itemsSubject
-            .map(MatrixItemChooserStateAction.updateItems)
+        let sectionsUpdatePublisher = matrixItemChooserService.sectionsSubject
+            .map(MatrixItemChooserStateAction.updateSections)
             .eraseToAnyPublisher()
-        dispatch(actionPublisher: itemsUpdatePublisher)
+        dispatch(actionPublisher: sectionsUpdatePublisher)
         
         let selectionPublisher = matrixItemChooserService.selectedItemIdsSubject
             .map(MatrixItemChooserStateAction.updateSelection)
@@ -99,8 +99,8 @@ class MatrixItemChooserViewModel: MatrixItemChooserViewModelType, MatrixItemChoo
 
     override class func reducer(state: inout MatrixItemChooserViewState, action: MatrixItemChooserStateAction) {
         switch action {
-        case .updateItems(let items):
-            state.items = items
+        case .updateSections(let sections):
+            state.sections = sections
         case .updateSelection(let selectedItemIds):
             state.selectedItemIds = selectedItemIds
         case .loadingState(let loading):

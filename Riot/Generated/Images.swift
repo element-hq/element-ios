@@ -175,6 +175,7 @@ internal enum Asset {
     internal static let modIcon = ImageAsset(name: "mod_icon")
     internal static let moreReactions = ImageAsset(name: "more_reactions")
     internal static let notifications = ImageAsset(name: "notifications")
+    internal static let roomAccessInfoHeaderIcon = ImageAsset(name: "room_access_info_header_icon")
     internal static let scrollup = ImageAsset(name: "scrollup")
     internal static let roomsEmptyScreenArtwork = ImageAsset(name: "rooms_empty_screen_artwork")
     internal static let roomsEmptyScreenArtworkDark = ImageAsset(name: "rooms_empty_screen_artwork_dark")

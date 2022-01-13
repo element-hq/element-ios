@@ -75,6 +75,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.selectedEventId = parameters.eventId
 
         self.roomViewController = RoomViewController.instantiate()
+        self.roomViewController.showSettingsInitially = parameters.showSettingsInitially
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
         self.roomViewController.parentSpaceId = parameters.parentSpaceId
@@ -228,6 +229,10 @@ extension RoomCoordinator: RoomViewControllerDelegate {
         
     func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String) {
         self.delegate?.roomCoordinator(self, didSelectRoomWithId: roomID)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, moveToRoomWithId roomID: String) {
+        self.delegate?.roomCoordinator(self, moveToRoomWithId: roomID)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {

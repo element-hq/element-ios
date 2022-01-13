@@ -43,6 +43,9 @@ struct RoomCoordinatorParameters {
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
+    /// If `true`, the room settings screen will be initially displayed. Default `false`
+    let showSettingsInitially: Bool
+    
     // MARK: - Setup
     
     private init(navigationRouter: NavigationRouterType?,
@@ -51,7 +54,8 @@ struct RoomCoordinatorParameters {
                  roomId: String,
                  parentSpaceId: String?,
                  eventId: String?,
-                 previewData: RoomPreviewData?) {
+                 previewData: RoomPreviewData?,
+                 showSettingsInitially: Bool) {
         self.navigationRouter = navigationRouter
         self.navigationRouterStore = navigationRouterStore
         self.session = session
@@ -59,6 +63,7 @@ struct RoomCoordinatorParameters {
         self.parentSpaceId = parentSpaceId
         self.eventId = eventId
         self.previewData = previewData
+        self.showSettingsInitially = showSettingsInitially
     }
     
     /// Init to present a joined room
@@ -67,9 +72,10 @@ struct RoomCoordinatorParameters {
          session: MXSession,
          parentSpaceId: String?,
          roomId: String,
-         eventId: String? = nil) {
+         eventId: String? = nil,
+         showSettingsInitially: Bool) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: session, roomId: roomId, parentSpaceId: parentSpaceId, eventId: eventId, previewData: nil)
+        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: session, roomId: roomId, parentSpaceId: parentSpaceId, eventId: eventId, previewData: nil, showSettingsInitially: showSettingsInitially)
     }
     
     /// Init to present a room preview
@@ -78,6 +84,6 @@ struct RoomCoordinatorParameters {
          parentSpaceId: String?,
          previewData: RoomPreviewData) {
         
-        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: previewData.mxSession, roomId: previewData.roomId, parentSpaceId: parentSpaceId, eventId: nil, previewData: previewData)
+        self.init(navigationRouter: navigationRouter, navigationRouterStore: navigationRouterStore, session: previewData.mxSession, roomId: previewData.roomId, parentSpaceId: parentSpaceId, eventId: nil, previewData: previewData, showSettingsInitially: false)
     }
 }

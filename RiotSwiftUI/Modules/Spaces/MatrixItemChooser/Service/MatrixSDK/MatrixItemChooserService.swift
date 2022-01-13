@@ -17,8 +17,14 @@
 import Foundation
 import Combine
 
+protocol MatrixItemChooserDataSource {
+    func sections(with session: MXSession, completion: @escaping (Result<[MatrixListItemSectionData], Error>) -> Void)
+    var preselectedItemIds: Set<String>? { get }
+}
+
 protocol MatrixItemChooserProcessorProtocol {
-    var dataType: MatrixItemChooserType { get }
+    var loadingText: String? { get }
+    var dataSource: MatrixItemChooserDataSource { get }
     func computeSelection(withIds itemsIds:[String], completion: @escaping (Result<Void, Error>) -> Void)
     func isItemIncluded(_ item: (MatrixListItemData)) -> Bool
 }
@@ -30,56 +36,60 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     
     // MARK: Private
     
-    private let processingQueue = DispatchQueue(label: "org.matrix.element.MatrixItemChooserService.processingQueue")
+    private let processingQueue = DispatchQueue(label: "io.matrix.element.MatrixItemChooserService.processingQueue")
     private let completionQueue = DispatchQueue.main
 
     private let session: MXSession
-    private let items: [MatrixListItemData]
-    private var filteredItems: [MatrixListItemData] {
+    private var sections: [MatrixListItemSectionData] = []
+    private var filteredSections: [MatrixListItemSectionData] = [] {
         didSet {
-            itemsSubject.send(filteredItems)
+            sectionsSubject.send(filteredSections)
         }
     }
     private var selectedItemIds: Set<String>
-    private let itemsProcessor: MatrixItemChooserProcessorProtocol?
+    private let itemsProcessor: MatrixItemChooserProcessorProtocol
     
     // MARK: Public
     
-    private(set) var type: MatrixItemChooserType
-    private(set) var itemsSubject: CurrentValueSubject<[MatrixListItemData], Never>
+    private(set) var sectionsSubject: CurrentValueSubject<[MatrixListItemSectionData], Never>
     private(set) var selectedItemIdsSubject: CurrentValueSubject<Set<String>, Never>
     var searchText: String = "" {
         didSet {
             refresh()
         }
     }
-    
+    var loadingText: String? {
+        itemsProcessor.loadingText
+    }
+
     // MARK: - Setup
     
-    init(session: MXSession, selectedItemIds: [String], itemsProcessor: MatrixItemChooserProcessorProtocol?) {
+    init(session: MXSession, selectedItemIds: [String], itemsProcessor: MatrixItemChooserProcessorProtocol) {
         self.session = session
-        self.type = itemsProcessor?.dataType ?? .room
-        switch type {
-        case .people:
-            self.items = session.users().map { user in
-                MatrixListItemData(mxUser: user)
-            }
-        case .room:
-            self.items = session.rooms.compactMap { room in
-                if room.summary.roomType == .space || room.isDirect {
-                    return nil
-                }
-                
-                return MatrixListItemData(mxRoom: room, spaceService: session.spaceService)
-            }
-        }
-        self.itemsSubject = CurrentValueSubject(self.items)
-        self.filteredItems = []
+        self.sectionsSubject = CurrentValueSubject(self.sections)
         
         self.selectedItemIds = Set(selectedItemIds)
         self.selectedItemIdsSubject = CurrentValueSubject(self.selectedItemIds)
         self.itemsProcessor = itemsProcessor
         
+        itemsProcessor.dataSource.sections(with: session) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let sections):
+                self.sections = sections
+                self.refresh()
+                if let preselectedItemIds = itemsProcessor.dataSource.preselectedItemIds {
+                    for itemId in preselectedItemIds {
+                        self.selectedItemIds.insert(itemId)
+                    }
+                    self.selectedItemIdsSubject.send(self.selectedItemIds)
+                }
+            case .failure(let error):
+                break
+            }
+        }
+
         refresh()
     }
     
@@ -95,82 +105,40 @@ class MatrixItemChooserService: MatrixItemChooserServiceProtocol {
     }
     
     func processSelection(completion: @escaping (Result<Void, Error>) -> Void) {
-        guard let selectionProcessor = self.itemsProcessor else {
-            completion(Result.success(()))
-            return
-        }
-        
-        selectionProcessor.computeSelection(withIds: Array(selectedItemIds), completion: completion)
+        itemsProcessor.computeSelection(withIds: Array(selectedItemIds), completion: completion)
     }
     
     func refresh() {
         self.processingQueue.async { [weak self] in
             guard let self = self else { return }
-            let filteredItems = self.filter(items: self.items)
+            let filteredSections = self.filter(sections: self.sections)
             
             self.completionQueue.async {
-                self.filteredItems = filteredItems
+                self.filteredSections = filteredSections
             }
         }
     }
 
     // MARK: - Private
     
-    private func filter(items: [MatrixListItemData]) -> [MatrixListItemData] {
-        if searchText.isEmpty {
-            if let selectionProcessor = self.itemsProcessor {
-                return items.filter {
-                    selectionProcessor.isItemIncluded($0)
+    private func filter(sections: [MatrixListItemSectionData]) -> [MatrixListItemSectionData] {
+        var newSections: [MatrixListItemSectionData] = []
+        
+        for section in sections {
+            let items: [MatrixListItemData]
+            if searchText.isEmpty {
+                items = section.items.filter {
+                    itemsProcessor.isItemIncluded($0)
                 }
             } else {
-                return items
-            }
-        } else {
-            let lowercasedSearchText = self.searchText.lowercased()
-            if let selectionProcessor = self.itemsProcessor {
-                return items.filter {
-                    selectionProcessor.isItemIncluded($0) && ($0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText))
-                }
-            } else {
-                return items.filter {
-                    $0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText)
+                let lowercasedSearchText = self.searchText.lowercased()
+                items = section.items.filter {
+                    itemsProcessor.isItemIncluded($0) && ($0.id.lowercased().contains(lowercasedSearchText) || ($0.displayName ?? "").lowercased().contains(lowercasedSearchText))
                 }
             }
+            newSections.append(MatrixListItemSectionData(title: section.title, infoText: section.infoText, items: items))
         }
+        
+        return newSections
     }
-}
-
-fileprivate extension MatrixListItemData {
-    
-    init(mxUser: MXUser) {
-        self.init(id: mxUser.userId, avatar: mxUser.avatarData, displayName: mxUser.displayname, detailText: mxUser.userId)
-    }
-    
-    init(mxRoom: MXRoom, spaceService: MXSpaceService) {
-        let parentSapceIds = mxRoom.summary.parentSpaceIds ?? Set()
-        let detailText: String?
-        if parentSapceIds.isEmpty {
-            detailText = nil
-        } else {
-            if let spaceName = spaceService.getSpace(withId: parentSapceIds.first ?? "")?.summary?.displayname {
-                let count = parentSapceIds.count - 1
-                switch count {
-                case 0:
-                    detailText = VectorL10n.spacesCreationInSpacename(spaceName)
-                case 1:
-                    detailText = VectorL10n.spacesCreationInSpacenamePlusOne(spaceName)
-                default:
-                    detailText = VectorL10n.spacesCreationInSpacenamePlusMany(spaceName, "\(count)")
-                }
-            } else {
-                if parentSapceIds.count > 1 {
-                    detailText = VectorL10n.spacesCreationInManySpaces("\(parentSapceIds.count)")
-                } else {
-                    detailText = VectorL10n.spacesCreationInOneSpace
-                }
-            }
-        }
-        self.init(id: mxRoom.roomId, avatar: mxRoom.avatarData, displayName: mxRoom.summary.displayname, detailText: detailText)
-    }
-    
 }

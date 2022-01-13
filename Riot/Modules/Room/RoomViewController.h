@@ -93,6 +93,11 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
 - (void)displayRoomPreview:(RoomPreviewData*)roomPreviewData;
 
 /**
+ If `YES`, the room settings screen will be initially displayed. Default `NO`
+ */
+@property (nonatomic) BOOL showSettingsInitially;
+
+/**
  Action used to handle some buttons.
  */
 - (IBAction)onButtonPressed:(id)sender;
@@ -137,6 +142,15 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  */
 - (void)roomViewController:(RoomViewController *)roomViewController
             showRoomWithId:(NSString *)roomID;
+
+/**
+ Tells the delegate that the room has been moved to a new room.
+ 
+ @param roomViewController the `RoomViewController` instance.
+ @param roomID the replacement roomId
+ */
+- (void)roomViewController:(RoomViewController *)roomViewController
+          moveToRoomWithId:(NSString *)roomID;
 
 /**
  Tells the delegate that the user wants to start a direct chat with a user.

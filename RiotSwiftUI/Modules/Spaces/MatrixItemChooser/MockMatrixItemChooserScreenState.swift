@@ -38,11 +38,11 @@ enum MockMatrixItemChooserScreenState: MockScreenState, CaseIterable {
         let service: MockMatrixItemChooserService
         switch self {
         case .noItems:
-            service = MockMatrixItemChooserService(type: .room, items: [])
+            service = MockMatrixItemChooserService(type: .room, sections: [MatrixListItemSectionData(title: nil, infoText: nil, items: [])])
         case .items:
             service = MockMatrixItemChooserService()
         case .selectedItems:
-            service = MockMatrixItemChooserService(type: .room, items: MockMatrixItemChooserService.mockItems, selectedItemIndexes: [0, 2])
+            service = MockMatrixItemChooserService(type: .room, sections: MockMatrixItemChooserService.mockSections, selectedItemIndexPaths: [IndexPath(row: 0, section: 0), IndexPath(row: 2, section: 0), IndexPath(row: 1, section: 1)])
         }
         let viewModel = MatrixItemChooserViewModel.makeMatrixItemChooserViewModel(matrixItemChooserService: service, title: "Some title", detail: "Detail text describing the current screen")
         

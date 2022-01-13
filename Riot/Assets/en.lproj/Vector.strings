@@ -767,8 +767,11 @@ Tap the + to start adding people.";
 "room_details_access_section_anyone"="Anyone who knows the room's link, including guests";
 "room_details_access_section_anyone_for_dm"="Anyone who knows the link, including guests";
 "room_details_access_section_no_address_warning" = "To link to a room it must have an address";
+"room_details_access_row_title" = "Access";
+"room_details_promote_room_title" = "Promote room";
 "room_details_access_section_directory_toggle"="List this room in room directory";
 "room_details_access_section_directory_toggle_for_dm"="List in room directory";
+"room_details_promote_room_suggest_title" = "Suggest to space members";
 "room_details_history_section"="Who can read history?";
 "room_details_history_section_anyone"="Anyone";
 "room_details_history_section_members_only"="Members only (since the point in time of selecting this option)";
@@ -818,6 +821,32 @@ Tap the + to start adding people.";
 "room_details_copy_room_id" = "Copy Room ID";
 "room_details_copy_room_address" = "Copy Room Address";
 "room_details_copy_room_url" = "Copy Room URL";
+
+// Room Access Settings
+"room_access_settings_screen_nav_title" = "Room access";
+"room_access_settings_screen_title" = "Who can access this room?";
+"room_access_settings_screen_message" = "Decide who can find and join %@.";
+"room_access_settings_screen_private_message" = "Only invited people can find and join.";
+"room_access_settings_screen_restricted_message" = "Let anyone in a space find and join.\nYou’ll be asked to confirm which spaces.";
+"room_access_settings_screen_upgrade_required" = "Upgrade required";
+"room_access_settings_screen_edit_spaces" = "Edit spaces";
+"room_access_settings_screen_public_message" = "Anyone can find and join.";
+
+"room_access_settings_screen_upgrade_alert_title" = "Upgrade room";
+"room_access_settings_screen_upgrade_alert_message" = "Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.";
+"room_access_settings_screen_upgrade_alert_auto_invite_switch" = "Automatically invite members to new room";
+"room_access_settings_screen_upgrade_alert_upgrade_button" = "Upgrade";
+"room_access_settings_screen_upgrade_alert_upgrading" = "Upgrading room";
+"room_access_settings_screen_setting_room_access" = "Setting room access";
+
+"room_access_space_chooser_known_spaces_section" = "Spaces you know containing %@";
+"room_access_space_chooser_other_spaces_section" = "Other spaces or rooms";
+"room_access_space_chooser_other_spaces_section_info" = "These are likely things other admins of %@ are a part of.";
+
+// Room suggestion Settings
+"room_suggestion_settings_screen_nav_title" = "Suggest room";
+"room_suggestion_settings_screen_title" = "Make a room suggested in a space";
+"room_suggestion_settings_screen_message" = "Suggested rooms are promoted to space members as good ones to join.";
 
 // Room Notification Settings
 "room_notifs_settings_notify_me_for" = "Notify me for";

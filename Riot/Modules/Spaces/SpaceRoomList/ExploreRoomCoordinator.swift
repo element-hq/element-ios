@@ -30,7 +30,9 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     private let spaceId: String
     private var spaceIdStack: [String]
     private weak var roomDetailCoordinator: SpaceChildRoomDetailCoordinator?
-    private weak var currentExploreRoomCoordiantor: SpaceExploreRoomCoordinator?
+    private weak var currentExploreRoomCoordinator: SpaceExploreRoomCoordinator?
+
+    private var pollEditFormCoordinator: PollEditFormCoordinator?
 
     private lazy var slidingModalPresenter: SlidingModalPresenter = {
         return SlidingModalPresenter()
@@ -61,7 +63,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         rootCoordinator.start()
 
         self.add(childCoordinator: rootCoordinator)
-        self.currentExploreRoomCoordiantor = rootCoordinator
+        self.currentExploreRoomCoordinator = rootCoordinator
 
         self.navigationRouter.setRootModule(rootCoordinator)
     }
@@ -77,7 +79,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         coordinator.start()
         
         self.add(childCoordinator: coordinator)
-        self.currentExploreRoomCoordiantor = coordinator
+        self.currentExploreRoomCoordinator = coordinator
 
         self.spaceIdStack.append(item.childInfo.childRoomId)
         
@@ -134,7 +136,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         return coordinator
     }
     
-    private func navigateTo(roomWith roomId: String) {
+    private func navigateTo(roomWith roomId: String, showSettingsInitially: Bool = false, animated: Bool = true) {
         let roomDataSourceManager = MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.session)
         roomDataSourceManager?.roomDataSource(forRoom: roomId, create: true, onComplete: { [weak self] roomDataSource in
             
@@ -143,11 +145,13 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
                 return
             }
             
-            self?.navigationRouter.push(roomViewController, animated: true, popCompletion: nil)
+            self?.navigationRouter.push(roomViewController, animated: animated, popCompletion: nil)
             roomViewController.parentSpaceId = self?.spaceIdStack.last
+            roomViewController.showSettingsInitially = showSettingsInitially
             roomViewController.displayRoom(roomDataSource)
             roomViewController.navigationItem.leftItemsSupplementBackButton = true
             roomViewController.showMissedDiscussionsBadge = false
+            roomViewController.delegate = self
         })
     }
     
@@ -160,6 +164,14 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         toPresentable().present(presentable, animated: true, completion: nil)
         createRoomCoordinator.start()
         self.add(childCoordinator: createRoomCoordinator)
+    }
+    
+    private func popToLastSpaceScreen(animated: Bool) {
+        if let lastSpaceScreen = self.currentExploreRoomCoordinator?.toPresentable() {
+            self.navigationRouter.popToModule(lastSpaceScreen, animated: animated)
+        } else {
+            self.navigationRouter.popToRootModule(animated: animated)
+        }
     }
 }
 
@@ -214,7 +226,7 @@ extension ExploreRoomCoordinator: SpaceChildRoomDetailCoordinatorDelegate {
 extension ExploreRoomCoordinator: CreateRoomCoordinatorDelegate {
     
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didCreateNewRoom room: MXRoom) {
-        self.currentExploreRoomCoordiantor?.reloadRooms()
+        self.currentExploreRoomCoordinator?.reloadRooms()
         coordinator.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
             self.navigateTo(roomWith: room.roomId)
@@ -222,7 +234,7 @@ extension ExploreRoomCoordinator: CreateRoomCoordinatorDelegate {
     }
     
     func createRoomCoordinator(_ coordinator: CreateRoomCoordinatorType, didAddRoomsWithId roomIds: [String]) {
-        self.currentExploreRoomCoordiantor?.reloadRooms()
+        self.currentExploreRoomCoordinator?.reloadRooms()
         coordinator.toPresentable().dismiss(animated: true) {
             self.remove(childCoordinator: coordinator)
         }
@@ -244,6 +256,75 @@ extension ExploreRoomCoordinator: UIAdaptivePresentationControllerDelegate {
             return
         }
         self.remove(childCoordinator: lastCoordinator)
+    }
+    
+}
+
+extension ExploreRoomCoordinator: RoomViewControllerDelegate {
+    func roomViewControllerShowRoomDetails(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showMemberDetails roomMember: MXRoomMember) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showRoomWithId roomID: String) {
+        self.navigateTo(roomWith: roomID)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, moveToRoomWithId roomID: String) {
+        self.currentExploreRoomCoordinator?.reloadRooms()
+        self.popToLastSpaceScreen(animated: false)
+        self.navigateTo(roomWith: roomID, showSettingsInitially: true, animated: false)
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, startChatWithUserId userId: String, completion: @escaping () -> Void) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, showCompleteSecurityFor session: MXSession) {
+        // TODO:
+    }
+    
+    func roomViewControllerDidLeaveRoom(_ roomViewController: RoomViewController) {
+        self.popToLastSpaceScreen(animated: true)
+    }
+    
+    func roomViewControllerPreviewDidTapCancel(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, handleUniversalLinkWith parameters: UniversalLinkParameters) -> Bool {
+        // TODO:
+        return true
+    }
+    
+    func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter, room: roomViewController.roomDataSource.room)
+        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        pollEditFormCoordinator?.start()
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
     }
     
 }

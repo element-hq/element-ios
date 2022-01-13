@@ -30,14 +30,14 @@ struct MatrixItemChooserCoordinatorParameters {
     let detail: String?
     let selectedItemsIds: [String]
     let viewProvider: MatrixItemChooserCoordinatorViewProvider?
-    let itemsProcessor: MatrixItemChooserProcessorProtocol?
+    let itemsProcessor: MatrixItemChooserProcessorProtocol
     
     init(session: MXSession,
          title: String? = nil,
          detail: String? = nil,
          selectedItemsIds: [String] = [],
          viewProvider: MatrixItemChooserCoordinatorViewProvider? = nil,
-         itemsProcessor: MatrixItemChooserProcessorProtocol?) {
+         itemsProcessor: MatrixItemChooserProcessorProtocol) {
         self.session = session
         self.title = title
         self.detail = detail
@@ -55,7 +55,7 @@ final class MatrixItemChooserCoordinator: Coordinator, Presentable {
     // MARK: Private
     
     private let parameters: MatrixItemChooserCoordinatorParameters
-    private let matrixItemChooserHostingController: UIViewController
+    private let matrixItemChooserHostingController: VectorHostingController
     private var matrixItemChooserViewModel: MatrixItemChooserViewModelProtocol
 
     // MARK: Public

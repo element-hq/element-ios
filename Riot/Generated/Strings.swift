@@ -2611,6 +2611,74 @@ public class VectorL10n: NSObject {
   public static var retry: String { 
     return VectorL10n.tr("Vector", "retry") 
   }
+  /// Edit spaces
+  public static var roomAccessSettingsScreenEditSpaces: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_edit_spaces") 
+  }
+  /// Decide who can find and join %@.
+  public static func roomAccessSettingsScreenMessage(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_settings_screen_message", p1)
+  }
+  /// Room access
+  public static var roomAccessSettingsScreenNavTitle: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_nav_title") 
+  }
+  /// Only invited people can find and join.
+  public static var roomAccessSettingsScreenPrivateMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_private_message") 
+  }
+  /// Anyone can find and join.
+  public static var roomAccessSettingsScreenPublicMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_public_message") 
+  }
+  /// Let anyone in a space find and join.\nYou’ll be asked to confirm which spaces.
+  public static var roomAccessSettingsScreenRestrictedMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_restricted_message") 
+  }
+  /// Setting room access
+  public static var roomAccessSettingsScreenSettingRoomAccess: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_setting_room_access") 
+  }
+  /// Who can access this room?
+  public static var roomAccessSettingsScreenTitle: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_title") 
+  }
+  /// Automatically invite members to new room
+  public static var roomAccessSettingsScreenUpgradeAlertAutoInviteSwitch: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_auto_invite_switch") 
+  }
+  /// Anyone in Space name will be able to find and join this room - no need to manually invite everyone. You’ll be able to change this in room settings anytime.\n\nPlease note upgrading will make a new version of the room.  All current messages will stay in this archived room.
+  public static var roomAccessSettingsScreenUpgradeAlertMessage: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_message") 
+  }
+  /// Upgrade room
+  public static var roomAccessSettingsScreenUpgradeAlertTitle: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_title") 
+  }
+  /// Upgrade
+  public static var roomAccessSettingsScreenUpgradeAlertUpgradeButton: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_upgrade_button") 
+  }
+  /// Upgrading room
+  public static var roomAccessSettingsScreenUpgradeAlertUpgrading: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_alert_upgrading") 
+  }
+  /// Upgrade required
+  public static var roomAccessSettingsScreenUpgradeRequired: String { 
+    return VectorL10n.tr("Vector", "room_access_settings_screen_upgrade_required") 
+  }
+  /// Spaces you know containing %@
+  public static func roomAccessSpaceChooserKnownSpacesSection(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_space_chooser_known_spaces_section", p1)
+  }
+  /// Other spaces or rooms
+  public static var roomAccessSpaceChooserOtherSpacesSection: String { 
+    return VectorL10n.tr("Vector", "room_access_space_chooser_other_spaces_section") 
+  }
+  /// These are likely things other admins of %@ are a part of.
+  public static func roomAccessSpaceChooserOtherSpacesSectionInfo(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "room_access_space_chooser_other_spaces_section_info", p1)
+  }
   /// Call
   public static var roomAccessibilityCall: String { 
     return VectorL10n.tr("Vector", "room_accessibility_call") 
@@ -2742,6 +2810,10 @@ public class VectorL10n: NSObject {
   /// Delete unsent messages
   public static var roomDeleteUnsentMessages: String { 
     return VectorL10n.tr("Vector", "room_delete_unsent_messages") 
+  }
+  /// Access
+  public static var roomDetailsAccessRowTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_access_row_title") 
   }
   /// Who can access this room?
   public static var roomDetailsAccessSection: String { 
@@ -3006,6 +3078,14 @@ public class VectorL10n: NSObject {
   /// Photo
   public static var roomDetailsPhotoForDm: String { 
     return VectorL10n.tr("Vector", "room_details_photo_for_dm") 
+  }
+  /// Suggest to space members
+  public static var roomDetailsPromoteRoomSuggestTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_promote_room_suggest_title") 
+  }
+  /// Promote room
+  public static var roomDetailsPromoteRoomTitle: String { 
+    return VectorL10n.tr("Vector", "room_details_promote_room_title") 
   }
   /// Room Name
   public static var roomDetailsRoomName: String { 
@@ -3758,6 +3838,18 @@ public class VectorL10n: NSObject {
   /// Slide to end the call for everyone
   public static var roomSlideToEndGroupCall: String { 
     return VectorL10n.tr("Vector", "room_slide_to_end_group_call") 
+  }
+  /// Suggested rooms are promoted to space members as good ones to join.
+  public static var roomSuggestionSettingsScreenMessage: String { 
+    return VectorL10n.tr("Vector", "room_suggestion_settings_screen_message") 
+  }
+  /// Suggest room
+  public static var roomSuggestionSettingsScreenNavTitle: String { 
+    return VectorL10n.tr("Vector", "room_suggestion_settings_screen_nav_title") 
+  }
+  /// Make a room suggested in a space
+  public static var roomSuggestionSettingsScreenTitle: String { 
+    return VectorL10n.tr("Vector", "room_suggestion_settings_screen_title") 
   }
   /// Invite members
   public static var roomTitleInviteMembers: String { 

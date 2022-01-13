@@ -19,6 +19,7 @@ import Foundation
     func roomCoordinatorBridgePresenterDidLeaveRoom(_ bridgePresenter: RoomCoordinatorBridgePresenter)
     func roomCoordinatorBridgePresenterDidCancelRoomPreview(_ bridgePresenter: RoomCoordinatorBridgePresenter)
     func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, didSelectRoomWithId roomId: String)
+    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, moveToRoomWithId roomId: String)
     func roomCoordinatorBridgePresenterDidDismissInteractively(_ bridgePresenter: RoomCoordinatorBridgePresenter)
 }
 
@@ -40,16 +41,21 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
+    /// If `true`, the room settings screen will be initially displayed. Default `false`
+    let showSettingsInitially: Bool
+    
     init(session: MXSession,
          roomId: String,
          parentSpaceId: String?,
          eventId: String?,
-         previewData: RoomPreviewData?) {
+         previewData: RoomPreviewData?,
+         showSettingsInitially: Bool) {
         self.session = session
         self.roomId = roomId
         self.parentSpaceId = parentSpaceId
         self.eventId = eventId
         self.previewData = previewData
+        self.showSettingsInitially = showSettingsInitially
     }
 }
 
@@ -122,7 +128,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         if let previewData = self.bridgeParameters.previewData {
             coordinatorParameters = RoomCoordinatorParameters(navigationRouter: navigationRouter, parentSpaceId: parentSpaceId, previewData: previewData)
         } else {
-            coordinatorParameters =  RoomCoordinatorParameters(navigationRouter: navigationRouter, session: self.bridgeParameters.session, parentSpaceId: parentSpaceId, roomId: self.bridgeParameters.roomId, eventId: self.bridgeParameters.eventId)
+            coordinatorParameters =  RoomCoordinatorParameters(navigationRouter: navigationRouter, session: self.bridgeParameters.session, parentSpaceId: parentSpaceId, roomId: self.bridgeParameters.roomId, eventId: self.bridgeParameters.eventId, showSettingsInitially: self.bridgeParameters.showSettingsInitially)
         }
         
         return RoomCoordinator(parameters: coordinatorParameters)
@@ -134,6 +140,10 @@ extension RoomCoordinatorBridgePresenter: RoomCoordinatorDelegate {
     
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
         self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId)
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, moveToRoomWithId roomId: String) {
+        self.delegate?.roomCoordinatorBridgePresenter(self, moveToRoomWithId: roomId)
     }
     
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {

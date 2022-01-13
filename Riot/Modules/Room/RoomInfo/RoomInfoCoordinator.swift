@@ -55,6 +55,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         }
         
         let settings = RoomSettingsViewController()
+        settings.delegate = self
         settings.finalizeInit()
         settings.screenTimer = AnalyticsScreenTimer(screen: .roomSettings)
         settings.initWith(self.session, andRoomId: self.room.roomId)
@@ -114,7 +115,9 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         self.add(childCoordinator: rootCoordinator)
         
         if self.navigationRouter.modules.isEmpty == false {
-            self.navigationRouter.push(rootCoordinator.toPresentable(), animated: true, popCompletion: nil)
+            // push room info screen non animated if another screen needs to be pushed just after
+            let animated = initialSection == .none
+            self.navigationRouter.push(rootCoordinator.toPresentable(), animated: animated, popCompletion: nil)
         } else {
             self.navigationRouter.setRootModule(rootCoordinator)
         }
@@ -126,6 +129,8 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
             self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldAvatar), animated: false)
         case .changeTopic:
             self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldTopic), animated: false)
+        case .settings:
+            self.showRoomDetails(with: .settings(RoomSettingsViewControllerFieldNone), animated: false)
         case .none:
             break
         }
@@ -218,4 +223,10 @@ extension RoomInfoCoordinator: RoomNotificationSettingsCoordinatorDelegate {
         
     }
     
+}
+
+extension RoomInfoCoordinator: RoomSettingsViewControllerDelegate {
+    func roomSettingsViewController(_ controller: RoomSettingsViewController!, didMoveRoomTo newRoomId: String!) {
+        self.delegate?.roomInfoCoordinator(self, didMoveToRoomWithId: newRoomId)
+    }
 }

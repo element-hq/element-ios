@@ -21,31 +21,55 @@ struct WaitOverlay: ViewModifier {
     // MARK: - Properties
     
     var alignment: Alignment = .center
+    var allowUserInteraction: Bool = true
+    @Binding var message: String?
     @Binding var isLoading: Bool
     
     // MARK: - Private
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
 
+    // MARK: - Setup
+    
+    init(alignment: Alignment = .center,
+         allowUserInteraction: Bool = true,
+         message: Binding<String?> = .constant(nil),
+         isLoading: Binding<Bool>) {
+        _message = message
+        _isLoading = isLoading
+        self.alignment = alignment
+        self.allowUserInteraction = allowUserInteraction
+    }
+    
     // MARK: - Public
     
     public func body(content: Content) -> some View
     {
-        ZStack(alignment: alignment) {
+        ZStack {
             content
             if isLoading {
-                ZStack {
-                    Color.clear
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(theme.colors.tertiaryContent.opacity(0.6))
-                        .frame(width: 50, height: 50)
-                    ProgressView()
-                        .scaleEffect(1.3, anchor: .center)
-                        .progressViewStyle(CircularProgressViewStyle(tint:      theme.colors.background))
+                ZStack(alignment: alignment) {
+                    if allowUserInteraction {
+                        Color.clear
+                    } else {
+                        theme.colors.background.opacity(0.3)
+                    }
+                    VStack(spacing: 12) {
+                        ProgressView()
+                            .scaleEffect(1.3, anchor: .center)
+                            .progressViewStyle(CircularProgressViewStyle(tint: theme.colors.secondaryContent))
+                        if let message = message {
+                            Text(message)
+                                .font(theme.fonts.callout)
+                                .foregroundColor(theme.colors.secondaryContent)
+                        }
+                    }
+                    .padding(12)
+                    .background(RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(theme.colors.navigation.opacity(0.9)))
                 }
-                .frame(width: .infinity, height: .infinity)
+                .edgesIgnoringSafeArea(.all)
                 .transition(.opacity)
-                .allowsHitTesting(true)
             }
         }
         .animation(.easeIn(duration: 0.2))

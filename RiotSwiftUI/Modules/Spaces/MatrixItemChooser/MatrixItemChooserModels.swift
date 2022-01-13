@@ -21,6 +21,8 @@ import Foundation
 enum MatrixItemChooserType {
     case room
     case people
+    case ancestorsOf(String)
+    case restrictedAllowedSpacesOf(String)
 }
 
 // MARK: View model
@@ -28,7 +30,7 @@ enum MatrixItemChooserType {
 enum MatrixItemChooserStateAction {
     case loadingState(Bool)
     case updateError(Error?)
-    case updateItems([MatrixListItemData])
+    case updateSections([MatrixListItemSectionData])
     case updateSelection(Set<String>)
 }
 
@@ -40,8 +42,24 @@ enum MatrixItemChooserViewModelResult {
 
 // MARK: View
 
+enum MatrixListItemDataType {
+    case user
+    case room
+    case space
+}
+
+struct MatrixListItemSectionData {
+    let id = UUID().uuidString
+    let title: String?
+    let infoText: String?
+    let items: [MatrixListItemData]
+}
+
+extension MatrixListItemSectionData: Identifiable, Equatable {}
+
 struct MatrixListItemData {
     let id: String
+    let type: MatrixListItemDataType
     let avatar: AvatarInput
     let displayName: String?
     let detailText: String?
@@ -53,8 +71,9 @@ struct MatrixItemChooserViewState: BindableState {
     var title: String?
     var message: String?
     var emptyListMessage: String
-    var items: [MatrixListItemData]
+    var sections: [MatrixListItemSectionData]
     var selectedItemIds: Set<String>
+    var loadingText: String?
     var loading: Bool
     var error: String?
 }

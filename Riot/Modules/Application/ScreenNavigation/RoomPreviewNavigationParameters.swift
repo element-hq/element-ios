@@ -34,6 +34,7 @@ class RoomPreviewNavigationParameters: RoomNavigationParameters {
         super.init(roomId: previewData.roomId,
                    eventId: previewData.eventId,
                    mxSession: previewData.mxSession,
-                   presentationParameters: presentationParameters)
+                   presentationParameters: presentationParameters,
+                   showSettingsInitially: false)
     }
 }

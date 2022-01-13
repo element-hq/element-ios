@@ -20,6 +20,7 @@ import Foundation
 enum RoomInfoSection: Int {
     case none
     case addParticipants
+    case settings
     case changeAvatar
     case changeTopic
 }

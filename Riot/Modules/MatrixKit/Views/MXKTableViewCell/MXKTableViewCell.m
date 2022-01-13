@@ -24,10 +24,10 @@
     // Check whether a nib file is available
     NSBundle *mainBundle = [NSBundle mxk_bundleForClass:self.class];
     
-    NSString *path = [mainBundle pathForResource:NSStringFromClass([self class]) ofType:@"nib"];
+    NSString *path = [mainBundle pathForResource:[self className] ofType:@"nib"];
     if (path)
     {
-        return [UINib nibWithNibName:NSStringFromClass([self class]) bundle:mainBundle];
+        return [UINib nibWithNibName:[self className] bundle:mainBundle];
     }
     return nil;
 }
@@ -35,6 +35,11 @@
 + (NSString*)defaultReuseIdentifier
 {
     return NSStringFromClass([self class]);
+}
+
++ (NSString*)className
+{
+    return [NSStringFromClass([self class]) componentsSeparatedByString:@"."].lastObject;
 }
 
 - (void)awakeFromNib

@@ -36,7 +36,7 @@ struct MatrixItemChooser: View {
     var body: some View {
         listContent
             .background(Color.clear)
-            .modifier(WaitOverlay(isLoading: .constant(viewModel.viewState.loading)))
+            .modifier(WaitOverlay(allowUserInteraction: false, message: .constant(viewModel.viewState.loadingText), isLoading: .constant(viewModel.viewState.loading)))
             .alert(isPresented: .constant(viewModel.viewState.error != nil), content: {
                 Alert(title: Text(MatrixKitL10n.error), message: Text(viewModel.viewState.error ?? ""), dismissButton: .cancel(Text(MatrixKitL10n.ok)))
             })
@@ -48,30 +48,36 @@ struct MatrixItemChooser: View {
     private var listContent: some View {
         ScrollView{
             headerView
-            if viewModel.viewState.items.isEmpty {
-                Text(viewModel.viewState.emptyListMessage)
-                    .font(theme.fonts.body)
-                    .foregroundColor(theme.colors.secondaryContent)
-                    .accessibility(identifier: "emptyListMessage")
-                Spacer()
-            } else {
-                LazyVStack(spacing: 0) {
-                    ForEach(viewModel.viewState.items) { item in
-                        MatrixItemChooserListRow(
-                            avatar: item.avatar,
-                            displayName: item.displayName,
-                            detailText: item.detailText,
-                            isSelected: viewModel.viewState.selectedItemIds.contains(item.id)
-                        )
-                        .onTapGesture {
-                            viewModel.send(viewAction: .itemTapped(item.id))
+            LazyVStack(spacing: 0) {
+                ForEach(viewModel.viewState.sections) { section in
+                    if section.title != nil || section.infoText != nil {
+                        MatrixItemChooserSectionHeader(title: section.title, infoText: section.infoText)
+                    }
+                    
+                    if section.items.isEmpty {
+                        Text(viewModel.viewState.emptyListMessage)
+                            .font(theme.fonts.body)
+                            .foregroundColor(theme.colors.secondaryContent)
+                            .accessibility(identifier: "emptyListMessage")
+                    } else {
+                        ForEach(section.items) { item in
+                            MatrixItemChooserListRow(
+                                avatar: item.avatar,
+                                type: item.type,
+                                displayName: item.displayName,
+                                detailText: item.detailText,
+                                isSelected: viewModel.viewState.selectedItemIds.contains(item.id)
+                            )
+                            .onTapGesture {
+                                viewModel.send(viewAction: .itemTapped(item.id))
+                            }
                         }
                     }
                 }
-                .accessibility(identifier: "itemsList")
-                .frame(maxHeight: .infinity, alignment: .top)
-                .animation(nil)
             }
+            .accessibility(identifier: "sectionsList")
+            .frame(maxHeight: .infinity, alignment: .top)
+            .animation(nil)
         }
     }
 

@@ -711,6 +711,12 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     
     // Screen tracking
     [self.screenTimer start];
+    
+    if (self.showSettingsInitially)
+    {
+        [self showRoomInfoWithInitialSection:RoomInfoSectionSettings animated:NO];
+    }
+    self.showSettingsInitially = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1957,7 +1963,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showRoomAvatarChange
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeAvatar animated:YES];
 }
 
 - (void)showAddParticipants
@@ -1969,22 +1975,22 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)showRoomTopicChange
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionChangeTopic animated:YES];
 }
 
 - (void)showRoomInfo
 {
-    [self showRoomInfoWithInitialSection:RoomInfoSectionNone];
+    [self showRoomInfoWithInitialSection:RoomInfoSectionNone animated:YES];
 }
 
-- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection
+- (void)showRoomInfoWithInitialSection:(RoomInfoSection)roomInfoSection animated:(BOOL)animated
 {
     RoomInfoCoordinatorParameters *parameters = [[RoomInfoCoordinatorParameters alloc] initWithSession:self.roomDataSource.mxSession room:self.roomDataSource.room parentSpaceId:self.parentSpaceId initialSection:roomInfoSection];
     
     self.roomInfoCoordinatorBridgePresenter = [[RoomInfoCoordinatorBridgePresenter alloc] initWithParameters:parameters];
     
     self.roomInfoCoordinatorBridgePresenter.delegate = self;
-    [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+    [self.roomInfoCoordinatorBridgePresenter pushFrom:self.navigationController animated:animated];
 }
 
 - (void)setupActions {
@@ -6523,6 +6529,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     else
     {
         [[AppDelegate theDelegate] restoreInitialDisplay:nil];
+    }
+}
+
+- (void)roomInfoCoordinatorBridgePresenter:(RoomInfoCoordinatorBridgePresenter *)coordinatorBridgePresenter didMoveToRoomWithId:(NSString *)roomId
+{
+    if (self.delegate)
+    {
+        [self.delegate roomViewController:self moveToRoomWithId:roomId];
+    }
+    else
+    {
+        ScreenPresentationParameters *presentationParameters = [[ScreenPresentationParameters alloc] initWithRestoreInitialDisplay:YES stackAboveVisibleViews:NO];
+        RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId eventId:nil mxSession:self.mainSession presentationParameters:presentationParameters showSettingsInitially:YES];
+        [[AppDelegate theDelegate] showRoomWithParameters:parameters];
     }
 }
 

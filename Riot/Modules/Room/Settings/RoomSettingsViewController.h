@@ -20,6 +20,7 @@
 #import "TableViewCellWithCheckBoxes.h"
 
 @class AnalyticsScreenTimer;
+@protocol RoomSettingsViewControllerDelegate;
 
 /**
  List the settings fields. Used to preselect/edit a field
@@ -59,5 +60,15 @@ typedef enum : NSUInteger {
  */
 @property (nonatomic) AnalyticsScreenTimer *screenTimer;
 
+/**
+ Delegate of this view controller.
+ */
+@property (nonatomic, weak) id<RoomSettingsViewControllerDelegate> delegate;
+
 @end
 
+@protocol RoomSettingsViewControllerDelegate <NSObject>
+
+- (void)roomSettingsViewController:(RoomSettingsViewController *)controller didMoveRoomTo:(NSString *)newRoomId;
+
+@end

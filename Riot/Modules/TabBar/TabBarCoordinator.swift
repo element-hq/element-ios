@@ -394,8 +394,10 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         
         let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                   session: roomNavigationParameters.mxSession,
-                                                                  parentSpaceId: self.currentSpaceId, roomId: roomNavigationParameters.roomId,
-                                                                  eventId: roomNavigationParameters.eventId)
+                                                                  parentSpaceId: self.currentSpaceId,
+                                                                  roomId: roomNavigationParameters.roomId,
+                                                                  eventId: roomNavigationParameters.eventId,
+                                                                  showSettingsInitially: roomNavigationParameters.showSettingsInitially)
         
         self.showRoom(with: roomCoordinatorParameters,
                       stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,
@@ -407,7 +409,7 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
         // RoomCoordinator will be presented by the split view.
         // As we don't know which navigation controller instance will be used,
         // give the NavigationRouterStore instance and let it find the associated navigation controller
-        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, parentSpaceId: self.currentSpaceId, roomId: roomId, eventId: eventId)
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared, session: matrixSession, parentSpaceId: self.currentSpaceId, roomId: roomId, eventId: eventId, showSettingsInitially: false)
         
         self.showRoom(with: roomCoordinatorParameters, completion: completion)
     }
@@ -640,6 +642,22 @@ extension TabBarCoordinator: RoomCoordinatorDelegate {
     
     func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
         self.showRoom(withId: roomId)
+    }
+    
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, moveToRoomWithId roomId: String) {
+        guard let matrixSession = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+
+        let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
+                                                                  session: matrixSession,
+                                                                  parentSpaceId: self.currentSpaceId,
+                                                                  roomId: roomId,
+                                                                  eventId: nil,
+                                                                  showSettingsInitially: true)
+        
+        self.showRoom(with: roomCoordinatorParameters,
+                      stackOnSplitViewDetail: false)
     }
 }
 
