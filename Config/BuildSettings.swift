@@ -291,6 +291,13 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowMediaLibraryAction: Bool = true
     static let roomScreenAllowStickerAction: Bool = true
     static let roomScreenAllowFilesAction: Bool = true
+    
+    // Timeline style
+    static let roomScreenAllowTimelineStyleConfiguration: Bool = false
+    static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
+    static var roomScreenEnableMessageBubblesByDefault: Bool {
+        return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
+    }
 
     /// Allow split view detail view stacking    
     static let allowSplitViewDetailsScreenStacking: Bool = true
