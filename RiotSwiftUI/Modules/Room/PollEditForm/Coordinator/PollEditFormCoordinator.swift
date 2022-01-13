@@ -56,12 +56,14 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
         if let startEvent = parameters.pollStartEvent,
            let pollContent = MXEventContentPollStart(fromJSON: startEvent.content) {
             viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .editing,
-                                                                                          pollDetails: PollDetails(question: pollContent.question,
+                                                                                          pollDetails: PollDetails(type: Self.pollKindKeyToDetailsType(pollContent.kind),
+                                                                                                                   question: pollContent.question,
                                                                                                                    answerOptions: pollContent.answerOptions.map { $0.text })))
             
         } else {
             viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation,
-                                                                                          pollDetails: PollDetails(question: "",
+                                                                                          pollDetails: PollDetails(type: .disclosed,
+                                                                                                                   question: "",
                                                                                                                    answerOptions: ["", ""])))
         }
         
@@ -147,9 +149,23 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
         }
         
         return MXEventContentPollStart(question: details.question,
-                                       kind: (details.disclosed ? kMXMessageContentKeyExtensiblePollKindDisclosed : kMXMessageContentKeyExtensiblePollKindUndisclosed) ,
+                                       kind: Self.pollDetailsTypeToKindKey(details.type),
                                        maxSelections: NSNumber(value: details.maxSelections),
                                        answerOptions: options)
         
+    }
+    
+    private static func pollDetailsTypeToKindKey(_ type: PollEditFormType) -> String {
+        let mapping = [PollEditFormType.disclosed : kMXMessageContentKeyExtensiblePollKindDisclosed,
+                       PollEditFormType.undisclosed : kMXMessageContentKeyExtensiblePollKindUndisclosed]
+        
+        return mapping[type] ?? kMXMessageContentKeyExtensiblePollKindDisclosed
+    }
+    
+    private static func pollKindKeyToDetailsType(_ key: String) -> PollEditFormType {
+        let mapping = [kMXMessageContentKeyExtensiblePollKindDisclosed : PollEditFormType.disclosed,
+                       kMXMessageContentKeyExtensiblePollKindUndisclosed : PollEditFormType.undisclosed]
+        
+        return mapping[key] ?? PollEditFormType.disclosed
     }
 }

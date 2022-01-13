@@ -91,7 +91,16 @@ struct PollTimelineViewState: BindableState {
 }
 
 struct PollTimelineViewStateBindings {
-    var showsAnsweringFailureAlert: Bool = false
-    var showsClosingFailureAlert: Bool = false
+    var alertInfo: PollTimelineErrorAlertInfo?
 }
 
+struct PollTimelineErrorAlertInfo: Identifiable {
+    enum AlertType {
+        case failedClosingPoll
+        case failedSubmittingAnswer
+    }
+    
+    let id: AlertType
+    let title: String
+    let subtitle: String
+}
