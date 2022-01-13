@@ -1,0 +1,7 @@
+
+
+"NSContactsUsageDescription" = "O Element vai mostrar os seus contactos para que os possa convidar para conversar.";
+"NSMicrophoneUsageDescription" = "O Element necessita de aceder ao seu microfone para fazer e receber chamadas e para gravar mensagens de voz.";
+"NSPhotoLibraryUsageDescription" = "A biblioteca de fotos é usada para enviar fotos e vídeos.";
+// Permissions usage explanations
+"NSCameraUsageDescription" = "A câmara é usada para tirar fotos e vídeos e fazer videochamadas.";

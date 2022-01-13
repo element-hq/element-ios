@@ -655,6 +655,8 @@ Tap the + to start adding people.";
 
 "settings_show_NSFW_public_rooms" = "Show NSFW public rooms";
 
+"settings_enable_room_message_bubbles" = "Message bubbles";
+
 // Security settings
 "security_settings_title" = "Security";
 "security_settings_crypto_sessions" = "MY SESSIONS";

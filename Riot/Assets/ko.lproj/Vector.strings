@@ -1068,3 +1068,64 @@
 "contacts_address_book_permission_denied_alert_message" = "연락처를 사용하려면, 설정으로 이동하십시오.";
 "contacts_address_book_permission_denied_alert_title" = "연락처 사용 안 함";
 "rooms_empty_view_title" = "방";
+
+// AuthenticatedSessionViewControllerFactory
+"authenticated_session_flow_not_supported" = "이 앱은 해당 홈서버의 인증 구조를 지원하지 않습니다.";
+"security_settings_user_password_description" = "신원을 확인하기 위해 계정 비밀번호를 입력해주세요.";
+"event_formatter_widget_removed_by_you" = "위젯을 제거함 : %@";
+
+// Events formatter with you
+"event_formatter_widget_added_by_you" = "위젯을 추가함 : %@";
+"event_formatter_group_call_leave" = "떠나기";
+"event_formatter_group_call_join" = "들어가기";
+"event_formatter_group_call" = "그룹 전화";
+"event_formatter_call_end_call" = "통화 종료";
+"event_formatter_call_retry" = "재시도";
+"event_formatter_call_decline" = "거부";
+"event_formatter_call_back" = "통화 재시도";
+"event_formatter_call_connection_failed" = "연결 실패";
+"event_formatter_call_missed_voice" = "음성 통화 부재중";
+"event_formatter_call_missed_video" = "영상 통화 부재중";
+"event_formatter_call_you_declined" = "통화 거부";
+"event_formatter_call_active_voice" = "음성 통화 활성";
+"event_formatter_call_active_video" = "영상 통화 활성";
+"event_formatter_call_incoming_video" = "영상 통화 수신";
+"event_formatter_call_incoming_voice" = "음성 통화 수신";
+"event_formatter_call_has_ended_with_time" = "통화 끊김 %@";
+"event_formatter_call_has_ended" = "통화 끊기";
+"event_formatter_call_ringing" = "통화중…";
+"event_formatter_call_connecting" = "연결중…";
+"room_notifs_settings_encrypted_room_notice" = "암호화된 방에서는 멘션 및 키워드 알림이 작동하지 않습니다.";
+"room_notifs_settings_account_settings" = "계정 설정";
+"room_notifs_settings_cancel_action" = "취소";
+"room_notifs_settings_done_action" = "적용";
+"room_notifs_settings_none" = "알림받지 않기";
+"room_notifs_settings_mentions_and_keywords" = "멘션과 키워드만";
+"room_notifs_settings_all_messages" = "모든 메시지";
+"room_details_advanced_e2e_encryption_disabled_for_dm" = "이 방의 암호화가 활성화되지 않음.";
+"room_details_advanced_e2e_encryption_enabled_for_dm" = "이 방의 암호화 활성화됨";
+"room_details_advanced_room_id_for_dm" = "아이디 :";
+"room_details_no_local_addresses_for_dm" = "이 방은 로컬 주소를 가지고 있지 않음";
+"room_details_access_section_anyone_for_dm" = "게스트를 포함한 초대 링크를 알고 있는 누구나";
+"room_details_access_section_anyone_apart_from_guest_for_dm" = "게스트를 제외하고 초대 링크를 알고 있는 누구나";
+"room_details_access_section_for_dm" = "누가 접근할 수 있나요?";
+"room_details_notifs" = "알림";
+"room_details_room_name_for_dm" = "이름";
+"room_details_photo_for_dm" = "사진";
+"room_details_integrations" = "통합";
+"room_details_search" = "방 검색";
+"room_details_title_for_dm" = "정보";
+"manage_session_sign_out" = "세션 연결 끊기";
+"manage_session_not_trusted" = "신뢰하지 않음";
+"manage_session_trusted" = "신뢰하도록 설정됨";
+"manage_session_name" = "세션 이름";
+"manage_session_info" = "세션 정보";
+
+// Manage session
+"manage_session_title" = "세션 관리";
+"settings_analytics_and_crash_data" = "오류 및 분석 데이터 전송";
+"settings_labs_enabled_polls" = "투표";
+"room_event_action_end_poll" = "투표 종료";
+"room_event_action_remove_poll" = "투표 제거";
+"accessibility_button_label" = "버튼";
+"enable" = "활성화";

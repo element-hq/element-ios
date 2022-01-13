@@ -345,7 +345,7 @@
 // Country picker
 "country_picker_title" = "Pilih sebuah negara";
 "microphone_access_not_granted_for_voice_message" = "Pesan suara membutuhkan akses ke Mikrofon tetapi %@ tidak memiliki izin untuk menggunakannya";
-"local_contacts_access_discovery_warning" = "Untuk menemukan kontak Anda yang sudah menggunakan Matrix, %@ dapat mengirim alamat email dan nomor telepon di kontak Anda ke server identitas Matrix yang Anda pilih. Di mana saja yang didukung, data personal akan di-hash sebelum dikirim - mohon cek kebijakan privasi identitas server Anda untuk detail lainnya.";
+"local_contacts_access_discovery_warning" = "Untuk menemukan kontak Anda yang sudah menggunakan Matrix, %@ dapat mengirim alamat email dan nomor telepon di kontak Anda ke server identitas Matrix yang Anda pilih. Di mana saja yang didukung, data personal akan di-hash sebelum dikirim — mohon cek kebijakan privasi identitas server Anda untuk detail lainnya.";
 "local_contacts_access_discovery_warning_title" = "Penemuan pengguna";
 "local_contacts_access_not_granted" = "Penemuan pengguna dari kontak lokal membutuhkan akses ke kontak Anda tetapi %@ tidak memiliki izin untuk menggunakannya";
 "microphone_access_not_granted_for_call" = "Panggilan membutuhkan akses ke Mikrofon tetapi %@ tidak memiliki izin untuk menggunakannya";
