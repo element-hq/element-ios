@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollTimeline PollTimeline
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -19,20 +17,20 @@
 import Foundation
 import SwiftUI
 
-typealias PollTimelineViewModelCallback = ((PollTimelineViewModelResult) -> Void)
+typealias TimelinePollViewModelCallback = ((TimelinePollViewModelResult) -> Void)
 
-enum PollTimelineStateAction {
-    case viewAction(PollTimelineViewAction, PollTimelineViewModelCallback?)
+enum TimelinePollStateAction {
+    case viewAction(TimelinePollViewAction, TimelinePollViewModelCallback?)
     case updateWithPoll(TimelinePoll)
     case showAnsweringFailure
     case showClosingFailure
 }
 
-enum PollTimelineViewAction {
+enum TimelinePollViewAction {
     case selectAnswerOptionWithIdentifier(String)
 }
 
-enum PollTimelineViewModelResult {
+enum TimelinePollViewModelResult {
     case selectedAnswerOptionsWithIdentifiers([String])
 }
 
@@ -41,7 +39,7 @@ enum TimelinePollType {
     case undisclosed
 }
 
-class TimelineAnswerOption: Identifiable {
+class TimelinePollAnswerOption: Identifiable {
     var id: String
     var text: String
     var count: UInt
@@ -59,14 +57,14 @@ class TimelineAnswerOption: Identifiable {
 
 class TimelinePoll {
     var question: String
-    var answerOptions: [TimelineAnswerOption]
+    var answerOptions: [TimelinePollAnswerOption]
     var closed: Bool
     var totalAnswerCount: UInt
     var type: TimelinePollType
     var maxAllowedSelections: UInt
     var hasBeenEdited: Bool = true
     
-    init(question: String, answerOptions: [TimelineAnswerOption],
+    init(question: String, answerOptions: [TimelinePollAnswerOption],
          closed: Bool,
          totalAnswerCount: UInt,
          type: TimelinePollType,
@@ -85,16 +83,16 @@ class TimelinePoll {
     }
 }
 
-struct PollTimelineViewState: BindableState {
+struct TimelinePollViewState: BindableState {
     var poll: TimelinePoll
-    var bindings: PollTimelineViewStateBindings
+    var bindings: TimelinePollViewStateBindings
 }
 
-struct PollTimelineViewStateBindings {
-    var alertInfo: PollTimelineErrorAlertInfo?
+struct TimelinePollViewStateBindings {
+    var alertInfo: TimelinePollErrorAlertInfo?
 }
 
-struct PollTimelineErrorAlertInfo: Identifiable {
+struct TimelinePollErrorAlertInfo: Identifiable {
     enum AlertType {
         case failedClosingPoll
         case failedSubmittingAnswer

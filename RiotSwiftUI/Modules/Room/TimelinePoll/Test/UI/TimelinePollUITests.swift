@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollTimeline PollTimeline
 //
 // Copyright 2021 New Vector Ltd
 //
@@ -20,7 +18,7 @@ import XCTest
 import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class PollTimelineUITests: XCTestCase {
+class TimelinePollUITests: XCTestCase {
     
     private var app: XCUIApplication!
     
@@ -32,7 +30,7 @@ class PollTimelineUITests: XCTestCase {
     }
     
     func testOpenDisclosedPoll() {
-        app.goToScreenWithIdentifier(MockPollTimelineScreenState.openDisclosed.title)
+        app.goToScreenWithIdentifier(MockTimelinePollScreenState.openDisclosed.title)
         
         XCTAssert(app.staticTexts["Question"].exists)
         XCTAssert(app.staticTexts["20 votes cast"].exists)
@@ -70,7 +68,7 @@ class PollTimelineUITests: XCTestCase {
     }
     
     func testOpenUndisclosedPoll() {
-        app.goToScreenWithIdentifier(MockPollTimelineScreenState.openUndisclosed.title)
+        app.goToScreenWithIdentifier(MockTimelinePollScreenState.openUndisclosed.title)
         
         XCTAssert(app.staticTexts["Question"].exists)
         XCTAssert(app.staticTexts["20 votes cast"].exists)
@@ -101,12 +99,12 @@ class PollTimelineUITests: XCTestCase {
     }
     
     func testClosedDisclosedPoll() {
-        app.goToScreenWithIdentifier(MockPollTimelineScreenState.closedDisclosed.title)
+        app.goToScreenWithIdentifier(MockTimelinePollScreenState.closedDisclosed.title)
         checkClosedPoll()
     }
     
     func testClosedUndisclosedPoll() {
-        app.goToScreenWithIdentifier(MockPollTimelineScreenState.closedUndisclosed.title)
+        app.goToScreenWithIdentifier(MockTimelinePollScreenState.closedUndisclosed.title)
         checkClosedPoll()
     }
     

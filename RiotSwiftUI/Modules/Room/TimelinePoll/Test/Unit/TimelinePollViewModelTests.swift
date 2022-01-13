@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollTimeline PollTimeline
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -22,15 +20,15 @@ import Combine
 @testable import RiotSwiftUI
 
 @available(iOS 14.0, *)
-class PollTimelineViewModelTests: XCTestCase {
-    var viewModel: PollTimelineViewModel!
-    var context: PollTimelineViewModelType.Context!
+class TimelinePollViewModelTests: XCTestCase {
+    var viewModel: TimelinePollViewModel!
+    var context: TimelinePollViewModelType.Context!
     var cancellables = Set<AnyCancellable>()
     
     override func setUpWithError() throws {
-        let answerOptions = [TimelineAnswerOption(id: "1", text: "1", count: 1, winner: false, selected: false),
-                             TimelineAnswerOption(id: "2", text: "2", count: 1, winner: false, selected: false),
-                             TimelineAnswerOption(id: "3", text: "3", count: 1, winner: false, selected: false)]
+        let answerOptions = [TimelinePollAnswerOption(id: "1", text: "1", count: 1, winner: false, selected: false),
+                             TimelinePollAnswerOption(id: "2", text: "2", count: 1, winner: false, selected: false),
+                             TimelinePollAnswerOption(id: "3", text: "3", count: 1, winner: false, selected: false)]
         
         let timelinePoll = TimelinePoll(question: "Question",
                                         answerOptions: answerOptions,
@@ -40,7 +38,7 @@ class PollTimelineViewModelTests: XCTestCase {
                                         maxAllowedSelections: 1,
                                         hasBeenEdited: false)
         
-        viewModel = PollTimelineViewModel(timelinePoll: timelinePoll)
+        viewModel = TimelinePollViewModel(timelinePoll: timelinePoll)
         context = viewModel.context
     }
     

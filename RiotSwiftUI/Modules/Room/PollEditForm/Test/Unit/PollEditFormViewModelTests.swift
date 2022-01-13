@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollEditForm PollEditForm
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -29,7 +27,7 @@ class PollEditFormViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {
         viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation,
-                                                                                      pollDetails: PollDetails(question: "", answerOptions: ["", ""])))
+                                                                                      pollDetails: PollDetails(type: .disclosed, question: "", answerOptions: ["", ""])))
         context = viewModel.context
     }
     

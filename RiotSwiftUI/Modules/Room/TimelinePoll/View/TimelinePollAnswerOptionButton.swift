@@ -17,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct PollTimelineAnswerOptionButton: View {
+struct TimelinePollAnswerOptionButton: View {
     
     // MARK: - Properties
     
@@ -26,7 +26,7 @@ struct PollTimelineAnswerOptionButton: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
     let poll: TimelinePoll
-    let answerOption: TimelineAnswerOption
+    let answerOption: TimelinePollAnswerOption
     let action: () -> Void
     
     // MARK: Public
@@ -106,8 +106,8 @@ struct PollTimelineAnswerOptionButton: View {
 }
 
 @available(iOS 14.0, *)
-struct PollTimelineAnswerOptionButton_Previews: PreviewProvider {
-    static let stateRenderer = MockPollTimelineScreenState.stateRenderer
+struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
+    static let stateRenderer = MockTimelinePollScreenState.stateRenderer
     
     static var previews: some View {
         Group {
@@ -115,33 +115,33 @@ struct PollTimelineAnswerOptionButton_Previews: PreviewProvider {
             
             ForEach(pollTypes, id: \.self) { type in
                 VStack {
-                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: false, type: type),
+                    TimelinePollAnswerOptionButton(poll: buildPoll(closed: false, type: type),
                                                    answerOption: buildAnswerOption(selected: false),
                                                    action: {})
                     
-                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: false, type: type),
+                    TimelinePollAnswerOptionButton(poll: buildPoll(closed: false, type: type),
                                                    answerOption: buildAnswerOption(selected: true),
                                                    action: {})
                     
-                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                    TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: false, winner: false),
                                                    action: {})
 
-                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                    TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: false, winner: true),
                                                    action: {})
 
-                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                    TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: true, winner: false),
                                                    action: {})
 
-                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                    TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(selected: true, winner: true),
                                                    action: {})
 
                     let longText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 
-                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                    TimelinePollAnswerOptionButton(poll: buildPoll(closed: true, type: type),
                                                    answerOption: buildAnswerOption(text: longText, selected: true, winner: true),
                                                    action: {})
                 }
@@ -159,7 +159,7 @@ struct PollTimelineAnswerOptionButton_Previews: PreviewProvider {
                      hasBeenEdited: false)
     }
     
-    static func buildAnswerOption(text: String = "Test", selected: Bool, winner: Bool = false) -> TimelineAnswerOption {
-        TimelineAnswerOption(id: "1", text: text, count: 5, winner: winner, selected: selected)
+    static func buildAnswerOption(text: String = "Test", selected: Bool, winner: Bool = false) -> TimelinePollAnswerOption {
+        TimelinePollAnswerOption(id: "1", text: text, count: 5, winner: winner, selected: selected)
     }
 }
