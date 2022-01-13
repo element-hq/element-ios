@@ -305,12 +305,32 @@ extension ExploreRoomCoordinator: RoomViewControllerDelegate {
             return
         }
         
-        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter, room: roomViewController.roomDataSource.room)
-        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
+        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
         
-        pollEditFormCoordinator?.start()
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
     }
     
+    func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
+        // TODO:
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        // TODO:
+    }
+
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
         guard #available(iOS 14.0, *) else {
             return false

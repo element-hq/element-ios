@@ -11,6 +11,7 @@ on:
 env:
   # Make the git branch for a PR available to our Fastfile
   MX_GIT_BRANCH: ${{ github.event.pull_request.head.ref }}
+  MapTilerAPIKey: ${{ secrets.MAPTILER_API_KEY }}
 
 jobs:
   build:

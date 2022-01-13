@@ -491,15 +491,20 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
     
     @available(iOS 14.0, *)
     private func presentAnalyticsPrompt(with session: MXSession) {
-        let parameters = AnalyticsPromptCoordinatorParameters(session: session, navigationRouter: navigationRouter)
+        let parameters = AnalyticsPromptCoordinatorParameters(session: session)
         let coordinator = AnalyticsPromptCoordinator(parameters: parameters)
+        
         coordinator.completion = { [weak self, weak coordinator] in
             guard let self = self, let coordinator = coordinator else { return }
+            
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
             self.remove(childCoordinator: coordinator)
         }
         
-        coordinator.start()
         add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
     }
     
     // MARK: UserSessions management

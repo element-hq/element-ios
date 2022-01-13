@@ -2179,12 +2179,12 @@
     
     if (event && event.eventType == MXEventTypeRoomMessage)
     {
-        NSString *msgtype = event.content[@"msgtype"];
+        NSString *msgtype = event.content[kMXMessageTypeKey];
         
         NSString* textMessage;
         if ([msgtype isEqualToString:kMXMessageTypeText])
         {
-            textMessage = event.content[@"body"];
+            textMessage = event.content[kMXMessageBodyKey];
         }
         
         // Show a confirmation popup to the end user
@@ -3667,9 +3667,6 @@
                     // Let's the application do something
                     MXLogDebug(@"[MXKRoomVC] showAttachmentInCell on an unsent media");
                 }
-            }
-            else if (selectedAttachment.type == MXKAttachmentTypeLocation)
-            {
             }
             else if (selectedAttachment.type == MXKAttachmentTypeFile || selectedAttachment.type == MXKAttachmentTypeAudio)
             {

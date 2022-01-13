@@ -423,6 +423,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self.bubblesTableView registerClass:PollBubbleCell.class forCellReuseIdentifier:PollBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:PollWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:PollWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [self.bubblesTableView registerClass:PollWithPaginationTitleBubbleCell.class forCellReuseIdentifier:PollWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+
+    [self.bubblesTableView registerClass:LocationBubbleCell.class forCellReuseIdentifier:LocationBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:LocationWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:LocationWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [self.bubblesTableView registerClass:LocationWithPaginationTitleBubbleCell.class forCellReuseIdentifier:LocationWithPaginationTitleBubbleCell.defaultReuseIdentifier];
     
     [self vc_removeBackTitle];
     
@@ -2041,6 +2045,16 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self.delegate roomViewControllerDidRequestPollCreationFormPresentation:self];
         }]];
     }
+    if (RiotSettings.shared.roomScreenAllowLocationAction)
+    {
+        [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_location"] andAction:^{
+            MXStrongifyAndReturnIfNil(self);
+            if ([self.inputToolbarView isKindOfClass:RoomInputToolbarView.class]) {
+                ((RoomInputToolbarView *) self.inputToolbarView).actionMenuOpened = NO;
+            }
+            [self.delegate roomViewControllerDidRequestLocationSharingFormPresentation:self];
+        }]];
+    }
     if (RiotSettings.shared.roomScreenAllowCameraAction)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_camera"] andAction:^{
@@ -2740,6 +2754,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             cellViewClass = PollBubbleCell.class;
         }
     }
+    else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
+    {
+        if (bubbleData.isPaginationFirstBubble)
+        {
+            cellViewClass = LocationWithPaginationTitleBubbleCell.class;
+        }
+        else if (bubbleData.shouldHideSenderInformation)
+        {
+            cellViewClass = LocationWithoutSenderInfoBubbleCell.class;
+        }
+        else
+        {
+            cellViewClass = LocationBubbleCell.class;
+        }
+    }
     else if (bubbleData.isIncoming)
     {
         if (bubbleData.isAttachmentWithThumbnail)
@@ -2940,7 +2969,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                     }
                     else
                     {
-                        [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+                        if (tappedEvent.location) {
+                            [_delegate roomViewController:self didRequestLocationPresentationForEvent:tappedEvent bubbleData:bubbleData];
+                        } else {
+                            [self showContextualMenuForEvent:tappedEvent fromSingleTapGesture:YES cell:cell animated:YES];
+                        }
                     }
                 }
             }
@@ -3257,7 +3290,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             }]];
         }
         
-        if (selectedEvent.sentState == MXEventSentStateSent && selectedEvent.eventType != MXEventTypePollStart)
+        if (selectedEvent.sentState == MXEventSentStateSent &&
+            selectedEvent.eventType != MXEventTypePollStart &&
+            !selectedEvent.location)
         {
             [actionsMenu addAction:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                             style:UIAlertActionStyleDefault
@@ -6110,7 +6145,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         switch (event.eventType) {
             case MXEventTypeRoomMessage:
             {
-                NSString *messageType = event.content[@"msgtype"];
+                NSString *messageType = event.content[kMXMessageTypeKey];
                 
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
