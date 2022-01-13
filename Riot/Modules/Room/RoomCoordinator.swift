@@ -76,7 +76,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.activityIndicatorPresenter = ActivityIndicatorPresenter()
         
         if #available(iOS 14, *) {
-            PollTimelineProvider.shared.session = parameters.session
+            TimelinePollProvider.shared.session = parameters.session
         }
         
         super.init()
@@ -344,7 +344,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return false
         }
         
-        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
     func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
@@ -352,7 +352,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return
         }
         
-        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+        TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
@@ -360,7 +360,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return false
         }
         
-        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
     }
     
     func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {

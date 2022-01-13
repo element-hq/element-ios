@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollEditForm PollEditForm
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -19,7 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct PollTimelineView: View {
+struct TimelinePollView: View {
     
     // MARK: - Properties
     
@@ -29,7 +27,7 @@ struct PollTimelineView: View {
     
     // MARK: Public
     
-    @ObservedObject var viewModel: PollTimelineViewModel.Context
+    @ObservedObject var viewModel: TimelinePollViewModel.Context
     
     var body: some View {
         let poll = viewModel.viewState.poll
@@ -45,7 +43,7 @@ struct PollTimelineView: View {
             
             VStack(spacing: 24.0) {
                 ForEach(poll.answerOptions) { answerOption in
-                    PollTimelineAnswerOptionButton(poll: poll, answerOption: answerOption) {
+                    TimelinePollAnswerOptionButton(poll: poll, answerOption: answerOption) {
                         viewModel.send(viewAction: .selectAnswerOptionWithIdentifier(answerOption.id))
                     }
                 }
@@ -99,8 +97,8 @@ struct PollTimelineView: View {
 // MARK: - Previews
 
 @available(iOS 14.0, *)
-struct PollTimelineView_Previews: PreviewProvider {
-    static let stateRenderer = MockPollTimelineScreenState.stateRenderer
+struct TimelinePollView_Previews: PreviewProvider {
+    static let stateRenderer = MockTimelinePollScreenState.stateRenderer
     static var previews: some View {
         stateRenderer.screenGroup()
     }

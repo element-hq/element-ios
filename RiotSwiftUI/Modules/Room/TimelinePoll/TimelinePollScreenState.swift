@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/UserSuggestion UserSuggestion
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -20,20 +18,20 @@ import Foundation
 import SwiftUI
 
 @available(iOS 14.0, *)
-enum MockPollTimelineScreenState: MockScreenState, CaseIterable {
+enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
     case openDisclosed
     case closedDisclosed
     case openUndisclosed
     case closedUndisclosed
     
     var screenType: Any.Type {
-        MockPollTimelineScreenState.self
+        TimelinePoll.self
     }
     
     var screenView: ([Any], AnyView)  {
-        let answerOptions = [TimelineAnswerOption(id: "1", text: "First", count: 10, winner: false, selected: false),
-        TimelineAnswerOption(id: "2", text: "Second", count: 5, winner: false, selected: true),
-        TimelineAnswerOption(id: "3", text: "Third", count: 15, winner: true, selected: false)]
+        let answerOptions = [TimelinePollAnswerOption(id: "1", text: "First", count: 10, winner: false, selected: false),
+        TimelinePollAnswerOption(id: "2", text: "Second", count: 5, winner: false, selected: true),
+        TimelinePollAnswerOption(id: "3", text: "Third", count: 15, winner: true, selected: false)]
         
         let poll = TimelinePoll(question: "Question",
         answerOptions: answerOptions,
@@ -43,8 +41,8 @@ enum MockPollTimelineScreenState: MockScreenState, CaseIterable {
         maxAllowedSelections: 1,
         hasBeenEdited: false)
         
-        let viewModel = PollTimelineViewModel(timelinePoll: poll)
+        let viewModel = TimelinePollViewModel(timelinePoll: poll)
         
-        return ([viewModel], AnyView(PollTimelineView(viewModel: viewModel.context)))
+        return ([viewModel], AnyView(TimelinePollView(viewModel: viewModel.context)))
     }
 }

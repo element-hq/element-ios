@@ -44,6 +44,7 @@ struct PollEditFormAnswerOptionView: View {
                 } label: {
                     Image(uiImage:Asset.Images.pollDeleteOptionIcon.image)
                 }
+                .accessibilityIdentifier("Delete answer option")
             }
         }
     }
