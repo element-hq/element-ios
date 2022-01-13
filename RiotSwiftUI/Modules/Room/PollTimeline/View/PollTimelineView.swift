@@ -39,23 +39,15 @@ struct PollTimelineView: View {
             Text(poll.question)
                 .font(theme.fonts.bodySB)
                 .foregroundColor(theme.colors.primaryContent) +
-            Text(editedText)
+                Text(editedText)
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.secondaryContent)
             
             VStack(spacing: 24.0) {
                 ForEach(poll.answerOptions) { answerOption in
-                    PollTimelineAnswerOptionButton(answerOption: answerOption,
-                                                   pollClosed: poll.closed,
-                                                   showResults: shouldDiscloseResults,
-                                                   totalAnswerCount: poll.totalAnswerCount) {
+                    PollTimelineAnswerOptionButton(poll: poll, answerOption: answerOption) {
                         viewModel.send(viewAction: .selectAnswerOptionWithIdentifier(answerOption.id))
                     }
-                }
-                .alert(isPresented: $viewModel.showsClosingFailureAlert) {
-                    Alert(title: Text(VectorL10n.pollTimelineNotClosedTitle),
-                          message: Text(VectorL10n.pollTimelineNotClosedSubtitle),
-                          dismissButton: .default(Text(VectorL10n.ok)))
                 }
             }
             .disabled(poll.closed)
@@ -64,14 +56,14 @@ struct PollTimelineView: View {
             Text(totalVotesString)
                 .font(theme.fonts.footnote)
                 .foregroundColor(theme.colors.tertiaryContent)
-                .alert(isPresented: $viewModel.showsAnsweringFailureAlert) {
-                    Alert(title: Text(VectorL10n.pollTimelineVoteNotRegisteredTitle),
-                          message: Text(VectorL10n.pollTimelineVoteNotRegisteredSubtitle),
-                          dismissButton: .default(Text(VectorL10n.ok)))
-                }
         }
         .padding([.horizontal, .top], 2.0)
         .padding([.bottom])
+        .alert(item: $viewModel.alertInfo) { info in
+            Alert(title: Text(info.title),
+                  message: Text(info.subtitle),
+                  dismissButton: .default(Text(VectorL10n.ok)))
+        }
     }
     
     private var totalVotesString: String {
@@ -89,23 +81,13 @@ struct PollTimelineView: View {
         case 0:
             return VectorL10n.pollTimelineTotalNoVotes
         case 1:
-            return (poll.hasCurrentUserVoted ?
+            return (poll.hasCurrentUserVoted || poll.type == .undisclosed ?
                         VectorL10n.pollTimelineTotalOneVote :
                         VectorL10n.pollTimelineTotalOneVoteNotVoted)
         default:
-            return (poll.hasCurrentUserVoted ?
+            return (poll.hasCurrentUserVoted || poll.type == .undisclosed ?
                         VectorL10n.pollTimelineTotalVotes(Int(poll.totalAnswerCount)) :
                         VectorL10n.pollTimelineTotalVotesNotVoted(Int(poll.totalAnswerCount)))
-        }
-    }
-    
-    private var shouldDiscloseResults: Bool {
-        let poll = viewModel.viewState.poll
-        
-        if poll.closed {
-            return poll.totalAnswerCount > 0
-        } else {
-            return poll.type == .disclosed && poll.totalAnswerCount > 0 && poll.hasCurrentUserVoted
         }
     }
     

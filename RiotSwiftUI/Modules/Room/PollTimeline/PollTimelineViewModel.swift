@@ -69,9 +69,13 @@ class PollTimelineViewModel: PollTimelineViewModelType {
         case .updateWithPoll(let poll):
             state.poll = poll
         case .showAnsweringFailure:
-            state.bindings.showsAnsweringFailureAlert = true
+            state.bindings.alertInfo = PollTimelineErrorAlertInfo(id: .failedSubmittingAnswer,
+                                                                  title: VectorL10n.pollTimelineVoteNotRegisteredTitle,
+                                                                  subtitle: VectorL10n.pollTimelineVoteNotRegisteredSubtitle)
         case .showClosingFailure:
-            state.bindings.showsClosingFailureAlert = true
+            state.bindings.alertInfo = PollTimelineErrorAlertInfo(id: .failedClosingPoll,
+                                                                  title: VectorL10n.pollTimelineNotClosedTitle,
+                                                                  subtitle: VectorL10n.pollTimelineNotClosedSubtitle)
         }
     }
     

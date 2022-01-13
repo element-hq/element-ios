@@ -37,6 +37,8 @@ struct PollEditForm: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 32.0) {
                         
+                        PollEditFormTypeView(selectedType: $viewModel.type)
+                        
                         VStack(alignment: .leading, spacing: 16.0) {
                             Text(VectorL10n.pollEditFormPollQuestionOrTopic)
                                 .font(theme.fonts.title3SB)
@@ -58,7 +60,7 @@ struct PollEditForm: View {
                             
                             ForEach(0..<viewModel.answerOptions.count, id: \.self) { index in
                                 SafeBindingCollectionEnumerator($viewModel.answerOptions, index: index) { binding in
-                                    AnswerOptionGroup(text: binding.text, index: index) {
+                                    PollEditFormAnswerOptionView(text: binding.text, index: index) {
                                         withAnimation(.easeInOut(duration: 0.2)) {
                                             viewModel.send(viewAction: .deleteAnswerOption(viewModel.answerOptions[index]))
                                         }
@@ -84,7 +86,8 @@ struct PollEditForm: View {
                             .disabled(!viewModel.viewState.confirmationButtonEnabled)
                         }
                     }
-                    .padding()
+                    .padding(.vertical, 24.0)
+                    .padding(.horizontal, 16.0)
                     .activityIndicator(show: viewModel.viewState.showLoadingIndicator)
                     .alert(item: $viewModel.alertInfo) { info in
                         Alert(title: Text(info.title),
@@ -119,40 +122,6 @@ struct PollEditForm: View {
         }
         .accentColor(theme.colors.accent)
         .navigationViewStyle(StackNavigationViewStyle())
-    }
-}
-
-@available(iOS 14.0, *)
-private struct AnswerOptionGroup: View {
-    
-    @Environment(\.theme) private var theme: ThemeSwiftUI
-    
-    @State private var focused = false
-    
-    @Binding var text: String
-    
-    let index: Int
-    let onDelete: () -> Void
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8.0) {
-            Text(VectorL10n.pollEditFormOptionNumber(index + 1))
-                .font(theme.fonts.subheadline)
-                .foregroundColor(theme.colors.primaryContent)
-            
-            HStack(spacing: 16.0) {
-                TextField(VectorL10n.pollEditFormInputPlaceholder, text: $text, onEditingChanged: { edit in
-                    self.focused = edit
-                })
-                .textFieldStyle(BorderedInputFieldStyle(theme: _theme, isEditing: focused))
-                Button {
-                    onDelete()
-                } label: {
-                    Image(uiImage:Asset.Images.pollDeleteOptionIcon.image)
-                }
-                .accessibilityIdentifier("Delete answer option")
-            }
-        }
     }
 }
 

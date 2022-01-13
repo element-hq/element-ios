@@ -37,7 +37,8 @@ class PollTimelineViewModelTests: XCTestCase {
                                         closed: false,
                                         totalAnswerCount: 3,
                                         type: .disclosed,
-                                        maxAllowedSelections: 1)
+                                        maxAllowedSelections: 1,
+                                        hasBeenEdited: false)
         
         viewModel = PollTimelineViewModel(timelinePoll: timelinePoll)
         context = viewModel.context

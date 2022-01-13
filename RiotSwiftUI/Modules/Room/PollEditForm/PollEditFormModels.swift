@@ -20,10 +20,10 @@ import Foundation
 import SwiftUI
 
 struct PollDetails {
+    let type: PollEditFormType
     let question: String
     let answerOptions: [String]
     let maxSelections: UInt = 1
-    let disclosed: Bool = true
 }
 
 enum PollEditFormMode {
@@ -49,6 +49,11 @@ enum PollEditFormViewModelResult {
     case cancel
     case create(PollDetails)
     case update(PollDetails)
+}
+
+enum PollEditFormType {
+    case disclosed
+    case undisclosed
 }
 
 struct PollEditFormQuestion {
@@ -93,6 +98,7 @@ struct PollEditFormViewState: BindableState {
 struct PollEditFormViewStateBindings {
     var question: PollEditFormQuestion
     var answerOptions: [PollEditFormAnswerOption]
+    var type: PollEditFormType
     
     var alertInfo: PollEditFormErrorAlertInfo?
 }

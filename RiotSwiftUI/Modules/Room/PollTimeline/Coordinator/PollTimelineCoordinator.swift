@@ -141,8 +141,15 @@ final class PollTimelineCoordinator: Coordinator, Presentable, PollAggregatorDel
                             answerOptions: answerOptions,
                             closed: poll.isClosed,
                             totalAnswerCount: poll.totalAnswerCount,
-                            type: (poll.kind == .disclosed ? .disclosed : .undisclosed),
+                            type: pollKindToTimelinePollType(poll.kind),
                             maxAllowedSelections: poll.maxAllowedSelections,
                             hasBeenEdited: poll.hasBeenEdited)
+    }
+    
+    private func pollKindToTimelinePollType(_ kind: PollKind) -> TimelinePollType {
+        let mapping = [PollKind.disclosed: TimelinePollType.disclosed,
+                       PollKind.undisclosed: TimelinePollType.undisclosed]
+        
+        return mapping[kind] ?? .disclosed
     }
 }

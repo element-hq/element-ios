@@ -28,10 +28,11 @@ class PollEditFormViewModelTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
     
     override func setUpWithError() throws {
-        viewModel = PollEditFormViewModel()
+        viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation,
+                                                                                      pollDetails: PollDetails(question: "", answerOptions: ["", ""])))
         context = viewModel.context
     }
-
+    
     func testInitialState() {
         XCTAssertTrue(context.question.text.isEmpty)
         XCTAssertFalse(context.viewState.confirmationButtonEnabled)
@@ -100,14 +101,14 @@ class PollEditFormViewModelTests: XCTestCase {
         let thirdAnswer = "        "
         
         viewModel.completion = { result in
-            if case PollEditFormViewModelResult.create(let resultQuestion, let resultAnswerOptions) = result {
-                XCTAssertEqual(question.trimmingCharacters(in: .whitespacesAndNewlines), resultQuestion)
+            if case PollEditFormViewModelResult.create(let result) = result {
+                XCTAssertEqual(question.trimmingCharacters(in: .whitespacesAndNewlines), result.question)
                 
                 // The last answer option should be automatically dropped as it's empty
-                XCTAssertEqual(resultAnswerOptions.count, 2)
+                XCTAssertEqual(result.answerOptions.count, 2)
                 
-                XCTAssertEqual(resultAnswerOptions[0], firstAnswer.trimmingCharacters(in: .whitespacesAndNewlines))
-                XCTAssertEqual(resultAnswerOptions[1], secondAnswer.trimmingCharacters(in: .whitespacesAndNewlines))
+                XCTAssertEqual(result.answerOptions[0], firstAnswer.trimmingCharacters(in: .whitespacesAndNewlines))
+                XCTAssertEqual(result.answerOptions[1], secondAnswer.trimmingCharacters(in: .whitespacesAndNewlines))
             }
         }
         

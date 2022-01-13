@@ -53,7 +53,8 @@ class PollEditFormViewModel: PollEditFormViewModelType {
             mode: parameters.mode,
             bindings: PollEditFormViewStateBindings(
                 question: PollEditFormQuestion(text: parameters.pollDetails.question, maxLength: Constants.maxQuestionLength),
-                answerOptions: parameters.pollDetails.answerOptions.map { PollEditFormAnswerOption(text: $0, maxLength: Constants.maxAnswerOptionLength) }
+                answerOptions: parameters.pollDetails.answerOptions.map { PollEditFormAnswerOption(text: $0, maxLength: Constants.maxAnswerOptionLength) },
+                type: parameters.pollDetails.type
             )
         )
         
@@ -111,7 +112,8 @@ class PollEditFormViewModel: PollEditFormViewModelType {
     // MARK: - Private
     
     private func buildPollDetails() -> PollDetails {
-        return PollDetails(question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
+        return PollDetails(type: state.bindings.type,
+                           question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
                            answerOptions: state.bindings.answerOptions.compactMap({ answerOption in
                             let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
                             return text.isEmpty ? nil : text

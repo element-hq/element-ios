@@ -21,8 +21,10 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 enum MockPollTimelineScreenState: MockScreenState, CaseIterable {
-    case open
-    case closed
+    case openDisclosed
+    case closedDisclosed
+    case openUndisclosed
+    case closedUndisclosed
     
     var screenType: Any.Type {
         MockPollTimelineScreenState.self
@@ -35,9 +37,9 @@ enum MockPollTimelineScreenState: MockScreenState, CaseIterable {
         
         let poll = TimelinePoll(question: "Question",
         answerOptions: answerOptions,
-        closed: (self == .closed ? true : false),
+        closed: (self == .closedDisclosed || self == .closedUndisclosed ? true : false),
         totalAnswerCount: 20,
-        type: .disclosed,
+        type: (self == .closedDisclosed || self == .openDisclosed ? .disclosed : .undisclosed),
         maxAllowedSelections: 1,
         hasBeenEdited: false)
         

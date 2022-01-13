@@ -25,10 +25,8 @@ struct PollTimelineAnswerOptionButton: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    let poll: TimelinePoll
     let answerOption: TimelineAnswerOption
-    let pollClosed: Bool
-    let showResults: Bool
-    let totalAnswerCount: UInt
     let action: () -> Void
     
     // MARK: Public
@@ -37,9 +35,10 @@ struct PollTimelineAnswerOptionButton: View {
         Button(action: action) {
             let rect = RoundedRectangle(cornerRadius: 4.0)
             answerOptionLabel
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 8.0)
                 .padding(.top, 12.0)
-                .padding(.bottom, 4.0)
+                .padding(.bottom, 12.0)
                 .clipShape(rect)
                 .overlay(rect.stroke(borderAccentColor, lineWidth: 1.0))
                 .accentColor(progressViewAccentColor)
@@ -50,7 +49,7 @@ struct PollTimelineAnswerOptionButton: View {
         VStack(alignment: .leading, spacing: 12.0) {
             HStack(alignment: .top, spacing: 8.0) {
                 
-                if !pollClosed {
+                if !poll.closed {
                     Image(uiImage: answerOption.selected ? Asset.Images.pollCheckboxSelected.image : Asset.Images.pollCheckboxDefault.image)
                 }
                 
@@ -58,30 +57,31 @@ struct PollTimelineAnswerOptionButton: View {
                     .font(theme.fonts.body)
                     .foregroundColor(theme.colors.primaryContent)
                 
-                if pollClosed && answerOption.winner {
+                if poll.closed && answerOption.winner {
                     Spacer()
                     Image(uiImage: Asset.Images.pollWinnerIcon.image)
                 }
             }
             
-            HStack {
-                ProgressView(value: Double(showResults ? answerOption.count : 0),
-                             total: Double(totalAnswerCount))
-                    .progressViewStyle(LinearProgressViewStyle())
-                    .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
-                    .padding(.vertical, 8.0)
-                
-                if (showResults) {
-                    Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
-                        .font(theme.fonts.footnote)
-                        .foregroundColor(pollClosed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
+            if poll.type == .disclosed || poll.closed {
+                HStack {
+                    ProgressView(value: Double(shouldDiscloseResults ? answerOption.count : 0),
+                                 total: Double(poll.totalAnswerCount))
+                        .progressViewStyle(LinearProgressViewStyle())
+                        .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
+                    
+                    if (shouldDiscloseResults) {
+                        Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
+                            .font(theme.fonts.footnote)
+                            .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
+                    }
                 }
             }
         }
     }
     
     var borderAccentColor: Color {
-        guard !pollClosed else {
+        guard !poll.closed else {
             return (answerOption.winner ? theme.colors.accent : theme.colors.quinaryContent)
         }
         
@@ -89,67 +89,77 @@ struct PollTimelineAnswerOptionButton: View {
     }
     
     var progressViewAccentColor: Color {
-        guard !pollClosed else {
+        guard !poll.closed else {
             return (answerOption.winner ? theme.colors.accent : theme.colors.quarterlyContent)
         }
         
         return answerOption.selected ? theme.colors.accent : theme.colors.quarterlyContent
+    }
+    
+    private var shouldDiscloseResults: Bool {
+        if poll.closed {
+            return poll.totalAnswerCount > 0
+        } else {
+            return poll.type == .disclosed && poll.totalAnswerCount > 0 && poll.hasCurrentUserVoted
+        }
     }
 }
 
 @available(iOS 14.0, *)
 struct PollTimelineAnswerOptionButton_Previews: PreviewProvider {
     static let stateRenderer = MockPollTimelineScreenState.stateRenderer
+    
     static var previews: some View {
-        
         Group {
-            VStack {
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 5, winner: false, selected: false),
-                                               pollClosed: false, showResults: true, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 5, winner: false, selected: false),
-                                               pollClosed: false, showResults: false, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 8, winner: false, selected: true),
-                                               pollClosed: false, showResults: true, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 8, winner: false, selected: true),
-                                               pollClosed: false, showResults: false, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "",
-                                                                                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                                                                                  count: 200, winner: false, selected: false),
-                                               pollClosed: false, showResults: true, totalAnswerCount: 1000, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "",
-                                                                                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                                                                                  count: 200, winner: false, selected: false),
-                                               pollClosed: false, showResults: false, totalAnswerCount: 1000, action: {})
-            }
+            let pollTypes: [TimelinePollType] = [.disclosed, .undisclosed]
             
-            VStack {
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 5, winner: false, selected: false),
-                                               pollClosed: true, showResults: true, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 5, winner: true, selected: false),
-                                               pollClosed: true, showResults: true, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 8, winner: false, selected: true),
-                                               pollClosed: true, showResults: true, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "", text: "Test", count: 8, winner: true, selected: true),
-                                               pollClosed: true, showResults: true, totalAnswerCount: 100, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "",
-                                                                                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                                                                                  count: 200, winner: false, selected: false),
-                                               pollClosed: true, showResults: true, totalAnswerCount: 1000, action: {})
-                
-                PollTimelineAnswerOptionButton(answerOption: TimelineAnswerOption(id: "",
-                                                                                  text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                                                                                  count: 200, winner: true, selected: false),
-                                               pollClosed: true, showResults: true, totalAnswerCount: 1000, action: {})
+            ForEach(pollTypes, id: \.self) { type in
+                VStack {
+                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: false, type: type),
+                                                   answerOption: buildAnswerOption(selected: false),
+                                                   action: {})
+                    
+                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: false, type: type),
+                                                   answerOption: buildAnswerOption(selected: true),
+                                                   action: {})
+                    
+                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                                                   answerOption: buildAnswerOption(selected: false, winner: false),
+                                                   action: {})
+
+                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                                                   answerOption: buildAnswerOption(selected: false, winner: true),
+                                                   action: {})
+
+                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                                                   answerOption: buildAnswerOption(selected: true, winner: false),
+                                                   action: {})
+
+                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                                                   answerOption: buildAnswerOption(selected: true, winner: true),
+                                                   action: {})
+
+                    let longText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+
+                    PollTimelineAnswerOptionButton(poll: buildPoll(closed: true, type: type),
+                                                   answerOption: buildAnswerOption(text: longText, selected: true, winner: true),
+                                                   action: {})
+                }
             }
         }
+    }
+    
+    static func buildPoll(closed: Bool, type: TimelinePollType) -> TimelinePoll {
+        TimelinePoll(question: "",
+                     answerOptions: [],
+                     closed: closed,
+                     totalAnswerCount: 100,
+                     type: type,
+                     maxAllowedSelections: 1,
+                     hasBeenEdited: false)
+    }
+    
+    static func buildAnswerOption(text: String = "Test", selected: Bool, winner: Bool = false) -> TimelineAnswerOption {
+        TimelineAnswerOption(id: "1", text: text, count: 5, winner: winner, selected: selected)
     }
 }
