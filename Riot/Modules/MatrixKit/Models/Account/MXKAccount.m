@@ -36,6 +36,8 @@
 
 #import "MXKSwiftHeader.h"
 
+#import "GeneratedInterface-Swift.h"
+
 NSString *const kMXKAccountUserInfoDidChangeNotification = @"kMXKAccountUserInfoDidChangeNotification";
 NSString *const kMXKAccountAPNSActivityDidChangeNotification = @"kMXKAccountAPNSActivityDidChangeNotification";
 NSString *const kMXKAccountPushKitActivityDidChangeNotification = @"kMXKAccountPushKitActivityDidChangeNotification";
@@ -1700,17 +1702,18 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
     
     } andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
         [MXKAccountManager.sharedManager readAndWriteCredentials:handler];
-    } andUnauthenticatedHandler:^(MXError *error, void (^completion)(void)) {
+    } andUnauthenticatedHandler:^(MXError *error, BOOL isSoftLogout, BOOL isRefreshTokenAuth, void (^completion)(void)) {
         MXStrongifyAndReturnIfNil(self);
-        [self handleUnauthenticated:error andCompletion:completion];
+        [self handleUnauthenticatedWithError:error isSoftLogout:isSoftLogout isRefreshTokenAuth:isRefreshTokenAuth andCompletion:completion];
     }];
 }
 
-
-- (void)handleUnauthenticated:(MXError *)error andCompletion:(void (^)(void))completion
+- (void)handleUnauthenticatedWithError:(MXError *)error isSoftLogout:(BOOL)isSoftLogout isRefreshTokenAuth:(BOOL)isRefreshTokenAuth andCompletion:(void (^)(void))completion
 {
-    if (error.httpResponse.statusCode == 401
-        && [error.userInfo[kMXErrorSoftLogoutKey] isEqual:@(YES)])
+    
+    [Analytics.shared trackAuthUnauthenticatedErrorWithSoftLogout:isSoftLogout refreshTokenAuth:isRefreshTokenAuth errorCode:error.errcode errorReason:error.error];
+    MXLogDebug(@"[MXKAccountManager] handleUnauthenticated: trackAuthUnauthenticatedErrorWithSoftLogout sent");
+    if (isSoftLogout)
     {
         MXLogDebug(@"[MXKAccountManager] handleUnauthenticated: soft logout.");
         [[MXKAccountManager sharedManager] softLogout:self];

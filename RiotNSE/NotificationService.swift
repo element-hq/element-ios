@@ -58,8 +58,8 @@ class NotificationService: UNNotificationServiceExtension {
         }
         let restClient = MXRestClient(credentials: userAccount.mxCredentials, unrecognizedCertificateHandler: nil, persistentTokenDataHandler: { persistTokenDataHandler in
             MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
-        }, unauthenticatedHandler: { error, completion in
-            userAccount.handleUnauthenticated(error, andCompletion: completion)
+        }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
+            userAccount.handleUnauthenticatedWithError(error, isSoftLogout: softLogout, isRefreshTokenAuth: refreshTokenAuth, andCompletion: completion)
         })
         return restClient
     }()
@@ -96,6 +96,8 @@ class NotificationService: UNNotificationServiceExtension {
         
         //  log memory at the beginning of the process
         logMemory()
+        
+        setupAnalytics()
         
         UNUserNotificationCenter.current().removeUnwantedNotifications()
         
@@ -170,6 +172,13 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
+    private func setupAnalytics(){
+        // Configure our analytics. It will start if the option is enabled
+        let analytics = Analytics.shared
+        MXSDKOptions.sharedInstance().analyticsDelegate = analytics
+        analytics.startIfEnabled()
+    }
+    
     private func setup(withRoomId roomId: String, eventId: String, completion: @escaping () -> Void) {
         MXKAccountManager.sharedManager(withReload: true)
         self.userAccount = MXKAccountManager.shared()?.activeAccounts.first
@@ -180,8 +189,8 @@ class NotificationService: UNNotificationServiceExtension {
                     self.logMemory()
                     NotificationService.backgroundSyncService = MXBackgroundSyncService(withCredentials: userAccount.mxCredentials, persistTokenDataHandler: { persistTokenDataHandler in
                         MXKAccountManager.shared().readAndWriteCredentials(persistTokenDataHandler)
-                    }, unauthenticatedHandler: { error, completion in
-                        userAccount.handleUnauthenticated(error, andCompletion: completion)
+                    }, unauthenticatedHandler: { error, softLogout, refreshTokenAuth, completion in
+                        userAccount.handleUnauthenticatedWithError(error, isSoftLogout: softLogout, isRefreshTokenAuth: refreshTokenAuth, andCompletion: completion)
                     })
                     MXLog.debug("[NotificationService] setup: MXBackgroundSyncService init: AFTER")
                     self.logMemory()

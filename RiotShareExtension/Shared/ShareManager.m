@@ -81,9 +81,9 @@
     MXWeakify(self);
     MXRestClient *restClient = [[MXRestClient alloc] initWithCredentials:self.userAccount.mxCredentials andOnUnrecognizedCertificateBlock:nil andPersistentTokenDataHandler:^(void (^handler)(NSArray<MXCredentials *> *credentials, void (^completion)(BOOL didUpdateCredentials))) {
         [[MXKAccountManager sharedManager] readAndWriteCredentials:handler];
-    } andUnauthenticatedHandler:^(MXError *error, void (^completion)(void)) {
+    } andUnauthenticatedHandler:^(MXError *error, BOOL isSoftLogout, BOOL isRefreshTokenAuth, void (^completion)(void)) {
         MXStrongifyAndReturnIfNil(self);
-        [self.userAccount handleUnauthenticated:error andCompletion:completion];
+        [self.userAccount handleUnauthenticatedWithError:error isSoftLogout:isSoftLogout isRefreshTokenAuth:isRefreshTokenAuth andCompletion:completion];
     }];
     MXSession *session = [[MXSession alloc] initWithMatrixRestClient:restClient];
     [MXFileStore setPreloadOptions:0];

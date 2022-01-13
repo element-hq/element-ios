@@ -362,5 +362,5 @@ typedef BOOL (^MXKAccountOnCertificateChange)(MXKAccount *mxAccount, NSData *cer
 /**
  Handle unauthenticated errors from  the server triggering hard/soft logouts as appropriate.
  */
-- (void)handleUnauthenticated:(MXError *)error andCompletion:(void (^)(void))completion;
+- (void)handleUnauthenticatedWithError:(MXError *)error isSoftLogout:(BOOL)isSoftLogout isRefreshTokenAuth:(BOOL)isRefreshTokenAuth andCompletion:(void (^)(void))completion;
 @end

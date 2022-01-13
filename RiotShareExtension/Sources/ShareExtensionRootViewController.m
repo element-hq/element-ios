@@ -52,6 +52,10 @@
     
     [MXLog configure:configuration];
 
+    // Configure our analytics. It will start if the option is enabled
+    Analytics *analytics = Analytics.shared;
+    [MXSDKOptions sharedInstance].analyticsDelegate = analytics;
+    [analytics startIfEnabled];
     
     [ThemeService.shared setThemeId:RiotSettings.shared.userInterfaceTheme];
     

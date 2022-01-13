@@ -83,7 +83,7 @@ import AnalyticsEvents
         
         // Catch and log crashes
         MXLogger.logCrashes(true)
-        MXLogger.setBuildVersion(AppDelegate.theDelegate().build)
+        MXLogger.setBuildVersion(AppInfo.current.buildInfo.readableBuildVersion)
     }
     
     /// Use the analytics settings from the supplied session to configure analytics.
@@ -198,6 +198,16 @@ extension Analytics {
             let event = AnalyticsEvent.Error(context: nil, domain: .E2EE, name: reason.errorName)
             capture(event: event)
         }
+    }
+    
+    /// Track when a user becomes unauthenticated without pressing the `sign out` button.
+    /// - Parameters:
+    ///   - reason: The error that occurred.
+    ///   - count: The number of times that error occurred.
+    func trackAuthUnauthenticatedError(softLogout: Bool, refreshTokenAuth: Bool, errorCode: String, errorReason: String) {
+        let errorCode = AnalyticsEvent.UnauthenticatedError.ErrorCode(rawValue: errorCode) ?? .M_UNKNOWN
+        let event = AnalyticsEvent.UnauthenticatedError(errorCode: errorCode, errorReason: errorReason, refreshTokenAuth: refreshTokenAuth, softLogout: softLogout)
+        client.capture(event)
     }
     
     /// Track whether the user accepted or declined the terms to an identity server.

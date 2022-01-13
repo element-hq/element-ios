@@ -62,6 +62,8 @@ targets:
     - path: ../Riot/Managers/Widgets/WidgetConstants.m
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
     - path: ../Riot/Modules/MatrixKit
+    - path: ../Riot/Modules/Analytics
+    - path: ../Riot/Managers/AppInfo/
       excludes:
         - "**/*.md" # excludes all files with the .md extension
     - path: ../Riot/Generated/MatrixKitStrings.swift

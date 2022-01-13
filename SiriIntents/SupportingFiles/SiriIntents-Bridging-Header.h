@@ -15,3 +15,4 @@
 //
 
 #import "MatrixKit-Bridging-Header.h"
+#import "BuildInfo.h"
