@@ -505,3 +505,4 @@
 "attachment_unsupported_preview_title" = "Vorschau kann nicht angezeigt werden";
 "auth_reset_password_error_unauthorized" = "Nicht Authorisiert";
 "message_reply_to_sender_sent_their_location" = "hat den eigenen Standort geteilt.";
+"room_displayname_all_other_members_left" = "%@ (Verlassen)";
