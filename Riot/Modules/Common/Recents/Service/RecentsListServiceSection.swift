@@ -14,16 +14,15 @@
 // limitations under the License.
 //
 
-import MatrixSDK
+import Foundation
 
-@objcMembers
-public class MockRoomListData: MXRoomListData {
-    
-    public init(withRooms rooms: [MXRoomSummaryProtocol]) {
-        super.init(rooms: rooms,
-                   counts: MXStoreRoomListDataCounts(withRooms: rooms,
-                                                     total: nil),
-                   paginationOptions: .none)
-    }
-    
+@objc
+public enum RecentsListServiceSection: Int {
+    case invited
+    case favorited
+    case people
+    case conversation
+    case lowPriority
+    case serverNotice
+    case suggested
 }
