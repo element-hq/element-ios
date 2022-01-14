@@ -189,7 +189,7 @@ CHECKOUT OPTIONS:
     :commit: 8058dc6ec07ce0acfe5fdb19eb7e309b0c13845c
     :git: https://github.com/matrix-org/matrix-analytics-events.git
   MatrixSDK:
-    :commit: 7da1e08534dc6784dff80923ef475c2b86f6e289
+    :commit: 634b47c943a786db44d8beb04a4365a00b126901
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
