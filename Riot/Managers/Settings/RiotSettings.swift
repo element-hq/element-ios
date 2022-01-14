@@ -194,6 +194,9 @@ final class RiotSettings: NSObject {
     @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
     var roomScreenShowsURLPreviews
     
+    @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.roomScreenEnableMessageBubblesByDefault, storage: defaults)
+    var roomScreenEnableMessageBubbles
+    
     // MARK: - Room Contextual Menu
     
     @UserDefault(key: "roomContextualMenuShowMoreOptionForMessages", defaultValue: BuildSettings.roomContextualMenuShowMoreOptionForMessages, storage: defaults)

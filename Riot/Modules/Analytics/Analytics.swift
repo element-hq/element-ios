@@ -19,6 +19,16 @@ import AnalyticsEvents
 
 /// A class responsible for managing an analytics client
 /// and sending events through this client.
+///
+/// ## Creating Analytics Events
+///
+/// Events are managed in a shared repo for all Element clients https://github.com/matrix-org/matrix-analytics-events
+/// To add a new event create a PR to that repo with the new/updated schema.
+/// Once merged into `main`, follow the steps below to integrate the changes into the project:
+/// 1. Merge `main` into the `release/swift` branch.
+/// 2. Run `bundle exec pod update AnalyticsEvents` to update the pod.
+/// 3. Make sure to commit `Podfile.lock` with the new commit hash.
+///
 @objcMembers class Analytics: NSObject {
     
     // MARK: - Properties
