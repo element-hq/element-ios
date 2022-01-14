@@ -196,7 +196,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
         let firstEventId = firstComponent.event.eventId
         let firstMessageTopPosition = cell.topPosition(ofEvent: firstEventId)
             
-        let additionalContentHeight = roomBubbleCellData.additionalHeight(forEvent: lastEventId)
+        let additionalContentHeight = roomBubbleCellData.additionalContentHeight
                 
         bubbleHeight = lastMessageBottomPosition - firstMessageTopPosition - additionalContentHeight + bottomMargin
         
