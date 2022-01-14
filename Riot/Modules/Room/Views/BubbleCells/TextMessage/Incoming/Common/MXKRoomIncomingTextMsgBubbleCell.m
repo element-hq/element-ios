@@ -23,10 +23,8 @@
 - (void)setupViews
 {
     RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
-
-    id <RoomTimelineStyle> currentStyle = timelineConfiguration.currentStyle;
     
-    [currentStyle.cellLayoutUpdater setupLayoutForIncomingMessageCell:self];
+    [timelineConfiguration.currentStyle.cellLayoutUpdater setupLayoutForIncomingTextMessageCell:self];
 }
 
 @end
