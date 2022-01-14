@@ -1595,3 +1595,16 @@
 
 "location_sharing_title" = "Vendndodhje";
 "ok" = "OK";
+"settings_enable_room_message_bubbles" = "Flluska mesazhesh";
+"onboarding_splash_page_4_message" = "Element-i është gjithashtu i goditur për në punë. Është i besuar nga entet më të sigurta të botës.";
+"onboarding_splash_page_4_title_no_pun" = "Shkëmbim mesazhesh për ekipin tuaj.";
+"onboarding_splash_page_3_message" = "I fshehtëzuar skaj më skaj dhe pa u dashur numër telefoni. Pa reklama, apo shfrytëzim të dhënash.";
+"onboarding_splash_page_3_title" = "Shkëmbim i sigurt mesazhesh.";
+"onboarding_splash_page_2_message" = "Zgjidhni ku mbahen bisedat tuaja, duke ju dhënë kontroll dhe pavarësi. Të lidhur përmes Matrix-i.";
+"onboarding_splash_page_2_title" = "Kontrollin e keni ju.";
+"onboarding_splash_page_1_message" = "Komunikim i sigurt dhe i pavarur, që ju jep të njëjtën shkallë privatësie si biseda kokë më kokë, në shtëpinë tuaj.";
+"onboarding_splash_page_1_title" = "Jini zot i bisedave tuaja.";
+"onboarding_splash_login_button_title" = "Kam tashmë një llogari";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Krijoni llogari";
