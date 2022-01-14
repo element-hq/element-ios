@@ -478,3 +478,4 @@
 "rename" = "Rinomina";
 "attachment_unsupported_preview_message" = "Questo tipo di file non è supportato.";
 "attachment_unsupported_preview_title" = "Anteprima non disponibile";
+"message_reply_to_sender_sent_their_location" = "ha condiviso la sua posizione.";
