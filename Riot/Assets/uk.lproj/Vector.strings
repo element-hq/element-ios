@@ -1718,3 +1718,16 @@
 
 "location_sharing_title" = "Місцеперебування";
 "ok" = "Гаразд";
+"settings_enable_room_message_bubbles" = "Бульбашки повідомлень";
+"onboarding_splash_page_4_message" = "Елемент також чудово підходить для роботи. Йому довіряють найбезпечніші організації світу.";
+"onboarding_splash_page_4_title_no_pun" = "Спілкування зі своєю командою.";
+"onboarding_splash_page_3_message" = "Наскрізне шифрування та відсутність потреби у телефонному номері. Без реклами чи аналізу даних.";
+"onboarding_splash_page_3_title" = "Безпечне спілкування.";
+"onboarding_splash_page_2_message" = "Оберіть, де зберігати ваші бесіди, що дасть вам контроль і незалежність. Спілкуйтеся через Matrix.";
+"onboarding_splash_page_2_title" = "Ви контролюєте все.";
+"onboarding_splash_page_1_message" = "Безпечне та незалежне спілкування, яке дає вам такий же рівень приватності як особиста розмова у вашому власному домі.";
+"onboarding_splash_page_1_title" = "Будьте господарем свого спілкування.";
+"onboarding_splash_login_button_title" = "У мене вже є обліковий запис";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Створити обліковий запис";
