@@ -717,9 +717,18 @@ const CGFloat kTypingCellHeight = 24;
         {
             [bubbleCell updateTickViewWithFailedEventIds:self.failedEventIds];
         }
+        
+        [self updateCellLayoutIfNeeded:bubbleCell withCellData:cellData];
     }
 
     return cell;
+}
+
+- (void)updateCellLayoutIfNeeded:(MXKRoomBubbleTableViewCell*)cell withCellData:(MXKRoomBubbleCellData*)cellData {
+    
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+    
+    [timelineConfiguration.currentStyle.cellLayoutUpdater updateLayoutIfNeededFor:cell andCellData:cellData];
 }
 
 - (RoomBubbleCellData*)roomBubbleCellDataForEventId:(NSString*)eventId
