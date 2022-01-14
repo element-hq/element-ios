@@ -1471,7 +1471,7 @@
 "space_private_join_rule" = "Hapësirë private";
 "space_participants_action_ban" = "Dëboje prej kësaj hapësire";
 "space_participants_action_remove" = "Hiqe prej kësaj hapësire";
-"spaces_coming_soon_detail" = "Kjo veçori s’është sendërtuar këtu, por po bëhet. Tani për tani, mund ta bëni këtë me Element-in në kompjuterin tuaj.";
+"spaces_coming_soon_detail" = "Kjo veçori s’është sendërtuar këtu, por po bëhet. Tani për tani, mund ta bëni këtë me %@-in në kompjuterin tuaj.";
 "spaces_invites_coming_soon_title" = "Ftesat vijnë së shpejti";
 "spaces_add_rooms_coming_soon_title" = "Shtimi i dhomave vjen së shpejti";
 "spaces_coming_soon_title" = "S’afërmi";
@@ -1565,7 +1565,7 @@
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Mund të lexoni krejt kushtet tona %@.";
 "analytics_prompt_message_upgrade" = "Keni pranuar më herët të ndani me ne të dhëna anonime përdorimi. Tani, që të na ndihmoni të kuptojmë se si njerëzit përdorin pajisje të shumta, do të prodhojmë një identifikues kuturu, të përbashkët për pajisjet tuaja.";
-"analytics_prompt_message_new_user" = "Ndihmonani të identifikojmë probleme dhe të përmirësojmë Element-in, duke ndarë me ne të dhëna anonime përdorimi. Për të kuptuar se si i përdorin njerëzit disa pajisje njëherësh, do të prodhojmë një identifikues kuturu, të përbashkët për pajisjet tuaja.";
+"analytics_prompt_message_new_user" = "Ndihmonani të identifikojmë probleme dhe të përmirësojmë %@-in, duke ndarë me ne të dhëna anonime përdorimi. Për të kuptuar se si i përdorin njerëzit disa pajisje njëherësh, do të prodhojmë një identifikues kuturu, të përbashkët për pajisjet tuaja.";
 
 // Analytics
 "analytics_prompt_title" = "Ndihmoni të përmirësohet %@";
@@ -1579,3 +1579,19 @@
 "accessibility_button_label" = "kopsë";
 "open" = "Hapur";
 "enable" = "Aktivizoje";
+"location_sharing_settings_toggle_title" = "Aktivizoni tregim vendndodhjeje";
+"location_sharing_settings_header" = "Tregim vendndodhjeje";
+"location_sharing_open_google_maps" = "Hape në Google Maps";
+"location_sharing_open_apple_maps" = "Hape në Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Rregullime";
+"location_sharing_invalid_authorization_not_now" = "Jo tani";
+"location_sharing_locating_user_error_title" = "%@ s’njohu dot vendndodhjen tuaj. Ju lutemi, riprovoni më vonë.";
+"location_sharing_invalid_authorization_error_title" = "%@ s’ka leje të njohë vendndodhjen tuaj. Njohjen mund ta lejoni që nga Rregullime > Vendndodhje";
+"location_sharing_loading_map_error_title" = "%@ s’ngarkoi dot hartën. Ju lutemi, riprovoni më vonë.";
+"location_sharing_share_action" = "Ndajeni me të tjerë";
+"location_sharing_close_action" = "Mbylle";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Vendndodhje";
+"ok" = "OK";

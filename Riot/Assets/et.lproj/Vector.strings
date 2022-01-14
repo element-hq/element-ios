@@ -1420,7 +1420,7 @@
 "space_private_join_rule" = "Privaatne kogukond";
 "space_participants_action_ban" = "Sea selles kogukonnakeskus suhtluskeeld";
 "space_participants_action_remove" = "Eemalda sellest kogukonnakeskusest";
-"spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha Element'i töölauarakenduses.";
+"spaces_coming_soon_detail" = "See funktsionaalsus pole siin rakenduses hetkel veel saadaval, aga üsna varsti saab olema. Seni saad sa seda toimingut teha %@'i töölauarakenduses.";
 "spaces_invites_coming_soon_title" = "Varsti lisandub kutsete saatmine";
 "spaces_add_rooms_coming_soon_title" = "Varsti on jututubade lisamine võimalik";
 "spaces_coming_soon_title" = "Mõne aja pärast on meil uuendusi";
@@ -1520,10 +1520,26 @@
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Meie kasutustingimused leiad %@.";
 "analytics_prompt_message_upgrade" = "Sa oled varem nõustunud meiega anonüümsete andmete jagamisega. Selleks, et mõistaksime, kuidas kasutajad erinevaid seadmeid pruugivad, me loome sinu seadmetele ühise juhusliku tunnuse.";
-"analytics_prompt_message_new_user" = "Võimalike vigade leidmiseks ja Element'i arendamiseks jaga meiega anonüümseid andmeid. Selleks, et mõistaksime, kuidas kasutajad erinevaid seadmeid pruugivad me loome sinu seadmetele ühise juhusliku tunnuse.";
+"analytics_prompt_message_new_user" = "Võimalike vigade leidmiseks ja %@'i arendamiseks jaga meiega anonüümseid andmeid. Selleks, et mõistaksime, kuidas kasutajad erinevaid seadmeid pruugivad, me loome sinu seadmetele ühise juhusliku tunnuse.";
 
 // Analytics
 "analytics_prompt_title" = "Aita arendada %@ rakendust";
 "settings_analytics_and_crash_data" = "Saada rakenduse vigade ja analüütika andmeid";
 "accessibility_button_label" = "nupp";
 "enable" = "Võta kasutusele";
+"location_sharing_settings_toggle_title" = "Luba asukohta jagada";
+"location_sharing_settings_header" = "Asukoha jagamine";
+"location_sharing_open_google_maps" = "Ava rakendusega Google Maps";
+"location_sharing_open_apple_maps" = "Ava rakendusega Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Seadistused";
+"location_sharing_invalid_authorization_not_now" = "Mitte praegu";
+"location_sharing_invalid_authorization_error_title" = "%@ vajab asukoha määramiseks õigusi, mida saad määrata Seadistused > Asukoht valikust";
+"location_sharing_locating_user_error_title" = "%@ ei saanud asukohta tuvastada. Palun proovi hiljem uuesti.";
+"location_sharing_loading_map_error_title" = "%@ ei saanud kaarti avada. Palun proovi hiljem uuesti.";
+"location_sharing_share_action" = "Jaga";
+"location_sharing_close_action" = "Sulge";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Asukoht";
+"ok" = "Sobib";
