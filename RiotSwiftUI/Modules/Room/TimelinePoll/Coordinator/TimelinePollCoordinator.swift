@@ -52,7 +52,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
         try pollAggregator = PollAggregator(session: parameters.session, room: parameters.room, pollStartEventId: parameters.pollStartEvent.eventId)
         pollAggregator.delegate = self
         
-        viewModel = TimelinePollViewModel(timelinePoll: buildTimelinePollFrom(pollAggregator.poll))
+        viewModel = TimelinePollViewModel(timelinePollDetails: buildTimelinePollFrom(pollAggregator.poll))
         viewModel.callback = { [weak self] result in
             guard let self = self else { return }
             
@@ -95,7 +95,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     }
     
     func canEditPoll() -> Bool {
-        return (pollAggregator.poll.isClosed == false && pollAggregator.poll.totalAnswerCount == 0)
+        return pollAggregator.poll.isClosed == false && pollAggregator.poll.totalAnswerCount == 0
     }
     
     func endPoll() {
@@ -126,7 +126,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     
     // PollProtocol is intentionally not available in the SwiftUI target as we don't want
     // to add the SDK as a dependency to it. We need to translate from one to the other on this level.
-    func buildTimelinePollFrom(_ poll: PollProtocol) -> TimelinePoll {
+    func buildTimelinePollFrom(_ poll: PollProtocol) -> TimelinePollDetails {
         let answerOptions = poll.answerOptions.map { pollAnswerOption in
             TimelinePollAnswerOption(id: pollAnswerOption.id,
                                  text: pollAnswerOption.text,
@@ -135,7 +135,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
                                  selected: pollAnswerOption.isCurrentUserSelection)
         }
         
-        return TimelinePoll(question: poll.text,
+        return TimelinePollDetails(question: poll.text,
                             answerOptions: answerOptions,
                             closed: poll.isClosed,
                             totalAnswerCount: poll.totalAnswerCount,

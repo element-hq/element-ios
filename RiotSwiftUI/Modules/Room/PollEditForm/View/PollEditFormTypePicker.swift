@@ -17,28 +17,28 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct PollEditFormTypeView: View {
+struct PollEditFormTypePicker: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @Binding var selectedType: PollEditFormType
+    @Binding var selectedType: EditFormPollType
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16.0) {
             Text(VectorL10n.pollEditFormPollType)
                 .font(theme.fonts.title3SB)
                 .foregroundColor(theme.colors.primaryContent)
-            PollTypeViewButton(type: .disclosed, selectedType: $selectedType)
-            PollTypeViewButton(type: .undisclosed, selectedType: $selectedType)
+            PollEditFormTypeButton(type: .disclosed, selectedType: $selectedType)
+            PollEditFormTypeButton(type: .undisclosed, selectedType: $selectedType)
         }
     }
 }
 
 @available(iOS 14.0, *)
-private struct PollTypeViewButton: View {
+private struct PollEditFormTypeButton: View {
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    var type: PollEditFormType
-    @Binding var selectedType: PollEditFormType
+    let type: EditFormPollType
+    @Binding var selectedType: EditFormPollType
     
     var body: some View {
         Button {
@@ -46,11 +46,7 @@ private struct PollTypeViewButton: View {
         } label: {
             HStack(alignment: .top, spacing: 8.0) {
                 
-                if type == selectedType {
-                    Image(uiImage: Asset.Images.pollTypeCheckboxSelected.image)
-                } else {
-                    Image(uiImage: Asset.Images.pollTypeCheckboxDefault.image)
-                }
+                Image(uiImage: selectionImage)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
@@ -81,14 +77,22 @@ private struct PollTypeViewButton: View {
             return VectorL10n.pollEditFormPollTypeClosedDescription
         }
     }
+    
+    private var selectionImage: UIImage {
+        if type == selectedType {
+            return Asset.Images.pollTypeCheckboxSelected.image
+        } else {
+            return Asset.Images.pollTypeCheckboxDefault.image
+        }
+    }
 }
 
 @available(iOS 14.0, *)
-struct PollEditFormTypeView_Previews: PreviewProvider {
+struct PollEditFormTypePicker_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            PollEditFormTypeView(selectedType: Binding.constant(.disclosed))
-            PollEditFormTypeView(selectedType: Binding.constant(.undisclosed))
+            PollEditFormTypePicker(selectedType: Binding.constant(.disclosed))
+            PollEditFormTypePicker(selectedType: Binding.constant(.undisclosed))
         }
     }
 }

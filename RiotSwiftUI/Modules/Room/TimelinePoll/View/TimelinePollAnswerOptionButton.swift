@@ -25,7 +25,7 @@ struct TimelinePollAnswerOptionButton: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    let poll: TimelinePoll
+    let poll: TimelinePollDetails
     let answerOption: TimelinePollAnswerOption
     let action: () -> Void
     
@@ -65,12 +65,12 @@ struct TimelinePollAnswerOptionButton: View {
             
             if poll.type == .disclosed || poll.closed {
                 HStack {
-                    ProgressView(value: Double(shouldDiscloseResults ? answerOption.count : 0),
+                    ProgressView(value: Double(poll.shouldDiscloseResults ? answerOption.count : 0),
                                  total: Double(poll.totalAnswerCount))
                         .progressViewStyle(LinearProgressViewStyle())
                         .scaleEffect(x: 1.0, y: 1.2, anchor: .center)
                     
-                    if (shouldDiscloseResults) {
+                    if (poll.shouldDiscloseResults) {
                         Text(answerOption.count == 1 ? VectorL10n.pollTimelineOneVote : VectorL10n.pollTimelineVotesCount(Int(answerOption.count)))
                             .font(theme.fonts.footnote)
                             .foregroundColor(poll.closed && answerOption.winner ? theme.colors.accent : theme.colors.secondaryContent)
@@ -94,14 +94,6 @@ struct TimelinePollAnswerOptionButton: View {
         }
         
         return answerOption.selected ? theme.colors.accent : theme.colors.quarterlyContent
-    }
-    
-    private var shouldDiscloseResults: Bool {
-        if poll.closed {
-            return poll.totalAnswerCount > 0
-        } else {
-            return poll.type == .disclosed && poll.totalAnswerCount > 0 && poll.hasCurrentUserVoted
-        }
     }
 }
 
@@ -149,8 +141,8 @@ struct TimelinePollAnswerOptionButton_Previews: PreviewProvider {
         }
     }
     
-    static func buildPoll(closed: Bool, type: TimelinePollType) -> TimelinePoll {
-        TimelinePoll(question: "",
+    static func buildPoll(closed: Bool, type: TimelinePollType) -> TimelinePollDetails {
+        TimelinePollDetails(question: "",
                      answerOptions: [],
                      closed: closed,
                      totalAnswerCount: 100,

@@ -26,8 +26,7 @@ class PollEditFormViewModelTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
     
     override func setUpWithError() throws {
-        viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation,
-                                                                                      pollDetails: PollDetails(type: .disclosed, question: "", answerOptions: ["", ""])))
+        viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation, pollDetails: .default))
         context = viewModel.context
     }
     

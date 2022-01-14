@@ -34,8 +34,8 @@ class TimelinePollViewModel: TimelinePollViewModelType {
     
     // MARK: - Setup
     
-    init(timelinePoll: TimelinePoll) {
-        super.init(initialViewState: TimelinePollViewState(poll: timelinePoll, bindings: TimelinePollViewStateBindings()))
+    init(timelinePollDetails: TimelinePollDetails) {
+        super.init(initialViewState: TimelinePollViewState(poll: timelinePollDetails, bindings: TimelinePollViewStateBindings()))
     }
     
     // MARK: - Public

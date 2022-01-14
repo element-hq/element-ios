@@ -19,7 +19,7 @@ import Combine
 
 struct PollEditFormViewModelParameters {
     let mode: PollEditFormMode
-    let pollDetails: PollDetails
+    let pollDetails: EditFormPollDetails
 }
 
 @available(iOS 14, *)
@@ -97,7 +97,7 @@ class PollEditFormViewModel: PollEditFormViewModelType {
                                                                       title: VectorL10n.pollEditFormPostFailureTitle,
                                                                       subtitle: VectorL10n.pollEditFormPostFailureSubtitle)
             case .failedUpdatingPoll:
-                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedCreatingPoll,
+                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedUpdatingPoll,
                                                                       title: VectorL10n.pollEditFormUpdateFailureTitle,
                                                                       subtitle: VectorL10n.pollEditFormUpdateFailureSubtitle)
             case .none:
@@ -109,8 +109,8 @@ class PollEditFormViewModel: PollEditFormViewModelType {
     
     // MARK: - Private
     
-    private func buildPollDetails() -> PollDetails {
-        return PollDetails(type: state.bindings.type,
+    private func buildPollDetails() -> EditFormPollDetails {
+        return EditFormPollDetails(type: state.bindings.type,
                            question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
                            answerOptions: state.bindings.answerOptions.compactMap({ answerOption in
                             let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
