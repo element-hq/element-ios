@@ -1632,3 +1632,35 @@
 "settings_pin_rooms_with_missed_notif" = "Pripnúť miestnosti so zmeškanými oznámeniami";
 "settings_confirm_media_size" = "Potvrdiť veľkosť pri odosielaní";
 "ok" = "OK";
+"poll_edit_form_question_or_topic" = "Otázka alebo téma";
+"poll_timeline_vote_not_registered_title" = "Hlas nebol zaznamenaný";
+"poll_timeline_vote_not_registered_subtitle" = "Je nám ľúto, váš hlas nebol zaznamenaný. Skúste to prosím znova";
+"poll_timeline_not_closed_title" = "Nepodarilo sa ukončiť anketu";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Poloha";
+"location_sharing_close_action" = "Zavrieť";
+"location_sharing_share_action" = "Zdieľať";
+"location_sharing_loading_map_error_title" = "%@ sa nepodarilo načítať mapu. Skúste to prosím neskôr.";
+"location_sharing_locating_user_error_title" = "%@ sa nepodarilo získať prístup k vašej polohe. Skúste to prosím neskôr.";
+"location_sharing_invalid_authorization_error_title" = "%@ nemá povolenie na prístup k vašej polohe. Prístup môžete povoliť v ponuke Nastavenia > Poloha";
+"location_sharing_invalid_authorization_not_now" = "Teraz nie";
+"location_sharing_invalid_authorization_settings" = "Nastavenia";
+"location_sharing_open_apple_maps" = "Otvoriť v službe Apple Mapy";
+"location_sharing_open_google_maps" = "Otvoriť v službe Mapy Google";
+"location_sharing_settings_header" = "Zdieľanie polohy";
+"location_sharing_settings_toggle_title" = "Povoliť zdieľanie polohy";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Vytvoriť účet";
+"onboarding_splash_login_button_title" = "Už mám účet";
+"onboarding_splash_page_1_title" = "Vlastnite svoje konverzácie.";
+"onboarding_splash_page_1_message" = "Bezpečná a nezávislá komunikácia, ktorá vám poskytuje rovnakú úroveň súkromia ako rozhovor zoči-voči vo vašom vlastnom dome.";
+"onboarding_splash_page_2_title" = "Vy máte všetko pod kontrolou.";
+"onboarding_splash_page_2_message" = "Vyberte si, kde budú vaše rozhovory uložené, a získajte tak kontrolu a nezávislosť. Pripojené cez Matrix.";
+"onboarding_splash_page_3_title" = "Zabezpečené zasielanie správ.";
+"onboarding_splash_page_3_message" = "End-to-end šifrovanie a bez potreby telefónneho čísla. Žiadne reklamy ani zneužívanie údajov.";
+"onboarding_splash_page_4_title_no_pun" = "Zasielanie správ pre váš tím.";
+"onboarding_splash_page_4_message" = "Element je skvelý aj na pracovisku. Dôverujú mu najbezpečnejšie organizácie na svete.";
+"settings_enable_room_message_bubbles" = "Správy v bublinách";
