@@ -21,7 +21,7 @@ typealias TimelinePollViewModelCallback = ((TimelinePollViewModelResult) -> Void
 
 enum TimelinePollStateAction {
     case viewAction(TimelinePollViewAction, TimelinePollViewModelCallback?)
-    case updateWithPoll(TimelinePoll)
+    case updateWithPoll(TimelinePollDetails)
     case showAnsweringFailure
     case showClosingFailure
 }
@@ -55,7 +55,7 @@ class TimelinePollAnswerOption: Identifiable {
     }
 }
 
-class TimelinePoll {
+class TimelinePollDetails {
     var question: String
     var answerOptions: [TimelinePollAnswerOption]
     var closed: Bool
@@ -68,7 +68,8 @@ class TimelinePoll {
          closed: Bool,
          totalAnswerCount: UInt,
          type: TimelinePollType,
-         maxAllowedSelections: UInt, hasBeenEdited: Bool) {
+         maxAllowedSelections: UInt,
+         hasBeenEdited: Bool) {
         self.question = question
         self.answerOptions = answerOptions
         self.closed = closed
@@ -81,10 +82,18 @@ class TimelinePoll {
     var hasCurrentUserVoted: Bool {
         answerOptions.filter { $0.selected == true}.count > 0
     }
+    
+    var shouldDiscloseResults: Bool {
+        if closed {
+            return totalAnswerCount > 0
+        } else {
+            return type == .disclosed && totalAnswerCount > 0 && hasCurrentUserVoted
+        }
+    }
 }
 
 struct TimelinePollViewState: BindableState {
-    var poll: TimelinePoll
+    var poll: TimelinePollDetails
     var bindings: TimelinePollViewStateBindings
 }
 

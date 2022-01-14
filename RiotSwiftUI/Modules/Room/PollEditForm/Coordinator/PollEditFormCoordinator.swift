@@ -39,7 +39,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
     }
     
     // MARK: Public
-
+    
     var childCoordinators: [Coordinator] = []
     
     var completion: (() -> Void)?
@@ -54,15 +54,12 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
         if let startEvent = parameters.pollStartEvent,
            let pollContent = MXEventContentPollStart(fromJSON: startEvent.content) {
             viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .editing,
-                                                                                          pollDetails: PollDetails(type: Self.pollKindKeyToDetailsType(pollContent.kind),
-                                                                                                                   question: pollContent.question,
-                                                                                                                   answerOptions: pollContent.answerOptions.map { $0.text })))
+                                                                                          pollDetails: EditFormPollDetails(type: Self.pollKindKeyToDetailsType(pollContent.kind),
+                                                                                                                           question: pollContent.question,
+                                                                                                                           answerOptions: pollContent.answerOptions.map { $0.text })))
             
         } else {
-            viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation,
-                                                                                          pollDetails: PollDetails(type: .disclosed,
-                                                                                                                   question: "",
-                                                                                                                   answerOptions: ["", ""])))
+            viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation, pollDetails: .default))
         }
         
         let view = PollEditForm(viewModel: viewModel.context)
@@ -140,7 +137,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
     
     // MARK: - Private
     
-    private func buildPollContentWithDetails(_ details: PollDetails) -> MXEventContentPollStart {
+    private func buildPollContentWithDetails(_ details: EditFormPollDetails) -> MXEventContentPollStart {
         var options = [MXEventContentPollStartAnswerOption]()
         for answerOption in details.answerOptions {
             options.append(MXEventContentPollStartAnswerOption(uuid: UUID().uuidString, text: answerOption))
@@ -153,17 +150,17 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
         
     }
     
-    private static func pollDetailsTypeToKindKey(_ type: PollEditFormType) -> String {
-        let mapping = [PollEditFormType.disclosed : kMXMessageContentKeyExtensiblePollKindDisclosed,
-                       PollEditFormType.undisclosed : kMXMessageContentKeyExtensiblePollKindUndisclosed]
+    private static func pollDetailsTypeToKindKey(_ type: EditFormPollType) -> String {
+        let mapping = [EditFormPollType.disclosed : kMXMessageContentKeyExtensiblePollKindDisclosed,
+                       EditFormPollType.undisclosed : kMXMessageContentKeyExtensiblePollKindUndisclosed]
         
         return mapping[type] ?? kMXMessageContentKeyExtensiblePollKindDisclosed
     }
     
-    private static func pollKindKeyToDetailsType(_ key: String) -> PollEditFormType {
-        let mapping = [kMXMessageContentKeyExtensiblePollKindDisclosed : PollEditFormType.disclosed,
-                       kMXMessageContentKeyExtensiblePollKindUndisclosed : PollEditFormType.undisclosed]
+    private static func pollKindKeyToDetailsType(_ key: String) -> EditFormPollType {
+        let mapping = [kMXMessageContentKeyExtensiblePollKindDisclosed : EditFormPollType.disclosed,
+                       kMXMessageContentKeyExtensiblePollKindUndisclosed : EditFormPollType.undisclosed]
         
-        return mapping[key] ?? PollEditFormType.disclosed
+        return mapping[key] ?? EditFormPollType.disclosed
     }
 }

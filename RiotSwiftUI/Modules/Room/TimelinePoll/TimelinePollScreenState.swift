@@ -25,23 +25,23 @@ enum MockTimelinePollScreenState: MockScreenState, CaseIterable {
     case closedUndisclosed
     
     var screenType: Any.Type {
-        TimelinePoll.self
+        TimelinePollDetails.self
     }
     
     var screenView: ([Any], AnyView)  {
         let answerOptions = [TimelinePollAnswerOption(id: "1", text: "First", count: 10, winner: false, selected: false),
-        TimelinePollAnswerOption(id: "2", text: "Second", count: 5, winner: false, selected: true),
-        TimelinePollAnswerOption(id: "3", text: "Third", count: 15, winner: true, selected: false)]
+                             TimelinePollAnswerOption(id: "2", text: "Second", count: 5, winner: false, selected: true),
+                             TimelinePollAnswerOption(id: "3", text: "Third", count: 15, winner: true, selected: false)]
         
-        let poll = TimelinePoll(question: "Question",
-        answerOptions: answerOptions,
-        closed: (self == .closedDisclosed || self == .closedUndisclosed ? true : false),
-        totalAnswerCount: 20,
-        type: (self == .closedDisclosed || self == .openDisclosed ? .disclosed : .undisclosed),
-        maxAllowedSelections: 1,
-        hasBeenEdited: false)
+        let poll = TimelinePollDetails(question: "Question",
+                                       answerOptions: answerOptions,
+                                       closed: (self == .closedDisclosed || self == .closedUndisclosed ? true : false),
+                                       totalAnswerCount: 20,
+                                       type: (self == .closedDisclosed || self == .openDisclosed ? .disclosed : .undisclosed),
+                                       maxAllowedSelections: 1,
+                                       hasBeenEdited: false)
         
-        let viewModel = TimelinePollViewModel(timelinePoll: poll)
+        let viewModel = TimelinePollViewModel(timelinePollDetails: poll)
         
         return ([viewModel], AnyView(TimelinePollView(viewModel: viewModel.context)))
     }

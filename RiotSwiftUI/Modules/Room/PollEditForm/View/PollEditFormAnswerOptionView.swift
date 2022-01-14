@@ -39,9 +39,7 @@ struct PollEditFormAnswerOptionView: View {
                     self.focused = edit
                 })
                 .textFieldStyle(BorderedInputFieldStyle(theme: _theme, isEditing: focused))
-                Button {
-                    onDelete()
-                } label: {
+                Button(action: onDelete) {
                     Image(uiImage:Asset.Images.pollDeleteOptionIcon.image)
                 }
                 .accessibilityIdentifier("Delete answer option")
