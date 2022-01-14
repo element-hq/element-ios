@@ -136,10 +136,10 @@
 "room_participants_action_section_other" = "Optionen";
 "room_participants_action_invite" = "Einladen";
 "room_participants_action_leave" = "Diesen Raum verlassen";
-"room_participants_action_remove" = "Von diesem Raum entfernen";
+"room_participants_action_remove" = "Aus diesem Raum entfernen";
 "room_participants_action_ban" = "Aus diesem Raum bannen";
-"room_participants_action_ignore" = "Alle Nachrichten von diesem Nutzer verbergen";
-"room_participants_action_unignore" = "Zeige alle Nachrichten von diesem Nutzer";
+"room_participants_action_ignore" = "Alle Nachrichten dieser Person verbergen";
+"room_participants_action_unignore" = "Alle Nachrichten dieser Person zeigen";
 "room_participants_action_set_moderator" = "Moderationsrechte vergeben";
 "room_participants_action_set_admin" = "Administrationsrechte vergeben";
 "room_participants_action_start_new_chat" = "Starte neuen Chat";
@@ -299,7 +299,7 @@
 "room_participants_ago" = "her";
 "room_participants_action_section_admin_tools" = "Admin-Werkzeuge";
 "room_participants_action_unban" = "Entsperren";
-"room_participants_action_set_default_power_level" = "Zurück auf normale Berechtigung";
+"room_participants_action_set_default_power_level" = "Besondere Berechtigungen entziehen";
 "room_participants_action_start_voice_call" = "Starte Sprach-Anruf";
 "room_ongoing_conference_call" = "Laufender Konferenz-Anruf. Trete bei als %@ oder %@.";
 "room_event_action_redact" = "Entfernen";
