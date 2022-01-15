@@ -1722,3 +1722,16 @@
 
 "location_sharing_title" = "Lokasi";
 "ok" = "OKE";
+"settings_enable_room_message_bubbles" = "Gelembung pesan";
+"onboarding_splash_page_4_message" = "Element juga bagus untuk tempat kerja. Terpercayai oleh organisasi paling aman di dunia.";
+"onboarding_splash_page_4_title_no_pun" = "Perpesanan untuk tim Anda.";
+"onboarding_splash_page_3_message" = "Terenkripsi secara ujung-ke-ujung dan tidak memerlukan nomor telepon. Tidak ada iklan atau penambangan data.";
+"onboarding_splash_page_3_title" = "Perpesanan aman.";
+"onboarding_splash_page_2_message" = "Pilihlah di mana percakapan Anda disimpan, memberikan Anda kendali dan kebebasan. Terhubung via Matrix.";
+"onboarding_splash_page_2_title" = "Anda dalam kendali.";
+"onboarding_splash_page_1_message" = "Komunikasi aman dan independen yang memberikan tingkat privasi yang sama seperti percakapan tatap muka di rumah Anda sendiri.";
+"onboarding_splash_page_1_title" = "Miliki percakapan Anda.";
+"onboarding_splash_login_button_title" = "Saya sudah punya akun";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Buat akun";
