@@ -1543,3 +1543,16 @@
 
 "location_sharing_title" = "Asukoht";
 "ok" = "Sobib";
+"settings_enable_room_message_bubbles" = "Jutumullid";
+"onboarding_splash_page_4_message" = "Element sobib ideaalselt kasutamiseks töökeskkonnas. Ta on kasutusel ka mitmetes üliturvalistes organisatsioonides.";
+"onboarding_splash_page_4_title_no_pun" = "Sõnumisuhtlus sinu tiimi või kogukonna jaoks.";
+"onboarding_splash_page_3_message" = "Tagatud on andmete läbiv krüptimine ning oma telefoninumbrit ei pea sa jagama. Pole reklaame ega sinu andmete kogumist.";
+"onboarding_splash_page_3_title" = "Turvaline sõnumisuhtlus.";
+"onboarding_splash_page_2_message" = "Sa ise valid serveri, kus sinu vestlusi hoitakse ning sellega tagadki kontrolli oma andmete üle. Lahendus põhineb Matrix'i võrgul.";
+"onboarding_splash_page_2_title" = "Sul on kontroll oma andmete üle.";
+"onboarding_splash_page_1_message" = "Turvaline ja sõltumatu suhtluslahendus, mis tagab sama privaatsuse, kui omavaheline vestlus sinu kodus.";
+"onboarding_splash_page_1_title" = "Vestlused, mida sa tegelikult ka omad.";
+"onboarding_splash_login_button_title" = "Mul on kasutajakonto juba olemas";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Loo kasutajakonto";
