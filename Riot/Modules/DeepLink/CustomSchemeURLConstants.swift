@@ -20,9 +20,12 @@ enum CustomSchemeURLConstants {
     
     enum Parameters {
         static let transactionId = "transaction_id"
+        static let customServerUrl = "custom_server_url"
+        static let autoSignIn = "auto_sign_in"
     }
     
     enum Hosts {
         static let connect = "connect"
+        static let customServer = "custom_server"
     }
 }
