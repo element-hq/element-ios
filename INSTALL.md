@@ -21,7 +21,7 @@ If you do not want to grant the ruby package manager, [RubyGems](https://rubygem
 To install CocoaPods you can grab the right version by using `bundler` (recommended) or you can directly install it with RubyGems:
 
 ```
-$ gem install cocoapods
+gem install cocoapods
 ```
 
 In the last case please ensure that you are using the same version as indicated at the end of the `Podfile.lock` file.
@@ -31,7 +31,7 @@ In the last case please ensure that you are using the same version as indicated 
 You can directly install XcodeGen with [Homebrew](https://brew.sh) or RubyGems:
 
 ```
-$ brew install xcodegen
+brew install xcodegen
 ```
 
 ### Install bundler (optional)
@@ -39,7 +39,7 @@ $ brew install xcodegen
 By using `bundler` you will ensure to use the right versions of build tools used to build and deliver the project. You can find dependency definitions in the `Gemfile`. To install `bundler`:
 
 ```
-$ gem install bundler
+gem install bundler
 ```
 
 ## Choose Matrix SDKs version to build
@@ -89,7 +89,7 @@ More advanced build configuration can be found in the `project.yml` file and eac
 In order to get rid of git conflicts, the `Riot.xcodeproj` is not pushed into the git repository anymore but generated using `XcodeGen`. To generate the `xcodeproj` file simply run the following command line from the root folder :
 
 ```
-$ xcodegen
+xcodegen
 ```
 
 
@@ -100,14 +100,14 @@ Then, before opening the Element Xcode workspace, you need to install dependenci
 To be sure to use the right CocoaPods version you can use `bundler`:
 
 ```
-$ bundle install
-$ bundle exec pod install
+bundle install
+bundle exec pod install
 ```
 
 Or if you prefer to use directly CocoaPods:
 
 ```
-$ pod install
+pod install
 ```
 
 This will load all dependencies for the Element source code, including [MatrixSDK](https://github.com/matrix-org/matrix-ios-sdk).
@@ -118,7 +118,7 @@ This will load all dependencies for the Element source code, including [MatrixSD
 Then, open `Riot.xcworkspace` with Xcode.
 
 ```
-$ open Riot.xcworkspace
+open Riot.xcworkspace
 ```
 
 **Note**: If you have multiple Xcode versions installed don't forget to use the right version of Command Line Tools when you are building the app. To check the Command Line Tools version go to `Xcode > Preferences > Locations > Command Line Tools` and check that the displayed version match your Xcode version.
@@ -129,7 +129,7 @@ $ open Riot.xcworkspace
 If you want to generate the project easily and quickly, there is a local script called `setup_project.sh` that creates the `xcodeproj` and `xcworkspace` with all source files and dependencies with commands described before. It automatically selects the right dependencies based on your local Git branch or your Podfile local modifications. All you have to do is to go in the project root folder and run the script:
 
 ```
-$ ./setup_project.sh
+./setup_project.sh
 ```
 
 ## Generate IPA
@@ -156,16 +156,24 @@ For other times:
 
 Before executing the release command you need to export your Apple ID in environment variables:
 
-`export APPLE_ID="foo.bar@apple.com"`
+```
+export APPLE_ID="foo.bar@apple.com"
+```
 
 To make an App Store release you can directly execute this command:
 
-`bundle exec fastlane app_store build_number:<your_build_number>`
+```
+bundle exec fastlane app_store build_number:<your_build_number>
+```
 
 Or you can use the wrapper script located at `/Tools/Release/buildRelease.sh`. For that go to the `Release` folder: 
 
-`$ cd ./Tools/Release/`
+```
+cd ./Tools/Release/
+```
 
 And then indicate a branch or a tag like this:
 
-`$ ./buildRelease.sh <tag or branch>`
+```
+./buildRelease.sh <tag or branch>
+```
