@@ -509,7 +509,7 @@
 "room_action_send_photo_or_video" = "Foto oder Video senden";
 "room_action_send_sticker" = "Aufkleber senden";
 "settings_deactivate_account" = "DEAKTIVIERTES KONTO";
-"settings_deactivate_my_account" = "Benutzerkonto deaktiveren";
+"settings_deactivate_my_account" = "Mein Konto deaktivieren";
 "widget_sticker_picker_no_stickerpacks_alert" = "Du hast aktuell keine Aufkleberpakete aktiviert.";
 "widget_sticker_picker_no_stickerpacks_alert_add_now" = "Welche hinzufügen?";
 // GDPR
@@ -548,8 +548,8 @@
 "room_resource_limit_exceeded_message_contact_3" = " um diesen Dienst weiter zu nutzen.";
 "homeserver_connection_lost" = "Konnte keine Verbindung zum Heimserver herstellen.";
 "room_resource_usage_limit_reached_message_1_default" = "Dieser Heimserver hat eine seiner Ressourcengrenzen überschritten, sodass ";
-"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Dieser Heimserver hat seine Begrenzung an monatlich aktiven Benutzern überschritten, sodass ";
-"room_resource_usage_limit_reached_message_2" = "einige Benutzer nicht in der Lage sein werden, sich anzumelden.";
+"room_resource_usage_limit_reached_message_1_monthly_active_user" = "Dieser Heimserver hat seine Grenze an monatlich aktiven Benutzenden erreicht, sodass ";
+"room_resource_usage_limit_reached_message_2" = "einige Benutzende nicht in der Lage sein werden, sich anzumelden.";
 "room_resource_usage_limit_reached_message_contact_3" = " um diese Obergrenze erhöhen zu lassen.";
 "auth_accept_policies" = "Bitte Regeln dieses Heimservers ansehen und akzeptieren:";
 "settings_key_backup" = "SCHLÜSSEL-SICHERHEITSKOPIE";
@@ -634,13 +634,13 @@
 "sign_out_existing_key_backup_alert_sign_out_action" = "Abmelden";
 "sign_out_non_existing_key_backup_alert_title" = "Du verlierst den Zugriff auf deine verschlüsselten Nachrichten, wenn du dich jetzt abmeldest";
 "sign_out_non_existing_key_backup_alert_setup_key_backup_action" = "Beginne Schlüsselsicherung zu nutzen";
-"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Ich möchte meine verschlüsselten Nachrichten nicht";
+"sign_out_non_existing_key_backup_alert_discard_key_backup_action" = "Ich brauche meine verschlüsselten Nachrichten nicht";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_title" = "Du wirst deine verschlüsselten Nachrichten verlieren";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_message" = "Du verlierst den Zugriff auf deine verschlüsselten Nachrichten, es sei denn, du sicherst deine Schlüssel, bevor du dich abmeldest.";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_sign_out_action" = "Abmelden";
 "sign_out_non_existing_key_backup_sign_out_confirmation_alert_backup_action" = "Sicherungskopie";
 "sign_out_key_backup_in_progress_alert_title" = "Schlüsselsicherung läuft. Wenn du dich jetzt abmeldest, verlierst du den Zugriff auf deine verschlüsselten Nachrichten.";
-"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ich möchte meine verschlüsselten Nachrichten nicht";
+"sign_out_key_backup_in_progress_alert_discard_key_backup_action" = "Ich brauche meine verschlüsselten Nachrichten nicht";
 "sign_out_key_backup_in_progress_alert_cancel_action" = "Ich werde warten";
 // Key backup wrong version
 "e2e_key_backup_wrong_version_title" = "Neue Schlüsselsicherung";
@@ -1002,10 +1002,10 @@
 "security_settings_crosssigning_info_not_bootstrapped" = "Quersignierung ist bisher nicht konfiguriert.";
 "room_member_power_level_admin_in" = "Admin in %@";
 "room_member_power_level_moderator_in" = "Mod in %@";
-"room_member_power_level_custom_in" = "Benutzerdefiniert (%@) in %@";
+"room_member_power_level_custom_in" = "Selbstdefiniert (%@) in %@";
 "room_member_power_level_short_admin" = "Admin";
 "room_member_power_level_short_moderator" = "Mod";
-"room_member_power_level_short_custom" = "Benutzerdefiniert";
+"room_member_power_level_short_custom" = "Selbstdefiniert";
 "security_settings_secure_backup" = "SICHERE SICHERHEITSKOPIE";
 "security_settings_secure_backup_synchronise" = "Synchronisiere";
 "security_settings_secure_backup_delete" = "Backup löschen";
@@ -1349,7 +1349,7 @@
 "event_formatter_call_ringing" = "Läuten…";
 "event_formatter_call_connecting" = "Verbinden…";
 "settings_labs_enable_ringing_for_group_calls" = "Bei Gruppenanrufen klingeln";
-"room_no_privileges_to_create_group_call" = "Du musst Admin oder Mod sein, um einen Anruf zu starten.";
+"room_no_privileges_to_create_group_call" = "Du musst Administrations- oder Moderationsrechte besitzen, um einen Anruf zu starten.";
 "room_join_group_call" = "Beitreten";
 
 // Chat
@@ -1583,3 +1583,16 @@
 // MARK: - Location sharing
 
 "location_sharing_title" = "Standort";
+"onboarding_splash_page_4_title_no_pun" = "Nachrichtenaustausch für dein Team.";
+"onboarding_splash_page_3_title" = "Sicherer Nachrichtenaustausch.";
+"onboarding_splash_page_2_message" = "Wähle wo deine Gespräche liegen, für Kontrolle und Unabhängigkeit. Verbunden mit Matrix.";
+"onboarding_splash_page_1_title" = "Nimm deine Gespräche in die eigene Hand.";
+"onboarding_splash_login_button_title" = "Ich habe bereits ein Konto";
+"onboarding_splash_page_4_message" = "Element ist auch für die Arbeit großartig. Ihm vertrauen die sichersten Unternehmen der Welt.";
+"onboarding_splash_page_3_message" = "Ende-zu-Ende-verschlüsselt und ohne Telefonnummer nutzbar. Keine Werbung oder Datenerfassung.";
+"onboarding_splash_page_2_title" = "Du hast die Kontrolle.";
+"onboarding_splash_page_1_message" = "Sichere und unabhängige Kommunikation, die für die gleiche Vertraulichkeit sorgt, wie ein Gespräch von Angesicht zu Angesicht in deinem eigenen Zuhause.";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Konto erstellen";
+"settings_enable_room_message_bubbles" = "Nachrichtenblasen";
