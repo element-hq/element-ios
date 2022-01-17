@@ -37,6 +37,8 @@ targets:
       base:
         TEST_TARGET_NAME: RiotSwiftUI
         PRODUCT_BUNDLE_IDENTIFIER: org.matrix.RiotSwiftUITests$(rfc1034identifier)
+        SWIFT_OBJC_BRIDGING_HEADER: $(SRCROOT)/RiotSwiftUI/RiotSwiftUI-Bridging-Header.h
+        SWIFT_OBJC_INTERFACE_HEADER_NAME: GeneratedInterface-Swift.h
     sources:
       # Source included/excluded here here are similar to RiotSwiftUI as we
       # need access to ScreenStates
@@ -45,6 +47,8 @@ targets:
       - "**/MatrixSDK/**"
       - "**/Coordinator/**"
       - "**/Test/Unit/**"
+    - path: ../Riot/Managers/AppInfo/
+    - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Generated/Strings.swift
     - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Theme/ThemeIdentifier.swift

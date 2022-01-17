@@ -79,7 +79,7 @@ struct PollEditForm: View {
                         Button(VectorL10n.pollEditFormCreatePoll) {
                             viewModel.send(viewAction: .create)
                         }
-                        .buttonStyle(PrimaryActionButtonStyle(enabled: viewModel.viewState.confirmationButtonEnabled))
+                        .buttonStyle(PrimaryActionButtonStyle())
                         .disabled(!viewModel.viewState.confirmationButtonEnabled)
                     }
                     .padding()
@@ -87,7 +87,7 @@ struct PollEditForm: View {
                     .alert(isPresented: $viewModel.showsFailureAlert) {
                         Alert(title: Text(VectorL10n.pollEditFormPostFailureTitle),
                               message: Text(VectorL10n.pollEditFormPostFailureSubtitle),
-                              dismissButton: .default(Text(VectorL10n.pollEditFormPostFailureAction)))
+                              dismissButton: .default(Text(VectorL10n.ok)))
                     }
                     .frame(minHeight: proxy.size.height) // Make the VStack fill the ScrollView's parent
                     .toolbar {

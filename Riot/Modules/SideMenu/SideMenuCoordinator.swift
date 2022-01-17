@@ -395,9 +395,9 @@ extension SideMenuCoordinator: SpaceMenuPresenterDelegate {
             case .addRoom:
                 self.showAddRoom(spaceId: spaceId, session: session)
             case .addSpace:
-                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesComingSoonDetail)
+                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.spacesAddSpace, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
             case .settings:
-                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.sideMenuActionSettings, message: VectorL10n.spacesComingSoonDetail)
+                AppDelegate.theDelegate().showAlert(withTitle: VectorL10n.sideMenuActionSettings, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName))
             }
         }
     }

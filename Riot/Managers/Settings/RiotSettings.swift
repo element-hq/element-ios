@@ -23,7 +23,8 @@ final class RiotSettings: NSObject {
     // MARK: - Constants
     
     public enum UserDefaultsKeys {
-        static let enableCrashReport = "enableCrashReport"
+        static let enableAnalytics = "enableAnalytics"
+        static let matomoAnalytics = "enableCrashReport"
         static let notificationsShowDecryptedContent = "showDecryptedContent"
         static let allowStunServerFallback = "allowStunServerFallback"
         static let pinRoomsWithMissedNotificationsOnHome = "pinRoomsWithMissedNotif"
@@ -100,13 +101,31 @@ final class RiotSettings: NSObject {
     
     // MARK: Other
     
-    /// Indicate if `enableCrashReport` settings has been set once.
-    var isEnableCrashReportHasBeenSetOnce: Bool {
-        return RiotSettings.defaults.object(forKey: UserDefaultsKeys.enableCrashReport) != nil
+    /// Whether the user was previously shown the Matomo analytics prompt.
+    var hasSeenAnalyticsPrompt: Bool {
+        RiotSettings.defaults.object(forKey: UserDefaultsKeys.enableAnalytics) != nil
     }
     
-    @UserDefault(key: UserDefaultsKeys.enableCrashReport, defaultValue: false, storage: defaults)
-    var enableCrashReport
+    /// Whether the user has both seen the Matomo analytics prompt and declined it.
+    var hasDeclinedMatomoAnalytics: Bool {
+        RiotSettings.defaults.object(forKey: UserDefaultsKeys.matomoAnalytics) != nil && !RiotSettings.defaults.bool(forKey: UserDefaultsKeys.matomoAnalytics)
+    }
+    
+    /// Whether the user previously accepted the Matomo analytics prompt.
+    /// This allows these users to be shown a different prompt to explain the changes.
+    var hasAcceptedMatomoAnalytics: Bool {
+        RiotSettings.defaults.bool(forKey: UserDefaultsKeys.matomoAnalytics)
+    }
+    
+    /// `true` when the user has opted in to send analytics.
+    @UserDefault(key: UserDefaultsKeys.enableAnalytics, defaultValue: false, storage: defaults)
+    var enableAnalytics
+    
+    /// Indicates if the device has already called identify for this session to PostHog.
+    /// This is separate to `enableAnalytics` as logging out will leave analytics
+    /// enabled but reset identification.
+    @UserDefault(key: "isIdentifiedForAnalytics", defaultValue: false, storage: defaults)
+    var isIdentifiedForAnalytics
     
     @UserDefault(key: "enableRageShake", defaultValue: false, storage: defaults)
     var enableRageShake
@@ -168,9 +187,15 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "roomScreenAllowPollsAction", defaultValue: false, storage: defaults)
     var roomScreenAllowPollsAction
+    
+    @UserDefault(key: "roomScreenAllowLocationAction", defaultValue: false, storage: defaults)
+    var roomScreenAllowLocationAction
         
     @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
     var roomScreenShowsURLPreviews
+    
+    @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.roomScreenEnableMessageBubblesByDefault, storage: defaults)
+    var roomScreenEnableMessageBubbles
     
     // MARK: - Room Contextual Menu
     

@@ -592,6 +592,25 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
                        failure:(void (^)(NSError *error))failure;
 
 /**
+ Send a location message to a room.
+ 
+ While sending, a fake event will be echoed in the messages list.
+ Once complete, this local echo will be replaced by the event saved by the homeserver.
+ 
+ @param latitude the location's latitude
+ @param longitude the location's longitude
+ @param description an optional description
+ @param success A block object called when the operation succeeds. It returns
+                the event id of the event generated on the homeserver
+ @param failure A block object called when the operation fails.
+ */
+- (void)sendLocationWithLatitude:(double)latitude
+                       longitude:(double)longitude
+                     description:(NSString *)description
+                         success:(void (^)(NSString *))success
+                         failure:(void (^)(NSError *))failure;
+
+/**
  Send a generic non state event to a room.
 
  While sending, a fake event will be echoed in the messages list.

@@ -115,7 +115,7 @@
         return;
     }
     
-    NSString *messageType = self.event.content[@"msgtype"];
+    NSString *messageType = self.event.content[kMXMessageTypeKey];
     
     if (!messageType || !([messageType isEqualToString:kMXMessageTypeText] || [messageType isEqualToString:kMXMessageTypeNotice] || [messageType isEqualToString:kMXMessageTypeEmote]))
     {

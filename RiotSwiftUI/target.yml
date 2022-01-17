@@ -31,6 +31,7 @@ targets:
     platform: iOS
     dependencies:
     - target: DesignKit
+    - package: Mapbox
     sources:
     - path: .
       excludes:
@@ -38,6 +39,8 @@ targets:
       - "**/MatrixSDK/**"
       - "**/Coordinator/**"
       - "**/Test/**"
+    - path: ../Riot/Managers/AppInfo/
+    - path: ../Riot/Categories/Bundle.swift
     - path: ../Riot/Generated/Strings.swift
     - path: ../Riot/Generated/Images.swift
     - path: ../Riot/Managers/Theme/ThemeIdentifier.swift

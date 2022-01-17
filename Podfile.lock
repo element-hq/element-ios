@@ -14,6 +14,7 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
+  - AnalyticsEvents (0.1.0)
   - BlueCryptor (1.0.32)
   - BlueECC (1.2.5)
   - BlueRSA (1.0.200)
@@ -37,7 +38,7 @@ PODS:
     - DTFoundation/Core
   - DTFoundation/UIKit (1.7.18):
     - DTFoundation/Core
-  - ffmpeg-kit-ios-audio (4.5)
+  - ffmpeg-kit-ios-audio (4.5.1)
   - FLEX (4.5.0)
   - FlowCommoniOS (1.12.2)
   - GBDeviceInfo (6.6.0):
@@ -48,6 +49,7 @@ PODS:
   - Introspect (0.1.3)
   - JitsiMeetSDK (3.10.2)
   - KeychainAccess (4.2.2)
+  - Keys (1.0.1)
   - KituraContracts (1.2.1):
     - LoggerAPI (~> 1.7)
   - KTCenterFlowLayout (1.3.1)
@@ -56,19 +58,16 @@ PODS:
   - LoggerAPI (1.9.200):
     - Logging (~> 1.1)
   - Logging (1.4.0)
-  - MatomoTracker (7.4.1):
-    - MatomoTracker/Core (= 7.4.1)
-  - MatomoTracker/Core (7.4.1)
-  - MatrixSDK (0.20.15):
-    - MatrixSDK/Core (= 0.20.15)
-  - MatrixSDK/Core (0.20.15):
+  - MatrixSDK (0.20.16):
+    - MatrixSDK/Core (= 0.20.16)
+  - MatrixSDK/Core (0.20.16):
     - AFNetworking (~> 4.0.0)
     - GZIP (~> 1.3.0)
     - libbase58 (~> 0.1.4)
     - OLMKit (~> 3.2.5)
     - Realm (= 10.16.0)
     - SwiftyBeaver (= 1.9.5)
-  - MatrixSDK/JingleCallStack (0.20.15):
+  - MatrixSDK/JingleCallStack (0.20.16):
     - JitsiMeetSDK (= 3.10.2)
     - MatrixSDK/Core
   - OLMKit (3.2.5):
@@ -76,6 +75,7 @@ PODS:
     - OLMKit/olmcpp (= 3.2.5)
   - OLMKit/olmc (3.2.5)
   - OLMKit/olmcpp (3.2.5)
+  - PostHog (1.4.4)
   - ReadMoreTextView (3.0.1)
   - Realm (10.16.0):
     - Realm/Headers (= 10.16.0)
@@ -103,23 +103,25 @@ PODS:
   - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
+  - AnalyticsEvents (from `https://github.com/matrix-org/matrix-analytics-events.git`, branch `release/swift`)
   - DGCollectionViewLeftAlignFlowLayout (~> 1.0.4)
   - Down (~> 0.11.0)
   - DSWaveformImage (~> 6.1.1)
   - DTCoreText (~> 1.6.25)
-  - ffmpeg-kit-ios-audio (~> 4.5)
+  - ffmpeg-kit-ios-audio (= 4.5.1)
   - FLEX (~> 4.5.0)
   - FlowCommoniOS (~> 1.12.0)
   - GBDeviceInfo (~> 6.6.0)
   - HPGrowingTextView (~> 1.1)
   - Introspect (~> 0.1)
   - KeychainAccess (~> 4.2.2)
+  - Keys (from `Pods/CocoaPodsKeys`)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
-  - MatomoTracker (~> 7.4.1)
-  - MatrixSDK (= 0.20.15)
-  - MatrixSDK/JingleCallStack (= 0.20.15)
+  - MatrixSDK (= 0.20.16)
+  - MatrixSDK/JingleCallStack (= 0.20.16)
   - OLMKit
+  - PostHog (~> 1.4.4)
   - ReadMoreTextView (~> 3.0.1)
   - Reusable (~> 4.1)
   - SideMenu (~> 6.5)
@@ -157,9 +159,9 @@ SPEC REPOS:
     - libPhoneNumber-iOS
     - LoggerAPI
     - Logging
-    - MatomoTracker
     - MatrixSDK
     - OLMKit
+    - PostHog
     - ReadMoreTextView
     - Realm
     - Reusable
@@ -173,8 +175,21 @@ SPEC REPOS:
     - zxcvbn-ios
     - ZXingObjC
 
+EXTERNAL SOURCES:
+  AnalyticsEvents:
+    :branch: release/swift
+    :git: https://github.com/matrix-org/matrix-analytics-events.git
+  Keys:
+    :path: Pods/CocoaPodsKeys
+
+CHECKOUT OPTIONS:
+  AnalyticsEvents:
+    :commit: f1805ad7c3fafa7fd9c6e2eaa9e0165f8142ecd2
+    :git: https://github.com/matrix-org/matrix-analytics-events.git
+
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
+  AnalyticsEvents: 333bf47d67dc628fadd29ce887b7ac93d8bd6e05
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   BlueECC: 0d18e93347d3ec6d41416de21c1ffa4d4cd3c2cc
   BlueRSA: dfeef51db96bcc4edec654956c1581adbda4e6a3
@@ -183,7 +198,7 @@ SPEC CHECKSUMS:
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
   DTCoreText: ec749e013f2e1f76de5e7c7634642e600a7467ce
   DTFoundation: a53f8cda2489208cbc71c648be177f902ee17536
-  ffmpeg-kit-ios-audio: 8c44d93054e1a9743a7014ec3dd26cd1ad8f2a59
+  ffmpeg-kit-ios-audio: 662ce2064e56733ca7d8216705efbc38d9e1c3fe
   FLEX: e51461dd6f0bfb00643c262acdfea5d5d12c596b
   FlowCommoniOS: ca92071ab526dc89905495a37844fd7e78d1a7f2
   GBDeviceInfo: ed0db16230d2fa280e1cbb39a5a7f60f6946aaec
@@ -192,15 +207,16 @@ SPEC CHECKSUMS:
   Introspect: 2be020f30f084ada52bb4387fff83fa52c5c400e
   JitsiMeetSDK: 2f118fa770f23e518f3560fc224fae3ac7062223
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   LoggerAPI: ad9c4a6f1e32f518fdb43a1347ac14d765ab5e3d
   Logging: beeb016c9c80cf77042d62e83495816847ef108b
-  MatomoTracker: 24a846c9d3aa76933183fe9d47fd62c9efa863fb
-  MatrixSDK: 2f4d3aacb1c53e2785f0be71d24b8e62e5c5c056
+  MatrixSDK: af6a70532bb43af59f43a1f4dae512a26afeab0b
   OLMKit: 9fb4799c4a044dd2c06bda31ec31a12191ad30b5
+  PostHog: 4b6321b521569092d4ef3a02238d9435dbaeb99f
   ReadMoreTextView: 19147adf93abce6d7271e14031a00303fe28720d
   Realm: b6027801398f3743fc222f096faa85281b506e6c
   Reusable: 6bae6a5e8aa793c9c441db0213c863a64bce9136
@@ -214,6 +230,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 989bcc8b1857dc64a9b810ddaf4446903adbe162
+PODFILE CHECKSUM: 2493587902f8f28bb2638303dd583c47e9f24d8b
 
 COCOAPODS: 1.11.2

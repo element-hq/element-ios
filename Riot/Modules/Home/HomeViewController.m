@@ -47,6 +47,7 @@
 @property (nonatomic, strong) CrossSigningSetupCoordinatorBridgePresenter *crossSigningSetupCoordinatorBridgePresenter;
 
 @property (nonatomic, assign, readwrite) BOOL roomListDataReady;
+@property (nonatomic, strong) MXThrottler *collectionViewPaginationThrottler;
 
 @property(nonatomic) SpaceMembersCoordinatorBridgePresenter *spaceMembersCoordinatorBridgePresenter;
 
@@ -69,7 +70,8 @@
     selectedRoomId = nil;
     selectedCollectionViewContentOffset = -1;
     
-    self.screenName = @"Home";
+    self.screenTimer = [[AnalyticsScreenTimer alloc] initWithScreen:AnalyticsScreenHome];
+    self.collectionViewPaginationThrottler = [[MXThrottler alloc] initWithMinimumDelay:0.1];
 }
 
 - (void)viewDidLoad
@@ -565,6 +567,20 @@
     cell.backgroundColor = ThemeService.shared.theme.backgroundColor;
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.collectionViewPaginationThrottler throttle:^{
+        NSInteger collectionViewSection = indexPath.section;
+        NSInteger numberOfItemsInSection = [collectionView numberOfItemsInSection:collectionViewSection];
+        if (collectionView.numberOfSections > collectionViewSection
+            && indexPath.item == numberOfItemsInSection - 1)
+        {
+            NSInteger tableViewSection = collectionView.tag;
+            [self->recentsDataSource paginateInSection:tableViewSection];
+        }
+    }];
 }
 
 #pragma mark - UICollectionViewDelegate

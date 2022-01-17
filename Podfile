@@ -3,7 +3,7 @@ source 'https://cdn.cocoapods.org/'
 # Uncomment this line to define a global platform for your project
 platform :ios, '12.1'
 
-# Use frameforks to allow usage of pod written in Swift (like PiwikTracker)
+# Use frameworks to allow usage of pods written in Swift
 use_frameworks!
 
 # Different flavours of pods to MatrixSDK. Can be one of:
@@ -13,7 +13,7 @@ use_frameworks!
 # - `{ :specHash => {sdk spec hash}` to depend on specific pod options (:git => …, :podspec => …) for MatrixSDK repo. Used by Fastfile during CI
 #
 # Warning: our internal tooling depends on the name of this variable name, so be sure not to change it
-$matrixSDKVersion = '0.20.15'
+$matrixSDKVersion = '= 0.20.16'
 # $matrixSDKVersion = :local
 # $matrixSDKVersion = { :branch => 'develop'}
 # $matrixSDKVersion = { :specHash => { git: 'https://git.io/fork123', branch: 'fix' } }
@@ -67,8 +67,10 @@ abstract_target 'RiotPods' do
   pod 'KeychainAccess', '~> 4.2.2'
   pod 'WeakDictionary', '~> 2.0'
 
-  # Piwik for analytics
-  pod 'MatomoTracker', '~> 7.4.1'
+  # PostHog for analytics
+  pod 'PostHog', '~> 1.4.4'
+  pod 'AnalyticsEvents', :git => 'https://github.com/matrix-org/matrix-analytics-events.git', :branch => 'release/swift'
+  # pod 'AnalyticsEvents', :path => '../matrix-analytics-events/AnalyticsEvents.podspec'
 
   # Remove warnings from "bad" pods
   pod 'OLMKit', :inhibit_warnings => true
@@ -93,7 +95,7 @@ abstract_target 'RiotPods' do
     pod 'SwiftJWT', '~> 3.6.200'
     pod 'SideMenu', '~> 6.5'
     pod 'DSWaveformImage', '~> 6.1.1'
-    pod 'ffmpeg-kit-ios-audio', '~> 4.5'
+    pod 'ffmpeg-kit-ios-audio', '4.5.1'
     
     pod 'FLEX', '~> 4.5.0', :configurations => ['Debug']
 
@@ -127,6 +129,10 @@ abstract_target 'RiotPods' do
 
 end
 
+plugin 'cocoapods-keys', {
+  :project => "Riot",
+  :keys => ["MapTilerAPIKey"]
+}
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
