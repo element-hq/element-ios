@@ -45,7 +45,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Md3-uq-cSB" customClass="ThreadSummaryView" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="44" y="60" width="248" height="32"/>
+                        <rect key="frame" x="44" y="60" width="264" height="32"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="Pnm-yi-36O"/>
@@ -65,7 +65,7 @@
                     <constraint firstItem="108-Xh-aZf" firstAttribute="leading" secondItem="I32-A5-WWw" secondAttribute="trailing" constant="12" id="sXf-FI-gD3"/>
                     <constraint firstItem="xzR-f9-3qV" firstAttribute="top" secondItem="108-Xh-aZf" secondAttribute="bottom" constant="4" id="tQN-Rr-MIS"/>
                     <constraint firstItem="C2U-Ih-4Oh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="u3s-nr-avO"/>
-                    <constraint firstAttribute="trailing" secondItem="Md3-uq-cSB" secondAttribute="trailing" constant="28" id="vxt-vD-jy8"/>
+                    <constraint firstAttribute="trailing" secondItem="Md3-uq-cSB" secondAttribute="trailing" constant="12" id="vxt-vD-jy8"/>
                     <constraint firstAttribute="trailing" secondItem="C2U-Ih-4Oh" secondAttribute="trailing" constant="27" id="wNc-xV-uIR"/>
                 </constraints>
             </tableViewCellContentView>
