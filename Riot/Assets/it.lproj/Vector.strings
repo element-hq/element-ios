@@ -1577,3 +1577,16 @@
 
 "location_sharing_title" = "Posizione";
 "ok" = "OK";
+"settings_enable_room_message_bubbles" = "Messaggi";
+"onboarding_splash_page_4_message" = "Element è ottimo anche per i luoghi di lavoro. È considerato affidabile dalle più sicure organizzazioni del mondo.";
+"onboarding_splash_page_4_title_no_pun" = "Messaggistica per la tua squadra.";
+"onboarding_splash_page_3_message" = "Crittografia end-to-end e nessun numero di telefono richiesto. Niente pubblicità o raccolta di dati.";
+"onboarding_splash_page_3_title" = "Messaggistica sicura.";
+"onboarding_splash_page_2_message" = "Scegli dove vengono tenute le tue conversazioni, dandoti controllo e indipendenza. Connesso via Matrix.";
+"onboarding_splash_page_2_title" = "Tu hai il controllo.";
+"onboarding_splash_page_1_message" = "Comunicazioni sicure e indipendenti che ti danno lo stesso livello di riservatezza di una conversazione faccia a faccia in casa tua.";
+"onboarding_splash_page_1_title" = "Prendi il controllo delle tue conversazioni.";
+"onboarding_splash_login_button_title" = "Ho già un account";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Crea account";
