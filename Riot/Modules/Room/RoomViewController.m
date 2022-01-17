@@ -3890,6 +3890,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [actionsMenu mxk_setAccessibilityIdentifier:@"RoomVCEventMenuAlert"];
         [actionsMenu popoverPresentationController].sourceView = roomBubbleTableViewCell;
         [actionsMenu popoverPresentationController].sourceRect = sourceRect;
+        [self dismissKeyboard];
         [self presentViewController:actionsMenu animated:animated completion:nil];
         currentAlert = actionsMenu;
     }
