@@ -1826,27 +1826,31 @@ static NSArray<NSNumber*> *initialSyncSilentErrorsHTTPStatusCodes;
         
         dispatch_group_t dispatchGroup = dispatch_group_create();
         
-        for (MXRoomSummary *summary in mxSession.roomsSummaries)
+        for (MXRoom *room in mxSession.rooms)
         {
-            dispatch_group_enter(dispatchGroup);
-            [summary.mxSession eventWithEventId:summary.lastMessage.eventId
-                                         inRoom:summary.roomId
-                                        success:^(MXEvent *event) {
-                
-                if (event)
-                {
-                    if (summary.lastMessage.others == nil)
+            MXRoomSummary *summary = room.summary;
+            if (summary)
+            {
+                dispatch_group_enter(dispatchGroup);
+                [summary.mxSession eventWithEventId:summary.lastMessage.eventId
+                                             inRoom:summary.roomId
+                                            success:^(MXEvent *event) {
+                    
+                    if (event)
                     {
-                        summary.lastMessage.others = [NSMutableDictionary dictionary];
+                        if (summary.lastMessage.others == nil)
+                        {
+                            summary.lastMessage.others = [NSMutableDictionary dictionary];
+                        }
+                        summary.lastMessage.others[@"lastEventDate"] = [eventFormatter dateStringFromEvent:event withTime:YES];
+                        [self->mxSession.store.roomSummaryStore storeSummary:summary];
                     }
-                    summary.lastMessage.others[@"lastEventDate"] = [eventFormatter dateStringFromEvent:event withTime:YES];
-                    [self->mxSession.store storeSummaryForRoom:summary.roomId summary:summary];
-                }
-                
-                dispatch_group_leave(dispatchGroup);
-            } failure:^(NSError *error) {
-                dispatch_group_leave(dispatchGroup);
-            }];
+                    
+                    dispatch_group_leave(dispatchGroup);
+                } failure:^(NSError *error) {
+                    dispatch_group_leave(dispatchGroup);
+                }];
+            }
         }
         
         dispatch_group_notify(dispatchGroup, dispatch_get_main_queue(), ^{

@@ -695,6 +695,10 @@ public class MatrixKitL10n: NSObject {
   public static var messageReplyToSenderSentAnImage: String { 
     return MatrixKitL10n.tr("message_reply_to_sender_sent_an_image") 
   }
+  /// has shared their location.
+  public static var messageReplyToSenderSentTheirLocation: String { 
+    return MatrixKitL10n.tr("message_reply_to_sender_sent_their_location") 
+  }
   /// There are unsaved changes. Leaving will discard them.
   public static var messageUnsavedChanges: String { 
     return MatrixKitL10n.tr("message_unsaved_changes") 

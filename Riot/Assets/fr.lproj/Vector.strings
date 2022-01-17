@@ -62,7 +62,7 @@
 "auth_missing_phone" = "Numéro de téléphone manquant";
 "auth_missing_email_or_phone" = "Adresse e-mail ou numéro de téléphone manquant";
 "auth_password_dont_match" = "Les mots de passe ne correspondent pas";
-"auth_username_in_use" = "";
+"auth_username_in_use" = "Nom d’utilisateur déjà pris";
 "auth_forgot_password" = "Mot de passe oublié ?";
 "auth_use_server_options" = "Utiliser un serveur personnalisé (avancé)";
 "auth_email_validation_message" = "Merci de vérifier vos e-mails pour continuer l’inscription";
@@ -94,7 +94,7 @@
 "room_creation_keep_private" = "Garder privée";
 "room_creation_make_private" = "Rendre privée";
 "room_creation_wait_for_creation" = "Un salon est déjà en cours de création. Veuillez patienter.";
-"room_creation_invite_another_user" = "Rechercher/inviter par identifiant, nom ou e-mail";
+"room_creation_invite_another_user" = "Identifiant, nom ou e-mail";
 // Room recents
 "room_recents_directory_section" = "RÉPERTOIRE DES SALONS";
 "room_recents_favourites_section" = "FAVORIS";
@@ -251,9 +251,9 @@
 "settings_user_settings" = "PRÉFÉRENCES UTILISATEUR";
 "settings_notifications_settings" = "PRÉFÉRENCES DE NOTIFICATIONS";
 "settings_ignored_users" = "UTILISATEURS IGNORÉS";
-"settings_contacts" = "CONTACTS LOCAUX";
+"settings_contacts" = "CONTACTS DE L’APPAREIL";
 "settings_advanced" = "AVANCÉ";
-"settings_other" = "AUTRES";
+"settings_other" = "Autres";
 "settings_labs" = "EXPÉRIMENTAL";
 "settings_devices" = "SESSIONS";
 "settings_cryptography" = "CHIFFREMENT";
@@ -1520,3 +1520,87 @@
 "room_recents_suggested_rooms_section" = "SALONS RECOMMANDÉS";
 "done" = "Terminé";
 "open" = "Ouvrir";
+"poll_timeline_not_closed_action" = "Ok";
+"poll_timeline_not_closed_subtitle" = "Merci de réessayer";
+"poll_timeline_not_closed_title" = "Échec de la fermeture du sondage";
+"poll_timeline_vote_not_registered_action" = "Ok";
+"poll_timeline_vote_not_registered_subtitle" = "Désolé votre vote n’a pas été enregistré, veuillez réessayer";
+"poll_timeline_vote_not_registered_title" = "Vote non enregistré";
+"poll_timeline_total_final_results" = "Résultats finaux basés sur %lu votes";
+"poll_timeline_total_final_results_one_vote" = "Résultats finaux basés sur 1 vote";
+"poll_timeline_total_votes_not_voted" = "%lu votes recueillis. Votez pour consulter les résultats";
+"poll_timeline_total_one_vote_not_voted" = "1 vote recueilli. Votez pour connaître les résultats";
+"poll_timeline_total_votes" = "%lu votes recueillis";
+"poll_timeline_total_one_vote" = "1 vote recueilli";
+"poll_timeline_total_no_votes" = "Aucun vote recueilli";
+"poll_timeline_votes_count" = "%lu votes";
+"poll_timeline_one_vote" = "1 vote";
+"poll_edit_form_post_failure_action" = "Ok";
+"poll_edit_form_post_failure_subtitle" = "Merci de réessayer";
+"poll_edit_form_post_failure_title" = "Échec de la publication du sondage";
+"poll_edit_form_add_option" = "Ajouter une option";
+"poll_edit_form_option_number" = "Option %lu";
+"poll_edit_form_create_options" = "Ajouter des options";
+"poll_edit_form_input_placeholder" = "Écrivez quelque chose";
+"poll_edit_form_question_or_topic" = "Question ou sujet";
+"poll_edit_form_poll_question_or_topic" = "Question ou sujet du sondage";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Créer un sondage";
+"space_home_show_all_rooms" = "Afficher tous les salons";
+"service_terms_modal_information_description_integration_manager" = "Un gestionnaire d’intégrations vous permet d’ajouter des fonctionnalités de tierces-parties.";
+"service_terms_modal_information_description_identity_server" = "Un serveur d’identité vous aide à trouver vos contacts, en recherchant leur numéro de téléphone ou adresse e-mail pour vérifier s’ils ont déjà un compte.";
+"service_terms_modal_information_title_integration_manager" = "Gestionnaire d’intégrations";
+
+// Alert explaining what an identity server / integration manager is.
+"service_terms_modal_information_title_identity_server" = "Serveur d’identité";
+"service_terms_modal_description_integration_manager" = "Ceci vous permettra d’utiliser les robots, passerelles, widgets et jeux d’autocollants.";
+"service_terms_modal_description_identity_server" = "Ceci permettra aux personnes qui ont votre numéro de téléphone ou adresse e-mail de sauvegardées dans leurs contacts de vous trouver.";
+"service_terms_modal_table_header_integration_manager" = "CONDITIONS D’UTILISATION DU GESTIONNAIRE D’INTÉGRATIONS";
+"service_terms_modal_table_header_identity_server" = "CONDITIONS D’UTILISATION DU SERVEUR D’IDENTITÉ";
+"service_terms_modal_footer" = "Ceci peut être désactivé a n’importe quel moment dans les paramètres.";
+
+// Service terms
+"service_terms_modal_title_message" = "Pour poursuivre, acceptez nos conditions d’utilisation";
+"share_extension_send_now" = "Envoyer maintenant";
+"share_extension_low_quality_video_message" = "Envoyez depuis %@ pour une meilleure qualité. Ou envoyez en mauvaise qualité ci-dessous.";
+"share_extension_low_quality_video_title" = "La vidéo sera envoyée en mauvaise qualité";
+"analytics_prompt_stop" = "Arrêter de partager";
+"analytics_prompt_yes" = "Oui, ça me va";
+"analytics_prompt_not_now" = "Pas maintenant";
+"analytics_prompt_point_3" = "Vous pouvez désactiver ceci à tout moment dans les paramètres";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Nous ne partageons <b>pas</b> les données avec des entités tierces";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Nous n’enregistrons et ne profilons <b>pas</b> de données liées à votre compte";
+"analytics_prompt_terms_link_upgrade" = "ici";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Lisez nos conditions d’utilisation %@. Êtes vous d’accord ?";
+"analytics_prompt_terms_link_new_user" = "ici";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Vous pouvez lire nos conditions d’utilisation %@.";
+"analytics_prompt_message_upgrade" = "Vous aviez consenti précédemment à partager des rapports d’utilisation avec nous. Désormais, pour nous aider à comprendre comment les gens utilisent cette application sur plusieurs appareils, nous allons générer un identifiant aléatoire commun à tous vos appareils.";
+"analytics_prompt_message_new_user" = "Aidez nous à identifier les problèmes et améliorer Element en envoyant des rapports d’usage anonymes. Pour comprendre de quelle manière les gens utilisent Element sur plusieurs appareils, nous créeront un identifiant aléatoire commun à tous vos appareils.";
+
+// Analytics
+"analytics_prompt_title" = "Aidez à améliorer %@";
+"settings_discovery_accept_terms" = "Accepter les conditions du serveur d’identité";
+"settings_analytics_and_crash_data" = "Envoyer les rapports de plantages et d’utilisation";
+"settings_labs_enabled_polls" = "Sondages";
+"settings_about" = "À PROPOS";
+"settings_phone_contacts" = "CONTACTS DU TÉLÉPHONE";
+"room_event_action_forward" = "Transférer";
+"room_event_action_end_poll" = "Mettre fin au sondage";
+"room_event_action_remove_poll" = "Supprimer le sondage";
+"find_your_contacts_identity_service_error" = "Impossible de se connecter au serveur d’identité.";
+"find_your_contacts_button_title" = "Trouvez vos contacts";
+"find_your_contacts_message" = "Permettez à %@ d’accéder à vos contacts pour commencer à discuter rapidement avec ceux que vous connaissez le mieux.";
+"contacts_address_book_permission_denied_alert_message" = "Pour activer les contacts, rendez vous dans les paramètres de votre appareil.";
+"contacts_address_book_permission_denied_alert_title" = "Contacts désactivés";
+"accessibility_button_label" = "bouton";
+"enable" = "Activer";
+"find_your_contacts_footer" = "Cette fonctionnalité peut être désactivé à tout moment à partir des paramètres.";
+"find_your_contacts_title" = "Commencez par lister vos contacts";
+"settings_contacts_enable_sync_description" = "Cette fonctionnalité utilisera votre serveur d'identité pour vous connecter avec vos contacts, ainsi que pour les aider à vous trouver.";
+"settings_contacts_enable_sync" = "Trouvez vos contacts";

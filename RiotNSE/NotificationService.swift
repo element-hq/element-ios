@@ -385,8 +385,8 @@ class NotificationService: UNNotificationServiceExtension {
                                 }
                             }
                             
-                            let msgType = event.content["msgtype"] as? String
-                            let messageContent = event.content["body"] as? String
+                            let msgType = event.content[kMXMessageTypeKey] as? String
+                            let messageContent = event.content[kMXMessageBodyKey] as? String
                             let isReply = event.isReply()
                             
                             if isReply {
@@ -398,6 +398,11 @@ class NotificationService: UNNotificationServiceExtension {
                             if event.isEncrypted && !self.showDecryptedContentInNotifications {
                                 // Hide the content
                                 notificationBody = NSString.localizedUserNotificationString(forKey: "MESSAGE", arguments: [])
+                                break
+                            }
+                            
+                            if event.location != nil {
+                                notificationBody = NSString.localizedUserNotificationString(forKey: "LOCATION_FROM_USER", arguments: [eventSenderName])
                                 break
                             }
                             

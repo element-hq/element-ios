@@ -183,6 +183,13 @@ extern NSString *const kRecentsDataSourceTapOnDirectoryServerChange;
 @property (nonatomic) UIImageView* droppingCellBackGroundView;
 
 /**
+ Paginate in the given section. Results will be notified from delegate methods.
+ 
+ @param section section index to be paginated
+ */
+- (void)paginateInSection:(NSInteger)section;
+
+/**
  Move a cell from a path to another one.
  It is based on room Tag.
  */
