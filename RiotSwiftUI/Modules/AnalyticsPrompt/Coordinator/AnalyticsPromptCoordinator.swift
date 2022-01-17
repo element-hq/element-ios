@@ -21,11 +21,9 @@ import SwiftUI
 struct AnalyticsPromptCoordinatorParameters {
     /// The session to use if analytics are enabled.
     let session: MXSession
-    /// The navigation router used to display the prompt.
-    let navigationRouter: NavigationRouterType
 }
 
-final class AnalyticsPromptCoordinator: Coordinator {
+final class AnalyticsPromptCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
@@ -78,8 +76,6 @@ final class AnalyticsPromptCoordinator: Coordinator {
         
         MXLog.debug("[AnalyticsPromptCoordinator] did start.")
         
-        parameters.navigationRouter.present(toPresentable(), animated: true)
-        
         analyticsPromptViewModel.completion = { [weak self] result in
             MXLog.debug("[AnalyticsPromptCoordinator] AnalyticsPromptViewModel did complete with result: \(result).")
             
@@ -88,11 +84,9 @@ final class AnalyticsPromptCoordinator: Coordinator {
             switch result {
             case .enable:
                 Analytics.shared.optIn(with: self.parameters.session)
-                self.parameters.navigationRouter.dismissModule(animated: true, completion: nil)
                 self.completion?()
             case .disable:
                 Analytics.shared.optOut()
-                self.parameters.navigationRouter.dismissModule(animated: true, completion: nil)
                 self.completion?()
             }
         }

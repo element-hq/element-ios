@@ -15,6 +15,7 @@
 //
 
 import Foundation
+import Keys
 
 /// BuildSettings provides settings computed at build time.
 /// In future, it may be automatically generated from xcconfig files
@@ -22,13 +23,6 @@ import Foundation
 final class BuildSettings: NSObject {
     
     // MARK: - Bundle Settings
-    static var bundleDisplayName: String {
-        guard let bundleDisplayName = Bundle.app.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String else {
-            fatalError("CFBundleDisplayName should be defined")
-        }
-        return bundleDisplayName
-    }
-    
     static var applicationGroupIdentifier: String {
         guard let applicationGroupIdentifier = Bundle.app.object(forInfoDictionaryKey: "applicationGroupIdentifier") as? String else {
             fatalError("applicationGroupIdentifier should be defined")
@@ -297,6 +291,13 @@ final class BuildSettings: NSObject {
     static let roomScreenAllowMediaLibraryAction: Bool = true
     static let roomScreenAllowStickerAction: Bool = true
     static let roomScreenAllowFilesAction: Bool = true
+    
+    // Timeline style
+    static let roomScreenAllowTimelineStyleConfiguration: Bool = false
+    static let roomScreenTimelineDefaultStyleIdentifier: RoomTimelineStyleIdentifier = .plain
+    static var roomScreenEnableMessageBubblesByDefault: Bool {
+        return self.roomScreenTimelineDefaultStyleIdentifier == .bubble
+    }
 
     /// Allow split view detail view stacking    
     static let allowSplitViewDetailsScreenStacking: Bool = true
@@ -363,5 +364,17 @@ final class BuildSettings: NSObject {
         }
         
         return true
+    }
+    
+    // MARK: - Location Sharing
+    
+    static let tileServerMapURL = URL(string: "https://api.maptiler.com/maps/streets/style.json?key=" + RiotKeys().mapTilerAPIKey)!
+    
+    static var locationSharingEnabled: Bool {
+        guard #available(iOS 14, *) else {
+            return false
+        }
+        
+        return false
     }
 }

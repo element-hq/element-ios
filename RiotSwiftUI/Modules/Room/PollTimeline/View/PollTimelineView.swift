@@ -50,7 +50,7 @@ struct PollTimelineView: View {
                 .alert(isPresented: $viewModel.showsClosingFailureAlert) {
                     Alert(title: Text(VectorL10n.pollTimelineNotClosedTitle),
                           message: Text(VectorL10n.pollTimelineNotClosedSubtitle),
-                          dismissButton: .default(Text(VectorL10n.pollTimelineNotClosedAction)))
+                          dismissButton: .default(Text(VectorL10n.ok)))
                 }
             }
             .disabled(poll.closed)
@@ -62,7 +62,7 @@ struct PollTimelineView: View {
                 .alert(isPresented: $viewModel.showsAnsweringFailureAlert) {
                     Alert(title: Text(VectorL10n.pollTimelineVoteNotRegisteredTitle),
                           message: Text(VectorL10n.pollTimelineVoteNotRegisteredSubtitle),
-                          dismissButton: .default(Text(VectorL10n.pollTimelineVoteNotRegisteredAction)))
+                          dismissButton: .default(Text(VectorL10n.ok)))
                 }
         }
         .padding([.horizontal, .top], 2.0)

@@ -1,3 +1,15 @@
+## Changes in 1.6.12 (2022-01-11)
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.20.16](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.20.16)).
+- Analytics: Replace Matomo with PostHog. ([#5035](https://github.com/vector-im/element-ios/issues/5035))
+
+🐛 Bugfixes
+
+- RoomVC: Fix left room reason label memory management. ([#5311](https://github.com/vector-im/element-ios/issues/5311))
+
+
 ## Changes in 1.6.11 (2021-12-14)
 
 ✨ Features

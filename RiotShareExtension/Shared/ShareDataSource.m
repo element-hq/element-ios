@@ -77,20 +77,23 @@
      
 - (void)loadCellData
 {
-    [self.fileStore asyncRoomsSummaries:^(NSArray<MXRoomSummary *> *roomsSummaries) {
+    [self.fileStore.roomSummaryStore fetchAllSummaries:^(NSArray<id<MXRoomSummaryProtocol>> *summaries) {
         
         NSMutableArray *cellData = [NSMutableArray array];
         
         // Add a fake matrix session to each room summary to provide it a REST client (used to handle correctly the room avatar).
         MXSession *session = [[MXSession alloc] initWithMatrixRestClient:[[MXRestClient alloc] initWithCredentials:self.credentials andOnUnrecognizedCertificateBlock:nil]];
         
-        for (MXRoomSummary *roomSummary in roomsSummaries)
+        for (id<MXRoomSummaryProtocol> summary in summaries)
         {
-            if (!roomSummary.hiddenFromUser && roomSummary.roomType == MXRoomTypeRoom)
+            if (!summary.hiddenFromUser && summary.roomType == MXRoomTypeRoom)
             {
-                [roomSummary setMatrixSession:session];
+                if ([summary respondsToSelector:@selector(setMatrixSession:)])
+                {
+                    [summary setMatrixSession:session];
+                }
                 
-                MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:roomSummary dataSource:nil];
+                MXKRecentCellData *recentCellData = [[MXKRecentCellData alloc] initWithRoomSummary:summary dataSource:nil];
                 
                 [cellData addObject:recentCellData];
             }
@@ -110,10 +113,6 @@
             [self.delegate dataSource:self didCellChange:nil];
             
         });
-        
-    } failure:^(NSError * _Nonnull error) {
-        
-        MXLogDebug(@"[ShareDataSource failed to get room summaries]");
         
     }];
 }

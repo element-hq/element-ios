@@ -21,11 +21,10 @@ import UIKit
 import SwiftUI
 
 struct PollEditFormCoordinatorParameters {
-    let navigationRouter: NavigationRouterType?
     let room: MXRoom
 }
 
-final class PollEditFormCoordinator: Coordinator {
+final class PollEditFormCoordinator: Coordinator, Presentable {
     
     // MARK: - Properties
     
@@ -42,8 +41,9 @@ final class PollEditFormCoordinator: Coordinator {
     
     // MARK: Public
 
-    // Must be used only internally
     var childCoordinators: [Coordinator] = []
+    
+    var completion: (() -> Void)?
     
     // MARK: - Setup
     
@@ -65,13 +65,11 @@ final class PollEditFormCoordinator: Coordinator {
             return
         }
         
-        parameters.navigationRouter?.present(pollEditFormHostingController, animated: true)
-        
         pollEditFormViewModel.completion = { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .cancel:
-                self.parameters.navigationRouter?.dismissModule(animated: true, completion: nil)
+                self.completion?()
             case .create(let question, let answerOptions):
                 var options = [MXEventContentPollStartAnswerOption]()
                 for answerOption in answerOptions {
@@ -88,8 +86,8 @@ final class PollEditFormCoordinator: Coordinator {
                 self.parameters.room.sendPollStart(withContent: pollStartContent, threadId: nil, localEcho: nil) { [weak self] result in
                     guard let self = self else { return }
                     
-                    self.parameters.navigationRouter?.dismissModule(animated: true, completion: nil)
                     self.pollEditFormViewModel.dispatch(action: .stopLoading(nil))
+                    self.completion?()
                 } failure: { [weak self] error in
                     guard let self = self else { return }
                     
@@ -98,5 +96,11 @@ final class PollEditFormCoordinator: Coordinator {
                 }
             }
         }
+    }
+    
+    // MARK: - Private
+    
+    func toPresentable() -> UIViewController {
+        return pollEditFormHostingController
     }
 }
