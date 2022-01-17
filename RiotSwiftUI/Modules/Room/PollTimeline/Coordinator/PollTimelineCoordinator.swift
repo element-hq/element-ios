@@ -27,7 +27,7 @@ struct PollTimelineCoordinatorParameters {
 }
 
 @available(iOS 14.0, *)
-final class PollTimelineCoordinator: Coordinator, PollAggregatorDelegate {
+final class PollTimelineCoordinator: Coordinator, Presentable, PollAggregatorDelegate {
     
     // MARK: - Properties
     

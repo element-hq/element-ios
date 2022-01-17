@@ -35,6 +35,7 @@ targets:
     - target: SiriIntents
     - target: RiotNSE
     - target: DesignKit
+    - package: Mapbox
 
     configFiles:
       Debug: Debug.xcconfig

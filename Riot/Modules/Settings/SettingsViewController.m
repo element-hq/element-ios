@@ -47,10 +47,11 @@
 
 NSString* const kSettingsViewControllerPhoneBookCountryCellId = @"kSettingsViewControllerPhoneBookCountryCellId";
 
-enum
+typedef NS_ENUM(NSUInteger, SECTION_TAG)
 {
     SECTION_TAG_SIGN_OUT = 0,
     SECTION_TAG_USER_SETTINGS,
+    SECTION_TAG_LOCATION_SHARING,
     SECTION_TAG_SENDING_MEDIA,
     SECTION_TAG_LINKS,
     SECTION_TAG_SECURITY,
@@ -69,7 +70,7 @@ enum
     SECTION_TAG_DEACTIVATE_ACCOUNT
 };
 
-enum
+typedef NS_ENUM(NSUInteger, USER_SETTINGS_INDEX)
 {
     USER_SETTINGS_PROFILE_PICTURE_INDEX = 0,
     USER_SETTINGS_DISPLAYNAME_INDEX,
@@ -80,24 +81,29 @@ enum
     USER_SETTINGS_ADD_PHONENUMBER_INDEX
 };
 
-enum
+typedef NS_ENUM(NSUInteger, USER_SETTINGS_OFFSET)
 {
     USER_SETTINGS_EMAILS_OFFSET = 2000,
     USER_SETTINGS_PHONENUMBERS_OFFSET = 1000
 };
 
-enum
+typedef NS_ENUM(NSUInteger, LOCATION_SHARING)
+{
+    LOCATION_SHARING_ENABLED
+};
+
+typedef NS_ENUM(NSUInteger, SENDING_MEDIA)
 {
     SENDING_MEDIA_CONFIRM_SIZE = 0
 };
 
-enum
+typedef NS_ENUM(NSUInteger, LINKS_SHOW_URL_PREVIEWS)
 {
     LINKS_SHOW_URL_PREVIEWS_INDEX = 0,
     LINKS_SHOW_URL_PREVIEWS_DESCRIPTION_INDEX
 };
 
-enum
+typedef NS_ENUM(NSUInteger, NOTIFICATION_SETTINGS)
 {
     NOTIFICATION_SETTINGS_ENABLE_PUSH_INDEX = 0,
     NOTIFICATION_SETTINGS_SYSTEM_SETTINGS,
@@ -109,33 +115,35 @@ enum
     NOTIFICATION_SETTINGS_OTHER_SETTINGS_INDEX,
 };
 
-enum
+typedef NS_ENUM(NSUInteger, CALLS_ENABLE_STUN_SERVER)
 {
     CALLS_ENABLE_STUN_SERVER_FALLBACK_INDEX = 0
 };
 
-enum
+typedef NS_ENUM(NSUInteger, INTEGRATIONS)
 {
     INTEGRATIONS_INDEX
 };
 
-enum {
+typedef NS_ENUM(NSUInteger, LOCAL_CONTACTS)
+{
     LOCAL_CONTACTS_SYNC_INDEX,
     LOCAL_CONTACTS_PHONEBOOK_COUNTRY_INDEX
 };
 
-enum
+typedef NS_ENUM(NSUInteger, USER_INTERFACE)
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX
+    USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_TIMELINE_STYLE_INDEX
 };
 
-enum
+typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
 {
     IDENTITY_SERVER_INDEX
 };
 
-enum
+typedef NS_ENUM(NSUInteger, ADVANCED)
 {
     ADVANCED_SHOW_NSFW_ROOMS_INDEX = 0,
     ADVANCED_CRASH_REPORT_INDEX,
@@ -145,7 +153,7 @@ enum
     ADVANCED_REPORT_BUG_INDEX,
 };
 
-enum
+typedef NS_ENUM(NSUInteger, ABOUT)
 {
     ABOUT_COPYRIGHT_INDEX = 0,
     ABOUT_TERM_CONDITIONS_INDEX,
@@ -160,7 +168,7 @@ typedef NS_ENUM(NSUInteger, LABS_ENABLE)
     LABS_ENABLE_THREADS_INDEX
 };
 
-enum
+typedef NS_ENUM(NSUInteger, SECURITY)
 {
     SECURITY_BUTTON_INDEX = 0,
 };
@@ -375,6 +383,14 @@ TableViewSectionsDelegate>
     sectionUserSettings.headerTitle = [VectorL10n settingsUserSettings];
     [tmpSections addObject:sectionUserSettings];
     
+    if (BuildSettings.locationSharingEnabled)
+    {
+        Section *sectionLocationSharing = [Section sectionWithTag:SECTION_TAG_LOCATION_SHARING];
+        [sectionLocationSharing addRowWithTag:LOCATION_SHARING_ENABLED];
+        sectionLocationSharing.headerTitle = VectorL10n.locationSharingSettingsHeader.uppercaseString;
+        [tmpSections addObject:sectionLocationSharing];
+    }
+    
     if (BuildSettings.settingsScreenShowConfirmMediaSize)
     {
         Section *sectionMedia = [Section sectionWithTag:SECTION_TAG_SENDING_MEDIA];
@@ -500,9 +516,16 @@ TableViewSectionsDelegate>
     }
     
     Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
+    sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
+    
     [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
-    sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
+    
+    if (BuildSettings.roomScreenAllowTimelineStyleConfiguration)
+    {
+        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
+    }
+        
     [tmpSections addObject: sectionUserInterface];
     
     Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
@@ -1943,6 +1966,21 @@ TableViewSectionsDelegate>
             cell = passwordCell;
         }
     }
+    else if (section == SECTION_TAG_LOCATION_SHARING)
+    {
+        if (row == LOCATION_SHARING_ENABLED)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+    
+            labelAndSwitchCell.mxkLabel.text = VectorL10n.locationSharingSettingsToggleTitle;
+            labelAndSwitchCell.mxkSwitch.on =  RiotSettings.shared.roomScreenAllowLocationAction;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleLocationSharing:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
+    }
     else if (section == SECTION_TAG_SENDING_MEDIA)
     {
         if (row == SENDING_MEDIA_CONFIRM_SIZE)
@@ -2196,6 +2234,19 @@ TableViewSectionsDelegate>
 
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        else if (row == USER_INTERFACE_TIMELINE_STYLE_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnableRoomMessageBubbles];
+            
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenEnableMessageBubbles;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRoomMessageBubbles:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
         }
     }
     else if (section == SECTION_TAG_IGNORED_USERS)
@@ -2974,6 +3025,11 @@ TableViewSectionsDelegate>
             currentAlert = removePrompt;
         }
     }
+}
+
+- (void)toggleLocationSharing:(UISwitch *)sender
+{
+    RiotSettings.shared.roomScreenAllowLocationAction = sender.on;
 }
 
 - (void)toggleConfirmMediaSize:(UISwitch *)sender
@@ -3855,6 +3911,11 @@ TableViewSectionsDelegate>
 - (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender
 {
     RiotSettings.shared.showNSFWPublicRooms = sender.isOn;
+}
+
+- (void)toggleEnableRoomMessageBubbles:(UISwitch *)sender
+{
+    RiotSettings.shared.roomScreenEnableMessageBubbles = sender.isOn;
 }
 
 #pragma mark - TextField listener

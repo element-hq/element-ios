@@ -26,15 +26,15 @@
     NSUInteger missedDiscussionsCount = 0;
     
     // Sum all the rooms with missed notifications.
-    for (MXRoomSummary *roomSummary in self.roomsSummaries)
+    for (MXRoom *room in self.rooms)
     {
-        NSUInteger notificationCount = roomSummary.notificationCount;
+        NSUInteger notificationCount = room.summary.notificationCount;
         
         // Ignore the regular notification count if the room is in 'mentions only" mode at the Riot level.
-        if (roomSummary.room.isMentionsOnly)
+        if (room.isMentionsOnly)
         {
             // Only the highlighted missed messages must be considered here.
-            notificationCount = roomSummary.highlightCount;
+            notificationCount = room.summary.highlightCount;
         }
         
         if (notificationCount)
