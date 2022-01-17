@@ -21,37 +21,5 @@ import Combine
 
 @available(iOS 14.0, *)
 class OnboardingSplashScreenViewModelTests: XCTestCase {
-    private enum Constants {
-        static let presenceInitialValue: OnboardingSplashScreenPresence = .offline
-        static let displayName = "Alice"
-    }
-    var service: MockOnboardingSplashScreenService!
-    var viewModel: OnboardingSplashScreenViewModelProtocol!
-    var context: OnboardingSplashScreenViewModelType.Context!
-    var cancellables = Set<AnyCancellable>()
-    override func setUpWithError() throws {
-        service = MockOnboardingSplashScreenService(displayName: Constants.displayName, presence: Constants.presenceInitialValue)
-        viewModel = OnboardingSplashScreenViewModel.makeOnboardingSplashScreenViewModel(onboardingSplashScreenService: service)
-        context = viewModel.context
-    }
-
-    func testInitialState() {
-        XCTAssertEqual(context.viewState.displayName, Constants.displayName)
-        XCTAssertEqual(context.viewState.presence, Constants.presenceInitialValue)
-    }
-
-    func testFirstPresenceReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(1).first()
-        XCTAssertEqual(try xcAwait(presencePublisher), [Constants.presenceInitialValue])
-    }
-
-    func testPresenceUpdatesReceived() throws {
-        let presencePublisher = context.$viewState.map(\.presence).removeDuplicates().collect(3).first()
-        let awaitDeferred = xcAwaitDeferred(presencePublisher)
-        let newPresenceValue1: OnboardingSplashScreenPresence = .online
-        let newPresenceValue2: OnboardingSplashScreenPresence = .idle
-        service.simulateUpdate(presence: newPresenceValue1)
-        service.simulateUpdate(presence: newPresenceValue2)
-        XCTAssertEqual(try awaitDeferred(), [Constants.presenceInitialValue, newPresenceValue1, newPresenceValue2])
-    }
+    // TODO: Check for any useful tests when finished
 }

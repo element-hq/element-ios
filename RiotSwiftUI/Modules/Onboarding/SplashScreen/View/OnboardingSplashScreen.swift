@@ -38,7 +38,7 @@ struct OnboardingSplashScreen: View {
     @ObservedObject var viewModel: OnboardingSplashScreenViewModel.Context
     
     var buttons: some View {
-        VStack {
+        VStack(spacing: 12) {
             Button { viewModel.send(viewAction: .register) } label: {
                 Text(VectorL10n.onboardingSplashRegisterButtonTitle)
             }
@@ -52,19 +52,27 @@ struct OnboardingSplashScreen: View {
     }
     
     var overlay: some View {
-        VStack {
-            OnboardingSplashScreenPageIndicator(pageCount: pageCount,
-                                                pageIndex: viewModel.pageIndex)
-                .padding(.vertical, 20)
+        VStack(spacing: 50) {
+            Color.clear
+            Color.clear
             
-            buttons
-                .padding(.horizontal, 16)
+            VStack {
+                OnboardingSplashScreenPageIndicator(pageCount: pageCount,
+                                                    pageIndex: viewModel.pageIndex)
+                Spacer()
+                
+                buttons
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: 600)
+                Spacer()
+            }
+            .background(ViewFrameReader(frame: $overlayFrame))
         }
     }
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .bottomLeading) {
+            ZStack(alignment: .leading) {
                 HStack(spacing: 0) {
                     OnboardingSplashScreenPage(content: viewModel.viewState.content[pageCount - 1],
                                                overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
@@ -103,11 +111,9 @@ struct OnboardingSplashScreen: View {
                 
                 overlay
                     .frame(width: geometry.size.width)
-                    .background(ViewFrameReader(frame: $overlayFrame))
-                    .padding(.bottom, geometry.safeAreaInsets.bottom > 0 ? 0 : 16)
             }
         }
-        .background(theme.colors.background.ignoresSafeArea())  // whilst gradients are transparent
+        .background(theme.colors.background.ignoresSafeArea())
         .accentColor(theme.colors.accent)
         .navigationBarHidden(true)
         .onAppear { startTimer() }

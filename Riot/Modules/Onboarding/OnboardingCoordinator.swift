@@ -28,7 +28,7 @@ struct OnboardingCoordinatorParameters {
     
     init(router: NavigationRouterType? = nil,
          softLogoutCredentials: MXCredentials? = nil) {
-        self.router = router ?? NavigationRouter(navigationController: RiotNavigationController())
+        self.router = router ?? NavigationRouter(navigationController: RiotNavigationController(isLockedToPortraitOnPhone: true))
         self.softLogoutCredentials = softLogoutCredentials
     }
 }

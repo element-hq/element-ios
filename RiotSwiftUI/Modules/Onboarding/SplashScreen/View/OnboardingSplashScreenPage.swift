@@ -28,44 +28,48 @@ struct OnboardingSplashScreenPage: View {
     let content: OnboardingSplashScreenPageContent
     let overlayHeight: CGFloat
     
+    var isDarkModeEnabled: Bool {
+        theme.identifier != .light
+    }
+    
     // MARK: - Views
     
+    @ViewBuilder
     var backgroundGradient: some View {
-        LinearGradient(gradient: content.gradient, startPoint: .leading, endPoint: .trailing)
-            .flipsForRightToLeftLayoutDirection(true)
-            .opacity(0.2)
+        if !isDarkModeEnabled {
+            LinearGradient(gradient: content.gradient, startPoint: .leading, endPoint: .trailing)
+                .flipsForRightToLeftLayoutDirection(true)
+        }
     }
     
     var body: some View {
         VStack {
-            Color.clear
-                .overlay(
-                    Image(content.image.name)
-                        .resizable()
-                        .scaledToFit()
-                )
-            
-            Color.clear
-                .overlay(
-                    VStack(spacing: 8) {
-                        Spacer()
-                        OnboardingSplashScreenTitleText(content.title)
-                            .font(theme.fonts.title2B)
-                            .foregroundColor(theme.colors.primaryContent)
-                        Text(content.message)
-                            .font(theme.fonts.body)
-                            .foregroundColor(theme.colors.secondaryContent)
-                            .multilineTextAlignment(.center)
-                        Spacer()
-                        Spacer()
-                    }
-                )
-            
-            Spacer()
-                .frame(height: overlayHeight)
+            VStack {
+                Image(isDarkModeEnabled ? content.darkImage.name : content.image.name)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 300)
+                    .padding(20)
+                
+                VStack(spacing: 8) {
+                    OnboardingSplashScreenTitleText(content.title)
+                        .font(theme.fonts.title2B)
+                        .foregroundColor(theme.colors.primaryContent)
+                    Text(content.message)
+                        .font(theme.fonts.body)
+                        .foregroundColor(theme.colors.secondaryContent)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.bottom)
+                
+                Spacer()
+                
+                Spacer()
+                    .frame(maxHeight: overlayHeight)
+            }
+            .padding(.horizontal, 16)
+            .frame(maxWidth: 600, maxHeight: 750)
         }
-        .padding(.top, 30)
-        .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundGradient.ignoresSafeArea())
     }
@@ -76,7 +80,7 @@ struct OnboardingSplashScreenPage_Previews: PreviewProvider {
     static let content = OnboardingSplashScreenViewState().content
     static var previews: some View {
         ForEach(0..<content.count, id:\.self) { index in
-            OnboardingSplashScreenPage(content: content[index], overlayHeight: 55)
+            OnboardingSplashScreenPage(content: content[index], overlayHeight: 200)
         }
     }
 }

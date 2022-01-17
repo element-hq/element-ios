@@ -32,6 +32,11 @@
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
+    if (self.isLockedToPortraitOnPhone && UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+    {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    
     if (self.topViewController)
     {
         return self.topViewController.supportedInterfaceOrientations;
@@ -65,6 +70,16 @@
         return;
     }
     [super pushViewController:viewController animated:animated];
+}
+
+
+- (instancetype)initWithIsLockedToPortraitOnPhone:(BOOL)isLockedToPortraitOnPhone
+{
+    self = [super init];
+    if (self) {
+        self.isLockedToPortraitOnPhone = isLockedToPortraitOnPhone;
+    }
+    return self;
 }
 
 @end

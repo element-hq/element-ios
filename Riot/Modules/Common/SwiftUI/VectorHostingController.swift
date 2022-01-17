@@ -30,17 +30,6 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     // MARK: Public
     
-    /// When `true` the presented view will have its orientation fixed to portrait on iPhone.
-    var isLockedToPortraitOnPhone = false
-    
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if isLockedToPortraitOnPhone && UIDevice.current.isPhone {
-            return .portrait
-        }
-        
-        return super.supportedInterfaceOrientations
-    }
-    
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
         super.init(rootView: AnyView(rootView.vectorContent()))

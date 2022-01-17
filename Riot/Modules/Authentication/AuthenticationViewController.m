@@ -580,6 +580,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     keyVerificationCoordinatorBridgePresenter.delegate = self;
     
     [keyVerificationCoordinatorBridgePresenter presentCompleteSecurityFrom:self isNewSignIn:YES animated:YES];
+    
+    self.keyVerificationCoordinatorBridgePresenter = keyVerificationCoordinatorBridgePresenter;
 }
 
 - (void)dismiss

@@ -103,7 +103,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     }
 }
 
-// MARK: - AuthenticationViewModelCoordinatorDelegate
+// MARK: - AuthenticationViewControllerDelegate
 extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
     func authenticationViewControllerDidTapBackButton(_ authenticationViewController: AuthenticationViewController!) {
         completion?(.navigateBack)

@@ -23,6 +23,7 @@ struct OnboardingSplashScreenPageContent {
     let title: String
     let message: String
     let image: ImageAsset
+    let darkImage: ImageAsset
     let gradient: Gradient
 }
 
@@ -45,7 +46,6 @@ struct OnboardingSplashScreenViewState: BindableState {
     var bindings: OnboardingSplashScreenBindings
     
     init() {
-        #warning("Check why LocaleProvider.locale always returns en")
         let locale = Locale.current
         let page4Title = locale.identifier.hasPrefix("en") ? "Cut the slack from teams." : VectorL10n.onboardingSplashPage4TitleNoPun
         
@@ -53,30 +53,34 @@ struct OnboardingSplashScreenViewState: BindableState {
             OnboardingSplashScreenPageContent(title: VectorL10n.onboardingSplashPage1Title,
                                               message: VectorL10n.onboardingSplashPage1Message,
                                               image: Asset.Images.onboardingSplashScreenPage1,
+                                              darkImage: Asset.Images.onboardingSplashScreenPage1Dark,
                                               gradient: Gradient(colors: [
-                                                Color(red: 0.73, green: 0.91, blue: 0.81),
-                                                Color(red: 0.45, green: 0.78, blue: 0.85)
+                                                Color(red: 0.95, green: 0.98, blue: 0.96),
+                                                Color(red: 0.89, green: 0.96, blue: 0.97)
                                               ])),
             OnboardingSplashScreenPageContent(title: VectorL10n.onboardingSplashPage2Title,
                                               message: VectorL10n.onboardingSplashPage2Message,
                                               image: Asset.Images.onboardingSplashScreenPage2,
+                                              darkImage: Asset.Images.onboardingSplashScreenPage2Dark,
                                               gradient: Gradient(colors: [
-                                                Color(red: 0.45, green: 0.78, blue: 0.85),
-                                                Color(red: 0.72, green: 0.45, blue: 0.85)
+                                                Color(red: 0.89, green: 0.96, blue: 0.97),
+                                                Color(red: 0.95, green: 0.89, blue: 0.97)
                                               ])),
             OnboardingSplashScreenPageContent(title: VectorL10n.onboardingSplashPage3Title,
                                               message: VectorL10n.onboardingSplashPage3Message,
                                               image: Asset.Images.onboardingSplashScreenPage3,
+                                              darkImage: Asset.Images.onboardingSplashScreenPage3Dark,
                                               gradient: Gradient(colors: [
-                                                Color(red: 0.72, green: 0.45, blue: 0.85),
-                                                Color(red: 0.05, green: 0.74, blue: 0.55)
+                                                Color(red: 0.95, green: 0.89, blue: 0.97),
+                                                Color(red: 0.81, green: 0.95, blue: 0.91)
                                               ])),
             OnboardingSplashScreenPageContent(title: page4Title,
                                               message: VectorL10n.onboardingSplashPage4Message,
                                               image: Asset.Images.onboardingSplashScreenPage4,
+                                              darkImage: Asset.Images.onboardingSplashScreenPage4Dark,
                                               gradient: Gradient(colors: [
-                                                Color(red: 0.05, green: 0.74, blue: 0.55),
-                                                Color(red: 0.73, green: 0.91, blue: 0.81)
+                                                Color(red: 0.81, green: 0.95, blue: 0.91),
+                                                Color(red: 0.95, green: 0.98, blue: 0.96)
                                               ])),
         ]
         self.bindings = OnboardingSplashScreenBindings()
