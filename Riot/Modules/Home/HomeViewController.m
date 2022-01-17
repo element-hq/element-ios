@@ -104,6 +104,8 @@
 {
     [super viewWillAppear:animated];
     
+    // The title gets updated in the MasterTabBarController based on accessibilityLabel
+    self.accessibilityLabel = [VectorL10n titleHome];
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleHome];
 
     [ThemeService.shared.theme applyStyleOnNavigationBar:[AppDelegate theDelegate].masterTabBarController.navigationController.navigationBar];

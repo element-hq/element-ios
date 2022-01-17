@@ -67,6 +67,8 @@
 {
     [super viewWillAppear:animated];
     
+    // The title gets updated in the MasterTabBarController based on accessibilityLabel
+    self.accessibilityLabel = [VectorL10n titleRoomsAarenet];
     [AppDelegate theDelegate].masterTabBarController.navigationItem.title = [VectorL10n titleRooms];
     [AppDelegate theDelegate].masterTabBarController.tabBar.tintColor = ThemeService.shared.theme.tintColor;
     

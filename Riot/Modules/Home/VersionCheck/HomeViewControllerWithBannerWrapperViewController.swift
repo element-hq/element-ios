@@ -57,6 +57,13 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
         homeViewController.didMove(toParent: self)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Update title on home screen
+        self.accessibilityLabel = VectorL10n.titleHome
+    }
+
     // MARK: - BannerPresentationProtocol
     
     func presentBannerView(_ bannerView: UIView, animated: Bool) {

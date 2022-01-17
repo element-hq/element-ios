@@ -336,6 +336,12 @@
 {
     NSInteger index = [self indexOfTabItemWithTag:tabBarIndex];
     self.selectedIndex = index;
+    
+    // Normally the title gets updated in the UITabBarControllerDelegate.
+    // But that gets called only when the user selects a tab. When a tab get
+    // set otherwise (e.g. after changing language) we have to update it here.
+    [self.selectedViewController viewWillAppear:NO];
+    titleView.titleLabel.text = self.selectedViewController.accessibilityLabel;
 }
 
 #pragma mark -
