@@ -95,7 +95,7 @@ private class ToastOperation: AsyncOperation {
     
     private enum Constants {
         static let margin: UIEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        static let animationDuration: TimeInterval = 0.25
+        static let animationDuration: TimeInterval = 0.15
         static let timeBetweenToasts: TimeInterval = 0.5
     }
     
