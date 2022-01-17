@@ -1541,7 +1541,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (UIBarButtonItem *)threadListBarButtonItem
 {
-    UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(24, 24)];
+    UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(21, 21)];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:icon
                                                              style:UIBarButtonItemStylePlain
                                                             target:self

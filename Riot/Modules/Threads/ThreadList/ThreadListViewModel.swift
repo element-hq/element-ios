@@ -136,7 +136,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
                                             title: VectorL10n.threadsEmptyTitle,
                                             info: VectorL10n.threadsEmptyInfoMy,
-                                            tip: VectorL10n.threadsEmptyTip,
+                                            tip: nil,
                                             showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
                                             showAllThreadsButtonHidden: false)
         }
@@ -192,6 +192,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                rootMessageSenderAvatar: rootAvatarViewData,
                                rootMessageSenderDisplayName: rootMessageSender?.displayname,
                                rootMessageText: rootMessageText,
+                               rootMessageRedacted: thread.rootMessage?.isRedactedEvent() ?? false,
                                lastMessageTime: lastMessageTime,
                                summaryViewModel: summaryViewModel)
     }
