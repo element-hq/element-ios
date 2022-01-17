@@ -2074,6 +2074,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     [_room sendLocationWithLatitude:latitude
                           longitude:longitude
                         description:description
+                           threadId:self.threadId
                           localEcho:&localEchoEvent
                             success:success failure:failure];
     
