@@ -87,6 +87,18 @@
 "accessibility_checkbox_label" = "checkbox";
 "accessibility_button_label" = "button";
 
+// Onboarding
+"onboarding_splash_register_button_title" = "Create account";
+"onboarding_splash_login_button_title" = "I already have an account";
+"onboarding_splash_page_1_title" = "Own your conversations.";
+"onboarding_splash_page_1_message" = "Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.";
+"onboarding_splash_page_2_title" = "You’re in control.";
+"onboarding_splash_page_2_message" = "Choose where your conversations are kept, giving you control and independence. Connected via Matrix.";
+"onboarding_splash_page_3_title" = "Secure messaging.";
+"onboarding_splash_page_3_message" = "End-to-end encrypted and no phone number required. No ads or datamining.";
+"onboarding_splash_page_4_title_no_pun" = "Messaging for your team.";
+"onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";

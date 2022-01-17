@@ -2387,6 +2387,46 @@ public class VectorL10n: NSObject {
   public static var on: String { 
     return VectorL10n.tr("Vector", "on") 
   }
+  /// I already have an account
+  public static var onboardingSplashLoginButtonTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_login_button_title") 
+  }
+  /// Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.
+  public static var onboardingSplashPage1Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_1_message") 
+  }
+  /// Own your conversations.
+  public static var onboardingSplashPage1Title: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_1_title") 
+  }
+  /// Choose where your conversations are kept, giving you control and independence. Connected via Matrix.
+  public static var onboardingSplashPage2Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_2_message") 
+  }
+  /// You’re in control.
+  public static var onboardingSplashPage2Title: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_2_title") 
+  }
+  /// End-to-end encrypted and no phone number required. No ads or datamining.
+  public static var onboardingSplashPage3Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_3_message") 
+  }
+  /// Secure messaging.
+  public static var onboardingSplashPage3Title: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_3_title") 
+  }
+  /// Element is also great for the workplace. It’s trusted by the world’s most secure organisations.
+  public static var onboardingSplashPage4Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_4_message") 
+  }
+  /// Messaging for your team.
+  public static var onboardingSplashPage4TitleNoPun: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_4_title_no_pun") 
+  }
+  /// Create account
+  public static var onboardingSplashRegisterButtonTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_register_button_title") 
+  }
   /// Open
   public static var `open`: String { 
     return VectorL10n.tr("Vector", "open") 
