@@ -29,7 +29,7 @@ class ThreadSummaryView: UIView {
     private enum Constants {
         static let viewHeight: CGFloat = 40
         static let viewDefaultWidth: CGFloat = 320
-        static let cornerRadius: CGFloat = 4
+        static let cornerRadius: CGFloat = 8
         static let lastMessageFont: UIFont = .systemFont(ofSize: 13)
     }
     

@@ -45,7 +45,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Md3-uq-cSB" customClass="ThreadSummaryView" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="47" y="60" width="245" height="32"/>
+                        <rect key="frame" x="44" y="60" width="248" height="32"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="Pnm-yi-36O"/>
@@ -58,7 +58,7 @@
                     <constraint firstItem="Md3-uq-cSB" firstAttribute="top" secondItem="xzR-f9-3qV" secondAttribute="bottom" constant="8" id="6mB-Yd-Pyg"/>
                     <constraint firstAttribute="bottom" secondItem="Md3-uq-cSB" secondAttribute="bottom" constant="8" id="Ppd-HN-Ehg"/>
                     <constraint firstItem="I32-A5-WWw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="Trt-CK-Tly"/>
-                    <constraint firstItem="Md3-uq-cSB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="47" id="Vpf-02-TgV"/>
+                    <constraint firstItem="Md3-uq-cSB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="44" id="Vpf-02-TgV"/>
                     <constraint firstAttribute="trailing" secondItem="xzR-f9-3qV" secondAttribute="trailing" constant="28" id="Zz9-PK-l9b"/>
                     <constraint firstItem="C2U-Ih-4Oh" firstAttribute="leading" secondItem="108-Xh-aZf" secondAttribute="trailing" constant="8" id="bE8-Yy-3B9"/>
                     <constraint firstItem="xzR-f9-3qV" firstAttribute="leading" secondItem="I32-A5-WWw" secondAttribute="trailing" constant="12" id="g8i-lt-K8f"/>
