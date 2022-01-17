@@ -225,6 +225,8 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     }
     
     private func upgradeRoom(to restrictedVersionOverride: String, inviteUsers userIds: [String], completion: @escaping (Bool, String) -> Void) {
+        // Need to disable graph update during this process as a lot of syncs will occure
+        session.spaceService.graphUpdateEnabled = false
         currentOperation = session.matrixRestClient.upgradeRoom(withId: self.currentRoomId, to: restrictedVersionOverride) { [weak self] response in
             guard let self = self else { return }
             
@@ -235,6 +237,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
                 self.currentRoomId = replacementRoomId
                 let parentSpaces = self.session.spaceService.directParentIds(ofRoomWithId: oldRoomId)
                 self.moveRoom(from: oldRoomId, to: replacementRoomId, within: Array(parentSpaces), at: 0) {
+                    self.session.spaceService.graphUpdateEnabled = true
                     self.didBuildSpaceGraphObserver = NotificationCenter.default.addObserver(forName: MXSpaceService.didBuildSpaceGraph, object: nil, queue: OperationQueue.main) { [weak self] notification in
                         guard let self = self else { return }
                         
@@ -249,6 +252,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
                     }
                 }
             case .failure(let error):
+                self.session.spaceService.graphUpdateEnabled = true
                 self.waitingMessageSubject.send(nil)
                 self.errorSubject.send(error)
             }
