@@ -3389,7 +3389,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             selectedEvent.eventType != MXEventTypePollStart &&
             !selectedEvent.location)
         {
-            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForwards
+            [self.eventMenuBuilder addItemWithType:EventMenuItemTypeForward
                                             action:[UIAlertAction actionWithTitle:[VectorL10n roomEventActionForward]
                                                                             style:UIAlertActionStyleDefault
                                                                           handler:^(UIAlertAction * action) {
