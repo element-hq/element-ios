@@ -26,6 +26,8 @@ protocol SpaceExploreRoomViewModelCoordinatorDelegate: AnyObject {
     func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, didSelect item: SpaceExploreRoomListItemViewData, from sourceView: UIView?)
     func spaceExploreRoomViewModelDidCancel(_ viewModel: SpaceExploreRoomViewModelType)
     func spaceExploreRoomViewModelDidAddRoom(_ viewModel: SpaceExploreRoomViewModelType)
+    func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, openSettingsOf item: SpaceExploreRoomListItemViewData)
+    func spaceExploreRoomViewModel(_ viewModel: SpaceExploreRoomViewModelType, inviteTo item: SpaceExploreRoomListItemViewData)
 }
 
 /// Protocol describing the view model used by `SpaceExploreRoomViewController`
@@ -35,4 +37,6 @@ protocol SpaceExploreRoomViewModelType {
     var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate? { get set }
     
     func process(viewAction: SpaceExploreRoomViewAction)
+    @available(iOS 13.0, *)
+    func contextMenu(for itemData: SpaceExploreRoomListItemViewData) -> UIMenu
 }

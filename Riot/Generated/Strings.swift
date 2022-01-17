@@ -5563,6 +5563,14 @@ public class VectorL10n: NSObject {
   public static var spacesExploreRooms: String { 
     return VectorL10n.tr("Vector", "spaces_explore_rooms") 
   }
+  /// 1 room
+  public static var spacesExploreRoomsOneRoom: String { 
+    return VectorL10n.tr("Vector", "spaces_explore_rooms_one_room") 
+  }
+  /// %@ rooms
+  public static func spacesExploreRoomsRoomNumber(_ p1: String) -> String {
+    return VectorL10n.tr("Vector", "spaces_explore_rooms_room_number", p1)
+  }
   /// Home
   public static var spacesHomeSpaceTitle: String { 
     return VectorL10n.tr("Vector", "spaces_home_space_title") 
@@ -5614,6 +5622,10 @@ public class VectorL10n: NSObject {
   /// Secure decentralised chat/VoIP
   public static var storeShortDescription: String { 
     return VectorL10n.tr("Vector", "store_short_description") 
+  }
+  /// Suggest
+  public static var suggest: String { 
+    return VectorL10n.tr("Vector", "suggest") 
   }
   /// Switch
   public static var `switch`: String { 

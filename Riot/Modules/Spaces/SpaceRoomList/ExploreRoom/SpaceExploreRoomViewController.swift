@@ -256,6 +256,16 @@ extension SpaceExploreRoomViewController: UITableViewDelegate {
             self.viewModel.process(viewAction: .loadData)
         }
     }
+    
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let viewData = self.itemDataList[indexPath.row]
+        return UIContextMenuConfiguration(identifier: nil) {
+            return SpaceRoomPreviewViewController.instantiate(with: viewData.childInfo, avatarViewData: viewData.avatarViewData)
+        } actionProvider: { suggestedActions in
+            return self.viewModel.contextMenu(for: self.itemDataList[indexPath.row])
+        }
+    }
 }
 
 // MARK: - SpaceExploreRoomViewModelViewDelegate

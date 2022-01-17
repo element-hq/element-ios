@@ -73,6 +73,7 @@
 "existing" = "Existing";
 "add" = "Add";
 "ok" = "OK";
+"suggest" = "Suggest";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -1803,6 +1804,8 @@ Tap the + to start adding people.";
 "leave_space_and_all_rooms_action" = "Leave all rooms and spaces";
 "spaces_explore_rooms" = "Explore rooms";
 "spaces_suggested_room" = "Suggested";
+"spaces_explore_rooms_room_number" = "%@ rooms";
+"spaces_explore_rooms_one_room" = "1 room";
 "space_tag" = "space";
 "spaces_empty_space_title" = "This space has no rooms (yet)";
 "spaces_empty_space_detail" = "Some rooms may be hidden because they’re private and you need an invite.";
