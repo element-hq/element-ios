@@ -16,7 +16,7 @@
 import UIKit
 
 @objc protocol RoomAccessCoordinatorBridgePresenterDelegate {
-    func roomAccessCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: RoomAccessCoordinatorBridgePresenter)
+    func roomAccessCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomAccessCoordinatorBridgePresenter, didCancelRoomWithId roomId: String)
     func roomAccessCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomAccessCoordinatorBridgePresenter, didCompleteRoomWithId roomId: String)
 }
 
@@ -54,8 +54,8 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
             guard let self = self else { return }
             
             switch result {
-            case .cancel:
-                self.delegate?.roomAccessCoordinatorBridgePresenterDelegateDidCancel(self)
+            case .cancel(let roomId):
+                self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCancelRoomWithId: roomId)
             case .done(let roomId):
                 self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCompleteRoomWithId: roomId)
             }
@@ -88,7 +88,11 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
 extension RoomAccessCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
     func roomNotificationSettingsCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        self.delegate?.roomAccessCoordinatorBridgePresenterDelegateDidCancel(self)
+        if let roomId = self.coordinator?.currentRoomId {
+            self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCancelRoomWithId: roomId)
+        } else {
+            self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCancelRoomWithId: self.room.roomId)
+        }
     }
     
 }

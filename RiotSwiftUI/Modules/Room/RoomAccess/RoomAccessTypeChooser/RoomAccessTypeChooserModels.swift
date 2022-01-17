@@ -36,7 +36,7 @@ struct RoomAccessTypeChooserAccessItem: Identifiable, Equatable {
 enum RoomAccessTypeChooserCoordinatorAction {
     case spaceSelection(String, RoomAccessTypeChooserAccessType)
     case done(String)
-    case cancel
+    case cancel(String)
 }
 
 // MARK: - View model
@@ -52,7 +52,7 @@ enum RoomAccessTypeChooserStateAction {
 enum RoomAccessTypeChooserViewModelAction {
     case spaceSelection(String, RoomAccessTypeChooserAccessType)
     case done(String)
-    case cancel
+    case cancel(String)
 }
 
 // MARK: - View

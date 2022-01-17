@@ -21,7 +21,7 @@ import UIKit
 /// Actions returned by the coordinator callback
 enum RoomAccessCoordinatorCoordinatorAction {
     case done(String)
-    case cancel
+    case cancel(String)
 }
 
 @objcMembers
@@ -32,6 +32,7 @@ final class RoomAccessCoordinator: Coordinator {
     // MARK: Private
     
     private let parameters: RoomAccessCoordinatorParameters
+    private var upgradedRoomId: String?
     
     private var navigationRouter: NavigationRouterType {
         return self.parameters.navigationRouter
@@ -43,6 +44,13 @@ final class RoomAccessCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     
     var callback: ((RoomAccessCoordinatorCoordinatorAction) -> Void)?
+    
+    var currentRoomId: String {
+        if let upgradedRoomId = upgradedRoomId {
+            return upgradedRoomId
+        }
+        return parameters.room.roomId
+    }
     
     // MARK: - Setup
     
@@ -99,9 +107,10 @@ final class RoomAccessCoordinator: Coordinator {
             switch result {
             case .done(let roomId):
                 self.callback?(.done(roomId))
-            case .cancel:
-                self.callback?(.cancel)
+            case .cancel(let roomId):
+                self.callback?(.cancel(roomId))
             case .spaceSelection(let roomId, _):
+                self.upgradedRoomId = roomId
                 self.pushScreen(with: self.createRestrictedAccessSpaceChooserCoordinator(with: roomId))
             }
         }
@@ -122,7 +131,7 @@ final class RoomAccessCoordinator: Coordinator {
             case .back:
                 self.navigationRouter.popModule(animated: true)
             case .cancel:
-                self.callback?(.cancel)
+                self.callback?(.cancel(roomId))
             case .done:
                 self.callback?(.done(roomId))
             }

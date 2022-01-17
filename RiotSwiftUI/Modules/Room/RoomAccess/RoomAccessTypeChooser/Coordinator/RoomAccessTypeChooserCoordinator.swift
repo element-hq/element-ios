@@ -61,8 +61,8 @@ final class RoomAccessTypeChooserCoordinator: Coordinator, Presentable {
                 self.callback?(.spaceSelection(roomId, accessType))
             case .done(let roomId):
                 self.callback?(.done(roomId))
-            case .cancel:
-                self.callback?(.cancel)
+            case .cancel(let roomId):
+                self.callback?(.cancel(roomId))
             }
         }
     }

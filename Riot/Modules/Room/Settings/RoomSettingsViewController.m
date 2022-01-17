@@ -4202,10 +4202,18 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
 
 #pragma mark - RoomAccessCoordinatorBridgePresenterDelegate
 
-- (void)roomAccessCoordinatorBridgePresenterDelegateDidCancel:(RoomAccessCoordinatorBridgePresenter *)coordinatorBridgePresenter
+- (void)roomAccessCoordinatorBridgePresenterDelegate:(RoomAccessCoordinatorBridgePresenter *)coordinatorBridgePresenter didCancelRoomWithId:(NSString *)roomId
 {
-    [roomAccessPresenter dismissWithAnimated:YES completion:nil];
-    roomAccessPresenter = nil;
+    if (![roomId isEqualToString: self.roomId]) {
+        // Room Access Coordinator upgraded the actual room -> Need to move to replacement room
+        [self.delegate roomSettingsViewController:self didMoveRoomTo:roomId];
+    }
+
+    MXWeakify(self);
+    [roomAccessPresenter dismissWithAnimated:YES completion:^{
+        MXStrongifyAndReturnIfNil(self);
+        self->roomAccessPresenter = nil;
+    }];
 }
 
 - (void)roomAccessCoordinatorBridgePresenterDelegate:(RoomAccessCoordinatorBridgePresenter *)coordinatorBridgePresenter didCompleteRoomWithId:(NSString *)roomId

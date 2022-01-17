@@ -112,7 +112,7 @@ class RoomAccessTypeChooserViewModel: RoomAccessTypeChooserViewModelType, RoomAc
     }
     
     private func cancel() {
-        callback?(.cancel)
+        callback?(.cancel(roomAccessTypeChooserService.currentRoomId))
     }
     
     private func didSelect(accessType: RoomAccessTypeChooserAccessType) {
