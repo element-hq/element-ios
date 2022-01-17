@@ -3230,6 +3230,7 @@ TableViewSectionsDelegate>
 {
     RiotSettings.shared.enableThreads = sender.isOn;
     [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
+    [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
