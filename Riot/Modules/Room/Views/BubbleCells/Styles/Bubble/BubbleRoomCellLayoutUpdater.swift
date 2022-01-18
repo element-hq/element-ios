@@ -164,7 +164,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
             return nil
         }
         
-        
         let bubbleHeight: CGFloat
         let bottomMargin: CGFloat = 4.0
             

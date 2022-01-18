@@ -92,7 +92,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             reactionsView.alignment = .right
             
             // TODO: Use constants
-            var outgointLeftMargin = 80.0
+            var outgointLeftMargin: CGFloat = 80.0
             
             if cellData.containsBubbleComponentWithEncryptionBadge {
                 outgointLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
@@ -156,7 +156,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         if cellData.isSenderCurrentUser {
             
             // TODO: Use constants
-            let rightMargin = 34.0
+            let rightMargin: CGFloat = 34.0
             
             leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
         } else {
