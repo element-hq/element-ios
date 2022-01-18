@@ -81,13 +81,14 @@ struct PollEditFormAnswerOption: Identifiable, Equatable {
 }
 
 struct PollEditFormViewState: BindableState {
+    var minAnswerOptionsCount: Int
     var maxAnswerOptionsCount: Int
     var mode: PollEditFormMode
     var bindings: PollEditFormViewStateBindings
     
     var confirmationButtonEnabled: Bool {
         !bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-            bindings.answerOptions.filter({ !$0.text.isEmpty }).count >= 2
+            bindings.answerOptions.filter({ !$0.text.isEmpty }).count >= minAnswerOptionsCount
     }
     
     var addAnswerOptionButtonEnabled: Bool {
