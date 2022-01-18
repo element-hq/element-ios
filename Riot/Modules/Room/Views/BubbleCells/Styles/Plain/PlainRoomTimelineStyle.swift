@@ -42,4 +42,20 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
     func canAddEvent(_ event: MXEvent, and roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool {
         return true
     }
+    
+    func applySelectedStyleIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
+        
+        // Check whether the selected event belongs to this bubble
+        let selectedComponentIndex = cellData.selectedComponentIndex
+        if selectedComponentIndex != NSNotFound {
+            
+            let showTimestamp = cellData.showTimestampForSelectedComponent
+            
+            cell.selectComponent(UInt(selectedComponentIndex),
+                                 showEditButton: false,
+                                 showTimestamp: showTimestamp)
+        } else {
+            cell.blurred = true
+        }
+    }
 }
