@@ -18,7 +18,7 @@ import UIKit
 import Reusable
 import Mapbox
 
-class LocationUserMarkerView: MGLAnnotationView, NibLoadable {
+class LocationMarkerView: MGLAnnotationView, NibLoadable {
     
     @IBOutlet private var avatarView: UserAvatarView!
     
