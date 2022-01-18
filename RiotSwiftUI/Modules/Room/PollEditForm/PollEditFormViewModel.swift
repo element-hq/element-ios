@@ -113,10 +113,10 @@ class PollEditFormViewModel: PollEditFormViewModelType {
     
     private func buildPollDetails() -> EditFormPollDetails {
         return EditFormPollDetails(type: state.bindings.type,
-                           question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
-                           answerOptions: state.bindings.answerOptions.compactMap({ answerOption in
-                            let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
-                            return text.isEmpty ? nil : text
-                           }))
+                                   question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
+                                   answerOptions: state.bindings.answerOptions.compactMap({ answerOption in
+                                    let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                                    return text.isEmpty ? nil : text
+                                   }))
     }
 }
