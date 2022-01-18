@@ -25,7 +25,7 @@ enum MockLocationSharingScreenState: MockScreenState, CaseIterable {
     case displayExistingLocation
     
     var screenType: Any.Type {
-        MockLocationSharingScreenState.self
+        LocationSharingView.self
     }
     
     var screenView: ([Any], AnyView)  {

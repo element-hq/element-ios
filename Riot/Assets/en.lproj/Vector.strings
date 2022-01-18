@@ -1839,6 +1839,8 @@ Tap the + to start adding people.";
 
 "poll_edit_form_create_poll" = "Create poll";
 
+"poll_edit_form_poll_type" = "Poll type";
+
 "poll_edit_form_poll_question_or_topic" = "Poll question or topic";
 
 "poll_edit_form_question_or_topic" = "Question or topic";
@@ -1854,6 +1856,18 @@ Tap the + to start adding people.";
 "poll_edit_form_post_failure_title" = "Failed to post poll";
 
 "poll_edit_form_post_failure_subtitle" = "Please try again";
+
+"poll_edit_form_update_failure_title" = "Failed to update poll";
+
+"poll_edit_form_update_failure_subtitle" = "Please try again";
+
+"poll_edit_form_poll_type_open" = "Open poll";
+
+"poll_edit_form_poll_type_open_description" = "Voters see results as soon as they have voted";
+
+"poll_edit_form_poll_type_closed" = "Closed poll";
+
+"poll_edit_form_poll_type_closed_description" = "Results are only revealed when you end the poll";
 
 "poll_timeline_one_vote" = "1 vote";
 

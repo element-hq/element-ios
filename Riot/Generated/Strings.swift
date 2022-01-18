@@ -2539,6 +2539,26 @@ public class VectorL10n: NSObject {
   public static var pollEditFormPollQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
   }
+  /// Poll type
+  public static var pollEditFormPollType: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type") 
+  }
+  /// Closed poll
+  public static var pollEditFormPollTypeClosed: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_closed") 
+  }
+  /// Results are only revealed when you end the poll
+  public static var pollEditFormPollTypeClosedDescription: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_closed_description") 
+  }
+  /// Open poll
+  public static var pollEditFormPollTypeOpen: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_open") 
+  }
+  /// Voters see results as soon as they have voted
+  public static var pollEditFormPollTypeOpenDescription: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_open_description") 
+  }
   /// Please try again
   public static var pollEditFormPostFailureSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_post_failure_subtitle") 
@@ -2550,6 +2570,14 @@ public class VectorL10n: NSObject {
   /// Question or topic
   public static var pollEditFormQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
+  }
+  /// Please try again
+  public static var pollEditFormUpdateFailureSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_subtitle") 
+  }
+  /// Failed to update poll
+  public static var pollEditFormUpdateFailureTitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
   }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 

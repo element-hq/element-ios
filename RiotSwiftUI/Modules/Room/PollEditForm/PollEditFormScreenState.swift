@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/UserSuggestion UserSuggestion
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -24,11 +22,11 @@ enum MockPollEditFormScreenState: MockScreenState, CaseIterable {
     case standard
     
     var screenType: Any.Type {
-        MockPollEditFormScreenState.self
+        PollEditForm.self
     }
     
     var screenView: ([Any], AnyView)  {
-        let viewModel = PollEditFormViewModel()
+        let viewModel = PollEditFormViewModel(parameters: PollEditFormViewModelParameters(mode: .creation, pollDetails: .default))
         return ([viewModel], AnyView(PollEditForm(viewModel: viewModel.context)))
     }
 }
