@@ -57,3 +57,5 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
         delegate.cell(self, didRecognizeAction: kMXKRoomBubbleCellTapOnContentView, userInfo: [kMXKRoomBubbleCellEventKey: event])
     }
 }
+
+extension PollBubbleCell: BubbleCellThreadSummaryDisplayable {}

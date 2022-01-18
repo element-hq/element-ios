@@ -195,6 +195,10 @@
                                 <constraint firstAttribute="trailing" secondItem="SNw-aM-ILI" secondAttribute="trailing" constant="15" id="ynR-d4-6cf"/>
                             </constraints>
                         </view>
+                        <view hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="2eB-kB-m20">
+                            <rect key="frame" x="0.0" y="0.0" width="595" height="0.0"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                     </subviews>
                     <constraints>
                         <constraint firstItem="Dj1-m6-1Jw" firstAttribute="width" secondItem="5GX-gn-bK1" secondAttribute="width" id="0Px-jL-CMJ"/>
@@ -238,6 +242,7 @@
                 <outlet property="readReceiptsContainerView" destination="4zo-V8-CNe" id="7ek-u4-CX8"/>
                 <outlet property="readReceiptsContentView" destination="rQt-NH-Cb0" id="tqw-je-kp9"/>
                 <outlet property="senderInfoContainerView" destination="w0C-6a-f5M" id="fZE-vY-0nR"/>
+                <outlet property="threadSummaryContainerView" destination="2eB-kB-m20" id="0Y4-4E-I9K"/>
                 <outlet property="userNameLabel" destination="meG-P8-61b" id="ETK-ag-WYR"/>
                 <outlet property="userNameTouchMaskView" destination="ohU-Sc-mgb" id="FwW-aL-kc5"/>
             </connections>

@@ -297,6 +297,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         //  do not consider this cell data if threads not enabled in the timeline
         return NO;
     }
+
+    if (roomDataSource.threadId)
+    {
+        //  do not consider this cell data if in a thread view
+        return NO;
+    }
     
     return super.hasThreadRoot;
 }
