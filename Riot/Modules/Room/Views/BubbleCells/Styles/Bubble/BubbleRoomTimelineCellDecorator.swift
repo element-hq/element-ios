@@ -18,4 +18,74 @@ import UIKit
 
 class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     
+    override func addReactionView(_ reactionsView: BubbleReactionsView,
+                                  toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
+        
+        cell.addTmpSubview(reactionsView)
+        
+        if let reactionsDisplayable = cell as? BubbleCellReactionsDisplayable {
+            reactionsDisplayable.addReactionsView(reactionsView)
+            return
+        }
+        
+        reactionsView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let cellContentView = cell.contentView
+        
+        cellContentView.addSubview(reactionsView)
+        
+        // TODO: Use constants
+        let topMargin: CGFloat = 4.0
+        let leftMargin: CGFloat
+        let rightMargin: CGFloat
+        
+        // Outgoing message
+        if cellData.isSenderCurrentUser {
+            reactionsView.alignment = .right
+            
+            // TODO: Use constants
+            var outgointLeftMargin = 80.0
+            
+            if cellData.containsBubbleComponentWithEncryptionBadge {
+                outgointLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            }
+            
+            leftMargin = outgointLeftMargin
+            
+            // TODO: Use constants
+            rightMargin = 33
+        } else {
+            // Incoming message
+            
+            var incomingLeftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+            
+            if cellData.containsBubbleComponentWithEncryptionBadge {
+                incomingLeftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            }
+            
+            leftMargin = incomingLeftMargin - 6.0
+            
+            // TODO: Use constants
+            let messageViewMarginRight: CGFloat = 42.0
+            
+            rightMargin = messageViewMarginRight
+        }
+        
+        let leadingConstraint = reactionsView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
+        
+        let trailingConstraint = reactionsView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
+        
+        let topConstraint: NSLayoutConstraint
+        if let upperDecorationView = upperDecorationView {
+            topConstraint = reactionsView.topAnchor.constraint(equalTo: upperDecorationView.bottomAnchor, constant: topMargin)
+        } else {
+            topConstraint = reactionsView.topAnchor.constraint(equalTo: cellContentView.topAnchor, constant: contentViewPositionY + topMargin)
+        }
+        
+        NSLayoutConstraint.activate([
+            leadingConstraint,
+            trailingConstraint,
+            topConstraint
+        ])
+    }
 }
