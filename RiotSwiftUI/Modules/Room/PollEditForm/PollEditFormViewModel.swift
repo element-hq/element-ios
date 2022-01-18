@@ -30,6 +30,7 @@ typealias PollEditFormViewModelType = StateStoreViewModel< PollEditFormViewState
 class PollEditFormViewModel: PollEditFormViewModelType {
     
     private struct Constants {
+        static let minAnswerOptionsCount = 2
         static let maxAnswerOptionsCount = 20
         static let maxQuestionLength = 340
         static let maxAnswerOptionLength = 340
@@ -47,6 +48,7 @@ class PollEditFormViewModel: PollEditFormViewModelType {
     
     init(parameters: PollEditFormViewModelParameters) {
         let state = PollEditFormViewState(
+            minAnswerOptionsCount: Constants.minAnswerOptionsCount,
             maxAnswerOptionsCount: Constants.maxAnswerOptionsCount,
             mode: parameters.mode,
             bindings: PollEditFormViewStateBindings(
