@@ -17,6 +17,54 @@
 import UIKit
 
 class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
+        
+    override func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
+        
+        guard self.canShowTimestamp(forCellData: cellData) else {
+            return
+        }
+        
+        self.addTimestampLabel(toCell: cell, cellData: cellData)
+    }
+        
+    override func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
+
+        // If cell contains a bubble background, add the timestamp inside of it
+        if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false {
+
+            let componentIndex = cellData.mostRecentComponentIndex
+
+            guard let bubbleComponents = cellData.bubbleComponents,
+                    componentIndex < bubbleComponents.count else {
+                      return
+                  }
+
+            let component = bubbleComponents[componentIndex]
+
+            let timestampLabel = self.createTimestampLabel(cellData: cellData,
+                                                           bubbleComponent: component,
+                                                           viewTag: componentIndex)
+            timestampLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            cell.addTmpSubview(timestampLabel)
+
+            bubbleBackgroundView.addSubview(timestampLabel)
+
+            let rightMargin: CGFloat = 8.0
+            let bottomMargin: CGFloat = 4.0
+
+            let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: bubbleBackgroundView.trailingAnchor, constant: -rightMargin)
+
+            let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: bubbleBackgroundView.bottomAnchor, constant: -bottomMargin)
+
+            NSLayoutConstraint.activate([
+                trailingConstraint,
+                bottomConstraint
+            ])
+        } else {
+            super.addTimestampLabel(toCell: cell, cellData: cellData)
+        }
+    }
     
     override func addReactionView(_ reactionsView: BubbleReactionsView,
                                   toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
@@ -131,5 +179,52 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             leadingOrTrailingConstraint,
             urlPreviewView.topAnchor.constraint(equalTo: cellContentView.topAnchor, constant: topMargin)
         ])
+    }
+    
+    // MARK: - Private
+    
+    private func createTimestampLabel(cellData: MXKRoomBubbleCellData, bubbleComponent: MXKRoomBubbleComponent, viewTag: Int) -> UILabel {
+        
+        let timeLabel = UILabel()
+
+        timeLabel.text = cellData.eventFormatter.timeString(from: bubbleComponent.date)
+        timeLabel.textAlignment = .right
+        timeLabel.textColor = ThemeService.shared().theme.textSecondaryColor
+        timeLabel.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        timeLabel.adjustsFontSizeToFitWidth = true
+        timeLabel.tag = viewTag
+        timeLabel.accessibilityIdentifier = "timestampLabel"
+        
+        return timeLabel
+    }
+    
+    private func canShowTimestamp(forCellData cellData: MXKRoomBubbleCellData) -> Bool {
+        
+        guard cellData.isCollapsableAndCollapsed == false else {
+            return false
+        }
+        
+        guard let firstComponent = cellData.getFirstBubbleComponentWithDisplay(), let firstEvent = firstComponent.event else {
+            return false
+        }
+        
+        switch firstEvent.eventType {
+        case .roomMessage:
+            if let messageTypeString = firstEvent.content["msgtype"] as? String {
+                
+                let messageType = MXMessageType(identifier: messageTypeString)
+                
+                switch messageType {
+                case .text:
+                    return true
+                default:
+                    break
+                }
+            }
+        default:
+            break
+        }
+        
+        return false
     }
 }
