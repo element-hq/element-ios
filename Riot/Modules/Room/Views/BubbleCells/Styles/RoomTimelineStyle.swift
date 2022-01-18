@@ -39,4 +39,7 @@ protocol RoomTimelineStyle {
     
     /// Indicate to merge or not event in timeline
     func canAddEvent(_ event: MXEvent, and roomState: MXRoomState, to cellData: MXKRoomBubbleCellData) -> Bool
+    
+    /// Apply selected or blurred style on cell
+    func applySelectedStyleIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData)
 }
