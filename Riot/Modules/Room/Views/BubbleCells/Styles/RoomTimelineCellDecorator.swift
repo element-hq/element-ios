@@ -23,6 +23,8 @@ protocol RoomTimelineCellDecorator {
     func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell,
                                    cellData: RoomBubbleCellData)
     
+    func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData)
+    
     func addURLPreviewView(_ urlPreviewView: URLPreviewView,
                            toCell cell: MXKRoomBubbleTableViewCell,
                            cellData: RoomBubbleCellData,

@@ -43,4 +43,19 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
         return false
     }
     
+    func applySelectedStyleIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
+        
+        // Check whether the selected event belongs to this bubble
+        let selectedComponentIndex = cellData.selectedComponentIndex
+        if selectedComponentIndex != NSNotFound {
+            
+            cell.selectComponent(UInt(selectedComponentIndex),
+                                 showEditButton: false,
+                                 showTimestamp: false)
+            
+            self.cellDecorator.addTimestampLabel(toCell: cell, cellData: cellData)
+        } else {
+            cell.blurred = true
+        }
+    }
 }
