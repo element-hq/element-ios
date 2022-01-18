@@ -18,9 +18,19 @@ import UIKit
 
 @objcMembers
 class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
+    
+    func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
+                
+        guard cellData.containsLastMessage && cellData.isCollapsableAndCollapsed == false else {
+            return
+        }
+        
+        // Display timestamp of the last message
+        self.addTimestampLabel(toCell: cell, cellData: cellData)
+    }
 
-    func addTimestampLabel(toCell bubbleCell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-        bubbleCell.addTimestampLabel(forComponent: UInt(cellData.mostRecentComponentIndex))
+    func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
+        cell.addTimestampLabel(forComponent: UInt(cellData.mostRecentComponentIndex))
     }
 
     func addURLPreviewView(_ urlPreviewView: URLPreviewView,
