@@ -66,7 +66,10 @@
                     if (cellData)
                     {
                         // Highlight the search pattern
-                        [cellData highlightPatternInTextMessage:self.searchText withForegroundColor:ThemeService.shared.theme.tintColor andFont:patternFont];
+                        [cellData highlightPatternInTextMessage:self.searchText
+                                            withBackgroundColor:[UIColor clearColor]
+                                                foregroundColor:ThemeService.shared.theme.tintColor
+                                                        andFont:patternFont];
 
                         // Use profile information as data to display
                         MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];

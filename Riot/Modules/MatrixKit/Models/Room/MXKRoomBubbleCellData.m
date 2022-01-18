@@ -351,10 +351,14 @@
     return customAttributedTextMsg;
 }
 
-- (void)highlightPatternInTextMessage:(NSString*)pattern withForegroundColor:(UIColor*)patternColor andFont:(UIFont*)patternFont
+- (void)highlightPatternInTextMessage:(NSString*)pattern
+                  withBackgroundColor:(UIColor *)backgroundColor
+                      foregroundColor:(UIColor*)foregroundColor
+                              andFont:(UIFont*)patternFont
 {
     highlightedPattern = pattern;
-    highlightedPatternColor = patternColor;
+    highlightedPatternBackgroundColor = backgroundColor;
+    highlightedPatternForegroundColor = foregroundColor;
     highlightedPatternFont = patternFont;
     
     // Indicate that the text message layout should be recomputed.
@@ -889,10 +893,16 @@
         
         while (range.location != NSNotFound)
         {
-            if (highlightedPatternColor)
+            if (highlightedPatternBackgroundColor)
+            {
+                // Update background color
+                [customAttributedTextMsg addAttribute:NSBackgroundColorAttributeName value:highlightedPatternBackgroundColor range:range];
+            }
+
+            if (highlightedPatternForegroundColor)
             {
                 // Update text color
-                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternColor range:range];
+                [customAttributedTextMsg addAttribute:NSForegroundColorAttributeName value:highlightedPatternForegroundColor range:range];
             }
             
             if (highlightedPatternFont)
