@@ -24,21 +24,27 @@ class RoomDisplayConfiguration: NSObject {
     let integrationsEnabled: Bool
     
     let jitsiWidgetRemoverEnabled: Bool
+
+    let sendingPollsEnabled: Bool
     
     init(callsEnabled: Bool,
          integrationsEnabled: Bool,
-         jitsiWidgetRemoverEnabled: Bool) {
+         jitsiWidgetRemoverEnabled: Bool,
+         sendingPollsEnabled: Bool) {
         self.callsEnabled = callsEnabled
         self.integrationsEnabled = integrationsEnabled
         self.jitsiWidgetRemoverEnabled = jitsiWidgetRemoverEnabled
+        self.sendingPollsEnabled = sendingPollsEnabled
         super.init()
     }
     
     static let `default`: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: true,
                                                                               integrationsEnabled: true,
-                                                                              jitsiWidgetRemoverEnabled: true)
+                                                                              jitsiWidgetRemoverEnabled: true,
+                                                                              sendingPollsEnabled: true)
     
     static let forThreads: RoomDisplayConfiguration = RoomDisplayConfiguration(callsEnabled: false,
                                                                                integrationsEnabled: false,
-                                                                               jitsiWidgetRemoverEnabled: false)
+                                                                               jitsiWidgetRemoverEnabled: false,
+                                                                               sendingPollsEnabled: false)
 }
