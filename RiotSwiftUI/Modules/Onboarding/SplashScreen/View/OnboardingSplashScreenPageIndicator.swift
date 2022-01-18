@@ -19,14 +19,23 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct OnboardingSplashScreenPageIndicator: View {
     
+    // MARK: - Properties
+    
+    // MARK: Private
     @Environment(\.theme) private var theme
     
+    // MARK: Public
+    /// The number of pages that are shown.
     let pageCount: Int
+    /// The index of the current page
     let pageIndex: Int
+    
+    // MARK: - Setup
     
     internal init(pageCount: Int, pageIndex: Int) {
         self.pageCount = pageCount
         
+        // Clamp the page index to handle the hidden page.
         if pageIndex == -1 {
             self.pageIndex = pageCount - 1
         } else {

@@ -25,7 +25,9 @@ struct OnboardingSplashScreenPage: View {
     @Environment(\.theme) private var theme
     
     // MARK: Public
+    /// The content that this page should display.
     let content: OnboardingSplashScreenPageContent
+    /// The height of the non-scrollable content in the splash screen.
     let overlayHeight: CGFloat
     
     var isDarkModeEnabled: Bool {
@@ -64,11 +66,12 @@ struct OnboardingSplashScreenPage: View {
                 
                 Spacer()
                 
-                Spacer()
-                    .frame(maxHeight: overlayHeight)
+                // Prevent the content from clashing with the overlay content.
+                Spacer().frame(maxHeight: overlayHeight)
             }
             .padding(.horizontal, 16)
-            .frame(maxWidth: 600, maxHeight: 750)
+            .frame(maxWidth: OnboardingCoordinator.maxContentWidth,
+                   maxHeight: OnboardingCoordinator.maxContentHeight)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundGradient.ignoresSafeArea())

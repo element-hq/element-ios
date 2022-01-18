@@ -26,15 +26,6 @@
 // MXKAuthenticationViewController has already a `delegate` member
 @property (nonatomic, weak) id<AuthenticationViewControllerDelegate> authVCDelegate;
 
-@property (weak, nonatomic) IBOutlet UIView *navigationBackView;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (weak, nonatomic) IBOutlet UIView *navigationBarSeparatorView;
-
-@property (weak, nonatomic) IBOutlet UINavigationItem *mainNavigationItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
-/// Controls whether or not a bar button item is shown to navigate back in the flow
-@property (nonatomic) BOOL isPartOfFlow;
-
 @property (weak, nonatomic) IBOutlet UIView *optionsContainer;
 
 @property (weak, nonatomic) IBOutlet UIButton *skipButton;
@@ -68,7 +59,6 @@
 
 @protocol AuthenticationViewControllerDelegate <NSObject>
 
-- (void)authenticationViewControllerDidTapBackButton:(AuthenticationViewController *)authenticationViewController;
 - (void)authenticationViewControllerDidDismiss:(AuthenticationViewController *)authenticationViewController;
 
 @end;

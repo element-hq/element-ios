@@ -34,19 +34,25 @@ struct OnboardingCoordinatorParameters {
 }
 
 @objcMembers
+/// A coordinator to manage the full onboarding flow with pre-auth screens, authentication and setup screens once signed in.
 final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
+    
+    // MARK: - Constants
+    static let maxContentWidth: CGFloat = 600
+    static let maxContentHeight: CGFloat = 750
     
     // MARK: - Properties
     
     // MARK: Private
         
     private let parameters: OnboardingCoordinatorParameters
-    /// The external registration parameters for AuthenticationViewController.
+    // TODO: these can likely be consolidated using an additional authType.
+    /// The any registration parameters for AuthenticationViewController from a server provisioning link.
     private var externalRegistrationParameters: [AnyHashable: Any]?
+    /// A custom homeserver to be shown when logging in.
     private var customHomeserver: String?
+    /// A custom identity server to be used once logged in.
     private var customIdentityServer: String?
-    
-//    private var currentPresentable: Presentable?
     
     private var navigationRouter: NavigationRouterType {
         parameters.router
@@ -70,12 +76,12 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
     // MARK: - Public
     
     func start() {
-        // TODO: Manage a separate flow for soft logout
-        if #available(iOS 14.0, *), parameters.softLogoutCredentials == nil {
+        // TODO: Manage a separate flow for soft logout that just uses AuthenticationCoordinator
+        if #available(iOS 14.0, *), parameters.softLogoutCredentials == nil, BuildSettings.authScreenShowRegister {
             showSplashScreen()
             preloadAuthentication()
         } else {
-            showAuthenticationScreen(isPartOfFlow: false)
+            showAuthenticationScreen()
         }
     }
     
@@ -83,17 +89,21 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
         navigationRouter.toPresentable()
     }
     
+    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
+    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         self.externalRegistrationParameters = externalRegistrationParameters
         authenticationCoordinator?.update(externalRegistrationParameters: externalRegistrationParameters)
     }
     
+    /// Set up the authentication screen with the specified homeserver and/or identity server.
     func showCustomHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         self.customHomeserver = homeserver
         self.customIdentityServer = identityServer
         authenticationCoordinator?.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
+    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
         guard let authenticationCoordinator = authenticationCoordinator else { return false }
         return authenticationCoordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)
@@ -102,6 +112,7 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
     // MARK: - Private
     
     @available(iOS 14.0, *)
+    /// Show the onboarding splash screen as the root module in the flow.
     private func showSplashScreen() {
         let coordinatorParameters = OnboardingSplashScreenCoordinatorParameters()
         let coordinator = OnboardingSplashScreenCoordinator(parameters: coordinatorParameters)
@@ -116,35 +127,31 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
         self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
     }
     
+    /// Displays the next view in the flow after the splash screen.
     private func splashScreenCoordinator(_ coordinator: OnboardingSplashScreenCoordinator, didCompleteWith result: OnboardingSplashScreenViewModelResult) {
         splashScreenResult = result
-        showAuthenticationScreen(isPartOfFlow: true)
+        showAuthenticationScreen()
     }
     
+    /// Preload the authentication view controller to avoid a delay during its presentation
     private func preloadAuthentication() {
         AuthenticationCoordinator.preload()
     }
     
-    private func showAuthenticationScreen(isPartOfFlow: Bool) {
+    /// Show the authentication screen. Any parameters that have been set in previous screens are be applied.
+    private func showAuthenticationScreen() {
         guard authenticationCoordinator == nil else { return }
         
         MXLog.debug("[OnboardingCoordinator] showAuthenticationScreen")
         
         let parameters = AuthenticationCoordinatorParameters(authenticationType: splashScreenResult == .register ? MXKAuthenticationTypeRegister : MXKAuthenticationTypeLogin,
                                                              externalRegistrationParameters: externalRegistrationParameters,
-                                                             softLogoutCredentials: parameters.softLogoutCredentials,
-                                                             isPartOfFlow: isPartOfFlow)
+                                                             softLogoutCredentials: parameters.softLogoutCredentials)
         
         let coordinator = AuthenticationCoordinator(parameters: parameters)
-        coordinator.completion = { [weak self, weak coordinator] result in
+        coordinator.completion = { [weak self, weak coordinator] in
             guard let self = self, let coordinator = coordinator else { return }
-            switch result {
-            case .navigateBack:
-                self.navigationRouter.popModule(animated: true)
-                self.remove(childCoordinator: coordinator)
-            case .success:
-                self.authenticationCoordinatorDidComplete(coordinator)
-            }
+            self.authenticationCoordinatorDidComplete(coordinator)
         }
         
         coordinator.start()
@@ -158,10 +165,13 @@ final class OnboardingCoordinator: NSObject, Coordinator, Presentable {
         if self.navigationRouter.modules.isEmpty {
             self.navigationRouter.setRootModule(coordinator, popCompletion: nil)
         } else {
-            self.navigationRouter.push(coordinator, animated: true, popCompletion: nil)
+            self.navigationRouter.push(coordinator, animated: true) { [weak self] in
+                self?.remove(childCoordinator: coordinator)
+            }
         }
     }
     
+    /// Displays the next view in the flow after the authentication screen.
     private func authenticationCoordinatorDidComplete(_ coordinator: AuthenticationCoordinator) {
         completion?()
     }

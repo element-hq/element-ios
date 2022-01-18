@@ -338,7 +338,7 @@ extension NavigationRouter: UINavigationControllerDelegate {
                 return
         }
         
-        MXLog.debug("[NavigationRouter] Poppped module: \(poppedViewController)")
+        MXLog.debug("[NavigationRouter] Popped module: \(poppedViewController)")
         
         self.didPopViewController(poppedViewController)
     }

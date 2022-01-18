@@ -27,11 +27,10 @@ struct AuthenticationCoordinatorParameters {
     let externalRegistrationParameters: [AnyHashable: Any]?
     /// The credentials to use after a soft logout has taken place.
     let softLogoutCredentials: MXCredentials?
-    /// Controls whether a back button item will be shown to navigate back in the flow
-    let isPartOfFlow: Bool
 }
 
 
+/// A coordinator that handles authentication, verification and setting a PIN.
 final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtocol {
     
     // MARK: - Properties
@@ -42,15 +41,10 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
     private let authenticationViewController: AuthenticationViewController
     
     // MARK: Public
-    
-    enum CompletionResult {
-        case success
-        case navigateBack
-    }
 
     // Must be used only internally
     var childCoordinators: [Coordinator] = []
-    var completion: ((CompletionResult) -> Void)?
+    var completion: (() -> Void)?
     
     // MARK: - Setup
     
@@ -69,10 +63,9 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         // Listen to the end of the authentication flow
         authenticationViewController.authVCDelegate = self
         
-        // Must be set first as the bar buttons are refreshed when authType changes.
-        authenticationViewController.isPartOfFlow = parameters.isPartOfFlow
+        // Set authType first as registration parameters or soft logout credentials
+        // may update this afterwards to handle those use cases.
         authenticationViewController.authType = parameters.authenticationType
-        
         if let externalRegistrationParameters = parameters.externalRegistrationParameters {
             authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
         }
@@ -85,18 +78,23 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
         return self.authenticationViewController
     }
     
+    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
+    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         authenticationViewController.externalRegistrationParameters = externalRegistrationParameters
     }
     
+    /// Set up the authentication screen with the specified homeserver and/or identity server.
     func showCustomHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         authenticationViewController.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
+    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
         authenticationViewController.continueSSOLogin(withToken: loginToken, txnId: transactionID)
     }
     
+    /// Preload `AuthenticationViewController` from it's xib file to avoid locking up the UI when before presentation.
     static func preload() {
         let authenticationViewController = AuthenticationViewController()
         authenticationViewController.loadViewIfNeeded()
@@ -105,11 +103,7 @@ final class AuthenticationCoordinator: NSObject, AuthenticationCoordinatorProtoc
 
 // MARK: - AuthenticationViewControllerDelegate
 extension AuthenticationCoordinator: AuthenticationViewControllerDelegate {
-    func authenticationViewControllerDidTapBackButton(_ authenticationViewController: AuthenticationViewController!) {
-        completion?(.navigateBack)
-    }
-    
     func authenticationViewControllerDidDismiss(_ authenticationViewController: AuthenticationViewController!) {
-        completion?(.success)
+        completion?()
     }
 }

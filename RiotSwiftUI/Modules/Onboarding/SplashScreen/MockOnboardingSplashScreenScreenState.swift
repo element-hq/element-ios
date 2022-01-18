@@ -24,7 +24,7 @@ enum MockOnboardingSplashScreenScreenState: MockScreenState, CaseIterable {
     // A case for each state you want to represent
     // with specific, minimal associated data that will allow you
     // mock that screen.
-    case standard
+    case animated
     
     /// The associated screen
     var screenType: Any.Type {
@@ -33,7 +33,7 @@ enum MockOnboardingSplashScreenScreenState: MockScreenState, CaseIterable {
     
     /// A list of screen state definitions
     static var allCases: [MockOnboardingSplashScreenScreenState] {
-        [.standard]
+        [.animated]
     }
     
     /// Generate the view struct for the screen state.

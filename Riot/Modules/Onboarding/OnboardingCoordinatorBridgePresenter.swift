@@ -102,14 +102,18 @@ final class OnboardingCoordinatorBridgePresenter: NSObject {
         self.navigationType = .push
     }
     
+    /// Force a registration process based on a predefined set of parameters from a server provisioning link.
+    /// For more information see `AuthenticationViewController.externalRegistrationParameters`.
     func update(externalRegistrationParameters: [AnyHashable: Any]) {
         coordinator?.update(externalRegistrationParameters: externalRegistrationParameters)
     }
     
+    /// Set up the authentication screen with the specified homeserver and/or identity server.
     func showCustomHomeserver(_ homeserver: String?, andIdentityServer identityServer: String?) {
         coordinator?.showCustomHomeserver(homeserver, andIdentityServer: identityServer)
     }
     
+    /// When SSO login succeeded, when SFSafariViewController is used, continue login with success parameters.
     func continueSSOLogin(withToken loginToken: String, transactionID: String) -> Bool {
         guard let coordinator = coordinator else { return false }
         return coordinator.continueSSOLogin(withToken: loginToken, transactionID: transactionID)

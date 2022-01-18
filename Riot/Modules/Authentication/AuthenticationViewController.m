@@ -62,8 +62,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     BOOL didCheckFalseAuthScreenDisplay;
 }
 
-@property (nonatomic, strong) UIBarButtonItem *navigateBackInFlowButton;
-
 @property (nonatomic, readonly) BOOL isIdentityServerConfigured;
 @property (nonatomic, strong) KeyVerificationCoordinatorBridgePresenter *keyVerificationCoordinatorBridgePresenter;
 @property (nonatomic, strong) SetPinCoordinatorBridgePresenter *setPinCoordinatorBridgePresenter;
@@ -122,19 +120,17 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     
     self.crossSigningService = [CrossSigningService new];
     self.errorPresenter = [MXKErrorAlertPresentation new];
-    
-    self.navigateBackInFlowButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"]
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:self
-                                                                    action:@selector(onButtonPressed:)];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.mainNavigationItem.title = nil;
-    self.rightBarButtonItem.title = [VectorL10n authRegister];
+    self.navigationItem.title = nil;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:VectorL10n.authRegister
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(onButtonPressed:)];
     
     self.defaultHomeServerUrl = RiotSettings.shared.homeserverUrlString;
     
@@ -157,15 +153,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateNormal];
     [self.customServersTickButton setImage:[UIImage imageNamed:@"selection_untick"] forState:UIControlStateHighlighted];
     
-    if (self.isPartOfFlow)
-    {
-        self.mainNavigationItem.leftBarButtonItem = self.navigateBackInFlowButton;
-    }
-    
     if (!BuildSettings.authScreenShowRegister)
     {
-        self.rightBarButtonItem.enabled = NO;
-        self.rightBarButtonItem.title = nil;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItem.title = nil;
     }
     self.serverOptionsContainer.hidden = !BuildSettings.authScreenShowCustomServerOptions;
     
@@ -223,16 +214,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
 - (void)userInterfaceThemeDidChange
 {
-    self.navigationBackView.backgroundColor = ThemeService.shared.theme.baseColor;
-    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationBar];
-    self.navigationBarSeparatorView.backgroundColor = ThemeService.shared.theme.lineBreakColor;
-
-    // This view controller is not part of a navigation controller
-    // so that applyStyleOnNavigationBar does not fully work.
-    // In order to have the right status bar color, use the expected status bar color
-    // as the main view background color.
-    // Hopefully, subviews define their own background color with `theme.backgroundColor`,
-    // which makes all work together.
+    [ThemeService.shared.theme applyStyleOnNavigationBar:self.navigationController.navigationBar];
+    
     self.view.backgroundColor = ThemeService.shared.theme.backgroundColor;
 
     self.authenticationScrollView.backgroundColor = ThemeService.shared.theme.backgroundColor;
@@ -323,6 +306,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     [super viewWillAppear:animated];
     
     [_keyboardAvoider startAvoiding];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -396,8 +380,6 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     autoDiscovery = nil;
     _keyVerificationCoordinatorBridgePresenter = nil;
     _keyboardAvoider = nil;
-    
-    self.navigateBackInFlowButton = nil;
 }
 
 - (BOOL)isIdentityServerConfigured
@@ -513,7 +495,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     super.userInteractionEnabled = userInteractionEnabled;
 
     // Reset
-    self.rightBarButtonItem.enabled = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
     
     // Show/Hide server options
     if (_optionsContainer.hidden == userInteractionEnabled)
@@ -527,10 +509,10 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     if (!userInteractionEnabled)
     {
         // The right bar button is used to cancel the running request.
-        self.rightBarButtonItem.title = [VectorL10n cancel];
+        self.navigationItem.rightBarButtonItem.title = [VectorL10n cancel];
 
         // Remove the potential back button.
-        self.mainNavigationItem.leftBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = nil;
     }
     else
     {
@@ -547,18 +529,18 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
                 && !self.softLogoutCredentials
                 && BuildSettings.authScreenShowRegister)
             {
-                self.rightBarButtonItem.title = [VectorL10n authRegister];
+                self.navigationItem.rightBarButtonItem.title = [VectorL10n authRegister];
             }
             else
             {
                 // Disable register on SSO
-                self.rightBarButtonItem.enabled = NO;
-                self.rightBarButtonItem.title = nil;
+                self.navigationItem.rightBarButtonItem.enabled = NO;
+                self.navigationItem.rightBarButtonItem.title = nil;
             }
         }
         else if (self.authType == MXKAuthenticationTypeRegister)
         {
-            self.rightBarButtonItem.title = [VectorL10n authLogin];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n authLogin];
             
             // Restore the back button
             if (authInputsview)
@@ -569,7 +551,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         else if (self.authType == MXKAuthenticationTypeForgotPassword)
         {
             // The right bar button is used to return to login.
-            self.rightBarButtonItem.title = [VectorL10n cancel];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n cancel];
         }
     }
 }
@@ -608,7 +590,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self loginWithToken:loginToken];
         return YES;
     }
-        
+    
     MXLogDebug(@"[AuthenticationVC] Fail to continue SSO login");
     return NO;
 }
@@ -686,8 +668,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 
     // Customise the screen for soft logout
     self.customServersTickButton.hidden = YES;
-    self.rightBarButtonItem.title = nil;
-    self.mainNavigationItem.title = [VectorL10n authSoftlogoutSignedOut];
+    self.navigationItem.rightBarButtonItem.title = nil;
+    self.navigationItem.title = [VectorL10n authSoftlogoutSignedOut];
 
     [self showSoftLogoutClearDataContainer];
 }
@@ -925,7 +907,7 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
             self.authType = MXKAuthenticationTypeForgotPassword;
         }
     }
-    else if (sender == self.rightBarButtonItem)
+    else if (sender == self.navigationItem.rightBarButtonItem)
     {
         // Check whether a request is in progress
         if (!self.userInteractionEnabled)
@@ -936,21 +918,17 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         else if (self.authType == MXKAuthenticationTypeLogin)
         {
             self.authType = MXKAuthenticationTypeRegister;
-            self.rightBarButtonItem.title = [VectorL10n authLogin];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n authLogin];
         }
         else
         {
             self.authType = MXKAuthenticationTypeLogin;
-            self.rightBarButtonItem.title = [VectorL10n authRegister];
+            self.navigationItem.rightBarButtonItem.title = [VectorL10n authRegister];
         }
     }
-    else if (sender == self.mainNavigationItem.leftBarButtonItem)
+    else if (sender == self.navigationItem.leftBarButtonItem)
     {
-        if (sender == self.navigateBackInFlowButton)
-        {
-            [self.authVCDelegate authenticationViewControllerDidTapBackButton:self];
-        }
-        else if ([self.authInputsView isKindOfClass:AuthInputsView.class])
+        if ([self.authInputsView isKindOfClass:AuthInputsView.class])
         {
             AuthInputsView *authInputsview = (AuthInputsView*)self.authInputsView;
             
@@ -1176,25 +1154,18 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
         [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateNormal];
         [self.submitButton setTitle:[VectorL10n authRegister] forState:UIControlStateHighlighted];
         
-        if (self.isPartOfFlow)
-        {
-            self.mainNavigationItem.leftBarButtonItem = self.navigateBackInFlowButton;
-        }
-        else
-        {
-            self.mainNavigationItem.leftBarButtonItem = nil;
-        }
+        self.navigationItem.leftBarButtonItem = nil;
     }
     else
     {
         [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateNormal];
         [self.submitButton setTitle:[VectorL10n authSubmit] forState:UIControlStateHighlighted];
         
-        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"back_icon"]
+        UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:VectorL10n.back
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(onButtonPressed:)];
-        self.mainNavigationItem.leftBarButtonItem = leftBarButtonItem;
+        self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     }
 }
 

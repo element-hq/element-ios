@@ -23,7 +23,7 @@
 @interface RiotNavigationController : UINavigationController
 
 /**
- When `true` the presented view will have its orientation fixed to portrait on iPhone.
+ When `true` the navigation stack will have its orientation fixed to portrait on iPhone.
  */
 @property (nonatomic) BOOL isLockedToPortraitOnPhone;
 

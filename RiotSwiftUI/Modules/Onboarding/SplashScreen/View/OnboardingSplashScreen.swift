@@ -17,6 +17,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
+/// The splash screen shown at the beginning of the onboarding flow.
 struct OnboardingSplashScreen: View {
 
     // MARK: - Properties
@@ -29,14 +30,18 @@ struct OnboardingSplashScreen: View {
     private var isLeftToRight: Bool { layoutDirection == .leftToRight }
     private var pageCount: Int { viewModel.viewState.content.count }
     
+    /// The dimensions of the stack with the action buttons and page indicator.
     @State private var overlayFrame: CGRect = .zero
+    /// A timer to automatically animate the pages.
     @State private var pageTimer: Timer?
+    /// The amount of offset to apply when a drag gesture is in progress.
     @State private var dragOffset: CGFloat = .zero
     
     // MARK: Public
     
     @ObservedObject var viewModel: OnboardingSplashScreenViewModel.Context
     
+    /// The main action buttons.
     var buttons: some View {
         VStack(spacing: 12) {
             Button { viewModel.send(viewAction: .register) } label: {
@@ -46,11 +51,13 @@ struct OnboardingSplashScreen: View {
             
             Button { viewModel.send(viewAction: .login) } label: {
                 Text(VectorL10n.onboardingSplashLoginButtonTitle)
+                    .font(theme.fonts.body)
                     .padding(12)
             }
         }
     }
     
+    /// The only part of the UI that isn't inside of the carousel.
     var overlay: some View {
         VStack(spacing: 50) {
             Color.clear
@@ -63,7 +70,7 @@ struct OnboardingSplashScreen: View {
                 
                 buttons
                     .padding(.horizontal, 16)
-                    .frame(maxWidth: 600)
+                    .frame(maxWidth: OnboardingCoordinator.maxContentWidth)
                 Spacer()
             }
             .background(ViewFrameReader(frame: $overlayFrame))
@@ -73,40 +80,29 @@ struct OnboardingSplashScreen: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
+                
+                // The main content of the carousel
                 HStack(spacing: 0) {
+                    
+                    // Add a hidden page at the start of the carousel duplicating the content of the last page
                     OnboardingSplashScreenPage(content: viewModel.viewState.content[pageCount - 1],
                                                overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
                         .frame(width: geometry.size.width)
                         .tag(-1)
                     
-                    ForEach(0..<pageCount, id:\.self) { index in
-                        let pageContent = viewModel.viewState.content[index]
-                        OnboardingSplashScreenPage(content: pageContent,
+                    ForEach(0..<pageCount) { index in
+                        OnboardingSplashScreenPage(content: viewModel.viewState.content[index],
                                                    overlayHeight: overlayFrame.height + geometry.safeAreaInsets.bottom)
                             .frame(width: geometry.size.width)
                             .tag(index)
                     }
+                    
                 }
                 .offset(x: (CGFloat(viewModel.pageIndex + 1) * -geometry.size.width) + dragOffset)
                 .gesture(
                     DragGesture()
-                        .onChanged {
-                            guard shouldSwipeForTranslation($0.translation.width) else { return }
-                            
-                            stopTimer()
-                            dragOffset = isLeftToRight ? $0.translation.width : -$0.translation.width
-                        }
-                        .onEnded { value in
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                if dragOffset < -geometry.size.width / 3 {
-                                    viewModel.send(viewAction: .nextPage)
-                                } else if dragOffset > geometry.size.width / 3 {
-                                    viewModel.send(viewAction: .previousPage)
-                                }
-                                
-                                dragOffset = 0
-                            }
-                        }
+                        .onChanged(handleDragGestureChange)
+                        .onEnded { _ in handleDragGestureEnded(viewSize: geometry.size) }
                 )
                 
                 overlay
@@ -120,16 +116,9 @@ struct OnboardingSplashScreen: View {
         .onDisappear { stopTimer() }
     }
     
-    private func shouldSwipeForTranslation(_ width: CGFloat) -> Bool {
-        if viewModel.pageIndex == 0  {
-            return isLeftToRight ? width < 0 : width > 0
-        } else if viewModel.pageIndex == pageCount - 1 {
-            return isLeftToRight ? width > 0 : width < 0
-        }
-        
-        return true
-    }
+    // MARK: - Animation
     
+    /// Starts the animation timer for an automatic carousel effect.
     private func startTimer() {
         guard pageTimer == nil else { return }
         
@@ -148,11 +137,54 @@ struct OnboardingSplashScreen: View {
         }
     }
     
+    /// Stops the animation timer for manual interaction.
     private func stopTimer() {
         guard let pageTimer = pageTimer else { return }
         
         self.pageTimer = nil
         pageTimer.invalidate()
+    }
+    
+    // MARK: - Gestures
+    
+    /// Whether or not a drag gesture is valid or not.
+    /// - Parameter width: The gesture's translation width.
+    /// - Returns: `true` if there is another page to drag to.
+    private func shouldSwipeForTranslation(_ width: CGFloat) -> Bool {
+        if viewModel.pageIndex == 0  {
+            return isLeftToRight ? width < 0 : width > 0
+        } else if viewModel.pageIndex == pageCount - 1 {
+            return isLeftToRight ? width > 0 : width < 0
+        }
+        
+        return true
+    }
+    
+    /// Updates the `dragOffset` based on the gesture's value.
+    /// - Parameter drag: The drag gesture value to handle.
+    private func handleDragGestureChange(_ drag: DragGesture.Value) {
+        guard shouldSwipeForTranslation(drag.translation.width) else { return }
+        
+        stopTimer()
+        
+        // Animate the change over a few frames to smooth out any stuttering.
+        withAnimation(.linear(duration: 0.05)) {
+            dragOffset = isLeftToRight ? drag.translation.width : -drag.translation.width
+        }
+    }
+    
+    /// Clears the drag offset and informs the view model to switch to another page if necessary.
+    /// - Parameter viewSize: The size of the view in which the gesture took place.
+    private func handleDragGestureEnded(viewSize: CGSize) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+            if dragOffset < -viewSize.width / 3 {
+                viewModel.send(viewAction: .nextPage)
+            } else if dragOffset > viewSize.width / 3 {
+                viewModel.send(viewAction: .previousPage)
+            }
+            
+            dragOffset = 0
+        }
     }
 }
 

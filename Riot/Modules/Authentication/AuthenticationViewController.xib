@@ -34,14 +34,9 @@
                 <outlet property="identityServerLabel" destination="5CT-Ht-Z3v" id="9h4-6J-n3X"/>
                 <outlet property="identityServerSeparator" destination="t08-ua-0mJ" id="Sbf-ps-zeK"/>
                 <outlet property="identityServerTextField" destination="PZC-Hd-Q6a" id="vKg-sd-dzJ"/>
-                <outlet property="mainNavigationItem" destination="rj9-wP-8QS" id="yNN-Dg-4Yw"/>
-                <outlet property="navigationBackView" destination="6q5-bI-9WO" id="edE-wy-DYw"/>
-                <outlet property="navigationBar" destination="k7D-Gy-yBR" id="6Uc-3Q-3dO"/>
-                <outlet property="navigationBarSeparatorView" destination="izX-ya-hXh" id="gY5-Oj-nSl"/>
                 <outlet property="noFlowLabel" destination="54b-4O-ip9" id="f18-H1-cQm"/>
                 <outlet property="optionsContainer" destination="Gg0-TE-OGb" id="RWa-Pl-eaL"/>
                 <outlet property="retryButton" destination="wIH-Kd-r7q" id="42j-Ad-zVS"/>
-                <outlet property="rightBarButtonItem" destination="Kwt-KN-aVL" id="Y3F-wA-tf8"/>
                 <outlet property="serverOptionsContainer" destination="FIn-2w-e6H" id="Z0e-NN-3LY"/>
                 <outlet property="skipButton" destination="wEJ-AF-rdH" id="smu-MS-2IY"/>
                 <outlet property="socialLoginContainerView" destination="TjK-XL-dQS" id="Rte-h1-blp"/>
@@ -59,35 +54,8 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6q5-bI-9WO">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="88"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </view>
-                <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7D-Gy-yBR">
-                    <rect key="frame" x="0.0" y="44" width="375" height="44"/>
-                    <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <items>
-                        <navigationItem title="Riot" id="rj9-wP-8QS">
-                            <barButtonItem key="rightBarButtonItem" title="Register" id="Kwt-KN-aVL">
-                                <connections>
-                                    <action selector="onButtonPressed:" destination="-1" id="nwk-aV-eBO"/>
-                                </connections>
-                            </barButtonItem>
-                        </navigationItem>
-                    </items>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="AuthenticationVCNavigationBar"/>
-                    </userDefinedRuntimeAttributes>
-                </navigationBar>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="izX-ya-hXh">
-                    <rect key="frame" x="0.0" y="88" width="375" height="1"/>
-                    <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="ZiW-uP-cgo"/>
-                    </constraints>
-                </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="OHV-KQ-Ww0">
-                    <rect key="frame" x="0.0" y="89" width="375" height="723"/>
+                    <rect key="frame" x="0.0" y="44" width="375" height="768"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhx-dD-4EJ" userLabel="Content View">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="485"/>
@@ -129,7 +97,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wIH-Kd-r7q" userLabel="retryButton">
-                                            <rect key="frame" x="165" y="46.666666666666686" width="45" height="30"/>
+                                            <rect key="frame" x="165" y="46.666666666666657" width="45" height="30"/>
                                             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCRetryButton"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="WtO-NT-ei8"/>
@@ -513,24 +481,14 @@ Clear it if you're finished using this device, or want to sign in to another acc
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="AuthenticationVCView"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="k7D-Gy-yBR" secondAttribute="trailing" id="5VB-NY-mpo"/>
-                <constraint firstAttribute="trailing" secondItem="izX-ya-hXh" secondAttribute="trailing" id="8Ae-F5-jr2"/>
-                <constraint firstItem="k7D-Gy-yBR" firstAttribute="top" secondItem="3h8-75-kcp" secondAttribute="top" id="8Fw-By-vab"/>
-                <constraint firstItem="OHV-KQ-Ww0" firstAttribute="top" secondItem="izX-ya-hXh" secondAttribute="bottom" id="BJv-Y7-VKe"/>
+                <constraint firstItem="OHV-KQ-Ww0" firstAttribute="top" secondItem="3h8-75-kcp" secondAttribute="top" id="1ep-Co-Ook"/>
                 <constraint firstItem="q1e-Wg-6t7" firstAttribute="trailing" secondItem="3h8-75-kcp" secondAttribute="trailing" id="Dcr-ff-OGs"/>
                 <constraint firstItem="q1e-Wg-6t7" firstAttribute="leading" secondItem="3h8-75-kcp" secondAttribute="leading" id="HTS-LJ-eiv"/>
                 <constraint firstItem="OHV-KQ-Ww0" firstAttribute="leading" secondItem="3h8-75-kcp" secondAttribute="leading" id="Lat-3d-ufd"/>
-                <constraint firstItem="izX-ya-hXh" firstAttribute="leading" secondItem="5rn-KE-plm" secondAttribute="leading" id="MrU-gL-vGG"/>
                 <constraint firstAttribute="bottom" secondItem="OHV-KQ-Ww0" secondAttribute="bottom" id="Q6p-jM-1nj"/>
-                <constraint firstItem="6q5-bI-9WO" firstAttribute="leading" secondItem="5rn-KE-plm" secondAttribute="leading" id="SQT-Gz-hp5"/>
-                <constraint firstItem="6q5-bI-9WO" firstAttribute="top" secondItem="5rn-KE-plm" secondAttribute="top" id="TeU-yo-Lbi"/>
                 <constraint firstItem="OHV-KQ-Ww0" firstAttribute="trailing" secondItem="3h8-75-kcp" secondAttribute="trailing" id="cIg-kU-obq"/>
-                <constraint firstAttribute="trailing" secondItem="6q5-bI-9WO" secondAttribute="trailing" id="eZp-eW-PG2"/>
-                <constraint firstItem="k7D-Gy-yBR" firstAttribute="bottom" secondItem="6q5-bI-9WO" secondAttribute="bottom" id="pmI-Og-NJA"/>
                 <constraint firstItem="q1e-Wg-6t7" firstAttribute="bottom" secondItem="3h8-75-kcp" secondAttribute="bottom" id="qqV-Kd-Qs1"/>
                 <constraint firstItem="q1e-Wg-6t7" firstAttribute="top" secondItem="3h8-75-kcp" secondAttribute="top" id="tSe-Uf-qYh"/>
-                <constraint firstItem="izX-ya-hXh" firstAttribute="top" secondItem="k7D-Gy-yBR" secondAttribute="bottom" id="y2h-1T-TZ4"/>
-                <constraint firstItem="k7D-Gy-yBR" firstAttribute="leading" secondItem="5rn-KE-plm" secondAttribute="leading" id="z6D-6L-5Ud"/>
             </constraints>
             <point key="canvasLocation" x="138.40000000000001" y="153.69458128078819"/>
         </view>

@@ -31,6 +31,7 @@ struct OnboardingSplashScreenTitleText: View {
         let isColored: Bool
     }
     
+    /// The individual components of the string.
     private let components: [StringComponent]
     
     // MARK: - Setup

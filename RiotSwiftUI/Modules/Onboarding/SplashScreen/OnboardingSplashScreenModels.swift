@@ -19,6 +19,7 @@ import SwiftUI
 // MARK: - Coordinator
 
 @available(iOS 13.0, *)
+/// The content displayed in a single splash screen page.
 struct OnboardingSplashScreenPageContent {
     let title: String
     let message: String
@@ -41,11 +42,18 @@ enum OnboardingSplashScreenViewModelResult {
 // MARK: View
 
 @available(iOS 13.0, *)
-struct OnboardingSplashScreenViewState: BindableState {
+struct OnboardingSplashScreenViewState: BindableState, CustomDebugStringConvertible {
+    /// An array containing all content of the carousel pages
     let content: [OnboardingSplashScreenPageContent]
     var bindings: OnboardingSplashScreenBindings
     
+    /// Custom debug description to reduce noise in the logs.
+    var debugDescription: String {
+        "OnboardingSplashScreenViewState at page \(bindings.pageIndex)."
+    }
+    
     init() {
+        // The pun doesn't translate, so we only use it for English.
         let locale = Locale.current
         let page4Title = locale.identifier.hasPrefix("en") ? "Cut the slack from teams." : VectorL10n.onboardingSplashPage4TitleNoPun
         

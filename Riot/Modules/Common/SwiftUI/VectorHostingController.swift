@@ -28,8 +28,6 @@ class VectorHostingController: UIHostingController<AnyView> {
     
     private var theme: Theme
     
-    // MARK: Public
-    
     init<Content>(rootView: Content) where Content: View {
         self.theme = ThemeService.shared().theme
         super.init(rootView: AnyView(rootView.vectorContent()))
