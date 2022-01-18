@@ -573,6 +573,8 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     additionalVerticalHeight+= [self reactionHeightForEventId:eventId];
     // Add vertical whitespace in case of a thread root
     additionalVerticalHeight+= [self threadSummaryViewHeightForEventId:eventId];
+    // Add vertical whitespace in case of from a thread
+    additionalVerticalHeight+= [self fromThreadViewHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
     additionalVerticalHeight+= [self readReceiptHeightForEventId:eventId];
     
@@ -593,6 +595,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         height+= [self urlPreviewHeightForEventId:eventId];
         height+= [self reactionHeightForEventId:eventId];
         height+= [self threadSummaryViewHeightForEventId:eventId];
+        height+= [self fromThreadViewHeightForEventId:eventId];
         height+= [self readReceiptHeightForEventId:eventId];
     }
     
@@ -654,7 +657,35 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         //  component is not a thread root
         return 0;
     }
-    return RoomBubbleCellLayout.threadSummaryViewTopMargin + [ThreadSummaryView contentViewHeightForThread:component.thread fitting:self.maxTextViewWidth];
+    return RoomBubbleCellLayout.threadSummaryViewTopMargin +
+        [ThreadSummaryView contentViewHeightForThread:component.thread fitting:self.maxTextViewWidth];
+}
+
+- (CGFloat)fromThreadViewHeightForEventId:(NSString*)eventId
+{
+    if (!RiotSettings.shared.enableThreads)
+    {
+        //  do not show from thread view if threads not enabled
+        return 0;
+    }
+    if (roomDataSource.threadId)
+    {
+        //  do not show from thread view on threads
+        return 0;
+    }
+    NSInteger index = [self bubbleComponentIndexForEventId:eventId];
+    if (index == NSNotFound)
+    {
+        return 0;
+    }
+    MXKRoomBubbleComponent *component = self.bubbleComponents[index];
+    if (!component.event.isInThread)
+    {
+        //  event is not in a thread
+        return 0;
+    }
+    return RoomBubbleCellLayout.fromThreadViewTopMargin +
+        [FromThreadView contentViewHeightForEvent:component.event fitting:self.maxTextViewWidth];
 }
 
 - (CGFloat)urlPreviewHeightForEventId:(NSString*)eventId

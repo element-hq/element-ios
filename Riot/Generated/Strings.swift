@@ -2319,6 +2319,10 @@ public class VectorL10n: NSObject {
   public static var mediaTypeAccessibilityVideo: String { 
     return VectorL10n.tr("Vector", "media_type_accessibility_video") 
   }
+  /// From a thread
+  public static var messageFromAThread: String { 
+    return VectorL10n.tr("Vector", "message_from_a_thread") 
+  }
   /// More
   public static var more: String { 
     return VectorL10n.tr("Vector", "more") 

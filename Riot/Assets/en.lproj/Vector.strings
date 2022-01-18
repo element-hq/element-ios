@@ -446,6 +446,7 @@ Tap the + to start adding people.";
 "threads_empty_info_my" = "Reply to an ongoing thread or tap a message and use “Thread” to start a new one.";
 "threads_empty_tip" = "Tip: Tap a message and use “Thread” to start one.";
 "threads_empty_show_all_threads" = "Show all threads";
+"message_from_a_thread" = "From a thread";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
