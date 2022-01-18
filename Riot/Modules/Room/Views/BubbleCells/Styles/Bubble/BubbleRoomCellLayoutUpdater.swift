@@ -42,7 +42,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
             
     func updateLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
         
-        if let messageBubbleBackgroundView = self.getMessageBubbleBackgroundView(from: cell) {
+        if let messageBubbleBackgroundView = cell.messageBubbleBackgroundView {
             
             if self.canUseBubbleBackground(forCell: cell, withCellData: cellData) {
                 
@@ -57,7 +57,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
     
     func updateLayout(forOutgoingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
 
-        if let messageBubbleBackgroundView = self.getMessageBubbleBackgroundView(from: cell) {
+        if let messageBubbleBackgroundView = cell.messageBubbleBackgroundView {
             
             if self.canUseBubbleBackground(forCell: cell, withCellData: cellData) {
                 
@@ -103,15 +103,6 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
         return bubbleBackgroundView
     }
     
-    func getMessageBubbleBackgroundView(from cell: MXKRoomBubbleTableViewCell) -> RoomMessageBubbleBackgroundView? {
-        
-        let foundView = cell.contentView.subviews.first { view in
-            return view is RoomMessageBubbleBackgroundView
-        }
-        
-        return foundView as? RoomMessageBubbleBackgroundView
-    }
-    
     private func addBubbleBackgroundViewToCell(_ bubbleCell: MXKRoomBubbleTableViewCell, backgroundColor: UIColor) {
         
         guard let messageTextView =  bubbleCell.messageTextView else {
@@ -119,8 +110,8 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
         }
         
         let topMargin: CGFloat = 0.0
-        let leftMargin: CGFloat = -5.0
-        let rightMargin: CGFloat = 5.0
+        let leftMargin: CGFloat = 5.0
+        let rightMargin: CGFloat = 45.0 // Add extra space for timestamp
                         
         let bubbleBackgroundView = self.createBubbleBackgroundView(with: backgroundColor)
         
@@ -134,7 +125,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
         
         NSLayoutConstraint.activate([
             bubbleBackgroundView.topAnchor.constraint(equalTo: topAnchor, constant: topMargin),
-            bubbleBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leftMargin),
+            bubbleBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -leftMargin),
             bubbleBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: rightMargin)
         ])
     }
@@ -257,7 +248,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
         let contentView = cell.contentView
         
         let leftMargin: CGFloat = 80.0
-        let rightMargin: CGFloat = 38.0
+        let rightMargin: CGFloat = 78.0
         let bottomMargin: CGFloat = -2.0
         
         cell.msgTextViewLeadingConstraint.isActive = false
