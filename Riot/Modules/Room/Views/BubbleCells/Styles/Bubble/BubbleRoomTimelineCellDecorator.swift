@@ -88,4 +88,48 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             topConstraint
         ])
     }
+    
+    override func addURLPreviewView(_ urlPreviewView: URLPreviewView,
+                                    toCell cell: MXKRoomBubbleTableViewCell,
+                                    cellData: RoomBubbleCellData,
+                                    contentViewPositionY: CGFloat) {
+        
+        cell.addTmpSubview(urlPreviewView)
+        
+        let cellContentView = cell.contentView
+        
+        urlPreviewView.translatesAutoresizingMaskIntoConstraints = false
+        urlPreviewView.availableWidth = cellData.maxTextViewWidth
+        cellContentView.addSubview(urlPreviewView)
+        
+        let leadingOrTrailingConstraint: NSLayoutConstraint
+        
+        // Outgoing message
+        if cellData.isSenderCurrentUser {
+            
+            // TODO: Use constants
+            let rightMargin = 34.0
+            
+            leadingOrTrailingConstraint = urlPreviewView.trailingAnchor.constraint(equalTo: cellContentView.trailingAnchor, constant: -rightMargin)
+        } else {
+            // Incoming message
+            
+            var leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin
+            if cellData.containsBubbleComponentWithEncryptionBadge {
+                leftMargin += RoomBubbleCellLayout.encryptedContentLeftMargin
+            }
+            
+            leftMargin-=5.0
+            
+            leadingOrTrailingConstraint = urlPreviewView.leadingAnchor.constraint(equalTo: cellContentView.leadingAnchor, constant: leftMargin)
+        }
+        
+        let topMargin = contentViewPositionY + RoomBubbleCellLayout.urlPreviewViewTopMargin + RoomBubbleCellLayout.reactionsViewTopMargin
+        
+        // Set the preview view's origin
+        NSLayoutConstraint.activate([
+            leadingOrTrailingConstraint,
+            urlPreviewView.topAnchor.constraint(equalTo: cellContentView.topAnchor, constant: topMargin)
+        ])
+    }
 }
