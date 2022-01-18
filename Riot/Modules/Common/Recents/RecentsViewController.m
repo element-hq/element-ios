@@ -193,11 +193,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [ThemeService.shared.theme applyStyleOnSearchBar:tableSearchBar];
     [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
 
-    if (self.recentsTableView.dataSource)
-    {
-        // Force table refresh
-        [self cancelEditionMode:YES];
-    }
+    // Force table refresh
+    [self.recentsTableView reloadData];
     
     [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
