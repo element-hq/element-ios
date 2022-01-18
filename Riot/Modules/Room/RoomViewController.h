@@ -225,6 +225,12 @@ canEndPollWithEventIdentifier:(NSString *)eventIdentifier;
 - (void)roomViewController:(RoomViewController *)roomViewController
 endPollWithEventIdentifier:(NSString *)eventIdentifier;
 
+- (BOOL)roomViewController:(RoomViewController *)roomViewController
+canEditPollWithEventIdentifier:(NSString *)eventIdentifier;
+
+- (void)roomViewController:(RoomViewController *)roomViewController
+didRequestEditForPollWithStartEvent:(MXEvent *)startEvent;
+
 @end
 
 NS_ASSUME_NONNULL_END

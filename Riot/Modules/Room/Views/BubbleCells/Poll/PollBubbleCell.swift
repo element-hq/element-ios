@@ -29,7 +29,7 @@ class PollBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
               let bubbleData = cellData as? RoomBubbleCellData,
               let event = bubbleData.events.last,
               event.eventType == __MXEventType.pollStart,
-              let view = PollTimelineProvider.shared.buildPollTimelineViewForEvent(event) else {
+              let view = TimelinePollProvider.shared.buildTimelinePollViewForEvent(event) else {
             return
         }
         

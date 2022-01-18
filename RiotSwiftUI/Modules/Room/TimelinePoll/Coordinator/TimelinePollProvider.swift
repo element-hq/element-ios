@@ -17,11 +17,11 @@
 import Foundation
 
 @available(iOS 14, *)
-class PollTimelineProvider {
-    static let shared = PollTimelineProvider()
+class TimelinePollProvider {
+    static let shared = TimelinePollProvider()
     
     var session: MXSession?
-    var coordinatorsForEventIdentifiers = [String: PollTimelineCoordinator]()
+    var coordinatorsForEventIdentifiers = [String: TimelinePollCoordinator]()
     
     private init() {
         
@@ -29,7 +29,7 @@ class PollTimelineProvider {
     
     /// Create or retrieve the poll timeline coordinator for this event and return
     /// a view to be displayed in the timeline
-    func buildPollTimelineViewForEvent(_ event: MXEvent) -> UIView? {
+    func buildTimelinePollViewForEvent(_ event: MXEvent) -> UIView? {
         guard let session = session, let room = session.room(withRoomId: event.roomId) else {
             return nil
         }
@@ -38,8 +38,8 @@ class PollTimelineProvider {
             return coordinator.toPresentable().view
         }
         
-        let parameters = PollTimelineCoordinatorParameters(session: session, room: room, pollStartEvent: event)
-        guard let coordinator = try? PollTimelineCoordinator(parameters: parameters) else {
+        let parameters = TimelinePollCoordinatorParameters(session: session, room: room, pollStartEvent: event)
+        guard let coordinator = try? TimelinePollCoordinator(parameters: parameters) else {
             return nil
         }
         
@@ -49,7 +49,7 @@ class PollTimelineProvider {
     }
     
     /// Retrieve the poll timeline coordinator for the given event or nil if it hasn't been created yet
-    func pollTimelineCoordinatorForEventIdentifier(_ eventIdentifier: String) -> PollTimelineCoordinator? {
+    func timelinePollCoordinatorForEventIdentifier(_ eventIdentifier: String) -> TimelinePollCoordinator? {
         return coordinatorsForEventIdentifiers[eventIdentifier]
     }
 }

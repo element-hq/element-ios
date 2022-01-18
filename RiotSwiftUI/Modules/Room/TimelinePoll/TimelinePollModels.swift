@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollTimeline PollTimeline
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -19,20 +17,20 @@
 import Foundation
 import SwiftUI
 
-typealias PollTimelineViewModelCallback = ((PollTimelineViewModelResult) -> Void)
+typealias TimelinePollViewModelCallback = ((TimelinePollViewModelResult) -> Void)
 
-enum PollTimelineStateAction {
-    case viewAction(PollTimelineViewAction, PollTimelineViewModelCallback?)
-    case updateWithPoll(TimelinePoll)
+enum TimelinePollStateAction {
+    case viewAction(TimelinePollViewAction, TimelinePollViewModelCallback?)
+    case updateWithPoll(TimelinePollDetails)
     case showAnsweringFailure
     case showClosingFailure
 }
 
-enum PollTimelineViewAction {
+enum TimelinePollViewAction {
     case selectAnswerOptionWithIdentifier(String)
 }
 
-enum PollTimelineViewModelResult {
+enum TimelinePollViewModelResult {
     case selectedAnswerOptionsWithIdentifiers([String])
 }
 
@@ -41,7 +39,7 @@ enum TimelinePollType {
     case undisclosed
 }
 
-class TimelineAnswerOption: Identifiable {
+class TimelinePollAnswerOption: Identifiable {
     var id: String
     var text: String
     var count: UInt
@@ -57,35 +55,59 @@ class TimelineAnswerOption: Identifiable {
     }
 }
 
-class TimelinePoll {
+class TimelinePollDetails {
     var question: String
-    var answerOptions: [TimelineAnswerOption]
+    var answerOptions: [TimelinePollAnswerOption]
     var closed: Bool
     var totalAnswerCount: UInt
     var type: TimelinePollType
     var maxAllowedSelections: UInt
+    var hasBeenEdited: Bool = true
     
-    init(question: String, answerOptions: [TimelineAnswerOption], closed: Bool, totalAnswerCount: UInt, type: TimelinePollType, maxAllowedSelections: UInt) {
+    init(question: String, answerOptions: [TimelinePollAnswerOption],
+         closed: Bool,
+         totalAnswerCount: UInt,
+         type: TimelinePollType,
+         maxAllowedSelections: UInt,
+         hasBeenEdited: Bool) {
         self.question = question
         self.answerOptions = answerOptions
         self.closed = closed
         self.totalAnswerCount = totalAnswerCount
         self.type = type
         self.maxAllowedSelections = maxAllowedSelections
+        self.hasBeenEdited = hasBeenEdited
     }
     
     var hasCurrentUserVoted: Bool {
         answerOptions.filter { $0.selected == true}.count > 0
     }
+    
+    var shouldDiscloseResults: Bool {
+        if closed {
+            return totalAnswerCount > 0
+        } else {
+            return type == .disclosed && totalAnswerCount > 0 && hasCurrentUserVoted
+        }
+    }
 }
 
-struct PollTimelineViewState: BindableState {
-    var poll: TimelinePoll
-    var bindings: PollTimelineViewStateBindings
+struct TimelinePollViewState: BindableState {
+    var poll: TimelinePollDetails
+    var bindings: TimelinePollViewStateBindings
 }
 
-struct PollTimelineViewStateBindings {
-    var showsAnsweringFailureAlert: Bool = false
-    var showsClosingFailureAlert: Bool = false
+struct TimelinePollViewStateBindings {
+    var alertInfo: TimelinePollErrorAlertInfo?
 }
 
+struct TimelinePollErrorAlertInfo: Identifiable {
+    enum AlertType {
+        case failedClosingPoll
+        case failedSubmittingAnswer
+    }
+    
+    let id: AlertType
+    let title: String
+    let subtitle: String
+}

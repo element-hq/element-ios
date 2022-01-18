@@ -2093,7 +2093,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
-    if (RiotSettings.shared.roomScreenAllowPollsAction && self.displayConfiguration.sendingPollsEnabled)
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_poll"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -6318,16 +6318,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     
     RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
-    editMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-        [self editEventContentWithId:event.eventId];
-        
-        // And display the keyboard
-        [self.inputToolbarView becomeFirstResponder];
-    };
     
-    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+    switch (event.eventType) {
+        case MXEventTypePollStart: {
+            editMenuItem.action = ^{
+                MXStrongifyAndReturnIfNil(self);
+                [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:nil];
+                [self.delegate roomViewController:self didRequestEditForPollWithStartEvent:event];
+            };
+            
+            editMenuItem.isEnabled = [self.delegate roomViewController:self canEditPollWithEventIdentifier:event.eventId];
+            
+            break;
+        }
+        default: {
+            editMenuItem.action = ^{
+                MXStrongifyAndReturnIfNil(self);
+                [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+                [self editEventContentWithId:event.eventId];
+                
+                // And display the keyboard
+                [self.inputToolbarView becomeFirstResponder];
+            };
+            
+            editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+            
+            break;
+        }
+    }
     
     return editMenuItem;
 }

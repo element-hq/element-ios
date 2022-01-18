@@ -279,6 +279,10 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     
     if (self.tag == RoomBubbleCellDataTagPoll)
     {
+        if (self.events.lastObject.isEditEvent) {
+            return YES;
+        }
+        
         return NO;
     }
     
