@@ -25,4 +25,9 @@ extension MXKRoomBubbleCellData {
         }
         return false
     }
+    
+    // Indicate true if the cell data is collapsable and collapsed
+    var isCollapsableAndCollapsed: Bool {
+        return self.collapsable && self.collapsed
+    }
 }
