@@ -28,7 +28,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="818" translatesAutoresizingMaskIntoConstraints="NO" id="7VY-m9-wCS" customClass="ThreadListEmptyView" customModule="Riot" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="delegate" destination="V8j-Lb-PgC" id="SQT-2N-wnf"/>
@@ -42,10 +42,10 @@
                             <constraint firstItem="X8K-NO-SQ3" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" id="Mfw-In-peq"/>
                             <constraint firstAttribute="bottom" secondItem="7VY-m9-wCS" secondAttribute="bottom" id="PkX-MO-5aO"/>
                             <constraint firstAttribute="bottom" secondItem="X8K-NO-SQ3" secondAttribute="bottom" id="SIG-7P-2CK"/>
+                            <constraint firstItem="7VY-m9-wCS" firstAttribute="top" secondItem="EL9-GA-lwo" secondAttribute="top" id="aFs-kb-rJp"/>
                             <constraint firstItem="7VY-m9-wCS" firstAttribute="leading" secondItem="EL9-GA-lwo" secondAttribute="leading" id="acw-H6-LKX"/>
                             <constraint firstItem="X8K-NO-SQ3" firstAttribute="leading" secondItem="EL9-GA-lwo" secondAttribute="leading" id="ehI-Nc-6di"/>
                             <constraint firstAttribute="trailing" secondItem="X8K-NO-SQ3" secondAttribute="trailing" id="hbZ-R8-8kH"/>
-                            <constraint firstItem="7VY-m9-wCS" firstAttribute="top" secondItem="bFg-jh-JZB" secondAttribute="top" id="obE-c9-v49"/>
                         </constraints>
                     </view>
                     <connections>

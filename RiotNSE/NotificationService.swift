@@ -427,7 +427,7 @@ class NotificationService: UNNotificationServiceExtension {
                                 if event.isReply() {
                                     let parser = MXReplyEventParser()
                                     let replyParts = parser.parse(event)
-                                    notificationBody = replyParts.bodyParts.replyText
+                                    notificationBody = replyParts?.bodyParts.replyText
                                 } else {
                                     notificationBody = messageContent
                                 }

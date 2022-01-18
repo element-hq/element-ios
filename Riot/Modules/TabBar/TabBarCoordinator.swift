@@ -448,13 +448,19 @@ final class TabBarCoordinator: NSObject, TabBarCoordinatorType {
                 self.activityIndicatorPresenter.removeCurrentActivityIndicator(animated: true)
             }
         } else {
-            let isThread = roomNavigationParameters.threadParameters != nil
+            let threadId = roomNavigationParameters.threadParameters?.threadId
+            let displayConfig: RoomDisplayConfiguration
+            if threadId != nil {
+                displayConfig = .forThreads
+            } else {
+                displayConfig = .default
+            }
             let roomCoordinatorParameters = RoomCoordinatorParameters(navigationRouterStore: NavigationRouterStore.shared,
                                                                       session: roomNavigationParameters.mxSession,
                                                                       roomId: roomNavigationParameters.roomId,
                                                                       eventId: roomNavigationParameters.eventId,
-                                                                      threadId: roomNavigationParameters.threadParameters?.threadId,
-                                                                      displayConfiguration: isThread ? .forThreads : .default)
+                                                                      threadId: threadId,
+                                                                      displayConfiguration: displayConfig)
             
             self.showRoom(with: roomCoordinatorParameters,
                           stackOnSplitViewDetail: roomNavigationParameters.presentationParameters.stackAboveVisibleViews,

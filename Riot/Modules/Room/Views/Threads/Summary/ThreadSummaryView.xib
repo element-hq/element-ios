@@ -25,14 +25,15 @@
                     <rect key="frame" x="8" y="4" width="398" height="32"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="threads_icon" translatesAutoresizingMaskIntoConstraints="NO" id="vva-PV-3Ya">
-                            <rect key="frame" x="4" y="3" width="26" height="26"/>
+                            <rect key="frame" x="4" y="7" width="18" height="18"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="vva-PV-3Ya" secondAttribute="height" multiplier="1:1" id="972-WJ-2Zq"/>
+                                <constraint firstAttribute="height" constant="18" id="1Tz-Xd-AQx"/>
+                                <constraint firstAttribute="width" constant="18" id="PY6-xa-ldK"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GcG-W8-9LR">
-                            <rect key="frame" x="34" y="0.0" width="6" height="32"/>
+                            <rect key="frame" x="26" y="0.0" width="6" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="6" id="9Nt-Rk-O81"/>
@@ -42,14 +43,15 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9wW-1f-f69" customClass="UserAvatarView" customModule="Riot" customModuleProvider="target">
-                            <rect key="frame" x="52" y="0.0" width="32" height="32"/>
+                            <rect key="frame" x="44" y="4" width="24" height="24"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" secondItem="9wW-1f-f69" secondAttribute="height" multiplier="1:1" id="V4H-JA-w4O"/>
+                                <constraint firstAttribute="width" constant="24" id="Dmj-av-Udn"/>
+                                <constraint firstAttribute="height" constant="24" id="GHv-19-Tjh"/>
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVT-JI-3kw">
-                            <rect key="frame" x="92" y="0.0" width="298" height="32"/>
+                            <rect key="frame" x="76" y="0.0" width="314" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <nil key="textColor"/>
@@ -58,18 +60,16 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="vva-PV-3Ya" firstAttribute="top" secondItem="TFL-sS-eJc" secondAttribute="top" constant="3" id="3JV-P7-s7n"/>
                         <constraint firstAttribute="bottom" secondItem="DVT-JI-3kw" secondAttribute="bottom" id="ArM-9P-35J"/>
                         <constraint firstAttribute="bottom" secondItem="GcG-W8-9LR" secondAttribute="bottom" id="FI4-bk-goz"/>
-                        <constraint firstItem="9wW-1f-f69" firstAttribute="top" secondItem="TFL-sS-eJc" secondAttribute="top" id="GBe-gi-Iwc"/>
                         <constraint firstItem="DVT-JI-3kw" firstAttribute="top" secondItem="TFL-sS-eJc" secondAttribute="top" id="MSs-PD-tov"/>
                         <constraint firstItem="GcG-W8-9LR" firstAttribute="leading" secondItem="vva-PV-3Ya" secondAttribute="trailing" constant="4" id="PhI-J3-Ycb"/>
                         <constraint firstItem="GcG-W8-9LR" firstAttribute="top" secondItem="TFL-sS-eJc" secondAttribute="top" id="Twp-gS-w3u"/>
-                        <constraint firstAttribute="bottom" secondItem="9wW-1f-f69" secondAttribute="bottom" id="VG5-XU-DAK"/>
+                        <constraint firstItem="9wW-1f-f69" firstAttribute="centerY" secondItem="TFL-sS-eJc" secondAttribute="centerY" id="UYy-PQ-m7A"/>
                         <constraint firstAttribute="trailing" secondItem="DVT-JI-3kw" secondAttribute="trailing" constant="8" id="bX2-Ha-8bf"/>
+                        <constraint firstItem="vva-PV-3Ya" firstAttribute="centerY" secondItem="TFL-sS-eJc" secondAttribute="centerY" id="mkf-Hx-FLe"/>
                         <constraint firstItem="DVT-JI-3kw" firstAttribute="leading" secondItem="9wW-1f-f69" secondAttribute="trailing" constant="8" id="qGg-0A-C6M"/>
                         <constraint firstItem="9wW-1f-f69" firstAttribute="leading" secondItem="GcG-W8-9LR" secondAttribute="trailing" constant="12" id="s2V-X9-cyI"/>
-                        <constraint firstAttribute="bottom" secondItem="vva-PV-3Ya" secondAttribute="bottom" constant="3" id="smY-cv-CoE"/>
                         <constraint firstItem="vva-PV-3Ya" firstAttribute="leading" secondItem="TFL-sS-eJc" secondAttribute="leading" constant="4" id="vyh-e4-Vy3"/>
                     </constraints>
                 </view>
@@ -87,6 +87,6 @@
         </view>
     </objects>
     <resources>
-        <image name="threads_icon" width="32" height="32"/>
+        <image name="threads_icon" width="27" height="28.5"/>
     </resources>
 </document>

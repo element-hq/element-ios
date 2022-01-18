@@ -168,6 +168,10 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
         if let bubbleCellReactionsDisplayable = self as? BubbleCellReactionsDisplayable {
             bubbleCellReactionsDisplayable.removeReactionsView()
         }
+
+        if let bubbleCellThreadSummaryDisplayable = self as? BubbleCellThreadSummaryDisplayable {
+            bubbleCellThreadSummaryDisplayable.removeThreadSummaryView()
+        }
     }
     
     override func render(_ cellData: MXKCellData!) {
@@ -243,6 +247,16 @@ class BaseBubbleCell: MXKRoomBubbleTableViewCell, BaseBubbleCellType {
     
     func removeReactionsView() {
         self.bubbleCellContentView?.removeReactionsView()
+    }
+
+    // MARK: - BubbleCellThreadSummaryDisplayable
+
+    func addThreadSummaryView(_ threadSummaryView: ThreadSummaryView) {
+        self.bubbleCellContentView?.addThreadSummaryView(threadSummaryView)
+    }
+
+    func removeThreadSummaryView() {
+        self.bubbleCellContentView?.removeThreadSummaryView()
     }
     
     // Encryption status

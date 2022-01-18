@@ -21,6 +21,7 @@ struct ThreadViewModel {
     var rootMessageSenderAvatar: AvatarViewDataProtocol?
     var rootMessageSenderDisplayName: String?
     var rootMessageText: NSAttributedString?
+    var rootMessageRedacted: Bool
     var lastMessageTime: String?
     var summaryViewModel: ThreadSummaryViewModel?
     var notificationStatus: ThreadNotificationStatus

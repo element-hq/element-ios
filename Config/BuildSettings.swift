@@ -375,6 +375,6 @@ final class BuildSettings: NSObject {
             return false
         }
         
-        return false
+        return true
     }
 }

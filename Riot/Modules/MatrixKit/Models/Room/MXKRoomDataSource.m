@@ -2199,8 +2199,8 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             [self removeEventWithEventId:eventId];
             
             if (event.isVoiceMessage) {
-                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudio][kMXMessageContentKeyExtensibleAudioDuration];
-                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudio][kMXMessageContentKeyExtensibleAudioWaveform];
+                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
+                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioWaveform];
                 
                 [self sendVoiceMessage:localFileURL mimeType:mimetype duration:duration.doubleValue samples:samples success:success failure:failure];
             } else {

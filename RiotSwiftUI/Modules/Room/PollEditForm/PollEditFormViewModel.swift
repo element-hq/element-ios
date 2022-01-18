@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollEditForm PollEditForm
 //
 // Copyright 2021 New Vector Ltd
 //
@@ -19,6 +17,11 @@
 import SwiftUI
 import Combine
 
+struct PollEditFormViewModelParameters {
+    let mode: PollEditFormMode
+    let pollDetails: EditFormPollDetails
+}
+
 @available(iOS 14, *)
 typealias PollEditFormViewModelType = StateStoreViewModel< PollEditFormViewState,
                                                            PollEditFormStateAction,
@@ -27,6 +30,7 @@ typealias PollEditFormViewModelType = StateStoreViewModel< PollEditFormViewState
 class PollEditFormViewModel: PollEditFormViewModelType {
     
     private struct Constants {
+        static let minAnswerOptionsCount = 2
         static let maxAnswerOptionsCount = 20
         static let maxQuestionLength = 340
         static let maxAnswerOptionLength = 340
@@ -42,20 +46,19 @@ class PollEditFormViewModel: PollEditFormViewModelType {
     
     // MARK: - Setup
     
-    init() {
-        super.init(initialViewState: Self.defaultState())
-    }
-    
-    private static func defaultState() -> PollEditFormViewState {
-        return PollEditFormViewState(
+    init(parameters: PollEditFormViewModelParameters) {
+        let state = PollEditFormViewState(
+            minAnswerOptionsCount: Constants.minAnswerOptionsCount,
             maxAnswerOptionsCount: Constants.maxAnswerOptionsCount,
+            mode: parameters.mode,
             bindings: PollEditFormViewStateBindings(
-                question: PollEditFormQuestion(text: "", maxLength: Constants.maxQuestionLength),
-                answerOptions: [PollEditFormAnswerOption(text: "", maxLength: Constants.maxAnswerOptionLength),
-                                PollEditFormAnswerOption(text: "", maxLength: Constants.maxAnswerOptionLength)
-                ]
+                question: PollEditFormQuestion(text: parameters.pollDetails.question, maxLength: Constants.maxQuestionLength),
+                answerOptions: parameters.pollDetails.answerOptions.map { PollEditFormAnswerOption(text: $0, maxLength: Constants.maxAnswerOptionLength) },
+                type: parameters.pollDetails.type
             )
         )
+        
+        super.init(initialViewState: state)
     }
     
     // MARK: - Public
@@ -65,11 +68,9 @@ class PollEditFormViewModel: PollEditFormViewModelType {
         case .cancel:
             completion?(.cancel)
         case .create:
-            completion?(.create(state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
-                                state.bindings.answerOptions.compactMap({ answerOption in
-                                    let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
-                                    return text.isEmpty ? nil : text
-                                })))
+            completion?(.create(buildPollDetails()))
+        case .update:
+            completion?(.update(buildPollDetails()))
         default:
             dispatch(action: .viewAction(viewAction))
         }
@@ -92,10 +93,30 @@ class PollEditFormViewModel: PollEditFormViewModelType {
         case .stopLoading(let error):
             state.showLoadingIndicator = false
             
-            if error != nil {
-                state.bindings.showsFailureAlert = true
+            switch error {
+            case .failedCreatingPoll:
+                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedCreatingPoll,
+                                                                      title: VectorL10n.pollEditFormPostFailureTitle,
+                                                                      subtitle: VectorL10n.pollEditFormPostFailureSubtitle)
+            case .failedUpdatingPoll:
+                state.bindings.alertInfo = PollEditFormErrorAlertInfo(id: .failedUpdatingPoll,
+                                                                      title: VectorL10n.pollEditFormUpdateFailureTitle,
+                                                                      subtitle: VectorL10n.pollEditFormUpdateFailureSubtitle)
+            case .none:
+                break
             }
             break
         }
+    }
+    
+    // MARK: - Private
+    
+    private func buildPollDetails() -> EditFormPollDetails {
+        return EditFormPollDetails(type: state.bindings.type,
+                                   question: state.bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines),
+                                   answerOptions: state.bindings.answerOptions.compactMap({ answerOption in
+                                    let text = answerOption.text.trimmingCharacters(in: .whitespacesAndNewlines)
+                                    return text.isEmpty ? nil : text
+                                   }))
     }
 }

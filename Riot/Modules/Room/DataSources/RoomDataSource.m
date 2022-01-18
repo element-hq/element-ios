@@ -527,45 +527,55 @@ const CGFloat kTypingCellHeight = 24;
                     {
                         threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread];
                         threadSummaryView.delegate = self;
-                        
+
                         [temporaryViews addObject:threadSummaryView];
                         [bubbleCell.tmpSubviews addObject:threadSummaryView];
-                        
+
                         threadSummaryView.translatesAutoresizingMaskIntoConstraints = NO;
-                        [bubbleCell.contentView addSubview:threadSummaryView];
-                        
-                        CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
-                        if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+
+                        if ([[bubbleCell class] conformsToProtocol:@protocol(BubbleCellThreadSummaryDisplayable)])
                         {
-                            leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
-                        }
-                        
-                        // The top constraint may need to include the URL preview view or reactions view
-                        NSLayoutConstraint *topConstraint;
-                        if (reactionsView)
-                        {
-                            topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor
-                                                                            constant:RoomBubbleCellLayout.threadSummaryViewTopMargin];
-                        }
-                        else if (urlPreviewView)
-                        {
-                            topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor
-                                                                            constant:RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                            id<BubbleCellThreadSummaryDisplayable> threadSummaryDisplayable = (id<BubbleCellThreadSummaryDisplayable>)bubbleCell;
+
+                            [threadSummaryDisplayable addThreadSummaryView:threadSummaryView];
                         }
                         else
                         {
-                            topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
-                                                                            constant:bottomPositionY + RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                            [bubbleCell.contentView addSubview:threadSummaryView];
+
+                            CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                            if (roomBubbleCellData.containsBubbleComponentWithEncryptionBadge)
+                            {
+                                leftMargin+= RoomBubbleCellLayout.encryptedContentLeftMargin;
+                            }
+
+                            // The top constraint may need to include the URL preview view or reactions view
+                            NSLayoutConstraint *topConstraint;
+                            if (reactionsView)
+                            {
+                                topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:reactionsView.bottomAnchor
+                                                                                constant:RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                            }
+                            else if (urlPreviewView)
+                            {
+                                topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:urlPreviewView.bottomAnchor
+                                                                                constant:RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                            }
+                            else
+                            {
+                                topConstraint = [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
+                                                                                constant:bottomPositionY + RoomBubbleCellLayout.threadSummaryViewTopMargin];
+                            }
+
+                            // Set constraints for the summary view
+                            [NSLayoutConstraint activateConstraints: @[
+                                [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
+                                                                    constant:leftMargin],
+                                topConstraint,
+                                [threadSummaryView.heightAnchor constraintEqualToConstant:[ThreadSummaryView contentViewHeightForThread:component.thread fitting:cellData.maxTextViewWidth]],
+                                [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
+                            ]];
                         }
-                        
-                        // Set constraints for the summary view
-                        [NSLayoutConstraint activateConstraints: @[
-                            [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
-                                                                constant:leftMargin],
-                            topConstraint,
-                            [threadSummaryView.heightAnchor constraintEqualToConstant:[ThreadSummaryView contentViewHeightForThread:component.thread fitting:cellData.maxTextViewWidth]],
-                            [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
-                        ]];
                     }
                     
                     MXKReceiptSendersContainer* avatarsContainer;

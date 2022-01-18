@@ -58,7 +58,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Md3-uq-cSB" customClass="ThreadSummaryView" customModule="Riot" customModuleProvider="target">
-                        <rect key="frame" x="47" y="56" width="245" height="32"/>
+                        <rect key="frame" x="44" y="60" width="264" height="32"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="Pnm-yi-36O"/>
@@ -72,7 +72,7 @@
                     <constraint firstAttribute="trailing" secondItem="aUq-D2-1KM" secondAttribute="trailing" constant="10" id="Du2-UR-wBe"/>
                     <constraint firstAttribute="bottom" secondItem="Md3-uq-cSB" secondAttribute="bottom" constant="12" id="Ppd-HN-Ehg"/>
                     <constraint firstItem="I32-A5-WWw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="Trt-CK-Tly"/>
-                    <constraint firstItem="Md3-uq-cSB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="47" id="Vpf-02-TgV"/>
+                    <constraint firstItem="Md3-uq-cSB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="44" id="Vpf-02-TgV"/>
                     <constraint firstAttribute="trailing" secondItem="xzR-f9-3qV" secondAttribute="trailing" constant="28" id="Zz9-PK-l9b"/>
                     <constraint firstItem="C2U-Ih-4Oh" firstAttribute="leading" secondItem="108-Xh-aZf" secondAttribute="trailing" constant="8" id="bE8-Yy-3B9"/>
                     <constraint firstItem="xzR-f9-3qV" firstAttribute="leading" secondItem="I32-A5-WWw" secondAttribute="trailing" constant="12" id="g8i-lt-K8f"/>
@@ -80,7 +80,7 @@
                     <constraint firstItem="108-Xh-aZf" firstAttribute="leading" secondItem="I32-A5-WWw" secondAttribute="trailing" constant="12" id="sXf-FI-gD3"/>
                     <constraint firstItem="xzR-f9-3qV" firstAttribute="top" secondItem="108-Xh-aZf" secondAttribute="bottom" constant="4" id="tQN-Rr-MIS"/>
                     <constraint firstItem="C2U-Ih-4Oh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="14" id="u3s-nr-avO"/>
-                    <constraint firstAttribute="trailing" secondItem="Md3-uq-cSB" secondAttribute="trailing" constant="28" id="vxt-vD-jy8"/>
+                    <constraint firstAttribute="trailing" secondItem="Md3-uq-cSB" secondAttribute="trailing" constant="12" id="vxt-vD-jy8"/>
                     <constraint firstAttribute="trailing" secondItem="C2U-Ih-4Oh" secondAttribute="trailing" constant="27" id="wNc-xV-uIR"/>
                 </constraints>
             </tableViewCellContentView>

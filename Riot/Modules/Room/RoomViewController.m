@@ -1564,7 +1564,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 - (BadgedBarButtonItem *)threadListBarButtonItem
 {
     UIButton *button = [UIButton new];
-    UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(24, 24)];
+    UIImage *icon = [[UIImage imageNamed:@"threads_icon"] vc_resizedWith:CGSizeMake(21, 21)];
     button.contentEdgeInsets = UIEdgeInsetsMake(4, 8, 4, 8);
     [button setImage:icon
             forState:UIControlStateNormal];
@@ -2121,7 +2121,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [self roomInputToolbarViewDidTapFileUpload];
         }]];
     }
-    if (RiotSettings.shared.roomScreenAllowPollsAction)
+    if (BuildSettings.pollsEnabled && self.displayConfiguration.sendingPollsEnabled)
     {
         [actionItems addObject:[[RoomActionItem alloc] initWithImage:[UIImage imageNamed:@"action_poll"] andAction:^{
             MXStrongifyAndReturnIfNil(self);
@@ -3918,6 +3918,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [actionsMenu mxk_setAccessibilityIdentifier:@"RoomVCEventMenuAlert"];
         [actionsMenu popoverPresentationController].sourceView = roomBubbleTableViewCell;
         [actionsMenu popoverPresentationController].sourceRect = sourceRect;
+        [self dismissKeyboard];
         [self presentViewController:actionsMenu animated:animated completion:nil];
         currentAlert = actionsMenu;
     }
@@ -6335,16 +6336,34 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     MXWeakify(self);
     
     RoomContextualMenuItem *editMenuItem = [[RoomContextualMenuItem alloc] initWithMenuAction:RoomContextualMenuActionEdit];
-    editMenuItem.action = ^{
-        MXStrongifyAndReturnIfNil(self);
-        [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
-        [self editEventContentWithId:event.eventId];
-        
-        // And display the keyboard
-        [self.inputToolbarView becomeFirstResponder];
-    };
     
-    editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+    switch (event.eventType) {
+        case MXEventTypePollStart: {
+            editMenuItem.action = ^{
+                MXStrongifyAndReturnIfNil(self);
+                [self hideContextualMenuAnimated:YES cancelEventSelection:YES completion:nil];
+                [self.delegate roomViewController:self didRequestEditForPollWithStartEvent:event];
+            };
+            
+            editMenuItem.isEnabled = [self.delegate roomViewController:self canEditPollWithEventIdentifier:event.eventId];
+            
+            break;
+        }
+        default: {
+            editMenuItem.action = ^{
+                MXStrongifyAndReturnIfNil(self);
+                [self hideContextualMenuAnimated:YES cancelEventSelection:NO completion:nil];
+                [self editEventContentWithId:event.eventId];
+                
+                // And display the keyboard
+                [self.inputToolbarView becomeFirstResponder];
+            };
+            
+            editMenuItem.isEnabled = [self.roomDataSource canEditEventWithId:event.eventId];
+            
+            break;
+        }
+    }
     
     return editMenuItem;
 }

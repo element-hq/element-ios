@@ -27,9 +27,8 @@ protocol ThreadSummaryViewDelegate: AnyObject {
 class ThreadSummaryView: UIView {
     
     private enum Constants {
-        static let viewHeight: CGFloat = 40
         static let viewDefaultWidth: CGFloat = 320
-        static let cornerRadius: CGFloat = 4
+        static let cornerRadius: CGFloat = 8
         static let lastMessageFont: UIFont = .systemFont(ofSize: 13)
     }
     
@@ -53,14 +52,14 @@ class ThreadSummaryView: UIView {
         self.thread = thread
         super.init(frame: CGRect(origin: .zero,
                                  size: CGSize(width: Constants.viewDefaultWidth,
-                                              height: Constants.viewHeight)))
+                                              height: RoomBubbleCellLayout.threadSummaryViewHeight)))
         loadNibContent()
         update(theme: ThemeService.shared().theme)
         configure()
     }
     
     static func contentViewHeight(forThread thread: MXThread, fitting maxWidth: CGFloat) -> CGFloat {
-        return Constants.viewHeight
+        return RoomBubbleCellLayout.threadSummaryViewHeight
     }
     
     required init?(coder: NSCoder) {

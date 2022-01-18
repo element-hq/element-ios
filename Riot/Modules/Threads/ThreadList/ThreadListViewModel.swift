@@ -136,7 +136,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             return ThreadListEmptyViewModel(icon: Asset.Images.threadsIcon.image,
                                             title: VectorL10n.threadsEmptyTitle,
                                             info: VectorL10n.threadsEmptyInfoMy,
-                                            tip: VectorL10n.threadsEmptyTip,
+                                            tip: nil,
                                             showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
                                             showAllThreadsButtonHidden: false)
         }
@@ -193,6 +193,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                rootMessageSenderAvatar: rootAvatarViewData,
                                rootMessageSenderDisplayName: rootMessageSender?.displayname,
                                rootMessageText: rootMessageText,
+                               rootMessageRedacted: thread.rootMessage?.isRedactedEvent() ?? false,
                                lastMessageTime: lastMessageTime,
                                summaryViewModel: summaryViewModel,
                                notificationStatus: notificationStatus)
@@ -204,6 +205,23 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         }
         guard let message = thread.rootMessage else {
             return nil
+        }
+        if message.isReply(), let newMessage = message.copy() as? MXEvent {
+            var jsonDict = newMessage.isEncrypted ? newMessage.clear?.jsonDictionary() : newMessage.jsonDictionary()
+            if var content = jsonDict?["content"] as? [String: Any] {
+                content.removeValue(forKey: "format")
+                content.removeValue(forKey: "formatted_body")
+                content.removeValue(forKey: kMXEventRelationRelatesToKey)
+                if let replyText = MXReplyEventParser().parse(newMessage)?.bodyParts.replyText {
+                    content["body"] = replyText
+                }
+                jsonDict?["content"] = content
+            }
+            let trimmedMessage = MXEvent(fromJSON: jsonDict)
+            let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+            return eventFormatter.attributedString(from: trimmedMessage,
+                                                   with: roomState,
+                                                   error: formatterError)
         }
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         return eventFormatter.attributedString(from: message,

@@ -50,7 +50,8 @@
      The optional text pattern to be highlighted in the body of the message.
      */
     NSString *highlightedPattern;
-    UIColor  *highlightedPatternColor;
+    UIColor  *highlightedPatternForegroundColor;
+    UIColor  *highlightedPatternBackgroundColor;
     UIFont   *highlightedPatternFont;
 }
 
