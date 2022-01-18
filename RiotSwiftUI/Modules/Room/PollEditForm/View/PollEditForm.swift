@@ -35,7 +35,8 @@ struct PollEditForm: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 32.0) {
                         
-                        PollEditFormTypePicker(selectedType: $viewModel.type)
+                        // Intentionally disabled until platform parity.
+                        // PollEditFormTypePicker(selectedType: $viewModel.type)
                         
                         VStack(alignment: .leading, spacing: 16.0) {
                             Text(VectorL10n.pollEditFormPollQuestionOrTopic)
