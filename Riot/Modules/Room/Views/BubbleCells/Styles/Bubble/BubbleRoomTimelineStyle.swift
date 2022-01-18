@@ -26,12 +26,15 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     let cellProvider: RoomTimelineCellProviderProtocol
     
+    let cellDecorator: RoomTimelineCellDecorator
+    
     // MARK: - Setup
     
     init() {
         self.identifier = .bubble
         self.cellLayoutUpdater = BubbleRoomCellLayoutUpdater()
         self.cellProvider = BubbleRoomTimelineCellProvider()
+        self.cellDecorator = BubbleRoomTimelineCellDecorator()
     }
     
     // MARK: - Public
