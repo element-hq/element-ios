@@ -553,16 +553,7 @@ const CGFloat kTypingCellHeight = 24;
         // Check whether an event is currently selected: the other messages are then blurred
         if (_selectedEventId)
         {
-            // Check whether the selected event belongs to this bubble
-            NSInteger selectedComponentIndex = cellData.selectedComponentIndex;
-            if (selectedComponentIndex != NSNotFound)
-            {
-                [bubbleCell selectComponent:cellData.selectedComponentIndex showEditButton:NO showTimestamp:cellData.showTimestampForSelectedComponent];
-            }
-            else
-            {
-                bubbleCell.blurred = YES;
-            }
+            [[RoomTimelineConfiguration shared].currentStyle applySelectedStyleIfNeededToCell:bubbleCell cellData:cellData];
         }
 
         // Reset the marker if any
