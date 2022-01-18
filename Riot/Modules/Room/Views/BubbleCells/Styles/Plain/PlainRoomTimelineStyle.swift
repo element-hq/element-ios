@@ -26,12 +26,15 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
     
     let cellProvider: RoomTimelineCellProviderProtocol
     
+    let cellDecorator: RoomTimelineCellDecorator
+    
     // MARK: - Setup
     
     init() {
         self.identifier = .plain
         self.cellLayoutUpdater = nil
         self.cellProvider = PlainRoomTimelineCellProvider()
+        self.cellDecorator = PlainRoomTimelineCellDecorator()
     }
     
     // MARK: - Methods
