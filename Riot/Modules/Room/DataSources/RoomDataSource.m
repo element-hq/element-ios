@@ -334,11 +334,8 @@ const CGFloat kTypingCellHeight = 24;
 
         BOOL isCollapsableCellCollapsed = cellData.collapsable && cellData.collapsed;
         
-        // Display timestamp of the last message
-        if (cellData.containsLastMessage && !isCollapsableCellCollapsed)
-        {
-            [cellDecorator addTimestampLabelToCell:bubbleCell cellData:cellData];
-        }
+        // Display timestamp of the message if needed
+        [cellDecorator addTimestampLabelIfNeededToCell:bubbleCell cellData:cellData];
         
         NSMutableArray *temporaryViews = [NSMutableArray new];
         
