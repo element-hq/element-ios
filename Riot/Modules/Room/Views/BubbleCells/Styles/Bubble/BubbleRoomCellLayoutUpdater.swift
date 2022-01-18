@@ -18,12 +18,6 @@ import UIKit
 
 @objcMembers
 class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
-                    
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let bubbleBackgroundViewCornerRadius: CGFloat = 12.0
-    }
     
     // MARK: - Properties
     
@@ -38,19 +32,12 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
     // MARK: - Public
     
     func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
-     
-        var isMessageSenderCurrentUser: Bool = false
         
-        if let senderId = cellData.senderId, let currentUserId = cellData.mxSession.myUserId, senderId == currentUserId {
-            isMessageSenderCurrentUser = true
-        }
-                
-        if isMessageSenderCurrentUser {
+        if cellData.isSenderCurrentUser {
             self.updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
         } else {
             self.updateLayout(forIncomingTextMessageCell: cell, andCellData: cellData)
         }
-        
     }
             
     func updateLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
@@ -232,7 +219,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
         let messageViewMarginTop: CGFloat
         let messageViewMarginBottom: CGFloat = -2.0
         let messageViewMarginLeft: CGFloat = 3.0
-        let messageViewMarginRight: CGFloat = 0.0
+        let messageViewMarginRight: CGFloat = 80
         
         if bubbleCell.userNameLabel != nil {
             messageViewMarginTop = 10.0
