@@ -32,6 +32,9 @@ protocol RoomTimelineStyle {
     /// Register and provide timeline cells
     var cellProvider: RoomTimelineCellProviderProtocol { get }
     
+    /// Handle cell decorations (reactions, read receipts, URL preview, …)
+    var cellDecorator: RoomTimelineCellDecorator { get }
+    
     // MARK: - Methods
     
     /// Indicate to merge or not event in timeline
