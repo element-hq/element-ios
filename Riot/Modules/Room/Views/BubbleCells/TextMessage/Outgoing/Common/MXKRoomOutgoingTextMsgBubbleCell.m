@@ -22,6 +22,8 @@
 
 - (void)setupViews
 {
+    [super setupViews];
+    
     RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
         
     [timelineConfiguration.currentStyle.cellLayoutUpdater setupLayoutForOutgoingTextMessageCell:self];
