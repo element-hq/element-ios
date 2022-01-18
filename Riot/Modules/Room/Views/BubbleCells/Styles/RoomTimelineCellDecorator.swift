@@ -19,9 +19,9 @@ import UIKit
 /// RoomTimelineCellDecorator enables to add decoration on a cell (reactions, read receipts, timestamp, URL preview).
 @objc
 protocol RoomTimelineCellDecorator {
-        
-    func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell,
-                           cellData: RoomBubbleCellData)
+    
+    func addTimestampLabelIfNeeded(toCell cell: MXKRoomBubbleTableViewCell,
+                                   cellData: RoomBubbleCellData)
     
     func addURLPreviewView(_ urlPreviewView: URLPreviewView,
                            toCell cell: MXKRoomBubbleTableViewCell,
