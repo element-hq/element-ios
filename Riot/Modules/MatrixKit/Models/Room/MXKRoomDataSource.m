@@ -34,6 +34,7 @@
 #import "MXKSendReplyEventStringLocalizer.h"
 #import "MXKSlashCommands.h"
 
+const BOOL USE_THREAD_TIMELINE = NO;
 
 #pragma mark - Constant definitions
 
@@ -259,11 +260,21 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
         // Asynchronously preload data here so that the data will be ready later
         // to synchronously respond to that request
-        if (roomDataSource.threadId)
+
+        if (USE_THREAD_TIMELINE)
         {
-            [roomDataSource.thread liveTimeline:^(id<MXEventTimeline> _Nonnull liveTimeline) {
-                onComplete(roomDataSource);
-            }];
+            if (roomDataSource.threadId)
+            {
+                [roomDataSource.thread liveTimeline:^(id<MXEventTimeline> _Nonnull liveTimeline) {
+                    onComplete(roomDataSource);
+                }];
+            }
+            else
+            {
+                [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                    onComplete(roomDataSource);
+                }];
+            }
         }
         else
         {
@@ -632,9 +643,16 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     if (MXSessionStateStoreDataReady <= self.mxSession.state)
     {
-        if (_threadId)
+        if (USE_THREAD_TIMELINE)
         {
-            [self initializeTimelineForThread];
+            if (_threadId)
+            {
+                [self initializeTimelineForThread];
+            }
+            else
+            {
+                [self initializeTimelineForRoom];
+            }
         }
         else
         {
