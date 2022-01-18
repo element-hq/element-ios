@@ -2172,6 +2172,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             [MXSDKOptions sharedInstance].videoConversionPresetName = presetName;
             [roomInputToolbarView sendSelectedVideoAsset:videoAsset isPhotoLibraryAsset:isPhotoLibraryAsset];
         }];
+        compressionPrompt.popoverPresentationController.sourceView = roomInputToolbarView.attachMediaButton;
+        compressionPrompt.popoverPresentationController.sourceRect = roomInputToolbarView.attachMediaButton.bounds;
         
         [self presentViewController:compressionPrompt animated:YES completion:nil];
     }
