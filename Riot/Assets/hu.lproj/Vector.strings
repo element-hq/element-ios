@@ -1606,3 +1606,16 @@
 
 "location_sharing_title" = "Földrajzi helyzet";
 "ok" = "OK";
+"onboarding_splash_page_4_message" = "Element megállja a helyét a munkahelyen is. A világ legbiztonságosabb szervezetei bíznak meg benne.";
+"onboarding_splash_page_3_message" = "Telefonszám nélkül végpontok között titkosított. Reklámok és adatbányászat nélkül.";
+"onboarding_splash_page_2_message" = "Válaszd meg hol legyenek a beszélgetéseid tárolva, visszaadja az irányítást és függetlenné tesz. Csatlakozva a Matrixhoz.";
+"onboarding_splash_page_1_message" = "Biztonságos és független kommunikáció ami olyan biztonságos mintha valakivel négyszemközt beszélgetnél a házadban.";
+"settings_enable_room_message_bubbles" = "Üzenet buborékok";
+"onboarding_splash_page_4_title_no_pun" = "Üzenetküldés a csoportodnak.";
+"onboarding_splash_page_3_title" = "Biztonságos üzenetküldés.";
+"onboarding_splash_page_2_title" = "Te irányítasz.";
+"onboarding_splash_page_1_title" = "Az ön beszélgetései csak az öné.";
+"onboarding_splash_login_button_title" = "Már van fiókom";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Fiók létrehozása";
