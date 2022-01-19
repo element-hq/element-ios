@@ -17,7 +17,6 @@
 import UIKit
 import Reusable
 import Mapbox
-import Keys
 
 class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegate {
 
@@ -25,7 +24,6 @@ class RoomTimelineLocationView: UIView, NibLoadable, Themable, MGLMapViewDelegat
     
     private struct Constants {
         static let mapHeight: CGFloat = 300.0
-        static let mapTilerKey = RiotKeys().mapTilerAPIKey
         static let mapZoomLevel = 15.0
         static let cellBorderRadius: CGFloat = 1.0
         static let cellCornerRadius: CGFloat = 8.0
