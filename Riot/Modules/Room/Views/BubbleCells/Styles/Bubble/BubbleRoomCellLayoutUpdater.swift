@@ -157,48 +157,77 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
     }
     
     private func getTextMessageHeight(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> CGFloat? {
-        
+
         guard let roomBubbleCellData = cellData as? RoomBubbleCellData,
                 let lastBubbleComponent = cellData.getLastBubbleComponentWithDisplay(),
                 let firstComponent = roomBubbleCellData.getFirstBubbleComponentWithDisplay() else {
             return nil
         }
-        
+
         let bubbleHeight: CGFloat
-        let bottomMargin: CGFloat = 4.0
-            
+
         let lastEventId = lastBubbleComponent.event.eventId
         let lastMessageBottomPosition = cell.bottomPosition(ofEvent: lastEventId)
-        
+
         let firstEventId = firstComponent.event.eventId
         let firstMessageTopPosition = cell.topPosition(ofEvent: firstEventId)
-            
+
         let additionalContentHeight = roomBubbleCellData.additionalContentHeight
-                
-        bubbleHeight = lastMessageBottomPosition - firstMessageTopPosition - additionalContentHeight + bottomMargin
-        
+
+        bubbleHeight = lastMessageBottomPosition - firstMessageTopPosition - additionalContentHeight
+
         guard bubbleHeight >= 0 else {
             return nil
         }
-        
+
         return bubbleHeight
+    }
+    
+    // TODO: Improve text message height calculation
+    // This method is closer to final result but lack of stability because of extra vertical space not handled here.
+//    private func getTextMessageHeight(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> CGFloat? {
+//
+//        guard let roomBubbleCellData = cellData as? RoomBubbleCellData,
+//              let firstComponent = roomBubbleCellData.getFirstBubbleComponentWithDisplay() else {
+//                  return nil
+//              }
+//
+//        let bubbleHeight: CGFloat
+//
+//        let componentIndex = cellData.bubbleComponentIndex(forEventId: firstComponent.event.eventId)
+//
+//        let componentFrame = cell.componentFrameInContentView(for: componentIndex)
+//
+//        bubbleHeight = componentFrame.height
+//
+//        guard bubbleHeight >= 0 else {
+//            return nil
+//        }
+//
+//        return bubbleHeight
+//    }
+    
+    private func getMessageBubbleBackgroundHeight(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> CGFloat? {
+
+        var finalBubbleHeight: CGFloat?
+        let extraMargin = 4.0
+
+        if let bubbleHeight = self.getTextMessageHeight(for: cell, andCellData: cellData) {
+            finalBubbleHeight = bubbleHeight + extraMargin
+
+        } else if let messageTextViewHeight = cell.messageTextView?.frame.height {
+
+            finalBubbleHeight = messageTextViewHeight + extraMargin
+        }
+
+        return finalBubbleHeight
     }
     
     @discardableResult
     private func updateMessageBubbleBackgroundView(_ roomMessageBubbleBackgroundView: RoomMessageBubbleBackgroundView, withCell cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> Bool {
         
-        var finalBubbleHeight: CGFloat?
-        
-        if let bubbleHeight = self.getTextMessageHeight(for: cell, andCellData: cellData) {
-            finalBubbleHeight = bubbleHeight
-            
-        } else if let messageTextViewHeight = cell.messageTextView?.frame.height {
-            
-            finalBubbleHeight = messageTextViewHeight
-        }
-        
-        if let finalBubbleHeight = finalBubbleHeight {
-            return roomMessageBubbleBackgroundView.updateHeight(finalBubbleHeight)
+        if let bubbleHeight = self.getMessageBubbleBackgroundHeight(for: cell, andCellData: cellData) {
+            return roomMessageBubbleBackgroundView.updateHeight(bubbleHeight)
         } else {
             return false
         }
