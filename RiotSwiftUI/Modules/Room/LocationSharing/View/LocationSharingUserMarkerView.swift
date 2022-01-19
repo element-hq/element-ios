@@ -25,7 +25,7 @@ struct LocationSharingUserMarkerView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
-    @State var frame: CGRect = .zero
+    @State private var frame: CGRect = .zero
     
     // MARK: Public
     
@@ -35,7 +35,7 @@ struct LocationSharingUserMarkerView: View {
         ZStack {
             Image(uiImage: Asset.Images.locationUserMarker.image)
             AvatarImage(avatarData: avatarData, size: .large)
-                .offset(.init(width: 0.0, height: -1.5))
+                .offset(y: -1.5)
         }
         .background(ViewFrameReader(frame: $frame))
         .padding(.bottom, frame.height)
