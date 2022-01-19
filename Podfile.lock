@@ -49,7 +49,6 @@ PODS:
   - Introspect (0.1.3)
   - JitsiMeetSDK (3.10.2)
   - KeychainAccess (4.2.2)
-  - Keys (1.0.1)
   - KituraContracts (1.2.1):
     - LoggerAPI (~> 1.7)
   - KTCenterFlowLayout (1.3.1)
@@ -115,7 +114,6 @@ DEPENDENCIES:
   - HPGrowingTextView (~> 1.1)
   - Introspect (~> 0.1)
   - KeychainAccess (~> 4.2.2)
-  - Keys (from `Pods/CocoaPodsKeys`)
   - KTCenterFlowLayout (~> 1.3.1)
   - libPhoneNumber-iOS (~> 0.9.13)
   - MatrixSDK (= 0.20.16)
@@ -179,12 +177,10 @@ EXTERNAL SOURCES:
   AnalyticsEvents:
     :branch: release/swift
     :git: https://github.com/matrix-org/matrix-analytics-events.git
-  Keys:
-    :path: Pods/CocoaPodsKeys
 
 CHECKOUT OPTIONS:
   AnalyticsEvents:
-    :commit: f1805ad7c3fafa7fd9c6e2eaa9e0165f8142ecd2
+    :commit: 8058dc6ec07ce0acfe5fdb19eb7e309b0c13845c
     :git: https://github.com/matrix-org/matrix-analytics-events.git
 
 SPEC CHECKSUMS:
@@ -207,7 +203,6 @@ SPEC CHECKSUMS:
   Introspect: 2be020f30f084ada52bb4387fff83fa52c5c400e
   JitsiMeetSDK: 2f118fa770f23e518f3560fc224fae3ac7062223
   KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
-  Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   KituraContracts: e845e60dc8627ad0a76fa55ef20a45451d8f830b
   KTCenterFlowLayout: 6e02b50ab2bd865025ae82fe266ed13b6d9eaf97
   libbase58: 7c040313537b8c44b6e2d15586af8e21f7354efd
@@ -230,6 +225,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 2493587902f8f28bb2638303dd583c47e9f24d8b
+PODFILE CHECKSUM: c9a50c445e32b40b22fadd0f54b376f1bd624ebb
 
 COCOAPODS: 1.11.2
