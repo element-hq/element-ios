@@ -1,0 +1,1 @@
+Fix crash when uploading a video on iPad when "Confirm size when sending" is enabled in settings.
