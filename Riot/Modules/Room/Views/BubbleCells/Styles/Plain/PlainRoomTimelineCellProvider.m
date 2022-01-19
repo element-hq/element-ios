@@ -278,7 +278,7 @@
     NSDictionary *incomingAttachmentCellsMapping = [self incomingAttachmentCellsMapping];
     [cellClasses addEntriesFromDictionary:incomingAttachmentCellsMapping];
     
-    NSDictionary *outgoingAttachmentCellsMapping = [self outgoingTextMessageCellsMapping];
+    NSDictionary *outgoingAttachmentCellsMapping = [self outgoingAttachmentCellsMapping];
     [cellClasses addEntriesFromDictionary:outgoingAttachmentCellsMapping];
     
     // Other cells
