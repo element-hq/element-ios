@@ -25,16 +25,20 @@ struct LocationSharingUserMarkerView: View {
     
     @Environment(\.theme) private var theme: ThemeSwiftUI
     
+    @State var frame: CGRect = .zero
+    
     // MARK: Public
     
     let avatarData: AvatarInputProtocol
     
     var body: some View {
-        ZStack(alignment: .center) {
+        ZStack {
             Image(uiImage: Asset.Images.locationUserMarker.image)
             AvatarImage(avatarData: avatarData, size: .large)
                 .offset(.init(width: 0.0, height: -1.5))
         }
+        .background(ViewFrameReader(frame: $frame))
+        .padding(.bottom, frame.height)
         .accentColor(theme.colors.accent)
     }
 }
