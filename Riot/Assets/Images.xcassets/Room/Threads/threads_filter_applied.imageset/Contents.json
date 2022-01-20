@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "Right controls.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Right controls@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Right controls@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "filter-on.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
