@@ -18,7 +18,7 @@ import Foundation
 
 /// Enables to setup or update a room timeline cell view
 @objc
-protocol RoomCellLayoutUpdaterProtocol: Themable {
+protocol RoomCellLayoutUpdater: Themable {
     
     func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData)
             

@@ -27,7 +27,7 @@ protocol RoomTimelineStyle: Themable {
     var identifier: RoomTimelineStyleIdentifier { get }
     
     /// Update layout if needed for cells provided by the cell provider
-    var cellLayoutUpdater: RoomCellLayoutUpdaterProtocol? { get }
+    var cellLayoutUpdater: RoomCellLayoutUpdater? { get }
     
     /// Register and provide timeline cells
     var cellProvider: RoomTimelineCellProviderProtocol { get }
