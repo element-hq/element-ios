@@ -20,8 +20,8 @@ import Reusable
 import DGCollectionViewLeftAlignFlowLayout
 import UIKit
 
-/// BubbleReactionsView items alignement
-enum BubbleReactionsViewAlignement {
+/// BubbleReactionsView items alignment
+enum BubbleReactionsViewAlignment {
     case left
     case right
 }
@@ -58,7 +58,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         }
     }
     
-    var alignment: BubbleReactionsViewAlignement = .left {
+    var alignment: BubbleReactionsViewAlignment = .left {
         didSet {
             self.updateCollectionViewLayout(for: alignment)
         }
@@ -107,9 +107,9 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.collectionView.reloadData()
     }
     
-    private func updateCollectionViewLayout(for alignement: BubbleReactionsViewAlignement) {
+    private func updateCollectionViewLayout(for alignment: BubbleReactionsViewAlignment) {
         
-        let collectionViewLayout = self.collectionViewLayout(for: alignement)
+        let collectionViewLayout = self.collectionViewLayout(for: alignment)
         
         self.collectionView.collectionViewLayout = collectionViewLayout
         
@@ -123,7 +123,7 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    private func collectionViewLayout(for alignement: BubbleReactionsViewAlignement) -> UICollectionViewLayout {
+    private func collectionViewLayout(for alignment: BubbleReactionsViewAlignment) -> UICollectionViewLayout {
         
         let collectionViewLayout: UICollectionViewLayout
         
