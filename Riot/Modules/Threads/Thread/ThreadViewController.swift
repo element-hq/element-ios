@@ -123,7 +123,8 @@ class ThreadViewController: RoomViewController {
         
         MXKPasteboardManager.shared.pasteboard.string = permalink
         view.vc_toast(message: VectorL10n.roomEventCopyLinkInfo,
-                      image: Asset.Images.linkIcon.image)
+                      image: Asset.Images.linkIcon.image,
+                      additionalMargin: self.roomInputToolbarContainerHeightConstraint.constant)
     }
     
     private func sharePermalink() {
