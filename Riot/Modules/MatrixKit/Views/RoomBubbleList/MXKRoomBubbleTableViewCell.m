@@ -1130,7 +1130,7 @@ static BOOL _disableLongPressGestureOnEvent;
     [self resetAttachmentViewBottomConstraintConstant];
 }
 
-- (void)addTmpSubview:(UIView*)subview
+- (void)addTemporarySubview:(UIView*)subview
 {
     if (!self.tmpSubviews)
     {
