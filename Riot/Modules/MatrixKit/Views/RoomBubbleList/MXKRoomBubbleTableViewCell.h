@@ -326,6 +326,6 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 - (void)setupViews;
 
 /// Add temporary subview to `tmpSubviews` property.
-- (void)addTmpSubview:(UIView*)subview;
+- (void)addTemporarySubview:(UIView*)subview;
 
 @end

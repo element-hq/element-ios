@@ -37,7 +37,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                            toCell cell: MXKRoomBubbleTableViewCell,
                            cellData: RoomBubbleCellData,
                            contentViewPositionY: CGFloat) {
-        cell.addTmpSubview(urlPreviewView)
+        cell.addTemporarySubview(urlPreviewView)
 
         let cellContentView = cell.contentView
 
@@ -65,7 +65,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                          contentViewPositionY: CGFloat,
                          upperDecorationView: UIView?) {
 
-        cell.addTmpSubview(reactionsView)
+        cell.addTemporarySubview(reactionsView)
 
         if let reactionsDisplayable = cell as? BubbleCellReactionsDisplayable {
             reactionsDisplayable.addReactionsView(reactionsView)
@@ -107,7 +107,7 @@ class PlainRoomTimelineCellDecorator: RoomTimelineCellDecorator {
                              contentViewPositionY: CGFloat,
                              upperDecorationView: UIView?) {
 
-        cell.addTmpSubview(readReceiptsView)
+        cell.addTemporarySubview(readReceiptsView)
 
         if let readReceiptsDisplayable = cell as? BubbleCellReadReceiptsDisplayable {
             readReceiptsDisplayable.addReadReceiptsView(readReceiptsView)

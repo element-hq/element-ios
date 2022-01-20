@@ -46,7 +46,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                                            viewTag: componentIndex)
             timestampLabel.translatesAutoresizingMaskIntoConstraints = false
 
-            cell.addTmpSubview(timestampLabel)
+            cell.addTemporarySubview(timestampLabel)
 
             bubbleBackgroundView.addSubview(timestampLabel)
 
@@ -69,7 +69,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     override func addReactionView(_ reactionsView: BubbleReactionsView,
                                   toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData, contentViewPositionY: CGFloat, upperDecorationView: UIView?) {
         
-        cell.addTmpSubview(reactionsView)
+        cell.addTemporarySubview(reactionsView)
         
         if let reactionsDisplayable = cell as? BubbleCellReactionsDisplayable {
             reactionsDisplayable.addReactionsView(reactionsView)
@@ -142,7 +142,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                                     cellData: RoomBubbleCellData,
                                     contentViewPositionY: CGFloat) {
         
-        cell.addTmpSubview(urlPreviewView)
+        cell.addTemporarySubview(urlPreviewView)
         
         let cellContentView = cell.contentView
         
