@@ -210,7 +210,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
     private func getMessageBubbleBackgroundHeight(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) -> CGFloat? {
 
         var finalBubbleHeight: CGFloat?
-        let extraMargin = 4.0
+        let extraMargin: CGFloat = 4.0
 
         if let bubbleHeight = self.getTextMessageHeight(for: cell, andCellData: cellData) {
             finalBubbleHeight = bubbleHeight + extraMargin
