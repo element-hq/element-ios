@@ -306,16 +306,15 @@
     return first;
 }
 
-- (MXKRoomBubbleComponent*) getFirstBubbleComponentWithDisplay
+- (MXKRoomBubbleComponent*)getFirstBubbleComponentWithDisplay
 {
     // Look for the first component which is actually displayed (some event are ignored in room history display).
     MXKRoomBubbleComponent* first = nil;
     
     @synchronized(bubbleComponents)
     {
-        for (NSInteger index = 0; index < bubbleComponents.count; index++)
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
         {
-            MXKRoomBubbleComponent *component = bubbleComponents[index];
             if (component.attributedTextMessage)
             {
                 first = component;
@@ -331,19 +330,19 @@
 {
     // Look for the first component which is actually displayed (some event are ignored in room history display).
     MXKRoomBubbleComponent* lastVisibleComponent = nil;
-    
+
     @synchronized(bubbleComponents)
     {
-        for (NSInteger index = 0; index < bubbleComponents.count; index++)
+        for (MXKRoomBubbleComponent *component in bubbleComponents.reverseObjectEnumerator)
         {
-            MXKRoomBubbleComponent *component = bubbleComponents[index];
             if (component.attributedTextMessage)
             {
                 lastVisibleComponent = component;
+                break;
             }
         }
     }
-    
+
     return lastVisibleComponent;
 }
 
