@@ -52,7 +52,7 @@ NSString *const kThemeServiceDidChangeThemeNotification = @"kThemeServiceDidChan
         
         [self updateAppearance];
 
-        [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kThemeServiceDidChangeThemeNotification object:self];
     }
 }
 

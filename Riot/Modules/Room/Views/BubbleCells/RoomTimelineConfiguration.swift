@@ -34,6 +34,8 @@ class RoomTimelineConfiguration: NSObject {
         self.currentStyle = style
         
         super.init()
+        
+        self.registerThemeDidChange()
     }
     
     convenience init(styleIdentifier: RoomTimelineStyleIdentifier) {
@@ -61,16 +63,32 @@ class RoomTimelineConfiguration: NSObject {
     }
     
     // MARK: - Private
+    
+    private func registerThemeDidChange() {
+        NotificationCenter.default.addObserver(self, selector: #selector(themeDidChange(notification:)), name: .themeServiceDidChangeTheme, object: nil)
+        
+    }
+    
+    @objc private func themeDidChange(notification: Notification) {
+        
+        guard let themeService = notification.object as? ThemeService else {
+            return
+        }
+        
+        self.currentStyle.update(theme: themeService.theme)
+    }
         
     private class func style(for identifier: RoomTimelineStyleIdentifier) -> RoomTimelineStyle {
         
         let roomTimelineStyle: RoomTimelineStyle
         
+        let theme = ThemeService.shared().theme
+        
         switch identifier {
         case .plain:
-            roomTimelineStyle = PlainRoomTimelineStyle()
+            roomTimelineStyle = PlainRoomTimelineStyle(theme: theme)
         case .bubble:
-            roomTimelineStyle = BubbleRoomTimelineStyle()
+            roomTimelineStyle = BubbleRoomTimelineStyle(theme: theme)
         }
         
         return roomTimelineStyle

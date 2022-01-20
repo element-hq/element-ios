@@ -20,6 +20,12 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     // MARK: - Properties
     
+    // MARK: Private
+    
+    private var theme: Theme
+    
+    // MARK: Public
+    
     let identifier: RoomTimelineStyleIdentifier
     
     let cellLayoutUpdater: RoomCellLayoutUpdaterProtocol?
@@ -30,9 +36,10 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     // MARK: - Setup
     
-    init() {
+    init(theme: Theme) {
+        self.theme = theme
         self.identifier = .bubble
-        self.cellLayoutUpdater = BubbleRoomCellLayoutUpdater()
+        self.cellLayoutUpdater = BubbleRoomCellLayoutUpdater(theme: theme)
         self.cellProvider = BubbleRoomTimelineCellProvider()
         self.cellDecorator = BubbleRoomTimelineCellDecorator()
     }
@@ -58,4 +65,12 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
             cell.blurred = true
         }
     }
+    
+    // MARK: Themable
+    
+    func update(theme: Theme) {
+        self.theme = theme        
+        self.cellLayoutUpdater?.update(theme: theme)
+    }
+    
 }

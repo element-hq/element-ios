@@ -17,8 +17,14 @@
 import Foundation
 
 class PlainRoomTimelineStyle: RoomTimelineStyle {
-
+    
     // MARK: - Properties
+    
+    // MARK: Private
+    
+    private var theme: Theme
+    
+    // MARK: Public
     
     let identifier: RoomTimelineStyleIdentifier
     
@@ -26,11 +32,12 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
     
     let cellProvider: RoomTimelineCellProviderProtocol
     
-    let cellDecorator: RoomTimelineCellDecorator
-    
+    let cellDecorator: RoomTimelineCellDecorator    
+ 
     // MARK: - Setup
     
-    init() {
+    init(theme: Theme) {
+        self.theme = theme
         self.identifier = .plain
         self.cellLayoutUpdater = nil
         self.cellProvider = PlainRoomTimelineCellProvider()
@@ -57,5 +64,11 @@ class PlainRoomTimelineStyle: RoomTimelineStyle {
         } else {
             cell.blurred = true
         }
+    }
+    
+    // MARK: Themable
+    
+    func update(theme: Theme) {
+        self.theme = theme
     }
 }

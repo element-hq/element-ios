@@ -19,7 +19,7 @@ import MatrixSDK
 
 /// RoomTimelineStyle describes a room timeline style used to customize timeline appearance
 @objc
-protocol RoomTimelineStyle {
+protocol RoomTimelineStyle: Themable {
     
     // MARK: - Properties
     

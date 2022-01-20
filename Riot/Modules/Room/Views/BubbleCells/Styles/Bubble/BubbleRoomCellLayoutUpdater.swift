@@ -21,12 +21,20 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
     
     // MARK: - Properties
     
+    private var theme: Theme
+    
     private var incomingColor: UIColor {
-        return ThemeService.shared().theme.colors.system
+        return self.theme.colors.system
     }
     
     private var outgoingColor: UIColor {
-        return ThemeService.shared().theme.colors.accent.withAlphaComponent(0.10)
+        return self.theme.colors.accent.withAlphaComponent(0.10)
+    }
+    
+    // MARK: - Setup
+    
+    init(theme: Theme) {
+        self.theme = theme
     }
     
     // MARK: - Public
@@ -89,6 +97,12 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdaterProtocol {
         self.addBubbleBackgroundViewToCell(cell, backgroundColor: self.outgoingColor)
         
         cell.setNeedsUpdateConstraints()
+    }
+    
+    // MARK: Themable
+    
+    func update(theme: Theme) {
+        self.theme = theme
     }
     
     // MARK: - Private
