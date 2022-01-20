@@ -6593,7 +6593,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     if ([[self.bubblesTableView indexPathsForVisibleRows] containsObject:indexPath])
     {
         [self.bubblesTableView reloadRowsAtIndexPaths:@[indexPath]
-                                     withRowAnimation:UITableViewRowAnimationAutomatic];
+                                     withRowAnimation:UITableViewRowAnimationNone];
+        [self.bubblesTableView scrollToRowAtIndexPath:indexPath
+                                     atScrollPosition:UITableViewScrollPositionMiddle
+                                             animated:YES];
     }
     else if ([self.bubblesTableView vc_hasIndexPath:indexPath])
     {
