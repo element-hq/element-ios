@@ -73,11 +73,7 @@ class ThreadViewController: RoomViewController {
     override func handleTypingNotification(_ typing: Bool) {
         //  no-op
     }
-    
-    override func scrollToBottomAction(_ sender: Any) {
-        scrollBubblesTableViewToBottom(animated: true)
-    }
-    
+
     private func showThreadActions() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         

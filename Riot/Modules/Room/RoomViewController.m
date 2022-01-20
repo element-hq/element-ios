@@ -1813,6 +1813,10 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
             if (self.roomDataSource.threadId)
             {
                 //  in a thread
+                if (rightBarButtonItems == nil)
+                {
+                    rightBarButtonItems = [NSMutableArray new];
+                }
                 UIBarButtonItem *itemThreadMore = [self threadMoreBarButtonItem];
                 [rightBarButtonItems insertObject:itemThreadMore atIndex:0];
             }
@@ -4656,7 +4660,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self checkReadMarkerVisibility];
     
     // Switch back to the live mode when the user scrolls to the bottom of the non live timeline.
-    if (!self.roomDataSource.isLive && !self.roomDataSource.threadId && ![self isRoomPreview])
+    if (!self.roomDataSource.isLive && ![self isRoomPreview])
     {
         CGFloat contentBottomPosY = self.bubblesTableView.contentOffset.y + self.bubblesTableView.frame.size.height - self.bubblesTableView.adjustedContentInset.bottom;
         if (contentBottomPosY >= self.bubblesTableView.contentSize.height && ![self.roomDataSource.timeline canPaginate:MXTimelineDirectionForwards])
@@ -5281,33 +5285,58 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         self.updateRoomReadMarker = NO;
         
         [self scrollBubblesTableViewToBottomAnimated:YES];
+
+        [self cancelEventHighlight];
     }
     else
     {
-        // Switch back to the room live timeline managed by MXKRoomDataSourceManager
-        MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
-        
         MXWeakify(self);
-        [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId create:YES onComplete:^(MXKRoomDataSource *roomDataSource) {
+
+        void(^continueBlock)(MXKRoomDataSource *, BOOL) = ^(MXKRoomDataSource *roomDataSource, BOOL hasRoomDataSourceOwnership){
             MXStrongifyAndReturnIfNil(self);
-            
+
+            [roomDataSource finalizeInitialization];
+
             // Scroll to bottom the bubble history on the display refresh.
             self->shouldScrollToBottomOnTableRefresh = YES;
-            
+
             [self displayRoom:roomDataSource];
-            
-            // The room view controller do not have here the data source ownership.
-            self.hasRoomDataSourceOwnership = NO;
-            
+
+            // Set the room view controller has the data source ownership here.
+            self.hasRoomDataSourceOwnership = hasRoomDataSourceOwnership;
+
             [self refreshActivitiesViewDisplay];
             [self refreshJumpToLastUnreadBannerDisplay];
-            
+
             if (self.saveProgressTextInput)
             {
                 // Restore the potential message partially typed before jump to last unread messages.
                 self.inputToolbarView.textMessage = roomDataSource.partialTextMessage;
             }
-        }];
+        };
+
+        if (self.roomDataSource.threadId)
+        {
+            [ThreadDataSource loadRoomDataSourceWithRoomId:self.roomDataSource.roomId
+                                            initialEventId:nil
+                                                  threadId:self.roomDataSource.threadId
+                                          andMatrixSession:self.mainSession
+                                                onComplete:^(ThreadDataSource *threadDataSource)
+             {
+                continueBlock(threadDataSource, YES);
+            }];
+        }
+        else
+        {
+            // Switch back to the room live timeline managed by MXKRoomDataSourceManager
+            MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+
+            [roomDataSourceManager roomDataSourceForRoom:self.roomDataSource.roomId
+                                                  create:YES
+                                              onComplete:^(MXKRoomDataSource *roomDataSource) {
+                continueBlock(roomDataSource, NO);
+            }];
+        }
     }
 }
 
@@ -6574,6 +6603,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                     andMatrixSession:self.roomDataSource.mxSession
                                           onComplete:^(RoomDataSource *roomDataSource) {
             MXStrongifyAndReturnIfNil(self);
+            [roomDataSource finalizeInitialization];
             [self stopActivityIndicator];
             roomDataSource.markTimelineInitialEvent = YES;
             [self displayRoom:roomDataSource];

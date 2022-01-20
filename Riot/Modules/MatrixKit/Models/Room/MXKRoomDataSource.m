@@ -266,12 +266,14 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             if (roomDataSource.threadId)
             {
                 [roomDataSource.thread liveTimeline:^(id<MXEventTimeline> _Nonnull liveTimeline) {
+                    [liveTimeline resetPagination];
                     onComplete(roomDataSource);
                 }];
             }
             else
             {
                 [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                    [liveTimeline resetPagination];
                     onComplete(roomDataSource);
                 }];
             }
@@ -279,6 +281,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         else
         {
             [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                [liveTimeline resetPagination];
                 onComplete(roomDataSource);
             }];
         }
