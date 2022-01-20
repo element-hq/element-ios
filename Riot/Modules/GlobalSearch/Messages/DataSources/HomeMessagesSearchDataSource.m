@@ -51,36 +51,65 @@
             dispatch_group_enter(group);
 
             // Check whether the user knows this room to create the room data source if it doesn't exist.
-            [roomDataSourceManager roomDataSourceForRoom:roomId create:[self.mxSession roomWithRoomId:roomId] onComplete:^(MXKRoomDataSource *roomDataSource) {
+            MXRoom *room = [self.mxSession roomWithRoomId:roomId];
+            [roomDataSourceManager roomDataSourceForRoom:roomId create:(room != nil) onComplete:^(MXKRoomDataSource *roomDataSource) {
 
                 if (roomDataSource)
                 {
-                    // Prepare text font used to highlight the search pattern.
-                    UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
+                    void(^continueBlock)(void) = ^{
+                        // Prepare text font used to highlight the search pattern.
+                        UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
 
-                    // Let the `RoomViewController` ecosystem do the job
-                    // The search result contains only room message events, no state events.
-                    // Thus, passing the current room state is not a huge problem. Only
-                    // the user display name and his avatar may be wrong.
-                    RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.roomState andRoomDataSource:roomDataSource];
-                    if (cellData)
+                        // Let the `RoomViewController` ecosystem do the job
+                        // The search result contains only room message events, no state events.
+                        // Thus, passing the current room state is not a huge problem. Only
+                        // the user display name and his avatar may be wrong.
+                        RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.roomState andRoomDataSource:roomDataSource];
+                        if (cellData)
+                        {
+                            // Highlight the search pattern
+                            [cellData highlightPatternInTextMessage:self.searchText
+                                                withBackgroundColor:[UIColor clearColor]
+                                                    foregroundColor:ThemeService.shared.theme.tintColor
+                                                            andFont:patternFont];
+
+                            // Use profile information as data to display
+                            MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];
+                            cellData.senderDisplayName = userProfile.displayName;
+                            cellData.senderAvatarUrl = userProfile.avatarUrl;
+
+                            [self->cellDataArray insertObject:cellData atIndex:0];
+                        }
+                        dispatch_group_leave(group);
+                    };
+
+                    if (result.result.isInThread)
                     {
-                        // Highlight the search pattern
-                        [cellData highlightPatternInTextMessage:self.searchText
-                                            withBackgroundColor:[UIColor clearColor]
-                                                foregroundColor:ThemeService.shared.theme.tintColor
-                                                        andFont:patternFont];
-
-                        // Use profile information as data to display
-                        MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];
-                        cellData.senderDisplayName = userProfile.displayName;
-                        cellData.senderAvatarUrl = userProfile.avatarUrl;
-
-                        [self->cellDataArray insertObject:cellData atIndex:0];
+                        continueBlock();
+                    }
+                    else if (room)
+                    {
+                        [room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                            [liveTimeline paginate:NSUIntegerMax
+                                         direction:MXTimelineDirectionBackwards
+                                     onlyFromStore:YES
+                                          complete:^{
+                                [liveTimeline resetPagination];
+                                continueBlock();
+                            } failure:^(NSError * _Nonnull error) {
+                                continueBlock();
+                            }];
+                        }];
+                    }
+                    else
+                    {
+                        continueBlock();
                     }
                 }
-
-                dispatch_group_leave(group);
+                else
+                {
+                    dispatch_group_leave(group);
+                }
             }];
         }
     }

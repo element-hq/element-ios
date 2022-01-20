@@ -57,33 +57,62 @@
 {
     // Prepare text font used to highlight the search pattern.
     UIFont *patternFont = [roomDataSource.eventFormatter bingTextFont];
+
+    dispatch_group_t group = dispatch_group_create();
     
     // Convert the HS results into `RoomViewController` cells
     for (MXSearchResult *result in roomEventResults.results)
     {
-        // Let the `RoomViewController` ecosystem do the job
-        // The search result contains only room message events, no state events.
-        // Thus, passing the current room state is not a huge problem. Only
-        // the user display name and his avatar may be wrong.
-        RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:roomDataSource.roomState andRoomDataSource:roomDataSource];
-        if (cellData)
+        dispatch_group_enter(group);
+
+        void(^continueBlock)(void) = ^{
+            // Let the `RoomViewController` ecosystem do the job
+            // The search result contains only room message events, no state events.
+            // Thus, passing the current room state is not a huge problem. Only
+            // the user display name and his avatar may be wrong.
+            RoomBubbleCellData *cellData = [[RoomBubbleCellData alloc] initWithEvent:result.result andRoomState:self->roomDataSource.roomState andRoomDataSource:self->roomDataSource];
+            if (cellData)
+            {
+                // Highlight the search pattern
+                [cellData highlightPatternInTextMessage:self.searchText
+                                    withBackgroundColor:[UIColor clearColor]
+                                        foregroundColor:ThemeService.shared.theme.tintColor
+                                                andFont:patternFont];
+
+                // Use profile information as data to display
+                MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];
+                cellData.senderDisplayName = userProfile.displayName;
+                cellData.senderAvatarUrl = userProfile.avatarUrl;
+
+                [self->cellDataArray insertObject:cellData atIndex:0];
+            }
+
+            dispatch_group_leave(group);
+        };
+
+        if (result.result.isInThread)
         {
-            // Highlight the search pattern
-            [cellData highlightPatternInTextMessage:self.searchText
-                                withBackgroundColor:[UIColor clearColor]
-                                    foregroundColor:ThemeService.shared.theme.tintColor
-                                            andFont:patternFont];
-
-            // Use profile information as data to display
-            MXSearchUserProfile *userProfile = result.context.profileInfo[result.result.sender];
-            cellData.senderDisplayName = userProfile.displayName;
-            cellData.senderAvatarUrl = userProfile.avatarUrl;
-
-            [cellDataArray insertObject:cellData atIndex:0];
+            continueBlock();
+        }
+        else
+        {
+            [roomDataSource.room liveTimeline:^(id<MXEventTimeline> liveTimeline) {
+                [liveTimeline paginate:NSUIntegerMax
+                             direction:MXTimelineDirectionBackwards
+                         onlyFromStore:YES
+                              complete:^{
+                    [liveTimeline resetPagination];
+                    continueBlock();
+                } failure:^(NSError * _Nonnull error) {
+                    continueBlock();
+                }];
+            }];
         }
     }
 
-    onComplete();
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        onComplete();
+    });
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
