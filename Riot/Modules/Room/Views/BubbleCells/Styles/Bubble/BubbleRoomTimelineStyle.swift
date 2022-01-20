@@ -30,7 +30,7 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     let cellLayoutUpdater: RoomCellLayoutUpdater?
     
-    let cellProvider: RoomTimelineCellProviderProtocol
+    let cellProvider: RoomTimelineCellProvider
     
     let cellDecorator: RoomTimelineCellDecorator
     

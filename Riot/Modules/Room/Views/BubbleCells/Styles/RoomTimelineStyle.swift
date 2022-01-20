@@ -30,7 +30,7 @@ protocol RoomTimelineStyle: Themable {
     var cellLayoutUpdater: RoomCellLayoutUpdater? { get }
     
     /// Register and provide timeline cells
-    var cellProvider: RoomTimelineCellProviderProtocol { get }
+    var cellProvider: RoomTimelineCellProvider { get }
     
     /// Handle cell decorations (reactions, read receipts, URL preview, …)
     var cellDecorator: RoomTimelineCellDecorator { get }

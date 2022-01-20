@@ -82,7 +82,7 @@
 
 #import "MXSDKOptions.h"
 
-#import "RoomTimelineCellProviderProtocol.h"
+#import "RoomTimelineCellProvider.h"
 
 #import "GeneratedInterface-Swift.h"
 

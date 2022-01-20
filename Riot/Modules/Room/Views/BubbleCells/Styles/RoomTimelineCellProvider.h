@@ -22,7 +22,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Enables to register and provide room timeline cells
-@protocol RoomTimelineCellProviderProtocol <NSObject>
+@protocol RoomTimelineCellProvider <NSObject>
 
 /// Register timeline cells for the given table view
 - (void)registerCellsForTableView:(UITableView*)tableView;

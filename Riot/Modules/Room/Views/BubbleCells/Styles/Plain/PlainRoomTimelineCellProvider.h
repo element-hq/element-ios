@@ -14,13 +14,15 @@
 // limitations under the License.
 //
 
-#import "RoomTimelineCellProviderProtocol.h"
+#import "RoomTimelineCellProvider.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlainRoomTimelineCellProvider: NSObject<RoomTimelineCellProviderProtocol>
+@interface PlainRoomTimelineCellProvider: NSObject<RoomTimelineCellProvider>
 
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)outgoingAttachmentCellsMapping;
 
 @end
 

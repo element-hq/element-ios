@@ -46,7 +46,7 @@
 #import "NSArray+Element.h"
 #import "ShareItemSender.h"
 #import "HTMLFormatter.h"
-#import "RoomTimelineCellProviderProtocol.h"
+#import "RoomTimelineCellProvider.h"
 #import "PlainRoomTimelineCellProvider.h"
 #import "BubbleRoomTimelineCellProvider.h"
 
