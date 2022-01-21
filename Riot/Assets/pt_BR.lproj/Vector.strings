@@ -1554,7 +1554,7 @@
 "analytics_prompt_message_new_user" = "Ajude-nos a identificar problemas e melhorar %@ ao compartilhar dados de uso anônimos. Para entender como pessoas usam múltiplos dispositivos, nós geramos um identificador aleatório, compartilhado por seus dispositivos.";
 
 // Analytics
-"analytics_prompt_title" = "Ajudar a melhorar %@";
+"analytics_prompt_title" = "Ajude a melhorar %@";
 "settings_analytics_and_crash_data" = "Enviar dados de crash e analítica";
 "accessibility_button_label" = "botão";
 "enable" = "Habilitar";
