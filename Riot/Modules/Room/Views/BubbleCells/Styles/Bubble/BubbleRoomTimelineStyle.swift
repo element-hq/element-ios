@@ -28,7 +28,7 @@ class BubbleRoomTimelineStyle: RoomTimelineStyle {
     
     let identifier: RoomTimelineStyleIdentifier
     
-    let cellLayoutUpdater: RoomCellLayoutUpdater?
+    let cellLayoutUpdater: RoomCellLayoutUpdating?
     
     let cellProvider: RoomTimelineCellProvider
     

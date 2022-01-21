@@ -17,7 +17,7 @@
 import UIKit
 
 @objcMembers
-class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdater {
+class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     
     // MARK: - Properties
     
