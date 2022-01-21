@@ -46,6 +46,7 @@
 #import "RoomOutgoingAttachmentBubbleCell.h"
 #import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.h"
 
 #import "RoomOutgoingEncryptedTextMsgBubbleCell.h"
 #import "RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.h"
@@ -199,6 +200,7 @@
     [tableView registerClass:RoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
     [tableView registerClass:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
     [tableView registerClass:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.class forCellReuseIdentifier:RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.defaultReuseIdentifier];
     
     // Encrypted
     

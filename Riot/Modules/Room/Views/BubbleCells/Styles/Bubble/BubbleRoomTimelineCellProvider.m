@@ -28,6 +28,7 @@
 #import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
 #import "RoomOutgoingTextMsgWithoutSenderNameBubbleCell.h"
 #import "RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.h"
 
 // Encrypted
 
@@ -78,7 +79,7 @@
         // Clear
         @(RoomTimelineCellIdentifierOutgoingAttachment) : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutSenderInfo) : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierOutgoingAttachmentWithPaginationTitle) : RoomOutgoingAttachmentWithPaginationTitleBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithPaginationTitle) : RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.class,
         // Encrypted
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncrypted) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
