@@ -14,6 +14,4 @@
 
 #import "MXKRoomInputToolbarView.h"
 #import "MXKImageView.h"
-#import "MXKRoomBubbleTableViewCell.h"
 #import "MXKRoomBubbleCellData.h"
-#import "MXKRoomBubbleTableViewCell.h"
