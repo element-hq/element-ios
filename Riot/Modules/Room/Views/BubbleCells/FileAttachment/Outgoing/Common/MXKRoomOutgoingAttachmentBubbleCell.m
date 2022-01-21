@@ -23,11 +23,22 @@
 #import "MXKImageView.h"
 #import "MXKPieChartView.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation MXKRoomOutgoingAttachmentBubbleCell
 
 - (void)dealloc
 {
     [self stopAnimating];
+}
+
+- (void)setupViews
+{
+    [super setupViews];
+    
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+        
+    [timelineConfiguration.currentStyle.cellLayoutUpdater setupLayoutForOutgoingFileAttachmentCell:self];
 }
 
 - (void)render:(MXKCellData *)cellData
