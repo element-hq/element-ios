@@ -14,11 +14,16 @@
 // limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-/// Represents the room timeline style identifiers available
-@objc
-enum RoomTimelineStyleIdentifier: Int {
-    case plain
-    case bubble
+/// UICollectionViewFlowLayout with right align behavior
+class CollectionViewRightAlignFlowLayout: UICollectionViewFlowLayout {
+
+    override var flipsHorizontallyInOppositeLayoutDirection: Bool {
+        return true
+    }
+
+    override var developmentLayoutDirection: UIUserInterfaceLayoutDirection {
+        return UIUserInterfaceLayoutDirection.rightToLeft
+    }    
 }

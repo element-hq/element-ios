@@ -14,11 +14,23 @@
 // limitations under the License.
 //
 
-import Foundation
+#import <UIKit/UIKit.h>
 
-/// Represents the room timeline style identifiers available
-@objc
-enum RoomTimelineStyleIdentifier: Int {
-    case plain
-    case bubble
-}
+#import "RoomTimelineCellIdentifier.h"
+#import "MXKCellRendering.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+/// Enables to register and provide room timeline cells
+@protocol RoomTimelineCellProvider <NSObject>
+
+/// Register timeline cells for the given table view
+- (void)registerCellsForTableView:(UITableView*)tableView;
+
+/// Get timeline cell class from cell identifier
+- (Class<MXKCellRendering>)cellViewClassForCellIdentifier:(RoomTimelineCellIdentifier)identifier;
+
+@end
+
+NS_ASSUME_NONNULL_END
+

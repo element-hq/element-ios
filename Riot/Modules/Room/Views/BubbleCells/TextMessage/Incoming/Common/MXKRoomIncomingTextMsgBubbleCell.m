@@ -16,6 +16,17 @@
 
 #import "MXKRoomIncomingTextMsgBubbleCell.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation MXKRoomIncomingTextMsgBubbleCell
+
+- (void)setupViews
+{
+    [super setupViews];
+    
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+    
+    [timelineConfiguration.currentStyle.cellLayoutUpdater setupLayoutForIncomingTextMessageCell:self];
+}
 
 @end

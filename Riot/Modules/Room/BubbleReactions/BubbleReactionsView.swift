@@ -18,6 +18,13 @@ import Foundation
 import MatrixSDK
 import Reusable
 import DGCollectionViewLeftAlignFlowLayout
+import UIKit
+
+/// BubbleReactionsView items alignment
+enum BubbleReactionsViewAlignment {
+    case left
+    case right
+}
 
 @objcMembers
 final class BubbleReactionsView: UIView, NibOwnerLoadable {
@@ -48,6 +55,12 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         didSet {
             self.viewModel?.viewDelegate = self
             self.viewModel?.process(viewAction: .loadData)
+        }
+    }
+    
+    var alignment: BubbleReactionsViewAlignment = .left {
+        didSet {
+            self.updateCollectionViewLayout(for: alignment)
         }
     }
     
@@ -87,7 +100,18 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
         self.collectionView.isScrollEnabled = false
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        self.collectionView.collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
+        self.alignment = .left
+        
+        self.collectionView.register(cellType: BubbleReactionViewCell.self)
+        self.collectionView.register(cellType: BubbleReactionActionViewCell.self)
+        self.collectionView.reloadData()
+    }
+    
+    private func updateCollectionViewLayout(for alignment: BubbleReactionsViewAlignment) {
+        
+        let collectionViewLayout = self.collectionViewLayout(for: alignment)
+        
+        self.collectionView.collectionViewLayout = collectionViewLayout
         
         if let collectionViewFlowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             collectionViewFlowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
@@ -95,9 +119,22 @@ final class BubbleReactionsView: UIView, NibOwnerLoadable {
             collectionViewFlowLayout.minimumLineSpacing = Constants.minimumLineSpacing
         }
         
-        self.collectionView.register(cellType: BubbleReactionViewCell.self)
-        self.collectionView.register(cellType: BubbleReactionActionViewCell.self)
         self.collectionView.reloadData()
+        self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    private func collectionViewLayout(for alignment: BubbleReactionsViewAlignment) -> UICollectionViewLayout {
+        
+        let collectionViewLayout: UICollectionViewLayout
+        
+        switch alignment {
+        case .left:
+            collectionViewLayout = DGCollectionViewLeftAlignFlowLayout()
+        case .right:
+            collectionViewLayout = CollectionViewRightAlignFlowLayout()
+        }
+        
+        return collectionViewLayout
     }
     
     private func setupLongPressGestureRecognizer() {

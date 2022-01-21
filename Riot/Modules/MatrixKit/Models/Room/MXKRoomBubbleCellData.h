@@ -163,4 +163,11 @@
  */
 - (MXKRoomBubbleComponent*)getFirstBubbleComponentWithDisplay;
 
+/**
+ Get the last visible component.
+ 
+ @return Last visible component or nil.
+ */
+- (MXKRoomBubbleComponent*)getLastBubbleComponentWithDisplay;
+
 @end

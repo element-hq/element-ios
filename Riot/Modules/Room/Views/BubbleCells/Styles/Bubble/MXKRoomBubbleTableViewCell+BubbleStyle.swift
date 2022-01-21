@@ -16,9 +16,15 @@
 
 import Foundation
 
-/// Represents the room timeline style identifiers available
-@objc
-enum RoomTimelineStyleIdentifier: Int {
-    case plain
-    case bubble
+extension MXKRoomBubbleTableViewCell {
+    
+    // Enables to get existing bubble background view
+    // This used while there is no dedicated cell classes for bubble style
+    var messageBubbleBackgroundView: RoomMessageBubbleBackgroundView? {
+        
+        let foundView = self.contentView.subviews.first { view in
+            return view is RoomMessageBubbleBackgroundView
+        }
+        return foundView as? RoomMessageBubbleBackgroundView
+    }
 }

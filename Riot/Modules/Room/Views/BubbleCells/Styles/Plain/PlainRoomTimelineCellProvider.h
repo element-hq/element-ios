@@ -14,11 +14,16 @@
 // limitations under the License.
 //
 
-import Foundation
+#import "RoomTimelineCellProvider.h"
 
-/// Represents the room timeline style identifiers available
-@objc
-enum RoomTimelineStyleIdentifier: Int {
-    case plain
-    case bubble
-}
+NS_ASSUME_NONNULL_BEGIN
+
+@interface PlainRoomTimelineCellProvider: NSObject<RoomTimelineCellProvider>
+
+- (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)outgoingAttachmentCellsMapping;
+
+@end
+
+NS_ASSUME_NONNULL_END

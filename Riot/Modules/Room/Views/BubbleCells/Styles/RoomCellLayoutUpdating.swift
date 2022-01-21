@@ -16,9 +16,13 @@
 
 import Foundation
 
-/// Represents the room timeline style identifiers available
+/// Enables to setup or update a room timeline cell view
 @objc
-enum RoomTimelineStyleIdentifier: Int {
-    case plain
-    case bubble
+protocol RoomCellLayoutUpdating: Themable {
+    
+    func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData)
+            
+    func setupLayout(forIncomingTextMessageCell cell: MXKRoomBubbleTableViewCell)
+    
+    func setupLayout(forOutgoingTextMessageCell cell: MXKRoomBubbleTableViewCell)
 }
