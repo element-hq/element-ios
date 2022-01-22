@@ -1706,3 +1706,16 @@
 
 "location_sharing_title" = "Locatie";
 "ok" = "OK";
+"settings_enable_room_message_bubbles" = "Bericht bubbels";
+"onboarding_splash_page_4_message" = "Element is ook zeer geschikt voor op de werkvloer. Het wordt vertrouwd door 's werelds veiligste organisaties.";
+"onboarding_splash_page_4_title_no_pun" = "Berichten voor uw team.";
+"onboarding_splash_page_3_message" = "End-to-end versleuteld en geen telefoonnummer vereist. Geen advertenties of datamining.";
+"onboarding_splash_page_3_title" = "Veilig berichtenverkeer.";
+"onboarding_splash_page_2_message" = "Kies waar u gesprekken worden gehouden, zodat u controle en onafhankelijkheid heeft. Verbonden via Matrix.";
+"onboarding_splash_page_2_title" = "U heeft de controle.";
+"onboarding_splash_page_1_message" = "Veilige en onafhankelijke communicatie die u dezelfde mate van privacy geeft als een persoonlijk gesprek in uw eigen huis.";
+"onboarding_splash_page_1_title" = "Word eigenaar van uw gesprekken.";
+"onboarding_splash_login_button_title" = "Ik heb al een account";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Account aanmaken";
