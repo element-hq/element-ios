@@ -106,12 +106,12 @@ import DesignKit
     // MARK: - Customisation methods
 
     
-    /// Apply the theme on a button.
+    /// Apply the theme on a tab bar.
     ///
-    /// - Parameter tabBar: The tabBar to customise.
+    /// - Parameter tabBar: The tab bar to customise.
     func applyStyle(onTabBar tabBar: UITabBar)
 
-    /// Apply the theme on a navigation bar
+    /// Apply the theme on a navigation bar.
     ///
     /// - Parameter navigationBar: the navigation bar to customise.
     func applyStyle(onNavigationBar navigationBar: UINavigationBar)
