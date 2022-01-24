@@ -272,7 +272,7 @@
     NSDictionary *incomingTextMessageCellsMapping = [self incomingTextMessageCellsMapping];
     [cellClasses addEntriesFromDictionary:incomingTextMessageCellsMapping];
     
-    NSDictionary *outgoingTextMessageCellsMapping = [self incomingTextMessageCellsMapping];
+    NSDictionary *outgoingTextMessageCellsMapping = [self outgoingTextMessageCellsMapping];
     [cellClasses addEntriesFromDictionary:outgoingTextMessageCellsMapping];
     
     // Attachment
