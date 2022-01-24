@@ -1839,6 +1839,9 @@ Tap the + to start adding people.";
 
 "space_topic" = "description";
 
+"space_settings_access_section"="Who can access this space?";
+"space_settings_update_failed_message"="Failed to update space settings. Do you want to retry?";
+
 // Mark: - Space Creation
 
 "spaces_creation_hint" = "Spaces are a new way to group rooms and people.";

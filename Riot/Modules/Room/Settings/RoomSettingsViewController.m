@@ -909,7 +909,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
                                                            
                                                            [self->updatedItemsDict removeAllObjects];
                                                            
-                                                           [self withdrawViewControllerAnimated:YES completion:nil];
+                                                           if (self.delegate)
+                                                           {
+                                                               [self.delegate roomSettingsViewControllerDidCancel:self];
+                                                           }
+                                                           else
+                                                           {
+                                                               [self withdrawViewControllerAnimated:YES completion:nil];
+                                                           }
                                                        }
                                                        
                                                    }]];
@@ -1432,7 +1439,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     }
     else
     {
-        [self withdrawViewControllerAnimated:YES completion:nil];
+        if (self.delegate)
+        {
+            [self.delegate roomSettingsViewControllerDidCancel:self];
+        }
+        else
+        {
+            [self withdrawViewControllerAnimated:YES completion:nil];
+        }
     }
 }
 
@@ -2180,7 +2194,14 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
     
     [self stopActivityIndicator];
     
-    [self withdrawViewControllerAnimated:YES completion:nil];
+    if (self.delegate)
+    {
+        [self.delegate roomSettingsViewControllerDidComplete:self];
+    }
+    else
+    {
+        [self withdrawViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - UITableViewDataSource

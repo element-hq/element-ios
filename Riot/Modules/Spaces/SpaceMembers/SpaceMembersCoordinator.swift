@@ -22,6 +22,17 @@ struct SpaceMembersCoordinatorParameters {
     let userSessionsService: UserSessionsService
     let session: MXSession
     let spaceId: String
+    let navigationRouter: NavigationRouterType
+    
+    init(userSessionsService: UserSessionsService,
+         session: MXSession,
+         spaceId: String,
+         navigationRouter: NavigationRouterType = NavigationRouter(navigationController: RiotNavigationController())) {
+        self.userSessionsService = userSessionsService
+        self.session = session
+        self.spaceId = spaceId
+        self.navigationRouter = navigationRouter
+    }
 }
 
 @objcMembers
@@ -46,7 +57,7 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     
     init(parameters: SpaceMembersCoordinatorParameters) {
         self.parameters = parameters
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+        self.navigationRouter = parameters.navigationRouter
     }
     
     // MARK: - Public methods
@@ -59,8 +70,15 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
 
         self.add(childCoordinator: rootCoordinator)
 
-        self.navigationRouter.setRootModule(rootCoordinator)
-      }
+        if self.navigationRouter.modules.isEmpty {
+            self.navigationRouter.setRootModule(rootCoordinator)
+        } else {
+            self.navigationRouter.push(rootCoordinator, animated: true) {
+                self.remove(childCoordinator: rootCoordinator)
+            }
+        }
+
+    }
     
     func toPresentable() -> UIViewController {
         return self.navigationRouter.toPresentable()
@@ -99,7 +117,7 @@ final class SpaceMembersCoordinator: SpaceMembersCoordinatorType {
     }
     
     private func createSpaceMemberDetailCoordinator(with member: MXRoomMember) -> SpaceMemberDetailCoordinator {
-        let parameters = SpaceMemberDetailCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, member: member, session: self.parameters.session, spaceId: self.parameters.spaceId)
+        let parameters = SpaceMemberDetailCoordinatorParameters(userSessionsService: self.parameters.userSessionsService, member: member, session: self.parameters.session, spaceId: self.parameters.spaceId, showCancelMenuItem: false)
         let coordinator = SpaceMemberDetailCoordinator(parameters: parameters)
         coordinator.delegate = self
         return coordinator
@@ -138,10 +156,11 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
             return
         }
         
-        let coordinator = ContactsPickerCoordinator(session: parameters.session, room: spaceRoom, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
+        let coordinator = ContactsPickerCoordinator(session: parameters.session, room: spaceRoom, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
         coordinator.delegate = self
         coordinator.start()
         childCoordinators.append(coordinator)
+        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
     }
 }
 

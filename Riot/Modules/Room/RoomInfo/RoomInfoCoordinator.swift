@@ -30,6 +30,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
     private let room: MXRoom
     private let parentSpaceId: String?
     private let initialSection: RoomInfoSection
+    private let dismissOnCancel: Bool
     private weak var roomSettingsViewController: RoomSettingsViewController?
     
     private lazy var segmentedViewController: SegmentedViewController = {
@@ -103,6 +104,7 @@ final class RoomInfoCoordinator: NSObject, RoomInfoCoordinatorType {
         self.room = parameters.room
         self.parentSpaceId = parameters.parentSpaceId
         self.initialSection = parameters.initialSection
+        self.dismissOnCancel = parameters.dismissOnCancel
     }    
     
     // MARK: - Public methods
@@ -226,6 +228,22 @@ extension RoomInfoCoordinator: RoomNotificationSettingsCoordinatorDelegate {
 }
 
 extension RoomInfoCoordinator: RoomSettingsViewControllerDelegate {
+    func roomSettingsViewControllerDidCancel(_ controller: RoomSettingsViewController!) {
+        if self.dismissOnCancel {
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+        } else {
+            controller.withdrawViewController(animated: true) {}
+        }
+    }
+    
+    func roomSettingsViewControllerDidComplete(_ controller: RoomSettingsViewController!) {
+        if self.dismissOnCancel {
+            self.navigationRouter.dismissModule(animated: true, completion: nil)
+        } else {
+            controller.withdrawViewController(animated: true) {}
+        }
+    }
+    
     func roomSettingsViewController(_ controller: RoomSettingsViewController!, didMoveRoomTo newRoomId: String!) {
         self.delegate?.roomInfoCoordinator(self, didMoveToRoomWithId: newRoomId)
     }

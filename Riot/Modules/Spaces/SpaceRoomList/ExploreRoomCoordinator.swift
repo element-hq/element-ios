@@ -47,8 +47,9 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     
     // MARK: - Setup
     
-    init(session: MXSession, spaceId: String) {
-        self.navigationRouter = NavigationRouter(navigationController: RiotNavigationController())
+    init(session: MXSession, spaceId: String,
+         navigationRouter: NavigationRouterType = NavigationRouter(navigationController: RiotNavigationController())) {
+        self.navigationRouter = navigationRouter
         self.session = session
         self.spaceId = spaceId
         self.spaceIdStack = [spaceId]
@@ -65,7 +66,13 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         self.add(childCoordinator: rootCoordinator)
         self.currentExploreRoomCoordinator = rootCoordinator
 
-        self.navigationRouter.setRootModule(rootCoordinator)
+        if self.navigationRouter.modules.isEmpty {
+            self.navigationRouter.setRootModule(rootCoordinator)
+        } else {
+            self.navigationRouter.push(rootCoordinator, animated: true) {
+                self.remove(childCoordinator: rootCoordinator)
+            }
+        }
     }
     
     func toPresentable() -> UIViewController {
@@ -75,13 +82,17 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     // MARK: - Private methods
     
     private func pushSpace(with item: SpaceExploreRoomListItemViewData) {
-        let coordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: item.childInfo.childRoomId, spaceName: item.childInfo.name)
+        pushSpace(with: item.childInfo.childRoomId, name: item.childInfo.name)
+    }
+    
+    private func pushSpace(with spaceId: String, name: String?) {
+        let coordinator = self.createShowSpaceExploreRoomCoordinator(session: self.session, spaceId: spaceId, spaceName: name)
         coordinator.start()
         
         self.add(childCoordinator: coordinator)
         self.currentExploreRoomCoordinator = coordinator
 
-        self.spaceIdStack.append(item.childInfo.childRoomId)
+        self.spaceIdStack.append(spaceId)
         
         self.navigationRouter.push(coordinator.toPresentable(), animated: true) {
             self.remove(childCoordinator: coordinator)
@@ -125,7 +136,7 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
     }
 
     private func createShowSpaceExploreRoomCoordinator(session: MXSession, spaceId: String, spaceName: String?) -> SpaceExploreRoomCoordinator {
-        let coordinator = SpaceExploreRoomCoordinator(parameters: SpaceExploreRoomCoordinatorParameters(session: session, spaceId: spaceId, spaceName: spaceName))
+        let coordinator = SpaceExploreRoomCoordinator(parameters: SpaceExploreRoomCoordinatorParameters(session: session, spaceId: spaceId, spaceName: spaceName, showCancelMenuItem: self.navigationRouter.modules.isEmpty))
         coordinator.delegate = self
         return coordinator
     }
@@ -174,16 +185,53 @@ final class ExploreRoomCoordinator: NSObject, ExploreRoomCoordinatorType {
         }
     }
     
-    private func pushInviteScreen(forRoomWithId roomId: String) {
+    private func presentInviteScreen(forRoomWithId roomId: String) {
         guard let room = session.room(withRoomId: roomId) else {
             MXLog.error("[ExploreRoomCoordinator] pushInviteScreen: room not found.")
             return
         }
         
-        let coordinator = ContactsPickerCoordinator(session: session, room: room, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
+        let coordinator = ContactsPickerCoordinator(session: session, room: room, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil)
         coordinator.delegate = self
         coordinator.start()
-        childCoordinators.append(coordinator)
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.present(coordinator, animated: true)
+    }
+    
+    @available(iOS 14.0, *)
+    private func showSpaceSettings(of childInfo: MXSpaceChildInfo) {
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: childInfo.childRoomId))
+        coordinator.callback = { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .cancel(let spaceId), .done(let spaceId):
+                if spaceId != childInfo.childRoomId {
+                    // the space has been upgraded. We need to refresh the rooms list
+                    self.currentExploreRoomCoordinator?.reloadRooms()
+                }
+                
+                self.navigationRouter.dismissModule(animated: true) {
+                    self.remove(childCoordinator: coordinator)
+                }
+            }
+        }
+        coordinator.start()
+        self.add(childCoordinator: coordinator)
+        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+    }
+    
+    private func presentSettings(ofRoomWithId roomId: String) -> Bool {
+        guard let room = session.room(withRoomId: roomId) else {
+            return false
+        }
+        
+        let coordinator = RoomInfoCoordinator(parameters: RoomInfoCoordinatorParameters(session: session, room: room, parentSpaceId: self.spaceIdStack.last, initialSection: .settings, dismissOnCancel: true))
+        coordinator.delegate = self
+        add(childCoordinator: coordinator)
+        coordinator.start()
+        self.navigationRouter.present(coordinator.toPresentable(), animated: true)
+        return true
     }
 }
 
@@ -206,11 +254,19 @@ extension ExploreRoomCoordinator: SpaceExploreRoomCoordinatorDelegate {
     }
     
     func spaceExploreRoomCoordinatorDidAddRoom(_ viewModel: SpaceExploreRoomCoordinatorType, openSettingsOf item: SpaceExploreRoomListItemViewData) {
-        self.navigateTo(roomWith: item.childInfo.childRoomId, showSettingsInitially: true, animated: true)
+        if item.childInfo.roomType == .space {
+            if #available(iOS 14, *) {
+                self.showSpaceSettings(of: item.childInfo)
+            }
+        } else {
+            if !presentSettings(ofRoomWithId: item.childInfo.childRoomId) {
+                self.navigateTo(roomWith: item.childInfo.childRoomId, showSettingsInitially: true, animated: true)
+            }
+        }
     }
     
     func spaceExploreRoomCoordinatorDidAddRoom(_ viewModel: SpaceExploreRoomCoordinatorType, inviteTo item: SpaceExploreRoomListItemViewData) {
-        self.pushInviteScreen(forRoomWithId: item.childInfo.childRoomId)
+        self.presentInviteScreen(forRoomWithId: item.childInfo.childRoomId)
     }
 }
 
@@ -380,6 +436,36 @@ extension ExploreRoomCoordinator: ContactsPickerCoordinatorDelegate {
     
     func contactsPickerCoordinatorDidClose(_ coordinator: ContactsPickerCoordinatorType) {
         childCoordinators.removeLast()
+    }
+    
+}
+
+// MARK: - RoomInfoCoordinatorDelegate
+extension ExploreRoomCoordinator: RoomInfoCoordinatorDelegate {
+    func roomInfoCoordinatorDidComplete(_ coordinator: RoomInfoCoordinatorType) {
+        self.navigationRouter.dismissModule(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didRequestMentionForMember member: MXRoomMember) {
+        // Do nothing in this case
+    }
+    
+    func roomInfoCoordinatorDidLeaveRoom(_ coordinator: RoomInfoCoordinatorType) {
+        self.currentExploreRoomCoordinator?.reloadRooms()
+        
+        self.navigationRouter.dismissModule(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
+    }
+    
+    func roomInfoCoordinator(_ coordinator: RoomInfoCoordinatorType, didMoveToRoomWithId roomId: String) {
+        self.currentExploreRoomCoordinator?.reloadRooms()
+        
+        self.navigationRouter.dismissModule(animated: true) {
+            self.remove(childCoordinator: coordinator)
+        }
     }
     
 }

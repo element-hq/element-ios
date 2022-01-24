@@ -64,6 +64,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
 
     weak var viewDelegate: SpaceExploreRoomViewModelViewDelegate?
     weak var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate?
+    private(set) var showCancelMenuItem: Bool
     
     // MARK: - Setup
     
@@ -71,6 +72,7 @@ final class SpaceExploreRoomViewModel: SpaceExploreRoomViewModelType {
         self.session = parameters.session
         self.spaceId = parameters.spaceId
         self.spaceName = parameters.spaceName
+        self.showCancelMenuItem = parameters.showCancelMenuItem
     }
     
     deinit {

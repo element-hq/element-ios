@@ -106,11 +106,13 @@ final class SpaceMemberDetailViewController: RoomMemberDetailsViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+        if viewModel.showCancelMenuItem {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+                self?.cancelButtonAction()
+            }
+            
+            self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
     }
 
     private func render(viewState: SpaceMemberDetailViewState) {

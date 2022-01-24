@@ -35,6 +35,7 @@ protocol SpaceExploreRoomViewModelType {
         
     var viewDelegate: SpaceExploreRoomViewModelViewDelegate? { get set }
     var coordinatorDelegate: SpaceExploreRoomViewModelCoordinatorDelegate? { get set }
+    var showCancelMenuItem: Bool { get }
     
     func process(viewAction: SpaceExploreRoomViewAction)
     @available(iOS 13.0, *)

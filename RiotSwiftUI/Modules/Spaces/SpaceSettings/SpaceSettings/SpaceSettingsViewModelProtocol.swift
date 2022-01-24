@@ -16,9 +16,12 @@
 
 import Foundation
 
-struct SpaceExploreRoomCoordinatorParameters {
-    let session: MXSession
-    let spaceId: String
-    let spaceName: String?
-    let showCancelMenuItem: Bool
+protocol SpaceSettingsViewModelProtocol {
+    
+    var completion: ((SpaceSettingsViewModelResult) -> Void)? { get set }
+    @available(iOS 14, *)
+    static func makeSpaceSettingsViewModel(service: SpaceSettingsServiceProtocol) -> SpaceSettingsViewModelProtocol
+    @available(iOS 14, *)
+    var context: SpaceSettingsViewModelType.Context { get }
+    func updateAvatarImage(with image: UIImage?)
 }

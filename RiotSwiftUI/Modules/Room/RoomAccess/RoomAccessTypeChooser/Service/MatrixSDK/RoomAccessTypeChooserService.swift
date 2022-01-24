@@ -25,6 +25,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     // MARK: Private
     
     private let roomId: String
+    private let allowsRoomUpgrade: Bool
     private let session:MXSession
     private var replacementRoom: MXRoom?
     private var didBuildSpaceGraphObserver: Any?
@@ -62,8 +63,9 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
 
     // MARK: - Setup
     
-    init(roomId: String, session: MXSession) {
+    init(roomId: String, allowsRoomUpgrade: Bool, session: MXSession) {
         self.roomId = roomId
+        self.allowsRoomUpgrade = allowsRoomUpgrade
         self.session = session
         self.currentRoomId = roomId
         restrictedVersionOverride = session.homeserverCapabilities.versionOverrideForFeature(.restricted)
@@ -179,7 +181,7 @@ class RoomAccessTypeChooserService: RoomAccessTypeChooserServiceProtocol {
     // MARK: - Private
     
     private func setupAccessItems() {
-        guard let spaceService = session.spaceService, let ancestors = spaceService.ancestorsPerRoomId[currentRoomId], !ancestors.isEmpty else {
+        guard let spaceService = session.spaceService, let ancestors = spaceService.ancestorsPerRoomId[currentRoomId], !ancestors.isEmpty, allowsRoomUpgrade || !roomUpgradeRequired else {
             self.accessItems = [
                 RoomAccessTypeChooserAccessItem(id: .private, isSelected: false, title: VectorL10n.private, detail: VectorL10n.roomAccessSettingsScreenPrivateMessage, badgeText: nil),
                 RoomAccessTypeChooserAccessItem(id: .public, isSelected: false, title: VectorL10n.public, detail: VectorL10n.roomAccessSettingsScreenPublicMessage, badgeText: nil),

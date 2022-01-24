@@ -1,4 +1,4 @@
-// 
+//
 // Copyright 2021 New Vector Ltd
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,23 @@
 
 import Foundation
 
-struct SpaceExploreRoomCoordinatorParameters {
+/// SpaceSettingsModalCoordinator input parameters
+struct SpaceSettingsModalCoordinatorParameters {
+    
+    /// The Matrix session
     let session: MXSession
+
+    /// The ID of the space
     let spaceId: String
-    let spaceName: String?
-    let showCancelMenuItem: Bool
+                
+    /// The navigation router that manage physical navigation
+    let navigationRouter: NavigationRouterType
+    
+    init(session: MXSession,
+         spaceId: String,
+         navigationRouter: NavigationRouterType? = nil) {
+        self.session = session
+        self.spaceId = spaceId
+        self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
+    }
 }

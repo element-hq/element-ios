@@ -5375,6 +5375,14 @@ public class VectorL10n: NSObject {
   public static var spacePublicJoinRuleDetail: String { 
     return VectorL10n.tr("Vector", "space_public_join_rule_detail") 
   }
+  /// Who can access this space?
+  public static var spaceSettingsAccessSection: String { 
+    return VectorL10n.tr("Vector", "space_settings_access_section") 
+  }
+  /// Failed to update space settings. Do you want to retry?
+  public static var spaceSettingsUpdateFailedMessage: String { 
+    return VectorL10n.tr("Vector", "space_settings_update_failed_message") 
+  }
   /// space
   public static var spaceTag: String { 
     return VectorL10n.tr("Vector", "space_tag") 

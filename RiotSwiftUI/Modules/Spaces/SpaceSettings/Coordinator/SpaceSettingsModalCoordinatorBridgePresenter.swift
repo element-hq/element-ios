@@ -13,58 +13,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 import UIKit
 
-@objc protocol RoomAccessCoordinatorBridgePresenterDelegate {
-    func roomAccessCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomAccessCoordinatorBridgePresenter, didCancelRoomWithId roomId: String)
-    func roomAccessCoordinatorBridgePresenterDelegate(_ coordinatorBridgePresenter: RoomAccessCoordinatorBridgePresenter, didCompleteRoomWithId roomId: String)
+@objc protocol SpaceSettingsModalCoordinatorBridgePresenterDelegate {
+    func spaceSettingsModalCoordinatorBridgePresenterDelegateDidCancel(_ coordinatorBridgePresenter: SpaceSettingsModalCoordinatorBridgePresenter)
+    func spaceSettingsModalCoordinatorBridgePresenterDelegateDidFinish(_ coordinatorBridgePresenter: SpaceSettingsModalCoordinatorBridgePresenter)
 }
 
-/// RoomNotificationSettingsCoordinatorBridgePresenter enables to start RoomNotificationSettingsCoordinator from a view controller.
+/// SpaceSettingsModalCoordinatorBridgePresenter enables to start SpaceSettingsModalCoordinator from a view controller.
 /// This bridge is used while waiting for global usage of coordinator pattern.
 /// It breaks the Coordinator abstraction and it has been introduced for Objective-C compatibility (mainly for integration in legacy view controllers).
 /// Each bridge should be removed once the underlying Coordinator has been integrated by another Coordinator.
 @objcMembers
-final class RoomAccessCoordinatorBridgePresenter: NSObject {
+final class SpaceSettingsModalCoordinatorBridgePresenter: NSObject {
     
     // MARK: - Properties
     
     // MARK: Private
     
-    private let room: MXRoom
-    private let allowsRoomUpgrade: Bool
-    private var coordinator: RoomAccessCoordinator?
+    private let spaceId: String
+    private let session: MXSession
+    private var coordinator: SpaceSettingsModalCoordinator?
     
     // MARK: Public
     
-    weak var delegate: RoomAccessCoordinatorBridgePresenterDelegate?
+    weak var delegate: SpaceSettingsModalCoordinatorBridgePresenterDelegate?
     
     // MARK: - Setup
     
-    init(room: MXRoom,
-         allowsRoomUpgrade: Bool) {
-        self.room = room
-        self.allowsRoomUpgrade = allowsRoomUpgrade
+    init(spaceId: String, session: MXSession) {
+        self.spaceId = spaceId
+        self.session = session
         super.init()
-    }
-    
-    convenience init(room: MXRoom) {
-        self.init(room: room, allowsRoomUpgrade: true)
     }
     
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
         let navigationRouter = NavigationRouter()
-        let coordinator = RoomAccessCoordinator(parameters: RoomAccessCoordinatorParameters(room: room, allowsRoomUpgrade: allowsRoomUpgrade, navigationRouter: navigationRouter))
+        let coordinator = SpaceSettingsModalCoordinator(parameters: SpaceSettingsModalCoordinatorParameters(session: session, spaceId: spaceId, navigationRouter: navigationRouter))
         coordinator.callback = { [weak self] result in
             guard let self = self else { return }
             
             switch result {
-            case .cancel(let roomId):
-                self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCancelRoomWithId: roomId)
-            case .done(let roomId):
-                self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCompleteRoomWithId: roomId)
+            case .cancel:
+                self.delegate?.spaceSettingsModalCoordinatorBridgePresenterDelegateDidCancel(self)
+            case .done:
+                self.delegate?.spaceSettingsModalCoordinatorBridgePresenterDelegateDidFinish(self)
             }
         }
         let presentable = coordinator.toPresentable()
@@ -92,14 +88,10 @@ final class RoomAccessCoordinatorBridgePresenter: NSObject {
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
-extension RoomAccessCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
+extension SpaceSettingsModalCoordinatorBridgePresenter: UIAdaptivePresentationControllerDelegate {
     
     func roomNotificationSettingsCoordinatorDidComplete(_ presentationController: UIPresentationController) {
-        if let roomId = self.coordinator?.currentRoomId {
-            self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCancelRoomWithId: roomId)
-        } else {
-            self.delegate?.roomAccessCoordinatorBridgePresenterDelegate(self, didCancelRoomWithId: self.room.roomId)
-        }
+        self.delegate?.spaceSettingsModalCoordinatorBridgePresenterDelegateDidCancel(self)
     }
     
 }

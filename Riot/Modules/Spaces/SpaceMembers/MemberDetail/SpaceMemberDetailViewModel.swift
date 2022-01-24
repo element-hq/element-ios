@@ -29,6 +29,7 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
     private let member: MXRoomMember
     private let spaceId: String
     private var space: MXSpace?
+    private(set) var showCancelMenuItem: Bool
     
     private var currentOperation: MXHTTPOperation?
     
@@ -39,11 +40,12 @@ final class SpaceMemberDetailViewModel: NSObject, SpaceMemberDetailViewModelType
     
     // MARK: - Setup
     
-    init(userSessionsService: UserSessionsService, session: MXSession, member: MXRoomMember, spaceId: String) {
+    init(userSessionsService: UserSessionsService, session: MXSession, member: MXRoomMember, spaceId: String, showCancelMenuItem: Bool) {
         self.userSessionsService = userSessionsService
         self.session = session
         self.member = member
         self.spaceId = spaceId
+        self.showCancelMenuItem = showCancelMenuItem
     }
     
     deinit {

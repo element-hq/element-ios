@@ -18,6 +18,7 @@ import SwiftUI
 
 struct RoomAccessTypeChooserCoordinatorParameters {
     let roomId: String
+    let allowsRoomUpgrade: Bool
     let session: MXSession
 }
 
@@ -42,7 +43,7 @@ final class RoomAccessTypeChooserCoordinator: Coordinator, Presentable {
     @available(iOS 14.0, *)
     init(parameters: RoomAccessTypeChooserCoordinatorParameters) {
         self.parameters = parameters
-        let viewModel = RoomAccessTypeChooserViewModel(roomAccessTypeChooserService: RoomAccessTypeChooserService(roomId: parameters.roomId, session: parameters.session))
+        let viewModel = RoomAccessTypeChooserViewModel(roomAccessTypeChooserService: RoomAccessTypeChooserService(roomId: parameters.roomId, allowsRoomUpgrade: parameters.allowsRoomUpgrade, session: parameters.session))
         let room = parameters.session.room(withRoomId: parameters.roomId)
         let view = RoomAccessTypeChooser(viewModel: viewModel.context, roomName: room?.displayName ?? "")
         roomAccessTypeChooserViewModel = viewModel

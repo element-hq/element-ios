@@ -125,11 +125,13 @@ final class SpaceExploreRoomViewController: UIViewController {
     }
     
     private func setupViews() {
-        let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
-            self?.cancelButtonAction()
+        if viewModel.showCancelMenuItem {
+            let cancelBarButtonItem = MXKBarButtonItem(title: VectorL10n.cancel, style: .plain) { [weak self] in
+                self?.cancelButtonAction()
+            }
+            
+            self.navigationItem.leftBarButtonItem = cancelBarButtonItem
         }
-        
-        self.navigationItem.rightBarButtonItem = cancelBarButtonItem
         
         self.vc_removeBackTitle()
 
