@@ -1130,6 +1130,16 @@ static BOOL _disableLongPressGestureOnEvent;
     [self resetAttachmentViewBottomConstraintConstant];
 }
 
+- (void)addTemporarySubview:(UIView*)subview
+{
+    if (!self.tmpSubviews)
+    {
+        self.tmpSubviews = [NSMutableArray new];
+    }
+    
+    [self.tmpSubviews addObject:subview];
+}
+
 #pragma mark - Attachment progress handling
 
 - (void)updateProgressUI:(NSDictionary*)statisticsDict

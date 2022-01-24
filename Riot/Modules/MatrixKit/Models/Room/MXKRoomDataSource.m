@@ -1914,6 +1914,29 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
 }
 
+- (void)sendLocationWithLatitude:(double)latitude
+                       longitude:(double)longitude
+                     description:(NSString *)description
+                         success:(void (^)(NSString *))success
+                         failure:(void (^)(NSError *))failure
+{
+    __block MXEvent *localEchoEvent = nil;
+    
+    // Make the request to the homeserver
+    [_room sendLocationWithLatitude:latitude
+                          longitude:longitude
+                        description:description
+                          localEcho:&localEchoEvent
+                            success:success failure:failure];
+    
+    if (localEchoEvent)
+    {
+        // Make the data source digest this fake local echo message
+        [self queueEventForProcessing:localEchoEvent withRoomState:self.roomState direction:MXTimelineDirectionForwards];
+        [self processQueuedEvents:nil];
+    }
+}
+
 - (void)sendEventOfType:(MXEventTypeString)eventTypeString content:(NSDictionary<NSString*, id>*)msgContent success:(void (^)(NSString *eventId))success failure:(void (^)(NSError *error))failure
 {
     __block MXEvent *localEchoEvent = nil;
@@ -1951,7 +1974,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     else if ([event.type isEqualToString:kMXEventTypeStringRoomMessage])
     {
         // And retry the send the message according to its type
-        NSString *msgType = event.content[@"msgtype"];
+        NSString *msgType = event.content[kMXMessageTypeKey];
         if ([msgType isEqualToString:kMXMessageTypeText] || [msgType isEqualToString:kMXMessageTypeEmote])
         {
             // Resend the Matrix event by reusing the existing echo
@@ -2027,8 +2050,8 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             [self removeEventWithEventId:eventId];
             
             if (event.isVoiceMessage) {
-                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudio][kMXMessageContentKeyExtensibleAudioDuration];
-                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudio][kMXMessageContentKeyExtensibleAudioWaveform];
+                NSNumber *duration = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioDuration];
+                NSArray<NSNumber *> *samples = event.content[kMXMessageContentKeyExtensibleAudioMSC1767][kMXMessageContentKeyExtensibleAudioWaveform];
                 
                 [self sendVoiceMessage:localFileURL mimeType:mimetype duration:duration.doubleValue samples:samples success:success failure:failure];
             } else {
@@ -2712,7 +2735,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         return NO;
     }
     
-    NSString *messageType = event.content[@"msgtype"];
+    NSString *messageType = event.content[kMXMessageTypeKey];
     if (messageType == nil || [messageType isEqualToString:@"m.bad.encrypted"]) {
         return NO;
     }
@@ -3928,7 +3951,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
     if ([self canPerformActionOnEvent:event])
     {
-        NSString *messageType = event.content[@"msgtype"];
+        NSString *messageType = event.content[kMXMessageTypeKey];
         
         if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
         {
@@ -3971,7 +3994,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     MXEvent *event = [self eventWithEventId:eventId];
     BOOL isRoomMessage = event.eventType == MXEventTypeRoomMessage;
-    NSString *messageType = event.content[@"msgtype"];
+    NSString *messageType = event.content[kMXMessageTypeKey];
     
     return isRoomMessage
     && ([messageType isEqualToString:kMXMessageTypeText] || [messageType isEqualToString:kMXMessageTypeEmote])
@@ -3992,7 +4015,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     }
     else
     {
-        editableTextMessage = event.content[@"body"];
+        editableTextMessage = event.content[kMXMessageBodyKey];
     }
     
     return editableTextMessage;
@@ -4109,7 +4132,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     NSString *sanitizedText = [self sanitizedMessageText:text];
     NSString *formattedText = [self htmlMessageFromSanitizedText:sanitizedText];
     
-    NSString *eventBody = event.content[@"body"];
+    NSString *eventBody = event.content[kMXMessageBodyKey];
     NSString *eventFormattedBody = event.content[@"formatted_body"];
     
     if (![sanitizedText isEqualToString:eventBody] && (!eventFormattedBody || ![formattedText isEqualToString:eventFormattedBody]))

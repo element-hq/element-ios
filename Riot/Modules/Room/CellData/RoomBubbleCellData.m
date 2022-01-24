@@ -174,8 +174,17 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
                         self.displayTimestampForSelectedComponentOnLeftWhenPossible = NO;
                     }
                 }
-            }
+                
                 break;
+            }
+            case MXEventTypeRoomMessage:
+            {
+                if (event.location) {
+                    self.tag = RoomBubbleCellDataTagLocation;
+                    self.collapsable = NO;
+                    self.collapsed = NO;
+                }
+            }
             default:
                 break;
         }
@@ -269,6 +278,15 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     }
     
     if (self.tag == RoomBubbleCellDataTagPoll)
+    {
+        if (self.events.lastObject.isEditEvent) {
+            return YES;
+        }
+        
+        return NO;
+    }
+    
+    if (self.tag == RoomBubbleCellDataTagLocation)
     {
         return NO;
     }
@@ -812,6 +830,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
 {
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+    
+    if (NO == [timelineConfiguration.currentStyle canAddEvent:event and:roomState to:self]) {
+        return NO;
+    }
+    
     BOOL shouldAddEvent = YES;
     
     switch (self.tag)
@@ -845,6 +869,9 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         case RoomBubbleCellDataTagPoll:
             shouldAddEvent = NO;
             break;
+        case RoomBubbleCellDataTagLocation:
+            shouldAddEvent = NO;
+            break;
         default:
             break;
     }
@@ -857,7 +884,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         {
             case MXEventTypeRoomMessage:
             {
-                NSString *messageType = event.content[@"msgtype"];
+                if (event.location) {
+                    shouldAddEvent = NO;
+                    break;
+                }
+                
+                NSString *messageType = event.content[kMXMessageTypeKey];
                 
                 if ([messageType isEqualToString:kMXMessageTypeKeyVerificationRequest])
                 {
@@ -991,7 +1023,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             break;
         case MXEventTypeRoomMessage:
         {
-            NSString *msgType = event.content[@"msgtype"];
+            NSString *msgType = event.content[kMXMessageTypeKey];
             
             if ([msgType isEqualToString:kMXMessageTypeKeyVerificationRequest])
             {
@@ -1044,7 +1076,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     {
         NSString *mediaName = [self accessibilityLabelForAttachmentType:self.attachment.type];
 
-        MXJSONModelSetString(accessibilityLabel, self.events.firstObject.content[@"body"]);
+        MXJSONModelSetString(accessibilityLabel, self.events.firstObject.content[kMXMessageBodyKey]);
         if (accessibilityLabel)
         {
             accessibilityLabel = [NSString stringWithFormat:@"%@ %@", mediaName, accessibilityLabel];
@@ -1074,9 +1106,6 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
             break;
         case MXKAttachmentTypeVideo:
             accessibilityLabel = [VectorL10n mediaTypeAccessibilityVideo];
-            break;
-        case MXKAttachmentTypeLocation:
-            accessibilityLabel = [VectorL10n mediaTypeAccessibilityLocation];
             break;
         case MXKAttachmentTypeFile:
             accessibilityLabel = [VectorL10n mediaTypeAccessibilityFile];

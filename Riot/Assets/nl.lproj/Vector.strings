@@ -64,7 +64,7 @@
 "auth_repeat_password_placeholder" = "Wachtwoord herhalen";
 "auth_repeat_new_password_placeholder" = "Bevestig uw nieuwe wachtwoord";
 "auth_invalid_login_param" = "Onjuiste gebruikersnaam en/of wachtwoord";
-"auth_invalid_user_name" = "Gebruikersnamen mogen alleen letters, cijfers, punten, koppeltekens en underscores bevatten";
+"auth_invalid_user_name" = "Inlognamen mogen alleen letters, cijfers, punten, koppeltekens en onderstrepingstekens bevatten";
 "auth_invalid_password" = "Het wachtwoord is te kort (min 6)";
 "auth_invalid_email" = "Dit ziet er niet uit als een geldig e-mailadres";
 "auth_invalid_phone" = "Dit ziet er niet uit als een geldig telefoonnummer";
@@ -263,7 +263,7 @@
 "settings_ignored_users" = "GENEGEERDE GEBRUIKERS";
 "settings_contacts" = "APPARAAT CONTACTEN";
 "settings_advanced" = "GEAVANCEERD";
-"settings_other" = "OVERIGE";
+"settings_other" = "OVERIG";
 "settings_labs" = "EXPERIMENTEEL";
 "settings_devices" = "APPARATEN";
 "settings_cryptography" = "CRYPTOGRAFIE";
@@ -566,7 +566,7 @@
 "store_short_description" = "Veilig en gedecentraliseerd chatten en bellen";
 "store_full_description" = "Element is een nieuw type messenger en samenwerkings app die:\n\n1. U de controle geeft om uw privacy te behouden\n2. U laat communiceren met iedereen in het Matrix-netwerk, en zelfs daarbuiten door integratie met apps zoals Slack\n3. Beschermt u tegen reclame, datamining, achterdeurtjes en ommuurde netwerken\n4. Beveiligt u door eind-tot-eind versleuteling, met kruislings ondertekenen om anderen te verifiëren\n\nElement is compleet anders dan andere messengers en samenwerkings-apps, omdat het gedecentraliseerd en open source is.\n\nMet Element kunt u zelf hosten - of een host kiezen - zodat u privacy, eigendom en controle heeft over uw gegevens en gesprekken. Het geeft u toegang tot een open netwerk; u zit dus niet vast aan het praten met alleen andere Element-gebruikers. En het is zeer veilig.\n\nElement is hiertoe in staat omdat het werkt op basis van Matrix - de standaard voor open, gedecentraliseerde communicatie. \n\nElement geeft u de controle door u te laten kiezen wie uw gesprekken host. Vanuit de Element app kunt u kiezen om op verschillende manieren te hosten:\n\n1. Neem een gratis account op de publieke server matrix.org\n2. Host het zelf, uw account door draait op uw eigen server\n3. Laat ons het hosten, meld u aan voor een account op een aangepaste server bij het Element Matrix Services hosting platform\n\nWaarom kiest u voor Element?\n\nEIGENAAR VAN UW GEGEVENS: U bepaalt waar uw gegevens en berichten worden bewaard. U bent de eigenaar en heeft de controle, niet een of andere MEGACORP die uw gegevens mijnt of toegang geeft aan derden.\n\nOPEN MESSAGING EN SAMENWERKING: U kunt met iedereen in het Matrix-netwerk chatten, of ze nu Element of een andere Matrix-app gebruiken, en zelfs als ze een ander messaging-systeem gebruiken zoals Slack, IRC of XMPP.\n\nSUPER-VEILIG: Echte eind-tot-eind versleuteling (alleen degenen in de conversatie kunnen berichten ontsleutelen), en kruislings ondertekenen om de apparaten van gespreksdeelnemers te verifiëren.\n\nCOMPLETE COMMUNICATIE: Berichten, spraak- en videogesprekken, bestandsdeling, schermdeling en een heleboel integraties, bots en widgets. Bouw kamers, Spaces, blijf in contact en krijg het gedaan.\n\nOVERAL WAAR U BENT: Blijf in contact waar u ook bent met volledig gesynchroniseerde berichtgeschiedenis op al uw apparaten en op het web op https://element.io/app.";
 "auth_login_single_sign_on" = "Aanmelden met enkele aanmelding";
-"auth_accept_policies" = "Gelieve het beleid van deze server te lezen en aanvaarden:";
+"auth_accept_policies" = "Lees het beleid van deze homeserver en kies om te aanvaarden:";
 "auth_autodiscover_invalid_response" = "Ongeldig server-ontdekkings-antwoord";
 "room_recents_server_notice_section" = "SYSTEEMMELDINGEN";
 "room_message_unable_open_link_error_message" = "Kan de koppeling niet openen.";
@@ -1632,3 +1632,61 @@
 "find_your_contacts_title" = "Begin met een lijst van uw contacten";
 "contacts_address_book_permission_denied_alert_message" = "Om contacten in te schakelen, ga naar uw apparaatinstellingen.";
 "contacts_address_book_permission_denied_alert_title" = "Contacten uitgeschakeld";
+"poll_edit_form_add_option" = "Optie toevoegen";
+"poll_edit_form_option_number" = "Optie %lu";
+"poll_edit_form_create_options" = "Opties maken";
+"poll_edit_form_input_placeholder" = "Schrijf iets";
+"poll_edit_form_question_or_topic" = "Vraag of onderwerp";
+"poll_edit_form_poll_question_or_topic" = "Poll vraag of onderwerp";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Poll maken";
+"share_extension_send_now" = "Versturen";
+"share_extension_low_quality_video_message" = "Stuur in %@ voor een betere kwaliteit of stuur in lage kwaliteit hieronder.";
+"share_extension_low_quality_video_title" = "Video zal in lage kwaliteit worden verstuurd";
+"settings_discovery_accept_terms" = "Identiteitsserver-voorwaarden aanvaarden";
+"settings_about" = "OVER";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Probeer het opnieuw";
+"poll_timeline_not_closed_title" = "Sluiten van de poll mislukt";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Sorry, uw stem is niet geregistreerd. Probeer het opnieuw";
+"poll_timeline_vote_not_registered_title" = "Stem niet geregistreerd";
+"poll_timeline_total_final_results" = "Uitslag gebaseerd op %lu stemmen";
+"poll_timeline_total_final_results_one_vote" = "Uitslag gebaseerd op 1 stem";
+"poll_timeline_total_votes_not_voted" = "%lu stemmen uitgebracht. Stem om de resultaten te zien";
+"poll_timeline_total_one_vote_not_voted" = "1 stem uitgebracht. Stem om de resultaten te zien";
+"poll_timeline_total_votes" = "%lu stemmen uitgebracht";
+"poll_timeline_total_one_vote" = "1 stem uitgebracht";
+"poll_timeline_total_no_votes" = "Geen stemmen uitgebracht";
+"poll_timeline_votes_count" = "%lu stemmen";
+"poll_timeline_one_vote" = "1 stem";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Probeer het opnieuw";
+"poll_edit_form_post_failure_title" = "Poll plaatsen mislukt";
+"analytics_prompt_stop" = "Delen stoppen";
+"analytics_prompt_yes" = "Ja, dat is prima";
+"analytics_prompt_not_now" = "Niet nu";
+"analytics_prompt_point_3" = "U kunt dit op elk moment uitzetten in de instellingen";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Wij delen <b>geen</b> informatie met derden";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "We registreren of profileren <b>geen</b> accountgegevens";
+"analytics_prompt_terms_link_upgrade" = "hier";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Lees al onze voorwaarden %@. Is dit akkoord?";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "U kunt al onze voorwaarden %@ lezen.";
+"analytics_prompt_terms_link_new_user" = "hier";
+"analytics_prompt_message_upgrade" = "U heeft eerder toestemming gegeven om anonieme gebruiksgegevens met ons te delen. Om beter te begrijpen hoe mensen meerdere apparaten gebruiken, genereren we nu een willekeurige identificatiecode die door uw apparaten wordt gedeeld.";
+"analytics_prompt_message_new_user" = "Help ons bij het identificeren van problemen en het verbeteren van Element door anonieme gebruiksgegevens te delen. Om te begrijpen hoe mensen meerdere apparaten gebruiken genereren we een willekeurige identificatie die we verspreiden over uw apparaten.";
+
+// Analytics
+"analytics_prompt_title" = "Help %@ verbeteren";
+"settings_analytics_and_crash_data" = "Crash en analytische data versturen";
+"settings_labs_enabled_polls" = "Polls";
+"room_event_action_end_poll" = "Poll sluiten";
+"room_event_action_remove_poll" = "Poll verwijderen";
+"accessibility_button_label" = "knop";
+"enable" = "Inschakelen";

@@ -35,3 +35,9 @@ include:
   - path: RiotSwiftUI/target.yml
   - path: RiotSwiftUI/targetUnitTests.yml
   - path: RiotSwiftUI/targetUITests.yml
+
+packages:
+  Mapbox:
+    url: https://github.com/maplibre/maplibre-gl-native-distribution
+    minVersion: 5.12.2
+    maxVersion: 5.13.0

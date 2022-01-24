@@ -22,7 +22,6 @@ protocol MockScreenState {
     static var screenStates: [MockScreenState] { get }
     var screenType: Any.Type { get }
     var screenView: ([Any], AnyView) { get }
-    var stateTitle: String { get }
 }
 
 @available(iOS 14.0, *)
@@ -33,44 +32,32 @@ extension MockScreenState {
         let depsAndViews  = screenStates.map(\.screenView)
         let deps = depsAndViews.map({ $0.0 })
         let views = depsAndViews.map({ $0.1 })
-        let stateTitles = screenStates.map(\.stateTitle)
-        let fullScreenTitles = screenStates.map(\.fullScreenTitle)
+        let titles = screenStates.map(\.title)
         
         var states = [ScreenStateInfo]()
         for i in 0..<deps.count {
             let dep = deps[i]
             let view = views[i]
-            let stateTitle = stateTitles[i]
-            let stateKey = screenStateKeys[i]
-            let fullScreenTitle = fullScreenTitles[i]
-            states.append(ScreenStateInfo(dependencies: dep, view: view, stateTitle: stateTitle, fullScreenTitle:fullScreenTitle, stateKey: stateKey))
+            let screenTitle = titles[i]
+            states.append(ScreenStateInfo(dependencies: dep, view: view, screenTitle: screenTitle))
         }
         
         return StateRenderer(states: states)
     }
     
-    /// A unique key to identify each screen state.
-    static var screenStateKeys: [String] {
-        return screenStates.enumerated().map { (index, state) in
-            state.screenName + String(index)
-        }
+    /// All available screen state keys
+    static var screenNames: [String] {
+        screenStates.map { $0.title }
     }
     
     /// A title to represent the screen and it's screen state
-    var screenName: String {
-        "\(String(describing: screenType.self))"
+    var title: String {
+        "\(simpleTypeName(screenType.self)): \(simpleTypeName(self))"
     }
     
-    /// A title to represent this screen state
-    var stateTitle: String {
-        String(describing: self)
+    private func simpleTypeName(_ type: Any) -> String {
+        String(describing: type).components(separatedBy: .punctuationCharacters).filter { $0.count > 0}.last!
     }
-    
-    /// A title to represent the screen and it's screen state
-    var fullScreenTitle: String {
-        "\(screenName): \(stateTitle)"
-    }
-
 }
 
 @available(iOS 14.0, *)

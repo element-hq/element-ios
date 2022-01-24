@@ -30,8 +30,6 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
     private let activityIndicatorPresenter: ActivityIndicatorPresenterType
     private var selectedEventId: String?
     
-    private var pollEditFormCoordinator: PollEditFormCoordinator?
-
     private var roomDataSourceManager: MXKRoomDataSourceManager {
         return MXKRoomDataSourceManager.sharedManager(forMatrixSession: self.parameters.session)
     }
@@ -80,7 +78,7 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         self.roomViewController.parentSpaceId = parameters.parentSpaceId
 
         if #available(iOS 14, *) {
-            PollTimelineProvider.shared.session = parameters.session
+            TimelinePollProvider.shared.session = parameters.session
         }
         
         super.init()
@@ -200,6 +198,79 @@ final class RoomCoordinator: NSObject, RoomCoordinatorProtocol {
         
         completion?()
     }
+    
+    private func startLocationCoordinatorWithEvent(_ event: MXEvent? = nil, bubbleData: MXKRoomBubbleCellDataStoring? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        guard let navigationRouter = self.navigationRouter,
+              let mediaManager = mxSession?.mediaManager,
+              let user = mxSession?.myUser else {
+            MXLog.error("[RoomCoordinator] Invalid location sharing coordinator parameters. Returning.")
+            return
+        }
+        
+        var avatarData: AvatarInputProtocol
+        if event != nil, let bubbleData = bubbleData {
+            avatarData = AvatarInput(mxContentUri: bubbleData.senderAvatarUrl,
+                                     matrixItemId: bubbleData.senderId,
+                                     displayName: bubbleData.senderDisplayName)
+        } else {
+            avatarData = AvatarInput(mxContentUri: user.avatarUrl,
+                                     matrixItemId: user.userId,
+                                     displayName: user.displayname)
+        }
+        
+        var location: CLLocationCoordinate2D?
+        if let locationContent = event?.location {
+            location = CLLocationCoordinate2D(latitude: locationContent.latitude, longitude: locationContent.longitude)
+        }
+        
+        let parameters = LocationSharingCoordinatorParameters(roomDataSource: roomViewController.roomDataSource,
+                                                              mediaManager: mediaManager,
+                                                              avatarData: avatarData,
+                                                              location: location)
+        
+        let coordinator = LocationSharingCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter.present(coordinator, animated: true)
+        coordinator.start()
+    }
+    
+    private func startEditPollCoordinator(startEvent: MXEvent? = nil) {
+        guard #available(iOS 14.0, *) else {
+            return
+        }
+        
+        let parameters = PollEditFormCoordinatorParameters(room: roomViewController.roomDataSource.room, pollStartEvent: startEvent)
+        let coordinator = PollEditFormCoordinator(parameters: parameters)
+        
+        coordinator.completion = { [weak self, weak coordinator] in
+            guard let self = self, let coordinator = coordinator else {
+                return
+            }
+            
+            self.navigationRouter?.dismissModule(animated: true, completion: nil)
+            self.remove(childCoordinator: coordinator)
+        }
+        
+        add(childCoordinator: coordinator)
+        
+        navigationRouter?.present(coordinator, animated: true)
+        coordinator.start()
+    }
 }
 
 // MARK: - RoomIdentifiable
@@ -259,14 +330,15 @@ extension RoomCoordinator: RoomViewControllerDelegate {
     }
     
     func roomViewControllerDidRequestPollCreationFormPresentation(_ roomViewController: RoomViewController) {
-        guard #available(iOS 14.0, *) else {
-            return
-        }
-        
-        let parameters = PollEditFormCoordinatorParameters(navigationRouter: self.navigationRouter, room: roomViewController.roomDataSource.room)
-        pollEditFormCoordinator = PollEditFormCoordinator(parameters: parameters)
-        
-        pollEditFormCoordinator?.start()
+        startEditPollCoordinator()
+    }
+    
+    func roomViewControllerDidRequestLocationSharingFormPresentation(_ roomViewController: RoomViewController) {
+        startLocationCoordinatorWithEvent()
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestLocationPresentationFor event: MXEvent, bubbleData: MXKRoomBubbleCellDataStoring) {
+        startLocationCoordinatorWithEvent(event, bubbleData: bubbleData)
     }
     
     func roomViewController(_ roomViewController: RoomViewController, canEndPollWithEventIdentifier eventIdentifier: String) -> Bool {
@@ -274,7 +346,7 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return false
         }
         
-        return PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEndPoll() ?? false
     }
     
     func roomViewController(_ roomViewController: RoomViewController, endPollWithEventIdentifier eventIdentifier: String) {
@@ -282,6 +354,18 @@ extension RoomCoordinator: RoomViewControllerDelegate {
             return
         }
         
-        PollTimelineProvider.shared.pollTimelineCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+        TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.endPoll()
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, canEditPollWithEventIdentifier eventIdentifier: String) -> Bool {
+        guard #available(iOS 14.0, *) else {
+            return false
+        }
+        
+        return TimelinePollProvider.shared.timelinePollCoordinatorForEventIdentifier(eventIdentifier)?.canEditPoll() ?? false
+    }
+    
+    func roomViewController(_ roomViewController: RoomViewController, didRequestEditForPollWithStart startEvent: MXEvent) {
+        startEditPollCoordinator(startEvent: startEvent)
     }
 }

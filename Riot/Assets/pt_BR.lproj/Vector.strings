@@ -290,7 +290,7 @@
 "settings_ignored_users" = "USUÁRIAS(OS) IGNORADAS(OS)";
 "settings_contacts" = "CONTATOS DE DISPOSITIVO";
 "settings_advanced" = "AVANÇADAS";
-"settings_other" = "OUTRAS";
+"settings_other" = "Outras";
 "settings_labs" = "LABS";
 "settings_flair" = "Mostrar flair onde permitido";
 "settings_devices" = "SESSÕES";
@@ -1500,3 +1500,61 @@
 "contacts_address_book_permission_denied_alert_title" = "Contatos desabilitados";
 "space_home_show_all_rooms" = "Mostrar todas as salas";
 "room_event_action_forward" = "Encaminhar";
+"poll_edit_form_add_option" = "Adicionar opção";
+"poll_edit_form_option_number" = "Opção %lu";
+"poll_edit_form_create_options" = "Criar opções";
+"poll_edit_form_input_placeholder" = "Escreva algo";
+"poll_edit_form_question_or_topic" = "Pergunta ou tópico";
+"poll_edit_form_poll_question_or_topic" = "Sondar pergunta ou tópico";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Criar sondagem";
+"share_extension_send_now" = "Enviar agora";
+"share_extension_low_quality_video_message" = "Enviar em %@ para melhor qualidade, ou enviar em baixa qualidade abaixo.";
+"share_extension_low_quality_video_title" = "Vídeo vai ser enviado em baixa qualidade";
+"settings_discovery_accept_terms" = "Aceitar Termos de Servidor de Identidade";
+"settings_about" = "SOBRE";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Por favor tente de novo";
+"poll_timeline_not_closed_title" = "Falha para terminar sondagem";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Desculpe, seu voto não foi registrado, por favor tente de novo";
+"poll_timeline_vote_not_registered_title" = "Voto não registrado";
+"poll_timeline_total_final_results" = "Resultados finais baseados em %lu votos";
+"poll_timeline_total_final_results_one_vote" = "Resultados finais baseados em 1 voto";
+"poll_timeline_total_votes_not_voted" = "%lu votos lançados. Vote para ver os resultados";
+"poll_timeline_total_one_vote_not_voted" = "1 voto lançado. Vote para ver os resultados";
+"poll_timeline_total_votes" = "%lu votos lançados";
+"poll_timeline_total_one_vote" = "1 voto lançado";
+"poll_timeline_total_no_votes" = "Nenhum voto lançado";
+"poll_timeline_votes_count" = "%lu votos";
+"poll_timeline_one_vote" = "1 voto";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Por favor tente de novo";
+"poll_edit_form_post_failure_title" = "Falha para postar sondagem";
+"settings_labs_enabled_polls" = "Sondagens";
+"room_event_action_end_poll" = "Terminar sondagem";
+"room_event_action_remove_poll" = "Remover sondagem";
+"analytics_prompt_stop" = "Parar de compartilhar";
+"analytics_prompt_yes" = "Sim, pode ser";
+"analytics_prompt_not_now" = "Não agora";
+"analytics_prompt_point_3" = "Você pode desativar isto a qualquer hora em configurações";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "Nós <b>não</b> compartilhamos informação com terceiros";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "Nós <b>não</b> gravamos ou perfilamos quaisquer dados de conta";
+"analytics_prompt_terms_link_upgrade" = "aqui";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Leia todos os nossos termos %@. Isso está OK?";
+"analytics_prompt_terms_link_new_user" = "aqui";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Você pode ler todos os nossos termos %@.";
+"analytics_prompt_message_upgrade" = "Você previamente consentiu a compartilhar dados de uso anônimos conosco. Agora, para ajudar a entender como pessoas usam múltiplos dispositivos, nós vamos gerar um identificador aleatório, compartilhado por seus dispositivos.";
+"analytics_prompt_message_new_user" = "Ajude-nos a identificar problemas e melhorar Element ao compartilhar dados de uso anônimos. Para entender como pessoas usam múltiplos dispositivos, nós geramos um identificador aleatório, compartilhado por seus dispositivos.";
+
+// Analytics
+"analytics_prompt_title" = "Ajudar a melhorar %@";
+"settings_analytics_and_crash_data" = "Enviar dados de crash e analítica";
+"accessibility_button_label" = "botão";
+"enable" = "Habilitar";

@@ -64,3 +64,4 @@ targets:
     - path: ../Riot/Managers/EncryptionKeyManager/EncryptionKeyManager.swift
     - path: ../Riot/Managers/KeyValueStorage/
     - path: ../Riot/PropertyWrappers/UserDefaultsBackedPropertyWrapper.swift
+    - path: ../Riot/Modules/Room/Views/BubbleCells/Styles/RoomTimelineStyleIdentifier.swift

@@ -532,3 +532,11 @@
 "attachment_size_prompt_message" = "U kunt dit uitzetten in uw instellingen.";
 "attachment_size_prompt_title" = "Bevestig de afmeting om te versturen";
 "room_displayname_all_other_participants_left" = "%@ (vertrok)";
+"auth_reset_password_error_not_found" = "Niet gevonden";
+"auth_reset_password_error_unauthorized" = "Niet toegestaan";
+"auth_invalid_user_name" = "Ongeldige inlognaam";
+"attachment_unsupported_preview_message" = "Dit bestandstype wordt niet ondersteund.";
+"attachment_unsupported_preview_title" = "Kan geen voorbeeld geven";
+"room_displayname_all_other_members_left" = "%@ (Vertrok)";
+"auth_username_in_use" = "Inlognaam al in gebruik";
+"rename" = "Hernoemen";

@@ -175,10 +175,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         {
             isSupportedAttachment = hasUrl || hasFile;
         }
-        else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-        {
-            // Not supported yet
-        }
         else if ([msgtype isEqualToString:kMXMessageTypeFile])
         {
             isSupportedAttachment = hasUrl || hasFile;
@@ -1252,7 +1248,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             else
             {
                 NSString *msgtype;
-                MXJSONModelSetString(msgtype, event.content[@"msgtype"]);
+                MXJSONModelSetString(msgtype, event.content[kMXMessageTypeKey]);
 
                 NSString *body;
                 BOOL isHTML = NO;
@@ -1267,12 +1263,12 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 else if (eventThreadIdentifier)
                 {
                     isHTML = YES;
-                    MXJSONModelSetString(body, event.content[@"body"]);
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                     MXEvent *threadRootEvent = [mxSession.store eventWithEventId:eventThreadIdentifier
                                                                           inRoom:event.roomId];
                     
                     NSString *threadRootEventContent;
-                    MXJSONModelSetString(threadRootEventContent, threadRootEvent.content[@"body"]);
+                    MXJSONModelSetString(threadRootEventContent, threadRootEvent.content[kMXMessageBodyKey]);
                     body = [NSString stringWithFormat:@"<mx-reply><blockquote><a href=\"%@\">In reply to</a> <a href=\"%@\">%@</a><br>%@</blockquote></mx-reply>%@",
                             [MXTools permalinkToEvent:eventThreadIdentifier inRoom:event.roomId],
                             [MXTools permalinkToUserWithUserId:threadRootEvent.sender],
@@ -1283,7 +1279,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                 }
                 else
                 {
-                    MXJSONModelSetString(body, event.content[@"body"]);
+                    MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                 }
 
                 if (body)
@@ -1319,23 +1315,6 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
                     else if ([msgtype isEqualToString:kMXMessageTypeVideo])
                     {
                         body = body? body : [MatrixKitL10n noticeVideoAttachment];
-                        if (![self isSupportedAttachment:event])
-                        {
-                            MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
-                            if (_isForSubtitle || !_settings.showUnsupportedEventsInRoomHistory)
-                            {
-                                body = [MatrixKitL10n noticeInvalidAttachment];
-                            }
-                            else
-                            {
-                                body = [MatrixKitL10n noticeUnsupportedAttachment:event.description];
-                            }
-                            *error = MXKEventFormatterErrorUnsupported;
-                        }
-                    }
-                    else if ([msgtype isEqualToString:kMXMessageTypeLocation])
-                    {
-                        body = body? body : [MatrixKitL10n noticeLocationAttachment];
                         if (![self isSupportedAttachment:event])
                         {
                             MXLogDebug(@"[MXKEventFormatter] Warning: Unsupported attachment %@", event.description);
@@ -1582,7 +1561,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
             else
             {
                 NSString *body;
-                MXJSONModelSetString(body, event.content[@"body"]);
+                MXJSONModelSetString(body, event.content[kMXMessageBodyKey]);
                 
                 // Check sticker validity
                 if (![self isSupportedAttachment:event])
@@ -1598,6 +1577,11 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
         }
         case MXEventTypePollStart:
         {
+            if (event.isEditEvent)
+            {
+                return nil;
+            }
+            
             displayText = [MXEventContentPollStart modelFromJSON:event.content].question;
             break;
         }
@@ -2000,7 +1984,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
 
             if (event.eventType == MXEventTypeRoomMessage)
             {
-                NSString *msgtype = event.content[@"msgtype"];
+                NSString *msgtype = event.content[kMXMessageTypeKey];
                 if ([msgtype isEqualToString:kMXMessageTypeEmote] == NO)
                 {
                     NSString *senderDisplayName = [self senderDisplayNameForEvent:event withRoomState:roomState];
@@ -2121,7 +2105,7 @@ static NSString *const kHTMLATagRegexPattern = @"<a href=\"(.*?)\">([^<]*)</a>";
     else if (!_isForSubtitle && event.eventType == MXEventTypeRoomMessage && (_emojiOnlyTextFont || _singleEmojiTextFont))
     {
         NSString *message;
-        MXJSONModelSetString(message, event.content[@"body"]);
+        MXJSONModelSetString(message, event.content[kMXMessageBodyKey]);
 
         if (_emojiOnlyTextFont && [MXKTools isEmojiOnlyString:message])
         {

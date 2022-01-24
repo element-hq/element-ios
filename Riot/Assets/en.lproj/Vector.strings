@@ -41,6 +41,7 @@
 "retry" = "Retry";
 "on" = "On";
 "off" = "Off";
+"enable" = "Enable";
 "cancel" = "Cancel";
 "save" = "Save";
 "join" = "Join";
@@ -65,6 +66,7 @@
 "less" = "Less";
 "open" = "Open";
 "done" = "Done";
+"ok" = "OK";
 
 // Call Bar
 "callbar_only_single_active" = "Tap to return to the call (%@)";
@@ -77,6 +79,19 @@
 
 // Accessibility
 "accessibility_checkbox_label" = "checkbox";
+"accessibility_button_label" = "button";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Create account";
+"onboarding_splash_login_button_title" = "I already have an account";
+"onboarding_splash_page_1_title" = "Own your conversations.";
+"onboarding_splash_page_1_message" = "Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.";
+"onboarding_splash_page_2_title" = "You’re in control.";
+"onboarding_splash_page_2_message" = "Choose where your conversations are kept, giving you control and independence. Connected via Matrix.";
+"onboarding_splash_page_3_title" = "Secure messaging.";
+"onboarding_splash_page_3_message" = "End-to-end encrypted and no phone number required. No ads or datamining.";
+"onboarding_splash_page_4_title_no_pun" = "Messaging for your team.";
+"onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
 
 // Authentication
 "auth_login" = "Log in";
@@ -578,7 +593,7 @@ Tap the + to start adding people.";
 "settings_term_conditions" = "Terms & Conditions";
 "settings_privacy_policy" = "Privacy Policy";
 "settings_third_party_notices" = "Third-party Notices";
-"settings_send_crash_report" = "Send anon crash & usage data";
+"settings_analytics_and_crash_data" = "Send crash and analytics data";
 "settings_enable_rageshake" = "Rage shake to report bug";
 "settings_clear_cache" = "Clear cache";
 
@@ -652,6 +667,8 @@ Tap the + to start adding people.";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
 
 "settings_show_NSFW_public_rooms" = "Show NSFW public rooms";
+
+"settings_enable_room_message_bubbles" = "Message bubbles";
 
 // Security settings
 "security_settings_title" = "Security";
@@ -946,8 +963,24 @@ Tap the + to start adding people.";
 "no_voip_title" = "Incoming call";
 "no_voip" = "%@ is calling you but %@ does not support calls yet.\nYou can ignore this notification and answer the call from another device or you can reject it.";
 
-// Crash report
-"google_analytics_use_prompt" = "Would you like to help improve %@ by automatically reporting anonymous crash reports and usage data?";
+// Analytics
+"analytics_prompt_title" = "Help improve %@";
+"analytics_prompt_message_new_user" = "Help us identify issues and improve %@ by sharing anonymous usage data. To understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.";
+"analytics_prompt_message_upgrade" = "You previously consented to share anonymous usage data with us. Now, to help understand how people use multiple devices, we’ll generate a random identifier, shared by your devices.";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "You can read all our terms %@.";
+"analytics_prompt_terms_link_new_user" = "here";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Read all our terms %@. Is that OK?";
+"analytics_prompt_terms_link_upgrade" = "here";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "We <b>don't</b> record or profile any account data";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "We <b>don't</b> share information with third parties";
+"analytics_prompt_point_3" = "You can turn this off anytime in settings";
+"analytics_prompt_not_now" = "Not now";
+"analytics_prompt_yes" = "Yes, that's fine";
+"analytics_prompt_stop" = "Stop sharing";
 
 // Crypto
 "e2e_enabling_on_app_update" = "%@ now supports end-to-end encryption but you need to log in again to enable it.\n\nYou can do it now or later from the application settings.";
@@ -1747,7 +1780,7 @@ Tap the + to start adding people.";
 "spaces_coming_soon_title" = "Coming soon";
 "spaces_add_rooms_coming_soon_title" = "Adding rooms coming soon";
 "spaces_invites_coming_soon_title" = "Invites coming soon";
-"spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with Element on your computer.";
+"spaces_coming_soon_detail" = "This feature hasn’t been implemented here, but it’s on the way. For now, you can do that with %@ on your computer.";
 "space_participants_action_remove" = "Remove from this space";
 "space_participants_action_ban" = "Ban from this space";
 "space_home_show_all_rooms" = "Show all rooms";
@@ -1804,6 +1837,8 @@ Tap the + to start adding people.";
 
 "poll_edit_form_create_poll" = "Create poll";
 
+"poll_edit_form_poll_type" = "Poll type";
+
 "poll_edit_form_poll_question_or_topic" = "Poll question or topic";
 
 "poll_edit_form_question_or_topic" = "Question or topic";
@@ -1820,7 +1855,17 @@ Tap the + to start adding people.";
 
 "poll_edit_form_post_failure_subtitle" = "Please try again";
 
-"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_update_failure_title" = "Failed to update poll";
+
+"poll_edit_form_update_failure_subtitle" = "Please try again";
+
+"poll_edit_form_poll_type_open" = "Open poll";
+
+"poll_edit_form_poll_type_open_description" = "Voters see results as soon as they have voted";
+
+"poll_edit_form_poll_type_closed" = "Closed poll";
+
+"poll_edit_form_poll_type_closed_description" = "Results are only revealed when you end the poll";
 
 "poll_timeline_one_vote" = "1 vote";
 
@@ -1844,10 +1889,32 @@ Tap the + to start adding people.";
 
 "poll_timeline_vote_not_registered_subtitle" = "Sorry, your vote was not registered, please try again";
 
-"poll_timeline_vote_not_registered_action" = "OK";
-
 "poll_timeline_not_closed_title" = "Failed to end poll";
 
 "poll_timeline_not_closed_subtitle" = "Please try again";
 
-"poll_timeline_not_closed_action" = "OK";
+// MARK: - Location sharing
+
+"location_sharing_title" = "Location";
+
+"location_sharing_close_action" = "Close";
+
+"location_sharing_share_action" = "Share";
+
+"location_sharing_loading_map_error_title" = "%@ could not load the map. Please try again later.";
+
+"location_sharing_locating_user_error_title" = "%@ could not access your location. Please try again later.";
+
+"location_sharing_invalid_authorization_error_title" = "%@ does not have permission to access your location. You can enable access in Settings > Location";
+
+"location_sharing_invalid_authorization_not_now" = "Not now";
+
+"location_sharing_invalid_authorization_settings" = "Settings";
+
+"location_sharing_open_apple_maps" = "Open in Apple Maps";
+
+"location_sharing_open_google_maps" = "Open in Google Maps";
+
+"location_sharing_settings_header" = "Location sharing";
+
+"location_sharing_settings_toggle_title" = "Enable location sharing";

@@ -283,7 +283,7 @@
 "settings_ignored_users" = "FIGYELMEN KÍVÜL HAGYOTT FELHASZNÁLÓK";
 "settings_contacts" = "ESZKÖZ NÉVJEGYZÉK";
 "settings_advanced" = "HALADÓ";
-"settings_other" = "MÁS";
+"settings_other" = "Más";
 "settings_labs" = "LABOR";
 "settings_flair" = "Kitűző mutatása ahol lehet";
 "settings_devices" = "MUNKAMENETEK";
@@ -1532,3 +1532,61 @@
 "contacts_address_book_permission_denied_alert_title" = "Névjegyzék letiltva";
 "space_home_show_all_rooms" = "Minden szoba megjelenítése";
 "room_event_action_forward" = "Továbbítás";
+"poll_edit_form_add_option" = "Lehetőség hozzáadása";
+"poll_edit_form_option_number" = "%lu lehetőség";
+"poll_edit_form_create_options" = "Lehetőségek hozzáadása";
+"poll_edit_form_input_placeholder" = "Írjon valamit";
+"poll_edit_form_question_or_topic" = "Kérdés vagy téma";
+"poll_edit_form_poll_question_or_topic" = "Szavazás kérdés vagy téma";
+
+// Mark: - Polls
+
+"poll_edit_form_create_poll" = "Szavazás létrehozása";
+"share_extension_send_now" = "Küldés most";
+"share_extension_low_quality_video_message" = "Jobb minőségért küld így: %@ vagy gyengébb minőségben alább.";
+"share_extension_low_quality_video_title" = "Alacsony minőségű videó lesz elküldve";
+"settings_discovery_accept_terms" = "Azonosítási Szolgáltatás felhasználási feltételeinek elfogadása";
+"settings_about" = "NÉVJEGY";
+"poll_timeline_not_closed_action" = "OK";
+"poll_timeline_not_closed_subtitle" = "Kérlek próbáld újra";
+"poll_timeline_not_closed_title" = "Nem sikerült a szavazás lezárása";
+"poll_timeline_vote_not_registered_action" = "OK";
+"poll_timeline_vote_not_registered_subtitle" = "Sajnos a szavazatod nem lett rögzítve. Kérlek ismételd meg újra";
+"poll_timeline_vote_not_registered_title" = "Szavazás nem sikerült";
+"poll_timeline_total_final_results" = "Végeredmény %lu szavazat alapján";
+"poll_timeline_total_final_results_one_vote" = "Eredmény 1 szavazat alapján";
+"poll_timeline_total_votes_not_voted" = "%lu szavazatot adtak le. Szavazz az eredmény megtekintéséhez";
+"poll_timeline_total_one_vote_not_voted" = "1 szavazatot adtak le. Szavazz az eredmény megtekintéséhez";
+"poll_timeline_total_votes" = "%lu szavazatot adtak le";
+"poll_timeline_total_one_vote" = "1 szavazatot adtak le";
+"poll_timeline_total_no_votes" = "Nem adtak le szavazatot";
+"poll_timeline_votes_count" = "%lu szavazat";
+"poll_timeline_one_vote" = "1 szavazat";
+"poll_edit_form_post_failure_action" = "OK";
+"poll_edit_form_post_failure_subtitle" = "Kérlek próbáld újra";
+"poll_edit_form_post_failure_title" = "A szavazást nem sikerült beküldeni";
+"analytics_prompt_stop" = "Megosztás megállítása";
+"analytics_prompt_yes" = "Igen, rendben van";
+"analytics_prompt_not_now" = "Nem most";
+"analytics_prompt_point_3" = "Ezt bármikor kikapcsolhatod a beállításokban";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_2" = "<b>Nem</b> osztjuk meg az információt harmadik féllel";
+/* Note: The word "don't" is formatted in bold */
+"analytics_prompt_point_1" = "<b>Nem</b> küldünk és nem profilozunk semmilyen fiók adatot";
+"analytics_prompt_terms_link_upgrade" = "itt";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_upgrade */
+"analytics_prompt_terms_upgrade" = "Olvasd el minden feltételünket: %@. Rendben?";
+"analytics_prompt_terms_link_new_user" = "itt";
+/* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
+"analytics_prompt_terms_new_user" = "Az összes feltételünket elolvashatod itt: %@.";
+"analytics_prompt_message_new_user" = "Segíts észrevennünk a hibákat, és jobbá tenni az Element-et a névtelen használati adatok küldése által. Ahhoz, hogy megértsük, hogyan használnak a felhasználók egyszerre több eszközt, egy véletlenszerű azonosítót generálunk, ami az eszközeid között meg lesz osztva.";
+
+// Analytics
+"analytics_prompt_title" = "Segíts jobbá tenni %@";
+"settings_analytics_and_crash_data" = "Összeomlás és analitikai adatok küldése";
+"settings_labs_enabled_polls" = "Szavazások";
+"room_event_action_end_poll" = "Szavazás lezárása";
+"room_event_action_remove_poll" = "Szavazás törlése";
+"accessibility_button_label" = "gomb";
+"enable" = "Engedélyezés";
+"analytics_prompt_message_upgrade" = "Korábban beleegyeztél, hogy velünk anonimizált adatokat osztasz meg. Most, hogy jobban megértsük, hogyan használnak több eszközt az emberek, véletlenszerű azonosítót állítunk elő amit az eszközeid használni fognak.";

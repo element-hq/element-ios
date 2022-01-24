@@ -207,6 +207,10 @@ final class SpaceExploreRoomViewController: UIViewController {
         self.viewModel.process(viewAction: .cancel)
     }
     
+    @objc private func addRoomAction(semder: UIView) {
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesAddRoomsComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
+    }
+
     // MARK: - UISearchBarDelegate
     
     override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -270,7 +274,7 @@ extension SpaceExploreRoomViewController: SpaceExploreRoomViewModelViewDelegate 
 extension SpaceExploreRoomViewController: AddItemHeaderViewDelegate {
     
     func addItemHeaderView(_ headerView: AddItemHeaderView, didTapButton button: UIButton) {
-        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesAddRoomsComingSoonTitle, message: VectorL10n.spacesComingSoonDetail, animated: true, handler: nil)
+        self.errorPresenter.presentError(from: self, title: VectorL10n.spacesAddRoomsComingSoonTitle, message: VectorL10n.spacesComingSoonDetail(AppInfo.current.displayName), animated: true, handler: nil)
     }
     
 }

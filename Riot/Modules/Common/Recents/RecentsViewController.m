@@ -29,6 +29,7 @@
 #import "InviteRecentTableViewCell.h"
 #import "DirectoryRecentTableViewCell.h"
 #import "RoomIdOrAliasTableViewCell.h"
+#import "TableViewCellWithCollectionView.h"
 
 #import "GeneratedInterface-Swift.h"
 
@@ -105,9 +106,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     // Setup `MXKViewControllerHandling` properties
     self.enableBarTintColorStatusChange = NO;
     self.rageShakeManager = [RageShakeManager sharedManager];
-    
-    // Set default screen name
-    _screenName = @"RecentsScreen";
     
     // Enable the search bar in the recents table, and remove the search option from the navigation bar.
     _enableSearchBar = YES;
@@ -195,11 +193,8 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     [ThemeService.shared.theme applyStyleOnSearchBar:tableSearchBar];
     [ThemeService.shared.theme applyStyleOnSearchBar:self.recentsSearchBar];
 
-    if (self.recentsTableView.dataSource)
-    {
-        // Force table refresh
-        [self cancelEditionMode:YES];
-    }
+    // Force table refresh
+    [self.recentsTableView reloadData];
     
     [self.emptyView updateWithTheme:ThemeService.shared.theme];
 
@@ -258,9 +253,6 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    // Screen tracking
-    [[Analytics sharedInstance] trackScreen:_screenName];
 
     // Reset back user interactions
     self.userInteractionEnabled = YES;
@@ -329,11 +321,14 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
         // the selected room (if any) is highlighted.
         [self refreshCurrentSelectedCell:YES];
     }
+    
+    [self.screenTimer start];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [self.screenTimer stop];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1009,9 +1004,32 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
 
 - (void)dataSource:(MXKDataSource *)dataSource didCellChange:(id)changes
 {
-    [super dataSource:dataSource didCellChange:changes];
+    BOOL cellReloaded = NO;
+    if ([changes isKindOfClass:NSNumber.class])
+    {
+        NSInteger section = ((NSNumber *)changes).integerValue;
+        if (section >= 0)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+            UITableViewCell *cell = [self.recentsTableView cellForRowAtIndexPath:indexPath];
+            if ([cell isKindOfClass:TableViewCellWithCollectionView.class])
+            {
+                TableViewCellWithCollectionView *collectionViewCell = (TableViewCellWithCollectionView *)cell;
+                [collectionViewCell.collectionView reloadData];
+                cellReloaded = YES;
+            }
+        }
+    }
     
-    [self showEmptyViewIfNeeded];
+    if (!cellReloaded)
+    {
+        [super dataSource:dataSource didCellChange:changes];
+    }
+    
+    if (changes == nil)
+    {
+        [self showEmptyViewIfNeeded];
+    }
     
     if (dataSource.state == MXKDataSourceStateReady)
     {

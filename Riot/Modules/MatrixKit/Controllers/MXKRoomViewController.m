@@ -36,16 +36,6 @@
 
 #import "MXKRoomBubbleCellData.h"
 
-#import "MXKRoomIncomingTextMsgBubbleCell.h"
-#import "MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.h"
-#import "MXKRoomIncomingAttachmentBubbleCell.h"
-#import "MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.h"
-
-#import "MXKRoomOutgoingTextMsgBubbleCell.h"
-#import "MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
-#import "MXKRoomOutgoingAttachmentBubbleCell.h"
-#import "MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
-
 #import "MXKEncryptionKeysImportView.h"
 
 #import "NSBundle+MatrixKit.h"
@@ -616,17 +606,6 @@
     _bubblesTableView.delegate = self;
     _bubblesTableView.dataSource = roomDataSource; // Note: data source may be nil here, it will be set during [displayRoom:] call.
     
-    // Set up default classes to use for cells
-    [_bubblesTableView registerClass:MXKRoomIncomingTextMsgBubbleCell.class forCellReuseIdentifier:MXKRoomIncomingTextMsgBubbleCell.defaultReuseIdentifier];
-    [_bubblesTableView registerClass:MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [_bubblesTableView registerClass:MXKRoomIncomingAttachmentBubbleCell.class forCellReuseIdentifier:MXKRoomIncomingAttachmentBubbleCell.defaultReuseIdentifier];
-    [_bubblesTableView registerClass:MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    
-    [_bubblesTableView registerClass:MXKRoomOutgoingTextMsgBubbleCell.class forCellReuseIdentifier:MXKRoomOutgoingTextMsgBubbleCell.defaultReuseIdentifier];
-    [_bubblesTableView registerClass:MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    [_bubblesTableView registerClass:MXKRoomOutgoingAttachmentBubbleCell.class forCellReuseIdentifier:MXKRoomOutgoingAttachmentBubbleCell.defaultReuseIdentifier];
-    [_bubblesTableView registerClass:MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
-    
     // Observe kMXSessionWillLeaveRoomNotification to be notified if the user leaves the current room.
     MXWeakify(self);
     _mxSessionWillLeaveRoomNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:kMXSessionWillLeaveRoomNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif) {
@@ -1031,13 +1010,15 @@
     roomDataSource = nil;
     
     // Add reason label
-    _leftRoomReasonLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width - 20, 70)];
-    _leftRoomReasonLabel.numberOfLines = 0;
-    _leftRoomReasonLabel.text = reason;
-    _leftRoomReasonLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    UILabel *leftRoomReasonLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width - 20, 70)];
+    leftRoomReasonLabel.numberOfLines = 0;
+    leftRoomReasonLabel.text = reason;
+    leftRoomReasonLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _bubblesTableView.tableHeaderView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 80)];
-    [_bubblesTableView.tableHeaderView addSubview:_leftRoomReasonLabel];
+    [_bubblesTableView.tableHeaderView addSubview:leftRoomReasonLabel];
     [_bubblesTableView reloadData];
+    
+    _leftRoomReasonLabel = leftRoomReasonLabel;
     
     [self updateViewControllerAppearanceOnRoomDataSourceState];
 }
@@ -2177,12 +2158,12 @@
     
     if (event && event.eventType == MXEventTypeRoomMessage)
     {
-        NSString *msgtype = event.content[@"msgtype"];
+        NSString *msgtype = event.content[kMXMessageTypeKey];
         
         NSString* textMessage;
         if ([msgtype isEqualToString:kMXMessageTypeText])
         {
-            textMessage = event.content[@"body"];
+            textMessage = event.content[kMXMessageBodyKey];
         }
         
         // Show a confirmation popup to the end user
@@ -2475,64 +2456,7 @@
 
 - (Class<MXKCellRendering>)cellViewClassForCellData:(MXKCellData*)cellData
 {
-    Class cellViewClass = nil;
-    
-    // Sanity check
-    if ([cellData conformsToProtocol:@protocol(MXKRoomBubbleCellDataStoring)])
-    {
-        id<MXKRoomBubbleCellDataStoring> bubbleData = (id<MXKRoomBubbleCellDataStoring>)cellData;
-        
-        // Select the suitable table view cell class
-        if (bubbleData.isIncoming)
-        {
-            if (bubbleData.isAttachmentWithThumbnail)
-            {
-                if (bubbleData.shouldHideSenderInformation)
-                {
-                    cellViewClass = MXKRoomIncomingAttachmentWithoutSenderInfoBubbleCell.class;
-                }
-                else
-                {
-                    cellViewClass = MXKRoomIncomingAttachmentBubbleCell.class;
-                }
-            }
-            else
-            {
-                if (bubbleData.shouldHideSenderInformation)
-                {
-                    cellViewClass = MXKRoomIncomingTextMsgWithoutSenderInfoBubbleCell.class;
-                }
-                else
-                {
-                    cellViewClass = MXKRoomIncomingTextMsgBubbleCell.class;
-                }
-            }
-        }
-        else if (bubbleData.isAttachmentWithThumbnail)
-        {
-            if (bubbleData.shouldHideSenderInformation)
-            {
-                cellViewClass = MXKRoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class;
-            }
-            else
-            {
-                cellViewClass = MXKRoomOutgoingAttachmentBubbleCell.class;
-            }
-        }
-        else
-        {
-            if (bubbleData.shouldHideSenderInformation)
-            {
-                cellViewClass = MXKRoomOutgoingTextMsgWithoutSenderInfoBubbleCell.class;
-            }
-            else
-            {
-                cellViewClass = MXKRoomOutgoingTextMsgBubbleCell.class;
-            }
-        }
-    }
-    
-    return cellViewClass;
+    return nil;
 }
 
 - (NSString *)cellReuseIdentifierForCellData:(MXKCellData*)cellData
@@ -3665,9 +3589,6 @@
                     // Let's the application do something
                     MXLogDebug(@"[MXKRoomVC] showAttachmentInCell on an unsent media");
                 }
-            }
-            else if (selectedAttachment.type == MXKAttachmentTypeLocation)
-            {
             }
             else if (selectedAttachment.type == MXKAttachmentTypeFile || selectedAttachment.type == MXKAttachmentTypeAudio)
             {
