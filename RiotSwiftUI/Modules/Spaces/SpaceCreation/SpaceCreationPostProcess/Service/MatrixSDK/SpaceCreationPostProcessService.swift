@@ -43,7 +43,7 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
     
     private var currentSubTaskIndex = 0
 
-    private var processingQueue = DispatchQueue(label: "org.matrix.sdk.MXSpace.processingQueue", attributes: .concurrent)
+    private var processingQueue = DispatchQueue(label: "io.element.MXSpace.processingQueue", attributes: .concurrent)
 
     private lazy var stateEventBuilder: MXRoomInitialStateEventBuilder = {
         return MXRoomInitialStateEventBuilder()
