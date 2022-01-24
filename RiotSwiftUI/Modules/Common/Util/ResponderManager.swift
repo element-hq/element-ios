@@ -16,6 +16,7 @@
 
 import UIKit
 
+/// `ResponderManager` is used to chain `SwiftUI` text editing views that embed `UIKit` text editing views using `UIViewRepresentable`
 class ResponderManager {
     
     private static var tagIndex: Int = 1000
@@ -40,6 +41,10 @@ class ResponderManager {
         return nil
     }
     
+    /// register the `UIKit` view as a responder
+    ///
+    /// - Parameters:
+    ///     - view: view to be registered
     static func register(view: UIView) {
         if registeredResponders.object(forKey: NSNumber(value: view.tag)) == nil {
             view.tag = nextIndex
@@ -47,10 +52,16 @@ class ResponderManager {
         }
     }
     
+    /// Unregister the `UIKit` view from this manager. The view won't be considered as potential next responder anymore
+    ///
+    /// - Parameters:
+    ///     - view: view to be unregistered
     static func unregister(view: UIView) {
         registeredResponders.removeObject(forKey: NSNumber(value: view.tag))
     }
     
+    /// Tries to get the focused registered responder and give the focus to it's next responder
+    /// - Returns: `True` if the next responder has been found and is successfully focused. `False` otherwise.
     static func makeActiveNextResponder() -> Bool {
         guard let firstResponder = self.firstResponder else {
             return false
@@ -59,6 +70,12 @@ class ResponderManager {
         return makeActiveNextResponder(of: firstResponder)
     }
     
+    /// Give the focus to the next responder f the given `UIKit` view
+    ///
+    /// - Parameters:
+    ///     - view: base view
+    ///
+    /// - Returns: `True` if the next responder has been found and is successfully focused. `False` otherwise.
     static func makeActiveNextResponder(of view: UIView) -> Bool {
         let nextTag = view.tag + 1
         guard let nextResponder = registeredResponders.object(forKey: NSNumber(value: nextTag)) else {
@@ -69,6 +86,7 @@ class ResponderManager {
         return true
     }
     
+    /// Unfocus any focused registered view.
     static func resignFirstResponder() {
         firstResponder?.resignFirstResponder()
     }

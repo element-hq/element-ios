@@ -70,7 +70,7 @@ class SpaceCreationMatrixItemChooserService: SpaceCreationMatrixItemChooserServi
             }
         case .room:
             self.items = session.rooms.compactMap { room in
-                if room.summary.roomType == .space || room.isDirect {
+                if room.summary.roomType == .space {
                     return nil
                 }
                 

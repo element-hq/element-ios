@@ -16,6 +16,7 @@
 
 import SwiftUI
 
+/// `WaitOverlay` allows to easily add an overlay that covers the entire with an `ActivityIndicator` at the center
 @available(iOS 14.0, *)
 struct WaitOverlay: ViewModifier {
     // MARK: - Properties
@@ -36,12 +37,7 @@ struct WaitOverlay: ViewModifier {
             if isLoading {
                 ZStack {
                     Color.clear
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(theme.colors.tertiaryContent.opacity(0.6))
-                        .frame(width: 50, height: 50)
-                    ProgressView()
-                        .scaleEffect(1.3, anchor: .center)
-                        .progressViewStyle(CircularProgressViewStyle(tint:      theme.colors.background))
+                    ActivityIndicator()
                 }
                 .frame(width: .infinity, height: .infinity)
                 .transition(.opacity)

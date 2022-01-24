@@ -141,10 +141,6 @@ class SpaceCreationPostProcessService: SpaceCreationPostProcessServiceProtocol {
             return
         }
         
-//        createdSpaceId = session.spaceService.rootSpaceSummaries.first?.roomId
-//        fakeTaskExecution(task: task)
-//        return
-
         switch task.type {
         case .createSpace:
             createSpace(andUpdate: task)

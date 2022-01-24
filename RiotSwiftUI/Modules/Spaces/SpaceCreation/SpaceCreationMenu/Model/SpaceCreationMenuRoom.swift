@@ -19,10 +19,15 @@
 import Foundation
 import UIKit
 
+/// list of IDs for the items displayed in the different menu views
 enum SpaceCreationMenuRoomOptionId {
+    /// Public space option
     case publicSpace
+    /// Private space option
     case privateSpace
+    /// Private space for internal use option
     case ownedPrivateSpace
+    /// Private space shared with members option
     case sharedPrivateSpace
 }
 

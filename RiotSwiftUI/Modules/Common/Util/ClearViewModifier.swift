@@ -16,6 +16,7 @@
 
 import SwiftUI
 
+/// `ClearViewModifier` aims to add a clear button (e.g. `x` button) on the right side of any text editing view
 @available(iOS 14.0, *)
 struct ClearViewModifier: ViewModifier
 {
