@@ -24,7 +24,6 @@ enum MockAppScreens {
         MockAnalyticsPromptScreenState.self,
         MockUserSuggestionScreenState.self,
         MockPollEditFormScreenState.self,
-        MockPollTimelineScreenState.self,
         MockSpaceCreationEmailInvitesScreenState.self,
         MockSpaceCreationMatrixItemChooserScreenState.self,
         MockSpaceCreationMenuScreenState.self,
