@@ -66,11 +66,11 @@ struct LocationSharingViewState: BindableState {
 }
 
 struct LocationSharingViewStateBindings {
-    var alertInfo: ErrorAlertInfo?
+    var alertInfo: LocationSharingErrorAlertInfo?
     var userLocation: CLLocationCoordinate2D?
 }
 
-struct ErrorAlertInfo: Identifiable {
+struct LocationSharingErrorAlertInfo: Identifiable {
     enum AlertType {
         case mapLoadingError
         case userLocatingError

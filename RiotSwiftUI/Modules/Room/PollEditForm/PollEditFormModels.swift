@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/PollEditForm PollEditForm
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -19,10 +17,31 @@
 import Foundation
 import SwiftUI
 
+enum EditFormPollType {
+    case disclosed
+    case undisclosed
+}
+
+struct EditFormPollDetails {
+    let type: EditFormPollType
+    let question: String
+    let answerOptions: [String]
+    let maxSelections: UInt = 1
+    
+    static var `default`: EditFormPollDetails {
+        EditFormPollDetails(type: .disclosed, question: "", answerOptions: ["", ""])
+    }
+}
+
+enum PollEditFormMode {
+    case creation
+    case editing
+}
+
 enum PollEditFormStateAction {
     case viewAction(PollEditFormViewAction)
     case startLoading
-    case stopLoading(Error?)
+    case stopLoading(PollEditFormErrorAlertInfo.AlertType?)
 }
 
 enum PollEditFormViewAction {
@@ -30,11 +49,13 @@ enum PollEditFormViewAction {
     case deleteAnswerOption(PollEditFormAnswerOption)
     case cancel
     case create
+    case update
 }
 
 enum PollEditFormViewModelResult {
     case cancel
-    case create(String, [String])
+    case create(EditFormPollDetails)
+    case update(EditFormPollDetails)
 }
 
 struct PollEditFormQuestion {
@@ -60,12 +81,14 @@ struct PollEditFormAnswerOption: Identifiable, Equatable {
 }
 
 struct PollEditFormViewState: BindableState {
+    var minAnswerOptionsCount: Int
     var maxAnswerOptionsCount: Int
+    var mode: PollEditFormMode
     var bindings: PollEditFormViewStateBindings
     
     var confirmationButtonEnabled: Bool {
         !bindings.question.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-            bindings.answerOptions.filter({ !$0.text.isEmpty }).count >= 2
+            bindings.answerOptions.filter({ !$0.text.isEmpty }).count >= minAnswerOptionsCount
     }
     
     var addAnswerOptionButtonEnabled: Bool {
@@ -78,6 +101,18 @@ struct PollEditFormViewState: BindableState {
 struct PollEditFormViewStateBindings {
     var question: PollEditFormQuestion
     var answerOptions: [PollEditFormAnswerOption]
+    var type: EditFormPollType
     
-    var showsFailureAlert: Bool = false
+    var alertInfo: PollEditFormErrorAlertInfo?
+}
+
+struct PollEditFormErrorAlertInfo: Identifiable {
+    enum AlertType {
+        case failedCreatingPoll
+        case failedUpdatingPoll
+    }
+    
+    let id: AlertType
+    let title: String
+    let subtitle: String
 }

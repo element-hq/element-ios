@@ -2347,6 +2347,46 @@ public class VectorL10n: NSObject {
   public static var on: String { 
     return VectorL10n.tr("Vector", "on") 
   }
+  /// I already have an account
+  public static var onboardingSplashLoginButtonTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_login_button_title") 
+  }
+  /// Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.
+  public static var onboardingSplashPage1Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_1_message") 
+  }
+  /// Own your conversations.
+  public static var onboardingSplashPage1Title: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_1_title") 
+  }
+  /// Choose where your conversations are kept, giving you control and independence. Connected via Matrix.
+  public static var onboardingSplashPage2Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_2_message") 
+  }
+  /// You’re in control.
+  public static var onboardingSplashPage2Title: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_2_title") 
+  }
+  /// End-to-end encrypted and no phone number required. No ads or datamining.
+  public static var onboardingSplashPage3Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_3_message") 
+  }
+  /// Secure messaging.
+  public static var onboardingSplashPage3Title: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_3_title") 
+  }
+  /// Element is also great for the workplace. It’s trusted by the world’s most secure organisations.
+  public static var onboardingSplashPage4Message: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_4_message") 
+  }
+  /// Messaging for your team.
+  public static var onboardingSplashPage4TitleNoPun: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_page_4_title_no_pun") 
+  }
+  /// Create account
+  public static var onboardingSplashRegisterButtonTitle: String { 
+    return VectorL10n.tr("Vector", "onboarding_splash_register_button_title") 
+  }
   /// Open
   public static var `open`: String { 
     return VectorL10n.tr("Vector", "open") 
@@ -2495,6 +2535,26 @@ public class VectorL10n: NSObject {
   public static var pollEditFormPollQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_poll_question_or_topic") 
   }
+  /// Poll type
+  public static var pollEditFormPollType: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type") 
+  }
+  /// Closed poll
+  public static var pollEditFormPollTypeClosed: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_closed") 
+  }
+  /// Results are only revealed when you end the poll
+  public static var pollEditFormPollTypeClosedDescription: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_closed_description") 
+  }
+  /// Open poll
+  public static var pollEditFormPollTypeOpen: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_open") 
+  }
+  /// Voters see results as soon as they have voted
+  public static var pollEditFormPollTypeOpenDescription: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_poll_type_open_description") 
+  }
   /// Please try again
   public static var pollEditFormPostFailureSubtitle: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_post_failure_subtitle") 
@@ -2506,6 +2566,14 @@ public class VectorL10n: NSObject {
   /// Question or topic
   public static var pollEditFormQuestionOrTopic: String { 
     return VectorL10n.tr("Vector", "poll_edit_form_question_or_topic") 
+  }
+  /// Please try again
+  public static var pollEditFormUpdateFailureSubtitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_subtitle") 
+  }
+  /// Failed to update poll
+  public static var pollEditFormUpdateFailureTitle: String { 
+    return VectorL10n.tr("Vector", "poll_edit_form_update_failure_title") 
   }
   /// Please try again
   public static var pollTimelineNotClosedSubtitle: String { 

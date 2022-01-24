@@ -482,7 +482,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
     // Hide input view when there is only social login actions to present
     if ((self.authType == MXKAuthenticationTypeLogin || self.authType == MXKAuthenticationTypeRegister)
         && self.currentLoginSSOFlow
-        && !self.isAuthSessionContainsPasswordFlow)
+        && !self.isAuthSessionContainsPasswordFlow
+        && BuildSettings.authScreenShowSocialLoginSection)
     {
         hideAuthInputView = YES;
     }
@@ -1735,8 +1736,8 @@ static const CGFloat kAuthInputContainerViewMinHeightConstraintConstant = 150.0;
 - (void)updateSocialLoginViewVisibility
 {
     SocialLoginButtonMode socialLoginButtonMode = SocialLoginButtonModeContinue;
-    
-    BOOL showSocialLoginView = self.currentLoginSSOFlow ? YES : NO;
+
+    BOOL showSocialLoginView = BuildSettings.authScreenShowSocialLoginSection && (self.currentLoginSSOFlow ? YES : NO);
     
     switch (self.authType)
     {
