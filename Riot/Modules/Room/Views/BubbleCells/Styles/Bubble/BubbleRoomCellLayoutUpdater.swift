@@ -165,7 +165,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
                 let messageType = MXMessageType(identifier: messageTypeString)
                 
                 switch messageType {
-                case .text :
+                case .text, .file:
                     return true
                 default:
                     break
