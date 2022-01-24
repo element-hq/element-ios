@@ -176,8 +176,6 @@ EXTERNAL SOURCES:
   AnalyticsEvents:
     :branch: release/swift
     :git: https://github.com/matrix-org/matrix-analytics-events.git
-  Keys:
-    :path: Pods/CocoaPodsKeys
   MatrixSDK:
     :branch: langleyd/5292_refresh_tokens
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
@@ -187,7 +185,7 @@ CHECKOUT OPTIONS:
     :commit: 8058dc6ec07ce0acfe5fdb19eb7e309b0c13845c
     :git: https://github.com/matrix-org/matrix-analytics-events.git
   MatrixSDK:
-    :commit: 634b47c943a786db44d8beb04a4365a00b126901
+    :commit: 35fa763f2c6ccd71ad0340c47cc44e6c40083746
     :git: https://github.com/matrix-org/matrix-ios-sdk.git
 
 SPEC CHECKSUMS:
@@ -232,6 +230,6 @@ SPEC CHECKSUMS:
   zxcvbn-ios: fef98b7c80f1512ff0eec47ac1fa399fc00f7e3c
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 8ad5a5ab16f6cb768b9fad274722fe6e0593c3d7
+PODFILE CHECKSUM: c5f0584d20a092fba207f356f7487bdbea129ab8
 
 COCOAPODS: 1.11.2

@@ -212,8 +212,10 @@ extension Analytics {
     
     /// Track when a user becomes unauthenticated without pressing the `sign out` button.
     /// - Parameters:
-    ///   - reason: The error that occurred.
-    ///   - count: The number of times that error occurred.
+    ///   - softLogout: Wether it was a soft/hard logout that was triggered.
+    ///   - refreshTokenAuth: Wether it was either an access-token-based or refresh-token-based auth mechanism enabled.
+    ///   - errorCode: The error code as returned by the homeserver that triggered the logout.
+    ///   - errorReason: The reason for the error as returned by the homeserver that triggered the logout.
     func trackAuthUnauthenticatedError(softLogout: Bool, refreshTokenAuth: Bool, errorCode: String, errorReason: String) {
         let errorCode = AnalyticsEvent.UnauthenticatedError.ErrorCode(rawValue: errorCode) ?? .M_UNKNOWN
         let event = AnalyticsEvent.UnauthenticatedError(errorCode: errorCode, errorReason: errorReason, refreshTokenAuth: refreshTokenAuth, softLogout: softLogout)

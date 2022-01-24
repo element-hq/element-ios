@@ -733,7 +733,7 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
     NSError *error;
     NSFileCoordinator *fileCoordinator = [[NSFileCoordinator alloc] init];
     __block BOOL coordinatorSuccess = NO;
-    NSLog(@"[MXKAccountManager] readAndWriteCredentials: purposeIdentifier = %@", fileCoordinator.purposeIdentifier);
+    MXLogDebug(@"[MXKAccountManager] readAndWriteCredentials: purposeIdentifier = %@", fileCoordinator.purposeIdentifier);
     NSDate *coordinateStartTime = [NSDate date];
     [fileCoordinator coordinateReadingItemAtURL:[self accountFileUrl]
                                         options:0
@@ -744,7 +744,7 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
 
         NSDate *accessorStartTime = [NSDate date];
         NSTimeInterval acquireInterval = [accessorStartTime timeIntervalSinceDate:coordinateStartTime];
-        NSLog(@"[MXKAccountManager] readAndWriteCredentials: acquireInterval = %f", acquireInterval);
+        MXLogDebug(@"[MXKAccountManager] readAndWriteCredentials: acquireInterval = %f", acquireInterval);
         NSError *error = nil;
         NSData* data = [NSData dataWithContentsOfURL:newReadingURL options:(NSDataReadingMappedAlways | NSDataReadingUncached) error:&error];
         
@@ -771,21 +771,21 @@ NSString *const MXKAccountManagerDataType = @"org.matrix.kit.MXKAccountManagerDa
         dispatch_group_wait(dispatchGroup, DISPATCH_TIME_FOREVER);
         
         if (didUpdate) {
-            NSLog(@"[MXKAccountManager] readAndWriteCredentials: did update saving credential data");
+            MXLogDebug(@"[MXKAccountManager] readAndWriteCredentials: did update saving credential data");
             NSKeyedArchiver *encoder = [[NSKeyedArchiver alloc] initRequiringSecureCoding: NO];
             [encoder setClassName:@"MXKAccount" forClass:[MXKAccountData class]];
             [encoder encodeObject:mxAccountsData forKey:@"mxAccounts"];
             NSData *writeData = [self encryptData:[encoder encodedData]];
             coordinatorSuccess = [writeData writeToURL:newWritingURL atomically:YES];
         } else {
-            NSLog(@"[MXKAccountManager] readAndWriteCredentials: did not update not saving credential data");
+            MXLogDebug(@"[MXKAccountManager] readAndWriteCredentials: did not update not saving credential data");
             coordinatorSuccess = YES;
         }
         NSDate *accessorEndTime = [NSDate date];
         NSTimeInterval lockedTime = [accessorEndTime timeIntervalSinceDate:accessorStartTime];
-        NSLog(@"[MXKAccountManager] readAndWriteCredentials: lockedTime = %f", lockedTime);
+        MXLogDebug(@"[MXKAccountManager] readAndWriteCredentials: lockedTime = %f", lockedTime);
     }];
-    NSLog(@"[MXKAccountManager] readAndWriteCredentials:exit");
+    MXLogDebug(@"[MXKAccountManager] readAndWriteCredentials:exit %d", coordinatorSuccess);
 }
 
 - (NSURL *)accountFileUrl
