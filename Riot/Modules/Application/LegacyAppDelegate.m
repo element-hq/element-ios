@@ -1654,7 +1654,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
         if ([self.masterTabBarController.selectedViewController conformsToProtocol:@protocol(MXKViewControllerActivityHandling)])
         {
             UIViewController<MXKViewControllerActivityHandling> *homeViewController = (UIViewController<MXKViewControllerActivityHandling>*)self.masterTabBarController.selectedViewController;
-            
+
             // Note: the activity indicator will not disappear if the session is not ready
             [homeViewController stopActivityIndicator];
         }

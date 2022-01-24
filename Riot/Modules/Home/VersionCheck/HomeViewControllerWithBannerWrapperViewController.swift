@@ -17,7 +17,7 @@
 import Foundation
 
 class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKViewControllerActivityHandling, BannerPresentationProtocol {
-
+    
     @objc let homeViewController: HomeViewController
     private var bannerContainerView: UIView!
     private var stackView: UIStackView!
@@ -95,11 +95,11 @@ class HomeViewControllerWithBannerWrapperViewController: UIViewController, MXKVi
             homeViewController.activityIndicator = newValue
         }
     }
-    
+
     func startActivityIndicator() {
         homeViewController.startActivityIndicator()
     }
-    
+
     func stopActivityIndicator() {
         homeViewController.stopActivityIndicator()
     }
