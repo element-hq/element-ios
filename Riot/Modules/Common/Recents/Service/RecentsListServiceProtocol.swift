@@ -87,6 +87,11 @@ public protocol RecentsListServiceProtocol {
     /// Stop service. Do not use after stopping.
     func stop()
     
+    //  MARK: Pagination
+    
+    /// Paginate in the given section.
+    func paginate(inSection section: RecentsListServiceSection)
+    
     //  MARK: - Delegate
     
     /// Add delegate instance for the service

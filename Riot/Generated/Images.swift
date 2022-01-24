@@ -155,6 +155,8 @@ internal enum Asset {
     internal static let pollDeleteOptionIcon = ImageAsset(name: "poll_delete_option_icon")
     internal static let pollEditIcon = ImageAsset(name: "poll_edit_icon")
     internal static let pollEndIcon = ImageAsset(name: "poll_end_icon")
+    internal static let pollTypeCheckboxDefault = ImageAsset(name: "poll_type_checkbox_default")
+    internal static let pollTypeCheckboxSelected = ImageAsset(name: "poll_type_checkbox_selected")
     internal static let pollWinnerIcon = ImageAsset(name: "poll_winner_icon")
     internal static let urlPreviewClose = ImageAsset(name: "url_preview_close")
     internal static let urlPreviewCloseDark = ImageAsset(name: "url_preview_close_dark")

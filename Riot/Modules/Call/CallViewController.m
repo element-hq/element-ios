@@ -664,9 +664,7 @@ CallAudioRouteMenuViewDelegate>
     {
         return;
     }
-    BOOL result = [self.mxCall sendDTMF:digit
-                               duration:0
-                           interToneGap:0];
+    BOOL result = [self.mxCall sendDTMF:digit];
     
     MXLogDebug(@"[CallViewController] Sending DTMF tones %@", result ? @"succeeded": @"failed");
 }

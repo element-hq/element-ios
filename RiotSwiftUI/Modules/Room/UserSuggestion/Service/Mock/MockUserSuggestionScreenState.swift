@@ -1,5 +1,3 @@
-// File created from SimpleUserProfileExample
-// $ createScreen.sh Room/UserSuggestion UserSuggestion
 // 
 // Copyright 2021 New Vector Ltd
 //
@@ -26,7 +24,7 @@ enum MockUserSuggestionScreenState: MockScreenState, CaseIterable {
     static private var members: [RoomMembersProviderMember]!
     
     var screenType: Any.Type {
-        MockUserSuggestionScreenState.self
+        UserSuggestionList.self
     }
     
     var screenView: ([Any], AnyView)  {

@@ -184,15 +184,19 @@ final class RiotSettings: NSObject {
     
     @UserDefault(key: "roomScreenAllowFilesAction", defaultValue: BuildSettings.roomScreenAllowFilesAction, storage: defaults)
     var roomScreenAllowFilesAction
-    
-    @UserDefault(key: "roomScreenAllowPollsAction", defaultValue: false, storage: defaults)
-    var roomScreenAllowPollsAction
-    
+        
     @UserDefault(key: "roomScreenAllowLocationAction", defaultValue: false, storage: defaults)
     var roomScreenAllowLocationAction
         
     @UserDefault(key: "roomScreenShowsURLPreviews", defaultValue: true, storage: defaults)
     var roomScreenShowsURLPreviews
+    
+    @UserDefault(key: "roomScreenEnableMessageBubbles", defaultValue: BuildSettings.roomScreenEnableMessageBubblesByDefault, storage: defaults)
+    var roomScreenEnableMessageBubbles
+    
+    var roomTimelineStyleIdentifier: RoomTimelineStyleIdentifier {
+        return self.roomScreenEnableMessageBubbles ? .bubble : .plain
+    }
     
     // MARK: - Room Contextual Menu
     

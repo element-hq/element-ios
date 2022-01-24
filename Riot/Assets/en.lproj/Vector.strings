@@ -84,6 +84,18 @@
 "accessibility_checkbox_label" = "checkbox";
 "accessibility_button_label" = "button";
 
+// Onboarding
+"onboarding_splash_register_button_title" = "Create account";
+"onboarding_splash_login_button_title" = "I already have an account";
+"onboarding_splash_page_1_title" = "Own your conversations.";
+"onboarding_splash_page_1_message" = "Secure and independent communication that gives you the same level of privacy as a face-to-face conversation in your own home.";
+"onboarding_splash_page_2_title" = "You’re in control.";
+"onboarding_splash_page_2_message" = "Choose where your conversations are kept, giving you control and independence. Connected via Matrix.";
+"onboarding_splash_page_3_title" = "Secure messaging.";
+"onboarding_splash_page_3_message" = "End-to-end encrypted and no phone number required. No ads or datamining.";
+"onboarding_splash_page_4_title_no_pun" = "Messaging for your team.";
+"onboarding_splash_page_4_message" = "Element is also great for the workplace. It’s trusted by the world’s most secure organisations.";
+
 // Authentication
 "auth_login" = "Log in";
 "auth_register" = "Register";
@@ -657,6 +669,8 @@ Tap the + to start adding people.";
 "settings_identity_server_no_is_description" = "You are not currently using an identity server. To discover and be discoverable by existing contacts you know, add one above.";
 
 "settings_show_NSFW_public_rooms" = "Show NSFW public rooms";
+
+"settings_enable_room_message_bubbles" = "Message bubbles";
 
 // Security settings
 "security_settings_title" = "Security";
@@ -1870,6 +1884,8 @@ Tap the + to start adding people.";
 
 "poll_edit_form_create_poll" = "Create poll";
 
+"poll_edit_form_poll_type" = "Poll type";
+
 "poll_edit_form_poll_question_or_topic" = "Poll question or topic";
 
 "poll_edit_form_question_or_topic" = "Question or topic";
@@ -1885,6 +1901,18 @@ Tap the + to start adding people.";
 "poll_edit_form_post_failure_title" = "Failed to post poll";
 
 "poll_edit_form_post_failure_subtitle" = "Please try again";
+
+"poll_edit_form_update_failure_title" = "Failed to update poll";
+
+"poll_edit_form_update_failure_subtitle" = "Please try again";
+
+"poll_edit_form_poll_type_open" = "Open poll";
+
+"poll_edit_form_poll_type_open_description" = "Voters see results as soon as they have voted";
+
+"poll_edit_form_poll_type_closed" = "Closed poll";
+
+"poll_edit_form_poll_type_closed_description" = "Results are only revealed when you end the poll";
 
 "poll_timeline_one_vote" = "1 vote";
 
