@@ -425,9 +425,14 @@
 - (NSDictionary<NSNumber*, Class>*)voiceMessageCellsMapping
 {
     return @{
-        @(RoomTimelineCellIdentifierVoiceMessage) : VoiceMessageBubbleCell.class,
-        @(RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class,
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceMessage) : VoiceMessageBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class,
+        // Outoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessage) : VoiceMessageBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo) : VoiceMessageWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle) : VoiceMessageWithPaginationTitleBubbleCell.class
     };
 }
 
