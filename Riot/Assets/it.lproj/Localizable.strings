@@ -116,3 +116,6 @@
 /** General **/
 
 "NOTIFICATION" = "Notifica";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ ha condiviso la sua posizione";
