@@ -870,6 +870,12 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
 
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
 {
+    RoomTimelineConfiguration *timelineConfiguration = [RoomTimelineConfiguration shared];
+    
+    if (NO == [timelineConfiguration.currentStyle canAddEvent:event and:roomState to:self]) {
+        return NO;
+    }
+    
     BOOL shouldAddEvent = YES;
     
     switch (self.tag)

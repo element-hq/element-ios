@@ -14,20 +14,16 @@
 // limitations under the License.
 //
 
-import UIKit
-import Reusable
-import Mapbox
+#import "RoomTimelineCellProvider.h"
 
-class LocationUserMarkerView: MGLAnnotationView, NibLoadable {
-    
-    @IBOutlet private var avatarView: UserAvatarView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    func setAvatarData(_ avatarData: AvatarViewDataProtocol) {
-        avatarView.fill(with: avatarData)
-    }
-}
+NS_ASSUME_NONNULL_BEGIN
+
+@interface PlainRoomTimelineCellProvider: NSObject<RoomTimelineCellProvider>
+
+- (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)outgoingAttachmentCellsMapping;
+
+@end
+
+NS_ASSUME_NONNULL_END

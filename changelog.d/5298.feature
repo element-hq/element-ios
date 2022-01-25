@@ -1,0 +1,1 @@
+Added static location sharing sending and rendering support.

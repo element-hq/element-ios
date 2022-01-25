@@ -216,6 +216,7 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewMinHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *attachViewLeadingConstraint;
 
 /**
  The constraints which defines the relationship between bubbleInfoContainer and its superview
@@ -324,5 +325,8 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
  Setup outlets views. Useful to call when cell subclass does not use a xib otherwise this method is called automatically in `awakeFromNib`.
  */
 - (void)setupViews;
+
+/// Add temporary subview to `tmpSubviews` property.
+- (void)addTemporarySubview:(UIView*)subview;
 
 @end

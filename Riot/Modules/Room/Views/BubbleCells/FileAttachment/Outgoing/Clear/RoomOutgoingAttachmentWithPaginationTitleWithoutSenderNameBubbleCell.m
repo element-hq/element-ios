@@ -1,5 +1,6 @@
 /*
  Copyright 2015 OpenMarket Ltd
+ Copyright 2017 Vector Creations Ltd
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,8 +15,18 @@
  limitations under the License.
  */
 
-#import "MXKRoomIncomingTextMsgBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.h"
 
-@implementation MXKRoomIncomingTextMsgBubbleCell
+#import "ThemeService.h"
+#import "GeneratedInterface-Swift.h"
+
+@implementation RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell
+
+- (void)customizeTableViewCellRendering
+{
+    [super customizeTableViewCellRendering];
+
+    self.messageTextView.tintColor = ThemeService.shared.theme.tintColor;
+}
 
 @end
