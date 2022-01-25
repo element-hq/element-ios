@@ -61,6 +61,14 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         return _waveformView
     }
     
+    var backgroundViewColor: UIColor? {
+        didSet {
+            if let theme = currentTheme {
+                self.update(theme: theme)
+            }
+        }
+    }
+    
     override var bounds: CGRect {
         didSet {
             if oldValue.width != bounds.width {
@@ -128,7 +136,10 @@ class VoiceMessagePlaybackView: UIView, NibLoadable, Themable {
         self.backgroundColor = theme.colors.background
         playButton.backgroundColor = theme.colors.background
         playButton.tintColor = theme.colors.secondaryContent
-        backgroundView.backgroundColor = theme.colors.quinaryContent
+        
+        let backgroundViewColor = self.backgroundViewColor ?? theme.colors.quinaryContent
+        
+        backgroundView.backgroundColor = backgroundViewColor
         _waveformView.primaryLineColor =  theme.colors.quarterlyContent
         _waveformView.secondaryLineColor = theme.colors.secondaryContent
         elapsedTimeLabel.textColor = theme.colors.tertiaryContent
