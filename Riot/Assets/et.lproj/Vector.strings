@@ -1556,3 +1556,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Loo kasutajakonto";
+"poll_edit_form_poll_type_closed_description" = "Tulemusi kuvame vaid siis, kui küsitlus on lõppenud";
+"poll_edit_form_poll_type_closed" = "Küsitlus on lõppenud";
+"poll_edit_form_poll_type_open_description" = "Osalejad näevad tulemusi peale oma valiku salvestamist";
+"poll_edit_form_poll_type_open" = "Ava küsitlus";
+"poll_edit_form_update_failure_subtitle" = "Palun proovi uuesti";
+"poll_edit_form_update_failure_title" = "Küsitluse muutmine ei õnnestunud";
+"poll_edit_form_poll_type" = "Küsitluse tüüp";
