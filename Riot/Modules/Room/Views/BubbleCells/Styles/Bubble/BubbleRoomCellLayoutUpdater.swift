@@ -99,6 +99,14 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         cell.setNeedsUpdateConstraints()
     }
     
+    func setupLayout(forOutgoingFileAttachmentCell cell: MXKRoomBubbleTableViewCell) {
+                
+        // Hide avatar view
+        cell.pictureView?.isHidden = true
+        
+        self.setupOutgoingFileAttachViewMargins(for: cell)
+    }
+    
     // MARK: Themable
     
     func update(theme: Theme) {
@@ -157,7 +165,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
                 let messageType = MXMessageType(identifier: messageTypeString)
                 
                 switch messageType {
-                case .text :
+                case .text, .emote, .file:
                     return true
                 default:
                     break
@@ -309,5 +317,29 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         cell.msgTextViewTrailingConstraint = rightConstraint
         
         cell.msgTextViewBottomConstraint.constant += bottomMargin
+    }
+    
+    private func setupOutgoingFileAttachViewMargins(for cell: MXKRoomBubbleTableViewCell) {
+        
+        guard let attachmentView = cell.attachmentView else {
+            return
+        }
+
+        let contentView = cell.contentView
+        
+        // TODO: Use constants
+        // Same as URL preview
+        let rightMargin: CGFloat = 34.0
+
+        if let attachViewLeadingConstraint = cell.attachViewLeadingConstraint {
+            attachViewLeadingConstraint.isActive = false
+            cell.attachViewLeadingConstraint = nil
+        }
+
+        let rightConstraint = attachmentView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -rightMargin)
+
+        NSLayoutConstraint.activate([
+            rightConstraint
+        ])
     }
 }

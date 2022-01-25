@@ -215,7 +215,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                 let messageType = MXMessageType(identifier: messageTypeString)
                 
                 switch messageType {
-                case .text:
+                case .text, .emote, .file:
                     return true
                 default:
                     break

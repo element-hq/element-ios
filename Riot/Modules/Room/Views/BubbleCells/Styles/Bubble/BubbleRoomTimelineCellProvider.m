@@ -16,11 +16,21 @@
 
 #import "BubbleRoomTimelineCellProvider.h"
 
+#pragma mark - Imports
+
+#pragma mark Text message
+
+// Outgoing
+
+// Clear
 #import "RoomOutgoingTextMsgBubbleCell.h"
 #import "RoomOutgoingTextMsgWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingTextMsgWithPaginationTitleBubbleCell.h"
 #import "RoomOutgoingTextMsgWithoutSenderNameBubbleCell.h"
 #import "RoomOutgoingTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
+#import "RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.h"
+
+// Encrypted
 
 #import "RoomOutgoingEncryptedTextMsgBubbleCell.h"
 #import "RoomOutgoingEncryptedTextMsgWithoutSenderInfoBubbleCell.h"
@@ -28,9 +38,18 @@
 #import "RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.h"
 #import "RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.h"
 
+#pragma mark Attachment
+
+// Outgoing
+
+// Clear
 #import "RoomOutgoingAttachmentBubbleCell.h"
 #import "RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingAttachmentWithPaginationTitleBubbleCell.h"
+// Encrypted
+#import "RoomOutgoingEncryptedAttachmentBubbleCell.h"
+#import "RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
+#import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
 @implementation BubbleRoomTimelineCellProvider
 
@@ -50,6 +69,21 @@
         @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitle) : RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithoutSenderNameBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingTextMessageEncryptedWithPaginationTitleWithoutSenderName) : RoomOutgoingEncryptedTextMsgWithPaginationTitleWithoutSenderNameBubbleCell.class,
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)outgoingAttachmentCellsMapping
+{
+    // Hide sender info and avatar for bubble outgoing file attachment
+    return @{
+        // Clear
+        @(RoomTimelineCellIdentifierOutgoingAttachment) : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithoutSenderInfo) : RoomOutgoingAttachmentWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentWithPaginationTitle) : RoomOutgoingAttachmentWithPaginationTitleWithoutSenderNameBubbleCell.class,
+        // Encrypted
+        @(RoomTimelineCellIdentifierOutgoingAttachmentEncrypted) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithPaginationTitle) : RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class
     };
 }
 
