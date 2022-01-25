@@ -1414,7 +1414,7 @@
 "spaces_no_room_found_detail" = "Деяких результатів може бути не видно, бо вони закриті й потребують запрошення.";
 "spaces_no_member_found_detail" = "Шукаєте когось, хто ще не в %@? Запросіть їх вебпереглядачем або комп'ютером.";
 "spaces_invites_coming_soon_title" = "Запрошення ще в розробці";
-"spaces_coming_soon_detail" = "Ця можливість тут іще не втілена, але скоро буде. Поки що можете зробити це в Element на комп'ютері.";
+"spaces_coming_soon_detail" = "Ця можливість ще не втілена, але скоро буде. Поки що можете зробити це в %@ на комп'ютері.";
 "space_participants_action_remove" = "Вилучити з цього простору";
 "space_participants_action_ban" = "Заблокувати в цьому просторі";
 
@@ -1476,7 +1476,7 @@
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Можете прочитати всі наші умови %@.";
 "analytics_prompt_message_upgrade" = "Раніше ви погодилися надсилати нам анонімні дані про використання. Тепер, щоб розуміти, як люди використовують кілька пристроїв, ми створимо спільний для ваших пристроїв випадковий ідентифікатор.";
-"analytics_prompt_message_new_user" = "Допомагайте нам визначати проблеми й удосконалювати Element, надсилаючи анонімні дані про використання. Щоб розуміти, як люди використовують кілька пристроїв, ми створимо спільний для ваших пристроїв випадковий ідентифікатор.";
+"analytics_prompt_message_new_user" = "Допомагайте нам визначати проблеми й удосконалювати %@, надсилаючи анонімні дані про використання. Щоб розуміти, як люди використовують кілька пристроїв, ми створимо спільний для ваших пристроїв випадковий ідентифікатор.";
 
 // Analytics
 "analytics_prompt_title" = "Допоможіть удосконалити %@";
@@ -1702,3 +1702,32 @@
 "room_details_flair_section" = "Показувати значки для спільнот";
 "settings_flair" = "Показувати значок, де це дозволено";
 "room_warning_about_encryption" = "Наскрізне шифрування ще на етапі бета-тестування й може бути ненадійним.\n\nПоки що не варто довіряти йому захист даних.\n\nПристрої ще не зможуть розшифрувати історію до того, як з них приєдналися до кімнати.\n\nЗашифровані повідомлення не буде показано у клієнтах, які ще не використовують шифрування.";
+"location_sharing_settings_toggle_title" = "Увімкнути надсилання місцеперебування";
+"location_sharing_settings_header" = "Надсилання місцеперебування";
+"location_sharing_open_google_maps" = "Відкрити в Картах Google";
+"location_sharing_open_apple_maps" = "Відкрити в Apple Maps";
+"location_sharing_invalid_authorization_settings" = "Налаштування";
+"location_sharing_invalid_authorization_not_now" = "Не зараз";
+"location_sharing_invalid_authorization_error_title" = "%@ не має дозволу на доступ до вашого місцеперебування. Ви можете увімкнути доступ у Налаштування > Місцеперебування";
+"location_sharing_locating_user_error_title" = "%@ не може отримати доступ до вашого місцеперебування. Повторіть спробу пізніше.";
+"location_sharing_loading_map_error_title" = "%@ не може завантажити карту. Повторіть спробу пізніше.";
+"location_sharing_share_action" = "Поділиться";
+"location_sharing_close_action" = "Закрити";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Місцеперебування";
+"ok" = "Гаразд";
+"settings_enable_room_message_bubbles" = "Бульбашки повідомлень";
+"onboarding_splash_page_4_message" = "Елемент також чудово підходить для роботи. Йому довіряють найбезпечніші організації світу.";
+"onboarding_splash_page_4_title_no_pun" = "Спілкування зі своєю командою.";
+"onboarding_splash_page_3_message" = "Наскрізне шифрування та відсутність потреби у телефонному номері. Без реклами чи аналізу даних.";
+"onboarding_splash_page_3_title" = "Безпечне спілкування.";
+"onboarding_splash_page_2_message" = "Оберіть, де зберігати ваші бесіди, що дасть вам контроль і незалежність. Спілкуйтеся через Matrix.";
+"onboarding_splash_page_2_title" = "Ви контролюєте все.";
+"onboarding_splash_page_1_message" = "Безпечне та незалежне спілкування, яке дає вам такий же рівень приватності як особиста розмова у вашому власному домі.";
+"onboarding_splash_page_1_title" = "Будьте господарем свого спілкування.";
+"onboarding_splash_login_button_title" = "У мене вже є обліковий запис";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Створити обліковий запис";
