@@ -16,19 +16,9 @@
 
 import Foundation
 
-/// The static list of mocked screens in RiotSwiftUI
-@available(iOS 14.0, *)
-enum MockAppScreens {
-    static let appScreens: [MockScreenState.Type] = [
-        MockLocationSharingScreenState.self,
-        MockAnalyticsPromptScreenState.self,
-        MockUserSuggestionScreenState.self,
-        MockPollEditFormScreenState.self,
-        MockTimelinePollScreenState.self,
-        MockTemplateSimpleScreenScreenState.self,
-        MockTemplateUserProfileScreenState.self,
-        MockTemplateRoomListScreenState.self,
-        MockTemplateRoomChatScreenState.self
-    ]
+protocol TemplateSimpleScreenViewModelProtocol {
+    
+    var completion: ((TemplateSimpleScreenViewModelResult) -> Void)? { get set }
+    @available(iOS 14, *)
+    var context: TemplateSimpleScreenViewModelType.Context { get }
 }
-
