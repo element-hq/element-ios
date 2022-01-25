@@ -24,11 +24,11 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     private var theme: Theme
     
     private var incomingColor: UIColor {
-        return self.theme.colors.system
+        return self.theme.bubbleCellIncomingBackgroundColor
     }
     
     private var outgoingColor: UIColor {
-        return self.theme.colors.accent.withAlphaComponent(0.10)
+        return self.theme.bubbleCellOutgoingBackgroundColor
     }
     
     // MARK: - Setup
