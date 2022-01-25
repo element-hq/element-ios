@@ -5,3 +5,4 @@
 "NSContactsUsageDescription" = "Element affichera vos contacts pour que vous puissiez les inviter à parler.";
 "NSCalendarsUsageDescription" = "Voir vos rendez-vous dans l’application.";
 "NSFaceIDUsageDescription" = "Face ID est utilisé pour accéder à votre application.";
+"NSLocationWhenInUseUsageDescription" = "Element doit accéder à votre emplacement pour vous permettre de la partager aux autres utilisateurs sur une carte.";

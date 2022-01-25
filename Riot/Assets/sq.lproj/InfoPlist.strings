@@ -5,3 +5,4 @@
 "NSContactsUsageDescription" = "Element-i do të shfaqë kontaktet tuaja, që kështu të mund t’i ftoni për të biseduar.";
 "NSCalendarsUsageDescription" = "Shihini te aplikacioni takimet tuaja të planifikuara.";
 "NSFaceIDUsageDescription" = "Face ID përdoret që të hyni në aplikacionin tuaj.";
+"NSLocationWhenInUseUsageDescription" = "Kur ndani vendndodhjen tuaj me persona, Element-i ka nevojë për hyrje në të, që t’u trgojë atyre një hartë.";
