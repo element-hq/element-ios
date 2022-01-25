@@ -2654,17 +2654,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagLocation)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierLocationWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierLocationWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingLocation;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierLocation;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingLocation;
+            }
         }
     }
     else if (bubbleData.isIncoming)
