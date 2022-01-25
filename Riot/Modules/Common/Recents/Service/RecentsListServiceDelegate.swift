@@ -21,5 +21,11 @@ public protocol RecentsListServiceDelegate: AnyObject {
     
     /// Delegate method to be called when service data updated
     /// - Parameter service: service object
-    func serviceDidChangeData(_ service: RecentsListServiceProtocol)
+    @objc optional func recentsListServiceDidChangeData(_ service: RecentsListServiceProtocol)
+    
+    /// Delegate method to be called when a specific section data updated. Called for each updated section before `recentsListServiceDidChangeData` if implemented.
+    /// - Parameter service: service object
+    /// - Parameter section: updated section
+    @objc optional func recentsListServiceDidChangeData(_ service: RecentsListServiceProtocol,
+                                                        forSection section: RecentsListServiceSection)
 }

@@ -1492,7 +1492,7 @@
 "space_private_join_rule" = "Espace privé";
 "space_participants_action_ban" = "Supprimer de cet espace";
 "space_participants_action_remove" = "Enlever de cet espace";
-"spaces_coming_soon_detail" = "Cette fonctionnalité n’a pas été implémentée ici, mais elle arrive. Pour effectuer cette action, vous pouvez utiliser Element sur votre ordinateur.";
+"spaces_coming_soon_detail" = "Cette fonctionnalité n’a pas été implémentée ici, mais elle arrive. Pour effectuer cette action, vous pouvez utiliser %@ sur votre ordinateur.";
 "spaces_invites_coming_soon_title" = "Les invitations arrivent prochainement";
 "spaces_add_rooms_coming_soon_title" = "L’ajout de salons arrive bientôt";
 "spaces_coming_soon_title" = "Prochainement";
@@ -1581,7 +1581,7 @@
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Vous pouvez lire nos conditions d’utilisation %@.";
 "analytics_prompt_message_upgrade" = "Vous aviez consenti précédemment à partager des rapports d’utilisation avec nous. Désormais, pour nous aider à comprendre comment les gens utilisent cette application sur plusieurs appareils, nous allons générer un identifiant aléatoire commun à tous vos appareils.";
-"analytics_prompt_message_new_user" = "Aidez nous à identifier les problèmes et améliorer Element en envoyant des rapports d’usage anonymes. Pour comprendre de quelle manière les gens utilisent Element sur plusieurs appareils, nous créeront un identifiant aléatoire commun à tous vos appareils.";
+"analytics_prompt_message_new_user" = "Aidez nous à identifier les problèmes et améliorer %@ en envoyant des rapports d’usage anonymes. Pour comprendre de quelle manière les gens utilisent Element sur plusieurs appareils, nous créeront un identifiant aléatoire commun à tous vos appareils.";
 
 // Analytics
 "analytics_prompt_title" = "Aidez à améliorer %@";
@@ -1604,3 +1604,32 @@
 "find_your_contacts_title" = "Commencez par lister vos contacts";
 "settings_contacts_enable_sync_description" = "Cette fonctionnalité utilisera votre serveur d'identité pour vous connecter avec vos contacts, ainsi que pour les aider à vous trouver.";
 "settings_contacts_enable_sync" = "Trouvez vos contacts";
+"location_sharing_settings_toggle_title" = "Activer le partage de localisation";
+"location_sharing_settings_header" = "Partage de localisation";
+"location_sharing_open_google_maps" = "Ouvrir dans Google Maps";
+"location_sharing_open_apple_maps" = "Ouvrir dans Apple Plans";
+"location_sharing_invalid_authorization_settings" = "Paramètres";
+"location_sharing_invalid_authorization_not_now" = "Pas maintenant";
+"location_sharing_invalid_authorization_error_title" = "%@ n’a pas les autorisations pour accéder à votre localisation. Vous pouvez l’autoriser dans Réglages > Confidentialité";
+"location_sharing_locating_user_error_title" = "%@ n’a pas pu déterminer votre localisation. Veuillez ré-essayer plus tard.";
+"location_sharing_loading_map_error_title" = "%@ n’a pas pu charger la carte. Veuillez ré-essayer plus tard.";
+"location_sharing_share_action" = "Partager";
+"location_sharing_close_action" = "Fermer";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Localisation";
+"settings_enable_room_message_bubbles" = "Messages en bulles";
+"onboarding_splash_page_4_message" = "Element est parfaite pour le bureau. Les sociétés aux plus gros besoins de sécurité lui font confiance.";
+"onboarding_splash_page_4_title_no_pun" = "Une messagerie pour votre équipe.";
+"onboarding_splash_page_3_message" = "Chiffrée de bout en bout, aucun numéro de téléphone requis. Pas de pub ni d’exploitation de données.";
+"onboarding_splash_page_3_title" = "Messagerie sécurisée.";
+"onboarding_splash_page_2_message" = "Décidez où vos conversations sont stockées, en toute liberté et indépendance. Grâce à Matrix.";
+"onboarding_splash_page_2_title" = "C’est vous qui décidez.";
+"onboarding_splash_page_1_message" = "Une messagerie sécurisée et indépendante qui vous garantit le même niveau de confidentialité qu’une conversation en face à face chez vous.";
+"onboarding_splash_page_1_title" = "Maîtrisez vos conversations.";
+"onboarding_splash_login_button_title" = "J’ai déjà un compte";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Créer un compte";
+"ok" = "Ok";
