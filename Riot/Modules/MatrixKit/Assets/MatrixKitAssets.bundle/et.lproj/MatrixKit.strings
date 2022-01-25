@@ -270,7 +270,7 @@
 // Language picker
 "language_picker_title" = "Vali keel";
 "language_picker_default_language" = "Vaikimisi (%@)";
-"notice_room_invite" = "%@ kutsus kasutajat %@";
+"notice_room_invite" = "%@ saatis kutse kasutajale %@";
 "notice_room_third_party_invite" = "%@ saatis kasutajale %@ kutse jututoaga liitumiseks";
 "notice_room_third_party_registered_invite" = "%@ võttis vastu kutse %@ nimel";
 "notice_room_third_party_revoked_invite" = "%@ võttis tagasi jututoaga liitumise kutse kasutajalt %@";
@@ -433,7 +433,7 @@
 "notice_room_history_visible_to_members_from_invited_point_for_dm" = "%@ määras, et jututoa tulevane ajalugu on nähtav kõikidele selle liikmetele liitumiskutse saatmise hetkest.";
 "notice_room_history_visible_to_members_from_joined_point_for_dm" = "%@ määras, et jututoa tulevane ajalugu on nähtav kõikidele selle liikmetele nende liitumise hetkest.";
 "room_left_for_dm" = "Sina lahkusid";
-"notice_room_third_party_invite_for_dm" = "%@ kutsus kasutajat %@";
+"notice_room_third_party_invite_for_dm" = "%@ saatis kutse kasutajale %@";
 "notice_room_third_party_revoked_invite_for_dm" = "%@ võttis tagasi kasutaja %@ kutse";
 "notice_room_name_changed_for_dm" = "%@ muutis jututoa uueks nimeks %@.";
 "notice_room_third_party_invite_by_you_for_dm" = "Sina kutsusid kasutajat %@";
@@ -478,3 +478,4 @@
 "room_displayname_all_other_members_left" = "%@ (lahkus(id))";
 "attachment_unsupported_preview_message" = "See failitüüp ei ole toetatud.";
 "attachment_unsupported_preview_title" = "Eelvaate kuvamine ei õnnestu";
+"message_reply_to_sender_sent_their_location" = "on jaganud oma asukohta.";

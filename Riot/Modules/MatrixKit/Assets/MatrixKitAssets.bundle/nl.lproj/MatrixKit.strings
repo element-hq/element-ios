@@ -311,7 +311,7 @@
 // titles 
 
 // button names 
-"ok" = "Oké";
+"ok" = "OK";
 "cancel" = "Annuleren";
 "save" = "Opslaan";
 "leave" = "Verlaten";
@@ -540,3 +540,4 @@
 "room_displayname_all_other_members_left" = "%@ (Vertrok)";
 "auth_username_in_use" = "Inlognaam al in gebruik";
 "rename" = "Hernoemen";
+"message_reply_to_sender_sent_their_location" = "deelde hun locatie.";
