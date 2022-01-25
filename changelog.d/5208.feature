@@ -1,1 +1,0 @@
-Message bubbles: Text message layout.
