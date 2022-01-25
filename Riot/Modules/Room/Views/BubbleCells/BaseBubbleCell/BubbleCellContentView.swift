@@ -36,6 +36,9 @@ final class BubbleCellContentView: UIView, NibLoadable {
     
     @IBOutlet weak var innerContentView: UIView!
     
+    @IBOutlet weak var innerContentViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var innerContentViewTrailingConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var encryptionStatusContainerView: UIView!
     @IBOutlet weak var encryptionImageView: UIImageView!
     
