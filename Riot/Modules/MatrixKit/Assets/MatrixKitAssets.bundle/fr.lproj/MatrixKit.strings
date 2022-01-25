@@ -275,7 +275,7 @@
 "notice_conference_call_started" = "Téléconférence en VoIP démarrée";
 "notice_conference_call_finished" = "Téléconférence en VoIP terminée";
 // button names 
-"ok" = "OK";
+"ok" = "Ok";
 "send" = "Envoyer";
 "copy_button_name" = "Copier";
 "resend" = "Renvoyer";

@@ -134,7 +134,8 @@ typedef NS_ENUM(NSUInteger, LOCAL_CONTACTS)
 typedef NS_ENUM(NSUInteger, USER_INTERFACE)
 {
     USER_INTERFACE_LANGUAGE_INDEX = 0,
-    USER_INTERFACE_THEME_INDEX
+    USER_INTERFACE_THEME_INDEX,
+    USER_INTERFACE_TIMELINE_STYLE_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, IDENTITY_SERVER)
@@ -162,8 +163,7 @@ typedef NS_ENUM(NSUInteger, ABOUT)
 
 typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
-    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX,
-    LABS_ENABLE_POLLS
+    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -514,9 +514,16 @@ TableViewSectionsDelegate>
     }
     
     Section *sectionUserInterface = [Section sectionWithTag:SECTION_TAG_USER_INTERFACE];
+    sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
+    
     [sectionUserInterface addRowWithTag:USER_INTERFACE_LANGUAGE_INDEX];
     [sectionUserInterface addRowWithTag:USER_INTERFACE_THEME_INDEX];
-    sectionUserInterface.headerTitle = [VectorL10n settingsUserInterface];
+    
+    if (BuildSettings.roomScreenAllowTimelineStyleConfiguration)
+    {
+        [sectionUserInterface addRowWithTag:USER_INTERFACE_TIMELINE_STYLE_INDEX];
+    }
+        
     [tmpSections addObject: sectionUserInterface];
     
     Section *sectionAdvanced = [Section sectionWithTag:SECTION_TAG_ADVANCED];
@@ -571,7 +578,6 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        [sectionLabs addRowWithTag:LABS_ENABLE_POLLS];
         
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
@@ -2226,6 +2232,19 @@ TableViewSectionsDelegate>
             [cell vc_setAccessoryDisclosureIndicatorWithCurrentTheme];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
+        else if (row == USER_INTERFACE_TIMELINE_STYLE_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch* labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsEnableRoomMessageBubbles];
+            
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenEnableMessageBubbles;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            labelAndSwitchCell.mxkSwitch.enabled = YES;
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRoomMessageBubbles:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_IGNORED_USERS)
     {
@@ -2440,19 +2459,6 @@ TableViewSectionsDelegate>
             labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
             
             [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableRingingForGroupCalls:) forControlEvents:UIControlEventValueChanged];
-            
-            cell = labelAndSwitchCell;
-        }
-        
-        if (row == LABS_ENABLE_POLLS && BuildSettings.pollsEnabled)
-        {
-            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
-            
-            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnabledPolls];
-            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.roomScreenAllowPollsAction;
-            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
-            
-            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnablePolls:) forControlEvents:UIControlEventValueChanged];
             
             cell = labelAndSwitchCell;
         }
@@ -3188,11 +3194,6 @@ TableViewSectionsDelegate>
     RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
 }
 
-- (void)toggleEnablePolls:(UISwitch *)sender
-{
-    RiotSettings.shared.roomScreenAllowPollsAction = sender.isOn;
-}
-
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
 {
     RiotSettings.shared.pinRoomsWithMissedNotificationsOnHome = sender.isOn;
@@ -3872,6 +3873,18 @@ TableViewSectionsDelegate>
 - (void)toggleNSFWPublicRoomsFiltering:(UISwitch *)sender
 {
     RiotSettings.shared.showNSFWPublicRooms = sender.isOn;
+}
+
+- (void)toggleEnableRoomMessageBubbles:(UISwitch *)sender
+{
+    RiotSettings.shared.roomScreenEnableMessageBubbles = sender.isOn;
+            
+    [[RoomTimelineConfiguration shared] updateStyleWithIdentifier:RiotSettings.shared.roomTimelineStyleIdentifier];
+    
+    // Close all room data sources
+    // Be sure to use new room timeline style configurations
+    MXKRoomDataSourceManager *roomDataSourceManager = [MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession];
+    [roomDataSourceManager reset];
 }
 
 #pragma mark - TextField listener

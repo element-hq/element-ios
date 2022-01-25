@@ -116,3 +116,6 @@
 /** General **/
 
 "NOTIFICATION" = "Сповіщення";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ надсилає дані про своє місцеперебування";
