@@ -92,10 +92,15 @@ typedef NS_ENUM(NSUInteger, RoomTimelineCellIdentifier) {
     RoomTimelineCellIdentifierGroupCallStatus,
     
     // - Voice message
-    RoomTimelineCellIdentifierVoiceMessage,
-    RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo,
-    RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle,
-
+    // -- Incoming
+    RoomTimelineCellIdentifierIncomingVoiceMessage,
+    RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo,
+    RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle,
+    // -- Outgoing
+    RoomTimelineCellIdentifierOutgoingVoiceMessage,
+    RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo,
+    RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle,
+    
     // - Poll
     RoomTimelineCellIdentifierPoll,
     RoomTimelineCellIdentifierPollWithoutSenderInfo,
