@@ -22,6 +22,7 @@ protocol ThreadListEmptyViewDelegate: AnyObject {
     func threadListEmptyViewTappedShowAllThreads(_ emptyView: ThreadListEmptyView)
 }
 
+/// View to be shown on the thread list screen when no thread is available. Use a `ThreadListEmptyModel` instance to configure.
 class ThreadListEmptyView: UIView {
     
     @IBOutlet weak var delegate: ThreadListEmptyViewDelegate?
@@ -38,7 +39,7 @@ class ThreadListEmptyView: UIView {
         loadNibContent()
     }
     
-    func configure(withViewModel viewModel: ThreadListEmptyViewModel) {
+    func configure(withViewModel viewModel: ThreadListEmptyModel) {
         iconView.image = viewModel.icon
         titleLabel.text = viewModel.title
         infoLabel.text = viewModel.info

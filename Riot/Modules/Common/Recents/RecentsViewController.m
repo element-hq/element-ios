@@ -875,7 +875,7 @@ NSString *const RecentsViewControllerDataReadyNotification = @"RecentsViewContro
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:nil
                                                                                   mxSession:matrixSession
-                                                                 threadParameters:nil
+                                                                           threadParameters:nil
                                                                      presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters completion:^{

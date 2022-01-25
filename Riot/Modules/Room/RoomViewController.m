@@ -93,7 +93,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @interface RoomViewController () <UISearchBarDelegate, UIGestureRecognizerDelegate, UIScrollViewAccessibilityDelegate, RoomTitleViewTapGestureDelegate, RoomParticipantsViewControllerDelegate, MXKRoomMemberDetailsViewControllerDelegate, ContactsTableViewControllerDelegate, MXServerNoticesDelegate, RoomContextualMenuViewControllerDelegate,
     ReactionsMenuViewModelCoordinatorDelegate, EditHistoryCoordinatorBridgePresenterDelegate, MXKDocumentPickerPresenterDelegate, EmojiPickerCoordinatorBridgePresenterDelegate,
     ReactionHistoryCoordinatorBridgePresenterDelegate, CameraPresenterDelegate, MediaPickerCoordinatorBridgePresenterDelegate,
-    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, RoomCoordinatorBridgePresenterDelegate, ThreadsCoordinatorBridgePresenterDelegate>
+    RoomDataSourceDelegate, RoomCreationModalCoordinatorBridgePresenterDelegate, RoomInfoCoordinatorBridgePresenterDelegate, DialpadViewControllerDelegate, RemoveJitsiWidgetViewDelegate, VoiceMessageControllerDelegate, SpaceDetailPresenterDelegate, UserSuggestionCoordinatorBridgeDelegate, ThreadsCoordinatorBridgePresenterDelegate>
 {
     
     // The preview header
@@ -197,9 +197,8 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 @property (nonatomic, strong) RoomMessageURLParser *roomMessageURLParser;
 @property (nonatomic, strong) RoomCreationModalCoordinatorBridgePresenter *roomCreationModalCoordinatorBridgePresenter;
 @property (nonatomic, strong) RoomInfoCoordinatorBridgePresenter *roomInfoCoordinatorBridgePresenter;
-@property (nonatomic, strong) RoomCoordinatorBridgePresenter *threadBridgePresenter;
 @property (nonatomic, strong) CustomSizedPresentationController *customSizedPresentationController;
-@property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsCoordinatorBridgePresenter;
+@property (nonatomic, strong) ThreadsCoordinatorBridgePresenter *threadsBridgePresenter;
 @property (nonatomic, getter=isActivitiesViewExpanded) BOOL activitiesViewExpanded;
 @property (nonatomic, getter=isScrollToBottomHidden) BOOL scrollToBottomHidden;
 @property (nonatomic, getter=isMissedDiscussionsBadgeHidden) BOOL missedDiscussionsBadgeHidden;
@@ -4341,10 +4340,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (IBAction)onThreadListTapped:(id)sender
 {
-    self.threadsCoordinatorBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
-                                                                                                 roomId:self.roomDataSource.roomId];
-    self.threadsCoordinatorBridgePresenter.delegate = self;
-    [self.threadsCoordinatorBridgePresenter pushFrom:self.navigationController animated:YES];
+    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
+                                                                                      roomId:self.roomDataSource.roomId
+                                                                                    threadId:nil];
+    self.threadsBridgePresenter.delegate = self;
+    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
 - (IBAction)onIntegrationsPressed:(id)sender
@@ -4473,7 +4473,7 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         [super scrollViewWillBeginDragging:scrollView];
     }
     
-    //  if data source is highlighting an event, dismiss the highlight when user dragges the table view
+    //  if data source is highlighting an event, dismiss the highlight when user drags the table view
     if (customizedRoomDataSource.highlightedEventId)
     {
         NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:customizedRoomDataSource.highlightedEventId];
@@ -6352,25 +6352,20 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
 
 - (void)openThreadWithId:(NSString *)threadId
 {
-    if (self.threadBridgePresenter)
+    if (self.threadsBridgePresenter)
     {
-        [self.threadBridgePresenter dismissWithAnimated:YES completion:nil];
-        self.threadBridgePresenter = nil;
+        [self.threadsBridgePresenter dismissWithAnimated:YES completion:nil];
+        self.threadsBridgePresenter = nil;
     }
-    
-    RoomDisplayConfiguration *configuration = RoomDisplayConfiguration.forThreads;
-    RoomCoordinatorBridgePresenterParameters *parameters = [[RoomCoordinatorBridgePresenterParameters alloc] initWithSession:self.mainSession
-                                                                                                                      roomId:self.roomDataSource.roomId
-                                                                                                                     eventId:nil
-                                                                                                                    threadId:threadId
-                                                                                                        displayConfiguration:configuration
-                                                                                                                 previewData:nil];
-    self.threadBridgePresenter = [[RoomCoordinatorBridgePresenter alloc] initWithParameters:parameters];
-    self.threadBridgePresenter.delegate = self;
-    [self.threadBridgePresenter pushFrom:self.navigationController animated:YES];
+
+    self.threadsBridgePresenter = [[ThreadsCoordinatorBridgePresenter alloc] initWithSession:self.mainSession
+                                                                                      roomId:self.roomDataSource.roomId
+                                                                                    threadId:threadId];
+    self.threadsBridgePresenter.delegate = self;
+    [self.threadsBridgePresenter pushFrom:self.navigationController animated:YES];
 }
 
-- (void)highlightEvent:(NSString *)eventId completion:(void (^)(void))completion
+- (void)highlightAndDisplayEvent:(NSString *)eventId completion:(void (^)(void))completion
 {
     NSInteger row = [self.roomDataSource indexOfCellDataWithEventId:eventId];
     if (row == NSNotFound)
@@ -6816,66 +6811,29 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     [self mention:member];
 }
 
-#pragma mark - RoomCoordinatorBridgePresenterDelegate
-
-- (void)roomCoordinatorBridgePresenterDidLeaveRoom:(RoomCoordinatorBridgePresenter *)bridgePresenter
-{
-    
-}
-
-- (void)roomCoordinatorBridgePresenterDidCancelRoomPreview:(RoomCoordinatorBridgePresenter *)bridgePresenter
-{
-    
-}
-
-- (void)roomCoordinatorBridgePresenter:(RoomCoordinatorBridgePresenter *)bridgePresenter
-                   didSelectRoomWithId:(NSString *)roomId
-                               eventId:(NSString*)eventId
-{
-    if (bridgePresenter == self.threadBridgePresenter && [roomId isEqualToString:self.roomDataSource.roomId] && eventId)
-    {
-        //  thread view wants to highlight an event in the timeline
-        //  dismiss thread view first
-        MXWeakify(self);
-        [self.threadBridgePresenter dismissWithAnimated:YES completion:^{
-            MXStrongifyAndReturnIfNil(self);
-            
-            [self highlightEvent:eventId completion:nil];
-        }];
-    }
-}
-
-- (void)roomCoordinatorBridgePresenterDidDismissInteractively:(RoomCoordinatorBridgePresenter *)bridgePresenter
-{
-    if (bridgePresenter == self.threadBridgePresenter)
-    {
-        self.threadBridgePresenter = nil;
-    }
-}
-
 #pragma mark - ThreadsCoordinatorBridgePresenterDelegate
 
 - (void)threadsCoordinatorBridgePresenterDelegateDidComplete:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    self.threadsCoordinatorBridgePresenter = nil;
+    self.threadsBridgePresenter = nil;
 }
 
 - (void)threadsCoordinatorBridgePresenterDelegateDidSelect:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter roomId:(NSString *)roomId eventId:(NSString *)eventId
 {
     MXWeakify(self);
-    [self.threadsCoordinatorBridgePresenter dismissWithAnimated:YES completion:^{
+    [self.threadsBridgePresenter dismissWithAnimated:YES completion:^{
         MXStrongifyAndReturnIfNil(self);
         
         if (eventId)
         {
-            [self highlightEvent:eventId completion:nil];
+            [self highlightAndDisplayEvent:eventId completion:nil];
         }
     }];
 }
 
 - (void)threadsCoordinatorBridgePresenterDidDismissInteractively:(ThreadsCoordinatorBridgePresenter *)coordinatorBridgePresenter
 {
-    self.threadsCoordinatorBridgePresenter = nil;
+    self.threadsBridgePresenter = nil;
 }
 
 @end

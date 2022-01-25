@@ -16,11 +16,10 @@
 
 import Foundation
 
-struct ThreadListEmptyViewModel {
-    let icon: UIImage?
-    let title: String?
-    let info: String?
-    let tip: String?
-    let showAllThreadsButtonTitle: String?
-    let showAllThreadsButtonHidden: Bool
+struct ThreadModel {
+    let rootMessageSenderAvatar: AvatarViewDataProtocol?
+    let rootMessageSenderDisplayName: String?
+    let rootMessageText: String?
+    let lastMessageTime: String?
+    let summaryViewModel: ThreadSummaryModel?
 }

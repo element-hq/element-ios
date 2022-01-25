@@ -16,12 +16,11 @@
 
 import Foundation
 
-struct ThreadRoomTitleViewModel {
-    var roomAvatar: AvatarViewDataProtocol?
-    var roomEncryptionBadge: UIImage?
-    var roomDisplayName: String?
-    
-    static let empty = ThreadRoomTitleViewModel(roomAvatar: nil,
-                                                roomEncryptionBadge: nil,
-                                                roomDisplayName: nil)
+struct ThreadListEmptyModel {
+    let icon: UIImage?
+    let title: String?
+    let info: String?
+    let tip: String?
+    let showAllThreadsButtonTitle: String?
+    let showAllThreadsButtonHidden: Bool
 }

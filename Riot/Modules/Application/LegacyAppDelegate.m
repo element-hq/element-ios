@@ -1380,7 +1380,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                                                   eventId:eventId
                                                                                                                 mxSession:account.mxSession
-                                                                                               threadParameters:threadParameters
+                                                                                                         threadParameters:threadParameters
                                                                                                    presentationParameters:screenPresentationParameters];
                     
                     [self showRoomWithParameters:roomNavigationParameters];
@@ -2914,7 +2914,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:mxSession
-                                                                 threadParameters:nil
+                                                                           threadParameters:nil
                                                                      presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];

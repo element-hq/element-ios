@@ -26,15 +26,20 @@ struct ThreadsCoordinatorParameters {
     
     /// Room identifier
     let roomId: String
+
+    /// Thread identifier. Specified thread will be opened if provided, the thread list otherwise
+    let threadId: String?
                 
     /// The navigation router that manage physical navigation
     let navigationRouter: NavigationRouterType
     
     init(session: MXSession,
          roomId: String,
+         threadId: String?,
          navigationRouter: NavigationRouterType? = nil) {
         self.session = session
         self.roomId = roomId
+        self.threadId = threadId
         self.navigationRouter = navigationRouter ?? NavigationRouter(navigationController: RiotNavigationController())
     }
 }

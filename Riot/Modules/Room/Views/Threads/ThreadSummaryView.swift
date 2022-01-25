@@ -37,7 +37,7 @@ class ThreadSummaryView: UIView {
     @IBOutlet private weak var lastMessageAvatarView: UserAvatarView!
     @IBOutlet private weak var lastMessageContentLabel: UILabel!
     
-    private(set) var thread: MXThread!
+    private(set) var thread: MXThread?
     
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
         return UITapGestureRecognizer(target: self, action: #selector(tapped(_:)))
@@ -57,7 +57,7 @@ class ThreadSummaryView: UIView {
         configure()
     }
     
-    static func contentViewHeight(forThread thread: MXThread, fitting maxWidth: CGFloat) -> CGFloat {
+    static func contentViewHeight(forThread thread: MXThread?, fitting maxWidth: CGFloat) -> CGFloat {
         return Constants.viewHeight
     }
     
@@ -66,7 +66,7 @@ class ThreadSummaryView: UIView {
         loadNibContent()
     }
     
-    @nonobjc func configure(withViewModel viewModel: ThreadSummaryViewModel) {
+    @nonobjc func configure(withViewModel viewModel: ThreadSummaryModel) {
         numberOfRepliesLabel.text = String(viewModel.numberOfReplies)
         if let avatar = viewModel.lastMessageSenderAvatar {
             lastMessageAvatarView.fill(with: avatar)
@@ -105,7 +105,7 @@ class ThreadSummaryView: UIView {
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
             let lastMessageText = eventFormatter.string(from: lastMessage, with: roomState, error: formatterError)
             
-            let viewModel = ThreadSummaryViewModel(numberOfReplies: thread.numberOfReplies,
+            let viewModel = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
                                                    lastMessageSenderAvatar: avatarViewData,
                                                    lastMessageText: lastMessageText)
             self.configure(withViewModel: viewModel)
@@ -120,8 +120,6 @@ class ThreadSummaryView: UIView {
         delegate?.threadSummaryViewTapped(self)
     }
 }
-
-// extension ThreadSummaryView: NibLoadable {}
 
 extension ThreadSummaryView: NibOwnerLoadable {}
 

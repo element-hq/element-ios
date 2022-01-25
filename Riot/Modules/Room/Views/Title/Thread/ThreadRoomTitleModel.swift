@@ -16,21 +16,12 @@
 
 import Foundation
 
-/// Structure used to pass modules to routers with pop completion blocks.
-struct PresentableModule {
-    /// Actual presentable of the module
-    let presentable: Presentable
+struct ThreadRoomTitleModel {
+    let roomAvatar: AvatarViewDataProtocol?
+    let roomEncryptionBadge: UIImage?
+    let roomDisplayName: String?
     
-    /// Block to be called when the module is popped
-    let popCompletion: (() -> Void)?
-}
-
-//  MARK: - CustomStringConvertible
-
-extension PresentableModule: CustomStringConvertible {
-    
-    var description: String {
-        return "PresentableModule: \(presentable), pop completion: \(String(describing: popCompletion))"
-    }
-    
+    static let empty = ThreadRoomTitleModel(roomAvatar: nil,
+                                            roomEncryptionBadge: nil,
+                                            roomDisplayName: nil)
 }

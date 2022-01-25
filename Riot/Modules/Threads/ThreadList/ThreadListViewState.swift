@@ -23,7 +23,7 @@ enum ThreadListViewState {
     case idle
     case loading
     case loaded
-    case empty(_ viewModel: ThreadListEmptyViewModel)
+    case empty(_ viewModel: ThreadListEmptyModel)
     case showingFilterTypes
     case error(Error)
 }

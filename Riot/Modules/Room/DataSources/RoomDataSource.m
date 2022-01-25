@@ -464,6 +464,7 @@ const CGFloat kTypingCellHeight = 24;
                     {
                         threadSummaryView = [[ThreadSummaryView alloc] initWithThread:component.thread];
                         threadSummaryView.delegate = self;
+                        threadSummaryView.tag = index;
                         
                         [temporaryViews addObject:threadSummaryView];
                         UIView *upperDecorationView = reactionsView ?: urlPreviewView;

@@ -16,8 +16,21 @@
 
 import Foundation
 
-struct ThreadSummaryViewModel {
-    var numberOfReplies: Int
-    var lastMessageSenderAvatar: AvatarViewDataProtocol?
-    var lastMessageText: String?
+/// Structure used to pass modules to routers with pop completion blocks.
+struct NavigationModule {
+    /// Actual presentable of the module
+    let presentable: Presentable
+    
+    /// Block to be called when the module is popped
+    let popCompletion: (() -> Void)?
+}
+
+//  MARK: - CustomStringConvertible
+
+extension NavigationModule: CustomStringConvertible {
+    
+    var description: String {
+        return "NavigationModule: \(presentable), pop completion: \(String(describing: popCompletion))"
+    }
+    
 }

@@ -16,10 +16,8 @@
 
 import Foundation
 
-struct ThreadViewModel {
-    var rootMessageSenderAvatar: AvatarViewDataProtocol?
-    var rootMessageSenderDisplayName: String?
-    var rootMessageText: String?
-    var lastMessageTime: String?
-    var summaryViewModel: ThreadSummaryViewModel?
+struct ThreadSummaryModel {
+    let numberOfReplies: Int
+    let lastMessageSenderAvatar: AvatarViewDataProtocol?
+    let lastMessageText: String?
 }
