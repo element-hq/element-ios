@@ -51,7 +51,20 @@
 #import "RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.h"
 #import "RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.h"
 
+#import "GeneratedInterface-Swift.h"
+
 @implementation BubbleRoomTimelineCellProvider
+
+- (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView
+{
+    // Incoming
+    [tableView registerClass:VoiceMessageIncomingBubbleCell.class forCellReuseIdentifier:VoiceMessageIncomingBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageIncomingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageIncomingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageIncomingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageIncomingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+    // Outgoing
+    [tableView registerClass:VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class forCellReuseIdentifier:VoiceMessageOutgoingWithoutSenderInfoBubbleCell.defaultReuseIdentifier];
+    [tableView registerClass:VoiceMessageOutgoingWithPaginationTitleBubbleCell.class forCellReuseIdentifier:VoiceMessageOutgoingWithPaginationTitleBubbleCell.defaultReuseIdentifier];
+}
 
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping
 {
@@ -84,6 +97,20 @@
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncrypted) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithoutSenderInfo) : RoomOutgoingEncryptedAttachmentWithoutSenderInfoBubbleCell.class,
         @(RoomTimelineCellIdentifierOutgoingAttachmentEncryptedWithPaginationTitle) : RoomOutgoingEncryptedAttachmentWithPaginationTitleBubbleCell.class
+    };
+}
+
+- (NSDictionary<NSNumber*, Class>*)voiceMessageCellsMapping
+{
+    return @{
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingVoiceMessage) : VoiceMessageIncomingBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo) : VoiceMessageIncomingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle) : VoiceMessageIncomingWithPaginationTitleBubbleCell.class,
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessage) : VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo) : VoiceMessageOutgoingWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle) : VoiceMessageOutgoingWithPaginationTitleBubbleCell.class,
     };
 }
 
