@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerVoiceMessageCellsForTableView:(UITableView*)tableView;
 
+- (void)registerLocationCellsForTableView:(UITableView*)tableView;
+
 #pragma mark - Mapping
 
 - (NSDictionary<NSNumber*, Class>*)outgoingTextMessageCellsMapping;
@@ -31,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSDictionary<NSNumber*, Class>*)outgoingAttachmentCellsMapping;
 
 - (NSDictionary<NSNumber*, Class>*)voiceMessageCellsMapping;
+
+- (NSDictionary<NSNumber*, Class>*)locationCellsMapping;
 
 @end
 

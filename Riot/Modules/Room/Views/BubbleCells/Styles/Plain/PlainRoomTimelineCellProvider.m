@@ -448,9 +448,14 @@
 - (NSDictionary<NSNumber*, Class>*)locationCellsMapping
 {
     return @{
-        @(RoomTimelineCellIdentifierLocation) : LocationBubbleCell.class,
-        @(RoomTimelineCellIdentifierLocationWithoutSenderInfo) : LocationWithoutSenderInfoBubbleCell.class,
-        @(RoomTimelineCellIdentifierLocationWithPaginationTitle) : LocationWithPaginationTitleBubbleCell.class
+        // Incoming
+        @(RoomTimelineCellIdentifierIncomingLocation) : LocationBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithoutSenderInfo) : LocationWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierIncomingLocationWithPaginationTitle) : LocationWithPaginationTitleBubbleCell.class,
+        // Outgoing
+        @(RoomTimelineCellIdentifierOutgoingLocation) : LocationBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithoutSenderInfo) : LocationWithoutSenderInfoBubbleCell.class,
+        @(RoomTimelineCellIdentifierOutgoingLocationWithPaginationTitle) : LocationWithPaginationTitleBubbleCell.class
     };
 }
 
