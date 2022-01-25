@@ -3441,9 +3441,15 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 [self cancelEventSelection];
                 
-                NSArray *activityItems = @[selectedComponent.textMessage];
+                UIActivityViewController *activityViewController = nil;
+                if (selectedEvent.location) {
+                    activityViewController = [self.delegate roomViewController:self locationShareActivityViewControllerForEvent:selectedEvent];
+                }
                 
-                UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                if (activityViewController == nil) {
+                    NSArray *activityItems = @[selectedComponent.textMessage];
+                    activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+                }
                 
                 if (activityViewController)
                 {

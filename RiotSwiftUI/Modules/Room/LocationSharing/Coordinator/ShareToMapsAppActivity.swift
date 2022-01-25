@@ -20,25 +20,25 @@ extension UIActivity.ActivityType {
     static let shareToMapsApp = UIActivity.ActivityType("Element.ShareToMapsApp")
 }
 
-class ShareToMapsAppActivity: UIActivity {
-    enum MapsAppType {
+public class ShareToMapsAppActivity: UIActivity {
+    public enum MapsAppType {
         case apple
         case google
     }
     
-    let type: MapsAppType
-    let location: CLLocationCoordinate2D
+    private let type: MapsAppType
+    private let location: CLLocationCoordinate2D
     
     private override init() {
         fatalError()
     }
     
-    init(type: MapsAppType, location: CLLocationCoordinate2D) {
+    public init(type: MapsAppType, location: CLLocationCoordinate2D) {
         self.type = type
         self.location = location
     }
     
-    static func urlForMapsAppType(_ type: MapsAppType, location: CLLocationCoordinate2D) -> URL {
+    public static func urlForMapsAppType(_ type: MapsAppType, location: CLLocationCoordinate2D) -> URL {
         switch type {
         case .apple:
             return URL(string: "https://maps.apple.com?ll=\(location.latitude),\(location.longitude)&q=Pin")!
@@ -47,7 +47,7 @@ class ShareToMapsAppActivity: UIActivity {
         }
     }
     
-    override var activityTitle: String? {
+    public override var activityTitle: String? {
         switch type {
         case .apple:
             return VectorL10n.locationSharingOpenAppleMaps
@@ -60,15 +60,15 @@ class ShareToMapsAppActivity: UIActivity {
         return .action
     }
     
-    override var activityType: UIActivity.ActivityType {
+    public override var activityType: UIActivity.ActivityType {
         return .shareToMapsApp
     }
     
-    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+    public override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
         return true
     }
     
-    override func prepare(withActivityItems activityItems: [Any]) {
+    public override func prepare(withActivityItems activityItems: [Any]) {
         let url = Self.urlForMapsAppType(type, location: location)
         
         UIApplication.shared.open(url, options: [:]) { [weak self] result in
