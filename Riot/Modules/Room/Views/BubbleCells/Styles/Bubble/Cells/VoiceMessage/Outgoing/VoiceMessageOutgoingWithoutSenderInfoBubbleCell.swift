@@ -16,60 +16,29 @@
 
 import Foundation
 
-class VoiceMessageOutgoingWithoutSenderInfoBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
-    
-    private var playbackController: VoiceMessagePlaybackController!
-    
-    override func render(_ cellData: MXKCellData!) {
-        super.render(cellData)
+class VoiceMessageOutgoingWithoutSenderInfoBubbleCell: VoiceMessageBubbleCell {
         
-        guard let data = cellData as? RoomBubbleCellData else {
-            return
-        }
-        
-        guard data.attachment.type == MXKAttachmentTypeVoiceMessage || data.attachment.type == MXKAttachmentTypeAudio else {
-            fatalError("Invalid attachment type passed to a voice message cell.")
-        }
-        
-        if playbackController.attachment != data.attachment {
-            playbackController.attachment = data.attachment
-        }
-    }
-    
     override func setupViews() {
         super.setupViews()
+        
+        bubbleCellContentView?.showSenderInfo = false
         
         // TODO: Use constants
         // Same as outgoing message
         let rightMargin: CGFloat = 34.0
         let leftMargin: CGFloat = 80.0
-        
-        bubbleCellContentView?.backgroundColor = .clear
-        bubbleCellContentView?.showSenderInfo = false
-        bubbleCellContentView?.showPaginationTitle = false
+
         
         bubbleCellContentView?.innerContentViewTrailingConstraint.constant = rightMargin
         bubbleCellContentView?.innerContentViewLeadingConstraint.constant = leftMargin
-        
-        guard let contentView = bubbleCellContentView?.innerContentView else {
-            return
-        }
-        
-        playbackController = VoiceMessagePlaybackController(mediaServiceProvider: VoiceMessageMediaServiceProvider.sharedProvider,
-                                                            cacheManager: VoiceMessageAttachmentCacheManager.sharedManager)
-        
-        contentView.vc_addSubViewMatchingParent(playbackController.playbackView)
     }
     
     override func update(theme: Theme) {
-        
-        super.update(theme: theme)
-        
+                
         guard let playbackController = playbackController else {
             return
         }
         
-        playbackController.playbackView.update(theme: theme)
         playbackController.playbackView.backgroundViewColor = theme.bubbleCellOutgoingBackgroundColor
     }
 }

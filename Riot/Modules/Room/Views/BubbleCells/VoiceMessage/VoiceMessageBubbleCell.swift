@@ -18,7 +18,7 @@ import Foundation
 
 class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplayable {
     
-    private var playbackController: VoiceMessagePlaybackController!
+    private(set) var playbackController: VoiceMessagePlaybackController!
     
     override func render(_ cellData: MXKCellData!) {
         super.render(cellData)
@@ -34,6 +34,8 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
         if playbackController.attachment != data.attachment {
             playbackController.attachment = data.attachment
         }
+        
+        self.update(theme: ThemeService.shared().theme)
     }
     
     override func setupViews() {
@@ -51,5 +53,16 @@ class VoiceMessageBubbleCell: SizableBaseBubbleCell, BubbleCellReactionsDisplaya
                                                             cacheManager: VoiceMessageAttachmentCacheManager.sharedManager)
         
         contentView.vc_addSubViewMatchingParent(playbackController.playbackView)
+    }
+    
+    override func update(theme: Theme) {
+        
+        super.update(theme: theme)
+        
+        guard let playbackController = playbackController else {
+            return
+        }
+        
+        playbackController.playbackView.update(theme: theme)
     }
 }
