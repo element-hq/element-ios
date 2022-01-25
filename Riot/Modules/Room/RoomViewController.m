@@ -2606,17 +2606,35 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
     }
     else if (bubbleData.attachment.type == MXKAttachmentTypeVoiceMessage || bubbleData.attachment.type == MXKAttachmentTypeAudio)
     {
-        if (bubbleData.isPaginationFirstBubble)
+        if (bubbleData.isIncoming)
         {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithPaginationTitle;
-        }
-        else if (bubbleData.shouldHideSenderInformation)
-        {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessageWithoutSenderInfo;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierIncomingVoiceMessage;
+            }
         }
         else
         {
-            cellIdentifier = RoomTimelineCellIdentifierVoiceMessage;
+            if (bubbleData.isPaginationFirstBubble)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithPaginationTitle;
+            }
+            else if (bubbleData.shouldHideSenderInformation)
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessageWithoutSenderInfo;
+            }
+            else
+            {
+                cellIdentifier = RoomTimelineCellIdentifierOutgoingVoiceMessage;
+            }
         }
     }
     else if (bubbleData.tag == RoomBubbleCellDataTagPoll)
