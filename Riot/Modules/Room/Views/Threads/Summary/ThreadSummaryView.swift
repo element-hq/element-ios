@@ -68,14 +68,14 @@ class ThreadSummaryView: UIView {
         loadNibContent()
     }
     
-    @nonobjc func configure(withViewModel viewModel: ThreadSummaryModel) {
-        numberOfRepliesLabel.text = String(viewModel.numberOfReplies)
-        if let avatar = viewModel.lastMessageSenderAvatar {
+    @nonobjc func configure(withModel model: ThreadSummaryModel) {
+        numberOfRepliesLabel.text = String(model.numberOfReplies)
+        if let avatar = model.lastMessageSenderAvatar {
             lastMessageAvatarView.fill(with: avatar)
         } else {
             lastMessageAvatarView.avatarImageView.image = nil
         }
-        if let lastMessage = viewModel.lastMessageText {
+        if let lastMessage = model.lastMessageText {
             let mutable = NSMutableAttributedString(attributedString: lastMessage)
             mutable.setAttributes([
                 .font: Constants.lastMessageFont
@@ -117,10 +117,10 @@ class ThreadSummaryView: UIView {
                                                                   with: roomState,
                                                                   error: formatterError)
             
-            let viewModel = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
-                                               lastMessageSenderAvatar: avatarViewData,
-                                               lastMessageText: lastMessageText)
-            self.configure(withViewModel: viewModel)
+            let model = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
+                                           lastMessageSenderAvatar: avatarViewData,
+                                           lastMessageText: lastMessageText)
+            self.configure(withModel: model)
         }
     }
     

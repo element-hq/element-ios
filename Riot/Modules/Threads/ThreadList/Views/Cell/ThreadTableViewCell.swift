@@ -47,24 +47,24 @@ class ThreadTableViewCell: UITableViewCell {
         separatorInset = Constants.separatorInset
     }
     
-    func configure(withViewModel viewModel: ThreadModel) {
-        if let rootAvatar = viewModel.rootMessageSenderAvatar {
+    func configure(withModel model: ThreadModel) {
+        if let rootAvatar = model.rootMessageSenderAvatar {
             rootMessageAvatarView.fill(with: rootAvatar)
         } else {
             rootMessageAvatarView.avatarImageView.image = nil
         }
-        configuredSenderId = viewModel.rootMessageSenderUserId
-        configuredRootMessageRedacted = viewModel.rootMessageRedacted
+        configuredSenderId = model.rootMessageSenderUserId
+        configuredRootMessageRedacted = model.rootMessageRedacted
         updateRootMessageSenderColor()
-        rootMessageSenderLabel.text = viewModel.rootMessageSenderDisplayName
-        if let rootMessageText = viewModel.rootMessageText {
+        rootMessageSenderLabel.text = model.rootMessageSenderDisplayName
+        if let rootMessageText = model.rootMessageText {
             updateRootMessageContentAttributes(rootMessageText, color: rootMessageColor)
         } else {
             rootMessageContentLabel.attributedText = nil
         }
-        lastMessageTimeLabel.text = viewModel.lastMessageTime
-        if let summaryViewModel = viewModel.summaryViewModel {
-            summaryView.configure(withViewModel: summaryViewModel)
+        lastMessageTimeLabel.text = model.lastMessageTime
+        if let summaryModel = model.summaryModel {
+            summaryView.configure(withModel: summaryModel)
         }
     }
 

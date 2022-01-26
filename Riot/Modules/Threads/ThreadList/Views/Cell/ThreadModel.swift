@@ -17,11 +17,11 @@
 import Foundation
 
 struct ThreadModel {
-    var rootMessageSenderUserId: String?
-    var rootMessageSenderAvatar: AvatarViewDataProtocol?
-    var rootMessageSenderDisplayName: String?
-    var rootMessageText: NSAttributedString?
-    var rootMessageRedacted: Bool
-    var lastMessageTime: String?
-    var summaryViewModel: ThreadSummaryModel?
+    let rootMessageSenderUserId: String?
+    let rootMessageSenderAvatar: AvatarViewDataProtocol?
+    let rootMessageSenderDisplayName: String?
+    let rootMessageText: NSAttributedString?
+    let rootMessageRedacted: Bool
+    let lastMessageTime: String?
+    let summaryModel: ThreadSummaryModel?
 }
