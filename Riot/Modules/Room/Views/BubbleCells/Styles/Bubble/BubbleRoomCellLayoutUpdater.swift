@@ -160,10 +160,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         
         switch firstEvent.eventType {
         case .roomMessage:
-            if let messageTypeString = firstEvent.content["msgtype"] as? String {
-                
-                let messageType = MXMessageType(identifier: messageTypeString)
-                
+            if let messageType = firstEvent.messageType {
                 switch messageType {
                 case .text, .emote, .file:
                     return true
