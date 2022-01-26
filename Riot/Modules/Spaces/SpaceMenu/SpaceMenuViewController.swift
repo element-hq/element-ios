@@ -103,6 +103,12 @@ class SpaceMenuViewController: UIViewController {
         self.subtitleLabel.font = theme.fonts.caption1
         self.closeButton.backgroundColor = theme.roomInputTextBorder
         self.closeButton.tintColor = theme.noticeSecondaryColor
+        
+        if self.spaceId == SpaceListViewModel.Constants.homeSpaceId {
+            let defaultAsset = ThemeService.shared().isCurrentThemeDark() ? Asset.Images.spaceHomeIconDark : Asset.Images.spaceHomeIconLight
+            let avatarViewData = AvatarViewData(matrixItemId: self.spaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(defaultAsset.image, .center))
+            self.avatarView.fill(with: avatarViewData)
+        }
     }
     
     private func registerThemeServiceDidChangeThemeNotification() {
@@ -117,8 +123,6 @@ class SpaceMenuViewController: UIViewController {
         setupTableView()
         
         if self.spaceId == SpaceListViewModel.Constants.homeSpaceId {
-            let avatarViewData = AvatarViewData(matrixItemId: self.spaceId, displayName: nil, avatarUrl: nil, mediaManager: session.mediaManager, fallbackImage: .image(Asset.Images.spaceHomeIcon.image, .center))
-            self.avatarView.fill(with: avatarViewData)
             self.titleLabel.text = VectorL10n.titleHome
             self.subtitleLabel.text = VectorL10n.settingsTitle
             
