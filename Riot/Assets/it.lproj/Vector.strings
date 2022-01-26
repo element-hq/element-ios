@@ -1590,3 +1590,10 @@
 
 // Onboarding
 "onboarding_splash_register_button_title" = "Crea account";
+"poll_edit_form_poll_type_closed_description" = "I risultati verranno rivelati solo quando termini il sondaggio";
+"poll_edit_form_poll_type_closed" = "Sondaggio chiuso";
+"poll_edit_form_poll_type_open_description" = "I votanti vedono i risultati appena avranno votato";
+"poll_edit_form_poll_type_open" = "Apri sondaggio";
+"poll_edit_form_update_failure_subtitle" = "Riprova";
+"poll_edit_form_update_failure_title" = "Aggiornamento del sondaggio fallito";
+"poll_edit_form_poll_type" = "Tipo sondaggio";
