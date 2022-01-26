@@ -64,6 +64,7 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
     
     private var exploreRoomCoordinator: ExploreRoomCoordinator?
     private var membersCoordinator: SpaceMembersCoordinator?
+    private var createSpaceCoordinator: SpaceCreationCoordinator?
 
     // MARK: Public
 
@@ -257,6 +258,36 @@ final class SideMenuCoordinator: NSObject, SideMenuCoordinatorType {
         self.spaceDetailPresenter.present(forSpaceWithId: spaceId, from: self.sideMenuViewController, sourceView: sourceView, session: session, animated: true)
     }
     
+    @available(iOS 14.0, *)
+    private func showCreateSpace() {
+        guard let session = self.parameters.userSessionsService.mainUserSession?.matrixSession else {
+            return
+        }
+        
+        let coordinator = SpaceCreationCoordinator(parameters: SpaceCreationCoordinatorParameters(session: session))
+        let presentable = coordinator.toPresentable()
+        presentable.presentationController?.delegate = self
+        self.sideMenuViewController.present(presentable, animated: true, completion: nil)
+        coordinator.callback = { [weak self] result in
+            guard let self = self else {
+                return
+            }
+            
+            self.createSpaceCoordinator?.toPresentable().dismiss(animated: true) {
+                self.createSpaceCoordinator = nil
+                switch result {
+                case .cancel:
+                    break
+                case .done(let spaceId):
+                    self.select(spaceWithId: spaceId)
+                }
+            }
+        }
+        coordinator.start()
+        
+        self.createSpaceCoordinator = coordinator
+    }
+    
     // MARK: UserSessions management
     
     private func registerUserSessionsServiceNotifications() {
@@ -310,7 +341,7 @@ extension SideMenuCoordinator: SideMenuNavigationControllerDelegate {
 
 // MARK: - SideMenuNavigationControllerDelegate
 extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
-    func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {                
+    func spaceListCoordinatorDidSelectHomeSpace(_ coordinator: SpaceListCoordinatorType) {
         self.parameters.appNavigator.sideMenu.dismiss(animated: true) {
             
         }
@@ -330,6 +361,12 @@ extension SideMenuCoordinator: SpaceListCoordinatorDelegate {
     
     func spaceListCoordinator(_ coordinator: SpaceListCoordinatorType, didPressMoreForSpaceWithId spaceId: String, from sourceView: UIView) {
         self.showMenu(forSpaceWithId: spaceId, from: sourceView)
+    }
+    
+    func spaceListCoordinatorDidSelectCreateSpace(_ coordinator: SpaceListCoordinatorType) {
+        if #available(iOS 14.0, *) {
+            self.showCreateSpace()
+        }
     }
 }
 
@@ -386,5 +423,6 @@ extension SideMenuCoordinator: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.exploreRoomCoordinator = nil
         self.membersCoordinator = nil
+        self.createSpaceCoordinator = nil
     }
 }
