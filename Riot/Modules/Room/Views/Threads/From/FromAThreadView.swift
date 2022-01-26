@@ -18,7 +18,7 @@ import Foundation
 import Reusable
 
 @objcMembers
-class FromThreadView: UIView {
+class FromAThreadView: UIView {
 
     private enum Constants {
         static let viewHeight: CGFloat = 18
@@ -32,8 +32,8 @@ class FromThreadView: UIView {
         return Constants.viewHeight
     }
 
-    static func instantiate() -> FromThreadView {
-        let view = FromThreadView.loadFromNib()
+    static func instantiate() -> FromAThreadView {
+        let view = FromAThreadView.loadFromNib()
         view.update(theme: ThemeService.shared().theme)
         view.titleLabel.text = VectorL10n.messageFromAThread
         return view
@@ -41,9 +41,9 @@ class FromThreadView: UIView {
 
 }
 
-extension FromThreadView: NibLoadable {}
+extension FromAThreadView: NibLoadable {}
 
-extension FromThreadView: Themable {
+extension FromAThreadView: Themable {
 
     func update(theme: Theme) {
         backgroundColor = .clear

@@ -148,10 +148,10 @@ final class ThreadListViewController: UIViewController {
             renderEmptyView(withViewModel: viewModel)
         case .showingFilterTypes:
             renderShowingFilterTypes()
-        case .showingLongPressActions:
-            renderShowingLongPressActions()
-        case .share(let string):
-            renderShare(string)
+        case .showingLongPressActions(let index):
+            renderShowingLongPressActions(index)
+        case .share(let url, let index):
+            renderShare(url, index: index)
         case .toastForCopyLink:
             toastForCopyLink()
         case .error(let error):
@@ -226,7 +226,7 @@ final class ThreadListViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
-    private func renderShowingLongPressActions() {
+    private func renderShowingLongPressActions(_ index: Int) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionViewInRoom,
@@ -253,14 +253,25 @@ final class ThreadListViewController: UIViewController {
         controller.addAction(UIAlertAction(title: VectorL10n.cancel,
                                            style: .cancel,
                                            handler: nil))
-        
+
+        if let cell = threadsTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+            controller.popoverPresentationController?.sourceView = cell
+        } else {
+            controller.popoverPresentationController?.sourceView = view
+        }
+
         self.present(controller, animated: true, completion: nil)
     }
     
-    private func renderShare(_ string: String) {
-        let activityVC = UIActivityViewController(activityItems: [string],
+    private func renderShare(_ url: URL, index: Int) {
+        let activityVC = UIActivityViewController(activityItems: [url],
                                                   applicationActivities: nil)
         activityVC.modalTransitionStyle = .coverVertical
+        if let cell = threadsTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+            activityVC.popoverPresentationController?.sourceView = cell
+        } else {
+            activityVC.popoverPresentationController?.sourceView = view
+        }
         present(activityVC, animated: true, completion: nil)
     }
     

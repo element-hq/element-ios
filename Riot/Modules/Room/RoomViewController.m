@@ -3282,6 +3282,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                             style:UIAlertActionStyleDefault
                                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
+
+                [self cancelEventSelection];
+
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
         }
@@ -3311,6 +3314,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                             style:UIAlertActionStyleDefault
                                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
+
+                [self cancelEventSelection];
+
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
         }
@@ -3352,6 +3358,9 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                                                                             style:UIAlertActionStyleDefault
                                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
+
+                [self cancelEventSelection];
+                
                 [self presentEventForwardingDialogForSelectedEvent:selectedEvent];
             }]];
         }
@@ -3513,10 +3522,11 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
                 
                 // Create a matrix.to permalink that is common to all matrix clients
                 NSString *permalink = [MXTools permalinkToEvent:selectedEvent.eventId inRoom:selectedEvent.roomId];
+                NSURL *url = [NSURL URLWithString:permalink];
                 
-                if (permalink)
+                if (url)
                 {
-                    MXKPasteboardManager.shared.pasteboard.string = permalink;
+                    MXKPasteboardManager.shared.pasteboard.URL = url;
                     [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
                                              image:[UIImage imageNamed:@"link_icon"]
                                           duration:2.0

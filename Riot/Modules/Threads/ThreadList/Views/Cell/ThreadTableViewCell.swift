@@ -39,10 +39,7 @@ class ThreadTableViewCell: UITableViewCell {
     @IBOutlet private weak var lastMessageTimeLabel: UILabel!
     @IBOutlet private weak var summaryView: ThreadSummaryView!
     
-    private static var usernameColorGenerator: UserNameColorGenerator = {
-        let generator = UserNameColorGenerator()
-        return generator
-    }()
+    private static var usernameColorGenerator = UserNameColorGenerator()
 
     override func awakeFromNib() {
         super.awakeFromNib()

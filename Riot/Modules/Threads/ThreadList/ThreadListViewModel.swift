@@ -296,7 +296,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             return
         }
         longPressedThread = threads[index]
-        viewState = .showingLongPressActions
+        viewState = .showingLongPressActions(index)
     }
     
     private func actionViewInRoom() {
@@ -311,19 +311,22 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         guard let thread = longPressedThread else {
             return
         }
-        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
-            MXKPasteboardManager.shared.pasteboard.string = permalink
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId),
+           let url = URL(string: permalink) {
+            MXKPasteboardManager.shared.pasteboard.url = url
             viewState = .toastForCopyLink
         }
         longPressedThread = nil
     }
     
     private func actionShare() {
-        guard let thread = longPressedThread else {
+        guard let thread = longPressedThread,
+              let index = threads.firstIndex(of: thread) else {
             return
         }
-        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId) {
-            viewState = .share(permalink)
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId),
+           let url = URL(string: permalink) {
+            viewState = .share(url, index)
         }
         longPressedThread = nil
     }

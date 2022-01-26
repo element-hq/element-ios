@@ -695,7 +695,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         return 0;
     }
     return RoomBubbleCellLayout.fromThreadViewTopMargin +
-        [FromThreadView contentViewHeightForEvent:component.event fitting:self.maxTextViewWidth];
+        [FromAThreadView contentViewHeightForEvent:component.event fitting:self.maxTextViewWidth];
 }
 
 - (CGFloat)urlPreviewHeightForEventId:(NSString*)eventId

@@ -113,6 +113,7 @@
                 [bubbleCell.contentView addSubview:threadSummaryView];
 
                 CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                CGFloat height = [ThreadSummaryView contentViewHeightForThread:thread fitting:cellData.maxTextViewWidth];
 
                 CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
                 CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
@@ -120,22 +121,23 @@
                 // Set constraints for the summary view
                 [NSLayoutConstraint activateConstraints: @[
                     [threadSummaryView.leadingAnchor constraintEqualToAnchor:threadSummaryView.superview.leadingAnchor
-                                                        constant:leftMargin],
+                                                                    constant:leftMargin],
                     [threadSummaryView.topAnchor constraintEqualToAnchor:threadSummaryView.superview.topAnchor
-                                                                    constant:bottomPositionY + RoomBubbleCellLayout.threadSummaryViewTopMargin],
-                    [threadSummaryView.heightAnchor constraintEqualToConstant:[ThreadSummaryView contentViewHeightForThread:thread fitting:cellData.maxTextViewWidth]],
+                                                                constant:bottomPositionY + RoomBubbleCellLayout.threadSummaryViewTopMargin],
+                    [threadSummaryView.heightAnchor constraintEqualToConstant:height],
                     [threadSummaryView.trailingAnchor constraintLessThanOrEqualToAnchor:threadSummaryView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
                 ]];
             }
             else if (event.isInThread)
             {
-                FromThreadView *fromThreadView = [FromThreadView instantiate];
+                FromAThreadView *fromThreadView = [FromAThreadView instantiate];
                 [bubbleCell.tmpSubviews addObject:fromThreadView];
 
                 fromThreadView.translatesAutoresizingMaskIntoConstraints = NO;
                 [bubbleCell.contentView addSubview:fromThreadView];
 
                 CGFloat leftMargin = RoomBubbleCellLayout.reactionsViewLeftMargin;
+                CGFloat height = [FromAThreadView contentViewHeightForEvent:event fitting:cellData.maxTextViewWidth];
 
                 CGRect bubbleComponentFrame = [bubbleCell componentFrameInContentViewForIndex:0];
                 CGFloat bottomPositionY = bubbleComponentFrame.origin.y + bubbleComponentFrame.size.height;
@@ -143,10 +145,10 @@
                 // Set constraints for the summary view
                 [NSLayoutConstraint activateConstraints: @[
                     [fromThreadView.leadingAnchor constraintEqualToAnchor:fromThreadView.superview.leadingAnchor
-                                                        constant:leftMargin],
+                                                                 constant:leftMargin],
                     [fromThreadView.topAnchor constraintEqualToAnchor:fromThreadView.superview.topAnchor
-                                                                    constant:bottomPositionY + RoomBubbleCellLayout.fromThreadViewTopMargin],
-                    [fromThreadView.heightAnchor constraintEqualToConstant:[FromThreadView contentViewHeightForEvent:event fitting:cellData.maxTextViewWidth]],
+                                                             constant:bottomPositionY + RoomBubbleCellLayout.fromThreadViewTopMargin],
+                    [fromThreadView.heightAnchor constraintEqualToConstant:height],
                     [fromThreadView.trailingAnchor constraintLessThanOrEqualToAnchor:fromThreadView.superview.trailingAnchor constant:-RoomBubbleCellLayout.reactionsViewRightMargin]
                 ]];
             }
