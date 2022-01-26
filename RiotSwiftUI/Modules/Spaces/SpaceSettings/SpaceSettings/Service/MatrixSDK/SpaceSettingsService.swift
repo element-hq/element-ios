@@ -84,10 +84,11 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
             self?.roomState = roomState
             self?.isLoadingSubject.send(false)
         }
+        
         roomEventListener = self.room?.listen(toEvents: { [weak self] event, direction, state in
-            guard let self = self, let roomState = state else { return }
-            
-            self.roomState = roomState
+            self?.room?.state({ [weak self]  roomState in
+                self?.roomState = roomState
+            })
         })
     }
     
@@ -134,7 +135,7 @@ class SpaceSettingsService: SpaceSettingsServiceProtocol {
         self.roomProperties = SpaceSettingsRoomProperties(
             name: roomState.name,
             topic: roomState.topic,
-            address: roomState.canonicalAlias.extractLocalAliasPart(),
+            address: roomState.canonicalAlias?.extractLocalAliasPart(),
             avatarUrl: roomState.avatar,
             visibility: visibility(with: roomState),
             allowedParentIds: allowedParentIds(with: roomState),

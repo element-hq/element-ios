@@ -93,6 +93,10 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
             .map(SpaceSettingsStateAction.updateShowPostProcessAlert)
             .eraseToAnyPublisher()
         dispatch(actionPublisher: showAlertPublisher)
+        let roomPropertiesPublisher = service.roomPropertiesSubject
+            .map(SpaceSettingsStateAction.updateRoomProperties)
+            .eraseToAnyPublisher()
+        dispatch(actionPublisher: roomPropertiesPublisher)
     }
 
     // MARK: - Public
@@ -124,6 +128,8 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
     }
     
     override class func reducer(state: inout SpaceSettingsViewState, action: SpaceSettingsStateAction) {
+        UILog.debug("[SpaceSettingsViewModel] reducer with action \(action) produced state: \(state)")
+
         switch action {
         case .updateLoading(let isLoading):
             state.isLoading = isLoading
@@ -131,8 +137,26 @@ class SpaceSettingsViewModel: SpaceSettingsViewModelType, SpaceSettingsViewModel
             state.userSelectedAvatar = image
         case .updateShowPostProcessAlert(let show):
             state.bindings.showPostProcessAlert = show
+        case .updateRoomProperties(let roomProperties):
+            guard let roomProperties = roomProperties else {
+                return
+            }
+            
+            UILog.debug("[TOTO] reducer \(roomProperties.visibility)")
+
+            state.roomProperties = roomProperties
+            if !state.isRoomNameModified {
+                state.bindings.name = roomProperties.name ?? ""
+            }
+            if !state.isTopicModified {
+                state.bindings.topic = roomProperties.topic ?? ""
+            }
+            if !state.isAddressModified {
+                state.bindings.address = roomProperties.address ?? ""
+            }
+            state.visibilityString = visibilityString(with: roomProperties.visibility)
+            state.showRoomAddress = roomProperties.visibility == .public
         }
-        UILog.debug("[SpaceSettingsViewModel] reducer with action \(action) produced state: \(state)")
     }
 
     private func done() {

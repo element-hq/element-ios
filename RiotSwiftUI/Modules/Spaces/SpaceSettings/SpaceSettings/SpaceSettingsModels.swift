@@ -28,6 +28,7 @@ enum SpaceSettingsCoordinatorResult {
 
 enum SpaceSettingsStateAction {
     case updateLoading(Bool)
+    case updateRoomProperties(SpaceSettingsRoomProperties?)
     case updateShowPostProcessAlert(Bool)
     case updateAvatarImage(UIImage?)
 }
@@ -66,7 +67,7 @@ struct SpaceSettingsViewState: BindableState {
     let avatar: AvatarInputProtocol
     var roomProperties: SpaceSettingsRoomProperties?
     var userSelectedAvatar: UIImage?
-    let showRoomAddress: Bool
+    var showRoomAddress: Bool
     let roomNameError: String?
     let addressMessage: String?
     let isAddressValid: Bool
@@ -74,7 +75,16 @@ struct SpaceSettingsViewState: BindableState {
     var visibilityString: String
     var options: [SpaceSettingsOption]
     var isModified: Bool {
-        userSelectedAvatar != nil || (roomProperties?.name ?? "") != bindings.name || (roomProperties?.topic ?? "") != bindings.topic || (roomProperties?.address ?? "") != bindings.address
+        userSelectedAvatar != nil || isRoomNameModified || isTopicModified || isAddressModified
+    }
+    var isRoomNameModified: Bool {
+        (roomProperties?.name ?? "") != bindings.name
+    }
+    var isTopicModified: Bool {
+        (roomProperties?.topic ?? "") != bindings.topic
+    }
+    var isAddressModified: Bool {
+        (roomProperties?.address ?? "") != bindings.address
     }
     var bindings: SpaceSettingsViewModelBindings
 }
