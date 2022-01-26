@@ -25,5 +25,9 @@ enum ThreadListViewAction {
     case showFilterTypes
     case selectFilterType(_ type: ThreadListFilterType)
     case selectThread(_ index: Int)
+    case longPressThread(_ index: Int)
+    case actionViewInRoom
+    case actionCopyLinkToThread
+    case actionShare
     case cancel
 }

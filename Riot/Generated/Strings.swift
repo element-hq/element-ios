@@ -2319,6 +2319,10 @@ public class VectorL10n: NSObject {
   public static var mediaTypeAccessibilityVideo: String { 
     return VectorL10n.tr("Vector", "media_type_accessibility_video") 
   }
+  /// From a thread
+  public static var messageFromAThread: String { 
+    return VectorL10n.tr("Vector", "message_from_a_thread") 
+  }
   /// More
   public static var more: String { 
     return VectorL10n.tr("Vector", "more") 
@@ -3254,6 +3258,10 @@ public class VectorL10n: NSObject {
   /// View Source
   public static var roomEventActionViewSource: String { 
     return VectorL10n.tr("Vector", "room_event_action_view_source") 
+  }
+  /// Link copied to clipboard.
+  public static var roomEventCopyLinkInfo: String { 
+    return VectorL10n.tr("Vector", "room_event_copy_link_info") 
   }
   /// Failed to send
   public static var roomEventFailedToSend: String { 
@@ -5339,7 +5347,7 @@ public class VectorL10n: NSObject {
   public static var threadsEmptyInfoAll: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_all") 
   }
-  /// Reply to an ongoing thread or use “Thread” when selecting a message to start a new one.
+  /// Reply to an ongoing thread or tap a message and use “Thread” to start a new one.
   public static var threadsEmptyInfoMy: String { 
     return VectorL10n.tr("Vector", "threads_empty_info_my") 
   }
@@ -5347,7 +5355,7 @@ public class VectorL10n: NSObject {
   public static var threadsEmptyShowAllThreads: String { 
     return VectorL10n.tr("Vector", "threads_empty_show_all_threads") 
   }
-  /// Tip: Use “Thread” option when selecting a message.
+  /// Tip: Tap a message and use “Thread” to start one.
   public static var threadsEmptyTip: String { 
     return VectorL10n.tr("Vector", "threads_empty_tip") 
   }

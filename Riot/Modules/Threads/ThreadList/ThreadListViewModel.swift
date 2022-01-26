@@ -31,6 +31,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     private var roomState: MXRoomState?
     
     private var currentOperation: MXHTTPOperation?
+    private var longPressedThread: MXThread?
     
     // MARK: Public
 
@@ -73,6 +74,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             loadData()
         case .selectThread(let index):
             selectThread(index)
+        case .longPressThread(let index):
+            longPressThread(index)
+        case .actionViewInRoom:
+            actionViewInRoom()
+        case .actionCopyLinkToThread:
+            actionCopyLinkToThread()
+        case .actionShare:
+            actionShare()
         case .cancel:
             cancelOperations()
             coordinatorDelegate?.threadListViewModelDidCancel(self)
@@ -103,7 +112,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
                                                                                           room.displayName))
         
         let encrpytionBadge: UIImage?
-        if let summary = room.summary, session.crypto != nil {
+        if let summary = room.summary, summary.isEncrypted, session.crypto != nil {
             encrpytionBadge = EncryptionTrustLevelBadgeImageHelper.roomBadgeImage(for: summary.roomEncryptionTrustLevel())
         } else {
             encrpytionBadge = nil
@@ -117,17 +126,17 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     private var emptyViewModel: ThreadListEmptyModel {
         switch selectedFilterType {
         case .all:
-            return ThreadListEmptyModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+            return ThreadListEmptyModel(icon: Asset.Images.threadsIcon.image,
                                         title: VectorL10n.threadsEmptyTitle,
                                         info: VectorL10n.threadsEmptyInfoAll,
                                         tip: VectorL10n.threadsEmptyTip,
                                         showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
                                         showAllThreadsButtonHidden: true)
         case .myThreads:
-            return ThreadListEmptyModel(icon: Asset.Images.roomContextMenuReplyInThread.image,
+            return ThreadListEmptyModel(icon: Asset.Images.threadsIcon.image,
                                         title: VectorL10n.threadsEmptyTitle,
                                         info: VectorL10n.threadsEmptyInfoMy,
-                                        tip: VectorL10n.threadsEmptyTip,
+                                        tip: nil,
                                         showAllThreadsButtonTitle: VectorL10n.threadsEmptyShowAllThreads,
                                         showAllThreadsButtonHidden: false)
         }
@@ -178,28 +187,47 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         let summaryModel = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
                                               lastMessageSenderAvatar: lastAvatarViewData,
                                               lastMessageText: lastMessageText)
-        
-        return ThreadModel(rootMessageSenderAvatar: rootAvatarViewData,
+
+        return ThreadModel(rootMessageSenderUserId: rootMessageSender?.userId,
+                           rootMessageSenderAvatar: rootAvatarViewData,
                            rootMessageSenderDisplayName: rootMessageSender?.displayname,
                            rootMessageText: rootMessageText,
+                           rootMessageRedacted: thread.rootMessage?.isRedactedEvent() ?? false,
                            lastMessageTime: lastMessageTime,
                            summaryModel: summaryModel)
     }
     
-    private func rootMessageText(forThread thread: MXThread) -> String? {
+    private func rootMessageText(forThread thread: MXThread) -> NSAttributedString? {
         guard let eventFormatter = eventFormatter else {
             return nil
         }
         guard let message = thread.rootMessage else {
             return nil
         }
+        if message.isReply(), let newMessage = message.copy() as? MXEvent {
+            var jsonDict = newMessage.isEncrypted ? newMessage.clear?.jsonDictionary() : newMessage.jsonDictionary()
+            if var content = jsonDict?["content"] as? [String: Any] {
+                content.removeValue(forKey: "format")
+                content.removeValue(forKey: "formatted_body")
+                content.removeValue(forKey: kMXEventRelationRelatesToKey)
+                if let replyText = MXReplyEventParser().parse(newMessage)?.bodyParts.replyText {
+                    content["body"] = replyText
+                }
+                jsonDict?["content"] = content
+            }
+            let trimmedMessage = MXEvent(fromJSON: jsonDict)
+            let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
+            return eventFormatter.attributedString(from: trimmedMessage,
+                                                   with: roomState,
+                                                   error: formatterError)
+        }
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-        return eventFormatter.string(from: message,
-                                     with: roomState,
-                                     error: formatterError)
+        return eventFormatter.attributedString(from: message,
+                                               with: roomState,
+                                               error: formatterError)
     }
     
-    private func lastMessageTextAndTime(forThread thread: MXThread) -> (String?, String?) {
+    private func lastMessageTextAndTime(forThread thread: MXThread) -> (NSAttributedString?, String?) {
         guard let eventFormatter = eventFormatter else {
             return (nil, nil)
         }
@@ -208,9 +236,9 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         }
         let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
         return (
-            eventFormatter.string(from: message,
-                                  with: roomState,
-                                  error: formatterError),
+            eventFormatter.attributedString(from: message,
+                                            with: roomState,
+                                            error: formatterError),
             eventFormatter.dateString(from: message, withTime: true)
         )
     }
@@ -261,6 +289,46 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         }
         let thread = threads[index]
         coordinatorDelegate?.threadListViewModelDidSelectThread(self, thread: thread)
+    }
+    
+    private func longPressThread(_ index: Int) {
+        guard index < threads.count else {
+            return
+        }
+        longPressedThread = threads[index]
+        viewState = .showingLongPressActions(index)
+    }
+    
+    private func actionViewInRoom() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        coordinatorDelegate?.threadListViewModelDidSelectThreadViewInRoom(self, thread: thread)
+        longPressedThread = nil
+    }
+    
+    private func actionCopyLinkToThread() {
+        guard let thread = longPressedThread else {
+            return
+        }
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId),
+           let url = URL(string: permalink) {
+            MXKPasteboardManager.shared.pasteboard.url = url
+            viewState = .toastForCopyLink
+        }
+        longPressedThread = nil
+    }
+    
+    private func actionShare() {
+        guard let thread = longPressedThread,
+              let index = threads.firstIndex(of: thread) else {
+            return
+        }
+        if let permalink = MXTools.permalink(toEvent: thread.id, inRoom: thread.roomId),
+           let url = URL(string: permalink) {
+            viewState = .share(url, index)
+        }
+        longPressedThread = nil
     }
     
     private func cancelOperations() {

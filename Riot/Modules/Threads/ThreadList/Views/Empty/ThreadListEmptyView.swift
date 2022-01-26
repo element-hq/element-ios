@@ -65,6 +65,7 @@ extension ThreadListEmptyView: Themable {
     
     func update(theme: Theme) {
         iconBackgroundView.backgroundColor = theme.colors.system
+        iconView.tintColor = theme.colors.secondaryContent
         titleLabel.textColor = theme.colors.primaryContent
         infoLabel.textColor = theme.colors.secondaryContent
         tipLabel.textColor = theme.colors.secondaryContent

@@ -1032,27 +1032,33 @@ NSString *const kRoomSettingsAdvancedE2eEnabledCellViewIdentifier = @"kRoomSetti
         [currentAlert addAction:[UIAlertAction actionWithTitle:[VectorL10n roomDetailsCopyRoomUrl]
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action) {
-                                                           
-                                                           if (weakSelf)
-                                                           {
-                                                               typeof(self) self = weakSelf;
-                                                               self->currentAlert = nil;
-                                                               
-                                                               // Create a matrix.to permalink to the room
-                                                               
-                                                               NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
-                                                               
-                                                               if (permalink)
-                                                               {
-                                                                   MXKPasteboardManager.shared.pasteboard.string = permalink;
-                                                               }
-                                                               else
-                                                               {
-                                                                   MXLogDebug(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
-                                                               }
-                                                           }
-                                                           
-                                                       }]];
+            
+            if (weakSelf)
+            {
+                typeof(self) self = weakSelf;
+                self->currentAlert = nil;
+                
+                // Create a matrix.to permalink to the room
+                
+                NSString *permalink = [MXTools permalinkToRoom:roomAliasLabel.text];
+                NSURL *url = [NSURL URLWithString:permalink];
+
+                if (url)
+                {
+                    MXKPasteboardManager.shared.pasteboard.URL = url;
+                    [self.view vc_toastWithMessage:VectorL10n.roomEventCopyLinkInfo
+                                             image:[UIImage imageNamed:@"link_icon"]
+                                          duration:2.0
+                                          position:ToastPositionBottom
+                                  additionalMargin:0.0];
+                }
+                else
+                {
+                    MXLogDebug(@"[RoomSettingsViewController] Copy room URL failed. Room URL is nil");
+                }
+            }
+            
+        }]];
         
         // The user can only delete alias they has created, even if the Admin has set it as canonical.
         // So, let the server answer if it's possible to delete an alias.

@@ -141,15 +141,21 @@ final class ThreadListViewController: UIViewController {
         case .idle:
             break
         case .loading:
-            self.renderLoading()
+            renderLoading()
         case .loaded:
-            self.renderLoaded()
+            renderLoaded()
         case .empty(let model):
-            self.renderEmptyView(withModel: model)
+            renderEmptyView(withModel: model)
         case .showingFilterTypes:
-            self.renderShowingFilterTypes()
+            renderShowingFilterTypes()
+        case .showingLongPressActions(let index):
+            renderShowingLongPressActions(index)
+        case .share(let url, let index):
+            renderShare(url, index: index)
+        case .toastForCopyLink:
+            toastForCopyLink()
         case .error(let error):
-            self.render(error: error)
+            render(error: error)
         }
     }
     
@@ -164,6 +170,12 @@ final class ThreadListViewController: UIViewController {
         threadsTableView.isHidden = false
         self.threadsTableView.reloadData()
         navigationItem.rightBarButtonItem?.isEnabled = true
+        switch viewModel.selectedFilterType {
+        case .all:
+            navigationItem.rightBarButtonItem?.image = Asset.Images.threadsFilter.image
+        case .myThreads:
+            navigationItem.rightBarButtonItem?.image = Asset.Images.threadsFilterApplied.image
+        }
     }
     
     private func renderEmptyView(withModel model: ThreadListEmptyModel) {
@@ -172,6 +184,12 @@ final class ThreadListViewController: UIViewController {
         threadsTableView.isHidden = true
         emptyView.isHidden = false
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectedFilterType == .myThreads
+        switch viewModel.selectedFilterType {
+        case .all:
+            navigationItem.rightBarButtonItem = nil
+        case .myThreads:
+            navigationItem.rightBarButtonItem?.image = Asset.Images.threadsFilterApplied.image
+        }
     }
     
     private func renderShowingFilterTypes() {
@@ -208,6 +226,60 @@ final class ThreadListViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    private func renderShowingLongPressActions(_ index: Int) {
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionViewInRoom,
+                                           style: .default,
+                                           handler: { [weak self] action in
+                                            guard let self = self else { return }
+                                            self.viewModel.process(viewAction: .actionViewInRoom)
+                                           }))
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.threadCopyLinkToThread,
+                                           style: .default,
+                                           handler: { [weak self] action in
+                                            guard let self = self else { return }
+                                            self.viewModel.process(viewAction: .actionCopyLinkToThread)
+                                           }))
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.roomEventActionShare,
+                                           style: .default,
+                                           handler: { [weak self] action in
+                                            guard let self = self else { return }
+                                            self.viewModel.process(viewAction: .actionShare)
+                                           }))
+        
+        controller.addAction(UIAlertAction(title: VectorL10n.cancel,
+                                           style: .cancel,
+                                           handler: nil))
+
+        if let cell = threadsTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+            controller.popoverPresentationController?.sourceView = cell
+        } else {
+            controller.popoverPresentationController?.sourceView = view
+        }
+
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func renderShare(_ url: URL, index: Int) {
+        let activityVC = UIActivityViewController(activityItems: [url],
+                                                  applicationActivities: nil)
+        activityVC.modalTransitionStyle = .coverVertical
+        if let cell = threadsTableView.cellForRow(at: IndexPath(row: index, section: 0)) {
+            activityVC.popoverPresentationController?.sourceView = cell
+        } else {
+            activityVC.popoverPresentationController?.sourceView = view
+        }
+        present(activityVC, animated: true, completion: nil)
+    }
+    
+    private func toastForCopyLink() {
+        view.vc_toast(message: VectorL10n.roomEventCopyLinkInfo,
+                      image: Asset.Images.linkIcon.image)
+    }
+    
     private func render(error: Error) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         self.errorPresenter.presentError(from: self, forError: error, animated: true, handler: nil)
@@ -218,6 +290,22 @@ final class ThreadListViewController: UIViewController {
     @objc
     private func filterButtonTapped(_ sender: UIBarButtonItem) {
         self.viewModel.process(viewAction: .showFilterTypes)
+    }
+    
+    @IBAction private func longPressed(_ sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else {
+            return
+        }
+        let point = sender.location(in: threadsTableView)
+        guard let indexPath = threadsTableView.indexPathForRow(at: point) else {
+            return
+        }
+        guard let cell = threadsTableView.cellForRow(at: indexPath) else {
+            return
+        }
+        if cell.isHighlighted {
+            viewModel.process(viewAction: .longPressThread(indexPath.row))
+        }
     }
 
 }
@@ -243,10 +331,10 @@ extension ThreadListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ThreadTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         
+        cell.update(theme: theme)
         if let threadModel = viewModel.threadModel(at: indexPath.row) {
             cell.configure(withModel: threadModel)
         }
-        cell.update(theme: theme)
         
         return cell
     }

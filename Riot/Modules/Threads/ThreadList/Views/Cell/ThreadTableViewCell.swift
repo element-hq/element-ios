@@ -22,12 +22,24 @@ class ThreadTableViewCell: UITableViewCell {
     private enum Constants {
         static let separatorInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 56, bottom: 0, right: 0)
     }
+
+    private var theme: Theme = ThemeService.shared().theme
+    private var configuredSenderId: String?
+    private var configuredRootMessageRedacted: Bool = false
+
+    private var rootMessageColor: UIColor {
+        return configuredRootMessageRedacted ?
+            theme.colors.secondaryContent :
+            theme.colors.primaryContent
+    }
     
     @IBOutlet private weak var rootMessageAvatarView: UserAvatarView!
     @IBOutlet private weak var rootMessageSenderLabel: UILabel!
     @IBOutlet private weak var rootMessageContentLabel: UILabel!
     @IBOutlet private weak var lastMessageTimeLabel: UILabel!
     @IBOutlet private weak var summaryView: ThreadSummaryView!
+    
+    private static var usernameColorGenerator = UserNameColorGenerator()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,12 +53,35 @@ class ThreadTableViewCell: UITableViewCell {
         } else {
             rootMessageAvatarView.avatarImageView.image = nil
         }
+        configuredSenderId = model.rootMessageSenderUserId
+        configuredRootMessageRedacted = model.rootMessageRedacted
+        updateRootMessageSenderColor()
         rootMessageSenderLabel.text = model.rootMessageSenderDisplayName
-        rootMessageContentLabel.text = model.rootMessageText
+        if let rootMessageText = model.rootMessageText {
+            updateRootMessageContentAttributes(rootMessageText, color: rootMessageColor)
+        } else {
+            rootMessageContentLabel.attributedText = nil
+        }
         lastMessageTimeLabel.text = model.lastMessageTime
         if let summaryModel = model.summaryModel {
             summaryView.configure(withModel: summaryModel)
         }
+    }
+
+    private func updateRootMessageSenderColor() {
+        if let senderUserId = configuredSenderId {
+            rootMessageSenderLabel.textColor = Self.usernameColorGenerator.color(from: senderUserId)
+        } else {
+            rootMessageSenderLabel.textColor = Self.usernameColorGenerator.defaultColor
+        }
+    }
+
+    private func updateRootMessageContentAttributes(_ string: NSAttributedString, color: UIColor) {
+        let mutable = NSMutableAttributedString(attributedString: string)
+        mutable.addAttributes([
+            .foregroundColor: color
+        ], range: NSRange(location: 0, length: mutable.length))
+        rootMessageContentLabel.attributedText = mutable
     }
 
 }
@@ -56,8 +91,14 @@ extension ThreadTableViewCell: NibReusable {}
 extension ThreadTableViewCell: Themable {
     
     func update(theme: Theme) {
+        self.theme = theme
+        Self.usernameColorGenerator.defaultColor = theme.colors.primaryContent
+        Self.usernameColorGenerator.userNameColors = theme.colors.namesAndAvatars
+        updateRootMessageSenderColor()
         rootMessageAvatarView.backgroundColor = .clear
-        rootMessageContentLabel.textColor = theme.colors.primaryContent
+        if let attributedText = rootMessageContentLabel.attributedText {
+            updateRootMessageContentAttributes(attributedText, color: rootMessageColor)
+        }
         lastMessageTimeLabel.textColor = theme.colors.secondaryContent
         summaryView.update(theme: theme)
         summaryView.backgroundColor = .clear

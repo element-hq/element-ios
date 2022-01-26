@@ -160,6 +160,10 @@ extension ThreadsCoordinator: ThreadListCoordinatorDelegate {
         self.add(childCoordinator: roomCoordinator)
     }
     
+    func threadListCoordinatorDidSelectRoom(_ coordinator: ThreadListCoordinatorProtocol, roomId: String, eventId: String) {
+        self.delegate?.threadsCoordinatorDidSelect(self, roomId: roomId, eventId: eventId)
+    }
+    
     func threadListCoordinatorDidCancel(_ coordinator: ThreadListCoordinatorProtocol) {
         self.delegate?.threadsCoordinatorDidComplete(self)
     }

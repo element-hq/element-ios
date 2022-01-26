@@ -27,9 +27,9 @@ protocol ThreadSummaryViewDelegate: AnyObject {
 class ThreadSummaryView: UIView {
     
     private enum Constants {
-        static let viewHeight: CGFloat = 32
         static let viewDefaultWidth: CGFloat = 320
-        static let cornerRadius: CGFloat = 4
+        static let cornerRadius: CGFloat = 8
+        static let lastMessageFont: UIFont = .systemFont(ofSize: 13)
     }
     
     @IBOutlet private weak var iconView: UIImageView!
@@ -37,6 +37,7 @@ class ThreadSummaryView: UIView {
     @IBOutlet private weak var lastMessageAvatarView: UserAvatarView!
     @IBOutlet private weak var lastMessageContentLabel: UILabel!
     
+    private var theme: Theme = ThemeService.shared().theme
     private(set) var thread: MXThread?
     
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
@@ -51,14 +52,15 @@ class ThreadSummaryView: UIView {
         self.thread = thread
         super.init(frame: CGRect(origin: .zero,
                                  size: CGSize(width: Constants.viewDefaultWidth,
-                                              height: Constants.viewHeight)))
+                                              height: RoomBubbleCellLayout.threadSummaryViewHeight)))
         loadNibContent()
         update(theme: ThemeService.shared().theme)
         configure()
+        translatesAutoresizingMaskIntoConstraints = false
     }
     
     static func contentViewHeight(forThread thread: MXThread?, fitting maxWidth: CGFloat) -> CGFloat {
-        return Constants.viewHeight
+        return RoomBubbleCellLayout.threadSummaryViewHeight
     }
     
     required init?(coder: NSCoder) {
@@ -73,7 +75,15 @@ class ThreadSummaryView: UIView {
         } else {
             lastMessageAvatarView.avatarImageView.image = nil
         }
-        lastMessageContentLabel.text = model.lastMessageText
+        if let lastMessage = model.lastMessageText {
+            let mutable = NSMutableAttributedString(attributedString: lastMessage)
+            mutable.setAttributes([
+                .font: Constants.lastMessageFont
+            ], range: NSRange(location: 0, length: mutable.length))
+            lastMessageContentLabel.attributedText = mutable
+        } else {
+            lastMessageContentLabel.attributedText = nil
+        }
     }
     
     private func configure() {
@@ -103,7 +113,9 @@ class ThreadSummaryView: UIView {
         room.state { [weak self] roomState in
             guard let self = self else { return }
             let formatterError = UnsafeMutablePointer<MXKEventFormatterError>.allocate(capacity: 1)
-            let lastMessageText = eventFormatter.string(from: lastMessage, with: roomState, error: formatterError)
+            let lastMessageText = eventFormatter.attributedString(from: lastMessage,
+                                                                  with: roomState,
+                                                                  error: formatterError)
             
             let model = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
                                            lastMessageSenderAvatar: avatarViewData,
@@ -126,7 +138,10 @@ extension ThreadSummaryView: NibOwnerLoadable {}
 extension ThreadSummaryView: Themable {
     
     func update(theme: Theme) {
+        self.theme = theme
+        
         backgroundColor = theme.colors.system
+        iconView.tintColor = theme.colors.secondaryContent
         numberOfRepliesLabel.textColor = theme.colors.secondaryContent
         lastMessageContentLabel.textColor = theme.colors.secondaryContent
     }

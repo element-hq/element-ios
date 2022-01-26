@@ -59,7 +59,7 @@ import Foundation
         case .reply:
             image = Asset.Images.roomContextMenuReply.image
         case .replyInThread:
-            image = Asset.Images.roomContextMenuReplyInThread.image
+            image = Asset.Images.roomContextMenuThread.image
         case .edit:
             image = Asset.Images.roomContextMenuEdit.image
         case .more:
