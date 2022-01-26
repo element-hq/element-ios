@@ -85,7 +85,7 @@ class VoiceMessageAttachmentCacheManager {
     }
     
     func loadAttachment(_ attachment: MXKAttachment, numberOfSamples: Int, completion: @escaping (Result<VoiceMessageAttachmentCacheManagerLoadResult, Error>) -> Void) {
-        guard attachment.type == MXKAttachmentTypeVoiceMessage || attachment.type == MXKAttachmentTypeAudio else {
+        guard attachment.type == .voiceMessage || attachment.type == .audio else {
             completion(Result.failure(VoiceMessageAttachmentCacheManagerError.invalidAttachmentType))
             MXLog.error("[VoiceMessageAttachmentCacheManager] Invalid attachment type, ignoring request.")
             return
