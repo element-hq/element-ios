@@ -208,6 +208,13 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             return false
         }
         
+        switch cellData.cellDataTag {
+        case .location:
+            return true
+        default:
+            break
+        }
+        
         switch firstEvent.eventType {
         case .roomMessage:
             if let messageTypeString = firstEvent.content["msgtype"] as? String {
