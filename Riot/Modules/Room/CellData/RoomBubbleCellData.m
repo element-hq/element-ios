@@ -584,7 +584,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
     // Add vertical whitespace in case of a thread root
     additionalVerticalHeight+= [self threadSummaryViewHeightForEventId:eventId];
     // Add vertical whitespace in case of from a thread
-    additionalVerticalHeight+= [self fromThreadViewHeightForEventId:eventId];
+    additionalVerticalHeight+= [self fromAThreadViewHeightForEventId:eventId];
     // Add vertical whitespace in case of read receipts.
     additionalVerticalHeight+= [self readReceiptHeightForEventId:eventId];
     
@@ -605,7 +605,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         height+= [self urlPreviewHeightForEventId:eventId];
         height+= [self reactionHeightForEventId:eventId];
         height+= [self threadSummaryViewHeightForEventId:eventId];
-        height+= [self fromThreadViewHeightForEventId:eventId];
+        height+= [self fromAThreadViewHeightForEventId:eventId];
         height+= [self readReceiptHeightForEventId:eventId];
     }
     
@@ -671,16 +671,16 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         [ThreadSummaryView contentViewHeightForThread:component.thread fitting:self.maxTextViewWidth];
 }
 
-- (CGFloat)fromThreadViewHeightForEventId:(NSString*)eventId
+- (CGFloat)fromAThreadViewHeightForEventId:(NSString*)eventId
 {
     if (!RiotSettings.shared.enableThreads)
     {
-        //  do not show from thread view if threads not enabled
+        //  do not show from a thread view if threads not enabled
         return 0;
     }
     if (roomDataSource.threadId)
     {
-        //  do not show from thread view on threads
+        //  do not show from a thread view on threads
         return 0;
     }
     NSInteger index = [self bubbleComponentIndexForEventId:eventId];
@@ -694,7 +694,7 @@ NSString *const URLPreviewDidUpdateNotification = @"URLPreviewDidUpdateNotificat
         //  event is not in a thread
         return 0;
     }
-    return RoomBubbleCellLayout.fromThreadViewTopMargin +
+    return RoomBubbleCellLayout.fromAThreadViewTopMargin +
         [FromAThreadView contentViewHeightForEvent:component.event fitting:self.maxTextViewWidth];
 }
 

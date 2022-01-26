@@ -51,5 +51,5 @@ final class RoomBubbleCellLayout: NSObject {
     
     static let threadSummaryViewTopMargin: CGFloat = 8.0
     static let threadSummaryViewHeight: CGFloat = 40.0
-    static let fromThreadViewTopMargin: CGFloat = 8.0
+    static let fromAThreadViewTopMargin: CGFloat = 8.0
 }
