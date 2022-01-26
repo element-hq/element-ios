@@ -88,7 +88,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         let rightMargin: CGFloat
         
         // Outgoing message
-        if cellData.isSenderCurrentUser {
+        if cellData.isIncoming == false {
             reactionsView.alignment = .right
             
             // TODO: Use constants
@@ -153,7 +153,7 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
         let leadingOrTrailingConstraint: NSLayoutConstraint
         
         // Outgoing message
-        if cellData.isSenderCurrentUser {
+        if cellData.isIncoming == false {
             
             // TODO: Use constants
             let rightMargin: CGFloat = 34.0

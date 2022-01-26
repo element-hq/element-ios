@@ -41,7 +41,7 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
     
     func updateLayoutIfNeeded(for cell: MXKRoomBubbleTableViewCell, andCellData cellData: MXKRoomBubbleCellData) {
         
-        if cellData.isSenderCurrentUser {
+        if cellData.isIncoming == false {
             self.updateLayout(forOutgoingTextMessageCell: cell, andCellData: cellData)
         } else {
             self.updateLayout(forIncomingTextMessageCell: cell, andCellData: cellData)
