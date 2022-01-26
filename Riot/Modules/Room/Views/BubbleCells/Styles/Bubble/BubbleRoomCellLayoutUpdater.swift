@@ -162,8 +162,11 @@ class BubbleRoomCellLayoutUpdater: RoomCellLayoutUpdating {
         case .roomMessage:
             if let messageType = firstEvent.messageType {
                 switch messageType {
-                case .text, .emote, .file:
+                case .text, .file:
                     return true
+                case .emote:
+                    // Explicitely disable bubble for emotes
+                    return false                    
                 default:
                     break
                 }
