@@ -21,14 +21,17 @@ class OptionListItemViewData {
     let detail: String?
     let image: UIImage?
     let accessoryImage: UIImage?
+    let enabled: Bool
     
     init(title: String? = nil,
          detail: String? = nil,
          image: UIImage? = nil,
-         accessoryImage: UIImage? = Asset.Images.chevron.image) {
+         accessoryImage: UIImage? = Asset.Images.chevron.image,
+         enabled: Bool = true) {
         self.title = title
         self.detail = detail
         self.image = image
         self.accessoryImage = accessoryImage
+        self.enabled = enabled
     }
 }

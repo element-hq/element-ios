@@ -1750,6 +1750,8 @@ Tap the + to start adding people.";
 "room_invite_to_space_option_detail" = "They can explore %@, but won’t be a member of %@.";
 "room_invite_to_room_option_title" = "To just this room";
 "room_invite_to_room_option_detail" = "They won’t be a part of %@.";
+"room_invite_not_enough_permission" = "You do not have permission to invite people to this room";
+"space_invite_not_enough_permission" = "You do not have permission to invite people to this space";
 
 // Mark: - Spaces
 

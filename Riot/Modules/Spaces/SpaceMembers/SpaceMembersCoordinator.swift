@@ -138,10 +138,27 @@ extension SpaceMembersCoordinator: SpaceMemberListCoordinatorDelegate {
             return
         }
         
-        let coordinator = ContactsPickerCoordinator(session: parameters.session, room: spaceRoom, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: navigationRouter)
-        coordinator.delegate = self
-        coordinator.start()
-        childCoordinators.append(coordinator)
+        spaceRoom.state { [weak self] roomState in
+            guard let self = self else { return }
+            
+            guard let powerLevels = roomState?.powerLevels, let userId = self.parameters.session.myUserId else {
+                MXLog.error("[RoomParticipantsInviteCoordinatorBridgePresenter] present: powerLevels room found")
+                return
+            }
+            let userPowerLevel = powerLevels.powerLevelOfUser(withUserID: userId)
+            
+            guard userPowerLevel >= powerLevels.invite else {
+                let alert = UIAlertController(title: VectorL10n.spacesInvitePeople, message: VectorL10n.spaceInviteNotEnoughPermission, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: VectorL10n.ok, style: .default, handler: nil))
+                self.navigationRouter.present(alert, animated: true)
+                return
+            }
+            
+            let coordinator = ContactsPickerCoordinator(session: self.parameters.session, room: spaceRoom, currentSearchText: nil, actualParticipants: nil, invitedParticipants: nil, userParticipant: nil, navigationRouter: self.navigationRouter)
+            coordinator.delegate = self
+            coordinator.start()
+            self.childCoordinators.append(coordinator)
+        }
     }
 }
 

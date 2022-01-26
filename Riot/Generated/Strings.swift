@@ -3291,6 +3291,10 @@ public class VectorL10n: NSObject {
   public static var roomIntroCellInformationRoomWithoutTopicSentence2Part2: String { 
     return VectorL10n.tr("Vector", "room_intro_cell_information_room_without_topic_sentence2_part2") 
   }
+  /// You do not have permission to invite people to this room
+  public static var roomInviteNotEnoughPermission: String { 
+    return VectorL10n.tr("Vector", "room_invite_not_enough_permission") 
+  }
   /// They won’t be a part of %@.
   public static func roomInviteToRoomOptionDetail(_ p1: String) -> String {
     return VectorL10n.tr("Vector", "room_invite_to_room_option_detail", p1)
@@ -5234,6 +5238,10 @@ public class VectorL10n: NSObject {
   /// Show all rooms
   public static var spaceHomeShowAllRooms: String { 
     return VectorL10n.tr("Vector", "space_home_show_all_rooms") 
+  }
+  /// You do not have permission to invite people to this space
+  public static var spaceInviteNotEnoughPermission: String { 
+    return VectorL10n.tr("Vector", "space_invite_not_enough_permission") 
   }
   /// Ban from this space
   public static var spaceParticipantsActionBan: String { 

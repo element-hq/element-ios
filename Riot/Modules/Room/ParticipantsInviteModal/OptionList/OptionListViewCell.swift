@@ -26,6 +26,12 @@ class OptionListViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var detailLabel: UILabel!
     @IBOutlet private weak var selectionView: UIView!
     @IBOutlet private weak var chevronView: UIImageView!
+    
+    var isEnabled: Bool = true {
+        didSet {
+            self.contentView.alpha = isEnabled ? 1 : 0.3
+        }
+    }
 
     // MARK: - Private
     
@@ -42,10 +48,12 @@ class OptionListViewCell: UITableViewCell, NibReusable {
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+        if isEnabled {
+            super.setSelected(selected, animated: animated)
 
-        UIView.animate(withDuration: animated ? 0.2 : 0.0) {
-            self.selectionView.transform = selected ? .init(scaleX: 0.95, y: 0.95) : .identity
+            UIView.animate(withDuration: animated ? 0.2 : 0.0) {
+                self.selectionView.transform = selected ? .init(scaleX: 0.95, y: 0.95) : .identity
+            }
         }
     }
 
@@ -56,6 +64,7 @@ class OptionListViewCell: UITableViewCell, NibReusable {
         self.titleLabel.text = viewData.title
         self.detailLabel.text = viewData.detail
         self.chevronView.image = viewData.accessoryImage?.withRenderingMode(.alwaysTemplate)
+        self.isEnabled = viewData.enabled
     }
     
     func update(theme: Theme) {

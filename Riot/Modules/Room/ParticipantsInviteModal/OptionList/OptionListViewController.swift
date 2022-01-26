@@ -207,6 +207,8 @@ extension OptionListViewController: UITableViewDataSource {
 extension OptionListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel.process(viewAction: .selected(indexPath.row))
+        if options[indexPath.row].enabled {
+            viewModel.process(viewAction: .selected(indexPath.row))
+        }
     }
 }
