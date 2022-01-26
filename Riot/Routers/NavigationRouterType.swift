@@ -45,7 +45,7 @@ protocol NavigationRouterType: AnyObject, Presentable {
     ///   - modules: The modules stack to set.
     ///   - hideNavigationBar: Specify true to hide the UINavigationBar.
     ///   - animated: Specify true to animate the transition.
-    func setModules(_ modules: [PresentableModule], hideNavigationBar: Bool, animated: Bool)
+    func setModules(_ modules: [NavigationModule], hideNavigationBar: Bool, animated: Bool)
     
     /// Pop to root view controller of navigation controller and remove all others
     ///
@@ -68,7 +68,7 @@ protocol NavigationRouterType: AnyObject, Presentable {
     ///
     /// - Parameter modules: Modules to push
     /// - Parameter animated: Specify true to animate the transition.
-    func push(_ modules: [PresentableModule], animated: Bool)
+    func push(_ modules: [NavigationModule], animated: Bool)
     
     /// Pop last view controller from navigation controller stack
     ///
@@ -99,7 +99,7 @@ extension NavigationRouterType {
         setRootModule(module, hideNavigationBar: false, animated: false, popCompletion: popCompletion)
     }
     
-    func setModules(_ modules: [PresentableModule], animated: Bool) {
+    func setModules(_ modules: [NavigationModule], animated: Bool) {
         setModules(modules, hideNavigationBar: false, animated: animated)
     }
     
@@ -109,15 +109,15 @@ extension NavigationRouterType {
     
 }
 
-//  MARK: - Presentable <--> ModulePresentable Transitive Methods
+//  MARK: - Presentable <--> NavigationModule Transitive Methods
 
 extension NavigationRouterType {
     
-    func setRootModule(_ module: PresentableModule) {
+    func setRootModule(_ module: NavigationModule) {
         setRootModule(module.presentable, popCompletion: module.popCompletion)
     }
     
-    func push(_ module: PresentableModule, animated: Bool) {
+    func push(_ module: NavigationModule, animated: Bool) {
         push(module.presentable, animated: animated, popCompletion: module.popCompletion)
     }
     

@@ -1,1 +1,170 @@
 
+
+
+/** Reactions **/
+
+/* A user has reacted to a message, including the reaction e.g. "Alice reacted 👍". */
+"REACTION_FROM_USER" = "%@ reagoval/a %@";
+
+/* Look, stuff's happened, alright? Just open the app. */
+"MSGS_IN_TWO_PLUS_ROOMS" = "%@ nových zpráv v %@, %@ a dalších";
+
+/* Multiple messages in two rooms */
+"MSGS_IN_TWO_ROOMS" = "%@ nových zpráv v %@ a %@";
+
+/* Multiple unread messages from two plus people (ie. for 4+ people: 'others' replaces the third person) */
+"MSGS_FROM_TWO_PLUS_USERS" = "%@ nových zpráv od %@, %@ a dalších";
+
+/* Multiple unread messages from three people */
+"MSGS_FROM_THREE_USERS" = "%@ nových zpráv od %@, %@ a %@";
+
+/* Multiple unread messages from two people */
+"MSGS_FROM_TWO_USERS" = "%@ nových zpráv od %@ a %@";
+
+/* Multiple unread messages from a specific person, not referencing a room */
+"MSGS_FROM_USER" = "%@ nové zprávy od %@";
+
+/** Coalesced messages **/
+
+/* Multiple unread messages in a room */
+"UNREAD_IN_ROOM" = "%@ nové zprávy v %@";
+
+/* New message with hidden content due to PIN enabled */
+"MESSAGE_PROTECTED" = "Nová zpráva";
+
+/* New message indicator on a room */
+"MESSAGE_IN_X" = "Zpráva v %@";
+
+/* New message indicator from a DM */
+"MESSAGE_FROM_X" = "Zpráva od %@";
+
+/** Notification messages **/
+
+/* New message indicator on unknown room */
+"MESSAGE" = "Zpráva";
+
+/* Sticker from a specific person, not referencing a room. */
+"STICKER_FROM_USER" = "%@ poslal/a nálepku";
+
+/* A single unread message */
+"SINGLE_UNREAD" = "Dostali jste zprávu";
+
+/* A single unread message in a room */
+"SINGLE_UNREAD_IN_ROOM" = "V %@ vám přišla zpráva";
+
+/* New file message from a specific person, not referencing a room. */
+"LOCATION_FROM_USER" = "%@ sdílel/a svou polohu";
+
+/** Single, unencrypted messages (where we can include the content */
+
+/* New message from a specific person, not referencing a room. Content included. */
+"MSG_FROM_USER_WITH_CONTENT" = "%@: %@";
+
+/** Key verification **/
+
+"KEY_VERIFICATION_REQUEST_FROM_USER" = "%@ žádá o ověření";
+
+/* Group call from user, CallKit caller name */
+"GROUP_CALL_FROM_USER" = "%@ (Skupinový hovor)";
+
+/* A user added a Jitsi call to a room */
+"GROUP_CALL_STARTED" = "Začal skupinový hovor";
+
+/* Incoming named video conference invite from a specific person */
+"VIDEO_CONF_NAMED_FROM_USER" = "Skupinový videohovor od %@: '%@'";
+
+/* Incoming named voice conference invite from a specific person */
+"VOICE_CONF_NAMED_FROM_USER" = "Skupinový hovor od %@: '%@'";
+
+/* Incoming unnamed video conference invite from a specific person */
+"VIDEO_CONF_FROM_USER" = "Skupinový videohovor od %@";
+
+/* Incoming unnamed voice conference invite from a specific person */
+"VOICE_CONF_FROM_USER" = "Skupinový hovor od %@";
+
+/* Incoming one-to-one video call */
+"VIDEO_CALL_FROM_USER" = "Videohovor od %@";
+
+/** Calls **/
+
+/* Incoming one-to-one voice call */
+"VOICE_CALL_FROM_USER" = "Hovor od %@";
+
+/* A user's membership has updated in an unknown way */
+"USER_MEMBERSHIP_UPDATED" = "%@ aktualizoval/a svůj profil";
+
+/* A user has change their avatar */
+"USER_UPDATED_AVATAR" = "%@ změnil/a svůj avatar";
+
+/* A user has change their name to a new name which we don't know */
+"GENERIC_USER_UPDATED_DISPLAYNAME" = "%@ změnil/a svůj alias";
+
+/** Membership Updates **/
+
+/* A user has change their name to a new name */
+"USER_UPDATED_DISPLAYNAME" = "%@ změnil/a svůj alias na %@";
+
+/* A user has invited you to a named room */
+"USER_INVITE_TO_NAMED_ROOM" = "%@ vás pozval/a do %@";
+
+/* A user has invited you to an (unamed) group chat */
+"USER_INVITE_TO_CHAT_GROUP_CHAT" = "%@ vás pozval/a ke skupinové konverzaci";
+
+/** Invites **/
+
+/* A user has invited you to a chat */
+"USER_INVITE_TO_CHAT" = "%@ vás pozval/a ke konverzaci";
+
+/* A user has reacted to a message, but the reaction content is unknown */
+"GENERIC_REACTION_FROM_USER" = "%@ poslal/a reakci";
+
+/* New message from a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM" = "%@ něco zveřejnil v %@";
+
+/* New file message from a specific person, not referencing a room. */
+"FILE_FROM_USER" = "%@ poslal/a soubor %@";
+
+/* New voice message from a specific person, not referencing a room. */
+"VOICE_MESSAGE_FROM_USER" = "%@ poslal/a zvukový soubor";
+
+/* New audio message from a specific person, not referencing a room. */
+"AUDIO_FROM_USER" = "%@ poslal/a zvukový soubor %@";
+
+/* New video message from a specific person, not referencing a room. */
+"VIDEO_FROM_USER" = "%@ poslal/a video";
+
+/* New image message from a specific person in a named room. */
+"IMAGE_FROM_USER_IN_ROOM" = "%@ zveřejnil/a obrázek %@ v %@";
+
+/** Media Messages **/
+
+/* New image message from a specific person, not referencing a room. */
+"PICTURE_FROM_USER" = "%@ poslal/a obrázek";
+
+/* New action message from a specific person in a named room. */
+"ACTION_FROM_USER_IN_ROOM" = "%@: * %@ %@";
+
+/* New action message from a specific person, not referencing a room. */
+"ACTION_FROM_USER" = "* %@ %@";
+
+/* New message from a specific person in a named room. Content included. */
+"MSG_FROM_USER_IN_ROOM_WITH_CONTENT" = "%@ v %@: %@";
+
+/** Single, end-to-end encrypted messages (ie. we don't know what they say) */
+
+/* New message from a specific person, not referencing a room */
+"MSG_FROM_USER" = "%@ poslal/a zprávu";
+
+/* New message reply from a specific person in a named room. */
+"REPLY_FROM_USER_IN_ROOM_TITLE" = "%@ odpověděl/a v %@";
+
+/* New message reply from a specific person, not referencing a room. */
+"REPLY_FROM_USER_TITLE" = "%@ odpověděl/a";
+
+/** Titles **/
+
+/* Message title for a specific person in a named room */
+"MSG_FROM_USER_IN_ROOM_TITLE" = "%@ v %@";
+/** General **/
+
+"NOTIFICATION" = "Oznámení";

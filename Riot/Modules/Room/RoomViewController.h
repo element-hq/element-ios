@@ -106,7 +106,7 @@ extern NSNotificationName const RoomGroupCallTileTappedNotification;
  @param eventId Identifier of the event to be highlighted.
  @param completion Completion block to be called at the end of process. Optional.
  */
-- (void)highlightEvent:(NSString *)eventId completion:(nullable void (^)(void))completion;
+- (void)highlightAndDisplayEvent:(NSString *)eventId completion:(nullable void (^)(void))completion;
 
 /**
  Creates and returns a new `RoomViewController` object.

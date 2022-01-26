@@ -31,8 +31,8 @@ extension Presentable {
     
     /// Returns a new module from the presentable without a pop completion block
     /// - Returns: Module
-    func toModule() -> PresentableModule {
-        return PresentableModule(presentable: self, popCompletion: nil)
+    func toModule() -> NavigationModule {
+        return NavigationModule(presentable: self, popCompletion: nil)
     }
     
 }

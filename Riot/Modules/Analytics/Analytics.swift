@@ -23,11 +23,14 @@ import AnalyticsEvents
 /// ## Creating Analytics Events
 ///
 /// Events are managed in a shared repo for all Element clients https://github.com/matrix-org/matrix-analytics-events
-/// To add a new event create a PR to that repo with the new/updated schema.
+/// To add a new event create a PR to that repo with the new/updated schema. Element's Podfile has
+/// a local version of the pod (commented out) for development purposes.
 /// Once merged into `main`, follow the steps below to integrate the changes into the project:
-/// 1. Merge `main` into the `release/swift` branch.
-/// 2. Run `bundle exec pod update AnalyticsEvents` to update the pod.
-/// 3. Make sure to commit `Podfile.lock` with the new commit hash.
+/// 1. Check if `main` contains any source breaking changes to the events. If so, please
+/// wait until you are ready to merge your work into element-ios.
+/// 2. Merge `main` into the `release/swift` branch.
+/// 3. Run `bundle exec pod update AnalyticsEvents` to update the pod.
+/// 4. Make sure to commit `Podfile.lock` with the new commit hash.
 ///
 @objcMembers class Analytics: NSObject {
     

@@ -1380,7 +1380,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
                     RoomNavigationParameters *roomNavigationParameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                                                   eventId:eventId
                                                                                                                 mxSession:account.mxSession
-                                                                                               threadParameters:threadParameters
+                                                                                                         threadParameters:threadParameters
                                                                                                    presentationParameters:screenPresentationParameters];
                     
                     [self showRoomWithParameters:roomNavigationParameters];
@@ -1391,9 +1391,9 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
             else
             {
                 void(^findRoom)(void) = ^{
-                    if ([_masterTabBarController.selectedViewController isKindOfClass:MXKActivityHandlingViewController.class])
+                    if ([_masterTabBarController.selectedViewController conformsToProtocol:@protocol(MXKViewControllerActivityHandling)])
                     {
-                        MXKActivityHandlingViewController *homeViewController = (MXKActivityHandlingViewController*)_masterTabBarController.selectedViewController;
+                        UIViewController<MXKViewControllerActivityHandling> *homeViewController = (UIViewController<MXKViewControllerActivityHandling>*)_masterTabBarController.selectedViewController;
                         
                         [homeViewController startActivityIndicator];
                         
@@ -1670,11 +1670,13 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     // Try to get more information about the room before opening its preview
     [roomPreviewData peekInRoom:^(BOOL succeeded) {
         MXStrongifyAndReturnIfNil(self);
-        
-        MXKViewController *homeViewController = (MXKViewController*)self.masterTabBarController.selectedViewController;
+        if ([self.masterTabBarController.selectedViewController conformsToProtocol:@protocol(MXKViewControllerActivityHandling)])
+        {
+            UIViewController<MXKViewControllerActivityHandling> *homeViewController = (UIViewController<MXKViewControllerActivityHandling>*)self.masterTabBarController.selectedViewController;
 
-        // Note: the activity indicator will not disappear if the session is not ready
-        [homeViewController stopActivityIndicator];
+            // Note: the activity indicator will not disappear if the session is not ready
+            [homeViewController stopActivityIndicator];
+        }
         
         // If no data is available for this room, we name it with the known room alias (if any).
         if (!succeeded && self->universalLinkFragmentPendingRoomAlias[roomIdOrAlias])
@@ -2912,7 +2914,7 @@ NSString *const AppDelegateUniversalLinkDidChangeNotification = @"AppDelegateUni
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:mxSession
-                                                                 threadParameters:nil
+                                                                           threadParameters:nil
                                                                      presentationParameters:presentationParameters];
     
     [self showRoomWithParameters:parameters];

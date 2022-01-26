@@ -50,7 +50,7 @@ class ThreadTableViewCell: UITableViewCell {
         separatorInset = Constants.separatorInset
     }
     
-    func configure(withViewModel viewModel: ThreadViewModel) {
+    func configure(withViewModel viewModel: ThreadModel) {
         if let rootAvatar = viewModel.rootMessageSenderAvatar {
             rootMessageAvatarView.fill(with: rootAvatar)
         } else {

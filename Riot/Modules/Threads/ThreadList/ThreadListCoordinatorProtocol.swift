@@ -25,7 +25,7 @@ protocol ThreadListCoordinatorDelegate: AnyObject {
     func threadListCoordinatorDidCancel(_ coordinator: ThreadListCoordinatorProtocol)
 }
 
-/// `ThreadListCoordinatorProtocol` is a protocol describing a Coordinator that handle xxxxxxx navigation flow.
+/// `ThreadListCoordinatorProtocol` is a protocol describing a Coordinator that handle thread list navigation flow.
 protocol ThreadListCoordinatorProtocol: Coordinator, Presentable {
     var delegate: ThreadListCoordinatorDelegate? { get }
 }

@@ -20,12 +20,6 @@ import UIKit
 
 final class ThreadListViewController: UIViewController {
     
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let aConstant: Int = 666
-    }
-    
     // MARK: - Properties
     
     // MARK: Outlets
@@ -184,7 +178,7 @@ final class ThreadListViewController: UIViewController {
         }
     }
     
-    private func renderEmptyView(withViewModel emptyViewModel: ThreadListEmptyViewModel) {
+    private func renderEmptyView(withViewModel emptyViewModel: ThreadListEmptyModel) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
         emptyView.configure(withViewModel: emptyViewModel)
         threadsTableView.isHidden = true

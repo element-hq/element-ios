@@ -1483,7 +1483,7 @@
 "space_private_join_rule" = "Privát tér";
 "space_participants_action_ban" = "Kitiltás a térről";
 "space_participants_action_remove" = "Eltávolítás a térről";
-"spaces_coming_soon_detail" = "Ez a lehetőség még nincs meg, de fejlesztés alatt van. Egyenlőre a számítógépeden Elementtel tudod ezt megtenni.";
+"spaces_coming_soon_detail" = "Ez a lehetőség még nincs meg, de fejlesztés alatt van. Egyenlőre a számítógépeden %@ alkalmazással tudod ezt megtenni.";
 "spaces_invites_coming_soon_title" = "Meghívók küldése hamarosan érkezik";
 "spaces_add_rooms_coming_soon_title" = "Szobák hozzáadása hamarosan érkezik";
 "spaces_coming_soon_title" = "Hamarosan";
@@ -1579,7 +1579,7 @@
 "analytics_prompt_terms_link_new_user" = "itt";
 /* Note: The placeholder is for the contents of analytics_prompt_terms_link_new_user */
 "analytics_prompt_terms_new_user" = "Az összes feltételünket elolvashatod itt: %@.";
-"analytics_prompt_message_new_user" = "Segíts észrevennünk a hibákat, és jobbá tenni az Element-et a névtelen használati adatok küldése által. Ahhoz, hogy megértsük, hogyan használnak a felhasználók egyszerre több eszközt, egy véletlenszerű azonosítót generálunk, ami az eszközeid között meg lesz osztva.";
+"analytics_prompt_message_new_user" = "Segíts észrevennünk a hibákat, és jobbá tenni a(z) %@ alkalmazást a névtelen használati adatok küldése által. Ahhoz, hogy megértsük, hogyan használnak a felhasználók egyszerre több eszközt, egy véletlenszerű azonosítót generálunk, ami az eszközeid között meg lesz osztva.";
 
 // Analytics
 "analytics_prompt_title" = "Segíts jobbá tenni %@";
@@ -1590,3 +1590,32 @@
 "accessibility_button_label" = "gomb";
 "enable" = "Engedélyezés";
 "analytics_prompt_message_upgrade" = "Korábban beleegyeztél, hogy velünk anonimizált adatokat osztasz meg. Most, hogy jobban megértsük, hogyan használnak több eszközt az emberek, véletlenszerű azonosítót állítunk elő amit az eszközeid használni fognak.";
+"location_sharing_settings_toggle_title" = "Földrajzi hely megosztás engedélyezése";
+"location_sharing_settings_header" = "Földrajzi hely megosztása";
+"location_sharing_open_google_maps" = "Megnyitás a Google Térképen";
+"location_sharing_open_apple_maps" = "Megnyitás az Apple Térképen";
+"location_sharing_invalid_authorization_settings" = "Beállítások";
+"location_sharing_invalid_authorization_not_now" = "Nem most";
+"location_sharing_invalid_authorization_error_title" = "%@ alkalmazásnak nincs jogosultsága a helyadatod eléréséhez. Engedélyezheted a Beállítások > Helyadatokban";
+"location_sharing_loading_map_error_title" = "%@ nem tudja betölteni a térképet. Próbáld újra később.";
+"location_sharing_locating_user_error_title" = "%@ nem fér hozzá a helyadatodhoz. Próbáld újra később.";
+"location_sharing_share_action" = "Megoszt";
+"location_sharing_close_action" = "Bezár";
+
+// MARK: - Location sharing
+
+"location_sharing_title" = "Földrajzi helyzet";
+"ok" = "OK";
+"onboarding_splash_page_4_message" = "Element megállja a helyét a munkahelyen is. A világ legbiztonságosabb szervezetei bíznak meg benne.";
+"onboarding_splash_page_3_message" = "Telefonszám nélkül végpontok között titkosított. Reklámok és adatbányászat nélkül.";
+"onboarding_splash_page_2_message" = "Válaszd meg hol legyenek a beszélgetéseid tárolva, visszaadja az irányítást és függetlenné tesz. Csatlakozva a Matrixhoz.";
+"onboarding_splash_page_1_message" = "Biztonságos és független kommunikáció ami olyan biztonságos mintha valakivel négyszemközt beszélgetnél a házadban.";
+"settings_enable_room_message_bubbles" = "Üzenet buborékok";
+"onboarding_splash_page_4_title_no_pun" = "Üzenetküldés a csoportodnak.";
+"onboarding_splash_page_3_title" = "Biztonságos üzenetküldés.";
+"onboarding_splash_page_2_title" = "Te irányítasz.";
+"onboarding_splash_page_1_title" = "Az ön beszélgetései csak az öné.";
+"onboarding_splash_login_button_title" = "Már van fiókom";
+
+// Onboarding
+"onboarding_splash_register_button_title" = "Fiók létrehozása";

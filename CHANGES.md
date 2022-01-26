@@ -1,3 +1,35 @@
+## Changes in 1.7.0 (2022-01-25)
+
+✨ Features
+
+- Message bubbles: Text message layout. ([#5208](https://github.com/vector-im/element-ios/issues/5208))
+- Message Bubbles: Layout for Media. ([#5209](https://github.com/vector-im/element-ios/issues/5209))
+- Message Bubbles: Support URL Previews. ([#5212](https://github.com/vector-im/element-ios/issues/5212))
+- Message Bubbles: Support reactions. ([#5214](https://github.com/vector-im/element-ios/issues/5214))
+- Added static location sharing sending and rendering support. ([#5298](https://github.com/vector-im/element-ios/issues/5298))
+- Message bubbles: Add settings and build flag. ([#5321](https://github.com/vector-im/element-ios/issues/5321))
+
+🙌 Improvements
+
+- Upgrade MatrixSDK version ([v0.21.0](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.21.0)).
+- Using mutable room list fetch sort options after chaning them to be a structure. Adaptation to MXStore api changes. ([#4384](https://github.com/vector-im/element-ios/issues/4384))
+- Reduce grace period to report decryption failure ([#5345](https://github.com/vector-im/element-ios/issues/5345))
+
+🐛 Bugfixes
+
+- Fixed home screen not updating properly on theme changes. ([#4208](https://github.com/vector-im/element-ios/issues/4208))
+- Fixes DTMF(dial tones) during voice calls. ([#5375](https://github.com/vector-im/element-ios/issues/5375))
+- Fix crash when uploading a video on iPad when "Confirm size when sending" is enabled in settings. ([#5399](https://github.com/vector-im/element-ios/issues/5399))
+- Fix BuildSetting to show/hide the "Invite Friends" button in the side SideMenu. ([#5402](https://github.com/vector-im/element-ios/issues/5402))
+- Add BuildSetting to hide social login in favour of the simple SSO button. ([#5404](https://github.com/vector-im/element-ios/issues/5404))
+- Fix grey spinner showing indefinitely over the home view after launch. ([#5407](https://github.com/vector-im/element-ios/issues/5407))
+- RecentsViewController: Update tab bar badges on section-only updates. ([#5421](https://github.com/vector-im/element-ios/issues/5421))
+
+Others
+
+- Fix graphql warnings in issue workflow automation ([#5294](https://github.com/vector-im/element-ios/issues/5294))
+
+
 ## Changes in 1.6.12 (2022-01-11)
 
 🙌 Improvements

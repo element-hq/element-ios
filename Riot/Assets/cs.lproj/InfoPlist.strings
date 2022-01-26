@@ -1,0 +1,7 @@
+
+
+// Permissions usage explanations
+"NSCameraUsageDescription" = "Kamera slouží k focení, zachycení videí a k videohovorům.";
+"NSPhotoLibraryUsageDescription" = "Galerie se používá k posílání obrázků a videí.";
+"NSCalendarsUsageDescription" = "Zobrazuje události v aplikaci.";
+"NSFaceIDUsageDescription" = "Face ID se používá k přístupu do aplikace.";

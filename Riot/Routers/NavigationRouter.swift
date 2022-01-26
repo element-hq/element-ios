@@ -117,7 +117,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         self.didPushViewController(controller)
     }
         
-    func setModules(_ modules: [PresentableModule], hideNavigationBar: Bool, animated: Bool) {
+    func setModules(_ modules: [NavigationModule], hideNavigationBar: Bool, animated: Bool) {
         
         MXLog.debug("[NavigationRouter] Set modules \(modules)")
         
@@ -221,7 +221,7 @@ final class NavigationRouter: NSObject, NavigationRouterType {
         self.didPushViewController(controller)
     }
     
-    func push(_ modules: [PresentableModule], animated: Bool) {
+    func push(_ modules: [NavigationModule], animated: Bool) {
         MXLog.debug("[NavigationRouter] Push modules \(modules)")
         
         // Avoid pushing any UINavigationController onto stack

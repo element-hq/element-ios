@@ -363,13 +363,13 @@ extension SplitViewCoordinator: SplitViewMasterPresentableDelegate {
         detailNavigationRouter.push(detailPresentable, animated: true, popCompletion: popCompletion)
     }
     
-    func splitViewMasterPresentable(_ presentable: Presentable, wantsToReplaceDetailsWith modules: [PresentableModule]) {
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToReplaceDetailsWith modules: [NavigationModule]) {
         MXLog.debug("[SplitViewCoordinator] splitViewMasterPresentable: \(presentable) wantsToReplaceDetailsWith modules: \(modules)")
         
         self.detailNavigationRouter?.setModules(modules, animated: true)
     }
     
-    func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack modules: [PresentableModule]) {
+    func splitViewMasterPresentable(_ presentable: Presentable, wantsToStack modules: [NavigationModule]) {
         guard let detailNavigationRouter = self.detailNavigationRouter else {
             MXLog.warning("[SplitViewCoordinator] Failed to stack \(modules) because detailNavigationRouter is nil")
             return

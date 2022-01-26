@@ -38,7 +38,7 @@ class ThreadRoomTitleView: RoomTitleView {
     
     //  MARK: - Methods
     
-    func configure(withViewModel viewModel: ThreadRoomTitleViewModel) {
+    func configure(withViewModel viewModel: ThreadRoomTitleModel) {
         if let avatarViewData = viewModel.roomAvatar {
             roomAvatarView.fill(with: avatarViewData)
         } else {
@@ -81,9 +81,9 @@ class ThreadRoomTitleView: RoomTitleView {
             encrpytionBadge = nil
         }
         
-        let viewModel = ThreadRoomTitleViewModel(roomAvatar: avatarViewData,
-                                                 roomEncryptionBadge: encrpytionBadge,
-                                                 roomDisplayName: room.displayName)
+        let viewModel = ThreadRoomTitleModel(roomAvatar: avatarViewData,
+                                             roomEncryptionBadge: encrpytionBadge,
+                                             roomDisplayName: room.displayName)
         configure(withViewModel: viewModel)
     }
     
