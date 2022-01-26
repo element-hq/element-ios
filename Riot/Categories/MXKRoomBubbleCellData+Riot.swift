@@ -30,4 +30,9 @@ extension MXKRoomBubbleCellData {
     var isCollapsableAndCollapsed: Bool {
         return self.collapsable && self.collapsed
     }
+    
+    var cellDataTag: RoomBubbleCellDataTag {
+        return RoomBubbleCellDataTag(rawValue: self.tag) ?? .message
+    }
+    
 }
