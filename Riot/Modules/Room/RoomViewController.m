@@ -3577,24 +3577,21 @@ const NSTimeInterval kResizeComposerAnimationDuration = .05;
         if (selectedEvent.eventType != MXEventTypeRoomEncryption)
         {
             NSString *title;
-            UIAlertActionStyle style;
             EventMenuItemType itemType;
             if (selectedEvent.eventType == MXEventTypePollStart)
             {
                 title = [VectorL10n roomEventActionRemovePoll];
-                style = UIAlertActionStyleDefault;
                 itemType = EventMenuItemTypeRemovePoll;
             }
             else
             {
                 title = [VectorL10n roomEventActionRedact];
-                style = UIAlertActionStyleDestructive;
                 itemType = EventMenuItemTypeRemove;
             }
             
             [self.eventMenuBuilder addItemWithType:itemType
                                             action:[UIAlertAction actionWithTitle:title
-                                                                            style:style
+                                                                            style:UIAlertActionStyleDestructive
                                                                           handler:^(UIAlertAction * action) {
                 MXStrongifyAndReturnIfNil(self);
                 
