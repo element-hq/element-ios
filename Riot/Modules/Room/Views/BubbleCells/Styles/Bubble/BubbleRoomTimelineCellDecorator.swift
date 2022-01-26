@@ -28,22 +28,10 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     }
         
     override func addTimestampLabel(toCell cell: MXKRoomBubbleTableViewCell, cellData: RoomBubbleCellData) {
-
+        
         // If cell contains a bubble background, add the timestamp inside of it
-        if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false {
+        if let bubbleBackgroundView = cell.messageBubbleBackgroundView, bubbleBackgroundView.isHidden == false, let timestampLabel = self.createTimestampLabel(for: cellData) {
 
-            let componentIndex = cellData.mostRecentComponentIndex
-
-            guard let bubbleComponents = cellData.bubbleComponents,
-                    componentIndex < bubbleComponents.count else {
-                      return
-                  }
-
-            let component = bubbleComponents[componentIndex]
-
-            let timestampLabel = self.createTimestampLabel(cellData: cellData,
-                                                           bubbleComponent: component,
-                                                           viewTag: componentIndex)
             timestampLabel.translatesAutoresizingMaskIntoConstraints = false
 
             cell.addTemporarySubview(timestampLabel)
@@ -61,6 +49,35 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
                 trailingConstraint,
                 bottomConstraint
             ])
+        } else if cellData.isAttachmentWithThumbnail {
+                                                 
+            if cellData.attachment?.type == .sticker {
+                // TODO: Handle sticker & selected sticker
+            } else if let attachmentView = cell.attachmentView, let timestampLabel = self.createTimestampLabel(for: cellData, textColor: self.theme.baseIconPrimaryColor) {
+                // For media with thumbnail cells, add timestamp inside thumbnail
+                
+                timestampLabel.translatesAutoresizingMaskIntoConstraints = false
+
+                cell.addTemporarySubview(timestampLabel)
+                
+                let cellContentView = cell.contentView
+                
+                cellContentView.addSubview(timestampLabel)
+
+                let rightMargin: CGFloat = 8.0
+                let bottomMargin: CGFloat = 4.0
+
+                let trailingConstraint = timestampLabel.trailingAnchor.constraint(equalTo: attachmentView.trailingAnchor, constant: -rightMargin)
+
+                let bottomConstraint = timestampLabel.bottomAnchor.constraint(equalTo: attachmentView.bottomAnchor, constant: -bottomMargin)
+
+                NSLayoutConstraint.activate([
+                    trailingConstraint,
+                    bottomConstraint
+                ])
+            } else {
+                super.addTimestampLabel(toCell: cell, cellData: cellData)
+            }
         } else {
             super.addTimestampLabel(toCell: cell, cellData: cellData)
         }
@@ -183,19 +200,37 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
     
     // MARK: - Private
     
-    private func createTimestampLabel(cellData: MXKRoomBubbleCellData, bubbleComponent: MXKRoomBubbleComponent, viewTag: Int) -> UILabel {
+    private func createTimestampLabel(cellData: MXKRoomBubbleCellData, bubbleComponent: MXKRoomBubbleComponent, viewTag: Int, textColor: UIColor) -> UILabel {
         
         let timeLabel = UILabel()
 
         timeLabel.text = cellData.eventFormatter.timeString(from: bubbleComponent.date)
         timeLabel.textAlignment = .right
-        timeLabel.textColor = ThemeService.shared().theme.textSecondaryColor
-        timeLabel.font = UIFont.systemFont(ofSize: 11, weight: .light)
+        timeLabel.textColor = textColor
+        timeLabel.font = self.theme.fonts.caption2
         timeLabel.adjustsFontSizeToFitWidth = true
         timeLabel.tag = viewTag
         timeLabel.accessibilityIdentifier = "timestampLabel"
         
         return timeLabel
+    }
+    
+    func createTimestampLabel(for cellData: RoomBubbleCellData) -> UILabel? {
+        return self.createTimestampLabel(for: cellData, textColor: self.theme.textSecondaryColor)
+    }
+    
+    private func createTimestampLabel(for cellData: RoomBubbleCellData, textColor: UIColor) -> UILabel? {
+        
+        let componentIndex = cellData.mostRecentComponentIndex
+        
+        guard let bubbleComponents = cellData.bubbleComponents,
+              componentIndex < bubbleComponents.count else {
+                  return nil
+              }
+        
+        let component = bubbleComponents[componentIndex]
+
+        return self.createTimestampLabel(cellData: cellData, bubbleComponent: component, viewTag: componentIndex, textColor: textColor)
     }
     
     private func canShowTimestamp(forCellData cellData: MXKRoomBubbleCellData) -> Bool {
@@ -213,6 +248,22 @@ class BubbleRoomTimelineCellDecorator: PlainRoomTimelineCellDecorator {
             return true
         default:
             break
+        }
+        
+        if let attachmentType = cellData.attachment?.type {
+            switch attachmentType {
+            case .voiceMessage, .audio:
+                return true
+            case .sticker:
+                // Do not show timestamp for stickers atm
+                return false
+            default:
+                break
+            }
+        }
+        
+        if cellData.isAttachmentWithThumbnail {
+            return true
         }
         
         switch firstEvent.eventType {
