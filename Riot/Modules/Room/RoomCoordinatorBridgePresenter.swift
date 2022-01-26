@@ -18,7 +18,9 @@ import Foundation
 @objc protocol RoomCoordinatorBridgePresenterDelegate {
     func roomCoordinatorBridgePresenterDidLeaveRoom(_ bridgePresenter: RoomCoordinatorBridgePresenter)
     func roomCoordinatorBridgePresenterDidCancelRoomPreview(_ bridgePresenter: RoomCoordinatorBridgePresenter)
-    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter, didSelectRoomWithId roomId: String)
+    func roomCoordinatorBridgePresenter(_ bridgePresenter: RoomCoordinatorBridgePresenter,
+                                        didSelectRoomWithId roomId: String,
+                                        eventId: String?)
     func roomCoordinatorBridgePresenterDidDismissInteractively(_ bridgePresenter: RoomCoordinatorBridgePresenter)
 }
 
@@ -34,16 +36,26 @@ class RoomCoordinatorBridgePresenterParameters: NSObject {
     /// If not nil, the room will be opened on this event.
     let eventId: String?
     
+    /// If not nil, specified thread will be opened.
+    let threadId: String?
+    
+    /// Display configuration for the room
+    let displayConfiguration: RoomDisplayConfiguration
+    
     /// The data for the room preview.
     let previewData: RoomPreviewData?
     
     init(session: MXSession,
          roomId: String,
          eventId: String?,
+         threadId: String?,
+         displayConfiguration: RoomDisplayConfiguration,
          previewData: RoomPreviewData?) {
         self.session = session
         self.roomId = roomId
         self.eventId = eventId
+        self.threadId = threadId
+        self.displayConfiguration = displayConfiguration
         self.previewData = previewData
     }
 }
@@ -60,6 +72,12 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         
     private let bridgeParameters: RoomCoordinatorBridgePresenterParameters
     private var coordinator: RoomCoordinator?
+    private var navigationType: NavigationType = .present
+    
+    private enum NavigationType {
+        case present
+        case push
+    }
     
     // MARK: Public
     
@@ -75,7 +93,6 @@ final class RoomCoordinatorBridgePresenter: NSObject {
     // MARK: - Public
     
     func present(from viewController: UIViewController, animated: Bool) {
-        
         let coordinator = self.createRoomCoordinator()
         coordinator.delegate = self
         let presentable = coordinator.toPresentable()
@@ -84,6 +101,7 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         coordinator.start()
         
         self.coordinator = coordinator
+        self.navigationType = .present
     }
     
     func push(from navigationController: UINavigationController, animated: Bool) {
@@ -95,13 +113,25 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         coordinator.start() // Will trigger view controller push
         
         self.coordinator = coordinator
+        self.navigationType = .push
     }
     
     func dismiss(animated: Bool, completion: (() -> Void)?) {
         guard let coordinator = self.coordinator else {
             return
         }
-        coordinator.toPresentable().dismiss(animated: animated) {
+        switch navigationType {
+        case .present:
+            coordinator.toPresentable().dismiss(animated: animated) {
+                self.coordinator = nil
+
+                completion?()
+            }
+        case .push:
+            guard let navigationController = coordinator.toPresentable().navigationController else {
+                return
+            }
+            navigationController.popViewController(animated: animated)
             self.coordinator = nil
 
             completion?()
@@ -117,7 +147,12 @@ final class RoomCoordinatorBridgePresenter: NSObject {
         if let previewData = self.bridgeParameters.previewData {
             coordinatorParameters = RoomCoordinatorParameters(navigationRouter: navigationRouter, previewData: previewData)
         } else {
-            coordinatorParameters =  RoomCoordinatorParameters(navigationRouter: navigationRouter, session: self.bridgeParameters.session, roomId: self.bridgeParameters.roomId, eventId: self.bridgeParameters.eventId)
+            coordinatorParameters =  RoomCoordinatorParameters(navigationRouter: navigationRouter,
+                                                               session: self.bridgeParameters.session,
+                                                               roomId: self.bridgeParameters.roomId,
+                                                               eventId: self.bridgeParameters.eventId,
+                                                               threadId: self.bridgeParameters.threadId,
+                                                               displayConfiguration: self.bridgeParameters.displayConfiguration)
         }
         
         return RoomCoordinator(parameters: coordinatorParameters)
@@ -127,8 +162,8 @@ final class RoomCoordinatorBridgePresenter: NSObject {
 // MARK: - RoomNotificationSettingsCoordinatorDelegate
 extension RoomCoordinatorBridgePresenter: RoomCoordinatorDelegate {
     
-    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String) {
-        self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId)
+    func roomCoordinator(_ coordinator: RoomCoordinatorProtocol, didSelectRoomWithId roomId: String, eventId: String?) {
+        self.delegate?.roomCoordinatorBridgePresenter(self, didSelectRoomWithId: roomId, eventId: eventId)
     }
     
     func roomCoordinatorDidLeaveRoom(_ coordinator: RoomCoordinatorProtocol) {

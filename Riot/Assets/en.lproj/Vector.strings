@@ -338,7 +338,8 @@ Tap the + to start adding people.";
 "room_member_power_level_short_moderator" = "Mod";
 "room_member_power_level_short_custom" = "Custom";
 
-// Chat
+// MARK: - Chat
+
 "room_slide_to_end_group_call" = "Slide to end the call for everyone";
 "room_jump_to_first_unread" = "Jump to unread";
 "room_accessiblity_scroll_to_bottom" = "Scroll to bottom";
@@ -378,7 +379,8 @@ Tap the + to start adding people.";
 "room_event_action_more" = "More";
 "room_event_action_share" = "Share";
 "room_event_action_forward" = "Forward";
-"room_event_action_permalink" = "Permalink";
+"room_event_action_view_in_room" = "View in room";
+"room_event_action_permalink" = "Copy link to message";
 "room_event_action_view_source" = "View Source";
 "room_event_action_view_decrypted_source" = "View Decrypted Source";
 "room_event_action_report" = "Report content";
@@ -395,6 +397,7 @@ Tap the + to start adding people.";
 "room_event_action_cancel_download" = "Cancel Download";
 "room_event_action_view_encryption" = "Encryption Information";
 "room_event_action_reply" = "Reply";
+"room_event_action_reply_in_thread" = "Thread";
 "room_event_action_edit" = "Edit";
 "room_event_action_reaction_show_all" = "Show all";
 "room_event_action_reaction_show_less" = "Show less";
@@ -423,11 +426,25 @@ Tap the + to start adding people.";
 "room_accessibility_upload" = "Upload";
 "room_accessibility_call" = "Call";
 "room_accessibility_video_call" = "Video Call";
+"room_accessibility_threads" = "Threads";
 "room_accessibility_hangup" = "Hang up";
+"room_accessibility_thread_more" = "More";
 "room_place_voice_call" = "Voice call";
 "room_open_dialpad" = "Dial pad";
 "room_join_group_call" = "Join";
 "room_no_privileges_to_create_group_call" = "You need to be an admin or a moderator to start a call.";
+
+// MARK: Threads
+"room_thread_title" = "Thread";
+"thread_copy_link_to_thread" = "Copy link to thread";
+"threads_title" = "Threads";
+"threads_action_all_threads" = "All threads";
+"threads_action_my_threads" = "My threads";
+"threads_empty_title" = "Keep discussions organised with threads";
+"threads_empty_info_all" = "Threads help keep your conversations on-topic and easy to track.";
+"threads_empty_info_my" = "Reply to an ongoing thread or use “Thread” when selecting a message to start a new one.";
+"threads_empty_tip" = "Tip: Use “Thread” option when selecting a message.";
+"threads_empty_show_all_threads" = "Show all threads";
 
 "media_type_accessibility_image" = "Image";
 "media_type_accessibility_audio" = "Audio";
@@ -585,6 +602,7 @@ Tap the + to start adding people.";
 "settings_labs_message_reaction" = "React to messages with emoji";
 "settings_labs_enable_ringing_for_group_calls" = "Ring for group calls";
 "settings_labs_enabled_polls" = "Polls";
+"settings_labs_enable_threads" = "Threaded messaging";
 
 "settings_version" = "Version %@";
 "settings_olm_version" = "Olm Version %@";
@@ -919,6 +937,7 @@ Tap the + to start adding people.";
 "event_formatter_group_call_join" = "Join";
 "event_formatter_group_call_leave" = "Leave";
 "event_formatter_group_call_incoming" = "%@ in %@";
+"event_formatter_message_deleted" = "Message deleted";
 
 // Events formatter with you
 "event_formatter_widget_added_by_you" = "You added the widget: %@";

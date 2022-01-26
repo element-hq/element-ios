@@ -204,6 +204,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 @property (nonatomic, readwrite) MXRoom *secondaryRoom;
 @property (nonatomic, strong) MXEventTimeline *secondaryTimeline;
+@property (nonatomic, readwrite) NSString *threadId;
 
 @end
 
@@ -215,9 +216,9 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     [self ensureSessionStateForDataSource:roomDataSource initialEventId:nil andMatrixSession:mxSession onComplete:onComplete];
 }
 
-+ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
++ (void)loadRoomDataSourceWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession onComplete:(void (^)(id roomDataSource))onComplete
 {
-    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId initialEventId:initialEventId andMatrixSession:mxSession];
+    MXKRoomDataSource *roomDataSource = [[self alloc] initWithRoomId:roomId initialEventId:initialEventId threadId:threadId andMatrixSession:mxSession];
     [self ensureSessionStateForDataSource:roomDataSource initialEventId:initialEventId andMatrixSession:mxSession onComplete:onComplete];
 }
 
@@ -347,7 +348,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     return self;
 }
 
-- (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId2 andMatrixSession:(MXSession*)mxSession
+- (instancetype)initWithRoomId:(NSString*)roomId initialEventId:(NSString*)initialEventId2 threadId:(NSString*)threadId andMatrixSession:(MXSession*)mxSession
 {
     self = [self initWithRoomId:roomId andMatrixSession:mxSession];
     if (self)
@@ -357,6 +358,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             initialEventId = initialEventId2;
             _isLive = NO;
         }
+        _threadId = threadId;
     }
 
     return self;
@@ -364,7 +366,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 
 - (instancetype)initWithPeekingRoom:(MXPeekingRoom*)peekingRoom2 andInitialEventId:(NSString*)theInitialEventId
 {
-    self = [self initWithRoomId:peekingRoom2.roomId initialEventId:theInitialEventId andMatrixSession:peekingRoom2.mxSession];
+    self = [self initWithRoomId:peekingRoom2.roomId initialEventId:theInitialEventId threadId:nil andMatrixSession:peekingRoom2.mxSession];
     if (self)
     {
         peekingRoom = peekingRoom2;
@@ -1289,6 +1291,34 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     
 }
 
+- (BOOL)shouldQueueEventForProcessing:(MXEvent*)event roomState:(MXRoomState*)roomState direction:(MXTimelineDirection)direction
+{
+    if (self.filterMessagesWithURL)
+    {
+        // Check whether the event has a value for the 'url' key in its content.
+        if (!event.getMediaURLs.count)
+        {
+            // ignore the event
+            return NO;
+        }
+    }
+    
+    // Check for undecryptable messages that were sent while the user was not in the room and hide them
+    if ([MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents
+        && direction == MXTimelineDirectionBackwards)
+    {
+        [self checkForPreJoinUTDWithEvent:event roomState:roomState];
+        
+        // Hide pre joint UTD events
+        if (self.shouldStopBackPagination)
+        {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -1425,7 +1455,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     // Launch the pagination
     
     MXWeakify(self);
-    paginationRequest = [_timeline paginate:numItems direction:direction onlyFromStore:onlyFromStore complete:^{
+    paginationRequest = [_timeline paginate:numItems
+                                  direction:direction
+                              onlyFromStore:onlyFromStore
+                                   complete:^{
         
         MXStrongifyAndReturnIfNil(self);
         
@@ -1489,7 +1522,10 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         dispatch_group_enter(dispatchGroup);
         // Launch the pagination
         MXWeakify(self);
-        secondaryPaginationRequest = [_secondaryTimeline paginate:numItems direction:direction onlyFromStore:onlyFromStore complete:^{
+        secondaryPaginationRequest = [_secondaryTimeline paginate:numItems
+                                                        direction:direction
+                                                    onlyFromStore:onlyFromStore
+                                                         complete:^{
             
             MXStrongifyAndReturnIfNil(self);
             
@@ -1676,11 +1712,11 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     // Make the request to the homeserver
     if (isEmote)
     {
-        [_room sendEmote:sanitizedText formattedText:html localEcho:&localEchoEvent success:success failure:failure];
+        [_room sendEmote:sanitizedText formattedText:html threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     }    
     else
     {
-        [_room sendTextMessage:sanitizedText formattedText:html localEcho:&localEchoEvent success:success failure:failure];
+        [_room sendTextMessage:sanitizedText formattedText:html threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     }
     
     if (localEchoEvent)
@@ -1821,7 +1857,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendImage:imageData withImageSize:imageSize mimeType:mimetype andThumbnail:thumbnail localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendImage:imageData withImageSize:imageSize mimeType:mimetype andThumbnail:thumbnail threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1841,7 +1877,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendVideoAsset:videoAsset withThumbnail:videoThumbnail localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendVideoAsset:videoAsset withThumbnail:videoThumbnail threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1855,7 +1891,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendAudioFile:audioFileLocalURL mimeType:mimeType localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
+    [_room sendAudioFile:audioFileLocalURL mimeType:mimeType threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
     
     if (localEchoEvent)
     {
@@ -1874,7 +1910,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendVoiceMessage:audioFileLocalURL mimeType:mimeType duration:duration samples:samples localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
+    [_room sendVoiceMessage:audioFileLocalURL mimeType:mimeType duration:duration samples:samples threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure keepActualFilename:YES];
     
     if (localEchoEvent)
     {
@@ -1889,7 +1925,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
 {
     __block MXEvent *localEchoEvent = nil;
     
-    [_room sendFile:fileLocalURL mimeType:mimeType localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendFile:fileLocalURL mimeType:mimeType threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1904,7 +1940,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     __block MXEvent *localEchoEvent = nil;
     
     // Make the request to the homeserver
-    [_room sendMessageWithContent:msgContent localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendMessageWithContent:msgContent threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
     
     if (localEchoEvent)
     {
@@ -1926,6 +1962,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     [_room sendLocationWithLatitude:latitude
                           longitude:longitude
                         description:description
+                           threadId:self.threadId
                           localEcho:&localEchoEvent
                             success:success failure:failure];
     
@@ -1942,7 +1979,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     __block MXEvent *localEchoEvent = nil;
 
     // Make the request to the homeserver
-    [_room sendEventOfType:eventTypeString content:msgContent localEcho:&localEchoEvent success:success failure:failure];
+    [_room sendEventOfType:eventTypeString content:msgContent threadId:self.threadId localEcho:&localEchoEvent success:success failure:failure];
 
     if (localEchoEvent)
     {
@@ -1969,7 +2006,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
     {
         // We try here to resent an encrypted event
         // Note: we keep the existing local echo.
-        [_room sendEventOfType:kMXEventTypeStringRoomEncrypted content:event.wireContent localEcho:&event success:success failure:failure];
+        [_room sendEventOfType:kMXEventTypeStringRoomEncrypted content:event.wireContent threadId:self.threadId localEcho:&event success:success failure:failure];
     }
     else if ([event.type isEqualToString:kMXEventTypeStringRoomMessage])
     {
@@ -1978,7 +2015,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         if ([msgType isEqualToString:kMXMessageTypeText] || [msgType isEqualToString:kMXMessageTypeEmote])
         {
             // Resend the Matrix event by reusing the existing echo
-            [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+            [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
         }
         else if ([msgType isEqualToString:kMXMessageTypeImage])
         {
@@ -2021,7 +2058,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             else
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
             }
         }
         else if ([msgType isEqualToString:kMXMessageTypeAudio])
@@ -2032,7 +2069,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             if (!contentURL || ![contentURL hasPrefix:kMXMediaUploadIdPrefix])
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
                 return;
             }
             
@@ -2072,7 +2109,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             else
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
             }
         }
         else if ([msgType isEqualToString:kMXMessageTypeFile])
@@ -2108,7 +2145,7 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
             else
             {
                 // Resend the Matrix event by reusing the existing echo
-                [_room sendMessageWithContent:event.content localEcho:&event success:success failure:failure];
+                [_room sendMessageWithContent:event.content threadId:self.threadId localEcho:&event success:success failure:failure];
             }
         }
         else
@@ -2805,27 +2842,9 @@ typedef NS_ENUM (NSUInteger, MXKRoomDataSourceError) {
         MXLogVerbose(@"[MXKRoomDataSource][%p] queueEventForProcessing: %@", self, event.eventId);
     }
     
-    if (self.filterMessagesWithURL)
+    if (![self shouldQueueEventForProcessing:event roomState:roomState direction:direction])
     {
-        // Check whether the event has a value for the 'url' key in its content.
-        if (!event.getMediaURLs.count)
-        {
-            // Ignore the event
-            return;
-        }
-    }
-    
-    // Check for undecryptable messages that were sent while the user was not in the room and hide them
-    if ([MXKAppSettings standardAppSettings].hidePreJoinedUndecryptableEvents
-        && direction == MXTimelineDirectionBackwards)
-    {
-        [self checkForPreJoinUTDWithEvent:event roomState:roomState];
-        
-        // Hide pre joint UTD events
-        if (self.shouldStopBackPagination)
-        {
-            return;
-        }
+        return;
     }
     
     MXKQueuedEvent *queuedEvent = [[MXKQueuedEvent alloc] initWithEvent:event andRoomState:roomState direction:direction];

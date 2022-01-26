@@ -164,6 +164,7 @@
     RoomNavigationParameters *parameters = [[RoomNavigationParameters alloc] initWithRoomId:roomId
                                                                                     eventId:eventId
                                                                                   mxSession:session
+                                                                           threadParameters:nil
                                                                      presentationParameters:presentationParameters];
     
     [[AppDelegate theDelegate] showRoomWithParameters:parameters];

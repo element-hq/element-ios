@@ -168,7 +168,7 @@ extern NSString *const kMXKRoomBubbleCellUrlItemInteraction;
 @property (nonatomic) UIImage *picturePlaceholder;
 
 /**
- The list of the temporary subviews that should be removed before reusing the cell (nil by default).
+ The list of the temporary subviews that should be removed before reusing the cell (empty array by default).
  */
 @property (nonatomic) NSMutableArray<UIView*> *tmpSubviews;
 

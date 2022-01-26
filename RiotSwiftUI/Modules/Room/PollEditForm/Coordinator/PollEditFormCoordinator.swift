@@ -86,7 +86,7 @@ final class PollEditFormCoordinator: Coordinator, Presentable {
                 
                 self.pollEditFormViewModel.dispatch(action: .startLoading)
                 
-                self.parameters.room.sendPollStart(withContent: pollStartContent, localEcho: nil) { [weak self] result in
+                self.parameters.room.sendPollStart(withContent: pollStartContent, threadId: nil, localEcho: nil) { [weak self] result in
                     guard let self = self else { return }
                     
                     self.pollEditFormViewModel.dispatch(action: .stopLoading(nil))

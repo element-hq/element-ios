@@ -626,6 +626,22 @@
     return NO;
 }
 
+- (BOOL)hasThreadRoot
+{
+    @synchronized (bubbleComponents)
+    {
+        for (MXKRoomBubbleComponent *component in bubbleComponents)
+        {
+            if (component.thread)
+            {
+                return YES;
+            }
+        }
+    }
+    
+    return NO;
+}
+
 - (MXKRoomBubbleComponentDisplayFix)displayFix
 {
     MXKRoomBubbleComponentDisplayFix displayFix = MXKRoomBubbleComponentDisplayFixNone;

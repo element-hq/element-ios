@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ThreadRoomTitleView" customModule="Riot" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ami-Cg-fcA">
+                    <rect key="frame" x="0.0" y="0.0" width="243" height="64"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thread" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BnG-NU-7Mg">
+                            <rect key="frame" x="18" y="22" width="56.5" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FJB-2F-rrQ" customClass="RoomAvatarView" customModule="Riot" customModuleProvider="target">
+                            <rect key="frame" x="82.5" y="24" width="16" height="16"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="Fg7-y5-fEC"/>
+                                <constraint firstAttribute="height" constant="16" id="Qxm-RC-uC5"/>
+                            </constraints>
+                        </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mli-PC-WUh">
+                            <rect key="frame" x="92.5" y="28" width="12" height="12"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Mli-PC-WUh" secondAttribute="height" multiplier="1:1" id="Ohw-dy-qg0"/>
+                                <constraint firstAttribute="width" constant="12" id="nKB-SN-cO0"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Room name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8lk-sN-3IP">
+                            <rect key="frame" x="109.5" y="24.5" width="67" height="15"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Mli-PC-WUh" firstAttribute="centerX" secondItem="FJB-2F-rrQ" secondAttribute="trailing" id="BU4-yl-DrP"/>
+                        <constraint firstItem="BnG-NU-7Mg" firstAttribute="leading" secondItem="Ami-Cg-fcA" secondAttribute="leading" constant="18" id="ES6-mL-Y9F"/>
+                        <constraint firstItem="8lk-sN-3IP" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="S0S-6y-Vkn"/>
+                        <constraint firstItem="FJB-2F-rrQ" firstAttribute="leading" secondItem="BnG-NU-7Mg" secondAttribute="trailing" constant="8" id="SQk-zN-CO6"/>
+                        <constraint firstItem="FJB-2F-rrQ" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="nY0-2s-Wgo"/>
+                        <constraint firstItem="8lk-sN-3IP" firstAttribute="leading" secondItem="FJB-2F-rrQ" secondAttribute="trailing" constant="11" id="ql2-B3-82Y"/>
+                        <constraint firstItem="BnG-NU-7Mg" firstAttribute="centerY" secondItem="Ami-Cg-fcA" secondAttribute="centerY" id="rwC-ak-Ydb"/>
+                        <constraint firstItem="Mli-PC-WUh" firstAttribute="bottom" secondItem="FJB-2F-rrQ" secondAttribute="bottom" id="ulL-Xh-oCC"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Ami-Cg-fcA" secondAttribute="trailing" id="a9m-d6-0go"/>
+                <constraint firstAttribute="bottom" secondItem="Ami-Cg-fcA" secondAttribute="bottom" id="fEm-nj-yVF"/>
+                <constraint firstItem="Ami-Cg-fcA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="h0M-ab-EGv"/>
+                <constraint firstItem="Ami-Cg-fcA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="zAN-VI-ZYk"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="roomAvatarView" destination="FJB-2F-rrQ" id="SUd-p8-VCH"/>
+                <outlet property="roomEncryptionBadgeView" destination="Mli-PC-WUh" id="MuX-Qw-DfQ"/>
+                <outlet property="roomNameLabel" destination="8lk-sN-3IP" id="wFm-R4-fBo"/>
+                <outlet property="titleLabel" destination="BnG-NU-7Mg" id="gDw-Pr-oR8"/>
+                <outlet property="titleLabelLeadingConstraint" destination="ES6-mL-Y9F" id="MpE-vt-KKC"/>
+            </connections>
+            <point key="canvasLocation" x="0.7246376811594204" y="-152.00892857142856"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -70,6 +70,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
 
                 self.parameters.room.sendPollResponse(for: parameters.pollStartEvent,
                                                       withAnswerIdentifiers: identifiers,
+                                                      threadId: nil,
                                                       localEcho: nil, success: nil) { [weak self] error in
                     guard let self = self else { return }
                     
@@ -100,7 +101,7 @@ final class TimelinePollCoordinator: Coordinator, Presentable, PollAggregatorDel
     }
     
     func endPoll() {
-        parameters.room.sendPollEnd(for: parameters.pollStartEvent, localEcho: nil, success: nil) { [weak self] error in
+        parameters.room.sendPollEnd(for: parameters.pollStartEvent, threadId: nil, localEcho: nil, success: nil) { [weak self] error in
             self?.viewModel.dispatch(action: .showClosingFailure)
         }
     }

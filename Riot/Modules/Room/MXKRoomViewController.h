@@ -437,4 +437,11 @@ typedef NS_ENUM(NSUInteger, MXKRoomViewControllerJoinRoomResult) {
  */
 - (void)setBubbleTableViewContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 
+/**
+ Handle typing notification.
+ 
+ @param typing Flag indicating whether the user is typing or not.
+ */
+- (void)handleTypingNotification:(BOOL)typing;
+
 @end

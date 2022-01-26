@@ -163,7 +163,8 @@ typedef NS_ENUM(NSUInteger, ABOUT)
 
 typedef NS_ENUM(NSUInteger, LABS_ENABLE)
 {
-    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX
+    LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX = 0,
+    LABS_ENABLE_THREADS_INDEX
 };
 
 typedef NS_ENUM(NSUInteger, SECURITY)
@@ -578,7 +579,7 @@ TableViewSectionsDelegate>
     {
         Section *sectionLabs = [Section sectionWithTag:SECTION_TAG_LABS];
         [sectionLabs addRowWithTag:LABS_ENABLE_RINGING_FOR_GROUP_CALLS_INDEX];
-        
+        [sectionLabs addRowWithTag:LABS_ENABLE_THREADS_INDEX];
         sectionLabs.headerTitle = [VectorL10n settingsLabs];
         if (sectionLabs.hasAnyRows)
         {
@@ -2462,6 +2463,18 @@ TableViewSectionsDelegate>
             
             cell = labelAndSwitchCell;
         }
+        else if (row == LABS_ENABLE_THREADS_INDEX)
+        {
+            MXKTableViewCellWithLabelAndSwitch *labelAndSwitchCell = [self getLabelAndSwitchCell:tableView forIndexPath:indexPath];
+            
+            labelAndSwitchCell.mxkLabel.text = [VectorL10n settingsLabsEnableThreads];
+            labelAndSwitchCell.mxkSwitch.on = RiotSettings.shared.enableThreads;
+            labelAndSwitchCell.mxkSwitch.onTintColor = ThemeService.shared.theme.tintColor;
+            
+            [labelAndSwitchCell.mxkSwitch addTarget:self action:@selector(toggleEnableThreads:) forControlEvents:UIControlEventValueChanged];
+            
+            cell = labelAndSwitchCell;
+        }
     }
     else if (section == SECTION_TAG_FLAIR)
     {
@@ -3192,6 +3205,13 @@ TableViewSectionsDelegate>
 - (void)toggleEnableRingingForGroupCalls:(UISwitch *)sender
 {
     RiotSettings.shared.enableRingingForGroupCalls = sender.isOn;
+}
+
+- (void)toggleEnableThreads:(UISwitch *)sender
+{
+    RiotSettings.shared.enableThreads = sender.isOn;
+    [[MXKRoomDataSourceManager sharedManagerForMatrixSession:self.mainSession] reset];
+    [[AppDelegate theDelegate] restoreEmptyDetailsViewController];
 }
 
 - (void)togglePinRoomsWithMissedNotif:(UISwitch *)sender
