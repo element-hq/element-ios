@@ -673,12 +673,14 @@
 
 - (UIContextMenuConfiguration *)collectionView:(UICollectionView *)collectionView contextMenuConfigurationForItemAtIndexPath:(NSIndexPath *)indexPath point:(CGPoint)point API_AVAILABLE(ios(13.0))
 {
+    id<MXKRecentCellDataStoring> cellData = [recentsDataSource cellDataAtIndexPath:[NSIndexPath indexPathForRow:indexPath.item inSection:collectionView.tag]];
     MXRoom *room = [self.dataSource getRoomAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:collectionView.tag]];
     NSString *roomId = room.roomId;
     
-    return [UIContextMenuConfiguration configurationWithIdentifier:roomId
-                                                   previewProvider:nil
-                                                    actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
+    return [UIContextMenuConfiguration configurationWithIdentifier:roomId previewProvider:^UIViewController * _Nullable {
+        // Add a preview using the cell's data to prevent the avatar and displayname from changing with a room list update.
+        return [[RoomPreviewViewController alloc] initWithCellData:cellData];
+    } actionProvider:^UIMenu * _Nullable(NSArray<UIMenuElement *> * _Nonnull suggestedActions) {
         MXWeakify(self);
         
         BOOL isDirect = room.isDirect;
