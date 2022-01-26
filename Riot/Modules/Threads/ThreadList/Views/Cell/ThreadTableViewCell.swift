@@ -35,17 +35,17 @@ class ThreadTableViewCell: UITableViewCell {
         separatorInset = Constants.separatorInset
     }
     
-    func configure(withViewModel viewModel: ThreadModel) {
-        if let rootAvatar = viewModel.rootMessageSenderAvatar {
+    func configure(withModel model: ThreadModel) {
+        if let rootAvatar = model.rootMessageSenderAvatar {
             rootMessageAvatarView.fill(with: rootAvatar)
         } else {
             rootMessageAvatarView.avatarImageView.image = nil
         }
-        rootMessageSenderLabel.text = viewModel.rootMessageSenderDisplayName
-        rootMessageContentLabel.text = viewModel.rootMessageText
-        lastMessageTimeLabel.text = viewModel.lastMessageTime
-        if let summaryViewModel = viewModel.summaryViewModel {
-            summaryView.configure(withViewModel: summaryViewModel)
+        rootMessageSenderLabel.text = model.rootMessageSenderDisplayName
+        rootMessageContentLabel.text = model.rootMessageText
+        lastMessageTimeLabel.text = model.lastMessageTime
+        if let summaryModel = model.summaryModel {
+            summaryView.configure(withModel: summaryModel)
         }
     }
 

@@ -21,5 +21,5 @@ struct ThreadModel {
     let rootMessageSenderDisplayName: String?
     let rootMessageText: String?
     let lastMessageTime: String?
-    let summaryViewModel: ThreadSummaryModel?
+    let summaryModel: ThreadSummaryModel?
 }

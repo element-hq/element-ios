@@ -119,7 +119,7 @@ final class ThreadListViewController: UIViewController {
     private func setupViews() {
         let titleView = ThreadRoomTitleView.loadFromNib()
         titleView.mode = .allThreads
-        titleView.configure(withViewModel: viewModel.titleViewModel)
+        titleView.configure(withModel: viewModel.titleModel)
         titleView.updateLayout(for: UIApplication.shared.statusBarOrientation)
         self.titleView = titleView
         navigationItem.leftItemsSupplementBackButton = true
@@ -144,8 +144,8 @@ final class ThreadListViewController: UIViewController {
             self.renderLoading()
         case .loaded:
             self.renderLoaded()
-        case .empty(let viewModel):
-            self.renderEmptyView(withViewModel: viewModel)
+        case .empty(let model):
+            self.renderEmptyView(withModel: model)
         case .showingFilterTypes:
             self.renderShowingFilterTypes()
         case .error(let error):
@@ -166,9 +166,9 @@ final class ThreadListViewController: UIViewController {
         navigationItem.rightBarButtonItem?.isEnabled = true
     }
     
-    private func renderEmptyView(withViewModel emptyViewModel: ThreadListEmptyModel) {
+    private func renderEmptyView(withModel model: ThreadListEmptyModel) {
         self.activityPresenter.removeCurrentActivityIndicator(animated: true)
-        emptyView.configure(withViewModel: emptyViewModel)
+        emptyView.configure(withModel: model)
         threadsTableView.isHidden = true
         emptyView.isHidden = false
         navigationItem.rightBarButtonItem?.isEnabled = viewModel.selectedFilterType == .myThreads
@@ -243,8 +243,8 @@ extension ThreadListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: ThreadTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         
-        if let threadVM = viewModel.threadViewModel(at: indexPath.row) {
-            cell.configure(withViewModel: threadVM)
+        if let threadModel = viewModel.threadModel(at: indexPath.row) {
+            cell.configure(withModel: threadModel)
         }
         cell.update(theme: theme)
         

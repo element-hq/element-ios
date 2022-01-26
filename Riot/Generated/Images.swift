@@ -136,6 +136,7 @@ internal enum Asset {
     internal static let roomContextMenuReply = ImageAsset(name: "room_context_menu_reply")
     internal static let roomContextMenuReplyInThread = ImageAsset(name: "room_context_menu_reply_in_thread")
     internal static let roomContextMenuRetry = ImageAsset(name: "room_context_menu_retry")
+    internal static let roomContextMenuThread = ImageAsset(name: "room_context_menu_thread")
     internal static let inputCloseIcon = ImageAsset(name: "input_close_icon")
     internal static let inputEditIcon = ImageAsset(name: "input_edit_icon")
     internal static let inputReplyIcon = ImageAsset(name: "input_reply_icon")

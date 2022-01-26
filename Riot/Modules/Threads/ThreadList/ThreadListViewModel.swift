@@ -83,14 +83,14 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
         return threads.count
     }
     
-    func threadViewModel(at index: Int) -> ThreadModel? {
+    func threadModel(at index: Int) -> ThreadModel? {
         guard index < threads.count else {
             return nil
         }
-        return viewModel(forThread: threads[index])
+        return model(forThread: threads[index])
     }
     
-    var titleViewModel: ThreadRoomTitleModel {
+    var titleModel: ThreadRoomTitleModel {
         guard let room = session.room(withRoomId: roomId) else {
             return .empty
         }
@@ -135,7 +135,7 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
     
     // MARK: - Private
     
-    private func viewModel(forThread thread: MXThread) -> ThreadModel {
+    private func model(forThread thread: MXThread) -> ThreadModel {
         let rootAvatarViewData: AvatarViewData?
         let rootMessageSender: MXUser?
         let lastAvatarViewData: AvatarViewData?
@@ -175,15 +175,15 @@ final class ThreadListViewModel: ThreadListViewModelProtocol {
             lastMessageSender = nil
         }
         
-        let summaryViewModel = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
-                                                  lastMessageSenderAvatar: lastAvatarViewData,
-                                                  lastMessageText: lastMessageText)
+        let summaryModel = ThreadSummaryModel(numberOfReplies: thread.numberOfReplies,
+                                              lastMessageSenderAvatar: lastAvatarViewData,
+                                              lastMessageText: lastMessageText)
         
         return ThreadModel(rootMessageSenderAvatar: rootAvatarViewData,
                            rootMessageSenderDisplayName: rootMessageSender?.displayname,
                            rootMessageText: rootMessageText,
                            lastMessageTime: lastMessageTime,
-                           summaryViewModel: summaryViewModel)
+                           summaryModel: summaryModel)
     }
     
     private func rootMessageText(forThread thread: MXThread) -> String? {
